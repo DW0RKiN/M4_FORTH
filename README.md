@@ -176,9 +176,9 @@ Theoretically, your function name or variable may conflict with the name of the 
 
 ### Logic
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
-|    and     |     AND      |                |     ( x2 x1 -- x )               |                       |
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment      |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- | :----------- |
+|    and     |     AND      |                |     ( x2 x1 -- x )               |                       |              |
 |     or     |      OR      |                |     ( x2 x1 -- x )               |                       |
 |    xor     |     XOR      |                |        ( x1 -- -x1 )             |                       |
 |    abs     |     ABS      |                |         ( n -- u )               |                       |
@@ -218,25 +218,20 @@ Theoretically, your function name or variable may conflict with the name of the 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
 
-    PRINT( {"1. Hello, World! Use, {{1,2,3} {4}}"})
-    PRINT( {"2. Hello, World! Use {{1,2,3}} {{4}}"})
-    PRINT({{"4. Hello, World! Use {1,2,3} {4}"}})
-    PRINT(  "5. Hello  {,} World!")
+    PRINT(  "1. Hello{,} World! Use {,} {{1,2,3}} {{4}}")
+    PRINT(  "2. Hello{, World! Use , {1,2,3} {4}}")
+    PRINT( {"3. Hello, World! Use , {1,2,3} {4}"})
 
     STRING_SECTION:
-    string104:
-    db "5. Hello  , World!"
-    size104 EQU $ - string104
     string103:
-    db "4. Hello, World! Use {1,2,3} {4}"
+    db "3. Hello, World! Use , {1,2,3} {4}"
     size103 EQU $ - string103
     string102:
-    db "2. Hello, World! Use {1,2,3} {4}"
+    db "2. Hello, World! Use , {1,2,3} {4}"
     size102 EQU $ - string102
     string101:
-    db "1. Hello, World! Use, {1,2,3} {4}"
+    db "1. Hello, World! Use , {1,2,3} {4}"
     size101 EQU $ - string101
-
 
 And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error.
 
@@ -287,16 +282,16 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### Other
 
-| original   |    M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :-----------: | :------------: | :------------------------------- | :-------------------- |
-|            | INIT(RAS_addr)|                |                                  |  Init HL' = RAS_addr  |
+| original   |    M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment      |
+| :--------: | :-----------: | :------------: | :------------------------------- | :-------------------- | :----------- |
+|            | INIT(RAS_addr)|                |                                  |  Init HL' = RAS_addr  |              |
 |            |     STOP      |                |            ( -- )                |  Load orig. HL'       |
 |  constant  |   CONSTANT    |                |            ( -- )                |                       |
 |  variable  | VARIABLE(PI)  |                |            ( -- index )          |                       |
 |   addr @   |    FETCH      |                |       ( addr -- x )              |                       |
 |            |               |  XFETCH(addr)  |            ( -- x )              |                       |
-|  addr x !  |    STORE      |                |     ( addr x -- )                |                       | (addr) --> x
-|            |               |  XSTORE(addr)  |          ( x -- )                |                       |  x --> (addr)
+|  addr x !  |    STORE      |                |     ( addr x -- )                |                       | (addr) --> x |
+|            |               |  XSTORE(addr)  |          ( x -- )                |                       |  x --> (addr)|
 
 ## External links
 
