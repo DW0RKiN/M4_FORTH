@@ -262,8 +262,8 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 |            |              |    UNSLOOP     | ( stop index -- )                | ( -- )                |
 |            |              |       SI       |        ( s i -- s i i )          | ( -- )                |
 | `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )                | ( -- `1` )            |
-|            |              |     XLOOP      |            ( -- )                | ( index -- )          |
-| `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )                | ( index -- )          |
+|            |              |     XLOOP      |            ( -- )                | ( index -- index++ )  |
+| `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )                | ( index -- index+`2` )|
 |            |              |    UNXLOOP     |            ( -- )                | ( index -- )          |
 |     i      |              |       XI       |            ( -- i )              | ( i -- i )            |
 |     j      |              |       XJ       |            ( -- j )              | ( j i -- j i )        |
