@@ -9,6 +9,8 @@ include(`./FIRST.M4')dnl
         DROP
     SEMICOLON
     COLON(fib2_bench,( -- ))
-        XDO(1000,0) XI CALL(fib2) DROP XLOOP
+        XDO(1000,0) 
+            XDO(20,0) XI CALL(fib2) DROP XLOOP
+        XLOOP
     SEMICOLON
 include({./LAST.M4})dnl

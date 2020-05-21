@@ -93,18 +93,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib1.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib2.asm
 
-Fib(23) = 28657
-
-From this value it calculates crap.
-
-Fib(24) = 46368 = -19168
-...
-Fib(1000)= 4346655768693745643568852767504062580256466051737178040248172908953655541794905189040387984007925516929592
-2593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875
 
 | Name              |   System                             |  Forth                  |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m21.73s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m10.76s
 | Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz     | VolksForth MS-DOS (ITC) | Fibonacci2  | 8
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Fibonacci 2 | 1m57s   | 1x
 | Carsten Fulde     | Amiga 500 mit ACA1233n-Turbokarte (68030 @ 40 MHz) | JForth 3.1 Delta Research (Phil Burk) | Fibonacci 2 | 0.35s | 1x

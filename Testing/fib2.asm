@@ -111,32 +111,52 @@ fib2_bench:             ;           ( -- )
     ld  (HL),low 0      ; 2:10      xdo 102
     exx                 ; 1:4       xdo 102
 xdo102:                 ;           xdo 102 
-    exx                 ; 1:4       index xi 102    
-    ld    A,(HL)        ; 1:7       index xi 102 lo
-    inc   L             ; 1:4       index xi 102
-    ex   AF, AF'        ; 1:4       index xi 102
-    ld    A,(HL)        ; 1:7       index xi 102 hi
-    dec   L             ; 1:4       index xi 102
-    exx                 ; 1:4       index xi 102
-    push DE             ; 1:11      index xi 102
-    ex   DE, HL         ; 1:4       index xi 102
-    ld    H, A          ; 1:4       index xi 102
-    ex   AF, AF'        ; 1:4       index xi 102
-    ld    L, A          ; 1:4       index xi 102
-;   exx                 ; 1:4       index xi 102
-;   ld    E,(HL)        ; 1:7       index xi 102
-;   inc   L             ; 1:4       index xi 102
-;   ld    D,(HL)        ; 1:7       index xi 102
-;   push DE             ; 1:11      index xi 102
-;   dec   L             ; 1:4       index xi 102
-;   exx                 ; 1:4       index xi 102
-;   ex   DE, HL         ; 1:4       index xi 102 ( i x2 x1 -- i  x1 x2 )
-;   ex  (SP),HL         ; 1:19      index xi 102 ( i x1 x2 -- x2 x1 i ) 
+            
+    exx                 ; 1:4       xdo 103
+    dec  HL             ; 1:6       xdo 103
+    ld  (HL),high 0     ; 2:10      xdo 103
+    dec   L             ; 1:4       xdo 103
+    ld  (HL),low 0      ; 2:10      xdo 103
+    exx                 ; 1:4       xdo 103
+xdo103:                 ;           xdo 103 
+    exx                 ; 1:4       index xi 103    
+    ld    A,(HL)        ; 1:7       index xi 103 lo
+    inc   L             ; 1:4       index xi 103
+    ex   AF, AF'        ; 1:4       index xi 103
+    ld    A,(HL)        ; 1:7       index xi 103 hi
+    dec   L             ; 1:4       index xi 103
+    exx                 ; 1:4       index xi 103
+    push DE             ; 1:11      index xi 103
+    ex   DE, HL         ; 1:4       index xi 103
+    ld    H, A          ; 1:4       index xi 103
+    ex   AF, AF'        ; 1:4       index xi 103
+    ld    L, A          ; 1:4       index xi 103
+;   exx                 ; 1:4       index xi 103
+;   ld    E,(HL)        ; 1:7       index xi 103
+;   inc   L             ; 1:4       index xi 103
+;   ld    D,(HL)        ; 1:7       index xi 103
+;   push DE             ; 1:11      index xi 103
+;   dec   L             ; 1:4       index xi 103
+;   exx                 ; 1:4       index xi 103
+;   ex   DE, HL         ; 1:4       index xi 103 ( i x2 x1 -- i  x1 x2 )
+;   ex  (SP),HL         ; 1:19      index xi 103 ( i x1 x2 -- x2 x1 i ) 
     call fib2           ; 3:17      call
     ex   DE,HL          ; 1:4       call    
     exx                 ; 1:4       call 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop 
+    exx                 ; 1:4       xloop 103
+    inc (HL)            ; 1:7       xloop 103 index_lo++
+    ld    A, 20         ; 2:7       xloop 103
+    scf                 ; 1:4       xloop 103
+    sbc   A, (HL)       ; 1:7       xloop 103 stop_lo - index_lo - 1
+    exx                 ; 1:4       xloop 103
+    jp   nc,xdo103      ; 3:10      xloop 103 again
+    exx                 ; 1:4       xloop 103
+    inc   L             ; 1:4       xloop 103
+    inc  HL             ; 1:6       xloop 103
+    exx                 ; 1:4       xloop 103
+        
     exx                 ; 1:4       xloop 102
     ld    E,(HL)        ; 1:7       xloop 102
     inc   L             ; 1:4       xloop 102
