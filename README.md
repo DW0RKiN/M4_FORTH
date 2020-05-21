@@ -174,6 +174,71 @@ Theoretically, your function name or variable may conflict with the name of the 
 |     2*     |    TWO_MUL   |                |        ( x1 -- x1*2 )            |                       |
 |     2/     |    TWO_DIV   |                |        ( x1 -- x1/2 )            |                       |
 
+### Logic
+
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|    and     |     AND      |                |     ( x2 x1 -- x )               |                       |
+|     or     |      OR      |                |     ( x2 x1 -- x )               |                       |
+|    xor     |     XOR      |                |        ( x1 -- -x1 )             |                       |
+|    abs     |     ABS      |                |         ( n -- u )               |                       |
+|            |    INVERT    |                |     ( x2 x1 -- x )               |                       |
+|     /      |     TRUE     |                |     ( x2 x1 -- x )               |                       |
+|    mod     |    FALSE     |                |     ( x2 x1 -- x )               |                       |
+|            |      CP0     |                |        ( x1 -- x1 )              |                       | x1-0 --> set zero flag
+|            |     DCP0     |                |     ( x2 x1 -- x2 x1 )           |                       | x2x1-0 --> set zero flag
+|   `0` =    |      EQ0     |                |        ( x1 -- x )               |                       |
+|  `0` <>    |      NE0     |                |        ( x1 -- x )               |                       | Do not use! Because FALSE=0 and TRUE=-1,-2,1,2,...
+|      =     |      EQ      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     <>     |      NE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      <     |      LT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     <=     |      LE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      >     |      GT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     >=     |      GE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      <     |     ULT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     <=     |     ULE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      >     |     UGT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     >=     |     UGE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     >>     |              |                |     ( x1 u -- x1>>u )            |                       |
+|     >>     |              |                |     ( x1 u -- x1>>u )            |                       |
+
+### Device
+
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|     .      |     DOT      |                |        ( x1 -- )                 |                       |
+|     .s     |     DOTS     |                |  ( x3 x2 x1 -- x3 x2 x1 )        |                       |
+|   DUP .    |    DUP_DOT   |                |        ( x1 -- x1 )              |                       |
+|     cr     |      CR      |                |           ( -- )                 |                       |
+|            | PUTCHAR('a') |                |           ( -- )                 |                       |
+|            |     TYPE     |                |    ( addr n -- )                 |                       |
+|            |  DUP2_TYPE   |                |    ( addr n -- addr n )          |                       |
+| .( Hello)  |PRINT("Hello")|                |           ( -- )                 |                       |
+
+The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
+Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
+
+    PRINT( {"1. Hello, Word! Use, {{1,2,3} {4}}"})
+    PRINT( {"2. Hello, Word! Use {{1,2,3}} {{4}}"})
+    PRINT({{"4. Hello, Word! Use {1,2,3} {4}"}})
+    PRINT(  "5. Hello  {,} Word!")
+
+    STRING_SECTION:
+    string104:
+    db "5. Hello  , Word!"
+    size104 EQU $ - string104
+    string103:
+    db "4. Hello, Word! Use {1,2,3} {4}"
+    size103 EQU $ - string103
+    string102:
+    db "2. Hello, Word! Use {1,2,3} {4}"
+    size102 EQU $ - string102
+    string101:
+    db "1. Hello, Word! Use, {1,2,3} {4}"
+    size101 EQU $ - string101
+
+
+And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error.
 
 ## External links
 
