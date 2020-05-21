@@ -278,12 +278,25 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 |     i      |              |       XI       |            ( -- i )              | ( i -- i )            |
 |     j      |              |       XJ       |            ( -- j )              | ( j i -- j i )        |
 |     k      |              |       XK       |            ( -- k )              | ( k j i -- k j i )    |
-|   begin    |    BEGIN     |                |            ( -- )                | ( -- )                |
-|   while    |    WHILE     |                |       ( flag -- )                | ( -- )                |
-|   repeat   |    REPEAT    |                |            ( -- )                | ( -- )                |
-|   again    |    AGAIN     |                |            ( -- )                | ( -- )                |
-|   until    |    UNTIL     |                |       ( flag -- )                | ( -- )                |
+|   begin    |    BEGIN     |                |            ( -- )                |                       |
+|   while    |    WHILE     |                |       ( flag -- )                |                       |
+|   repeat   |    REPEAT    |                |            ( -- )                |                       |
+|   again    |    AGAIN     |                |            ( -- )                |                       |
+|   until    |    UNTIL     |                |       ( flag -- )                |                       |
 
+
+### Other
+
+| original   |    M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :-----------: | :------------: | :------------------------------- | :-------------------- |
+|            | INIT(RAS_addr)|                |                                  |  Init HL' = RAS_addr  |
+|            |     STOP      |                |            ( -- )                |  Load orig. HL'       |
+|  constant  |   CONSTANT    |                |            ( -- )                |                       |
+|  variable  | VARIABLE(PI)  |                |            ( -- index )          |                       |
+|   addr @   |    FETCH      |                |       ( addr -- x )              |                       |
+|            |               |  XFETCH(addr)  |            ( -- x )              |                       |
+|  addr x !  |    STORE      |                |     ( addr x -- )                |                       | (addr) --> x
+|            |               |  XSTORE(addr)  |          ( x -- )                |                       |  x --> (addr)
 
 ## External links
 
