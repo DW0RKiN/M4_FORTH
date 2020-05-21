@@ -241,6 +241,7 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 | :--------: | :----------: | :------------: | :------------------------------- | :-------------------- | :--------------- |
 |     if     |      IF      |                |      ( flag -- )                 |                       |
 |            |     IFNZ     |                |           ( -- )                 |                       | IF not zero flag
+|            |     IFZ      |                |           ( -- )                 |                       | IF zero flag
 |    else    |     ELSE     |                |           ( -- )                 |                       |
 |    then    |     THEN     |                |           ( -- )                 |                       |
 

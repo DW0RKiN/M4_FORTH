@@ -12,11 +12,20 @@ pushdef({THEN_STACK}, IF_COUNT)dnl
     jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
 dnl
 dnl
+dnl if not zero
 define(IFNZ,{
 define({IF_COUNT}, incr(IF_COUNT))dnl
 pushdef({ELSE_STACK}, IF_COUNT)dnl
 pushdef({THEN_STACK}, IF_COUNT)dnl
-    jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
+    jp    z, else{}IF_COUNT}    ; 3:10      ifnz)dnl
+dnl
+dnl
+dnl if zero
+define(IFZ,{
+define({IF_COUNT}, incr(IF_COUNT))dnl
+pushdef({ELSE_STACK}, IF_COUNT)dnl
+pushdef({THEN_STACK}, IF_COUNT)dnl
+    jp   nz, else{}IF_COUNT}    ; 3:10      ifz)dnl
 dnl
 dnl
 define({ELSE},{
