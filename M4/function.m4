@@ -1,18 +1,19 @@
 dnl ## Definice funkce
 dnl
-dnl ( --  )
+dnl ( -- )
 dnl call function
 define(CALL,{
     call format({%-15s},$1); 3:17      call
     ex   DE,HL          ; 1:4       call    
     exx                 ; 1:4       call})dnl
 dnl
+dnl
 dnl ( -- )
-dnl save return to (HL})
+dnl save return to (HL')
 define(COLON,{
 pushdef({FCE_STACK},{patsubst({$1}, { *$}, {})})dnl
 ;   ---  b e g i n  ---
-format({%-24s;           $2},format({%s:},FCE_STACK))
+format({%-24s;           $2},FCE_STACK:)
     exx                 ; 1:4       :
     pop  DE             ; 1:10      : ret
     dec  HL             ; 1:6       :
@@ -25,11 +26,11 @@ dnl
 dnl ( -- )
 dnl return
 define(EXIT,{
-    jp   format({%-15s},FCE_STACK{}_end); 3:10})dnl
+    jp   format({%-15s},FCE_STACK{}_end); 3:10      exit})dnl
 dnl
 dnl
 dnl ( -- )
-dnl return from functionx = x1 & x2
+dnl return from function
 define(SEMICOLON,{
 FCE_STACK{}_end:popdef({FCE_STACK})
     exx                 ; 1:4       ;
@@ -40,5 +41,33 @@ FCE_STACK{}_end:popdef({FCE_STACK})
     ex   DE,HL          ; 1:4       ;
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----})dnl
+dnl
+dnl
+dnl ( -- ret )
+dnl call function
+define(SCALL,{
+    call format({%-15s},$1); 3:17      scall})dnl
+dnl
+dnl
+dnl ( ret -- ret )
+define(SCOLON,{
+pushdef({FCE_STACK},{patsubst({$1}, { *$}, {})})dnl
+;   ---  b e g i n  ---
+format({%-24s;           $2},FCE_STACK:)})dnl
+dnl
+dnl
+dnl ( ret -- )
+dnl return
+define(SEXIT,{
+    ret                 ; 1:10      sexit})dnl
+dnl
+dnl
+dnl ( ret -- )
+dnl return from function
+define(SSEMICOLON,{
+FCE_STACK{}_end:popdef({FCE_STACK})
+    ret                 ; 1:10      s;
+;   -----  e n d  -----})dnl
+dnl
 dnl
 dnl

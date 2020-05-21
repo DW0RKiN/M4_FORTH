@@ -3,14 +3,14 @@ include(`./FIRST.M4')dnl
     INIT(35000)
     CALL(fib1_bench)
     STOP   
-    XCOLON(fib1,( a -- b ))
-        DUP PUSH(2) LT IF DROP_PUSH(1) EXIT THEN
-        DUP  ONE_SUB XCALL(fib1) 
-        SWAP TWO_SUB XCALL(fib1) ADD
-    XSEMICOLON
+    SCOLON(fib1x,( a -- b ))
+        DUP_PUSH(2) LT IF DROP_PUSH(1) SEXIT THEN
+        DUP  ONE_SUB SCALL(fib1x) 
+        SWAP TWO_SUB SCALL(fib1x) ADD
+    SSEMICOLON
     COLON(fib1_bench,( -- ))
         XDO(1000,0)
-            XDO(20,0) XI XCALL(fib1) DROP XLOOP
+            XDO(20,0) XI SCALL(fib1x) DROP XLOOP
         XLOOP
     SEMICOLON
 include({./LAST.M4})dnl

@@ -18,14 +18,12 @@
 ;   =====  e n d  =====   
     
 ;   ---  b e g i n  ---
-fib1:                   ;           ( a -- b )
+fib1x:                  ;           ( a -- b )
         
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
-    push DE             ; 1:11      push(2)
-    ex   DE, HL         ; 1:4       push(2)
-    ld   HL, 2          ; 3:10      push(2) 
+    push DE             ; 1:11      dup_push(2)
+    push HL             ; 1:11      dup_push(2)
+    ex   DE, HL         ; 1:4       dup_push(2)
+    ld   HL, 2          ; 3:10      dup_push(2) 
     ld    A, H          ; 1:4       <
     xor   D             ; 1:4       <
     jp    p, $+7        ; 3:10      <
@@ -40,8 +38,8 @@ fib1:                   ;           ( a -- b )
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else101    ; 3:10      if 
-    ld   HL, 1          ; 3:10      drop_push 
-    jp   fib1_end       ; 3:10      exit 
+    ld   HL, 1          ; 3:10      drop_push(1) 
+    ret                 ; 1:10      sexit 
 else101  EQU $          ;           = endif
 endif101:
         
@@ -49,17 +47,17 @@ endif101:
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup  
     dec  HL             ; 1:6       1- 
-    call fib1           ; 3:17      xcall 
+    call fib1x          ; 3:17      scall 
         
     ex   DE, HL         ; 1:4       swap 
     dec  HL             ; 1:6       2-
     dec  HL             ; 1:6       2- 
-    call fib1           ; 3:17      xcall 
+    call fib1x          ; 3:17      scall 
     add  HL, DE         ; 1:4       +
     pop  DE             ; 1:10      +
     
-fib1_end:
-    ret                 ; 1:10      x;
+fib1x_end:
+    ret                 ; 1:10      s;
 ;   -----  e n d  -----
     
 ;   ---  b e g i n  ---
@@ -108,7 +106,7 @@ xdo102:                 ;           xdo 102
 ;   exx                 ; 1:4       index xi 102
 ;   ex   DE, HL         ; 1:4       index xi 102 ( i x2 x1 -- i  x1 x2 )
 ;   ex  (SP),HL         ; 1:19      index xi 102 ( i x1 x2 -- x2 x1 i ) 
-    call fib1           ; 3:17      xcall 
+    call fib1x          ; 3:17      scall 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop 
     exx                 ; 1:4       xloop 102

@@ -93,7 +93,17 @@ dnl DROP_PUSH(50)
 dnl ( a -- 50 ) 
 dnl zmeni hodnotu top
 define({DROP_PUSH},{
-    ld   HL, format({%-11s},$1); 3:10      drop_push})dnl
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      drop_push($1)})dnl
+dnl
+dnl
+dnl DUP_PUSH(50)
+dnl ( a -- a a 50 ) 
+dnl zmeni hodnotu top
+define({DUP_PUSH},{
+    push DE             ; 1:11      dup_push($1)
+    push HL             ; 1:11      dup_push($1)
+    ex   DE, HL         ; 1:4       dup_push($1)
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup_push($1)})dnl
 dnl
 dnl
 dnl 0 pick ( a 0 -- a a )
