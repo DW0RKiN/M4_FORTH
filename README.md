@@ -185,10 +185,10 @@ Theoretically, your function name or variable may conflict with the name of the 
 |   invert   |    INVERT    |                |        ( x1 -- ~x1 )             |                       |
 |    true    |     TRUE     |                |           ( -- -1 )              |                       |
 |   false    |    FALSE     |                |           ( -- 0 )               |                       |
-|            |      CP0     |                |        ( x1 -- x1 )              |                       | x1-0 --> set zero flag
-|            |     DCP0     |                |     ( x2 x1 -- x2 x1 )           |                       | x2x1-0 --> set zero flag
-|   `0` =    |      EQ0     |                |        ( x1 -- x )               |                       |
-|  `0` <>    |      NE0     |                |        ( x1 -- x )               |                       | Do not use! Because FALSE=0 and TRUE=-1,-2,1,2,...
+|            |              |      CP0       |        ( x1 -- x1 )              |                       | x1-0 --> set zero flag
+|            |              |     DCP0       |     ( x2 x1 -- x2 x1 )           |                       | x2x1-0 --> set zero flag
+|   `0` =    |              |      EQ0       |        ( x1 -- x )               |                       |
+|  `0` <>    |              |      NE0       |        ( x1 -- x )               |                       | Do not use! Because FALSE=0 and TRUE=-1,-2,1,2,...
 |      =     |      EQ      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
 |     <>     |      NE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
 |      <     |      LT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
@@ -237,9 +237,10 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### IF
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
-|     if     |      IF      |                |           ( -- )                 |                       |
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment      |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- | :----------- |
+|     if     |      IF      |                |      ( flag -- )                 |                       |
+|            |     IFNZ     |                |           ( -- )                 |                       | IF not zero flag
 |    else    |     ELSE     |                |           ( -- )                 |                       |
 |    then    |     THEN     |                |           ( -- )                 |                       |
 
