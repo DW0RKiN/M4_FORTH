@@ -49,7 +49,7 @@ It is created using functions. The return value of the function is stored in the
     m4 my_program_name.m4 > my_program_name.asm
     pasmo -d my_program_name.asm my_program_name.bin > test.asm
 
-## Hello Word!
+## Hello World!
 
 For clarity, macros are divided into several files and stored in the M4 directory.
 To avoid having to manually include each file, a FIRST.M4 file is created that includes all other files.
@@ -247,6 +247,16 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 |     if     |      IF      |                |           ( -- )                 |                       |
 |    else    |     ELSE     |                |           ( -- )                 |                       |
 |    then    |     THEN     |                |           ( -- )                 |                       |
+
+### Function
+
+| original   |     M4 FORTH     |  optimization  |   data stack                     |  return address stack |
+| :--------: | :--------------: | :------------: | :------------------------------- | :-------------------- |
+|    name    |    CALL(name)    |                |           ( -- ret )             | ( -- )                |
+|     :      |COLON(name,coment)|                |       ( ret -- )                 | ( -- ret )            |
+|     ;      |     SEMICOLON    |                |           ( -- )                 | ( ret -- )            |
+|    exit    |       EXIT       |                |           ( -- )                 | ( ret -- )            |
+
 
 ### LOOP
 
