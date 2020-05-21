@@ -69,23 +69,27 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/gcd2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib1.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib1.asm
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib1x.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib1x.asm
 
-| Name              |   System                             |  Forth            |  Benchmark  | Time (sec/round) | Scale |
-| :---------------: | :----------------------------------: | :---------------: | :---------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH          | Fib1        | 48m14.51s
-| Johan Kotlinski   | DEC 3000-600 Alpha 21064 175Mhz      | pForth            | Fibonacci 1 | 0.0038
-| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware      | Fibonacci 1 | 0.0026
-| Michael Kalus     | Rockwell R1200-14, 2Mhz 65F12        | RSC-Forth         | Fibonacci 1 | 16.09
-| Matthias Trute    | Atmega16 8MHz                        | amForth 4.4       | Fibonacci 1 | 1.46
-| Carsten Strotmann | IBM L40X (386SX)                     | VolksForth MS-DOS | Fibonacci 1 | 0.36s
-| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255     | OpenFirmware      | Fib1        | 0,005s
-| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac       | OpenBoot 3.25     | Fib1        | 0,014s
-| Herbert Lange     | Compaq Deskpro P166                  | pForth V27        | Fib1        | 0,061s
-| Herbert Lange     | Apple iMac G3 400Mhz                 | pForth V27        | Fib1        | 0,015s
-| Herbert Lange     | DEC 3000 400s                        | pForth V27        | Fib1        | 0,098s
-| Herbert Lange     | SUN Ultra 1 Creator 3D               | pForth V27        | Fib1        | 0,052s
-| Thorsten Schoeler | NCR 3150 486SX/25Mhz+FPU=Linux 2.0.0 | gforth 0.3.0      | Fib1        | 1m79s
-| Thorsten Schoeler | MSP430FR5739, 8Mhz DCO intern MSP-EXP430FR5739 Experimenter Board | CamelForth | FIB1 | 00'46':39 | 100x
+
+| Name              |   System                             |  Forth                  |  Benchmark  | Time (sec/round) | Scale |
+| :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib1        | 48m14.51s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib1x       | 35m14.61s
+| Johan Kotlinski   | DEC 3000-600 Alpha 21064 175Mhz      | pForth                  | Fibonacci 1 | 0.0038
+| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Fibonacci 1 | 0.0026
+| Michael Kalus     | Rockwell R1200-14, 2Mhz 65F12        | RSC-Forth               | Fibonacci 1 | 16.09
+| Matthias Trute    | Atmega16 8MHz                        | amForth 4.4             | Fibonacci 1 | 1.46
+| Carsten Strotmann | IBM L40X (386SX)                     | VolksForth MS-DOS       | Fibonacci 1 | 0.36s
+| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255     | OpenFirmware            | Fib1        | 0,005s
+| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac       | OpenBoot 3.25           | Fib1        | 0,014s
+| Herbert Lange     | Compaq Deskpro P166                  | pForth V27              | Fib1        | 0,061s
+| Herbert Lange     | Apple iMac G3 400Mhz                 | pForth V27              | Fib1        | 0,015s
+| Herbert Lange     | DEC 3000 400s                        | pForth V27              | Fib1        | 0,098s
+| Herbert Lange     | SUN Ultra 1 Creator 3D               | pForth V27              | Fib1        | 0,052s
+| Thorsten Schoeler | NCR 3150 486SX/25Mhz+FPU=Linux 2.0.0 | gforth 0.3.0            | Fib1        | 1m79s
+| Thorsten Schoeler | MSP430FR5739, 8Mhz DCO intern MSP-EXP430FR5739 Experimenter Board |CamelForth|FIB1| 00'46':39 | 100x
 
 
 ### Fib 2
