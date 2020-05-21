@@ -141,9 +141,10 @@ Theoretically, your function name or variable may conflict with the name of the 
 |   -rot     |     RROT     |                |  ( x3 x2 x1 -- x1 x3 x2 )        |                       |
 |   `123`    |  PUSH(`123`) |   PUSH2()      |           ( -- `123` )           |                       |
 |   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1` )         |                       |
-| addr `7` ! | PUSH((addr)) |                |  *addr = 7 --> ( -- `7`)         |                       |
-|            |PUSH2((A),`2`)|                |  *A = 4 --> ( -- `4` `2` )       |                       |
-| drop `5`   |DROP_PUSH(`5`)|                |        ( x1 -- `5`)              |                       |
+| addr `7` ! | PUSH((addr)) |                | *addr = 7 --> ( -- `7`)          |                       |
+|            |              | PUSH2((A),`2`) | *A = 4 --> ( -- `4` `2` )        |                       |
+| drop `5`   |              | DROP_PUSH(`5`) |        ( x1 -- `5`)              |                       |
+|  dup `4`   |              |  DUP_PUSH(`4`) |        ( x1 -- x1 x1 `4`)        |                       |
 |   0 pick   |              |     XPICK0     |         ( a -- a a )             |                       |
 |   1 pick   |              |     XPICK1     |       ( b a -- b a b )           |                       |
 |   2 pick   |              |     XPICK2     |     ( c b a -- c b a c )         |                       |
@@ -251,12 +252,16 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### Function
 
-| original   |     M4 FORTH     |  optimization  |   data stack                     |  return address stack |
-| :--------: | :--------------: | :------------: | :------------------------------- | :-------------------- |
-|    name    |    CALL(name)    |                |           ( -- ret )             | ( -- )                |
-|     :      |COLON(name,coment)|                |       ( ret -- )                 | ( -- ret )            |
-|     ;      |     SEMICOLON    |                |           ( -- )                 | ( ret -- )            |
-|    exit    |       EXIT       |                |           ( -- )                 | ( ret -- )            |
+| original   |     M4 FORTH     |    optimization   |   data stack                     |  return address stack |
+| :--------: | :--------------: | :---------------: | :------------------------------- | :-------------------- |
+|    name    |    CALL(name)    |                   |     ( x2 x1 -- ret x2 x1 )       | ( -- )                |
+|     :      |COLON(name,coment)|                   | ( ret x2 x1 -- x2 x1 )           | ( -- ret )            |
+|     ;      |     SEMICOLON    |                   |           ( -- )                 | ( ret -- )            |
+|    exit    |       EXIT       |                   |           ( -- )                 | ( ret -- )            |
+|    name    |                  |    SCALL(name)    |     ( x2 x1 -- ret x2 x1 )       | ( -- )                |
+|     :      |                  |SCOLON(name,coment)| ( ret x2 x1 -- ret x2 x1 )       | ( -- )                |
+|     ;      |                  |     SSEMICOLON    | ( ret x2 x1 -- x2 x1 )           | ( -- )                |
+|    exit    |                  |       SEXIT       | ( ret x2 x1 -- x2 x1 )           | ( -- )                |
 
 
 ### LOOP
