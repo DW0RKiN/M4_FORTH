@@ -189,16 +189,16 @@ Theoretically, your function name or variable may conflict with the name of the 
 |            |              |     DCP0       |     ( x2 x1 -- x2 x1 )           |                       | x2x1-0 --> set zero flag
 |   `0` =    |              |      EQ0       |        ( x1 -- x )               |                       |
 |  `0` <>    |              |      NE0       |        ( x1 -- x )               |                       | Do not use! Because FALSE=0 and TRUE=-1,-2,1,2,...
-|      =     |      EQ      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|     <>     |      NE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|      <     |      LT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|     <=     |      LE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|      >     |      GT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|     >=     |      GE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|      <     |     ULT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|     <=     |     ULE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|      >     |     UGT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
-|     >=     |     UGE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      =     |      EQ      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|     <>     |      NE      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|      <     |      LT      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|     <=     |      LE      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|      >     |      GT      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|     >=     |      GE      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|      <     |     ULT      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|     <=     |     ULE      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|      >     |     UGT      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
+|     >=     |     UGE      |                |     ( x2 x1 -- flag )            |                       | TRUE=-1 FALSE=0
 |     >>     |              |                |     ( x1 u -- x1>>u )            |                       |
 |     >>     |              |                |     ( x1 u -- x1>>u )            |                       |
 
