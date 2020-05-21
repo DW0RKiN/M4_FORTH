@@ -35,7 +35,7 @@ define(XOR,{
 dnl
 dnl ( x1 -- x )
 dnl x = ~x1
-define(INVERT,{
+#define(INVERT,{
     ld    A, L          ; 1:4       invert
     cpl                 ; 1:4       invert
     ld    L, A          ; 1:4       invert
@@ -103,6 +103,8 @@ define(NE0,{
 dnl
 dnl ------------ signed -----------------
 dnl
+dnl
+dnl =
 dnl ( x1 x2 -- x )
 dnl equal ( x1 == x2 )
 define({EQ},{
@@ -114,6 +116,7 @@ define({EQ},{
     pop  DE             ; 1:10      eq})dnl
 dnl
 dnl
+dnl <>
 dnl ( x1 x2 -- x )
 dnl not equal ( x1 <> x2 )
 define({NE},{
@@ -124,6 +127,7 @@ define({NE},{
     pop  DE             ; 1:10      <>})dnl
 dnl
 dnl
+dnl <
 dnl ( x2 x1 -- x )
 dnl signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define(LT,{
@@ -137,6 +141,8 @@ define(LT,{
     sbc  HL, HL         ; 2:15      <
     pop  DE             ; 1:10      <})dnl
 dnl
+dnl
+dnl <=
 dnl ( x2 x1 -- x )
 dnl signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
 define(LE,{
@@ -152,6 +158,7 @@ define(LE,{
     pop  DE             ; 1:10      <=})dnl
 dnl
 dnl
+dnl >
 dnl ( x2 x1 -- x )
 dnl signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define(GT,{
@@ -165,6 +172,7 @@ define(GT,{
     pop  DE             ; 1:10      >})dnl
 dnl
 dnl
+dnl >=
 dnl ( x2 x1 -- x )
 dnl signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 define({GE},{
@@ -226,7 +234,7 @@ define(UGE,{
     sbc  HL, HL         ; 2:15      (u) >=
     pop  DE             ; 1:10      (u) >=})dnl
 dnl
-dnl -------------------------------------
+dnl ------------- shifts ----------------
 dnl
 dnl ( x u -- x)
 dnl shifts x left u places
@@ -239,5 +247,36 @@ dnl shifts x right u places
 define(RSHIFT,{
     .warning Nedodelano...
 })dnl
+dnl
+dnl
+dnl <<
+dnl ( x u -- x)
+dnl shifts x left u places
+define(XLSHIFT1,{
+    add  HL, HL         ; 1:11      xlshift1})dnl
+dnl
+dnl
+dnl >>
+dnl ( x u -- x)
+dnl shifts x right u places
+define(XRSHIFT1,{
+    sra   H             ; 2:8       xrshift1 signed
+    rr    L             ; 2:8       xrshift1})dnl
+dnl
+dnl
+dnl
+dnl u<<
+dnl ( x u -- x)
+dnl shifts x left u places
+define(XULSHIFT1,{
+    add  HL, HL         ; 1:11      xulshift1})dnl
+dnl
+dnl
+dnl u>>
+dnl ( x u -- x)
+dnl shifts x right u places
+define(XURSHIFT1,{
+    srl   H             ; 2:8       xurshift1 unsigned
+    rr    L             ; 2:8       xurshift1})dnl
 dnl
 dnl

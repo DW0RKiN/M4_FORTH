@@ -199,6 +199,7 @@ UDIVIDE_HI:
     ret                 ; 1:10})dnl
 dnl
 ALL_VARIABLE
-ALL_STRING_STACK
+STRING_SECTION:
+define({STRING_POP},{STRING_STACK{}popdef({STRING_STACK})})ALL_STRING_STACK
 dnl
 dnl

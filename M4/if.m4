@@ -11,6 +11,14 @@ pushdef({THEN_STACK}, IF_COUNT)dnl
     pop  DE             ; 1:10      if
     jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
 dnl
+dnl
+define(IFNZ,{
+define({IF_COUNT}, incr(IF_COUNT))dnl
+pushdef({ELSE_STACK}, IF_COUNT)dnl
+pushdef({THEN_STACK}, IF_COUNT)dnl
+    jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
+dnl
+dnl
 define({ELSE},{
     jp   endif{}THEN_STACK       ; 3:10      else
 else{}ELSE_STACK:popdef({ELSE_STACK})})dnl

@@ -1,6 +1,7 @@
 define(LOOP_COUNT,100)dnl
 dnl
 dnl
+dnl ( stop index -- )
 define(DO,{define({LOOP_COUNT}, incr(LOOP_COUNT))pushdef({LOOP_STACK}, LOOP_COUNT)
     push HL             ; 1:11      do LOOP_STACK index
     push DE             ; 1:11      do LOOP_STACK stop

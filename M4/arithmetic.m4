@@ -26,7 +26,7 @@ define({NEGATE},{
     ld    H, A          ; 1:4       negate})dnl
 dnl
 dnl
-dnl ( x -- x )
+dnl ( x -- u )
 dnl absolute value of x
 define(ABS,{
     ld    A, H          ; 1:4       abs
