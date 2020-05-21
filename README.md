@@ -211,8 +211,8 @@ Theoretically, your function name or variable may conflict with the name of the 
 |   DUP .    |    DUP_DOT   |                |        ( x1 -- x1 )              |                       |
 |     cr     |      CR      |                |           ( -- )                 |                       |
 |            | PUTCHAR('a') |                |           ( -- )                 |                       |
-|            |     TYPE     |                |    ( addr n -- )                 |                       |
-|            |  DUP2_TYPE   |                |    ( addr n -- addr n )          |                       |
+|    type    |     TYPE     |                |    ( addr n -- )                 |                       |
+| dup2 type  |  DUP2_TYPE   |                |    ( addr n -- addr n )          |                       |
 | .( Hello)  |PRINT("Hello")|                |           ( -- )                 |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
@@ -239,6 +239,41 @@ Therefore, if there is a comma in the string, the inside must be wrapped in `{` 
 
 
 And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error.
+
+### IF
+
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|     if     |      IF      |                |           ( -- )                 |                       |
+|    else    |     ELSE     |                |           ( -- )                 |                       |
+|    then    |     THEN     |                |           ( -- )                 |                       |
+
+### LOOP
+
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|     do     |      DO      |                | ( stop index -- )                | ( -- stop index )     |
+|    loop    |     LOOP     |                |            ( -- )                | ( stop index -- )     |
+|   unloop   |    UNLOOP    |                |            ( -- )                | ( x -- )              |
+|      i     |       I      |                |            ( -- index )          | ( index -- index )    |
+|      j     |       J      |                |            ( -- j )              | ( j s i -- j s i )    |
+|            |              |      SDO       | ( stop index -- stop index )     | ( -- )                |
+|            |              |     SLOOP      | ( stop index -- )                | ( -- )                |
+|            |              |    UNSLOOP     | ( stop index -- )                | ( -- )                |
+|            |              |       SI       |        ( s i -- s i i )          | ( -- )                |
+| `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )                | ( -- `1` )            |
+|            |              |     XLOOP      |            ( -- )                | ( index -- )          |
+| `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )                | ( index -- )          |
+|            |              |    UNXLOOP     |            ( -- )                | ( index -- )          |
+|     i      |              |       XI       |            ( -- i )              | ( i -- i )            |
+|     j      |              |       XJ       |            ( -- j )              | ( j i -- j i )        |
+|     k      |              |       XK       |            ( -- k )              | ( k j i -- k j i )    |
+|   begin    |    BEGIN     |                |            ( -- )                | ( -- )                |
+|   while    |    WHILE     |                |       ( flag -- )                | ( -- )                |
+|   repeat   |    REPEAT    |                |            ( -- )                | ( -- )                |
+|   again    |    AGAIN     |                |            ( -- )                | ( -- )                |
+|   until    |    UNTIL     |                |       ( flag -- )                | ( -- )                |
+
 
 ## External links
 
