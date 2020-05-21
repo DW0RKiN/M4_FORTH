@@ -218,23 +218,23 @@ Theoretically, your function name or variable may conflict with the name of the 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
 
-    PRINT( {"1. Hello, Word! Use, {{1,2,3} {4}}"})
-    PRINT( {"2. Hello, Word! Use {{1,2,3}} {{4}}"})
-    PRINT({{"4. Hello, Word! Use {1,2,3} {4}"}})
-    PRINT(  "5. Hello  {,} Word!")
+    PRINT( {"1. Hello, World! Use, {{1,2,3} {4}}"})
+    PRINT( {"2. Hello, World! Use {{1,2,3}} {{4}}"})
+    PRINT({{"4. Hello, World! Use {1,2,3} {4}"}})
+    PRINT(  "5. Hello  {,} World!")
 
     STRING_SECTION:
     string104:
-    db "5. Hello  , Word!"
+    db "5. Hello  , World!"
     size104 EQU $ - string104
     string103:
-    db "4. Hello, Word! Use {1,2,3} {4}"
+    db "4. Hello, World! Use {1,2,3} {4}"
     size103 EQU $ - string103
     string102:
-    db "2. Hello, Word! Use {1,2,3} {4}"
+    db "2. Hello, World! Use {1,2,3} {4}"
     size102 EQU $ - string102
     string101:
-    db "1. Hello, Word! Use, {1,2,3} {4}"
+    db "1. Hello, World! Use, {1,2,3} {4}"
     size101 EQU $ - string101
 
 
