@@ -1,281 +1,251 @@
-# Floating-point library for Z80
-Floating-Point Arithmetic Library for Z80
+# M4 FORTH (ZX Spectrum, Z80)
+
+A simple FORTH compiler created with M4 macros. Creates readable code in the Z80 assembler. No peephole optimization. The small Runtime library is intended for the ZX Spectrum computer.
+
+The compiler is suitable for study purposes due to its simplicity. Can be easily edited. For the most part, this is a simple replacement for a FORTH word for a sequence of instructions. 
+
+The more complex part is branching and loops.
+
+## Use registers
+
+Internal implementation of data stack and return address stack.
+
+    Data Stack:
+
+    HL                  TOP (top of stack)
+    DE                  NOS (next on stack)
+    (SP)                NNOS
+    (SP+2)
+    (SP+4)
+    ...
+
+    Return Stack or Loop stack:
+
+    (HL')              
+    (HL'+2)
+    (HL'+4)
+    (HL'+6)
+    (HL'+8)
+    ...
+
+    Free registers: AF, AF', BC, DE', BC', IX, IY
+
+    Pollutes register: AF, AF', BC, DE', BC'
+
+## Branching
+
+Branching internally creates new names for the label. This is a simple increase in numbers for `else100` and `endif100`. Numbers start with three digits for better alignment. At the end of the branch, it is determined whether the "else" part has been used. `if` always jumps on `else1..`. If `else1..` was not used it should stack the value with `endif1..`. `endif1..` always exists for potential use to jump out of a branch.`
+
+## Loops
+
+Looping internally creates new names for the label. `DO` increments the last number used at `do100`. And store it on the stack. `LOOP` reads the last stored number from the stack. This connects DO and LOOP whether they are used in parallel or in series. When the program is executed, the loops store the indexes on the return address stack.
+
+## Creating new words
+
+It is created using functions. The return value of the function is stored in the return address stack. Recursion is triggered by simply calling yourself.
+
+## Compilation
+
+    m4 my_program_name.m4 > my_program_name.asm
+    pasmo -d my_program_name.asm my_program_name.bin > test.asm
+
+## Hello Word!
+
+For clarity, macros are divided into several files and stored in the M4 directory.
+To avoid having to manually include each file, a FIRST.M4 file is created that includes all other files.
+So the first thing that needs to be done is to include this file using:
+
+    include(`./M4/FIRST.M4')dnl
+
+From now on, they are replaced with `' for {}.
+
+LAST.M4 must be appended to the end of the file using:
+
+    include ({./M4/LAST.M4})dnl
+
+This file creates, among other things, the functions used at the end of the program. For example, to list a string or a number. Multiplication and division functions. Saves used strings, or allocates space for used variables.
+
+Use the `INIT(xxx)` and `STOP` macros so that the program can be called from the Basic ZX spectrum and returned successfully. These save the shadow registers and set the value for the return address stack to xxx.
+
+In order for the compiler not to compile the program from the zero address, it must still contain the ORG value. For example, ORG 0x8000.
+
+File Hello.m4
+
+    include(`./M4/FIRST.M4')dnl
+    ORG 0x8000
+    INIT(60000)
+    PRINT("Hello World!")
+    STOP
+    include({./M4/LAST.M4})dnl
+
+m4 Hello.m4
+
+    ORG 0x8000
+
+    ;   ===  b e g i n  ===
+        exx
+        push HL
+        push DE
+        ld   HL, 60000
+        exx
+
+        push DE             ; 1:11      print
+        push HL             ; 1:11      print
+        ld    L, 0x1A       ; 2:7       print Upper screen
+        call 0x1605         ; 3:17      print Open channel
+        ld   BC, size101    ; 3:10      print Length of string to print
+        ld   DE, string101  ; 3:10      print Address of string
+        call 0x203C         ; 3:17      print Print our string
+        pop  HL             ; 1:10      print
+        pop  DE             ; 1:10      print
 
 
-## bfloat
+        pop  DE
+        pop  HL
+        exx
+        ret
+    ;   =====  e n d  =====
 
-https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
-
-![Ray tracing using bfloat](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/bfloat.png)
-
-    FEDC BA98 7654 3210
-    eeee eeee Smmm mmmm
-
-    S (bit[7]):     Sign bit
-    e (bits[F:8]):  Biased exponent
-    m (bits[6:0]):  Fraction
-
-    BIAS = $7F = 127
-    MIN = 2^-127 * 1 = 5.8774717541114375×10⁻³⁹
-    MAX = 2^+128 * 1.9921875 = 6.779062778503071×10³⁸
-
-floating-point number = (-1)^S * 2^(eeee eeee - BIAS) * ( 128 + mmm mmmm) / 128
-
-Sign position is moved from the original.
+    VARIABLE_SECTION:
 
 
-## danagy
-
-https://github.com/nagydani/lpfp
-
-![Ray tracing using danagy](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/danagy.png)
-
-    FEDC BA98 7654 3210
-    Seee eeee mmmm mmmm
-
-    S (bit[F]):     Sign bit
-    e (bits[E:8]):  Biased exponent
-    m (bits[7:0]):  Fraction
-
-    BIAS = $40 = 64
-    MIN = 2^-64 * 1 = 5.421010862427522170037264×10⁻²⁰
-    MAX = 2^+63 * 1.99609375 = 1.8410715276690587648×10¹⁹
-
-floating-point number = (-1)^S * 2^(eee eeee - BIAS) * ( 256 + mmmm mmmm) / 256
 
 
-## binary16 (half)
+    STRING_SECTION:
 
-https://en.wikipedia.org/wiki/Half-precision_floating-point_format
+    string101:
+    db "Hello World!"
+    size101 EQU $ - string101 
 
-![Ray tracing using binary16](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/binary16.png)
+## Limitations of the M4 markup language
 
-    FEDC BA98 7654 3210
-    Seee eemm mmmm mmmm
-
-    S (bit[F]):     Sign bit
-    e (bits[E:A]):  Biased exponent
-    m (bits[9:0]):  Fraction
-
-    BIAS = $F = 15
-    MIN = 2^-15 * 1 = 0.000030517578125
-    MAX = 2^+16 * 1.9990234375 = 131008
-
-floating-point number = (-1)^S * 2^(ee eee - BIAS) * ( 1024 + mm mmmm mmmm) / 1024
-
-
-## applies to everything
-
-Without support for infinity, zero, and NaN.
-
-    if ( a + b > MAX ) { res = MAX; set carry }
-    if ( a - b < MIN ) { res = MIN; set carry }
-
-Rounding of lost bits is (no matter what the sign):
-
-    if ( lost_bits <= ± least_significant_bit / 2 ) Result = Result;
-    if ( lost_bits >  ± least_significant_bit / 2 ) Result = Result ± least_significant_bit;
-
-    mmmm 0000 .. mmmm 1000 => mmmm + 0
-    mmmm 1001 .. mmmm 1111 => mmmm + 1
-
-`finit.asm` must be included manually BEFORE first use, ideally as the first file. It contains only definitions of constants and does not store anything in memory.
-
-Macro files must also be included BEFORE first use. Ideally behind finit.asm. Even those that will not be used because they contain only definitions.
-
-For example, if you need to use a DIV operation, you must include the fdiv.asm file anywhere. The DIV math operation needs to use MUL internally, so it includes the fmul.asm file itself. The library is designed for the fastest calculations, so it uses pre-calculated tables for division and multiplication. These must be completely divisible at 256 addresses. So the fdiv.tab file must also be included manually. The fmul.tab file will be included automatically in fdiv.tab.
-
-In short: if you need to use an `operation`, manually include the file `foperation.asm`, possibly `foperation.tab`.
-
-In binary16 floating-point format, the `fln.tab` (natural logarithmic auxiliary tables, part LN2_EXP) is not divisible by 256. It is best to include them last.
-
-In binary16 floating-point format, the `fexp.tab` (natural exponential function auxiliary tables) is not divisible by 256. It is best to include them last.
-
-
-### Supported math functions and operations
-
-    call  fadd          ; HL = HL + DE
-    call  faddp         ; HL = HL + DE                      ( HL and DE have the same signs )
-    call  fsub          ; HL = HL - DE
-    call  fsubp         ; HL = HL - DE                      ( HL and DE have the same signs )
-
-    call  fmul          ; HL = BC * DE                      ( needs to include fmul.tab )
-    call  fdiv          ; HL = BC / HL                      ( needs to include fdiv.tab )
-    call  fmod          ; HL = BC % HL
-    call  fsqdif        ; HL = HL^2 - DE^2 = (HL - DE) * (HL + DE)
-
-    call  fln           ; HL = ln(abs(HL))                  ( needs to include fln.tab )
-    call  fexp          ; HL = e^HL                         ( needs to include fexp.tab )
-    call  fpow2         ; HL = HL * HL                      ( needs to include fpow2.tab)
-    call  fsqrt         ; HL = abs(HL) ^ 0.5                ( needs to include fsqrt.tab )
-    call  fsin          ; HL = sin(HL)                      ( needs to include fsin.tab, HL < ±π/2 )
+Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. All FORTH words are in uppercase! Because `+` is written as `ADD`. This means that the assembler uses `add` for addition so that it is not interpreted as a macro.
     
+Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
 
-    call  frac          ; HL = HL % 1                       ( -0 => +0 (FMMIN => FPMIN) )
-    call  fint          ; HL = truncate(HL) * 1.0
-                        ;    = HL - ( HL % 1 )
+## Implemented words FORTH
 
-    call  fwld          ; HL = (unsigned word) HL * 1.0
-    call  fwst          ; HL = (unsigned word) 0.5 + abs(HL)
-    call  fbld          ; DE = (unsigned char) A * 1.0
-    call  fbld_div2     ; DE = (unsigned char) A * 0.5
-    call  fbld_div4     ; DE = (unsigned char) A * 0.25
-    call  fbld_div16    ; DE = (unsigned char) A * 0.0625
+### Stack manipulation
 
-    call  fcmp          ; set flag for HL - DE
-    call  fcmpa         ; set flag for abs(HL) - abs(DE)
-    call  fcmps         ; set flag for HL - DE              ( HL and DE have the same signs )
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|    swap    |     SWAP     |                |     ( x2 x1 -- x1 x2 )           |                       |
+|    dup     |      DUP     |                |        ( x1 -- x1 x1 )           |                       |
+|    2dup    |     DUP2     |                |     ( x2 x1 -- x2 x1 x2 x1 )     |                       |
+|    drop    |     DROP     |                |        ( x1 -- )                 |                       |
+|   2drop    |     DROP2    |                |     ( x2 x1 -- )                 |                       |
+|    nip     |      NIP     |                |     ( x2 x1 -- x1 )              |                       |
+|   tuck     |     TUCK     |                |     ( x2 x1 -- x1 x2 x1 )        |                       |
+|   over     |     OVER     |                |     ( x2 x1 -- x2 x1 x2 )        |                       |
+|    rot     |      ROT     |                |  ( x3 x2 x1 -- x2 x1 x3 )        |                       |
+|   -rot     |     RROT     |                |  ( x3 x2 x1 -- x1 x3 x2 )        |                       |
+|   `123`    |  PUSH(`123`) |   PUSH2()      |           ( -- `123` )           |                       |
+|   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1`           |                       |
+| addr `7` ! | PUSH((addr)) |                |  *addr = 7 --> ( -- `7`)         |                       |
+|            |PUSH2((A),`2`)|                |  *A = 4 --> ( -- `4` `2` )       |                       |
+| drop `5`   |DROP_PUSH(`5`)|                |        ( x1 -- `5`)              |                       |
+|   0 pick   |              |     XPICK0     |         ( a -- a a )             |                       |
+|   1 pick   |              |     XPICK1     |       ( b a -- b a b )           |                       |
+|   2 pick   |              |     XPICK2     |     ( c b a -- c b a c )         |                       |
+|   3 pick   |              |     XPICK3     |   ( d c b a -- d c b a d )       |                       |
+|     >r     |   RAS_PUSH   |                |        ( x1 -- )                 |    ( -- x1 )          |
+|     r>     |    RAS_POP   |                |           ( -- x1 )              | ( x1 -- )             |
 
-    call  fdot          ; dot product BC = (HL) * (DE)      ( A = dimensions, HL += 2*A, DE += 2*A )
-    call  fdot_rec      ; dot product BC = (HL) * (DE)      ( A = dim., use recursion, HL and DE = ?? )
-    call  flen          ; HL = (HL)^2 + ... + (HL+2*B-2)^2  ( B = dim. ≥ 1, square norm of a vector )
+### Arithmetic
 
-    MACROS (must be included before first use):
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|     +      |     ADD      |                |     ( x2 x1 -- x )               |                       |
+|     -      |     SUB      |                |     ( x2 x1 -- x )               |                       |
+|   negate   |    NEGATE    |                |        ( x1 -- -x1 )             |                       |
+|    abs     |     ABS      |                |         ( n -- u )               |                       |
+|     *      |              |                |     ( x2 x1 -- x )               |                       |
+|     /      |              |                |     ( x2 x1 -- x )               |                       |
+|    mod     |              |                |     ( x2 x1 -- x )               |                       |
+|    /mod    |              |                |     ( x2 x1 -- x )               |                       |
+|     u*     |     UMUL     |                |     ( x2 x1 -- x )               |                       |
+|     u/     |     UDIV     |                |     ( x2 x1 -- x )               |                       |
+|    umod    |     UMOD     |                |     ( x2 x1 -- x )               |                       |
+|    u/mod   |    UDIVMOD   |                |     ( x2 x1 -- rem quot )        |                       |
+|     1+     |    ONE_ADD   |                |        ( x1 -- x1++ )            |                       |
+|     1-     |    ONE_SUB   |                |        ( x1 -- x1-- )            |                       |
+|     2+     |    TWO_ADD   |                |        ( x1 -- x1+2 )            |                       |
+|     2-     |    TWO_SUB   |                |        ( x1 -- x1-2 )            |                       |
+|     2*     |    TWO_MUL   |                |        ( x1 -- x1*2 )            |                       |
+|     2/     |    TWO_DIV   |                |        ( x1 -- x1/2 )            |                       |
 
-    mtst  H, L          ; set flag for (HL - 0)
-                        ; if ( result == ±MIN ) set zero flag;
-                        ; if ( result <= -MIN ) set carry flag;
+### Logic
 
-    mcmpa H, L, D, E    ; set flag for abs(HL) - abs(DE)
-    mcmps H, L, D, E    ; set flag for HL - DE              ( HL and DE have the same signs )
-    mneg  H, L          ; HL = -HL
-    mabs  H, L          ; HL = abs(HL)
-    mge0  H, L          ; if (HL >= 0) set zero flag;
-    msor  H, L, D, E    ; (BIT 7, A) = HL_sign or DE_sign
-    mmul2 H, L          ; HL = HL * 2
-    mdiv2 H, L          ; HL = HL / 2
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|    and     |     AND      |                |     ( x2 x1 -- x )               |                       |
+|     or     |      OR      |                |     ( x2 x1 -- x )               |                       |
+|    xor     |     XOR      |                |        ( x1 -- -x1 )             |                       |
+|    abs     |     ABS      |                |         ( n -- u )               |                       |
+|   invert   |    INVERT    |                |        ( x1 -- ~x1 )             |                       |
+|    true    |     TRUE     |                |           ( -- -1 )              |                       |
+|   false    |    FALSE     |                |           ( -- 0 )               |                       |
+|            |      CP0     |                |        ( x1 -- x1 )              |                       | x1-0 --> set zero flag
+|            |     DCP0     |                |     ( x2 x1 -- x2 x1 )           |                       | x2x1-0 --> set zero flag
+|   `0` =    |      EQ0     |                |        ( x1 -- x )               |                       |
+|  `0` <>    |      NE0     |                |        ( x1 -- x )               |                       | Do not use! Because FALSE=0 and TRUE=-1,-2,1,2,...
+|      =     |      EQ      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     <>     |      NE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      <     |      LT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     <=     |      LE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      >     |      GT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     >=     |      GE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      <     |     ULT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     <=     |     ULE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|      >     |     UGT      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     >=     |     UGE      |                |     ( x2 x1 -- TRUEFALSE )       |                       | TRUE=-1 FALSE=0
+|     >>     |              |                |     ( x1 u -- x1>>u )            |                       |
+|     >>     |              |                |     ( x1 u -- x1>>u )            |                       |
 
-other
+### Device
 
-    call  print_text    ; printf("%s", POP);                ( look at PRINT_GROUNDI in ./Demo/print.asm )
-    call  print_bin     ; printf("+(2^+exp)*1.mant issa", HL);
-    call  print_hex     ; printf("$%04X", HL);
-    call  print_hex_DE  ; printf("$%04X", DE);              ( print_hex.asm )
-    call  print_hex_BC  ; printf("$%04X", BC);              ( print_hex.asm )
-    call  print_hex_DE  ; printf("$%04X", DE);              ( print_hex.asm )
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|     .      |     DOT      |                |        ( x1 -- )                 |                       |
+|     .s     |     DOTS     |                |  ( x3 x2 x1 -- x3 x2 x1 )        |                       |
+|   DUP .    |    DUP_DOT   |                |        ( x1 -- x1 )              |                       |
+|     cr     |      CR      |                |           ( -- )                 |                       |
+|            | PUTCHAR('a') |                |           ( -- )                 |                       |
+|            |     TYPE     |                |    ( addr n -- )                 |                       |
+|            |  DUP2_TYPE   |                |    ( addr n -- addr n )          |                       |
+| .( Hello)  |PRINT("Hello")|                |           ( -- )                 |                       |
 
-    push  DE
-    call  print_hex_stack ; printf("$%04X", POP);           ( print_hex.asm )
+The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
+Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
 
+    PRINT( {"1. Hello, Word! Use, {{1,2,3} {4}}"})
+    PRINT( {"2. Hello, Word! Use {{1,2,3}} {{4}}"})
+    PRINT({{"4. Hello, Word! Use {1,2,3} {4}"}})
+    PRINT(  "5. Hello  {,} Word!")
 
-### Size in bytes
-
-     color_flow_warning  EQU     0
-     carry_flow_warning  EQU     1
-
-                          binary16  danagy    bfloat    use
-                          --------  --------  --------  --------
-     fadd+fsub:           369       177       188       
-     fadd:                365       173       184       
-     fsub:                369       177       188       
-
-     fmul+fdiv:           10453     1931      1422      fmul.tab + fdiv.tab
-     fmul:                8322      1629      1108      fmul.tab
-     fdiv:                10453     1931      1422      fdiv.tab (include itself fmul.tab)
-
-     fln (fix_ln EQU 0):  2511      966       976       fln.tab
-     fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
-     fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
-     fsin:                2177      829       544       fsin.tab
-
-     fmod:                118       69        77        
-
-     fpow2:               8333      279       158       fpow2.tab
-     fsqrt:               4120      527       269       fsqrt.tab
-
-     frac:                55        31        33        
-     fint:                38        23        23        
-
-     fwld:                57        32        37        
-     fwst:                53        49        46        
-     fbld:                18        16        17        
-
-     all:                 21050     5858      4844   
-
-
-### Inaccuracy of least significant bit in floating point functions (operations).
-
-More information in *.dat files.
-
-|`FDIV`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
-| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
-|             ± 1             |  20.56%  |  20.11%  |  19.16%  |  BC / HL counted as BC * (1 / HL)      |
-|             ± more          | accurate | accurate | accurate |                                        |
-
-
-|    `FLN`   </br>fix_ln EQU 0| binary16 |  danagy  |  bfloat  |  comment                               |
-| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
-|             ± 1             |  29.93%  |  24.07%  |  25.09%  |                                        |
-|             ± 2             |   0.30%  |   0.05%  |   0.05%  |  only when input exponent = -1         |
-|             ± 3             |   0.19%  |   0.03%  |   0.03%  |  only when input exponent = -1         |
-|          min..max           |   0.48%  |   0.07%  |   0.05%  |  only when input exponent = -1         |
-|             min             |    -59   |    -10   |      4   |  correctly-result                      |
-|             max             |      6   |      7   |      7   |  correctly-result                      |
-|             ± more          | accurate | accurate | accurate |                                        |
-
-
-|    `FLN`   </br>fix_ln EQU 1| binary16 |  danagy  |  bfloat  |  comment                               |
-| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
-|             ± 1             |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected. |
-|             ± more          | accurate | accurate | accurate |                                        |
-
-
-|`FEXP`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
-| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
-|             ± 1             |  16.73%  |   4.52%  |   2.40%  |                                        |
-|             ± 2             |   0.91%  |   0.56%  |   0.34%  |                                        |
-|             ± 3             |   0.05%  |   0.05%  |   0.02%  |                                        |
-|             ± more          | accurate | accurate | accurate |                                        |
-
-    e^(ln(2)) = e^0.6931471805599453094172321 = 2
-    2^(log₂(e)) = 2^1.4426950408889634073599247 = e
-    e^x = 2^(x*1.4426950408889634073599247)
-
-|`FSIN`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
-| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
-|             ± 1             |   0.26%  | accurate | accurate |                                        |
-|             ± 2             |   0.03%  | accurate | accurate |                                        |
-|             ± more          | accurate | accurate | accurate |                                        |
-
-| Other</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
-| :-------------------------: | :------: | :------: | :------: | :---                                   |
-|                             | accurate | accurate | accurate |                                        |
+    STRING_SECTION:
+    string104:
+    db "5. Hello  , Word!"
+    size104 EQU $ - string104
+    string103:
+    db "4. Hello, Word! Use {1,2,3} {4}"
+    size103 EQU $ - string103
+    string102:
+    db "2. Hello, Word! Use {1,2,3} {4}"
+    size102 EQU $ - string102
+    string101:
+    db "1. Hello, Word! Use, {1,2,3} {4}"
+    size101 EQU $ - string101
 
 
-Warning: Add and subtract operations are implemented accurately, which means that the error is less than half the least significant bit. However, these two operations are the source of the most inaccurate. The width of the mantissa is limited, so a smaller number will lose some or all of the mantissa.
-
-`(A + B) - B = A` only applies if A >= B
-
-When A < B:
-
-`(A + B) - B = A` if the lost lowest bits of the mantissa number A after operation (A + B) were zero.
-
-`(A + B) - B = A - error` where the error is equal to the lost bits of the mantissa number A after the operation (A + B).
-
-`(A + B) - B = 0` if the number B is too large and the number A lost all mantissa bits after the operation (A + B). This means A + B = B.
-
+And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error.
 
 ## External links
 
-80-bits, 32-bit and 24-bit float formats
-https://github.com/Zeda/z80float
+http://wiki.laptop.org/go/Forth_Lessons
 
-24-bit float format
-https://github.com/RoaldFre/z80fltptlib
+http://astro.pas.rochester.edu/Forth/forth-words.html
 
-16-bit float format (seee eeee mmmm mmmm)
-https://github.com/nagydani/lpfp
+https://www.tutorialspoint.com/execute_forth_online.php
 
-16-bit float format (seee eemm mmmm mmmm)
-https://github.com/artyom-beilis/float16
-
-Learn more about algorithms (natural) exponential function 
-http://guihaire.com/code/?p=1107
-
-http://www.andreadrian.de/oldcpu/Z80_number_cruncher.html
-
-http://mathonweb.com/help_ebook/html/algorithms.htm
-
-http://z80-heaven.wikidot.com/floating-point
-
-https://en.wikipedia.org/wiki/Logarithmic_number_system
+https://www.gnu.org/software/m4/manual/m4-1.4.15/html_node/index.html#Top
