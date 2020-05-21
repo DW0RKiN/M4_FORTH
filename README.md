@@ -162,10 +162,18 @@ Theoretically, your function name or variable may conflict with the name of the 
 |     *      |              |                |     ( x2 x1 -- x )               |                       |
 |     /      |              |                |     ( x2 x1 -- x )               |                       |
 |    mod     |              |                |     ( x2 x1 -- x )               |                       |
-|    um*     |     UMUL     |                |     ( x2 x1 -- x )               |                       |
-|     /      |     UDIV     |                |     ( x2 x1 -- x )               |                       |
-|    mod     |     UMOD     |                |     ( x2 x1 -- x )               |                       |
-|   um/mod   |    UDIVMOD   |                |     ( x2 x1 -- rem quot )        |                       |
+|    /mod    |              |                |     ( x2 x1 -- x )               |                       |
+|     u*     |     UMUL     |                |     ( x2 x1 -- x )               |                       |
+|     u/     |     UDIV     |                |     ( x2 x1 -- x )               |                       |
+|    umod    |     UMOD     |                |     ( x2 x1 -- x )               |                       |
+|    u/mod   |    UDIVMOD   |                |     ( x2 x1 -- rem quot )        |                       |
+|     1+     |    ONE_ADD   |                |        ( x1 -- x1++ )            |                       |
+|     1-     |    ONE_SUB   |                |        ( x1 -- x1-- )            |                       |
+|     2+     |    TWO_ADD   |                |        ( x1 -- x1+2 )            |                       |
+|     2-     |    TWO_SUB   |                |        ( x1 -- x1-2 )            |                       |
+|     2*     |    TWO_MUL   |                |        ( x1 -- x1*2 )            |                       |
+|     2/     |    TWO_DIV   |                |        ( x1 -- x1/2 )            |                       |
+
 
 ## External links
 
