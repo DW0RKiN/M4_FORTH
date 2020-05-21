@@ -159,10 +159,10 @@ Theoretically, your function name or variable may conflict with the name of the 
 |     -      |     SUB      |                |     ( x2 x1 -- x )               |                       |
 |   negate   |    NEGATE    |                |        ( x1 -- -x1 )             |                       |
 |    abs     |     ABS      |                |         ( n -- u )               |                       |
-|     *      |              |                |     ( x2 x1 -- x )               |                       |
-|     /      |              |                |     ( x2 x1 -- x )               |                       |
-|    mod     |              |                |     ( x2 x1 -- x )               |                       |
-|    /mod    |              |                |     ( x2 x1 -- x )               |                       |
+|     *      |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
+|     /      |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
+|    mod     |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
+|    /mod    |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
 |     u*     |     UMUL     |                |     ( x2 x1 -- x )               |                       |
 |     u/     |     UDIV     |                |     ( x2 x1 -- x )               |                       |
 |    umod    |     UMOD     |                |     ( x2 x1 -- x )               |                       |
@@ -199,8 +199,12 @@ Theoretically, your function name or variable may conflict with the name of the 
 |     <=     |     ULE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
 |      >     |     UGT      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
 |     >=     |     UGE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|     >>     |              |                |    ( x1 u -- x1>>u )  |                       |
-|     >>     |              |                |    ( x1 u -- x1>>u )  |                       |
+| x1 u >> x  |  i am lazy   |                |    ( x1 u -- x1>>u )  |                       |
+| x1 u << x  |  i am lazy   |                |    ( x1 u -- x1<<u )  |                       |
+| x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )  |                       | signed
+| x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )  |                       |
+| u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )  |                       | unsigned
+| u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )  |                       |
 
 ### Device
 
