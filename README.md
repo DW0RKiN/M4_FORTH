@@ -46,19 +46,21 @@ It is created using functions. The return value of the function is stored in the
 
 ## Compilation
 
-m4 my_program_name.m4 > my_program_name.asm
-pasmo -d my_program_name.asm my_program_name.bin > test.asm
+    m4 my_program_name.m4 > my_program_name.asm
+    pasmo -d my_program_name.asm my_program_name.bin > test.asm
 
 ## Hello Word!
 
 For clarity, macros are divided into several files and stored in the M4 directory.
 To avoid having to manually include each file, a FIRST.M4 file is created that includes all other files.
-So the first thing that needs to be done is to include this file using: 
+So the first thing that needs to be done is to include this file using:
+
     include(`./M4/FIRST.M4')dnl
 
 From now on, they are replaced with `' for {}.
 
-LAST.M4 must be appended to the end of the file using 
+LAST.M4 must be appended to the end of the file using:
+
     include ({./M4/LAST.M4})dnl
 
 This file creates, among other things, the functions used at the end of the program. For example, to list a string or a number. Multiplication and division functions. Saves used strings, or allocates space for used variables.
@@ -72,7 +74,7 @@ File Hello.m4
     include(`./M4/FIRST.M4')dnl
     ORG 0x8000
     INIT(60000)
-    PRINT(Hello Word!)
+    PRINT("Hello Word!")
     STOP
     include({./M4/LAST.M4})dnl
 
@@ -112,7 +114,7 @@ ORG 0x8000
     STRING_SECTION:
 
     string101:
-    db Hello Word!
+    db "Hello Word!"
     size101 EQU $ - string101 
 
 ## Limitations of the M4 markup language
