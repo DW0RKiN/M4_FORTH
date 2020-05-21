@@ -74,7 +74,7 @@ File Hello.m4
     include(`./M4/FIRST.M4')dnl
     ORG 0x8000
     INIT(60000)
-    PRINT("Hello Word!")
+    PRINT("Hello World!")
     STOP
     include({./M4/LAST.M4})dnl
 
@@ -114,7 +114,7 @@ m4 Hello.m4
     STRING_SECTION:
 
     string101:
-    db "Hello Word!"
+    db "Hello World!"
     size101 EQU $ - string101 
 
 ## Limitations of the M4 markup language
@@ -151,11 +151,28 @@ Theoretically, your function name or variable may conflict with the name of the 
 |     >r     |   RAS_PUSH   |                |        ( x1 -- )                 |    ( -- x1 )          |
 |     r>     |    RAS_POP   |                |           ( -- x1 )              | ( x1 -- )             |
 
+### Arithmetic
+
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
+|     +      |     ADD      |                |     ( x2 x1 -- x )               |                       |
+|     -      |     SUB      |                |     ( x2 x1 -- x )               |                       |
+|   negate   |    NEGATE    |                |        ( x1 -- -x1 )             |                       |
+|    abs     |     ABS      |                |         ( n -- u )               |                       |
+|     *      |              |                |     ( x2 x1 -- x )               |                       |
+|     /      |              |                |     ( x2 x1 -- x )               |                       |
+|    mod     |              |                |     ( x2 x1 -- x )               |                       |
+|    um*     |     UMUL     |                |     ( x2 x1 -- x )               |                       |
+|     /      |     UDIV     |                |     ( x2 x1 -- x )               |                       |
+|    mod     |     UMOD     |                |     ( x2 x1 -- x )               |                       |
+|   um/mod   |    UDIVMOD   |                |     ( x2 x1 -- rem quot )        |                       |
 
 ## External links
 
 http://wiki.laptop.org/go/Forth_Lessons
 
 http://astro.pas.rochester.edu/Forth/forth-words.html
+
+https://www.tutorialspoint.com/execute_forth_online.php
 
 https://www.gnu.org/software/m4/manual/m4-1.4.15/html_node/index.html#Top
