@@ -80,7 +80,7 @@ File Hello.m4
 
 m4 Hello.m4
 
-ORG 0x8000
+    ORG 0x8000
 
     ;   ===  b e g i n  ===
         exx
@@ -142,7 +142,7 @@ Theoretically, your function name or variable may conflict with the name of the 
 |   `123`    |  PUSH(`123`) |   PUSH2()      |           ( -- `123` )           |                       |
 |   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1`           |                       |
 | addr `7` ! | PUSH((addr)) |                |  *addr = 7 --> ( -- `7`)         |                       |
-| addr `7` ! |PUSH2((A),`2`)|                |  *A = 4 --> ( -- `4` `2` )       |                       |
+|            |PUSH2((A),`2`)|                |  *A = 4 --> ( -- `4` `2` )       |                       |
 | drop `5`   |DROP_PUSH(`5`)|                |        ( x1 -- `5`)              |                       |
 |   0 pick   |              |     XPICK0     |         ( a -- a a )             |                       |
 |   1 pick   |              |     XPICK1     |       ( b a -- b a b )           |                       |
