@@ -140,7 +140,7 @@ Theoretically, your function name or variable may conflict with the name of the 
 |    rot     |      ROT     |                |  ( x3 x2 x1 -- x2 x1 x3 )        |                       |
 |   -rot     |     RROT     |                |  ( x3 x2 x1 -- x1 x3 x2 )        |                       |
 |   `123`    |  PUSH(`123`) |   PUSH2()      |           ( -- `123` )           |                       |
-|   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1`           |                       |
+|   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1` )         |                       |
 | addr `7` ! | PUSH((addr)) |                |  *addr = 7 --> ( -- `7`)         |                       |
 |            |PUSH2((A),`2`)|                |  *A = 4 --> ( -- `4` `2` )       |                       |
 | drop `5`   |DROP_PUSH(`5`)|                |        ( x1 -- `5`)              |                       |
@@ -237,8 +237,8 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### IF
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment      |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- | :----------- |
+| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment          |
+| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- | :--------------- |
 |     if     |      IF      |                |      ( flag -- )                 |                       |
 |            |     IFNZ     |                |           ( -- )                 |                       | IF not zero flag
 |    else    |     ELSE     |                |           ( -- )                 |                       |
