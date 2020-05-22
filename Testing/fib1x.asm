@@ -52,17 +52,16 @@ fib1x_end:
 ;   ---  b e g i n  ---
 fib1_bench:             ;           ( -- )
         
-    push DE             ; 1:11      push2(1000,0)
-    ld   DE, 1000       ; 3:10      push2(1000,0)
-    push HL             ; 1:11      push2(1000,0)
-    ld   HL, 0          ; 3:10      push2(1000,0) 
-sdo101:                 ;           nemusime nic delat
+    push DE             ; 1:11      push(1000)
+    ex   DE, HL         ; 1:4       push(1000)
+    ld   HL, 1000       ; 3:10      push(1000) 
+szdo101:                ;           szdo 101 stack: ( index )
             
     push DE             ; 1:11      push2(20,0)
     ld   DE, 20         ; 3:10      push2(20,0)
     push HL             ; 1:11      push2(20,0)
     ld   HL, 0          ; 3:10      push2(20,0) 
-sdo102:                 ;           nemusime nic delat 
+sdo102:                 ;           sdo 102 stack: ( stop index ) 
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -74,19 +73,17 @@ sdo102:                 ;           nemusime nic delat
     ld   A, L           ; 1:4       sloop 102
     sub  E              ; 1:4       sloop 102 lo index - stop
     ld   A, H           ; 1:4       sloop 102
-    sbc  A, D           ; 2:7       sloop 102 hi index - stop
+    sbc  A, D           ; 1:4       sloop 102 hi index - stop
     jp   c, sdo102      ; 3:10      sloop 102
     pop  HL             ; 1:10      unsloop 101 index out
     pop  DE             ; 1:10      unsloop 101 stop  out
         
-    inc  HL             ; 1:6       sloop 101 index++
-    ld   A, L           ; 1:4       sloop 101
-    sub  E              ; 1:4       sloop 101 lo index - stop
-    ld   A, H           ; 1:4       sloop 101
-    sbc  A, D           ; 2:7       sloop 101 hi index - stop
-    jp   c, sdo101      ; 3:10      sloop 101
-    pop  HL             ; 1:10      unsloop LOOP_STACK index out
-    pop  DE             ; 1:10      unsloop LOOP_STACK stop  out
+    dec  HL             ; 1:6       szloop 101 index--
+    ld   A, H           ; 1:4       szloop 101
+    or   L              ; 1:4       szloop 101
+    jp  nz, szdo101     ; 3:10      szloop 101
+    ex   DE, HL         ; 1:4       unszloop LOOP_STACK
+    pop  DE             ; 1:10      unszloop LOOP_STACK
     
 fib1_bench_end:
     ret                 ; 1:10      s;

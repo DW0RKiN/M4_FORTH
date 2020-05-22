@@ -9,8 +9,8 @@ include(`./FIRST.M4')dnl
         SWAP TWO_SUB SCALL(fib1x) ADD
     SSEMICOLON
     SCOLON(fib1_bench,( -- ))
-        PUSH2(1000,0) SDO
+        PUSH(1000) SZDO
             PUSH2(20,0) SDO SI SCALL(fib1x) DROP SLOOP
-        SLOOP
+        SZLOOP
     SSEMICOLON
 include({./LAST.M4})dnl

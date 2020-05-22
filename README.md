@@ -1,10 +1,11 @@
 # M4 FORTH (ZX Spectrum, Z80)
 
-A simple FORTH compiler created with M4 macros. Creates readable code in the Z80 assembler. No peephole optimization. The small Runtime library is intended for the ZX Spectrum computer.
+A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the "dup constant condition if".
+The small Runtime library for listing numbers and text is intended for the ZX Spectrum computer.
 
-The compiler is suitable for study purposes due to its simplicity. Can be easily edited. For the most part, this is a simple replacement for a FORTH word for a sequence of instructions. 
+Due to its simplicity, the compiler is suitable for study purposes. Can be easily edited. For the most part, it is merely a substitution of the FORTH word for a sequence of instructions.
 
-The more complex part is branching and loops.
+The more complex parts are branches and loops.
 
 ## Use registers
 
@@ -19,7 +20,7 @@ Internal implementation of data stack and return address stack.
     (SP+4)
     ...
 
-    Return Stack or Loop stack:
+    Return Address Stack or Loop stack:
 
     (HL')              
     (HL'+2)
@@ -296,9 +297,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |      i     |       I      |                |            ( -- index )      | ( index -- index )    |
 |      j     |       J      |                |            ( -- j )          | ( j s i -- j s i )    |
 |            |              |      SDO       | ( stop index -- stop index ) | ( -- )                |
-|            |              |     SLOOP      | ( stop index -- )            | ( -- )                |
+|            |              |     SLOOP      | ( stop index -- stop index+1)| ( -- )                |
 |            |              |    UNSLOOP     | ( stop index -- )            | ( -- )                |
 |            |              |       SI       |        ( s i -- s i i )      | ( -- )                |
+|            |              |      SZDO      |      ( index -- index )      | ( -- )                |
+|            |              |     SZLOOP     |      ( index -- index-1 )    | ( -- )                |
+|            |              |    UNSZLOOP    |      ( index -- )            | ( -- )                |
+|            |              |      SZI       |          ( i -- i i )        | ( -- )                |
 | `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )            | ( -- `1` )            |
 |            |              |     XLOOP      |            ( -- )            | ( index -- index++ )  |
 | `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|

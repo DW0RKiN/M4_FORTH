@@ -87,13 +87,13 @@ define(LOOP,{
 dnl
 dnl
 dnl ---------- S L O O P ------------
-dnl Smycka musi mit na konci stejny datovy zasobnik jako na zacatku
-dnl pokud nema musi byt prvni a druha polozka na zasobniku nezmenena ( fyzicky HL a DE )
-dnl
+dnl Stack Loop
+dnl 5 0 sdo . sloop --> 0 1 2 3 4 
+dnl Use data stack
 dnl
 dnl ( stop index -- stop index )
 define({SDO}, {define({LOOP_COUNT}, incr(LOOP_COUNT))pushdef({LOOP_STACK}, LOOP_COUNT)
-sdo{}LOOP_STACK:                 ;           nemusime nic delat})dnl
+sdo{}LOOP_STACK:                 ;           sdo LOOP_STACK stack: ( stop index )})dnl
 dnl
 dnl
 dnl
@@ -117,8 +117,43 @@ define({SLOOP},{
     ld   A, L           ; 1:4       sloop LOOP_STACK
     sub  E              ; 1:4       sloop LOOP_STACK lo index - stop
     ld   A, H           ; 1:4       sloop LOOP_STACK
-    sbc  A, D           ; 2:7       sloop LOOP_STACK hi index - stop
+    sbc  A, D           ; 1:4       sloop LOOP_STACK hi index - stop
     jp   c, sdo{}LOOP_STACK      ; 3:10      sloop LOOP_STACK{}popdef({LOOP_STACK}){}UNSLOOP})dnl
+dnl
+dnl
+dnl
+dnl ---------- S Z L O O P ------------
+dnl Stack Zero Loop
+dnl 5 szdo . szloop --> 5 4 3 2 1 
+dnl Use data stack
+dnl
+dnl ( index -- index )
+dnl stop = 0
+define({SZDO}, {define({LOOP_COUNT}, incr(LOOP_COUNT))pushdef({LOOP_STACK}, LOOP_COUNT)
+szdo{}LOOP_STACK:                ;           szdo LOOP_STACK stack: ( index )})dnl
+dnl
+dnl
+dnl
+dnl Discard the loop-control parameters for the current nesting level.
+define({UNSZLOOP},{
+    ex   DE, HL         ; 1:4       unszloop LOOP_STACK
+    pop  DE             ; 1:10      unszloop LOOP_STACK})dnl
+dnl
+dnl
+dnl ( i -- i i )
+dnl To same co DUP
+dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi v DE, K lezi na (SP)
+define({SZI}, {
+    DUP})dnl
+dnl
+dnl
+dnl
+dnl ( index -- index-1 )
+define({SZLOOP},{
+    dec  HL             ; 1:6       szloop LOOP_STACK index--
+    ld   A, H           ; 1:4       szloop LOOP_STACK
+    or   L              ; 1:4       szloop LOOP_STACK
+    jp  nz, szdo{}LOOP_STACK     ; 3:10      szloop LOOP_STACK{}popdef({LOOP_STACK}){}UNSZLOOP})dnl
 dnl
 dnl
 dnl
