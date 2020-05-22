@@ -53,16 +53,16 @@ It is created using functions. The return value of the function is stored in the
 ## Hello World!
 
 For clarity, macros are divided into several files and stored in the M4 directory.
-To avoid having to manually include each file, a FIRST.M4 file is created that includes all other files.
+To avoid having to manually include each file, a `FIRST.M4` file is created that includes all other files.
 So the first thing that needs to be done is to include this file using:
 
     include(`./M4/FIRST.M4')dnl
 
-From now on, they are replaced with `' for {}.
+On the first line immediately change quotes to `{` and `}`. All M4 macros use these new quotes.
 
-LAST.M4 must be appended to the end of the file using:
+`LAST.M4` must be appended to the end of the file using:
 
-    include ({./M4/LAST.M4})dnl
+    include({./M4/LAST.M4})dnl
 
 Among other things, this file lists all used runtime library functions. For example, to list a string or a number. Multiplication and division functions. Lists the strings used or allocates space for used variables.
 
