@@ -35,7 +35,7 @@ Internal implementation of data stack and return address stack.
 
 ## Branching
 
-Branching internally creates new names for the label. This is a simple increase in numbers for `else100` and `endif100`. Numbers start with three digits for better alignment. At the end of the branch, it is determined whether the "else" part has been used. `if` always jumps on `else1..`. If `else1..` was not used it should stack the value with `endif1..`. `endif1..` always exists for potential use to jump out of a branch.`
+Branching internally creates new names for the label. This is a simple increase in numbers for `else100` and `endif100`. Numbers start with three digits for better alignment. At the end of the branch, it is determined whether the `else` part has been used. `if` always jumps on `else1..`. If `else1..` was not used it should stack the value with `endif1..`. `endif1..` always exists for potential use to jump out of a branch.`
 
 ## Loops
 
@@ -43,7 +43,7 @@ Looping internally creates new names for the label. `DO` increments the last num
 
 ## Creating new words
 
-It is created using functions. The return value of the function is stored in the return address stack. Recursion is triggered by simply calling yourself.
+It is converted to the creation of new functions. The return value of the function is stored in the return address stack. Recursion is triggered by simply calling yourself.
 
 ## Compilation
 
