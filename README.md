@@ -127,53 +127,53 @@ Theoretically, your function name or variable may conflict with the name of the 
 
 ### Stack manipulation
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
-|    swap    |     SWAP     |                |     ( x2 x1 -- x1 x2 )           |                       |
-|    dup     |      DUP     |                |        ( x1 -- x1 x1 )           |                       |
-|    2dup    |     DUP2     |                |     ( x2 x1 -- x2 x1 x2 x1 )     |                       |
-|    drop    |     DROP     |                |        ( x1 -- )                 |                       |
-|   2drop    |     DROP2    |                |     ( x2 x1 -- )                 |                       |
-|    nip     |      NIP     |                |     ( x2 x1 -- x1 )              |                       |
-|   tuck     |     TUCK     |                |     ( x2 x1 -- x1 x2 x1 )        |                       |
-|   over     |     OVER     |                |     ( x2 x1 -- x2 x1 x2 )        |                       |
-|    rot     |      ROT     |                |  ( x3 x2 x1 -- x2 x1 x3 )        |                       |
-|   -rot     |     RROT     |                |  ( x3 x2 x1 -- x1 x3 x2 )        |                       |
-|   `123`    |  PUSH(`123`) |   PUSH2()      |           ( -- `123` )           |                       |
-|   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1` )         |                       |
-| addr `7` ! | PUSH((addr)) |                | *addr = 7 --> ( -- `7`)          |                       |
-|            |              | PUSH2((A),`2`) | *A = 4 --> ( -- `4` `2` )        |                       |
-| drop `5`   |              | DROP_PUSH(`5`) |        ( x1 -- `5`)              |                       |
-|  dup `4`   |              |  DUP_PUSH(`4`) |        ( x1 -- x1 x1 `4`)        |                       |
-|   0 pick   |              |     XPICK0     |         ( a -- a a )             |                       |
-|   1 pick   |              |     XPICK1     |       ( b a -- b a b )           |                       |
-|   2 pick   |              |     XPICK2     |     ( c b a -- c b a c )         |                       |
-|   3 pick   |              |     XPICK3     |   ( d c b a -- d c b a d )       |                       |
-|     >r     |   RAS_PUSH   |                |        ( x1 -- )                 |    ( -- x1 )          |
-|     r>     |    RAS_POP   |                |           ( -- x1 )              | ( x1 -- )             |
+| original   |   M4 FORTH   |  optimization  |   data stack                |  return address stack |
+| :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
+|    swap    |     SWAP     |                |    ( x2 x1 -- x1 x2 )       |                       |
+|    dup     |      DUP     |                |       ( x1 -- x1 x1 )       |                       |
+|    2dup    |     DUP2     |                |    ( x2 x1 -- x2 x1 x2 x1 ) |                       |
+|    drop    |     DROP     |                |       ( x1 -- )             |                       |
+|   2drop    |     DROP2    |                |    ( x2 x1 -- )             |                       |
+|    nip     |      NIP     |                |    ( x2 x1 -- x1 )          |                       |
+|   tuck     |     TUCK     |                |    ( x2 x1 -- x1 x2 x1 )    |                       |
+|   over     |     OVER     |                |    ( x2 x1 -- x2 x1 x2 )    |                       |
+|    rot     |      ROT     |                | ( x3 x2 x1 -- x2 x1 x3 )    |                       |
+|   -rot     |     RROT     |                | ( x3 x2 x1 -- x1 x3 x2 )    |                       |
+|   `123`    |  PUSH(`123`) |   PUSH2()      |          ( -- `123` )       |                       |
+|   `2` `1`  |PUSH2(`2`,`1`)|                |          ( -- `2` `1` )     |                       |
+| addr `7` ! | PUSH((addr)) |                |  *addr = 7 --> ( -- `7`)    |                       |
+|            |              | PUSH2((A),`2`) |  *A = 4 --> ( -- `4` `2` )  |                       |
+| drop `5`   |              | DROP_PUSH(`5`) |       ( x1 -- `5`)          |                       |
+|  dup `4`   |              |  DUP_PUSH(`4`) |       ( x1 -- x1 x1 `4`)    |                       |
+|   0 pick   |              |     XPICK0     |        ( a -- a a )         |                       |
+|   1 pick   |              |     XPICK1     |      ( b a -- b a b )       |                       |
+|   2 pick   |              |     XPICK2     |    ( c b a -- c b a c )     |                       |
+|   3 pick   |              |     XPICK3     |  ( d c b a -- d c b a d )   |                       |
+|     >r     |   RAS_PUSH   |                |       ( x1 -- )             |    ( -- x1 )          |
+|     r>     |    RAS_POP   |                |          ( -- x1 )          | ( x1 -- )             |
 
 ### Arithmetic
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
-|     +      |     ADD      |                |     ( x2 x1 -- x )               |                       |
-|     -      |     SUB      |                |     ( x2 x1 -- x )               |                       |
-|   negate   |    NEGATE    |                |        ( x1 -- -x1 )             |                       |
-|    abs     |     ABS      |                |         ( n -- u )               |                       |
-|     *      |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
-|     /      |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
-|    mod     |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
-|    /mod    |  i am lazy   |                |     ( x2 x1 -- x )               |                       |
-|     u*     |     UMUL     |                |     ( x2 x1 -- x )               |                       |
-|     u/     |     UDIV     |                |     ( x2 x1 -- x )               |                       |
-|    umod    |     UMOD     |                |     ( x2 x1 -- x )               |                       |
-|    u/mod   |    UDIVMOD   |                |     ( x2 x1 -- rem quot )        |                       |
-|     1+     |    ONE_ADD   |                |        ( x1 -- x1++ )            |                       |
-|     1-     |    ONE_SUB   |                |        ( x1 -- x1-- )            |                       |
-|     2+     |    TWO_ADD   |                |        ( x1 -- x1+2 )            |                       |
-|     2-     |    TWO_SUB   |                |        ( x1 -- x1-2 )            |                       |
-|     2*     |    TWO_MUL   |                |        ( x1 -- x1*2 )            |                       |
-|     2/     |    TWO_DIV   |                |        ( x1 -- x1/2 )            |                       |
+| original   |   M4 FORTH   |  optimization  |  data stack                 |  return address stack |
+| :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
+|     +      |     ADD      |                |    ( x2 x1 -- x )           |                       |
+|     -      |     SUB      |                |    ( x2 x1 -- x )           |                       |
+|   negate   |    NEGATE    |                |       ( x1 -- -x1 )         |                       |
+|    abs     |     ABS      |                |        ( n -- u )           |                       |
+|     *      |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
+|     /      |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
+|    mod     |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
+|    /mod    |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
+|     u*     |     UMUL     |                |    ( x2 x1 -- x )           |                       |
+|     u/     |     UDIV     |                |    ( x2 x1 -- x )           |                       |
+|    umod    |     UMOD     |                |    ( x2 x1 -- x )           |                       |
+|    u/mod   |    UDIVMOD   |                |    ( x2 x1 -- rem quot )    |                       |
+|     1+     |    ONE_ADD   |                |       ( x1 -- x1++ )        |                       |
+|     1-     |    ONE_SUB   |                |       ( x1 -- x1-- )        |                       |
+|     2+     |    TWO_ADD   |                |       ( x1 -- x1+2 )        |                       |
+|     2-     |    TWO_SUB   |                |       ( x1 -- x1-2 )        |                       |
+|     2*     |    TWO_MUL   |                |       ( x1 -- x1*2 )        |                       |
+|     2/     |    TWO_DIV   |                |       ( x1 -- x1/2 )        |                       |
 
 ### Logic
 
@@ -209,16 +209,16 @@ Theoretically, your function name or variable may conflict with the name of the 
 
 ### Device
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
-|     .      |     DOT      |                |        ( x1 -- )                 |                       |
-|     .s     |     DOTS     |                |  ( x3 x2 x1 -- x3 x2 x1 )        |                       |
-|   DUP .    |    DUP_DOT   |                |        ( x1 -- x1 )              |                       |
-|     cr     |      CR      |                |           ( -- )                 |                       |
-|            | PUTCHAR('a') |                |           ( -- )                 |                       |
-|    type    |     TYPE     |                |    ( addr n -- )                 |                       |
-| dup2 type  |  DUP2_TYPE   |                |    ( addr n -- addr n )          |                       |
-| .( Hello)  |PRINT("Hello")|                |           ( -- )                 |                       |
+| original   |   M4 FORTH   |  optimization  |  data stack              |  return address stack |
+| :--------: | :----------: | :------------: | :----------------------- | :-------------------- |
+|     .      |     DOT      |                |       ( x1 -- )          |                       |
+|     .s     |     DOTS     |                | ( x3 x2 x1 -- x3 x2 x1 ) |                       |
+|   DUP .    |    DUP_DOT   |                |       ( x1 -- x1 )       |                       |
+|     cr     |      CR      |                |          ( -- )          |                       |
+|            | PUTCHAR('a') |                |          ( -- )          |                       |
+|    type    |     TYPE     |                |   ( addr n -- )          |                       |
+| dup2 type  |  DUP2_TYPE   |                |   ( addr n -- addr n )   |                       |
+| .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
@@ -242,75 +242,75 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### IF
 
-|   original   |   M4 FORTH   |    optimization    |   data stack                     |  return address stack | comment          |
-| :----------: | :----------: |  :---------------: | :------------------------------- | :-------------------- | :--------------- |
-|      if      |      IF      |                    |      ( flag -- )                 |                       |
-|              |     IFNZ     |                    |           ( -- )                 |                       | IF not zero flag
-|              |     IFZ      |                    |           ( -- )                 |                       | IF zero flag
-|     else     |     ELSE     |                    |           ( -- )                 |                       |
-|     then     |     THEN     |                    |           ( -- )                 |                       |
-| dup `5` < if |              | DUP_PUSH_LT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-| dup `5` <= if|              | DUP_PUSH_LE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-| dup `5` > if |              | DUP_PUSH_GT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-| dup `5` >= if|              | DUP_PUSH_GE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-|dup `5` u< if |              |DUP_PUSH_ULT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-|dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-|dup `5` u> if |              |DUP_PUSH_UGT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
-|dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+|   original   |   M4 FORTH   |    optimization    |   data stack         |  r.a.s. | comment          |
+| :----------: | :----------: |  :---------------: | :------------------- | :------ | :--------------- |
+|      if      |      IF      |                    |     ( flag -- )      |         |
+|              |     IFNZ     |                    |          ( -- )      |         | IF not zero flag
+|              |     IFZ      |                    |          ( -- )      |         | IF zero flag
+|     else     |     ELSE     |                    |          ( -- )      |         |
+|     then     |     THEN     |                    |          ( -- )      |         |
+| dup `5` < if |              | DUP_PUSH_LT_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+| dup `5` <= if|              | DUP_PUSH_LE_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+| dup `5` > if |              | DUP_PUSH_GT_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+| dup `5` >= if|              | DUP_PUSH_GE_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+|dup `5` u< if |              |DUP_PUSH_ULT_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+|dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+|dup `5` u> if |              |DUP_PUSH_UGT_IF(`5`)|          ( -- )      |         |`(addr)` not supported
+|dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|          ( -- )      |         |`(addr)` not supported
 
 ### Function
 
-| original   |     M4 FORTH     |    optimization   |   data stack                     |  return address stack |
-| :--------: | :--------------: | :---------------: | :------------------------------- | :-------------------- |
-|    name    |    CALL(name)    |                   |     ( x2 x1 -- ret x2 x1 )       | ( -- )                |
-|     :      |COLON(name,coment)|                   | ( ret x2 x1 -- x2 x1 )           | ( -- ret )            |
-|     ;      |     SEMICOLON    |                   |           ( -- )                 | ( ret -- )            |
-|    exit    |       EXIT       |                   |           ( -- )                 | ( ret -- )            |
-|    name    |                  |    SCALL(name)    |     ( x2 x1 -- ret x2 x1 )       | ( -- )                |
-|     :      |                  |SCOLON(name,coment)| ( ret x2 x1 -- ret x2 x1 )       | ( -- )                |
-|     ;      |                  |     SSEMICOLON    | ( ret x2 x1 -- x2 x1 )           | ( -- )                |
-|    exit    |                  |       SEXIT       | ( ret x2 x1 -- x2 x1 )           | ( -- )                |
+| original   |     M4 FORTH     |    optimization   |   data stack               |  return address stack |
+| :--------: | :--------------: | :---------------: | :------------------------- | :-------------------- |
+|    name    |    CALL(name)    |                   |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
+|     :      |COLON(name,coment)|                   | ( ret x2 x1 -- x2 x1 )     | ( -- ret )            |
+|     ;      |     SEMICOLON    |                   |           ( -- )           | ( ret -- )            |
+|    exit    |       EXIT       |                   |           ( -- )           | ( ret -- )            |
+|    name    |                  |    SCALL(name)    |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
+|     :      |                  |SCOLON(name,coment)| ( ret x2 x1 -- ret x2 x1 ) | ( -- )                |
+|     ;      |                  |     SSEMICOLON    | ( ret x2 x1 -- x2 x1 )     | ( -- )                |
+|    exit    |                  |       SEXIT       | ( ret x2 x1 -- x2 x1 )     | ( -- )                |
 
 
 ### LOOP
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- |
-|     do     |      DO      |                | ( stop index -- )                | ( -- stop index )     |
-|    loop    |     LOOP     |                |            ( -- )                | ( stop index -- )     |
-|   unloop   |    UNLOOP    |                |            ( -- )                | ( x -- )              |
-|      i     |       I      |                |            ( -- index )          | ( index -- index )    |
-|      j     |       J      |                |            ( -- j )              | ( j s i -- j s i )    |
-|            |              |      SDO       | ( stop index -- stop index )     | ( -- )                |
-|            |              |     SLOOP      | ( stop index -- )                | ( -- )                |
-|            |              |    UNSLOOP     | ( stop index -- )                | ( -- )                |
-|            |              |       SI       |        ( s i -- s i i )          | ( -- )                |
-| `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )                | ( -- `1` )            |
-|            |              |     XLOOP      |            ( -- )                | ( index -- index++ )  |
-| `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )                | ( index -- index+`2` )|
-|            |              |    UNXLOOP     |            ( -- )                | ( index -- )          |
-|     i      |              |       XI       |            ( -- i )              | ( i -- i )            |
-|     j      |              |       XJ       |            ( -- j )              | ( j i -- j i )        |
-|     k      |              |       XK       |            ( -- k )              | ( k j i -- k j i )    |
-|   begin    |    BEGIN     |                |            ( -- )                |                       |
-|   while    |    WHILE     |                |       ( flag -- )                |                       |
-|   repeat   |    REPEAT    |                |            ( -- )                |                       |
-|   again    |    AGAIN     |                |            ( -- )                |                       |
-|   until    |    UNTIL     |                |       ( flag -- )                |                       |
+| original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
+| :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |
+|     do     |      DO      |                | ( stop index -- )            | ( -- stop index )     |
+|    loop    |     LOOP     |                |            ( -- )            | ( stop index -- )     |
+|   unloop   |    UNLOOP    |                |            ( -- )            | ( x -- )              |
+|      i     |       I      |                |            ( -- index )      | ( index -- index )    |
+|      j     |       J      |                |            ( -- j )          | ( j s i -- j s i )    |
+|            |              |      SDO       | ( stop index -- stop index ) | ( -- )                |
+|            |              |     SLOOP      | ( stop index -- )            | ( -- )                |
+|            |              |    UNSLOOP     | ( stop index -- )            | ( -- )                |
+|            |              |       SI       |        ( s i -- s i i )      | ( -- )                |
+| `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )            | ( -- `1` )            |
+|            |              |     XLOOP      |            ( -- )            | ( index -- index++ )  |
+| `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|
+|            |              |    UNXLOOP     |            ( -- )            | ( index -- )          |
+|     i      |              |       XI       |            ( -- i )          | ( i -- i )            |
+|     j      |              |       XJ       |            ( -- j )          | ( j i -- j i )        |
+|     k      |              |       XK       |            ( -- k )          | ( k j i -- k j i )    |
+|   begin    |    BEGIN     |                |            ( -- )            |                       |
+|   while    |    WHILE     |                |       ( flag -- )            |                       |
+|   repeat   |    REPEAT    |                |            ( -- )            |                       |
+|   again    |    AGAIN     |                |            ( -- )            |                       |
+|   until    |    UNTIL     |                |       ( flag -- )            |                       |
 
 
 ### Other
 
-| original   |    M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment      |
-| :--------: | :-----------: | :------------: | :------------------------------- | :-------------------- | :----------- |
-|            | INIT(RAS_addr)|                |                                  |  Init HL' = RAS_addr  |              |
-|            |     STOP      |                |            ( -- )                |  Load orig. HL'       |
-|  constant  |   CONSTANT    |                |            ( -- )                |                       |
-|  variable  | VARIABLE(PI)  |                |            ( -- index )          |                       |
-|   addr @   |    FETCH      |                |       ( addr -- x )              |                       |
-|            |               |  XFETCH(addr)  |            ( -- x )              |                       |
-|  addr x !  |    STORE      |                |     ( addr x -- )                |                       | (addr) --> x |
-|            |               |  XSTORE(addr)  |          ( x -- )                |                       |  x --> (addr)|
+| original   |    M4 FORTH   |  optimization  |   data stack        |  return address stack | comment      |
+| :--------: | :-----------: | :------------: | :------------------ | :-------------------- | :----------- |
+|            | INIT(RAS_addr)|                |                     |  Init HL' = RAS_addr  |              |
+|            |     STOP      |                |        ( -- )       |  Load orig. HL'       |
+|  constant  |   CONSTANT    |                |        ( -- )       |                       |
+|  variable  | VARIABLE(PI)  |                |        ( -- index ) |                       |
+|   addr @   |    FETCH      |                |   ( addr -- x )     |                       |
+|            |               |  XFETCH(addr)  |        ( -- x )     |                       |
+|  addr x !  |    STORE      |                | ( addr x -- )       |                       | (addr) --> x |
+|            |               |  XSTORE(addr)  |      ( x -- )       |                       |  x --> (addr)|
 
 ## External links
 
