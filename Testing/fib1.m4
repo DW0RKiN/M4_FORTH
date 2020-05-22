@@ -4,7 +4,7 @@ include(`./FIRST.M4')dnl
     CALL(fib1_bench)
     STOP   
     COLON(fib1,( a -- b ))
-        DUP PUSH(2) LT IF DROP_PUSH(1) EXIT THEN
+        DUP_PUSH_LT_IF(2) DROP_PUSH(1) EXIT THEN
         DUP  ONE_SUB CALL(fib1) 
         SWAP TWO_SUB CALL(fib1) ADD
     SEMICOLON

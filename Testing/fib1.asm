@@ -27,28 +27,17 @@ fib1:                   ;           ( a -- b )
     ld  (HL),E          ; 1:7       : (HL') = ret
     exx                 ; 1:4       :
         
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
-    push DE             ; 1:11      push(2)
-    ex   DE, HL         ; 1:4       push(2)
-    ld   HL, 2          ; 3:10      push(2) 
-    ld    A, H          ; 1:4       <
-    xor   D             ; 1:4       <
-    jp    p, $+7        ; 3:10      <
-    rl    D             ; 2:8       < sign x2
-    jr   $+5            ; 2:12      <
-    ex   DE, HL         ; 1:4       <
-    sbc  HL, DE         ; 2:15      <
-    sbc  HL, HL         ; 2:15      <
-    pop  DE             ; 1:10      < 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else101    ; 3:10      if 
-    ld   HL, 1          ; 3:10      drop_push 
-    jp   fib1_end       ; 3:10 
+    ld    A, H          ; 1:4       dup 2 < if
+    add   A, A          ; 1:4       dup 2 < if
+    jr    c, $+11       ; 2:7/12    dup 2 < if    positive constant
+
+    ld    A, L          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
+    sub   low 2         ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
+    ld    A, H          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
+    sbc   A, high 2     ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
+    jp   nc, else101    ; 3:10      dup 2 < if 
+    ld   HL, 1          ; 3:10      drop_push(1) 
+    jp   fib1_end       ; 3:10      exit 
 else101  EQU $          ;           = endif
 endif101:
         
