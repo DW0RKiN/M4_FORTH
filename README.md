@@ -127,6 +127,8 @@ Theoretically, your function name or variable may conflict with the name of the 
 
 ### Stack manipulation
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
+
 | original   |   M4 FORTH   |  optimization  |   data stack                |  return address stack |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
 |    swap    |     SWAP     |                |    ( x2 x1 -- x1 x2 )       |                       |
@@ -154,6 +156,8 @@ Theoretically, your function name or variable may conflict with the name of the 
 
 ### Arithmetic
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
+
 | original   |   M4 FORTH   |  optimization  |  data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
 |     +      |     ADD      |                |    ( x2 x1 -- x )           |                       |
@@ -176,6 +180,8 @@ Theoretically, your function name or variable may conflict with the name of the 
 |     2/     |    TWO_DIV   |                |       ( x1 -- x1/2 )        |                       |
 
 ### Logic
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 | original   |   M4 FORTH   |  optimization  |  data stack           |  r.a.s. | comment      |
 | :--------: | :----------: | :------------: | :-------------------- | :------ | :----------- |
@@ -208,6 +214,8 @@ Theoretically, your function name or variable may conflict with the name of the 
 | u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )  |         |
 
 ### Device
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
 | original   |   M4 FORTH   |  optimization  |  data stack              |  return address stack |
 | :--------: | :----------: | :------------: | :----------------------- | :-------------------- |
@@ -242,6 +250,8 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### IF
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
+
 |   original   |   M4 FORTH   |    optimization    |   data stack         |  r.a.s. | comment          |
 | :----------: | :----------: |  :---------------: | :------------------- | :------ | :--------------- |
 |      if      |      IF      |                    |     ( flag -- )      |         |
@@ -260,6 +270,8 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### Function
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
+
 | original   |     M4 FORTH     |    optimization   |   data stack               |  return address stack |
 | :--------: | :--------------: | :---------------: | :------------------------- | :-------------------- |
 |    name    |    CALL(name)    |                   |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
@@ -273,6 +285,8 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 
 ### LOOP
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
 | original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |
@@ -301,6 +315,8 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### Other
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
+
 | original   |    M4 FORTH   |  optimization  |   data stack        |  return address stack | comment      |
 | :--------: | :-----------: | :------------: | :------------------ | :-------------------- | :----------- |
 |            | INIT(RAS_addr)|                |                     |  Init HL' = RAS_addr  |              |
@@ -311,6 +327,14 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 |            |               |  XFETCH(addr)  |        ( -- x )     |                       |
 |  addr x !  |    STORE      |                | ( addr x -- )       |                       | (addr) --> x |
 |            |               |  XSTORE(addr)  |      ( x -- )       |                       |  x --> (addr)|
+
+### Output
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4
+
+The small Runtime library.
+Variable section.
+String section.
 
 ## External links
 
