@@ -1,6 +1,6 @@
 # M4 FORTH (ZX Spectrum, Z80)
 
-A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the "dup constant condition if".
+A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup constant condition if`.
 The small Runtime library for listing numbers and text is intended for the ZX Spectrum computer.
 
 Due to its simplicity, the compiler is suitable for study purposes. Can be easily edited. For the most part, it is merely a substitution of the FORTH word for a sequence of instructions.
@@ -64,9 +64,10 @@ LAST.M4 must be appended to the end of the file using:
 
     include ({./M4/LAST.M4})dnl
 
-This file creates, among other things, the functions used at the end of the program. For example, to list a string or a number. Multiplication and division functions. Saves used strings, or allocates space for used variables.
+Among other things, this file lists all used runtime library functions. For example, to list a string or a number. Multiplication and division functions. Lists the strings used or allocates space for used variables.
 
-Use the `INIT(xxx)` and `STOP` macros so that the program can be called from the Basic ZX spectrum and returned successfully. These save the shadow registers and set the value for the return address stack to xxx.
+In order to be able to call a program from Basic and return it again without error, the `INIT()` and `STOP` macros must be used.
+`INIT(xxx)` stores shadow registers and sets the initial value of the return address stack.
 
 In order for the compiler not to compile the program from the zero address, it must still contain the ORG value. For example, ORG 0x8000.
 
@@ -120,7 +121,8 @@ m4 Hello.m4
 
 ## Limitations of the M4 markup language
 
-Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. All FORTH words are in uppercase! Because `+` is written as `ADD`. This means that the assembler uses `add` for addition so that it is not interpreted as a macro.
+Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. 
+All FORTH words must be capitalized! Because `+` is written as `ADD`. And `add` is reserved for assembler instructions.
     
 Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
 
@@ -229,7 +231,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 | dup2 type  |  DUP2_TYPE   |                |   ( addr n -- addr n )   |                       |
 | .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
 
-The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because the comma introduces another parameter.
+The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
 
     PRINT(  "1. Hello{,} World! Use {,} {{1,2,3}} {{4}}")
