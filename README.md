@@ -226,6 +226,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |     .s     |     DOTS     |                | ( x3 x2 x1 -- x3 x2 x1 ) |                       |
 |   DUP .    |    DUP_DOT   |                |       ( x1 -- x1 )       |                       |
 |     cr     |      CR      |                |          ( -- )          |                       |
+|    emit    |     EMIT     |                |      ( 'a' -- )          |                       |
 |            | PUTCHAR('a') |                |          ( -- )          |                       |
 |    type    |     TYPE     |                |   ( addr n -- )          |                       |
 | dup2 type  |  DUP2_TYPE   |                |   ( addr n -- addr n )   |                       |

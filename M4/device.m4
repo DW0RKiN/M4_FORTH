@@ -32,6 +32,13 @@ define(CR,{
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A})dnl
 dnl
 dnl
+dnl ( 'a' -- )
+dnl new line
+define(EMIT,{
+    ld    A, L          ; 1:4       emit    Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      emit    with 48K ROM in, this will print char in A{}DROP})dnl
+dnl
+dnl
 dnl ( -- )
 dnl .( char )
 define(PUTCHAR,{
