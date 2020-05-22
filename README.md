@@ -242,13 +242,21 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 ### IF
 
-| original   |   M4 FORTH   |  optimization  |   data stack                     |  return address stack | comment          |
-| :--------: | :----------: | :------------: | :------------------------------- | :-------------------- | :--------------- |
-|     if     |      IF      |                |      ( flag -- )                 |                       |
-|            |     IFNZ     |                |           ( -- )                 |                       | IF not zero flag
-|            |     IFZ      |                |           ( -- )                 |                       | IF zero flag
-|    else    |     ELSE     |                |           ( -- )                 |                       |
-|    then    |     THEN     |                |           ( -- )                 |                       |
+|   original   |   M4 FORTH   |    optimization    |   data stack                     |  return address stack | comment          |
+| :----------: | :----------: |  :---------------: | :------------------------------- | :-------------------- | :--------------- |
+|      if      |      IF      |                    |      ( flag -- )                 |                       |
+|              |     IFNZ     |                    |           ( -- )                 |                       | IF not zero flag
+|              |     IFZ      |                    |           ( -- )                 |                       | IF zero flag
+|     else     |     ELSE     |                    |           ( -- )                 |                       |
+|     then     |     THEN     |                    |           ( -- )                 |                       |
+| dup `5` < if |              | DUP_PUSH_LT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+| dup `5` <= if|              | DUP_PUSH_LE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+| dup `5` > if |              | DUP_PUSH_GT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+| dup `5` >= if|              | DUP_PUSH_GE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+|dup `5` u< if |              |DUP_PUSH_ULT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+|dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+|dup `5` u> if |              |DUP_PUSH_UGT_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
+|dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|           ( -- )                 |                       |`(addr)` not supported
 
 ### Function
 
