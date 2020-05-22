@@ -177,35 +177,35 @@ Theoretically, your function name or variable may conflict with the name of the 
 
 ### Logic
 
-| original   |   M4 FORTH   |  optimization  |  data stack           |  return address stack | comment      |
-| :--------: | :----------: | :------------: | :-------------------- | :-------------------- | :----------- |
-|    and     |     AND      |                |    ( x2 x1 -- x )     |                       |              |
-|     or     |      OR      |                |    ( x2 x1 -- x )     |                       |
-|    xor     |     XOR      |                |       ( x1 -- -x1 )   |                       |
-|    abs     |     ABS      |                |        ( n -- u )     |                       |
-|   invert   |    INVERT    |                |       ( x1 -- ~x1 )   |                       |
-|    true    |     TRUE     |                |          ( -- -1 )    |                       |
-|   false    |    FALSE     |                |          ( -- 0 )     |                       |
-|            |              |      CP0       |       ( x1 -- x1 )    |                       | x1-0 --> set zero flag
-|            |              |     DCP0       |    ( x2 x1 -- x2 x1 ) |                       | x2x1-0 --> set zero flag
-|   `0` =    |              |      EQ0       |       ( x1 -- x )     |                       |
-|  `0` <>    |              |      NE0       |       ( x1 -- x )     |                       | Do not use! Change True `3` to True `-1`
-|      =     |      EQ      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|     <>     |      NE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|      <     |      LT      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|     <=     |      LE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|      >     |      GT      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|     >=     |      GE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|      <     |     ULT      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|     <=     |     ULE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|      >     |     UGT      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-|     >=     |     UGE      |                |    ( x2 x1 -- flag )  |                       | TRUE=-1 FALSE=0
-| x1 u >> x  |  i am lazy   |                |    ( x1 u -- x1>>u )  |                       |
-| x1 u << x  |  i am lazy   |                |    ( x1 u -- x1<<u )  |                       |
-| x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )  |                       | signed
-| x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )  |                       |
-| u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )  |                       | unsigned
-| u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )  |                       |
+| original   |   M4 FORTH   |  optimization  |  data stack           |  r.a.s. | comment      |
+| :--------: | :----------: | :------------: | :-------------------- | :------ | :----------- |
+|    and     |     AND      |                |    ( x2 x1 -- x )     |         |              |
+|     or     |      OR      |                |    ( x2 x1 -- x )     |         |
+|    xor     |     XOR      |                |       ( x1 -- -x1 )   |         |
+|    abs     |     ABS      |                |        ( n -- u )     |         |
+|   invert   |    INVERT    |                |       ( x1 -- ~x1 )   |         |
+|    true    |     TRUE     |                |          ( -- -1 )    |         |
+|   false    |    FALSE     |                |          ( -- 0 )     |         |
+|            |              |      CP0       |       ( x1 -- x1 )    |         | x1-0 --> set zero flag
+|            |              |     DCP0       |    ( x2 x1 -- x2 x1 ) |         | x2x1-0 --> set zero flag
+|   `0` =    |              |      EQ0       |       ( x1 -- x )     |         |
+|  `0` <>    |              |      NE0       |       ( x1 -- x )     |         | Do not use! Change True `3` to True `-1`
+|      =     |      EQ      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     <>     |      NE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|      <     |      LT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     <=     |      LE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|      >     |      GT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     >=     |      GE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|      <     |     ULT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     <=     |     ULE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|      >     |     UGT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     >=     |     UGE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+| x1 u >> x  |  i am lazy   |                |    ( x1 u -- x1>>u )  |         |
+| x1 u << x  |  i am lazy   |                |    ( x1 u -- x1<<u )  |         |
+| x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )  |         | signed
+| x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )  |         |
+| u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )  |         | unsigned
+| u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )  |         |
 
 ### Device
 
