@@ -27,12 +27,8 @@ gcd1:                   ;           ( a b -- gcd )
     ld  (HL),E          ; 1:7       : (HL') = ret
     exx                 ; 1:4       :                                                                
     
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
+    ld    A, D          ; 1:4       over if
+    or    E             ; 1:4       over if
     jp    z, else101    ; 3:10      if                                                                         
             
 begin101:                                                                         
@@ -47,17 +43,11 @@ begin101:
     pop  DE             ; 1:10      while 101
     jp    z, repeat101  ; 3:10      while 101                                                                   
                 
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup 
-    or    A             ; 1:4       (u) >
-    sbc  HL, DE         ; 2:15      (u) >
-    sbc  HL, HL         ; 2:15      (u) >
-    pop  DE             ; 1:10      (u) > 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else102    ; 3:10      if 
+    ld    A, L          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sub   E             ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sbc   A, D          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    jp   nc, else102    ; 3:10      dup2 (u)> if 
     ex   DE, HL         ; 1:4       swap 
 else102  EQU $          ;           = endif
 endif102: 
@@ -76,20 +66,15 @@ repeat101:
     jp   endif101       ; 3:10      else
 else101:                                                               
             
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
+    ld    A, H          ; 1:4       dup if
+    or    L             ; 1:4       dup if
     jp    z, else103    ; 3:10      if 
     pop  DE             ; 1:10      nip 
     jp   endif103       ; 3:10      else
 else103: 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push 
+    ld   HL, 1          ; 3:10      drop_push(1) 
 endif103:                                                   
         
 endif101: 

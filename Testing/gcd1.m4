@@ -4,14 +4,14 @@ include(`./FIRST.M4')dnl
     CALL(gcd1_bench)
     STOP   
     COLON(gcd1,( a b -- gcd ))                                                                
-    OVER IF                                                                         
+    OVER_IF                                                                         
             BEGIN                                                                         
                 DUP 
             WHILE                                                                   
-                DUP2 UGT IF SWAP THEN OVER SUB                                               
+                DUP2_UGT_IF SWAP THEN OVER SUB                                               
             REPEAT DROP 
         ELSE                                                               
-            DUP IF NIP ELSE DROP DROP_PUSH(1) THEN                                                   
+            DUP_IF NIP ELSE DROP DROP_PUSH(1) THEN                                                   
         THEN 
     SEMICOLON 
     COLON(gcd1_bench,( -- ))
