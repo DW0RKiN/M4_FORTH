@@ -205,10 +205,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |     <=     |      LE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |      >     |      GT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     >=     |      GE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|      <     |     ULT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     <=     |     ULE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|      >     |     UGT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     >=     |     UGE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     u<     |     ULT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|    u<=     |     ULE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     u>     |     UGT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|    u>=     |     UGE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 | x1 u >> x  |  i am lazy   |                |    ( x1 u -- x1>>u )  |         |
 | x1 u << x  |  i am lazy   |                |    ( x1 u -- x1<<u )  |         |
 | x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )  |         | signed
@@ -229,7 +229,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |    emit    |     EMIT     |                |      ( 'a' -- )          |                       |
 |            | PUTCHAR('a') |                |          ( -- )          |                       |
 |    type    |     TYPE     |                |   ( addr n -- )          |                       |
-| dup2 type  |  DUP2_TYPE   |                |   ( addr n -- addr n )   |                       |
+| 2dup type  |  DUP2_TYPE   |                |   ( addr n -- addr n )   |                       |
 | .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
@@ -272,6 +272,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u> if |              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
+|dup dup u< if |              |   DUP_DUP_ULT_IF   |         ( -- )      |         |
+|dup dup u<= if|              |   DUP_DUP_ULE_IF   |         ( -- )      |         |
+|dup dup u> if |              |   DUP_DUP_UGT_IF   |         ( -- )      |         |
+|dup dup u>= if|              |   DUP_DUP_UGE_IF   |         ( -- )      |         |
 
 ### Function
 
