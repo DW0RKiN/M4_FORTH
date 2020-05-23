@@ -172,6 +172,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 |    mod     |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
 |    /mod    |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
 |     u*     |     UMUL     |                |    ( x2 x1 -- x )           |                       |
+|  `+12` *   |              |   XMUL(`17`)   |    ( x2 x1 -- x )           |                       |
 |     u/     |     UDIV     |                |    ( x2 x1 -- x )           |                       |
 |    umod    |     UMOD     |                |    ( x2 x1 -- x )           |                       |
 |    u/mod   |    UDIVMOD   |                |    ( x2 x1 -- rem quot )    |                       |
@@ -259,7 +260,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |   original   |   M4 FORTH   |    optimization    |   data stack        |  r.a.s. | comment          |
 | :----------: | :----------: |  :---------------: | :------------------ | :------ | :--------------- |
 |      if      |      IF      |                    |    ( flag -- )      |         |
-|              |    DUP_IF    |                    |    ( flag -- flag ) |         |
+|    dup if    |              |      DUP_IF        |    ( flag -- flag ) |         |
 |              |     IFNZ     |                    |         ( -- )      |         | IF not zero flag
 |              |     IFZ      |                    |         ( -- )      |         | IF zero flag
 |     else     |     ELSE     |                    |         ( -- )      |         |
