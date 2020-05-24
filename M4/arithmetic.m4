@@ -169,6 +169,7 @@ dnl Pro (2^x)-1 jako 2-1,4-1,8-1,16-1,32-1,64-1,128-1,...
     ld    C, L          ; 1:4       $1* save 1x{}define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}dnl
 XMUL_NEGLOOP_START(XMUL_1)
+    or    A             ; 1:4       $1*
     sbc  HL, BC         ; 2:15      $1* HL - save},
 XMUL_BITS,{3},{dnl
 dnl
@@ -180,7 +181,7 @@ define({XMUL_SAVE},{
     add   A, L          ; 1:4       $1*
     ld    C, A          ; 1:4       $1*
     ld    A, B          ; 1:4       $1*
-    add   A, H          ; 1:4       $1*
+    adc   A, H          ; 1:4       $1*
     ld    B, A          ; 1:4       $1* +save XMUL_SUM{}x})}){}dnl
 define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}XMUL_LOOP_START(XMUL_1)
@@ -193,7 +194,7 @@ ifelse(eval($1 & 1),{1},{define({XMUL_SAVE},{
     add   A, L          ; 1:4       $1*
     ld    C, A          ; 1:4       $1*
     ld    A, B          ; 1:4       $1*
-    add   A, H          ; 1:4       $1*
+    adc   A, H          ; 1:4       $1*
     ld    B, A          ; 1:4       $1* +save XMUL_SUM{}x})define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})
     ld    B, H          ; 1:4       $1*
@@ -202,6 +203,7 @@ ifelse(eval($1 & 1),{1},{define({XMUL_SAVE},{
     add  HL, HL         ; 1:11      $1* 2x
     ld    C, L          ; 1:4       $1*
     ld    B, H          ; 1:4       $1* +save 2x})}){}XMUL_NEGLOOP_START(XMUL_1)
+    or    A             ; 1:4       $1*
     sbc  HL, BC         ; 2:15      $1* HL - save},
 eval(XMUL_NOBITS+2>XMUL_BITS),{1},{dnl
 dnl
@@ -232,6 +234,7 @@ define({XMUL_SAVE},{
     ld    C, E          ; 1:4       $1*
     ld    D, H          ; 1:4       $1*
     ld    E, L          ; 1:4       $1* save 1x{}XMUL_NEGLOOP_START(XMUL_1)
+    or    A             ; 1:4       $1*
     sbc  HL, DE         ; 2:15      $1* HL - save
     ld    D, B          ; 1:4       $1*
     ld    E, C          ; 1:4       $1*})})dnl
