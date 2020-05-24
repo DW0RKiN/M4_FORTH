@@ -5,7 +5,8 @@ define(INIT,{
     exx
     push HL
     push DE
-    ld   HL, $1
+    ld   HL, ifelse($1,{},{60000
+    .warning "Missing value for return address stack. The init() macro has no parameter!"},{$1})
     exx})dnl
 dnl
 dnl ( -- )
