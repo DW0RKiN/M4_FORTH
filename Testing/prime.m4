@@ -1,4 +1,4 @@
-include(`./M4/FIRST.M4')dnl 
+include(`./FIRST.M4')dnl 
 ORG 0x6000
 INIT(0xF500)
       PUSH(2)      XMUL(3)      XMUL(5)      XMUL(7)     XMUL(11)     XMUL(13)     XMUL(17)     XMUL(19)     XMUL(23)     XMUL(29) 
@@ -126,4 +126,4 @@ INIT(0xF500)
    XMUL(9901)   XMUL(9907)   XMUL(9923)   XMUL(9929)   XMUL(9931)   XMUL(9941)   XMUL(9949)   XMUL(9967)   XMUL(9973)   DOT
 STOP
 
-include({./M4/LAST.M4})dnl
+include({./LAST.M4})dnl

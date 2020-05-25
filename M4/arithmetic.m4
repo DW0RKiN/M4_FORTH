@@ -104,26 +104,27 @@ define(TWO_MUL,{
     add  HL, HL         ; 1:11      2*})dnl
 dnl
 dnl
-define({SUM_BITS},{define({TEMP},eval(($1 & 0x5555) + ($1 & 0xAAAA)/2)){}dnl
+define({SUM_1BITS},{define({TEMP},eval((($1) & 0x5555) + (($1) & 0xAAAA)/2)){}dnl
 define({TEMP},eval((TEMP & 0x3333) + (TEMP & 0xCCCC)/4)){}dnl
 define({TEMP},eval((TEMP & 0x0F0F) + (TEMP & 0xF0F0)/16)){}dnl
 eval((TEMP & 0x00FF) + (TEMP & 0xFF00)/256)})dnl
 dnl
 dnl
 dnl
-define({SUM_NO_BITS},{define({TEMP},eval($1 | ($1 >> 1)))dnl
-define({TEMP},eval(TEMP | (TEMP >> 2)))dnl
-define({TEMP},eval(TEMP | (TEMP >> 4)))dnl
-define({TEMP},eval(TEMP | (TEMP >> 8)))dnl 
-define({TEMP},eval(TEMP | (TEMP >> 16)))dnl
-eval(SUM_BITS(TEMP-$1))})dnl
+define({SUM_0BITS},{define({INV_BITS},eval(($1) | (($1) >> 1)))dnl
+define({INV_BITS},eval(INV_BITS | (INV_BITS >> 2)))dnl
+define({INV_BITS},eval(INV_BITS | (INV_BITS >> 4)))dnl
+define({INV_BITS},eval(INV_BITS | (INV_BITS >> 8)))dnl 
+define({INV_BITS},eval(INV_BITS | (INV_BITS >> 16)))dnl
+define({INV_BITS},eval(INV_BITS-($1)))dnl
+SUM_1BITS(eval(INV_BITS))})dnl
 dnl
 dnl
 dnl "const *"
 dnl ( x1 -- const*x1 )
-define({XMUL},{define({XMUL_BITS},SUM_BITS($1)){}define({XMUL_NOBITS},SUM_NO_BITS($1))dnl
+define({XMUL},{define({XMUL_BITS},SUM_1BITS($1)){}define({XMUL_NOBITS},SUM_0BITS($1))dnl
 dnl
-define({XMUL_LOOP_START},{define({XMUL_PAR},$1){}define({XMUL_SUM},{1}){}XMUL_LOOP($1)})dnl
+define({XMUL_LOOP_START},{define({XMUL_PAR},eval($1)){}define({XMUL_SUM},{1}){}XMUL_LOOP($1)})dnl
 dnl
 define({XMUL_LOOP},{ifelse(eval(XMUL_PAR>1),{1},{ifelse(eval(XMUL_PAR & 1),{1},{XMUL_SAVE}){}dnl
 dnl
@@ -131,7 +132,7 @@ define({XMUL_PAR},eval(XMUL_PAR/2)){}ifelse(eval(XMUL_PAR & 127),{0},{define({XM
     ld    H, L          ; 1:4       $1*
     ld    L, 0x00       ; 2:7       $1* XMUL_SUM{}x},{define({XMUL_SUM},eval(2*XMUL_SUM)){}XMUL_2X}){}XMUL_LOOP($1)})})dnl
 dnl
-define({XMUL_NEGLOOP_START},{define({XMUL_PAR},$1){}define({XMUL_SUM},{1}){}XMUL_NEGLOOP($1)})dnl
+define({XMUL_NEGLOOP_START},{define({XMUL_PAR},eval($1)){}define({XMUL_SUM},{1}){}XMUL_NEGLOOP($1)})dnl
 dnl
 define({XMUL_NEGLOOP},{ifelse(eval(XMUL_PAR>=1),{1},{ifelse(eval(XMUL_PAR & 1),{0},{XMUL_SAVE}){}dnl
 dnl
@@ -171,6 +172,19 @@ dnl Pro (2^x)-1 jako 2-1,4-1,8-1,16-1,32-1,64-1,128-1,...
 XMUL_NEGLOOP_START(XMUL_1)
     or    A             ; 1:4       $1*
     sbc  HL, BC         ; 2:15      $1* HL - save},
+eval(SUM_0BITS(INV_BITS)),{0},{dnl
+dnl
+dnl 2^x - 2^(x-y) jako 60=64-4
+dnl
+define({XMUL_SAVE},{
+    ld    B, H          ; 1:4       $1*
+    ld    C, L          ; 1:4       $1* save XMUL_SUM{}x{}define({XMUL_SAVE},{})}){}dnl
+define({XMUL_2X},{
+    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})dnl
+XMUL_LOOP_START(XMUL_1)
+    add  HL, HL         ; 1:11      $1* eval(2*XMUL_SUM)x
+    or    A             ; 1:4       $1*
+    sbc  HL, BC         ; 2:15      $1*},
 XMUL_BITS,{3},{dnl
 dnl
 dnl Soucty 3 bitu jako 11=8+2+1,69=64+4+1
@@ -178,11 +192,11 @@ dnl
 define({XMUL_SAVE},{
     ld    B, H          ; 1:4       $1*
     ld    A, L          ; 1:4       $1* save XMUL_SUM{}x{}define({XMUL_SAVE},{
-    add   A, L          ; 1:4       $1*
-    ld    C, A          ; 1:4       $1*
-    ld    A, B          ; 1:4       $1*
-    adc   A, H          ; 1:4       $1*
-    ld    B, A          ; 1:4       $1* +save XMUL_SUM{}x})}){}dnl
+    add   A, L          ; 1:4       $1* +
+    ld    C, A          ; 1:4       $1* +
+    ld    A, B          ; 1:4       $1* +
+    adc   A, H          ; 1:4       $1* +
+    ld    B, A          ; 1:4       $1* + save XMUL_SUM{}x})}){}dnl
 define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}XMUL_LOOP_START(XMUL_1)
     add  HL, BC         ; 1:11      $1* HL + save},
@@ -191,30 +205,32 @@ dnl
 dnl Pro (2^x)-(2^(x-y))-1 jako 27=(32-4)-1
 dnl
 ifelse(eval($1 & 1),{1},{define({XMUL_SAVE},{
-    add   A, L          ; 1:4       $1*
-    ld    C, A          ; 1:4       $1*
-    ld    A, B          ; 1:4       $1*
-    adc   A, H          ; 1:4       $1*
-    ld    B, A          ; 1:4       $1* +save XMUL_SUM{}x})define({XMUL_2X},{
+    add   A, L          ; 1:4       $1* +
+    ld    C, A          ; 1:4       $1* +
+    ld    A, B          ; 1:4       $1* +
+    adc   A, H          ; 1:4       $1* +
+    ld    B, A          ; 1:4       $1* + save XMUL_SUM{}x})define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})
     ld    B, H          ; 1:4       $1*
-    ld    A, L          ; 1:4       $1* save 1x},{define({XMUL_2X},{define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})})define({XMUL_SAVE},{
+    ld    A, L          ; 1:4       $1* save 1x},{
+define({XMUL_SAVE},{
     add  HL, HL         ; 1:11      $1* 2x
     ld    C, L          ; 1:4       $1*
-    ld    B, H          ; 1:4       $1* +save 2x})}){}XMUL_NEGLOOP_START(XMUL_1)
+    ld    B, H          ; 1:4       $1* save 2x})define({XMUL_2X},{define({XMUL_2X},{
+    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})})}){}dnl
+XMUL_NEGLOOP_START(XMUL_1)
     or    A             ; 1:4       $1*
     sbc  HL, BC         ; 2:15      $1* HL - save},
-eval(XMUL_NOBITS+2>XMUL_BITS),{1},{dnl
+eval(XMUL_NOBITS+2>=XMUL_BITS),{1},{dnl
 dnl
 dnl Ostatni...
 dnl
 define({XMUL_SAVE},{
     ld    D, H          ; 1:4       $1*
     ld    E, L          ; 1:4       $1* save XMUL_SUM{}x{}define({XMUL_SAVE},{
-    ex   DE, HL         ; 1:4       $1*
-    add  HL, DE         ; 1:11      $1* +save XMUL_SUM{}x
-    ex   DE, HL         ; 1:4       $1*})}){}dnl
+    ex   DE, HL         ; 1:4       $1* +
+    add  HL, DE         ; 1:11      $1* + save XMUL_SUM{}x
+    ex   DE, HL         ; 1:4       $1* +})}){}dnl
 define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})
     ld    B, D          ; 1:4       $1*
@@ -226,9 +242,9 @@ dnl
 dnl Ostatni minus...
 dnl
 define({XMUL_SAVE},{
-    ex   DE, HL         ; 1:4       $1*
-    add  HL, DE         ; 1:11      $1* +save XMUL_SUM{}x
-    ex   DE, HL         ; 1:4       $1*}){}define({XMUL_2X},{
+    ex   DE, HL         ; 1:4       $1* +
+    add  HL, DE         ; 1:11      $1* + save XMUL_SUM{}x
+    ex   DE, HL         ; 1:4       $1* +}){}define({XMUL_2X},{
     add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})
     ld    B, D          ; 1:4       $1*
     ld    C, E          ; 1:4       $1*

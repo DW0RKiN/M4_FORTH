@@ -7,7 +7,7 @@ cat $1 |
 sed 's#^\([^;]*\s\+\|^\);\(\s\|$\)#\1\SEMICOLON\2#g' |
 sed -e 's#(#;(#' > $TMPFILE
 
-for (( c=1; c<=50; c++ ))
+for (( c=1; c<=20; c++ ))
 do
 
 cat $TMPFILE |
@@ -142,7 +142,23 @@ cat $TMPFILE2 > $TMPFILE
 
 done
 
-printf "include(\`./M4/FIRST.M4')dnl \nORG 0x8000\nINIT(60000)\n...\nSTOP\n"
+printf "include(\`"
+
+if [ -f ./FIRST.M4 ]
+then
+    DIR="./"
+elif [ -f ./M4/FIRST.M4 ]
+then
+    DIR="./M4/"
+elif [ -f ../M4/FIRST.M4 ]
+then
+    DIR="../M4/"
+else
+    DIR=" adds_the_path_to_the_file "
+fi
+    
+printf "include(\`${DIR}FIRST.M4')dnl \nORG 0x8000\nINIT(60000)\n...\nSTOP\n"
+
 
 cat $TMPFILE |
 
@@ -156,4 +172,4 @@ sed 's#^\([^;]*\s\+\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#g' |
 # call
 sed 's#^\([^;]*\s\+\|^\)\([a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g'
 
-printf "\ninclude({./M4/LAST.M4})dnl\n"
+printf "\ninclude({${DIR}LAST.M4})dnl\n"
