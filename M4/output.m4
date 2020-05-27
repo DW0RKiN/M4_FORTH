@@ -116,42 +116,42 @@ PRINT_STRING:
 dnl
 dnl
 dnl
-ifdef({USE_UMUL},{
+ifdef({USE_MUL},{
 ; Input: HL,DE
 ; Output: HL=HL*DE
-; Pollutes: AF, DE
-UMULTIPLY:
+; It does not matter whether it is signed or unsigned multiplication.
+; Pollutes: AF, B, DE
+MULTIPLY:   
     ld    A, H          ; 1:4
-    or    A             ; 1:4
-    jr    z, MUL_DEgr   ; 2:7/12
-
-    ld    A, D          ; 1:4
-    or    A             ; 1:4
-    jr    z, MUL_HLgr   ; 2:7/12
-    
-;   overflow
-    ld   HL, 32767      ; 3:10
-    ret                 ; 1:10
-
-MUL_HLgr:
+    sub   D             ; 1:4
+    jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4
-MUL_DEgr:
-;     HL=DE*HL==DE*0L
 
+    ld    B, H          ; 1:4       
     ld    A, L          ; 1:4
-    ld    L, H          ; 1:4       HL = 0 
-    
-MUL_LOOP:
-    srl   A             ; 2:8       divide A by 2
-    jr   nc,$+3         ; 2:7/12
-    add  HL,DE          ; 1:11
+    ld   HL, 0x0000     ; 3:10 
 
+    srl   B             ; 2:8
+    rra                 ; 1:4       divide BA by 2
+    jr   nc, $+3        ; 2:7/12
+MUL_LOOP:
+    add  HL, DE         ; 1:11
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2    
+    srl   B             ; 2:8
+    rra                 ; 1:4       divide BA by 2
+    jr    c, MUL_LOOP   ; 2:7/12
+    jp   nz, MUL_LOOP+1 ; 3:10      B = ?
+
+    db   0x06           ; 2:7
+MUL_LOOP2:
+    add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2
-    
-    or    A             ; 1:4
-    jr   nz,MUL_LOOP    ; 2:7/12
-    
+    srl   A             ; 2:8       divide A by 2
+    jr    c, MUL_LOOP2  ; 2:7/12
+    jp   nz, MUL_LOOP2+1; 3:10      A = ?
+
     ret                 ; 1:10})dnl
 dnl
 dnl

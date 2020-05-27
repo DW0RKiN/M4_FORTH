@@ -37,10 +37,10 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 * x1
-define(UMUL,{
-ifdef({USE_UMUL},,define({USE_UMUL},{}))dnl
-    call UMULTIPLY      ; 3:17      u*
-    pop  DE             ; 1:10      u*})dnl
+define(MUL,{
+ifdef({USE_MUL},,define({USE_MUL},{}))dnl
+    call MULTIPLY       ; 3:17      *
+    pop  DE             ; 1:10      *})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )

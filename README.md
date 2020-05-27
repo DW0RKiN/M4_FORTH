@@ -167,7 +167,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 |     -      |     SUB      |                |    ( x2 x1 -- x )           |                       |
 |   negate   |    NEGATE    |                |       ( x1 -- -x1 )         |                       |
 |    abs     |     ABS      |                |        ( n -- u )           |                       |
-|     *      |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
+|     *      |     MUL      |                |    ( x2 x1 -- x )           |                       |
 |     /      |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
 |    mod     |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
 |    /mod    |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
