@@ -10,23 +10,23 @@ ORG 0x6000
     push DE             ; 1:11      push(2)
     ex   DE, HL         ; 1:4       push(2)
     ld   HL, 2          ; 3:10      push(2)      
-    ld    B, H          ; 1:4       3*
+    ld    B, H          ; 1:4       3* Variant: 2^a + 2^b
     ld    C, L          ; 1:4       3* save 1x
     add  HL, HL         ; 1:11      3* 2x
     add  HL, BC         ; 1:11      3* HL + save      
-    ld    B, H          ; 1:4       5*
+    ld    B, H          ; 1:4       5* Variant: 2^a + 2^b
     ld    C, L          ; 1:4       5* save 1x
     add  HL, HL         ; 1:11      5* 2x
     add  HL, HL         ; 1:11      5* 4x
     add  HL, BC         ; 1:11      5* HL + save      
-    ld    B, H          ; 1:4       7*
+    ld    B, H          ; 1:4       7* Variant: 2^a - 2^b
     ld    C, L          ; 1:4       7* save 1x
     add  HL, HL         ; 1:11      7* 2x
     add  HL, HL         ; 1:11      7* 4x
     add  HL, HL         ; 1:11      7* 8x
     or    A             ; 1:4       7*
     sbc  HL, BC         ; 2:15      7* HL - save     
-    ld    B, H          ; 1:4       11*
+    ld    B, H          ; 1:4       11* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       11* save 1x
     add  HL, HL         ; 1:11      11* 2x
     add   A, L          ; 1:4       11* +
@@ -37,7 +37,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      11* 4x
     add  HL, HL         ; 1:11      11* 8x
     add  HL, BC         ; 1:11      11* HL + save     
-    ld    B, H          ; 1:4       13*
+    ld    B, H          ; 1:4       13* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       13* save 1x
     add  HL, HL         ; 1:11      13* 2x
     add  HL, HL         ; 1:11      13* 4x
@@ -48,14 +48,14 @@ ORG 0x6000
     ld    B, A          ; 1:4       13* + save 4x
     add  HL, HL         ; 1:11      13* 8x
     add  HL, BC         ; 1:11      13* HL + save     
-    ld    B, H          ; 1:4       17*
+    ld    B, H          ; 1:4       17* Variant: 2^a + 2^b
     ld    C, L          ; 1:4       17* save 1x
     add  HL, HL         ; 1:11      17* 2x
     add  HL, HL         ; 1:11      17* 4x
     add  HL, HL         ; 1:11      17* 8x
     add  HL, HL         ; 1:11      17* 16x
     add  HL, BC         ; 1:11      17* HL + save     
-    ld    B, H          ; 1:4       19*
+    ld    B, H          ; 1:4       19* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       19* save 1x
     add  HL, HL         ; 1:11      19* 2x
     add   A, L          ; 1:4       19* +
@@ -67,12 +67,12 @@ ORG 0x6000
     add  HL, HL         ; 1:11      19* 8x
     add  HL, HL         ; 1:11      19* 16x
     add  HL, BC         ; 1:11      19* HL + save     
-    ld    B, H          ; 1:4       23*
+    ld    B, H          ; 1:4       23* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       23* save 1x
     add  HL, HL         ; 1:11      23* 2x
     add  HL, HL         ; 1:11      23* 4x
     add  HL, HL         ; 1:11      23* 8x
-    add   A, L          ; 1:4       23* +
+    add   A, L          ; 1:4       23*
     ld    C, A          ; 1:4       23* +
     ld    A, B          ; 1:4       23* +
     adc   A, H          ; 1:4       23* +
@@ -81,10 +81,10 @@ ORG 0x6000
     add  HL, HL         ; 1:11      23* 32x
     or    A             ; 1:4       23*
     sbc  HL, BC         ; 2:15      23* HL - save     
-    ld    B, H          ; 1:4       29*
+    ld    B, H          ; 1:4       29* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       29* save 1x
     add  HL, HL         ; 1:11      29* 2x
-    add   A, L          ; 1:4       29* +
+    add   A, L          ; 1:4       29*
     ld    C, A          ; 1:4       29* +
     ld    A, B          ; 1:4       29* +
     adc   A, H          ; 1:4       29* +
@@ -96,7 +96,7 @@ ORG 0x6000
     or    A             ; 1:4       29*
     sbc  HL, BC         ; 2:15      29* HL - save 
      
-    ld    B, H          ; 1:4       31*
+    ld    B, H          ; 1:4       31* Variant: 2^a - 2^b
     ld    C, L          ; 1:4       31* save 1x
     add  HL, HL         ; 1:11      31* 2x
     add  HL, HL         ; 1:11      31* 4x
@@ -105,7 +105,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      31* 32x
     or    A             ; 1:4       31*
     sbc  HL, BC         ; 2:15      31* HL - save     
-    ld    B, H          ; 1:4       37*
+    ld    B, H          ; 1:4       37* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       37* save 1x
     add  HL, HL         ; 1:11      37* 2x
     add  HL, HL         ; 1:11      37* 4x
@@ -118,7 +118,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      37* 16x
     add  HL, HL         ; 1:11      37* 32x
     add  HL, BC         ; 1:11      37* HL + save     
-    ld    B, H          ; 1:4       41*
+    ld    B, H          ; 1:4       41* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       41* save 1x
     add  HL, HL         ; 1:11      41* 2x
     add  HL, HL         ; 1:11      41* 4x
@@ -130,8 +130,8 @@ ORG 0x6000
     ld    B, A          ; 1:4       41* + save 8x
     add  HL, HL         ; 1:11      41* 16x
     add  HL, HL         ; 1:11      41* 32x
-    add  HL, BC         ; 1:11      41* HL + save     
-    ld    B, D          ; 1:4       43*
+    add  HL, BC         ; 1:11      41* HL + save         
+    ld    B, D          ; 1:4       43* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       43*
     ld    D, H          ; 1:4       43*
     ld    E, L          ; 1:4       43* save 1x
@@ -149,13 +149,13 @@ ORG 0x6000
     add  HL, DE         ; 1:11      43* HL + save
     ld    D, B          ; 1:4       43*
     ld    E, C          ; 1:4       43*     
-    ld    B, H          ; 1:4       47*
+    ld    B, H          ; 1:4       47* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       47* save 1x
     add  HL, HL         ; 1:11      47* 2x
     add  HL, HL         ; 1:11      47* 4x
     add  HL, HL         ; 1:11      47* 8x
     add  HL, HL         ; 1:11      47* 16x
-    add   A, L          ; 1:4       47* +
+    add   A, L          ; 1:4       47*
     ld    C, A          ; 1:4       47* +
     ld    A, B          ; 1:4       47* +
     adc   A, H          ; 1:4       47* +
@@ -163,8 +163,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      47* 32x
     add  HL, HL         ; 1:11      47* 64x
     or    A             ; 1:4       47*
-    sbc  HL, BC         ; 2:15      47* HL - save     
-    ld    B, D          ; 1:4       53*
+    sbc  HL, BC         ; 2:15      47* HL - save         
+    ld    B, D          ; 1:4       53* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       53*
     ld    D, H          ; 1:4       53*
     ld    E, L          ; 1:4       53* save 1x
@@ -182,11 +182,11 @@ ORG 0x6000
     add  HL, DE         ; 1:11      53* HL + save
     ld    D, B          ; 1:4       53*
     ld    E, C          ; 1:4       53*     
-    ld    B, H          ; 1:4       59*
+    ld    B, H          ; 1:4       59* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       59* save 1x
     add  HL, HL         ; 1:11      59* 2x
     add  HL, HL         ; 1:11      59* 4x
-    add   A, L          ; 1:4       59* +
+    add   A, L          ; 1:4       59*
     ld    C, A          ; 1:4       59* +
     ld    A, B          ; 1:4       59* +
     adc   A, H          ; 1:4       59* +
@@ -197,10 +197,10 @@ ORG 0x6000
     add  HL, HL         ; 1:11      59* 64x
     or    A             ; 1:4       59*
     sbc  HL, BC         ; 2:15      59* HL - save     
-    ld    B, H          ; 1:4       61*
+    ld    B, H          ; 1:4       61* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       61* save 1x
     add  HL, HL         ; 1:11      61* 2x
-    add   A, L          ; 1:4       61* +
+    add   A, L          ; 1:4       61*
     ld    C, A          ; 1:4       61* +
     ld    A, B          ; 1:4       61* +
     adc   A, H          ; 1:4       61* +
@@ -212,7 +212,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      61* 64x
     or    A             ; 1:4       61*
     sbc  HL, BC         ; 2:15      61* HL - save     
-    ld    B, H          ; 1:4       67*
+    ld    B, H          ; 1:4       67* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       67* save 1x
     add  HL, HL         ; 1:11      67* 2x
     add   A, L          ; 1:4       67* +
@@ -225,8 +225,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      67* 16x
     add  HL, HL         ; 1:11      67* 32x
     add  HL, HL         ; 1:11      67* 64x
-    add  HL, BC         ; 1:11      67* HL + save     
-    ld    B, D          ; 1:4       71*
+    add  HL, BC         ; 1:11      67* HL + save         
+    ld    B, D          ; 1:4       71* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       71*
     ld    D, H          ; 1:4       71*
     ld    E, L          ; 1:4       71* save 1x
@@ -246,7 +246,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       71*
     ld    E, C          ; 1:4       71* 
      
-    ld    B, H          ; 1:4       73*
+    ld    B, H          ; 1:4       73* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       73* save 1x
     add  HL, HL         ; 1:11      73* 2x
     add  HL, HL         ; 1:11      73* 4x
@@ -259,29 +259,30 @@ ORG 0x6000
     add  HL, HL         ; 1:11      73* 16x
     add  HL, HL         ; 1:11      73* 32x
     add  HL, HL         ; 1:11      73* 64x
-    add  HL, BC         ; 1:11      73* HL + save     
-    ld    B, D          ; 1:4       79*
+    add  HL, BC         ; 1:11      73* HL + save         
+    ld    B, D          ; 1:4       79* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       79*
     ld    D, H          ; 1:4       79*
     ld    E, L          ; 1:4       79* save 1x
     add  HL, HL         ; 1:11      79* 2x
+    ex   DE, HL         ; 1:4       79* +
+    add  HL, DE         ; 1:11      79* + save 2x
+    ex   DE, HL         ; 1:4       79* +
     add  HL, HL         ; 1:11      79* 4x
+    ex   DE, HL         ; 1:4       79* +
+    add  HL, DE         ; 1:11      79* + save 4x
+    ex   DE, HL         ; 1:4       79* +
     add  HL, HL         ; 1:11      79* 8x
+    ex   DE, HL         ; 1:4       79* +
+    add  HL, DE         ; 1:11      79* + save 8x
+    ex   DE, HL         ; 1:4       79* +
     add  HL, HL         ; 1:11      79* 16x
-    ex   DE, HL         ; 1:4       79* +
-    add  HL, DE         ; 1:11      79* + save 16x
-    ex   DE, HL         ; 1:4       79* +
     add  HL, HL         ; 1:11      79* 32x
-    ex   DE, HL         ; 1:4       79* +
-    add  HL, DE         ; 1:11      79* + save 32x
-    ex   DE, HL         ; 1:4       79* +
     add  HL, HL         ; 1:11      79* 64x
-    add  HL, HL         ; 1:11      79* 128x
-    or    A             ; 1:4       79*
-    sbc  HL, DE         ; 2:15      79* HL - save
+    add  HL, DE         ; 1:11      79* HL + save
     ld    D, B          ; 1:4       79*
-    ld    E, C          ; 1:4       79*     
-    ld    B, D          ; 1:4       83*
+    ld    E, C          ; 1:4       79*         
+    ld    B, D          ; 1:4       83* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       83*
     ld    D, H          ; 1:4       83*
     ld    E, L          ; 1:4       83* save 1x
@@ -299,8 +300,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      83* 64x
     add  HL, DE         ; 1:11      83* HL + save
     ld    D, B          ; 1:4       83*
-    ld    E, C          ; 1:4       83*     
-    ld    B, D          ; 1:4       89*
+    ld    E, C          ; 1:4       83*         
+    ld    B, D          ; 1:4       89* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       89*
     ld    D, H          ; 1:4       89*
     ld    E, L          ; 1:4       89* save 1x
@@ -319,7 +320,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      89* HL + save
     ld    D, B          ; 1:4       89*
     ld    E, C          ; 1:4       89*     
-    ld    B, H          ; 1:4       97*
+    ld    B, H          ; 1:4       97* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       97* save 1x
     add  HL, HL         ; 1:11      97* 2x
     add  HL, HL         ; 1:11      97* 4x
@@ -332,8 +333,8 @@ ORG 0x6000
     adc   A, H          ; 1:4       97* +
     ld    B, A          ; 1:4       97* + save 32x
     add  HL, HL         ; 1:11      97* 64x
-    add  HL, BC         ; 1:11      97* HL + save    
-    ld    B, D          ; 1:4       101*
+    add  HL, BC         ; 1:11      97* HL + save        
+    ld    B, D          ; 1:4       101* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       101*
     ld    D, H          ; 1:4       101*
     ld    E, L          ; 1:4       101* save 1x
@@ -351,71 +352,74 @@ ORG 0x6000
     add  HL, HL         ; 1:11      101* 64x
     add  HL, DE         ; 1:11      101* HL + save
     ld    D, B          ; 1:4       101*
-    ld    E, C          ; 1:4       101*    
-    ld    B, D          ; 1:4       103*
+    ld    E, C          ; 1:4       101*        
+    ld    B, D          ; 1:4       103* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       103*
     ld    D, H          ; 1:4       103*
     ld    E, L          ; 1:4       103* save 1x
     add  HL, HL         ; 1:11      103* 2x
+    ex   DE, HL         ; 1:4       103* +
+    add  HL, DE         ; 1:11      103* + save 2x
+    ex   DE, HL         ; 1:4       103* +
     add  HL, HL         ; 1:11      103* 4x
+    ex   DE, HL         ; 1:4       103* +
+    add  HL, DE         ; 1:11      103* + save 4x
+    ex   DE, HL         ; 1:4       103* +
     add  HL, HL         ; 1:11      103* 8x
-    ex   DE, HL         ; 1:4       103* +
-    add  HL, DE         ; 1:11      103* + save 8x
-    ex   DE, HL         ; 1:4       103* +
     add  HL, HL         ; 1:11      103* 16x
-    ex   DE, HL         ; 1:4       103* +
-    add  HL, DE         ; 1:11      103* + save 16x
-    ex   DE, HL         ; 1:4       103* +
     add  HL, HL         ; 1:11      103* 32x
+    ex   DE, HL         ; 1:4       103* +
+    add  HL, DE         ; 1:11      103* + save 32x
+    ex   DE, HL         ; 1:4       103* +
     add  HL, HL         ; 1:11      103* 64x
-    add  HL, HL         ; 1:11      103* 128x
-    or    A             ; 1:4       103*
-    sbc  HL, DE         ; 2:15      103* HL - save
+    add  HL, DE         ; 1:11      103* HL + save
     ld    D, B          ; 1:4       103*
-    ld    E, C          ; 1:4       103*    
-    ld    B, D          ; 1:4       107*
+    ld    E, C          ; 1:4       103*        
+    ld    B, D          ; 1:4       107* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       107*
     ld    D, H          ; 1:4       107*
     ld    E, L          ; 1:4       107* save 1x
     add  HL, HL         ; 1:11      107* 2x
+    ex   DE, HL         ; 1:4       107* +
+    add  HL, DE         ; 1:11      107* + save 2x
+    ex   DE, HL         ; 1:4       107* +
     add  HL, HL         ; 1:11      107* 4x
-    ex   DE, HL         ; 1:4       107* +
-    add  HL, DE         ; 1:11      107* + save 4x
-    ex   DE, HL         ; 1:4       107* +
     add  HL, HL         ; 1:11      107* 8x
+    ex   DE, HL         ; 1:4       107* +
+    add  HL, DE         ; 1:11      107* + save 8x
+    ex   DE, HL         ; 1:4       107* +
     add  HL, HL         ; 1:11      107* 16x
-    ex   DE, HL         ; 1:4       107* +
-    add  HL, DE         ; 1:11      107* + save 16x
-    ex   DE, HL         ; 1:4       107* +
     add  HL, HL         ; 1:11      107* 32x
+    ex   DE, HL         ; 1:4       107* +
+    add  HL, DE         ; 1:11      107* + save 32x
+    ex   DE, HL         ; 1:4       107* +
     add  HL, HL         ; 1:11      107* 64x
-    add  HL, HL         ; 1:11      107* 128x
-    or    A             ; 1:4       107*
-    sbc  HL, DE         ; 2:15      107* HL - save
+    add  HL, DE         ; 1:11      107* HL + save
     ld    D, B          ; 1:4       107*
-    ld    E, C          ; 1:4       107*    
-    ld    B, D          ; 1:4       109*
+    ld    E, C          ; 1:4       107*        
+    ld    B, D          ; 1:4       109* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       109*
     ld    D, H          ; 1:4       109*
     ld    E, L          ; 1:4       109* save 1x
     add  HL, HL         ; 1:11      109* 2x
-    ex   DE, HL         ; 1:4       109* +
-    add  HL, DE         ; 1:11      109* + save 2x
-    ex   DE, HL         ; 1:4       109* +
     add  HL, HL         ; 1:11      109* 4x
+    ex   DE, HL         ; 1:4       109* +
+    add  HL, DE         ; 1:11      109* + save 4x
+    ex   DE, HL         ; 1:4       109* +
     add  HL, HL         ; 1:11      109* 8x
+    ex   DE, HL         ; 1:4       109* +
+    add  HL, DE         ; 1:11      109* + save 8x
+    ex   DE, HL         ; 1:4       109* +
     add  HL, HL         ; 1:11      109* 16x
-    ex   DE, HL         ; 1:4       109* +
-    add  HL, DE         ; 1:11      109* + save 16x
-    ex   DE, HL         ; 1:4       109* +
     add  HL, HL         ; 1:11      109* 32x
+    ex   DE, HL         ; 1:4       109* +
+    add  HL, DE         ; 1:11      109* + save 32x
+    ex   DE, HL         ; 1:4       109* +
     add  HL, HL         ; 1:11      109* 64x
-    add  HL, HL         ; 1:11      109* 128x
-    or    A             ; 1:4       109*
-    sbc  HL, DE         ; 2:15      109* HL - save
+    add  HL, DE         ; 1:11      109* HL + save
     ld    D, B          ; 1:4       109*
-    ld    E, C          ; 1:4       109*    
-    ld    B, D          ; 1:4       113*
+    ld    E, C          ; 1:4       109*        
+    ld    B, D          ; 1:4       113* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       113*
     ld    D, H          ; 1:4       113*
     ld    E, L          ; 1:4       113* save 1x
@@ -435,7 +439,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       113*
     ld    E, C          ; 1:4       113* 
     
-    ld    B, H          ; 1:4       127*
+    ld    B, H          ; 1:4       127* Variant: 2^a - 2^b
     ld    C, L          ; 1:4       127* save 1x
     add  HL, HL         ; 1:11      127* 2x
     add  HL, HL         ; 1:11      127* 4x
@@ -446,7 +450,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      127* 128x
     or    A             ; 1:4       127*
     sbc  HL, BC         ; 2:15      127* HL - save    
-    ld    B, H          ; 1:4       131*
+    ld    B, H          ; 1:4       131* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       131* save 1x
     add  HL, HL         ; 1:11      131* 2x
     add   A, L          ; 1:4       131* +
@@ -461,7 +465,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      131* 64x
     add  HL, HL         ; 1:11      131* 128x
     add  HL, BC         ; 1:11      131* HL + save    
-    ld    B, H          ; 1:4       137*
+    ld    B, H          ; 1:4       137* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       137* save 1x
     add  HL, HL         ; 1:11      137* 2x
     add  HL, HL         ; 1:11      137* 4x
@@ -475,8 +479,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      137* 32x
     add  HL, HL         ; 1:11      137* 64x
     add  HL, HL         ; 1:11      137* 128x
-    add  HL, BC         ; 1:11      137* HL + save    
-    ld    B, D          ; 1:4       139*
+    add  HL, BC         ; 1:11      137* HL + save        
+    ld    B, D          ; 1:4       139* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       139*
     ld    D, H          ; 1:4       139*
     ld    E, L          ; 1:4       139* save 1x
@@ -495,8 +499,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      139* 128x
     add  HL, DE         ; 1:11      139* HL + save
     ld    D, B          ; 1:4       139*
-    ld    E, C          ; 1:4       139*    
-    ld    B, D          ; 1:4       149*
+    ld    E, C          ; 1:4       139*        
+    ld    B, D          ; 1:4       149* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       149*
     ld    D, H          ; 1:4       149*
     ld    E, L          ; 1:4       149* save 1x
@@ -515,8 +519,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      149* 128x
     add  HL, DE         ; 1:11      149* HL + save
     ld    D, B          ; 1:4       149*
-    ld    E, C          ; 1:4       149*    
-    ld    B, D          ; 1:4       151*
+    ld    E, C          ; 1:4       149*        
+    ld    B, D          ; 1:4       151* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       151*
     ld    D, H          ; 1:4       151*
     ld    E, L          ; 1:4       151* save 1x
@@ -538,8 +542,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      151* 128x
     add  HL, DE         ; 1:11      151* HL + save
     ld    D, B          ; 1:4       151*
-    ld    E, C          ; 1:4       151*    
-    ld    B, D          ; 1:4       157*
+    ld    E, C          ; 1:4       151*        
+    ld    B, D          ; 1:4       157* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       157*
     ld    D, H          ; 1:4       157*
     ld    E, L          ; 1:4       157* save 1x
@@ -561,8 +565,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      157* 128x
     add  HL, DE         ; 1:11      157* HL + save
     ld    D, B          ; 1:4       157*
-    ld    E, C          ; 1:4       157*    
-    ld    B, D          ; 1:4       163*
+    ld    E, C          ; 1:4       157*        
+    ld    B, D          ; 1:4       163* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       163*
     ld    D, H          ; 1:4       163*
     ld    E, L          ; 1:4       163* save 1x
@@ -581,8 +585,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      163* 128x
     add  HL, DE         ; 1:11      163* HL + save
     ld    D, B          ; 1:4       163*
-    ld    E, C          ; 1:4       163*    
-    ld    B, D          ; 1:4       167*
+    ld    E, C          ; 1:4       163*        
+    ld    B, D          ; 1:4       167* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       167*
     ld    D, H          ; 1:4       167*
     ld    E, L          ; 1:4       167* save 1x
@@ -604,8 +608,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      167* 128x
     add  HL, DE         ; 1:11      167* HL + save
     ld    D, B          ; 1:4       167*
-    ld    E, C          ; 1:4       167*    
-    ld    B, D          ; 1:4       173*
+    ld    E, C          ; 1:4       167*        
+    ld    B, D          ; 1:4       173* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       173*
     ld    D, H          ; 1:4       173*
     ld    E, L          ; 1:4       173* save 1x
@@ -628,8 +632,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      173* HL + save
     ld    D, B          ; 1:4       173*
     ld    E, C          ; 1:4       173* 
-    
-    ld    B, D          ; 1:4       179*
+        
+    ld    B, D          ; 1:4       179* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       179*
     ld    D, H          ; 1:4       179*
     ld    E, L          ; 1:4       179* save 1x
@@ -651,8 +655,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      179* 128x
     add  HL, DE         ; 1:11      179* HL + save
     ld    D, B          ; 1:4       179*
-    ld    E, C          ; 1:4       179*    
-    ld    B, D          ; 1:4       181*
+    ld    E, C          ; 1:4       179*        
+    ld    B, D          ; 1:4       181* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       181*
     ld    D, H          ; 1:4       181*
     ld    E, L          ; 1:4       181* save 1x
@@ -675,7 +679,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      181* HL + save
     ld    D, B          ; 1:4       181*
     ld    E, C          ; 1:4       181*    
-    ld    B, H          ; 1:4       191*
+    ld    B, H          ; 1:4       191* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       191* save 1x
     add  HL, HL         ; 1:11      191* 2x
     add  HL, HL         ; 1:11      191* 4x
@@ -683,7 +687,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      191* 16x
     add  HL, HL         ; 1:11      191* 32x
     add  HL, HL         ; 1:11      191* 64x
-    add   A, L          ; 1:4       191* +
+    add   A, L          ; 1:4       191*
     ld    C, A          ; 1:4       191* +
     ld    A, B          ; 1:4       191* +
     adc   A, H          ; 1:4       191* +
@@ -692,7 +696,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      191* 256x
     or    A             ; 1:4       191*
     sbc  HL, BC         ; 2:15      191* HL - save    
-    ld    B, H          ; 1:4       193*
+    ld    B, H          ; 1:4       193* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       193* save 1x
     add  HL, HL         ; 1:11      193* 2x
     add  HL, HL         ; 1:11      193* 4x
@@ -706,8 +710,8 @@ ORG 0x6000
     adc   A, H          ; 1:4       193* +
     ld    B, A          ; 1:4       193* + save 64x
     add  HL, HL         ; 1:11      193* 128x
-    add  HL, BC         ; 1:11      193* HL + save    
-    ld    B, D          ; 1:4       197*
+    add  HL, BC         ; 1:11      193* HL + save        
+    ld    B, D          ; 1:4       197* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       197*
     ld    D, H          ; 1:4       197*
     ld    E, L          ; 1:4       197* save 1x
@@ -726,8 +730,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      197* 128x
     add  HL, DE         ; 1:11      197* HL + save
     ld    D, B          ; 1:4       197*
-    ld    E, C          ; 1:4       197*    
-    ld    B, D          ; 1:4       199*
+    ld    E, C          ; 1:4       197*        
+    ld    B, D          ; 1:4       199* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       199*
     ld    D, H          ; 1:4       199*
     ld    E, L          ; 1:4       199* save 1x
@@ -749,8 +753,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      199* 128x
     add  HL, DE         ; 1:11      199* HL + save
     ld    D, B          ; 1:4       199*
-    ld    E, C          ; 1:4       199*    
-    ld    B, D          ; 1:4       211*
+    ld    E, C          ; 1:4       199*        
+    ld    B, D          ; 1:4       211* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       211*
     ld    D, H          ; 1:4       211*
     ld    E, L          ; 1:4       211* save 1x
@@ -773,14 +777,14 @@ ORG 0x6000
     add  HL, DE         ; 1:11      211* HL + save
     ld    D, B          ; 1:4       211*
     ld    E, C          ; 1:4       211*    
-    ld    B, H          ; 1:4       223*
+    ld    B, H          ; 1:4       223* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       223* save 1x
     add  HL, HL         ; 1:11      223* 2x
     add  HL, HL         ; 1:11      223* 4x
     add  HL, HL         ; 1:11      223* 8x
     add  HL, HL         ; 1:11      223* 16x
     add  HL, HL         ; 1:11      223* 32x
-    add   A, L          ; 1:4       223* +
+    add   A, L          ; 1:4       223*
     ld    C, A          ; 1:4       223* +
     ld    A, B          ; 1:4       223* +
     adc   A, H          ; 1:4       223* +
@@ -789,8 +793,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      223* 128x
     add  HL, HL         ; 1:11      223* 256x
     or    A             ; 1:4       223*
-    sbc  HL, BC         ; 2:15      223* HL - save    
-    ld    B, D          ; 1:4       227*
+    sbc  HL, BC         ; 2:15      223* HL - save        
+    ld    B, D          ; 1:4       227* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       227*
     ld    D, H          ; 1:4       227*
     ld    E, L          ; 1:4       227* save 1x
@@ -812,8 +816,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      227* 128x
     add  HL, DE         ; 1:11      227* HL + save
     ld    D, B          ; 1:4       227*
-    ld    E, C          ; 1:4       227*    
-    ld    B, D          ; 1:4       229*
+    ld    E, C          ; 1:4       227*        
+    ld    B, D          ; 1:4       229* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       229*
     ld    D, H          ; 1:4       229*
     ld    E, L          ; 1:4       229* save 1x
@@ -836,8 +840,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      229* HL + save
     ld    D, B          ; 1:4       229*
     ld    E, C          ; 1:4       229* 
-    
-    ld    B, D          ; 1:4       233*
+        
+    ld    B, D          ; 1:4       233* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       233*
     ld    D, H          ; 1:4       233*
     ld    E, L          ; 1:4       233* save 1x
@@ -860,13 +864,13 @@ ORG 0x6000
     add  HL, DE         ; 1:11      233* HL + save
     ld    D, B          ; 1:4       233*
     ld    E, C          ; 1:4       233*    
-    ld    B, H          ; 1:4       239*
+    ld    B, H          ; 1:4       239* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       239* save 1x
     add  HL, HL         ; 1:11      239* 2x
     add  HL, HL         ; 1:11      239* 4x
     add  HL, HL         ; 1:11      239* 8x
     add  HL, HL         ; 1:11      239* 16x
-    add   A, L          ; 1:4       239* +
+    add   A, L          ; 1:4       239*
     ld    C, A          ; 1:4       239* +
     ld    A, B          ; 1:4       239* +
     adc   A, H          ; 1:4       239* +
@@ -876,8 +880,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      239* 128x
     add  HL, HL         ; 1:11      239* 256x
     or    A             ; 1:4       239*
-    sbc  HL, BC         ; 2:15      239* HL - save    
-    ld    B, D          ; 1:4       241*
+    sbc  HL, BC         ; 2:15      239* HL - save        
+    ld    B, D          ; 1:4       241* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       241*
     ld    D, H          ; 1:4       241*
     ld    E, L          ; 1:4       241* save 1x
@@ -900,11 +904,11 @@ ORG 0x6000
     add  HL, DE         ; 1:11      241* HL + save
     ld    D, B          ; 1:4       241*
     ld    E, C          ; 1:4       241*    
-    ld    B, H          ; 1:4       251*
+    ld    B, H          ; 1:4       251* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       251* save 1x
     add  HL, HL         ; 1:11      251* 2x
     add  HL, HL         ; 1:11      251* 4x
-    add   A, L          ; 1:4       251* +
+    add   A, L          ; 1:4       251*
     ld    C, A          ; 1:4       251* +
     ld    A, B          ; 1:4       251* +
     adc   A, H          ; 1:4       251* +
@@ -917,12 +921,12 @@ ORG 0x6000
     add  HL, HL         ; 1:11      251* 256x
     or    A             ; 1:4       251*
     sbc  HL, BC         ; 2:15      251* HL - save    
-    ld    B, H          ; 1:4       257*
+    ld    B, H          ; 1:4       257* Variant: 2^a + 2^b
     ld    C, L          ; 1:4       257* save 1x
     ld    H, L          ; 1:4       257*
     ld    L, 0x00       ; 2:7       257* 256x
-    add  HL, BC         ; 1:11      257* HL + save    
-    ld    B, D          ; 1:4       263*
+    add  HL, BC         ; 1:11      257* HL + save        
+    ld    B, D          ; 1:4       263* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       263*
     ld    D, H          ; 1:4       263*
     ld    E, L          ; 1:4       263* save 1x
@@ -942,8 +946,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      263* 256x
     add  HL, DE         ; 1:11      263* HL + save
     ld    D, B          ; 1:4       263*
-    ld    E, C          ; 1:4       263*    
-    ld    B, D          ; 1:4       269*
+    ld    E, C          ; 1:4       263*        
+    ld    B, D          ; 1:4       269* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       269*
     ld    D, H          ; 1:4       269*
     ld    E, L          ; 1:4       269* save 1x
@@ -963,8 +967,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      269* 256x
     add  HL, DE         ; 1:11      269* HL + save
     ld    D, B          ; 1:4       269*
-    ld    E, C          ; 1:4       269*    
-    ld    B, D          ; 1:4       271*
+    ld    E, C          ; 1:4       269*        
+    ld    B, D          ; 1:4       271* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       271*
     ld    D, H          ; 1:4       271*
     ld    E, L          ; 1:4       271* save 1x
@@ -987,8 +991,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      271* 256x
     add  HL, DE         ; 1:11      271* HL + save
     ld    D, B          ; 1:4       271*
-    ld    E, C          ; 1:4       271*    
-    ld    B, D          ; 1:4       277*
+    ld    E, C          ; 1:4       271*        
+    ld    B, D          ; 1:4       277* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       277*
     ld    D, H          ; 1:4       277*
     ld    E, L          ; 1:4       277* save 1x
@@ -1008,8 +1012,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      277* 256x
     add  HL, DE         ; 1:11      277* HL + save
     ld    D, B          ; 1:4       277*
-    ld    E, C          ; 1:4       277*    
-    ld    B, D          ; 1:4       281*
+    ld    E, C          ; 1:4       277*        
+    ld    B, D          ; 1:4       281* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       281*
     ld    D, H          ; 1:4       281*
     ld    E, L          ; 1:4       281* save 1x
@@ -1030,8 +1034,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      281* HL + save
     ld    D, B          ; 1:4       281*
     ld    E, C          ; 1:4       281* 
-    
-    ld    B, D          ; 1:4       283*
+        
+    ld    B, D          ; 1:4       283* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       283*
     ld    D, H          ; 1:4       283*
     ld    E, L          ; 1:4       283* save 1x
@@ -1054,8 +1058,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      283* 256x
     add  HL, DE         ; 1:11      283* HL + save
     ld    D, B          ; 1:4       283*
-    ld    E, C          ; 1:4       283*    
-    ld    B, D          ; 1:4       293*
+    ld    E, C          ; 1:4       283*        
+    ld    B, D          ; 1:4       293* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       293*
     ld    D, H          ; 1:4       293*
     ld    E, L          ; 1:4       293* save 1x
@@ -1075,8 +1079,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      293* 256x
     add  HL, DE         ; 1:11      293* HL + save
     ld    D, B          ; 1:4       293*
-    ld    E, C          ; 1:4       293*    
-    ld    B, D          ; 1:4       307*
+    ld    E, C          ; 1:4       293*        
+    ld    B, D          ; 1:4       307* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       307*
     ld    D, H          ; 1:4       307*
     ld    E, L          ; 1:4       307* save 1x
@@ -1099,34 +1103,35 @@ ORG 0x6000
     add  HL, HL         ; 1:11      307* 256x
     add  HL, DE         ; 1:11      307* HL + save
     ld    D, B          ; 1:4       307*
-    ld    E, C          ; 1:4       307*    
-    ld    B, D          ; 1:4       311*
+    ld    E, C          ; 1:4       307*        
+    ld    B, D          ; 1:4       311* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       311*
     ld    D, H          ; 1:4       311*
     ld    E, L          ; 1:4       311* save 1x
     add  HL, HL         ; 1:11      311* 2x
+    ex   DE, HL         ; 1:4       311* +
+    add  HL, DE         ; 1:11      311* + save 2x
+    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 4x
+    ex   DE, HL         ; 1:4       311* +
+    add  HL, DE         ; 1:11      311* + save 4x
+    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 8x
-    ex   DE, HL         ; 1:4       311* +
-    add  HL, DE         ; 1:11      311* + save 8x
-    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 16x
+    ex   DE, HL         ; 1:4       311* +
+    add  HL, DE         ; 1:11      311* + save 16x
+    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 32x
+    ex   DE, HL         ; 1:4       311* +
+    add  HL, DE         ; 1:11      311* + save 32x
+    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 64x
-    ex   DE, HL         ; 1:4       311* +
-    add  HL, DE         ; 1:11      311* + save 64x
-    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 128x
-    ex   DE, HL         ; 1:4       311* +
-    add  HL, DE         ; 1:11      311* + save 128x
-    ex   DE, HL         ; 1:4       311* +
     add  HL, HL         ; 1:11      311* 256x
-    add  HL, HL         ; 1:11      311* 512x
-    or    A             ; 1:4       311*
-    sbc  HL, DE         ; 2:15      311* HL - save
+    add  HL, DE         ; 1:11      311* HL + save
     ld    D, B          ; 1:4       311*
-    ld    E, C          ; 1:4       311*    
-    ld    B, D          ; 1:4       313*
+    ld    E, C          ; 1:4       311*        
+    ld    B, D          ; 1:4       313* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       313*
     ld    D, H          ; 1:4       313*
     ld    E, L          ; 1:4       313* save 1x
@@ -1149,34 +1154,35 @@ ORG 0x6000
     add  HL, HL         ; 1:11      313* 256x
     add  HL, DE         ; 1:11      313* HL + save
     ld    D, B          ; 1:4       313*
-    ld    E, C          ; 1:4       313*    
-    ld    B, D          ; 1:4       317*
+    ld    E, C          ; 1:4       313*        
+    ld    B, D          ; 1:4       317* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       317*
     ld    D, H          ; 1:4       317*
     ld    E, L          ; 1:4       317* save 1x
     add  HL, HL         ; 1:11      317* 2x
-    ex   DE, HL         ; 1:4       317* +
-    add  HL, DE         ; 1:11      317* + save 2x
-    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 4x
+    ex   DE, HL         ; 1:4       317* +
+    add  HL, DE         ; 1:11      317* + save 4x
+    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 8x
+    ex   DE, HL         ; 1:4       317* +
+    add  HL, DE         ; 1:11      317* + save 8x
+    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 16x
+    ex   DE, HL         ; 1:4       317* +
+    add  HL, DE         ; 1:11      317* + save 16x
+    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 32x
+    ex   DE, HL         ; 1:4       317* +
+    add  HL, DE         ; 1:11      317* + save 32x
+    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 64x
-    ex   DE, HL         ; 1:4       317* +
-    add  HL, DE         ; 1:11      317* + save 64x
-    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 128x
-    ex   DE, HL         ; 1:4       317* +
-    add  HL, DE         ; 1:11      317* + save 128x
-    ex   DE, HL         ; 1:4       317* +
     add  HL, HL         ; 1:11      317* 256x
-    add  HL, HL         ; 1:11      317* 512x
-    or    A             ; 1:4       317*
-    sbc  HL, DE         ; 2:15      317* HL - save
+    add  HL, DE         ; 1:11      317* HL + save
     ld    D, B          ; 1:4       317*
-    ld    E, C          ; 1:4       317*    
-    ld    B, D          ; 1:4       331*
+    ld    E, C          ; 1:4       317*        
+    ld    B, D          ; 1:4       331* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       331*
     ld    D, H          ; 1:4       331*
     ld    E, L          ; 1:4       331* save 1x
@@ -1199,8 +1205,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      331* 256x
     add  HL, DE         ; 1:11      331* HL + save
     ld    D, B          ; 1:4       331*
-    ld    E, C          ; 1:4       331*    
-    ld    B, D          ; 1:4       337*
+    ld    E, C          ; 1:4       331*        
+    ld    B, D          ; 1:4       337* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       337*
     ld    D, H          ; 1:4       337*
     ld    E, L          ; 1:4       337* save 1x
@@ -1220,61 +1226,63 @@ ORG 0x6000
     add  HL, HL         ; 1:11      337* 256x
     add  HL, DE         ; 1:11      337* HL + save
     ld    D, B          ; 1:4       337*
-    ld    E, C          ; 1:4       337*    
-    ld    B, D          ; 1:4       347*
+    ld    E, C          ; 1:4       337*        
+    ld    B, D          ; 1:4       347* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       347*
     ld    D, H          ; 1:4       347*
     ld    E, L          ; 1:4       347* save 1x
     add  HL, HL         ; 1:11      347* 2x
+    ex   DE, HL         ; 1:4       347* +
+    add  HL, DE         ; 1:11      347* + save 2x
+    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 4x
-    ex   DE, HL         ; 1:4       347* +
-    add  HL, DE         ; 1:11      347* + save 4x
-    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 8x
+    ex   DE, HL         ; 1:4       347* +
+    add  HL, DE         ; 1:11      347* + save 8x
+    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 16x
+    ex   DE, HL         ; 1:4       347* +
+    add  HL, DE         ; 1:11      347* + save 16x
+    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 32x
-    ex   DE, HL         ; 1:4       347* +
-    add  HL, DE         ; 1:11      347* + save 32x
-    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 64x
+    ex   DE, HL         ; 1:4       347* +
+    add  HL, DE         ; 1:11      347* + save 64x
+    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 128x
-    ex   DE, HL         ; 1:4       347* +
-    add  HL, DE         ; 1:11      347* + save 128x
-    ex   DE, HL         ; 1:4       347* +
     add  HL, HL         ; 1:11      347* 256x
-    add  HL, HL         ; 1:11      347* 512x
-    or    A             ; 1:4       347*
-    sbc  HL, DE         ; 2:15      347* HL - save
+    add  HL, DE         ; 1:11      347* HL + save
     ld    D, B          ; 1:4       347*
-    ld    E, C          ; 1:4       347*    
-    ld    B, D          ; 1:4       349*
+    ld    E, C          ; 1:4       347*        
+    ld    B, D          ; 1:4       349* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       349*
     ld    D, H          ; 1:4       349*
     ld    E, L          ; 1:4       349* save 1x
     add  HL, HL         ; 1:11      349* 2x
-    ex   DE, HL         ; 1:4       349* +
-    add  HL, DE         ; 1:11      349* + save 2x
-    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 4x
+    ex   DE, HL         ; 1:4       349* +
+    add  HL, DE         ; 1:11      349* + save 4x
+    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 8x
+    ex   DE, HL         ; 1:4       349* +
+    add  HL, DE         ; 1:11      349* + save 8x
+    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 16x
+    ex   DE, HL         ; 1:4       349* +
+    add  HL, DE         ; 1:11      349* + save 16x
+    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 32x
-    ex   DE, HL         ; 1:4       349* +
-    add  HL, DE         ; 1:11      349* + save 32x
-    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 64x
+    ex   DE, HL         ; 1:4       349* +
+    add  HL, DE         ; 1:11      349* + save 64x
+    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 128x
-    ex   DE, HL         ; 1:4       349* +
-    add  HL, DE         ; 1:11      349* + save 128x
-    ex   DE, HL         ; 1:4       349* +
     add  HL, HL         ; 1:11      349* 256x
-    add  HL, HL         ; 1:11      349* 512x
-    or    A             ; 1:4       349*
-    sbc  HL, DE         ; 2:15      349* HL - save
+    add  HL, DE         ; 1:11      349* HL + save
     ld    D, B          ; 1:4       349*
     ld    E, C          ; 1:4       349* 
-    
-    ld    B, D          ; 1:4       353*
+        
+    ld    B, D          ; 1:4       353* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       353*
     ld    D, H          ; 1:4       353*
     ld    E, L          ; 1:4       353* save 1x
@@ -1294,34 +1302,35 @@ ORG 0x6000
     add  HL, HL         ; 1:11      353* 256x
     add  HL, DE         ; 1:11      353* HL + save
     ld    D, B          ; 1:4       353*
-    ld    E, C          ; 1:4       353*    
-    ld    B, D          ; 1:4       359*
+    ld    E, C          ; 1:4       353*        
+    ld    B, D          ; 1:4       359* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       359*
     ld    D, H          ; 1:4       359*
     ld    E, L          ; 1:4       359* save 1x
     add  HL, HL         ; 1:11      359* 2x
+    ex   DE, HL         ; 1:4       359* +
+    add  HL, DE         ; 1:11      359* + save 2x
+    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 4x
+    ex   DE, HL         ; 1:4       359* +
+    add  HL, DE         ; 1:11      359* + save 4x
+    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 8x
-    ex   DE, HL         ; 1:4       359* +
-    add  HL, DE         ; 1:11      359* + save 8x
-    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 16x
-    ex   DE, HL         ; 1:4       359* +
-    add  HL, DE         ; 1:11      359* + save 16x
-    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 32x
+    ex   DE, HL         ; 1:4       359* +
+    add  HL, DE         ; 1:11      359* + save 32x
+    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 64x
+    ex   DE, HL         ; 1:4       359* +
+    add  HL, DE         ; 1:11      359* + save 64x
+    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 128x
-    ex   DE, HL         ; 1:4       359* +
-    add  HL, DE         ; 1:11      359* + save 128x
-    ex   DE, HL         ; 1:4       359* +
     add  HL, HL         ; 1:11      359* 256x
-    add  HL, HL         ; 1:11      359* 512x
-    or    A             ; 1:4       359*
-    sbc  HL, DE         ; 2:15      359* HL - save
+    add  HL, DE         ; 1:11      359* HL + save
     ld    D, B          ; 1:4       359*
     ld    E, C          ; 1:4       359*    
-    ld    B, D          ; 1:4       367*
+    ld    B, D          ; 1:4       367* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       367*
     ld    D, H          ; 1:4       367*
     ld    E, L          ; 1:4       367* save 1x
@@ -1343,34 +1352,35 @@ ORG 0x6000
     or    A             ; 1:4       367*
     sbc  HL, DE         ; 2:15      367* HL - save
     ld    D, B          ; 1:4       367*
-    ld    E, C          ; 1:4       367*    
-    ld    B, D          ; 1:4       373*
+    ld    E, C          ; 1:4       367*        
+    ld    B, D          ; 1:4       373* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       373*
     ld    D, H          ; 1:4       373*
     ld    E, L          ; 1:4       373* save 1x
     add  HL, HL         ; 1:11      373* 2x
-    ex   DE, HL         ; 1:4       373* +
-    add  HL, DE         ; 1:11      373* + save 2x
-    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 4x
+    ex   DE, HL         ; 1:4       373* +
+    add  HL, DE         ; 1:11      373* + save 4x
+    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 8x
-    ex   DE, HL         ; 1:4       373* +
-    add  HL, DE         ; 1:11      373* + save 8x
-    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 16x
+    ex   DE, HL         ; 1:4       373* +
+    add  HL, DE         ; 1:11      373* + save 16x
+    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 32x
+    ex   DE, HL         ; 1:4       373* +
+    add  HL, DE         ; 1:11      373* + save 32x
+    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 64x
+    ex   DE, HL         ; 1:4       373* +
+    add  HL, DE         ; 1:11      373* + save 64x
+    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 128x
-    ex   DE, HL         ; 1:4       373* +
-    add  HL, DE         ; 1:11      373* + save 128x
-    ex   DE, HL         ; 1:4       373* +
     add  HL, HL         ; 1:11      373* 256x
-    add  HL, HL         ; 1:11      373* 512x
-    or    A             ; 1:4       373*
-    sbc  HL, DE         ; 2:15      373* HL - save
+    add  HL, DE         ; 1:11      373* HL + save
     ld    D, B          ; 1:4       373*
     ld    E, C          ; 1:4       373*    
-    ld    B, D          ; 1:4       379*
+    ld    B, D          ; 1:4       379* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       379*
     ld    D, H          ; 1:4       379*
     ld    E, L          ; 1:4       379* save 1x
@@ -1393,7 +1403,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      379* HL - save
     ld    D, B          ; 1:4       379*
     ld    E, C          ; 1:4       379*    
-    ld    B, H          ; 1:4       383*
+    ld    B, H          ; 1:4       383* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       383* save 1x
     add  HL, HL         ; 1:11      383* 2x
     add  HL, HL         ; 1:11      383* 4x
@@ -1402,7 +1412,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      383* 32x
     add  HL, HL         ; 1:11      383* 64x
     add  HL, HL         ; 1:11      383* 128x
-    add   A, L          ; 1:4       383* +
+    add   A, L          ; 1:4       383*
     ld    C, A          ; 1:4       383* +
     ld    A, B          ; 1:4       383* +
     adc   A, H          ; 1:4       383* +
@@ -1410,8 +1420,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      383* 256x
     add  HL, HL         ; 1:11      383* 512x
     or    A             ; 1:4       383*
-    sbc  HL, BC         ; 2:15      383* HL - save    
-    ld    B, D          ; 1:4       389*
+    sbc  HL, BC         ; 2:15      383* HL - save        
+    ld    B, D          ; 1:4       389* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       389*
     ld    D, H          ; 1:4       389*
     ld    E, L          ; 1:4       389* save 1x
@@ -1431,8 +1441,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      389* 256x
     add  HL, DE         ; 1:11      389* HL + save
     ld    D, B          ; 1:4       389*
-    ld    E, C          ; 1:4       389*    
-    ld    B, D          ; 1:4       397*
+    ld    E, C          ; 1:4       389*        
+    ld    B, D          ; 1:4       397* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       397*
     ld    D, H          ; 1:4       397*
     ld    E, L          ; 1:4       397* save 1x
@@ -1455,8 +1465,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      397* 256x
     add  HL, DE         ; 1:11      397* HL + save
     ld    D, B          ; 1:4       397*
-    ld    E, C          ; 1:4       397*    
-    ld    B, D          ; 1:4       401*
+    ld    E, C          ; 1:4       397*        
+    ld    B, D          ; 1:4       401* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       401*
     ld    D, H          ; 1:4       401*
     ld    E, L          ; 1:4       401* save 1x
@@ -1476,8 +1486,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      401* 256x
     add  HL, DE         ; 1:11      401* HL + save
     ld    D, B          ; 1:4       401*
-    ld    E, C          ; 1:4       401*    
-    ld    B, D          ; 1:4       409*
+    ld    E, C          ; 1:4       401*        
+    ld    B, D          ; 1:4       409* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       409*
     ld    D, H          ; 1:4       409*
     ld    E, L          ; 1:4       409* save 1x
@@ -1501,8 +1511,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      409* HL + save
     ld    D, B          ; 1:4       409*
     ld    E, C          ; 1:4       409* 
-    
-    ld    B, D          ; 1:4       419*
+        
+    ld    B, D          ; 1:4       419* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       419*
     ld    D, H          ; 1:4       419*
     ld    E, L          ; 1:4       419* save 1x
@@ -1525,8 +1535,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      419* 256x
     add  HL, DE         ; 1:11      419* HL + save
     ld    D, B          ; 1:4       419*
-    ld    E, C          ; 1:4       419*    
-    ld    B, D          ; 1:4       421*
+    ld    E, C          ; 1:4       419*        
+    ld    B, D          ; 1:4       421* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       421*
     ld    D, H          ; 1:4       421*
     ld    E, L          ; 1:4       421* save 1x
@@ -1550,7 +1560,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      421* HL + save
     ld    D, B          ; 1:4       421*
     ld    E, C          ; 1:4       421*    
-    ld    B, D          ; 1:4       431*
+    ld    B, D          ; 1:4       431* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       431*
     ld    D, H          ; 1:4       431*
     ld    E, L          ; 1:4       431* save 1x
@@ -1572,8 +1582,8 @@ ORG 0x6000
     or    A             ; 1:4       431*
     sbc  HL, DE         ; 2:15      431* HL - save
     ld    D, B          ; 1:4       431*
-    ld    E, C          ; 1:4       431*    
-    ld    B, D          ; 1:4       433*
+    ld    E, C          ; 1:4       431*        
+    ld    B, D          ; 1:4       433* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       433*
     ld    D, H          ; 1:4       433*
     ld    E, L          ; 1:4       433* save 1x
@@ -1597,7 +1607,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      433* HL + save
     ld    D, B          ; 1:4       433*
     ld    E, C          ; 1:4       433*    
-    ld    B, D          ; 1:4       439*
+    ld    B, D          ; 1:4       439* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       439*
     ld    D, H          ; 1:4       439*
     ld    E, L          ; 1:4       439* save 1x
@@ -1620,7 +1630,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      439* HL - save
     ld    D, B          ; 1:4       439*
     ld    E, C          ; 1:4       439*    
-    ld    B, D          ; 1:4       443*
+    ld    B, D          ; 1:4       443* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       443*
     ld    D, H          ; 1:4       443*
     ld    E, L          ; 1:4       443* save 1x
@@ -1642,8 +1652,8 @@ ORG 0x6000
     or    A             ; 1:4       443*
     sbc  HL, DE         ; 2:15      443* HL - save
     ld    D, B          ; 1:4       443*
-    ld    E, C          ; 1:4       443*    
-    ld    B, D          ; 1:4       449*
+    ld    E, C          ; 1:4       443*        
+    ld    B, D          ; 1:4       449* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       449*
     ld    D, H          ; 1:4       449*
     ld    E, L          ; 1:4       449* save 1x
@@ -1663,8 +1673,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      449* 256x
     add  HL, DE         ; 1:11      449* HL + save
     ld    D, B          ; 1:4       449*
-    ld    E, C          ; 1:4       449*    
-    ld    B, D          ; 1:4       457*
+    ld    E, C          ; 1:4       449*        
+    ld    B, D          ; 1:4       457* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       457*
     ld    D, H          ; 1:4       457*
     ld    E, L          ; 1:4       457* save 1x
@@ -1687,34 +1697,35 @@ ORG 0x6000
     add  HL, HL         ; 1:11      457* 256x
     add  HL, DE         ; 1:11      457* HL + save
     ld    D, B          ; 1:4       457*
-    ld    E, C          ; 1:4       457*    
-    ld    B, D          ; 1:4       461*
+    ld    E, C          ; 1:4       457*        
+    ld    B, D          ; 1:4       461* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       461*
     ld    D, H          ; 1:4       461*
     ld    E, L          ; 1:4       461* save 1x
     add  HL, HL         ; 1:11      461* 2x
-    ex   DE, HL         ; 1:4       461* +
-    add  HL, DE         ; 1:11      461* + save 2x
-    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 4x
+    ex   DE, HL         ; 1:4       461* +
+    add  HL, DE         ; 1:11      461* + save 4x
+    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 8x
+    ex   DE, HL         ; 1:4       461* +
+    add  HL, DE         ; 1:11      461* + save 8x
+    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 16x
-    ex   DE, HL         ; 1:4       461* +
-    add  HL, DE         ; 1:11      461* + save 16x
-    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 32x
-    ex   DE, HL         ; 1:4       461* +
-    add  HL, DE         ; 1:11      461* + save 32x
-    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 64x
+    ex   DE, HL         ; 1:4       461* +
+    add  HL, DE         ; 1:11      461* + save 64x
+    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 128x
+    ex   DE, HL         ; 1:4       461* +
+    add  HL, DE         ; 1:11      461* + save 128x
+    ex   DE, HL         ; 1:4       461* +
     add  HL, HL         ; 1:11      461* 256x
-    add  HL, HL         ; 1:11      461* 512x
-    or    A             ; 1:4       461*
-    sbc  HL, DE         ; 2:15      461* HL - save
+    add  HL, DE         ; 1:11      461* HL + save
     ld    D, B          ; 1:4       461*
     ld    E, C          ; 1:4       461*    
-    ld    B, D          ; 1:4       463*
+    ld    B, D          ; 1:4       463* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       463*
     ld    D, H          ; 1:4       463*
     ld    E, L          ; 1:4       463* save 1x
@@ -1737,41 +1748,42 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      463* HL - save
     ld    D, B          ; 1:4       463*
     ld    E, C          ; 1:4       463* 
-    
-    ld    B, D          ; 1:4       467*
+        
+    ld    B, D          ; 1:4       467* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       467*
     ld    D, H          ; 1:4       467*
     ld    E, L          ; 1:4       467* save 1x
     add  HL, HL         ; 1:11      467* 2x
+    ex   DE, HL         ; 1:4       467* +
+    add  HL, DE         ; 1:11      467* + save 2x
+    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 4x
-    ex   DE, HL         ; 1:4       467* +
-    add  HL, DE         ; 1:11      467* + save 4x
-    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 8x
-    ex   DE, HL         ; 1:4       467* +
-    add  HL, DE         ; 1:11      467* + save 8x
-    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 16x
+    ex   DE, HL         ; 1:4       467* +
+    add  HL, DE         ; 1:11      467* + save 16x
+    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 32x
-    ex   DE, HL         ; 1:4       467* +
-    add  HL, DE         ; 1:11      467* + save 32x
-    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 64x
+    ex   DE, HL         ; 1:4       467* +
+    add  HL, DE         ; 1:11      467* + save 64x
+    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 128x
+    ex   DE, HL         ; 1:4       467* +
+    add  HL, DE         ; 1:11      467* + save 128x
+    ex   DE, HL         ; 1:4       467* +
     add  HL, HL         ; 1:11      467* 256x
-    add  HL, HL         ; 1:11      467* 512x
-    or    A             ; 1:4       467*
-    sbc  HL, DE         ; 2:15      467* HL - save
+    add  HL, DE         ; 1:11      467* HL + save
     ld    D, B          ; 1:4       467*
     ld    E, C          ; 1:4       467*    
-    ld    B, H          ; 1:4       479*
+    ld    B, H          ; 1:4       479* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       479* save 1x
     add  HL, HL         ; 1:11      479* 2x
     add  HL, HL         ; 1:11      479* 4x
     add  HL, HL         ; 1:11      479* 8x
     add  HL, HL         ; 1:11      479* 16x
     add  HL, HL         ; 1:11      479* 32x
-    add   A, L          ; 1:4       479* +
+    add   A, L          ; 1:4       479*
     ld    C, A          ; 1:4       479* +
     ld    A, B          ; 1:4       479* +
     adc   A, H          ; 1:4       479* +
@@ -1782,7 +1794,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      479* 512x
     or    A             ; 1:4       479*
     sbc  HL, BC         ; 2:15      479* HL - save    
-    ld    B, D          ; 1:4       487*
+    ld    B, D          ; 1:4       487* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       487*
     ld    D, H          ; 1:4       487*
     ld    E, L          ; 1:4       487* save 1x
@@ -1805,7 +1817,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      487* HL - save
     ld    D, B          ; 1:4       487*
     ld    E, C          ; 1:4       487*    
-    ld    B, D          ; 1:4       491*
+    ld    B, D          ; 1:4       491* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       491*
     ld    D, H          ; 1:4       491*
     ld    E, L          ; 1:4       491* save 1x
@@ -1828,7 +1840,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      491* HL - save
     ld    D, B          ; 1:4       491*
     ld    E, C          ; 1:4       491*    
-    ld    B, D          ; 1:4       499*
+    ld    B, D          ; 1:4       499* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       499*
     ld    D, H          ; 1:4       499*
     ld    E, L          ; 1:4       499* save 1x
@@ -1851,12 +1863,12 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      499* HL - save
     ld    D, B          ; 1:4       499*
     ld    E, C          ; 1:4       499*    
-    ld    B, H          ; 1:4       503*
+    ld    B, H          ; 1:4       503* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       503* save 1x
     add  HL, HL         ; 1:11      503* 2x
     add  HL, HL         ; 1:11      503* 4x
     add  HL, HL         ; 1:11      503* 8x
-    add   A, L          ; 1:4       503* +
+    add   A, L          ; 1:4       503*
     ld    C, A          ; 1:4       503* +
     ld    A, B          ; 1:4       503* +
     adc   A, H          ; 1:4       503* +
@@ -1869,10 +1881,10 @@ ORG 0x6000
     add  HL, HL         ; 1:11      503* 512x
     or    A             ; 1:4       503*
     sbc  HL, BC         ; 2:15      503* HL - save    
-    ld    B, H          ; 1:4       509*
+    ld    B, H          ; 1:4       509* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       509* save 1x
     add  HL, HL         ; 1:11      509* 2x
-    add   A, L          ; 1:4       509* +
+    add   A, L          ; 1:4       509*
     ld    C, A          ; 1:4       509* +
     ld    A, B          ; 1:4       509* +
     adc   A, H          ; 1:4       509* +
@@ -1881,7 +1893,7 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       509* 512x
     or    A             ; 1:4       509*
     sbc  HL, BC         ; 2:15      509* HL - save    
-    ld    B, H          ; 1:4       521*
+    ld    B, H          ; 1:4       521* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       521* save 1x
     add  HL, HL         ; 1:11      521* 2x
     add  HL, HL         ; 1:11      521* 4x
@@ -1897,8 +1909,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      521* 128x
     add  HL, HL         ; 1:11      521* 256x
     add  HL, HL         ; 1:11      521* 512x
-    add  HL, BC         ; 1:11      521* HL + save    
-    ld    B, D          ; 1:4       523*
+    add  HL, BC         ; 1:11      521* HL + save        
+    ld    B, D          ; 1:4       523* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       523*
     ld    D, H          ; 1:4       523*
     ld    E, L          ; 1:4       523* save 1x
@@ -1919,8 +1931,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      523* 512x
     add  HL, DE         ; 1:11      523* HL + save
     ld    D, B          ; 1:4       523*
-    ld    E, C          ; 1:4       523*    
-    ld    B, D          ; 1:4       541*
+    ld    E, C          ; 1:4       523*        
+    ld    B, D          ; 1:4       541* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       541*
     ld    D, H          ; 1:4       541*
     ld    E, L          ; 1:4       541* save 1x
@@ -1945,8 +1957,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      541* HL + save
     ld    D, B          ; 1:4       541*
     ld    E, C          ; 1:4       541* 
-    
-    ld    B, D          ; 1:4       547*
+        
+    ld    B, D          ; 1:4       547* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       547*
     ld    D, H          ; 1:4       547*
     ld    E, L          ; 1:4       547* save 1x
@@ -1967,8 +1979,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      547* 512x
     add  HL, DE         ; 1:11      547* HL + save
     ld    D, B          ; 1:4       547*
-    ld    E, C          ; 1:4       547*    
-    ld    B, D          ; 1:4       557*
+    ld    E, C          ; 1:4       547*        
+    ld    B, D          ; 1:4       557* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       557*
     ld    D, H          ; 1:4       557*
     ld    E, L          ; 1:4       557* save 1x
@@ -1992,8 +2004,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      557* 512x
     add  HL, DE         ; 1:11      557* HL + save
     ld    D, B          ; 1:4       557*
-    ld    E, C          ; 1:4       557*    
-    ld    B, D          ; 1:4       563*
+    ld    E, C          ; 1:4       557*        
+    ld    B, D          ; 1:4       563* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       563*
     ld    D, H          ; 1:4       563*
     ld    E, L          ; 1:4       563* save 1x
@@ -2017,8 +2029,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      563* 512x
     add  HL, DE         ; 1:11      563* HL + save
     ld    D, B          ; 1:4       563*
-    ld    E, C          ; 1:4       563*    
-    ld    B, D          ; 1:4       569*
+    ld    E, C          ; 1:4       563*        
+    ld    B, D          ; 1:4       569* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       569*
     ld    D, H          ; 1:4       569*
     ld    E, L          ; 1:4       569* save 1x
@@ -2042,8 +2054,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      569* 512x
     add  HL, DE         ; 1:11      569* HL + save
     ld    D, B          ; 1:4       569*
-    ld    E, C          ; 1:4       569*    
-    ld    B, D          ; 1:4       571*
+    ld    E, C          ; 1:4       569*        
+    ld    B, D          ; 1:4       571* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       571*
     ld    D, H          ; 1:4       571*
     ld    E, L          ; 1:4       571* save 1x
@@ -2071,7 +2083,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      571* HL + save
     ld    D, B          ; 1:4       571*
     ld    E, C          ; 1:4       571*    
-    ld    B, H          ; 1:4       577*
+    ld    B, H          ; 1:4       577* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       577* save 1x
     add  HL, HL         ; 1:11      577* 2x
     add  HL, HL         ; 1:11      577* 4x
@@ -2087,8 +2099,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      577* 128x
     add  HL, HL         ; 1:11      577* 256x
     add  HL, HL         ; 1:11      577* 512x
-    add  HL, BC         ; 1:11      577* HL + save    
-    ld    B, D          ; 1:4       587*
+    add  HL, BC         ; 1:11      577* HL + save        
+    ld    B, D          ; 1:4       587* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       587*
     ld    D, H          ; 1:4       587*
     ld    E, L          ; 1:4       587* save 1x
@@ -2112,8 +2124,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      587* 512x
     add  HL, DE         ; 1:11      587* HL + save
     ld    D, B          ; 1:4       587*
-    ld    E, C          ; 1:4       587*    
-    ld    B, D          ; 1:4       593*
+    ld    E, C          ; 1:4       587*        
+    ld    B, D          ; 1:4       593* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       593*
     ld    D, H          ; 1:4       593*
     ld    E, L          ; 1:4       593* save 1x
@@ -2134,8 +2146,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      593* 512x
     add  HL, DE         ; 1:11      593* HL + save
     ld    D, B          ; 1:4       593*
-    ld    E, C          ; 1:4       593*    
-    ld    B, D          ; 1:4       599*
+    ld    E, C          ; 1:4       593*        
+    ld    B, D          ; 1:4       599* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       599*
     ld    D, H          ; 1:4       599*
     ld    E, L          ; 1:4       599* save 1x
@@ -2162,8 +2174,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      599* 512x
     add  HL, DE         ; 1:11      599* HL + save
     ld    D, B          ; 1:4       599*
-    ld    E, C          ; 1:4       599*    
-    ld    B, D          ; 1:4       601*
+    ld    E, C          ; 1:4       599*        
+    ld    B, D          ; 1:4       601* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       601*
     ld    D, H          ; 1:4       601*
     ld    E, L          ; 1:4       601* save 1x
@@ -2189,7 +2201,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       601*
     ld    E, C          ; 1:4       601* 
     
-    ld    B, D          ; 1:4       607*
+    ld    B, D          ; 1:4       607* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       607*
     ld    D, H          ; 1:4       607*
     ld    E, L          ; 1:4       607* save 1x
@@ -2215,8 +2227,8 @@ ORG 0x6000
     or    A             ; 1:4       607*
     sbc  HL, DE         ; 2:15      607* HL - save
     ld    D, B          ; 1:4       607*
-    ld    E, C          ; 1:4       607*    
-    ld    B, D          ; 1:4       613*
+    ld    E, C          ; 1:4       607*        
+    ld    B, D          ; 1:4       613* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       613*
     ld    D, H          ; 1:4       613*
     ld    E, L          ; 1:4       613* save 1x
@@ -2240,8 +2252,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      613* 512x
     add  HL, DE         ; 1:11      613* HL + save
     ld    D, B          ; 1:4       613*
-    ld    E, C          ; 1:4       613*    
-    ld    B, D          ; 1:4       617*
+    ld    E, C          ; 1:4       613*        
+    ld    B, D          ; 1:4       617* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       617*
     ld    D, H          ; 1:4       617*
     ld    E, L          ; 1:4       617* save 1x
@@ -2265,8 +2277,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      617* 512x
     add  HL, DE         ; 1:11      617* HL + save
     ld    D, B          ; 1:4       617*
-    ld    E, C          ; 1:4       617*    
-    ld    B, D          ; 1:4       619*
+    ld    E, C          ; 1:4       617*        
+    ld    B, D          ; 1:4       619* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       619*
     ld    D, H          ; 1:4       619*
     ld    E, L          ; 1:4       619* save 1x
@@ -2294,7 +2306,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      619* HL + save
     ld    D, B          ; 1:4       619*
     ld    E, C          ; 1:4       619*    
-    ld    B, D          ; 1:4       631*
+    ld    B, D          ; 1:4       631* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       631*
     ld    D, H          ; 1:4       631*
     ld    E, L          ; 1:4       631* save 1x
@@ -2321,7 +2333,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      631* HL - save
     ld    D, B          ; 1:4       631*
     ld    E, C          ; 1:4       631*    
-    ld    B, H          ; 1:4       641*
+    ld    B, H          ; 1:4       641* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       641* save 1x
     add  HL, HL         ; 1:11      641* 2x
     add  HL, HL         ; 1:11      641* 4x
@@ -2337,8 +2349,8 @@ ORG 0x6000
     ld    B, A          ; 1:4       641* + save 128x
     add  HL, HL         ; 1:11      641* 256x
     add  HL, HL         ; 1:11      641* 512x
-    add  HL, BC         ; 1:11      641* HL + save    
-    ld    B, D          ; 1:4       643*
+    add  HL, BC         ; 1:11      641* HL + save        
+    ld    B, D          ; 1:4       643* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       643*
     ld    D, H          ; 1:4       643*
     ld    E, L          ; 1:4       643* save 1x
@@ -2359,8 +2371,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      643* 512x
     add  HL, DE         ; 1:11      643* HL + save
     ld    D, B          ; 1:4       643*
-    ld    E, C          ; 1:4       643*    
-    ld    B, D          ; 1:4       647*
+    ld    E, C          ; 1:4       643*        
+    ld    B, D          ; 1:4       647* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       647*
     ld    D, H          ; 1:4       647*
     ld    E, L          ; 1:4       647* save 1x
@@ -2384,8 +2396,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      647* 512x
     add  HL, DE         ; 1:11      647* HL + save
     ld    D, B          ; 1:4       647*
-    ld    E, C          ; 1:4       647*    
-    ld    B, D          ; 1:4       653*
+    ld    E, C          ; 1:4       647*        
+    ld    B, D          ; 1:4       653* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       653*
     ld    D, H          ; 1:4       653*
     ld    E, L          ; 1:4       653* save 1x
@@ -2409,8 +2421,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      653* 512x
     add  HL, DE         ; 1:11      653* HL + save
     ld    D, B          ; 1:4       653*
-    ld    E, C          ; 1:4       653*    
-    ld    B, D          ; 1:4       659*
+    ld    E, C          ; 1:4       653*        
+    ld    B, D          ; 1:4       659* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       659*
     ld    D, H          ; 1:4       659*
     ld    E, L          ; 1:4       659* save 1x
@@ -2435,8 +2447,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      659* HL + save
     ld    D, B          ; 1:4       659*
     ld    E, C          ; 1:4       659* 
-    
-    ld    B, D          ; 1:4       661*
+        
+    ld    B, D          ; 1:4       661* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       661*
     ld    D, H          ; 1:4       661*
     ld    E, L          ; 1:4       661* save 1x
@@ -2460,8 +2472,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      661* 512x
     add  HL, DE         ; 1:11      661* HL + save
     ld    D, B          ; 1:4       661*
-    ld    E, C          ; 1:4       661*    
-    ld    B, D          ; 1:4       673*
+    ld    E, C          ; 1:4       661*        
+    ld    B, D          ; 1:4       673* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       673*
     ld    D, H          ; 1:4       673*
     ld    E, L          ; 1:4       673* save 1x
@@ -2482,8 +2494,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      673* 512x
     add  HL, DE         ; 1:11      673* HL + save
     ld    D, B          ; 1:4       673*
-    ld    E, C          ; 1:4       673*    
-    ld    B, D          ; 1:4       677*
+    ld    E, C          ; 1:4       673*        
+    ld    B, D          ; 1:4       677* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       677*
     ld    D, H          ; 1:4       677*
     ld    E, L          ; 1:4       677* save 1x
@@ -2507,8 +2519,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      677* 512x
     add  HL, DE         ; 1:11      677* HL + save
     ld    D, B          ; 1:4       677*
-    ld    E, C          ; 1:4       677*    
-    ld    B, D          ; 1:4       683*
+    ld    E, C          ; 1:4       677*        
+    ld    B, D          ; 1:4       683* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       683*
     ld    D, H          ; 1:4       683*
     ld    E, L          ; 1:4       683* save 1x
@@ -2535,8 +2547,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      683* 512x
     add  HL, DE         ; 1:11      683* HL + save
     ld    D, B          ; 1:4       683*
-    ld    E, C          ; 1:4       683*    
-    ld    B, D          ; 1:4       691*
+    ld    E, C          ; 1:4       683*        
+    ld    B, D          ; 1:4       691* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       691*
     ld    D, H          ; 1:4       691*
     ld    E, L          ; 1:4       691* save 1x
@@ -2564,7 +2576,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      691* HL + save
     ld    D, B          ; 1:4       691*
     ld    E, C          ; 1:4       691*    
-    ld    B, D          ; 1:4       701*
+    ld    B, D          ; 1:4       701* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       701*
     ld    D, H          ; 1:4       701*
     ld    E, L          ; 1:4       701* save 1x
@@ -2590,8 +2602,8 @@ ORG 0x6000
     or    A             ; 1:4       701*
     sbc  HL, DE         ; 2:15      701* HL - save
     ld    D, B          ; 1:4       701*
-    ld    E, C          ; 1:4       701*    
-    ld    B, D          ; 1:4       709*
+    ld    E, C          ; 1:4       701*        
+    ld    B, D          ; 1:4       709* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       709*
     ld    D, H          ; 1:4       709*
     ld    E, L          ; 1:4       709* save 1x
@@ -2616,7 +2628,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      709* HL + save
     ld    D, B          ; 1:4       709*
     ld    E, C          ; 1:4       709*    
-    ld    B, D          ; 1:4       719*
+    ld    B, D          ; 1:4       719* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       719*
     ld    D, H          ; 1:4       719*
     ld    E, L          ; 1:4       719* save 1x
@@ -2643,7 +2655,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      719* HL - save
     ld    D, B          ; 1:4       719*
     ld    E, C          ; 1:4       719*    
-    ld    B, D          ; 1:4       727*
+    ld    B, D          ; 1:4       727* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       727*
     ld    D, H          ; 1:4       727*
     ld    E, L          ; 1:4       727* save 1x
@@ -2670,7 +2682,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      727* HL - save
     ld    D, B          ; 1:4       727*
     ld    E, C          ; 1:4       727*    
-    ld    B, D          ; 1:4       733*
+    ld    B, D          ; 1:4       733* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       733*
     ld    D, H          ; 1:4       733*
     ld    E, L          ; 1:4       733* save 1x
@@ -2697,8 +2709,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      733* HL - save
     ld    D, B          ; 1:4       733*
     ld    E, C          ; 1:4       733* 
-    
-    ld    B, D          ; 1:4       739*
+        
+    ld    B, D          ; 1:4       739* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       739*
     ld    D, H          ; 1:4       739*
     ld    E, L          ; 1:4       739* save 1x
@@ -2726,7 +2738,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      739* HL + save
     ld    D, B          ; 1:4       739*
     ld    E, C          ; 1:4       739*    
-    ld    B, D          ; 1:4       743*
+    ld    B, D          ; 1:4       743* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       743*
     ld    D, H          ; 1:4       743*
     ld    E, L          ; 1:4       743* save 1x
@@ -2753,7 +2765,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      743* HL - save
     ld    D, B          ; 1:4       743*
     ld    E, C          ; 1:4       743*    
-    ld    B, D          ; 1:4       751*
+    ld    B, D          ; 1:4       751* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       751*
     ld    D, H          ; 1:4       751*
     ld    E, L          ; 1:4       751* save 1x
@@ -2777,7 +2789,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      751* HL - save
     ld    D, B          ; 1:4       751*
     ld    E, C          ; 1:4       751*    
-    ld    B, D          ; 1:4       757*
+    ld    B, D          ; 1:4       757* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       757*
     ld    D, H          ; 1:4       757*
     ld    E, L          ; 1:4       757* save 1x
@@ -2804,7 +2816,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      757* HL - save
     ld    D, B          ; 1:4       757*
     ld    E, C          ; 1:4       757*    
-    ld    B, D          ; 1:4       761*
+    ld    B, D          ; 1:4       761* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       761*
     ld    D, H          ; 1:4       761*
     ld    E, L          ; 1:4       761* save 1x
@@ -2831,7 +2843,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      761* HL - save
     ld    D, B          ; 1:4       761*
     ld    E, C          ; 1:4       761*    
-    ld    B, H          ; 1:4       769*
+    ld    B, H          ; 1:4       769* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       769* save 1x
     ld    H, L          ; 1:4       769*
     ld    L, 0x00       ; 2:7       769* 256x
@@ -2841,8 +2853,8 @@ ORG 0x6000
     adc   A, H          ; 1:4       769* +
     ld    B, A          ; 1:4       769* + save 256x
     add  HL, HL         ; 1:11      769* 512x
-    add  HL, BC         ; 1:11      769* HL + save    
-    ld    B, D          ; 1:4       773*
+    add  HL, BC         ; 1:11      769* HL + save        
+    ld    B, D          ; 1:4       773* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       773*
     ld    D, H          ; 1:4       773*
     ld    E, L          ; 1:4       773* save 1x
@@ -2863,8 +2875,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      773* 512x
     add  HL, DE         ; 1:11      773* HL + save
     ld    D, B          ; 1:4       773*
-    ld    E, C          ; 1:4       773*    
-    ld    B, D          ; 1:4       787*
+    ld    E, C          ; 1:4       773*        
+    ld    B, D          ; 1:4       787* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       787*
     ld    D, H          ; 1:4       787*
     ld    E, L          ; 1:4       787* save 1x
@@ -2888,8 +2900,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      787* 512x
     add  HL, DE         ; 1:11      787* HL + save
     ld    D, B          ; 1:4       787*
-    ld    E, C          ; 1:4       787*    
-    ld    B, D          ; 1:4       797*
+    ld    E, C          ; 1:4       787*        
+    ld    B, D          ; 1:4       797* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       797*
     ld    D, H          ; 1:4       797*
     ld    E, L          ; 1:4       797* save 1x
@@ -2916,8 +2928,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      797* 512x
     add  HL, DE         ; 1:11      797* HL + save
     ld    D, B          ; 1:4       797*
-    ld    E, C          ; 1:4       797*    
-    ld    B, D          ; 1:4       809*
+    ld    E, C          ; 1:4       797*        
+    ld    B, D          ; 1:4       809* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       809*
     ld    D, H          ; 1:4       809*
     ld    E, L          ; 1:4       809* save 1x
@@ -2942,8 +2954,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      809* HL + save
     ld    D, B          ; 1:4       809*
     ld    E, C          ; 1:4       809* 
-    
-    ld    B, D          ; 1:4       811*
+        
+    ld    B, D          ; 1:4       811* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       811*
     ld    D, H          ; 1:4       811*
     ld    E, L          ; 1:4       811* save 1x
@@ -2970,8 +2982,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      811* 512x
     add  HL, DE         ; 1:11      811* HL + save
     ld    D, B          ; 1:4       811*
-    ld    E, C          ; 1:4       811*    
-    ld    B, D          ; 1:4       821*
+    ld    E, C          ; 1:4       811*        
+    ld    B, D          ; 1:4       821* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       821*
     ld    D, H          ; 1:4       821*
     ld    E, L          ; 1:4       821* save 1x
@@ -2999,7 +3011,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      821* HL + save
     ld    D, B          ; 1:4       821*
     ld    E, C          ; 1:4       821*    
-    ld    B, D          ; 1:4       823*
+    ld    B, D          ; 1:4       823* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       823*
     ld    D, H          ; 1:4       823*
     ld    E, L          ; 1:4       823* save 1x
@@ -3026,7 +3038,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      823* HL - save
     ld    D, B          ; 1:4       823*
     ld    E, C          ; 1:4       823*    
-    ld    B, D          ; 1:4       827*
+    ld    B, D          ; 1:4       827* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       827*
     ld    D, H          ; 1:4       827*
     ld    E, L          ; 1:4       827* save 1x
@@ -3053,7 +3065,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      827* HL - save
     ld    D, B          ; 1:4       827*
     ld    E, C          ; 1:4       827*    
-    ld    B, D          ; 1:4       829*
+    ld    B, D          ; 1:4       829* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       829*
     ld    D, H          ; 1:4       829*
     ld    E, L          ; 1:4       829* save 1x
@@ -3079,8 +3091,8 @@ ORG 0x6000
     or    A             ; 1:4       829*
     sbc  HL, DE         ; 2:15      829* HL - save
     ld    D, B          ; 1:4       829*
-    ld    E, C          ; 1:4       829*    
-    ld    B, D          ; 1:4       839*
+    ld    E, C          ; 1:4       829*        
+    ld    B, D          ; 1:4       839* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       839*
     ld    D, H          ; 1:4       839*
     ld    E, L          ; 1:4       839* save 1x
@@ -3107,8 +3119,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      839* 512x
     add  HL, DE         ; 1:11      839* HL + save
     ld    D, B          ; 1:4       839*
-    ld    E, C          ; 1:4       839*    
-    ld    B, D          ; 1:4       853*
+    ld    E, C          ; 1:4       839*        
+    ld    B, D          ; 1:4       853* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       853*
     ld    D, H          ; 1:4       853*
     ld    E, L          ; 1:4       853* save 1x
@@ -3135,8 +3147,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      853* 512x
     add  HL, DE         ; 1:11      853* HL + save
     ld    D, B          ; 1:4       853*
-    ld    E, C          ; 1:4       853*    
-    ld    B, D          ; 1:4       857*
+    ld    E, C          ; 1:4       853*        
+    ld    B, D          ; 1:4       857* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       857*
     ld    D, H          ; 1:4       857*
     ld    E, L          ; 1:4       857* save 1x
@@ -3164,7 +3176,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      857* HL + save
     ld    D, B          ; 1:4       857*
     ld    E, C          ; 1:4       857*    
-    ld    B, D          ; 1:4       859*
+    ld    B, D          ; 1:4       859* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       859*
     ld    D, H          ; 1:4       859*
     ld    E, L          ; 1:4       859* save 1x
@@ -3191,7 +3203,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      859* HL - save
     ld    D, B          ; 1:4       859*
     ld    E, C          ; 1:4       859*    
-    ld    B, D          ; 1:4       863*
+    ld    B, D          ; 1:4       863* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       863*
     ld    D, H          ; 1:4       863*
     ld    E, L          ; 1:4       863* save 1x
@@ -3216,7 +3228,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       863*
     ld    E, C          ; 1:4       863* 
     
-    ld    B, D          ; 1:4       877*
+    ld    B, D          ; 1:4       877* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       877*
     ld    D, H          ; 1:4       877*
     ld    E, L          ; 1:4       877* save 1x
@@ -3242,8 +3254,8 @@ ORG 0x6000
     or    A             ; 1:4       877*
     sbc  HL, DE         ; 2:15      877* HL - save
     ld    D, B          ; 1:4       877*
-    ld    E, C          ; 1:4       877*    
-    ld    B, D          ; 1:4       881*
+    ld    E, C          ; 1:4       877*        
+    ld    B, D          ; 1:4       881* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       881*
     ld    D, H          ; 1:4       881*
     ld    E, L          ; 1:4       881* save 1x
@@ -3271,7 +3283,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      881* HL + save
     ld    D, B          ; 1:4       881*
     ld    E, C          ; 1:4       881*    
-    ld    B, D          ; 1:4       883*
+    ld    B, D          ; 1:4       883* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       883*
     ld    D, H          ; 1:4       883*
     ld    E, L          ; 1:4       883* save 1x
@@ -3298,7 +3310,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      883* HL - save
     ld    D, B          ; 1:4       883*
     ld    E, C          ; 1:4       883*    
-    ld    B, D          ; 1:4       887*
+    ld    B, D          ; 1:4       887* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       887*
     ld    D, H          ; 1:4       887*
     ld    E, L          ; 1:4       887* save 1x
@@ -3321,8 +3333,8 @@ ORG 0x6000
     or    A             ; 1:4       887*
     sbc  HL, DE         ; 2:15      887* HL - save
     ld    D, B          ; 1:4       887*
-    ld    E, C          ; 1:4       887*    
-    ld    B, D          ; 1:4       907*
+    ld    E, C          ; 1:4       887*        
+    ld    B, D          ; 1:4       907* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       907*
     ld    D, H          ; 1:4       907*
     ld    E, L          ; 1:4       907* save 1x
@@ -3350,7 +3362,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      907* HL + save
     ld    D, B          ; 1:4       907*
     ld    E, C          ; 1:4       907*    
-    ld    B, D          ; 1:4       911*
+    ld    B, D          ; 1:4       911* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       911*
     ld    D, H          ; 1:4       911*
     ld    E, L          ; 1:4       911* save 1x
@@ -3377,7 +3389,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      911* HL - save
     ld    D, B          ; 1:4       911*
     ld    E, C          ; 1:4       911*    
-    ld    B, D          ; 1:4       919*
+    ld    B, D          ; 1:4       919* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       919*
     ld    D, H          ; 1:4       919*
     ld    E, L          ; 1:4       919* save 1x
@@ -3403,8 +3415,8 @@ ORG 0x6000
     or    A             ; 1:4       919*
     sbc  HL, DE         ; 2:15      919* HL - save
     ld    D, B          ; 1:4       919*
-    ld    E, C          ; 1:4       919*    
-    ld    B, D          ; 1:4       929*
+    ld    E, C          ; 1:4       919*        
+    ld    B, D          ; 1:4       929* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       929*
     ld    D, H          ; 1:4       929*
     ld    E, L          ; 1:4       929* save 1x
@@ -3428,8 +3440,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      929* 512x
     add  HL, DE         ; 1:11      929* HL + save
     ld    D, B          ; 1:4       929*
-    ld    E, C          ; 1:4       929*    
-    ld    B, D          ; 1:4       937*
+    ld    E, C          ; 1:4       929*        
+    ld    B, D          ; 1:4       937* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       937*
     ld    D, H          ; 1:4       937*
     ld    E, L          ; 1:4       937* save 1x
@@ -3457,7 +3469,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      937* HL + save
     ld    D, B          ; 1:4       937*
     ld    E, C          ; 1:4       937*    
-    ld    B, D          ; 1:4       941*
+    ld    B, D          ; 1:4       941* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       941*
     ld    D, H          ; 1:4       941*
     ld    E, L          ; 1:4       941* save 1x
@@ -3485,7 +3497,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       941*
     ld    E, C          ; 1:4       941* 
     
-    ld    B, D          ; 1:4       947*
+    ld    B, D          ; 1:4       947* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       947*
     ld    D, H          ; 1:4       947*
     ld    E, L          ; 1:4       947* save 1x
@@ -3512,7 +3524,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      947* HL - save
     ld    D, B          ; 1:4       947*
     ld    E, C          ; 1:4       947*    
-    ld    B, D          ; 1:4       953*
+    ld    B, D          ; 1:4       953* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       953*
     ld    D, H          ; 1:4       953*
     ld    E, L          ; 1:4       953* save 1x
@@ -3539,7 +3551,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      953* HL - save
     ld    D, B          ; 1:4       953*
     ld    E, C          ; 1:4       953*    
-    ld    B, D          ; 1:4       967*
+    ld    B, D          ; 1:4       967* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       967*
     ld    D, H          ; 1:4       967*
     ld    E, L          ; 1:4       967* save 1x
@@ -3566,7 +3578,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      967* HL - save
     ld    D, B          ; 1:4       967*
     ld    E, C          ; 1:4       967*    
-    ld    B, D          ; 1:4       971*
+    ld    B, D          ; 1:4       971* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       971*
     ld    D, H          ; 1:4       971*
     ld    E, L          ; 1:4       971* save 1x
@@ -3592,8 +3604,8 @@ ORG 0x6000
     or    A             ; 1:4       971*
     sbc  HL, DE         ; 2:15      971* HL - save
     ld    D, B          ; 1:4       971*
-    ld    E, C          ; 1:4       971*    
-    ld    B, D          ; 1:4       977*
+    ld    E, C          ; 1:4       971*        
+    ld    B, D          ; 1:4       977* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       977*
     ld    D, H          ; 1:4       977*
     ld    E, L          ; 1:4       977* save 1x
@@ -3621,7 +3633,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      977* HL + save
     ld    D, B          ; 1:4       977*
     ld    E, C          ; 1:4       977*    
-    ld    B, D          ; 1:4       983*
+    ld    B, D          ; 1:4       983* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       983*
     ld    D, H          ; 1:4       983*
     ld    E, L          ; 1:4       983* save 1x
@@ -3645,14 +3657,14 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      983* HL - save
     ld    D, B          ; 1:4       983*
     ld    E, C          ; 1:4       983*    
-    ld    B, H          ; 1:4       991*
+    ld    B, H          ; 1:4       991* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       991* save 1x
     add  HL, HL         ; 1:11      991* 2x
     add  HL, HL         ; 1:11      991* 4x
     add  HL, HL         ; 1:11      991* 8x
     add  HL, HL         ; 1:11      991* 16x
     add  HL, HL         ; 1:11      991* 32x
-    add   A, L          ; 1:4       991* +
+    add   A, L          ; 1:4       991*
     ld    C, A          ; 1:4       991* +
     ld    A, B          ; 1:4       991* +
     adc   A, H          ; 1:4       991* +
@@ -3664,7 +3676,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      991* 1024x
     or    A             ; 1:4       991*
     sbc  HL, BC         ; 2:15      991* HL - save    
-    ld    B, D          ; 1:4       997*
+    ld    B, D          ; 1:4       997* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       997*
     ld    D, H          ; 1:4       997*
     ld    E, L          ; 1:4       997* save 1x
@@ -3691,7 +3703,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      997* HL - save
     ld    D, B          ; 1:4       997*
     ld    E, C          ; 1:4       997*   
-    ld    B, D          ; 1:4       1009*
+    ld    B, D          ; 1:4       1009* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1009*
     ld    D, H          ; 1:4       1009*
     ld    E, L          ; 1:4       1009* save 1x
@@ -3707,18 +3719,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1009* +
     add  HL, DE         ; 1:11      1009* + save 8x
     ex   DE, HL         ; 1:4       1009* +
-    add  HL, HL         ; 1:11      1009* 16x
-    add  HL, HL         ; 1:11      1009* 32x
-    add  HL, HL         ; 1:11      1009* 64x
-    add  HL, HL         ; 1:11      1009* 128x
-    add  HL, HL         ; 1:11      1009* 256x
-    add  HL, HL         ; 1:11      1009* 512x
-    add  HL, HL         ; 1:11      1009* 1024x
+    rr    H             ; 2:8       1009*
+    rr    L             ; 2:8       1009*
+    ld    H, L          ; 1:4       1009*
+    ld    L, 0x00       ; 2:7       1009* 1024x
     or    A             ; 1:4       1009*
     sbc  HL, DE         ; 2:15      1009* HL - save
     ld    D, B          ; 1:4       1009*
     ld    E, C          ; 1:4       1009*   
-    ld    B, D          ; 1:4       1013*
+    ld    B, D          ; 1:4       1013* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1013*
     ld    D, H          ; 1:4       1013*
     ld    E, L          ; 1:4       1013* save 1x
@@ -3731,23 +3740,20 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1013* +
     add  HL, DE         ; 1:11      1013* + save 8x
     ex   DE, HL         ; 1:4       1013* +
-    add  HL, HL         ; 1:11      1013* 16x
-    add  HL, HL         ; 1:11      1013* 32x
-    add  HL, HL         ; 1:11      1013* 64x
-    add  HL, HL         ; 1:11      1013* 128x
-    add  HL, HL         ; 1:11      1013* 256x
-    add  HL, HL         ; 1:11      1013* 512x
-    add  HL, HL         ; 1:11      1013* 1024x
+    rr    H             ; 2:8       1013*
+    rr    L             ; 2:8       1013*
+    ld    H, L          ; 1:4       1013*
+    ld    L, 0x00       ; 2:7       1013* 1024x
     or    A             ; 1:4       1013*
     sbc  HL, DE         ; 2:15      1013* HL - save
     ld    D, B          ; 1:4       1013*
     ld    E, C          ; 1:4       1013* 
    
-    ld    B, H          ; 1:4       1019*
+    ld    B, H          ; 1:4       1019* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       1019* save 1x
     add  HL, HL         ; 1:11      1019* 2x
     add  HL, HL         ; 1:11      1019* 4x
-    add   A, L          ; 1:4       1019* +
+    add   A, L          ; 1:4       1019*
     ld    C, A          ; 1:4       1019* +
     ld    A, B          ; 1:4       1019* +
     adc   A, H          ; 1:4       1019* +
@@ -3756,10 +3762,10 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       1019* 1024x
     or    A             ; 1:4       1019*
     sbc  HL, BC         ; 2:15      1019* HL - save   
-    ld    B, H          ; 1:4       1021*
+    ld    B, H          ; 1:4       1021* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       1021* save 1x
     add  HL, HL         ; 1:11      1021* 2x
-    add   A, L          ; 1:4       1021* +
+    add   A, L          ; 1:4       1021*
     ld    C, A          ; 1:4       1021* +
     ld    A, B          ; 1:4       1021* +
     adc   A, H          ; 1:4       1021* +
@@ -3768,8 +3774,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       1021* 512x
     add  HL, HL         ; 1:11      1021* 1024x
     or    A             ; 1:4       1021*
-    sbc  HL, BC         ; 2:15      1021* HL - save   
-    ld    B, D          ; 1:4       1031*
+    sbc  HL, BC         ; 2:15      1021* HL - save       
+    ld    B, D          ; 1:4       1031* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1031*
     ld    D, H          ; 1:4       1031*
     ld    E, L          ; 1:4       1031* save 1x
@@ -3786,7 +3792,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1031* HL + save
     ld    D, B          ; 1:4       1031*
     ld    E, C          ; 1:4       1031*   
-    ld    B, H          ; 1:4       1033*
+    ld    B, H          ; 1:4       1033* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       1033* save 1x
     add  HL, HL         ; 1:11      1033* 2x
     add  HL, HL         ; 1:11      1033* 4x
@@ -3796,15 +3802,12 @@ ORG 0x6000
     ld    A, B          ; 1:4       1033* +
     adc   A, H          ; 1:4       1033* +
     ld    B, A          ; 1:4       1033* + save 8x
-    add  HL, HL         ; 1:11      1033* 16x
-    add  HL, HL         ; 1:11      1033* 32x
-    add  HL, HL         ; 1:11      1033* 64x
-    add  HL, HL         ; 1:11      1033* 128x
-    add  HL, HL         ; 1:11      1033* 256x
-    add  HL, HL         ; 1:11      1033* 512x
-    add  HL, HL         ; 1:11      1033* 1024x
-    add  HL, BC         ; 1:11      1033* HL + save   
-    ld    B, D          ; 1:4       1039*
+    rr    H             ; 2:8       1033*
+    rr    L             ; 2:8       1033*
+    ld    H, L          ; 1:4       1033*
+    ld    L, 0x00       ; 2:7       1033* 1024x
+    add  HL, BC         ; 1:11      1033* HL + save       
+    ld    B, D          ; 1:4       1039* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1039*
     ld    D, H          ; 1:4       1039*
     ld    E, L          ; 1:4       1039* save 1x
@@ -3820,17 +3823,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1039* +
     add  HL, DE         ; 1:11      1039* + save 8x
     ex   DE, HL         ; 1:4       1039* +
-    add  HL, HL         ; 1:11      1039* 16x
-    add  HL, HL         ; 1:11      1039* 32x
-    add  HL, HL         ; 1:11      1039* 64x
-    add  HL, HL         ; 1:11      1039* 128x
-    add  HL, HL         ; 1:11      1039* 256x
-    add  HL, HL         ; 1:11      1039* 512x
-    add  HL, HL         ; 1:11      1039* 1024x
+    rr    H             ; 2:8       1039*
+    rr    L             ; 2:8       1039*
+    ld    H, L          ; 1:4       1039*
+    ld    L, 0x00       ; 2:7       1039* 1024x
     add  HL, DE         ; 1:11      1039* HL + save
     ld    D, B          ; 1:4       1039*
-    ld    E, C          ; 1:4       1039*   
-    ld    B, D          ; 1:4       1049*
+    ld    E, C          ; 1:4       1039*       
+    ld    B, D          ; 1:4       1049* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1049*
     ld    D, H          ; 1:4       1049*
     ld    E, L          ; 1:4       1049* save 1x
@@ -3852,8 +3852,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1049* 1024x
     add  HL, DE         ; 1:11      1049* HL + save
     ld    D, B          ; 1:4       1049*
-    ld    E, C          ; 1:4       1049*   
-    ld    B, D          ; 1:4       1051*
+    ld    E, C          ; 1:4       1049*       
+    ld    B, D          ; 1:4       1051* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1051*
     ld    D, H          ; 1:4       1051*
     ld    E, L          ; 1:4       1051* save 1x
@@ -3878,8 +3878,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1051* 1024x
     add  HL, DE         ; 1:11      1051* HL + save
     ld    D, B          ; 1:4       1051*
-    ld    E, C          ; 1:4       1051*   
-    ld    B, D          ; 1:4       1061*
+    ld    E, C          ; 1:4       1051*       
+    ld    B, D          ; 1:4       1061* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1061*
     ld    D, H          ; 1:4       1061*
     ld    E, L          ; 1:4       1061* save 1x
@@ -3901,8 +3901,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1061* 1024x
     add  HL, DE         ; 1:11      1061* HL + save
     ld    D, B          ; 1:4       1061*
-    ld    E, C          ; 1:4       1061*   
-    ld    B, D          ; 1:4       1063*
+    ld    E, C          ; 1:4       1061*       
+    ld    B, D          ; 1:4       1063* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1063*
     ld    D, H          ; 1:4       1063*
     ld    E, L          ; 1:4       1063* save 1x
@@ -3927,8 +3927,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1063* 1024x
     add  HL, DE         ; 1:11      1063* HL + save
     ld    D, B          ; 1:4       1063*
-    ld    E, C          ; 1:4       1063*   
-    ld    B, D          ; 1:4       1069*
+    ld    E, C          ; 1:4       1063*       
+    ld    B, D          ; 1:4       1069* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1069*
     ld    D, H          ; 1:4       1069*
     ld    E, L          ; 1:4       1069* save 1x
@@ -3954,39 +3954,40 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1069* HL + save
     ld    D, B          ; 1:4       1069*
     ld    E, C          ; 1:4       1069* 
-   
-    ld    B, D          ; 1:4       1087*
+       
+    ld    B, D          ; 1:4       1087* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1087*
     ld    D, H          ; 1:4       1087*
     ld    E, L          ; 1:4       1087* save 1x
     add  HL, HL         ; 1:11      1087* 2x
+    ex   DE, HL         ; 1:4       1087* +
+    add  HL, DE         ; 1:11      1087* + save 2x
+    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 4x
+    ex   DE, HL         ; 1:4       1087* +
+    add  HL, DE         ; 1:11      1087* + save 4x
+    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 8x
+    ex   DE, HL         ; 1:4       1087* +
+    add  HL, DE         ; 1:11      1087* + save 8x
+    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 16x
+    ex   DE, HL         ; 1:4       1087* +
+    add  HL, DE         ; 1:11      1087* + save 16x
+    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 32x
+    ex   DE, HL         ; 1:4       1087* +
+    add  HL, DE         ; 1:11      1087* + save 32x
+    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 64x
-    ex   DE, HL         ; 1:4       1087* +
-    add  HL, DE         ; 1:11      1087* + save 64x
-    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 128x
-    ex   DE, HL         ; 1:4       1087* +
-    add  HL, DE         ; 1:11      1087* + save 128x
-    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 256x
-    ex   DE, HL         ; 1:4       1087* +
-    add  HL, DE         ; 1:11      1087* + save 256x
-    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 512x
-    ex   DE, HL         ; 1:4       1087* +
-    add  HL, DE         ; 1:11      1087* + save 512x
-    ex   DE, HL         ; 1:4       1087* +
     add  HL, HL         ; 1:11      1087* 1024x
-    add  HL, HL         ; 1:11      1087* 2048x
-    or    A             ; 1:4       1087*
-    sbc  HL, DE         ; 2:15      1087* HL - save
+    add  HL, DE         ; 1:11      1087* HL + save
     ld    D, B          ; 1:4       1087*
-    ld    E, C          ; 1:4       1087*   
-    ld    B, D          ; 1:4       1091*
+    ld    E, C          ; 1:4       1087*       
+    ld    B, D          ; 1:4       1091* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1091*
     ld    D, H          ; 1:4       1091*
     ld    E, L          ; 1:4       1091* save 1x
@@ -4008,8 +4009,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1091* 1024x
     add  HL, DE         ; 1:11      1091* HL + save
     ld    D, B          ; 1:4       1091*
-    ld    E, C          ; 1:4       1091*   
-    ld    B, D          ; 1:4       1093*
+    ld    E, C          ; 1:4       1091*       
+    ld    B, D          ; 1:4       1093* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1093*
     ld    D, H          ; 1:4       1093*
     ld    E, L          ; 1:4       1093* save 1x
@@ -4031,8 +4032,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1093* 1024x
     add  HL, DE         ; 1:11      1093* HL + save
     ld    D, B          ; 1:4       1093*
-    ld    E, C          ; 1:4       1093*   
-    ld    B, D          ; 1:4       1097*
+    ld    E, C          ; 1:4       1093*       
+    ld    B, D          ; 1:4       1097* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1097*
     ld    D, H          ; 1:4       1097*
     ld    E, L          ; 1:4       1097* save 1x
@@ -4054,8 +4055,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1097* 1024x
     add  HL, DE         ; 1:11      1097* HL + save
     ld    D, B          ; 1:4       1097*
-    ld    E, C          ; 1:4       1097*   
-    ld    B, D          ; 1:4       1103*
+    ld    E, C          ; 1:4       1097*       
+    ld    B, D          ; 1:4       1103* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1103*
     ld    D, H          ; 1:4       1103*
     ld    E, L          ; 1:4       1103* save 1x
@@ -4083,8 +4084,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1103* 1024x
     add  HL, DE         ; 1:11      1103* HL + save
     ld    D, B          ; 1:4       1103*
-    ld    E, C          ; 1:4       1103*   
-    ld    B, D          ; 1:4       1109*
+    ld    E, C          ; 1:4       1103*       
+    ld    B, D          ; 1:4       1109* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1109*
     ld    D, H          ; 1:4       1109*
     ld    E, L          ; 1:4       1109* save 1x
@@ -4109,8 +4110,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1109* 1024x
     add  HL, DE         ; 1:11      1109* HL + save
     ld    D, B          ; 1:4       1109*
-    ld    E, C          ; 1:4       1109*   
-    ld    B, D          ; 1:4       1117*
+    ld    E, C          ; 1:4       1109*       
+    ld    B, D          ; 1:4       1117* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1117*
     ld    D, H          ; 1:4       1117*
     ld    E, L          ; 1:4       1117* save 1x
@@ -4138,8 +4139,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1117* 1024x
     add  HL, DE         ; 1:11      1117* HL + save
     ld    D, B          ; 1:4       1117*
-    ld    E, C          ; 1:4       1117*   
-    ld    B, D          ; 1:4       1123*
+    ld    E, C          ; 1:4       1117*       
+    ld    B, D          ; 1:4       1123* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1123*
     ld    D, H          ; 1:4       1123*
     ld    E, L          ; 1:4       1123* save 1x
@@ -4164,8 +4165,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1123* 1024x
     add  HL, DE         ; 1:11      1123* HL + save
     ld    D, B          ; 1:4       1123*
-    ld    E, C          ; 1:4       1123*   
-    ld    B, D          ; 1:4       1129*
+    ld    E, C          ; 1:4       1123*       
+    ld    B, D          ; 1:4       1129* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1129*
     ld    D, H          ; 1:4       1129*
     ld    E, L          ; 1:4       1129* save 1x
@@ -4191,7 +4192,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1129* HL + save
     ld    D, B          ; 1:4       1129*
     ld    E, C          ; 1:4       1129*   
-    ld    B, D          ; 1:4       1151*
+    ld    B, D          ; 1:4       1151* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1151*
     ld    D, H          ; 1:4       1151*
     ld    E, L          ; 1:4       1151* save 1x
@@ -4220,7 +4221,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1151*
     ld    E, C          ; 1:4       1151* 
    
-    ld    B, H          ; 1:4       1153*
+    ld    B, H          ; 1:4       1153* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       1153* save 1x
     add  HL, HL         ; 1:11      1153* 2x
     add  HL, HL         ; 1:11      1153* 4x
@@ -4237,8 +4238,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1153* 256x
     add  HL, HL         ; 1:11      1153* 512x
     add  HL, HL         ; 1:11      1153* 1024x
-    add  HL, BC         ; 1:11      1153* HL + save   
-    ld    B, D          ; 1:4       1163*
+    add  HL, BC         ; 1:11      1153* HL + save       
+    ld    B, D          ; 1:4       1163* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1163*
     ld    D, H          ; 1:4       1163*
     ld    E, L          ; 1:4       1163* save 1x
@@ -4263,8 +4264,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1163* 1024x
     add  HL, DE         ; 1:11      1163* HL + save
     ld    D, B          ; 1:4       1163*
-    ld    E, C          ; 1:4       1163*   
-    ld    B, D          ; 1:4       1171*
+    ld    E, C          ; 1:4       1163*       
+    ld    B, D          ; 1:4       1171* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1171*
     ld    D, H          ; 1:4       1171*
     ld    E, L          ; 1:4       1171* save 1x
@@ -4289,8 +4290,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1171* 1024x
     add  HL, DE         ; 1:11      1171* HL + save
     ld    D, B          ; 1:4       1171*
-    ld    E, C          ; 1:4       1171*   
-    ld    B, D          ; 1:4       1181*
+    ld    E, C          ; 1:4       1171*       
+    ld    B, D          ; 1:4       1181* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1181*
     ld    D, H          ; 1:4       1181*
     ld    E, L          ; 1:4       1181* save 1x
@@ -4318,8 +4319,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1181* 1024x
     add  HL, DE         ; 1:11      1181* HL + save
     ld    D, B          ; 1:4       1181*
-    ld    E, C          ; 1:4       1181*   
-    ld    B, D          ; 1:4       1187*
+    ld    E, C          ; 1:4       1181*       
+    ld    B, D          ; 1:4       1187* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1187*
     ld    D, H          ; 1:4       1187*
     ld    E, L          ; 1:4       1187* save 1x
@@ -4344,8 +4345,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1187* 1024x
     add  HL, DE         ; 1:11      1187* HL + save
     ld    D, B          ; 1:4       1187*
-    ld    E, C          ; 1:4       1187*   
-    ld    B, D          ; 1:4       1193*
+    ld    E, C          ; 1:4       1187*       
+    ld    B, D          ; 1:4       1193* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1193*
     ld    D, H          ; 1:4       1193*
     ld    E, L          ; 1:4       1193* save 1x
@@ -4370,8 +4371,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1193* 1024x
     add  HL, DE         ; 1:11      1193* HL + save
     ld    D, B          ; 1:4       1193*
-    ld    E, C          ; 1:4       1193*   
-    ld    B, D          ; 1:4       1201*
+    ld    E, C          ; 1:4       1193*       
+    ld    B, D          ; 1:4       1201* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1201*
     ld    D, H          ; 1:4       1201*
     ld    E, L          ; 1:4       1201* save 1x
@@ -4396,39 +4397,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1201* 1024x
     add  HL, DE         ; 1:11      1201* HL + save
     ld    D, B          ; 1:4       1201*
-    ld    E, C          ; 1:4       1201*   
-    ld    B, D          ; 1:4       1213*
+    ld    E, C          ; 1:4       1201*       
+    ld    B, D          ; 1:4       1213* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1213*
     ld    D, H          ; 1:4       1213*
     ld    E, L          ; 1:4       1213* save 1x
     add  HL, HL         ; 1:11      1213* 2x
-    ex   DE, HL         ; 1:4       1213* +
-    add  HL, DE         ; 1:11      1213* + save 2x
-    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 4x
+    ex   DE, HL         ; 1:4       1213* +
+    add  HL, DE         ; 1:11      1213* + save 4x
+    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 8x
+    ex   DE, HL         ; 1:4       1213* +
+    add  HL, DE         ; 1:11      1213* + save 8x
+    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 16x
+    ex   DE, HL         ; 1:4       1213* +
+    add  HL, DE         ; 1:11      1213* + save 16x
+    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 32x
+    ex   DE, HL         ; 1:4       1213* +
+    add  HL, DE         ; 1:11      1213* + save 32x
+    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 64x
-    ex   DE, HL         ; 1:4       1213* +
-    add  HL, DE         ; 1:11      1213* + save 64x
-    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 128x
+    ex   DE, HL         ; 1:4       1213* +
+    add  HL, DE         ; 1:11      1213* + save 128x
+    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 256x
-    ex   DE, HL         ; 1:4       1213* +
-    add  HL, DE         ; 1:11      1213* + save 256x
-    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 512x
-    ex   DE, HL         ; 1:4       1213* +
-    add  HL, DE         ; 1:11      1213* + save 512x
-    ex   DE, HL         ; 1:4       1213* +
     add  HL, HL         ; 1:11      1213* 1024x
-    add  HL, HL         ; 1:11      1213* 2048x
-    or    A             ; 1:4       1213*
-    sbc  HL, DE         ; 2:15      1213* HL - save
+    add  HL, DE         ; 1:11      1213* HL + save
     ld    D, B          ; 1:4       1213*
-    ld    E, C          ; 1:4       1213*   
-    ld    B, D          ; 1:4       1217*
+    ld    E, C          ; 1:4       1213*       
+    ld    B, D          ; 1:4       1217* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1217*
     ld    D, H          ; 1:4       1217*
     ld    E, L          ; 1:4       1217* save 1x
@@ -4450,8 +4452,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1217* 1024x
     add  HL, DE         ; 1:11      1217* HL + save
     ld    D, B          ; 1:4       1217*
-    ld    E, C          ; 1:4       1217*   
-    ld    B, D          ; 1:4       1223*
+    ld    E, C          ; 1:4       1217*       
+    ld    B, D          ; 1:4       1223* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1223*
     ld    D, H          ; 1:4       1223*
     ld    E, L          ; 1:4       1223* save 1x
@@ -4480,8 +4482,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1223* HL + save
     ld    D, B          ; 1:4       1223*
     ld    E, C          ; 1:4       1223* 
-   
-    ld    B, D          ; 1:4       1229*
+       
+    ld    B, D          ; 1:4       1229* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1229*
     ld    D, H          ; 1:4       1229*
     ld    E, L          ; 1:4       1229* save 1x
@@ -4509,39 +4511,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1229* 1024x
     add  HL, DE         ; 1:11      1229* HL + save
     ld    D, B          ; 1:4       1229*
-    ld    E, C          ; 1:4       1229*   
-    ld    B, D          ; 1:4       1231*
+    ld    E, C          ; 1:4       1229*       
+    ld    B, D          ; 1:4       1231* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1231*
     ld    D, H          ; 1:4       1231*
     ld    E, L          ; 1:4       1231* save 1x
     add  HL, HL         ; 1:11      1231* 2x
+    ex   DE, HL         ; 1:4       1231* +
+    add  HL, DE         ; 1:11      1231* + save 2x
+    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 4x
+    ex   DE, HL         ; 1:4       1231* +
+    add  HL, DE         ; 1:11      1231* + save 4x
+    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 8x
+    ex   DE, HL         ; 1:4       1231* +
+    add  HL, DE         ; 1:11      1231* + save 8x
+    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 16x
-    ex   DE, HL         ; 1:4       1231* +
-    add  HL, DE         ; 1:11      1231* + save 16x
-    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 32x
-    ex   DE, HL         ; 1:4       1231* +
-    add  HL, DE         ; 1:11      1231* + save 32x
-    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 64x
+    ex   DE, HL         ; 1:4       1231* +
+    add  HL, DE         ; 1:11      1231* + save 64x
+    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 128x
+    ex   DE, HL         ; 1:4       1231* +
+    add  HL, DE         ; 1:11      1231* + save 128x
+    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 256x
-    ex   DE, HL         ; 1:4       1231* +
-    add  HL, DE         ; 1:11      1231* + save 256x
-    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 512x
-    ex   DE, HL         ; 1:4       1231* +
-    add  HL, DE         ; 1:11      1231* + save 512x
-    ex   DE, HL         ; 1:4       1231* +
     add  HL, HL         ; 1:11      1231* 1024x
-    add  HL, HL         ; 1:11      1231* 2048x
-    or    A             ; 1:4       1231*
-    sbc  HL, DE         ; 2:15      1231* HL - save
+    add  HL, DE         ; 1:11      1231* HL + save
     ld    D, B          ; 1:4       1231*
-    ld    E, C          ; 1:4       1231*   
-    ld    B, D          ; 1:4       1237*
+    ld    E, C          ; 1:4       1231*       
+    ld    B, D          ; 1:4       1237* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1237*
     ld    D, H          ; 1:4       1237*
     ld    E, L          ; 1:4       1237* save 1x
@@ -4569,8 +4572,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1237* 1024x
     add  HL, DE         ; 1:11      1237* HL + save
     ld    D, B          ; 1:4       1237*
-    ld    E, C          ; 1:4       1237*   
-    ld    B, D          ; 1:4       1249*
+    ld    E, C          ; 1:4       1237*       
+    ld    B, D          ; 1:4       1249* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1249*
     ld    D, H          ; 1:4       1249*
     ld    E, L          ; 1:4       1249* save 1x
@@ -4595,39 +4598,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1249* 1024x
     add  HL, DE         ; 1:11      1249* HL + save
     ld    D, B          ; 1:4       1249*
-    ld    E, C          ; 1:4       1249*   
-    ld    B, D          ; 1:4       1259*
+    ld    E, C          ; 1:4       1249*       
+    ld    B, D          ; 1:4       1259* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1259*
     ld    D, H          ; 1:4       1259*
     ld    E, L          ; 1:4       1259* save 1x
     add  HL, HL         ; 1:11      1259* 2x
+    ex   DE, HL         ; 1:4       1259* +
+    add  HL, DE         ; 1:11      1259* + save 2x
+    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 4x
-    ex   DE, HL         ; 1:4       1259* +
-    add  HL, DE         ; 1:11      1259* + save 4x
-    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 8x
+    ex   DE, HL         ; 1:4       1259* +
+    add  HL, DE         ; 1:11      1259* + save 8x
+    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 16x
-    ex   DE, HL         ; 1:4       1259* +
-    add  HL, DE         ; 1:11      1259* + save 16x
-    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 32x
+    ex   DE, HL         ; 1:4       1259* +
+    add  HL, DE         ; 1:11      1259* + save 32x
+    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 64x
+    ex   DE, HL         ; 1:4       1259* +
+    add  HL, DE         ; 1:11      1259* + save 64x
+    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 128x
+    ex   DE, HL         ; 1:4       1259* +
+    add  HL, DE         ; 1:11      1259* + save 128x
+    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 256x
-    ex   DE, HL         ; 1:4       1259* +
-    add  HL, DE         ; 1:11      1259* + save 256x
-    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 512x
-    ex   DE, HL         ; 1:4       1259* +
-    add  HL, DE         ; 1:11      1259* + save 512x
-    ex   DE, HL         ; 1:4       1259* +
     add  HL, HL         ; 1:11      1259* 1024x
-    add  HL, HL         ; 1:11      1259* 2048x
-    or    A             ; 1:4       1259*
-    sbc  HL, DE         ; 2:15      1259* HL - save
+    add  HL, DE         ; 1:11      1259* HL + save
     ld    D, B          ; 1:4       1259*
     ld    E, C          ; 1:4       1259*   
-    ld    B, D          ; 1:4       1277*
+    ld    B, D          ; 1:4       1277* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1277*
     ld    D, H          ; 1:4       1277*
     ld    E, L          ; 1:4       1277* save 1x
@@ -4635,13 +4639,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1277* +
     add  HL, DE         ; 1:11      1277* + save 2x
     ex   DE, HL         ; 1:4       1277* +
-    add  HL, HL         ; 1:11      1277* 4x
-    add  HL, HL         ; 1:11      1277* 8x
-    add  HL, HL         ; 1:11      1277* 16x
-    add  HL, HL         ; 1:11      1277* 32x
-    add  HL, HL         ; 1:11      1277* 64x
-    add  HL, HL         ; 1:11      1277* 128x
-    add  HL, HL         ; 1:11      1277* 256x
+    rr    H             ; 2:8       1277*
+    rr    L             ; 2:8       1277*
+    ld    H, L          ; 1:4       1277*
+    ld    L, 0x00       ; 2:7       1277* 256x
     ex   DE, HL         ; 1:4       1277* +
     add  HL, DE         ; 1:11      1277* + save 256x
     ex   DE, HL         ; 1:4       1277* +
@@ -4655,7 +4656,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1277* HL - save
     ld    D, B          ; 1:4       1277*
     ld    E, C          ; 1:4       1277*   
-    ld    B, D          ; 1:4       1279*
+    ld    B, D          ; 1:4       1279* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1279*
     ld    D, H          ; 1:4       1279*
     ld    E, L          ; 1:4       1279* save 1x
@@ -4673,8 +4674,8 @@ ORG 0x6000
     or    A             ; 1:4       1279*
     sbc  HL, DE         ; 2:15      1279* HL - save
     ld    D, B          ; 1:4       1279*
-    ld    E, C          ; 1:4       1279*   
-    ld    B, D          ; 1:4       1283*
+    ld    E, C          ; 1:4       1279*       
+    ld    B, D          ; 1:4       1283* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1283*
     ld    D, H          ; 1:4       1283*
     ld    E, L          ; 1:4       1283* save 1x
@@ -4682,13 +4683,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1283* +
     add  HL, DE         ; 1:11      1283* + save 2x
     ex   DE, HL         ; 1:4       1283* +
-    add  HL, HL         ; 1:11      1283* 4x
-    add  HL, HL         ; 1:11      1283* 8x
-    add  HL, HL         ; 1:11      1283* 16x
-    add  HL, HL         ; 1:11      1283* 32x
-    add  HL, HL         ; 1:11      1283* 64x
-    add  HL, HL         ; 1:11      1283* 128x
-    add  HL, HL         ; 1:11      1283* 256x
+    rr    H             ; 2:8       1283*
+    rr    L             ; 2:8       1283*
+    ld    H, L          ; 1:4       1283*
+    ld    L, 0x00       ; 2:7       1283* 256x
     ex   DE, HL         ; 1:4       1283* +
     add  HL, DE         ; 1:11      1283* + save 256x
     ex   DE, HL         ; 1:4       1283* +
@@ -4696,8 +4694,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1283* 1024x
     add  HL, DE         ; 1:11      1283* HL + save
     ld    D, B          ; 1:4       1283*
-    ld    E, C          ; 1:4       1283*   
-    ld    B, D          ; 1:4       1289*
+    ld    E, C          ; 1:4       1283*       
+    ld    B, D          ; 1:4       1289* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1289*
     ld    D, H          ; 1:4       1289*
     ld    E, L          ; 1:4       1289* save 1x
@@ -4719,8 +4717,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1289* 1024x
     add  HL, DE         ; 1:11      1289* HL + save
     ld    D, B          ; 1:4       1289*
-    ld    E, C          ; 1:4       1289*   
-    ld    B, D          ; 1:4       1291*
+    ld    E, C          ; 1:4       1289*       
+    ld    B, D          ; 1:4       1291* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1291*
     ld    D, H          ; 1:4       1291*
     ld    E, L          ; 1:4       1291* save 1x
@@ -4746,8 +4744,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1291* HL + save
     ld    D, B          ; 1:4       1291*
     ld    E, C          ; 1:4       1291* 
-   
-    ld    B, D          ; 1:4       1297*
+       
+    ld    B, D          ; 1:4       1297* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1297*
     ld    D, H          ; 1:4       1297*
     ld    E, L          ; 1:4       1297* save 1x
@@ -4769,8 +4767,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1297* 1024x
     add  HL, DE         ; 1:11      1297* HL + save
     ld    D, B          ; 1:4       1297*
-    ld    E, C          ; 1:4       1297*   
-    ld    B, D          ; 1:4       1301*
+    ld    E, C          ; 1:4       1297*       
+    ld    B, D          ; 1:4       1301* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1301*
     ld    D, H          ; 1:4       1301*
     ld    E, L          ; 1:4       1301* save 1x
@@ -4795,8 +4793,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1301* 1024x
     add  HL, DE         ; 1:11      1301* HL + save
     ld    D, B          ; 1:4       1301*
-    ld    E, C          ; 1:4       1301*   
-    ld    B, D          ; 1:4       1303*
+    ld    E, C          ; 1:4       1301*       
+    ld    B, D          ; 1:4       1303* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1303*
     ld    D, H          ; 1:4       1303*
     ld    E, L          ; 1:4       1303* save 1x
@@ -4824,8 +4822,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1303* 1024x
     add  HL, DE         ; 1:11      1303* HL + save
     ld    D, B          ; 1:4       1303*
-    ld    E, C          ; 1:4       1303*   
-    ld    B, D          ; 1:4       1307*
+    ld    E, C          ; 1:4       1303*       
+    ld    B, D          ; 1:4       1307* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1307*
     ld    D, H          ; 1:4       1307*
     ld    E, L          ; 1:4       1307* save 1x
@@ -4853,8 +4851,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1307* 1024x
     add  HL, DE         ; 1:11      1307* HL + save
     ld    D, B          ; 1:4       1307*
-    ld    E, C          ; 1:4       1307*   
-    ld    B, D          ; 1:4       1319*
+    ld    E, C          ; 1:4       1307*       
+    ld    B, D          ; 1:4       1319* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1319*
     ld    D, H          ; 1:4       1319*
     ld    E, L          ; 1:4       1319* save 1x
@@ -4882,8 +4880,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1319* 1024x
     add  HL, DE         ; 1:11      1319* HL + save
     ld    D, B          ; 1:4       1319*
-    ld    E, C          ; 1:4       1319*   
-    ld    B, D          ; 1:4       1321*
+    ld    E, C          ; 1:4       1319*       
+    ld    B, D          ; 1:4       1321* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1321*
     ld    D, H          ; 1:4       1321*
     ld    E, L          ; 1:4       1321* save 1x
@@ -4908,39 +4906,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1321* 1024x
     add  HL, DE         ; 1:11      1321* HL + save
     ld    D, B          ; 1:4       1321*
-    ld    E, C          ; 1:4       1321*   
-    ld    B, D          ; 1:4       1327*
+    ld    E, C          ; 1:4       1321*       
+    ld    B, D          ; 1:4       1327* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1327*
     ld    D, H          ; 1:4       1327*
     ld    E, L          ; 1:4       1327* save 1x
     add  HL, HL         ; 1:11      1327* 2x
+    ex   DE, HL         ; 1:4       1327* +
+    add  HL, DE         ; 1:11      1327* + save 2x
+    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 4x
+    ex   DE, HL         ; 1:4       1327* +
+    add  HL, DE         ; 1:11      1327* + save 4x
+    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 8x
+    ex   DE, HL         ; 1:4       1327* +
+    add  HL, DE         ; 1:11      1327* + save 8x
+    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 16x
-    ex   DE, HL         ; 1:4       1327* +
-    add  HL, DE         ; 1:11      1327* + save 16x
-    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 32x
+    ex   DE, HL         ; 1:4       1327* +
+    add  HL, DE         ; 1:11      1327* + save 32x
+    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 64x
-    ex   DE, HL         ; 1:4       1327* +
-    add  HL, DE         ; 1:11      1327* + save 64x
-    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 128x
-    ex   DE, HL         ; 1:4       1327* +
-    add  HL, DE         ; 1:11      1327* + save 128x
-    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 256x
+    ex   DE, HL         ; 1:4       1327* +
+    add  HL, DE         ; 1:11      1327* + save 256x
+    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 512x
-    ex   DE, HL         ; 1:4       1327* +
-    add  HL, DE         ; 1:11      1327* + save 512x
-    ex   DE, HL         ; 1:4       1327* +
     add  HL, HL         ; 1:11      1327* 1024x
-    add  HL, HL         ; 1:11      1327* 2048x
-    or    A             ; 1:4       1327*
-    sbc  HL, DE         ; 2:15      1327* HL - save
+    add  HL, DE         ; 1:11      1327* HL + save
     ld    D, B          ; 1:4       1327*
-    ld    E, C          ; 1:4       1327*   
-    ld    B, D          ; 1:4       1361*
+    ld    E, C          ; 1:4       1327*       
+    ld    B, D          ; 1:4       1361* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1361*
     ld    D, H          ; 1:4       1361*
     ld    E, L          ; 1:4       1361* save 1x
@@ -4965,71 +4964,73 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1361* 1024x
     add  HL, DE         ; 1:11      1361* HL + save
     ld    D, B          ; 1:4       1361*
-    ld    E, C          ; 1:4       1361*   
-    ld    B, D          ; 1:4       1367*
+    ld    E, C          ; 1:4       1361*       
+    ld    B, D          ; 1:4       1367* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1367*
     ld    D, H          ; 1:4       1367*
     ld    E, L          ; 1:4       1367* save 1x
     add  HL, HL         ; 1:11      1367* 2x
+    ex   DE, HL         ; 1:4       1367* +
+    add  HL, DE         ; 1:11      1367* + save 2x
+    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 4x
+    ex   DE, HL         ; 1:4       1367* +
+    add  HL, DE         ; 1:11      1367* + save 4x
+    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 8x
-    ex   DE, HL         ; 1:4       1367* +
-    add  HL, DE         ; 1:11      1367* + save 8x
-    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 16x
+    ex   DE, HL         ; 1:4       1367* +
+    add  HL, DE         ; 1:11      1367* + save 16x
+    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 32x
-    ex   DE, HL         ; 1:4       1367* +
-    add  HL, DE         ; 1:11      1367* + save 32x
-    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 64x
+    ex   DE, HL         ; 1:4       1367* +
+    add  HL, DE         ; 1:11      1367* + save 64x
+    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 128x
-    ex   DE, HL         ; 1:4       1367* +
-    add  HL, DE         ; 1:11      1367* + save 128x
-    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 256x
+    ex   DE, HL         ; 1:4       1367* +
+    add  HL, DE         ; 1:11      1367* + save 256x
+    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 512x
-    ex   DE, HL         ; 1:4       1367* +
-    add  HL, DE         ; 1:11      1367* + save 512x
-    ex   DE, HL         ; 1:4       1367* +
     add  HL, HL         ; 1:11      1367* 1024x
-    add  HL, HL         ; 1:11      1367* 2048x
-    or    A             ; 1:4       1367*
-    sbc  HL, DE         ; 2:15      1367* HL - save
+    add  HL, DE         ; 1:11      1367* HL + save
     ld    D, B          ; 1:4       1367*
-    ld    E, C          ; 1:4       1367*   
-    ld    B, D          ; 1:4       1373*
+    ld    E, C          ; 1:4       1367*       
+    ld    B, D          ; 1:4       1373* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1373*
     ld    D, H          ; 1:4       1373*
     ld    E, L          ; 1:4       1373* save 1x
     add  HL, HL         ; 1:11      1373* 2x
-    ex   DE, HL         ; 1:4       1373* +
-    add  HL, DE         ; 1:11      1373* + save 2x
-    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 4x
+    ex   DE, HL         ; 1:4       1373* +
+    add  HL, DE         ; 1:11      1373* + save 4x
+    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 8x
+    ex   DE, HL         ; 1:4       1373* +
+    add  HL, DE         ; 1:11      1373* + save 8x
+    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 16x
+    ex   DE, HL         ; 1:4       1373* +
+    add  HL, DE         ; 1:11      1373* + save 16x
+    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 32x
-    ex   DE, HL         ; 1:4       1373* +
-    add  HL, DE         ; 1:11      1373* + save 32x
-    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 64x
+    ex   DE, HL         ; 1:4       1373* +
+    add  HL, DE         ; 1:11      1373* + save 64x
+    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 128x
-    ex   DE, HL         ; 1:4       1373* +
-    add  HL, DE         ; 1:11      1373* + save 128x
-    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 256x
+    ex   DE, HL         ; 1:4       1373* +
+    add  HL, DE         ; 1:11      1373* + save 256x
+    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 512x
-    ex   DE, HL         ; 1:4       1373* +
-    add  HL, DE         ; 1:11      1373* + save 512x
-    ex   DE, HL         ; 1:4       1373* +
     add  HL, HL         ; 1:11      1373* 1024x
-    add  HL, HL         ; 1:11      1373* 2048x
-    or    A             ; 1:4       1373*
-    sbc  HL, DE         ; 2:15      1373* HL - save
+    add  HL, DE         ; 1:11      1373* HL + save
     ld    D, B          ; 1:4       1373*
     ld    E, C          ; 1:4       1373* 
-   
-    ld    B, D          ; 1:4       1381*
+       
+    ld    B, D          ; 1:4       1381* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1381*
     ld    D, H          ; 1:4       1381*
     ld    E, L          ; 1:4       1381* save 1x
@@ -5058,7 +5059,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1381* HL + save
     ld    D, B          ; 1:4       1381*
     ld    E, C          ; 1:4       1381*   
-    ld    B, D          ; 1:4       1399*
+    ld    B, D          ; 1:4       1399* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1399*
     ld    D, H          ; 1:4       1399*
     ld    E, L          ; 1:4       1399* save 1x
@@ -5085,8 +5086,8 @@ ORG 0x6000
     or    A             ; 1:4       1399*
     sbc  HL, DE         ; 2:15      1399* HL - save
     ld    D, B          ; 1:4       1399*
-    ld    E, C          ; 1:4       1399*   
-    ld    B, D          ; 1:4       1409*
+    ld    E, C          ; 1:4       1399*       
+    ld    B, D          ; 1:4       1409* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1409*
     ld    D, H          ; 1:4       1409*
     ld    E, L          ; 1:4       1409* save 1x
@@ -5108,39 +5109,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1409* 1024x
     add  HL, DE         ; 1:11      1409* HL + save
     ld    D, B          ; 1:4       1409*
-    ld    E, C          ; 1:4       1409*   
-    ld    B, D          ; 1:4       1423*
+    ld    E, C          ; 1:4       1409*       
+    ld    B, D          ; 1:4       1423* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1423*
     ld    D, H          ; 1:4       1423*
     ld    E, L          ; 1:4       1423* save 1x
     add  HL, HL         ; 1:11      1423* 2x
+    ex   DE, HL         ; 1:4       1423* +
+    add  HL, DE         ; 1:11      1423* + save 2x
+    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 4x
+    ex   DE, HL         ; 1:4       1423* +
+    add  HL, DE         ; 1:11      1423* + save 4x
+    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 8x
+    ex   DE, HL         ; 1:4       1423* +
+    add  HL, DE         ; 1:11      1423* + save 8x
+    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 16x
-    ex   DE, HL         ; 1:4       1423* +
-    add  HL, DE         ; 1:11      1423* + save 16x
-    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 32x
-    ex   DE, HL         ; 1:4       1423* +
-    add  HL, DE         ; 1:11      1423* + save 32x
-    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 64x
-    ex   DE, HL         ; 1:4       1423* +
-    add  HL, DE         ; 1:11      1423* + save 64x
-    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 128x
+    ex   DE, HL         ; 1:4       1423* +
+    add  HL, DE         ; 1:11      1423* + save 128x
+    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 256x
+    ex   DE, HL         ; 1:4       1423* +
+    add  HL, DE         ; 1:11      1423* + save 256x
+    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 512x
-    ex   DE, HL         ; 1:4       1423* +
-    add  HL, DE         ; 1:11      1423* + save 512x
-    ex   DE, HL         ; 1:4       1423* +
     add  HL, HL         ; 1:11      1423* 1024x
-    add  HL, HL         ; 1:11      1423* 2048x
-    or    A             ; 1:4       1423*
-    sbc  HL, DE         ; 2:15      1423* HL - save
+    add  HL, DE         ; 1:11      1423* HL + save
     ld    D, B          ; 1:4       1423*
-    ld    E, C          ; 1:4       1423*   
-    ld    B, D          ; 1:4       1427*
+    ld    E, C          ; 1:4       1423*       
+    ld    B, D          ; 1:4       1427* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1427*
     ld    D, H          ; 1:4       1427*
     ld    E, L          ; 1:4       1427* save 1x
@@ -5168,8 +5170,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1427* 1024x
     add  HL, DE         ; 1:11      1427* HL + save
     ld    D, B          ; 1:4       1427*
-    ld    E, C          ; 1:4       1427*   
-    ld    B, D          ; 1:4       1429*
+    ld    E, C          ; 1:4       1427*       
+    ld    B, D          ; 1:4       1429* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1429*
     ld    D, H          ; 1:4       1429*
     ld    E, L          ; 1:4       1429* save 1x
@@ -5197,8 +5199,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1429* 1024x
     add  HL, DE         ; 1:11      1429* HL + save
     ld    D, B          ; 1:4       1429*
-    ld    E, C          ; 1:4       1429*   
-    ld    B, D          ; 1:4       1433*
+    ld    E, C          ; 1:4       1429*       
+    ld    B, D          ; 1:4       1433* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1433*
     ld    D, H          ; 1:4       1433*
     ld    E, L          ; 1:4       1433* save 1x
@@ -5227,7 +5229,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1433* HL + save
     ld    D, B          ; 1:4       1433*
     ld    E, C          ; 1:4       1433*   
-    ld    B, D          ; 1:4       1439*
+    ld    B, D          ; 1:4       1439* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1439*
     ld    D, H          ; 1:4       1439*
     ld    E, L          ; 1:4       1439* save 1x
@@ -5254,133 +5256,137 @@ ORG 0x6000
     or    A             ; 1:4       1439*
     sbc  HL, DE         ; 2:15      1439* HL - save
     ld    D, B          ; 1:4       1439*
-    ld    E, C          ; 1:4       1439*   
-    ld    B, D          ; 1:4       1447*
+    ld    E, C          ; 1:4       1439*       
+    ld    B, D          ; 1:4       1447* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1447*
     ld    D, H          ; 1:4       1447*
     ld    E, L          ; 1:4       1447* save 1x
     add  HL, HL         ; 1:11      1447* 2x
+    ex   DE, HL         ; 1:4       1447* +
+    add  HL, DE         ; 1:11      1447* + save 2x
+    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 4x
+    ex   DE, HL         ; 1:4       1447* +
+    add  HL, DE         ; 1:11      1447* + save 4x
+    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 8x
-    ex   DE, HL         ; 1:4       1447* +
-    add  HL, DE         ; 1:11      1447* + save 8x
-    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 16x
-    ex   DE, HL         ; 1:4       1447* +
-    add  HL, DE         ; 1:11      1447* + save 16x
-    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 32x
+    ex   DE, HL         ; 1:4       1447* +
+    add  HL, DE         ; 1:11      1447* + save 32x
+    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 64x
-    ex   DE, HL         ; 1:4       1447* +
-    add  HL, DE         ; 1:11      1447* + save 64x
-    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 128x
+    ex   DE, HL         ; 1:4       1447* +
+    add  HL, DE         ; 1:11      1447* + save 128x
+    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 256x
+    ex   DE, HL         ; 1:4       1447* +
+    add  HL, DE         ; 1:11      1447* + save 256x
+    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 512x
-    ex   DE, HL         ; 1:4       1447* +
-    add  HL, DE         ; 1:11      1447* + save 512x
-    ex   DE, HL         ; 1:4       1447* +
     add  HL, HL         ; 1:11      1447* 1024x
-    add  HL, HL         ; 1:11      1447* 2048x
-    or    A             ; 1:4       1447*
-    sbc  HL, DE         ; 2:15      1447* HL - save
+    add  HL, DE         ; 1:11      1447* HL + save
     ld    D, B          ; 1:4       1447*
-    ld    E, C          ; 1:4       1447*   
-    ld    B, D          ; 1:4       1451*
+    ld    E, C          ; 1:4       1447*       
+    ld    B, D          ; 1:4       1451* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1451*
     ld    D, H          ; 1:4       1451*
     ld    E, L          ; 1:4       1451* save 1x
     add  HL, HL         ; 1:11      1451* 2x
+    ex   DE, HL         ; 1:4       1451* +
+    add  HL, DE         ; 1:11      1451* + save 2x
+    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 4x
-    ex   DE, HL         ; 1:4       1451* +
-    add  HL, DE         ; 1:11      1451* + save 4x
-    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 8x
+    ex   DE, HL         ; 1:4       1451* +
+    add  HL, DE         ; 1:11      1451* + save 8x
+    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 16x
-    ex   DE, HL         ; 1:4       1451* +
-    add  HL, DE         ; 1:11      1451* + save 16x
-    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 32x
+    ex   DE, HL         ; 1:4       1451* +
+    add  HL, DE         ; 1:11      1451* + save 32x
+    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 64x
-    ex   DE, HL         ; 1:4       1451* +
-    add  HL, DE         ; 1:11      1451* + save 64x
-    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 128x
+    ex   DE, HL         ; 1:4       1451* +
+    add  HL, DE         ; 1:11      1451* + save 128x
+    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 256x
+    ex   DE, HL         ; 1:4       1451* +
+    add  HL, DE         ; 1:11      1451* + save 256x
+    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 512x
-    ex   DE, HL         ; 1:4       1451* +
-    add  HL, DE         ; 1:11      1451* + save 512x
-    ex   DE, HL         ; 1:4       1451* +
     add  HL, HL         ; 1:11      1451* 1024x
-    add  HL, HL         ; 1:11      1451* 2048x
-    or    A             ; 1:4       1451*
-    sbc  HL, DE         ; 2:15      1451* HL - save
+    add  HL, DE         ; 1:11      1451* HL + save
     ld    D, B          ; 1:4       1451*
     ld    E, C          ; 1:4       1451* 
-   
-    ld    B, D          ; 1:4       1453*
+       
+    ld    B, D          ; 1:4       1453* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1453*
     ld    D, H          ; 1:4       1453*
     ld    E, L          ; 1:4       1453* save 1x
     add  HL, HL         ; 1:11      1453* 2x
-    ex   DE, HL         ; 1:4       1453* +
-    add  HL, DE         ; 1:11      1453* + save 2x
-    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 4x
+    ex   DE, HL         ; 1:4       1453* +
+    add  HL, DE         ; 1:11      1453* + save 4x
+    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 8x
+    ex   DE, HL         ; 1:4       1453* +
+    add  HL, DE         ; 1:11      1453* + save 8x
+    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 16x
-    ex   DE, HL         ; 1:4       1453* +
-    add  HL, DE         ; 1:11      1453* + save 16x
-    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 32x
+    ex   DE, HL         ; 1:4       1453* +
+    add  HL, DE         ; 1:11      1453* + save 32x
+    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 64x
-    ex   DE, HL         ; 1:4       1453* +
-    add  HL, DE         ; 1:11      1453* + save 64x
-    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 128x
+    ex   DE, HL         ; 1:4       1453* +
+    add  HL, DE         ; 1:11      1453* + save 128x
+    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 256x
+    ex   DE, HL         ; 1:4       1453* +
+    add  HL, DE         ; 1:11      1453* + save 256x
+    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 512x
-    ex   DE, HL         ; 1:4       1453* +
-    add  HL, DE         ; 1:11      1453* + save 512x
-    ex   DE, HL         ; 1:4       1453* +
     add  HL, HL         ; 1:11      1453* 1024x
-    add  HL, HL         ; 1:11      1453* 2048x
-    or    A             ; 1:4       1453*
-    sbc  HL, DE         ; 2:15      1453* HL - save
+    add  HL, DE         ; 1:11      1453* HL + save
     ld    D, B          ; 1:4       1453*
-    ld    E, C          ; 1:4       1453*   
-    ld    B, D          ; 1:4       1459*
+    ld    E, C          ; 1:4       1453*       
+    ld    B, D          ; 1:4       1459* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1459*
     ld    D, H          ; 1:4       1459*
     ld    E, L          ; 1:4       1459* save 1x
     add  HL, HL         ; 1:11      1459* 2x
+    ex   DE, HL         ; 1:4       1459* +
+    add  HL, DE         ; 1:11      1459* + save 2x
+    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 4x
-    ex   DE, HL         ; 1:4       1459* +
-    add  HL, DE         ; 1:11      1459* + save 4x
-    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 8x
-    ex   DE, HL         ; 1:4       1459* +
-    add  HL, DE         ; 1:11      1459* + save 8x
-    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 16x
+    ex   DE, HL         ; 1:4       1459* +
+    add  HL, DE         ; 1:11      1459* + save 16x
+    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 32x
+    ex   DE, HL         ; 1:4       1459* +
+    add  HL, DE         ; 1:11      1459* + save 32x
+    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 64x
-    ex   DE, HL         ; 1:4       1459* +
-    add  HL, DE         ; 1:11      1459* + save 64x
-    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 128x
+    ex   DE, HL         ; 1:4       1459* +
+    add  HL, DE         ; 1:11      1459* + save 128x
+    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 256x
+    ex   DE, HL         ; 1:4       1459* +
+    add  HL, DE         ; 1:11      1459* + save 256x
+    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 512x
-    ex   DE, HL         ; 1:4       1459* +
-    add  HL, DE         ; 1:11      1459* + save 512x
-    ex   DE, HL         ; 1:4       1459* +
     add  HL, HL         ; 1:11      1459* 1024x
-    add  HL, HL         ; 1:11      1459* 2048x
-    or    A             ; 1:4       1459*
-    sbc  HL, DE         ; 2:15      1459* HL - save
+    add  HL, DE         ; 1:11      1459* HL + save
     ld    D, B          ; 1:4       1459*
     ld    E, C          ; 1:4       1459*   
-    ld    B, D          ; 1:4       1471*
+    ld    B, D          ; 1:4       1471* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1471*
     ld    D, H          ; 1:4       1471*
     ld    E, L          ; 1:4       1471* save 1x
@@ -5404,8 +5410,8 @@ ORG 0x6000
     or    A             ; 1:4       1471*
     sbc  HL, DE         ; 2:15      1471* HL - save
     ld    D, B          ; 1:4       1471*
-    ld    E, C          ; 1:4       1471*   
-    ld    B, D          ; 1:4       1481*
+    ld    E, C          ; 1:4       1471*       
+    ld    B, D          ; 1:4       1481* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1481*
     ld    D, H          ; 1:4       1481*
     ld    E, L          ; 1:4       1481* save 1x
@@ -5433,39 +5439,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1481* 1024x
     add  HL, DE         ; 1:11      1481* HL + save
     ld    D, B          ; 1:4       1481*
-    ld    E, C          ; 1:4       1481*   
-    ld    B, D          ; 1:4       1483*
+    ld    E, C          ; 1:4       1481*       
+    ld    B, D          ; 1:4       1483* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1483*
     ld    D, H          ; 1:4       1483*
     ld    E, L          ; 1:4       1483* save 1x
     add  HL, HL         ; 1:11      1483* 2x
+    ex   DE, HL         ; 1:4       1483* +
+    add  HL, DE         ; 1:11      1483* + save 2x
+    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 4x
-    ex   DE, HL         ; 1:4       1483* +
-    add  HL, DE         ; 1:11      1483* + save 4x
-    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 8x
+    ex   DE, HL         ; 1:4       1483* +
+    add  HL, DE         ; 1:11      1483* + save 8x
+    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 16x
-    ex   DE, HL         ; 1:4       1483* +
-    add  HL, DE         ; 1:11      1483* + save 16x
-    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 32x
-    ex   DE, HL         ; 1:4       1483* +
-    add  HL, DE         ; 1:11      1483* + save 32x
-    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 64x
+    ex   DE, HL         ; 1:4       1483* +
+    add  HL, DE         ; 1:11      1483* + save 64x
+    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 128x
+    ex   DE, HL         ; 1:4       1483* +
+    add  HL, DE         ; 1:11      1483* + save 128x
+    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 256x
+    ex   DE, HL         ; 1:4       1483* +
+    add  HL, DE         ; 1:11      1483* + save 256x
+    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 512x
-    ex   DE, HL         ; 1:4       1483* +
-    add  HL, DE         ; 1:11      1483* + save 512x
-    ex   DE, HL         ; 1:4       1483* +
     add  HL, HL         ; 1:11      1483* 1024x
-    add  HL, HL         ; 1:11      1483* 2048x
-    or    A             ; 1:4       1483*
-    sbc  HL, DE         ; 2:15      1483* HL - save
+    add  HL, DE         ; 1:11      1483* HL + save
     ld    D, B          ; 1:4       1483*
     ld    E, C          ; 1:4       1483*   
-    ld    B, D          ; 1:4       1487*
+    ld    B, D          ; 1:4       1487* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1487*
     ld    D, H          ; 1:4       1487*
     ld    E, L          ; 1:4       1487* save 1x
@@ -5492,8 +5499,8 @@ ORG 0x6000
     or    A             ; 1:4       1487*
     sbc  HL, DE         ; 2:15      1487* HL - save
     ld    D, B          ; 1:4       1487*
-    ld    E, C          ; 1:4       1487*   
-    ld    B, D          ; 1:4       1489*
+    ld    E, C          ; 1:4       1487*       
+    ld    B, D          ; 1:4       1489* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1489*
     ld    D, H          ; 1:4       1489*
     ld    E, L          ; 1:4       1489* save 1x
@@ -5521,39 +5528,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1489* 1024x
     add  HL, DE         ; 1:11      1489* HL + save
     ld    D, B          ; 1:4       1489*
-    ld    E, C          ; 1:4       1489*   
-    ld    B, D          ; 1:4       1493*
+    ld    E, C          ; 1:4       1489*       
+    ld    B, D          ; 1:4       1493* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1493*
     ld    D, H          ; 1:4       1493*
     ld    E, L          ; 1:4       1493* save 1x
     add  HL, HL         ; 1:11      1493* 2x
-    ex   DE, HL         ; 1:4       1493* +
-    add  HL, DE         ; 1:11      1493* + save 2x
-    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 4x
+    ex   DE, HL         ; 1:4       1493* +
+    add  HL, DE         ; 1:11      1493* + save 4x
+    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 8x
-    ex   DE, HL         ; 1:4       1493* +
-    add  HL, DE         ; 1:11      1493* + save 8x
-    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 16x
+    ex   DE, HL         ; 1:4       1493* +
+    add  HL, DE         ; 1:11      1493* + save 16x
+    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 32x
-    ex   DE, HL         ; 1:4       1493* +
-    add  HL, DE         ; 1:11      1493* + save 32x
-    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 64x
+    ex   DE, HL         ; 1:4       1493* +
+    add  HL, DE         ; 1:11      1493* + save 64x
+    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 128x
+    ex   DE, HL         ; 1:4       1493* +
+    add  HL, DE         ; 1:11      1493* + save 128x
+    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 256x
+    ex   DE, HL         ; 1:4       1493* +
+    add  HL, DE         ; 1:11      1493* + save 256x
+    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 512x
-    ex   DE, HL         ; 1:4       1493* +
-    add  HL, DE         ; 1:11      1493* + save 512x
-    ex   DE, HL         ; 1:4       1493* +
     add  HL, HL         ; 1:11      1493* 1024x
-    add  HL, HL         ; 1:11      1493* 2048x
-    or    A             ; 1:4       1493*
-    sbc  HL, DE         ; 2:15      1493* HL - save
+    add  HL, DE         ; 1:11      1493* HL + save
     ld    D, B          ; 1:4       1493*
     ld    E, C          ; 1:4       1493*   
-    ld    B, D          ; 1:4       1499*
+    ld    B, D          ; 1:4       1499* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1499*
     ld    D, H          ; 1:4       1499*
     ld    E, L          ; 1:4       1499* save 1x
@@ -5581,7 +5589,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1499* HL - save
     ld    D, B          ; 1:4       1499*
     ld    E, C          ; 1:4       1499*   
-    ld    B, D          ; 1:4       1511*
+    ld    B, D          ; 1:4       1511* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1511*
     ld    D, H          ; 1:4       1511*
     ld    E, L          ; 1:4       1511* save 1x
@@ -5610,7 +5618,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1511*
     ld    E, C          ; 1:4       1511* 
    
-    ld    B, D          ; 1:4       1523*
+    ld    B, D          ; 1:4       1523* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1523*
     ld    D, H          ; 1:4       1523*
     ld    E, L          ; 1:4       1523* save 1x
@@ -5638,7 +5646,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1523* HL - save
     ld    D, B          ; 1:4       1523*
     ld    E, C          ; 1:4       1523*   
-    ld    B, D          ; 1:4       1531*
+    ld    B, D          ; 1:4       1531* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1531*
     ld    D, H          ; 1:4       1531*
     ld    E, L          ; 1:4       1531* save 1x
@@ -5647,13 +5655,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1531* +
     add  HL, DE         ; 1:11      1531* + save 4x
     ex   DE, HL         ; 1:4       1531* +
-    add  HL, HL         ; 1:11      1531* 8x
-    add  HL, HL         ; 1:11      1531* 16x
-    add  HL, HL         ; 1:11      1531* 32x
-    add  HL, HL         ; 1:11      1531* 64x
-    add  HL, HL         ; 1:11      1531* 128x
-    add  HL, HL         ; 1:11      1531* 256x
-    add  HL, HL         ; 1:11      1531* 512x
+    rr    H             ; 2:8       1531*
+    rr    L             ; 2:8       1531*
+    ld    H, L          ; 1:4       1531*
+    ld    L, 0x00       ; 2:7       1531* 512x
     ex   DE, HL         ; 1:4       1531* +
     add  HL, DE         ; 1:11      1531* + save 512x
     ex   DE, HL         ; 1:4       1531* +
@@ -5662,8 +5667,8 @@ ORG 0x6000
     or    A             ; 1:4       1531*
     sbc  HL, DE         ; 2:15      1531* HL - save
     ld    D, B          ; 1:4       1531*
-    ld    E, C          ; 1:4       1531*   
-    ld    B, D          ; 1:4       1543*
+    ld    E, C          ; 1:4       1531*       
+    ld    B, D          ; 1:4       1543* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1543*
     ld    D, H          ; 1:4       1543*
     ld    E, L          ; 1:4       1543* save 1x
@@ -5675,21 +5680,18 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1543* +
     add  HL, DE         ; 1:11      1543* + save 4x
     ex   DE, HL         ; 1:4       1543* +
-    add  HL, HL         ; 1:11      1543* 8x
-    add  HL, HL         ; 1:11      1543* 16x
-    add  HL, HL         ; 1:11      1543* 32x
-    add  HL, HL         ; 1:11      1543* 64x
-    add  HL, HL         ; 1:11      1543* 128x
-    add  HL, HL         ; 1:11      1543* 256x
-    add  HL, HL         ; 1:11      1543* 512x
+    rr    H             ; 2:8       1543*
+    rr    L             ; 2:8       1543*
+    ld    H, L          ; 1:4       1543*
+    ld    L, 0x00       ; 2:7       1543* 512x
     ex   DE, HL         ; 1:4       1543* +
     add  HL, DE         ; 1:11      1543* + save 512x
     ex   DE, HL         ; 1:4       1543* +
     add  HL, HL         ; 1:11      1543* 1024x
     add  HL, DE         ; 1:11      1543* HL + save
     ld    D, B          ; 1:4       1543*
-    ld    E, C          ; 1:4       1543*   
-    ld    B, D          ; 1:4       1549*
+    ld    E, C          ; 1:4       1543*       
+    ld    B, D          ; 1:4       1549* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1549*
     ld    D, H          ; 1:4       1549*
     ld    E, L          ; 1:4       1549* save 1x
@@ -5714,8 +5716,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1549* 1024x
     add  HL, DE         ; 1:11      1549* HL + save
     ld    D, B          ; 1:4       1549*
-    ld    E, C          ; 1:4       1549*   
-    ld    B, D          ; 1:4       1553*
+    ld    E, C          ; 1:4       1549*       
+    ld    B, D          ; 1:4       1553* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1553*
     ld    D, H          ; 1:4       1553*
     ld    E, L          ; 1:4       1553* save 1x
@@ -5737,8 +5739,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1553* 1024x
     add  HL, DE         ; 1:11      1553* HL + save
     ld    D, B          ; 1:4       1553*
-    ld    E, C          ; 1:4       1553*   
-    ld    B, D          ; 1:4       1559*
+    ld    E, C          ; 1:4       1553*       
+    ld    B, D          ; 1:4       1559* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1559*
     ld    D, H          ; 1:4       1559*
     ld    E, L          ; 1:4       1559* save 1x
@@ -5766,39 +5768,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1559* 1024x
     add  HL, DE         ; 1:11      1559* HL + save
     ld    D, B          ; 1:4       1559*
-    ld    E, C          ; 1:4       1559*   
-    ld    B, D          ; 1:4       1567*
+    ld    E, C          ; 1:4       1559*       
+    ld    B, D          ; 1:4       1567* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1567*
     ld    D, H          ; 1:4       1567*
     ld    E, L          ; 1:4       1567* save 1x
     add  HL, HL         ; 1:11      1567* 2x
+    ex   DE, HL         ; 1:4       1567* +
+    add  HL, DE         ; 1:11      1567* + save 2x
+    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 4x
+    ex   DE, HL         ; 1:4       1567* +
+    add  HL, DE         ; 1:11      1567* + save 4x
+    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 8x
+    ex   DE, HL         ; 1:4       1567* +
+    add  HL, DE         ; 1:11      1567* + save 8x
+    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 16x
+    ex   DE, HL         ; 1:4       1567* +
+    add  HL, DE         ; 1:11      1567* + save 16x
+    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 32x
-    ex   DE, HL         ; 1:4       1567* +
-    add  HL, DE         ; 1:11      1567* + save 32x
-    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 64x
-    ex   DE, HL         ; 1:4       1567* +
-    add  HL, DE         ; 1:11      1567* + save 64x
-    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 128x
-    ex   DE, HL         ; 1:4       1567* +
-    add  HL, DE         ; 1:11      1567* + save 128x
-    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 256x
-    ex   DE, HL         ; 1:4       1567* +
-    add  HL, DE         ; 1:11      1567* + save 256x
-    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 512x
+    ex   DE, HL         ; 1:4       1567* +
+    add  HL, DE         ; 1:11      1567* + save 512x
+    ex   DE, HL         ; 1:4       1567* +
     add  HL, HL         ; 1:11      1567* 1024x
-    add  HL, HL         ; 1:11      1567* 2048x
-    or    A             ; 1:4       1567*
-    sbc  HL, DE         ; 2:15      1567* HL - save
+    add  HL, DE         ; 1:11      1567* HL + save
     ld    D, B          ; 1:4       1567*
-    ld    E, C          ; 1:4       1567*   
-    ld    B, D          ; 1:4       1571*
+    ld    E, C          ; 1:4       1567*       
+    ld    B, D          ; 1:4       1571* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1571*
     ld    D, H          ; 1:4       1571*
     ld    E, L          ; 1:4       1571* save 1x
@@ -5823,8 +5826,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1571* 1024x
     add  HL, DE         ; 1:11      1571* HL + save
     ld    D, B          ; 1:4       1571*
-    ld    E, C          ; 1:4       1571*   
-    ld    B, D          ; 1:4       1579*
+    ld    E, C          ; 1:4       1571*       
+    ld    B, D          ; 1:4       1579* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1579*
     ld    D, H          ; 1:4       1579*
     ld    E, L          ; 1:4       1579* save 1x
@@ -5852,71 +5855,73 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1579* 1024x
     add  HL, DE         ; 1:11      1579* HL + save
     ld    D, B          ; 1:4       1579*
-    ld    E, C          ; 1:4       1579*   
-    ld    B, D          ; 1:4       1583*
+    ld    E, C          ; 1:4       1579*       
+    ld    B, D          ; 1:4       1583* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1583*
     ld    D, H          ; 1:4       1583*
     ld    E, L          ; 1:4       1583* save 1x
     add  HL, HL         ; 1:11      1583* 2x
+    ex   DE, HL         ; 1:4       1583* +
+    add  HL, DE         ; 1:11      1583* + save 2x
+    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 4x
+    ex   DE, HL         ; 1:4       1583* +
+    add  HL, DE         ; 1:11      1583* + save 4x
+    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 8x
+    ex   DE, HL         ; 1:4       1583* +
+    add  HL, DE         ; 1:11      1583* + save 8x
+    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 16x
-    ex   DE, HL         ; 1:4       1583* +
-    add  HL, DE         ; 1:11      1583* + save 16x
-    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 32x
+    ex   DE, HL         ; 1:4       1583* +
+    add  HL, DE         ; 1:11      1583* + save 32x
+    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 64x
-    ex   DE, HL         ; 1:4       1583* +
-    add  HL, DE         ; 1:11      1583* + save 64x
-    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 128x
-    ex   DE, HL         ; 1:4       1583* +
-    add  HL, DE         ; 1:11      1583* + save 128x
-    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 256x
-    ex   DE, HL         ; 1:4       1583* +
-    add  HL, DE         ; 1:11      1583* + save 256x
-    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 512x
+    ex   DE, HL         ; 1:4       1583* +
+    add  HL, DE         ; 1:11      1583* + save 512x
+    ex   DE, HL         ; 1:4       1583* +
     add  HL, HL         ; 1:11      1583* 1024x
-    add  HL, HL         ; 1:11      1583* 2048x
-    or    A             ; 1:4       1583*
-    sbc  HL, DE         ; 2:15      1583* HL - save
+    add  HL, DE         ; 1:11      1583* HL + save
     ld    D, B          ; 1:4       1583*
     ld    E, C          ; 1:4       1583* 
-   
-    ld    B, D          ; 1:4       1597*
+       
+    ld    B, D          ; 1:4       1597* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1597*
     ld    D, H          ; 1:4       1597*
     ld    E, L          ; 1:4       1597* save 1x
     add  HL, HL         ; 1:11      1597* 2x
-    ex   DE, HL         ; 1:4       1597* +
-    add  HL, DE         ; 1:11      1597* + save 2x
-    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 4x
+    ex   DE, HL         ; 1:4       1597* +
+    add  HL, DE         ; 1:11      1597* + save 4x
+    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 8x
+    ex   DE, HL         ; 1:4       1597* +
+    add  HL, DE         ; 1:11      1597* + save 8x
+    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 16x
+    ex   DE, HL         ; 1:4       1597* +
+    add  HL, DE         ; 1:11      1597* + save 16x
+    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 32x
+    ex   DE, HL         ; 1:4       1597* +
+    add  HL, DE         ; 1:11      1597* + save 32x
+    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 64x
-    ex   DE, HL         ; 1:4       1597* +
-    add  HL, DE         ; 1:11      1597* + save 64x
-    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 128x
-    ex   DE, HL         ; 1:4       1597* +
-    add  HL, DE         ; 1:11      1597* + save 128x
-    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 256x
-    ex   DE, HL         ; 1:4       1597* +
-    add  HL, DE         ; 1:11      1597* + save 256x
-    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 512x
+    ex   DE, HL         ; 1:4       1597* +
+    add  HL, DE         ; 1:11      1597* + save 512x
+    ex   DE, HL         ; 1:4       1597* +
     add  HL, HL         ; 1:11      1597* 1024x
-    add  HL, HL         ; 1:11      1597* 2048x
-    or    A             ; 1:4       1597*
-    sbc  HL, DE         ; 2:15      1597* HL - save
+    add  HL, DE         ; 1:11      1597* HL + save
     ld    D, B          ; 1:4       1597*
-    ld    E, C          ; 1:4       1597*   
-    ld    B, D          ; 1:4       1601*
+    ld    E, C          ; 1:4       1597*       
+    ld    B, D          ; 1:4       1601* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1601*
     ld    D, H          ; 1:4       1601*
     ld    E, L          ; 1:4       1601* save 1x
@@ -5938,8 +5943,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1601* 1024x
     add  HL, DE         ; 1:11      1601* HL + save
     ld    D, B          ; 1:4       1601*
-    ld    E, C          ; 1:4       1601*   
-    ld    B, D          ; 1:4       1607*
+    ld    E, C          ; 1:4       1601*       
+    ld    B, D          ; 1:4       1607* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1607*
     ld    D, H          ; 1:4       1607*
     ld    E, L          ; 1:4       1607* save 1x
@@ -5967,8 +5972,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1607* 1024x
     add  HL, DE         ; 1:11      1607* HL + save
     ld    D, B          ; 1:4       1607*
-    ld    E, C          ; 1:4       1607*   
-    ld    B, D          ; 1:4       1609*
+    ld    E, C          ; 1:4       1607*       
+    ld    B, D          ; 1:4       1609* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1609*
     ld    D, H          ; 1:4       1609*
     ld    E, L          ; 1:4       1609* save 1x
@@ -5993,8 +5998,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1609* 1024x
     add  HL, DE         ; 1:11      1609* HL + save
     ld    D, B          ; 1:4       1609*
-    ld    E, C          ; 1:4       1609*   
-    ld    B, D          ; 1:4       1613*
+    ld    E, C          ; 1:4       1609*       
+    ld    B, D          ; 1:4       1613* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1613*
     ld    D, H          ; 1:4       1613*
     ld    E, L          ; 1:4       1613* save 1x
@@ -6022,8 +6027,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1613* 1024x
     add  HL, DE         ; 1:11      1613* HL + save
     ld    D, B          ; 1:4       1613*
-    ld    E, C          ; 1:4       1613*   
-    ld    B, D          ; 1:4       1619*
+    ld    E, C          ; 1:4       1613*       
+    ld    B, D          ; 1:4       1619* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1619*
     ld    D, H          ; 1:4       1619*
     ld    E, L          ; 1:4       1619* save 1x
@@ -6051,8 +6056,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1619* 1024x
     add  HL, DE         ; 1:11      1619* HL + save
     ld    D, B          ; 1:4       1619*
-    ld    E, C          ; 1:4       1619*   
-    ld    B, D          ; 1:4       1621*
+    ld    E, C          ; 1:4       1619*       
+    ld    B, D          ; 1:4       1621* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1621*
     ld    D, H          ; 1:4       1621*
     ld    E, L          ; 1:4       1621* save 1x
@@ -6080,39 +6085,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1621* 1024x
     add  HL, DE         ; 1:11      1621* HL + save
     ld    D, B          ; 1:4       1621*
-    ld    E, C          ; 1:4       1621*   
-    ld    B, D          ; 1:4       1627*
+    ld    E, C          ; 1:4       1621*       
+    ld    B, D          ; 1:4       1627* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1627*
     ld    D, H          ; 1:4       1627*
     ld    E, L          ; 1:4       1627* save 1x
     add  HL, HL         ; 1:11      1627* 2x
+    ex   DE, HL         ; 1:4       1627* +
+    add  HL, DE         ; 1:11      1627* + save 2x
+    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 4x
-    ex   DE, HL         ; 1:4       1627* +
-    add  HL, DE         ; 1:11      1627* + save 4x
-    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 8x
+    ex   DE, HL         ; 1:4       1627* +
+    add  HL, DE         ; 1:11      1627* + save 8x
+    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 16x
+    ex   DE, HL         ; 1:4       1627* +
+    add  HL, DE         ; 1:11      1627* + save 16x
+    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 32x
-    ex   DE, HL         ; 1:4       1627* +
-    add  HL, DE         ; 1:11      1627* + save 32x
-    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 64x
+    ex   DE, HL         ; 1:4       1627* +
+    add  HL, DE         ; 1:11      1627* + save 64x
+    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 128x
-    ex   DE, HL         ; 1:4       1627* +
-    add  HL, DE         ; 1:11      1627* + save 128x
-    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 256x
-    ex   DE, HL         ; 1:4       1627* +
-    add  HL, DE         ; 1:11      1627* + save 256x
-    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 512x
+    ex   DE, HL         ; 1:4       1627* +
+    add  HL, DE         ; 1:11      1627* + save 512x
+    ex   DE, HL         ; 1:4       1627* +
     add  HL, HL         ; 1:11      1627* 1024x
-    add  HL, HL         ; 1:11      1627* 2048x
-    or    A             ; 1:4       1627*
-    sbc  HL, DE         ; 2:15      1627* HL - save
+    add  HL, DE         ; 1:11      1627* HL + save
     ld    D, B          ; 1:4       1627*
-    ld    E, C          ; 1:4       1627*   
-    ld    B, D          ; 1:4       1637*
+    ld    E, C          ; 1:4       1627*       
+    ld    B, D          ; 1:4       1637* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1637*
     ld    D, H          ; 1:4       1637*
     ld    E, L          ; 1:4       1637* save 1x
@@ -6140,40 +6146,41 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1637* 1024x
     add  HL, DE         ; 1:11      1637* HL + save
     ld    D, B          ; 1:4       1637*
-    ld    E, C          ; 1:4       1637*   
-    ld    B, D          ; 1:4       1657*
+    ld    E, C          ; 1:4       1637*       
+    ld    B, D          ; 1:4       1657* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1657*
     ld    D, H          ; 1:4       1657*
     ld    E, L          ; 1:4       1657* save 1x
     add  HL, HL         ; 1:11      1657* 2x
-    ex   DE, HL         ; 1:4       1657* +
-    add  HL, DE         ; 1:11      1657* + save 2x
-    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 4x
-    ex   DE, HL         ; 1:4       1657* +
-    add  HL, DE         ; 1:11      1657* + save 4x
-    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 8x
+    ex   DE, HL         ; 1:4       1657* +
+    add  HL, DE         ; 1:11      1657* + save 8x
+    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 16x
+    ex   DE, HL         ; 1:4       1657* +
+    add  HL, DE         ; 1:11      1657* + save 16x
+    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 32x
+    ex   DE, HL         ; 1:4       1657* +
+    add  HL, DE         ; 1:11      1657* + save 32x
+    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 64x
+    ex   DE, HL         ; 1:4       1657* +
+    add  HL, DE         ; 1:11      1657* + save 64x
+    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 128x
-    ex   DE, HL         ; 1:4       1657* +
-    add  HL, DE         ; 1:11      1657* + save 128x
-    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 256x
-    ex   DE, HL         ; 1:4       1657* +
-    add  HL, DE         ; 1:11      1657* + save 256x
-    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 512x
+    ex   DE, HL         ; 1:4       1657* +
+    add  HL, DE         ; 1:11      1657* + save 512x
+    ex   DE, HL         ; 1:4       1657* +
     add  HL, HL         ; 1:11      1657* 1024x
-    add  HL, HL         ; 1:11      1657* 2048x
-    or    A             ; 1:4       1657*
-    sbc  HL, DE         ; 2:15      1657* HL - save
+    add  HL, DE         ; 1:11      1657* HL + save
     ld    D, B          ; 1:4       1657*
     ld    E, C          ; 1:4       1657* 
    
-    ld    B, D          ; 1:4       1663*
+    ld    B, D          ; 1:4       1663* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1663*
     ld    D, H          ; 1:4       1663*
     ld    E, L          ; 1:4       1663* save 1x
@@ -6197,8 +6204,8 @@ ORG 0x6000
     or    A             ; 1:4       1663*
     sbc  HL, DE         ; 2:15      1663* HL - save
     ld    D, B          ; 1:4       1663*
-    ld    E, C          ; 1:4       1663*   
-    ld    B, D          ; 1:4       1667*
+    ld    E, C          ; 1:4       1663*       
+    ld    B, D          ; 1:4       1667* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1667*
     ld    D, H          ; 1:4       1667*
     ld    E, L          ; 1:4       1667* save 1x
@@ -6223,8 +6230,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1667* 1024x
     add  HL, DE         ; 1:11      1667* HL + save
     ld    D, B          ; 1:4       1667*
-    ld    E, C          ; 1:4       1667*   
-    ld    B, D          ; 1:4       1669*
+    ld    E, C          ; 1:4       1667*       
+    ld    B, D          ; 1:4       1669* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1669*
     ld    D, H          ; 1:4       1669*
     ld    E, L          ; 1:4       1669* save 1x
@@ -6249,39 +6256,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1669* 1024x
     add  HL, DE         ; 1:11      1669* HL + save
     ld    D, B          ; 1:4       1669*
-    ld    E, C          ; 1:4       1669*   
-    ld    B, D          ; 1:4       1693*
+    ld    E, C          ; 1:4       1669*       
+    ld    B, D          ; 1:4       1693* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1693*
     ld    D, H          ; 1:4       1693*
     ld    E, L          ; 1:4       1693* save 1x
     add  HL, HL         ; 1:11      1693* 2x
-    ex   DE, HL         ; 1:4       1693* +
-    add  HL, DE         ; 1:11      1693* + save 2x
-    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 4x
+    ex   DE, HL         ; 1:4       1693* +
+    add  HL, DE         ; 1:11      1693* + save 4x
+    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 8x
+    ex   DE, HL         ; 1:4       1693* +
+    add  HL, DE         ; 1:11      1693* + save 8x
+    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 16x
+    ex   DE, HL         ; 1:4       1693* +
+    add  HL, DE         ; 1:11      1693* + save 16x
+    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 32x
-    ex   DE, HL         ; 1:4       1693* +
-    add  HL, DE         ; 1:11      1693* + save 32x
-    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 64x
-    ex   DE, HL         ; 1:4       1693* +
-    add  HL, DE         ; 1:11      1693* + save 64x
-    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 128x
+    ex   DE, HL         ; 1:4       1693* +
+    add  HL, DE         ; 1:11      1693* + save 128x
+    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 256x
-    ex   DE, HL         ; 1:4       1693* +
-    add  HL, DE         ; 1:11      1693* + save 256x
-    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 512x
+    ex   DE, HL         ; 1:4       1693* +
+    add  HL, DE         ; 1:11      1693* + save 512x
+    ex   DE, HL         ; 1:4       1693* +
     add  HL, HL         ; 1:11      1693* 1024x
-    add  HL, HL         ; 1:11      1693* 2048x
-    or    A             ; 1:4       1693*
-    sbc  HL, DE         ; 2:15      1693* HL - save
+    add  HL, DE         ; 1:11      1693* HL + save
     ld    D, B          ; 1:4       1693*
-    ld    E, C          ; 1:4       1693*   
-    ld    B, D          ; 1:4       1697*
+    ld    E, C          ; 1:4       1693*       
+    ld    B, D          ; 1:4       1697* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1697*
     ld    D, H          ; 1:4       1697*
     ld    E, L          ; 1:4       1697* save 1x
@@ -6306,8 +6314,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1697* 1024x
     add  HL, DE         ; 1:11      1697* HL + save
     ld    D, B          ; 1:4       1697*
-    ld    E, C          ; 1:4       1697*   
-    ld    B, D          ; 1:4       1699*
+    ld    E, C          ; 1:4       1697*       
+    ld    B, D          ; 1:4       1699* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1699*
     ld    D, H          ; 1:4       1699*
     ld    E, L          ; 1:4       1699* save 1x
@@ -6335,70 +6343,72 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1699* 1024x
     add  HL, DE         ; 1:11      1699* HL + save
     ld    D, B          ; 1:4       1699*
-    ld    E, C          ; 1:4       1699*   
-    ld    B, D          ; 1:4       1709*
+    ld    E, C          ; 1:4       1699*       
+    ld    B, D          ; 1:4       1709* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1709*
     ld    D, H          ; 1:4       1709*
     ld    E, L          ; 1:4       1709* save 1x
     add  HL, HL         ; 1:11      1709* 2x
-    ex   DE, HL         ; 1:4       1709* +
-    add  HL, DE         ; 1:11      1709* + save 2x
-    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 4x
+    ex   DE, HL         ; 1:4       1709* +
+    add  HL, DE         ; 1:11      1709* + save 4x
+    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 8x
+    ex   DE, HL         ; 1:4       1709* +
+    add  HL, DE         ; 1:11      1709* + save 8x
+    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 16x
-    ex   DE, HL         ; 1:4       1709* +
-    add  HL, DE         ; 1:11      1709* + save 16x
-    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 32x
+    ex   DE, HL         ; 1:4       1709* +
+    add  HL, DE         ; 1:11      1709* + save 32x
+    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 64x
-    ex   DE, HL         ; 1:4       1709* +
-    add  HL, DE         ; 1:11      1709* + save 64x
-    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 128x
+    ex   DE, HL         ; 1:4       1709* +
+    add  HL, DE         ; 1:11      1709* + save 128x
+    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 256x
-    ex   DE, HL         ; 1:4       1709* +
-    add  HL, DE         ; 1:11      1709* + save 256x
-    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 512x
+    ex   DE, HL         ; 1:4       1709* +
+    add  HL, DE         ; 1:11      1709* + save 512x
+    ex   DE, HL         ; 1:4       1709* +
     add  HL, HL         ; 1:11      1709* 1024x
-    add  HL, HL         ; 1:11      1709* 2048x
-    or    A             ; 1:4       1709*
-    sbc  HL, DE         ; 2:15      1709* HL - save
+    add  HL, DE         ; 1:11      1709* HL + save
     ld    D, B          ; 1:4       1709*
-    ld    E, C          ; 1:4       1709*   
-    ld    B, D          ; 1:4       1721*
+    ld    E, C          ; 1:4       1709*       
+    ld    B, D          ; 1:4       1721* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1721*
     ld    D, H          ; 1:4       1721*
     ld    E, L          ; 1:4       1721* save 1x
     add  HL, HL         ; 1:11      1721* 2x
-    ex   DE, HL         ; 1:4       1721* +
-    add  HL, DE         ; 1:11      1721* + save 2x
-    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 4x
-    ex   DE, HL         ; 1:4       1721* +
-    add  HL, DE         ; 1:11      1721* + save 4x
-    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 8x
+    ex   DE, HL         ; 1:4       1721* +
+    add  HL, DE         ; 1:11      1721* + save 8x
+    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 16x
+    ex   DE, HL         ; 1:4       1721* +
+    add  HL, DE         ; 1:11      1721* + save 16x
+    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 32x
+    ex   DE, HL         ; 1:4       1721* +
+    add  HL, DE         ; 1:11      1721* + save 32x
+    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 64x
-    ex   DE, HL         ; 1:4       1721* +
-    add  HL, DE         ; 1:11      1721* + save 64x
-    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 128x
+    ex   DE, HL         ; 1:4       1721* +
+    add  HL, DE         ; 1:11      1721* + save 128x
+    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 256x
-    ex   DE, HL         ; 1:4       1721* +
-    add  HL, DE         ; 1:11      1721* + save 256x
-    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 512x
+    ex   DE, HL         ; 1:4       1721* +
+    add  HL, DE         ; 1:11      1721* + save 512x
+    ex   DE, HL         ; 1:4       1721* +
     add  HL, HL         ; 1:11      1721* 1024x
-    add  HL, HL         ; 1:11      1721* 2048x
-    or    A             ; 1:4       1721*
-    sbc  HL, DE         ; 2:15      1721* HL - save
+    add  HL, DE         ; 1:11      1721* HL + save
     ld    D, B          ; 1:4       1721*
     ld    E, C          ; 1:4       1721*   
-    ld    B, D          ; 1:4       1723*
+    ld    B, D          ; 1:4       1723* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1723*
     ld    D, H          ; 1:4       1723*
     ld    E, L          ; 1:4       1723* save 1x
@@ -6425,8 +6435,8 @@ ORG 0x6000
     or    A             ; 1:4       1723*
     sbc  HL, DE         ; 2:15      1723* HL - save
     ld    D, B          ; 1:4       1723*
-    ld    E, C          ; 1:4       1723*   
-    ld    B, D          ; 1:4       1733*
+    ld    E, C          ; 1:4       1723*       
+    ld    B, D          ; 1:4       1733* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1733*
     ld    D, H          ; 1:4       1733*
     ld    E, L          ; 1:4       1733* save 1x
@@ -6455,101 +6465,104 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1733* HL + save
     ld    D, B          ; 1:4       1733*
     ld    E, C          ; 1:4       1733* 
-   
-    ld    B, D          ; 1:4       1741*
+       
+    ld    B, D          ; 1:4       1741* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1741*
     ld    D, H          ; 1:4       1741*
     ld    E, L          ; 1:4       1741* save 1x
     add  HL, HL         ; 1:11      1741* 2x
-    ex   DE, HL         ; 1:4       1741* +
-    add  HL, DE         ; 1:11      1741* + save 2x
-    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 4x
+    ex   DE, HL         ; 1:4       1741* +
+    add  HL, DE         ; 1:11      1741* + save 4x
+    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 8x
+    ex   DE, HL         ; 1:4       1741* +
+    add  HL, DE         ; 1:11      1741* + save 8x
+    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 16x
-    ex   DE, HL         ; 1:4       1741* +
-    add  HL, DE         ; 1:11      1741* + save 16x
-    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 32x
-    ex   DE, HL         ; 1:4       1741* +
-    add  HL, DE         ; 1:11      1741* + save 32x
-    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 64x
+    ex   DE, HL         ; 1:4       1741* +
+    add  HL, DE         ; 1:11      1741* + save 64x
+    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 128x
+    ex   DE, HL         ; 1:4       1741* +
+    add  HL, DE         ; 1:11      1741* + save 128x
+    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 256x
-    ex   DE, HL         ; 1:4       1741* +
-    add  HL, DE         ; 1:11      1741* + save 256x
-    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 512x
+    ex   DE, HL         ; 1:4       1741* +
+    add  HL, DE         ; 1:11      1741* + save 512x
+    ex   DE, HL         ; 1:4       1741* +
     add  HL, HL         ; 1:11      1741* 1024x
-    add  HL, HL         ; 1:11      1741* 2048x
-    or    A             ; 1:4       1741*
-    sbc  HL, DE         ; 2:15      1741* HL - save
+    add  HL, DE         ; 1:11      1741* HL + save
     ld    D, B          ; 1:4       1741*
-    ld    E, C          ; 1:4       1741*   
-    ld    B, D          ; 1:4       1747*
+    ld    E, C          ; 1:4       1741*       
+    ld    B, D          ; 1:4       1747* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1747*
     ld    D, H          ; 1:4       1747*
     ld    E, L          ; 1:4       1747* save 1x
     add  HL, HL         ; 1:11      1747* 2x
+    ex   DE, HL         ; 1:4       1747* +
+    add  HL, DE         ; 1:11      1747* + save 2x
+    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 4x
-    ex   DE, HL         ; 1:4       1747* +
-    add  HL, DE         ; 1:11      1747* + save 4x
-    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 8x
-    ex   DE, HL         ; 1:4       1747* +
-    add  HL, DE         ; 1:11      1747* + save 8x
-    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 16x
+    ex   DE, HL         ; 1:4       1747* +
+    add  HL, DE         ; 1:11      1747* + save 16x
+    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 32x
-    ex   DE, HL         ; 1:4       1747* +
-    add  HL, DE         ; 1:11      1747* + save 32x
-    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 64x
+    ex   DE, HL         ; 1:4       1747* +
+    add  HL, DE         ; 1:11      1747* + save 64x
+    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 128x
+    ex   DE, HL         ; 1:4       1747* +
+    add  HL, DE         ; 1:11      1747* + save 128x
+    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 256x
-    ex   DE, HL         ; 1:4       1747* +
-    add  HL, DE         ; 1:11      1747* + save 256x
-    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 512x
+    ex   DE, HL         ; 1:4       1747* +
+    add  HL, DE         ; 1:11      1747* + save 512x
+    ex   DE, HL         ; 1:4       1747* +
     add  HL, HL         ; 1:11      1747* 1024x
-    add  HL, HL         ; 1:11      1747* 2048x
-    or    A             ; 1:4       1747*
-    sbc  HL, DE         ; 2:15      1747* HL - save
+    add  HL, DE         ; 1:11      1747* HL + save
     ld    D, B          ; 1:4       1747*
-    ld    E, C          ; 1:4       1747*   
-    ld    B, D          ; 1:4       1753*
+    ld    E, C          ; 1:4       1747*       
+    ld    B, D          ; 1:4       1753* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1753*
     ld    D, H          ; 1:4       1753*
     ld    E, L          ; 1:4       1753* save 1x
     add  HL, HL         ; 1:11      1753* 2x
-    ex   DE, HL         ; 1:4       1753* +
-    add  HL, DE         ; 1:11      1753* + save 2x
-    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 4x
-    ex   DE, HL         ; 1:4       1753* +
-    add  HL, DE         ; 1:11      1753* + save 4x
-    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 8x
+    ex   DE, HL         ; 1:4       1753* +
+    add  HL, DE         ; 1:11      1753* + save 8x
+    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 16x
+    ex   DE, HL         ; 1:4       1753* +
+    add  HL, DE         ; 1:11      1753* + save 16x
+    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 32x
-    ex   DE, HL         ; 1:4       1753* +
-    add  HL, DE         ; 1:11      1753* + save 32x
-    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 64x
+    ex   DE, HL         ; 1:4       1753* +
+    add  HL, DE         ; 1:11      1753* + save 64x
+    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 128x
+    ex   DE, HL         ; 1:4       1753* +
+    add  HL, DE         ; 1:11      1753* + save 128x
+    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 256x
-    ex   DE, HL         ; 1:4       1753* +
-    add  HL, DE         ; 1:11      1753* + save 256x
-    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 512x
+    ex   DE, HL         ; 1:4       1753* +
+    add  HL, DE         ; 1:11      1753* + save 512x
+    ex   DE, HL         ; 1:4       1753* +
     add  HL, HL         ; 1:11      1753* 1024x
-    add  HL, HL         ; 1:11      1753* 2048x
-    or    A             ; 1:4       1753*
-    sbc  HL, DE         ; 2:15      1753* HL - save
+    add  HL, DE         ; 1:11      1753* HL + save
     ld    D, B          ; 1:4       1753*
     ld    E, C          ; 1:4       1753*   
-    ld    B, D          ; 1:4       1759*
+    ld    B, D          ; 1:4       1759* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1759*
     ld    D, H          ; 1:4       1759*
     ld    E, L          ; 1:4       1759* save 1x
@@ -6573,39 +6586,40 @@ ORG 0x6000
     or    A             ; 1:4       1759*
     sbc  HL, DE         ; 2:15      1759* HL - save
     ld    D, B          ; 1:4       1759*
-    ld    E, C          ; 1:4       1759*   
-    ld    B, D          ; 1:4       1777*
+    ld    E, C          ; 1:4       1759*       
+    ld    B, D          ; 1:4       1777* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1777*
     ld    D, H          ; 1:4       1777*
     ld    E, L          ; 1:4       1777* save 1x
     add  HL, HL         ; 1:11      1777* 2x
-    ex   DE, HL         ; 1:4       1777* +
-    add  HL, DE         ; 1:11      1777* + save 2x
-    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 4x
-    ex   DE, HL         ; 1:4       1777* +
-    add  HL, DE         ; 1:11      1777* + save 4x
-    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 8x
-    ex   DE, HL         ; 1:4       1777* +
-    add  HL, DE         ; 1:11      1777* + save 8x
-    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 16x
+    ex   DE, HL         ; 1:4       1777* +
+    add  HL, DE         ; 1:11      1777* + save 16x
+    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 32x
+    ex   DE, HL         ; 1:4       1777* +
+    add  HL, DE         ; 1:11      1777* + save 32x
+    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 64x
+    ex   DE, HL         ; 1:4       1777* +
+    add  HL, DE         ; 1:11      1777* + save 64x
+    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 128x
+    ex   DE, HL         ; 1:4       1777* +
+    add  HL, DE         ; 1:11      1777* + save 128x
+    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 256x
-    ex   DE, HL         ; 1:4       1777* +
-    add  HL, DE         ; 1:11      1777* + save 256x
-    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 512x
+    ex   DE, HL         ; 1:4       1777* +
+    add  HL, DE         ; 1:11      1777* + save 512x
+    ex   DE, HL         ; 1:4       1777* +
     add  HL, HL         ; 1:11      1777* 1024x
-    add  HL, HL         ; 1:11      1777* 2048x
-    or    A             ; 1:4       1777*
-    sbc  HL, DE         ; 2:15      1777* HL - save
+    add  HL, DE         ; 1:11      1777* HL + save
     ld    D, B          ; 1:4       1777*
     ld    E, C          ; 1:4       1777*   
-    ld    B, D          ; 1:4       1783*
+    ld    B, D          ; 1:4       1783* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1783*
     ld    D, H          ; 1:4       1783*
     ld    E, L          ; 1:4       1783* save 1x
@@ -6630,7 +6644,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1783* HL - save
     ld    D, B          ; 1:4       1783*
     ld    E, C          ; 1:4       1783*   
-    ld    B, D          ; 1:4       1787*
+    ld    B, D          ; 1:4       1787* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1787*
     ld    D, H          ; 1:4       1787*
     ld    E, L          ; 1:4       1787* save 1x
@@ -6655,7 +6669,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1787* HL - save
     ld    D, B          ; 1:4       1787*
     ld    E, C          ; 1:4       1787*   
-    ld    B, D          ; 1:4       1789*
+    ld    B, D          ; 1:4       1789* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1789*
     ld    D, H          ; 1:4       1789*
     ld    E, L          ; 1:4       1789* save 1x
@@ -6663,13 +6677,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       1789* +
     add  HL, DE         ; 1:11      1789* + save 2x
     ex   DE, HL         ; 1:4       1789* +
-    add  HL, HL         ; 1:11      1789* 4x
-    add  HL, HL         ; 1:11      1789* 8x
-    add  HL, HL         ; 1:11      1789* 16x
-    add  HL, HL         ; 1:11      1789* 32x
-    add  HL, HL         ; 1:11      1789* 64x
-    add  HL, HL         ; 1:11      1789* 128x
-    add  HL, HL         ; 1:11      1789* 256x
+    rr    H             ; 2:8       1789*
+    rr    L             ; 2:8       1789*
+    ld    H, L          ; 1:4       1789*
+    ld    L, 0x00       ; 2:7       1789* 256x
     ex   DE, HL         ; 1:4       1789* +
     add  HL, DE         ; 1:11      1789* + save 256x
     ex   DE, HL         ; 1:4       1789* +
@@ -6679,8 +6690,8 @@ ORG 0x6000
     or    A             ; 1:4       1789*
     sbc  HL, DE         ; 2:15      1789* HL - save
     ld    D, B          ; 1:4       1789*
-    ld    E, C          ; 1:4       1789*   
-    ld    B, D          ; 1:4       1801*
+    ld    E, C          ; 1:4       1789*       
+    ld    B, D          ; 1:4       1801* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1801*
     ld    D, H          ; 1:4       1801*
     ld    E, L          ; 1:4       1801* save 1x
@@ -6705,8 +6716,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1801* 1024x
     add  HL, DE         ; 1:11      1801* HL + save
     ld    D, B          ; 1:4       1801*
-    ld    E, C          ; 1:4       1801*   
-    ld    B, D          ; 1:4       1811*
+    ld    E, C          ; 1:4       1801*       
+    ld    B, D          ; 1:4       1811* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1811*
     ld    D, H          ; 1:4       1811*
     ld    E, L          ; 1:4       1811* save 1x
@@ -6736,7 +6747,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1811*
     ld    E, C          ; 1:4       1811* 
    
-    ld    B, D          ; 1:4       1823*
+    ld    B, D          ; 1:4       1823* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1823*
     ld    D, H          ; 1:4       1823*
     ld    E, L          ; 1:4       1823* save 1x
@@ -6763,39 +6774,40 @@ ORG 0x6000
     or    A             ; 1:4       1823*
     sbc  HL, DE         ; 2:15      1823* HL - save
     ld    D, B          ; 1:4       1823*
-    ld    E, C          ; 1:4       1823*   
-    ld    B, D          ; 1:4       1831*
+    ld    E, C          ; 1:4       1823*       
+    ld    B, D          ; 1:4       1831* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1831*
     ld    D, H          ; 1:4       1831*
     ld    E, L          ; 1:4       1831* save 1x
     add  HL, HL         ; 1:11      1831* 2x
+    ex   DE, HL         ; 1:4       1831* +
+    add  HL, DE         ; 1:11      1831* + save 2x
+    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 4x
+    ex   DE, HL         ; 1:4       1831* +
+    add  HL, DE         ; 1:11      1831* + save 4x
+    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 8x
-    ex   DE, HL         ; 1:4       1831* +
-    add  HL, DE         ; 1:11      1831* + save 8x
-    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 16x
-    ex   DE, HL         ; 1:4       1831* +
-    add  HL, DE         ; 1:11      1831* + save 16x
-    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 32x
+    ex   DE, HL         ; 1:4       1831* +
+    add  HL, DE         ; 1:11      1831* + save 32x
+    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 64x
-    ex   DE, HL         ; 1:4       1831* +
-    add  HL, DE         ; 1:11      1831* + save 64x
-    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 128x
-    ex   DE, HL         ; 1:4       1831* +
-    add  HL, DE         ; 1:11      1831* + save 128x
-    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 256x
+    ex   DE, HL         ; 1:4       1831* +
+    add  HL, DE         ; 1:11      1831* + save 256x
+    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 512x
+    ex   DE, HL         ; 1:4       1831* +
+    add  HL, DE         ; 1:11      1831* + save 512x
+    ex   DE, HL         ; 1:4       1831* +
     add  HL, HL         ; 1:11      1831* 1024x
-    add  HL, HL         ; 1:11      1831* 2048x
-    or    A             ; 1:4       1831*
-    sbc  HL, DE         ; 2:15      1831* HL - save
+    add  HL, DE         ; 1:11      1831* HL + save
     ld    D, B          ; 1:4       1831*
     ld    E, C          ; 1:4       1831*   
-    ld    B, D          ; 1:4       1847*
+    ld    B, D          ; 1:4       1847* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1847*
     ld    D, H          ; 1:4       1847*
     ld    E, L          ; 1:4       1847* save 1x
@@ -6822,8 +6834,8 @@ ORG 0x6000
     or    A             ; 1:4       1847*
     sbc  HL, DE         ; 2:15      1847* HL - save
     ld    D, B          ; 1:4       1847*
-    ld    E, C          ; 1:4       1847*   
-    ld    B, D          ; 1:4       1861*
+    ld    E, C          ; 1:4       1847*       
+    ld    B, D          ; 1:4       1861* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1861*
     ld    D, H          ; 1:4       1861*
     ld    E, L          ; 1:4       1861* save 1x
@@ -6851,39 +6863,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1861* 1024x
     add  HL, DE         ; 1:11      1861* HL + save
     ld    D, B          ; 1:4       1861*
-    ld    E, C          ; 1:4       1861*   
-    ld    B, D          ; 1:4       1867*
+    ld    E, C          ; 1:4       1861*       
+    ld    B, D          ; 1:4       1867* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1867*
     ld    D, H          ; 1:4       1867*
     ld    E, L          ; 1:4       1867* save 1x
     add  HL, HL         ; 1:11      1867* 2x
+    ex   DE, HL         ; 1:4       1867* +
+    add  HL, DE         ; 1:11      1867* + save 2x
+    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 4x
-    ex   DE, HL         ; 1:4       1867* +
-    add  HL, DE         ; 1:11      1867* + save 4x
-    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 8x
+    ex   DE, HL         ; 1:4       1867* +
+    add  HL, DE         ; 1:11      1867* + save 8x
+    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 16x
-    ex   DE, HL         ; 1:4       1867* +
-    add  HL, DE         ; 1:11      1867* + save 16x
-    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 32x
-    ex   DE, HL         ; 1:4       1867* +
-    add  HL, DE         ; 1:11      1867* + save 32x
-    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 64x
+    ex   DE, HL         ; 1:4       1867* +
+    add  HL, DE         ; 1:11      1867* + save 64x
+    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 128x
-    ex   DE, HL         ; 1:4       1867* +
-    add  HL, DE         ; 1:11      1867* + save 128x
-    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 256x
+    ex   DE, HL         ; 1:4       1867* +
+    add  HL, DE         ; 1:11      1867* + save 256x
+    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 512x
+    ex   DE, HL         ; 1:4       1867* +
+    add  HL, DE         ; 1:11      1867* + save 512x
+    ex   DE, HL         ; 1:4       1867* +
     add  HL, HL         ; 1:11      1867* 1024x
-    add  HL, HL         ; 1:11      1867* 2048x
-    or    A             ; 1:4       1867*
-    sbc  HL, DE         ; 2:15      1867* HL - save
+    add  HL, DE         ; 1:11      1867* HL + save
     ld    D, B          ; 1:4       1867*
     ld    E, C          ; 1:4       1867*   
-    ld    B, D          ; 1:4       1871*
+    ld    B, D          ; 1:4       1871* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1871*
     ld    D, H          ; 1:4       1871*
     ld    E, L          ; 1:4       1871* save 1x
@@ -6910,8 +6923,8 @@ ORG 0x6000
     or    A             ; 1:4       1871*
     sbc  HL, DE         ; 2:15      1871* HL - save
     ld    D, B          ; 1:4       1871*
-    ld    E, C          ; 1:4       1871*   
-    ld    B, D          ; 1:4       1873*
+    ld    E, C          ; 1:4       1871*       
+    ld    B, D          ; 1:4       1873* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1873*
     ld    D, H          ; 1:4       1873*
     ld    E, L          ; 1:4       1873* save 1x
@@ -6939,39 +6952,40 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1873* 1024x
     add  HL, DE         ; 1:11      1873* HL + save
     ld    D, B          ; 1:4       1873*
-    ld    E, C          ; 1:4       1873*   
-    ld    B, D          ; 1:4       1877*
+    ld    E, C          ; 1:4       1873*       
+    ld    B, D          ; 1:4       1877* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1877*
     ld    D, H          ; 1:4       1877*
     ld    E, L          ; 1:4       1877* save 1x
     add  HL, HL         ; 1:11      1877* 2x
-    ex   DE, HL         ; 1:4       1877* +
-    add  HL, DE         ; 1:11      1877* + save 2x
-    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 4x
+    ex   DE, HL         ; 1:4       1877* +
+    add  HL, DE         ; 1:11      1877* + save 4x
+    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 8x
-    ex   DE, HL         ; 1:4       1877* +
-    add  HL, DE         ; 1:11      1877* + save 8x
-    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 16x
+    ex   DE, HL         ; 1:4       1877* +
+    add  HL, DE         ; 1:11      1877* + save 16x
+    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 32x
-    ex   DE, HL         ; 1:4       1877* +
-    add  HL, DE         ; 1:11      1877* + save 32x
-    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 64x
+    ex   DE, HL         ; 1:4       1877* +
+    add  HL, DE         ; 1:11      1877* + save 64x
+    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 128x
-    ex   DE, HL         ; 1:4       1877* +
-    add  HL, DE         ; 1:11      1877* + save 128x
-    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 256x
+    ex   DE, HL         ; 1:4       1877* +
+    add  HL, DE         ; 1:11      1877* + save 256x
+    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 512x
+    ex   DE, HL         ; 1:4       1877* +
+    add  HL, DE         ; 1:11      1877* + save 512x
+    ex   DE, HL         ; 1:4       1877* +
     add  HL, HL         ; 1:11      1877* 1024x
-    add  HL, HL         ; 1:11      1877* 2048x
-    or    A             ; 1:4       1877*
-    sbc  HL, DE         ; 2:15      1877* HL - save
+    add  HL, DE         ; 1:11      1877* HL + save
     ld    D, B          ; 1:4       1877*
     ld    E, C          ; 1:4       1877*   
-    ld    B, D          ; 1:4       1879*
+    ld    B, D          ; 1:4       1879* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1879*
     ld    D, H          ; 1:4       1879*
     ld    E, L          ; 1:4       1879* save 1x
@@ -6998,8 +7012,8 @@ ORG 0x6000
     or    A             ; 1:4       1879*
     sbc  HL, DE         ; 2:15      1879* HL - save
     ld    D, B          ; 1:4       1879*
-    ld    E, C          ; 1:4       1879*   
-    ld    B, D          ; 1:4       1889*
+    ld    E, C          ; 1:4       1879*       
+    ld    B, D          ; 1:4       1889* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1889*
     ld    D, H          ; 1:4       1889*
     ld    E, L          ; 1:4       1889* save 1x
@@ -7029,7 +7043,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1889*
     ld    E, C          ; 1:4       1889* 
    
-    ld    B, D          ; 1:4       1901*
+    ld    B, D          ; 1:4       1901* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1901*
     ld    D, H          ; 1:4       1901*
     ld    E, L          ; 1:4       1901* save 1x
@@ -7057,7 +7071,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1901* HL - save
     ld    D, B          ; 1:4       1901*
     ld    E, C          ; 1:4       1901*   
-    ld    B, D          ; 1:4       1907*
+    ld    B, D          ; 1:4       1907* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1907*
     ld    D, H          ; 1:4       1907*
     ld    E, L          ; 1:4       1907* save 1x
@@ -7085,7 +7099,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1907* HL - save
     ld    D, B          ; 1:4       1907*
     ld    E, C          ; 1:4       1907*   
-    ld    B, D          ; 1:4       1913*
+    ld    B, D          ; 1:4       1913* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1913*
     ld    D, H          ; 1:4       1913*
     ld    E, L          ; 1:4       1913* save 1x
@@ -7112,70 +7126,72 @@ ORG 0x6000
     or    A             ; 1:4       1913*
     sbc  HL, DE         ; 2:15      1913* HL - save
     ld    D, B          ; 1:4       1913*
-    ld    E, C          ; 1:4       1913*   
-    ld    B, D          ; 1:4       1931*
+    ld    E, C          ; 1:4       1913*       
+    ld    B, D          ; 1:4       1931* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1931*
     ld    D, H          ; 1:4       1931*
     ld    E, L          ; 1:4       1931* save 1x
     add  HL, HL         ; 1:11      1931* 2x
+    ex   DE, HL         ; 1:4       1931* +
+    add  HL, DE         ; 1:11      1931* + save 2x
+    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 4x
-    ex   DE, HL         ; 1:4       1931* +
-    add  HL, DE         ; 1:11      1931* + save 4x
-    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 8x
+    ex   DE, HL         ; 1:4       1931* +
+    add  HL, DE         ; 1:11      1931* + save 8x
+    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 16x
-    ex   DE, HL         ; 1:4       1931* +
-    add  HL, DE         ; 1:11      1931* + save 16x
-    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 32x
-    ex   DE, HL         ; 1:4       1931* +
-    add  HL, DE         ; 1:11      1931* + save 32x
-    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 64x
-    ex   DE, HL         ; 1:4       1931* +
-    add  HL, DE         ; 1:11      1931* + save 64x
-    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 128x
+    ex   DE, HL         ; 1:4       1931* +
+    add  HL, DE         ; 1:11      1931* + save 128x
+    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 256x
+    ex   DE, HL         ; 1:4       1931* +
+    add  HL, DE         ; 1:11      1931* + save 256x
+    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 512x
+    ex   DE, HL         ; 1:4       1931* +
+    add  HL, DE         ; 1:11      1931* + save 512x
+    ex   DE, HL         ; 1:4       1931* +
     add  HL, HL         ; 1:11      1931* 1024x
-    add  HL, HL         ; 1:11      1931* 2048x
-    or    A             ; 1:4       1931*
-    sbc  HL, DE         ; 2:15      1931* HL - save
+    add  HL, DE         ; 1:11      1931* HL + save
     ld    D, B          ; 1:4       1931*
-    ld    E, C          ; 1:4       1931*   
-    ld    B, D          ; 1:4       1933*
+    ld    E, C          ; 1:4       1931*       
+    ld    B, D          ; 1:4       1933* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1933*
     ld    D, H          ; 1:4       1933*
     ld    E, L          ; 1:4       1933* save 1x
     add  HL, HL         ; 1:11      1933* 2x
-    ex   DE, HL         ; 1:4       1933* +
-    add  HL, DE         ; 1:11      1933* + save 2x
-    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 4x
+    ex   DE, HL         ; 1:4       1933* +
+    add  HL, DE         ; 1:11      1933* + save 4x
+    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 8x
+    ex   DE, HL         ; 1:4       1933* +
+    add  HL, DE         ; 1:11      1933* + save 8x
+    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 16x
-    ex   DE, HL         ; 1:4       1933* +
-    add  HL, DE         ; 1:11      1933* + save 16x
-    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 32x
-    ex   DE, HL         ; 1:4       1933* +
-    add  HL, DE         ; 1:11      1933* + save 32x
-    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 64x
-    ex   DE, HL         ; 1:4       1933* +
-    add  HL, DE         ; 1:11      1933* + save 64x
-    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 128x
+    ex   DE, HL         ; 1:4       1933* +
+    add  HL, DE         ; 1:11      1933* + save 128x
+    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 256x
+    ex   DE, HL         ; 1:4       1933* +
+    add  HL, DE         ; 1:11      1933* + save 256x
+    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 512x
+    ex   DE, HL         ; 1:4       1933* +
+    add  HL, DE         ; 1:11      1933* + save 512x
+    ex   DE, HL         ; 1:4       1933* +
     add  HL, HL         ; 1:11      1933* 1024x
-    add  HL, HL         ; 1:11      1933* 2048x
-    or    A             ; 1:4       1933*
-    sbc  HL, DE         ; 2:15      1933* HL - save
+    add  HL, DE         ; 1:11      1933* HL + save
     ld    D, B          ; 1:4       1933*
     ld    E, C          ; 1:4       1933*   
-    ld    B, D          ; 1:4       1949*
+    ld    B, D          ; 1:4       1949* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1949*
     ld    D, H          ; 1:4       1949*
     ld    E, L          ; 1:4       1949* save 1x
@@ -7203,7 +7219,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1949* HL - save
     ld    D, B          ; 1:4       1949*
     ld    E, C          ; 1:4       1949*   
-    ld    B, D          ; 1:4       1951*
+    ld    B, D          ; 1:4       1951* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1951*
     ld    D, H          ; 1:4       1951*
     ld    E, L          ; 1:4       1951* save 1x
@@ -7228,7 +7244,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1951* HL - save
     ld    D, B          ; 1:4       1951*
     ld    E, C          ; 1:4       1951*   
-    ld    B, D          ; 1:4       1973*
+    ld    B, D          ; 1:4       1973* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1973*
     ld    D, H          ; 1:4       1973*
     ld    E, L          ; 1:4       1973* save 1x
@@ -7256,7 +7272,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1973* HL - save
     ld    D, B          ; 1:4       1973*
     ld    E, C          ; 1:4       1973*   
-    ld    B, D          ; 1:4       1979*
+    ld    B, D          ; 1:4       1979* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1979*
     ld    D, H          ; 1:4       1979*
     ld    E, L          ; 1:4       1979* save 1x
@@ -7280,71 +7296,73 @@ ORG 0x6000
     or    A             ; 1:4       1979*
     sbc  HL, DE         ; 2:15      1979* HL - save
     ld    D, B          ; 1:4       1979*
-    ld    E, C          ; 1:4       1979*   
-    ld    B, D          ; 1:4       1987*
+    ld    E, C          ; 1:4       1979*       
+    ld    B, D          ; 1:4       1987* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1987*
     ld    D, H          ; 1:4       1987*
     ld    E, L          ; 1:4       1987* save 1x
     add  HL, HL         ; 1:11      1987* 2x
+    ex   DE, HL         ; 1:4       1987* +
+    add  HL, DE         ; 1:11      1987* + save 2x
+    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 4x
-    ex   DE, HL         ; 1:4       1987* +
-    add  HL, DE         ; 1:11      1987* + save 4x
-    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 8x
-    ex   DE, HL         ; 1:4       1987* +
-    add  HL, DE         ; 1:11      1987* + save 8x
-    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 16x
-    ex   DE, HL         ; 1:4       1987* +
-    add  HL, DE         ; 1:11      1987* + save 16x
-    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 32x
-    ex   DE, HL         ; 1:4       1987* +
-    add  HL, DE         ; 1:11      1987* + save 32x
-    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 64x
+    ex   DE, HL         ; 1:4       1987* +
+    add  HL, DE         ; 1:11      1987* + save 64x
+    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 128x
+    ex   DE, HL         ; 1:4       1987* +
+    add  HL, DE         ; 1:11      1987* + save 128x
+    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 256x
+    ex   DE, HL         ; 1:4       1987* +
+    add  HL, DE         ; 1:11      1987* + save 256x
+    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 512x
+    ex   DE, HL         ; 1:4       1987* +
+    add  HL, DE         ; 1:11      1987* + save 512x
+    ex   DE, HL         ; 1:4       1987* +
     add  HL, HL         ; 1:11      1987* 1024x
-    add  HL, HL         ; 1:11      1987* 2048x
-    or    A             ; 1:4       1987*
-    sbc  HL, DE         ; 2:15      1987* HL - save
+    add  HL, DE         ; 1:11      1987* HL + save
     ld    D, B          ; 1:4       1987*
     ld    E, C          ; 1:4       1987* 
-   
-    ld    B, D          ; 1:4       1993*
+       
+    ld    B, D          ; 1:4       1993* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       1993*
     ld    D, H          ; 1:4       1993*
     ld    E, L          ; 1:4       1993* save 1x
     add  HL, HL         ; 1:11      1993* 2x
-    ex   DE, HL         ; 1:4       1993* +
-    add  HL, DE         ; 1:11      1993* + save 2x
-    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 4x
-    ex   DE, HL         ; 1:4       1993* +
-    add  HL, DE         ; 1:11      1993* + save 4x
-    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 8x
+    ex   DE, HL         ; 1:4       1993* +
+    add  HL, DE         ; 1:11      1993* + save 8x
+    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 16x
-    ex   DE, HL         ; 1:4       1993* +
-    add  HL, DE         ; 1:11      1993* + save 16x
-    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 32x
-    ex   DE, HL         ; 1:4       1993* +
-    add  HL, DE         ; 1:11      1993* + save 32x
-    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 64x
+    ex   DE, HL         ; 1:4       1993* +
+    add  HL, DE         ; 1:11      1993* + save 64x
+    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 128x
+    ex   DE, HL         ; 1:4       1993* +
+    add  HL, DE         ; 1:11      1993* + save 128x
+    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 256x
+    ex   DE, HL         ; 1:4       1993* +
+    add  HL, DE         ; 1:11      1993* + save 256x
+    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 512x
+    ex   DE, HL         ; 1:4       1993* +
+    add  HL, DE         ; 1:11      1993* + save 512x
+    ex   DE, HL         ; 1:4       1993* +
     add  HL, HL         ; 1:11      1993* 1024x
-    add  HL, HL         ; 1:11      1993* 2048x
-    or    A             ; 1:4       1993*
-    sbc  HL, DE         ; 2:15      1993* HL - save
+    add  HL, DE         ; 1:11      1993* HL + save
     ld    D, B          ; 1:4       1993*
     ld    E, C          ; 1:4       1993*   
-    ld    B, D          ; 1:4       1997*
+    ld    B, D          ; 1:4       1997* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1997*
     ld    D, H          ; 1:4       1997*
     ld    E, L          ; 1:4       1997* save 1x
@@ -7372,7 +7390,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1997* HL - save
     ld    D, B          ; 1:4       1997*
     ld    E, C          ; 1:4       1997*   
-    ld    B, D          ; 1:4       1999*
+    ld    B, D          ; 1:4       1999* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       1999*
     ld    D, H          ; 1:4       1999*
     ld    E, L          ; 1:4       1999* save 1x
@@ -7397,7 +7415,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1999* HL - save
     ld    D, B          ; 1:4       1999*
     ld    E, C          ; 1:4       1999*   
-    ld    B, D          ; 1:4       2003*
+    ld    B, D          ; 1:4       2003* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2003*
     ld    D, H          ; 1:4       2003*
     ld    E, L          ; 1:4       2003* save 1x
@@ -7425,7 +7443,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2003* HL - save
     ld    D, B          ; 1:4       2003*
     ld    E, C          ; 1:4       2003*   
-    ld    B, D          ; 1:4       2011*
+    ld    B, D          ; 1:4       2011* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2011*
     ld    D, H          ; 1:4       2011*
     ld    E, L          ; 1:4       2011* save 1x
@@ -7449,39 +7467,40 @@ ORG 0x6000
     or    A             ; 1:4       2011*
     sbc  HL, DE         ; 2:15      2011* HL - save
     ld    D, B          ; 1:4       2011*
-    ld    E, C          ; 1:4       2011*   
-    ld    B, D          ; 1:4       2017*
+    ld    E, C          ; 1:4       2011*       
+    ld    B, D          ; 1:4       2017* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2017*
     ld    D, H          ; 1:4       2017*
     ld    E, L          ; 1:4       2017* save 1x
     add  HL, HL         ; 1:11      2017* 2x
-    ex   DE, HL         ; 1:4       2017* +
-    add  HL, DE         ; 1:11      2017* + save 2x
-    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 4x
-    ex   DE, HL         ; 1:4       2017* +
-    add  HL, DE         ; 1:11      2017* + save 4x
-    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 8x
-    ex   DE, HL         ; 1:4       2017* +
-    add  HL, DE         ; 1:11      2017* + save 8x
-    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 16x
-    ex   DE, HL         ; 1:4       2017* +
-    add  HL, DE         ; 1:11      2017* + save 16x
-    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 32x
+    ex   DE, HL         ; 1:4       2017* +
+    add  HL, DE         ; 1:11      2017* + save 32x
+    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 64x
+    ex   DE, HL         ; 1:4       2017* +
+    add  HL, DE         ; 1:11      2017* + save 64x
+    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 128x
+    ex   DE, HL         ; 1:4       2017* +
+    add  HL, DE         ; 1:11      2017* + save 128x
+    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 256x
+    ex   DE, HL         ; 1:4       2017* +
+    add  HL, DE         ; 1:11      2017* + save 256x
+    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 512x
+    ex   DE, HL         ; 1:4       2017* +
+    add  HL, DE         ; 1:11      2017* + save 512x
+    ex   DE, HL         ; 1:4       2017* +
     add  HL, HL         ; 1:11      2017* 1024x
-    add  HL, HL         ; 1:11      2017* 2048x
-    or    A             ; 1:4       2017*
-    sbc  HL, DE         ; 2:15      2017* HL - save
+    add  HL, DE         ; 1:11      2017* HL + save
     ld    D, B          ; 1:4       2017*
     ld    E, C          ; 1:4       2017*   
-    ld    B, D          ; 1:4       2027*
+    ld    B, D          ; 1:4       2027* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2027*
     ld    D, H          ; 1:4       2027*
     ld    E, L          ; 1:4       2027* save 1x
@@ -7495,18 +7514,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       2027* +
     add  HL, DE         ; 1:11      2027* + save 16x
     ex   DE, HL         ; 1:4       2027* +
-    add  HL, HL         ; 1:11      2027* 32x
-    add  HL, HL         ; 1:11      2027* 64x
-    add  HL, HL         ; 1:11      2027* 128x
-    add  HL, HL         ; 1:11      2027* 256x
-    add  HL, HL         ; 1:11      2027* 512x
-    add  HL, HL         ; 1:11      2027* 1024x
-    add  HL, HL         ; 1:11      2027* 2048x
+    rr    H             ; 2:8       2027*
+    rr    L             ; 2:8       2027*
+    ld    H, L          ; 1:4       2027*
+    ld    L, 0x00       ; 2:7       2027* 2048x
     or    A             ; 1:4       2027*
     sbc  HL, DE         ; 2:15      2027* HL - save
     ld    D, B          ; 1:4       2027*
     ld    E, C          ; 1:4       2027*   
-    ld    B, D          ; 1:4       2029*
+    ld    B, D          ; 1:4       2029* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2029*
     ld    D, H          ; 1:4       2029*
     ld    E, L          ; 1:4       2029* save 1x
@@ -7520,23 +7536,20 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       2029* +
     add  HL, DE         ; 1:11      2029* + save 16x
     ex   DE, HL         ; 1:4       2029* +
-    add  HL, HL         ; 1:11      2029* 32x
-    add  HL, HL         ; 1:11      2029* 64x
-    add  HL, HL         ; 1:11      2029* 128x
-    add  HL, HL         ; 1:11      2029* 256x
-    add  HL, HL         ; 1:11      2029* 512x
-    add  HL, HL         ; 1:11      2029* 1024x
-    add  HL, HL         ; 1:11      2029* 2048x
+    rr    H             ; 2:8       2029*
+    rr    L             ; 2:8       2029*
+    ld    H, L          ; 1:4       2029*
+    ld    L, 0x00       ; 2:7       2029* 2048x
     or    A             ; 1:4       2029*
     sbc  HL, DE         ; 2:15      2029* HL - save
     ld    D, B          ; 1:4       2029*
     ld    E, C          ; 1:4       2029*   
-    ld    B, H          ; 1:4       2039*
+    ld    B, H          ; 1:4       2039* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       2039* save 1x
     add  HL, HL         ; 1:11      2039* 2x
     add  HL, HL         ; 1:11      2039* 4x
     add  HL, HL         ; 1:11      2039* 8x
-    add   A, L          ; 1:4       2039* +
+    add   A, L          ; 1:4       2039*
     ld    C, A          ; 1:4       2039* +
     ld    A, B          ; 1:4       2039* +
     adc   A, H          ; 1:4       2039* +
@@ -7545,7 +7558,7 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       2039* 2048x
     or    A             ; 1:4       2039*
     sbc  HL, BC         ; 2:15      2039* HL - save   
-    ld    B, H          ; 1:4       2053*
+    ld    B, H          ; 1:4       2053* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       2053* save 1x
     add  HL, HL         ; 1:11      2053* 2x
     add  HL, HL         ; 1:11      2053* 4x
@@ -7558,8 +7571,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       2053* 1024x
     add  HL, HL         ; 1:11      2053* 2048x
     add  HL, BC         ; 1:11      2053* HL + save 
-   
-    ld    B, D          ; 1:4       2063*
+       
+    ld    B, D          ; 1:4       2063* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2063*
     ld    D, H          ; 1:4       2063*
     ld    E, L          ; 1:4       2063* save 1x
@@ -7579,8 +7592,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       2063* 2048x
     add  HL, DE         ; 1:11      2063* HL + save
     ld    D, B          ; 1:4       2063*
-    ld    E, C          ; 1:4       2063*   
-    ld    B, D          ; 1:4       2069*
+    ld    E, C          ; 1:4       2063*       
+    ld    B, D          ; 1:4       2069* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2069*
     ld    D, H          ; 1:4       2069*
     ld    E, L          ; 1:4       2069* save 1x
@@ -7594,17 +7607,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       2069* +
     add  HL, DE         ; 1:11      2069* + save 16x
     ex   DE, HL         ; 1:4       2069* +
-    add  HL, HL         ; 1:11      2069* 32x
-    add  HL, HL         ; 1:11      2069* 64x
-    add  HL, HL         ; 1:11      2069* 128x
-    add  HL, HL         ; 1:11      2069* 256x
-    add  HL, HL         ; 1:11      2069* 512x
-    add  HL, HL         ; 1:11      2069* 1024x
-    add  HL, HL         ; 1:11      2069* 2048x
+    rr    H             ; 2:8       2069*
+    rr    L             ; 2:8       2069*
+    ld    H, L          ; 1:4       2069*
+    ld    L, 0x00       ; 2:7       2069* 2048x
     add  HL, DE         ; 1:11      2069* HL + save
     ld    D, B          ; 1:4       2069*
     ld    E, C          ; 1:4       2069*   
-    ld    B, H          ; 1:4       2081*
+    ld    B, H          ; 1:4       2081* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       2081* save 1x
     add  HL, HL         ; 1:11      2081* 2x
     add  HL, HL         ; 1:11      2081* 4x
@@ -7622,8 +7632,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2081* 512x
     add  HL, HL         ; 1:11      2081* 1024x
     add  HL, HL         ; 1:11      2081* 2048x
-    add  HL, BC         ; 1:11      2081* HL + save   
-    ld    B, D          ; 1:4       2083*
+    add  HL, BC         ; 1:11      2081* HL + save       
+    ld    B, D          ; 1:4       2083* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2083*
     ld    D, H          ; 1:4       2083*
     ld    E, L          ; 1:4       2083* save 1x
@@ -7646,8 +7656,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2083* 2048x
     add  HL, DE         ; 1:11      2083* HL + save
     ld    D, B          ; 1:4       2083*
-    ld    E, C          ; 1:4       2083*   
-    ld    B, D          ; 1:4       2087*
+    ld    E, C          ; 1:4       2083*       
+    ld    B, D          ; 1:4       2087* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2087*
     ld    D, H          ; 1:4       2087*
     ld    E, L          ; 1:4       2087* save 1x
@@ -7673,8 +7683,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2087* 2048x
     add  HL, DE         ; 1:11      2087* HL + save
     ld    D, B          ; 1:4       2087*
-    ld    E, C          ; 1:4       2087*   
-    ld    B, D          ; 1:4       2089*
+    ld    E, C          ; 1:4       2087*       
+    ld    B, D          ; 1:4       2089* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2089*
     ld    D, H          ; 1:4       2089*
     ld    E, L          ; 1:4       2089* save 1x
@@ -7697,8 +7707,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2089* 2048x
     add  HL, DE         ; 1:11      2089* HL + save
     ld    D, B          ; 1:4       2089*
-    ld    E, C          ; 1:4       2089*   
-    ld    B, D          ; 1:4       2099*
+    ld    E, C          ; 1:4       2089*       
+    ld    B, D          ; 1:4       2099* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2099*
     ld    D, H          ; 1:4       2099*
     ld    E, L          ; 1:4       2099* save 1x
@@ -7724,8 +7734,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2099* 2048x
     add  HL, DE         ; 1:11      2099* HL + save
     ld    D, B          ; 1:4       2099*
-    ld    E, C          ; 1:4       2099*   
-    ld    B, D          ; 1:4       2111*
+    ld    E, C          ; 1:4       2099*       
+    ld    B, D          ; 1:4       2111* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2111*
     ld    D, H          ; 1:4       2111*
     ld    E, L          ; 1:4       2111* save 1x
@@ -7758,7 +7768,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2111* HL + save
     ld    D, B          ; 1:4       2111*
     ld    E, C          ; 1:4       2111*   
-    ld    B, H          ; 1:4       2113*
+    ld    B, H          ; 1:4       2113* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       2113* save 1x
     add  HL, HL         ; 1:11      2113* 2x
     add  HL, HL         ; 1:11      2113* 4x
@@ -7776,8 +7786,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2113* 512x
     add  HL, HL         ; 1:11      2113* 1024x
     add  HL, HL         ; 1:11      2113* 2048x
-    add  HL, BC         ; 1:11      2113* HL + save   
-    ld    B, D          ; 1:4       2129*
+    add  HL, BC         ; 1:11      2113* HL + save       
+    ld    B, D          ; 1:4       2129* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2129*
     ld    D, H          ; 1:4       2129*
     ld    E, L          ; 1:4       2129* save 1x
@@ -7801,8 +7811,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2129* HL + save
     ld    D, B          ; 1:4       2129*
     ld    E, C          ; 1:4       2129* 
-   
-    ld    B, D          ; 1:4       2131*
+       
+    ld    B, D          ; 1:4       2131* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2131*
     ld    D, H          ; 1:4       2131*
     ld    E, L          ; 1:4       2131* save 1x
@@ -7828,8 +7838,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2131* 2048x
     add  HL, DE         ; 1:11      2131* HL + save
     ld    D, B          ; 1:4       2131*
-    ld    E, C          ; 1:4       2131*   
-    ld    B, D          ; 1:4       2137*
+    ld    E, C          ; 1:4       2131*       
+    ld    B, D          ; 1:4       2137* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2137*
     ld    D, H          ; 1:4       2137*
     ld    E, L          ; 1:4       2137* save 1x
@@ -7855,8 +7865,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2137* 2048x
     add  HL, DE         ; 1:11      2137* HL + save
     ld    D, B          ; 1:4       2137*
-    ld    E, C          ; 1:4       2137*   
-    ld    B, D          ; 1:4       2141*
+    ld    E, C          ; 1:4       2137*       
+    ld    B, D          ; 1:4       2141* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2141*
     ld    D, H          ; 1:4       2141*
     ld    E, L          ; 1:4       2141* save 1x
@@ -7885,8 +7895,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2141* 2048x
     add  HL, DE         ; 1:11      2141* HL + save
     ld    D, B          ; 1:4       2141*
-    ld    E, C          ; 1:4       2141*   
-    ld    B, D          ; 1:4       2143*
+    ld    E, C          ; 1:4       2141*       
+    ld    B, D          ; 1:4       2143* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2143*
     ld    D, H          ; 1:4       2143*
     ld    E, L          ; 1:4       2143* save 1x
@@ -7918,8 +7928,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2143* 2048x
     add  HL, DE         ; 1:11      2143* HL + save
     ld    D, B          ; 1:4       2143*
-    ld    E, C          ; 1:4       2143*   
-    ld    B, D          ; 1:4       2153*
+    ld    E, C          ; 1:4       2143*       
+    ld    B, D          ; 1:4       2153* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2153*
     ld    D, H          ; 1:4       2153*
     ld    E, L          ; 1:4       2153* save 1x
@@ -7945,8 +7955,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2153* 2048x
     add  HL, DE         ; 1:11      2153* HL + save
     ld    D, B          ; 1:4       2153*
-    ld    E, C          ; 1:4       2153*   
-    ld    B, D          ; 1:4       2161*
+    ld    E, C          ; 1:4       2153*       
+    ld    B, D          ; 1:4       2161* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2161*
     ld    D, H          ; 1:4       2161*
     ld    E, L          ; 1:4       2161* save 1x
@@ -7972,8 +7982,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2161* 2048x
     add  HL, DE         ; 1:11      2161* HL + save
     ld    D, B          ; 1:4       2161*
-    ld    E, C          ; 1:4       2161*   
-    ld    B, D          ; 1:4       2179*
+    ld    E, C          ; 1:4       2161*       
+    ld    B, D          ; 1:4       2179* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2179*
     ld    D, H          ; 1:4       2179*
     ld    E, L          ; 1:4       2179* save 1x
@@ -7996,8 +8006,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2179* 2048x
     add  HL, DE         ; 1:11      2179* HL + save
     ld    D, B          ; 1:4       2179*
-    ld    E, C          ; 1:4       2179*   
-    ld    B, D          ; 1:4       2203*
+    ld    E, C          ; 1:4       2179*       
+    ld    B, D          ; 1:4       2203* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2203*
     ld    D, H          ; 1:4       2203*
     ld    E, L          ; 1:4       2203* save 1x
@@ -8026,8 +8036,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2203* 2048x
     add  HL, DE         ; 1:11      2203* HL + save
     ld    D, B          ; 1:4       2203*
-    ld    E, C          ; 1:4       2203*   
-    ld    B, D          ; 1:4       2207*
+    ld    E, C          ; 1:4       2203*       
+    ld    B, D          ; 1:4       2207* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2207*
     ld    D, H          ; 1:4       2207*
     ld    E, L          ; 1:4       2207* save 1x
@@ -8059,8 +8069,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2207* 2048x
     add  HL, DE         ; 1:11      2207* HL + save
     ld    D, B          ; 1:4       2207*
-    ld    E, C          ; 1:4       2207*   
-    ld    B, D          ; 1:4       2213*
+    ld    E, C          ; 1:4       2207*       
+    ld    B, D          ; 1:4       2213* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2213*
     ld    D, H          ; 1:4       2213*
     ld    E, L          ; 1:4       2213* save 1x
@@ -8087,8 +8097,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2213* HL + save
     ld    D, B          ; 1:4       2213*
     ld    E, C          ; 1:4       2213* 
-   
-    ld    B, D          ; 1:4       2221*
+       
+    ld    B, D          ; 1:4       2221* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2221*
     ld    D, H          ; 1:4       2221*
     ld    E, L          ; 1:4       2221* save 1x
@@ -8117,8 +8127,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2221* 2048x
     add  HL, DE         ; 1:11      2221* HL + save
     ld    D, B          ; 1:4       2221*
-    ld    E, C          ; 1:4       2221*   
-    ld    B, D          ; 1:4       2237*
+    ld    E, C          ; 1:4       2221*       
+    ld    B, D          ; 1:4       2237* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2237*
     ld    D, H          ; 1:4       2237*
     ld    E, L          ; 1:4       2237* save 1x
@@ -8151,7 +8161,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2237* HL + save
     ld    D, B          ; 1:4       2237*
     ld    E, C          ; 1:4       2237*   
-    ld    B, D          ; 1:4       2239*
+    ld    B, D          ; 1:4       2239* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2239*
     ld    D, H          ; 1:4       2239*
     ld    E, L          ; 1:4       2239* save 1x
@@ -8182,8 +8192,8 @@ ORG 0x6000
     or    A             ; 1:4       2239*
     sbc  HL, DE         ; 2:15      2239* HL - save
     ld    D, B          ; 1:4       2239*
-    ld    E, C          ; 1:4       2239*   
-    ld    B, D          ; 1:4       2243*
+    ld    E, C          ; 1:4       2239*       
+    ld    B, D          ; 1:4       2243* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2243*
     ld    D, H          ; 1:4       2243*
     ld    E, L          ; 1:4       2243* save 1x
@@ -8209,8 +8219,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2243* 2048x
     add  HL, DE         ; 1:11      2243* HL + save
     ld    D, B          ; 1:4       2243*
-    ld    E, C          ; 1:4       2243*   
-    ld    B, D          ; 1:4       2251*
+    ld    E, C          ; 1:4       2243*       
+    ld    B, D          ; 1:4       2251* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2251*
     ld    D, H          ; 1:4       2251*
     ld    E, L          ; 1:4       2251* save 1x
@@ -8239,8 +8249,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2251* 2048x
     add  HL, DE         ; 1:11      2251* HL + save
     ld    D, B          ; 1:4       2251*
-    ld    E, C          ; 1:4       2251*   
-    ld    B, D          ; 1:4       2267*
+    ld    E, C          ; 1:4       2251*       
+    ld    B, D          ; 1:4       2267* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2267*
     ld    D, H          ; 1:4       2267*
     ld    E, L          ; 1:4       2267* save 1x
@@ -8272,8 +8282,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2267* 2048x
     add  HL, DE         ; 1:11      2267* HL + save
     ld    D, B          ; 1:4       2267*
-    ld    E, C          ; 1:4       2267*   
-    ld    B, D          ; 1:4       2269*
+    ld    E, C          ; 1:4       2267*       
+    ld    B, D          ; 1:4       2269* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2269*
     ld    D, H          ; 1:4       2269*
     ld    E, L          ; 1:4       2269* save 1x
@@ -8305,8 +8315,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2269* 2048x
     add  HL, DE         ; 1:11      2269* HL + save
     ld    D, B          ; 1:4       2269*
-    ld    E, C          ; 1:4       2269*   
-    ld    B, D          ; 1:4       2273*
+    ld    E, C          ; 1:4       2269*       
+    ld    B, D          ; 1:4       2273* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2273*
     ld    D, H          ; 1:4       2273*
     ld    E, L          ; 1:4       2273* save 1x
@@ -8332,8 +8342,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2273* 2048x
     add  HL, DE         ; 1:11      2273* HL + save
     ld    D, B          ; 1:4       2273*
-    ld    E, C          ; 1:4       2273*   
-    ld    B, D          ; 1:4       2281*
+    ld    E, C          ; 1:4       2273*       
+    ld    B, D          ; 1:4       2281* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2281*
     ld    D, H          ; 1:4       2281*
     ld    E, L          ; 1:4       2281* save 1x
@@ -8363,7 +8373,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2281* HL + save
     ld    D, B          ; 1:4       2281*
     ld    E, C          ; 1:4       2281*   
-    ld    B, D          ; 1:4       2287*
+    ld    B, D          ; 1:4       2287* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2287*
     ld    D, H          ; 1:4       2287*
     ld    E, L          ; 1:4       2287* save 1x
@@ -8395,8 +8405,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2287* HL - save
     ld    D, B          ; 1:4       2287*
     ld    E, C          ; 1:4       2287* 
-   
-    ld    B, D          ; 1:4       2293*
+       
+    ld    B, D          ; 1:4       2293* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2293*
     ld    D, H          ; 1:4       2293*
     ld    E, L          ; 1:4       2293* save 1x
@@ -8428,8 +8438,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2293* 2048x
     add  HL, DE         ; 1:11      2293* HL + save
     ld    D, B          ; 1:4       2293*
-    ld    E, C          ; 1:4       2293*   
-    ld    B, D          ; 1:4       2297*
+    ld    E, C          ; 1:4       2293*       
+    ld    B, D          ; 1:4       2297* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2297*
     ld    D, H          ; 1:4       2297*
     ld    E, L          ; 1:4       2297* save 1x
@@ -8461,8 +8471,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2297* 2048x
     add  HL, DE         ; 1:11      2297* HL + save
     ld    D, B          ; 1:4       2297*
-    ld    E, C          ; 1:4       2297*   
-    ld    B, D          ; 1:4       2309*
+    ld    E, C          ; 1:4       2297*       
+    ld    B, D          ; 1:4       2309* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2309*
     ld    D, H          ; 1:4       2309*
     ld    E, L          ; 1:4       2309* save 1x
@@ -8485,8 +8495,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2309* 2048x
     add  HL, DE         ; 1:11      2309* HL + save
     ld    D, B          ; 1:4       2309*
-    ld    E, C          ; 1:4       2309*   
-    ld    B, D          ; 1:4       2311*
+    ld    E, C          ; 1:4       2309*       
+    ld    B, D          ; 1:4       2311* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2311*
     ld    D, H          ; 1:4       2311*
     ld    E, L          ; 1:4       2311* save 1x
@@ -8512,8 +8522,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2311* 2048x
     add  HL, DE         ; 1:11      2311* HL + save
     ld    D, B          ; 1:4       2311*
-    ld    E, C          ; 1:4       2311*   
-    ld    B, D          ; 1:4       2333*
+    ld    E, C          ; 1:4       2311*       
+    ld    B, D          ; 1:4       2333* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2333*
     ld    D, H          ; 1:4       2333*
     ld    E, L          ; 1:4       2333* save 1x
@@ -8542,8 +8552,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2333* 2048x
     add  HL, DE         ; 1:11      2333* HL + save
     ld    D, B          ; 1:4       2333*
-    ld    E, C          ; 1:4       2333*   
-    ld    B, D          ; 1:4       2339*
+    ld    E, C          ; 1:4       2333*       
+    ld    B, D          ; 1:4       2339* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2339*
     ld    D, H          ; 1:4       2339*
     ld    E, L          ; 1:4       2339* save 1x
@@ -8569,8 +8579,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2339* 2048x
     add  HL, DE         ; 1:11      2339* HL + save
     ld    D, B          ; 1:4       2339*
-    ld    E, C          ; 1:4       2339*   
-    ld    B, D          ; 1:4       2341*
+    ld    E, C          ; 1:4       2339*       
+    ld    B, D          ; 1:4       2341* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2341*
     ld    D, H          ; 1:4       2341*
     ld    E, L          ; 1:4       2341* save 1x
@@ -8596,8 +8606,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2341* 2048x
     add  HL, DE         ; 1:11      2341* HL + save
     ld    D, B          ; 1:4       2341*
-    ld    E, C          ; 1:4       2341*   
-    ld    B, D          ; 1:4       2347*
+    ld    E, C          ; 1:4       2341*       
+    ld    B, D          ; 1:4       2347* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2347*
     ld    D, H          ; 1:4       2347*
     ld    E, L          ; 1:4       2347* save 1x
@@ -8626,8 +8636,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2347* 2048x
     add  HL, DE         ; 1:11      2347* HL + save
     ld    D, B          ; 1:4       2347*
-    ld    E, C          ; 1:4       2347*   
-    ld    B, D          ; 1:4       2351*
+    ld    E, C          ; 1:4       2347*       
+    ld    B, D          ; 1:4       2351* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2351*
     ld    D, H          ; 1:4       2351*
     ld    E, L          ; 1:4       2351* save 1x
@@ -8659,8 +8669,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2351* 2048x
     add  HL, DE         ; 1:11      2351* HL + save
     ld    D, B          ; 1:4       2351*
-    ld    E, C          ; 1:4       2351*   
-    ld    B, D          ; 1:4       2357*
+    ld    E, C          ; 1:4       2351*       
+    ld    B, D          ; 1:4       2357* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2357*
     ld    D, H          ; 1:4       2357*
     ld    E, L          ; 1:4       2357* save 1x
@@ -8690,8 +8700,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2357* HL + save
     ld    D, B          ; 1:4       2357*
     ld    E, C          ; 1:4       2357* 
-   
-    ld    B, D          ; 1:4       2371*
+       
+    ld    B, D          ; 1:4       2371* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2371*
     ld    D, H          ; 1:4       2371*
     ld    E, L          ; 1:4       2371* save 1x
@@ -8717,8 +8727,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2371* 2048x
     add  HL, DE         ; 1:11      2371* HL + save
     ld    D, B          ; 1:4       2371*
-    ld    E, C          ; 1:4       2371*   
-    ld    B, D          ; 1:4       2377*
+    ld    E, C          ; 1:4       2371*       
+    ld    B, D          ; 1:4       2377* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2377*
     ld    D, H          ; 1:4       2377*
     ld    E, L          ; 1:4       2377* save 1x
@@ -8744,8 +8754,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2377* 2048x
     add  HL, DE         ; 1:11      2377* HL + save
     ld    D, B          ; 1:4       2377*
-    ld    E, C          ; 1:4       2377*   
-    ld    B, D          ; 1:4       2381*
+    ld    E, C          ; 1:4       2377*       
+    ld    B, D          ; 1:4       2381* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2381*
     ld    D, H          ; 1:4       2381*
     ld    E, L          ; 1:4       2381* save 1x
@@ -8774,8 +8784,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2381* 2048x
     add  HL, DE         ; 1:11      2381* HL + save
     ld    D, B          ; 1:4       2381*
-    ld    E, C          ; 1:4       2381*   
-    ld    B, D          ; 1:4       2383*
+    ld    E, C          ; 1:4       2381*       
+    ld    B, D          ; 1:4       2383* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2383*
     ld    D, H          ; 1:4       2383*
     ld    E, L          ; 1:4       2383* save 1x
@@ -8807,8 +8817,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2383* 2048x
     add  HL, DE         ; 1:11      2383* HL + save
     ld    D, B          ; 1:4       2383*
-    ld    E, C          ; 1:4       2383*   
-    ld    B, D          ; 1:4       2389*
+    ld    E, C          ; 1:4       2383*       
+    ld    B, D          ; 1:4       2389* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2389*
     ld    D, H          ; 1:4       2389*
     ld    E, L          ; 1:4       2389* save 1x
@@ -8837,8 +8847,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2389* 2048x
     add  HL, DE         ; 1:11      2389* HL + save
     ld    D, B          ; 1:4       2389*
-    ld    E, C          ; 1:4       2389*   
-    ld    B, D          ; 1:4       2393*
+    ld    E, C          ; 1:4       2389*       
+    ld    B, D          ; 1:4       2393* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2393*
     ld    D, H          ; 1:4       2393*
     ld    E, L          ; 1:4       2393* save 1x
@@ -8868,7 +8878,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2393* HL + save
     ld    D, B          ; 1:4       2393*
     ld    E, C          ; 1:4       2393*   
-    ld    B, D          ; 1:4       2399*
+    ld    B, D          ; 1:4       2399* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2399*
     ld    D, H          ; 1:4       2399*
     ld    E, L          ; 1:4       2399* save 1x
@@ -8899,8 +8909,8 @@ ORG 0x6000
     or    A             ; 1:4       2399*
     sbc  HL, DE         ; 2:15      2399* HL - save
     ld    D, B          ; 1:4       2399*
-    ld    E, C          ; 1:4       2399*   
-    ld    B, D          ; 1:4       2411*
+    ld    E, C          ; 1:4       2399*       
+    ld    B, D          ; 1:4       2411* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2411*
     ld    D, H          ; 1:4       2411*
     ld    E, L          ; 1:4       2411* save 1x
@@ -8932,8 +8942,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2411* 2048x
     add  HL, DE         ; 1:11      2411* HL + save
     ld    D, B          ; 1:4       2411*
-    ld    E, C          ; 1:4       2411*   
-    ld    B, D          ; 1:4       2417*
+    ld    E, C          ; 1:4       2411*       
+    ld    B, D          ; 1:4       2417* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2417*
     ld    D, H          ; 1:4       2417*
     ld    E, L          ; 1:4       2417* save 1x
@@ -8963,7 +8973,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2417* HL + save
     ld    D, B          ; 1:4       2417*
     ld    E, C          ; 1:4       2417*   
-    ld    B, D          ; 1:4       2423*
+    ld    B, D          ; 1:4       2423* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2423*
     ld    D, H          ; 1:4       2423*
     ld    E, L          ; 1:4       2423* save 1x
@@ -8995,8 +9005,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2423* HL - save
     ld    D, B          ; 1:4       2423*
     ld    E, C          ; 1:4       2423* 
-   
-    ld    B, D          ; 1:4       2437*
+       
+    ld    B, D          ; 1:4       2437* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2437*
     ld    D, H          ; 1:4       2437*
     ld    E, L          ; 1:4       2437* save 1x
@@ -9022,8 +9032,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2437* 2048x
     add  HL, DE         ; 1:11      2437* HL + save
     ld    D, B          ; 1:4       2437*
-    ld    E, C          ; 1:4       2437*   
-    ld    B, D          ; 1:4       2441*
+    ld    E, C          ; 1:4       2437*       
+    ld    B, D          ; 1:4       2441* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2441*
     ld    D, H          ; 1:4       2441*
     ld    E, L          ; 1:4       2441* save 1x
@@ -9049,8 +9059,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2441* 2048x
     add  HL, DE         ; 1:11      2441* HL + save
     ld    D, B          ; 1:4       2441*
-    ld    E, C          ; 1:4       2441*   
-    ld    B, D          ; 1:4       2447*
+    ld    E, C          ; 1:4       2441*       
+    ld    B, D          ; 1:4       2447* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2447*
     ld    D, H          ; 1:4       2447*
     ld    E, L          ; 1:4       2447* save 1x
@@ -9082,8 +9092,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2447* 2048x
     add  HL, DE         ; 1:11      2447* HL + save
     ld    D, B          ; 1:4       2447*
-    ld    E, C          ; 1:4       2447*   
-    ld    B, D          ; 1:4       2459*
+    ld    E, C          ; 1:4       2447*       
+    ld    B, D          ; 1:4       2459* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2459*
     ld    D, H          ; 1:4       2459*
     ld    E, L          ; 1:4       2459* save 1x
@@ -9115,8 +9125,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2459* 2048x
     add  HL, DE         ; 1:11      2459* HL + save
     ld    D, B          ; 1:4       2459*
-    ld    E, C          ; 1:4       2459*   
-    ld    B, D          ; 1:4       2467*
+    ld    E, C          ; 1:4       2459*       
+    ld    B, D          ; 1:4       2467* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2467*
     ld    D, H          ; 1:4       2467*
     ld    E, L          ; 1:4       2467* save 1x
@@ -9145,8 +9155,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2467* 2048x
     add  HL, DE         ; 1:11      2467* HL + save
     ld    D, B          ; 1:4       2467*
-    ld    E, C          ; 1:4       2467*   
-    ld    B, D          ; 1:4       2473*
+    ld    E, C          ; 1:4       2467*       
+    ld    B, D          ; 1:4       2473* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2473*
     ld    D, H          ; 1:4       2473*
     ld    E, L          ; 1:4       2473* save 1x
@@ -9175,8 +9185,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2473* 2048x
     add  HL, DE         ; 1:11      2473* HL + save
     ld    D, B          ; 1:4       2473*
-    ld    E, C          ; 1:4       2473*   
-    ld    B, D          ; 1:4       2477*
+    ld    E, C          ; 1:4       2473*       
+    ld    B, D          ; 1:4       2477* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2477*
     ld    D, H          ; 1:4       2477*
     ld    E, L          ; 1:4       2477* save 1x
@@ -9208,8 +9218,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2477* 2048x
     add  HL, DE         ; 1:11      2477* HL + save
     ld    D, B          ; 1:4       2477*
-    ld    E, C          ; 1:4       2477*   
-    ld    B, D          ; 1:4       2503*
+    ld    E, C          ; 1:4       2477*       
+    ld    B, D          ; 1:4       2503* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2503*
     ld    D, H          ; 1:4       2503*
     ld    E, L          ; 1:4       2503* save 1x
@@ -9241,8 +9251,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2503* 2048x
     add  HL, DE         ; 1:11      2503* HL + save
     ld    D, B          ; 1:4       2503*
-    ld    E, C          ; 1:4       2503*   
-    ld    B, D          ; 1:4       2521*
+    ld    E, C          ; 1:4       2503*       
+    ld    B, D          ; 1:4       2521* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2521*
     ld    D, H          ; 1:4       2521*
     ld    E, L          ; 1:4       2521* save 1x
@@ -9274,8 +9284,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2521* 2048x
     add  HL, DE         ; 1:11      2521* HL + save
     ld    D, B          ; 1:4       2521*
-    ld    E, C          ; 1:4       2521*   
-    ld    B, D          ; 1:4       2531*
+    ld    E, C          ; 1:4       2521*       
+    ld    B, D          ; 1:4       2531* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2531*
     ld    D, H          ; 1:4       2531*
     ld    E, L          ; 1:4       2531* save 1x
@@ -9309,7 +9319,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       2531*
     ld    E, C          ; 1:4       2531* 
    
-    ld    B, D          ; 1:4       2539*
+    ld    B, D          ; 1:4       2539* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2539*
     ld    D, H          ; 1:4       2539*
     ld    E, L          ; 1:4       2539* save 1x
@@ -9341,7 +9351,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2539* HL - save
     ld    D, B          ; 1:4       2539*
     ld    E, C          ; 1:4       2539*   
-    ld    B, D          ; 1:4       2543*
+    ld    B, D          ; 1:4       2543* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2543*
     ld    D, H          ; 1:4       2543*
     ld    E, L          ; 1:4       2543* save 1x
@@ -9370,7 +9380,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2543* HL - save
     ld    D, B          ; 1:4       2543*
     ld    E, C          ; 1:4       2543*   
-    ld    B, D          ; 1:4       2549*
+    ld    B, D          ; 1:4       2549* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2549*
     ld    D, H          ; 1:4       2549*
     ld    E, L          ; 1:4       2549* save 1x
@@ -9402,7 +9412,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2549* HL - save
     ld    D, B          ; 1:4       2549*
     ld    E, C          ; 1:4       2549*   
-    ld    B, D          ; 1:4       2551*
+    ld    B, D          ; 1:4       2551* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2551*
     ld    D, H          ; 1:4       2551*
     ld    E, L          ; 1:4       2551* save 1x
@@ -9431,7 +9441,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2551* HL - save
     ld    D, B          ; 1:4       2551*
     ld    E, C          ; 1:4       2551*   
-    ld    B, D          ; 1:4       2557*
+    ld    B, D          ; 1:4       2557* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2557*
     ld    D, H          ; 1:4       2557*
     ld    E, L          ; 1:4       2557* save 1x
@@ -9453,8 +9463,8 @@ ORG 0x6000
     or    A             ; 1:4       2557*
     sbc  HL, DE         ; 2:15      2557* HL - save
     ld    D, B          ; 1:4       2557*
-    ld    E, C          ; 1:4       2557*   
-    ld    B, D          ; 1:4       2579*
+    ld    E, C          ; 1:4       2557*       
+    ld    B, D          ; 1:4       2579* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2579*
     ld    D, H          ; 1:4       2579*
     ld    E, L          ; 1:4       2579* save 1x
@@ -9480,8 +9490,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2579* 2048x
     add  HL, DE         ; 1:11      2579* HL + save
     ld    D, B          ; 1:4       2579*
-    ld    E, C          ; 1:4       2579*   
-    ld    B, D          ; 1:4       2591*
+    ld    E, C          ; 1:4       2579*       
+    ld    B, D          ; 1:4       2591* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2591*
     ld    D, H          ; 1:4       2591*
     ld    E, L          ; 1:4       2591* save 1x
@@ -9513,8 +9523,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2591* 2048x
     add  HL, DE         ; 1:11      2591* HL + save
     ld    D, B          ; 1:4       2591*
-    ld    E, C          ; 1:4       2591*   
-    ld    B, D          ; 1:4       2593*
+    ld    E, C          ; 1:4       2591*       
+    ld    B, D          ; 1:4       2593* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2593*
     ld    D, H          ; 1:4       2593*
     ld    E, L          ; 1:4       2593* save 1x
@@ -9537,8 +9547,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2593* 2048x
     add  HL, DE         ; 1:11      2593* HL + save
     ld    D, B          ; 1:4       2593*
-    ld    E, C          ; 1:4       2593*   
-    ld    B, D          ; 1:4       2609*
+    ld    E, C          ; 1:4       2593*       
+    ld    B, D          ; 1:4       2609* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2609*
     ld    D, H          ; 1:4       2609*
     ld    E, L          ; 1:4       2609* save 1x
@@ -9564,8 +9574,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2609* 2048x
     add  HL, DE         ; 1:11      2609* HL + save
     ld    D, B          ; 1:4       2609*
-    ld    E, C          ; 1:4       2609*   
-    ld    B, D          ; 1:4       2617*
+    ld    E, C          ; 1:4       2609*       
+    ld    B, D          ; 1:4       2617* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2617*
     ld    D, H          ; 1:4       2617*
     ld    E, L          ; 1:4       2617* save 1x
@@ -9595,8 +9605,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2617* HL + save
     ld    D, B          ; 1:4       2617*
     ld    E, C          ; 1:4       2617* 
-   
-    ld    B, D          ; 1:4       2621*
+       
+    ld    B, D          ; 1:4       2621* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2621*
     ld    D, H          ; 1:4       2621*
     ld    E, L          ; 1:4       2621* save 1x
@@ -9628,8 +9638,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2621* 2048x
     add  HL, DE         ; 1:11      2621* HL + save
     ld    D, B          ; 1:4       2621*
-    ld    E, C          ; 1:4       2621*   
-    ld    B, D          ; 1:4       2633*
+    ld    E, C          ; 1:4       2621*       
+    ld    B, D          ; 1:4       2633* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2633*
     ld    D, H          ; 1:4       2633*
     ld    E, L          ; 1:4       2633* save 1x
@@ -9655,8 +9665,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2633* 2048x
     add  HL, DE         ; 1:11      2633* HL + save
     ld    D, B          ; 1:4       2633*
-    ld    E, C          ; 1:4       2633*   
-    ld    B, D          ; 1:4       2647*
+    ld    E, C          ; 1:4       2633*       
+    ld    B, D          ; 1:4       2647* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2647*
     ld    D, H          ; 1:4       2647*
     ld    E, L          ; 1:4       2647* save 1x
@@ -9688,8 +9698,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2647* 2048x
     add  HL, DE         ; 1:11      2647* HL + save
     ld    D, B          ; 1:4       2647*
-    ld    E, C          ; 1:4       2647*   
-    ld    B, D          ; 1:4       2657*
+    ld    E, C          ; 1:4       2647*       
+    ld    B, D          ; 1:4       2657* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2657*
     ld    D, H          ; 1:4       2657*
     ld    E, L          ; 1:4       2657* save 1x
@@ -9715,8 +9725,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2657* 2048x
     add  HL, DE         ; 1:11      2657* HL + save
     ld    D, B          ; 1:4       2657*
-    ld    E, C          ; 1:4       2657*   
-    ld    B, D          ; 1:4       2659*
+    ld    E, C          ; 1:4       2657*       
+    ld    B, D          ; 1:4       2659* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2659*
     ld    D, H          ; 1:4       2659*
     ld    E, L          ; 1:4       2659* save 1x
@@ -9745,8 +9755,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2659* 2048x
     add  HL, DE         ; 1:11      2659* HL + save
     ld    D, B          ; 1:4       2659*
-    ld    E, C          ; 1:4       2659*   
-    ld    B, D          ; 1:4       2663*
+    ld    E, C          ; 1:4       2659*       
+    ld    B, D          ; 1:4       2663* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2663*
     ld    D, H          ; 1:4       2663*
     ld    E, L          ; 1:4       2663* save 1x
@@ -9779,7 +9789,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2663* HL + save
     ld    D, B          ; 1:4       2663*
     ld    E, C          ; 1:4       2663*   
-    ld    B, D          ; 1:4       2671*
+    ld    B, D          ; 1:4       2671* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2671*
     ld    D, H          ; 1:4       2671*
     ld    E, L          ; 1:4       2671* save 1x
@@ -9810,8 +9820,8 @@ ORG 0x6000
     or    A             ; 1:4       2671*
     sbc  HL, DE         ; 2:15      2671* HL - save
     ld    D, B          ; 1:4       2671*
-    ld    E, C          ; 1:4       2671*   
-    ld    B, D          ; 1:4       2677*
+    ld    E, C          ; 1:4       2671*       
+    ld    B, D          ; 1:4       2677* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2677*
     ld    D, H          ; 1:4       2677*
     ld    E, L          ; 1:4       2677* save 1x
@@ -9844,7 +9854,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2677* HL + save
     ld    D, B          ; 1:4       2677*
     ld    E, C          ; 1:4       2677*   
-    ld    B, D          ; 1:4       2683*
+    ld    B, D          ; 1:4       2683* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2683*
     ld    D, H          ; 1:4       2683*
     ld    E, L          ; 1:4       2683* save 1x
@@ -9876,7 +9886,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2683* HL - save
     ld    D, B          ; 1:4       2683*
     ld    E, C          ; 1:4       2683*   
-    ld    B, D          ; 1:4       2687*
+    ld    B, D          ; 1:4       2687* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2687*
     ld    D, H          ; 1:4       2687*
     ld    E, L          ; 1:4       2687* save 1x
@@ -9905,8 +9915,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2687* HL - save
     ld    D, B          ; 1:4       2687*
     ld    E, C          ; 1:4       2687* 
-   
-    ld    B, D          ; 1:4       2689*
+       
+    ld    B, D          ; 1:4       2689* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2689*
     ld    D, H          ; 1:4       2689*
     ld    E, L          ; 1:4       2689* save 1x
@@ -9929,8 +9939,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2689* 2048x
     add  HL, DE         ; 1:11      2689* HL + save
     ld    D, B          ; 1:4       2689*
-    ld    E, C          ; 1:4       2689*   
-    ld    B, D          ; 1:4       2693*
+    ld    E, C          ; 1:4       2689*       
+    ld    B, D          ; 1:4       2693* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2693*
     ld    D, H          ; 1:4       2693*
     ld    E, L          ; 1:4       2693* save 1x
@@ -9956,8 +9966,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2693* 2048x
     add  HL, DE         ; 1:11      2693* HL + save
     ld    D, B          ; 1:4       2693*
-    ld    E, C          ; 1:4       2693*   
-    ld    B, D          ; 1:4       2699*
+    ld    E, C          ; 1:4       2693*       
+    ld    B, D          ; 1:4       2699* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2699*
     ld    D, H          ; 1:4       2699*
     ld    E, L          ; 1:4       2699* save 1x
@@ -9986,8 +9996,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2699* 2048x
     add  HL, DE         ; 1:11      2699* HL + save
     ld    D, B          ; 1:4       2699*
-    ld    E, C          ; 1:4       2699*   
-    ld    B, D          ; 1:4       2707*
+    ld    E, C          ; 1:4       2699*       
+    ld    B, D          ; 1:4       2707* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2707*
     ld    D, H          ; 1:4       2707*
     ld    E, L          ; 1:4       2707* save 1x
@@ -10016,8 +10026,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2707* 2048x
     add  HL, DE         ; 1:11      2707* HL + save
     ld    D, B          ; 1:4       2707*
-    ld    E, C          ; 1:4       2707*   
-    ld    B, D          ; 1:4       2711*
+    ld    E, C          ; 1:4       2707*       
+    ld    B, D          ; 1:4       2711* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2711*
     ld    D, H          ; 1:4       2711*
     ld    E, L          ; 1:4       2711* save 1x
@@ -10049,8 +10059,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2711* 2048x
     add  HL, DE         ; 1:11      2711* HL + save
     ld    D, B          ; 1:4       2711*
-    ld    E, C          ; 1:4       2711*   
-    ld    B, D          ; 1:4       2713*
+    ld    E, C          ; 1:4       2711*       
+    ld    B, D          ; 1:4       2713* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2713*
     ld    D, H          ; 1:4       2713*
     ld    E, L          ; 1:4       2713* save 1x
@@ -10080,7 +10090,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2713* HL + save
     ld    D, B          ; 1:4       2713*
     ld    E, C          ; 1:4       2713*   
-    ld    B, D          ; 1:4       2719*
+    ld    B, D          ; 1:4       2719* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2719*
     ld    D, H          ; 1:4       2719*
     ld    E, L          ; 1:4       2719* save 1x
@@ -10111,8 +10121,8 @@ ORG 0x6000
     or    A             ; 1:4       2719*
     sbc  HL, DE         ; 2:15      2719* HL - save
     ld    D, B          ; 1:4       2719*
-    ld    E, C          ; 1:4       2719*   
-    ld    B, D          ; 1:4       2729*
+    ld    E, C          ; 1:4       2719*       
+    ld    B, D          ; 1:4       2729* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2729*
     ld    D, H          ; 1:4       2729*
     ld    E, L          ; 1:4       2729* save 1x
@@ -10141,8 +10151,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2729* 2048x
     add  HL, DE         ; 1:11      2729* HL + save
     ld    D, B          ; 1:4       2729*
-    ld    E, C          ; 1:4       2729*   
-    ld    B, D          ; 1:4       2731*
+    ld    E, C          ; 1:4       2729*       
+    ld    B, D          ; 1:4       2731* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2731*
     ld    D, H          ; 1:4       2731*
     ld    E, L          ; 1:4       2731* save 1x
@@ -10174,8 +10184,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2731* 2048x
     add  HL, DE         ; 1:11      2731* HL + save
     ld    D, B          ; 1:4       2731*
-    ld    E, C          ; 1:4       2731*   
-    ld    B, D          ; 1:4       2741*
+    ld    E, C          ; 1:4       2731*       
+    ld    B, D          ; 1:4       2741* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2741*
     ld    D, H          ; 1:4       2741*
     ld    E, L          ; 1:4       2741* save 1x
@@ -10209,7 +10219,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       2741*
     ld    E, C          ; 1:4       2741* 
    
-    ld    B, D          ; 1:4       2749*
+    ld    B, D          ; 1:4       2749* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2749*
     ld    D, H          ; 1:4       2749*
     ld    E, L          ; 1:4       2749* save 1x
@@ -10240,8 +10250,8 @@ ORG 0x6000
     or    A             ; 1:4       2749*
     sbc  HL, DE         ; 2:15      2749* HL - save
     ld    D, B          ; 1:4       2749*
-    ld    E, C          ; 1:4       2749*   
-    ld    B, D          ; 1:4       2753*
+    ld    E, C          ; 1:4       2749*       
+    ld    B, D          ; 1:4       2753* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2753*
     ld    D, H          ; 1:4       2753*
     ld    E, L          ; 1:4       2753* save 1x
@@ -10268,7 +10278,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2753* HL + save
     ld    D, B          ; 1:4       2753*
     ld    E, C          ; 1:4       2753*   
-    ld    B, D          ; 1:4       2767*
+    ld    B, D          ; 1:4       2767* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2767*
     ld    D, H          ; 1:4       2767*
     ld    E, L          ; 1:4       2767* save 1x
@@ -10299,8 +10309,8 @@ ORG 0x6000
     or    A             ; 1:4       2767*
     sbc  HL, DE         ; 2:15      2767* HL - save
     ld    D, B          ; 1:4       2767*
-    ld    E, C          ; 1:4       2767*   
-    ld    B, D          ; 1:4       2777*
+    ld    E, C          ; 1:4       2767*       
+    ld    B, D          ; 1:4       2777* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2777*
     ld    D, H          ; 1:4       2777*
     ld    E, L          ; 1:4       2777* save 1x
@@ -10332,8 +10342,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2777* 2048x
     add  HL, DE         ; 1:11      2777* HL + save
     ld    D, B          ; 1:4       2777*
-    ld    E, C          ; 1:4       2777*   
-    ld    B, D          ; 1:4       2789*
+    ld    E, C          ; 1:4       2777*       
+    ld    B, D          ; 1:4       2789* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2789*
     ld    D, H          ; 1:4       2789*
     ld    E, L          ; 1:4       2789* save 1x
@@ -10366,7 +10376,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2789* HL + save
     ld    D, B          ; 1:4       2789*
     ld    E, C          ; 1:4       2789*   
-    ld    B, D          ; 1:4       2791*
+    ld    B, D          ; 1:4       2791* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2791*
     ld    D, H          ; 1:4       2791*
     ld    E, L          ; 1:4       2791* save 1x
@@ -10398,7 +10408,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2791* HL - save
     ld    D, B          ; 1:4       2791*
     ld    E, C          ; 1:4       2791*   
-    ld    B, D          ; 1:4       2797*
+    ld    B, D          ; 1:4       2797* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2797*
     ld    D, H          ; 1:4       2797*
     ld    E, L          ; 1:4       2797* save 1x
@@ -10429,8 +10439,8 @@ ORG 0x6000
     or    A             ; 1:4       2797*
     sbc  HL, DE         ; 2:15      2797* HL - save
     ld    D, B          ; 1:4       2797*
-    ld    E, C          ; 1:4       2797*   
-    ld    B, D          ; 1:4       2801*
+    ld    E, C          ; 1:4       2797*       
+    ld    B, D          ; 1:4       2801* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2801*
     ld    D, H          ; 1:4       2801*
     ld    E, L          ; 1:4       2801* save 1x
@@ -10463,7 +10473,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2801* HL + save
     ld    D, B          ; 1:4       2801*
     ld    E, C          ; 1:4       2801*   
-    ld    B, D          ; 1:4       2803*
+    ld    B, D          ; 1:4       2803* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2803*
     ld    D, H          ; 1:4       2803*
     ld    E, L          ; 1:4       2803* save 1x
@@ -10494,8 +10504,8 @@ ORG 0x6000
     or    A             ; 1:4       2803*
     sbc  HL, DE         ; 2:15      2803* HL - save
     ld    D, B          ; 1:4       2803*
-    ld    E, C          ; 1:4       2803*   
-    ld    B, D          ; 1:4       2819*
+    ld    E, C          ; 1:4       2803*       
+    ld    B, D          ; 1:4       2819* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2819*
     ld    D, H          ; 1:4       2819*
     ld    E, L          ; 1:4       2819* save 1x
@@ -10503,13 +10513,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       2819* +
     add  HL, DE         ; 1:11      2819* + save 2x
     ex   DE, HL         ; 1:4       2819* +
-    add  HL, HL         ; 1:11      2819* 4x
-    add  HL, HL         ; 1:11      2819* 8x
-    add  HL, HL         ; 1:11      2819* 16x
-    add  HL, HL         ; 1:11      2819* 32x
-    add  HL, HL         ; 1:11      2819* 64x
-    add  HL, HL         ; 1:11      2819* 128x
-    add  HL, HL         ; 1:11      2819* 256x
+    rr    H             ; 2:8       2819*
+    rr    L             ; 2:8       2819*
+    ld    H, L          ; 1:4       2819*
+    ld    L, 0x00       ; 2:7       2819* 256x
     ex   DE, HL         ; 1:4       2819* +
     add  HL, DE         ; 1:11      2819* + save 256x
     ex   DE, HL         ; 1:4       2819* +
@@ -10522,8 +10529,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2819* HL + save
     ld    D, B          ; 1:4       2819*
     ld    E, C          ; 1:4       2819* 
-   
-    ld    B, D          ; 1:4       2833*
+       
+    ld    B, D          ; 1:4       2833* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2833*
     ld    D, H          ; 1:4       2833*
     ld    E, L          ; 1:4       2833* save 1x
@@ -10549,8 +10556,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2833* 2048x
     add  HL, DE         ; 1:11      2833* HL + save
     ld    D, B          ; 1:4       2833*
-    ld    E, C          ; 1:4       2833*   
-    ld    B, D          ; 1:4       2837*
+    ld    E, C          ; 1:4       2833*       
+    ld    B, D          ; 1:4       2837* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2837*
     ld    D, H          ; 1:4       2837*
     ld    E, L          ; 1:4       2837* save 1x
@@ -10579,8 +10586,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2837* 2048x
     add  HL, DE         ; 1:11      2837* HL + save
     ld    D, B          ; 1:4       2837*
-    ld    E, C          ; 1:4       2837*   
-    ld    B, D          ; 1:4       2843*
+    ld    E, C          ; 1:4       2837*       
+    ld    B, D          ; 1:4       2843* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2843*
     ld    D, H          ; 1:4       2843*
     ld    E, L          ; 1:4       2843* save 1x
@@ -10612,8 +10619,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2843* 2048x
     add  HL, DE         ; 1:11      2843* HL + save
     ld    D, B          ; 1:4       2843*
-    ld    E, C          ; 1:4       2843*   
-    ld    B, D          ; 1:4       2851*
+    ld    E, C          ; 1:4       2843*       
+    ld    B, D          ; 1:4       2851* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2851*
     ld    D, H          ; 1:4       2851*
     ld    E, L          ; 1:4       2851* save 1x
@@ -10642,8 +10649,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2851* 2048x
     add  HL, DE         ; 1:11      2851* HL + save
     ld    D, B          ; 1:4       2851*
-    ld    E, C          ; 1:4       2851*   
-    ld    B, D          ; 1:4       2857*
+    ld    E, C          ; 1:4       2851*       
+    ld    B, D          ; 1:4       2857* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2857*
     ld    D, H          ; 1:4       2857*
     ld    E, L          ; 1:4       2857* save 1x
@@ -10672,8 +10679,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2857* 2048x
     add  HL, DE         ; 1:11      2857* HL + save
     ld    D, B          ; 1:4       2857*
-    ld    E, C          ; 1:4       2857*   
-    ld    B, D          ; 1:4       2861*
+    ld    E, C          ; 1:4       2857*       
+    ld    B, D          ; 1:4       2861* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2861*
     ld    D, H          ; 1:4       2861*
     ld    E, L          ; 1:4       2861* save 1x
@@ -10706,7 +10713,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2861* HL + save
     ld    D, B          ; 1:4       2861*
     ld    E, C          ; 1:4       2861*   
-    ld    B, D          ; 1:4       2879*
+    ld    B, D          ; 1:4       2879* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2879*
     ld    D, H          ; 1:4       2879*
     ld    E, L          ; 1:4       2879* save 1x
@@ -10734,8 +10741,8 @@ ORG 0x6000
     or    A             ; 1:4       2879*
     sbc  HL, DE         ; 2:15      2879* HL - save
     ld    D, B          ; 1:4       2879*
-    ld    E, C          ; 1:4       2879*   
-    ld    B, D          ; 1:4       2887*
+    ld    E, C          ; 1:4       2879*       
+    ld    B, D          ; 1:4       2887* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2887*
     ld    D, H          ; 1:4       2887*
     ld    E, L          ; 1:4       2887* save 1x
@@ -10767,8 +10774,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2887* 2048x
     add  HL, DE         ; 1:11      2887* HL + save
     ld    D, B          ; 1:4       2887*
-    ld    E, C          ; 1:4       2887*   
-    ld    B, D          ; 1:4       2897*
+    ld    E, C          ; 1:4       2887*       
+    ld    B, D          ; 1:4       2897* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2897*
     ld    D, H          ; 1:4       2897*
     ld    E, L          ; 1:4       2897* save 1x
@@ -10798,7 +10805,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2897* HL + save
     ld    D, B          ; 1:4       2897*
     ld    E, C          ; 1:4       2897*   
-    ld    B, D          ; 1:4       2903*
+    ld    B, D          ; 1:4       2903* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2903*
     ld    D, H          ; 1:4       2903*
     ld    E, L          ; 1:4       2903* save 1x
@@ -10831,7 +10838,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       2903*
     ld    E, C          ; 1:4       2903* 
    
-    ld    B, D          ; 1:4       2909*
+    ld    B, D          ; 1:4       2909* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2909*
     ld    D, H          ; 1:4       2909*
     ld    E, L          ; 1:4       2909* save 1x
@@ -10862,8 +10869,8 @@ ORG 0x6000
     or    A             ; 1:4       2909*
     sbc  HL, DE         ; 2:15      2909* HL - save
     ld    D, B          ; 1:4       2909*
-    ld    E, C          ; 1:4       2909*   
-    ld    B, D          ; 1:4       2917*
+    ld    E, C          ; 1:4       2909*       
+    ld    B, D          ; 1:4       2917* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2917*
     ld    D, H          ; 1:4       2917*
     ld    E, L          ; 1:4       2917* save 1x
@@ -10896,7 +10903,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2917* HL + save
     ld    D, B          ; 1:4       2917*
     ld    E, C          ; 1:4       2917*   
-    ld    B, D          ; 1:4       2927*
+    ld    B, D          ; 1:4       2927* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2927*
     ld    D, H          ; 1:4       2927*
     ld    E, L          ; 1:4       2927* save 1x
@@ -10925,7 +10932,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2927* HL - save
     ld    D, B          ; 1:4       2927*
     ld    E, C          ; 1:4       2927*   
-    ld    B, D          ; 1:4       2939*
+    ld    B, D          ; 1:4       2939* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2939*
     ld    D, H          ; 1:4       2939*
     ld    E, L          ; 1:4       2939* save 1x
@@ -10953,8 +10960,8 @@ ORG 0x6000
     or    A             ; 1:4       2939*
     sbc  HL, DE         ; 2:15      2939* HL - save
     ld    D, B          ; 1:4       2939*
-    ld    E, C          ; 1:4       2939*   
-    ld    B, D          ; 1:4       2953*
+    ld    E, C          ; 1:4       2939*       
+    ld    B, D          ; 1:4       2953* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2953*
     ld    D, H          ; 1:4       2953*
     ld    E, L          ; 1:4       2953* save 1x
@@ -10983,8 +10990,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2953* 2048x
     add  HL, DE         ; 1:11      2953* HL + save
     ld    D, B          ; 1:4       2953*
-    ld    E, C          ; 1:4       2953*   
-    ld    B, D          ; 1:4       2957*
+    ld    E, C          ; 1:4       2953*       
+    ld    B, D          ; 1:4       2957* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2957*
     ld    D, H          ; 1:4       2957*
     ld    E, L          ; 1:4       2957* save 1x
@@ -11016,8 +11023,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2957* 2048x
     add  HL, DE         ; 1:11      2957* HL + save
     ld    D, B          ; 1:4       2957*
-    ld    E, C          ; 1:4       2957*   
-    ld    B, D          ; 1:4       2963*
+    ld    E, C          ; 1:4       2957*       
+    ld    B, D          ; 1:4       2963* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2963*
     ld    D, H          ; 1:4       2963*
     ld    E, L          ; 1:4       2963* save 1x
@@ -11049,8 +11056,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2963* 2048x
     add  HL, DE         ; 1:11      2963* HL + save
     ld    D, B          ; 1:4       2963*
-    ld    E, C          ; 1:4       2963*   
-    ld    B, D          ; 1:4       2969*
+    ld    E, C          ; 1:4       2963*       
+    ld    B, D          ; 1:4       2969* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       2969*
     ld    D, H          ; 1:4       2969*
     ld    E, L          ; 1:4       2969* save 1x
@@ -11083,7 +11090,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      2969* HL + save
     ld    D, B          ; 1:4       2969*
     ld    E, C          ; 1:4       2969*   
-    ld    B, D          ; 1:4       2971*
+    ld    B, D          ; 1:4       2971* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2971*
     ld    D, H          ; 1:4       2971*
     ld    E, L          ; 1:4       2971* save 1x
@@ -11115,7 +11122,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2971* HL - save
     ld    D, B          ; 1:4       2971*
     ld    E, C          ; 1:4       2971*   
-    ld    B, D          ; 1:4       2999*
+    ld    B, D          ; 1:4       2999* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       2999*
     ld    D, H          ; 1:4       2999*
     ld    E, L          ; 1:4       2999* save 1x
@@ -11145,7 +11152,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       2999*
     ld    E, C          ; 1:4       2999* 
    
-    ld    B, D          ; 1:4       3001*
+    ld    B, D          ; 1:4       3001* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3001*
     ld    D, H          ; 1:4       3001*
     ld    E, L          ; 1:4       3001* save 1x
@@ -11176,8 +11183,8 @@ ORG 0x6000
     or    A             ; 1:4       3001*
     sbc  HL, DE         ; 2:15      3001* HL - save
     ld    D, B          ; 1:4       3001*
-    ld    E, C          ; 1:4       3001*   
-    ld    B, D          ; 1:4       3011*
+    ld    E, C          ; 1:4       3001*       
+    ld    B, D          ; 1:4       3011* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3011*
     ld    D, H          ; 1:4       3011*
     ld    E, L          ; 1:4       3011* save 1x
@@ -11210,7 +11217,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3011* HL + save
     ld    D, B          ; 1:4       3011*
     ld    E, C          ; 1:4       3011*   
-    ld    B, D          ; 1:4       3019*
+    ld    B, D          ; 1:4       3019* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3019*
     ld    D, H          ; 1:4       3019*
     ld    E, L          ; 1:4       3019* save 1x
@@ -11242,7 +11249,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3019* HL - save
     ld    D, B          ; 1:4       3019*
     ld    E, C          ; 1:4       3019*   
-    ld    B, D          ; 1:4       3023*
+    ld    B, D          ; 1:4       3023* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3023*
     ld    D, H          ; 1:4       3023*
     ld    E, L          ; 1:4       3023* save 1x
@@ -11271,7 +11278,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3023* HL - save
     ld    D, B          ; 1:4       3023*
     ld    E, C          ; 1:4       3023*   
-    ld    B, D          ; 1:4       3037*
+    ld    B, D          ; 1:4       3037* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3037*
     ld    D, H          ; 1:4       3037*
     ld    E, L          ; 1:4       3037* save 1x
@@ -11299,8 +11306,8 @@ ORG 0x6000
     or    A             ; 1:4       3037*
     sbc  HL, DE         ; 2:15      3037* HL - save
     ld    D, B          ; 1:4       3037*
-    ld    E, C          ; 1:4       3037*   
-    ld    B, D          ; 1:4       3041*
+    ld    E, C          ; 1:4       3037*       
+    ld    B, D          ; 1:4       3041* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3041*
     ld    D, H          ; 1:4       3041*
     ld    E, L          ; 1:4       3041* save 1x
@@ -11333,7 +11340,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3041* HL + save
     ld    D, B          ; 1:4       3041*
     ld    E, C          ; 1:4       3041*   
-    ld    B, D          ; 1:4       3049*
+    ld    B, D          ; 1:4       3049* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3049*
     ld    D, H          ; 1:4       3049*
     ld    E, L          ; 1:4       3049* save 1x
@@ -11365,7 +11372,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3049* HL - save
     ld    D, B          ; 1:4       3049*
     ld    E, C          ; 1:4       3049*   
-    ld    B, D          ; 1:4       3061*
+    ld    B, D          ; 1:4       3061* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3061*
     ld    D, H          ; 1:4       3061*
     ld    E, L          ; 1:4       3061* save 1x
@@ -11378,13 +11385,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       3061* +
     add  HL, DE         ; 1:11      3061* + save 8x
     ex   DE, HL         ; 1:4       3061* +
-    add  HL, HL         ; 1:11      3061* 16x
-    add  HL, HL         ; 1:11      3061* 32x
-    add  HL, HL         ; 1:11      3061* 64x
-    add  HL, HL         ; 1:11      3061* 128x
-    add  HL, HL         ; 1:11      3061* 256x
-    add  HL, HL         ; 1:11      3061* 512x
-    add  HL, HL         ; 1:11      3061* 1024x
+    rr    H             ; 2:8       3061*
+    rr    L             ; 2:8       3061*
+    ld    H, L          ; 1:4       3061*
+    ld    L, 0x00       ; 2:7       3061* 1024x
     ex   DE, HL         ; 1:4       3061* +
     add  HL, DE         ; 1:11      3061* + save 1024x
     ex   DE, HL         ; 1:4       3061* +
@@ -11394,7 +11398,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3061* HL - save
     ld    D, B          ; 1:4       3061*
     ld    E, C          ; 1:4       3061*   
-    ld    B, D          ; 1:4       3067*
+    ld    B, D          ; 1:4       3067* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3067*
     ld    D, H          ; 1:4       3067*
     ld    E, L          ; 1:4       3067* save 1x
@@ -11413,8 +11417,8 @@ ORG 0x6000
     or    A             ; 1:4       3067*
     sbc  HL, DE         ; 2:15      3067* HL - save
     ld    D, B          ; 1:4       3067*
-    ld    E, C          ; 1:4       3067*   
-    ld    B, D          ; 1:4       3079*
+    ld    E, C          ; 1:4       3067*       
+    ld    B, D          ; 1:4       3079* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3079*
     ld    D, H          ; 1:4       3079*
     ld    E, L          ; 1:4       3079* save 1x
@@ -11435,8 +11439,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3079* HL + save
     ld    D, B          ; 1:4       3079*
     ld    E, C          ; 1:4       3079* 
-   
-    ld    B, D          ; 1:4       3083*
+       
+    ld    B, D          ; 1:4       3083* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3083*
     ld    D, H          ; 1:4       3083*
     ld    E, L          ; 1:4       3083* save 1x
@@ -11449,21 +11453,18 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       3083* +
     add  HL, DE         ; 1:11      3083* + save 8x
     ex   DE, HL         ; 1:4       3083* +
-    add  HL, HL         ; 1:11      3083* 16x
-    add  HL, HL         ; 1:11      3083* 32x
-    add  HL, HL         ; 1:11      3083* 64x
-    add  HL, HL         ; 1:11      3083* 128x
-    add  HL, HL         ; 1:11      3083* 256x
-    add  HL, HL         ; 1:11      3083* 512x
-    add  HL, HL         ; 1:11      3083* 1024x
+    rr    H             ; 2:8       3083*
+    rr    L             ; 2:8       3083*
+    ld    H, L          ; 1:4       3083*
+    ld    L, 0x00       ; 2:7       3083* 1024x
     ex   DE, HL         ; 1:4       3083* +
     add  HL, DE         ; 1:11      3083* + save 1024x
     ex   DE, HL         ; 1:4       3083* +
     add  HL, HL         ; 1:11      3083* 2048x
     add  HL, DE         ; 1:11      3083* HL + save
     ld    D, B          ; 1:4       3083*
-    ld    E, C          ; 1:4       3083*   
-    ld    B, D          ; 1:4       3089*
+    ld    E, C          ; 1:4       3083*       
+    ld    B, D          ; 1:4       3089* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3089*
     ld    D, H          ; 1:4       3089*
     ld    E, L          ; 1:4       3089* save 1x
@@ -11486,8 +11487,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3089* 2048x
     add  HL, DE         ; 1:11      3089* HL + save
     ld    D, B          ; 1:4       3089*
-    ld    E, C          ; 1:4       3089*   
-    ld    B, D          ; 1:4       3109*
+    ld    E, C          ; 1:4       3089*       
+    ld    B, D          ; 1:4       3109* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3109*
     ld    D, H          ; 1:4       3109*
     ld    E, L          ; 1:4       3109* save 1x
@@ -11513,8 +11514,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3109* 2048x
     add  HL, DE         ; 1:11      3109* HL + save
     ld    D, B          ; 1:4       3109*
-    ld    E, C          ; 1:4       3109*   
-    ld    B, D          ; 1:4       3119*
+    ld    E, C          ; 1:4       3109*       
+    ld    B, D          ; 1:4       3119* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3119*
     ld    D, H          ; 1:4       3119*
     ld    E, L          ; 1:4       3119* save 1x
@@ -11546,8 +11547,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3119* 2048x
     add  HL, DE         ; 1:11      3119* HL + save
     ld    D, B          ; 1:4       3119*
-    ld    E, C          ; 1:4       3119*   
-    ld    B, D          ; 1:4       3121*
+    ld    E, C          ; 1:4       3119*       
+    ld    B, D          ; 1:4       3121* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3121*
     ld    D, H          ; 1:4       3121*
     ld    E, L          ; 1:4       3121* save 1x
@@ -11573,8 +11574,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3121* 2048x
     add  HL, DE         ; 1:11      3121* HL + save
     ld    D, B          ; 1:4       3121*
-    ld    E, C          ; 1:4       3121*   
-    ld    B, D          ; 1:4       3137*
+    ld    E, C          ; 1:4       3121*       
+    ld    B, D          ; 1:4       3137* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3137*
     ld    D, H          ; 1:4       3137*
     ld    E, L          ; 1:4       3137* save 1x
@@ -11597,8 +11598,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3137* 2048x
     add  HL, DE         ; 1:11      3137* HL + save
     ld    D, B          ; 1:4       3137*
-    ld    E, C          ; 1:4       3137*   
-    ld    B, D          ; 1:4       3163*
+    ld    E, C          ; 1:4       3137*       
+    ld    B, D          ; 1:4       3163* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3163*
     ld    D, H          ; 1:4       3163*
     ld    E, L          ; 1:4       3163* save 1x
@@ -11631,7 +11632,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3163* HL + save
     ld    D, B          ; 1:4       3163*
     ld    E, C          ; 1:4       3163*   
-    ld    B, D          ; 1:4       3167*
+    ld    B, D          ; 1:4       3167* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3167*
     ld    D, H          ; 1:4       3167*
     ld    E, L          ; 1:4       3167* save 1x
@@ -11662,8 +11663,8 @@ ORG 0x6000
     or    A             ; 1:4       3167*
     sbc  HL, DE         ; 2:15      3167* HL - save
     ld    D, B          ; 1:4       3167*
-    ld    E, C          ; 1:4       3167*   
-    ld    B, D          ; 1:4       3169*
+    ld    E, C          ; 1:4       3167*       
+    ld    B, D          ; 1:4       3169* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3169*
     ld    D, H          ; 1:4       3169*
     ld    E, L          ; 1:4       3169* save 1x
@@ -11689,8 +11690,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3169* 2048x
     add  HL, DE         ; 1:11      3169* HL + save
     ld    D, B          ; 1:4       3169*
-    ld    E, C          ; 1:4       3169*   
-    ld    B, D          ; 1:4       3181*
+    ld    E, C          ; 1:4       3169*       
+    ld    B, D          ; 1:4       3181* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3181*
     ld    D, H          ; 1:4       3181*
     ld    E, L          ; 1:4       3181* save 1x
@@ -11723,8 +11724,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3181* HL + save
     ld    D, B          ; 1:4       3181*
     ld    E, C          ; 1:4       3181* 
-   
-    ld    B, D          ; 1:4       3187*
+       
+    ld    B, D          ; 1:4       3187* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3187*
     ld    D, H          ; 1:4       3187*
     ld    E, L          ; 1:4       3187* save 1x
@@ -11757,7 +11758,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3187* HL + save
     ld    D, B          ; 1:4       3187*
     ld    E, C          ; 1:4       3187*   
-    ld    B, D          ; 1:4       3191*
+    ld    B, D          ; 1:4       3191* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3191*
     ld    D, H          ; 1:4       3191*
     ld    E, L          ; 1:4       3191* save 1x
@@ -11788,8 +11789,8 @@ ORG 0x6000
     or    A             ; 1:4       3191*
     sbc  HL, DE         ; 2:15      3191* HL - save
     ld    D, B          ; 1:4       3191*
-    ld    E, C          ; 1:4       3191*   
-    ld    B, D          ; 1:4       3203*
+    ld    E, C          ; 1:4       3191*       
+    ld    B, D          ; 1:4       3203* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3203*
     ld    D, H          ; 1:4       3203*
     ld    E, L          ; 1:4       3203* save 1x
@@ -11815,8 +11816,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3203* 2048x
     add  HL, DE         ; 1:11      3203* HL + save
     ld    D, B          ; 1:4       3203*
-    ld    E, C          ; 1:4       3203*   
-    ld    B, D          ; 1:4       3209*
+    ld    E, C          ; 1:4       3203*       
+    ld    B, D          ; 1:4       3209* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3209*
     ld    D, H          ; 1:4       3209*
     ld    E, L          ; 1:4       3209* save 1x
@@ -11842,8 +11843,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3209* 2048x
     add  HL, DE         ; 1:11      3209* HL + save
     ld    D, B          ; 1:4       3209*
-    ld    E, C          ; 1:4       3209*   
-    ld    B, D          ; 1:4       3217*
+    ld    E, C          ; 1:4       3209*       
+    ld    B, D          ; 1:4       3217* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3217*
     ld    D, H          ; 1:4       3217*
     ld    E, L          ; 1:4       3217* save 1x
@@ -11869,8 +11870,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3217* 2048x
     add  HL, DE         ; 1:11      3217* HL + save
     ld    D, B          ; 1:4       3217*
-    ld    E, C          ; 1:4       3217*   
-    ld    B, D          ; 1:4       3221*
+    ld    E, C          ; 1:4       3217*       
+    ld    B, D          ; 1:4       3221* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3221*
     ld    D, H          ; 1:4       3221*
     ld    E, L          ; 1:4       3221* save 1x
@@ -11899,8 +11900,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3221* 2048x
     add  HL, DE         ; 1:11      3221* HL + save
     ld    D, B          ; 1:4       3221*
-    ld    E, C          ; 1:4       3221*   
-    ld    B, D          ; 1:4       3229*
+    ld    E, C          ; 1:4       3221*       
+    ld    B, D          ; 1:4       3229* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3229*
     ld    D, H          ; 1:4       3229*
     ld    E, L          ; 1:4       3229* save 1x
@@ -11932,8 +11933,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3229* 2048x
     add  HL, DE         ; 1:11      3229* HL + save
     ld    D, B          ; 1:4       3229*
-    ld    E, C          ; 1:4       3229*   
-    ld    B, D          ; 1:4       3251*
+    ld    E, C          ; 1:4       3229*       
+    ld    B, D          ; 1:4       3251* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3251*
     ld    D, H          ; 1:4       3251*
     ld    E, L          ; 1:4       3251* save 1x
@@ -11965,8 +11966,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3251* 2048x
     add  HL, DE         ; 1:11      3251* HL + save
     ld    D, B          ; 1:4       3251*
-    ld    E, C          ; 1:4       3251*   
-    ld    B, D          ; 1:4       3253*
+    ld    E, C          ; 1:4       3251*       
+    ld    B, D          ; 1:4       3253* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3253*
     ld    D, H          ; 1:4       3253*
     ld    E, L          ; 1:4       3253* save 1x
@@ -11998,8 +11999,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3253* 2048x
     add  HL, DE         ; 1:11      3253* HL + save
     ld    D, B          ; 1:4       3253*
-    ld    E, C          ; 1:4       3253*   
-    ld    B, D          ; 1:4       3257*
+    ld    E, C          ; 1:4       3253*       
+    ld    B, D          ; 1:4       3257* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3257*
     ld    D, H          ; 1:4       3257*
     ld    E, L          ; 1:4       3257* save 1x
@@ -12033,7 +12034,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       3257*
     ld    E, C          ; 1:4       3257* 
    
-    ld    B, D          ; 1:4       3259*
+    ld    B, D          ; 1:4       3259* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3259*
     ld    D, H          ; 1:4       3259*
     ld    E, L          ; 1:4       3259* save 1x
@@ -12064,8 +12065,8 @@ ORG 0x6000
     or    A             ; 1:4       3259*
     sbc  HL, DE         ; 2:15      3259* HL - save
     ld    D, B          ; 1:4       3259*
-    ld    E, C          ; 1:4       3259*   
-    ld    B, D          ; 1:4       3271*
+    ld    E, C          ; 1:4       3259*       
+    ld    B, D          ; 1:4       3271* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3271*
     ld    D, H          ; 1:4       3271*
     ld    E, L          ; 1:4       3271* save 1x
@@ -12097,8 +12098,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3271* 2048x
     add  HL, DE         ; 1:11      3271* HL + save
     ld    D, B          ; 1:4       3271*
-    ld    E, C          ; 1:4       3271*   
-    ld    B, D          ; 1:4       3299*
+    ld    E, C          ; 1:4       3271*       
+    ld    B, D          ; 1:4       3299* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3299*
     ld    D, H          ; 1:4       3299*
     ld    E, L          ; 1:4       3299* save 1x
@@ -12130,8 +12131,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3299* 2048x
     add  HL, DE         ; 1:11      3299* HL + save
     ld    D, B          ; 1:4       3299*
-    ld    E, C          ; 1:4       3299*   
-    ld    B, D          ; 1:4       3301*
+    ld    E, C          ; 1:4       3299*       
+    ld    B, D          ; 1:4       3301* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3301*
     ld    D, H          ; 1:4       3301*
     ld    E, L          ; 1:4       3301* save 1x
@@ -12164,7 +12165,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3301* HL + save
     ld    D, B          ; 1:4       3301*
     ld    E, C          ; 1:4       3301*   
-    ld    B, D          ; 1:4       3307*
+    ld    B, D          ; 1:4       3307* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3307*
     ld    D, H          ; 1:4       3307*
     ld    E, L          ; 1:4       3307* save 1x
@@ -12195,8 +12196,8 @@ ORG 0x6000
     or    A             ; 1:4       3307*
     sbc  HL, DE         ; 2:15      3307* HL - save
     ld    D, B          ; 1:4       3307*
-    ld    E, C          ; 1:4       3307*   
-    ld    B, D          ; 1:4       3313*
+    ld    E, C          ; 1:4       3307*       
+    ld    B, D          ; 1:4       3313* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3313*
     ld    D, H          ; 1:4       3313*
     ld    E, L          ; 1:4       3313* save 1x
@@ -12229,7 +12230,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3313* HL + save
     ld    D, B          ; 1:4       3313*
     ld    E, C          ; 1:4       3313*   
-    ld    B, D          ; 1:4       3319*
+    ld    B, D          ; 1:4       3319* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3319*
     ld    D, H          ; 1:4       3319*
     ld    E, L          ; 1:4       3319* save 1x
@@ -12258,7 +12259,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3319* HL - save
     ld    D, B          ; 1:4       3319*
     ld    E, C          ; 1:4       3319*   
-    ld    B, D          ; 1:4       3323*
+    ld    B, D          ; 1:4       3323* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3323*
     ld    D, H          ; 1:4       3323*
     ld    E, L          ; 1:4       3323* save 1x
@@ -12286,8 +12287,8 @@ ORG 0x6000
     or    A             ; 1:4       3323*
     sbc  HL, DE         ; 2:15      3323* HL - save
     ld    D, B          ; 1:4       3323*
-    ld    E, C          ; 1:4       3323*   
-    ld    B, D          ; 1:4       3329*
+    ld    E, C          ; 1:4       3323*       
+    ld    B, D          ; 1:4       3329* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3329*
     ld    D, H          ; 1:4       3329*
     ld    E, L          ; 1:4       3329* save 1x
@@ -12304,8 +12305,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3329* 2048x
     add  HL, DE         ; 1:11      3329* HL + save
     ld    D, B          ; 1:4       3329*
-    ld    E, C          ; 1:4       3329*   
-    ld    B, D          ; 1:4       3331*
+    ld    E, C          ; 1:4       3329*       
+    ld    B, D          ; 1:4       3331* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3331*
     ld    D, H          ; 1:4       3331*
     ld    E, L          ; 1:4       3331* save 1x
@@ -12313,13 +12314,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       3331* +
     add  HL, DE         ; 1:11      3331* + save 2x
     ex   DE, HL         ; 1:4       3331* +
-    add  HL, HL         ; 1:11      3331* 4x
-    add  HL, HL         ; 1:11      3331* 8x
-    add  HL, HL         ; 1:11      3331* 16x
-    add  HL, HL         ; 1:11      3331* 32x
-    add  HL, HL         ; 1:11      3331* 64x
-    add  HL, HL         ; 1:11      3331* 128x
-    add  HL, HL         ; 1:11      3331* 256x
+    rr    H             ; 2:8       3331*
+    rr    L             ; 2:8       3331*
+    ld    H, L          ; 1:4       3331*
+    ld    L, 0x00       ; 2:7       3331* 256x
     ex   DE, HL         ; 1:4       3331* +
     add  HL, DE         ; 1:11      3331* + save 256x
     ex   DE, HL         ; 1:4       3331* +
@@ -12332,8 +12330,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3331* HL + save
     ld    D, B          ; 1:4       3331*
     ld    E, C          ; 1:4       3331* 
-   
-    ld    B, D          ; 1:4       3343*
+       
+    ld    B, D          ; 1:4       3343* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3343*
     ld    D, H          ; 1:4       3343*
     ld    E, L          ; 1:4       3343* save 1x
@@ -12365,8 +12363,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3343* 2048x
     add  HL, DE         ; 1:11      3343* HL + save
     ld    D, B          ; 1:4       3343*
-    ld    E, C          ; 1:4       3343*   
-    ld    B, D          ; 1:4       3347*
+    ld    E, C          ; 1:4       3343*       
+    ld    B, D          ; 1:4       3347* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3347*
     ld    D, H          ; 1:4       3347*
     ld    E, L          ; 1:4       3347* save 1x
@@ -12396,7 +12394,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3347* HL + save
     ld    D, B          ; 1:4       3347*
     ld    E, C          ; 1:4       3347*   
-    ld    B, D          ; 1:4       3359*
+    ld    B, D          ; 1:4       3359* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3359*
     ld    D, H          ; 1:4       3359*
     ld    E, L          ; 1:4       3359* save 1x
@@ -12427,8 +12425,8 @@ ORG 0x6000
     or    A             ; 1:4       3359*
     sbc  HL, DE         ; 2:15      3359* HL - save
     ld    D, B          ; 1:4       3359*
-    ld    E, C          ; 1:4       3359*   
-    ld    B, D          ; 1:4       3361*
+    ld    E, C          ; 1:4       3359*       
+    ld    B, D          ; 1:4       3361* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3361*
     ld    D, H          ; 1:4       3361*
     ld    E, L          ; 1:4       3361* save 1x
@@ -12454,8 +12452,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3361* 2048x
     add  HL, DE         ; 1:11      3361* HL + save
     ld    D, B          ; 1:4       3361*
-    ld    E, C          ; 1:4       3361*   
-    ld    B, D          ; 1:4       3371*
+    ld    E, C          ; 1:4       3361*       
+    ld    B, D          ; 1:4       3371* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3371*
     ld    D, H          ; 1:4       3371*
     ld    E, L          ; 1:4       3371* save 1x
@@ -12487,8 +12485,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3371* 2048x
     add  HL, DE         ; 1:11      3371* HL + save
     ld    D, B          ; 1:4       3371*
-    ld    E, C          ; 1:4       3371*   
-    ld    B, D          ; 1:4       3373*
+    ld    E, C          ; 1:4       3371*       
+    ld    B, D          ; 1:4       3373* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3373*
     ld    D, H          ; 1:4       3373*
     ld    E, L          ; 1:4       3373* save 1x
@@ -12521,7 +12519,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3373* HL + save
     ld    D, B          ; 1:4       3373*
     ld    E, C          ; 1:4       3373*   
-    ld    B, D          ; 1:4       3389*
+    ld    B, D          ; 1:4       3389* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3389*
     ld    D, H          ; 1:4       3389*
     ld    E, L          ; 1:4       3389* save 1x
@@ -12553,7 +12551,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3389* HL - save
     ld    D, B          ; 1:4       3389*
     ld    E, C          ; 1:4       3389*   
-    ld    B, D          ; 1:4       3391*
+    ld    B, D          ; 1:4       3391* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3391*
     ld    D, H          ; 1:4       3391*
     ld    E, L          ; 1:4       3391* save 1x
@@ -12582,7 +12580,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3391* HL - save
     ld    D, B          ; 1:4       3391*
     ld    E, C          ; 1:4       3391*   
-    ld    B, D          ; 1:4       3407*
+    ld    B, D          ; 1:4       3407* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3407*
     ld    D, H          ; 1:4       3407*
     ld    E, L          ; 1:4       3407* save 1x
@@ -12613,8 +12611,8 @@ ORG 0x6000
     or    A             ; 1:4       3407*
     sbc  HL, DE         ; 2:15      3407* HL - save
     ld    D, B          ; 1:4       3407*
-    ld    E, C          ; 1:4       3407*   
-    ld    B, D          ; 1:4       3413*
+    ld    E, C          ; 1:4       3407*       
+    ld    B, D          ; 1:4       3413* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3413*
     ld    D, H          ; 1:4       3413*
     ld    E, L          ; 1:4       3413* save 1x
@@ -12647,8 +12645,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3413* HL + save
     ld    D, B          ; 1:4       3413*
     ld    E, C          ; 1:4       3413* 
-   
-    ld    B, D          ; 1:4       3433*
+       
+    ld    B, D          ; 1:4       3433* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3433*
     ld    D, H          ; 1:4       3433*
     ld    E, L          ; 1:4       3433* save 1x
@@ -12681,7 +12679,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3433* HL + save
     ld    D, B          ; 1:4       3433*
     ld    E, C          ; 1:4       3433*   
-    ld    B, D          ; 1:4       3449*
+    ld    B, D          ; 1:4       3449* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3449*
     ld    D, H          ; 1:4       3449*
     ld    E, L          ; 1:4       3449* save 1x
@@ -12712,8 +12710,8 @@ ORG 0x6000
     or    A             ; 1:4       3449*
     sbc  HL, DE         ; 2:15      3449* HL - save
     ld    D, B          ; 1:4       3449*
-    ld    E, C          ; 1:4       3449*   
-    ld    B, D          ; 1:4       3457*
+    ld    E, C          ; 1:4       3449*       
+    ld    B, D          ; 1:4       3457* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3457*
     ld    D, H          ; 1:4       3457*
     ld    E, L          ; 1:4       3457* save 1x
@@ -12739,8 +12737,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3457* 2048x
     add  HL, DE         ; 1:11      3457* HL + save
     ld    D, B          ; 1:4       3457*
-    ld    E, C          ; 1:4       3457*   
-    ld    B, D          ; 1:4       3461*
+    ld    E, C          ; 1:4       3457*       
+    ld    B, D          ; 1:4       3461* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3461*
     ld    D, H          ; 1:4       3461*
     ld    E, L          ; 1:4       3461* save 1x
@@ -12769,8 +12767,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3461* 2048x
     add  HL, DE         ; 1:11      3461* HL + save
     ld    D, B          ; 1:4       3461*
-    ld    E, C          ; 1:4       3461*   
-    ld    B, D          ; 1:4       3463*
+    ld    E, C          ; 1:4       3461*       
+    ld    B, D          ; 1:4       3463* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3463*
     ld    D, H          ; 1:4       3463*
     ld    E, L          ; 1:4       3463* save 1x
@@ -12802,8 +12800,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3463* 2048x
     add  HL, DE         ; 1:11      3463* HL + save
     ld    D, B          ; 1:4       3463*
-    ld    E, C          ; 1:4       3463*   
-    ld    B, D          ; 1:4       3467*
+    ld    E, C          ; 1:4       3463*       
+    ld    B, D          ; 1:4       3467* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3467*
     ld    D, H          ; 1:4       3467*
     ld    E, L          ; 1:4       3467* save 1x
@@ -12835,8 +12833,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3467* 2048x
     add  HL, DE         ; 1:11      3467* HL + save
     ld    D, B          ; 1:4       3467*
-    ld    E, C          ; 1:4       3467*   
-    ld    B, D          ; 1:4       3469*
+    ld    E, C          ; 1:4       3467*       
+    ld    B, D          ; 1:4       3469* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3469*
     ld    D, H          ; 1:4       3469*
     ld    E, L          ; 1:4       3469* save 1x
@@ -12868,8 +12866,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3469* 2048x
     add  HL, DE         ; 1:11      3469* HL + save
     ld    D, B          ; 1:4       3469*
-    ld    E, C          ; 1:4       3469*   
-    ld    B, D          ; 1:4       3491*
+    ld    E, C          ; 1:4       3469*       
+    ld    B, D          ; 1:4       3491* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3491*
     ld    D, H          ; 1:4       3491*
     ld    E, L          ; 1:4       3491* save 1x
@@ -12902,7 +12900,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3491* HL + save
     ld    D, B          ; 1:4       3491*
     ld    E, C          ; 1:4       3491*   
-    ld    B, D          ; 1:4       3499*
+    ld    B, D          ; 1:4       3499* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3499*
     ld    D, H          ; 1:4       3499*
     ld    E, L          ; 1:4       3499* save 1x
@@ -12934,7 +12932,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3499* HL - save
     ld    D, B          ; 1:4       3499*
     ld    E, C          ; 1:4       3499*   
-    ld    B, D          ; 1:4       3511*
+    ld    B, D          ; 1:4       3511* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3511*
     ld    D, H          ; 1:4       3511*
     ld    E, L          ; 1:4       3511* save 1x
@@ -12964,7 +12962,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       3511*
     ld    E, C          ; 1:4       3511* 
    
-    ld    B, D          ; 1:4       3517*
+    ld    B, D          ; 1:4       3517* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3517*
     ld    D, H          ; 1:4       3517*
     ld    E, L          ; 1:4       3517* save 1x
@@ -12993,7 +12991,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3517* HL - save
     ld    D, B          ; 1:4       3517*
     ld    E, C          ; 1:4       3517*   
-    ld    B, D          ; 1:4       3527*
+    ld    B, D          ; 1:4       3527* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3527*
     ld    D, H          ; 1:4       3527*
     ld    E, L          ; 1:4       3527* save 1x
@@ -13024,8 +13022,8 @@ ORG 0x6000
     or    A             ; 1:4       3527*
     sbc  HL, DE         ; 2:15      3527* HL - save
     ld    D, B          ; 1:4       3527*
-    ld    E, C          ; 1:4       3527*   
-    ld    B, D          ; 1:4       3529*
+    ld    E, C          ; 1:4       3527*       
+    ld    B, D          ; 1:4       3529* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3529*
     ld    D, H          ; 1:4       3529*
     ld    E, L          ; 1:4       3529* save 1x
@@ -13058,7 +13056,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3529* HL + save
     ld    D, B          ; 1:4       3529*
     ld    E, C          ; 1:4       3529*   
-    ld    B, D          ; 1:4       3533*
+    ld    B, D          ; 1:4       3533* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3533*
     ld    D, H          ; 1:4       3533*
     ld    E, L          ; 1:4       3533* save 1x
@@ -13090,7 +13088,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3533* HL - save
     ld    D, B          ; 1:4       3533*
     ld    E, C          ; 1:4       3533*   
-    ld    B, D          ; 1:4       3539*
+    ld    B, D          ; 1:4       3539* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3539*
     ld    D, H          ; 1:4       3539*
     ld    E, L          ; 1:4       3539* save 1x
@@ -13122,7 +13120,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3539* HL - save
     ld    D, B          ; 1:4       3539*
     ld    E, C          ; 1:4       3539*   
-    ld    B, D          ; 1:4       3541*
+    ld    B, D          ; 1:4       3541* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3541*
     ld    D, H          ; 1:4       3541*
     ld    E, L          ; 1:4       3541* save 1x
@@ -13154,7 +13152,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3541* HL - save
     ld    D, B          ; 1:4       3541*
     ld    E, C          ; 1:4       3541*   
-    ld    B, D          ; 1:4       3547*
+    ld    B, D          ; 1:4       3547* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3547*
     ld    D, H          ; 1:4       3547*
     ld    E, L          ; 1:4       3547* save 1x
@@ -13183,7 +13181,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3547* HL - save
     ld    D, B          ; 1:4       3547*
     ld    E, C          ; 1:4       3547*   
-    ld    B, D          ; 1:4       3557*
+    ld    B, D          ; 1:4       3557* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3557*
     ld    D, H          ; 1:4       3557*
     ld    E, L          ; 1:4       3557* save 1x
@@ -13215,7 +13213,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3557* HL - save
     ld    D, B          ; 1:4       3557*
     ld    E, C          ; 1:4       3557*   
-    ld    B, D          ; 1:4       3559*
+    ld    B, D          ; 1:4       3559* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3559*
     ld    D, H          ; 1:4       3559*
     ld    E, L          ; 1:4       3559* save 1x
@@ -13244,7 +13242,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3559* HL - save
     ld    D, B          ; 1:4       3559*
     ld    E, C          ; 1:4       3559*   
-    ld    B, D          ; 1:4       3571*
+    ld    B, D          ; 1:4       3571* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3571*
     ld    D, H          ; 1:4       3571*
     ld    E, L          ; 1:4       3571* save 1x
@@ -13274,7 +13272,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       3571*
     ld    E, C          ; 1:4       3571* 
    
-    ld    B, D          ; 1:4       3581*
+    ld    B, D          ; 1:4       3581* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3581*
     ld    D, H          ; 1:4       3581*
     ld    E, L          ; 1:4       3581* save 1x
@@ -13294,12 +13292,12 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3581* HL - save
     ld    D, B          ; 1:4       3581*
     ld    E, C          ; 1:4       3581*   
-    ld    B, H          ; 1:4       3583*
+    ld    B, H          ; 1:4       3583* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       3583* save 1x
     ld    H, L          ; 1:4       3583*
     ld    L, 0x00       ; 2:7       3583* 256x
     add  HL, HL         ; 1:11      3583* 512x
-    add   A, L          ; 1:4       3583* +
+    add   A, L          ; 1:4       3583*
     ld    C, A          ; 1:4       3583* +
     ld    A, B          ; 1:4       3583* +
     adc   A, H          ; 1:4       3583* +
@@ -13308,8 +13306,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3583* 2048x
     add  HL, HL         ; 1:11      3583* 4096x
     or    A             ; 1:4       3583*
-    sbc  HL, BC         ; 2:15      3583* HL - save   
-    ld    B, D          ; 1:4       3593*
+    sbc  HL, BC         ; 2:15      3583* HL - save       
+    ld    B, D          ; 1:4       3593* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3593*
     ld    D, H          ; 1:4       3593*
     ld    E, L          ; 1:4       3593* save 1x
@@ -13335,8 +13333,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3593* 2048x
     add  HL, DE         ; 1:11      3593* HL + save
     ld    D, B          ; 1:4       3593*
-    ld    E, C          ; 1:4       3593*   
-    ld    B, D          ; 1:4       3607*
+    ld    E, C          ; 1:4       3593*       
+    ld    B, D          ; 1:4       3607* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3607*
     ld    D, H          ; 1:4       3607*
     ld    E, L          ; 1:4       3607* save 1x
@@ -13368,8 +13366,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3607* 2048x
     add  HL, DE         ; 1:11      3607* HL + save
     ld    D, B          ; 1:4       3607*
-    ld    E, C          ; 1:4       3607*   
-    ld    B, D          ; 1:4       3613*
+    ld    E, C          ; 1:4       3607*       
+    ld    B, D          ; 1:4       3613* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3613*
     ld    D, H          ; 1:4       3613*
     ld    E, L          ; 1:4       3613* save 1x
@@ -13401,8 +13399,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3613* 2048x
     add  HL, DE         ; 1:11      3613* HL + save
     ld    D, B          ; 1:4       3613*
-    ld    E, C          ; 1:4       3613*   
-    ld    B, D          ; 1:4       3617*
+    ld    E, C          ; 1:4       3613*       
+    ld    B, D          ; 1:4       3617* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3617*
     ld    D, H          ; 1:4       3617*
     ld    E, L          ; 1:4       3617* save 1x
@@ -13428,8 +13426,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3617* 2048x
     add  HL, DE         ; 1:11      3617* HL + save
     ld    D, B          ; 1:4       3617*
-    ld    E, C          ; 1:4       3617*   
-    ld    B, D          ; 1:4       3623*
+    ld    E, C          ; 1:4       3617*       
+    ld    B, D          ; 1:4       3623* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3623*
     ld    D, H          ; 1:4       3623*
     ld    E, L          ; 1:4       3623* save 1x
@@ -13462,7 +13460,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3623* HL + save
     ld    D, B          ; 1:4       3623*
     ld    E, C          ; 1:4       3623*   
-    ld    B, D          ; 1:4       3631*
+    ld    B, D          ; 1:4       3631* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3631*
     ld    D, H          ; 1:4       3631*
     ld    E, L          ; 1:4       3631* save 1x
@@ -13493,8 +13491,8 @@ ORG 0x6000
     or    A             ; 1:4       3631*
     sbc  HL, DE         ; 2:15      3631* HL - save
     ld    D, B          ; 1:4       3631*
-    ld    E, C          ; 1:4       3631*   
-    ld    B, D          ; 1:4       3637*
+    ld    E, C          ; 1:4       3631*       
+    ld    B, D          ; 1:4       3637* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3637*
     ld    D, H          ; 1:4       3637*
     ld    E, L          ; 1:4       3637* save 1x
@@ -13527,7 +13525,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3637* HL + save
     ld    D, B          ; 1:4       3637*
     ld    E, C          ; 1:4       3637*   
-    ld    B, D          ; 1:4       3643*
+    ld    B, D          ; 1:4       3643* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3643*
     ld    D, H          ; 1:4       3643*
     ld    E, L          ; 1:4       3643* save 1x
@@ -13559,8 +13557,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3643* HL - save
     ld    D, B          ; 1:4       3643*
     ld    E, C          ; 1:4       3643* 
-   
-    ld    B, D          ; 1:4       3659*
+       
+    ld    B, D          ; 1:4       3659* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3659*
     ld    D, H          ; 1:4       3659*
     ld    E, L          ; 1:4       3659* save 1x
@@ -13593,7 +13591,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3659* HL + save
     ld    D, B          ; 1:4       3659*
     ld    E, C          ; 1:4       3659*   
-    ld    B, D          ; 1:4       3671*
+    ld    B, D          ; 1:4       3671* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3671*
     ld    D, H          ; 1:4       3671*
     ld    E, L          ; 1:4       3671* save 1x
@@ -13624,8 +13622,8 @@ ORG 0x6000
     or    A             ; 1:4       3671*
     sbc  HL, DE         ; 2:15      3671* HL - save
     ld    D, B          ; 1:4       3671*
-    ld    E, C          ; 1:4       3671*   
-    ld    B, D          ; 1:4       3673*
+    ld    E, C          ; 1:4       3671*       
+    ld    B, D          ; 1:4       3673* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3673*
     ld    D, H          ; 1:4       3673*
     ld    E, L          ; 1:4       3673* save 1x
@@ -13658,7 +13656,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3673* HL + save
     ld    D, B          ; 1:4       3673*
     ld    E, C          ; 1:4       3673*   
-    ld    B, D          ; 1:4       3677*
+    ld    B, D          ; 1:4       3677* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3677*
     ld    D, H          ; 1:4       3677*
     ld    E, L          ; 1:4       3677* save 1x
@@ -13690,7 +13688,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3677* HL - save
     ld    D, B          ; 1:4       3677*
     ld    E, C          ; 1:4       3677*   
-    ld    B, D          ; 1:4       3691*
+    ld    B, D          ; 1:4       3691* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3691*
     ld    D, H          ; 1:4       3691*
     ld    E, L          ; 1:4       3691* save 1x
@@ -13721,8 +13719,8 @@ ORG 0x6000
     or    A             ; 1:4       3691*
     sbc  HL, DE         ; 2:15      3691* HL - save
     ld    D, B          ; 1:4       3691*
-    ld    E, C          ; 1:4       3691*   
-    ld    B, D          ; 1:4       3697*
+    ld    E, C          ; 1:4       3691*       
+    ld    B, D          ; 1:4       3697* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3697*
     ld    D, H          ; 1:4       3697*
     ld    E, L          ; 1:4       3697* save 1x
@@ -13755,7 +13753,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3697* HL + save
     ld    D, B          ; 1:4       3697*
     ld    E, C          ; 1:4       3697*   
-    ld    B, D          ; 1:4       3701*
+    ld    B, D          ; 1:4       3701* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3701*
     ld    D, H          ; 1:4       3701*
     ld    E, L          ; 1:4       3701* save 1x
@@ -13787,7 +13785,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3701* HL - save
     ld    D, B          ; 1:4       3701*
     ld    E, C          ; 1:4       3701*   
-    ld    B, D          ; 1:4       3709*
+    ld    B, D          ; 1:4       3709* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3709*
     ld    D, H          ; 1:4       3709*
     ld    E, L          ; 1:4       3709* save 1x
@@ -13815,8 +13813,8 @@ ORG 0x6000
     or    A             ; 1:4       3709*
     sbc  HL, DE         ; 2:15      3709* HL - save
     ld    D, B          ; 1:4       3709*
-    ld    E, C          ; 1:4       3709*   
-    ld    B, D          ; 1:4       3719*
+    ld    E, C          ; 1:4       3709*       
+    ld    B, D          ; 1:4       3719* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3719*
     ld    D, H          ; 1:4       3719*
     ld    E, L          ; 1:4       3719* save 1x
@@ -13849,7 +13847,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3719* HL + save
     ld    D, B          ; 1:4       3719*
     ld    E, C          ; 1:4       3719*   
-    ld    B, D          ; 1:4       3727*
+    ld    B, D          ; 1:4       3727* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3727*
     ld    D, H          ; 1:4       3727*
     ld    E, L          ; 1:4       3727* save 1x
@@ -13881,8 +13879,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3727* HL - save
     ld    D, B          ; 1:4       3727*
     ld    E, C          ; 1:4       3727* 
-   
-    ld    B, D          ; 1:4       3733*
+       
+    ld    B, D          ; 1:4       3733* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3733*
     ld    D, H          ; 1:4       3733*
     ld    E, L          ; 1:4       3733* save 1x
@@ -13915,7 +13913,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3733* HL + save
     ld    D, B          ; 1:4       3733*
     ld    E, C          ; 1:4       3733*   
-    ld    B, D          ; 1:4       3739*
+    ld    B, D          ; 1:4       3739* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3739*
     ld    D, H          ; 1:4       3739*
     ld    E, L          ; 1:4       3739* save 1x
@@ -13946,8 +13944,8 @@ ORG 0x6000
     or    A             ; 1:4       3739*
     sbc  HL, DE         ; 2:15      3739* HL - save
     ld    D, B          ; 1:4       3739*
-    ld    E, C          ; 1:4       3739*   
-    ld    B, D          ; 1:4       3761*
+    ld    E, C          ; 1:4       3739*       
+    ld    B, D          ; 1:4       3761* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3761*
     ld    D, H          ; 1:4       3761*
     ld    E, L          ; 1:4       3761* save 1x
@@ -13980,7 +13978,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3761* HL + save
     ld    D, B          ; 1:4       3761*
     ld    E, C          ; 1:4       3761*   
-    ld    B, D          ; 1:4       3767*
+    ld    B, D          ; 1:4       3767* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3767*
     ld    D, H          ; 1:4       3767*
     ld    E, L          ; 1:4       3767* save 1x
@@ -14009,7 +14007,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3767* HL - save
     ld    D, B          ; 1:4       3767*
     ld    E, C          ; 1:4       3767*   
-    ld    B, D          ; 1:4       3769*
+    ld    B, D          ; 1:4       3769* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3769*
     ld    D, H          ; 1:4       3769*
     ld    E, L          ; 1:4       3769* save 1x
@@ -14040,8 +14038,8 @@ ORG 0x6000
     or    A             ; 1:4       3769*
     sbc  HL, DE         ; 2:15      3769* HL - save
     ld    D, B          ; 1:4       3769*
-    ld    E, C          ; 1:4       3769*   
-    ld    B, D          ; 1:4       3779*
+    ld    E, C          ; 1:4       3769*       
+    ld    B, D          ; 1:4       3779* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3779*
     ld    D, H          ; 1:4       3779*
     ld    E, L          ; 1:4       3779* save 1x
@@ -14073,8 +14071,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3779* 2048x
     add  HL, DE         ; 1:11      3779* HL + save
     ld    D, B          ; 1:4       3779*
-    ld    E, C          ; 1:4       3779*   
-    ld    B, D          ; 1:4       3793*
+    ld    E, C          ; 1:4       3779*       
+    ld    B, D          ; 1:4       3793* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3793*
     ld    D, H          ; 1:4       3793*
     ld    E, L          ; 1:4       3793* save 1x
@@ -14107,7 +14105,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3793* HL + save
     ld    D, B          ; 1:4       3793*
     ld    E, C          ; 1:4       3793*   
-    ld    B, D          ; 1:4       3797*
+    ld    B, D          ; 1:4       3797* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3797*
     ld    D, H          ; 1:4       3797*
     ld    E, L          ; 1:4       3797* save 1x
@@ -14139,7 +14137,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3797* HL - save
     ld    D, B          ; 1:4       3797*
     ld    E, C          ; 1:4       3797*   
-    ld    B, D          ; 1:4       3803*
+    ld    B, D          ; 1:4       3803* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3803*
     ld    D, H          ; 1:4       3803*
     ld    E, L          ; 1:4       3803* save 1x
@@ -14168,7 +14166,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3803* HL - save
     ld    D, B          ; 1:4       3803*
     ld    E, C          ; 1:4       3803*   
-    ld    B, D          ; 1:4       3821*
+    ld    B, D          ; 1:4       3821* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3821*
     ld    D, H          ; 1:4       3821*
     ld    E, L          ; 1:4       3821* save 1x
@@ -14198,7 +14196,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       3821*
     ld    E, C          ; 1:4       3821* 
    
-    ld    B, D          ; 1:4       3823*
+    ld    B, D          ; 1:4       3823* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3823*
     ld    D, H          ; 1:4       3823*
     ld    E, L          ; 1:4       3823* save 1x
@@ -14224,7 +14222,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3823* HL - save
     ld    D, B          ; 1:4       3823*
     ld    E, C          ; 1:4       3823*   
-    ld    B, D          ; 1:4       3833*
+    ld    B, D          ; 1:4       3833* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3833*
     ld    D, H          ; 1:4       3833*
     ld    E, L          ; 1:4       3833* save 1x
@@ -14252,8 +14250,8 @@ ORG 0x6000
     or    A             ; 1:4       3833*
     sbc  HL, DE         ; 2:15      3833* HL - save
     ld    D, B          ; 1:4       3833*
-    ld    E, C          ; 1:4       3833*   
-    ld    B, D          ; 1:4       3847*
+    ld    E, C          ; 1:4       3833*       
+    ld    B, D          ; 1:4       3847* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3847*
     ld    D, H          ; 1:4       3847*
     ld    E, L          ; 1:4       3847* save 1x
@@ -14285,8 +14283,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3847* 2048x
     add  HL, DE         ; 1:11      3847* HL + save
     ld    D, B          ; 1:4       3847*
-    ld    E, C          ; 1:4       3847*   
-    ld    B, D          ; 1:4       3851*
+    ld    E, C          ; 1:4       3847*       
+    ld    B, D          ; 1:4       3851* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3851*
     ld    D, H          ; 1:4       3851*
     ld    E, L          ; 1:4       3851* save 1x
@@ -14318,8 +14316,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3851* 2048x
     add  HL, DE         ; 1:11      3851* HL + save
     ld    D, B          ; 1:4       3851*
-    ld    E, C          ; 1:4       3851*   
-    ld    B, D          ; 1:4       3853*
+    ld    E, C          ; 1:4       3851*       
+    ld    B, D          ; 1:4       3853* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3853*
     ld    D, H          ; 1:4       3853*
     ld    E, L          ; 1:4       3853* save 1x
@@ -14352,7 +14350,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      3853* HL + save
     ld    D, B          ; 1:4       3853*
     ld    E, C          ; 1:4       3853*   
-    ld    B, D          ; 1:4       3863*
+    ld    B, D          ; 1:4       3863* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3863*
     ld    D, H          ; 1:4       3863*
     ld    E, L          ; 1:4       3863* save 1x
@@ -14383,8 +14381,8 @@ ORG 0x6000
     or    A             ; 1:4       3863*
     sbc  HL, DE         ; 2:15      3863* HL - save
     ld    D, B          ; 1:4       3863*
-    ld    E, C          ; 1:4       3863*   
-    ld    B, D          ; 1:4       3877*
+    ld    E, C          ; 1:4       3863*       
+    ld    B, D          ; 1:4       3877* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3877*
     ld    D, H          ; 1:4       3877*
     ld    E, L          ; 1:4       3877* save 1x
@@ -14416,8 +14414,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3877* 2048x
     add  HL, DE         ; 1:11      3877* HL + save
     ld    D, B          ; 1:4       3877*
-    ld    E, C          ; 1:4       3877*   
-    ld    B, D          ; 1:4       3881*
+    ld    E, C          ; 1:4       3877*       
+    ld    B, D          ; 1:4       3881* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3881*
     ld    D, H          ; 1:4       3881*
     ld    E, L          ; 1:4       3881* save 1x
@@ -14449,8 +14447,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3881* 2048x
     add  HL, DE         ; 1:11      3881* HL + save
     ld    D, B          ; 1:4       3881*
-    ld    E, C          ; 1:4       3881*   
-    ld    B, D          ; 1:4       3889*
+    ld    E, C          ; 1:4       3881*       
+    ld    B, D          ; 1:4       3889* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3889*
     ld    D, H          ; 1:4       3889*
     ld    E, L          ; 1:4       3889* save 1x
@@ -14482,8 +14480,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3889* 2048x
     add  HL, DE         ; 1:11      3889* HL + save
     ld    D, B          ; 1:4       3889*
-    ld    E, C          ; 1:4       3889*   
-    ld    B, D          ; 1:4       3907*
+    ld    E, C          ; 1:4       3889*       
+    ld    B, D          ; 1:4       3907* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       3907*
     ld    D, H          ; 1:4       3907*
     ld    E, L          ; 1:4       3907* save 1x
@@ -14517,7 +14515,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       3907*
     ld    E, C          ; 1:4       3907* 
    
-    ld    B, D          ; 1:4       3911*
+    ld    B, D          ; 1:4       3911* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3911*
     ld    D, H          ; 1:4       3911*
     ld    E, L          ; 1:4       3911* save 1x
@@ -14549,7 +14547,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3911* HL - save
     ld    D, B          ; 1:4       3911*
     ld    E, C          ; 1:4       3911*   
-    ld    B, D          ; 1:4       3917*
+    ld    B, D          ; 1:4       3917* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3917*
     ld    D, H          ; 1:4       3917*
     ld    E, L          ; 1:4       3917* save 1x
@@ -14581,7 +14579,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3917* HL - save
     ld    D, B          ; 1:4       3917*
     ld    E, C          ; 1:4       3917*   
-    ld    B, D          ; 1:4       3919*
+    ld    B, D          ; 1:4       3919* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3919*
     ld    D, H          ; 1:4       3919*
     ld    E, L          ; 1:4       3919* save 1x
@@ -14610,7 +14608,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3919* HL - save
     ld    D, B          ; 1:4       3919*
     ld    E, C          ; 1:4       3919*   
-    ld    B, D          ; 1:4       3923*
+    ld    B, D          ; 1:4       3923* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3923*
     ld    D, H          ; 1:4       3923*
     ld    E, L          ; 1:4       3923* save 1x
@@ -14642,7 +14640,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3923* HL - save
     ld    D, B          ; 1:4       3923*
     ld    E, C          ; 1:4       3923*   
-    ld    B, D          ; 1:4       3929*
+    ld    B, D          ; 1:4       3929* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3929*
     ld    D, H          ; 1:4       3929*
     ld    E, L          ; 1:4       3929* save 1x
@@ -14674,7 +14672,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3929* HL - save
     ld    D, B          ; 1:4       3929*
     ld    E, C          ; 1:4       3929*   
-    ld    B, D          ; 1:4       3931*
+    ld    B, D          ; 1:4       3931* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3931*
     ld    D, H          ; 1:4       3931*
     ld    E, L          ; 1:4       3931* save 1x
@@ -14703,7 +14701,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3931* HL - save
     ld    D, B          ; 1:4       3931*
     ld    E, C          ; 1:4       3931*   
-    ld    B, D          ; 1:4       3943*
+    ld    B, D          ; 1:4       3943* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3943*
     ld    D, H          ; 1:4       3943*
     ld    E, L          ; 1:4       3943* save 1x
@@ -14732,7 +14730,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3943* HL - save
     ld    D, B          ; 1:4       3943*
     ld    E, C          ; 1:4       3943*   
-    ld    B, D          ; 1:4       3947*
+    ld    B, D          ; 1:4       3947* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3947*
     ld    D, H          ; 1:4       3947*
     ld    E, L          ; 1:4       3947* save 1x
@@ -14761,7 +14759,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3947* HL - save
     ld    D, B          ; 1:4       3947*
     ld    E, C          ; 1:4       3947*   
-    ld    B, H          ; 1:4       3967*
+    ld    B, H          ; 1:4       3967* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       3967* save 1x
     add  HL, HL         ; 1:11      3967* 2x
     add  HL, HL         ; 1:11      3967* 4x
@@ -14770,7 +14768,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3967* 32x
     add  HL, HL         ; 1:11      3967* 64x
     add  HL, HL         ; 1:11      3967* 128x
-    add   A, L          ; 1:4       3967* +
+    add   A, L          ; 1:4       3967*
     ld    C, A          ; 1:4       3967* +
     ld    A, B          ; 1:4       3967* +
     adc   A, H          ; 1:4       3967* +
@@ -14782,7 +14780,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      3967* 4096x
     or    A             ; 1:4       3967*
     sbc  HL, BC         ; 2:15      3967* HL - save   
-    ld    B, D          ; 1:4       3989*
+    ld    B, D          ; 1:4       3989* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       3989*
     ld    D, H          ; 1:4       3989*
     ld    E, L          ; 1:4       3989* save 1x
@@ -14814,8 +14812,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      3989* HL - save
     ld    D, B          ; 1:4       3989*
     ld    E, C          ; 1:4       3989* 
-   
-    ld    B, D          ; 1:4       4001*
+       
+    ld    B, D          ; 1:4       4001* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4001*
     ld    D, H          ; 1:4       4001*
     ld    E, L          ; 1:4       4001* save 1x
@@ -14848,7 +14846,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4001* HL + save
     ld    D, B          ; 1:4       4001*
     ld    E, C          ; 1:4       4001*   
-    ld    B, D          ; 1:4       4003*
+    ld    B, D          ; 1:4       4003* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4003*
     ld    D, H          ; 1:4       4003*
     ld    E, L          ; 1:4       4003* save 1x
@@ -14880,7 +14878,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4003* HL - save
     ld    D, B          ; 1:4       4003*
     ld    E, C          ; 1:4       4003*   
-    ld    B, D          ; 1:4       4007*
+    ld    B, D          ; 1:4       4007* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4007*
     ld    D, H          ; 1:4       4007*
     ld    E, L          ; 1:4       4007* save 1x
@@ -14909,7 +14907,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4007* HL - save
     ld    D, B          ; 1:4       4007*
     ld    E, C          ; 1:4       4007*   
-    ld    B, D          ; 1:4       4013*
+    ld    B, D          ; 1:4       4013* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4013*
     ld    D, H          ; 1:4       4013*
     ld    E, L          ; 1:4       4013* save 1x
@@ -14938,7 +14936,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4013* HL - save
     ld    D, B          ; 1:4       4013*
     ld    E, C          ; 1:4       4013*   
-    ld    B, D          ; 1:4       4019*
+    ld    B, D          ; 1:4       4019* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4019*
     ld    D, H          ; 1:4       4019*
     ld    E, L          ; 1:4       4019* save 1x
@@ -14967,7 +14965,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4019* HL - save
     ld    D, B          ; 1:4       4019*
     ld    E, C          ; 1:4       4019*   
-    ld    B, D          ; 1:4       4021*
+    ld    B, D          ; 1:4       4021* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4021*
     ld    D, H          ; 1:4       4021*
     ld    E, L          ; 1:4       4021* save 1x
@@ -14996,7 +14994,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4021* HL - save
     ld    D, B          ; 1:4       4021*
     ld    E, C          ; 1:4       4021*   
-    ld    B, D          ; 1:4       4027*
+    ld    B, D          ; 1:4       4027* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4027*
     ld    D, H          ; 1:4       4027*
     ld    E, L          ; 1:4       4027* save 1x
@@ -15022,7 +15020,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4027* HL - save
     ld    D, B          ; 1:4       4027*
     ld    E, C          ; 1:4       4027*   
-    ld    B, D          ; 1:4       4049*
+    ld    B, D          ; 1:4       4049* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4049*
     ld    D, H          ; 1:4       4049*
     ld    E, L          ; 1:4       4049* save 1x
@@ -15043,18 +15041,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4049* +
     add  HL, DE         ; 1:11      4049* + save 32x
     ex   DE, HL         ; 1:4       4049* +
-    add  HL, HL         ; 1:11      4049* 64x
-    add  HL, HL         ; 1:11      4049* 128x
-    add  HL, HL         ; 1:11      4049* 256x
-    add  HL, HL         ; 1:11      4049* 512x
-    add  HL, HL         ; 1:11      4049* 1024x
-    add  HL, HL         ; 1:11      4049* 2048x
-    add  HL, HL         ; 1:11      4049* 4096x
+    rr    H             ; 2:8       4049*
+    rr    L             ; 2:8       4049*
+    ld    H, L          ; 1:4       4049*
+    ld    L, 0x00       ; 2:7       4049* 4096x
     or    A             ; 1:4       4049*
     sbc  HL, DE         ; 2:15      4049* HL - save
     ld    D, B          ; 1:4       4049*
     ld    E, C          ; 1:4       4049*   
-    ld    B, D          ; 1:4       4051*
+    ld    B, D          ; 1:4       4051* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4051*
     ld    D, H          ; 1:4       4051*
     ld    E, L          ; 1:4       4051* save 1x
@@ -15072,18 +15067,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4051* +
     add  HL, DE         ; 1:11      4051* + save 32x
     ex   DE, HL         ; 1:4       4051* +
-    add  HL, HL         ; 1:11      4051* 64x
-    add  HL, HL         ; 1:11      4051* 128x
-    add  HL, HL         ; 1:11      4051* 256x
-    add  HL, HL         ; 1:11      4051* 512x
-    add  HL, HL         ; 1:11      4051* 1024x
-    add  HL, HL         ; 1:11      4051* 2048x
-    add  HL, HL         ; 1:11      4051* 4096x
+    rr    H             ; 2:8       4051*
+    rr    L             ; 2:8       4051*
+    ld    H, L          ; 1:4       4051*
+    ld    L, 0x00       ; 2:7       4051* 4096x
     or    A             ; 1:4       4051*
     sbc  HL, DE         ; 2:15      4051* HL - save
     ld    D, B          ; 1:4       4051*
     ld    E, C          ; 1:4       4051*   
-    ld    B, D          ; 1:4       4057*
+    ld    B, D          ; 1:4       4057* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4057*
     ld    D, H          ; 1:4       4057*
     ld    E, L          ; 1:4       4057* save 1x
@@ -15101,19 +15093,16 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4057* +
     add  HL, DE         ; 1:11      4057* + save 32x
     ex   DE, HL         ; 1:4       4057* +
-    add  HL, HL         ; 1:11      4057* 64x
-    add  HL, HL         ; 1:11      4057* 128x
-    add  HL, HL         ; 1:11      4057* 256x
-    add  HL, HL         ; 1:11      4057* 512x
-    add  HL, HL         ; 1:11      4057* 1024x
-    add  HL, HL         ; 1:11      4057* 2048x
-    add  HL, HL         ; 1:11      4057* 4096x
+    rr    H             ; 2:8       4057*
+    rr    L             ; 2:8       4057*
+    ld    H, L          ; 1:4       4057*
+    ld    L, 0x00       ; 2:7       4057* 4096x
     or    A             ; 1:4       4057*
     sbc  HL, DE         ; 2:15      4057* HL - save
     ld    D, B          ; 1:4       4057*
     ld    E, C          ; 1:4       4057* 
    
-    ld    B, D          ; 1:4       4073*
+    ld    B, D          ; 1:4       4073* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4073*
     ld    D, H          ; 1:4       4073*
     ld    E, L          ; 1:4       4073* save 1x
@@ -15136,13 +15125,13 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      4073* HL - save
     ld    D, B          ; 1:4       4073*
     ld    E, C          ; 1:4       4073*   
-    ld    B, H          ; 1:4       4079*
+    ld    B, H          ; 1:4       4079* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       4079* save 1x
     add  HL, HL         ; 1:11      4079* 2x
     add  HL, HL         ; 1:11      4079* 4x
     add  HL, HL         ; 1:11      4079* 8x
     add  HL, HL         ; 1:11      4079* 16x
-    add   A, L          ; 1:4       4079* +
+    add   A, L          ; 1:4       4079*
     ld    C, A          ; 1:4       4079* +
     ld    A, B          ; 1:4       4079* +
     adc   A, H          ; 1:4       4079* +
@@ -15151,11 +15140,11 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       4079* 4096x
     or    A             ; 1:4       4079*
     sbc  HL, BC         ; 2:15      4079* HL - save   
-    ld    B, H          ; 1:4       4091*
+    ld    B, H          ; 1:4       4091* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       4091* save 1x
     add  HL, HL         ; 1:11      4091* 2x
     add  HL, HL         ; 1:11      4091* 4x
-    add   A, L          ; 1:4       4091* +
+    add   A, L          ; 1:4       4091*
     ld    C, A          ; 1:4       4091* +
     ld    A, B          ; 1:4       4091* +
     adc   A, H          ; 1:4       4091* +
@@ -15166,10 +15155,10 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4091* 4096x
     or    A             ; 1:4       4091*
     sbc  HL, BC         ; 2:15      4091* HL - save   
-    ld    B, H          ; 1:4       4093*
+    ld    B, H          ; 1:4       4093* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       4093* save 1x
     add  HL, HL         ; 1:11      4093* 2x
-    add   A, L          ; 1:4       4093* +
+    add   A, L          ; 1:4       4093*
     ld    C, A          ; 1:4       4093* +
     ld    A, B          ; 1:4       4093* +
     adc   A, H          ; 1:4       4093* +
@@ -15181,7 +15170,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4093* 4096x
     or    A             ; 1:4       4093*
     sbc  HL, BC         ; 2:15      4093* HL - save   
-    ld    B, H          ; 1:4       4099*
+    ld    B, H          ; 1:4       4099* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       4099* save 1x
     add  HL, HL         ; 1:11      4099* 2x
     add   A, L          ; 1:4       4099* +
@@ -15194,8 +15183,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4099* 1024x
     add  HL, HL         ; 1:11      4099* 2048x
     add  HL, HL         ; 1:11      4099* 4096x
-    add  HL, BC         ; 1:11      4099* HL + save   
-    ld    B, D          ; 1:4       4111*
+    add  HL, BC         ; 1:11      4099* HL + save       
+    ld    B, D          ; 1:4       4111* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4111*
     ld    D, H          ; 1:4       4111*
     ld    E, L          ; 1:4       4111* save 1x
@@ -15216,8 +15205,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4111* 4096x
     add  HL, DE         ; 1:11      4111* HL + save
     ld    D, B          ; 1:4       4111*
-    ld    E, C          ; 1:4       4111*   
-    ld    B, D          ; 1:4       4127*
+    ld    E, C          ; 1:4       4111*       
+    ld    B, D          ; 1:4       4127* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4127*
     ld    D, H          ; 1:4       4127*
     ld    E, L          ; 1:4       4127* save 1x
@@ -15242,7 +15231,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4127* HL + save
     ld    D, B          ; 1:4       4127*
     ld    E, C          ; 1:4       4127*   
-    ld    B, H          ; 1:4       4129*
+    ld    B, H          ; 1:4       4129* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       4129* save 1x
     add  HL, HL         ; 1:11      4129* 2x
     add  HL, HL         ; 1:11      4129* 4x
@@ -15254,15 +15243,12 @@ ORG 0x6000
     ld    A, B          ; 1:4       4129* +
     adc   A, H          ; 1:4       4129* +
     ld    B, A          ; 1:4       4129* + save 32x
-    add  HL, HL         ; 1:11      4129* 64x
-    add  HL, HL         ; 1:11      4129* 128x
-    add  HL, HL         ; 1:11      4129* 256x
-    add  HL, HL         ; 1:11      4129* 512x
-    add  HL, HL         ; 1:11      4129* 1024x
-    add  HL, HL         ; 1:11      4129* 2048x
-    add  HL, HL         ; 1:11      4129* 4096x
-    add  HL, BC         ; 1:11      4129* HL + save   
-    ld    B, D          ; 1:4       4133*
+    rr    H             ; 2:8       4129*
+    rr    L             ; 2:8       4129*
+    ld    H, L          ; 1:4       4129*
+    ld    L, 0x00       ; 2:7       4129* 4096x
+    add  HL, BC         ; 1:11      4129* HL + save       
+    ld    B, D          ; 1:4       4133* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4133*
     ld    D, H          ; 1:4       4133*
     ld    E, L          ; 1:4       4133* save 1x
@@ -15277,17 +15263,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4133* +
     add  HL, DE         ; 1:11      4133* + save 32x
     ex   DE, HL         ; 1:4       4133* +
-    add  HL, HL         ; 1:11      4133* 64x
-    add  HL, HL         ; 1:11      4133* 128x
-    add  HL, HL         ; 1:11      4133* 256x
-    add  HL, HL         ; 1:11      4133* 512x
-    add  HL, HL         ; 1:11      4133* 1024x
-    add  HL, HL         ; 1:11      4133* 2048x
-    add  HL, HL         ; 1:11      4133* 4096x
+    rr    H             ; 2:8       4133*
+    rr    L             ; 2:8       4133*
+    ld    H, L          ; 1:4       4133*
+    ld    L, 0x00       ; 2:7       4133* 4096x
     add  HL, DE         ; 1:11      4133* HL + save
     ld    D, B          ; 1:4       4133*
-    ld    E, C          ; 1:4       4133*   
-    ld    B, D          ; 1:4       4139*
+    ld    E, C          ; 1:4       4133*       
+    ld    B, D          ; 1:4       4139* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4139*
     ld    D, H          ; 1:4       4139*
     ld    E, L          ; 1:4       4139* save 1x
@@ -15305,18 +15288,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4139* +
     add  HL, DE         ; 1:11      4139* + save 32x
     ex   DE, HL         ; 1:4       4139* +
-    add  HL, HL         ; 1:11      4139* 64x
-    add  HL, HL         ; 1:11      4139* 128x
-    add  HL, HL         ; 1:11      4139* 256x
-    add  HL, HL         ; 1:11      4139* 512x
-    add  HL, HL         ; 1:11      4139* 1024x
-    add  HL, HL         ; 1:11      4139* 2048x
-    add  HL, HL         ; 1:11      4139* 4096x
+    rr    H             ; 2:8       4139*
+    rr    L             ; 2:8       4139*
+    ld    H, L          ; 1:4       4139*
+    ld    L, 0x00       ; 2:7       4139* 4096x
     add  HL, DE         ; 1:11      4139* HL + save
     ld    D, B          ; 1:4       4139*
     ld    E, C          ; 1:4       4139* 
-   
-    ld    B, D          ; 1:4       4153*
+       
+    ld    B, D          ; 1:4       4153* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4153*
     ld    D, H          ; 1:4       4153*
     ld    E, L          ; 1:4       4153* save 1x
@@ -15334,17 +15314,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4153* +
     add  HL, DE         ; 1:11      4153* + save 32x
     ex   DE, HL         ; 1:4       4153* +
-    add  HL, HL         ; 1:11      4153* 64x
-    add  HL, HL         ; 1:11      4153* 128x
-    add  HL, HL         ; 1:11      4153* 256x
-    add  HL, HL         ; 1:11      4153* 512x
-    add  HL, HL         ; 1:11      4153* 1024x
-    add  HL, HL         ; 1:11      4153* 2048x
-    add  HL, HL         ; 1:11      4153* 4096x
+    rr    H             ; 2:8       4153*
+    rr    L             ; 2:8       4153*
+    ld    H, L          ; 1:4       4153*
+    ld    L, 0x00       ; 2:7       4153* 4096x
     add  HL, DE         ; 1:11      4153* HL + save
     ld    D, B          ; 1:4       4153*
-    ld    E, C          ; 1:4       4153*   
-    ld    B, D          ; 1:4       4157*
+    ld    E, C          ; 1:4       4153*       
+    ld    B, D          ; 1:4       4157* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4157*
     ld    D, H          ; 1:4       4157*
     ld    E, L          ; 1:4       4157* save 1x
@@ -15365,17 +15342,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4157* +
     add  HL, DE         ; 1:11      4157* + save 32x
     ex   DE, HL         ; 1:4       4157* +
-    add  HL, HL         ; 1:11      4157* 64x
-    add  HL, HL         ; 1:11      4157* 128x
-    add  HL, HL         ; 1:11      4157* 256x
-    add  HL, HL         ; 1:11      4157* 512x
-    add  HL, HL         ; 1:11      4157* 1024x
-    add  HL, HL         ; 1:11      4157* 2048x
-    add  HL, HL         ; 1:11      4157* 4096x
+    rr    H             ; 2:8       4157*
+    rr    L             ; 2:8       4157*
+    ld    H, L          ; 1:4       4157*
+    ld    L, 0x00       ; 2:7       4157* 4096x
     add  HL, DE         ; 1:11      4157* HL + save
     ld    D, B          ; 1:4       4157*
-    ld    E, C          ; 1:4       4157*   
-    ld    B, D          ; 1:4       4159*
+    ld    E, C          ; 1:4       4157*       
+    ld    B, D          ; 1:4       4159* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4159*
     ld    D, H          ; 1:4       4159*
     ld    E, L          ; 1:4       4159* save 1x
@@ -15399,17 +15373,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4159* +
     add  HL, DE         ; 1:11      4159* + save 32x
     ex   DE, HL         ; 1:4       4159* +
-    add  HL, HL         ; 1:11      4159* 64x
-    add  HL, HL         ; 1:11      4159* 128x
-    add  HL, HL         ; 1:11      4159* 256x
-    add  HL, HL         ; 1:11      4159* 512x
-    add  HL, HL         ; 1:11      4159* 1024x
-    add  HL, HL         ; 1:11      4159* 2048x
-    add  HL, HL         ; 1:11      4159* 4096x
+    rr    H             ; 2:8       4159*
+    rr    L             ; 2:8       4159*
+    ld    H, L          ; 1:4       4159*
+    ld    L, 0x00       ; 2:7       4159* 4096x
     add  HL, DE         ; 1:11      4159* HL + save
     ld    D, B          ; 1:4       4159*
-    ld    E, C          ; 1:4       4159*   
-    ld    B, D          ; 1:4       4177*
+    ld    E, C          ; 1:4       4159*       
+    ld    B, D          ; 1:4       4177* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4177*
     ld    D, H          ; 1:4       4177*
     ld    E, L          ; 1:4       4177* save 1x
@@ -15433,8 +15404,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4177* 4096x
     add  HL, DE         ; 1:11      4177* HL + save
     ld    D, B          ; 1:4       4177*
-    ld    E, C          ; 1:4       4177*   
-    ld    B, D          ; 1:4       4201*
+    ld    E, C          ; 1:4       4177*       
+    ld    B, D          ; 1:4       4201* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4201*
     ld    D, H          ; 1:4       4201*
     ld    E, L          ; 1:4       4201* save 1x
@@ -15461,8 +15432,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4201* 4096x
     add  HL, DE         ; 1:11      4201* HL + save
     ld    D, B          ; 1:4       4201*
-    ld    E, C          ; 1:4       4201*   
-    ld    B, D          ; 1:4       4211*
+    ld    E, C          ; 1:4       4201*       
+    ld    B, D          ; 1:4       4211* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4211*
     ld    D, H          ; 1:4       4211*
     ld    E, L          ; 1:4       4211* save 1x
@@ -15492,8 +15463,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4211* 4096x
     add  HL, DE         ; 1:11      4211* HL + save
     ld    D, B          ; 1:4       4211*
-    ld    E, C          ; 1:4       4211*   
-    ld    B, D          ; 1:4       4217*
+    ld    E, C          ; 1:4       4211*       
+    ld    B, D          ; 1:4       4217* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4217*
     ld    D, H          ; 1:4       4217*
     ld    E, L          ; 1:4       4217* save 1x
@@ -15523,8 +15494,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4217* 4096x
     add  HL, DE         ; 1:11      4217* HL + save
     ld    D, B          ; 1:4       4217*
-    ld    E, C          ; 1:4       4217*   
-    ld    B, D          ; 1:4       4219*
+    ld    E, C          ; 1:4       4217*       
+    ld    B, D          ; 1:4       4219* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4219*
     ld    D, H          ; 1:4       4219*
     ld    E, L          ; 1:4       4219* save 1x
@@ -15557,8 +15528,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4219* 4096x
     add  HL, DE         ; 1:11      4219* HL + save
     ld    D, B          ; 1:4       4219*
-    ld    E, C          ; 1:4       4219*   
-    ld    B, D          ; 1:4       4229*
+    ld    E, C          ; 1:4       4219*       
+    ld    B, D          ; 1:4       4229* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4229*
     ld    D, H          ; 1:4       4229*
     ld    E, L          ; 1:4       4229* save 1x
@@ -15582,8 +15553,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4229* 4096x
     add  HL, DE         ; 1:11      4229* HL + save
     ld    D, B          ; 1:4       4229*
-    ld    E, C          ; 1:4       4229*   
-    ld    B, D          ; 1:4       4231*
+    ld    E, C          ; 1:4       4229*       
+    ld    B, D          ; 1:4       4231* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4231*
     ld    D, H          ; 1:4       4231*
     ld    E, L          ; 1:4       4231* save 1x
@@ -15611,8 +15582,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4231* HL + save
     ld    D, B          ; 1:4       4231*
     ld    E, C          ; 1:4       4231* 
-   
-    ld    B, D          ; 1:4       4241*
+       
+    ld    B, D          ; 1:4       4241* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4241*
     ld    D, H          ; 1:4       4241*
     ld    E, L          ; 1:4       4241* save 1x
@@ -15636,8 +15607,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4241* 4096x
     add  HL, DE         ; 1:11      4241* HL + save
     ld    D, B          ; 1:4       4241*
-    ld    E, C          ; 1:4       4241*   
-    ld    B, D          ; 1:4       4243*
+    ld    E, C          ; 1:4       4241*       
+    ld    B, D          ; 1:4       4243* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4243*
     ld    D, H          ; 1:4       4243*
     ld    E, L          ; 1:4       4243* save 1x
@@ -15664,8 +15635,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4243* 4096x
     add  HL, DE         ; 1:11      4243* HL + save
     ld    D, B          ; 1:4       4243*
-    ld    E, C          ; 1:4       4243*   
-    ld    B, D          ; 1:4       4253*
+    ld    E, C          ; 1:4       4243*       
+    ld    B, D          ; 1:4       4253* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4253*
     ld    D, H          ; 1:4       4253*
     ld    E, L          ; 1:4       4253* save 1x
@@ -15695,8 +15666,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4253* 4096x
     add  HL, DE         ; 1:11      4253* HL + save
     ld    D, B          ; 1:4       4253*
-    ld    E, C          ; 1:4       4253*   
-    ld    B, D          ; 1:4       4259*
+    ld    E, C          ; 1:4       4253*       
+    ld    B, D          ; 1:4       4259* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4259*
     ld    D, H          ; 1:4       4259*
     ld    E, L          ; 1:4       4259* save 1x
@@ -15723,8 +15694,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4259* 4096x
     add  HL, DE         ; 1:11      4259* HL + save
     ld    D, B          ; 1:4       4259*
-    ld    E, C          ; 1:4       4259*   
-    ld    B, D          ; 1:4       4261*
+    ld    E, C          ; 1:4       4259*       
+    ld    B, D          ; 1:4       4261* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4261*
     ld    D, H          ; 1:4       4261*
     ld    E, L          ; 1:4       4261* save 1x
@@ -15751,8 +15722,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4261* 4096x
     add  HL, DE         ; 1:11      4261* HL + save
     ld    D, B          ; 1:4       4261*
-    ld    E, C          ; 1:4       4261*   
-    ld    B, D          ; 1:4       4271*
+    ld    E, C          ; 1:4       4261*       
+    ld    B, D          ; 1:4       4271* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4271*
     ld    D, H          ; 1:4       4271*
     ld    E, L          ; 1:4       4271* save 1x
@@ -15785,8 +15756,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4271* 4096x
     add  HL, DE         ; 1:11      4271* HL + save
     ld    D, B          ; 1:4       4271*
-    ld    E, C          ; 1:4       4271*   
-    ld    B, D          ; 1:4       4273*
+    ld    E, C          ; 1:4       4271*       
+    ld    B, D          ; 1:4       4273* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4273*
     ld    D, H          ; 1:4       4273*
     ld    E, L          ; 1:4       4273* save 1x
@@ -15813,8 +15784,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4273* 4096x
     add  HL, DE         ; 1:11      4273* HL + save
     ld    D, B          ; 1:4       4273*
-    ld    E, C          ; 1:4       4273*   
-    ld    B, D          ; 1:4       4283*
+    ld    E, C          ; 1:4       4273*       
+    ld    B, D          ; 1:4       4283* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4283*
     ld    D, H          ; 1:4       4283*
     ld    E, L          ; 1:4       4283* save 1x
@@ -15847,8 +15818,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4283* 4096x
     add  HL, DE         ; 1:11      4283* HL + save
     ld    D, B          ; 1:4       4283*
-    ld    E, C          ; 1:4       4283*   
-    ld    B, D          ; 1:4       4289*
+    ld    E, C          ; 1:4       4283*       
+    ld    B, D          ; 1:4       4289* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4289*
     ld    D, H          ; 1:4       4289*
     ld    E, L          ; 1:4       4289* save 1x
@@ -15872,8 +15843,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4289* 4096x
     add  HL, DE         ; 1:11      4289* HL + save
     ld    D, B          ; 1:4       4289*
-    ld    E, C          ; 1:4       4289*   
-    ld    B, D          ; 1:4       4297*
+    ld    E, C          ; 1:4       4289*       
+    ld    B, D          ; 1:4       4297* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4297*
     ld    D, H          ; 1:4       4297*
     ld    E, L          ; 1:4       4297* save 1x
@@ -15901,8 +15872,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4297* HL + save
     ld    D, B          ; 1:4       4297*
     ld    E, C          ; 1:4       4297* 
-   
-    ld    B, D          ; 1:4       4327*
+       
+    ld    B, D          ; 1:4       4327* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4327*
     ld    D, H          ; 1:4       4327*
     ld    E, L          ; 1:4       4327* save 1x
@@ -15935,8 +15906,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4327* 4096x
     add  HL, DE         ; 1:11      4327* HL + save
     ld    D, B          ; 1:4       4327*
-    ld    E, C          ; 1:4       4327*   
-    ld    B, D          ; 1:4       4337*
+    ld    E, C          ; 1:4       4327*       
+    ld    B, D          ; 1:4       4337* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4337*
     ld    D, H          ; 1:4       4337*
     ld    E, L          ; 1:4       4337* save 1x
@@ -15966,8 +15937,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4337* 4096x
     add  HL, DE         ; 1:11      4337* HL + save
     ld    D, B          ; 1:4       4337*
-    ld    E, C          ; 1:4       4337*   
-    ld    B, D          ; 1:4       4339*
+    ld    E, C          ; 1:4       4337*       
+    ld    B, D          ; 1:4       4339* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4339*
     ld    D, H          ; 1:4       4339*
     ld    E, L          ; 1:4       4339* save 1x
@@ -16000,44 +15971,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4339* 4096x
     add  HL, DE         ; 1:11      4339* HL + save
     ld    D, B          ; 1:4       4339*
-    ld    E, C          ; 1:4       4339*   
-    ld    B, D          ; 1:4       4349*
+    ld    E, C          ; 1:4       4339*       
+    ld    B, D          ; 1:4       4349* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4349*
     ld    D, H          ; 1:4       4349*
     ld    E, L          ; 1:4       4349* save 1x
     add  HL, HL         ; 1:11      4349* 2x
-    ex   DE, HL         ; 1:4       4349* +
-    add  HL, DE         ; 1:11      4349* + save 2x
-    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 4x
+    ex   DE, HL         ; 1:4       4349* +
+    add  HL, DE         ; 1:11      4349* + save 4x
+    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 8x
+    ex   DE, HL         ; 1:4       4349* +
+    add  HL, DE         ; 1:11      4349* + save 8x
+    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 16x
+    ex   DE, HL         ; 1:4       4349* +
+    add  HL, DE         ; 1:11      4349* + save 16x
+    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 32x
+    ex   DE, HL         ; 1:4       4349* +
+    add  HL, DE         ; 1:11      4349* + save 32x
+    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 64x
+    ex   DE, HL         ; 1:4       4349* +
+    add  HL, DE         ; 1:11      4349* + save 64x
+    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 128x
+    ex   DE, HL         ; 1:4       4349* +
+    add  HL, DE         ; 1:11      4349* + save 128x
+    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 256x
-    ex   DE, HL         ; 1:4       4349* +
-    add  HL, DE         ; 1:11      4349* + save 256x
-    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 512x
-    ex   DE, HL         ; 1:4       4349* +
-    add  HL, DE         ; 1:11      4349* + save 512x
-    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 1024x
-    ex   DE, HL         ; 1:4       4349* +
-    add  HL, DE         ; 1:11      4349* + save 1024x
-    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 2048x
-    ex   DE, HL         ; 1:4       4349* +
-    add  HL, DE         ; 1:11      4349* + save 2048x
-    ex   DE, HL         ; 1:4       4349* +
     add  HL, HL         ; 1:11      4349* 4096x
-    add  HL, HL         ; 1:11      4349* 8192x
-    or    A             ; 1:4       4349*
-    sbc  HL, DE         ; 2:15      4349* HL - save
+    add  HL, DE         ; 1:11      4349* HL + save
     ld    D, B          ; 1:4       4349*
-    ld    E, C          ; 1:4       4349*   
-    ld    B, D          ; 1:4       4357*
+    ld    E, C          ; 1:4       4349*       
+    ld    B, D          ; 1:4       4357* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4357*
     ld    D, H          ; 1:4       4357*
     ld    E, L          ; 1:4       4357* save 1x
@@ -16061,8 +16033,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4357* 4096x
     add  HL, DE         ; 1:11      4357* HL + save
     ld    D, B          ; 1:4       4357*
-    ld    E, C          ; 1:4       4357*   
-    ld    B, D          ; 1:4       4363*
+    ld    E, C          ; 1:4       4357*       
+    ld    B, D          ; 1:4       4363* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4363*
     ld    D, H          ; 1:4       4363*
     ld    E, L          ; 1:4       4363* save 1x
@@ -16089,8 +16061,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4363* 4096x
     add  HL, DE         ; 1:11      4363* HL + save
     ld    D, B          ; 1:4       4363*
-    ld    E, C          ; 1:4       4363*   
-    ld    B, D          ; 1:4       4373*
+    ld    E, C          ; 1:4       4363*       
+    ld    B, D          ; 1:4       4373* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4373*
     ld    D, H          ; 1:4       4373*
     ld    E, L          ; 1:4       4373* save 1x
@@ -16117,8 +16089,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4373* 4096x
     add  HL, DE         ; 1:11      4373* HL + save
     ld    D, B          ; 1:4       4373*
-    ld    E, C          ; 1:4       4373*   
-    ld    B, D          ; 1:4       4391*
+    ld    E, C          ; 1:4       4373*       
+    ld    B, D          ; 1:4       4391* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4391*
     ld    D, H          ; 1:4       4391*
     ld    E, L          ; 1:4       4391* save 1x
@@ -16148,8 +16120,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4391* 4096x
     add  HL, DE         ; 1:11      4391* HL + save
     ld    D, B          ; 1:4       4391*
-    ld    E, C          ; 1:4       4391*   
-    ld    B, D          ; 1:4       4397*
+    ld    E, C          ; 1:4       4391*       
+    ld    B, D          ; 1:4       4397* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4397*
     ld    D, H          ; 1:4       4397*
     ld    E, L          ; 1:4       4397* save 1x
@@ -16179,8 +16151,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4397* 4096x
     add  HL, DE         ; 1:11      4397* HL + save
     ld    D, B          ; 1:4       4397*
-    ld    E, C          ; 1:4       4397*   
-    ld    B, D          ; 1:4       4409*
+    ld    E, C          ; 1:4       4397*       
+    ld    B, D          ; 1:4       4409* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4409*
     ld    D, H          ; 1:4       4409*
     ld    E, L          ; 1:4       4409* save 1x
@@ -16211,8 +16183,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4409* HL + save
     ld    D, B          ; 1:4       4409*
     ld    E, C          ; 1:4       4409* 
-   
-    ld    B, D          ; 1:4       4421*
+       
+    ld    B, D          ; 1:4       4421* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4421*
     ld    D, H          ; 1:4       4421*
     ld    E, L          ; 1:4       4421* save 1x
@@ -16239,8 +16211,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4421* 4096x
     add  HL, DE         ; 1:11      4421* HL + save
     ld    D, B          ; 1:4       4421*
-    ld    E, C          ; 1:4       4421*   
-    ld    B, D          ; 1:4       4423*
+    ld    E, C          ; 1:4       4421*       
+    ld    B, D          ; 1:4       4423* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4423*
     ld    D, H          ; 1:4       4423*
     ld    E, L          ; 1:4       4423* save 1x
@@ -16270,8 +16242,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4423* 4096x
     add  HL, DE         ; 1:11      4423* HL + save
     ld    D, B          ; 1:4       4423*
-    ld    E, C          ; 1:4       4423*   
-    ld    B, D          ; 1:4       4441*
+    ld    E, C          ; 1:4       4423*       
+    ld    B, D          ; 1:4       4441* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4441*
     ld    D, H          ; 1:4       4441*
     ld    E, L          ; 1:4       4441* save 1x
@@ -16301,44 +16273,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4441* 4096x
     add  HL, DE         ; 1:11      4441* HL + save
     ld    D, B          ; 1:4       4441*
-    ld    E, C          ; 1:4       4441*   
-    ld    B, D          ; 1:4       4447*
+    ld    E, C          ; 1:4       4441*       
+    ld    B, D          ; 1:4       4447* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4447*
     ld    D, H          ; 1:4       4447*
     ld    E, L          ; 1:4       4447* save 1x
     add  HL, HL         ; 1:11      4447* 2x
+    ex   DE, HL         ; 1:4       4447* +
+    add  HL, DE         ; 1:11      4447* + save 2x
+    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 4x
+    ex   DE, HL         ; 1:4       4447* +
+    add  HL, DE         ; 1:11      4447* + save 4x
+    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 8x
+    ex   DE, HL         ; 1:4       4447* +
+    add  HL, DE         ; 1:11      4447* + save 8x
+    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 16x
+    ex   DE, HL         ; 1:4       4447* +
+    add  HL, DE         ; 1:11      4447* + save 16x
+    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 32x
-    ex   DE, HL         ; 1:4       4447* +
-    add  HL, DE         ; 1:11      4447* + save 32x
-    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 64x
+    ex   DE, HL         ; 1:4       4447* +
+    add  HL, DE         ; 1:11      4447* + save 64x
+    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 128x
-    ex   DE, HL         ; 1:4       4447* +
-    add  HL, DE         ; 1:11      4447* + save 128x
-    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 256x
+    ex   DE, HL         ; 1:4       4447* +
+    add  HL, DE         ; 1:11      4447* + save 256x
+    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 512x
-    ex   DE, HL         ; 1:4       4447* +
-    add  HL, DE         ; 1:11      4447* + save 512x
-    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 1024x
-    ex   DE, HL         ; 1:4       4447* +
-    add  HL, DE         ; 1:11      4447* + save 1024x
-    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 2048x
-    ex   DE, HL         ; 1:4       4447* +
-    add  HL, DE         ; 1:11      4447* + save 2048x
-    ex   DE, HL         ; 1:4       4447* +
     add  HL, HL         ; 1:11      4447* 4096x
-    add  HL, HL         ; 1:11      4447* 8192x
-    or    A             ; 1:4       4447*
-    sbc  HL, DE         ; 2:15      4447* HL - save
+    add  HL, DE         ; 1:11      4447* HL + save
     ld    D, B          ; 1:4       4447*
-    ld    E, C          ; 1:4       4447*   
-    ld    B, D          ; 1:4       4451*
+    ld    E, C          ; 1:4       4447*       
+    ld    B, D          ; 1:4       4451* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4451*
     ld    D, H          ; 1:4       4451*
     ld    E, L          ; 1:4       4451* save 1x
@@ -16368,8 +16341,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4451* 4096x
     add  HL, DE         ; 1:11      4451* HL + save
     ld    D, B          ; 1:4       4451*
-    ld    E, C          ; 1:4       4451*   
-    ld    B, D          ; 1:4       4457*
+    ld    E, C          ; 1:4       4451*       
+    ld    B, D          ; 1:4       4457* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4457*
     ld    D, H          ; 1:4       4457*
     ld    E, L          ; 1:4       4457* save 1x
@@ -16399,44 +16372,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4457* 4096x
     add  HL, DE         ; 1:11      4457* HL + save
     ld    D, B          ; 1:4       4457*
-    ld    E, C          ; 1:4       4457*   
-    ld    B, D          ; 1:4       4463*
+    ld    E, C          ; 1:4       4457*       
+    ld    B, D          ; 1:4       4463* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4463*
     ld    D, H          ; 1:4       4463*
     ld    E, L          ; 1:4       4463* save 1x
     add  HL, HL         ; 1:11      4463* 2x
+    ex   DE, HL         ; 1:4       4463* +
+    add  HL, DE         ; 1:11      4463* + save 2x
+    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 4x
+    ex   DE, HL         ; 1:4       4463* +
+    add  HL, DE         ; 1:11      4463* + save 4x
+    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 8x
+    ex   DE, HL         ; 1:4       4463* +
+    add  HL, DE         ; 1:11      4463* + save 8x
+    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 16x
-    ex   DE, HL         ; 1:4       4463* +
-    add  HL, DE         ; 1:11      4463* + save 16x
-    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 32x
+    ex   DE, HL         ; 1:4       4463* +
+    add  HL, DE         ; 1:11      4463* + save 32x
+    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 64x
+    ex   DE, HL         ; 1:4       4463* +
+    add  HL, DE         ; 1:11      4463* + save 64x
+    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 128x
-    ex   DE, HL         ; 1:4       4463* +
-    add  HL, DE         ; 1:11      4463* + save 128x
-    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 256x
+    ex   DE, HL         ; 1:4       4463* +
+    add  HL, DE         ; 1:11      4463* + save 256x
+    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 512x
-    ex   DE, HL         ; 1:4       4463* +
-    add  HL, DE         ; 1:11      4463* + save 512x
-    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 1024x
-    ex   DE, HL         ; 1:4       4463* +
-    add  HL, DE         ; 1:11      4463* + save 1024x
-    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 2048x
-    ex   DE, HL         ; 1:4       4463* +
-    add  HL, DE         ; 1:11      4463* + save 2048x
-    ex   DE, HL         ; 1:4       4463* +
     add  HL, HL         ; 1:11      4463* 4096x
-    add  HL, HL         ; 1:11      4463* 8192x
-    or    A             ; 1:4       4463*
-    sbc  HL, DE         ; 2:15      4463* HL - save
+    add  HL, DE         ; 1:11      4463* HL + save
     ld    D, B          ; 1:4       4463*
-    ld    E, C          ; 1:4       4463*   
-    ld    B, D          ; 1:4       4481*
+    ld    E, C          ; 1:4       4463*       
+    ld    B, D          ; 1:4       4481* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4481*
     ld    D, H          ; 1:4       4481*
     ld    E, L          ; 1:4       4481* save 1x
@@ -16460,8 +16434,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4481* 4096x
     add  HL, DE         ; 1:11      4481* HL + save
     ld    D, B          ; 1:4       4481*
-    ld    E, C          ; 1:4       4481*   
-    ld    B, D          ; 1:4       4483*
+    ld    E, C          ; 1:4       4481*       
+    ld    B, D          ; 1:4       4483* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4483*
     ld    D, H          ; 1:4       4483*
     ld    E, L          ; 1:4       4483* save 1x
@@ -16488,8 +16462,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4483* 4096x
     add  HL, DE         ; 1:11      4483* HL + save
     ld    D, B          ; 1:4       4483*
-    ld    E, C          ; 1:4       4483*   
-    ld    B, D          ; 1:4       4493*
+    ld    E, C          ; 1:4       4483*       
+    ld    B, D          ; 1:4       4493* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4493*
     ld    D, H          ; 1:4       4493*
     ld    E, L          ; 1:4       4493* save 1x
@@ -16520,8 +16494,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4493* HL + save
     ld    D, B          ; 1:4       4493*
     ld    E, C          ; 1:4       4493* 
-   
-    ld    B, D          ; 1:4       4507*
+       
+    ld    B, D          ; 1:4       4507* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4507*
     ld    D, H          ; 1:4       4507*
     ld    E, L          ; 1:4       4507* save 1x
@@ -16554,8 +16528,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4507* 4096x
     add  HL, DE         ; 1:11      4507* HL + save
     ld    D, B          ; 1:4       4507*
-    ld    E, C          ; 1:4       4507*   
-    ld    B, D          ; 1:4       4513*
+    ld    E, C          ; 1:4       4507*       
+    ld    B, D          ; 1:4       4513* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4513*
     ld    D, H          ; 1:4       4513*
     ld    E, L          ; 1:4       4513* save 1x
@@ -16582,8 +16556,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4513* 4096x
     add  HL, DE         ; 1:11      4513* HL + save
     ld    D, B          ; 1:4       4513*
-    ld    E, C          ; 1:4       4513*   
-    ld    B, D          ; 1:4       4517*
+    ld    E, C          ; 1:4       4513*       
+    ld    B, D          ; 1:4       4517* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4517*
     ld    D, H          ; 1:4       4517*
     ld    E, L          ; 1:4       4517* save 1x
@@ -16613,8 +16587,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4517* 4096x
     add  HL, DE         ; 1:11      4517* HL + save
     ld    D, B          ; 1:4       4517*
-    ld    E, C          ; 1:4       4517*   
-    ld    B, D          ; 1:4       4519*
+    ld    E, C          ; 1:4       4517*       
+    ld    B, D          ; 1:4       4519* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4519*
     ld    D, H          ; 1:4       4519*
     ld    E, L          ; 1:4       4519* save 1x
@@ -16647,8 +16621,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4519* 4096x
     add  HL, DE         ; 1:11      4519* HL + save
     ld    D, B          ; 1:4       4519*
-    ld    E, C          ; 1:4       4519*   
-    ld    B, D          ; 1:4       4523*
+    ld    E, C          ; 1:4       4519*       
+    ld    B, D          ; 1:4       4523* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4523*
     ld    D, H          ; 1:4       4523*
     ld    E, L          ; 1:4       4523* save 1x
@@ -16681,8 +16655,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4523* 4096x
     add  HL, DE         ; 1:11      4523* HL + save
     ld    D, B          ; 1:4       4523*
-    ld    E, C          ; 1:4       4523*   
-    ld    B, D          ; 1:4       4547*
+    ld    E, C          ; 1:4       4523*       
+    ld    B, D          ; 1:4       4547* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4547*
     ld    D, H          ; 1:4       4547*
     ld    E, L          ; 1:4       4547* save 1x
@@ -16712,8 +16686,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4547* 4096x
     add  HL, DE         ; 1:11      4547* HL + save
     ld    D, B          ; 1:4       4547*
-    ld    E, C          ; 1:4       4547*   
-    ld    B, D          ; 1:4       4549*
+    ld    E, C          ; 1:4       4547*       
+    ld    B, D          ; 1:4       4549* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4549*
     ld    D, H          ; 1:4       4549*
     ld    E, L          ; 1:4       4549* save 1x
@@ -16743,8 +16717,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4549* 4096x
     add  HL, DE         ; 1:11      4549* HL + save
     ld    D, B          ; 1:4       4549*
-    ld    E, C          ; 1:4       4549*   
-    ld    B, D          ; 1:4       4561*
+    ld    E, C          ; 1:4       4549*       
+    ld    B, D          ; 1:4       4561* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4561*
     ld    D, H          ; 1:4       4561*
     ld    E, L          ; 1:4       4561* save 1x
@@ -16774,81 +16748,83 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4561* 4096x
     add  HL, DE         ; 1:11      4561* HL + save
     ld    D, B          ; 1:4       4561*
-    ld    E, C          ; 1:4       4561*   
-    ld    B, D          ; 1:4       4567*
+    ld    E, C          ; 1:4       4561*       
+    ld    B, D          ; 1:4       4567* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4567*
     ld    D, H          ; 1:4       4567*
     ld    E, L          ; 1:4       4567* save 1x
     add  HL, HL         ; 1:11      4567* 2x
+    ex   DE, HL         ; 1:4       4567* +
+    add  HL, DE         ; 1:11      4567* + save 2x
+    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 4x
+    ex   DE, HL         ; 1:4       4567* +
+    add  HL, DE         ; 1:11      4567* + save 4x
+    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 8x
-    ex   DE, HL         ; 1:4       4567* +
-    add  HL, DE         ; 1:11      4567* + save 8x
-    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 16x
+    ex   DE, HL         ; 1:4       4567* +
+    add  HL, DE         ; 1:11      4567* + save 16x
+    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 32x
-    ex   DE, HL         ; 1:4       4567* +
-    add  HL, DE         ; 1:11      4567* + save 32x
-    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 64x
+    ex   DE, HL         ; 1:4       4567* +
+    add  HL, DE         ; 1:11      4567* + save 64x
+    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 128x
+    ex   DE, HL         ; 1:4       4567* +
+    add  HL, DE         ; 1:11      4567* + save 128x
+    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 256x
+    ex   DE, HL         ; 1:4       4567* +
+    add  HL, DE         ; 1:11      4567* + save 256x
+    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 512x
-    ex   DE, HL         ; 1:4       4567* +
-    add  HL, DE         ; 1:11      4567* + save 512x
-    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 1024x
-    ex   DE, HL         ; 1:4       4567* +
-    add  HL, DE         ; 1:11      4567* + save 1024x
-    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 2048x
-    ex   DE, HL         ; 1:4       4567* +
-    add  HL, DE         ; 1:11      4567* + save 2048x
-    ex   DE, HL         ; 1:4       4567* +
     add  HL, HL         ; 1:11      4567* 4096x
-    add  HL, HL         ; 1:11      4567* 8192x
-    or    A             ; 1:4       4567*
-    sbc  HL, DE         ; 2:15      4567* HL - save
+    add  HL, DE         ; 1:11      4567* HL + save
     ld    D, B          ; 1:4       4567*
-    ld    E, C          ; 1:4       4567*   
-    ld    B, D          ; 1:4       4583*
+    ld    E, C          ; 1:4       4567*       
+    ld    B, D          ; 1:4       4583* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4583*
     ld    D, H          ; 1:4       4583*
     ld    E, L          ; 1:4       4583* save 1x
     add  HL, HL         ; 1:11      4583* 2x
+    ex   DE, HL         ; 1:4       4583* +
+    add  HL, DE         ; 1:11      4583* + save 2x
+    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 4x
+    ex   DE, HL         ; 1:4       4583* +
+    add  HL, DE         ; 1:11      4583* + save 4x
+    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 8x
-    ex   DE, HL         ; 1:4       4583* +
-    add  HL, DE         ; 1:11      4583* + save 8x
-    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 16x
-    ex   DE, HL         ; 1:4       4583* +
-    add  HL, DE         ; 1:11      4583* + save 16x
-    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 32x
+    ex   DE, HL         ; 1:4       4583* +
+    add  HL, DE         ; 1:11      4583* + save 32x
+    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 64x
+    ex   DE, HL         ; 1:4       4583* +
+    add  HL, DE         ; 1:11      4583* + save 64x
+    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 128x
+    ex   DE, HL         ; 1:4       4583* +
+    add  HL, DE         ; 1:11      4583* + save 128x
+    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 256x
+    ex   DE, HL         ; 1:4       4583* +
+    add  HL, DE         ; 1:11      4583* + save 256x
+    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 512x
-    ex   DE, HL         ; 1:4       4583* +
-    add  HL, DE         ; 1:11      4583* + save 512x
-    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 1024x
-    ex   DE, HL         ; 1:4       4583* +
-    add  HL, DE         ; 1:11      4583* + save 1024x
-    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 2048x
-    ex   DE, HL         ; 1:4       4583* +
-    add  HL, DE         ; 1:11      4583* + save 2048x
-    ex   DE, HL         ; 1:4       4583* +
     add  HL, HL         ; 1:11      4583* 4096x
-    add  HL, HL         ; 1:11      4583* 8192x
-    or    A             ; 1:4       4583*
-    sbc  HL, DE         ; 2:15      4583* HL - save
+    add  HL, DE         ; 1:11      4583* HL + save
     ld    D, B          ; 1:4       4583*
     ld    E, C          ; 1:4       4583* 
    
-    ld    B, D          ; 1:4       4591*
+    ld    B, D          ; 1:4       4591* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4591*
     ld    D, H          ; 1:4       4591*
     ld    E, L          ; 1:4       4591* save 1x
@@ -16880,44 +16856,45 @@ ORG 0x6000
     or    A             ; 1:4       4591*
     sbc  HL, DE         ; 2:15      4591* HL - save
     ld    D, B          ; 1:4       4591*
-    ld    E, C          ; 1:4       4591*   
-    ld    B, D          ; 1:4       4597*
+    ld    E, C          ; 1:4       4591*       
+    ld    B, D          ; 1:4       4597* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4597*
     ld    D, H          ; 1:4       4597*
     ld    E, L          ; 1:4       4597* save 1x
     add  HL, HL         ; 1:11      4597* 2x
-    ex   DE, HL         ; 1:4       4597* +
-    add  HL, DE         ; 1:11      4597* + save 2x
-    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 4x
+    ex   DE, HL         ; 1:4       4597* +
+    add  HL, DE         ; 1:11      4597* + save 4x
+    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 8x
-    ex   DE, HL         ; 1:4       4597* +
-    add  HL, DE         ; 1:11      4597* + save 8x
-    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 16x
+    ex   DE, HL         ; 1:4       4597* +
+    add  HL, DE         ; 1:11      4597* + save 16x
+    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 32x
+    ex   DE, HL         ; 1:4       4597* +
+    add  HL, DE         ; 1:11      4597* + save 32x
+    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 64x
+    ex   DE, HL         ; 1:4       4597* +
+    add  HL, DE         ; 1:11      4597* + save 64x
+    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 128x
+    ex   DE, HL         ; 1:4       4597* +
+    add  HL, DE         ; 1:11      4597* + save 128x
+    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 256x
+    ex   DE, HL         ; 1:4       4597* +
+    add  HL, DE         ; 1:11      4597* + save 256x
+    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 512x
-    ex   DE, HL         ; 1:4       4597* +
-    add  HL, DE         ; 1:11      4597* + save 512x
-    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 1024x
-    ex   DE, HL         ; 1:4       4597* +
-    add  HL, DE         ; 1:11      4597* + save 1024x
-    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 2048x
-    ex   DE, HL         ; 1:4       4597* +
-    add  HL, DE         ; 1:11      4597* + save 2048x
-    ex   DE, HL         ; 1:4       4597* +
     add  HL, HL         ; 1:11      4597* 4096x
-    add  HL, HL         ; 1:11      4597* 8192x
-    or    A             ; 1:4       4597*
-    sbc  HL, DE         ; 2:15      4597* HL - save
+    add  HL, DE         ; 1:11      4597* HL + save
     ld    D, B          ; 1:4       4597*
     ld    E, C          ; 1:4       4597*   
-    ld    B, D          ; 1:4       4603*
+    ld    B, D          ; 1:4       4603* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4603*
     ld    D, H          ; 1:4       4603*
     ld    E, L          ; 1:4       4603* save 1x
@@ -16926,13 +16903,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4603* +
     add  HL, DE         ; 1:11      4603* + save 4x
     ex   DE, HL         ; 1:4       4603* +
-    add  HL, HL         ; 1:11      4603* 8x
-    add  HL, HL         ; 1:11      4603* 16x
-    add  HL, HL         ; 1:11      4603* 32x
-    add  HL, HL         ; 1:11      4603* 64x
-    add  HL, HL         ; 1:11      4603* 128x
-    add  HL, HL         ; 1:11      4603* 256x
-    add  HL, HL         ; 1:11      4603* 512x
+    rr    H             ; 2:8       4603*
+    rr    L             ; 2:8       4603*
+    ld    H, L          ; 1:4       4603*
+    ld    L, 0x00       ; 2:7       4603* 512x
     ex   DE, HL         ; 1:4       4603* +
     add  HL, DE         ; 1:11      4603* + save 512x
     ex   DE, HL         ; 1:4       4603* +
@@ -16949,8 +16923,8 @@ ORG 0x6000
     or    A             ; 1:4       4603*
     sbc  HL, DE         ; 2:15      4603* HL - save
     ld    D, B          ; 1:4       4603*
-    ld    E, C          ; 1:4       4603*   
-    ld    B, D          ; 1:4       4621*
+    ld    E, C          ; 1:4       4603*       
+    ld    B, D          ; 1:4       4621* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4621*
     ld    D, H          ; 1:4       4621*
     ld    E, L          ; 1:4       4621* save 1x
@@ -16977,8 +16951,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4621* 4096x
     add  HL, DE         ; 1:11      4621* HL + save
     ld    D, B          ; 1:4       4621*
-    ld    E, C          ; 1:4       4621*   
-    ld    B, D          ; 1:4       4637*
+    ld    E, C          ; 1:4       4621*       
+    ld    B, D          ; 1:4       4637* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4637*
     ld    D, H          ; 1:4       4637*
     ld    E, L          ; 1:4       4637* save 1x
@@ -17008,8 +16982,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4637* 4096x
     add  HL, DE         ; 1:11      4637* HL + save
     ld    D, B          ; 1:4       4637*
-    ld    E, C          ; 1:4       4637*   
-    ld    B, D          ; 1:4       4639*
+    ld    E, C          ; 1:4       4637*       
+    ld    B, D          ; 1:4       4639* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4639*
     ld    D, H          ; 1:4       4639*
     ld    E, L          ; 1:4       4639* save 1x
@@ -17042,8 +17016,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4639* 4096x
     add  HL, DE         ; 1:11      4639* HL + save
     ld    D, B          ; 1:4       4639*
-    ld    E, C          ; 1:4       4639*   
-    ld    B, D          ; 1:4       4643*
+    ld    E, C          ; 1:4       4639*       
+    ld    B, D          ; 1:4       4643* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4643*
     ld    D, H          ; 1:4       4643*
     ld    E, L          ; 1:4       4643* save 1x
@@ -17070,8 +17044,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4643* 4096x
     add  HL, DE         ; 1:11      4643* HL + save
     ld    D, B          ; 1:4       4643*
-    ld    E, C          ; 1:4       4643*   
-    ld    B, D          ; 1:4       4649*
+    ld    E, C          ; 1:4       4643*       
+    ld    B, D          ; 1:4       4649* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4649*
     ld    D, H          ; 1:4       4649*
     ld    E, L          ; 1:4       4649* save 1x
@@ -17098,8 +17072,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4649* 4096x
     add  HL, DE         ; 1:11      4649* HL + save
     ld    D, B          ; 1:4       4649*
-    ld    E, C          ; 1:4       4649*   
-    ld    B, D          ; 1:4       4651*
+    ld    E, C          ; 1:4       4649*       
+    ld    B, D          ; 1:4       4651* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4651*
     ld    D, H          ; 1:4       4651*
     ld    E, L          ; 1:4       4651* save 1x
@@ -17129,8 +17103,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4651* 4096x
     add  HL, DE         ; 1:11      4651* HL + save
     ld    D, B          ; 1:4       4651*
-    ld    E, C          ; 1:4       4651*   
-    ld    B, D          ; 1:4       4657*
+    ld    E, C          ; 1:4       4651*       
+    ld    B, D          ; 1:4       4657* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4657*
     ld    D, H          ; 1:4       4657*
     ld    E, L          ; 1:4       4657* save 1x
@@ -17158,8 +17132,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4657* HL + save
     ld    D, B          ; 1:4       4657*
     ld    E, C          ; 1:4       4657* 
-   
-    ld    B, D          ; 1:4       4663*
+       
+    ld    B, D          ; 1:4       4663* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4663*
     ld    D, H          ; 1:4       4663*
     ld    E, L          ; 1:4       4663* save 1x
@@ -17192,8 +17166,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4663* 4096x
     add  HL, DE         ; 1:11      4663* HL + save
     ld    D, B          ; 1:4       4663*
-    ld    E, C          ; 1:4       4663*   
-    ld    B, D          ; 1:4       4673*
+    ld    E, C          ; 1:4       4663*       
+    ld    B, D          ; 1:4       4673* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4673*
     ld    D, H          ; 1:4       4673*
     ld    E, L          ; 1:4       4673* save 1x
@@ -17217,8 +17191,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4673* 4096x
     add  HL, DE         ; 1:11      4673* HL + save
     ld    D, B          ; 1:4       4673*
-    ld    E, C          ; 1:4       4673*   
-    ld    B, D          ; 1:4       4679*
+    ld    E, C          ; 1:4       4673*       
+    ld    B, D          ; 1:4       4679* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4679*
     ld    D, H          ; 1:4       4679*
     ld    E, L          ; 1:4       4679* save 1x
@@ -17248,8 +17222,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4679* 4096x
     add  HL, DE         ; 1:11      4679* HL + save
     ld    D, B          ; 1:4       4679*
-    ld    E, C          ; 1:4       4679*   
-    ld    B, D          ; 1:4       4691*
+    ld    E, C          ; 1:4       4679*       
+    ld    B, D          ; 1:4       4691* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4691*
     ld    D, H          ; 1:4       4691*
     ld    E, L          ; 1:4       4691* save 1x
@@ -17279,44 +17253,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4691* 4096x
     add  HL, DE         ; 1:11      4691* HL + save
     ld    D, B          ; 1:4       4691*
-    ld    E, C          ; 1:4       4691*   
-    ld    B, D          ; 1:4       4703*
+    ld    E, C          ; 1:4       4691*       
+    ld    B, D          ; 1:4       4703* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4703*
     ld    D, H          ; 1:4       4703*
     ld    E, L          ; 1:4       4703* save 1x
     add  HL, HL         ; 1:11      4703* 2x
+    ex   DE, HL         ; 1:4       4703* +
+    add  HL, DE         ; 1:11      4703* + save 2x
+    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 4x
+    ex   DE, HL         ; 1:4       4703* +
+    add  HL, DE         ; 1:11      4703* + save 4x
+    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 8x
+    ex   DE, HL         ; 1:4       4703* +
+    add  HL, DE         ; 1:11      4703* + save 8x
+    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 16x
+    ex   DE, HL         ; 1:4       4703* +
+    add  HL, DE         ; 1:11      4703* + save 16x
+    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 32x
-    ex   DE, HL         ; 1:4       4703* +
-    add  HL, DE         ; 1:11      4703* + save 32x
-    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 64x
+    ex   DE, HL         ; 1:4       4703* +
+    add  HL, DE         ; 1:11      4703* + save 64x
+    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 128x
-    ex   DE, HL         ; 1:4       4703* +
-    add  HL, DE         ; 1:11      4703* + save 128x
-    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 256x
-    ex   DE, HL         ; 1:4       4703* +
-    add  HL, DE         ; 1:11      4703* + save 256x
-    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 512x
+    ex   DE, HL         ; 1:4       4703* +
+    add  HL, DE         ; 1:11      4703* + save 512x
+    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 1024x
-    ex   DE, HL         ; 1:4       4703* +
-    add  HL, DE         ; 1:11      4703* + save 1024x
-    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 2048x
-    ex   DE, HL         ; 1:4       4703* +
-    add  HL, DE         ; 1:11      4703* + save 2048x
-    ex   DE, HL         ; 1:4       4703* +
     add  HL, HL         ; 1:11      4703* 4096x
-    add  HL, HL         ; 1:11      4703* 8192x
-    or    A             ; 1:4       4703*
-    sbc  HL, DE         ; 2:15      4703* HL - save
+    add  HL, DE         ; 1:11      4703* HL + save
     ld    D, B          ; 1:4       4703*
-    ld    E, C          ; 1:4       4703*   
-    ld    B, D          ; 1:4       4721*
+    ld    E, C          ; 1:4       4703*       
+    ld    B, D          ; 1:4       4721* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4721*
     ld    D, H          ; 1:4       4721*
     ld    E, L          ; 1:4       4721* save 1x
@@ -17346,8 +17321,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4721* 4096x
     add  HL, DE         ; 1:11      4721* HL + save
     ld    D, B          ; 1:4       4721*
-    ld    E, C          ; 1:4       4721*   
-    ld    B, D          ; 1:4       4723*
+    ld    E, C          ; 1:4       4721*       
+    ld    B, D          ; 1:4       4723* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4723*
     ld    D, H          ; 1:4       4723*
     ld    E, L          ; 1:4       4723* save 1x
@@ -17380,8 +17355,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4723* 4096x
     add  HL, DE         ; 1:11      4723* HL + save
     ld    D, B          ; 1:4       4723*
-    ld    E, C          ; 1:4       4723*   
-    ld    B, D          ; 1:4       4729*
+    ld    E, C          ; 1:4       4723*       
+    ld    B, D          ; 1:4       4729* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4729*
     ld    D, H          ; 1:4       4729*
     ld    E, L          ; 1:4       4729* save 1x
@@ -17414,44 +17389,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4729* 4096x
     add  HL, DE         ; 1:11      4729* HL + save
     ld    D, B          ; 1:4       4729*
-    ld    E, C          ; 1:4       4729*   
-    ld    B, D          ; 1:4       4733*
+    ld    E, C          ; 1:4       4729*       
+    ld    B, D          ; 1:4       4733* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4733*
     ld    D, H          ; 1:4       4733*
     ld    E, L          ; 1:4       4733* save 1x
     add  HL, HL         ; 1:11      4733* 2x
-    ex   DE, HL         ; 1:4       4733* +
-    add  HL, DE         ; 1:11      4733* + save 2x
-    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 4x
+    ex   DE, HL         ; 1:4       4733* +
+    add  HL, DE         ; 1:11      4733* + save 4x
+    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 8x
+    ex   DE, HL         ; 1:4       4733* +
+    add  HL, DE         ; 1:11      4733* + save 8x
+    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 16x
+    ex   DE, HL         ; 1:4       4733* +
+    add  HL, DE         ; 1:11      4733* + save 16x
+    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 32x
+    ex   DE, HL         ; 1:4       4733* +
+    add  HL, DE         ; 1:11      4733* + save 32x
+    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 64x
+    ex   DE, HL         ; 1:4       4733* +
+    add  HL, DE         ; 1:11      4733* + save 64x
+    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 128x
-    ex   DE, HL         ; 1:4       4733* +
-    add  HL, DE         ; 1:11      4733* + save 128x
-    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 256x
-    ex   DE, HL         ; 1:4       4733* +
-    add  HL, DE         ; 1:11      4733* + save 256x
-    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 512x
+    ex   DE, HL         ; 1:4       4733* +
+    add  HL, DE         ; 1:11      4733* + save 512x
+    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 1024x
-    ex   DE, HL         ; 1:4       4733* +
-    add  HL, DE         ; 1:11      4733* + save 1024x
-    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 2048x
-    ex   DE, HL         ; 1:4       4733* +
-    add  HL, DE         ; 1:11      4733* + save 2048x
-    ex   DE, HL         ; 1:4       4733* +
     add  HL, HL         ; 1:11      4733* 4096x
-    add  HL, HL         ; 1:11      4733* 8192x
-    or    A             ; 1:4       4733*
-    sbc  HL, DE         ; 2:15      4733* HL - save
+    add  HL, DE         ; 1:11      4733* HL + save
     ld    D, B          ; 1:4       4733*
-    ld    E, C          ; 1:4       4733*   
-    ld    B, D          ; 1:4       4751*
+    ld    E, C          ; 1:4       4733*       
+    ld    B, D          ; 1:4       4751* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4751*
     ld    D, H          ; 1:4       4751*
     ld    E, L          ; 1:4       4751* save 1x
@@ -17485,8 +17461,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4751* HL + save
     ld    D, B          ; 1:4       4751*
     ld    E, C          ; 1:4       4751* 
-   
-    ld    B, D          ; 1:4       4759*
+       
+    ld    B, D          ; 1:4       4759* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4759*
     ld    D, H          ; 1:4       4759*
     ld    E, L          ; 1:4       4759* save 1x
@@ -17519,44 +17495,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4759* 4096x
     add  HL, DE         ; 1:11      4759* HL + save
     ld    D, B          ; 1:4       4759*
-    ld    E, C          ; 1:4       4759*   
-    ld    B, D          ; 1:4       4783*
+    ld    E, C          ; 1:4       4759*       
+    ld    B, D          ; 1:4       4783* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4783*
     ld    D, H          ; 1:4       4783*
     ld    E, L          ; 1:4       4783* save 1x
     add  HL, HL         ; 1:11      4783* 2x
+    ex   DE, HL         ; 1:4       4783* +
+    add  HL, DE         ; 1:11      4783* + save 2x
+    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 4x
+    ex   DE, HL         ; 1:4       4783* +
+    add  HL, DE         ; 1:11      4783* + save 4x
+    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 8x
+    ex   DE, HL         ; 1:4       4783* +
+    add  HL, DE         ; 1:11      4783* + save 8x
+    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 16x
-    ex   DE, HL         ; 1:4       4783* +
-    add  HL, DE         ; 1:11      4783* + save 16x
-    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 32x
+    ex   DE, HL         ; 1:4       4783* +
+    add  HL, DE         ; 1:11      4783* + save 32x
+    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 64x
-    ex   DE, HL         ; 1:4       4783* +
-    add  HL, DE         ; 1:11      4783* + save 64x
-    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 128x
+    ex   DE, HL         ; 1:4       4783* +
+    add  HL, DE         ; 1:11      4783* + save 128x
+    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 256x
-    ex   DE, HL         ; 1:4       4783* +
-    add  HL, DE         ; 1:11      4783* + save 256x
-    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 512x
+    ex   DE, HL         ; 1:4       4783* +
+    add  HL, DE         ; 1:11      4783* + save 512x
+    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 1024x
-    ex   DE, HL         ; 1:4       4783* +
-    add  HL, DE         ; 1:11      4783* + save 1024x
-    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 2048x
-    ex   DE, HL         ; 1:4       4783* +
-    add  HL, DE         ; 1:11      4783* + save 2048x
-    ex   DE, HL         ; 1:4       4783* +
     add  HL, HL         ; 1:11      4783* 4096x
-    add  HL, HL         ; 1:11      4783* 8192x
-    or    A             ; 1:4       4783*
-    sbc  HL, DE         ; 2:15      4783* HL - save
+    add  HL, DE         ; 1:11      4783* HL + save
     ld    D, B          ; 1:4       4783*
-    ld    E, C          ; 1:4       4783*   
-    ld    B, D          ; 1:4       4787*
+    ld    E, C          ; 1:4       4783*       
+    ld    B, D          ; 1:4       4787* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4787*
     ld    D, H          ; 1:4       4787*
     ld    E, L          ; 1:4       4787* save 1x
@@ -17589,8 +17566,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4787* 4096x
     add  HL, DE         ; 1:11      4787* HL + save
     ld    D, B          ; 1:4       4787*
-    ld    E, C          ; 1:4       4787*   
-    ld    B, D          ; 1:4       4789*
+    ld    E, C          ; 1:4       4787*       
+    ld    B, D          ; 1:4       4789* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4789*
     ld    D, H          ; 1:4       4789*
     ld    E, L          ; 1:4       4789* save 1x
@@ -17623,8 +17600,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4789* 4096x
     add  HL, DE         ; 1:11      4789* HL + save
     ld    D, B          ; 1:4       4789*
-    ld    E, C          ; 1:4       4789*   
-    ld    B, D          ; 1:4       4793*
+    ld    E, C          ; 1:4       4789*       
+    ld    B, D          ; 1:4       4793* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4793*
     ld    D, H          ; 1:4       4793*
     ld    E, L          ; 1:4       4793* save 1x
@@ -17658,7 +17635,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4793* HL + save
     ld    D, B          ; 1:4       4793*
     ld    E, C          ; 1:4       4793*   
-    ld    B, D          ; 1:4       4799*
+    ld    B, D          ; 1:4       4799* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4799*
     ld    D, H          ; 1:4       4799*
     ld    E, L          ; 1:4       4799* save 1x
@@ -17690,8 +17667,8 @@ ORG 0x6000
     or    A             ; 1:4       4799*
     sbc  HL, DE         ; 2:15      4799* HL - save
     ld    D, B          ; 1:4       4799*
-    ld    E, C          ; 1:4       4799*   
-    ld    B, D          ; 1:4       4801*
+    ld    E, C          ; 1:4       4799*       
+    ld    B, D          ; 1:4       4801* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4801*
     ld    D, H          ; 1:4       4801*
     ld    E, L          ; 1:4       4801* save 1x
@@ -17718,8 +17695,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4801* 4096x
     add  HL, DE         ; 1:11      4801* HL + save
     ld    D, B          ; 1:4       4801*
-    ld    E, C          ; 1:4       4801*   
-    ld    B, D          ; 1:4       4813*
+    ld    E, C          ; 1:4       4801*       
+    ld    B, D          ; 1:4       4813* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4813*
     ld    D, H          ; 1:4       4813*
     ld    E, L          ; 1:4       4813* save 1x
@@ -17752,8 +17729,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4813* 4096x
     add  HL, DE         ; 1:11      4813* HL + save
     ld    D, B          ; 1:4       4813*
-    ld    E, C          ; 1:4       4813*   
-    ld    B, D          ; 1:4       4817*
+    ld    E, C          ; 1:4       4813*       
+    ld    B, D          ; 1:4       4817* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4817*
     ld    D, H          ; 1:4       4817*
     ld    E, L          ; 1:4       4817* save 1x
@@ -17784,7 +17761,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4817* HL + save
     ld    D, B          ; 1:4       4817*
     ld    E, C          ; 1:4       4817*   
-    ld    B, D          ; 1:4       4831*
+    ld    B, D          ; 1:4       4831* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4831*
     ld    D, H          ; 1:4       4831*
     ld    E, L          ; 1:4       4831* save 1x
@@ -17818,7 +17795,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       4831*
     ld    E, C          ; 1:4       4831* 
    
-    ld    B, D          ; 1:4       4861*
+    ld    B, D          ; 1:4       4861* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4861*
     ld    D, H          ; 1:4       4861*
     ld    E, L          ; 1:4       4861* save 1x
@@ -17826,13 +17803,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       4861* +
     add  HL, DE         ; 1:11      4861* + save 2x
     ex   DE, HL         ; 1:4       4861* +
-    add  HL, HL         ; 1:11      4861* 4x
-    add  HL, HL         ; 1:11      4861* 8x
-    add  HL, HL         ; 1:11      4861* 16x
-    add  HL, HL         ; 1:11      4861* 32x
-    add  HL, HL         ; 1:11      4861* 64x
-    add  HL, HL         ; 1:11      4861* 128x
-    add  HL, HL         ; 1:11      4861* 256x
+    rr    H             ; 2:8       4861*
+    rr    L             ; 2:8       4861*
+    ld    H, L          ; 1:4       4861*
+    ld    L, 0x00       ; 2:7       4861* 256x
     ex   DE, HL         ; 1:4       4861* +
     add  HL, DE         ; 1:11      4861* + save 256x
     ex   DE, HL         ; 1:4       4861* +
@@ -17850,8 +17824,8 @@ ORG 0x6000
     or    A             ; 1:4       4861*
     sbc  HL, DE         ; 2:15      4861* HL - save
     ld    D, B          ; 1:4       4861*
-    ld    E, C          ; 1:4       4861*   
-    ld    B, D          ; 1:4       4871*
+    ld    E, C          ; 1:4       4861*       
+    ld    B, D          ; 1:4       4871* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4871*
     ld    D, H          ; 1:4       4871*
     ld    E, L          ; 1:4       4871* save 1x
@@ -17881,8 +17855,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4871* 4096x
     add  HL, DE         ; 1:11      4871* HL + save
     ld    D, B          ; 1:4       4871*
-    ld    E, C          ; 1:4       4871*   
-    ld    B, D          ; 1:4       4877*
+    ld    E, C          ; 1:4       4871*       
+    ld    B, D          ; 1:4       4877* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4877*
     ld    D, H          ; 1:4       4877*
     ld    E, L          ; 1:4       4877* save 1x
@@ -17912,8 +17886,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4877* 4096x
     add  HL, DE         ; 1:11      4877* HL + save
     ld    D, B          ; 1:4       4877*
-    ld    E, C          ; 1:4       4877*   
-    ld    B, D          ; 1:4       4889*
+    ld    E, C          ; 1:4       4877*       
+    ld    B, D          ; 1:4       4889* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4889*
     ld    D, H          ; 1:4       4889*
     ld    E, L          ; 1:4       4889* save 1x
@@ -17943,8 +17917,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4889* 4096x
     add  HL, DE         ; 1:11      4889* HL + save
     ld    D, B          ; 1:4       4889*
-    ld    E, C          ; 1:4       4889*   
-    ld    B, D          ; 1:4       4903*
+    ld    E, C          ; 1:4       4889*       
+    ld    B, D          ; 1:4       4903* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4903*
     ld    D, H          ; 1:4       4903*
     ld    E, L          ; 1:4       4903* save 1x
@@ -17977,8 +17951,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4903* 4096x
     add  HL, DE         ; 1:11      4903* HL + save
     ld    D, B          ; 1:4       4903*
-    ld    E, C          ; 1:4       4903*   
-    ld    B, D          ; 1:4       4909*
+    ld    E, C          ; 1:4       4903*       
+    ld    B, D          ; 1:4       4909* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4909*
     ld    D, H          ; 1:4       4909*
     ld    E, L          ; 1:4       4909* save 1x
@@ -18011,44 +17985,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4909* 4096x
     add  HL, DE         ; 1:11      4909* HL + save
     ld    D, B          ; 1:4       4909*
-    ld    E, C          ; 1:4       4909*   
-    ld    B, D          ; 1:4       4919*
+    ld    E, C          ; 1:4       4909*       
+    ld    B, D          ; 1:4       4919* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4919*
     ld    D, H          ; 1:4       4919*
     ld    E, L          ; 1:4       4919* save 1x
     add  HL, HL         ; 1:11      4919* 2x
+    ex   DE, HL         ; 1:4       4919* +
+    add  HL, DE         ; 1:11      4919* + save 2x
+    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 4x
+    ex   DE, HL         ; 1:4       4919* +
+    add  HL, DE         ; 1:11      4919* + save 4x
+    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 8x
-    ex   DE, HL         ; 1:4       4919* +
-    add  HL, DE         ; 1:11      4919* + save 8x
-    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 16x
+    ex   DE, HL         ; 1:4       4919* +
+    add  HL, DE         ; 1:11      4919* + save 16x
+    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 32x
+    ex   DE, HL         ; 1:4       4919* +
+    add  HL, DE         ; 1:11      4919* + save 32x
+    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 64x
-    ex   DE, HL         ; 1:4       4919* +
-    add  HL, DE         ; 1:11      4919* + save 64x
-    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 128x
-    ex   DE, HL         ; 1:4       4919* +
-    add  HL, DE         ; 1:11      4919* + save 128x
-    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 256x
+    ex   DE, HL         ; 1:4       4919* +
+    add  HL, DE         ; 1:11      4919* + save 256x
+    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 512x
+    ex   DE, HL         ; 1:4       4919* +
+    add  HL, DE         ; 1:11      4919* + save 512x
+    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 1024x
-    ex   DE, HL         ; 1:4       4919* +
-    add  HL, DE         ; 1:11      4919* + save 1024x
-    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 2048x
-    ex   DE, HL         ; 1:4       4919* +
-    add  HL, DE         ; 1:11      4919* + save 2048x
-    ex   DE, HL         ; 1:4       4919* +
     add  HL, HL         ; 1:11      4919* 4096x
-    add  HL, HL         ; 1:11      4919* 8192x
-    or    A             ; 1:4       4919*
-    sbc  HL, DE         ; 2:15      4919* HL - save
+    add  HL, DE         ; 1:11      4919* HL + save
     ld    D, B          ; 1:4       4919*
-    ld    E, C          ; 1:4       4919*   
-    ld    B, D          ; 1:4       4931*
+    ld    E, C          ; 1:4       4919*       
+    ld    B, D          ; 1:4       4931* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4931*
     ld    D, H          ; 1:4       4931*
     ld    E, L          ; 1:4       4931* save 1x
@@ -18078,8 +18053,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4931* 4096x
     add  HL, DE         ; 1:11      4931* HL + save
     ld    D, B          ; 1:4       4931*
-    ld    E, C          ; 1:4       4931*   
-    ld    B, D          ; 1:4       4933*
+    ld    E, C          ; 1:4       4931*       
+    ld    B, D          ; 1:4       4933* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4933*
     ld    D, H          ; 1:4       4933*
     ld    E, L          ; 1:4       4933* save 1x
@@ -18109,8 +18084,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4933* 4096x
     add  HL, DE         ; 1:11      4933* HL + save
     ld    D, B          ; 1:4       4933*
-    ld    E, C          ; 1:4       4933*   
-    ld    B, D          ; 1:4       4937*
+    ld    E, C          ; 1:4       4933*       
+    ld    B, D          ; 1:4       4937* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4937*
     ld    D, H          ; 1:4       4937*
     ld    E, L          ; 1:4       4937* save 1x
@@ -18141,152 +18116,156 @@ ORG 0x6000
     add  HL, DE         ; 1:11      4937* HL + save
     ld    D, B          ; 1:4       4937*
     ld    E, C          ; 1:4       4937* 
-   
-    ld    B, D          ; 1:4       4943*
+       
+    ld    B, D          ; 1:4       4943* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4943*
     ld    D, H          ; 1:4       4943*
     ld    E, L          ; 1:4       4943* save 1x
     add  HL, HL         ; 1:11      4943* 2x
+    ex   DE, HL         ; 1:4       4943* +
+    add  HL, DE         ; 1:11      4943* + save 2x
+    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 4x
+    ex   DE, HL         ; 1:4       4943* +
+    add  HL, DE         ; 1:11      4943* + save 4x
+    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 8x
+    ex   DE, HL         ; 1:4       4943* +
+    add  HL, DE         ; 1:11      4943* + save 8x
+    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 16x
-    ex   DE, HL         ; 1:4       4943* +
-    add  HL, DE         ; 1:11      4943* + save 16x
-    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 32x
-    ex   DE, HL         ; 1:4       4943* +
-    add  HL, DE         ; 1:11      4943* + save 32x
-    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 64x
+    ex   DE, HL         ; 1:4       4943* +
+    add  HL, DE         ; 1:11      4943* + save 64x
+    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 128x
-    ex   DE, HL         ; 1:4       4943* +
-    add  HL, DE         ; 1:11      4943* + save 128x
-    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 256x
+    ex   DE, HL         ; 1:4       4943* +
+    add  HL, DE         ; 1:11      4943* + save 256x
+    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 512x
+    ex   DE, HL         ; 1:4       4943* +
+    add  HL, DE         ; 1:11      4943* + save 512x
+    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 1024x
-    ex   DE, HL         ; 1:4       4943* +
-    add  HL, DE         ; 1:11      4943* + save 1024x
-    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 2048x
-    ex   DE, HL         ; 1:4       4943* +
-    add  HL, DE         ; 1:11      4943* + save 2048x
-    ex   DE, HL         ; 1:4       4943* +
     add  HL, HL         ; 1:11      4943* 4096x
-    add  HL, HL         ; 1:11      4943* 8192x
-    or    A             ; 1:4       4943*
-    sbc  HL, DE         ; 2:15      4943* HL - save
+    add  HL, DE         ; 1:11      4943* HL + save
     ld    D, B          ; 1:4       4943*
-    ld    E, C          ; 1:4       4943*   
-    ld    B, D          ; 1:4       4951*
+    ld    E, C          ; 1:4       4943*       
+    ld    B, D          ; 1:4       4951* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4951*
     ld    D, H          ; 1:4       4951*
     ld    E, L          ; 1:4       4951* save 1x
     add  HL, HL         ; 1:11      4951* 2x
+    ex   DE, HL         ; 1:4       4951* +
+    add  HL, DE         ; 1:11      4951* + save 2x
+    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 4x
+    ex   DE, HL         ; 1:4       4951* +
+    add  HL, DE         ; 1:11      4951* + save 4x
+    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 8x
-    ex   DE, HL         ; 1:4       4951* +
-    add  HL, DE         ; 1:11      4951* + save 8x
-    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 16x
+    ex   DE, HL         ; 1:4       4951* +
+    add  HL, DE         ; 1:11      4951* + save 16x
+    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 32x
-    ex   DE, HL         ; 1:4       4951* +
-    add  HL, DE         ; 1:11      4951* + save 32x
-    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 64x
+    ex   DE, HL         ; 1:4       4951* +
+    add  HL, DE         ; 1:11      4951* + save 64x
+    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 128x
-    ex   DE, HL         ; 1:4       4951* +
-    add  HL, DE         ; 1:11      4951* + save 128x
-    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 256x
+    ex   DE, HL         ; 1:4       4951* +
+    add  HL, DE         ; 1:11      4951* + save 256x
+    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 512x
+    ex   DE, HL         ; 1:4       4951* +
+    add  HL, DE         ; 1:11      4951* + save 512x
+    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 1024x
-    ex   DE, HL         ; 1:4       4951* +
-    add  HL, DE         ; 1:11      4951* + save 1024x
-    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 2048x
-    ex   DE, HL         ; 1:4       4951* +
-    add  HL, DE         ; 1:11      4951* + save 2048x
-    ex   DE, HL         ; 1:4       4951* +
     add  HL, HL         ; 1:11      4951* 4096x
-    add  HL, HL         ; 1:11      4951* 8192x
-    or    A             ; 1:4       4951*
-    sbc  HL, DE         ; 2:15      4951* HL - save
+    add  HL, DE         ; 1:11      4951* HL + save
     ld    D, B          ; 1:4       4951*
-    ld    E, C          ; 1:4       4951*   
-    ld    B, D          ; 1:4       4957*
+    ld    E, C          ; 1:4       4951*       
+    ld    B, D          ; 1:4       4957* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4957*
     ld    D, H          ; 1:4       4957*
     ld    E, L          ; 1:4       4957* save 1x
     add  HL, HL         ; 1:11      4957* 2x
-    ex   DE, HL         ; 1:4       4957* +
-    add  HL, DE         ; 1:11      4957* + save 2x
-    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 4x
+    ex   DE, HL         ; 1:4       4957* +
+    add  HL, DE         ; 1:11      4957* + save 4x
+    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 8x
+    ex   DE, HL         ; 1:4       4957* +
+    add  HL, DE         ; 1:11      4957* + save 8x
+    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 16x
+    ex   DE, HL         ; 1:4       4957* +
+    add  HL, DE         ; 1:11      4957* + save 16x
+    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 32x
-    ex   DE, HL         ; 1:4       4957* +
-    add  HL, DE         ; 1:11      4957* + save 32x
-    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 64x
+    ex   DE, HL         ; 1:4       4957* +
+    add  HL, DE         ; 1:11      4957* + save 64x
+    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 128x
-    ex   DE, HL         ; 1:4       4957* +
-    add  HL, DE         ; 1:11      4957* + save 128x
-    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 256x
+    ex   DE, HL         ; 1:4       4957* +
+    add  HL, DE         ; 1:11      4957* + save 256x
+    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 512x
+    ex   DE, HL         ; 1:4       4957* +
+    add  HL, DE         ; 1:11      4957* + save 512x
+    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 1024x
-    ex   DE, HL         ; 1:4       4957* +
-    add  HL, DE         ; 1:11      4957* + save 1024x
-    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 2048x
-    ex   DE, HL         ; 1:4       4957* +
-    add  HL, DE         ; 1:11      4957* + save 2048x
-    ex   DE, HL         ; 1:4       4957* +
     add  HL, HL         ; 1:11      4957* 4096x
-    add  HL, HL         ; 1:11      4957* 8192x
-    or    A             ; 1:4       4957*
-    sbc  HL, DE         ; 2:15      4957* HL - save
+    add  HL, DE         ; 1:11      4957* HL + save
     ld    D, B          ; 1:4       4957*
-    ld    E, C          ; 1:4       4957*   
-    ld    B, D          ; 1:4       4967*
+    ld    E, C          ; 1:4       4957*       
+    ld    B, D          ; 1:4       4967* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4967*
     ld    D, H          ; 1:4       4967*
     ld    E, L          ; 1:4       4967* save 1x
     add  HL, HL         ; 1:11      4967* 2x
+    ex   DE, HL         ; 1:4       4967* +
+    add  HL, DE         ; 1:11      4967* + save 2x
+    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 4x
+    ex   DE, HL         ; 1:4       4967* +
+    add  HL, DE         ; 1:11      4967* + save 4x
+    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 8x
-    ex   DE, HL         ; 1:4       4967* +
-    add  HL, DE         ; 1:11      4967* + save 8x
-    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 16x
-    ex   DE, HL         ; 1:4       4967* +
-    add  HL, DE         ; 1:11      4967* + save 16x
-    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 32x
+    ex   DE, HL         ; 1:4       4967* +
+    add  HL, DE         ; 1:11      4967* + save 32x
+    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 64x
+    ex   DE, HL         ; 1:4       4967* +
+    add  HL, DE         ; 1:11      4967* + save 64x
+    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 128x
-    ex   DE, HL         ; 1:4       4967* +
-    add  HL, DE         ; 1:11      4967* + save 128x
-    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 256x
+    ex   DE, HL         ; 1:4       4967* +
+    add  HL, DE         ; 1:11      4967* + save 256x
+    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 512x
+    ex   DE, HL         ; 1:4       4967* +
+    add  HL, DE         ; 1:11      4967* + save 512x
+    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 1024x
-    ex   DE, HL         ; 1:4       4967* +
-    add  HL, DE         ; 1:11      4967* + save 1024x
-    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 2048x
-    ex   DE, HL         ; 1:4       4967* +
-    add  HL, DE         ; 1:11      4967* + save 2048x
-    ex   DE, HL         ; 1:4       4967* +
     add  HL, HL         ; 1:11      4967* 4096x
-    add  HL, HL         ; 1:11      4967* 8192x
-    or    A             ; 1:4       4967*
-    sbc  HL, DE         ; 2:15      4967* HL - save
+    add  HL, DE         ; 1:11      4967* HL + save
     ld    D, B          ; 1:4       4967*
-    ld    E, C          ; 1:4       4967*   
-    ld    B, D          ; 1:4       4969*
+    ld    E, C          ; 1:4       4967*       
+    ld    B, D          ; 1:4       4969* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4969*
     ld    D, H          ; 1:4       4969*
     ld    E, L          ; 1:4       4969* save 1x
@@ -18319,44 +18298,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4969* 4096x
     add  HL, DE         ; 1:11      4969* HL + save
     ld    D, B          ; 1:4       4969*
-    ld    E, C          ; 1:4       4969*   
-    ld    B, D          ; 1:4       4973*
+    ld    E, C          ; 1:4       4969*       
+    ld    B, D          ; 1:4       4973* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4973*
     ld    D, H          ; 1:4       4973*
     ld    E, L          ; 1:4       4973* save 1x
     add  HL, HL         ; 1:11      4973* 2x
-    ex   DE, HL         ; 1:4       4973* +
-    add  HL, DE         ; 1:11      4973* + save 2x
-    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 4x
+    ex   DE, HL         ; 1:4       4973* +
+    add  HL, DE         ; 1:11      4973* + save 4x
+    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 8x
+    ex   DE, HL         ; 1:4       4973* +
+    add  HL, DE         ; 1:11      4973* + save 8x
+    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 16x
-    ex   DE, HL         ; 1:4       4973* +
-    add  HL, DE         ; 1:11      4973* + save 16x
-    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 32x
+    ex   DE, HL         ; 1:4       4973* +
+    add  HL, DE         ; 1:11      4973* + save 32x
+    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 64x
+    ex   DE, HL         ; 1:4       4973* +
+    add  HL, DE         ; 1:11      4973* + save 64x
+    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 128x
-    ex   DE, HL         ; 1:4       4973* +
-    add  HL, DE         ; 1:11      4973* + save 128x
-    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 256x
+    ex   DE, HL         ; 1:4       4973* +
+    add  HL, DE         ; 1:11      4973* + save 256x
+    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 512x
+    ex   DE, HL         ; 1:4       4973* +
+    add  HL, DE         ; 1:11      4973* + save 512x
+    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 1024x
-    ex   DE, HL         ; 1:4       4973* +
-    add  HL, DE         ; 1:11      4973* + save 1024x
-    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 2048x
-    ex   DE, HL         ; 1:4       4973* +
-    add  HL, DE         ; 1:11      4973* + save 2048x
-    ex   DE, HL         ; 1:4       4973* +
     add  HL, HL         ; 1:11      4973* 4096x
-    add  HL, HL         ; 1:11      4973* 8192x
-    or    A             ; 1:4       4973*
-    sbc  HL, DE         ; 2:15      4973* HL - save
+    add  HL, DE         ; 1:11      4973* HL + save
     ld    D, B          ; 1:4       4973*
     ld    E, C          ; 1:4       4973*   
-    ld    B, D          ; 1:4       4987*
+    ld    B, D          ; 1:4       4987* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       4987*
     ld    D, H          ; 1:4       4987*
     ld    E, L          ; 1:4       4987* save 1x
@@ -18388,8 +18368,8 @@ ORG 0x6000
     or    A             ; 1:4       4987*
     sbc  HL, DE         ; 2:15      4987* HL - save
     ld    D, B          ; 1:4       4987*
-    ld    E, C          ; 1:4       4987*   
-    ld    B, D          ; 1:4       4993*
+    ld    E, C          ; 1:4       4987*       
+    ld    B, D          ; 1:4       4993* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4993*
     ld    D, H          ; 1:4       4993*
     ld    E, L          ; 1:4       4993* save 1x
@@ -18416,8 +18396,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4993* 4096x
     add  HL, DE         ; 1:11      4993* HL + save
     ld    D, B          ; 1:4       4993*
-    ld    E, C          ; 1:4       4993*   
-    ld    B, D          ; 1:4       4999*
+    ld    E, C          ; 1:4       4993*       
+    ld    B, D          ; 1:4       4999* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       4999*
     ld    D, H          ; 1:4       4999*
     ld    E, L          ; 1:4       4999* save 1x
@@ -18450,8 +18430,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      4999* 4096x
     add  HL, DE         ; 1:11      4999* HL + save
     ld    D, B          ; 1:4       4999*
-    ld    E, C          ; 1:4       4999*   
-    ld    B, D          ; 1:4       5003*
+    ld    E, C          ; 1:4       4999*       
+    ld    B, D          ; 1:4       5003* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5003*
     ld    D, H          ; 1:4       5003*
     ld    E, L          ; 1:4       5003* save 1x
@@ -18485,8 +18465,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5003* HL + save
     ld    D, B          ; 1:4       5003*
     ld    E, C          ; 1:4       5003* 
-   
-    ld    B, D          ; 1:4       5009*
+       
+    ld    B, D          ; 1:4       5009* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5009*
     ld    D, H          ; 1:4       5009*
     ld    E, L          ; 1:4       5009* save 1x
@@ -18516,8 +18496,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5009* 4096x
     add  HL, DE         ; 1:11      5009* HL + save
     ld    D, B          ; 1:4       5009*
-    ld    E, C          ; 1:4       5009*   
-    ld    B, D          ; 1:4       5011*
+    ld    E, C          ; 1:4       5009*       
+    ld    B, D          ; 1:4       5011* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5011*
     ld    D, H          ; 1:4       5011*
     ld    E, L          ; 1:4       5011* save 1x
@@ -18550,44 +18530,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5011* 4096x
     add  HL, DE         ; 1:11      5011* HL + save
     ld    D, B          ; 1:4       5011*
-    ld    E, C          ; 1:4       5011*   
-    ld    B, D          ; 1:4       5021*
+    ld    E, C          ; 1:4       5011*       
+    ld    B, D          ; 1:4       5021* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5021*
     ld    D, H          ; 1:4       5021*
     ld    E, L          ; 1:4       5021* save 1x
     add  HL, HL         ; 1:11      5021* 2x
-    ex   DE, HL         ; 1:4       5021* +
-    add  HL, DE         ; 1:11      5021* + save 2x
-    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 4x
+    ex   DE, HL         ; 1:4       5021* +
+    add  HL, DE         ; 1:11      5021* + save 4x
+    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 8x
+    ex   DE, HL         ; 1:4       5021* +
+    add  HL, DE         ; 1:11      5021* + save 8x
+    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 16x
+    ex   DE, HL         ; 1:4       5021* +
+    add  HL, DE         ; 1:11      5021* + save 16x
+    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 32x
-    ex   DE, HL         ; 1:4       5021* +
-    add  HL, DE         ; 1:11      5021* + save 32x
-    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 64x
-    ex   DE, HL         ; 1:4       5021* +
-    add  HL, DE         ; 1:11      5021* + save 64x
-    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 128x
+    ex   DE, HL         ; 1:4       5021* +
+    add  HL, DE         ; 1:11      5021* + save 128x
+    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 256x
+    ex   DE, HL         ; 1:4       5021* +
+    add  HL, DE         ; 1:11      5021* + save 256x
+    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 512x
+    ex   DE, HL         ; 1:4       5021* +
+    add  HL, DE         ; 1:11      5021* + save 512x
+    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 1024x
-    ex   DE, HL         ; 1:4       5021* +
-    add  HL, DE         ; 1:11      5021* + save 1024x
-    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 2048x
-    ex   DE, HL         ; 1:4       5021* +
-    add  HL, DE         ; 1:11      5021* + save 2048x
-    ex   DE, HL         ; 1:4       5021* +
     add  HL, HL         ; 1:11      5021* 4096x
-    add  HL, HL         ; 1:11      5021* 8192x
-    or    A             ; 1:4       5021*
-    sbc  HL, DE         ; 2:15      5021* HL - save
+    add  HL, DE         ; 1:11      5021* HL + save
     ld    D, B          ; 1:4       5021*
     ld    E, C          ; 1:4       5021*   
-    ld    B, D          ; 1:4       5023*
+    ld    B, D          ; 1:4       5023* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5023*
     ld    D, H          ; 1:4       5023*
     ld    E, L          ; 1:4       5023* save 1x
@@ -18620,7 +18601,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5023* HL - save
     ld    D, B          ; 1:4       5023*
     ld    E, C          ; 1:4       5023*   
-    ld    B, D          ; 1:4       5039*
+    ld    B, D          ; 1:4       5039* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5039*
     ld    D, H          ; 1:4       5039*
     ld    E, L          ; 1:4       5039* save 1x
@@ -18653,7 +18634,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5039* HL - save
     ld    D, B          ; 1:4       5039*
     ld    E, C          ; 1:4       5039*   
-    ld    B, D          ; 1:4       5051*
+    ld    B, D          ; 1:4       5051* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5051*
     ld    D, H          ; 1:4       5051*
     ld    E, L          ; 1:4       5051* save 1x
@@ -18685,8 +18666,8 @@ ORG 0x6000
     or    A             ; 1:4       5051*
     sbc  HL, DE         ; 2:15      5051* HL - save
     ld    D, B          ; 1:4       5051*
-    ld    E, C          ; 1:4       5051*   
-    ld    B, D          ; 1:4       5059*
+    ld    E, C          ; 1:4       5051*       
+    ld    B, D          ; 1:4       5059* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5059*
     ld    D, H          ; 1:4       5059*
     ld    E, L          ; 1:4       5059* save 1x
@@ -18719,80 +18700,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5059* 4096x
     add  HL, DE         ; 1:11      5059* HL + save
     ld    D, B          ; 1:4       5059*
-    ld    E, C          ; 1:4       5059*   
-    ld    B, D          ; 1:4       5077*
+    ld    E, C          ; 1:4       5059*       
+    ld    B, D          ; 1:4       5077* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5077*
     ld    D, H          ; 1:4       5077*
     ld    E, L          ; 1:4       5077* save 1x
     add  HL, HL         ; 1:11      5077* 2x
-    ex   DE, HL         ; 1:4       5077* +
-    add  HL, DE         ; 1:11      5077* + save 2x
-    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 4x
+    ex   DE, HL         ; 1:4       5077* +
+    add  HL, DE         ; 1:11      5077* + save 4x
+    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 8x
-    ex   DE, HL         ; 1:4       5077* +
-    add  HL, DE         ; 1:11      5077* + save 8x
-    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 16x
+    ex   DE, HL         ; 1:4       5077* +
+    add  HL, DE         ; 1:11      5077* + save 16x
+    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 32x
-    ex   DE, HL         ; 1:4       5077* +
-    add  HL, DE         ; 1:11      5077* + save 32x
-    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 64x
+    ex   DE, HL         ; 1:4       5077* +
+    add  HL, DE         ; 1:11      5077* + save 64x
+    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 128x
+    ex   DE, HL         ; 1:4       5077* +
+    add  HL, DE         ; 1:11      5077* + save 128x
+    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 256x
+    ex   DE, HL         ; 1:4       5077* +
+    add  HL, DE         ; 1:11      5077* + save 256x
+    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 512x
+    ex   DE, HL         ; 1:4       5077* +
+    add  HL, DE         ; 1:11      5077* + save 512x
+    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 1024x
-    ex   DE, HL         ; 1:4       5077* +
-    add  HL, DE         ; 1:11      5077* + save 1024x
-    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 2048x
-    ex   DE, HL         ; 1:4       5077* +
-    add  HL, DE         ; 1:11      5077* + save 2048x
-    ex   DE, HL         ; 1:4       5077* +
     add  HL, HL         ; 1:11      5077* 4096x
-    add  HL, HL         ; 1:11      5077* 8192x
-    or    A             ; 1:4       5077*
-    sbc  HL, DE         ; 2:15      5077* HL - save
+    add  HL, DE         ; 1:11      5077* HL + save
     ld    D, B          ; 1:4       5077*
-    ld    E, C          ; 1:4       5077*   
-    ld    B, D          ; 1:4       5081*
+    ld    E, C          ; 1:4       5077*       
+    ld    B, D          ; 1:4       5081* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5081*
     ld    D, H          ; 1:4       5081*
     ld    E, L          ; 1:4       5081* save 1x
     add  HL, HL         ; 1:11      5081* 2x
-    ex   DE, HL         ; 1:4       5081* +
-    add  HL, DE         ; 1:11      5081* + save 2x
-    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 4x
-    ex   DE, HL         ; 1:4       5081* +
-    add  HL, DE         ; 1:11      5081* + save 4x
-    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 8x
+    ex   DE, HL         ; 1:4       5081* +
+    add  HL, DE         ; 1:11      5081* + save 8x
+    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 16x
+    ex   DE, HL         ; 1:4       5081* +
+    add  HL, DE         ; 1:11      5081* + save 16x
+    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 32x
-    ex   DE, HL         ; 1:4       5081* +
-    add  HL, DE         ; 1:11      5081* + save 32x
-    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 64x
+    ex   DE, HL         ; 1:4       5081* +
+    add  HL, DE         ; 1:11      5081* + save 64x
+    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 128x
+    ex   DE, HL         ; 1:4       5081* +
+    add  HL, DE         ; 1:11      5081* + save 128x
+    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 256x
+    ex   DE, HL         ; 1:4       5081* +
+    add  HL, DE         ; 1:11      5081* + save 256x
+    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 512x
+    ex   DE, HL         ; 1:4       5081* +
+    add  HL, DE         ; 1:11      5081* + save 512x
+    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 1024x
-    ex   DE, HL         ; 1:4       5081* +
-    add  HL, DE         ; 1:11      5081* + save 1024x
-    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 2048x
-    ex   DE, HL         ; 1:4       5081* +
-    add  HL, DE         ; 1:11      5081* + save 2048x
-    ex   DE, HL         ; 1:4       5081* +
     add  HL, HL         ; 1:11      5081* 4096x
-    add  HL, HL         ; 1:11      5081* 8192x
-    or    A             ; 1:4       5081*
-    sbc  HL, DE         ; 2:15      5081* HL - save
+    add  HL, DE         ; 1:11      5081* HL + save
     ld    D, B          ; 1:4       5081*
     ld    E, C          ; 1:4       5081*   
-    ld    B, D          ; 1:4       5087*
+    ld    B, D          ; 1:4       5087* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5087*
     ld    D, H          ; 1:4       5087*
     ld    E, L          ; 1:4       5087* save 1x
@@ -18823,7 +18806,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       5087*
     ld    E, C          ; 1:4       5087* 
    
-    ld    B, D          ; 1:4       5099*
+    ld    B, D          ; 1:4       5099* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5099*
     ld    D, H          ; 1:4       5099*
     ld    E, L          ; 1:4       5099* save 1x
@@ -18856,7 +18839,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5099* HL - save
     ld    D, B          ; 1:4       5099*
     ld    E, C          ; 1:4       5099*   
-    ld    B, D          ; 1:4       5101*
+    ld    B, D          ; 1:4       5101* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5101*
     ld    D, H          ; 1:4       5101*
     ld    E, L          ; 1:4       5101* save 1x
@@ -18889,7 +18872,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5101* HL - save
     ld    D, B          ; 1:4       5101*
     ld    E, C          ; 1:4       5101*   
-    ld    B, D          ; 1:4       5107*
+    ld    B, D          ; 1:4       5107* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5107*
     ld    D, H          ; 1:4       5107*
     ld    E, L          ; 1:4       5107* save 1x
@@ -18902,13 +18885,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       5107* +
     add  HL, DE         ; 1:11      5107* + save 8x
     ex   DE, HL         ; 1:4       5107* +
-    add  HL, HL         ; 1:11      5107* 16x
-    add  HL, HL         ; 1:11      5107* 32x
-    add  HL, HL         ; 1:11      5107* 64x
-    add  HL, HL         ; 1:11      5107* 128x
-    add  HL, HL         ; 1:11      5107* 256x
-    add  HL, HL         ; 1:11      5107* 512x
-    add  HL, HL         ; 1:11      5107* 1024x
+    rr    H             ; 2:8       5107*
+    rr    L             ; 2:8       5107*
+    ld    H, L          ; 1:4       5107*
+    ld    L, 0x00       ; 2:7       5107* 1024x
     ex   DE, HL         ; 1:4       5107* +
     add  HL, DE         ; 1:11      5107* + save 1024x
     ex   DE, HL         ; 1:4       5107* +
@@ -18922,7 +18902,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5107* HL - save
     ld    D, B          ; 1:4       5107*
     ld    E, C          ; 1:4       5107*   
-    ld    B, D          ; 1:4       5113*
+    ld    B, D          ; 1:4       5113* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5113*
     ld    D, H          ; 1:4       5113*
     ld    E, L          ; 1:4       5113* save 1x
@@ -18949,7 +18929,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5113* HL - save
     ld    D, B          ; 1:4       5113*
     ld    E, C          ; 1:4       5113*   
-    ld    B, D          ; 1:4       5119*
+    ld    B, D          ; 1:4       5119* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5119*
     ld    D, H          ; 1:4       5119*
     ld    E, L          ; 1:4       5119* save 1x
@@ -18969,8 +18949,8 @@ ORG 0x6000
     or    A             ; 1:4       5119*
     sbc  HL, DE         ; 2:15      5119* HL - save
     ld    D, B          ; 1:4       5119*
-    ld    E, C          ; 1:4       5119*   
-    ld    B, D          ; 1:4       5147*
+    ld    E, C          ; 1:4       5119*       
+    ld    B, D          ; 1:4       5147* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5147*
     ld    D, H          ; 1:4       5147*
     ld    E, L          ; 1:4       5147* save 1x
@@ -19000,8 +18980,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5147* 4096x
     add  HL, DE         ; 1:11      5147* HL + save
     ld    D, B          ; 1:4       5147*
-    ld    E, C          ; 1:4       5147*   
-    ld    B, D          ; 1:4       5153*
+    ld    E, C          ; 1:4       5147*       
+    ld    B, D          ; 1:4       5153* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5153*
     ld    D, H          ; 1:4       5153*
     ld    E, L          ; 1:4       5153* save 1x
@@ -19025,8 +19005,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5153* 4096x
     add  HL, DE         ; 1:11      5153* HL + save
     ld    D, B          ; 1:4       5153*
-    ld    E, C          ; 1:4       5153*   
-    ld    B, D          ; 1:4       5167*
+    ld    E, C          ; 1:4       5153*       
+    ld    B, D          ; 1:4       5167* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5167*
     ld    D, H          ; 1:4       5167*
     ld    E, L          ; 1:4       5167* save 1x
@@ -19059,8 +19039,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5167* 4096x
     add  HL, DE         ; 1:11      5167* HL + save
     ld    D, B          ; 1:4       5167*
-    ld    E, C          ; 1:4       5167*   
-    ld    B, D          ; 1:4       5171*
+    ld    E, C          ; 1:4       5167*       
+    ld    B, D          ; 1:4       5171* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5171*
     ld    D, H          ; 1:4       5171*
     ld    E, L          ; 1:4       5171* save 1x
@@ -19090,8 +19070,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5171* 4096x
     add  HL, DE         ; 1:11      5171* HL + save
     ld    D, B          ; 1:4       5171*
-    ld    E, C          ; 1:4       5171*   
-    ld    B, D          ; 1:4       5179*
+    ld    E, C          ; 1:4       5171*       
+    ld    B, D          ; 1:4       5179* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5179*
     ld    D, H          ; 1:4       5179*
     ld    E, L          ; 1:4       5179* save 1x
@@ -19125,8 +19105,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5179* HL + save
     ld    D, B          ; 1:4       5179*
     ld    E, C          ; 1:4       5179* 
-   
-    ld    B, D          ; 1:4       5189*
+       
+    ld    B, D          ; 1:4       5189* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5189*
     ld    D, H          ; 1:4       5189*
     ld    E, L          ; 1:4       5189* save 1x
@@ -19153,8 +19133,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5189* 4096x
     add  HL, DE         ; 1:11      5189* HL + save
     ld    D, B          ; 1:4       5189*
-    ld    E, C          ; 1:4       5189*   
-    ld    B, D          ; 1:4       5197*
+    ld    E, C          ; 1:4       5189*       
+    ld    B, D          ; 1:4       5197* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5197*
     ld    D, H          ; 1:4       5197*
     ld    E, L          ; 1:4       5197* save 1x
@@ -19184,8 +19164,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5197* 4096x
     add  HL, DE         ; 1:11      5197* HL + save
     ld    D, B          ; 1:4       5197*
-    ld    E, C          ; 1:4       5197*   
-    ld    B, D          ; 1:4       5209*
+    ld    E, C          ; 1:4       5197*       
+    ld    B, D          ; 1:4       5209* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5209*
     ld    D, H          ; 1:4       5209*
     ld    E, L          ; 1:4       5209* save 1x
@@ -19215,8 +19195,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5209* 4096x
     add  HL, DE         ; 1:11      5209* HL + save
     ld    D, B          ; 1:4       5209*
-    ld    E, C          ; 1:4       5209*   
-    ld    B, D          ; 1:4       5227*
+    ld    E, C          ; 1:4       5209*       
+    ld    B, D          ; 1:4       5227* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5227*
     ld    D, H          ; 1:4       5227*
     ld    E, L          ; 1:4       5227* save 1x
@@ -19249,44 +19229,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5227* 4096x
     add  HL, DE         ; 1:11      5227* HL + save
     ld    D, B          ; 1:4       5227*
-    ld    E, C          ; 1:4       5227*   
-    ld    B, D          ; 1:4       5231*
+    ld    E, C          ; 1:4       5227*       
+    ld    B, D          ; 1:4       5231* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5231*
     ld    D, H          ; 1:4       5231*
     ld    E, L          ; 1:4       5231* save 1x
     add  HL, HL         ; 1:11      5231* 2x
+    ex   DE, HL         ; 1:4       5231* +
+    add  HL, DE         ; 1:11      5231* + save 2x
+    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 4x
+    ex   DE, HL         ; 1:4       5231* +
+    add  HL, DE         ; 1:11      5231* + save 4x
+    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 8x
+    ex   DE, HL         ; 1:4       5231* +
+    add  HL, DE         ; 1:11      5231* + save 8x
+    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 16x
-    ex   DE, HL         ; 1:4       5231* +
-    add  HL, DE         ; 1:11      5231* + save 16x
-    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 32x
+    ex   DE, HL         ; 1:4       5231* +
+    add  HL, DE         ; 1:11      5231* + save 32x
+    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 64x
+    ex   DE, HL         ; 1:4       5231* +
+    add  HL, DE         ; 1:11      5231* + save 64x
+    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 128x
-    ex   DE, HL         ; 1:4       5231* +
-    add  HL, DE         ; 1:11      5231* + save 128x
-    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 256x
-    ex   DE, HL         ; 1:4       5231* +
-    add  HL, DE         ; 1:11      5231* + save 256x
-    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 512x
-    ex   DE, HL         ; 1:4       5231* +
-    add  HL, DE         ; 1:11      5231* + save 512x
-    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 1024x
+    ex   DE, HL         ; 1:4       5231* +
+    add  HL, DE         ; 1:11      5231* + save 1024x
+    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 2048x
-    ex   DE, HL         ; 1:4       5231* +
-    add  HL, DE         ; 1:11      5231* + save 2048x
-    ex   DE, HL         ; 1:4       5231* +
     add  HL, HL         ; 1:11      5231* 4096x
-    add  HL, HL         ; 1:11      5231* 8192x
-    or    A             ; 1:4       5231*
-    sbc  HL, DE         ; 2:15      5231* HL - save
+    add  HL, DE         ; 1:11      5231* HL + save
     ld    D, B          ; 1:4       5231*
-    ld    E, C          ; 1:4       5231*   
-    ld    B, D          ; 1:4       5233*
+    ld    E, C          ; 1:4       5231*       
+    ld    B, D          ; 1:4       5233* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5233*
     ld    D, H          ; 1:4       5233*
     ld    E, L          ; 1:4       5233* save 1x
@@ -19316,8 +19297,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5233* 4096x
     add  HL, DE         ; 1:11      5233* HL + save
     ld    D, B          ; 1:4       5233*
-    ld    E, C          ; 1:4       5233*   
-    ld    B, D          ; 1:4       5237*
+    ld    E, C          ; 1:4       5233*       
+    ld    B, D          ; 1:4       5237* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5237*
     ld    D, H          ; 1:4       5237*
     ld    E, L          ; 1:4       5237* save 1x
@@ -19350,8 +19331,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5237* 4096x
     add  HL, DE         ; 1:11      5237* HL + save
     ld    D, B          ; 1:4       5237*
-    ld    E, C          ; 1:4       5237*   
-    ld    B, D          ; 1:4       5261*
+    ld    E, C          ; 1:4       5237*       
+    ld    B, D          ; 1:4       5261* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5261*
     ld    D, H          ; 1:4       5261*
     ld    E, L          ; 1:4       5261* save 1x
@@ -19381,8 +19362,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5261* 4096x
     add  HL, DE         ; 1:11      5261* HL + save
     ld    D, B          ; 1:4       5261*
-    ld    E, C          ; 1:4       5261*   
-    ld    B, D          ; 1:4       5273*
+    ld    E, C          ; 1:4       5261*       
+    ld    B, D          ; 1:4       5273* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5273*
     ld    D, H          ; 1:4       5273*
     ld    E, L          ; 1:4       5273* save 1x
@@ -19412,45 +19393,46 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5273* 4096x
     add  HL, DE         ; 1:11      5273* HL + save
     ld    D, B          ; 1:4       5273*
-    ld    E, C          ; 1:4       5273*   
-    ld    B, D          ; 1:4       5279*
+    ld    E, C          ; 1:4       5273*       
+    ld    B, D          ; 1:4       5279* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5279*
     ld    D, H          ; 1:4       5279*
     ld    E, L          ; 1:4       5279* save 1x
     add  HL, HL         ; 1:11      5279* 2x
+    ex   DE, HL         ; 1:4       5279* +
+    add  HL, DE         ; 1:11      5279* + save 2x
+    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 4x
+    ex   DE, HL         ; 1:4       5279* +
+    add  HL, DE         ; 1:11      5279* + save 4x
+    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 8x
+    ex   DE, HL         ; 1:4       5279* +
+    add  HL, DE         ; 1:11      5279* + save 8x
+    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 16x
+    ex   DE, HL         ; 1:4       5279* +
+    add  HL, DE         ; 1:11      5279* + save 16x
+    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 32x
-    ex   DE, HL         ; 1:4       5279* +
-    add  HL, DE         ; 1:11      5279* + save 32x
-    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 64x
-    ex   DE, HL         ; 1:4       5279* +
-    add  HL, DE         ; 1:11      5279* + save 64x
-    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 128x
+    ex   DE, HL         ; 1:4       5279* +
+    add  HL, DE         ; 1:11      5279* + save 128x
+    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 256x
-    ex   DE, HL         ; 1:4       5279* +
-    add  HL, DE         ; 1:11      5279* + save 256x
-    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 512x
-    ex   DE, HL         ; 1:4       5279* +
-    add  HL, DE         ; 1:11      5279* + save 512x
-    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 1024x
+    ex   DE, HL         ; 1:4       5279* +
+    add  HL, DE         ; 1:11      5279* + save 1024x
+    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 2048x
-    ex   DE, HL         ; 1:4       5279* +
-    add  HL, DE         ; 1:11      5279* + save 2048x
-    ex   DE, HL         ; 1:4       5279* +
     add  HL, HL         ; 1:11      5279* 4096x
-    add  HL, HL         ; 1:11      5279* 8192x
-    or    A             ; 1:4       5279*
-    sbc  HL, DE         ; 2:15      5279* HL - save
+    add  HL, DE         ; 1:11      5279* HL + save
     ld    D, B          ; 1:4       5279*
     ld    E, C          ; 1:4       5279* 
-   
-    ld    B, D          ; 1:4       5281*
+       
+    ld    B, D          ; 1:4       5281* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5281*
     ld    D, H          ; 1:4       5281*
     ld    E, L          ; 1:4       5281* save 1x
@@ -19477,8 +19459,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5281* 4096x
     add  HL, DE         ; 1:11      5281* HL + save
     ld    D, B          ; 1:4       5281*
-    ld    E, C          ; 1:4       5281*   
-    ld    B, D          ; 1:4       5297*
+    ld    E, C          ; 1:4       5281*       
+    ld    B, D          ; 1:4       5297* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5297*
     ld    D, H          ; 1:4       5297*
     ld    E, L          ; 1:4       5297* save 1x
@@ -19508,80 +19490,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5297* 4096x
     add  HL, DE         ; 1:11      5297* HL + save
     ld    D, B          ; 1:4       5297*
-    ld    E, C          ; 1:4       5297*   
-    ld    B, D          ; 1:4       5303*
+    ld    E, C          ; 1:4       5297*       
+    ld    B, D          ; 1:4       5303* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5303*
     ld    D, H          ; 1:4       5303*
     ld    E, L          ; 1:4       5303* save 1x
     add  HL, HL         ; 1:11      5303* 2x
+    ex   DE, HL         ; 1:4       5303* +
+    add  HL, DE         ; 1:11      5303* + save 2x
+    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 4x
+    ex   DE, HL         ; 1:4       5303* +
+    add  HL, DE         ; 1:11      5303* + save 4x
+    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 8x
-    ex   DE, HL         ; 1:4       5303* +
-    add  HL, DE         ; 1:11      5303* + save 8x
-    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 16x
+    ex   DE, HL         ; 1:4       5303* +
+    add  HL, DE         ; 1:11      5303* + save 16x
+    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 32x
+    ex   DE, HL         ; 1:4       5303* +
+    add  HL, DE         ; 1:11      5303* + save 32x
+    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 64x
-    ex   DE, HL         ; 1:4       5303* +
-    add  HL, DE         ; 1:11      5303* + save 64x
-    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 128x
+    ex   DE, HL         ; 1:4       5303* +
+    add  HL, DE         ; 1:11      5303* + save 128x
+    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 256x
-    ex   DE, HL         ; 1:4       5303* +
-    add  HL, DE         ; 1:11      5303* + save 256x
-    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 512x
-    ex   DE, HL         ; 1:4       5303* +
-    add  HL, DE         ; 1:11      5303* + save 512x
-    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 1024x
+    ex   DE, HL         ; 1:4       5303* +
+    add  HL, DE         ; 1:11      5303* + save 1024x
+    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 2048x
-    ex   DE, HL         ; 1:4       5303* +
-    add  HL, DE         ; 1:11      5303* + save 2048x
-    ex   DE, HL         ; 1:4       5303* +
     add  HL, HL         ; 1:11      5303* 4096x
-    add  HL, HL         ; 1:11      5303* 8192x
-    or    A             ; 1:4       5303*
-    sbc  HL, DE         ; 2:15      5303* HL - save
+    add  HL, DE         ; 1:11      5303* HL + save
     ld    D, B          ; 1:4       5303*
-    ld    E, C          ; 1:4       5303*   
-    ld    B, D          ; 1:4       5309*
+    ld    E, C          ; 1:4       5303*       
+    ld    B, D          ; 1:4       5309* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5309*
     ld    D, H          ; 1:4       5309*
     ld    E, L          ; 1:4       5309* save 1x
     add  HL, HL         ; 1:11      5309* 2x
-    ex   DE, HL         ; 1:4       5309* +
-    add  HL, DE         ; 1:11      5309* + save 2x
-    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 4x
+    ex   DE, HL         ; 1:4       5309* +
+    add  HL, DE         ; 1:11      5309* + save 4x
+    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 8x
+    ex   DE, HL         ; 1:4       5309* +
+    add  HL, DE         ; 1:11      5309* + save 8x
+    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 16x
+    ex   DE, HL         ; 1:4       5309* +
+    add  HL, DE         ; 1:11      5309* + save 16x
+    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 32x
+    ex   DE, HL         ; 1:4       5309* +
+    add  HL, DE         ; 1:11      5309* + save 32x
+    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 64x
-    ex   DE, HL         ; 1:4       5309* +
-    add  HL, DE         ; 1:11      5309* + save 64x
-    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 128x
+    ex   DE, HL         ; 1:4       5309* +
+    add  HL, DE         ; 1:11      5309* + save 128x
+    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 256x
-    ex   DE, HL         ; 1:4       5309* +
-    add  HL, DE         ; 1:11      5309* + save 256x
-    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 512x
-    ex   DE, HL         ; 1:4       5309* +
-    add  HL, DE         ; 1:11      5309* + save 512x
-    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 1024x
+    ex   DE, HL         ; 1:4       5309* +
+    add  HL, DE         ; 1:11      5309* + save 1024x
+    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 2048x
-    ex   DE, HL         ; 1:4       5309* +
-    add  HL, DE         ; 1:11      5309* + save 2048x
-    ex   DE, HL         ; 1:4       5309* +
     add  HL, HL         ; 1:11      5309* 4096x
-    add  HL, HL         ; 1:11      5309* 8192x
-    or    A             ; 1:4       5309*
-    sbc  HL, DE         ; 2:15      5309* HL - save
+    add  HL, DE         ; 1:11      5309* HL + save
     ld    D, B          ; 1:4       5309*
-    ld    E, C          ; 1:4       5309*   
-    ld    B, D          ; 1:4       5323*
+    ld    E, C          ; 1:4       5309*       
+    ld    B, D          ; 1:4       5323* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5323*
     ld    D, H          ; 1:4       5323*
     ld    E, L          ; 1:4       5323* save 1x
@@ -19614,8 +19598,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5323* 4096x
     add  HL, DE         ; 1:11      5323* HL + save
     ld    D, B          ; 1:4       5323*
-    ld    E, C          ; 1:4       5323*   
-    ld    B, D          ; 1:4       5333*
+    ld    E, C          ; 1:4       5323*       
+    ld    B, D          ; 1:4       5333* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5333*
     ld    D, H          ; 1:4       5333*
     ld    E, L          ; 1:4       5333* save 1x
@@ -19648,8 +19632,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5333* 4096x
     add  HL, DE         ; 1:11      5333* HL + save
     ld    D, B          ; 1:4       5333*
-    ld    E, C          ; 1:4       5333*   
-    ld    B, D          ; 1:4       5347*
+    ld    E, C          ; 1:4       5333*       
+    ld    B, D          ; 1:4       5347* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5347*
     ld    D, H          ; 1:4       5347*
     ld    E, L          ; 1:4       5347* save 1x
@@ -19682,44 +19666,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5347* 4096x
     add  HL, DE         ; 1:11      5347* HL + save
     ld    D, B          ; 1:4       5347*
-    ld    E, C          ; 1:4       5347*   
-    ld    B, D          ; 1:4       5351*
+    ld    E, C          ; 1:4       5347*       
+    ld    B, D          ; 1:4       5351* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5351*
     ld    D, H          ; 1:4       5351*
     ld    E, L          ; 1:4       5351* save 1x
     add  HL, HL         ; 1:11      5351* 2x
+    ex   DE, HL         ; 1:4       5351* +
+    add  HL, DE         ; 1:11      5351* + save 2x
+    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 4x
+    ex   DE, HL         ; 1:4       5351* +
+    add  HL, DE         ; 1:11      5351* + save 4x
+    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 8x
-    ex   DE, HL         ; 1:4       5351* +
-    add  HL, DE         ; 1:11      5351* + save 8x
-    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 16x
-    ex   DE, HL         ; 1:4       5351* +
-    add  HL, DE         ; 1:11      5351* + save 16x
-    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 32x
+    ex   DE, HL         ; 1:4       5351* +
+    add  HL, DE         ; 1:11      5351* + save 32x
+    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 64x
+    ex   DE, HL         ; 1:4       5351* +
+    add  HL, DE         ; 1:11      5351* + save 64x
+    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 128x
+    ex   DE, HL         ; 1:4       5351* +
+    add  HL, DE         ; 1:11      5351* + save 128x
+    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 256x
-    ex   DE, HL         ; 1:4       5351* +
-    add  HL, DE         ; 1:11      5351* + save 256x
-    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 512x
-    ex   DE, HL         ; 1:4       5351* +
-    add  HL, DE         ; 1:11      5351* + save 512x
-    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 1024x
+    ex   DE, HL         ; 1:4       5351* +
+    add  HL, DE         ; 1:11      5351* + save 1024x
+    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 2048x
-    ex   DE, HL         ; 1:4       5351* +
-    add  HL, DE         ; 1:11      5351* + save 2048x
-    ex   DE, HL         ; 1:4       5351* +
     add  HL, HL         ; 1:11      5351* 4096x
-    add  HL, HL         ; 1:11      5351* 8192x
-    or    A             ; 1:4       5351*
-    sbc  HL, DE         ; 2:15      5351* HL - save
+    add  HL, DE         ; 1:11      5351* HL + save
     ld    D, B          ; 1:4       5351*
-    ld    E, C          ; 1:4       5351*   
-    ld    B, D          ; 1:4       5381*
+    ld    E, C          ; 1:4       5351*       
+    ld    B, D          ; 1:4       5381* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5381*
     ld    D, H          ; 1:4       5381*
     ld    E, L          ; 1:4       5381* save 1x
@@ -19746,8 +19731,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5381* 4096x
     add  HL, DE         ; 1:11      5381* HL + save
     ld    D, B          ; 1:4       5381*
-    ld    E, C          ; 1:4       5381*   
-    ld    B, D          ; 1:4       5387*
+    ld    E, C          ; 1:4       5381*       
+    ld    B, D          ; 1:4       5387* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5387*
     ld    D, H          ; 1:4       5387*
     ld    E, L          ; 1:4       5387* save 1x
@@ -19778,8 +19763,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5387* HL + save
     ld    D, B          ; 1:4       5387*
     ld    E, C          ; 1:4       5387* 
-   
-    ld    B, D          ; 1:4       5393*
+       
+    ld    B, D          ; 1:4       5393* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5393*
     ld    D, H          ; 1:4       5393*
     ld    E, L          ; 1:4       5393* save 1x
@@ -19806,8 +19791,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5393* 4096x
     add  HL, DE         ; 1:11      5393* HL + save
     ld    D, B          ; 1:4       5393*
-    ld    E, C          ; 1:4       5393*   
-    ld    B, D          ; 1:4       5399*
+    ld    E, C          ; 1:4       5393*       
+    ld    B, D          ; 1:4       5399* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5399*
     ld    D, H          ; 1:4       5399*
     ld    E, L          ; 1:4       5399* save 1x
@@ -19840,44 +19825,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5399* 4096x
     add  HL, DE         ; 1:11      5399* HL + save
     ld    D, B          ; 1:4       5399*
-    ld    E, C          ; 1:4       5399*   
-    ld    B, D          ; 1:4       5407*
+    ld    E, C          ; 1:4       5399*       
+    ld    B, D          ; 1:4       5407* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5407*
     ld    D, H          ; 1:4       5407*
     ld    E, L          ; 1:4       5407* save 1x
     add  HL, HL         ; 1:11      5407* 2x
+    ex   DE, HL         ; 1:4       5407* +
+    add  HL, DE         ; 1:11      5407* + save 2x
+    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 4x
+    ex   DE, HL         ; 1:4       5407* +
+    add  HL, DE         ; 1:11      5407* + save 4x
+    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 8x
+    ex   DE, HL         ; 1:4       5407* +
+    add  HL, DE         ; 1:11      5407* + save 8x
+    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 16x
+    ex   DE, HL         ; 1:4       5407* +
+    add  HL, DE         ; 1:11      5407* + save 16x
+    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 32x
-    ex   DE, HL         ; 1:4       5407* +
-    add  HL, DE         ; 1:11      5407* + save 32x
-    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 64x
-    ex   DE, HL         ; 1:4       5407* +
-    add  HL, DE         ; 1:11      5407* + save 64x
-    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 128x
-    ex   DE, HL         ; 1:4       5407* +
-    add  HL, DE         ; 1:11      5407* + save 128x
-    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 256x
+    ex   DE, HL         ; 1:4       5407* +
+    add  HL, DE         ; 1:11      5407* + save 256x
+    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 512x
-    ex   DE, HL         ; 1:4       5407* +
-    add  HL, DE         ; 1:11      5407* + save 512x
-    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 1024x
+    ex   DE, HL         ; 1:4       5407* +
+    add  HL, DE         ; 1:11      5407* + save 1024x
+    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 2048x
-    ex   DE, HL         ; 1:4       5407* +
-    add  HL, DE         ; 1:11      5407* + save 2048x
-    ex   DE, HL         ; 1:4       5407* +
     add  HL, HL         ; 1:11      5407* 4096x
-    add  HL, HL         ; 1:11      5407* 8192x
-    or    A             ; 1:4       5407*
-    sbc  HL, DE         ; 2:15      5407* HL - save
+    add  HL, DE         ; 1:11      5407* HL + save
     ld    D, B          ; 1:4       5407*
-    ld    E, C          ; 1:4       5407*   
-    ld    B, D          ; 1:4       5413*
+    ld    E, C          ; 1:4       5407*       
+    ld    B, D          ; 1:4       5413* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5413*
     ld    D, H          ; 1:4       5413*
     ld    E, L          ; 1:4       5413* save 1x
@@ -19907,8 +19893,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5413* 4096x
     add  HL, DE         ; 1:11      5413* HL + save
     ld    D, B          ; 1:4       5413*
-    ld    E, C          ; 1:4       5413*   
-    ld    B, D          ; 1:4       5417*
+    ld    E, C          ; 1:4       5413*       
+    ld    B, D          ; 1:4       5417* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5417*
     ld    D, H          ; 1:4       5417*
     ld    E, L          ; 1:4       5417* save 1x
@@ -19938,8 +19924,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5417* 4096x
     add  HL, DE         ; 1:11      5417* HL + save
     ld    D, B          ; 1:4       5417*
-    ld    E, C          ; 1:4       5417*   
-    ld    B, D          ; 1:4       5419*
+    ld    E, C          ; 1:4       5417*       
+    ld    B, D          ; 1:4       5419* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5419*
     ld    D, H          ; 1:4       5419*
     ld    E, L          ; 1:4       5419* save 1x
@@ -19972,80 +19958,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5419* 4096x
     add  HL, DE         ; 1:11      5419* HL + save
     ld    D, B          ; 1:4       5419*
-    ld    E, C          ; 1:4       5419*   
-    ld    B, D          ; 1:4       5431*
+    ld    E, C          ; 1:4       5419*       
+    ld    B, D          ; 1:4       5431* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5431*
     ld    D, H          ; 1:4       5431*
     ld    E, L          ; 1:4       5431* save 1x
     add  HL, HL         ; 1:11      5431* 2x
+    ex   DE, HL         ; 1:4       5431* +
+    add  HL, DE         ; 1:11      5431* + save 2x
+    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 4x
+    ex   DE, HL         ; 1:4       5431* +
+    add  HL, DE         ; 1:11      5431* + save 4x
+    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 8x
-    ex   DE, HL         ; 1:4       5431* +
-    add  HL, DE         ; 1:11      5431* + save 8x
-    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 16x
+    ex   DE, HL         ; 1:4       5431* +
+    add  HL, DE         ; 1:11      5431* + save 16x
+    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 32x
+    ex   DE, HL         ; 1:4       5431* +
+    add  HL, DE         ; 1:11      5431* + save 32x
+    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 64x
-    ex   DE, HL         ; 1:4       5431* +
-    add  HL, DE         ; 1:11      5431* + save 64x
-    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 128x
-    ex   DE, HL         ; 1:4       5431* +
-    add  HL, DE         ; 1:11      5431* + save 128x
-    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 256x
+    ex   DE, HL         ; 1:4       5431* +
+    add  HL, DE         ; 1:11      5431* + save 256x
+    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 512x
-    ex   DE, HL         ; 1:4       5431* +
-    add  HL, DE         ; 1:11      5431* + save 512x
-    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 1024x
+    ex   DE, HL         ; 1:4       5431* +
+    add  HL, DE         ; 1:11      5431* + save 1024x
+    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 2048x
-    ex   DE, HL         ; 1:4       5431* +
-    add  HL, DE         ; 1:11      5431* + save 2048x
-    ex   DE, HL         ; 1:4       5431* +
     add  HL, HL         ; 1:11      5431* 4096x
-    add  HL, HL         ; 1:11      5431* 8192x
-    or    A             ; 1:4       5431*
-    sbc  HL, DE         ; 2:15      5431* HL - save
+    add  HL, DE         ; 1:11      5431* HL + save
     ld    D, B          ; 1:4       5431*
-    ld    E, C          ; 1:4       5431*   
-    ld    B, D          ; 1:4       5437*
+    ld    E, C          ; 1:4       5431*       
+    ld    B, D          ; 1:4       5437* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5437*
     ld    D, H          ; 1:4       5437*
     ld    E, L          ; 1:4       5437* save 1x
     add  HL, HL         ; 1:11      5437* 2x
-    ex   DE, HL         ; 1:4       5437* +
-    add  HL, DE         ; 1:11      5437* + save 2x
-    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 4x
+    ex   DE, HL         ; 1:4       5437* +
+    add  HL, DE         ; 1:11      5437* + save 4x
+    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 8x
+    ex   DE, HL         ; 1:4       5437* +
+    add  HL, DE         ; 1:11      5437* + save 8x
+    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 16x
+    ex   DE, HL         ; 1:4       5437* +
+    add  HL, DE         ; 1:11      5437* + save 16x
+    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 32x
+    ex   DE, HL         ; 1:4       5437* +
+    add  HL, DE         ; 1:11      5437* + save 32x
+    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 64x
-    ex   DE, HL         ; 1:4       5437* +
-    add  HL, DE         ; 1:11      5437* + save 64x
-    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 128x
-    ex   DE, HL         ; 1:4       5437* +
-    add  HL, DE         ; 1:11      5437* + save 128x
-    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 256x
+    ex   DE, HL         ; 1:4       5437* +
+    add  HL, DE         ; 1:11      5437* + save 256x
+    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 512x
-    ex   DE, HL         ; 1:4       5437* +
-    add  HL, DE         ; 1:11      5437* + save 512x
-    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 1024x
+    ex   DE, HL         ; 1:4       5437* +
+    add  HL, DE         ; 1:11      5437* + save 1024x
+    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 2048x
-    ex   DE, HL         ; 1:4       5437* +
-    add  HL, DE         ; 1:11      5437* + save 2048x
-    ex   DE, HL         ; 1:4       5437* +
     add  HL, HL         ; 1:11      5437* 4096x
-    add  HL, HL         ; 1:11      5437* 8192x
-    or    A             ; 1:4       5437*
-    sbc  HL, DE         ; 2:15      5437* HL - save
+    add  HL, DE         ; 1:11      5437* HL + save
     ld    D, B          ; 1:4       5437*
-    ld    E, C          ; 1:4       5437*   
-    ld    B, D          ; 1:4       5441*
+    ld    E, C          ; 1:4       5437*       
+    ld    B, D          ; 1:4       5441* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5441*
     ld    D, H          ; 1:4       5441*
     ld    E, L          ; 1:4       5441* save 1x
@@ -20072,8 +20060,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5441* 4096x
     add  HL, DE         ; 1:11      5441* HL + save
     ld    D, B          ; 1:4       5441*
-    ld    E, C          ; 1:4       5441*   
-    ld    B, D          ; 1:4       5443*
+    ld    E, C          ; 1:4       5441*       
+    ld    B, D          ; 1:4       5443* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5443*
     ld    D, H          ; 1:4       5443*
     ld    E, L          ; 1:4       5443* save 1x
@@ -20104,8 +20092,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5443* HL + save
     ld    D, B          ; 1:4       5443*
     ld    E, C          ; 1:4       5443* 
-   
-    ld    B, D          ; 1:4       5449*
+       
+    ld    B, D          ; 1:4       5449* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5449*
     ld    D, H          ; 1:4       5449*
     ld    E, L          ; 1:4       5449* save 1x
@@ -20136,7 +20124,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5449* HL + save
     ld    D, B          ; 1:4       5449*
     ld    E, C          ; 1:4       5449*   
-    ld    B, D          ; 1:4       5471*
+    ld    B, D          ; 1:4       5471* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5471*
     ld    D, H          ; 1:4       5471*
     ld    E, L          ; 1:4       5471* save 1x
@@ -20168,8 +20156,8 @@ ORG 0x6000
     or    A             ; 1:4       5471*
     sbc  HL, DE         ; 2:15      5471* HL - save
     ld    D, B          ; 1:4       5471*
-    ld    E, C          ; 1:4       5471*   
-    ld    B, D          ; 1:4       5477*
+    ld    E, C          ; 1:4       5471*       
+    ld    B, D          ; 1:4       5477* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5477*
     ld    D, H          ; 1:4       5477*
     ld    E, L          ; 1:4       5477* save 1x
@@ -20202,80 +20190,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5477* 4096x
     add  HL, DE         ; 1:11      5477* HL + save
     ld    D, B          ; 1:4       5477*
-    ld    E, C          ; 1:4       5477*   
-    ld    B, D          ; 1:4       5479*
+    ld    E, C          ; 1:4       5477*       
+    ld    B, D          ; 1:4       5479* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5479*
     ld    D, H          ; 1:4       5479*
     ld    E, L          ; 1:4       5479* save 1x
     add  HL, HL         ; 1:11      5479* 2x
+    ex   DE, HL         ; 1:4       5479* +
+    add  HL, DE         ; 1:11      5479* + save 2x
+    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 4x
+    ex   DE, HL         ; 1:4       5479* +
+    add  HL, DE         ; 1:11      5479* + save 4x
+    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 8x
-    ex   DE, HL         ; 1:4       5479* +
-    add  HL, DE         ; 1:11      5479* + save 8x
-    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 16x
-    ex   DE, HL         ; 1:4       5479* +
-    add  HL, DE         ; 1:11      5479* + save 16x
-    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 32x
+    ex   DE, HL         ; 1:4       5479* +
+    add  HL, DE         ; 1:11      5479* + save 32x
+    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 64x
+    ex   DE, HL         ; 1:4       5479* +
+    add  HL, DE         ; 1:11      5479* + save 64x
+    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 128x
-    ex   DE, HL         ; 1:4       5479* +
-    add  HL, DE         ; 1:11      5479* + save 128x
-    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 256x
+    ex   DE, HL         ; 1:4       5479* +
+    add  HL, DE         ; 1:11      5479* + save 256x
+    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 512x
-    ex   DE, HL         ; 1:4       5479* +
-    add  HL, DE         ; 1:11      5479* + save 512x
-    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 1024x
+    ex   DE, HL         ; 1:4       5479* +
+    add  HL, DE         ; 1:11      5479* + save 1024x
+    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 2048x
-    ex   DE, HL         ; 1:4       5479* +
-    add  HL, DE         ; 1:11      5479* + save 2048x
-    ex   DE, HL         ; 1:4       5479* +
     add  HL, HL         ; 1:11      5479* 4096x
-    add  HL, HL         ; 1:11      5479* 8192x
-    or    A             ; 1:4       5479*
-    sbc  HL, DE         ; 2:15      5479* HL - save
+    add  HL, DE         ; 1:11      5479* HL + save
     ld    D, B          ; 1:4       5479*
-    ld    E, C          ; 1:4       5479*   
-    ld    B, D          ; 1:4       5483*
+    ld    E, C          ; 1:4       5479*       
+    ld    B, D          ; 1:4       5483* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5483*
     ld    D, H          ; 1:4       5483*
     ld    E, L          ; 1:4       5483* save 1x
     add  HL, HL         ; 1:11      5483* 2x
+    ex   DE, HL         ; 1:4       5483* +
+    add  HL, DE         ; 1:11      5483* + save 2x
+    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 4x
-    ex   DE, HL         ; 1:4       5483* +
-    add  HL, DE         ; 1:11      5483* + save 4x
-    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 8x
+    ex   DE, HL         ; 1:4       5483* +
+    add  HL, DE         ; 1:11      5483* + save 8x
+    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 16x
-    ex   DE, HL         ; 1:4       5483* +
-    add  HL, DE         ; 1:11      5483* + save 16x
-    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 32x
+    ex   DE, HL         ; 1:4       5483* +
+    add  HL, DE         ; 1:11      5483* + save 32x
+    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 64x
+    ex   DE, HL         ; 1:4       5483* +
+    add  HL, DE         ; 1:11      5483* + save 64x
+    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 128x
-    ex   DE, HL         ; 1:4       5483* +
-    add  HL, DE         ; 1:11      5483* + save 128x
-    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 256x
+    ex   DE, HL         ; 1:4       5483* +
+    add  HL, DE         ; 1:11      5483* + save 256x
+    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 512x
-    ex   DE, HL         ; 1:4       5483* +
-    add  HL, DE         ; 1:11      5483* + save 512x
-    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 1024x
+    ex   DE, HL         ; 1:4       5483* +
+    add  HL, DE         ; 1:11      5483* + save 1024x
+    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 2048x
-    ex   DE, HL         ; 1:4       5483* +
-    add  HL, DE         ; 1:11      5483* + save 2048x
-    ex   DE, HL         ; 1:4       5483* +
     add  HL, HL         ; 1:11      5483* 4096x
-    add  HL, HL         ; 1:11      5483* 8192x
-    or    A             ; 1:4       5483*
-    sbc  HL, DE         ; 2:15      5483* HL - save
+    add  HL, DE         ; 1:11      5483* HL + save
     ld    D, B          ; 1:4       5483*
     ld    E, C          ; 1:4       5483*   
-    ld    B, D          ; 1:4       5501*
+    ld    B, D          ; 1:4       5501* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5501*
     ld    D, H          ; 1:4       5501*
     ld    E, L          ; 1:4       5501* save 1x
@@ -20308,7 +20298,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5501* HL - save
     ld    D, B          ; 1:4       5501*
     ld    E, C          ; 1:4       5501*   
-    ld    B, D          ; 1:4       5503*
+    ld    B, D          ; 1:4       5503* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5503*
     ld    D, H          ; 1:4       5503*
     ld    E, L          ; 1:4       5503* save 1x
@@ -20337,8 +20327,8 @@ ORG 0x6000
     or    A             ; 1:4       5503*
     sbc  HL, DE         ; 2:15      5503* HL - save
     ld    D, B          ; 1:4       5503*
-    ld    E, C          ; 1:4       5503*   
-    ld    B, D          ; 1:4       5507*
+    ld    E, C          ; 1:4       5503*       
+    ld    B, D          ; 1:4       5507* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5507*
     ld    D, H          ; 1:4       5507*
     ld    E, L          ; 1:4       5507* save 1x
@@ -20368,44 +20358,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5507* 4096x
     add  HL, DE         ; 1:11      5507* HL + save
     ld    D, B          ; 1:4       5507*
-    ld    E, C          ; 1:4       5507*   
-    ld    B, D          ; 1:4       5519*
+    ld    E, C          ; 1:4       5507*       
+    ld    B, D          ; 1:4       5519* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5519*
     ld    D, H          ; 1:4       5519*
     ld    E, L          ; 1:4       5519* save 1x
     add  HL, HL         ; 1:11      5519* 2x
+    ex   DE, HL         ; 1:4       5519* +
+    add  HL, DE         ; 1:11      5519* + save 2x
+    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 4x
+    ex   DE, HL         ; 1:4       5519* +
+    add  HL, DE         ; 1:11      5519* + save 4x
+    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 8x
+    ex   DE, HL         ; 1:4       5519* +
+    add  HL, DE         ; 1:11      5519* + save 8x
+    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 16x
-    ex   DE, HL         ; 1:4       5519* +
-    add  HL, DE         ; 1:11      5519* + save 16x
-    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 32x
-    ex   DE, HL         ; 1:4       5519* +
-    add  HL, DE         ; 1:11      5519* + save 32x
-    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 64x
-    ex   DE, HL         ; 1:4       5519* +
-    add  HL, DE         ; 1:11      5519* + save 64x
-    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 128x
+    ex   DE, HL         ; 1:4       5519* +
+    add  HL, DE         ; 1:11      5519* + save 128x
+    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 256x
+    ex   DE, HL         ; 1:4       5519* +
+    add  HL, DE         ; 1:11      5519* + save 256x
+    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 512x
-    ex   DE, HL         ; 1:4       5519* +
-    add  HL, DE         ; 1:11      5519* + save 512x
-    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 1024x
+    ex   DE, HL         ; 1:4       5519* +
+    add  HL, DE         ; 1:11      5519* + save 1024x
+    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 2048x
-    ex   DE, HL         ; 1:4       5519* +
-    add  HL, DE         ; 1:11      5519* + save 2048x
-    ex   DE, HL         ; 1:4       5519* +
     add  HL, HL         ; 1:11      5519* 4096x
-    add  HL, HL         ; 1:11      5519* 8192x
-    or    A             ; 1:4       5519*
-    sbc  HL, DE         ; 2:15      5519* HL - save
+    add  HL, DE         ; 1:11      5519* HL + save
     ld    D, B          ; 1:4       5519*
-    ld    E, C          ; 1:4       5519*   
-    ld    B, D          ; 1:4       5521*
+    ld    E, C          ; 1:4       5519*       
+    ld    B, D          ; 1:4       5521* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5521*
     ld    D, H          ; 1:4       5521*
     ld    E, L          ; 1:4       5521* save 1x
@@ -20436,116 +20427,119 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5521* HL + save
     ld    D, B          ; 1:4       5521*
     ld    E, C          ; 1:4       5521* 
-   
-    ld    B, D          ; 1:4       5527*
+       
+    ld    B, D          ; 1:4       5527* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5527*
     ld    D, H          ; 1:4       5527*
     ld    E, L          ; 1:4       5527* save 1x
     add  HL, HL         ; 1:11      5527* 2x
+    ex   DE, HL         ; 1:4       5527* +
+    add  HL, DE         ; 1:11      5527* + save 2x
+    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 4x
+    ex   DE, HL         ; 1:4       5527* +
+    add  HL, DE         ; 1:11      5527* + save 4x
+    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 8x
-    ex   DE, HL         ; 1:4       5527* +
-    add  HL, DE         ; 1:11      5527* + save 8x
-    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 16x
+    ex   DE, HL         ; 1:4       5527* +
+    add  HL, DE         ; 1:11      5527* + save 16x
+    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 32x
-    ex   DE, HL         ; 1:4       5527* +
-    add  HL, DE         ; 1:11      5527* + save 32x
-    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 64x
-    ex   DE, HL         ; 1:4       5527* +
-    add  HL, DE         ; 1:11      5527* + save 64x
-    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 128x
+    ex   DE, HL         ; 1:4       5527* +
+    add  HL, DE         ; 1:11      5527* + save 128x
+    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 256x
+    ex   DE, HL         ; 1:4       5527* +
+    add  HL, DE         ; 1:11      5527* + save 256x
+    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 512x
-    ex   DE, HL         ; 1:4       5527* +
-    add  HL, DE         ; 1:11      5527* + save 512x
-    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 1024x
+    ex   DE, HL         ; 1:4       5527* +
+    add  HL, DE         ; 1:11      5527* + save 1024x
+    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 2048x
-    ex   DE, HL         ; 1:4       5527* +
-    add  HL, DE         ; 1:11      5527* + save 2048x
-    ex   DE, HL         ; 1:4       5527* +
     add  HL, HL         ; 1:11      5527* 4096x
-    add  HL, HL         ; 1:11      5527* 8192x
-    or    A             ; 1:4       5527*
-    sbc  HL, DE         ; 2:15      5527* HL - save
+    add  HL, DE         ; 1:11      5527* HL + save
     ld    D, B          ; 1:4       5527*
-    ld    E, C          ; 1:4       5527*   
-    ld    B, D          ; 1:4       5531*
+    ld    E, C          ; 1:4       5527*       
+    ld    B, D          ; 1:4       5531* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5531*
     ld    D, H          ; 1:4       5531*
     ld    E, L          ; 1:4       5531* save 1x
     add  HL, HL         ; 1:11      5531* 2x
+    ex   DE, HL         ; 1:4       5531* +
+    add  HL, DE         ; 1:11      5531* + save 2x
+    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 4x
-    ex   DE, HL         ; 1:4       5531* +
-    add  HL, DE         ; 1:11      5531* + save 4x
-    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 8x
+    ex   DE, HL         ; 1:4       5531* +
+    add  HL, DE         ; 1:11      5531* + save 8x
+    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 16x
+    ex   DE, HL         ; 1:4       5531* +
+    add  HL, DE         ; 1:11      5531* + save 16x
+    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 32x
-    ex   DE, HL         ; 1:4       5531* +
-    add  HL, DE         ; 1:11      5531* + save 32x
-    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 64x
-    ex   DE, HL         ; 1:4       5531* +
-    add  HL, DE         ; 1:11      5531* + save 64x
-    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 128x
+    ex   DE, HL         ; 1:4       5531* +
+    add  HL, DE         ; 1:11      5531* + save 128x
+    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 256x
+    ex   DE, HL         ; 1:4       5531* +
+    add  HL, DE         ; 1:11      5531* + save 256x
+    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 512x
-    ex   DE, HL         ; 1:4       5531* +
-    add  HL, DE         ; 1:11      5531* + save 512x
-    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 1024x
+    ex   DE, HL         ; 1:4       5531* +
+    add  HL, DE         ; 1:11      5531* + save 1024x
+    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 2048x
-    ex   DE, HL         ; 1:4       5531* +
-    add  HL, DE         ; 1:11      5531* + save 2048x
-    ex   DE, HL         ; 1:4       5531* +
     add  HL, HL         ; 1:11      5531* 4096x
-    add  HL, HL         ; 1:11      5531* 8192x
-    or    A             ; 1:4       5531*
-    sbc  HL, DE         ; 2:15      5531* HL - save
+    add  HL, DE         ; 1:11      5531* HL + save
     ld    D, B          ; 1:4       5531*
-    ld    E, C          ; 1:4       5531*   
-    ld    B, D          ; 1:4       5557*
+    ld    E, C          ; 1:4       5531*       
+    ld    B, D          ; 1:4       5557* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5557*
     ld    D, H          ; 1:4       5557*
     ld    E, L          ; 1:4       5557* save 1x
     add  HL, HL         ; 1:11      5557* 2x
-    ex   DE, HL         ; 1:4       5557* +
-    add  HL, DE         ; 1:11      5557* + save 2x
-    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 4x
+    ex   DE, HL         ; 1:4       5557* +
+    add  HL, DE         ; 1:11      5557* + save 4x
+    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 8x
-    ex   DE, HL         ; 1:4       5557* +
-    add  HL, DE         ; 1:11      5557* + save 8x
-    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 16x
+    ex   DE, HL         ; 1:4       5557* +
+    add  HL, DE         ; 1:11      5557* + save 16x
+    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 32x
+    ex   DE, HL         ; 1:4       5557* +
+    add  HL, DE         ; 1:11      5557* + save 32x
+    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 64x
-    ex   DE, HL         ; 1:4       5557* +
-    add  HL, DE         ; 1:11      5557* + save 64x
-    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 128x
+    ex   DE, HL         ; 1:4       5557* +
+    add  HL, DE         ; 1:11      5557* + save 128x
+    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 256x
+    ex   DE, HL         ; 1:4       5557* +
+    add  HL, DE         ; 1:11      5557* + save 256x
+    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 512x
-    ex   DE, HL         ; 1:4       5557* +
-    add  HL, DE         ; 1:11      5557* + save 512x
-    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 1024x
+    ex   DE, HL         ; 1:4       5557* +
+    add  HL, DE         ; 1:11      5557* + save 1024x
+    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 2048x
-    ex   DE, HL         ; 1:4       5557* +
-    add  HL, DE         ; 1:11      5557* + save 2048x
-    ex   DE, HL         ; 1:4       5557* +
     add  HL, HL         ; 1:11      5557* 4096x
-    add  HL, HL         ; 1:11      5557* 8192x
-    or    A             ; 1:4       5557*
-    sbc  HL, DE         ; 2:15      5557* HL - save
+    add  HL, DE         ; 1:11      5557* HL + save
     ld    D, B          ; 1:4       5557*
     ld    E, C          ; 1:4       5557*   
-    ld    B, D          ; 1:4       5563*
+    ld    B, D          ; 1:4       5563* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5563*
     ld    D, H          ; 1:4       5563*
     ld    E, L          ; 1:4       5563* save 1x
@@ -20577,8 +20571,8 @@ ORG 0x6000
     or    A             ; 1:4       5563*
     sbc  HL, DE         ; 2:15      5563* HL - save
     ld    D, B          ; 1:4       5563*
-    ld    E, C          ; 1:4       5563*   
-    ld    B, D          ; 1:4       5569*
+    ld    E, C          ; 1:4       5563*       
+    ld    B, D          ; 1:4       5569* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5569*
     ld    D, H          ; 1:4       5569*
     ld    E, L          ; 1:4       5569* save 1x
@@ -20608,8 +20602,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5569* 4096x
     add  HL, DE         ; 1:11      5569* HL + save
     ld    D, B          ; 1:4       5569*
-    ld    E, C          ; 1:4       5569*   
-    ld    B, D          ; 1:4       5573*
+    ld    E, C          ; 1:4       5569*       
+    ld    B, D          ; 1:4       5573* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5573*
     ld    D, H          ; 1:4       5573*
     ld    E, L          ; 1:4       5573* save 1x
@@ -20642,44 +20636,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5573* 4096x
     add  HL, DE         ; 1:11      5573* HL + save
     ld    D, B          ; 1:4       5573*
-    ld    E, C          ; 1:4       5573*   
-    ld    B, D          ; 1:4       5581*
+    ld    E, C          ; 1:4       5573*       
+    ld    B, D          ; 1:4       5581* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5581*
     ld    D, H          ; 1:4       5581*
     ld    E, L          ; 1:4       5581* save 1x
     add  HL, HL         ; 1:11      5581* 2x
-    ex   DE, HL         ; 1:4       5581* +
-    add  HL, DE         ; 1:11      5581* + save 2x
-    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 4x
+    ex   DE, HL         ; 1:4       5581* +
+    add  HL, DE         ; 1:11      5581* + save 4x
+    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 8x
+    ex   DE, HL         ; 1:4       5581* +
+    add  HL, DE         ; 1:11      5581* + save 8x
+    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 16x
-    ex   DE, HL         ; 1:4       5581* +
-    add  HL, DE         ; 1:11      5581* + save 16x
-    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 32x
-    ex   DE, HL         ; 1:4       5581* +
-    add  HL, DE         ; 1:11      5581* + save 32x
-    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 64x
+    ex   DE, HL         ; 1:4       5581* +
+    add  HL, DE         ; 1:11      5581* + save 64x
+    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 128x
+    ex   DE, HL         ; 1:4       5581* +
+    add  HL, DE         ; 1:11      5581* + save 128x
+    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 256x
+    ex   DE, HL         ; 1:4       5581* +
+    add  HL, DE         ; 1:11      5581* + save 256x
+    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 512x
-    ex   DE, HL         ; 1:4       5581* +
-    add  HL, DE         ; 1:11      5581* + save 512x
-    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 1024x
+    ex   DE, HL         ; 1:4       5581* +
+    add  HL, DE         ; 1:11      5581* + save 1024x
+    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 2048x
-    ex   DE, HL         ; 1:4       5581* +
-    add  HL, DE         ; 1:11      5581* + save 2048x
-    ex   DE, HL         ; 1:4       5581* +
     add  HL, HL         ; 1:11      5581* 4096x
-    add  HL, HL         ; 1:11      5581* 8192x
-    or    A             ; 1:4       5581*
-    sbc  HL, DE         ; 2:15      5581* HL - save
+    add  HL, DE         ; 1:11      5581* HL + save
     ld    D, B          ; 1:4       5581*
     ld    E, C          ; 1:4       5581*   
-    ld    B, D          ; 1:4       5591*
+    ld    B, D          ; 1:4       5591* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5591*
     ld    D, H          ; 1:4       5591*
     ld    E, L          ; 1:4       5591* save 1x
@@ -20712,7 +20707,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5591* HL - save
     ld    D, B          ; 1:4       5591*
     ld    E, C          ; 1:4       5591*   
-    ld    B, D          ; 1:4       5623*
+    ld    B, D          ; 1:4       5623* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5623*
     ld    D, H          ; 1:4       5623*
     ld    E, L          ; 1:4       5623* save 1x
@@ -20741,8 +20736,8 @@ ORG 0x6000
     or    A             ; 1:4       5623*
     sbc  HL, DE         ; 2:15      5623* HL - save
     ld    D, B          ; 1:4       5623*
-    ld    E, C          ; 1:4       5623*   
-    ld    B, D          ; 1:4       5639*
+    ld    E, C          ; 1:4       5623*       
+    ld    B, D          ; 1:4       5639* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5639*
     ld    D, H          ; 1:4       5639*
     ld    E, L          ; 1:4       5639* save 1x
@@ -20754,13 +20749,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       5639* +
     add  HL, DE         ; 1:11      5639* + save 4x
     ex   DE, HL         ; 1:4       5639* +
-    add  HL, HL         ; 1:11      5639* 8x
-    add  HL, HL         ; 1:11      5639* 16x
-    add  HL, HL         ; 1:11      5639* 32x
-    add  HL, HL         ; 1:11      5639* 64x
-    add  HL, HL         ; 1:11      5639* 128x
-    add  HL, HL         ; 1:11      5639* 256x
-    add  HL, HL         ; 1:11      5639* 512x
+    rr    H             ; 2:8       5639*
+    rr    L             ; 2:8       5639*
+    ld    H, L          ; 1:4       5639*
+    ld    L, 0x00       ; 2:7       5639* 512x
     ex   DE, HL         ; 1:4       5639* +
     add  HL, DE         ; 1:11      5639* + save 512x
     ex   DE, HL         ; 1:4       5639* +
@@ -20773,8 +20765,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5639* HL + save
     ld    D, B          ; 1:4       5639*
     ld    E, C          ; 1:4       5639* 
-   
-    ld    B, D          ; 1:4       5641*
+       
+    ld    B, D          ; 1:4       5641* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5641*
     ld    D, H          ; 1:4       5641*
     ld    E, L          ; 1:4       5641* save 1x
@@ -20801,8 +20793,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5641* 4096x
     add  HL, DE         ; 1:11      5641* HL + save
     ld    D, B          ; 1:4       5641*
-    ld    E, C          ; 1:4       5641*   
-    ld    B, D          ; 1:4       5647*
+    ld    E, C          ; 1:4       5641*       
+    ld    B, D          ; 1:4       5647* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5647*
     ld    D, H          ; 1:4       5647*
     ld    E, L          ; 1:4       5647* save 1x
@@ -20835,8 +20827,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5647* 4096x
     add  HL, DE         ; 1:11      5647* HL + save
     ld    D, B          ; 1:4       5647*
-    ld    E, C          ; 1:4       5647*   
-    ld    B, D          ; 1:4       5651*
+    ld    E, C          ; 1:4       5647*       
+    ld    B, D          ; 1:4       5651* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5651*
     ld    D, H          ; 1:4       5651*
     ld    E, L          ; 1:4       5651* save 1x
@@ -20866,8 +20858,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5651* 4096x
     add  HL, DE         ; 1:11      5651* HL + save
     ld    D, B          ; 1:4       5651*
-    ld    E, C          ; 1:4       5651*   
-    ld    B, D          ; 1:4       5653*
+    ld    E, C          ; 1:4       5651*       
+    ld    B, D          ; 1:4       5653* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5653*
     ld    D, H          ; 1:4       5653*
     ld    E, L          ; 1:4       5653* save 1x
@@ -20897,8 +20889,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5653* 4096x
     add  HL, DE         ; 1:11      5653* HL + save
     ld    D, B          ; 1:4       5653*
-    ld    E, C          ; 1:4       5653*   
-    ld    B, D          ; 1:4       5657*
+    ld    E, C          ; 1:4       5653*       
+    ld    B, D          ; 1:4       5657* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5657*
     ld    D, H          ; 1:4       5657*
     ld    E, L          ; 1:4       5657* save 1x
@@ -20928,8 +20920,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5657* 4096x
     add  HL, DE         ; 1:11      5657* HL + save
     ld    D, B          ; 1:4       5657*
-    ld    E, C          ; 1:4       5657*   
-    ld    B, D          ; 1:4       5659*
+    ld    E, C          ; 1:4       5657*       
+    ld    B, D          ; 1:4       5659* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5659*
     ld    D, H          ; 1:4       5659*
     ld    E, L          ; 1:4       5659* save 1x
@@ -20962,8 +20954,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5659* 4096x
     add  HL, DE         ; 1:11      5659* HL + save
     ld    D, B          ; 1:4       5659*
-    ld    E, C          ; 1:4       5659*   
-    ld    B, D          ; 1:4       5669*
+    ld    E, C          ; 1:4       5659*       
+    ld    B, D          ; 1:4       5669* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5669*
     ld    D, H          ; 1:4       5669*
     ld    E, L          ; 1:4       5669* save 1x
@@ -20993,8 +20985,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5669* 4096x
     add  HL, DE         ; 1:11      5669* HL + save
     ld    D, B          ; 1:4       5669*
-    ld    E, C          ; 1:4       5669*   
-    ld    B, D          ; 1:4       5683*
+    ld    E, C          ; 1:4       5669*       
+    ld    B, D          ; 1:4       5683* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5683*
     ld    D, H          ; 1:4       5683*
     ld    E, L          ; 1:4       5683* save 1x
@@ -21027,8 +21019,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5683* 4096x
     add  HL, DE         ; 1:11      5683* HL + save
     ld    D, B          ; 1:4       5683*
-    ld    E, C          ; 1:4       5683*   
-    ld    B, D          ; 1:4       5689*
+    ld    E, C          ; 1:4       5683*       
+    ld    B, D          ; 1:4       5689* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5689*
     ld    D, H          ; 1:4       5689*
     ld    E, L          ; 1:4       5689* save 1x
@@ -21061,45 +21053,46 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5689* 4096x
     add  HL, DE         ; 1:11      5689* HL + save
     ld    D, B          ; 1:4       5689*
-    ld    E, C          ; 1:4       5689*   
-    ld    B, D          ; 1:4       5693*
+    ld    E, C          ; 1:4       5689*       
+    ld    B, D          ; 1:4       5693* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5693*
     ld    D, H          ; 1:4       5693*
     ld    E, L          ; 1:4       5693* save 1x
     add  HL, HL         ; 1:11      5693* 2x
-    ex   DE, HL         ; 1:4       5693* +
-    add  HL, DE         ; 1:11      5693* + save 2x
-    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 4x
+    ex   DE, HL         ; 1:4       5693* +
+    add  HL, DE         ; 1:11      5693* + save 4x
+    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 8x
+    ex   DE, HL         ; 1:4       5693* +
+    add  HL, DE         ; 1:11      5693* + save 8x
+    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 16x
+    ex   DE, HL         ; 1:4       5693* +
+    add  HL, DE         ; 1:11      5693* + save 16x
+    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 32x
+    ex   DE, HL         ; 1:4       5693* +
+    add  HL, DE         ; 1:11      5693* + save 32x
+    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 64x
-    ex   DE, HL         ; 1:4       5693* +
-    add  HL, DE         ; 1:11      5693* + save 64x
-    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 128x
-    ex   DE, HL         ; 1:4       5693* +
-    add  HL, DE         ; 1:11      5693* + save 128x
-    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 256x
-    ex   DE, HL         ; 1:4       5693* +
-    add  HL, DE         ; 1:11      5693* + save 256x
-    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 512x
+    ex   DE, HL         ; 1:4       5693* +
+    add  HL, DE         ; 1:11      5693* + save 512x
+    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 1024x
+    ex   DE, HL         ; 1:4       5693* +
+    add  HL, DE         ; 1:11      5693* + save 1024x
+    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 2048x
-    ex   DE, HL         ; 1:4       5693* +
-    add  HL, DE         ; 1:11      5693* + save 2048x
-    ex   DE, HL         ; 1:4       5693* +
     add  HL, HL         ; 1:11      5693* 4096x
-    add  HL, HL         ; 1:11      5693* 8192x
-    or    A             ; 1:4       5693*
-    sbc  HL, DE         ; 2:15      5693* HL - save
+    add  HL, DE         ; 1:11      5693* HL + save
     ld    D, B          ; 1:4       5693*
     ld    E, C          ; 1:4       5693* 
-   
-    ld    B, D          ; 1:4       5701*
+       
+    ld    B, D          ; 1:4       5701* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5701*
     ld    D, H          ; 1:4       5701*
     ld    E, L          ; 1:4       5701* save 1x
@@ -21129,44 +21122,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5701* 4096x
     add  HL, DE         ; 1:11      5701* HL + save
     ld    D, B          ; 1:4       5701*
-    ld    E, C          ; 1:4       5701*   
-    ld    B, D          ; 1:4       5711*
+    ld    E, C          ; 1:4       5701*       
+    ld    B, D          ; 1:4       5711* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5711*
     ld    D, H          ; 1:4       5711*
     ld    E, L          ; 1:4       5711* save 1x
     add  HL, HL         ; 1:11      5711* 2x
+    ex   DE, HL         ; 1:4       5711* +
+    add  HL, DE         ; 1:11      5711* + save 2x
+    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 4x
+    ex   DE, HL         ; 1:4       5711* +
+    add  HL, DE         ; 1:11      5711* + save 4x
+    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 8x
+    ex   DE, HL         ; 1:4       5711* +
+    add  HL, DE         ; 1:11      5711* + save 8x
+    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 16x
-    ex   DE, HL         ; 1:4       5711* +
-    add  HL, DE         ; 1:11      5711* + save 16x
-    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 32x
-    ex   DE, HL         ; 1:4       5711* +
-    add  HL, DE         ; 1:11      5711* + save 32x
-    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 64x
+    ex   DE, HL         ; 1:4       5711* +
+    add  HL, DE         ; 1:11      5711* + save 64x
+    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 128x
-    ex   DE, HL         ; 1:4       5711* +
-    add  HL, DE         ; 1:11      5711* + save 128x
-    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 256x
-    ex   DE, HL         ; 1:4       5711* +
-    add  HL, DE         ; 1:11      5711* + save 256x
-    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 512x
+    ex   DE, HL         ; 1:4       5711* +
+    add  HL, DE         ; 1:11      5711* + save 512x
+    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 1024x
+    ex   DE, HL         ; 1:4       5711* +
+    add  HL, DE         ; 1:11      5711* + save 1024x
+    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 2048x
-    ex   DE, HL         ; 1:4       5711* +
-    add  HL, DE         ; 1:11      5711* + save 2048x
-    ex   DE, HL         ; 1:4       5711* +
     add  HL, HL         ; 1:11      5711* 4096x
-    add  HL, HL         ; 1:11      5711* 8192x
-    or    A             ; 1:4       5711*
-    sbc  HL, DE         ; 2:15      5711* HL - save
+    add  HL, DE         ; 1:11      5711* HL + save
     ld    D, B          ; 1:4       5711*
-    ld    E, C          ; 1:4       5711*   
-    ld    B, D          ; 1:4       5717*
+    ld    E, C          ; 1:4       5711*       
+    ld    B, D          ; 1:4       5717* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5717*
     ld    D, H          ; 1:4       5717*
     ld    E, L          ; 1:4       5717* save 1x
@@ -21199,8 +21193,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5717* 4096x
     add  HL, DE         ; 1:11      5717* HL + save
     ld    D, B          ; 1:4       5717*
-    ld    E, C          ; 1:4       5717*   
-    ld    B, D          ; 1:4       5737*
+    ld    E, C          ; 1:4       5717*       
+    ld    B, D          ; 1:4       5737* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5737*
     ld    D, H          ; 1:4       5737*
     ld    E, L          ; 1:4       5737* save 1x
@@ -21233,44 +21227,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5737* 4096x
     add  HL, DE         ; 1:11      5737* HL + save
     ld    D, B          ; 1:4       5737*
-    ld    E, C          ; 1:4       5737*   
-    ld    B, D          ; 1:4       5741*
+    ld    E, C          ; 1:4       5737*       
+    ld    B, D          ; 1:4       5741* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5741*
     ld    D, H          ; 1:4       5741*
     ld    E, L          ; 1:4       5741* save 1x
     add  HL, HL         ; 1:11      5741* 2x
-    ex   DE, HL         ; 1:4       5741* +
-    add  HL, DE         ; 1:11      5741* + save 2x
-    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 4x
+    ex   DE, HL         ; 1:4       5741* +
+    add  HL, DE         ; 1:11      5741* + save 4x
+    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 8x
+    ex   DE, HL         ; 1:4       5741* +
+    add  HL, DE         ; 1:11      5741* + save 8x
+    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 16x
-    ex   DE, HL         ; 1:4       5741* +
-    add  HL, DE         ; 1:11      5741* + save 16x
-    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 32x
+    ex   DE, HL         ; 1:4       5741* +
+    add  HL, DE         ; 1:11      5741* + save 32x
+    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 64x
+    ex   DE, HL         ; 1:4       5741* +
+    add  HL, DE         ; 1:11      5741* + save 64x
+    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 128x
-    ex   DE, HL         ; 1:4       5741* +
-    add  HL, DE         ; 1:11      5741* + save 128x
-    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 256x
-    ex   DE, HL         ; 1:4       5741* +
-    add  HL, DE         ; 1:11      5741* + save 256x
-    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 512x
+    ex   DE, HL         ; 1:4       5741* +
+    add  HL, DE         ; 1:11      5741* + save 512x
+    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 1024x
+    ex   DE, HL         ; 1:4       5741* +
+    add  HL, DE         ; 1:11      5741* + save 1024x
+    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 2048x
-    ex   DE, HL         ; 1:4       5741* +
-    add  HL, DE         ; 1:11      5741* + save 2048x
-    ex   DE, HL         ; 1:4       5741* +
     add  HL, HL         ; 1:11      5741* 4096x
-    add  HL, HL         ; 1:11      5741* 8192x
-    or    A             ; 1:4       5741*
-    sbc  HL, DE         ; 2:15      5741* HL - save
+    add  HL, DE         ; 1:11      5741* HL + save
     ld    D, B          ; 1:4       5741*
     ld    E, C          ; 1:4       5741*   
-    ld    B, D          ; 1:4       5743*
+    ld    B, D          ; 1:4       5743* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5743*
     ld    D, H          ; 1:4       5743*
     ld    E, L          ; 1:4       5743* save 1x
@@ -21302,44 +21297,45 @@ ORG 0x6000
     or    A             ; 1:4       5743*
     sbc  HL, DE         ; 2:15      5743* HL - save
     ld    D, B          ; 1:4       5743*
-    ld    E, C          ; 1:4       5743*   
-    ld    B, D          ; 1:4       5749*
+    ld    E, C          ; 1:4       5743*       
+    ld    B, D          ; 1:4       5749* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5749*
     ld    D, H          ; 1:4       5749*
     ld    E, L          ; 1:4       5749* save 1x
     add  HL, HL         ; 1:11      5749* 2x
-    ex   DE, HL         ; 1:4       5749* +
-    add  HL, DE         ; 1:11      5749* + save 2x
-    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 4x
+    ex   DE, HL         ; 1:4       5749* +
+    add  HL, DE         ; 1:11      5749* + save 4x
+    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 8x
-    ex   DE, HL         ; 1:4       5749* +
-    add  HL, DE         ; 1:11      5749* + save 8x
-    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 16x
+    ex   DE, HL         ; 1:4       5749* +
+    add  HL, DE         ; 1:11      5749* + save 16x
+    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 32x
+    ex   DE, HL         ; 1:4       5749* +
+    add  HL, DE         ; 1:11      5749* + save 32x
+    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 64x
+    ex   DE, HL         ; 1:4       5749* +
+    add  HL, DE         ; 1:11      5749* + save 64x
+    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 128x
-    ex   DE, HL         ; 1:4       5749* +
-    add  HL, DE         ; 1:11      5749* + save 128x
-    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 256x
-    ex   DE, HL         ; 1:4       5749* +
-    add  HL, DE         ; 1:11      5749* + save 256x
-    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 512x
+    ex   DE, HL         ; 1:4       5749* +
+    add  HL, DE         ; 1:11      5749* + save 512x
+    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 1024x
+    ex   DE, HL         ; 1:4       5749* +
+    add  HL, DE         ; 1:11      5749* + save 1024x
+    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 2048x
-    ex   DE, HL         ; 1:4       5749* +
-    add  HL, DE         ; 1:11      5749* + save 2048x
-    ex   DE, HL         ; 1:4       5749* +
     add  HL, HL         ; 1:11      5749* 4096x
-    add  HL, HL         ; 1:11      5749* 8192x
-    or    A             ; 1:4       5749*
-    sbc  HL, DE         ; 2:15      5749* HL - save
+    add  HL, DE         ; 1:11      5749* HL + save
     ld    D, B          ; 1:4       5749*
-    ld    E, C          ; 1:4       5749*   
-    ld    B, D          ; 1:4       5779*
+    ld    E, C          ; 1:4       5749*       
+    ld    B, D          ; 1:4       5779* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5779*
     ld    D, H          ; 1:4       5779*
     ld    E, L          ; 1:4       5779* save 1x
@@ -21372,44 +21368,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5779* 4096x
     add  HL, DE         ; 1:11      5779* HL + save
     ld    D, B          ; 1:4       5779*
-    ld    E, C          ; 1:4       5779*   
-    ld    B, D          ; 1:4       5783*
+    ld    E, C          ; 1:4       5779*       
+    ld    B, D          ; 1:4       5783* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5783*
     ld    D, H          ; 1:4       5783*
     ld    E, L          ; 1:4       5783* save 1x
     add  HL, HL         ; 1:11      5783* 2x
+    ex   DE, HL         ; 1:4       5783* +
+    add  HL, DE         ; 1:11      5783* + save 2x
+    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 4x
+    ex   DE, HL         ; 1:4       5783* +
+    add  HL, DE         ; 1:11      5783* + save 4x
+    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 8x
-    ex   DE, HL         ; 1:4       5783* +
-    add  HL, DE         ; 1:11      5783* + save 8x
-    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 16x
+    ex   DE, HL         ; 1:4       5783* +
+    add  HL, DE         ; 1:11      5783* + save 16x
+    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 32x
-    ex   DE, HL         ; 1:4       5783* +
-    add  HL, DE         ; 1:11      5783* + save 32x
-    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 64x
-    ex   DE, HL         ; 1:4       5783* +
-    add  HL, DE         ; 1:11      5783* + save 64x
-    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 128x
+    ex   DE, HL         ; 1:4       5783* +
+    add  HL, DE         ; 1:11      5783* + save 128x
+    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 256x
-    ex   DE, HL         ; 1:4       5783* +
-    add  HL, DE         ; 1:11      5783* + save 256x
-    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 512x
+    ex   DE, HL         ; 1:4       5783* +
+    add  HL, DE         ; 1:11      5783* + save 512x
+    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 1024x
+    ex   DE, HL         ; 1:4       5783* +
+    add  HL, DE         ; 1:11      5783* + save 1024x
+    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 2048x
-    ex   DE, HL         ; 1:4       5783* +
-    add  HL, DE         ; 1:11      5783* + save 2048x
-    ex   DE, HL         ; 1:4       5783* +
     add  HL, HL         ; 1:11      5783* 4096x
-    add  HL, HL         ; 1:11      5783* 8192x
-    or    A             ; 1:4       5783*
-    sbc  HL, DE         ; 2:15      5783* HL - save
+    add  HL, DE         ; 1:11      5783* HL + save
     ld    D, B          ; 1:4       5783*
     ld    E, C          ; 1:4       5783*   
-    ld    B, D          ; 1:4       5791*
+    ld    B, D          ; 1:4       5791* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5791*
     ld    D, H          ; 1:4       5791*
     ld    E, L          ; 1:4       5791* save 1x
@@ -21442,8 +21439,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5791* HL - save
     ld    D, B          ; 1:4       5791*
     ld    E, C          ; 1:4       5791* 
-   
-    ld    B, D          ; 1:4       5801*
+       
+    ld    B, D          ; 1:4       5801* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5801*
     ld    D, H          ; 1:4       5801*
     ld    E, L          ; 1:4       5801* save 1x
@@ -21477,7 +21474,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5801* HL + save
     ld    D, B          ; 1:4       5801*
     ld    E, C          ; 1:4       5801*   
-    ld    B, D          ; 1:4       5807*
+    ld    B, D          ; 1:4       5807* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5807*
     ld    D, H          ; 1:4       5807*
     ld    E, L          ; 1:4       5807* save 1x
@@ -21509,44 +21506,45 @@ ORG 0x6000
     or    A             ; 1:4       5807*
     sbc  HL, DE         ; 2:15      5807* HL - save
     ld    D, B          ; 1:4       5807*
-    ld    E, C          ; 1:4       5807*   
-    ld    B, D          ; 1:4       5813*
+    ld    E, C          ; 1:4       5807*       
+    ld    B, D          ; 1:4       5813* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5813*
     ld    D, H          ; 1:4       5813*
     ld    E, L          ; 1:4       5813* save 1x
     add  HL, HL         ; 1:11      5813* 2x
-    ex   DE, HL         ; 1:4       5813* +
-    add  HL, DE         ; 1:11      5813* + save 2x
-    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 4x
+    ex   DE, HL         ; 1:4       5813* +
+    add  HL, DE         ; 1:11      5813* + save 4x
+    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 8x
-    ex   DE, HL         ; 1:4       5813* +
-    add  HL, DE         ; 1:11      5813* + save 8x
-    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 16x
+    ex   DE, HL         ; 1:4       5813* +
+    add  HL, DE         ; 1:11      5813* + save 16x
+    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 32x
+    ex   DE, HL         ; 1:4       5813* +
+    add  HL, DE         ; 1:11      5813* + save 32x
+    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 64x
-    ex   DE, HL         ; 1:4       5813* +
-    add  HL, DE         ; 1:11      5813* + save 64x
-    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 128x
+    ex   DE, HL         ; 1:4       5813* +
+    add  HL, DE         ; 1:11      5813* + save 128x
+    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 256x
-    ex   DE, HL         ; 1:4       5813* +
-    add  HL, DE         ; 1:11      5813* + save 256x
-    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 512x
+    ex   DE, HL         ; 1:4       5813* +
+    add  HL, DE         ; 1:11      5813* + save 512x
+    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 1024x
+    ex   DE, HL         ; 1:4       5813* +
+    add  HL, DE         ; 1:11      5813* + save 1024x
+    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 2048x
-    ex   DE, HL         ; 1:4       5813* +
-    add  HL, DE         ; 1:11      5813* + save 2048x
-    ex   DE, HL         ; 1:4       5813* +
     add  HL, HL         ; 1:11      5813* 4096x
-    add  HL, HL         ; 1:11      5813* 8192x
-    or    A             ; 1:4       5813*
-    sbc  HL, DE         ; 2:15      5813* HL - save
+    add  HL, DE         ; 1:11      5813* HL + save
     ld    D, B          ; 1:4       5813*
     ld    E, C          ; 1:4       5813*   
-    ld    B, D          ; 1:4       5821*
+    ld    B, D          ; 1:4       5821* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5821*
     ld    D, H          ; 1:4       5821*
     ld    E, L          ; 1:4       5821* save 1x
@@ -21578,8 +21576,8 @@ ORG 0x6000
     or    A             ; 1:4       5821*
     sbc  HL, DE         ; 2:15      5821* HL - save
     ld    D, B          ; 1:4       5821*
-    ld    E, C          ; 1:4       5821*   
-    ld    B, D          ; 1:4       5827*
+    ld    E, C          ; 1:4       5821*       
+    ld    B, D          ; 1:4       5827* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5827*
     ld    D, H          ; 1:4       5827*
     ld    E, L          ; 1:4       5827* save 1x
@@ -21613,7 +21611,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5827* HL + save
     ld    D, B          ; 1:4       5827*
     ld    E, C          ; 1:4       5827*   
-    ld    B, D          ; 1:4       5839*
+    ld    B, D          ; 1:4       5839* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5839*
     ld    D, H          ; 1:4       5839*
     ld    E, L          ; 1:4       5839* save 1x
@@ -21645,80 +21643,82 @@ ORG 0x6000
     or    A             ; 1:4       5839*
     sbc  HL, DE         ; 2:15      5839* HL - save
     ld    D, B          ; 1:4       5839*
-    ld    E, C          ; 1:4       5839*   
-    ld    B, D          ; 1:4       5843*
+    ld    E, C          ; 1:4       5839*       
+    ld    B, D          ; 1:4       5843* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5843*
     ld    D, H          ; 1:4       5843*
     ld    E, L          ; 1:4       5843* save 1x
     add  HL, HL         ; 1:11      5843* 2x
+    ex   DE, HL         ; 1:4       5843* +
+    add  HL, DE         ; 1:11      5843* + save 2x
+    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 4x
-    ex   DE, HL         ; 1:4       5843* +
-    add  HL, DE         ; 1:11      5843* + save 4x
-    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 8x
-    ex   DE, HL         ; 1:4       5843* +
-    add  HL, DE         ; 1:11      5843* + save 8x
-    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 16x
+    ex   DE, HL         ; 1:4       5843* +
+    add  HL, DE         ; 1:11      5843* + save 16x
+    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 32x
-    ex   DE, HL         ; 1:4       5843* +
-    add  HL, DE         ; 1:11      5843* + save 32x
-    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 64x
+    ex   DE, HL         ; 1:4       5843* +
+    add  HL, DE         ; 1:11      5843* + save 64x
+    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 128x
+    ex   DE, HL         ; 1:4       5843* +
+    add  HL, DE         ; 1:11      5843* + save 128x
+    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 256x
-    ex   DE, HL         ; 1:4       5843* +
-    add  HL, DE         ; 1:11      5843* + save 256x
-    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 512x
+    ex   DE, HL         ; 1:4       5843* +
+    add  HL, DE         ; 1:11      5843* + save 512x
+    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 1024x
+    ex   DE, HL         ; 1:4       5843* +
+    add  HL, DE         ; 1:11      5843* + save 1024x
+    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 2048x
-    ex   DE, HL         ; 1:4       5843* +
-    add  HL, DE         ; 1:11      5843* + save 2048x
-    ex   DE, HL         ; 1:4       5843* +
     add  HL, HL         ; 1:11      5843* 4096x
-    add  HL, HL         ; 1:11      5843* 8192x
-    or    A             ; 1:4       5843*
-    sbc  HL, DE         ; 2:15      5843* HL - save
+    add  HL, DE         ; 1:11      5843* HL + save
     ld    D, B          ; 1:4       5843*
-    ld    E, C          ; 1:4       5843*   
-    ld    B, D          ; 1:4       5849*
+    ld    E, C          ; 1:4       5843*       
+    ld    B, D          ; 1:4       5849* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5849*
     ld    D, H          ; 1:4       5849*
     ld    E, L          ; 1:4       5849* save 1x
     add  HL, HL         ; 1:11      5849* 2x
-    ex   DE, HL         ; 1:4       5849* +
-    add  HL, DE         ; 1:11      5849* + save 2x
-    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 4x
-    ex   DE, HL         ; 1:4       5849* +
-    add  HL, DE         ; 1:11      5849* + save 4x
-    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 8x
+    ex   DE, HL         ; 1:4       5849* +
+    add  HL, DE         ; 1:11      5849* + save 8x
+    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 16x
+    ex   DE, HL         ; 1:4       5849* +
+    add  HL, DE         ; 1:11      5849* + save 16x
+    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 32x
-    ex   DE, HL         ; 1:4       5849* +
-    add  HL, DE         ; 1:11      5849* + save 32x
-    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 64x
+    ex   DE, HL         ; 1:4       5849* +
+    add  HL, DE         ; 1:11      5849* + save 64x
+    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 128x
+    ex   DE, HL         ; 1:4       5849* +
+    add  HL, DE         ; 1:11      5849* + save 128x
+    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 256x
-    ex   DE, HL         ; 1:4       5849* +
-    add  HL, DE         ; 1:11      5849* + save 256x
-    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 512x
+    ex   DE, HL         ; 1:4       5849* +
+    add  HL, DE         ; 1:11      5849* + save 512x
+    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 1024x
+    ex   DE, HL         ; 1:4       5849* +
+    add  HL, DE         ; 1:11      5849* + save 1024x
+    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 2048x
-    ex   DE, HL         ; 1:4       5849* +
-    add  HL, DE         ; 1:11      5849* + save 2048x
-    ex   DE, HL         ; 1:4       5849* +
     add  HL, HL         ; 1:11      5849* 4096x
-    add  HL, HL         ; 1:11      5849* 8192x
-    or    A             ; 1:4       5849*
-    sbc  HL, DE         ; 2:15      5849* HL - save
+    add  HL, DE         ; 1:11      5849* HL + save
     ld    D, B          ; 1:4       5849*
     ld    E, C          ; 1:4       5849*   
-    ld    B, D          ; 1:4       5851*
+    ld    B, D          ; 1:4       5851* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5851*
     ld    D, H          ; 1:4       5851*
     ld    E, L          ; 1:4       5851* save 1x
@@ -21750,8 +21750,8 @@ ORG 0x6000
     or    A             ; 1:4       5851*
     sbc  HL, DE         ; 2:15      5851* HL - save
     ld    D, B          ; 1:4       5851*
-    ld    E, C          ; 1:4       5851*   
-    ld    B, D          ; 1:4       5857*
+    ld    E, C          ; 1:4       5851*       
+    ld    B, D          ; 1:4       5857* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5857*
     ld    D, H          ; 1:4       5857*
     ld    E, L          ; 1:4       5857* save 1x
@@ -21785,44 +21785,45 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5857* HL + save
     ld    D, B          ; 1:4       5857*
     ld    E, C          ; 1:4       5857* 
-   
-    ld    B, D          ; 1:4       5861*
+       
+    ld    B, D          ; 1:4       5861* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5861*
     ld    D, H          ; 1:4       5861*
     ld    E, L          ; 1:4       5861* save 1x
     add  HL, HL         ; 1:11      5861* 2x
-    ex   DE, HL         ; 1:4       5861* +
-    add  HL, DE         ; 1:11      5861* + save 2x
-    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 4x
+    ex   DE, HL         ; 1:4       5861* +
+    add  HL, DE         ; 1:11      5861* + save 4x
+    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 8x
-    ex   DE, HL         ; 1:4       5861* +
-    add  HL, DE         ; 1:11      5861* + save 8x
-    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 16x
-    ex   DE, HL         ; 1:4       5861* +
-    add  HL, DE         ; 1:11      5861* + save 16x
-    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 32x
+    ex   DE, HL         ; 1:4       5861* +
+    add  HL, DE         ; 1:11      5861* + save 32x
+    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 64x
+    ex   DE, HL         ; 1:4       5861* +
+    add  HL, DE         ; 1:11      5861* + save 64x
+    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 128x
+    ex   DE, HL         ; 1:4       5861* +
+    add  HL, DE         ; 1:11      5861* + save 128x
+    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 256x
-    ex   DE, HL         ; 1:4       5861* +
-    add  HL, DE         ; 1:11      5861* + save 256x
-    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 512x
+    ex   DE, HL         ; 1:4       5861* +
+    add  HL, DE         ; 1:11      5861* + save 512x
+    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 1024x
+    ex   DE, HL         ; 1:4       5861* +
+    add  HL, DE         ; 1:11      5861* + save 1024x
+    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 2048x
-    ex   DE, HL         ; 1:4       5861* +
-    add  HL, DE         ; 1:11      5861* + save 2048x
-    ex   DE, HL         ; 1:4       5861* +
     add  HL, HL         ; 1:11      5861* 4096x
-    add  HL, HL         ; 1:11      5861* 8192x
-    or    A             ; 1:4       5861*
-    sbc  HL, DE         ; 2:15      5861* HL - save
+    add  HL, DE         ; 1:11      5861* HL + save
     ld    D, B          ; 1:4       5861*
     ld    E, C          ; 1:4       5861*   
-    ld    B, D          ; 1:4       5867*
+    ld    B, D          ; 1:4       5867* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5867*
     ld    D, H          ; 1:4       5867*
     ld    E, L          ; 1:4       5867* save 1x
@@ -21855,7 +21856,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5867* HL - save
     ld    D, B          ; 1:4       5867*
     ld    E, C          ; 1:4       5867*   
-    ld    B, D          ; 1:4       5869*
+    ld    B, D          ; 1:4       5869* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5869*
     ld    D, H          ; 1:4       5869*
     ld    E, L          ; 1:4       5869* save 1x
@@ -21888,7 +21889,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5869* HL - save
     ld    D, B          ; 1:4       5869*
     ld    E, C          ; 1:4       5869*   
-    ld    B, D          ; 1:4       5879*
+    ld    B, D          ; 1:4       5879* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5879*
     ld    D, H          ; 1:4       5879*
     ld    E, L          ; 1:4       5879* save 1x
@@ -21918,7 +21919,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      5879* HL - save
     ld    D, B          ; 1:4       5879*
     ld    E, C          ; 1:4       5879*   
-    ld    B, D          ; 1:4       5881*
+    ld    B, D          ; 1:4       5881* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5881*
     ld    D, H          ; 1:4       5881*
     ld    E, L          ; 1:4       5881* save 1x
@@ -21950,8 +21951,8 @@ ORG 0x6000
     or    A             ; 1:4       5881*
     sbc  HL, DE         ; 2:15      5881* HL - save
     ld    D, B          ; 1:4       5881*
-    ld    E, C          ; 1:4       5881*   
-    ld    B, D          ; 1:4       5897*
+    ld    E, C          ; 1:4       5881*       
+    ld    B, D          ; 1:4       5897* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5897*
     ld    D, H          ; 1:4       5897*
     ld    E, L          ; 1:4       5897* save 1x
@@ -21981,44 +21982,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5897* 4096x
     add  HL, DE         ; 1:11      5897* HL + save
     ld    D, B          ; 1:4       5897*
-    ld    E, C          ; 1:4       5897*   
-    ld    B, D          ; 1:4       5903*
+    ld    E, C          ; 1:4       5897*       
+    ld    B, D          ; 1:4       5903* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5903*
     ld    D, H          ; 1:4       5903*
     ld    E, L          ; 1:4       5903* save 1x
     add  HL, HL         ; 1:11      5903* 2x
+    ex   DE, HL         ; 1:4       5903* +
+    add  HL, DE         ; 1:11      5903* + save 2x
+    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 4x
+    ex   DE, HL         ; 1:4       5903* +
+    add  HL, DE         ; 1:11      5903* + save 4x
+    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 8x
+    ex   DE, HL         ; 1:4       5903* +
+    add  HL, DE         ; 1:11      5903* + save 8x
+    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 16x
-    ex   DE, HL         ; 1:4       5903* +
-    add  HL, DE         ; 1:11      5903* + save 16x
-    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 32x
-    ex   DE, HL         ; 1:4       5903* +
-    add  HL, DE         ; 1:11      5903* + save 32x
-    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 64x
-    ex   DE, HL         ; 1:4       5903* +
-    add  HL, DE         ; 1:11      5903* + save 64x
-    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 128x
-    ex   DE, HL         ; 1:4       5903* +
-    add  HL, DE         ; 1:11      5903* + save 128x
-    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 256x
+    ex   DE, HL         ; 1:4       5903* +
+    add  HL, DE         ; 1:11      5903* + save 256x
+    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 512x
+    ex   DE, HL         ; 1:4       5903* +
+    add  HL, DE         ; 1:11      5903* + save 512x
+    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 1024x
+    ex   DE, HL         ; 1:4       5903* +
+    add  HL, DE         ; 1:11      5903* + save 1024x
+    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 2048x
-    ex   DE, HL         ; 1:4       5903* +
-    add  HL, DE         ; 1:11      5903* + save 2048x
-    ex   DE, HL         ; 1:4       5903* +
     add  HL, HL         ; 1:11      5903* 4096x
-    add  HL, HL         ; 1:11      5903* 8192x
-    or    A             ; 1:4       5903*
-    sbc  HL, DE         ; 2:15      5903* HL - save
+    add  HL, DE         ; 1:11      5903* HL + save
     ld    D, B          ; 1:4       5903*
-    ld    E, C          ; 1:4       5903*   
-    ld    B, D          ; 1:4       5923*
+    ld    E, C          ; 1:4       5903*       
+    ld    B, D          ; 1:4       5923* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5923*
     ld    D, H          ; 1:4       5923*
     ld    E, L          ; 1:4       5923* save 1x
@@ -22051,81 +22053,83 @@ ORG 0x6000
     add  HL, HL         ; 1:11      5923* 4096x
     add  HL, DE         ; 1:11      5923* HL + save
     ld    D, B          ; 1:4       5923*
-    ld    E, C          ; 1:4       5923*   
-    ld    B, D          ; 1:4       5927*
+    ld    E, C          ; 1:4       5923*       
+    ld    B, D          ; 1:4       5927* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5927*
     ld    D, H          ; 1:4       5927*
     ld    E, L          ; 1:4       5927* save 1x
     add  HL, HL         ; 1:11      5927* 2x
+    ex   DE, HL         ; 1:4       5927* +
+    add  HL, DE         ; 1:11      5927* + save 2x
+    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 4x
+    ex   DE, HL         ; 1:4       5927* +
+    add  HL, DE         ; 1:11      5927* + save 4x
+    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 8x
-    ex   DE, HL         ; 1:4       5927* +
-    add  HL, DE         ; 1:11      5927* + save 8x
-    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 16x
-    ex   DE, HL         ; 1:4       5927* +
-    add  HL, DE         ; 1:11      5927* + save 16x
-    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 32x
+    ex   DE, HL         ; 1:4       5927* +
+    add  HL, DE         ; 1:11      5927* + save 32x
+    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 64x
-    ex   DE, HL         ; 1:4       5927* +
-    add  HL, DE         ; 1:11      5927* + save 64x
-    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 128x
-    ex   DE, HL         ; 1:4       5927* +
-    add  HL, DE         ; 1:11      5927* + save 128x
-    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 256x
+    ex   DE, HL         ; 1:4       5927* +
+    add  HL, DE         ; 1:11      5927* + save 256x
+    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 512x
+    ex   DE, HL         ; 1:4       5927* +
+    add  HL, DE         ; 1:11      5927* + save 512x
+    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 1024x
+    ex   DE, HL         ; 1:4       5927* +
+    add  HL, DE         ; 1:11      5927* + save 1024x
+    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 2048x
-    ex   DE, HL         ; 1:4       5927* +
-    add  HL, DE         ; 1:11      5927* + save 2048x
-    ex   DE, HL         ; 1:4       5927* +
     add  HL, HL         ; 1:11      5927* 4096x
-    add  HL, HL         ; 1:11      5927* 8192x
-    or    A             ; 1:4       5927*
-    sbc  HL, DE         ; 2:15      5927* HL - save
+    add  HL, DE         ; 1:11      5927* HL + save
     ld    D, B          ; 1:4       5927*
-    ld    E, C          ; 1:4       5927*   
-    ld    B, D          ; 1:4       5939*
+    ld    E, C          ; 1:4       5927*       
+    ld    B, D          ; 1:4       5939* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5939*
     ld    D, H          ; 1:4       5939*
     ld    E, L          ; 1:4       5939* save 1x
     add  HL, HL         ; 1:11      5939* 2x
+    ex   DE, HL         ; 1:4       5939* +
+    add  HL, DE         ; 1:11      5939* + save 2x
+    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 4x
-    ex   DE, HL         ; 1:4       5939* +
-    add  HL, DE         ; 1:11      5939* + save 4x
-    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 8x
-    ex   DE, HL         ; 1:4       5939* +
-    add  HL, DE         ; 1:11      5939* + save 8x
-    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 16x
+    ex   DE, HL         ; 1:4       5939* +
+    add  HL, DE         ; 1:11      5939* + save 16x
+    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 32x
+    ex   DE, HL         ; 1:4       5939* +
+    add  HL, DE         ; 1:11      5939* + save 32x
+    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 64x
-    ex   DE, HL         ; 1:4       5939* +
-    add  HL, DE         ; 1:11      5939* + save 64x
-    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 128x
-    ex   DE, HL         ; 1:4       5939* +
-    add  HL, DE         ; 1:11      5939* + save 128x
-    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 256x
+    ex   DE, HL         ; 1:4       5939* +
+    add  HL, DE         ; 1:11      5939* + save 256x
+    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 512x
+    ex   DE, HL         ; 1:4       5939* +
+    add  HL, DE         ; 1:11      5939* + save 512x
+    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 1024x
+    ex   DE, HL         ; 1:4       5939* +
+    add  HL, DE         ; 1:11      5939* + save 1024x
+    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 2048x
-    ex   DE, HL         ; 1:4       5939* +
-    add  HL, DE         ; 1:11      5939* + save 2048x
-    ex   DE, HL         ; 1:4       5939* +
     add  HL, HL         ; 1:11      5939* 4096x
-    add  HL, HL         ; 1:11      5939* 8192x
-    or    A             ; 1:4       5939*
-    sbc  HL, DE         ; 2:15      5939* HL - save
+    add  HL, DE         ; 1:11      5939* HL + save
     ld    D, B          ; 1:4       5939*
     ld    E, C          ; 1:4       5939* 
-   
-    ld    B, D          ; 1:4       5953*
+       
+    ld    B, D          ; 1:4       5953* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5953*
     ld    D, H          ; 1:4       5953*
     ld    E, L          ; 1:4       5953* save 1x
@@ -22156,7 +22160,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      5953* HL + save
     ld    D, B          ; 1:4       5953*
     ld    E, C          ; 1:4       5953*   
-    ld    B, D          ; 1:4       5981*
+    ld    B, D          ; 1:4       5981* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       5981*
     ld    D, H          ; 1:4       5981*
     ld    E, L          ; 1:4       5981* save 1x
@@ -22188,44 +22192,45 @@ ORG 0x6000
     or    A             ; 1:4       5981*
     sbc  HL, DE         ; 2:15      5981* HL - save
     ld    D, B          ; 1:4       5981*
-    ld    E, C          ; 1:4       5981*   
-    ld    B, D          ; 1:4       5987*
+    ld    E, C          ; 1:4       5981*       
+    ld    B, D          ; 1:4       5987* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       5987*
     ld    D, H          ; 1:4       5987*
     ld    E, L          ; 1:4       5987* save 1x
     add  HL, HL         ; 1:11      5987* 2x
+    ex   DE, HL         ; 1:4       5987* +
+    add  HL, DE         ; 1:11      5987* + save 2x
+    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 4x
-    ex   DE, HL         ; 1:4       5987* +
-    add  HL, DE         ; 1:11      5987* + save 4x
-    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 8x
-    ex   DE, HL         ; 1:4       5987* +
-    add  HL, DE         ; 1:11      5987* + save 8x
-    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 16x
-    ex   DE, HL         ; 1:4       5987* +
-    add  HL, DE         ; 1:11      5987* + save 16x
-    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 32x
+    ex   DE, HL         ; 1:4       5987* +
+    add  HL, DE         ; 1:11      5987* + save 32x
+    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 64x
+    ex   DE, HL         ; 1:4       5987* +
+    add  HL, DE         ; 1:11      5987* + save 64x
+    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 128x
-    ex   DE, HL         ; 1:4       5987* +
-    add  HL, DE         ; 1:11      5987* + save 128x
-    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 256x
+    ex   DE, HL         ; 1:4       5987* +
+    add  HL, DE         ; 1:11      5987* + save 256x
+    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 512x
+    ex   DE, HL         ; 1:4       5987* +
+    add  HL, DE         ; 1:11      5987* + save 512x
+    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 1024x
+    ex   DE, HL         ; 1:4       5987* +
+    add  HL, DE         ; 1:11      5987* + save 1024x
+    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 2048x
-    ex   DE, HL         ; 1:4       5987* +
-    add  HL, DE         ; 1:11      5987* + save 2048x
-    ex   DE, HL         ; 1:4       5987* +
     add  HL, HL         ; 1:11      5987* 4096x
-    add  HL, HL         ; 1:11      5987* 8192x
-    or    A             ; 1:4       5987*
-    sbc  HL, DE         ; 2:15      5987* HL - save
+    add  HL, DE         ; 1:11      5987* HL + save
     ld    D, B          ; 1:4       5987*
     ld    E, C          ; 1:4       5987*   
-    ld    B, D          ; 1:4       6007*
+    ld    B, D          ; 1:4       6007* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6007*
     ld    D, H          ; 1:4       6007*
     ld    E, L          ; 1:4       6007* save 1x
@@ -22255,7 +22260,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6007* HL - save
     ld    D, B          ; 1:4       6007*
     ld    E, C          ; 1:4       6007*   
-    ld    B, D          ; 1:4       6011*
+    ld    B, D          ; 1:4       6011* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6011*
     ld    D, H          ; 1:4       6011*
     ld    E, L          ; 1:4       6011* save 1x
@@ -22284,80 +22289,82 @@ ORG 0x6000
     or    A             ; 1:4       6011*
     sbc  HL, DE         ; 2:15      6011* HL - save
     ld    D, B          ; 1:4       6011*
-    ld    E, C          ; 1:4       6011*   
-    ld    B, D          ; 1:4       6029*
+    ld    E, C          ; 1:4       6011*       
+    ld    B, D          ; 1:4       6029* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6029*
     ld    D, H          ; 1:4       6029*
     ld    E, L          ; 1:4       6029* save 1x
     add  HL, HL         ; 1:11      6029* 2x
-    ex   DE, HL         ; 1:4       6029* +
-    add  HL, DE         ; 1:11      6029* + save 2x
-    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 4x
+    ex   DE, HL         ; 1:4       6029* +
+    add  HL, DE         ; 1:11      6029* + save 4x
+    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 8x
+    ex   DE, HL         ; 1:4       6029* +
+    add  HL, DE         ; 1:11      6029* + save 8x
+    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 16x
-    ex   DE, HL         ; 1:4       6029* +
-    add  HL, DE         ; 1:11      6029* + save 16x
-    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 32x
-    ex   DE, HL         ; 1:4       6029* +
-    add  HL, DE         ; 1:11      6029* + save 32x
-    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 64x
-    ex   DE, HL         ; 1:4       6029* +
-    add  HL, DE         ; 1:11      6029* + save 64x
-    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 128x
+    ex   DE, HL         ; 1:4       6029* +
+    add  HL, DE         ; 1:11      6029* + save 128x
+    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 256x
+    ex   DE, HL         ; 1:4       6029* +
+    add  HL, DE         ; 1:11      6029* + save 256x
+    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 512x
+    ex   DE, HL         ; 1:4       6029* +
+    add  HL, DE         ; 1:11      6029* + save 512x
+    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 1024x
+    ex   DE, HL         ; 1:4       6029* +
+    add  HL, DE         ; 1:11      6029* + save 1024x
+    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 2048x
-    ex   DE, HL         ; 1:4       6029* +
-    add  HL, DE         ; 1:11      6029* + save 2048x
-    ex   DE, HL         ; 1:4       6029* +
     add  HL, HL         ; 1:11      6029* 4096x
-    add  HL, HL         ; 1:11      6029* 8192x
-    or    A             ; 1:4       6029*
-    sbc  HL, DE         ; 2:15      6029* HL - save
+    add  HL, DE         ; 1:11      6029* HL + save
     ld    D, B          ; 1:4       6029*
-    ld    E, C          ; 1:4       6029*   
-    ld    B, D          ; 1:4       6037*
+    ld    E, C          ; 1:4       6029*       
+    ld    B, D          ; 1:4       6037* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6037*
     ld    D, H          ; 1:4       6037*
     ld    E, L          ; 1:4       6037* save 1x
     add  HL, HL         ; 1:11      6037* 2x
-    ex   DE, HL         ; 1:4       6037* +
-    add  HL, DE         ; 1:11      6037* + save 2x
-    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 4x
+    ex   DE, HL         ; 1:4       6037* +
+    add  HL, DE         ; 1:11      6037* + save 4x
+    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 8x
-    ex   DE, HL         ; 1:4       6037* +
-    add  HL, DE         ; 1:11      6037* + save 8x
-    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 16x
+    ex   DE, HL         ; 1:4       6037* +
+    add  HL, DE         ; 1:11      6037* + save 16x
+    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 32x
-    ex   DE, HL         ; 1:4       6037* +
-    add  HL, DE         ; 1:11      6037* + save 32x
-    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 64x
-    ex   DE, HL         ; 1:4       6037* +
-    add  HL, DE         ; 1:11      6037* + save 64x
-    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 128x
+    ex   DE, HL         ; 1:4       6037* +
+    add  HL, DE         ; 1:11      6037* + save 128x
+    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 256x
+    ex   DE, HL         ; 1:4       6037* +
+    add  HL, DE         ; 1:11      6037* + save 256x
+    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 512x
+    ex   DE, HL         ; 1:4       6037* +
+    add  HL, DE         ; 1:11      6037* + save 512x
+    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 1024x
+    ex   DE, HL         ; 1:4       6037* +
+    add  HL, DE         ; 1:11      6037* + save 1024x
+    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 2048x
-    ex   DE, HL         ; 1:4       6037* +
-    add  HL, DE         ; 1:11      6037* + save 2048x
-    ex   DE, HL         ; 1:4       6037* +
     add  HL, HL         ; 1:11      6037* 4096x
-    add  HL, HL         ; 1:11      6037* 8192x
-    or    A             ; 1:4       6037*
-    sbc  HL, DE         ; 2:15      6037* HL - save
+    add  HL, DE         ; 1:11      6037* HL + save
     ld    D, B          ; 1:4       6037*
     ld    E, C          ; 1:4       6037*   
-    ld    B, D          ; 1:4       6043*
+    ld    B, D          ; 1:4       6043* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6043*
     ld    D, H          ; 1:4       6043*
     ld    E, L          ; 1:4       6043* save 1x
@@ -22390,7 +22397,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6043* HL - save
     ld    D, B          ; 1:4       6043*
     ld    E, C          ; 1:4       6043*   
-    ld    B, D          ; 1:4       6047*
+    ld    B, D          ; 1:4       6047* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6047*
     ld    D, H          ; 1:4       6047*
     ld    E, L          ; 1:4       6047* save 1x
@@ -22419,45 +22426,46 @@ ORG 0x6000
     or    A             ; 1:4       6047*
     sbc  HL, DE         ; 2:15      6047* HL - save
     ld    D, B          ; 1:4       6047*
-    ld    E, C          ; 1:4       6047*   
-    ld    B, D          ; 1:4       6053*
+    ld    E, C          ; 1:4       6047*       
+    ld    B, D          ; 1:4       6053* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6053*
     ld    D, H          ; 1:4       6053*
     ld    E, L          ; 1:4       6053* save 1x
     add  HL, HL         ; 1:11      6053* 2x
-    ex   DE, HL         ; 1:4       6053* +
-    add  HL, DE         ; 1:11      6053* + save 2x
-    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 4x
+    ex   DE, HL         ; 1:4       6053* +
+    add  HL, DE         ; 1:11      6053* + save 4x
+    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 8x
-    ex   DE, HL         ; 1:4       6053* +
-    add  HL, DE         ; 1:11      6053* + save 8x
-    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 16x
-    ex   DE, HL         ; 1:4       6053* +
-    add  HL, DE         ; 1:11      6053* + save 16x
-    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 32x
+    ex   DE, HL         ; 1:4       6053* +
+    add  HL, DE         ; 1:11      6053* + save 32x
+    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 64x
-    ex   DE, HL         ; 1:4       6053* +
-    add  HL, DE         ; 1:11      6053* + save 64x
-    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 128x
+    ex   DE, HL         ; 1:4       6053* +
+    add  HL, DE         ; 1:11      6053* + save 128x
+    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 256x
+    ex   DE, HL         ; 1:4       6053* +
+    add  HL, DE         ; 1:11      6053* + save 256x
+    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 512x
+    ex   DE, HL         ; 1:4       6053* +
+    add  HL, DE         ; 1:11      6053* + save 512x
+    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 1024x
+    ex   DE, HL         ; 1:4       6053* +
+    add  HL, DE         ; 1:11      6053* + save 1024x
+    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 2048x
-    ex   DE, HL         ; 1:4       6053* +
-    add  HL, DE         ; 1:11      6053* + save 2048x
-    ex   DE, HL         ; 1:4       6053* +
     add  HL, HL         ; 1:11      6053* 4096x
-    add  HL, HL         ; 1:11      6053* 8192x
-    or    A             ; 1:4       6053*
-    sbc  HL, DE         ; 2:15      6053* HL - save
+    add  HL, DE         ; 1:11      6053* HL + save
     ld    D, B          ; 1:4       6053*
     ld    E, C          ; 1:4       6053* 
    
-    ld    B, D          ; 1:4       6067*
+    ld    B, D          ; 1:4       6067* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6067*
     ld    D, H          ; 1:4       6067*
     ld    E, L          ; 1:4       6067* save 1x
@@ -22490,7 +22498,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6067* HL - save
     ld    D, B          ; 1:4       6067*
     ld    E, C          ; 1:4       6067*   
-    ld    B, D          ; 1:4       6073*
+    ld    B, D          ; 1:4       6073* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6073*
     ld    D, H          ; 1:4       6073*
     ld    E, L          ; 1:4       6073* save 1x
@@ -22523,7 +22531,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6073* HL - save
     ld    D, B          ; 1:4       6073*
     ld    E, C          ; 1:4       6073*   
-    ld    B, D          ; 1:4       6079*
+    ld    B, D          ; 1:4       6079* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6079*
     ld    D, H          ; 1:4       6079*
     ld    E, L          ; 1:4       6079* save 1x
@@ -22549,44 +22557,45 @@ ORG 0x6000
     or    A             ; 1:4       6079*
     sbc  HL, DE         ; 2:15      6079* HL - save
     ld    D, B          ; 1:4       6079*
-    ld    E, C          ; 1:4       6079*   
-    ld    B, D          ; 1:4       6089*
+    ld    E, C          ; 1:4       6079*       
+    ld    B, D          ; 1:4       6089* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6089*
     ld    D, H          ; 1:4       6089*
     ld    E, L          ; 1:4       6089* save 1x
     add  HL, HL         ; 1:11      6089* 2x
-    ex   DE, HL         ; 1:4       6089* +
-    add  HL, DE         ; 1:11      6089* + save 2x
-    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 4x
-    ex   DE, HL         ; 1:4       6089* +
-    add  HL, DE         ; 1:11      6089* + save 4x
-    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 8x
+    ex   DE, HL         ; 1:4       6089* +
+    add  HL, DE         ; 1:11      6089* + save 8x
+    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 16x
-    ex   DE, HL         ; 1:4       6089* +
-    add  HL, DE         ; 1:11      6089* + save 16x
-    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 32x
-    ex   DE, HL         ; 1:4       6089* +
-    add  HL, DE         ; 1:11      6089* + save 32x
-    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 64x
+    ex   DE, HL         ; 1:4       6089* +
+    add  HL, DE         ; 1:11      6089* + save 64x
+    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 128x
+    ex   DE, HL         ; 1:4       6089* +
+    add  HL, DE         ; 1:11      6089* + save 128x
+    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 256x
+    ex   DE, HL         ; 1:4       6089* +
+    add  HL, DE         ; 1:11      6089* + save 256x
+    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 512x
+    ex   DE, HL         ; 1:4       6089* +
+    add  HL, DE         ; 1:11      6089* + save 512x
+    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 1024x
+    ex   DE, HL         ; 1:4       6089* +
+    add  HL, DE         ; 1:11      6089* + save 1024x
+    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 2048x
-    ex   DE, HL         ; 1:4       6089* +
-    add  HL, DE         ; 1:11      6089* + save 2048x
-    ex   DE, HL         ; 1:4       6089* +
     add  HL, HL         ; 1:11      6089* 4096x
-    add  HL, HL         ; 1:11      6089* 8192x
-    or    A             ; 1:4       6089*
-    sbc  HL, DE         ; 2:15      6089* HL - save
+    add  HL, DE         ; 1:11      6089* HL + save
     ld    D, B          ; 1:4       6089*
     ld    E, C          ; 1:4       6089*   
-    ld    B, D          ; 1:4       6091*
+    ld    B, D          ; 1:4       6091* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6091*
     ld    D, H          ; 1:4       6091*
     ld    E, L          ; 1:4       6091* save 1x
@@ -22619,7 +22628,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6091* HL - save
     ld    D, B          ; 1:4       6091*
     ld    E, C          ; 1:4       6091*   
-    ld    B, D          ; 1:4       6101*
+    ld    B, D          ; 1:4       6101* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6101*
     ld    D, H          ; 1:4       6101*
     ld    E, L          ; 1:4       6101* save 1x
@@ -22651,44 +22660,45 @@ ORG 0x6000
     or    A             ; 1:4       6101*
     sbc  HL, DE         ; 2:15      6101* HL - save
     ld    D, B          ; 1:4       6101*
-    ld    E, C          ; 1:4       6101*   
-    ld    B, D          ; 1:4       6113*
+    ld    E, C          ; 1:4       6101*       
+    ld    B, D          ; 1:4       6113* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6113*
     ld    D, H          ; 1:4       6113*
     ld    E, L          ; 1:4       6113* save 1x
     add  HL, HL         ; 1:11      6113* 2x
-    ex   DE, HL         ; 1:4       6113* +
-    add  HL, DE         ; 1:11      6113* + save 2x
-    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 4x
-    ex   DE, HL         ; 1:4       6113* +
-    add  HL, DE         ; 1:11      6113* + save 4x
-    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 8x
-    ex   DE, HL         ; 1:4       6113* +
-    add  HL, DE         ; 1:11      6113* + save 8x
-    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 16x
-    ex   DE, HL         ; 1:4       6113* +
-    add  HL, DE         ; 1:11      6113* + save 16x
-    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 32x
+    ex   DE, HL         ; 1:4       6113* +
+    add  HL, DE         ; 1:11      6113* + save 32x
+    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 64x
+    ex   DE, HL         ; 1:4       6113* +
+    add  HL, DE         ; 1:11      6113* + save 64x
+    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 128x
+    ex   DE, HL         ; 1:4       6113* +
+    add  HL, DE         ; 1:11      6113* + save 128x
+    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 256x
+    ex   DE, HL         ; 1:4       6113* +
+    add  HL, DE         ; 1:11      6113* + save 256x
+    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 512x
+    ex   DE, HL         ; 1:4       6113* +
+    add  HL, DE         ; 1:11      6113* + save 512x
+    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 1024x
+    ex   DE, HL         ; 1:4       6113* +
+    add  HL, DE         ; 1:11      6113* + save 1024x
+    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 2048x
-    ex   DE, HL         ; 1:4       6113* +
-    add  HL, DE         ; 1:11      6113* + save 2048x
-    ex   DE, HL         ; 1:4       6113* +
     add  HL, HL         ; 1:11      6113* 4096x
-    add  HL, HL         ; 1:11      6113* 8192x
-    or    A             ; 1:4       6113*
-    sbc  HL, DE         ; 2:15      6113* HL - save
+    add  HL, DE         ; 1:11      6113* HL + save
     ld    D, B          ; 1:4       6113*
     ld    E, C          ; 1:4       6113*   
-    ld    B, D          ; 1:4       6121*
+    ld    B, D          ; 1:4       6121* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6121*
     ld    D, H          ; 1:4       6121*
     ld    E, L          ; 1:4       6121* save 1x
@@ -22705,13 +22715,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       6121* +
     add  HL, DE         ; 1:11      6121* + save 16x
     ex   DE, HL         ; 1:4       6121* +
-    add  HL, HL         ; 1:11      6121* 32x
-    add  HL, HL         ; 1:11      6121* 64x
-    add  HL, HL         ; 1:11      6121* 128x
-    add  HL, HL         ; 1:11      6121* 256x
-    add  HL, HL         ; 1:11      6121* 512x
-    add  HL, HL         ; 1:11      6121* 1024x
-    add  HL, HL         ; 1:11      6121* 2048x
+    rr    H             ; 2:8       6121*
+    rr    L             ; 2:8       6121*
+    ld    H, L          ; 1:4       6121*
+    ld    L, 0x00       ; 2:7       6121* 2048x
     ex   DE, HL         ; 1:4       6121* +
     add  HL, DE         ; 1:11      6121* + save 2048x
     ex   DE, HL         ; 1:4       6121* +
@@ -22721,7 +22728,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6121* HL - save
     ld    D, B          ; 1:4       6121*
     ld    E, C          ; 1:4       6121*   
-    ld    B, D          ; 1:4       6131*
+    ld    B, D          ; 1:4       6131* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6131*
     ld    D, H          ; 1:4       6131*
     ld    E, L          ; 1:4       6131* save 1x
@@ -22745,7 +22752,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6131* HL - save
     ld    D, B          ; 1:4       6131*
     ld    E, C          ; 1:4       6131*   
-    ld    B, D          ; 1:4       6133*
+    ld    B, D          ; 1:4       6133* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6133*
     ld    D, H          ; 1:4       6133*
     ld    E, L          ; 1:4       6133* save 1x
@@ -22770,14 +22777,14 @@ ORG 0x6000
     ld    D, B          ; 1:4       6133*
     ld    E, C          ; 1:4       6133* 
    
-    ld    B, H          ; 1:4       6143*
+    ld    B, H          ; 1:4       6143* Variant: 2^a - 2^b - 2^c
     ld    A, L          ; 1:4       6143* save 1x
     ld    H, L          ; 1:4       6143*
     ld    L, 0x00       ; 2:7       6143* 256x
     add  HL, HL         ; 1:11      6143* 512x
     add  HL, HL         ; 1:11      6143* 1024x
     add  HL, HL         ; 1:11      6143* 2048x
-    add   A, L          ; 1:4       6143* +
+    add   A, L          ; 1:4       6143*
     ld    C, A          ; 1:4       6143* +
     ld    A, B          ; 1:4       6143* +
     adc   A, H          ; 1:4       6143* +
@@ -22785,8 +22792,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6143* 4096x
     add  HL, HL         ; 1:11      6143* 8192x
     or    A             ; 1:4       6143*
-    sbc  HL, BC         ; 2:15      6143* HL - save   
-    ld    B, D          ; 1:4       6151*
+    sbc  HL, BC         ; 2:15      6143* HL - save       
+    ld    B, D          ; 1:4       6151* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6151*
     ld    D, H          ; 1:4       6151*
     ld    E, L          ; 1:4       6151* save 1x
@@ -22807,8 +22814,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6151* 4096x
     add  HL, DE         ; 1:11      6151* HL + save
     ld    D, B          ; 1:4       6151*
-    ld    E, C          ; 1:4       6151*   
-    ld    B, D          ; 1:4       6163*
+    ld    E, C          ; 1:4       6151*       
+    ld    B, D          ; 1:4       6163* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6163*
     ld    D, H          ; 1:4       6163*
     ld    E, L          ; 1:4       6163* save 1x
@@ -22822,21 +22829,18 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       6163* +
     add  HL, DE         ; 1:11      6163* + save 16x
     ex   DE, HL         ; 1:4       6163* +
-    add  HL, HL         ; 1:11      6163* 32x
-    add  HL, HL         ; 1:11      6163* 64x
-    add  HL, HL         ; 1:11      6163* 128x
-    add  HL, HL         ; 1:11      6163* 256x
-    add  HL, HL         ; 1:11      6163* 512x
-    add  HL, HL         ; 1:11      6163* 1024x
-    add  HL, HL         ; 1:11      6163* 2048x
+    rr    H             ; 2:8       6163*
+    rr    L             ; 2:8       6163*
+    ld    H, L          ; 1:4       6163*
+    ld    L, 0x00       ; 2:7       6163* 2048x
     ex   DE, HL         ; 1:4       6163* +
     add  HL, DE         ; 1:11      6163* + save 2048x
     ex   DE, HL         ; 1:4       6163* +
     add  HL, HL         ; 1:11      6163* 4096x
     add  HL, DE         ; 1:11      6163* HL + save
     ld    D, B          ; 1:4       6163*
-    ld    E, C          ; 1:4       6163*   
-    ld    B, D          ; 1:4       6173*
+    ld    E, C          ; 1:4       6163*       
+    ld    B, D          ; 1:4       6173* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6173*
     ld    D, H          ; 1:4       6173*
     ld    E, L          ; 1:4       6173* save 1x
@@ -22853,21 +22857,18 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       6173* +
     add  HL, DE         ; 1:11      6173* + save 16x
     ex   DE, HL         ; 1:4       6173* +
-    add  HL, HL         ; 1:11      6173* 32x
-    add  HL, HL         ; 1:11      6173* 64x
-    add  HL, HL         ; 1:11      6173* 128x
-    add  HL, HL         ; 1:11      6173* 256x
-    add  HL, HL         ; 1:11      6173* 512x
-    add  HL, HL         ; 1:11      6173* 1024x
-    add  HL, HL         ; 1:11      6173* 2048x
+    rr    H             ; 2:8       6173*
+    rr    L             ; 2:8       6173*
+    ld    H, L          ; 1:4       6173*
+    ld    L, 0x00       ; 2:7       6173* 2048x
     ex   DE, HL         ; 1:4       6173* +
     add  HL, DE         ; 1:11      6173* + save 2048x
     ex   DE, HL         ; 1:4       6173* +
     add  HL, HL         ; 1:11      6173* 4096x
     add  HL, DE         ; 1:11      6173* HL + save
     ld    D, B          ; 1:4       6173*
-    ld    E, C          ; 1:4       6173*   
-    ld    B, D          ; 1:4       6197*
+    ld    E, C          ; 1:4       6173*       
+    ld    B, D          ; 1:4       6197* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6197*
     ld    D, H          ; 1:4       6197*
     ld    E, L          ; 1:4       6197* save 1x
@@ -22897,8 +22898,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6197* 4096x
     add  HL, DE         ; 1:11      6197* HL + save
     ld    D, B          ; 1:4       6197*
-    ld    E, C          ; 1:4       6197*   
-    ld    B, D          ; 1:4       6199*
+    ld    E, C          ; 1:4       6197*       
+    ld    B, D          ; 1:4       6199* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6199*
     ld    D, H          ; 1:4       6199*
     ld    E, L          ; 1:4       6199* save 1x
@@ -22931,8 +22932,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6199* 4096x
     add  HL, DE         ; 1:11      6199* HL + save
     ld    D, B          ; 1:4       6199*
-    ld    E, C          ; 1:4       6199*   
-    ld    B, D          ; 1:4       6203*
+    ld    E, C          ; 1:4       6199*       
+    ld    B, D          ; 1:4       6203* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6203*
     ld    D, H          ; 1:4       6203*
     ld    E, L          ; 1:4       6203* save 1x
@@ -22965,8 +22966,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6203* 4096x
     add  HL, DE         ; 1:11      6203* HL + save
     ld    D, B          ; 1:4       6203*
-    ld    E, C          ; 1:4       6203*   
-    ld    B, D          ; 1:4       6211*
+    ld    E, C          ; 1:4       6203*       
+    ld    B, D          ; 1:4       6211* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6211*
     ld    D, H          ; 1:4       6211*
     ld    E, L          ; 1:4       6211* save 1x
@@ -22993,8 +22994,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6211* 4096x
     add  HL, DE         ; 1:11      6211* HL + save
     ld    D, B          ; 1:4       6211*
-    ld    E, C          ; 1:4       6211*   
-    ld    B, D          ; 1:4       6217*
+    ld    E, C          ; 1:4       6211*       
+    ld    B, D          ; 1:4       6217* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6217*
     ld    D, H          ; 1:4       6217*
     ld    E, L          ; 1:4       6217* save 1x
@@ -23021,8 +23022,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6217* 4096x
     add  HL, DE         ; 1:11      6217* HL + save
     ld    D, B          ; 1:4       6217*
-    ld    E, C          ; 1:4       6217*   
-    ld    B, D          ; 1:4       6221*
+    ld    E, C          ; 1:4       6217*       
+    ld    B, D          ; 1:4       6221* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6221*
     ld    D, H          ; 1:4       6221*
     ld    E, L          ; 1:4       6221* save 1x
@@ -23053,8 +23054,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6221* HL + save
     ld    D, B          ; 1:4       6221*
     ld    E, C          ; 1:4       6221* 
-   
-    ld    B, D          ; 1:4       6229*
+       
+    ld    B, D          ; 1:4       6229* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6229*
     ld    D, H          ; 1:4       6229*
     ld    E, L          ; 1:4       6229* save 1x
@@ -23084,8 +23085,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6229* 4096x
     add  HL, DE         ; 1:11      6229* HL + save
     ld    D, B          ; 1:4       6229*
-    ld    E, C          ; 1:4       6229*   
-    ld    B, D          ; 1:4       6247*
+    ld    E, C          ; 1:4       6229*       
+    ld    B, D          ; 1:4       6247* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6247*
     ld    D, H          ; 1:4       6247*
     ld    E, L          ; 1:4       6247* save 1x
@@ -23118,8 +23119,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6247* 4096x
     add  HL, DE         ; 1:11      6247* HL + save
     ld    D, B          ; 1:4       6247*
-    ld    E, C          ; 1:4       6247*   
-    ld    B, D          ; 1:4       6257*
+    ld    E, C          ; 1:4       6247*       
+    ld    B, D          ; 1:4       6257* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6257*
     ld    D, H          ; 1:4       6257*
     ld    E, L          ; 1:4       6257* save 1x
@@ -23149,80 +23150,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6257* 4096x
     add  HL, DE         ; 1:11      6257* HL + save
     ld    D, B          ; 1:4       6257*
-    ld    E, C          ; 1:4       6257*   
-    ld    B, D          ; 1:4       6263*
+    ld    E, C          ; 1:4       6257*       
+    ld    B, D          ; 1:4       6263* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6263*
     ld    D, H          ; 1:4       6263*
     ld    E, L          ; 1:4       6263* save 1x
     add  HL, HL         ; 1:11      6263* 2x
+    ex   DE, HL         ; 1:4       6263* +
+    add  HL, DE         ; 1:11      6263* + save 2x
+    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 4x
+    ex   DE, HL         ; 1:4       6263* +
+    add  HL, DE         ; 1:11      6263* + save 4x
+    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 8x
-    ex   DE, HL         ; 1:4       6263* +
-    add  HL, DE         ; 1:11      6263* + save 8x
-    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 16x
+    ex   DE, HL         ; 1:4       6263* +
+    add  HL, DE         ; 1:11      6263* + save 16x
+    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 32x
+    ex   DE, HL         ; 1:4       6263* +
+    add  HL, DE         ; 1:11      6263* + save 32x
+    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 64x
+    ex   DE, HL         ; 1:4       6263* +
+    add  HL, DE         ; 1:11      6263* + save 64x
+    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 128x
-    ex   DE, HL         ; 1:4       6263* +
-    add  HL, DE         ; 1:11      6263* + save 128x
-    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 256x
-    ex   DE, HL         ; 1:4       6263* +
-    add  HL, DE         ; 1:11      6263* + save 256x
-    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 512x
-    ex   DE, HL         ; 1:4       6263* +
-    add  HL, DE         ; 1:11      6263* + save 512x
-    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 1024x
-    ex   DE, HL         ; 1:4       6263* +
-    add  HL, DE         ; 1:11      6263* + save 1024x
-    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 2048x
+    ex   DE, HL         ; 1:4       6263* +
+    add  HL, DE         ; 1:11      6263* + save 2048x
+    ex   DE, HL         ; 1:4       6263* +
     add  HL, HL         ; 1:11      6263* 4096x
-    add  HL, HL         ; 1:11      6263* 8192x
-    or    A             ; 1:4       6263*
-    sbc  HL, DE         ; 2:15      6263* HL - save
+    add  HL, DE         ; 1:11      6263* HL + save
     ld    D, B          ; 1:4       6263*
-    ld    E, C          ; 1:4       6263*   
-    ld    B, D          ; 1:4       6269*
+    ld    E, C          ; 1:4       6263*       
+    ld    B, D          ; 1:4       6269* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6269*
     ld    D, H          ; 1:4       6269*
     ld    E, L          ; 1:4       6269* save 1x
     add  HL, HL         ; 1:11      6269* 2x
-    ex   DE, HL         ; 1:4       6269* +
-    add  HL, DE         ; 1:11      6269* + save 2x
-    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 4x
+    ex   DE, HL         ; 1:4       6269* +
+    add  HL, DE         ; 1:11      6269* + save 4x
+    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 8x
+    ex   DE, HL         ; 1:4       6269* +
+    add  HL, DE         ; 1:11      6269* + save 8x
+    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 16x
+    ex   DE, HL         ; 1:4       6269* +
+    add  HL, DE         ; 1:11      6269* + save 16x
+    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 32x
+    ex   DE, HL         ; 1:4       6269* +
+    add  HL, DE         ; 1:11      6269* + save 32x
+    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 64x
+    ex   DE, HL         ; 1:4       6269* +
+    add  HL, DE         ; 1:11      6269* + save 64x
+    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 128x
-    ex   DE, HL         ; 1:4       6269* +
-    add  HL, DE         ; 1:11      6269* + save 128x
-    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 256x
-    ex   DE, HL         ; 1:4       6269* +
-    add  HL, DE         ; 1:11      6269* + save 256x
-    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 512x
-    ex   DE, HL         ; 1:4       6269* +
-    add  HL, DE         ; 1:11      6269* + save 512x
-    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 1024x
-    ex   DE, HL         ; 1:4       6269* +
-    add  HL, DE         ; 1:11      6269* + save 1024x
-    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 2048x
+    ex   DE, HL         ; 1:4       6269* +
+    add  HL, DE         ; 1:11      6269* + save 2048x
+    ex   DE, HL         ; 1:4       6269* +
     add  HL, HL         ; 1:11      6269* 4096x
-    add  HL, HL         ; 1:11      6269* 8192x
-    or    A             ; 1:4       6269*
-    sbc  HL, DE         ; 2:15      6269* HL - save
+    add  HL, DE         ; 1:11      6269* HL + save
     ld    D, B          ; 1:4       6269*
     ld    E, C          ; 1:4       6269*   
-    ld    B, D          ; 1:4       6271*
+    ld    B, D          ; 1:4       6271* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6271*
     ld    D, H          ; 1:4       6271*
     ld    E, L          ; 1:4       6271* save 1x
@@ -23254,8 +23257,8 @@ ORG 0x6000
     or    A             ; 1:4       6271*
     sbc  HL, DE         ; 2:15      6271* HL - save
     ld    D, B          ; 1:4       6271*
-    ld    E, C          ; 1:4       6271*   
-    ld    B, D          ; 1:4       6277*
+    ld    E, C          ; 1:4       6271*       
+    ld    B, D          ; 1:4       6277* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6277*
     ld    D, H          ; 1:4       6277*
     ld    E, L          ; 1:4       6277* save 1x
@@ -23282,8 +23285,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6277* 4096x
     add  HL, DE         ; 1:11      6277* HL + save
     ld    D, B          ; 1:4       6277*
-    ld    E, C          ; 1:4       6277*   
-    ld    B, D          ; 1:4       6287*
+    ld    E, C          ; 1:4       6277*       
+    ld    B, D          ; 1:4       6287* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6287*
     ld    D, H          ; 1:4       6287*
     ld    E, L          ; 1:4       6287* save 1x
@@ -23316,8 +23319,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6287* 4096x
     add  HL, DE         ; 1:11      6287* HL + save
     ld    D, B          ; 1:4       6287*
-    ld    E, C          ; 1:4       6287*   
-    ld    B, D          ; 1:4       6299*
+    ld    E, C          ; 1:4       6287*       
+    ld    B, D          ; 1:4       6299* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6299*
     ld    D, H          ; 1:4       6299*
     ld    E, L          ; 1:4       6299* save 1x
@@ -23350,8 +23353,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6299* 4096x
     add  HL, DE         ; 1:11      6299* HL + save
     ld    D, B          ; 1:4       6299*
-    ld    E, C          ; 1:4       6299*   
-    ld    B, D          ; 1:4       6301*
+    ld    E, C          ; 1:4       6299*       
+    ld    B, D          ; 1:4       6301* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6301*
     ld    D, H          ; 1:4       6301*
     ld    E, L          ; 1:4       6301* save 1x
@@ -23385,8 +23388,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6301* HL + save
     ld    D, B          ; 1:4       6301*
     ld    E, C          ; 1:4       6301* 
-   
-    ld    B, D          ; 1:4       6311*
+       
+    ld    B, D          ; 1:4       6311* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6311*
     ld    D, H          ; 1:4       6311*
     ld    E, L          ; 1:4       6311* save 1x
@@ -23419,8 +23422,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6311* 4096x
     add  HL, DE         ; 1:11      6311* HL + save
     ld    D, B          ; 1:4       6311*
-    ld    E, C          ; 1:4       6311*   
-    ld    B, D          ; 1:4       6317*
+    ld    E, C          ; 1:4       6311*       
+    ld    B, D          ; 1:4       6317* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6317*
     ld    D, H          ; 1:4       6317*
     ld    E, L          ; 1:4       6317* save 1x
@@ -23453,8 +23456,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6317* 4096x
     add  HL, DE         ; 1:11      6317* HL + save
     ld    D, B          ; 1:4       6317*
-    ld    E, C          ; 1:4       6317*   
-    ld    B, D          ; 1:4       6323*
+    ld    E, C          ; 1:4       6317*       
+    ld    B, D          ; 1:4       6323* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6323*
     ld    D, H          ; 1:4       6323*
     ld    E, L          ; 1:4       6323* save 1x
@@ -23487,8 +23490,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6323* 4096x
     add  HL, DE         ; 1:11      6323* HL + save
     ld    D, B          ; 1:4       6323*
-    ld    E, C          ; 1:4       6323*   
-    ld    B, D          ; 1:4       6329*
+    ld    E, C          ; 1:4       6323*       
+    ld    B, D          ; 1:4       6329* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6329*
     ld    D, H          ; 1:4       6329*
     ld    E, L          ; 1:4       6329* save 1x
@@ -23521,8 +23524,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6329* 4096x
     add  HL, DE         ; 1:11      6329* HL + save
     ld    D, B          ; 1:4       6329*
-    ld    E, C          ; 1:4       6329*   
-    ld    B, D          ; 1:4       6337*
+    ld    E, C          ; 1:4       6329*       
+    ld    B, D          ; 1:4       6337* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6337*
     ld    D, H          ; 1:4       6337*
     ld    E, L          ; 1:4       6337* save 1x
@@ -23549,8 +23552,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6337* 4096x
     add  HL, DE         ; 1:11      6337* HL + save
     ld    D, B          ; 1:4       6337*
-    ld    E, C          ; 1:4       6337*   
-    ld    B, D          ; 1:4       6343*
+    ld    E, C          ; 1:4       6337*       
+    ld    B, D          ; 1:4       6343* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6343*
     ld    D, H          ; 1:4       6343*
     ld    E, L          ; 1:4       6343* save 1x
@@ -23583,8 +23586,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6343* 4096x
     add  HL, DE         ; 1:11      6343* HL + save
     ld    D, B          ; 1:4       6343*
-    ld    E, C          ; 1:4       6343*   
-    ld    B, D          ; 1:4       6353*
+    ld    E, C          ; 1:4       6343*       
+    ld    B, D          ; 1:4       6353* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6353*
     ld    D, H          ; 1:4       6353*
     ld    E, L          ; 1:4       6353* save 1x
@@ -23614,44 +23617,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6353* 4096x
     add  HL, DE         ; 1:11      6353* HL + save
     ld    D, B          ; 1:4       6353*
-    ld    E, C          ; 1:4       6353*   
-    ld    B, D          ; 1:4       6359*
+    ld    E, C          ; 1:4       6353*       
+    ld    B, D          ; 1:4       6359* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6359*
     ld    D, H          ; 1:4       6359*
     ld    E, L          ; 1:4       6359* save 1x
     add  HL, HL         ; 1:11      6359* 2x
+    ex   DE, HL         ; 1:4       6359* +
+    add  HL, DE         ; 1:11      6359* + save 2x
+    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 4x
+    ex   DE, HL         ; 1:4       6359* +
+    add  HL, DE         ; 1:11      6359* + save 4x
+    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 8x
-    ex   DE, HL         ; 1:4       6359* +
-    add  HL, DE         ; 1:11      6359* + save 8x
-    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 16x
+    ex   DE, HL         ; 1:4       6359* +
+    add  HL, DE         ; 1:11      6359* + save 16x
+    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 32x
-    ex   DE, HL         ; 1:4       6359* +
-    add  HL, DE         ; 1:11      6359* + save 32x
-    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 64x
+    ex   DE, HL         ; 1:4       6359* +
+    add  HL, DE         ; 1:11      6359* + save 64x
+    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 128x
+    ex   DE, HL         ; 1:4       6359* +
+    add  HL, DE         ; 1:11      6359* + save 128x
+    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 256x
-    ex   DE, HL         ; 1:4       6359* +
-    add  HL, DE         ; 1:11      6359* + save 256x
-    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 512x
-    ex   DE, HL         ; 1:4       6359* +
-    add  HL, DE         ; 1:11      6359* + save 512x
-    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 1024x
-    ex   DE, HL         ; 1:4       6359* +
-    add  HL, DE         ; 1:11      6359* + save 1024x
-    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 2048x
+    ex   DE, HL         ; 1:4       6359* +
+    add  HL, DE         ; 1:11      6359* + save 2048x
+    ex   DE, HL         ; 1:4       6359* +
     add  HL, HL         ; 1:11      6359* 4096x
-    add  HL, HL         ; 1:11      6359* 8192x
-    or    A             ; 1:4       6359*
-    sbc  HL, DE         ; 2:15      6359* HL - save
+    add  HL, DE         ; 1:11      6359* HL + save
     ld    D, B          ; 1:4       6359*
-    ld    E, C          ; 1:4       6359*   
-    ld    B, D          ; 1:4       6361*
+    ld    E, C          ; 1:4       6359*       
+    ld    B, D          ; 1:4       6361* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6361*
     ld    D, H          ; 1:4       6361*
     ld    E, L          ; 1:4       6361* save 1x
@@ -23685,7 +23689,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6361* HL + save
     ld    D, B          ; 1:4       6361*
     ld    E, C          ; 1:4       6361*   
-    ld    B, D          ; 1:4       6367*
+    ld    B, D          ; 1:4       6367* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6367*
     ld    D, H          ; 1:4       6367*
     ld    E, L          ; 1:4       6367* save 1x
@@ -23718,8 +23722,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6367* HL - save
     ld    D, B          ; 1:4       6367*
     ld    E, C          ; 1:4       6367* 
-   
-    ld    B, D          ; 1:4       6373*
+       
+    ld    B, D          ; 1:4       6373* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6373*
     ld    D, H          ; 1:4       6373*
     ld    E, L          ; 1:4       6373* save 1x
@@ -23752,80 +23756,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6373* 4096x
     add  HL, DE         ; 1:11      6373* HL + save
     ld    D, B          ; 1:4       6373*
-    ld    E, C          ; 1:4       6373*   
-    ld    B, D          ; 1:4       6379*
+    ld    E, C          ; 1:4       6373*       
+    ld    B, D          ; 1:4       6379* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6379*
     ld    D, H          ; 1:4       6379*
     ld    E, L          ; 1:4       6379* save 1x
     add  HL, HL         ; 1:11      6379* 2x
+    ex   DE, HL         ; 1:4       6379* +
+    add  HL, DE         ; 1:11      6379* + save 2x
+    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 4x
-    ex   DE, HL         ; 1:4       6379* +
-    add  HL, DE         ; 1:11      6379* + save 4x
-    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 8x
+    ex   DE, HL         ; 1:4       6379* +
+    add  HL, DE         ; 1:11      6379* + save 8x
+    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 16x
-    ex   DE, HL         ; 1:4       6379* +
-    add  HL, DE         ; 1:11      6379* + save 16x
-    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 32x
+    ex   DE, HL         ; 1:4       6379* +
+    add  HL, DE         ; 1:11      6379* + save 32x
+    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 64x
+    ex   DE, HL         ; 1:4       6379* +
+    add  HL, DE         ; 1:11      6379* + save 64x
+    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 128x
+    ex   DE, HL         ; 1:4       6379* +
+    add  HL, DE         ; 1:11      6379* + save 128x
+    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 256x
-    ex   DE, HL         ; 1:4       6379* +
-    add  HL, DE         ; 1:11      6379* + save 256x
-    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 512x
-    ex   DE, HL         ; 1:4       6379* +
-    add  HL, DE         ; 1:11      6379* + save 512x
-    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 1024x
-    ex   DE, HL         ; 1:4       6379* +
-    add  HL, DE         ; 1:11      6379* + save 1024x
-    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 2048x
+    ex   DE, HL         ; 1:4       6379* +
+    add  HL, DE         ; 1:11      6379* + save 2048x
+    ex   DE, HL         ; 1:4       6379* +
     add  HL, HL         ; 1:11      6379* 4096x
-    add  HL, HL         ; 1:11      6379* 8192x
-    or    A             ; 1:4       6379*
-    sbc  HL, DE         ; 2:15      6379* HL - save
+    add  HL, DE         ; 1:11      6379* HL + save
     ld    D, B          ; 1:4       6379*
-    ld    E, C          ; 1:4       6379*   
-    ld    B, D          ; 1:4       6389*
+    ld    E, C          ; 1:4       6379*       
+    ld    B, D          ; 1:4       6389* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6389*
     ld    D, H          ; 1:4       6389*
     ld    E, L          ; 1:4       6389* save 1x
     add  HL, HL         ; 1:11      6389* 2x
-    ex   DE, HL         ; 1:4       6389* +
-    add  HL, DE         ; 1:11      6389* + save 2x
-    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 4x
+    ex   DE, HL         ; 1:4       6389* +
+    add  HL, DE         ; 1:11      6389* + save 4x
+    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 8x
-    ex   DE, HL         ; 1:4       6389* +
-    add  HL, DE         ; 1:11      6389* + save 8x
-    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 16x
+    ex   DE, HL         ; 1:4       6389* +
+    add  HL, DE         ; 1:11      6389* + save 16x
+    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 32x
+    ex   DE, HL         ; 1:4       6389* +
+    add  HL, DE         ; 1:11      6389* + save 32x
+    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 64x
+    ex   DE, HL         ; 1:4       6389* +
+    add  HL, DE         ; 1:11      6389* + save 64x
+    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 128x
+    ex   DE, HL         ; 1:4       6389* +
+    add  HL, DE         ; 1:11      6389* + save 128x
+    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 256x
-    ex   DE, HL         ; 1:4       6389* +
-    add  HL, DE         ; 1:11      6389* + save 256x
-    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 512x
-    ex   DE, HL         ; 1:4       6389* +
-    add  HL, DE         ; 1:11      6389* + save 512x
-    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 1024x
-    ex   DE, HL         ; 1:4       6389* +
-    add  HL, DE         ; 1:11      6389* + save 1024x
-    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 2048x
+    ex   DE, HL         ; 1:4       6389* +
+    add  HL, DE         ; 1:11      6389* + save 2048x
+    ex   DE, HL         ; 1:4       6389* +
     add  HL, HL         ; 1:11      6389* 4096x
-    add  HL, HL         ; 1:11      6389* 8192x
-    or    A             ; 1:4       6389*
-    sbc  HL, DE         ; 2:15      6389* HL - save
+    add  HL, DE         ; 1:11      6389* HL + save
     ld    D, B          ; 1:4       6389*
     ld    E, C          ; 1:4       6389*   
-    ld    B, D          ; 1:4       6397*
+    ld    B, D          ; 1:4       6397* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6397*
     ld    D, H          ; 1:4       6397*
     ld    E, L          ; 1:4       6397* save 1x
@@ -23833,13 +23839,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       6397* +
     add  HL, DE         ; 1:11      6397* + save 2x
     ex   DE, HL         ; 1:4       6397* +
-    add  HL, HL         ; 1:11      6397* 4x
-    add  HL, HL         ; 1:11      6397* 8x
-    add  HL, HL         ; 1:11      6397* 16x
-    add  HL, HL         ; 1:11      6397* 32x
-    add  HL, HL         ; 1:11      6397* 64x
-    add  HL, HL         ; 1:11      6397* 128x
-    add  HL, HL         ; 1:11      6397* 256x
+    rr    H             ; 2:8       6397*
+    rr    L             ; 2:8       6397*
+    ld    H, L          ; 1:4       6397*
+    ld    L, 0x00       ; 2:7       6397* 256x
     ex   DE, HL         ; 1:4       6397* +
     add  HL, DE         ; 1:11      6397* + save 256x
     ex   DE, HL         ; 1:4       6397* +
@@ -23857,8 +23860,8 @@ ORG 0x6000
     or    A             ; 1:4       6397*
     sbc  HL, DE         ; 2:15      6397* HL - save
     ld    D, B          ; 1:4       6397*
-    ld    E, C          ; 1:4       6397*   
-    ld    B, D          ; 1:4       6421*
+    ld    E, C          ; 1:4       6397*       
+    ld    B, D          ; 1:4       6421* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6421*
     ld    D, H          ; 1:4       6421*
     ld    E, L          ; 1:4       6421* save 1x
@@ -23888,8 +23891,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6421* 4096x
     add  HL, DE         ; 1:11      6421* HL + save
     ld    D, B          ; 1:4       6421*
-    ld    E, C          ; 1:4       6421*   
-    ld    B, D          ; 1:4       6427*
+    ld    E, C          ; 1:4       6421*       
+    ld    B, D          ; 1:4       6427* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6427*
     ld    D, H          ; 1:4       6427*
     ld    E, L          ; 1:4       6427* save 1x
@@ -23922,8 +23925,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6427* 4096x
     add  HL, DE         ; 1:11      6427* HL + save
     ld    D, B          ; 1:4       6427*
-    ld    E, C          ; 1:4       6427*   
-    ld    B, D          ; 1:4       6449*
+    ld    E, C          ; 1:4       6427*       
+    ld    B, D          ; 1:4       6449* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6449*
     ld    D, H          ; 1:4       6449*
     ld    E, L          ; 1:4       6449* save 1x
@@ -23953,8 +23956,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6449* 4096x
     add  HL, DE         ; 1:11      6449* HL + save
     ld    D, B          ; 1:4       6449*
-    ld    E, C          ; 1:4       6449*   
-    ld    B, D          ; 1:4       6451*
+    ld    E, C          ; 1:4       6449*       
+    ld    B, D          ; 1:4       6451* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6451*
     ld    D, H          ; 1:4       6451*
     ld    E, L          ; 1:4       6451* save 1x
@@ -23987,8 +23990,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6451* 4096x
     add  HL, DE         ; 1:11      6451* HL + save
     ld    D, B          ; 1:4       6451*
-    ld    E, C          ; 1:4       6451*   
-    ld    B, D          ; 1:4       6469*
+    ld    E, C          ; 1:4       6451*       
+    ld    B, D          ; 1:4       6469* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6469*
     ld    D, H          ; 1:4       6469*
     ld    E, L          ; 1:4       6469* save 1x
@@ -24018,8 +24021,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6469* 4096x
     add  HL, DE         ; 1:11      6469* HL + save
     ld    D, B          ; 1:4       6469*
-    ld    E, C          ; 1:4       6469*   
-    ld    B, D          ; 1:4       6473*
+    ld    E, C          ; 1:4       6469*       
+    ld    B, D          ; 1:4       6473* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6473*
     ld    D, H          ; 1:4       6473*
     ld    E, L          ; 1:4       6473* save 1x
@@ -24050,8 +24053,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6473* HL + save
     ld    D, B          ; 1:4       6473*
     ld    E, C          ; 1:4       6473* 
-   
-    ld    B, D          ; 1:4       6481*
+       
+    ld    B, D          ; 1:4       6481* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6481*
     ld    D, H          ; 1:4       6481*
     ld    E, L          ; 1:4       6481* save 1x
@@ -24081,80 +24084,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6481* 4096x
     add  HL, DE         ; 1:11      6481* HL + save
     ld    D, B          ; 1:4       6481*
-    ld    E, C          ; 1:4       6481*   
-    ld    B, D          ; 1:4       6491*
+    ld    E, C          ; 1:4       6481*       
+    ld    B, D          ; 1:4       6491* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6491*
     ld    D, H          ; 1:4       6491*
     ld    E, L          ; 1:4       6491* save 1x
     add  HL, HL         ; 1:11      6491* 2x
+    ex   DE, HL         ; 1:4       6491* +
+    add  HL, DE         ; 1:11      6491* + save 2x
+    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 4x
-    ex   DE, HL         ; 1:4       6491* +
-    add  HL, DE         ; 1:11      6491* + save 4x
-    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 8x
+    ex   DE, HL         ; 1:4       6491* +
+    add  HL, DE         ; 1:11      6491* + save 8x
+    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 16x
+    ex   DE, HL         ; 1:4       6491* +
+    add  HL, DE         ; 1:11      6491* + save 16x
+    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 32x
-    ex   DE, HL         ; 1:4       6491* +
-    add  HL, DE         ; 1:11      6491* + save 32x
-    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 64x
+    ex   DE, HL         ; 1:4       6491* +
+    add  HL, DE         ; 1:11      6491* + save 64x
+    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 128x
-    ex   DE, HL         ; 1:4       6491* +
-    add  HL, DE         ; 1:11      6491* + save 128x
-    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 256x
+    ex   DE, HL         ; 1:4       6491* +
+    add  HL, DE         ; 1:11      6491* + save 256x
+    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 512x
-    ex   DE, HL         ; 1:4       6491* +
-    add  HL, DE         ; 1:11      6491* + save 512x
-    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 1024x
-    ex   DE, HL         ; 1:4       6491* +
-    add  HL, DE         ; 1:11      6491* + save 1024x
-    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 2048x
+    ex   DE, HL         ; 1:4       6491* +
+    add  HL, DE         ; 1:11      6491* + save 2048x
+    ex   DE, HL         ; 1:4       6491* +
     add  HL, HL         ; 1:11      6491* 4096x
-    add  HL, HL         ; 1:11      6491* 8192x
-    or    A             ; 1:4       6491*
-    sbc  HL, DE         ; 2:15      6491* HL - save
+    add  HL, DE         ; 1:11      6491* HL + save
     ld    D, B          ; 1:4       6491*
-    ld    E, C          ; 1:4       6491*   
-    ld    B, D          ; 1:4       6521*
+    ld    E, C          ; 1:4       6491*       
+    ld    B, D          ; 1:4       6521* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6521*
     ld    D, H          ; 1:4       6521*
     ld    E, L          ; 1:4       6521* save 1x
     add  HL, HL         ; 1:11      6521* 2x
-    ex   DE, HL         ; 1:4       6521* +
-    add  HL, DE         ; 1:11      6521* + save 2x
-    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 4x
-    ex   DE, HL         ; 1:4       6521* +
-    add  HL, DE         ; 1:11      6521* + save 4x
-    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 8x
+    ex   DE, HL         ; 1:4       6521* +
+    add  HL, DE         ; 1:11      6521* + save 8x
+    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 16x
+    ex   DE, HL         ; 1:4       6521* +
+    add  HL, DE         ; 1:11      6521* + save 16x
+    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 32x
+    ex   DE, HL         ; 1:4       6521* +
+    add  HL, DE         ; 1:11      6521* + save 32x
+    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 64x
+    ex   DE, HL         ; 1:4       6521* +
+    add  HL, DE         ; 1:11      6521* + save 64x
+    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 128x
-    ex   DE, HL         ; 1:4       6521* +
-    add  HL, DE         ; 1:11      6521* + save 128x
-    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 256x
+    ex   DE, HL         ; 1:4       6521* +
+    add  HL, DE         ; 1:11      6521* + save 256x
+    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 512x
-    ex   DE, HL         ; 1:4       6521* +
-    add  HL, DE         ; 1:11      6521* + save 512x
-    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 1024x
-    ex   DE, HL         ; 1:4       6521* +
-    add  HL, DE         ; 1:11      6521* + save 1024x
-    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 2048x
+    ex   DE, HL         ; 1:4       6521* +
+    add  HL, DE         ; 1:11      6521* + save 2048x
+    ex   DE, HL         ; 1:4       6521* +
     add  HL, HL         ; 1:11      6521* 4096x
-    add  HL, HL         ; 1:11      6521* 8192x
-    or    A             ; 1:4       6521*
-    sbc  HL, DE         ; 2:15      6521* HL - save
+    add  HL, DE         ; 1:11      6521* HL + save
     ld    D, B          ; 1:4       6521*
-    ld    E, C          ; 1:4       6521*   
-    ld    B, D          ; 1:4       6529*
+    ld    E, C          ; 1:4       6521*       
+    ld    B, D          ; 1:4       6529* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6529*
     ld    D, H          ; 1:4       6529*
     ld    E, L          ; 1:4       6529* save 1x
@@ -24181,8 +24186,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6529* 4096x
     add  HL, DE         ; 1:11      6529* HL + save
     ld    D, B          ; 1:4       6529*
-    ld    E, C          ; 1:4       6529*   
-    ld    B, D          ; 1:4       6547*
+    ld    E, C          ; 1:4       6529*       
+    ld    B, D          ; 1:4       6547* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6547*
     ld    D, H          ; 1:4       6547*
     ld    E, L          ; 1:4       6547* save 1x
@@ -24215,44 +24220,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6547* 4096x
     add  HL, DE         ; 1:11      6547* HL + save
     ld    D, B          ; 1:4       6547*
-    ld    E, C          ; 1:4       6547*   
-    ld    B, D          ; 1:4       6551*
+    ld    E, C          ; 1:4       6547*       
+    ld    B, D          ; 1:4       6551* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6551*
     ld    D, H          ; 1:4       6551*
     ld    E, L          ; 1:4       6551* save 1x
     add  HL, HL         ; 1:11      6551* 2x
+    ex   DE, HL         ; 1:4       6551* +
+    add  HL, DE         ; 1:11      6551* + save 2x
+    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 4x
+    ex   DE, HL         ; 1:4       6551* +
+    add  HL, DE         ; 1:11      6551* + save 4x
+    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 8x
-    ex   DE, HL         ; 1:4       6551* +
-    add  HL, DE         ; 1:11      6551* + save 8x
-    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 16x
+    ex   DE, HL         ; 1:4       6551* +
+    add  HL, DE         ; 1:11      6551* + save 16x
+    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 32x
-    ex   DE, HL         ; 1:4       6551* +
-    add  HL, DE         ; 1:11      6551* + save 32x
-    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 64x
-    ex   DE, HL         ; 1:4       6551* +
-    add  HL, DE         ; 1:11      6551* + save 64x
-    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 128x
+    ex   DE, HL         ; 1:4       6551* +
+    add  HL, DE         ; 1:11      6551* + save 128x
+    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 256x
+    ex   DE, HL         ; 1:4       6551* +
+    add  HL, DE         ; 1:11      6551* + save 256x
+    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 512x
-    ex   DE, HL         ; 1:4       6551* +
-    add  HL, DE         ; 1:11      6551* + save 512x
-    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 1024x
-    ex   DE, HL         ; 1:4       6551* +
-    add  HL, DE         ; 1:11      6551* + save 1024x
-    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 2048x
+    ex   DE, HL         ; 1:4       6551* +
+    add  HL, DE         ; 1:11      6551* + save 2048x
+    ex   DE, HL         ; 1:4       6551* +
     add  HL, HL         ; 1:11      6551* 4096x
-    add  HL, HL         ; 1:11      6551* 8192x
-    or    A             ; 1:4       6551*
-    sbc  HL, DE         ; 2:15      6551* HL - save
+    add  HL, DE         ; 1:11      6551* HL + save
     ld    D, B          ; 1:4       6551*
-    ld    E, C          ; 1:4       6551*   
-    ld    B, D          ; 1:4       6553*
+    ld    E, C          ; 1:4       6551*       
+    ld    B, D          ; 1:4       6553* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6553*
     ld    D, H          ; 1:4       6553*
     ld    E, L          ; 1:4       6553* save 1x
@@ -24285,8 +24291,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6553* 4096x
     add  HL, DE         ; 1:11      6553* HL + save
     ld    D, B          ; 1:4       6553*
-    ld    E, C          ; 1:4       6553*   
-    ld    B, D          ; 1:4       6563*
+    ld    E, C          ; 1:4       6553*       
+    ld    B, D          ; 1:4       6563* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6563*
     ld    D, H          ; 1:4       6563*
     ld    E, L          ; 1:4       6563* save 1x
@@ -24319,8 +24325,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6563* 4096x
     add  HL, DE         ; 1:11      6563* HL + save
     ld    D, B          ; 1:4       6563*
-    ld    E, C          ; 1:4       6563*   
-    ld    B, D          ; 1:4       6569*
+    ld    E, C          ; 1:4       6563*       
+    ld    B, D          ; 1:4       6569* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6569*
     ld    D, H          ; 1:4       6569*
     ld    E, L          ; 1:4       6569* save 1x
@@ -24353,45 +24359,46 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6569* 4096x
     add  HL, DE         ; 1:11      6569* HL + save
     ld    D, B          ; 1:4       6569*
-    ld    E, C          ; 1:4       6569*   
-    ld    B, D          ; 1:4       6571*
+    ld    E, C          ; 1:4       6569*       
+    ld    B, D          ; 1:4       6571* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6571*
     ld    D, H          ; 1:4       6571*
     ld    E, L          ; 1:4       6571* save 1x
     add  HL, HL         ; 1:11      6571* 2x
+    ex   DE, HL         ; 1:4       6571* +
+    add  HL, DE         ; 1:11      6571* + save 2x
+    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 4x
-    ex   DE, HL         ; 1:4       6571* +
-    add  HL, DE         ; 1:11      6571* + save 4x
-    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 8x
+    ex   DE, HL         ; 1:4       6571* +
+    add  HL, DE         ; 1:11      6571* + save 8x
+    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 16x
-    ex   DE, HL         ; 1:4       6571* +
-    add  HL, DE         ; 1:11      6571* + save 16x
-    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 32x
+    ex   DE, HL         ; 1:4       6571* +
+    add  HL, DE         ; 1:11      6571* + save 32x
+    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 64x
-    ex   DE, HL         ; 1:4       6571* +
-    add  HL, DE         ; 1:11      6571* + save 64x
-    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 128x
+    ex   DE, HL         ; 1:4       6571* +
+    add  HL, DE         ; 1:11      6571* + save 128x
+    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 256x
+    ex   DE, HL         ; 1:4       6571* +
+    add  HL, DE         ; 1:11      6571* + save 256x
+    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 512x
-    ex   DE, HL         ; 1:4       6571* +
-    add  HL, DE         ; 1:11      6571* + save 512x
-    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 1024x
-    ex   DE, HL         ; 1:4       6571* +
-    add  HL, DE         ; 1:11      6571* + save 1024x
-    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 2048x
+    ex   DE, HL         ; 1:4       6571* +
+    add  HL, DE         ; 1:11      6571* + save 2048x
+    ex   DE, HL         ; 1:4       6571* +
     add  HL, HL         ; 1:11      6571* 4096x
-    add  HL, HL         ; 1:11      6571* 8192x
-    or    A             ; 1:4       6571*
-    sbc  HL, DE         ; 2:15      6571* HL - save
+    add  HL, DE         ; 1:11      6571* HL + save
     ld    D, B          ; 1:4       6571*
     ld    E, C          ; 1:4       6571* 
-   
-    ld    B, D          ; 1:4       6577*
+       
+    ld    B, D          ; 1:4       6577* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6577*
     ld    D, H          ; 1:4       6577*
     ld    E, L          ; 1:4       6577* save 1x
@@ -24424,80 +24431,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6577* 4096x
     add  HL, DE         ; 1:11      6577* HL + save
     ld    D, B          ; 1:4       6577*
-    ld    E, C          ; 1:4       6577*   
-    ld    B, D          ; 1:4       6581*
+    ld    E, C          ; 1:4       6577*       
+    ld    B, D          ; 1:4       6581* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6581*
     ld    D, H          ; 1:4       6581*
     ld    E, L          ; 1:4       6581* save 1x
     add  HL, HL         ; 1:11      6581* 2x
-    ex   DE, HL         ; 1:4       6581* +
-    add  HL, DE         ; 1:11      6581* + save 2x
-    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 4x
+    ex   DE, HL         ; 1:4       6581* +
+    add  HL, DE         ; 1:11      6581* + save 4x
+    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 8x
-    ex   DE, HL         ; 1:4       6581* +
-    add  HL, DE         ; 1:11      6581* + save 8x
-    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 16x
+    ex   DE, HL         ; 1:4       6581* +
+    add  HL, DE         ; 1:11      6581* + save 16x
+    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 32x
+    ex   DE, HL         ; 1:4       6581* +
+    add  HL, DE         ; 1:11      6581* + save 32x
+    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 64x
-    ex   DE, HL         ; 1:4       6581* +
-    add  HL, DE         ; 1:11      6581* + save 64x
-    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 128x
+    ex   DE, HL         ; 1:4       6581* +
+    add  HL, DE         ; 1:11      6581* + save 128x
+    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 256x
+    ex   DE, HL         ; 1:4       6581* +
+    add  HL, DE         ; 1:11      6581* + save 256x
+    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 512x
-    ex   DE, HL         ; 1:4       6581* +
-    add  HL, DE         ; 1:11      6581* + save 512x
-    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 1024x
-    ex   DE, HL         ; 1:4       6581* +
-    add  HL, DE         ; 1:11      6581* + save 1024x
-    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 2048x
+    ex   DE, HL         ; 1:4       6581* +
+    add  HL, DE         ; 1:11      6581* + save 2048x
+    ex   DE, HL         ; 1:4       6581* +
     add  HL, HL         ; 1:11      6581* 4096x
-    add  HL, HL         ; 1:11      6581* 8192x
-    or    A             ; 1:4       6581*
-    sbc  HL, DE         ; 2:15      6581* HL - save
+    add  HL, DE         ; 1:11      6581* HL + save
     ld    D, B          ; 1:4       6581*
-    ld    E, C          ; 1:4       6581*   
-    ld    B, D          ; 1:4       6599*
+    ld    E, C          ; 1:4       6581*       
+    ld    B, D          ; 1:4       6599* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6599*
     ld    D, H          ; 1:4       6599*
     ld    E, L          ; 1:4       6599* save 1x
     add  HL, HL         ; 1:11      6599* 2x
+    ex   DE, HL         ; 1:4       6599* +
+    add  HL, DE         ; 1:11      6599* + save 2x
+    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 4x
+    ex   DE, HL         ; 1:4       6599* +
+    add  HL, DE         ; 1:11      6599* + save 4x
+    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 8x
-    ex   DE, HL         ; 1:4       6599* +
-    add  HL, DE         ; 1:11      6599* + save 8x
-    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 16x
-    ex   DE, HL         ; 1:4       6599* +
-    add  HL, DE         ; 1:11      6599* + save 16x
-    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 32x
-    ex   DE, HL         ; 1:4       6599* +
-    add  HL, DE         ; 1:11      6599* + save 32x
-    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 64x
+    ex   DE, HL         ; 1:4       6599* +
+    add  HL, DE         ; 1:11      6599* + save 64x
+    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 128x
+    ex   DE, HL         ; 1:4       6599* +
+    add  HL, DE         ; 1:11      6599* + save 128x
+    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 256x
+    ex   DE, HL         ; 1:4       6599* +
+    add  HL, DE         ; 1:11      6599* + save 256x
+    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 512x
-    ex   DE, HL         ; 1:4       6599* +
-    add  HL, DE         ; 1:11      6599* + save 512x
-    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 1024x
-    ex   DE, HL         ; 1:4       6599* +
-    add  HL, DE         ; 1:11      6599* + save 1024x
-    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 2048x
+    ex   DE, HL         ; 1:4       6599* +
+    add  HL, DE         ; 1:11      6599* + save 2048x
+    ex   DE, HL         ; 1:4       6599* +
     add  HL, HL         ; 1:11      6599* 4096x
-    add  HL, HL         ; 1:11      6599* 8192x
-    or    A             ; 1:4       6599*
-    sbc  HL, DE         ; 2:15      6599* HL - save
+    add  HL, DE         ; 1:11      6599* HL + save
     ld    D, B          ; 1:4       6599*
     ld    E, C          ; 1:4       6599*   
-    ld    B, D          ; 1:4       6607*
+    ld    B, D          ; 1:4       6607* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6607*
     ld    D, H          ; 1:4       6607*
     ld    E, L          ; 1:4       6607* save 1x
@@ -24530,7 +24539,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6607* HL - save
     ld    D, B          ; 1:4       6607*
     ld    E, C          ; 1:4       6607*   
-    ld    B, D          ; 1:4       6619*
+    ld    B, D          ; 1:4       6619* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6619*
     ld    D, H          ; 1:4       6619*
     ld    E, L          ; 1:4       6619* save 1x
@@ -24563,7 +24572,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6619* HL - save
     ld    D, B          ; 1:4       6619*
     ld    E, C          ; 1:4       6619*   
-    ld    B, D          ; 1:4       6637*
+    ld    B, D          ; 1:4       6637* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6637*
     ld    D, H          ; 1:4       6637*
     ld    E, L          ; 1:4       6637* save 1x
@@ -24596,7 +24605,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6637* HL - save
     ld    D, B          ; 1:4       6637*
     ld    E, C          ; 1:4       6637*   
-    ld    B, D          ; 1:4       6653*
+    ld    B, D          ; 1:4       6653* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6653*
     ld    D, H          ; 1:4       6653*
     ld    E, L          ; 1:4       6653* save 1x
@@ -24619,8 +24628,8 @@ ORG 0x6000
     or    A             ; 1:4       6653*
     sbc  HL, DE         ; 2:15      6653* HL - save
     ld    D, B          ; 1:4       6653*
-    ld    E, C          ; 1:4       6653*   
-    ld    B, D          ; 1:4       6659*
+    ld    E, C          ; 1:4       6653*       
+    ld    B, D          ; 1:4       6659* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6659*
     ld    D, H          ; 1:4       6659*
     ld    E, L          ; 1:4       6659* save 1x
@@ -24641,8 +24650,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6659* 4096x
     add  HL, DE         ; 1:11      6659* HL + save
     ld    D, B          ; 1:4       6659*
-    ld    E, C          ; 1:4       6659*   
-    ld    B, D          ; 1:4       6661*
+    ld    E, C          ; 1:4       6659*       
+    ld    B, D          ; 1:4       6661* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6661*
     ld    D, H          ; 1:4       6661*
     ld    E, L          ; 1:4       6661* save 1x
@@ -24651,13 +24660,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       6661* +
     add  HL, DE         ; 1:11      6661* + save 4x
     ex   DE, HL         ; 1:4       6661* +
-    add  HL, HL         ; 1:11      6661* 8x
-    add  HL, HL         ; 1:11      6661* 16x
-    add  HL, HL         ; 1:11      6661* 32x
-    add  HL, HL         ; 1:11      6661* 64x
-    add  HL, HL         ; 1:11      6661* 128x
-    add  HL, HL         ; 1:11      6661* 256x
-    add  HL, HL         ; 1:11      6661* 512x
+    rr    H             ; 2:8       6661*
+    rr    L             ; 2:8       6661*
+    ld    H, L          ; 1:4       6661*
+    ld    L, 0x00       ; 2:7       6661* 512x
     ex   DE, HL         ; 1:4       6661* +
     add  HL, DE         ; 1:11      6661* + save 512x
     ex   DE, HL         ; 1:4       6661* +
@@ -24669,8 +24675,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6661* 4096x
     add  HL, DE         ; 1:11      6661* HL + save
     ld    D, B          ; 1:4       6661*
-    ld    E, C          ; 1:4       6661*   
-    ld    B, D          ; 1:4       6673*
+    ld    E, C          ; 1:4       6661*       
+    ld    B, D          ; 1:4       6673* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6673*
     ld    D, H          ; 1:4       6673*
     ld    E, L          ; 1:4       6673* save 1x
@@ -24698,8 +24704,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6673* HL + save
     ld    D, B          ; 1:4       6673*
     ld    E, C          ; 1:4       6673* 
-   
-    ld    B, D          ; 1:4       6679*
+       
+    ld    B, D          ; 1:4       6679* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6679*
     ld    D, H          ; 1:4       6679*
     ld    E, L          ; 1:4       6679* save 1x
@@ -24732,8 +24738,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6679* 4096x
     add  HL, DE         ; 1:11      6679* HL + save
     ld    D, B          ; 1:4       6679*
-    ld    E, C          ; 1:4       6679*   
-    ld    B, D          ; 1:4       6689*
+    ld    E, C          ; 1:4       6679*       
+    ld    B, D          ; 1:4       6689* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6689*
     ld    D, H          ; 1:4       6689*
     ld    E, L          ; 1:4       6689* save 1x
@@ -24760,8 +24766,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6689* 4096x
     add  HL, DE         ; 1:11      6689* HL + save
     ld    D, B          ; 1:4       6689*
-    ld    E, C          ; 1:4       6689*   
-    ld    B, D          ; 1:4       6691*
+    ld    E, C          ; 1:4       6689*       
+    ld    B, D          ; 1:4       6691* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6691*
     ld    D, H          ; 1:4       6691*
     ld    E, L          ; 1:4       6691* save 1x
@@ -24791,8 +24797,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6691* 4096x
     add  HL, DE         ; 1:11      6691* HL + save
     ld    D, B          ; 1:4       6691*
-    ld    E, C          ; 1:4       6691*   
-    ld    B, D          ; 1:4       6701*
+    ld    E, C          ; 1:4       6691*       
+    ld    B, D          ; 1:4       6701* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6701*
     ld    D, H          ; 1:4       6701*
     ld    E, L          ; 1:4       6701* save 1x
@@ -24825,44 +24831,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6701* 4096x
     add  HL, DE         ; 1:11      6701* HL + save
     ld    D, B          ; 1:4       6701*
-    ld    E, C          ; 1:4       6701*   
-    ld    B, D          ; 1:4       6703*
+    ld    E, C          ; 1:4       6701*       
+    ld    B, D          ; 1:4       6703* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6703*
     ld    D, H          ; 1:4       6703*
     ld    E, L          ; 1:4       6703* save 1x
     add  HL, HL         ; 1:11      6703* 2x
+    ex   DE, HL         ; 1:4       6703* +
+    add  HL, DE         ; 1:11      6703* + save 2x
+    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 4x
+    ex   DE, HL         ; 1:4       6703* +
+    add  HL, DE         ; 1:11      6703* + save 4x
+    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 8x
+    ex   DE, HL         ; 1:4       6703* +
+    add  HL, DE         ; 1:11      6703* + save 8x
+    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 16x
-    ex   DE, HL         ; 1:4       6703* +
-    add  HL, DE         ; 1:11      6703* + save 16x
-    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 32x
+    ex   DE, HL         ; 1:4       6703* +
+    add  HL, DE         ; 1:11      6703* + save 32x
+    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 64x
-    ex   DE, HL         ; 1:4       6703* +
-    add  HL, DE         ; 1:11      6703* + save 64x
-    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 128x
-    ex   DE, HL         ; 1:4       6703* +
-    add  HL, DE         ; 1:11      6703* + save 128x
-    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 256x
-    ex   DE, HL         ; 1:4       6703* +
-    add  HL, DE         ; 1:11      6703* + save 256x
-    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 512x
+    ex   DE, HL         ; 1:4       6703* +
+    add  HL, DE         ; 1:11      6703* + save 512x
+    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 1024x
-    ex   DE, HL         ; 1:4       6703* +
-    add  HL, DE         ; 1:11      6703* + save 1024x
-    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 2048x
+    ex   DE, HL         ; 1:4       6703* +
+    add  HL, DE         ; 1:11      6703* + save 2048x
+    ex   DE, HL         ; 1:4       6703* +
     add  HL, HL         ; 1:11      6703* 4096x
-    add  HL, HL         ; 1:11      6703* 8192x
-    or    A             ; 1:4       6703*
-    sbc  HL, DE         ; 2:15      6703* HL - save
+    add  HL, DE         ; 1:11      6703* HL + save
     ld    D, B          ; 1:4       6703*
-    ld    E, C          ; 1:4       6703*   
-    ld    B, D          ; 1:4       6709*
+    ld    E, C          ; 1:4       6703*       
+    ld    B, D          ; 1:4       6709* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6709*
     ld    D, H          ; 1:4       6709*
     ld    E, L          ; 1:4       6709* save 1x
@@ -24896,7 +24903,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6709* HL + save
     ld    D, B          ; 1:4       6709*
     ld    E, C          ; 1:4       6709*   
-    ld    B, D          ; 1:4       6719*
+    ld    B, D          ; 1:4       6719* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6719*
     ld    D, H          ; 1:4       6719*
     ld    E, L          ; 1:4       6719* save 1x
@@ -24928,8 +24935,8 @@ ORG 0x6000
     or    A             ; 1:4       6719*
     sbc  HL, DE         ; 2:15      6719* HL - save
     ld    D, B          ; 1:4       6719*
-    ld    E, C          ; 1:4       6719*   
-    ld    B, D          ; 1:4       6733*
+    ld    E, C          ; 1:4       6719*       
+    ld    B, D          ; 1:4       6733* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6733*
     ld    D, H          ; 1:4       6733*
     ld    E, L          ; 1:4       6733* save 1x
@@ -24962,8 +24969,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6733* 4096x
     add  HL, DE         ; 1:11      6733* HL + save
     ld    D, B          ; 1:4       6733*
-    ld    E, C          ; 1:4       6733*   
-    ld    B, D          ; 1:4       6737*
+    ld    E, C          ; 1:4       6733*       
+    ld    B, D          ; 1:4       6737* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6737*
     ld    D, H          ; 1:4       6737*
     ld    E, L          ; 1:4       6737* save 1x
@@ -24993,8 +25000,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6737* 4096x
     add  HL, DE         ; 1:11      6737* HL + save
     ld    D, B          ; 1:4       6737*
-    ld    E, C          ; 1:4       6737*   
-    ld    B, D          ; 1:4       6761*
+    ld    E, C          ; 1:4       6737*       
+    ld    B, D          ; 1:4       6761* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6761*
     ld    D, H          ; 1:4       6761*
     ld    E, L          ; 1:4       6761* save 1x
@@ -25028,44 +25035,45 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6761* HL + save
     ld    D, B          ; 1:4       6761*
     ld    E, C          ; 1:4       6761* 
-   
-    ld    B, D          ; 1:4       6763*
+       
+    ld    B, D          ; 1:4       6763* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6763*
     ld    D, H          ; 1:4       6763*
     ld    E, L          ; 1:4       6763* save 1x
     add  HL, HL         ; 1:11      6763* 2x
+    ex   DE, HL         ; 1:4       6763* +
+    add  HL, DE         ; 1:11      6763* + save 2x
+    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 4x
-    ex   DE, HL         ; 1:4       6763* +
-    add  HL, DE         ; 1:11      6763* + save 4x
-    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 8x
+    ex   DE, HL         ; 1:4       6763* +
+    add  HL, DE         ; 1:11      6763* + save 8x
+    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 16x
-    ex   DE, HL         ; 1:4       6763* +
-    add  HL, DE         ; 1:11      6763* + save 16x
-    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 32x
+    ex   DE, HL         ; 1:4       6763* +
+    add  HL, DE         ; 1:11      6763* + save 32x
+    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 64x
+    ex   DE, HL         ; 1:4       6763* +
+    add  HL, DE         ; 1:11      6763* + save 64x
+    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 128x
-    ex   DE, HL         ; 1:4       6763* +
-    add  HL, DE         ; 1:11      6763* + save 128x
-    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 256x
-    ex   DE, HL         ; 1:4       6763* +
-    add  HL, DE         ; 1:11      6763* + save 256x
-    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 512x
+    ex   DE, HL         ; 1:4       6763* +
+    add  HL, DE         ; 1:11      6763* + save 512x
+    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 1024x
-    ex   DE, HL         ; 1:4       6763* +
-    add  HL, DE         ; 1:11      6763* + save 1024x
-    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 2048x
+    ex   DE, HL         ; 1:4       6763* +
+    add  HL, DE         ; 1:11      6763* + save 2048x
+    ex   DE, HL         ; 1:4       6763* +
     add  HL, HL         ; 1:11      6763* 4096x
-    add  HL, HL         ; 1:11      6763* 8192x
-    or    A             ; 1:4       6763*
-    sbc  HL, DE         ; 2:15      6763* HL - save
+    add  HL, DE         ; 1:11      6763* HL + save
     ld    D, B          ; 1:4       6763*
     ld    E, C          ; 1:4       6763*   
-    ld    B, D          ; 1:4       6779*
+    ld    B, D          ; 1:4       6779* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6779*
     ld    D, H          ; 1:4       6779*
     ld    E, L          ; 1:4       6779* save 1x
@@ -25098,7 +25106,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6779* HL - save
     ld    D, B          ; 1:4       6779*
     ld    E, C          ; 1:4       6779*   
-    ld    B, D          ; 1:4       6781*
+    ld    B, D          ; 1:4       6781* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6781*
     ld    D, H          ; 1:4       6781*
     ld    E, L          ; 1:4       6781* save 1x
@@ -25130,8 +25138,8 @@ ORG 0x6000
     or    A             ; 1:4       6781*
     sbc  HL, DE         ; 2:15      6781* HL - save
     ld    D, B          ; 1:4       6781*
-    ld    E, C          ; 1:4       6781*   
-    ld    B, D          ; 1:4       6791*
+    ld    E, C          ; 1:4       6781*       
+    ld    B, D          ; 1:4       6791* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6791*
     ld    D, H          ; 1:4       6791*
     ld    E, L          ; 1:4       6791* save 1x
@@ -25164,8 +25172,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6791* 4096x
     add  HL, DE         ; 1:11      6791* HL + save
     ld    D, B          ; 1:4       6791*
-    ld    E, C          ; 1:4       6791*   
-    ld    B, D          ; 1:4       6793*
+    ld    E, C          ; 1:4       6791*       
+    ld    B, D          ; 1:4       6793* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6793*
     ld    D, H          ; 1:4       6793*
     ld    E, L          ; 1:4       6793* save 1x
@@ -25195,8 +25203,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6793* 4096x
     add  HL, DE         ; 1:11      6793* HL + save
     ld    D, B          ; 1:4       6793*
-    ld    E, C          ; 1:4       6793*   
-    ld    B, D          ; 1:4       6803*
+    ld    E, C          ; 1:4       6793*       
+    ld    B, D          ; 1:4       6803* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6803*
     ld    D, H          ; 1:4       6803*
     ld    E, L          ; 1:4       6803* save 1x
@@ -25229,116 +25237,119 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6803* 4096x
     add  HL, DE         ; 1:11      6803* HL + save
     ld    D, B          ; 1:4       6803*
-    ld    E, C          ; 1:4       6803*   
-    ld    B, D          ; 1:4       6823*
+    ld    E, C          ; 1:4       6803*       
+    ld    B, D          ; 1:4       6823* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6823*
     ld    D, H          ; 1:4       6823*
     ld    E, L          ; 1:4       6823* save 1x
     add  HL, HL         ; 1:11      6823* 2x
+    ex   DE, HL         ; 1:4       6823* +
+    add  HL, DE         ; 1:11      6823* + save 2x
+    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 4x
+    ex   DE, HL         ; 1:4       6823* +
+    add  HL, DE         ; 1:11      6823* + save 4x
+    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 8x
-    ex   DE, HL         ; 1:4       6823* +
-    add  HL, DE         ; 1:11      6823* + save 8x
-    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 16x
-    ex   DE, HL         ; 1:4       6823* +
-    add  HL, DE         ; 1:11      6823* + save 16x
-    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 32x
+    ex   DE, HL         ; 1:4       6823* +
+    add  HL, DE         ; 1:11      6823* + save 32x
+    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 64x
-    ex   DE, HL         ; 1:4       6823* +
-    add  HL, DE         ; 1:11      6823* + save 64x
-    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 128x
+    ex   DE, HL         ; 1:4       6823* +
+    add  HL, DE         ; 1:11      6823* + save 128x
+    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 256x
-    ex   DE, HL         ; 1:4       6823* +
-    add  HL, DE         ; 1:11      6823* + save 256x
-    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 512x
+    ex   DE, HL         ; 1:4       6823* +
+    add  HL, DE         ; 1:11      6823* + save 512x
+    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 1024x
-    ex   DE, HL         ; 1:4       6823* +
-    add  HL, DE         ; 1:11      6823* + save 1024x
-    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 2048x
+    ex   DE, HL         ; 1:4       6823* +
+    add  HL, DE         ; 1:11      6823* + save 2048x
+    ex   DE, HL         ; 1:4       6823* +
     add  HL, HL         ; 1:11      6823* 4096x
-    add  HL, HL         ; 1:11      6823* 8192x
-    or    A             ; 1:4       6823*
-    sbc  HL, DE         ; 2:15      6823* HL - save
+    add  HL, DE         ; 1:11      6823* HL + save
     ld    D, B          ; 1:4       6823*
-    ld    E, C          ; 1:4       6823*   
-    ld    B, D          ; 1:4       6827*
+    ld    E, C          ; 1:4       6823*       
+    ld    B, D          ; 1:4       6827* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6827*
     ld    D, H          ; 1:4       6827*
     ld    E, L          ; 1:4       6827* save 1x
     add  HL, HL         ; 1:11      6827* 2x
+    ex   DE, HL         ; 1:4       6827* +
+    add  HL, DE         ; 1:11      6827* + save 2x
+    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 4x
-    ex   DE, HL         ; 1:4       6827* +
-    add  HL, DE         ; 1:11      6827* + save 4x
-    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 8x
+    ex   DE, HL         ; 1:4       6827* +
+    add  HL, DE         ; 1:11      6827* + save 8x
+    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 16x
-    ex   DE, HL         ; 1:4       6827* +
-    add  HL, DE         ; 1:11      6827* + save 16x
-    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 32x
+    ex   DE, HL         ; 1:4       6827* +
+    add  HL, DE         ; 1:11      6827* + save 32x
+    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 64x
-    ex   DE, HL         ; 1:4       6827* +
-    add  HL, DE         ; 1:11      6827* + save 64x
-    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 128x
+    ex   DE, HL         ; 1:4       6827* +
+    add  HL, DE         ; 1:11      6827* + save 128x
+    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 256x
-    ex   DE, HL         ; 1:4       6827* +
-    add  HL, DE         ; 1:11      6827* + save 256x
-    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 512x
+    ex   DE, HL         ; 1:4       6827* +
+    add  HL, DE         ; 1:11      6827* + save 512x
+    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 1024x
-    ex   DE, HL         ; 1:4       6827* +
-    add  HL, DE         ; 1:11      6827* + save 1024x
-    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 2048x
+    ex   DE, HL         ; 1:4       6827* +
+    add  HL, DE         ; 1:11      6827* + save 2048x
+    ex   DE, HL         ; 1:4       6827* +
     add  HL, HL         ; 1:11      6827* 4096x
-    add  HL, HL         ; 1:11      6827* 8192x
-    or    A             ; 1:4       6827*
-    sbc  HL, DE         ; 2:15      6827* HL - save
+    add  HL, DE         ; 1:11      6827* HL + save
     ld    D, B          ; 1:4       6827*
-    ld    E, C          ; 1:4       6827*   
-    ld    B, D          ; 1:4       6829*
+    ld    E, C          ; 1:4       6827*       
+    ld    B, D          ; 1:4       6829* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6829*
     ld    D, H          ; 1:4       6829*
     ld    E, L          ; 1:4       6829* save 1x
     add  HL, HL         ; 1:11      6829* 2x
-    ex   DE, HL         ; 1:4       6829* +
-    add  HL, DE         ; 1:11      6829* + save 2x
-    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 4x
+    ex   DE, HL         ; 1:4       6829* +
+    add  HL, DE         ; 1:11      6829* + save 4x
+    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 8x
+    ex   DE, HL         ; 1:4       6829* +
+    add  HL, DE         ; 1:11      6829* + save 8x
+    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 16x
-    ex   DE, HL         ; 1:4       6829* +
-    add  HL, DE         ; 1:11      6829* + save 16x
-    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 32x
+    ex   DE, HL         ; 1:4       6829* +
+    add  HL, DE         ; 1:11      6829* + save 32x
+    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 64x
-    ex   DE, HL         ; 1:4       6829* +
-    add  HL, DE         ; 1:11      6829* + save 64x
-    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 128x
+    ex   DE, HL         ; 1:4       6829* +
+    add  HL, DE         ; 1:11      6829* + save 128x
+    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 256x
-    ex   DE, HL         ; 1:4       6829* +
-    add  HL, DE         ; 1:11      6829* + save 256x
-    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 512x
+    ex   DE, HL         ; 1:4       6829* +
+    add  HL, DE         ; 1:11      6829* + save 512x
+    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 1024x
-    ex   DE, HL         ; 1:4       6829* +
-    add  HL, DE         ; 1:11      6829* + save 1024x
-    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 2048x
+    ex   DE, HL         ; 1:4       6829* +
+    add  HL, DE         ; 1:11      6829* + save 2048x
+    ex   DE, HL         ; 1:4       6829* +
     add  HL, HL         ; 1:11      6829* 4096x
-    add  HL, HL         ; 1:11      6829* 8192x
-    or    A             ; 1:4       6829*
-    sbc  HL, DE         ; 2:15      6829* HL - save
+    add  HL, DE         ; 1:11      6829* HL + save
     ld    D, B          ; 1:4       6829*
-    ld    E, C          ; 1:4       6829*   
-    ld    B, D          ; 1:4       6833*
+    ld    E, C          ; 1:4       6829*       
+    ld    B, D          ; 1:4       6833* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6833*
     ld    D, H          ; 1:4       6833*
     ld    E, L          ; 1:4       6833* save 1x
@@ -25372,44 +25383,45 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6833* HL + save
     ld    D, B          ; 1:4       6833*
     ld    E, C          ; 1:4       6833* 
-   
-    ld    B, D          ; 1:4       6841*
+       
+    ld    B, D          ; 1:4       6841* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6841*
     ld    D, H          ; 1:4       6841*
     ld    E, L          ; 1:4       6841* save 1x
     add  HL, HL         ; 1:11      6841* 2x
-    ex   DE, HL         ; 1:4       6841* +
-    add  HL, DE         ; 1:11      6841* + save 2x
-    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 4x
-    ex   DE, HL         ; 1:4       6841* +
-    add  HL, DE         ; 1:11      6841* + save 4x
-    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 8x
+    ex   DE, HL         ; 1:4       6841* +
+    add  HL, DE         ; 1:11      6841* + save 8x
+    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 16x
+    ex   DE, HL         ; 1:4       6841* +
+    add  HL, DE         ; 1:11      6841* + save 16x
+    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 32x
+    ex   DE, HL         ; 1:4       6841* +
+    add  HL, DE         ; 1:11      6841* + save 32x
+    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 64x
-    ex   DE, HL         ; 1:4       6841* +
-    add  HL, DE         ; 1:11      6841* + save 64x
-    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 128x
+    ex   DE, HL         ; 1:4       6841* +
+    add  HL, DE         ; 1:11      6841* + save 128x
+    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 256x
-    ex   DE, HL         ; 1:4       6841* +
-    add  HL, DE         ; 1:11      6841* + save 256x
-    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 512x
+    ex   DE, HL         ; 1:4       6841* +
+    add  HL, DE         ; 1:11      6841* + save 512x
+    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 1024x
-    ex   DE, HL         ; 1:4       6841* +
-    add  HL, DE         ; 1:11      6841* + save 1024x
-    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 2048x
+    ex   DE, HL         ; 1:4       6841* +
+    add  HL, DE         ; 1:11      6841* + save 2048x
+    ex   DE, HL         ; 1:4       6841* +
     add  HL, HL         ; 1:11      6841* 4096x
-    add  HL, HL         ; 1:11      6841* 8192x
-    or    A             ; 1:4       6841*
-    sbc  HL, DE         ; 2:15      6841* HL - save
+    add  HL, DE         ; 1:11      6841* HL + save
     ld    D, B          ; 1:4       6841*
-    ld    E, C          ; 1:4       6841*   
-    ld    B, D          ; 1:4       6857*
+    ld    E, C          ; 1:4       6841*       
+    ld    B, D          ; 1:4       6857* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6857*
     ld    D, H          ; 1:4       6857*
     ld    E, L          ; 1:4       6857* save 1x
@@ -25443,7 +25455,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6857* HL + save
     ld    D, B          ; 1:4       6857*
     ld    E, C          ; 1:4       6857*   
-    ld    B, D          ; 1:4       6863*
+    ld    B, D          ; 1:4       6863* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6863*
     ld    D, H          ; 1:4       6863*
     ld    E, L          ; 1:4       6863* save 1x
@@ -25475,44 +25487,45 @@ ORG 0x6000
     or    A             ; 1:4       6863*
     sbc  HL, DE         ; 2:15      6863* HL - save
     ld    D, B          ; 1:4       6863*
-    ld    E, C          ; 1:4       6863*   
-    ld    B, D          ; 1:4       6869*
+    ld    E, C          ; 1:4       6863*       
+    ld    B, D          ; 1:4       6869* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6869*
     ld    D, H          ; 1:4       6869*
     ld    E, L          ; 1:4       6869* save 1x
     add  HL, HL         ; 1:11      6869* 2x
-    ex   DE, HL         ; 1:4       6869* +
-    add  HL, DE         ; 1:11      6869* + save 2x
-    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 4x
+    ex   DE, HL         ; 1:4       6869* +
+    add  HL, DE         ; 1:11      6869* + save 4x
+    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 8x
-    ex   DE, HL         ; 1:4       6869* +
-    add  HL, DE         ; 1:11      6869* + save 8x
-    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 16x
+    ex   DE, HL         ; 1:4       6869* +
+    add  HL, DE         ; 1:11      6869* + save 16x
+    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 32x
-    ex   DE, HL         ; 1:4       6869* +
-    add  HL, DE         ; 1:11      6869* + save 32x
-    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 64x
+    ex   DE, HL         ; 1:4       6869* +
+    add  HL, DE         ; 1:11      6869* + save 64x
+    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 128x
+    ex   DE, HL         ; 1:4       6869* +
+    add  HL, DE         ; 1:11      6869* + save 128x
+    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 256x
-    ex   DE, HL         ; 1:4       6869* +
-    add  HL, DE         ; 1:11      6869* + save 256x
-    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 512x
+    ex   DE, HL         ; 1:4       6869* +
+    add  HL, DE         ; 1:11      6869* + save 512x
+    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 1024x
-    ex   DE, HL         ; 1:4       6869* +
-    add  HL, DE         ; 1:11      6869* + save 1024x
-    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 2048x
+    ex   DE, HL         ; 1:4       6869* +
+    add  HL, DE         ; 1:11      6869* + save 2048x
+    ex   DE, HL         ; 1:4       6869* +
     add  HL, HL         ; 1:11      6869* 4096x
-    add  HL, HL         ; 1:11      6869* 8192x
-    or    A             ; 1:4       6869*
-    sbc  HL, DE         ; 2:15      6869* HL - save
+    add  HL, DE         ; 1:11      6869* HL + save
     ld    D, B          ; 1:4       6869*
     ld    E, C          ; 1:4       6869*   
-    ld    B, D          ; 1:4       6871*
+    ld    B, D          ; 1:4       6871* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6871*
     ld    D, H          ; 1:4       6871*
     ld    E, L          ; 1:4       6871* save 1x
@@ -25544,44 +25557,45 @@ ORG 0x6000
     or    A             ; 1:4       6871*
     sbc  HL, DE         ; 2:15      6871* HL - save
     ld    D, B          ; 1:4       6871*
-    ld    E, C          ; 1:4       6871*   
-    ld    B, D          ; 1:4       6883*
+    ld    E, C          ; 1:4       6871*       
+    ld    B, D          ; 1:4       6883* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6883*
     ld    D, H          ; 1:4       6883*
     ld    E, L          ; 1:4       6883* save 1x
     add  HL, HL         ; 1:11      6883* 2x
+    ex   DE, HL         ; 1:4       6883* +
+    add  HL, DE         ; 1:11      6883* + save 2x
+    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 4x
-    ex   DE, HL         ; 1:4       6883* +
-    add  HL, DE         ; 1:11      6883* + save 4x
-    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 8x
-    ex   DE, HL         ; 1:4       6883* +
-    add  HL, DE         ; 1:11      6883* + save 8x
-    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 16x
-    ex   DE, HL         ; 1:4       6883* +
-    add  HL, DE         ; 1:11      6883* + save 16x
-    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 32x
+    ex   DE, HL         ; 1:4       6883* +
+    add  HL, DE         ; 1:11      6883* + save 32x
+    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 64x
+    ex   DE, HL         ; 1:4       6883* +
+    add  HL, DE         ; 1:11      6883* + save 64x
+    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 128x
+    ex   DE, HL         ; 1:4       6883* +
+    add  HL, DE         ; 1:11      6883* + save 128x
+    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 256x
-    ex   DE, HL         ; 1:4       6883* +
-    add  HL, DE         ; 1:11      6883* + save 256x
-    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 512x
+    ex   DE, HL         ; 1:4       6883* +
+    add  HL, DE         ; 1:11      6883* + save 512x
+    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 1024x
-    ex   DE, HL         ; 1:4       6883* +
-    add  HL, DE         ; 1:11      6883* + save 1024x
-    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 2048x
+    ex   DE, HL         ; 1:4       6883* +
+    add  HL, DE         ; 1:11      6883* + save 2048x
+    ex   DE, HL         ; 1:4       6883* +
     add  HL, HL         ; 1:11      6883* 4096x
-    add  HL, HL         ; 1:11      6883* 8192x
-    or    A             ; 1:4       6883*
-    sbc  HL, DE         ; 2:15      6883* HL - save
+    add  HL, DE         ; 1:11      6883* HL + save
     ld    D, B          ; 1:4       6883*
     ld    E, C          ; 1:4       6883*   
-    ld    B, D          ; 1:4       6899*
+    ld    B, D          ; 1:4       6899* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6899*
     ld    D, H          ; 1:4       6899*
     ld    E, L          ; 1:4       6899* save 1x
@@ -25614,7 +25628,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6899* HL - save
     ld    D, B          ; 1:4       6899*
     ld    E, C          ; 1:4       6899*   
-    ld    B, D          ; 1:4       6907*
+    ld    B, D          ; 1:4       6907* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6907*
     ld    D, H          ; 1:4       6907*
     ld    E, L          ; 1:4       6907* save 1x
@@ -25644,7 +25658,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6907* HL - save
     ld    D, B          ; 1:4       6907*
     ld    E, C          ; 1:4       6907*   
-    ld    B, D          ; 1:4       6911*
+    ld    B, D          ; 1:4       6911* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6911*
     ld    D, H          ; 1:4       6911*
     ld    E, L          ; 1:4       6911* save 1x
@@ -25664,8 +25678,8 @@ ORG 0x6000
     or    A             ; 1:4       6911*
     sbc  HL, DE         ; 2:15      6911* HL - save
     ld    D, B          ; 1:4       6911*
-    ld    E, C          ; 1:4       6911*   
-    ld    B, D          ; 1:4       6917*
+    ld    E, C          ; 1:4       6911*       
+    ld    B, D          ; 1:4       6917* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6917*
     ld    D, H          ; 1:4       6917*
     ld    E, L          ; 1:4       6917* save 1x
@@ -25696,8 +25710,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6917* HL + save
     ld    D, B          ; 1:4       6917*
     ld    E, C          ; 1:4       6917* 
-   
-    ld    B, D          ; 1:4       6947*
+       
+    ld    B, D          ; 1:4       6947* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6947*
     ld    D, H          ; 1:4       6947*
     ld    E, L          ; 1:4       6947* save 1x
@@ -25730,8 +25744,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6947* 4096x
     add  HL, DE         ; 1:11      6947* HL + save
     ld    D, B          ; 1:4       6947*
-    ld    E, C          ; 1:4       6947*   
-    ld    B, D          ; 1:4       6949*
+    ld    E, C          ; 1:4       6947*       
+    ld    B, D          ; 1:4       6949* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6949*
     ld    D, H          ; 1:4       6949*
     ld    E, L          ; 1:4       6949* save 1x
@@ -25765,7 +25779,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6949* HL + save
     ld    D, B          ; 1:4       6949*
     ld    E, C          ; 1:4       6949*   
-    ld    B, D          ; 1:4       6959*
+    ld    B, D          ; 1:4       6959* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6959*
     ld    D, H          ; 1:4       6959*
     ld    E, L          ; 1:4       6959* save 1x
@@ -25797,8 +25811,8 @@ ORG 0x6000
     or    A             ; 1:4       6959*
     sbc  HL, DE         ; 2:15      6959* HL - save
     ld    D, B          ; 1:4       6959*
-    ld    E, C          ; 1:4       6959*   
-    ld    B, D          ; 1:4       6961*
+    ld    E, C          ; 1:4       6959*       
+    ld    B, D          ; 1:4       6961* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6961*
     ld    D, H          ; 1:4       6961*
     ld    E, L          ; 1:4       6961* save 1x
@@ -25832,7 +25846,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      6961* HL + save
     ld    D, B          ; 1:4       6961*
     ld    E, C          ; 1:4       6961*   
-    ld    B, D          ; 1:4       6967*
+    ld    B, D          ; 1:4       6967* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6967*
     ld    D, H          ; 1:4       6967*
     ld    E, L          ; 1:4       6967* save 1x
@@ -25865,7 +25879,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      6967* HL - save
     ld    D, B          ; 1:4       6967*
     ld    E, C          ; 1:4       6967*   
-    ld    B, D          ; 1:4       6971*
+    ld    B, D          ; 1:4       6971* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6971*
     ld    D, H          ; 1:4       6971*
     ld    E, L          ; 1:4       6971* save 1x
@@ -25897,8 +25911,8 @@ ORG 0x6000
     or    A             ; 1:4       6971*
     sbc  HL, DE         ; 2:15      6971* HL - save
     ld    D, B          ; 1:4       6971*
-    ld    E, C          ; 1:4       6971*   
-    ld    B, D          ; 1:4       6977*
+    ld    E, C          ; 1:4       6971*       
+    ld    B, D          ; 1:4       6977* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6977*
     ld    D, H          ; 1:4       6977*
     ld    E, L          ; 1:4       6977* save 1x
@@ -25928,44 +25942,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      6977* 4096x
     add  HL, DE         ; 1:11      6977* HL + save
     ld    D, B          ; 1:4       6977*
-    ld    E, C          ; 1:4       6977*   
-    ld    B, D          ; 1:4       6983*
+    ld    E, C          ; 1:4       6977*       
+    ld    B, D          ; 1:4       6983* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6983*
     ld    D, H          ; 1:4       6983*
     ld    E, L          ; 1:4       6983* save 1x
     add  HL, HL         ; 1:11      6983* 2x
+    ex   DE, HL         ; 1:4       6983* +
+    add  HL, DE         ; 1:11      6983* + save 2x
+    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 4x
+    ex   DE, HL         ; 1:4       6983* +
+    add  HL, DE         ; 1:11      6983* + save 4x
+    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 8x
-    ex   DE, HL         ; 1:4       6983* +
-    add  HL, DE         ; 1:11      6983* + save 8x
-    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 16x
-    ex   DE, HL         ; 1:4       6983* +
-    add  HL, DE         ; 1:11      6983* + save 16x
-    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 32x
-    ex   DE, HL         ; 1:4       6983* +
-    add  HL, DE         ; 1:11      6983* + save 32x
-    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 64x
+    ex   DE, HL         ; 1:4       6983* +
+    add  HL, DE         ; 1:11      6983* + save 64x
+    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 128x
-    ex   DE, HL         ; 1:4       6983* +
-    add  HL, DE         ; 1:11      6983* + save 128x
-    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 256x
+    ex   DE, HL         ; 1:4       6983* +
+    add  HL, DE         ; 1:11      6983* + save 256x
+    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 512x
+    ex   DE, HL         ; 1:4       6983* +
+    add  HL, DE         ; 1:11      6983* + save 512x
+    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 1024x
-    ex   DE, HL         ; 1:4       6983* +
-    add  HL, DE         ; 1:11      6983* + save 1024x
-    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 2048x
+    ex   DE, HL         ; 1:4       6983* +
+    add  HL, DE         ; 1:11      6983* + save 2048x
+    ex   DE, HL         ; 1:4       6983* +
     add  HL, HL         ; 1:11      6983* 4096x
-    add  HL, HL         ; 1:11      6983* 8192x
-    or    A             ; 1:4       6983*
-    sbc  HL, DE         ; 2:15      6983* HL - save
+    add  HL, DE         ; 1:11      6983* HL + save
     ld    D, B          ; 1:4       6983*
     ld    E, C          ; 1:4       6983*   
-    ld    B, D          ; 1:4       6991*
+    ld    B, D          ; 1:4       6991* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       6991*
     ld    D, H          ; 1:4       6991*
     ld    E, L          ; 1:4       6991* save 1x
@@ -25997,117 +26012,120 @@ ORG 0x6000
     or    A             ; 1:4       6991*
     sbc  HL, DE         ; 2:15      6991* HL - save
     ld    D, B          ; 1:4       6991*
-    ld    E, C          ; 1:4       6991*   
-    ld    B, D          ; 1:4       6997*
+    ld    E, C          ; 1:4       6991*       
+    ld    B, D          ; 1:4       6997* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       6997*
     ld    D, H          ; 1:4       6997*
     ld    E, L          ; 1:4       6997* save 1x
     add  HL, HL         ; 1:11      6997* 2x
-    ex   DE, HL         ; 1:4       6997* +
-    add  HL, DE         ; 1:11      6997* + save 2x
-    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 4x
+    ex   DE, HL         ; 1:4       6997* +
+    add  HL, DE         ; 1:11      6997* + save 4x
+    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 8x
-    ex   DE, HL         ; 1:4       6997* +
-    add  HL, DE         ; 1:11      6997* + save 8x
-    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 16x
+    ex   DE, HL         ; 1:4       6997* +
+    add  HL, DE         ; 1:11      6997* + save 16x
+    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 32x
-    ex   DE, HL         ; 1:4       6997* +
-    add  HL, DE         ; 1:11      6997* + save 32x
-    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 64x
+    ex   DE, HL         ; 1:4       6997* +
+    add  HL, DE         ; 1:11      6997* + save 64x
+    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 128x
-    ex   DE, HL         ; 1:4       6997* +
-    add  HL, DE         ; 1:11      6997* + save 128x
-    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 256x
+    ex   DE, HL         ; 1:4       6997* +
+    add  HL, DE         ; 1:11      6997* + save 256x
+    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 512x
+    ex   DE, HL         ; 1:4       6997* +
+    add  HL, DE         ; 1:11      6997* + save 512x
+    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 1024x
-    ex   DE, HL         ; 1:4       6997* +
-    add  HL, DE         ; 1:11      6997* + save 1024x
-    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 2048x
+    ex   DE, HL         ; 1:4       6997* +
+    add  HL, DE         ; 1:11      6997* + save 2048x
+    ex   DE, HL         ; 1:4       6997* +
     add  HL, HL         ; 1:11      6997* 4096x
-    add  HL, HL         ; 1:11      6997* 8192x
-    or    A             ; 1:4       6997*
-    sbc  HL, DE         ; 2:15      6997* HL - save
+    add  HL, DE         ; 1:11      6997* HL + save
     ld    D, B          ; 1:4       6997*
     ld    E, C          ; 1:4       6997* 
-   
-    ld    B, D          ; 1:4       7001*
+       
+    ld    B, D          ; 1:4       7001* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7001*
     ld    D, H          ; 1:4       7001*
     ld    E, L          ; 1:4       7001* save 1x
     add  HL, HL         ; 1:11      7001* 2x
-    ex   DE, HL         ; 1:4       7001* +
-    add  HL, DE         ; 1:11      7001* + save 2x
-    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 4x
-    ex   DE, HL         ; 1:4       7001* +
-    add  HL, DE         ; 1:11      7001* + save 4x
-    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 8x
+    ex   DE, HL         ; 1:4       7001* +
+    add  HL, DE         ; 1:11      7001* + save 8x
+    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 16x
+    ex   DE, HL         ; 1:4       7001* +
+    add  HL, DE         ; 1:11      7001* + save 16x
+    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 32x
-    ex   DE, HL         ; 1:4       7001* +
-    add  HL, DE         ; 1:11      7001* + save 32x
-    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 64x
+    ex   DE, HL         ; 1:4       7001* +
+    add  HL, DE         ; 1:11      7001* + save 64x
+    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 128x
-    ex   DE, HL         ; 1:4       7001* +
-    add  HL, DE         ; 1:11      7001* + save 128x
-    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 256x
+    ex   DE, HL         ; 1:4       7001* +
+    add  HL, DE         ; 1:11      7001* + save 256x
+    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 512x
+    ex   DE, HL         ; 1:4       7001* +
+    add  HL, DE         ; 1:11      7001* + save 512x
+    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 1024x
-    ex   DE, HL         ; 1:4       7001* +
-    add  HL, DE         ; 1:11      7001* + save 1024x
-    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 2048x
+    ex   DE, HL         ; 1:4       7001* +
+    add  HL, DE         ; 1:11      7001* + save 2048x
+    ex   DE, HL         ; 1:4       7001* +
     add  HL, HL         ; 1:11      7001* 4096x
-    add  HL, HL         ; 1:11      7001* 8192x
-    or    A             ; 1:4       7001*
-    sbc  HL, DE         ; 2:15      7001* HL - save
+    add  HL, DE         ; 1:11      7001* HL + save
     ld    D, B          ; 1:4       7001*
-    ld    E, C          ; 1:4       7001*   
-    ld    B, D          ; 1:4       7013*
+    ld    E, C          ; 1:4       7001*       
+    ld    B, D          ; 1:4       7013* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7013*
     ld    D, H          ; 1:4       7013*
     ld    E, L          ; 1:4       7013* save 1x
     add  HL, HL         ; 1:11      7013* 2x
-    ex   DE, HL         ; 1:4       7013* +
-    add  HL, DE         ; 1:11      7013* + save 2x
-    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 4x
+    ex   DE, HL         ; 1:4       7013* +
+    add  HL, DE         ; 1:11      7013* + save 4x
+    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 8x
-    ex   DE, HL         ; 1:4       7013* +
-    add  HL, DE         ; 1:11      7013* + save 8x
-    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 16x
-    ex   DE, HL         ; 1:4       7013* +
-    add  HL, DE         ; 1:11      7013* + save 16x
-    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 32x
+    ex   DE, HL         ; 1:4       7013* +
+    add  HL, DE         ; 1:11      7013* + save 32x
+    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 64x
+    ex   DE, HL         ; 1:4       7013* +
+    add  HL, DE         ; 1:11      7013* + save 64x
+    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 128x
-    ex   DE, HL         ; 1:4       7013* +
-    add  HL, DE         ; 1:11      7013* + save 128x
-    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 256x
+    ex   DE, HL         ; 1:4       7013* +
+    add  HL, DE         ; 1:11      7013* + save 256x
+    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 512x
+    ex   DE, HL         ; 1:4       7013* +
+    add  HL, DE         ; 1:11      7013* + save 512x
+    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 1024x
-    ex   DE, HL         ; 1:4       7013* +
-    add  HL, DE         ; 1:11      7013* + save 1024x
-    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 2048x
+    ex   DE, HL         ; 1:4       7013* +
+    add  HL, DE         ; 1:11      7013* + save 2048x
+    ex   DE, HL         ; 1:4       7013* +
     add  HL, HL         ; 1:11      7013* 4096x
-    add  HL, HL         ; 1:11      7013* 8192x
-    or    A             ; 1:4       7013*
-    sbc  HL, DE         ; 2:15      7013* HL - save
+    add  HL, DE         ; 1:11      7013* HL + save
     ld    D, B          ; 1:4       7013*
     ld    E, C          ; 1:4       7013*   
-    ld    B, D          ; 1:4       7019*
+    ld    B, D          ; 1:4       7019* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7019*
     ld    D, H          ; 1:4       7019*
     ld    E, L          ; 1:4       7019* save 1x
@@ -26140,7 +26158,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7019* HL - save
     ld    D, B          ; 1:4       7019*
     ld    E, C          ; 1:4       7019*   
-    ld    B, D          ; 1:4       7027*
+    ld    B, D          ; 1:4       7027* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7027*
     ld    D, H          ; 1:4       7027*
     ld    E, L          ; 1:4       7027* save 1x
@@ -26173,7 +26191,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7027* HL - save
     ld    D, B          ; 1:4       7027*
     ld    E, C          ; 1:4       7027*   
-    ld    B, D          ; 1:4       7039*
+    ld    B, D          ; 1:4       7039* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7039*
     ld    D, H          ; 1:4       7039*
     ld    E, L          ; 1:4       7039* save 1x
@@ -26199,8 +26217,8 @@ ORG 0x6000
     or    A             ; 1:4       7039*
     sbc  HL, DE         ; 2:15      7039* HL - save
     ld    D, B          ; 1:4       7039*
-    ld    E, C          ; 1:4       7039*   
-    ld    B, D          ; 1:4       7043*
+    ld    E, C          ; 1:4       7039*       
+    ld    B, D          ; 1:4       7043* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7043*
     ld    D, H          ; 1:4       7043*
     ld    E, L          ; 1:4       7043* save 1x
@@ -26233,8 +26251,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7043* 4096x
     add  HL, DE         ; 1:11      7043* HL + save
     ld    D, B          ; 1:4       7043*
-    ld    E, C          ; 1:4       7043*   
-    ld    B, D          ; 1:4       7057*
+    ld    E, C          ; 1:4       7043*       
+    ld    B, D          ; 1:4       7057* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7057*
     ld    D, H          ; 1:4       7057*
     ld    E, L          ; 1:4       7057* save 1x
@@ -26268,7 +26286,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7057* HL + save
     ld    D, B          ; 1:4       7057*
     ld    E, C          ; 1:4       7057*   
-    ld    B, D          ; 1:4       7069*
+    ld    B, D          ; 1:4       7069* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7069*
     ld    D, H          ; 1:4       7069*
     ld    E, L          ; 1:4       7069* save 1x
@@ -26301,7 +26319,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7069* HL - save
     ld    D, B          ; 1:4       7069*
     ld    E, C          ; 1:4       7069*   
-    ld    B, D          ; 1:4       7079*
+    ld    B, D          ; 1:4       7079* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7079*
     ld    D, H          ; 1:4       7079*
     ld    E, L          ; 1:4       7079* save 1x
@@ -26334,7 +26352,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7079* HL - save
     ld    D, B          ; 1:4       7079*
     ld    E, C          ; 1:4       7079*   
-    ld    B, D          ; 1:4       7103*
+    ld    B, D          ; 1:4       7103* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7103*
     ld    D, H          ; 1:4       7103*
     ld    E, L          ; 1:4       7103* save 1x
@@ -26361,80 +26379,82 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7103* HL - save
     ld    D, B          ; 1:4       7103*
     ld    E, C          ; 1:4       7103* 
-   
-    ld    B, D          ; 1:4       7109*
+       
+    ld    B, D          ; 1:4       7109* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7109*
     ld    D, H          ; 1:4       7109*
     ld    E, L          ; 1:4       7109* save 1x
     add  HL, HL         ; 1:11      7109* 2x
-    ex   DE, HL         ; 1:4       7109* +
-    add  HL, DE         ; 1:11      7109* + save 2x
-    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 4x
+    ex   DE, HL         ; 1:4       7109* +
+    add  HL, DE         ; 1:11      7109* + save 4x
+    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 8x
-    ex   DE, HL         ; 1:4       7109* +
-    add  HL, DE         ; 1:11      7109* + save 8x
-    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 16x
-    ex   DE, HL         ; 1:4       7109* +
-    add  HL, DE         ; 1:11      7109* + save 16x
-    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 32x
-    ex   DE, HL         ; 1:4       7109* +
-    add  HL, DE         ; 1:11      7109* + save 32x
-    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 64x
+    ex   DE, HL         ; 1:4       7109* +
+    add  HL, DE         ; 1:11      7109* + save 64x
+    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 128x
+    ex   DE, HL         ; 1:4       7109* +
+    add  HL, DE         ; 1:11      7109* + save 128x
+    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 256x
+    ex   DE, HL         ; 1:4       7109* +
+    add  HL, DE         ; 1:11      7109* + save 256x
+    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 512x
+    ex   DE, HL         ; 1:4       7109* +
+    add  HL, DE         ; 1:11      7109* + save 512x
+    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 1024x
-    ex   DE, HL         ; 1:4       7109* +
-    add  HL, DE         ; 1:11      7109* + save 1024x
-    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 2048x
+    ex   DE, HL         ; 1:4       7109* +
+    add  HL, DE         ; 1:11      7109* + save 2048x
+    ex   DE, HL         ; 1:4       7109* +
     add  HL, HL         ; 1:11      7109* 4096x
-    add  HL, HL         ; 1:11      7109* 8192x
-    or    A             ; 1:4       7109*
-    sbc  HL, DE         ; 2:15      7109* HL - save
+    add  HL, DE         ; 1:11      7109* HL + save
     ld    D, B          ; 1:4       7109*
-    ld    E, C          ; 1:4       7109*   
-    ld    B, D          ; 1:4       7121*
+    ld    E, C          ; 1:4       7109*       
+    ld    B, D          ; 1:4       7121* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7121*
     ld    D, H          ; 1:4       7121*
     ld    E, L          ; 1:4       7121* save 1x
     add  HL, HL         ; 1:11      7121* 2x
-    ex   DE, HL         ; 1:4       7121* +
-    add  HL, DE         ; 1:11      7121* + save 2x
-    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 4x
-    ex   DE, HL         ; 1:4       7121* +
-    add  HL, DE         ; 1:11      7121* + save 4x
-    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 8x
-    ex   DE, HL         ; 1:4       7121* +
-    add  HL, DE         ; 1:11      7121* + save 8x
-    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 16x
+    ex   DE, HL         ; 1:4       7121* +
+    add  HL, DE         ; 1:11      7121* + save 16x
+    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 32x
-    ex   DE, HL         ; 1:4       7121* +
-    add  HL, DE         ; 1:11      7121* + save 32x
-    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 64x
+    ex   DE, HL         ; 1:4       7121* +
+    add  HL, DE         ; 1:11      7121* + save 64x
+    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 128x
+    ex   DE, HL         ; 1:4       7121* +
+    add  HL, DE         ; 1:11      7121* + save 128x
+    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 256x
+    ex   DE, HL         ; 1:4       7121* +
+    add  HL, DE         ; 1:11      7121* + save 256x
+    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 512x
+    ex   DE, HL         ; 1:4       7121* +
+    add  HL, DE         ; 1:11      7121* + save 512x
+    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 1024x
-    ex   DE, HL         ; 1:4       7121* +
-    add  HL, DE         ; 1:11      7121* + save 1024x
-    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 2048x
+    ex   DE, HL         ; 1:4       7121* +
+    add  HL, DE         ; 1:11      7121* + save 2048x
+    ex   DE, HL         ; 1:4       7121* +
     add  HL, HL         ; 1:11      7121* 4096x
-    add  HL, HL         ; 1:11      7121* 8192x
-    or    A             ; 1:4       7121*
-    sbc  HL, DE         ; 2:15      7121* HL - save
+    add  HL, DE         ; 1:11      7121* HL + save
     ld    D, B          ; 1:4       7121*
     ld    E, C          ; 1:4       7121*   
-    ld    B, D          ; 1:4       7127*
+    ld    B, D          ; 1:4       7127* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7127*
     ld    D, H          ; 1:4       7127*
     ld    E, L          ; 1:4       7127* save 1x
@@ -26464,7 +26484,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7127* HL - save
     ld    D, B          ; 1:4       7127*
     ld    E, C          ; 1:4       7127*   
-    ld    B, D          ; 1:4       7129*
+    ld    B, D          ; 1:4       7129* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7129*
     ld    D, H          ; 1:4       7129*
     ld    E, L          ; 1:4       7129* save 1x
@@ -26497,7 +26517,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7129* HL - save
     ld    D, B          ; 1:4       7129*
     ld    E, C          ; 1:4       7129*   
-    ld    B, D          ; 1:4       7151*
+    ld    B, D          ; 1:4       7151* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7151*
     ld    D, H          ; 1:4       7151*
     ld    E, L          ; 1:4       7151* save 1x
@@ -26524,7 +26544,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7151* HL - save
     ld    D, B          ; 1:4       7151*
     ld    E, C          ; 1:4       7151*   
-    ld    B, D          ; 1:4       7159*
+    ld    B, D          ; 1:4       7159* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7159*
     ld    D, H          ; 1:4       7159*
     ld    E, L          ; 1:4       7159* save 1x
@@ -26534,13 +26554,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       7159* +
     add  HL, DE         ; 1:11      7159* + save 8x
     ex   DE, HL         ; 1:4       7159* +
-    add  HL, HL         ; 1:11      7159* 16x
-    add  HL, HL         ; 1:11      7159* 32x
-    add  HL, HL         ; 1:11      7159* 64x
-    add  HL, HL         ; 1:11      7159* 128x
-    add  HL, HL         ; 1:11      7159* 256x
-    add  HL, HL         ; 1:11      7159* 512x
-    add  HL, HL         ; 1:11      7159* 1024x
+    rr    H             ; 2:8       7159*
+    rr    L             ; 2:8       7159*
+    ld    H, L          ; 1:4       7159*
+    ld    L, 0x00       ; 2:7       7159* 1024x
     ex   DE, HL         ; 1:4       7159* +
     add  HL, DE         ; 1:11      7159* + save 1024x
     ex   DE, HL         ; 1:4       7159* +
@@ -26550,8 +26567,8 @@ ORG 0x6000
     or    A             ; 1:4       7159*
     sbc  HL, DE         ; 2:15      7159* HL - save
     ld    D, B          ; 1:4       7159*
-    ld    E, C          ; 1:4       7159*   
-    ld    B, D          ; 1:4       7177*
+    ld    E, C          ; 1:4       7159*       
+    ld    B, D          ; 1:4       7177* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7177*
     ld    D, H          ; 1:4       7177*
     ld    E, L          ; 1:4       7177* save 1x
@@ -26561,13 +26578,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       7177* +
     add  HL, DE         ; 1:11      7177* + save 8x
     ex   DE, HL         ; 1:4       7177* +
-    add  HL, HL         ; 1:11      7177* 16x
-    add  HL, HL         ; 1:11      7177* 32x
-    add  HL, HL         ; 1:11      7177* 64x
-    add  HL, HL         ; 1:11      7177* 128x
-    add  HL, HL         ; 1:11      7177* 256x
-    add  HL, HL         ; 1:11      7177* 512x
-    add  HL, HL         ; 1:11      7177* 1024x
+    rr    H             ; 2:8       7177*
+    rr    L             ; 2:8       7177*
+    ld    H, L          ; 1:4       7177*
+    ld    L, 0x00       ; 2:7       7177* 1024x
     ex   DE, HL         ; 1:4       7177* +
     add  HL, DE         ; 1:11      7177* + save 1024x
     ex   DE, HL         ; 1:4       7177* +
@@ -26578,8 +26592,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7177* 4096x
     add  HL, DE         ; 1:11      7177* HL + save
     ld    D, B          ; 1:4       7177*
-    ld    E, C          ; 1:4       7177*   
-    ld    B, D          ; 1:4       7187*
+    ld    E, C          ; 1:4       7177*       
+    ld    B, D          ; 1:4       7187* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7187*
     ld    D, H          ; 1:4       7187*
     ld    E, L          ; 1:4       7187* save 1x
@@ -26609,8 +26623,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7187* 4096x
     add  HL, DE         ; 1:11      7187* HL + save
     ld    D, B          ; 1:4       7187*
-    ld    E, C          ; 1:4       7187*   
-    ld    B, D          ; 1:4       7193*
+    ld    E, C          ; 1:4       7187*       
+    ld    B, D          ; 1:4       7193* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7193*
     ld    D, H          ; 1:4       7193*
     ld    E, L          ; 1:4       7193* save 1x
@@ -26640,8 +26654,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7193* 4096x
     add  HL, DE         ; 1:11      7193* HL + save
     ld    D, B          ; 1:4       7193*
-    ld    E, C          ; 1:4       7193*   
-    ld    B, D          ; 1:4       7207*
+    ld    E, C          ; 1:4       7193*       
+    ld    B, D          ; 1:4       7207* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7207*
     ld    D, H          ; 1:4       7207*
     ld    E, L          ; 1:4       7207* save 1x
@@ -26675,8 +26689,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7207* HL + save
     ld    D, B          ; 1:4       7207*
     ld    E, C          ; 1:4       7207* 
-   
-    ld    B, D          ; 1:4       7211*
+       
+    ld    B, D          ; 1:4       7211* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7211*
     ld    D, H          ; 1:4       7211*
     ld    E, L          ; 1:4       7211* save 1x
@@ -26709,8 +26723,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7211* 4096x
     add  HL, DE         ; 1:11      7211* HL + save
     ld    D, B          ; 1:4       7211*
-    ld    E, C          ; 1:4       7211*   
-    ld    B, D          ; 1:4       7213*
+    ld    E, C          ; 1:4       7211*       
+    ld    B, D          ; 1:4       7213* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7213*
     ld    D, H          ; 1:4       7213*
     ld    E, L          ; 1:4       7213* save 1x
@@ -26743,8 +26757,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7213* 4096x
     add  HL, DE         ; 1:11      7213* HL + save
     ld    D, B          ; 1:4       7213*
-    ld    E, C          ; 1:4       7213*   
-    ld    B, D          ; 1:4       7219*
+    ld    E, C          ; 1:4       7213*       
+    ld    B, D          ; 1:4       7219* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7219*
     ld    D, H          ; 1:4       7219*
     ld    E, L          ; 1:4       7219* save 1x
@@ -26777,44 +26791,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7219* 4096x
     add  HL, DE         ; 1:11      7219* HL + save
     ld    D, B          ; 1:4       7219*
-    ld    E, C          ; 1:4       7219*   
-    ld    B, D          ; 1:4       7229*
+    ld    E, C          ; 1:4       7219*       
+    ld    B, D          ; 1:4       7229* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7229*
     ld    D, H          ; 1:4       7229*
     ld    E, L          ; 1:4       7229* save 1x
     add  HL, HL         ; 1:11      7229* 2x
-    ex   DE, HL         ; 1:4       7229* +
-    add  HL, DE         ; 1:11      7229* + save 2x
-    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 4x
+    ex   DE, HL         ; 1:4       7229* +
+    add  HL, DE         ; 1:11      7229* + save 4x
+    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 8x
+    ex   DE, HL         ; 1:4       7229* +
+    add  HL, DE         ; 1:11      7229* + save 8x
+    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 16x
+    ex   DE, HL         ; 1:4       7229* +
+    add  HL, DE         ; 1:11      7229* + save 16x
+    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 32x
+    ex   DE, HL         ; 1:4       7229* +
+    add  HL, DE         ; 1:11      7229* + save 32x
+    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 64x
-    ex   DE, HL         ; 1:4       7229* +
-    add  HL, DE         ; 1:11      7229* + save 64x
-    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 128x
-    ex   DE, HL         ; 1:4       7229* +
-    add  HL, DE         ; 1:11      7229* + save 128x
-    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 256x
-    ex   DE, HL         ; 1:4       7229* +
-    add  HL, DE         ; 1:11      7229* + save 256x
-    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 512x
-    ex   DE, HL         ; 1:4       7229* +
-    add  HL, DE         ; 1:11      7229* + save 512x
-    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 1024x
+    ex   DE, HL         ; 1:4       7229* +
+    add  HL, DE         ; 1:11      7229* + save 1024x
+    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 2048x
+    ex   DE, HL         ; 1:4       7229* +
+    add  HL, DE         ; 1:11      7229* + save 2048x
+    ex   DE, HL         ; 1:4       7229* +
     add  HL, HL         ; 1:11      7229* 4096x
-    add  HL, HL         ; 1:11      7229* 8192x
-    or    A             ; 1:4       7229*
-    sbc  HL, DE         ; 2:15      7229* HL - save
+    add  HL, DE         ; 1:11      7229* HL + save
     ld    D, B          ; 1:4       7229*
-    ld    E, C          ; 1:4       7229*   
-    ld    B, D          ; 1:4       7237*
+    ld    E, C          ; 1:4       7229*       
+    ld    B, D          ; 1:4       7237* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7237*
     ld    D, H          ; 1:4       7237*
     ld    E, L          ; 1:4       7237* save 1x
@@ -26844,8 +26859,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7237* 4096x
     add  HL, DE         ; 1:11      7237* HL + save
     ld    D, B          ; 1:4       7237*
-    ld    E, C          ; 1:4       7237*   
-    ld    B, D          ; 1:4       7243*
+    ld    E, C          ; 1:4       7237*       
+    ld    B, D          ; 1:4       7243* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7243*
     ld    D, H          ; 1:4       7243*
     ld    E, L          ; 1:4       7243* save 1x
@@ -26878,44 +26893,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7243* 4096x
     add  HL, DE         ; 1:11      7243* HL + save
     ld    D, B          ; 1:4       7243*
-    ld    E, C          ; 1:4       7243*   
-    ld    B, D          ; 1:4       7247*
+    ld    E, C          ; 1:4       7243*       
+    ld    B, D          ; 1:4       7247* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7247*
     ld    D, H          ; 1:4       7247*
     ld    E, L          ; 1:4       7247* save 1x
     add  HL, HL         ; 1:11      7247* 2x
+    ex   DE, HL         ; 1:4       7247* +
+    add  HL, DE         ; 1:11      7247* + save 2x
+    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 4x
+    ex   DE, HL         ; 1:4       7247* +
+    add  HL, DE         ; 1:11      7247* + save 4x
+    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 8x
+    ex   DE, HL         ; 1:4       7247* +
+    add  HL, DE         ; 1:11      7247* + save 8x
+    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 16x
-    ex   DE, HL         ; 1:4       7247* +
-    add  HL, DE         ; 1:11      7247* + save 16x
-    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 32x
-    ex   DE, HL         ; 1:4       7247* +
-    add  HL, DE         ; 1:11      7247* + save 32x
-    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 64x
+    ex   DE, HL         ; 1:4       7247* +
+    add  HL, DE         ; 1:11      7247* + save 64x
+    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 128x
-    ex   DE, HL         ; 1:4       7247* +
-    add  HL, DE         ; 1:11      7247* + save 128x
-    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 256x
-    ex   DE, HL         ; 1:4       7247* +
-    add  HL, DE         ; 1:11      7247* + save 256x
-    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 512x
-    ex   DE, HL         ; 1:4       7247* +
-    add  HL, DE         ; 1:11      7247* + save 512x
-    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 1024x
+    ex   DE, HL         ; 1:4       7247* +
+    add  HL, DE         ; 1:11      7247* + save 1024x
+    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 2048x
+    ex   DE, HL         ; 1:4       7247* +
+    add  HL, DE         ; 1:11      7247* + save 2048x
+    ex   DE, HL         ; 1:4       7247* +
     add  HL, HL         ; 1:11      7247* 4096x
-    add  HL, HL         ; 1:11      7247* 8192x
-    or    A             ; 1:4       7247*
-    sbc  HL, DE         ; 2:15      7247* HL - save
+    add  HL, DE         ; 1:11      7247* HL + save
     ld    D, B          ; 1:4       7247*
-    ld    E, C          ; 1:4       7247*   
-    ld    B, D          ; 1:4       7253*
+    ld    E, C          ; 1:4       7247*       
+    ld    B, D          ; 1:4       7253* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7253*
     ld    D, H          ; 1:4       7253*
     ld    E, L          ; 1:4       7253* save 1x
@@ -26948,44 +26964,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7253* 4096x
     add  HL, DE         ; 1:11      7253* HL + save
     ld    D, B          ; 1:4       7253*
-    ld    E, C          ; 1:4       7253*   
-    ld    B, D          ; 1:4       7283*
+    ld    E, C          ; 1:4       7253*       
+    ld    B, D          ; 1:4       7283* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7283*
     ld    D, H          ; 1:4       7283*
     ld    E, L          ; 1:4       7283* save 1x
     add  HL, HL         ; 1:11      7283* 2x
+    ex   DE, HL         ; 1:4       7283* +
+    add  HL, DE         ; 1:11      7283* + save 2x
+    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 4x
-    ex   DE, HL         ; 1:4       7283* +
-    add  HL, DE         ; 1:11      7283* + save 4x
-    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 8x
-    ex   DE, HL         ; 1:4       7283* +
-    add  HL, DE         ; 1:11      7283* + save 8x
-    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 16x
+    ex   DE, HL         ; 1:4       7283* +
+    add  HL, DE         ; 1:11      7283* + save 16x
+    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 32x
+    ex   DE, HL         ; 1:4       7283* +
+    add  HL, DE         ; 1:11      7283* + save 32x
+    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 64x
+    ex   DE, HL         ; 1:4       7283* +
+    add  HL, DE         ; 1:11      7283* + save 64x
+    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 128x
-    ex   DE, HL         ; 1:4       7283* +
-    add  HL, DE         ; 1:11      7283* + save 128x
-    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 256x
-    ex   DE, HL         ; 1:4       7283* +
-    add  HL, DE         ; 1:11      7283* + save 256x
-    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 512x
-    ex   DE, HL         ; 1:4       7283* +
-    add  HL, DE         ; 1:11      7283* + save 512x
-    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 1024x
+    ex   DE, HL         ; 1:4       7283* +
+    add  HL, DE         ; 1:11      7283* + save 1024x
+    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 2048x
+    ex   DE, HL         ; 1:4       7283* +
+    add  HL, DE         ; 1:11      7283* + save 2048x
+    ex   DE, HL         ; 1:4       7283* +
     add  HL, HL         ; 1:11      7283* 4096x
-    add  HL, HL         ; 1:11      7283* 8192x
-    or    A             ; 1:4       7283*
-    sbc  HL, DE         ; 2:15      7283* HL - save
+    add  HL, DE         ; 1:11      7283* HL + save
     ld    D, B          ; 1:4       7283*
-    ld    E, C          ; 1:4       7283*   
-    ld    B, D          ; 1:4       7297*
+    ld    E, C          ; 1:4       7283*       
+    ld    B, D          ; 1:4       7297* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7297*
     ld    D, H          ; 1:4       7297*
     ld    E, L          ; 1:4       7297* save 1x
@@ -27013,8 +27030,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7297* HL + save
     ld    D, B          ; 1:4       7297*
     ld    E, C          ; 1:4       7297* 
-   
-    ld    B, D          ; 1:4       7307*
+       
+    ld    B, D          ; 1:4       7307* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7307*
     ld    D, H          ; 1:4       7307*
     ld    E, L          ; 1:4       7307* save 1x
@@ -27047,8 +27064,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7307* 4096x
     add  HL, DE         ; 1:11      7307* HL + save
     ld    D, B          ; 1:4       7307*
-    ld    E, C          ; 1:4       7307*   
-    ld    B, D          ; 1:4       7309*
+    ld    E, C          ; 1:4       7307*       
+    ld    B, D          ; 1:4       7309* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7309*
     ld    D, H          ; 1:4       7309*
     ld    E, L          ; 1:4       7309* save 1x
@@ -27081,8 +27098,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7309* 4096x
     add  HL, DE         ; 1:11      7309* HL + save
     ld    D, B          ; 1:4       7309*
-    ld    E, C          ; 1:4       7309*   
-    ld    B, D          ; 1:4       7321*
+    ld    E, C          ; 1:4       7309*       
+    ld    B, D          ; 1:4       7321* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7321*
     ld    D, H          ; 1:4       7321*
     ld    E, L          ; 1:4       7321* save 1x
@@ -27115,8 +27132,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7321* 4096x
     add  HL, DE         ; 1:11      7321* HL + save
     ld    D, B          ; 1:4       7321*
-    ld    E, C          ; 1:4       7321*   
-    ld    B, D          ; 1:4       7331*
+    ld    E, C          ; 1:4       7321*       
+    ld    B, D          ; 1:4       7331* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7331*
     ld    D, H          ; 1:4       7331*
     ld    E, L          ; 1:4       7331* save 1x
@@ -27149,8 +27166,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7331* 4096x
     add  HL, DE         ; 1:11      7331* HL + save
     ld    D, B          ; 1:4       7331*
-    ld    E, C          ; 1:4       7331*   
-    ld    B, D          ; 1:4       7333*
+    ld    E, C          ; 1:4       7331*       
+    ld    B, D          ; 1:4       7333* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7333*
     ld    D, H          ; 1:4       7333*
     ld    E, L          ; 1:4       7333* save 1x
@@ -27183,44 +27200,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7333* 4096x
     add  HL, DE         ; 1:11      7333* HL + save
     ld    D, B          ; 1:4       7333*
-    ld    E, C          ; 1:4       7333*   
-    ld    B, D          ; 1:4       7349*
+    ld    E, C          ; 1:4       7333*       
+    ld    B, D          ; 1:4       7349* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7349*
     ld    D, H          ; 1:4       7349*
     ld    E, L          ; 1:4       7349* save 1x
     add  HL, HL         ; 1:11      7349* 2x
-    ex   DE, HL         ; 1:4       7349* +
-    add  HL, DE         ; 1:11      7349* + save 2x
-    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 4x
+    ex   DE, HL         ; 1:4       7349* +
+    add  HL, DE         ; 1:11      7349* + save 4x
+    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 8x
-    ex   DE, HL         ; 1:4       7349* +
-    add  HL, DE         ; 1:11      7349* + save 8x
-    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 16x
+    ex   DE, HL         ; 1:4       7349* +
+    add  HL, DE         ; 1:11      7349* + save 16x
+    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 32x
+    ex   DE, HL         ; 1:4       7349* +
+    add  HL, DE         ; 1:11      7349* + save 32x
+    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 64x
-    ex   DE, HL         ; 1:4       7349* +
-    add  HL, DE         ; 1:11      7349* + save 64x
-    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 128x
+    ex   DE, HL         ; 1:4       7349* +
+    add  HL, DE         ; 1:11      7349* + save 128x
+    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 256x
-    ex   DE, HL         ; 1:4       7349* +
-    add  HL, DE         ; 1:11      7349* + save 256x
-    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 512x
-    ex   DE, HL         ; 1:4       7349* +
-    add  HL, DE         ; 1:11      7349* + save 512x
-    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 1024x
+    ex   DE, HL         ; 1:4       7349* +
+    add  HL, DE         ; 1:11      7349* + save 1024x
+    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 2048x
+    ex   DE, HL         ; 1:4       7349* +
+    add  HL, DE         ; 1:11      7349* + save 2048x
+    ex   DE, HL         ; 1:4       7349* +
     add  HL, HL         ; 1:11      7349* 4096x
-    add  HL, HL         ; 1:11      7349* 8192x
-    or    A             ; 1:4       7349*
-    sbc  HL, DE         ; 2:15      7349* HL - save
+    add  HL, DE         ; 1:11      7349* HL + save
     ld    D, B          ; 1:4       7349*
     ld    E, C          ; 1:4       7349*   
-    ld    B, D          ; 1:4       7351*
+    ld    B, D          ; 1:4       7351* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7351*
     ld    D, H          ; 1:4       7351*
     ld    E, L          ; 1:4       7351* save 1x
@@ -27252,8 +27270,8 @@ ORG 0x6000
     or    A             ; 1:4       7351*
     sbc  HL, DE         ; 2:15      7351* HL - save
     ld    D, B          ; 1:4       7351*
-    ld    E, C          ; 1:4       7351*   
-    ld    B, D          ; 1:4       7369*
+    ld    E, C          ; 1:4       7351*       
+    ld    B, D          ; 1:4       7369* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7369*
     ld    D, H          ; 1:4       7369*
     ld    E, L          ; 1:4       7369* save 1x
@@ -27286,8 +27304,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7369* 4096x
     add  HL, DE         ; 1:11      7369* HL + save
     ld    D, B          ; 1:4       7369*
-    ld    E, C          ; 1:4       7369*   
-    ld    B, D          ; 1:4       7393*
+    ld    E, C          ; 1:4       7369*       
+    ld    B, D          ; 1:4       7393* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7393*
     ld    D, H          ; 1:4       7393*
     ld    E, L          ; 1:4       7393* save 1x
@@ -27321,7 +27339,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7393* HL + save
     ld    D, B          ; 1:4       7393*
     ld    E, C          ; 1:4       7393*   
-    ld    B, D          ; 1:4       7411*
+    ld    B, D          ; 1:4       7411* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7411*
     ld    D, H          ; 1:4       7411*
     ld    E, L          ; 1:4       7411* save 1x
@@ -27355,7 +27373,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       7411*
     ld    E, C          ; 1:4       7411* 
    
-    ld    B, D          ; 1:4       7417*
+    ld    B, D          ; 1:4       7417* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7417*
     ld    D, H          ; 1:4       7417*
     ld    E, L          ; 1:4       7417* save 1x
@@ -27387,8 +27405,8 @@ ORG 0x6000
     or    A             ; 1:4       7417*
     sbc  HL, DE         ; 2:15      7417* HL - save
     ld    D, B          ; 1:4       7417*
-    ld    E, C          ; 1:4       7417*   
-    ld    B, D          ; 1:4       7433*
+    ld    E, C          ; 1:4       7417*       
+    ld    B, D          ; 1:4       7433* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7433*
     ld    D, H          ; 1:4       7433*
     ld    E, L          ; 1:4       7433* save 1x
@@ -27418,44 +27436,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7433* 4096x
     add  HL, DE         ; 1:11      7433* HL + save
     ld    D, B          ; 1:4       7433*
-    ld    E, C          ; 1:4       7433*   
-    ld    B, D          ; 1:4       7451*
+    ld    E, C          ; 1:4       7433*       
+    ld    B, D          ; 1:4       7451* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7451*
     ld    D, H          ; 1:4       7451*
     ld    E, L          ; 1:4       7451* save 1x
     add  HL, HL         ; 1:11      7451* 2x
+    ex   DE, HL         ; 1:4       7451* +
+    add  HL, DE         ; 1:11      7451* + save 2x
+    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 4x
-    ex   DE, HL         ; 1:4       7451* +
-    add  HL, DE         ; 1:11      7451* + save 4x
-    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 8x
+    ex   DE, HL         ; 1:4       7451* +
+    add  HL, DE         ; 1:11      7451* + save 8x
+    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 16x
+    ex   DE, HL         ; 1:4       7451* +
+    add  HL, DE         ; 1:11      7451* + save 16x
+    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 32x
-    ex   DE, HL         ; 1:4       7451* +
-    add  HL, DE         ; 1:11      7451* + save 32x
-    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 64x
-    ex   DE, HL         ; 1:4       7451* +
-    add  HL, DE         ; 1:11      7451* + save 64x
-    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 128x
-    ex   DE, HL         ; 1:4       7451* +
-    add  HL, DE         ; 1:11      7451* + save 128x
-    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 256x
+    ex   DE, HL         ; 1:4       7451* +
+    add  HL, DE         ; 1:11      7451* + save 256x
+    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 512x
-    ex   DE, HL         ; 1:4       7451* +
-    add  HL, DE         ; 1:11      7451* + save 512x
-    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 1024x
+    ex   DE, HL         ; 1:4       7451* +
+    add  HL, DE         ; 1:11      7451* + save 1024x
+    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 2048x
+    ex   DE, HL         ; 1:4       7451* +
+    add  HL, DE         ; 1:11      7451* + save 2048x
+    ex   DE, HL         ; 1:4       7451* +
     add  HL, HL         ; 1:11      7451* 4096x
-    add  HL, HL         ; 1:11      7451* 8192x
-    or    A             ; 1:4       7451*
-    sbc  HL, DE         ; 2:15      7451* HL - save
+    add  HL, DE         ; 1:11      7451* HL + save
     ld    D, B          ; 1:4       7451*
-    ld    E, C          ; 1:4       7451*   
-    ld    B, D          ; 1:4       7457*
+    ld    E, C          ; 1:4       7451*       
+    ld    B, D          ; 1:4       7457* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7457*
     ld    D, H          ; 1:4       7457*
     ld    E, L          ; 1:4       7457* save 1x
@@ -27485,8 +27504,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7457* 4096x
     add  HL, DE         ; 1:11      7457* HL + save
     ld    D, B          ; 1:4       7457*
-    ld    E, C          ; 1:4       7457*   
-    ld    B, D          ; 1:4       7459*
+    ld    E, C          ; 1:4       7457*       
+    ld    B, D          ; 1:4       7459* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7459*
     ld    D, H          ; 1:4       7459*
     ld    E, L          ; 1:4       7459* save 1x
@@ -27519,80 +27538,82 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7459* 4096x
     add  HL, DE         ; 1:11      7459* HL + save
     ld    D, B          ; 1:4       7459*
-    ld    E, C          ; 1:4       7459*   
-    ld    B, D          ; 1:4       7477*
+    ld    E, C          ; 1:4       7459*       
+    ld    B, D          ; 1:4       7477* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7477*
     ld    D, H          ; 1:4       7477*
     ld    E, L          ; 1:4       7477* save 1x
     add  HL, HL         ; 1:11      7477* 2x
-    ex   DE, HL         ; 1:4       7477* +
-    add  HL, DE         ; 1:11      7477* + save 2x
-    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 4x
+    ex   DE, HL         ; 1:4       7477* +
+    add  HL, DE         ; 1:11      7477* + save 4x
+    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 8x
-    ex   DE, HL         ; 1:4       7477* +
-    add  HL, DE         ; 1:11      7477* + save 8x
-    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 16x
+    ex   DE, HL         ; 1:4       7477* +
+    add  HL, DE         ; 1:11      7477* + save 16x
+    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 32x
+    ex   DE, HL         ; 1:4       7477* +
+    add  HL, DE         ; 1:11      7477* + save 32x
+    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 64x
-    ex   DE, HL         ; 1:4       7477* +
-    add  HL, DE         ; 1:11      7477* + save 64x
-    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 128x
-    ex   DE, HL         ; 1:4       7477* +
-    add  HL, DE         ; 1:11      7477* + save 128x
-    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 256x
+    ex   DE, HL         ; 1:4       7477* +
+    add  HL, DE         ; 1:11      7477* + save 256x
+    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 512x
-    ex   DE, HL         ; 1:4       7477* +
-    add  HL, DE         ; 1:11      7477* + save 512x
-    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 1024x
+    ex   DE, HL         ; 1:4       7477* +
+    add  HL, DE         ; 1:11      7477* + save 1024x
+    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 2048x
+    ex   DE, HL         ; 1:4       7477* +
+    add  HL, DE         ; 1:11      7477* + save 2048x
+    ex   DE, HL         ; 1:4       7477* +
     add  HL, HL         ; 1:11      7477* 4096x
-    add  HL, HL         ; 1:11      7477* 8192x
-    or    A             ; 1:4       7477*
-    sbc  HL, DE         ; 2:15      7477* HL - save
+    add  HL, DE         ; 1:11      7477* HL + save
     ld    D, B          ; 1:4       7477*
-    ld    E, C          ; 1:4       7477*   
-    ld    B, D          ; 1:4       7481*
+    ld    E, C          ; 1:4       7477*       
+    ld    B, D          ; 1:4       7481* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7481*
     ld    D, H          ; 1:4       7481*
     ld    E, L          ; 1:4       7481* save 1x
     add  HL, HL         ; 1:11      7481* 2x
-    ex   DE, HL         ; 1:4       7481* +
-    add  HL, DE         ; 1:11      7481* + save 2x
-    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 4x
-    ex   DE, HL         ; 1:4       7481* +
-    add  HL, DE         ; 1:11      7481* + save 4x
-    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 8x
+    ex   DE, HL         ; 1:4       7481* +
+    add  HL, DE         ; 1:11      7481* + save 8x
+    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 16x
+    ex   DE, HL         ; 1:4       7481* +
+    add  HL, DE         ; 1:11      7481* + save 16x
+    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 32x
+    ex   DE, HL         ; 1:4       7481* +
+    add  HL, DE         ; 1:11      7481* + save 32x
+    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 64x
-    ex   DE, HL         ; 1:4       7481* +
-    add  HL, DE         ; 1:11      7481* + save 64x
-    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 128x
-    ex   DE, HL         ; 1:4       7481* +
-    add  HL, DE         ; 1:11      7481* + save 128x
-    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 256x
+    ex   DE, HL         ; 1:4       7481* +
+    add  HL, DE         ; 1:11      7481* + save 256x
+    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 512x
-    ex   DE, HL         ; 1:4       7481* +
-    add  HL, DE         ; 1:11      7481* + save 512x
-    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 1024x
+    ex   DE, HL         ; 1:4       7481* +
+    add  HL, DE         ; 1:11      7481* + save 1024x
+    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 2048x
+    ex   DE, HL         ; 1:4       7481* +
+    add  HL, DE         ; 1:11      7481* + save 2048x
+    ex   DE, HL         ; 1:4       7481* +
     add  HL, HL         ; 1:11      7481* 4096x
-    add  HL, HL         ; 1:11      7481* 8192x
-    or    A             ; 1:4       7481*
-    sbc  HL, DE         ; 2:15      7481* HL - save
+    add  HL, DE         ; 1:11      7481* HL + save
     ld    D, B          ; 1:4       7481*
     ld    E, C          ; 1:4       7481*   
-    ld    B, D          ; 1:4       7487*
+    ld    B, D          ; 1:4       7487* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7487*
     ld    D, H          ; 1:4       7487*
     ld    E, L          ; 1:4       7487* save 1x
@@ -27621,8 +27642,8 @@ ORG 0x6000
     or    A             ; 1:4       7487*
     sbc  HL, DE         ; 2:15      7487* HL - save
     ld    D, B          ; 1:4       7487*
-    ld    E, C          ; 1:4       7487*   
-    ld    B, D          ; 1:4       7489*
+    ld    E, C          ; 1:4       7487*       
+    ld    B, D          ; 1:4       7489* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7489*
     ld    D, H          ; 1:4       7489*
     ld    E, L          ; 1:4       7489* save 1x
@@ -27652,81 +27673,83 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7489* 4096x
     add  HL, DE         ; 1:11      7489* HL + save
     ld    D, B          ; 1:4       7489*
-    ld    E, C          ; 1:4       7489*   
-    ld    B, D          ; 1:4       7499*
+    ld    E, C          ; 1:4       7489*       
+    ld    B, D          ; 1:4       7499* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7499*
     ld    D, H          ; 1:4       7499*
     ld    E, L          ; 1:4       7499* save 1x
     add  HL, HL         ; 1:11      7499* 2x
+    ex   DE, HL         ; 1:4       7499* +
+    add  HL, DE         ; 1:11      7499* + save 2x
+    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 4x
-    ex   DE, HL         ; 1:4       7499* +
-    add  HL, DE         ; 1:11      7499* + save 4x
-    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 8x
+    ex   DE, HL         ; 1:4       7499* +
+    add  HL, DE         ; 1:11      7499* + save 8x
+    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 16x
-    ex   DE, HL         ; 1:4       7499* +
-    add  HL, DE         ; 1:11      7499* + save 16x
-    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 32x
-    ex   DE, HL         ; 1:4       7499* +
-    add  HL, DE         ; 1:11      7499* + save 32x
-    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 64x
+    ex   DE, HL         ; 1:4       7499* +
+    add  HL, DE         ; 1:11      7499* + save 64x
+    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 128x
-    ex   DE, HL         ; 1:4       7499* +
-    add  HL, DE         ; 1:11      7499* + save 128x
-    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 256x
+    ex   DE, HL         ; 1:4       7499* +
+    add  HL, DE         ; 1:11      7499* + save 256x
+    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 512x
-    ex   DE, HL         ; 1:4       7499* +
-    add  HL, DE         ; 1:11      7499* + save 512x
-    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 1024x
+    ex   DE, HL         ; 1:4       7499* +
+    add  HL, DE         ; 1:11      7499* + save 1024x
+    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 2048x
+    ex   DE, HL         ; 1:4       7499* +
+    add  HL, DE         ; 1:11      7499* + save 2048x
+    ex   DE, HL         ; 1:4       7499* +
     add  HL, HL         ; 1:11      7499* 4096x
-    add  HL, HL         ; 1:11      7499* 8192x
-    or    A             ; 1:4       7499*
-    sbc  HL, DE         ; 2:15      7499* HL - save
+    add  HL, DE         ; 1:11      7499* HL + save
     ld    D, B          ; 1:4       7499*
     ld    E, C          ; 1:4       7499* 
-   
-    ld    B, D          ; 1:4       7507*
+       
+    ld    B, D          ; 1:4       7507* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7507*
     ld    D, H          ; 1:4       7507*
     ld    E, L          ; 1:4       7507* save 1x
     add  HL, HL         ; 1:11      7507* 2x
+    ex   DE, HL         ; 1:4       7507* +
+    add  HL, DE         ; 1:11      7507* + save 2x
+    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 4x
-    ex   DE, HL         ; 1:4       7507* +
-    add  HL, DE         ; 1:11      7507* + save 4x
-    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 8x
-    ex   DE, HL         ; 1:4       7507* +
-    add  HL, DE         ; 1:11      7507* + save 8x
-    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 16x
+    ex   DE, HL         ; 1:4       7507* +
+    add  HL, DE         ; 1:11      7507* + save 16x
+    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 32x
-    ex   DE, HL         ; 1:4       7507* +
-    add  HL, DE         ; 1:11      7507* + save 32x
-    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 64x
+    ex   DE, HL         ; 1:4       7507* +
+    add  HL, DE         ; 1:11      7507* + save 64x
+    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 128x
-    ex   DE, HL         ; 1:4       7507* +
-    add  HL, DE         ; 1:11      7507* + save 128x
-    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 256x
+    ex   DE, HL         ; 1:4       7507* +
+    add  HL, DE         ; 1:11      7507* + save 256x
+    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 512x
-    ex   DE, HL         ; 1:4       7507* +
-    add  HL, DE         ; 1:11      7507* + save 512x
-    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 1024x
+    ex   DE, HL         ; 1:4       7507* +
+    add  HL, DE         ; 1:11      7507* + save 1024x
+    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 2048x
+    ex   DE, HL         ; 1:4       7507* +
+    add  HL, DE         ; 1:11      7507* + save 2048x
+    ex   DE, HL         ; 1:4       7507* +
     add  HL, HL         ; 1:11      7507* 4096x
-    add  HL, HL         ; 1:11      7507* 8192x
-    or    A             ; 1:4       7507*
-    sbc  HL, DE         ; 2:15      7507* HL - save
+    add  HL, DE         ; 1:11      7507* HL + save
     ld    D, B          ; 1:4       7507*
     ld    E, C          ; 1:4       7507*   
-    ld    B, D          ; 1:4       7517*
+    ld    B, D          ; 1:4       7517* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7517*
     ld    D, H          ; 1:4       7517*
     ld    E, L          ; 1:4       7517* save 1x
@@ -27758,116 +27781,119 @@ ORG 0x6000
     or    A             ; 1:4       7517*
     sbc  HL, DE         ; 2:15      7517* HL - save
     ld    D, B          ; 1:4       7517*
-    ld    E, C          ; 1:4       7517*   
-    ld    B, D          ; 1:4       7523*
+    ld    E, C          ; 1:4       7517*       
+    ld    B, D          ; 1:4       7523* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7523*
     ld    D, H          ; 1:4       7523*
     ld    E, L          ; 1:4       7523* save 1x
     add  HL, HL         ; 1:11      7523* 2x
+    ex   DE, HL         ; 1:4       7523* +
+    add  HL, DE         ; 1:11      7523* + save 2x
+    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 4x
-    ex   DE, HL         ; 1:4       7523* +
-    add  HL, DE         ; 1:11      7523* + save 4x
-    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 8x
-    ex   DE, HL         ; 1:4       7523* +
-    add  HL, DE         ; 1:11      7523* + save 8x
-    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 16x
-    ex   DE, HL         ; 1:4       7523* +
-    add  HL, DE         ; 1:11      7523* + save 16x
-    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 32x
+    ex   DE, HL         ; 1:4       7523* +
+    add  HL, DE         ; 1:11      7523* + save 32x
+    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 64x
+    ex   DE, HL         ; 1:4       7523* +
+    add  HL, DE         ; 1:11      7523* + save 64x
+    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 128x
-    ex   DE, HL         ; 1:4       7523* +
-    add  HL, DE         ; 1:11      7523* + save 128x
-    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 256x
+    ex   DE, HL         ; 1:4       7523* +
+    add  HL, DE         ; 1:11      7523* + save 256x
+    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 512x
-    ex   DE, HL         ; 1:4       7523* +
-    add  HL, DE         ; 1:11      7523* + save 512x
-    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 1024x
+    ex   DE, HL         ; 1:4       7523* +
+    add  HL, DE         ; 1:11      7523* + save 1024x
+    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 2048x
+    ex   DE, HL         ; 1:4       7523* +
+    add  HL, DE         ; 1:11      7523* + save 2048x
+    ex   DE, HL         ; 1:4       7523* +
     add  HL, HL         ; 1:11      7523* 4096x
-    add  HL, HL         ; 1:11      7523* 8192x
-    or    A             ; 1:4       7523*
-    sbc  HL, DE         ; 2:15      7523* HL - save
+    add  HL, DE         ; 1:11      7523* HL + save
     ld    D, B          ; 1:4       7523*
-    ld    E, C          ; 1:4       7523*   
-    ld    B, D          ; 1:4       7529*
+    ld    E, C          ; 1:4       7523*       
+    ld    B, D          ; 1:4       7529* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7529*
     ld    D, H          ; 1:4       7529*
     ld    E, L          ; 1:4       7529* save 1x
     add  HL, HL         ; 1:11      7529* 2x
-    ex   DE, HL         ; 1:4       7529* +
-    add  HL, DE         ; 1:11      7529* + save 2x
-    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 4x
-    ex   DE, HL         ; 1:4       7529* +
-    add  HL, DE         ; 1:11      7529* + save 4x
-    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 8x
+    ex   DE, HL         ; 1:4       7529* +
+    add  HL, DE         ; 1:11      7529* + save 8x
+    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 16x
-    ex   DE, HL         ; 1:4       7529* +
-    add  HL, DE         ; 1:11      7529* + save 16x
-    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 32x
+    ex   DE, HL         ; 1:4       7529* +
+    add  HL, DE         ; 1:11      7529* + save 32x
+    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 64x
+    ex   DE, HL         ; 1:4       7529* +
+    add  HL, DE         ; 1:11      7529* + save 64x
+    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 128x
-    ex   DE, HL         ; 1:4       7529* +
-    add  HL, DE         ; 1:11      7529* + save 128x
-    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 256x
+    ex   DE, HL         ; 1:4       7529* +
+    add  HL, DE         ; 1:11      7529* + save 256x
+    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 512x
-    ex   DE, HL         ; 1:4       7529* +
-    add  HL, DE         ; 1:11      7529* + save 512x
-    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 1024x
+    ex   DE, HL         ; 1:4       7529* +
+    add  HL, DE         ; 1:11      7529* + save 1024x
+    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 2048x
+    ex   DE, HL         ; 1:4       7529* +
+    add  HL, DE         ; 1:11      7529* + save 2048x
+    ex   DE, HL         ; 1:4       7529* +
     add  HL, HL         ; 1:11      7529* 4096x
-    add  HL, HL         ; 1:11      7529* 8192x
-    or    A             ; 1:4       7529*
-    sbc  HL, DE         ; 2:15      7529* HL - save
+    add  HL, DE         ; 1:11      7529* HL + save
     ld    D, B          ; 1:4       7529*
-    ld    E, C          ; 1:4       7529*   
-    ld    B, D          ; 1:4       7537*
+    ld    E, C          ; 1:4       7529*       
+    ld    B, D          ; 1:4       7537* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7537*
     ld    D, H          ; 1:4       7537*
     ld    E, L          ; 1:4       7537* save 1x
     add  HL, HL         ; 1:11      7537* 2x
-    ex   DE, HL         ; 1:4       7537* +
-    add  HL, DE         ; 1:11      7537* + save 2x
-    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 4x
-    ex   DE, HL         ; 1:4       7537* +
-    add  HL, DE         ; 1:11      7537* + save 4x
-    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 8x
-    ex   DE, HL         ; 1:4       7537* +
-    add  HL, DE         ; 1:11      7537* + save 8x
-    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 16x
+    ex   DE, HL         ; 1:4       7537* +
+    add  HL, DE         ; 1:11      7537* + save 16x
+    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 32x
+    ex   DE, HL         ; 1:4       7537* +
+    add  HL, DE         ; 1:11      7537* + save 32x
+    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 64x
+    ex   DE, HL         ; 1:4       7537* +
+    add  HL, DE         ; 1:11      7537* + save 64x
+    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 128x
-    ex   DE, HL         ; 1:4       7537* +
-    add  HL, DE         ; 1:11      7537* + save 128x
-    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 256x
+    ex   DE, HL         ; 1:4       7537* +
+    add  HL, DE         ; 1:11      7537* + save 256x
+    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 512x
-    ex   DE, HL         ; 1:4       7537* +
-    add  HL, DE         ; 1:11      7537* + save 512x
-    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 1024x
+    ex   DE, HL         ; 1:4       7537* +
+    add  HL, DE         ; 1:11      7537* + save 1024x
+    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 2048x
+    ex   DE, HL         ; 1:4       7537* +
+    add  HL, DE         ; 1:11      7537* + save 2048x
+    ex   DE, HL         ; 1:4       7537* +
     add  HL, HL         ; 1:11      7537* 4096x
-    add  HL, HL         ; 1:11      7537* 8192x
-    or    A             ; 1:4       7537*
-    sbc  HL, DE         ; 2:15      7537* HL - save
+    add  HL, DE         ; 1:11      7537* HL + save
     ld    D, B          ; 1:4       7537*
     ld    E, C          ; 1:4       7537*   
-    ld    B, D          ; 1:4       7541*
+    ld    B, D          ; 1:4       7541* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7541*
     ld    D, H          ; 1:4       7541*
     ld    E, L          ; 1:4       7541* save 1x
@@ -27900,7 +27926,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7541* HL - save
     ld    D, B          ; 1:4       7541*
     ld    E, C          ; 1:4       7541*   
-    ld    B, D          ; 1:4       7547*
+    ld    B, D          ; 1:4       7547* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7547*
     ld    D, H          ; 1:4       7547*
     ld    E, L          ; 1:4       7547* save 1x
@@ -27930,7 +27956,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7547* HL - save
     ld    D, B          ; 1:4       7547*
     ld    E, C          ; 1:4       7547*   
-    ld    B, D          ; 1:4       7549*
+    ld    B, D          ; 1:4       7549* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7549*
     ld    D, H          ; 1:4       7549*
     ld    E, L          ; 1:4       7549* save 1x
@@ -27959,44 +27985,45 @@ ORG 0x6000
     or    A             ; 1:4       7549*
     sbc  HL, DE         ; 2:15      7549* HL - save
     ld    D, B          ; 1:4       7549*
-    ld    E, C          ; 1:4       7549*   
-    ld    B, D          ; 1:4       7559*
+    ld    E, C          ; 1:4       7549*       
+    ld    B, D          ; 1:4       7559* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7559*
     ld    D, H          ; 1:4       7559*
     ld    E, L          ; 1:4       7559* save 1x
     add  HL, HL         ; 1:11      7559* 2x
+    ex   DE, HL         ; 1:4       7559* +
+    add  HL, DE         ; 1:11      7559* + save 2x
+    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 4x
+    ex   DE, HL         ; 1:4       7559* +
+    add  HL, DE         ; 1:11      7559* + save 4x
+    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 8x
-    ex   DE, HL         ; 1:4       7559* +
-    add  HL, DE         ; 1:11      7559* + save 8x
-    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 16x
-    ex   DE, HL         ; 1:4       7559* +
-    add  HL, DE         ; 1:11      7559* + save 16x
-    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 32x
-    ex   DE, HL         ; 1:4       7559* +
-    add  HL, DE         ; 1:11      7559* + save 32x
-    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 64x
-    ex   DE, HL         ; 1:4       7559* +
-    add  HL, DE         ; 1:11      7559* + save 64x
-    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 128x
+    ex   DE, HL         ; 1:4       7559* +
+    add  HL, DE         ; 1:11      7559* + save 128x
+    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 256x
+    ex   DE, HL         ; 1:4       7559* +
+    add  HL, DE         ; 1:11      7559* + save 256x
+    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 512x
-    ex   DE, HL         ; 1:4       7559* +
-    add  HL, DE         ; 1:11      7559* + save 512x
-    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 1024x
+    ex   DE, HL         ; 1:4       7559* +
+    add  HL, DE         ; 1:11      7559* + save 1024x
+    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 2048x
+    ex   DE, HL         ; 1:4       7559* +
+    add  HL, DE         ; 1:11      7559* + save 2048x
+    ex   DE, HL         ; 1:4       7559* +
     add  HL, HL         ; 1:11      7559* 4096x
-    add  HL, HL         ; 1:11      7559* 8192x
-    or    A             ; 1:4       7559*
-    sbc  HL, DE         ; 2:15      7559* HL - save
+    add  HL, DE         ; 1:11      7559* HL + save
     ld    D, B          ; 1:4       7559*
-    ld    E, C          ; 1:4       7559*   
-    ld    B, D          ; 1:4       7561*
+    ld    E, C          ; 1:4       7559*       
+    ld    B, D          ; 1:4       7561* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7561*
     ld    D, H          ; 1:4       7561*
     ld    E, L          ; 1:4       7561* save 1x
@@ -28030,80 +28057,82 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7561* HL + save
     ld    D, B          ; 1:4       7561*
     ld    E, C          ; 1:4       7561* 
-   
-    ld    B, D          ; 1:4       7573*
+       
+    ld    B, D          ; 1:4       7573* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7573*
     ld    D, H          ; 1:4       7573*
     ld    E, L          ; 1:4       7573* save 1x
     add  HL, HL         ; 1:11      7573* 2x
-    ex   DE, HL         ; 1:4       7573* +
-    add  HL, DE         ; 1:11      7573* + save 2x
-    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 4x
+    ex   DE, HL         ; 1:4       7573* +
+    add  HL, DE         ; 1:11      7573* + save 4x
+    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 8x
-    ex   DE, HL         ; 1:4       7573* +
-    add  HL, DE         ; 1:11      7573* + save 8x
-    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 16x
+    ex   DE, HL         ; 1:4       7573* +
+    add  HL, DE         ; 1:11      7573* + save 16x
+    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 32x
-    ex   DE, HL         ; 1:4       7573* +
-    add  HL, DE         ; 1:11      7573* + save 32x
-    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 64x
-    ex   DE, HL         ; 1:4       7573* +
-    add  HL, DE         ; 1:11      7573* + save 64x
-    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 128x
+    ex   DE, HL         ; 1:4       7573* +
+    add  HL, DE         ; 1:11      7573* + save 128x
+    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 256x
+    ex   DE, HL         ; 1:4       7573* +
+    add  HL, DE         ; 1:11      7573* + save 256x
+    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 512x
-    ex   DE, HL         ; 1:4       7573* +
-    add  HL, DE         ; 1:11      7573* + save 512x
-    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 1024x
+    ex   DE, HL         ; 1:4       7573* +
+    add  HL, DE         ; 1:11      7573* + save 1024x
+    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 2048x
+    ex   DE, HL         ; 1:4       7573* +
+    add  HL, DE         ; 1:11      7573* + save 2048x
+    ex   DE, HL         ; 1:4       7573* +
     add  HL, HL         ; 1:11      7573* 4096x
-    add  HL, HL         ; 1:11      7573* 8192x
-    or    A             ; 1:4       7573*
-    sbc  HL, DE         ; 2:15      7573* HL - save
+    add  HL, DE         ; 1:11      7573* HL + save
     ld    D, B          ; 1:4       7573*
-    ld    E, C          ; 1:4       7573*   
-    ld    B, D          ; 1:4       7577*
+    ld    E, C          ; 1:4       7573*       
+    ld    B, D          ; 1:4       7577* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7577*
     ld    D, H          ; 1:4       7577*
     ld    E, L          ; 1:4       7577* save 1x
     add  HL, HL         ; 1:11      7577* 2x
-    ex   DE, HL         ; 1:4       7577* +
-    add  HL, DE         ; 1:11      7577* + save 2x
-    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 4x
-    ex   DE, HL         ; 1:4       7577* +
-    add  HL, DE         ; 1:11      7577* + save 4x
-    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 8x
+    ex   DE, HL         ; 1:4       7577* +
+    add  HL, DE         ; 1:11      7577* + save 8x
+    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 16x
+    ex   DE, HL         ; 1:4       7577* +
+    add  HL, DE         ; 1:11      7577* + save 16x
+    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 32x
-    ex   DE, HL         ; 1:4       7577* +
-    add  HL, DE         ; 1:11      7577* + save 32x
-    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 64x
-    ex   DE, HL         ; 1:4       7577* +
-    add  HL, DE         ; 1:11      7577* + save 64x
-    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 128x
+    ex   DE, HL         ; 1:4       7577* +
+    add  HL, DE         ; 1:11      7577* + save 128x
+    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 256x
+    ex   DE, HL         ; 1:4       7577* +
+    add  HL, DE         ; 1:11      7577* + save 256x
+    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 512x
-    ex   DE, HL         ; 1:4       7577* +
-    add  HL, DE         ; 1:11      7577* + save 512x
-    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 1024x
+    ex   DE, HL         ; 1:4       7577* +
+    add  HL, DE         ; 1:11      7577* + save 1024x
+    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 2048x
+    ex   DE, HL         ; 1:4       7577* +
+    add  HL, DE         ; 1:11      7577* + save 2048x
+    ex   DE, HL         ; 1:4       7577* +
     add  HL, HL         ; 1:11      7577* 4096x
-    add  HL, HL         ; 1:11      7577* 8192x
-    or    A             ; 1:4       7577*
-    sbc  HL, DE         ; 2:15      7577* HL - save
+    add  HL, DE         ; 1:11      7577* HL + save
     ld    D, B          ; 1:4       7577*
     ld    E, C          ; 1:4       7577*   
-    ld    B, D          ; 1:4       7583*
+    ld    B, D          ; 1:4       7583* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7583*
     ld    D, H          ; 1:4       7583*
     ld    E, L          ; 1:4       7583* save 1x
@@ -28132,44 +28161,45 @@ ORG 0x6000
     or    A             ; 1:4       7583*
     sbc  HL, DE         ; 2:15      7583* HL - save
     ld    D, B          ; 1:4       7583*
-    ld    E, C          ; 1:4       7583*   
-    ld    B, D          ; 1:4       7589*
+    ld    E, C          ; 1:4       7583*       
+    ld    B, D          ; 1:4       7589* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7589*
     ld    D, H          ; 1:4       7589*
     ld    E, L          ; 1:4       7589* save 1x
     add  HL, HL         ; 1:11      7589* 2x
-    ex   DE, HL         ; 1:4       7589* +
-    add  HL, DE         ; 1:11      7589* + save 2x
-    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 4x
+    ex   DE, HL         ; 1:4       7589* +
+    add  HL, DE         ; 1:11      7589* + save 4x
+    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 8x
-    ex   DE, HL         ; 1:4       7589* +
-    add  HL, DE         ; 1:11      7589* + save 8x
-    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 16x
-    ex   DE, HL         ; 1:4       7589* +
-    add  HL, DE         ; 1:11      7589* + save 16x
-    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 32x
+    ex   DE, HL         ; 1:4       7589* +
+    add  HL, DE         ; 1:11      7589* + save 32x
+    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 64x
-    ex   DE, HL         ; 1:4       7589* +
-    add  HL, DE         ; 1:11      7589* + save 64x
-    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 128x
+    ex   DE, HL         ; 1:4       7589* +
+    add  HL, DE         ; 1:11      7589* + save 128x
+    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 256x
+    ex   DE, HL         ; 1:4       7589* +
+    add  HL, DE         ; 1:11      7589* + save 256x
+    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 512x
-    ex   DE, HL         ; 1:4       7589* +
-    add  HL, DE         ; 1:11      7589* + save 512x
-    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 1024x
+    ex   DE, HL         ; 1:4       7589* +
+    add  HL, DE         ; 1:11      7589* + save 1024x
+    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 2048x
+    ex   DE, HL         ; 1:4       7589* +
+    add  HL, DE         ; 1:11      7589* + save 2048x
+    ex   DE, HL         ; 1:4       7589* +
     add  HL, HL         ; 1:11      7589* 4096x
-    add  HL, HL         ; 1:11      7589* 8192x
-    or    A             ; 1:4       7589*
-    sbc  HL, DE         ; 2:15      7589* HL - save
+    add  HL, DE         ; 1:11      7589* HL + save
     ld    D, B          ; 1:4       7589*
     ld    E, C          ; 1:4       7589*   
-    ld    B, D          ; 1:4       7591*
+    ld    B, D          ; 1:4       7591* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7591*
     ld    D, H          ; 1:4       7591*
     ld    E, L          ; 1:4       7591* save 1x
@@ -28202,7 +28232,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7591* HL - save
     ld    D, B          ; 1:4       7591*
     ld    E, C          ; 1:4       7591*   
-    ld    B, D          ; 1:4       7603*
+    ld    B, D          ; 1:4       7603* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7603*
     ld    D, H          ; 1:4       7603*
     ld    E, L          ; 1:4       7603* save 1x
@@ -28235,7 +28265,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7603* HL - save
     ld    D, B          ; 1:4       7603*
     ld    E, C          ; 1:4       7603*   
-    ld    B, D          ; 1:4       7607*
+    ld    B, D          ; 1:4       7607* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7607*
     ld    D, H          ; 1:4       7607*
     ld    E, L          ; 1:4       7607* save 1x
@@ -28264,44 +28294,45 @@ ORG 0x6000
     or    A             ; 1:4       7607*
     sbc  HL, DE         ; 2:15      7607* HL - save
     ld    D, B          ; 1:4       7607*
-    ld    E, C          ; 1:4       7607*   
-    ld    B, D          ; 1:4       7621*
+    ld    E, C          ; 1:4       7607*       
+    ld    B, D          ; 1:4       7621* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7621*
     ld    D, H          ; 1:4       7621*
     ld    E, L          ; 1:4       7621* save 1x
     add  HL, HL         ; 1:11      7621* 2x
-    ex   DE, HL         ; 1:4       7621* +
-    add  HL, DE         ; 1:11      7621* + save 2x
-    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 4x
+    ex   DE, HL         ; 1:4       7621* +
+    add  HL, DE         ; 1:11      7621* + save 4x
+    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 8x
-    ex   DE, HL         ; 1:4       7621* +
-    add  HL, DE         ; 1:11      7621* + save 8x
-    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 16x
-    ex   DE, HL         ; 1:4       7621* +
-    add  HL, DE         ; 1:11      7621* + save 16x
-    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 32x
-    ex   DE, HL         ; 1:4       7621* +
-    add  HL, DE         ; 1:11      7621* + save 32x
-    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 64x
+    ex   DE, HL         ; 1:4       7621* +
+    add  HL, DE         ; 1:11      7621* + save 64x
+    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 128x
+    ex   DE, HL         ; 1:4       7621* +
+    add  HL, DE         ; 1:11      7621* + save 128x
+    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 256x
+    ex   DE, HL         ; 1:4       7621* +
+    add  HL, DE         ; 1:11      7621* + save 256x
+    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 512x
-    ex   DE, HL         ; 1:4       7621* +
-    add  HL, DE         ; 1:11      7621* + save 512x
-    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 1024x
+    ex   DE, HL         ; 1:4       7621* +
+    add  HL, DE         ; 1:11      7621* + save 1024x
+    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 2048x
+    ex   DE, HL         ; 1:4       7621* +
+    add  HL, DE         ; 1:11      7621* + save 2048x
+    ex   DE, HL         ; 1:4       7621* +
     add  HL, HL         ; 1:11      7621* 4096x
-    add  HL, HL         ; 1:11      7621* 8192x
-    or    A             ; 1:4       7621*
-    sbc  HL, DE         ; 2:15      7621* HL - save
+    add  HL, DE         ; 1:11      7621* HL + save
     ld    D, B          ; 1:4       7621*
     ld    E, C          ; 1:4       7621*   
-    ld    B, D          ; 1:4       7639*
+    ld    B, D          ; 1:4       7639* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7639*
     ld    D, H          ; 1:4       7639*
     ld    E, L          ; 1:4       7639* save 1x
@@ -28331,7 +28362,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7639* HL - save
     ld    D, B          ; 1:4       7639*
     ld    E, C          ; 1:4       7639*   
-    ld    B, D          ; 1:4       7643*
+    ld    B, D          ; 1:4       7643* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7643*
     ld    D, H          ; 1:4       7643*
     ld    E, L          ; 1:4       7643* save 1x
@@ -28361,44 +28392,45 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7643* HL - save
     ld    D, B          ; 1:4       7643*
     ld    E, C          ; 1:4       7643* 
-   
-    ld    B, D          ; 1:4       7649*
+       
+    ld    B, D          ; 1:4       7649* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7649*
     ld    D, H          ; 1:4       7649*
     ld    E, L          ; 1:4       7649* save 1x
     add  HL, HL         ; 1:11      7649* 2x
-    ex   DE, HL         ; 1:4       7649* +
-    add  HL, DE         ; 1:11      7649* + save 2x
-    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 4x
-    ex   DE, HL         ; 1:4       7649* +
-    add  HL, DE         ; 1:11      7649* + save 4x
-    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 8x
-    ex   DE, HL         ; 1:4       7649* +
-    add  HL, DE         ; 1:11      7649* + save 8x
-    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 16x
-    ex   DE, HL         ; 1:4       7649* +
-    add  HL, DE         ; 1:11      7649* + save 16x
-    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 32x
+    ex   DE, HL         ; 1:4       7649* +
+    add  HL, DE         ; 1:11      7649* + save 32x
+    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 64x
+    ex   DE, HL         ; 1:4       7649* +
+    add  HL, DE         ; 1:11      7649* + save 64x
+    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 128x
+    ex   DE, HL         ; 1:4       7649* +
+    add  HL, DE         ; 1:11      7649* + save 128x
+    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 256x
+    ex   DE, HL         ; 1:4       7649* +
+    add  HL, DE         ; 1:11      7649* + save 256x
+    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 512x
-    ex   DE, HL         ; 1:4       7649* +
-    add  HL, DE         ; 1:11      7649* + save 512x
-    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 1024x
+    ex   DE, HL         ; 1:4       7649* +
+    add  HL, DE         ; 1:11      7649* + save 1024x
+    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 2048x
+    ex   DE, HL         ; 1:4       7649* +
+    add  HL, DE         ; 1:11      7649* + save 2048x
+    ex   DE, HL         ; 1:4       7649* +
     add  HL, HL         ; 1:11      7649* 4096x
-    add  HL, HL         ; 1:11      7649* 8192x
-    or    A             ; 1:4       7649*
-    sbc  HL, DE         ; 2:15      7649* HL - save
+    add  HL, DE         ; 1:11      7649* HL + save
     ld    D, B          ; 1:4       7649*
     ld    E, C          ; 1:4       7649*   
-    ld    B, D          ; 1:4       7669*
+    ld    B, D          ; 1:4       7669* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7669*
     ld    D, H          ; 1:4       7669*
     ld    E, L          ; 1:4       7669* save 1x
@@ -28428,7 +28460,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7669* HL - save
     ld    D, B          ; 1:4       7669*
     ld    E, C          ; 1:4       7669*   
-    ld    B, D          ; 1:4       7673*
+    ld    B, D          ; 1:4       7673* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7673*
     ld    D, H          ; 1:4       7673*
     ld    E, L          ; 1:4       7673* save 1x
@@ -28440,13 +28472,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       7673* +
     add  HL, DE         ; 1:11      7673* + save 4x
     ex   DE, HL         ; 1:4       7673* +
-    add  HL, HL         ; 1:11      7673* 8x
-    add  HL, HL         ; 1:11      7673* 16x
-    add  HL, HL         ; 1:11      7673* 32x
-    add  HL, HL         ; 1:11      7673* 64x
-    add  HL, HL         ; 1:11      7673* 128x
-    add  HL, HL         ; 1:11      7673* 256x
-    add  HL, HL         ; 1:11      7673* 512x
+    rr    H             ; 2:8       7673*
+    rr    L             ; 2:8       7673*
+    ld    H, L          ; 1:4       7673*
+    ld    L, 0x00       ; 2:7       7673* 512x
     ex   DE, HL         ; 1:4       7673* +
     add  HL, DE         ; 1:11      7673* + save 512x
     ex   DE, HL         ; 1:4       7673* +
@@ -28457,8 +28486,8 @@ ORG 0x6000
     or    A             ; 1:4       7673*
     sbc  HL, DE         ; 2:15      7673* HL - save
     ld    D, B          ; 1:4       7673*
-    ld    E, C          ; 1:4       7673*   
-    ld    B, D          ; 1:4       7681*
+    ld    E, C          ; 1:4       7673*       
+    ld    B, D          ; 1:4       7681* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7681*
     ld    D, H          ; 1:4       7681*
     ld    E, L          ; 1:4       7681* save 1x
@@ -28479,8 +28508,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7681* 4096x
     add  HL, DE         ; 1:11      7681* HL + save
     ld    D, B          ; 1:4       7681*
-    ld    E, C          ; 1:4       7681*   
-    ld    B, D          ; 1:4       7687*
+    ld    E, C          ; 1:4       7681*       
+    ld    B, D          ; 1:4       7687* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7687*
     ld    D, H          ; 1:4       7687*
     ld    E, L          ; 1:4       7687* save 1x
@@ -28492,13 +28521,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       7687* +
     add  HL, DE         ; 1:11      7687* + save 4x
     ex   DE, HL         ; 1:4       7687* +
-    add  HL, HL         ; 1:11      7687* 8x
-    add  HL, HL         ; 1:11      7687* 16x
-    add  HL, HL         ; 1:11      7687* 32x
-    add  HL, HL         ; 1:11      7687* 64x
-    add  HL, HL         ; 1:11      7687* 128x
-    add  HL, HL         ; 1:11      7687* 256x
-    add  HL, HL         ; 1:11      7687* 512x
+    rr    H             ; 2:8       7687*
+    rr    L             ; 2:8       7687*
+    ld    H, L          ; 1:4       7687*
+    ld    L, 0x00       ; 2:7       7687* 512x
     ex   DE, HL         ; 1:4       7687* +
     add  HL, DE         ; 1:11      7687* + save 512x
     ex   DE, HL         ; 1:4       7687* +
@@ -28513,8 +28539,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7687* 4096x
     add  HL, DE         ; 1:11      7687* HL + save
     ld    D, B          ; 1:4       7687*
-    ld    E, C          ; 1:4       7687*   
-    ld    B, D          ; 1:4       7691*
+    ld    E, C          ; 1:4       7687*       
+    ld    B, D          ; 1:4       7691* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7691*
     ld    D, H          ; 1:4       7691*
     ld    E, L          ; 1:4       7691* save 1x
@@ -28547,8 +28573,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7691* 4096x
     add  HL, DE         ; 1:11      7691* HL + save
     ld    D, B          ; 1:4       7691*
-    ld    E, C          ; 1:4       7691*   
-    ld    B, D          ; 1:4       7699*
+    ld    E, C          ; 1:4       7691*       
+    ld    B, D          ; 1:4       7699* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7699*
     ld    D, H          ; 1:4       7699*
     ld    E, L          ; 1:4       7699* save 1x
@@ -28581,44 +28607,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7699* 4096x
     add  HL, DE         ; 1:11      7699* HL + save
     ld    D, B          ; 1:4       7699*
-    ld    E, C          ; 1:4       7699*   
-    ld    B, D          ; 1:4       7703*
+    ld    E, C          ; 1:4       7699*       
+    ld    B, D          ; 1:4       7703* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7703*
     ld    D, H          ; 1:4       7703*
     ld    E, L          ; 1:4       7703* save 1x
     add  HL, HL         ; 1:11      7703* 2x
+    ex   DE, HL         ; 1:4       7703* +
+    add  HL, DE         ; 1:11      7703* + save 2x
+    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 4x
+    ex   DE, HL         ; 1:4       7703* +
+    add  HL, DE         ; 1:11      7703* + save 4x
+    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 8x
-    ex   DE, HL         ; 1:4       7703* +
-    add  HL, DE         ; 1:11      7703* + save 8x
-    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 16x
+    ex   DE, HL         ; 1:4       7703* +
+    add  HL, DE         ; 1:11      7703* + save 16x
+    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 32x
-    ex   DE, HL         ; 1:4       7703* +
-    add  HL, DE         ; 1:11      7703* + save 32x
-    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 64x
-    ex   DE, HL         ; 1:4       7703* +
-    add  HL, DE         ; 1:11      7703* + save 64x
-    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 128x
-    ex   DE, HL         ; 1:4       7703* +
-    add  HL, DE         ; 1:11      7703* + save 128x
-    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 256x
-    ex   DE, HL         ; 1:4       7703* +
-    add  HL, DE         ; 1:11      7703* + save 256x
-    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 512x
+    ex   DE, HL         ; 1:4       7703* +
+    add  HL, DE         ; 1:11      7703* + save 512x
+    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 1024x
+    ex   DE, HL         ; 1:4       7703* +
+    add  HL, DE         ; 1:11      7703* + save 1024x
+    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 2048x
+    ex   DE, HL         ; 1:4       7703* +
+    add  HL, DE         ; 1:11      7703* + save 2048x
+    ex   DE, HL         ; 1:4       7703* +
     add  HL, HL         ; 1:11      7703* 4096x
-    add  HL, HL         ; 1:11      7703* 8192x
-    or    A             ; 1:4       7703*
-    sbc  HL, DE         ; 2:15      7703* HL - save
+    add  HL, DE         ; 1:11      7703* HL + save
     ld    D, B          ; 1:4       7703*
-    ld    E, C          ; 1:4       7703*   
-    ld    B, D          ; 1:4       7717*
+    ld    E, C          ; 1:4       7703*       
+    ld    B, D          ; 1:4       7717* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7717*
     ld    D, H          ; 1:4       7717*
     ld    E, L          ; 1:4       7717* save 1x
@@ -28651,45 +28678,46 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7717* 4096x
     add  HL, DE         ; 1:11      7717* HL + save
     ld    D, B          ; 1:4       7717*
-    ld    E, C          ; 1:4       7717*   
-    ld    B, D          ; 1:4       7723*
+    ld    E, C          ; 1:4       7717*       
+    ld    B, D          ; 1:4       7723* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7723*
     ld    D, H          ; 1:4       7723*
     ld    E, L          ; 1:4       7723* save 1x
     add  HL, HL         ; 1:11      7723* 2x
+    ex   DE, HL         ; 1:4       7723* +
+    add  HL, DE         ; 1:11      7723* + save 2x
+    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 4x
-    ex   DE, HL         ; 1:4       7723* +
-    add  HL, DE         ; 1:11      7723* + save 4x
-    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 8x
+    ex   DE, HL         ; 1:4       7723* +
+    add  HL, DE         ; 1:11      7723* + save 8x
+    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 16x
-    ex   DE, HL         ; 1:4       7723* +
-    add  HL, DE         ; 1:11      7723* + save 16x
-    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 32x
+    ex   DE, HL         ; 1:4       7723* +
+    add  HL, DE         ; 1:11      7723* + save 32x
+    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 64x
-    ex   DE, HL         ; 1:4       7723* +
-    add  HL, DE         ; 1:11      7723* + save 64x
-    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 128x
-    ex   DE, HL         ; 1:4       7723* +
-    add  HL, DE         ; 1:11      7723* + save 128x
-    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 256x
-    ex   DE, HL         ; 1:4       7723* +
-    add  HL, DE         ; 1:11      7723* + save 256x
-    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 512x
+    ex   DE, HL         ; 1:4       7723* +
+    add  HL, DE         ; 1:11      7723* + save 512x
+    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 1024x
+    ex   DE, HL         ; 1:4       7723* +
+    add  HL, DE         ; 1:11      7723* + save 1024x
+    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 2048x
+    ex   DE, HL         ; 1:4       7723* +
+    add  HL, DE         ; 1:11      7723* + save 2048x
+    ex   DE, HL         ; 1:4       7723* +
     add  HL, HL         ; 1:11      7723* 4096x
-    add  HL, HL         ; 1:11      7723* 8192x
-    or    A             ; 1:4       7723*
-    sbc  HL, DE         ; 2:15      7723* HL - save
+    add  HL, DE         ; 1:11      7723* HL + save
     ld    D, B          ; 1:4       7723*
     ld    E, C          ; 1:4       7723* 
    
-    ld    B, D          ; 1:4       7727*
+    ld    B, D          ; 1:4       7727* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7727*
     ld    D, H          ; 1:4       7727*
     ld    E, L          ; 1:4       7727* save 1x
@@ -28722,7 +28750,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7727* HL - save
     ld    D, B          ; 1:4       7727*
     ld    E, C          ; 1:4       7727*   
-    ld    B, D          ; 1:4       7741*
+    ld    B, D          ; 1:4       7741* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7741*
     ld    D, H          ; 1:4       7741*
     ld    E, L          ; 1:4       7741* save 1x
@@ -28754,8 +28782,8 @@ ORG 0x6000
     or    A             ; 1:4       7741*
     sbc  HL, DE         ; 2:15      7741* HL - save
     ld    D, B          ; 1:4       7741*
-    ld    E, C          ; 1:4       7741*   
-    ld    B, D          ; 1:4       7753*
+    ld    E, C          ; 1:4       7741*       
+    ld    B, D          ; 1:4       7753* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7753*
     ld    D, H          ; 1:4       7753*
     ld    E, L          ; 1:4       7753* save 1x
@@ -28788,44 +28816,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7753* 4096x
     add  HL, DE         ; 1:11      7753* HL + save
     ld    D, B          ; 1:4       7753*
-    ld    E, C          ; 1:4       7753*   
-    ld    B, D          ; 1:4       7757*
+    ld    E, C          ; 1:4       7753*       
+    ld    B, D          ; 1:4       7757* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7757*
     ld    D, H          ; 1:4       7757*
     ld    E, L          ; 1:4       7757* save 1x
     add  HL, HL         ; 1:11      7757* 2x
-    ex   DE, HL         ; 1:4       7757* +
-    add  HL, DE         ; 1:11      7757* + save 2x
-    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 4x
+    ex   DE, HL         ; 1:4       7757* +
+    add  HL, DE         ; 1:11      7757* + save 4x
+    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 8x
+    ex   DE, HL         ; 1:4       7757* +
+    add  HL, DE         ; 1:11      7757* + save 8x
+    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 16x
-    ex   DE, HL         ; 1:4       7757* +
-    add  HL, DE         ; 1:11      7757* + save 16x
-    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 32x
-    ex   DE, HL         ; 1:4       7757* +
-    add  HL, DE         ; 1:11      7757* + save 32x
-    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 64x
+    ex   DE, HL         ; 1:4       7757* +
+    add  HL, DE         ; 1:11      7757* + save 64x
+    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 128x
-    ex   DE, HL         ; 1:4       7757* +
-    add  HL, DE         ; 1:11      7757* + save 128x
-    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 256x
-    ex   DE, HL         ; 1:4       7757* +
-    add  HL, DE         ; 1:11      7757* + save 256x
-    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 512x
+    ex   DE, HL         ; 1:4       7757* +
+    add  HL, DE         ; 1:11      7757* + save 512x
+    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 1024x
+    ex   DE, HL         ; 1:4       7757* +
+    add  HL, DE         ; 1:11      7757* + save 1024x
+    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 2048x
+    ex   DE, HL         ; 1:4       7757* +
+    add  HL, DE         ; 1:11      7757* + save 2048x
+    ex   DE, HL         ; 1:4       7757* +
     add  HL, HL         ; 1:11      7757* 4096x
-    add  HL, HL         ; 1:11      7757* 8192x
-    or    A             ; 1:4       7757*
-    sbc  HL, DE         ; 2:15      7757* HL - save
+    add  HL, DE         ; 1:11      7757* HL + save
     ld    D, B          ; 1:4       7757*
     ld    E, C          ; 1:4       7757*   
-    ld    B, D          ; 1:4       7759*
+    ld    B, D          ; 1:4       7759* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7759*
     ld    D, H          ; 1:4       7759*
     ld    E, L          ; 1:4       7759* save 1x
@@ -28858,7 +28887,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7759* HL - save
     ld    D, B          ; 1:4       7759*
     ld    E, C          ; 1:4       7759*   
-    ld    B, D          ; 1:4       7789*
+    ld    B, D          ; 1:4       7789* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7789*
     ld    D, H          ; 1:4       7789*
     ld    E, L          ; 1:4       7789* save 1x
@@ -28890,44 +28919,45 @@ ORG 0x6000
     or    A             ; 1:4       7789*
     sbc  HL, DE         ; 2:15      7789* HL - save
     ld    D, B          ; 1:4       7789*
-    ld    E, C          ; 1:4       7789*   
-    ld    B, D          ; 1:4       7793*
+    ld    E, C          ; 1:4       7789*       
+    ld    B, D          ; 1:4       7793* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7793*
     ld    D, H          ; 1:4       7793*
     ld    E, L          ; 1:4       7793* save 1x
     add  HL, HL         ; 1:11      7793* 2x
-    ex   DE, HL         ; 1:4       7793* +
-    add  HL, DE         ; 1:11      7793* + save 2x
-    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 4x
-    ex   DE, HL         ; 1:4       7793* +
-    add  HL, DE         ; 1:11      7793* + save 4x
-    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 8x
-    ex   DE, HL         ; 1:4       7793* +
-    add  HL, DE         ; 1:11      7793* + save 8x
-    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 16x
+    ex   DE, HL         ; 1:4       7793* +
+    add  HL, DE         ; 1:11      7793* + save 16x
+    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 32x
+    ex   DE, HL         ; 1:4       7793* +
+    add  HL, DE         ; 1:11      7793* + save 32x
+    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 64x
+    ex   DE, HL         ; 1:4       7793* +
+    add  HL, DE         ; 1:11      7793* + save 64x
+    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 128x
-    ex   DE, HL         ; 1:4       7793* +
-    add  HL, DE         ; 1:11      7793* + save 128x
-    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 256x
-    ex   DE, HL         ; 1:4       7793* +
-    add  HL, DE         ; 1:11      7793* + save 256x
-    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 512x
+    ex   DE, HL         ; 1:4       7793* +
+    add  HL, DE         ; 1:11      7793* + save 512x
+    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 1024x
+    ex   DE, HL         ; 1:4       7793* +
+    add  HL, DE         ; 1:11      7793* + save 1024x
+    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 2048x
+    ex   DE, HL         ; 1:4       7793* +
+    add  HL, DE         ; 1:11      7793* + save 2048x
+    ex   DE, HL         ; 1:4       7793* +
     add  HL, HL         ; 1:11      7793* 4096x
-    add  HL, HL         ; 1:11      7793* 8192x
-    or    A             ; 1:4       7793*
-    sbc  HL, DE         ; 2:15      7793* HL - save
+    add  HL, DE         ; 1:11      7793* HL + save
     ld    D, B          ; 1:4       7793*
-    ld    E, C          ; 1:4       7793*   
-    ld    B, D          ; 1:4       7817*
+    ld    E, C          ; 1:4       7793*       
+    ld    B, D          ; 1:4       7817* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7817*
     ld    D, H          ; 1:4       7817*
     ld    E, L          ; 1:4       7817* save 1x
@@ -28961,7 +28991,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7817* HL + save
     ld    D, B          ; 1:4       7817*
     ld    E, C          ; 1:4       7817*   
-    ld    B, D          ; 1:4       7823*
+    ld    B, D          ; 1:4       7823* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7823*
     ld    D, H          ; 1:4       7823*
     ld    E, L          ; 1:4       7823* save 1x
@@ -28993,45 +29023,46 @@ ORG 0x6000
     or    A             ; 1:4       7823*
     sbc  HL, DE         ; 2:15      7823* HL - save
     ld    D, B          ; 1:4       7823*
-    ld    E, C          ; 1:4       7823*   
-    ld    B, D          ; 1:4       7829*
+    ld    E, C          ; 1:4       7823*       
+    ld    B, D          ; 1:4       7829* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7829*
     ld    D, H          ; 1:4       7829*
     ld    E, L          ; 1:4       7829* save 1x
     add  HL, HL         ; 1:11      7829* 2x
-    ex   DE, HL         ; 1:4       7829* +
-    add  HL, DE         ; 1:11      7829* + save 2x
-    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 4x
+    ex   DE, HL         ; 1:4       7829* +
+    add  HL, DE         ; 1:11      7829* + save 4x
+    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 8x
-    ex   DE, HL         ; 1:4       7829* +
-    add  HL, DE         ; 1:11      7829* + save 8x
-    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 16x
+    ex   DE, HL         ; 1:4       7829* +
+    add  HL, DE         ; 1:11      7829* + save 16x
+    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 32x
-    ex   DE, HL         ; 1:4       7829* +
-    add  HL, DE         ; 1:11      7829* + save 32x
-    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 64x
-    ex   DE, HL         ; 1:4       7829* +
-    add  HL, DE         ; 1:11      7829* + save 64x
-    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 128x
+    ex   DE, HL         ; 1:4       7829* +
+    add  HL, DE         ; 1:11      7829* + save 128x
+    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 256x
-    ex   DE, HL         ; 1:4       7829* +
-    add  HL, DE         ; 1:11      7829* + save 256x
-    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 512x
+    ex   DE, HL         ; 1:4       7829* +
+    add  HL, DE         ; 1:11      7829* + save 512x
+    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 1024x
+    ex   DE, HL         ; 1:4       7829* +
+    add  HL, DE         ; 1:11      7829* + save 1024x
+    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 2048x
+    ex   DE, HL         ; 1:4       7829* +
+    add  HL, DE         ; 1:11      7829* + save 2048x
+    ex   DE, HL         ; 1:4       7829* +
     add  HL, HL         ; 1:11      7829* 4096x
-    add  HL, HL         ; 1:11      7829* 8192x
-    or    A             ; 1:4       7829*
-    sbc  HL, DE         ; 2:15      7829* HL - save
+    add  HL, DE         ; 1:11      7829* HL + save
     ld    D, B          ; 1:4       7829*
     ld    E, C          ; 1:4       7829* 
-   
-    ld    B, D          ; 1:4       7841*
+       
+    ld    B, D          ; 1:4       7841* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7841*
     ld    D, H          ; 1:4       7841*
     ld    E, L          ; 1:4       7841* save 1x
@@ -29065,7 +29096,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      7841* HL + save
     ld    D, B          ; 1:4       7841*
     ld    E, C          ; 1:4       7841*   
-    ld    B, D          ; 1:4       7853*
+    ld    B, D          ; 1:4       7853* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7853*
     ld    D, H          ; 1:4       7853*
     ld    E, L          ; 1:4       7853* save 1x
@@ -29098,7 +29129,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7853* HL - save
     ld    D, B          ; 1:4       7853*
     ld    E, C          ; 1:4       7853*   
-    ld    B, D          ; 1:4       7867*
+    ld    B, D          ; 1:4       7867* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7867*
     ld    D, H          ; 1:4       7867*
     ld    E, L          ; 1:4       7867* save 1x
@@ -29127,8 +29158,8 @@ ORG 0x6000
     or    A             ; 1:4       7867*
     sbc  HL, DE         ; 2:15      7867* HL - save
     ld    D, B          ; 1:4       7867*
-    ld    E, C          ; 1:4       7867*   
-    ld    B, D          ; 1:4       7873*
+    ld    E, C          ; 1:4       7867*       
+    ld    B, D          ; 1:4       7873* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7873*
     ld    D, H          ; 1:4       7873*
     ld    E, L          ; 1:4       7873* save 1x
@@ -29161,44 +29192,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7873* 4096x
     add  HL, DE         ; 1:11      7873* HL + save
     ld    D, B          ; 1:4       7873*
-    ld    E, C          ; 1:4       7873*   
-    ld    B, D          ; 1:4       7877*
+    ld    E, C          ; 1:4       7873*       
+    ld    B, D          ; 1:4       7877* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7877*
     ld    D, H          ; 1:4       7877*
     ld    E, L          ; 1:4       7877* save 1x
     add  HL, HL         ; 1:11      7877* 2x
-    ex   DE, HL         ; 1:4       7877* +
-    add  HL, DE         ; 1:11      7877* + save 2x
-    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 4x
+    ex   DE, HL         ; 1:4       7877* +
+    add  HL, DE         ; 1:11      7877* + save 4x
+    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 8x
-    ex   DE, HL         ; 1:4       7877* +
-    add  HL, DE         ; 1:11      7877* + save 8x
-    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 16x
-    ex   DE, HL         ; 1:4       7877* +
-    add  HL, DE         ; 1:11      7877* + save 16x
-    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 32x
-    ex   DE, HL         ; 1:4       7877* +
-    add  HL, DE         ; 1:11      7877* + save 32x
-    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 64x
+    ex   DE, HL         ; 1:4       7877* +
+    add  HL, DE         ; 1:11      7877* + save 64x
+    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 128x
+    ex   DE, HL         ; 1:4       7877* +
+    add  HL, DE         ; 1:11      7877* + save 128x
+    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 256x
-    ex   DE, HL         ; 1:4       7877* +
-    add  HL, DE         ; 1:11      7877* + save 256x
-    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 512x
+    ex   DE, HL         ; 1:4       7877* +
+    add  HL, DE         ; 1:11      7877* + save 512x
+    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 1024x
+    ex   DE, HL         ; 1:4       7877* +
+    add  HL, DE         ; 1:11      7877* + save 1024x
+    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 2048x
+    ex   DE, HL         ; 1:4       7877* +
+    add  HL, DE         ; 1:11      7877* + save 2048x
+    ex   DE, HL         ; 1:4       7877* +
     add  HL, HL         ; 1:11      7877* 4096x
-    add  HL, HL         ; 1:11      7877* 8192x
-    or    A             ; 1:4       7877*
-    sbc  HL, DE         ; 2:15      7877* HL - save
+    add  HL, DE         ; 1:11      7877* HL + save
     ld    D, B          ; 1:4       7877*
     ld    E, C          ; 1:4       7877*   
-    ld    B, D          ; 1:4       7879*
+    ld    B, D          ; 1:4       7879* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7879*
     ld    D, H          ; 1:4       7879*
     ld    E, L          ; 1:4       7879* save 1x
@@ -29231,7 +29263,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7879* HL - save
     ld    D, B          ; 1:4       7879*
     ld    E, C          ; 1:4       7879*   
-    ld    B, D          ; 1:4       7883*
+    ld    B, D          ; 1:4       7883* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7883*
     ld    D, H          ; 1:4       7883*
     ld    E, L          ; 1:4       7883* save 1x
@@ -29264,7 +29296,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7883* HL - save
     ld    D, B          ; 1:4       7883*
     ld    E, C          ; 1:4       7883*   
-    ld    B, D          ; 1:4       7901*
+    ld    B, D          ; 1:4       7901* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7901*
     ld    D, H          ; 1:4       7901*
     ld    E, L          ; 1:4       7901* save 1x
@@ -29294,7 +29326,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7901* HL - save
     ld    D, B          ; 1:4       7901*
     ld    E, C          ; 1:4       7901*   
-    ld    B, D          ; 1:4       7907*
+    ld    B, D          ; 1:4       7907* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7907*
     ld    D, H          ; 1:4       7907*
     ld    E, L          ; 1:4       7907* save 1x
@@ -29327,7 +29359,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7907* HL - save
     ld    D, B          ; 1:4       7907*
     ld    E, C          ; 1:4       7907*   
-    ld    B, D          ; 1:4       7919*
+    ld    B, D          ; 1:4       7919* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7919*
     ld    D, H          ; 1:4       7919*
     ld    E, L          ; 1:4       7919* save 1x
@@ -29355,7 +29387,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       7919*
     ld    E, C          ; 1:4       7919* 
    
-    ld    B, D          ; 1:4       7927*
+    ld    B, D          ; 1:4       7927* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7927*
     ld    D, H          ; 1:4       7927*
     ld    E, L          ; 1:4       7927* save 1x
@@ -29382,7 +29414,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7927* HL - save
     ld    D, B          ; 1:4       7927*
     ld    E, C          ; 1:4       7927*   
-    ld    B, D          ; 1:4       7933*
+    ld    B, D          ; 1:4       7933* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7933*
     ld    D, H          ; 1:4       7933*
     ld    E, L          ; 1:4       7933* save 1x
@@ -29390,13 +29422,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       7933* +
     add  HL, DE         ; 1:11      7933* + save 2x
     ex   DE, HL         ; 1:4       7933* +
-    add  HL, HL         ; 1:11      7933* 4x
-    add  HL, HL         ; 1:11      7933* 8x
-    add  HL, HL         ; 1:11      7933* 16x
-    add  HL, HL         ; 1:11      7933* 32x
-    add  HL, HL         ; 1:11      7933* 64x
-    add  HL, HL         ; 1:11      7933* 128x
-    add  HL, HL         ; 1:11      7933* 256x
+    rr    H             ; 2:8       7933*
+    rr    L             ; 2:8       7933*
+    ld    H, L          ; 1:4       7933*
+    ld    L, 0x00       ; 2:7       7933* 256x
     ex   DE, HL         ; 1:4       7933* +
     add  HL, DE         ; 1:11      7933* + save 256x
     ex   DE, HL         ; 1:4       7933* +
@@ -29408,8 +29437,8 @@ ORG 0x6000
     or    A             ; 1:4       7933*
     sbc  HL, DE         ; 2:15      7933* HL - save
     ld    D, B          ; 1:4       7933*
-    ld    E, C          ; 1:4       7933*   
-    ld    B, D          ; 1:4       7937*
+    ld    E, C          ; 1:4       7933*       
+    ld    B, D          ; 1:4       7937* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7937*
     ld    D, H          ; 1:4       7937*
     ld    E, L          ; 1:4       7937* save 1x
@@ -29433,44 +29462,45 @@ ORG 0x6000
     add  HL, HL         ; 1:11      7937* 4096x
     add  HL, DE         ; 1:11      7937* HL + save
     ld    D, B          ; 1:4       7937*
-    ld    E, C          ; 1:4       7937*   
-    ld    B, D          ; 1:4       7949*
+    ld    E, C          ; 1:4       7937*       
+    ld    B, D          ; 1:4       7949* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       7949*
     ld    D, H          ; 1:4       7949*
     ld    E, L          ; 1:4       7949* save 1x
     add  HL, HL         ; 1:11      7949* 2x
-    ex   DE, HL         ; 1:4       7949* +
-    add  HL, DE         ; 1:11      7949* + save 2x
-    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 4x
+    ex   DE, HL         ; 1:4       7949* +
+    add  HL, DE         ; 1:11      7949* + save 4x
+    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 8x
+    ex   DE, HL         ; 1:4       7949* +
+    add  HL, DE         ; 1:11      7949* + save 8x
+    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 16x
-    ex   DE, HL         ; 1:4       7949* +
-    add  HL, DE         ; 1:11      7949* + save 16x
-    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 32x
-    ex   DE, HL         ; 1:4       7949* +
-    add  HL, DE         ; 1:11      7949* + save 32x
-    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 64x
-    ex   DE, HL         ; 1:4       7949* +
-    add  HL, DE         ; 1:11      7949* + save 64x
-    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 128x
-    ex   DE, HL         ; 1:4       7949* +
-    add  HL, DE         ; 1:11      7949* + save 128x
-    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 256x
+    ex   DE, HL         ; 1:4       7949* +
+    add  HL, DE         ; 1:11      7949* + save 256x
+    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 512x
+    ex   DE, HL         ; 1:4       7949* +
+    add  HL, DE         ; 1:11      7949* + save 512x
+    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 1024x
+    ex   DE, HL         ; 1:4       7949* +
+    add  HL, DE         ; 1:11      7949* + save 1024x
+    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 2048x
+    ex   DE, HL         ; 1:4       7949* +
+    add  HL, DE         ; 1:11      7949* + save 2048x
+    ex   DE, HL         ; 1:4       7949* +
     add  HL, HL         ; 1:11      7949* 4096x
-    add  HL, HL         ; 1:11      7949* 8192x
-    or    A             ; 1:4       7949*
-    sbc  HL, DE         ; 2:15      7949* HL - save
+    add  HL, DE         ; 1:11      7949* HL + save
     ld    D, B          ; 1:4       7949*
     ld    E, C          ; 1:4       7949*   
-    ld    B, D          ; 1:4       7951*
+    ld    B, D          ; 1:4       7951* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7951*
     ld    D, H          ; 1:4       7951*
     ld    E, L          ; 1:4       7951* save 1x
@@ -29503,7 +29533,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7951* HL - save
     ld    D, B          ; 1:4       7951*
     ld    E, C          ; 1:4       7951*   
-    ld    B, D          ; 1:4       7963*
+    ld    B, D          ; 1:4       7963* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7963*
     ld    D, H          ; 1:4       7963*
     ld    E, L          ; 1:4       7963* save 1x
@@ -29536,7 +29566,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      7963* HL - save
     ld    D, B          ; 1:4       7963*
     ld    E, C          ; 1:4       7963*   
-    ld    B, D          ; 1:4       7993*
+    ld    B, D          ; 1:4       7993* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       7993*
     ld    D, H          ; 1:4       7993*
     ld    E, L          ; 1:4       7993* save 1x
@@ -29568,44 +29598,45 @@ ORG 0x6000
     or    A             ; 1:4       7993*
     sbc  HL, DE         ; 2:15      7993* HL - save
     ld    D, B          ; 1:4       7993*
-    ld    E, C          ; 1:4       7993*   
-    ld    B, D          ; 1:4       8009*
+    ld    E, C          ; 1:4       7993*       
+    ld    B, D          ; 1:4       8009* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8009*
     ld    D, H          ; 1:4       8009*
     ld    E, L          ; 1:4       8009* save 1x
     add  HL, HL         ; 1:11      8009* 2x
-    ex   DE, HL         ; 1:4       8009* +
-    add  HL, DE         ; 1:11      8009* + save 2x
-    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 4x
-    ex   DE, HL         ; 1:4       8009* +
-    add  HL, DE         ; 1:11      8009* + save 4x
-    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 8x
+    ex   DE, HL         ; 1:4       8009* +
+    add  HL, DE         ; 1:11      8009* + save 8x
+    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 16x
-    ex   DE, HL         ; 1:4       8009* +
-    add  HL, DE         ; 1:11      8009* + save 16x
-    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 32x
-    ex   DE, HL         ; 1:4       8009* +
-    add  HL, DE         ; 1:11      8009* + save 32x
-    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 64x
+    ex   DE, HL         ; 1:4       8009* +
+    add  HL, DE         ; 1:11      8009* + save 64x
+    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 128x
-    ex   DE, HL         ; 1:4       8009* +
-    add  HL, DE         ; 1:11      8009* + save 128x
-    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 256x
+    ex   DE, HL         ; 1:4       8009* +
+    add  HL, DE         ; 1:11      8009* + save 256x
+    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 512x
+    ex   DE, HL         ; 1:4       8009* +
+    add  HL, DE         ; 1:11      8009* + save 512x
+    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 1024x
+    ex   DE, HL         ; 1:4       8009* +
+    add  HL, DE         ; 1:11      8009* + save 1024x
+    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 2048x
+    ex   DE, HL         ; 1:4       8009* +
+    add  HL, DE         ; 1:11      8009* + save 2048x
+    ex   DE, HL         ; 1:4       8009* +
     add  HL, HL         ; 1:11      8009* 4096x
-    add  HL, HL         ; 1:11      8009* 8192x
-    or    A             ; 1:4       8009*
-    sbc  HL, DE         ; 2:15      8009* HL - save
+    add  HL, DE         ; 1:11      8009* HL + save
     ld    D, B          ; 1:4       8009*
     ld    E, C          ; 1:4       8009*   
-    ld    B, D          ; 1:4       8011*
+    ld    B, D          ; 1:4       8011* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8011*
     ld    D, H          ; 1:4       8011*
     ld    E, L          ; 1:4       8011* save 1x
@@ -29637,45 +29668,46 @@ ORG 0x6000
     or    A             ; 1:4       8011*
     sbc  HL, DE         ; 2:15      8011* HL - save
     ld    D, B          ; 1:4       8011*
-    ld    E, C          ; 1:4       8011*   
-    ld    B, D          ; 1:4       8017*
+    ld    E, C          ; 1:4       8011*       
+    ld    B, D          ; 1:4       8017* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8017*
     ld    D, H          ; 1:4       8017*
     ld    E, L          ; 1:4       8017* save 1x
     add  HL, HL         ; 1:11      8017* 2x
-    ex   DE, HL         ; 1:4       8017* +
-    add  HL, DE         ; 1:11      8017* + save 2x
-    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 4x
-    ex   DE, HL         ; 1:4       8017* +
-    add  HL, DE         ; 1:11      8017* + save 4x
-    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 8x
-    ex   DE, HL         ; 1:4       8017* +
-    add  HL, DE         ; 1:11      8017* + save 8x
-    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 16x
+    ex   DE, HL         ; 1:4       8017* +
+    add  HL, DE         ; 1:11      8017* + save 16x
+    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 32x
-    ex   DE, HL         ; 1:4       8017* +
-    add  HL, DE         ; 1:11      8017* + save 32x
-    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 64x
+    ex   DE, HL         ; 1:4       8017* +
+    add  HL, DE         ; 1:11      8017* + save 64x
+    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 128x
-    ex   DE, HL         ; 1:4       8017* +
-    add  HL, DE         ; 1:11      8017* + save 128x
-    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 256x
+    ex   DE, HL         ; 1:4       8017* +
+    add  HL, DE         ; 1:11      8017* + save 256x
+    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 512x
+    ex   DE, HL         ; 1:4       8017* +
+    add  HL, DE         ; 1:11      8017* + save 512x
+    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 1024x
+    ex   DE, HL         ; 1:4       8017* +
+    add  HL, DE         ; 1:11      8017* + save 1024x
+    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 2048x
+    ex   DE, HL         ; 1:4       8017* +
+    add  HL, DE         ; 1:11      8017* + save 2048x
+    ex   DE, HL         ; 1:4       8017* +
     add  HL, HL         ; 1:11      8017* 4096x
-    add  HL, HL         ; 1:11      8017* 8192x
-    or    A             ; 1:4       8017*
-    sbc  HL, DE         ; 2:15      8017* HL - save
+    add  HL, DE         ; 1:11      8017* HL + save
     ld    D, B          ; 1:4       8017*
     ld    E, C          ; 1:4       8017* 
    
-    ld    B, D          ; 1:4       8039*
+    ld    B, D          ; 1:4       8039* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8039*
     ld    D, H          ; 1:4       8039*
     ld    E, L          ; 1:4       8039* save 1x
@@ -29705,7 +29737,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8039* HL - save
     ld    D, B          ; 1:4       8039*
     ld    E, C          ; 1:4       8039*   
-    ld    B, D          ; 1:4       8053*
+    ld    B, D          ; 1:4       8053* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8053*
     ld    D, H          ; 1:4       8053*
     ld    E, L          ; 1:4       8053* save 1x
@@ -29735,7 +29767,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8053* HL - save
     ld    D, B          ; 1:4       8053*
     ld    E, C          ; 1:4       8053*   
-    ld    B, D          ; 1:4       8059*
+    ld    B, D          ; 1:4       8059* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8059*
     ld    D, H          ; 1:4       8059*
     ld    E, L          ; 1:4       8059* save 1x
@@ -29761,80 +29793,82 @@ ORG 0x6000
     or    A             ; 1:4       8059*
     sbc  HL, DE         ; 2:15      8059* HL - save
     ld    D, B          ; 1:4       8059*
-    ld    E, C          ; 1:4       8059*   
-    ld    B, D          ; 1:4       8069*
+    ld    E, C          ; 1:4       8059*       
+    ld    B, D          ; 1:4       8069* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8069*
     ld    D, H          ; 1:4       8069*
     ld    E, L          ; 1:4       8069* save 1x
     add  HL, HL         ; 1:11      8069* 2x
-    ex   DE, HL         ; 1:4       8069* +
-    add  HL, DE         ; 1:11      8069* + save 2x
-    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 4x
+    ex   DE, HL         ; 1:4       8069* +
+    add  HL, DE         ; 1:11      8069* + save 4x
+    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 8x
-    ex   DE, HL         ; 1:4       8069* +
-    add  HL, DE         ; 1:11      8069* + save 8x
-    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 16x
-    ex   DE, HL         ; 1:4       8069* +
-    add  HL, DE         ; 1:11      8069* + save 16x
-    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 32x
-    ex   DE, HL         ; 1:4       8069* +
-    add  HL, DE         ; 1:11      8069* + save 32x
-    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 64x
-    ex   DE, HL         ; 1:4       8069* +
-    add  HL, DE         ; 1:11      8069* + save 64x
-    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 128x
+    ex   DE, HL         ; 1:4       8069* +
+    add  HL, DE         ; 1:11      8069* + save 128x
+    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 256x
+    ex   DE, HL         ; 1:4       8069* +
+    add  HL, DE         ; 1:11      8069* + save 256x
+    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 512x
+    ex   DE, HL         ; 1:4       8069* +
+    add  HL, DE         ; 1:11      8069* + save 512x
+    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 1024x
+    ex   DE, HL         ; 1:4       8069* +
+    add  HL, DE         ; 1:11      8069* + save 1024x
+    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 2048x
+    ex   DE, HL         ; 1:4       8069* +
+    add  HL, DE         ; 1:11      8069* + save 2048x
+    ex   DE, HL         ; 1:4       8069* +
     add  HL, HL         ; 1:11      8069* 4096x
-    add  HL, HL         ; 1:11      8069* 8192x
-    or    A             ; 1:4       8069*
-    sbc  HL, DE         ; 2:15      8069* HL - save
+    add  HL, DE         ; 1:11      8069* HL + save
     ld    D, B          ; 1:4       8069*
-    ld    E, C          ; 1:4       8069*   
-    ld    B, D          ; 1:4       8081*
+    ld    E, C          ; 1:4       8069*       
+    ld    B, D          ; 1:4       8081* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8081*
     ld    D, H          ; 1:4       8081*
     ld    E, L          ; 1:4       8081* save 1x
     add  HL, HL         ; 1:11      8081* 2x
-    ex   DE, HL         ; 1:4       8081* +
-    add  HL, DE         ; 1:11      8081* + save 2x
-    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 4x
-    ex   DE, HL         ; 1:4       8081* +
-    add  HL, DE         ; 1:11      8081* + save 4x
-    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 8x
-    ex   DE, HL         ; 1:4       8081* +
-    add  HL, DE         ; 1:11      8081* + save 8x
-    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 16x
+    ex   DE, HL         ; 1:4       8081* +
+    add  HL, DE         ; 1:11      8081* + save 16x
+    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 32x
-    ex   DE, HL         ; 1:4       8081* +
-    add  HL, DE         ; 1:11      8081* + save 32x
-    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 64x
-    ex   DE, HL         ; 1:4       8081* +
-    add  HL, DE         ; 1:11      8081* + save 64x
-    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 128x
+    ex   DE, HL         ; 1:4       8081* +
+    add  HL, DE         ; 1:11      8081* + save 128x
+    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 256x
+    ex   DE, HL         ; 1:4       8081* +
+    add  HL, DE         ; 1:11      8081* + save 256x
+    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 512x
+    ex   DE, HL         ; 1:4       8081* +
+    add  HL, DE         ; 1:11      8081* + save 512x
+    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 1024x
+    ex   DE, HL         ; 1:4       8081* +
+    add  HL, DE         ; 1:11      8081* + save 1024x
+    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 2048x
+    ex   DE, HL         ; 1:4       8081* +
+    add  HL, DE         ; 1:11      8081* + save 2048x
+    ex   DE, HL         ; 1:4       8081* +
     add  HL, HL         ; 1:11      8081* 4096x
-    add  HL, HL         ; 1:11      8081* 8192x
-    or    A             ; 1:4       8081*
-    sbc  HL, DE         ; 2:15      8081* HL - save
+    add  HL, DE         ; 1:11      8081* HL + save
     ld    D, B          ; 1:4       8081*
     ld    E, C          ; 1:4       8081*   
-    ld    B, D          ; 1:4       8087*
+    ld    B, D          ; 1:4       8087* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8087*
     ld    D, H          ; 1:4       8087*
     ld    E, L          ; 1:4       8087* save 1x
@@ -29853,18 +29887,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8087* +
     add  HL, DE         ; 1:11      8087* + save 64x
     ex   DE, HL         ; 1:4       8087* +
-    add  HL, HL         ; 1:11      8087* 128x
-    add  HL, HL         ; 1:11      8087* 256x
-    add  HL, HL         ; 1:11      8087* 512x
-    add  HL, HL         ; 1:11      8087* 1024x
-    add  HL, HL         ; 1:11      8087* 2048x
-    add  HL, HL         ; 1:11      8087* 4096x
-    add  HL, HL         ; 1:11      8087* 8192x
+    rr    H             ; 2:8       8087*
+    rr    L             ; 2:8       8087*
+    ld    H, L          ; 1:4       8087*
+    ld    L, 0x00       ; 2:7       8087* 8192x
     or    A             ; 1:4       8087*
     sbc  HL, DE         ; 2:15      8087* HL - save
     ld    D, B          ; 1:4       8087*
     ld    E, C          ; 1:4       8087*   
-    ld    B, D          ; 1:4       8089*
+    ld    B, D          ; 1:4       8089* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8089*
     ld    D, H          ; 1:4       8089*
     ld    E, L          ; 1:4       8089* save 1x
@@ -29886,18 +29917,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8089* +
     add  HL, DE         ; 1:11      8089* + save 64x
     ex   DE, HL         ; 1:4       8089* +
-    add  HL, HL         ; 1:11      8089* 128x
-    add  HL, HL         ; 1:11      8089* 256x
-    add  HL, HL         ; 1:11      8089* 512x
-    add  HL, HL         ; 1:11      8089* 1024x
-    add  HL, HL         ; 1:11      8089* 2048x
-    add  HL, HL         ; 1:11      8089* 4096x
-    add  HL, HL         ; 1:11      8089* 8192x
+    rr    H             ; 2:8       8089*
+    rr    L             ; 2:8       8089*
+    ld    H, L          ; 1:4       8089*
+    ld    L, 0x00       ; 2:7       8089* 8192x
     or    A             ; 1:4       8089*
     sbc  HL, DE         ; 2:15      8089* HL - save
     ld    D, B          ; 1:4       8089*
     ld    E, C          ; 1:4       8089*   
-    ld    B, D          ; 1:4       8093*
+    ld    B, D          ; 1:4       8093* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8093*
     ld    D, H          ; 1:4       8093*
     ld    E, L          ; 1:4       8093* save 1x
@@ -29916,18 +29944,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8093* +
     add  HL, DE         ; 1:11      8093* + save 64x
     ex   DE, HL         ; 1:4       8093* +
-    add  HL, HL         ; 1:11      8093* 128x
-    add  HL, HL         ; 1:11      8093* 256x
-    add  HL, HL         ; 1:11      8093* 512x
-    add  HL, HL         ; 1:11      8093* 1024x
-    add  HL, HL         ; 1:11      8093* 2048x
-    add  HL, HL         ; 1:11      8093* 4096x
-    add  HL, HL         ; 1:11      8093* 8192x
+    rr    H             ; 2:8       8093*
+    rr    L             ; 2:8       8093*
+    ld    H, L          ; 1:4       8093*
+    ld    L, 0x00       ; 2:7       8093* 8192x
     or    A             ; 1:4       8093*
     sbc  HL, DE         ; 2:15      8093* HL - save
     ld    D, B          ; 1:4       8093*
     ld    E, C          ; 1:4       8093*   
-    ld    B, D          ; 1:4       8101*
+    ld    B, D          ; 1:4       8101* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8101*
     ld    D, H          ; 1:4       8101*
     ld    E, L          ; 1:4       8101* save 1x
@@ -29949,18 +29974,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8101* +
     add  HL, DE         ; 1:11      8101* + save 64x
     ex   DE, HL         ; 1:4       8101* +
-    add  HL, HL         ; 1:11      8101* 128x
-    add  HL, HL         ; 1:11      8101* 256x
-    add  HL, HL         ; 1:11      8101* 512x
-    add  HL, HL         ; 1:11      8101* 1024x
-    add  HL, HL         ; 1:11      8101* 2048x
-    add  HL, HL         ; 1:11      8101* 4096x
-    add  HL, HL         ; 1:11      8101* 8192x
+    rr    H             ; 2:8       8101*
+    rr    L             ; 2:8       8101*
+    ld    H, L          ; 1:4       8101*
+    ld    L, 0x00       ; 2:7       8101* 8192x
     or    A             ; 1:4       8101*
     sbc  HL, DE         ; 2:15      8101* HL - save
     ld    D, B          ; 1:4       8101*
     ld    E, C          ; 1:4       8101*   
-    ld    B, D          ; 1:4       8111*
+    ld    B, D          ; 1:4       8111* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8111*
     ld    D, H          ; 1:4       8111*
     ld    E, L          ; 1:4       8111* save 1x
@@ -29976,19 +29998,16 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8111* +
     add  HL, DE         ; 1:11      8111* + save 64x
     ex   DE, HL         ; 1:4       8111* +
-    add  HL, HL         ; 1:11      8111* 128x
-    add  HL, HL         ; 1:11      8111* 256x
-    add  HL, HL         ; 1:11      8111* 512x
-    add  HL, HL         ; 1:11      8111* 1024x
-    add  HL, HL         ; 1:11      8111* 2048x
-    add  HL, HL         ; 1:11      8111* 4096x
-    add  HL, HL         ; 1:11      8111* 8192x
+    rr    H             ; 2:8       8111*
+    rr    L             ; 2:8       8111*
+    ld    H, L          ; 1:4       8111*
+    ld    L, 0x00       ; 2:7       8111* 8192x
     or    A             ; 1:4       8111*
     sbc  HL, DE         ; 2:15      8111* HL - save
     ld    D, B          ; 1:4       8111*
     ld    E, C          ; 1:4       8111* 
    
-    ld    B, D          ; 1:4       8117*
+    ld    B, D          ; 1:4       8117* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8117*
     ld    D, H          ; 1:4       8117*
     ld    E, L          ; 1:4       8117* save 1x
@@ -30007,18 +30026,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8117* +
     add  HL, DE         ; 1:11      8117* + save 64x
     ex   DE, HL         ; 1:4       8117* +
-    add  HL, HL         ; 1:11      8117* 128x
-    add  HL, HL         ; 1:11      8117* 256x
-    add  HL, HL         ; 1:11      8117* 512x
-    add  HL, HL         ; 1:11      8117* 1024x
-    add  HL, HL         ; 1:11      8117* 2048x
-    add  HL, HL         ; 1:11      8117* 4096x
-    add  HL, HL         ; 1:11      8117* 8192x
+    rr    H             ; 2:8       8117*
+    rr    L             ; 2:8       8117*
+    ld    H, L          ; 1:4       8117*
+    ld    L, 0x00       ; 2:7       8117* 8192x
     or    A             ; 1:4       8117*
     sbc  HL, DE         ; 2:15      8117* HL - save
     ld    D, B          ; 1:4       8117*
     ld    E, C          ; 1:4       8117*   
-    ld    B, D          ; 1:4       8123*
+    ld    B, D          ; 1:4       8123* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8123*
     ld    D, H          ; 1:4       8123*
     ld    E, L          ; 1:4       8123* save 1x
@@ -30034,18 +30050,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8123* +
     add  HL, DE         ; 1:11      8123* + save 64x
     ex   DE, HL         ; 1:4       8123* +
-    add  HL, HL         ; 1:11      8123* 128x
-    add  HL, HL         ; 1:11      8123* 256x
-    add  HL, HL         ; 1:11      8123* 512x
-    add  HL, HL         ; 1:11      8123* 1024x
-    add  HL, HL         ; 1:11      8123* 2048x
-    add  HL, HL         ; 1:11      8123* 4096x
-    add  HL, HL         ; 1:11      8123* 8192x
+    rr    H             ; 2:8       8123*
+    rr    L             ; 2:8       8123*
+    ld    H, L          ; 1:4       8123*
+    ld    L, 0x00       ; 2:7       8123* 8192x
     or    A             ; 1:4       8123*
     sbc  HL, DE         ; 2:15      8123* HL - save
     ld    D, B          ; 1:4       8123*
     ld    E, C          ; 1:4       8123*   
-    ld    B, D          ; 1:4       8147*
+    ld    B, D          ; 1:4       8147* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8147*
     ld    D, H          ; 1:4       8147*
     ld    E, L          ; 1:4       8147* save 1x
@@ -30069,7 +30082,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8147* HL - save
     ld    D, B          ; 1:4       8147*
     ld    E, C          ; 1:4       8147*   
-    ld    B, D          ; 1:4       8161*
+    ld    B, D          ; 1:4       8161* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8161*
     ld    D, H          ; 1:4       8161*
     ld    E, L          ; 1:4       8161* save 1x
@@ -30096,7 +30109,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8161* HL - save
     ld    D, B          ; 1:4       8161*
     ld    E, C          ; 1:4       8161*   
-    ld    B, D          ; 1:4       8167*
+    ld    B, D          ; 1:4       8167* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8167*
     ld    D, H          ; 1:4       8167*
     ld    E, L          ; 1:4       8167* save 1x
@@ -30117,7 +30130,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8167* HL - save
     ld    D, B          ; 1:4       8167*
     ld    E, C          ; 1:4       8167*   
-    ld    B, D          ; 1:4       8171*
+    ld    B, D          ; 1:4       8171* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8171*
     ld    D, H          ; 1:4       8171*
     ld    E, L          ; 1:4       8171* save 1x
@@ -30138,7 +30151,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8171* HL - save
     ld    D, B          ; 1:4       8171*
     ld    E, C          ; 1:4       8171*   
-    ld    B, D          ; 1:4       8179*
+    ld    B, D          ; 1:4       8179* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8179*
     ld    D, H          ; 1:4       8179*
     ld    E, L          ; 1:4       8179* save 1x
@@ -30159,7 +30172,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8179* HL - save
     ld    D, B          ; 1:4       8179*
     ld    E, C          ; 1:4       8179*   
-    ld    B, H          ; 1:4       8191*
+    ld    B, H          ; 1:4       8191* Variant: 2^a - 2^b
     ld    C, L          ; 1:4       8191* save 1x
     ld    H, L          ; 1:4       8191*
     ld    L, 0x00       ; 2:7       8191* 256x
@@ -30170,7 +30183,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8191* 8192x
     or    A             ; 1:4       8191*
     sbc  HL, BC         ; 2:15      8191* HL - save   
-    ld    B, H          ; 1:4       8209*
+    ld    B, H          ; 1:4       8209* Variant: 2^a + 2^b + 2^c
     ld    A, L          ; 1:4       8209* save 1x
     add  HL, HL         ; 1:11      8209* 2x
     add  HL, HL         ; 1:11      8209* 4x
@@ -30184,8 +30197,8 @@ ORG 0x6000
     ld    H, L          ; 1:4       8209*
     ld    L, 0x00       ; 2:7       8209* 4096x
     add  HL, HL         ; 1:11      8209* 8192x
-    add  HL, BC         ; 1:11      8209* HL + save   
-    ld    B, D          ; 1:4       8219*
+    add  HL, BC         ; 1:11      8209* HL + save       
+    ld    B, D          ; 1:4       8219* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8219*
     ld    D, H          ; 1:4       8219*
     ld    E, L          ; 1:4       8219* save 1x
@@ -30208,8 +30221,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8219* HL + save
     ld    D, B          ; 1:4       8219*
     ld    E, C          ; 1:4       8219* 
-   
-    ld    B, D          ; 1:4       8221*
+       
+    ld    B, D          ; 1:4       8221* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8221*
     ld    D, H          ; 1:4       8221*
     ld    E, L          ; 1:4       8221* save 1x
@@ -30231,8 +30244,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8221* 8192x
     add  HL, DE         ; 1:11      8221* HL + save
     ld    D, B          ; 1:4       8221*
-    ld    E, C          ; 1:4       8221*   
-    ld    B, D          ; 1:4       8231*
+    ld    E, C          ; 1:4       8221*       
+    ld    B, D          ; 1:4       8231* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8231*
     ld    D, H          ; 1:4       8231*
     ld    E, L          ; 1:4       8231* save 1x
@@ -30254,8 +30267,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       8231* 8192x
     add  HL, DE         ; 1:11      8231* HL + save
     ld    D, B          ; 1:4       8231*
-    ld    E, C          ; 1:4       8231*   
-    ld    B, D          ; 1:4       8233*
+    ld    E, C          ; 1:4       8231*       
+    ld    B, D          ; 1:4       8233* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8233*
     ld    D, H          ; 1:4       8233*
     ld    E, L          ; 1:4       8233* save 1x
@@ -30274,8 +30287,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       8233* 8192x
     add  HL, DE         ; 1:11      8233* HL + save
     ld    D, B          ; 1:4       8233*
-    ld    E, C          ; 1:4       8233*   
-    ld    B, D          ; 1:4       8237*
+    ld    E, C          ; 1:4       8233*       
+    ld    B, D          ; 1:4       8237* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8237*
     ld    D, H          ; 1:4       8237*
     ld    E, L          ; 1:4       8237* save 1x
@@ -30297,8 +30310,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       8237* 8192x
     add  HL, DE         ; 1:11      8237* HL + save
     ld    D, B          ; 1:4       8237*
-    ld    E, C          ; 1:4       8237*   
-    ld    B, D          ; 1:4       8243*
+    ld    E, C          ; 1:4       8237*       
+    ld    B, D          ; 1:4       8243* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8243*
     ld    D, H          ; 1:4       8243*
     ld    E, L          ; 1:4       8243* save 1x
@@ -30320,8 +30333,8 @@ ORG 0x6000
     ld    L, 0x00       ; 2:7       8243* 8192x
     add  HL, DE         ; 1:11      8243* HL + save
     ld    D, B          ; 1:4       8243*
-    ld    E, C          ; 1:4       8243*   
-    ld    B, D          ; 1:4       8263*
+    ld    E, C          ; 1:4       8243*       
+    ld    B, D          ; 1:4       8263* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8263*
     ld    D, H          ; 1:4       8263*
     ld    E, L          ; 1:4       8263* save 1x
@@ -30340,17 +30353,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8263* +
     add  HL, DE         ; 1:11      8263* + save 64x
     ex   DE, HL         ; 1:4       8263* +
-    add  HL, HL         ; 1:11      8263* 128x
-    add  HL, HL         ; 1:11      8263* 256x
-    add  HL, HL         ; 1:11      8263* 512x
-    add  HL, HL         ; 1:11      8263* 1024x
-    add  HL, HL         ; 1:11      8263* 2048x
-    add  HL, HL         ; 1:11      8263* 4096x
-    add  HL, HL         ; 1:11      8263* 8192x
+    rr    H             ; 2:8       8263*
+    rr    L             ; 2:8       8263*
+    ld    H, L          ; 1:4       8263*
+    ld    L, 0x00       ; 2:7       8263* 8192x
     add  HL, DE         ; 1:11      8263* HL + save
     ld    D, B          ; 1:4       8263*
-    ld    E, C          ; 1:4       8263*   
-    ld    B, D          ; 1:4       8269*
+    ld    E, C          ; 1:4       8263*       
+    ld    B, D          ; 1:4       8269* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8269*
     ld    D, H          ; 1:4       8269*
     ld    E, L          ; 1:4       8269* save 1x
@@ -30369,17 +30379,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8269* +
     add  HL, DE         ; 1:11      8269* + save 64x
     ex   DE, HL         ; 1:4       8269* +
-    add  HL, HL         ; 1:11      8269* 128x
-    add  HL, HL         ; 1:11      8269* 256x
-    add  HL, HL         ; 1:11      8269* 512x
-    add  HL, HL         ; 1:11      8269* 1024x
-    add  HL, HL         ; 1:11      8269* 2048x
-    add  HL, HL         ; 1:11      8269* 4096x
-    add  HL, HL         ; 1:11      8269* 8192x
+    rr    H             ; 2:8       8269*
+    rr    L             ; 2:8       8269*
+    ld    H, L          ; 1:4       8269*
+    ld    L, 0x00       ; 2:7       8269* 8192x
     add  HL, DE         ; 1:11      8269* HL + save
     ld    D, B          ; 1:4       8269*
-    ld    E, C          ; 1:4       8269*   
-    ld    B, D          ; 1:4       8273*
+    ld    E, C          ; 1:4       8269*       
+    ld    B, D          ; 1:4       8273* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8273*
     ld    D, H          ; 1:4       8273*
     ld    E, L          ; 1:4       8273* save 1x
@@ -30395,17 +30402,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8273* +
     add  HL, DE         ; 1:11      8273* + save 64x
     ex   DE, HL         ; 1:4       8273* +
-    add  HL, HL         ; 1:11      8273* 128x
-    add  HL, HL         ; 1:11      8273* 256x
-    add  HL, HL         ; 1:11      8273* 512x
-    add  HL, HL         ; 1:11      8273* 1024x
-    add  HL, HL         ; 1:11      8273* 2048x
-    add  HL, HL         ; 1:11      8273* 4096x
-    add  HL, HL         ; 1:11      8273* 8192x
+    rr    H             ; 2:8       8273*
+    rr    L             ; 2:8       8273*
+    ld    H, L          ; 1:4       8273*
+    ld    L, 0x00       ; 2:7       8273* 8192x
     add  HL, DE         ; 1:11      8273* HL + save
     ld    D, B          ; 1:4       8273*
-    ld    E, C          ; 1:4       8273*   
-    ld    B, D          ; 1:4       8287*
+    ld    E, C          ; 1:4       8273*       
+    ld    B, D          ; 1:4       8287* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8287*
     ld    D, H          ; 1:4       8287*
     ld    E, L          ; 1:4       8287* save 1x
@@ -30430,17 +30434,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8287* +
     add  HL, DE         ; 1:11      8287* + save 64x
     ex   DE, HL         ; 1:4       8287* +
-    add  HL, HL         ; 1:11      8287* 128x
-    add  HL, HL         ; 1:11      8287* 256x
-    add  HL, HL         ; 1:11      8287* 512x
-    add  HL, HL         ; 1:11      8287* 1024x
-    add  HL, HL         ; 1:11      8287* 2048x
-    add  HL, HL         ; 1:11      8287* 4096x
-    add  HL, HL         ; 1:11      8287* 8192x
+    rr    H             ; 2:8       8287*
+    rr    L             ; 2:8       8287*
+    ld    H, L          ; 1:4       8287*
+    ld    L, 0x00       ; 2:7       8287* 8192x
     add  HL, DE         ; 1:11      8287* HL + save
     ld    D, B          ; 1:4       8287*
-    ld    E, C          ; 1:4       8287*   
-    ld    B, D          ; 1:4       8291*
+    ld    E, C          ; 1:4       8287*       
+    ld    B, D          ; 1:4       8291* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8291*
     ld    D, H          ; 1:4       8291*
     ld    E, L          ; 1:4       8291* save 1x
@@ -30459,18 +30460,15 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8291* +
     add  HL, DE         ; 1:11      8291* + save 64x
     ex   DE, HL         ; 1:4       8291* +
-    add  HL, HL         ; 1:11      8291* 128x
-    add  HL, HL         ; 1:11      8291* 256x
-    add  HL, HL         ; 1:11      8291* 512x
-    add  HL, HL         ; 1:11      8291* 1024x
-    add  HL, HL         ; 1:11      8291* 2048x
-    add  HL, HL         ; 1:11      8291* 4096x
-    add  HL, HL         ; 1:11      8291* 8192x
+    rr    H             ; 2:8       8291*
+    rr    L             ; 2:8       8291*
+    ld    H, L          ; 1:4       8291*
+    ld    L, 0x00       ; 2:7       8291* 8192x
     add  HL, DE         ; 1:11      8291* HL + save
     ld    D, B          ; 1:4       8291*
     ld    E, C          ; 1:4       8291* 
-   
-    ld    B, D          ; 1:4       8293*
+       
+    ld    B, D          ; 1:4       8293* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8293*
     ld    D, H          ; 1:4       8293*
     ld    E, L          ; 1:4       8293* save 1x
@@ -30489,17 +30487,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8293* +
     add  HL, DE         ; 1:11      8293* + save 64x
     ex   DE, HL         ; 1:4       8293* +
-    add  HL, HL         ; 1:11      8293* 128x
-    add  HL, HL         ; 1:11      8293* 256x
-    add  HL, HL         ; 1:11      8293* 512x
-    add  HL, HL         ; 1:11      8293* 1024x
-    add  HL, HL         ; 1:11      8293* 2048x
-    add  HL, HL         ; 1:11      8293* 4096x
-    add  HL, HL         ; 1:11      8293* 8192x
+    rr    H             ; 2:8       8293*
+    rr    L             ; 2:8       8293*
+    ld    H, L          ; 1:4       8293*
+    ld    L, 0x00       ; 2:7       8293* 8192x
     add  HL, DE         ; 1:11      8293* HL + save
     ld    D, B          ; 1:4       8293*
-    ld    E, C          ; 1:4       8293*   
-    ld    B, D          ; 1:4       8297*
+    ld    E, C          ; 1:4       8293*       
+    ld    B, D          ; 1:4       8297* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8297*
     ld    D, H          ; 1:4       8297*
     ld    E, L          ; 1:4       8297* save 1x
@@ -30518,17 +30513,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8297* +
     add  HL, DE         ; 1:11      8297* + save 64x
     ex   DE, HL         ; 1:4       8297* +
-    add  HL, HL         ; 1:11      8297* 128x
-    add  HL, HL         ; 1:11      8297* 256x
-    add  HL, HL         ; 1:11      8297* 512x
-    add  HL, HL         ; 1:11      8297* 1024x
-    add  HL, HL         ; 1:11      8297* 2048x
-    add  HL, HL         ; 1:11      8297* 4096x
-    add  HL, HL         ; 1:11      8297* 8192x
+    rr    H             ; 2:8       8297*
+    rr    L             ; 2:8       8297*
+    ld    H, L          ; 1:4       8297*
+    ld    L, 0x00       ; 2:7       8297* 8192x
     add  HL, DE         ; 1:11      8297* HL + save
     ld    D, B          ; 1:4       8297*
-    ld    E, C          ; 1:4       8297*   
-    ld    B, D          ; 1:4       8311*
+    ld    E, C          ; 1:4       8297*       
+    ld    B, D          ; 1:4       8311* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8311*
     ld    D, H          ; 1:4       8311*
     ld    E, L          ; 1:4       8311* save 1x
@@ -30553,17 +30545,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8311* +
     add  HL, DE         ; 1:11      8311* + save 64x
     ex   DE, HL         ; 1:4       8311* +
-    add  HL, HL         ; 1:11      8311* 128x
-    add  HL, HL         ; 1:11      8311* 256x
-    add  HL, HL         ; 1:11      8311* 512x
-    add  HL, HL         ; 1:11      8311* 1024x
-    add  HL, HL         ; 1:11      8311* 2048x
-    add  HL, HL         ; 1:11      8311* 4096x
-    add  HL, HL         ; 1:11      8311* 8192x
+    rr    H             ; 2:8       8311*
+    rr    L             ; 2:8       8311*
+    ld    H, L          ; 1:4       8311*
+    ld    L, 0x00       ; 2:7       8311* 8192x
     add  HL, DE         ; 1:11      8311* HL + save
     ld    D, B          ; 1:4       8311*
-    ld    E, C          ; 1:4       8311*   
-    ld    B, D          ; 1:4       8317*
+    ld    E, C          ; 1:4       8311*       
+    ld    B, D          ; 1:4       8317* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8317*
     ld    D, H          ; 1:4       8317*
     ld    E, L          ; 1:4       8317* save 1x
@@ -30588,17 +30577,14 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8317* +
     add  HL, DE         ; 1:11      8317* + save 64x
     ex   DE, HL         ; 1:4       8317* +
-    add  HL, HL         ; 1:11      8317* 128x
-    add  HL, HL         ; 1:11      8317* 256x
-    add  HL, HL         ; 1:11      8317* 512x
-    add  HL, HL         ; 1:11      8317* 1024x
-    add  HL, HL         ; 1:11      8317* 2048x
-    add  HL, HL         ; 1:11      8317* 4096x
-    add  HL, HL         ; 1:11      8317* 8192x
+    rr    H             ; 2:8       8317*
+    rr    L             ; 2:8       8317*
+    ld    H, L          ; 1:4       8317*
+    ld    L, 0x00       ; 2:7       8317* 8192x
     add  HL, DE         ; 1:11      8317* HL + save
     ld    D, B          ; 1:4       8317*
-    ld    E, C          ; 1:4       8317*   
-    ld    B, D          ; 1:4       8329*
+    ld    E, C          ; 1:4       8317*       
+    ld    B, D          ; 1:4       8329* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8329*
     ld    D, H          ; 1:4       8329*
     ld    E, L          ; 1:4       8329* save 1x
@@ -30623,8 +30609,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8329* 8192x
     add  HL, DE         ; 1:11      8329* HL + save
     ld    D, B          ; 1:4       8329*
-    ld    E, C          ; 1:4       8329*   
-    ld    B, D          ; 1:4       8353*
+    ld    E, C          ; 1:4       8329*       
+    ld    B, D          ; 1:4       8353* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8353*
     ld    D, H          ; 1:4       8353*
     ld    E, L          ; 1:4       8353* save 1x
@@ -30649,8 +30635,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8353* 8192x
     add  HL, DE         ; 1:11      8353* HL + save
     ld    D, B          ; 1:4       8353*
-    ld    E, C          ; 1:4       8353*   
-    ld    B, D          ; 1:4       8363*
+    ld    E, C          ; 1:4       8353*       
+    ld    B, D          ; 1:4       8363* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8363*
     ld    D, H          ; 1:4       8363*
     ld    E, L          ; 1:4       8363* save 1x
@@ -30681,8 +30667,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8363* 8192x
     add  HL, DE         ; 1:11      8363* HL + save
     ld    D, B          ; 1:4       8363*
-    ld    E, C          ; 1:4       8363*   
-    ld    B, D          ; 1:4       8369*
+    ld    E, C          ; 1:4       8363*       
+    ld    B, D          ; 1:4       8369* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8369*
     ld    D, H          ; 1:4       8369*
     ld    E, L          ; 1:4       8369* save 1x
@@ -30710,8 +30696,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8369* 8192x
     add  HL, DE         ; 1:11      8369* HL + save
     ld    D, B          ; 1:4       8369*
-    ld    E, C          ; 1:4       8369*   
-    ld    B, D          ; 1:4       8377*
+    ld    E, C          ; 1:4       8369*       
+    ld    B, D          ; 1:4       8377* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8377*
     ld    D, H          ; 1:4       8377*
     ld    E, L          ; 1:4       8377* save 1x
@@ -30742,8 +30728,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8377* 8192x
     add  HL, DE         ; 1:11      8377* HL + save
     ld    D, B          ; 1:4       8377*
-    ld    E, C          ; 1:4       8377*   
-    ld    B, D          ; 1:4       8387*
+    ld    E, C          ; 1:4       8377*       
+    ld    B, D          ; 1:4       8387* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8387*
     ld    D, H          ; 1:4       8387*
     ld    E, L          ; 1:4       8387* save 1x
@@ -30772,8 +30758,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8387* HL + save
     ld    D, B          ; 1:4       8387*
     ld    E, C          ; 1:4       8387* 
-   
-    ld    B, D          ; 1:4       8389*
+       
+    ld    B, D          ; 1:4       8389* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8389*
     ld    D, H          ; 1:4       8389*
     ld    E, L          ; 1:4       8389* save 1x
@@ -30801,8 +30787,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8389* 8192x
     add  HL, DE         ; 1:11      8389* HL + save
     ld    D, B          ; 1:4       8389*
-    ld    E, C          ; 1:4       8389*   
-    ld    B, D          ; 1:4       8419*
+    ld    E, C          ; 1:4       8389*       
+    ld    B, D          ; 1:4       8419* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8419*
     ld    D, H          ; 1:4       8419*
     ld    E, L          ; 1:4       8419* save 1x
@@ -30833,8 +30819,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8419* 8192x
     add  HL, DE         ; 1:11      8419* HL + save
     ld    D, B          ; 1:4       8419*
-    ld    E, C          ; 1:4       8419*   
-    ld    B, D          ; 1:4       8423*
+    ld    E, C          ; 1:4       8419*       
+    ld    B, D          ; 1:4       8423* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8423*
     ld    D, H          ; 1:4       8423*
     ld    E, L          ; 1:4       8423* save 1x
@@ -30868,8 +30854,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8423* 8192x
     add  HL, DE         ; 1:11      8423* HL + save
     ld    D, B          ; 1:4       8423*
-    ld    E, C          ; 1:4       8423*   
-    ld    B, D          ; 1:4       8429*
+    ld    E, C          ; 1:4       8423*       
+    ld    B, D          ; 1:4       8429* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8429*
     ld    D, H          ; 1:4       8429*
     ld    E, L          ; 1:4       8429* save 1x
@@ -30903,8 +30889,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8429* 8192x
     add  HL, DE         ; 1:11      8429* HL + save
     ld    D, B          ; 1:4       8429*
-    ld    E, C          ; 1:4       8429*   
-    ld    B, D          ; 1:4       8431*
+    ld    E, C          ; 1:4       8429*       
+    ld    B, D          ; 1:4       8431* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8431*
     ld    D, H          ; 1:4       8431*
     ld    E, L          ; 1:4       8431* save 1x
@@ -30941,8 +30927,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8431* 8192x
     add  HL, DE         ; 1:11      8431* HL + save
     ld    D, B          ; 1:4       8431*
-    ld    E, C          ; 1:4       8431*   
-    ld    B, D          ; 1:4       8443*
+    ld    E, C          ; 1:4       8431*       
+    ld    B, D          ; 1:4       8443* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8443*
     ld    D, H          ; 1:4       8443*
     ld    E, L          ; 1:4       8443* save 1x
@@ -30980,7 +30966,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8443* HL + save
     ld    D, B          ; 1:4       8443*
     ld    E, C          ; 1:4       8443*   
-    ld    B, D          ; 1:4       8447*
+    ld    B, D          ; 1:4       8447* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8447*
     ld    D, H          ; 1:4       8447*
     ld    E, L          ; 1:4       8447* save 1x
@@ -31010,8 +30996,8 @@ ORG 0x6000
     or    A             ; 1:4       8447*
     sbc  HL, DE         ; 2:15      8447* HL - save
     ld    D, B          ; 1:4       8447*
-    ld    E, C          ; 1:4       8447*   
-    ld    B, D          ; 1:4       8461*
+    ld    E, C          ; 1:4       8447*       
+    ld    B, D          ; 1:4       8461* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8461*
     ld    D, H          ; 1:4       8461*
     ld    E, L          ; 1:4       8461* save 1x
@@ -31039,8 +31025,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8461* 8192x
     add  HL, DE         ; 1:11      8461* HL + save
     ld    D, B          ; 1:4       8461*
-    ld    E, C          ; 1:4       8461*   
-    ld    B, D          ; 1:4       8467*
+    ld    E, C          ; 1:4       8461*       
+    ld    B, D          ; 1:4       8467* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8467*
     ld    D, H          ; 1:4       8467*
     ld    E, L          ; 1:4       8467* save 1x
@@ -31068,8 +31054,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8467* 8192x
     add  HL, DE         ; 1:11      8467* HL + save
     ld    D, B          ; 1:4       8467*
-    ld    E, C          ; 1:4       8467*   
-    ld    B, D          ; 1:4       8501*
+    ld    E, C          ; 1:4       8467*       
+    ld    B, D          ; 1:4       8501* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8501*
     ld    D, H          ; 1:4       8501*
     ld    E, L          ; 1:4       8501* save 1x
@@ -31101,8 +31087,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8501* HL + save
     ld    D, B          ; 1:4       8501*
     ld    E, C          ; 1:4       8501* 
-   
-    ld    B, D          ; 1:4       8513*
+       
+    ld    B, D          ; 1:4       8513* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8513*
     ld    D, H          ; 1:4       8513*
     ld    E, L          ; 1:4       8513* save 1x
@@ -31127,8 +31113,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8513* 8192x
     add  HL, DE         ; 1:11      8513* HL + save
     ld    D, B          ; 1:4       8513*
-    ld    E, C          ; 1:4       8513*   
-    ld    B, D          ; 1:4       8521*
+    ld    E, C          ; 1:4       8513*       
+    ld    B, D          ; 1:4       8521* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8521*
     ld    D, H          ; 1:4       8521*
     ld    E, L          ; 1:4       8521* save 1x
@@ -31156,8 +31142,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8521* 8192x
     add  HL, DE         ; 1:11      8521* HL + save
     ld    D, B          ; 1:4       8521*
-    ld    E, C          ; 1:4       8521*   
-    ld    B, D          ; 1:4       8527*
+    ld    E, C          ; 1:4       8521*       
+    ld    B, D          ; 1:4       8527* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8527*
     ld    D, H          ; 1:4       8527*
     ld    E, L          ; 1:4       8527* save 1x
@@ -31191,8 +31177,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8527* 8192x
     add  HL, DE         ; 1:11      8527* HL + save
     ld    D, B          ; 1:4       8527*
-    ld    E, C          ; 1:4       8527*   
-    ld    B, D          ; 1:4       8537*
+    ld    E, C          ; 1:4       8527*       
+    ld    B, D          ; 1:4       8537* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8537*
     ld    D, H          ; 1:4       8537*
     ld    E, L          ; 1:4       8537* save 1x
@@ -31223,8 +31209,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8537* 8192x
     add  HL, DE         ; 1:11      8537* HL + save
     ld    D, B          ; 1:4       8537*
-    ld    E, C          ; 1:4       8537*   
-    ld    B, D          ; 1:4       8539*
+    ld    E, C          ; 1:4       8537*       
+    ld    B, D          ; 1:4       8539* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8539*
     ld    D, H          ; 1:4       8539*
     ld    E, L          ; 1:4       8539* save 1x
@@ -31258,8 +31244,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8539* 8192x
     add  HL, DE         ; 1:11      8539* HL + save
     ld    D, B          ; 1:4       8539*
-    ld    E, C          ; 1:4       8539*   
-    ld    B, D          ; 1:4       8543*
+    ld    E, C          ; 1:4       8539*       
+    ld    B, D          ; 1:4       8543* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8543*
     ld    D, H          ; 1:4       8543*
     ld    E, L          ; 1:4       8543* save 1x
@@ -31296,8 +31282,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8543* 8192x
     add  HL, DE         ; 1:11      8543* HL + save
     ld    D, B          ; 1:4       8543*
-    ld    E, C          ; 1:4       8543*   
-    ld    B, D          ; 1:4       8563*
+    ld    E, C          ; 1:4       8543*       
+    ld    B, D          ; 1:4       8563* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8563*
     ld    D, H          ; 1:4       8563*
     ld    E, L          ; 1:4       8563* save 1x
@@ -31331,8 +31317,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8563* 8192x
     add  HL, DE         ; 1:11      8563* HL + save
     ld    D, B          ; 1:4       8563*
-    ld    E, C          ; 1:4       8563*   
-    ld    B, D          ; 1:4       8573*
+    ld    E, C          ; 1:4       8563*       
+    ld    B, D          ; 1:4       8573* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8573*
     ld    D, H          ; 1:4       8573*
     ld    E, L          ; 1:4       8573* save 1x
@@ -31369,8 +31355,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8573* 8192x
     add  HL, DE         ; 1:11      8573* HL + save
     ld    D, B          ; 1:4       8573*
-    ld    E, C          ; 1:4       8573*   
-    ld    B, D          ; 1:4       8581*
+    ld    E, C          ; 1:4       8573*       
+    ld    B, D          ; 1:4       8581* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8581*
     ld    D, H          ; 1:4       8581*
     ld    E, L          ; 1:4       8581* save 1x
@@ -31398,8 +31384,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8581* 8192x
     add  HL, DE         ; 1:11      8581* HL + save
     ld    D, B          ; 1:4       8581*
-    ld    E, C          ; 1:4       8581*   
-    ld    B, D          ; 1:4       8597*
+    ld    E, C          ; 1:4       8581*       
+    ld    B, D          ; 1:4       8597* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8597*
     ld    D, H          ; 1:4       8597*
     ld    E, L          ; 1:4       8597* save 1x
@@ -31431,8 +31417,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8597* HL + save
     ld    D, B          ; 1:4       8597*
     ld    E, C          ; 1:4       8597* 
-   
-    ld    B, D          ; 1:4       8599*
+       
+    ld    B, D          ; 1:4       8599* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8599*
     ld    D, H          ; 1:4       8599*
     ld    E, L          ; 1:4       8599* save 1x
@@ -31466,8 +31452,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8599* 8192x
     add  HL, DE         ; 1:11      8599* HL + save
     ld    D, B          ; 1:4       8599*
-    ld    E, C          ; 1:4       8599*   
-    ld    B, D          ; 1:4       8609*
+    ld    E, C          ; 1:4       8599*       
+    ld    B, D          ; 1:4       8609* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8609*
     ld    D, H          ; 1:4       8609*
     ld    E, L          ; 1:4       8609* save 1x
@@ -31495,8 +31481,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8609* 8192x
     add  HL, DE         ; 1:11      8609* HL + save
     ld    D, B          ; 1:4       8609*
-    ld    E, C          ; 1:4       8609*   
-    ld    B, D          ; 1:4       8623*
+    ld    E, C          ; 1:4       8609*       
+    ld    B, D          ; 1:4       8623* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8623*
     ld    D, H          ; 1:4       8623*
     ld    E, L          ; 1:4       8623* save 1x
@@ -31533,8 +31519,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8623* 8192x
     add  HL, DE         ; 1:11      8623* HL + save
     ld    D, B          ; 1:4       8623*
-    ld    E, C          ; 1:4       8623*   
-    ld    B, D          ; 1:4       8627*
+    ld    E, C          ; 1:4       8623*       
+    ld    B, D          ; 1:4       8627* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8627*
     ld    D, H          ; 1:4       8627*
     ld    E, L          ; 1:4       8627* save 1x
@@ -31568,8 +31554,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8627* 8192x
     add  HL, DE         ; 1:11      8627* HL + save
     ld    D, B          ; 1:4       8627*
-    ld    E, C          ; 1:4       8627*   
-    ld    B, D          ; 1:4       8629*
+    ld    E, C          ; 1:4       8627*       
+    ld    B, D          ; 1:4       8629* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8629*
     ld    D, H          ; 1:4       8629*
     ld    E, L          ; 1:4       8629* save 1x
@@ -31603,8 +31589,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8629* 8192x
     add  HL, DE         ; 1:11      8629* HL + save
     ld    D, B          ; 1:4       8629*
-    ld    E, C          ; 1:4       8629*   
-    ld    B, D          ; 1:4       8641*
+    ld    E, C          ; 1:4       8629*       
+    ld    B, D          ; 1:4       8641* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8641*
     ld    D, H          ; 1:4       8641*
     ld    E, L          ; 1:4       8641* save 1x
@@ -31632,8 +31618,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8641* 8192x
     add  HL, DE         ; 1:11      8641* HL + save
     ld    D, B          ; 1:4       8641*
-    ld    E, C          ; 1:4       8641*   
-    ld    B, D          ; 1:4       8647*
+    ld    E, C          ; 1:4       8641*       
+    ld    B, D          ; 1:4       8647* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8647*
     ld    D, H          ; 1:4       8647*
     ld    E, L          ; 1:4       8647* save 1x
@@ -31667,8 +31653,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8647* 8192x
     add  HL, DE         ; 1:11      8647* HL + save
     ld    D, B          ; 1:4       8647*
-    ld    E, C          ; 1:4       8647*   
-    ld    B, D          ; 1:4       8663*
+    ld    E, C          ; 1:4       8647*       
+    ld    B, D          ; 1:4       8663* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8663*
     ld    D, H          ; 1:4       8663*
     ld    E, L          ; 1:4       8663* save 1x
@@ -31705,8 +31691,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8663* 8192x
     add  HL, DE         ; 1:11      8663* HL + save
     ld    D, B          ; 1:4       8663*
-    ld    E, C          ; 1:4       8663*   
-    ld    B, D          ; 1:4       8669*
+    ld    E, C          ; 1:4       8663*       
+    ld    B, D          ; 1:4       8669* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8669*
     ld    D, H          ; 1:4       8669*
     ld    E, L          ; 1:4       8669* save 1x
@@ -31743,8 +31729,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8669* 8192x
     add  HL, DE         ; 1:11      8669* HL + save
     ld    D, B          ; 1:4       8669*
-    ld    E, C          ; 1:4       8669*   
-    ld    B, D          ; 1:4       8677*
+    ld    E, C          ; 1:4       8669*       
+    ld    B, D          ; 1:4       8677* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8677*
     ld    D, H          ; 1:4       8677*
     ld    E, L          ; 1:4       8677* save 1x
@@ -31779,8 +31765,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8677* HL + save
     ld    D, B          ; 1:4       8677*
     ld    E, C          ; 1:4       8677* 
-   
-    ld    B, D          ; 1:4       8681*
+       
+    ld    B, D          ; 1:4       8681* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8681*
     ld    D, H          ; 1:4       8681*
     ld    E, L          ; 1:4       8681* save 1x
@@ -31814,8 +31800,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8681* 8192x
     add  HL, DE         ; 1:11      8681* HL + save
     ld    D, B          ; 1:4       8681*
-    ld    E, C          ; 1:4       8681*   
-    ld    B, D          ; 1:4       8689*
+    ld    E, C          ; 1:4       8681*       
+    ld    B, D          ; 1:4       8689* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8689*
     ld    D, H          ; 1:4       8689*
     ld    E, L          ; 1:4       8689* save 1x
@@ -31849,8 +31835,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8689* 8192x
     add  HL, DE         ; 1:11      8689* HL + save
     ld    D, B          ; 1:4       8689*
-    ld    E, C          ; 1:4       8689*   
-    ld    B, D          ; 1:4       8693*
+    ld    E, C          ; 1:4       8689*       
+    ld    B, D          ; 1:4       8693* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8693*
     ld    D, H          ; 1:4       8693*
     ld    E, L          ; 1:4       8693* save 1x
@@ -31888,7 +31874,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8693* HL + save
     ld    D, B          ; 1:4       8693*
     ld    E, C          ; 1:4       8693*   
-    ld    B, D          ; 1:4       8699*
+    ld    B, D          ; 1:4       8699* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8699*
     ld    D, H          ; 1:4       8699*
     ld    E, L          ; 1:4       8699* save 1x
@@ -31897,13 +31883,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8699* +
     add  HL, DE         ; 1:11      8699* + save 4x
     ex   DE, HL         ; 1:4       8699* +
-    add  HL, HL         ; 1:11      8699* 8x
-    add  HL, HL         ; 1:11      8699* 16x
-    add  HL, HL         ; 1:11      8699* 32x
-    add  HL, HL         ; 1:11      8699* 64x
-    add  HL, HL         ; 1:11      8699* 128x
-    add  HL, HL         ; 1:11      8699* 256x
-    add  HL, HL         ; 1:11      8699* 512x
+    rr    H             ; 2:8       8699*
+    rr    L             ; 2:8       8699*
+    ld    H, L          ; 1:4       8699*
+    ld    L, 0x00       ; 2:7       8699* 512x
     ex   DE, HL         ; 1:4       8699* +
     add  HL, DE         ; 1:11      8699* + save 512x
     ex   DE, HL         ; 1:4       8699* +
@@ -31924,8 +31907,8 @@ ORG 0x6000
     or    A             ; 1:4       8699*
     sbc  HL, DE         ; 2:15      8699* HL - save
     ld    D, B          ; 1:4       8699*
-    ld    E, C          ; 1:4       8699*   
-    ld    B, D          ; 1:4       8707*
+    ld    E, C          ; 1:4       8699*       
+    ld    B, D          ; 1:4       8707* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8707*
     ld    D, H          ; 1:4       8707*
     ld    E, L          ; 1:4       8707* save 1x
@@ -31944,8 +31927,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8707* 8192x
     add  HL, DE         ; 1:11      8707* HL + save
     ld    D, B          ; 1:4       8707*
-    ld    E, C          ; 1:4       8707*   
-    ld    B, D          ; 1:4       8713*
+    ld    E, C          ; 1:4       8707*       
+    ld    B, D          ; 1:4       8713* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8713*
     ld    D, H          ; 1:4       8713*
     ld    E, L          ; 1:4       8713* save 1x
@@ -31970,8 +31953,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8713* 8192x
     add  HL, DE         ; 1:11      8713* HL + save
     ld    D, B          ; 1:4       8713*
-    ld    E, C          ; 1:4       8713*   
-    ld    B, D          ; 1:4       8719*
+    ld    E, C          ; 1:4       8713*       
+    ld    B, D          ; 1:4       8719* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8719*
     ld    D, H          ; 1:4       8719*
     ld    E, L          ; 1:4       8719* save 1x
@@ -32002,8 +31985,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8719* 8192x
     add  HL, DE         ; 1:11      8719* HL + save
     ld    D, B          ; 1:4       8719*
-    ld    E, C          ; 1:4       8719*   
-    ld    B, D          ; 1:4       8731*
+    ld    E, C          ; 1:4       8719*       
+    ld    B, D          ; 1:4       8731* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8731*
     ld    D, H          ; 1:4       8731*
     ld    E, L          ; 1:4       8731* save 1x
@@ -32034,8 +32017,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8731* 8192x
     add  HL, DE         ; 1:11      8731* HL + save
     ld    D, B          ; 1:4       8731*
-    ld    E, C          ; 1:4       8731*   
-    ld    B, D          ; 1:4       8737*
+    ld    E, C          ; 1:4       8731*       
+    ld    B, D          ; 1:4       8737* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8737*
     ld    D, H          ; 1:4       8737*
     ld    E, L          ; 1:4       8737* save 1x
@@ -32060,8 +32043,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8737* 8192x
     add  HL, DE         ; 1:11      8737* HL + save
     ld    D, B          ; 1:4       8737*
-    ld    E, C          ; 1:4       8737*   
-    ld    B, D          ; 1:4       8741*
+    ld    E, C          ; 1:4       8737*       
+    ld    B, D          ; 1:4       8741* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8741*
     ld    D, H          ; 1:4       8741*
     ld    E, L          ; 1:4       8741* save 1x
@@ -32090,8 +32073,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8741* HL + save
     ld    D, B          ; 1:4       8741*
     ld    E, C          ; 1:4       8741* 
-   
-    ld    B, D          ; 1:4       8747*
+       
+    ld    B, D          ; 1:4       8747* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8747*
     ld    D, H          ; 1:4       8747*
     ld    E, L          ; 1:4       8747* save 1x
@@ -32122,8 +32105,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8747* 8192x
     add  HL, DE         ; 1:11      8747* HL + save
     ld    D, B          ; 1:4       8747*
-    ld    E, C          ; 1:4       8747*   
-    ld    B, D          ; 1:4       8753*
+    ld    E, C          ; 1:4       8747*       
+    ld    B, D          ; 1:4       8753* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8753*
     ld    D, H          ; 1:4       8753*
     ld    E, L          ; 1:4       8753* save 1x
@@ -32151,8 +32134,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8753* 8192x
     add  HL, DE         ; 1:11      8753* HL + save
     ld    D, B          ; 1:4       8753*
-    ld    E, C          ; 1:4       8753*   
-    ld    B, D          ; 1:4       8761*
+    ld    E, C          ; 1:4       8753*       
+    ld    B, D          ; 1:4       8761* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8761*
     ld    D, H          ; 1:4       8761*
     ld    E, L          ; 1:4       8761* save 1x
@@ -32183,8 +32166,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8761* 8192x
     add  HL, DE         ; 1:11      8761* HL + save
     ld    D, B          ; 1:4       8761*
-    ld    E, C          ; 1:4       8761*   
-    ld    B, D          ; 1:4       8779*
+    ld    E, C          ; 1:4       8761*       
+    ld    B, D          ; 1:4       8779* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8779*
     ld    D, H          ; 1:4       8779*
     ld    E, L          ; 1:4       8779* save 1x
@@ -32215,8 +32198,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8779* 8192x
     add  HL, DE         ; 1:11      8779* HL + save
     ld    D, B          ; 1:4       8779*
-    ld    E, C          ; 1:4       8779*   
-    ld    B, D          ; 1:4       8783*
+    ld    E, C          ; 1:4       8779*       
+    ld    B, D          ; 1:4       8783* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8783*
     ld    D, H          ; 1:4       8783*
     ld    E, L          ; 1:4       8783* save 1x
@@ -32250,8 +32233,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8783* 8192x
     add  HL, DE         ; 1:11      8783* HL + save
     ld    D, B          ; 1:4       8783*
-    ld    E, C          ; 1:4       8783*   
-    ld    B, D          ; 1:4       8803*
+    ld    E, C          ; 1:4       8783*       
+    ld    B, D          ; 1:4       8803* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8803*
     ld    D, H          ; 1:4       8803*
     ld    E, L          ; 1:4       8803* save 1x
@@ -32282,8 +32265,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8803* 8192x
     add  HL, DE         ; 1:11      8803* HL + save
     ld    D, B          ; 1:4       8803*
-    ld    E, C          ; 1:4       8803*   
-    ld    B, D          ; 1:4       8807*
+    ld    E, C          ; 1:4       8803*       
+    ld    B, D          ; 1:4       8807* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8807*
     ld    D, H          ; 1:4       8807*
     ld    E, L          ; 1:4       8807* save 1x
@@ -32317,8 +32300,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8807* 8192x
     add  HL, DE         ; 1:11      8807* HL + save
     ld    D, B          ; 1:4       8807*
-    ld    E, C          ; 1:4       8807*   
-    ld    B, D          ; 1:4       8819*
+    ld    E, C          ; 1:4       8807*       
+    ld    B, D          ; 1:4       8819* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8819*
     ld    D, H          ; 1:4       8819*
     ld    E, L          ; 1:4       8819* save 1x
@@ -32352,8 +32335,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8819* 8192x
     add  HL, DE         ; 1:11      8819* HL + save
     ld    D, B          ; 1:4       8819*
-    ld    E, C          ; 1:4       8819*   
-    ld    B, D          ; 1:4       8821*
+    ld    E, C          ; 1:4       8819*       
+    ld    B, D          ; 1:4       8821* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8821*
     ld    D, H          ; 1:4       8821*
     ld    E, L          ; 1:4       8821* save 1x
@@ -32388,7 +32371,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8821* HL + save
     ld    D, B          ; 1:4       8821*
     ld    E, C          ; 1:4       8821*   
-    ld    B, D          ; 1:4       8831*
+    ld    B, D          ; 1:4       8831* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8831*
     ld    D, H          ; 1:4       8831*
     ld    E, L          ; 1:4       8831* save 1x
@@ -32425,8 +32408,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      8831* HL - save
     ld    D, B          ; 1:4       8831*
     ld    E, C          ; 1:4       8831* 
-   
-    ld    B, D          ; 1:4       8837*
+       
+    ld    B, D          ; 1:4       8837* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8837*
     ld    D, H          ; 1:4       8837*
     ld    E, L          ; 1:4       8837* save 1x
@@ -32454,8 +32437,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8837* 8192x
     add  HL, DE         ; 1:11      8837* HL + save
     ld    D, B          ; 1:4       8837*
-    ld    E, C          ; 1:4       8837*   
-    ld    B, D          ; 1:4       8839*
+    ld    E, C          ; 1:4       8837*       
+    ld    B, D          ; 1:4       8839* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8839*
     ld    D, H          ; 1:4       8839*
     ld    E, L          ; 1:4       8839* save 1x
@@ -32486,8 +32469,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8839* 8192x
     add  HL, DE         ; 1:11      8839* HL + save
     ld    D, B          ; 1:4       8839*
-    ld    E, C          ; 1:4       8839*   
-    ld    B, D          ; 1:4       8849*
+    ld    E, C          ; 1:4       8839*       
+    ld    B, D          ; 1:4       8849* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8849*
     ld    D, H          ; 1:4       8849*
     ld    E, L          ; 1:4       8849* save 1x
@@ -32515,8 +32498,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8849* 8192x
     add  HL, DE         ; 1:11      8849* HL + save
     ld    D, B          ; 1:4       8849*
-    ld    E, C          ; 1:4       8849*   
-    ld    B, D          ; 1:4       8861*
+    ld    E, C          ; 1:4       8849*       
+    ld    B, D          ; 1:4       8861* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8861*
     ld    D, H          ; 1:4       8861*
     ld    E, L          ; 1:4       8861* save 1x
@@ -32550,8 +32533,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8861* 8192x
     add  HL, DE         ; 1:11      8861* HL + save
     ld    D, B          ; 1:4       8861*
-    ld    E, C          ; 1:4       8861*   
-    ld    B, D          ; 1:4       8863*
+    ld    E, C          ; 1:4       8861*       
+    ld    B, D          ; 1:4       8863* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8863*
     ld    D, H          ; 1:4       8863*
     ld    E, L          ; 1:4       8863* save 1x
@@ -32588,8 +32571,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8863* 8192x
     add  HL, DE         ; 1:11      8863* HL + save
     ld    D, B          ; 1:4       8863*
-    ld    E, C          ; 1:4       8863*   
-    ld    B, D          ; 1:4       8867*
+    ld    E, C          ; 1:4       8863*       
+    ld    B, D          ; 1:4       8867* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8867*
     ld    D, H          ; 1:4       8867*
     ld    E, L          ; 1:4       8867* save 1x
@@ -32620,8 +32603,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8867* 8192x
     add  HL, DE         ; 1:11      8867* HL + save
     ld    D, B          ; 1:4       8867*
-    ld    E, C          ; 1:4       8867*   
-    ld    B, D          ; 1:4       8887*
+    ld    E, C          ; 1:4       8867*       
+    ld    B, D          ; 1:4       8887* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8887*
     ld    D, H          ; 1:4       8887*
     ld    E, L          ; 1:4       8887* save 1x
@@ -32658,8 +32641,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8887* 8192x
     add  HL, DE         ; 1:11      8887* HL + save
     ld    D, B          ; 1:4       8887*
-    ld    E, C          ; 1:4       8887*   
-    ld    B, D          ; 1:4       8893*
+    ld    E, C          ; 1:4       8887*       
+    ld    B, D          ; 1:4       8893* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8893*
     ld    D, H          ; 1:4       8893*
     ld    E, L          ; 1:4       8893* save 1x
@@ -32696,8 +32679,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8893* 8192x
     add  HL, DE         ; 1:11      8893* HL + save
     ld    D, B          ; 1:4       8893*
-    ld    E, C          ; 1:4       8893*   
-    ld    B, D          ; 1:4       8923*
+    ld    E, C          ; 1:4       8893*       
+    ld    B, D          ; 1:4       8923* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8923*
     ld    D, H          ; 1:4       8923*
     ld    E, L          ; 1:4       8923* save 1x
@@ -32734,8 +32717,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8923* 8192x
     add  HL, DE         ; 1:11      8923* HL + save
     ld    D, B          ; 1:4       8923*
-    ld    E, C          ; 1:4       8923*   
-    ld    B, D          ; 1:4       8929*
+    ld    E, C          ; 1:4       8923*       
+    ld    B, D          ; 1:4       8929* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8929*
     ld    D, H          ; 1:4       8929*
     ld    E, L          ; 1:4       8929* save 1x
@@ -32767,8 +32750,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8929* HL + save
     ld    D, B          ; 1:4       8929*
     ld    E, C          ; 1:4       8929* 
-   
-    ld    B, D          ; 1:4       8933*
+       
+    ld    B, D          ; 1:4       8933* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8933*
     ld    D, H          ; 1:4       8933*
     ld    E, L          ; 1:4       8933* save 1x
@@ -32802,8 +32785,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8933* 8192x
     add  HL, DE         ; 1:11      8933* HL + save
     ld    D, B          ; 1:4       8933*
-    ld    E, C          ; 1:4       8933*   
-    ld    B, D          ; 1:4       8941*
+    ld    E, C          ; 1:4       8933*       
+    ld    B, D          ; 1:4       8941* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8941*
     ld    D, H          ; 1:4       8941*
     ld    E, L          ; 1:4       8941* save 1x
@@ -32841,7 +32824,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      8941* HL + save
     ld    D, B          ; 1:4       8941*
     ld    E, C          ; 1:4       8941*   
-    ld    B, D          ; 1:4       8951*
+    ld    B, D          ; 1:4       8951* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       8951*
     ld    D, H          ; 1:4       8951*
     ld    E, L          ; 1:4       8951* save 1x
@@ -32877,8 +32860,8 @@ ORG 0x6000
     or    A             ; 1:4       8951*
     sbc  HL, DE         ; 2:15      8951* HL - save
     ld    D, B          ; 1:4       8951*
-    ld    E, C          ; 1:4       8951*   
-    ld    B, D          ; 1:4       8963*
+    ld    E, C          ; 1:4       8951*       
+    ld    B, D          ; 1:4       8963* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8963*
     ld    D, H          ; 1:4       8963*
     ld    E, L          ; 1:4       8963* save 1x
@@ -32886,13 +32869,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       8963* +
     add  HL, DE         ; 1:11      8963* + save 2x
     ex   DE, HL         ; 1:4       8963* +
-    add  HL, HL         ; 1:11      8963* 4x
-    add  HL, HL         ; 1:11      8963* 8x
-    add  HL, HL         ; 1:11      8963* 16x
-    add  HL, HL         ; 1:11      8963* 32x
-    add  HL, HL         ; 1:11      8963* 64x
-    add  HL, HL         ; 1:11      8963* 128x
-    add  HL, HL         ; 1:11      8963* 256x
+    rr    H             ; 2:8       8963*
+    rr    L             ; 2:8       8963*
+    ld    H, L          ; 1:4       8963*
+    ld    L, 0x00       ; 2:7       8963* 256x
     ex   DE, HL         ; 1:4       8963* +
     add  HL, DE         ; 1:11      8963* + save 256x
     ex   DE, HL         ; 1:4       8963* +
@@ -32906,8 +32886,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8963* 8192x
     add  HL, DE         ; 1:11      8963* HL + save
     ld    D, B          ; 1:4       8963*
-    ld    E, C          ; 1:4       8963*   
-    ld    B, D          ; 1:4       8969*
+    ld    E, C          ; 1:4       8963*       
+    ld    B, D          ; 1:4       8969* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8969*
     ld    D, H          ; 1:4       8969*
     ld    E, L          ; 1:4       8969* save 1x
@@ -32935,8 +32915,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8969* 8192x
     add  HL, DE         ; 1:11      8969* HL + save
     ld    D, B          ; 1:4       8969*
-    ld    E, C          ; 1:4       8969*   
-    ld    B, D          ; 1:4       8971*
+    ld    E, C          ; 1:4       8969*       
+    ld    B, D          ; 1:4       8971* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8971*
     ld    D, H          ; 1:4       8971*
     ld    E, L          ; 1:4       8971* save 1x
@@ -32967,8 +32947,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8971* 8192x
     add  HL, DE         ; 1:11      8971* HL + save
     ld    D, B          ; 1:4       8971*
-    ld    E, C          ; 1:4       8971*   
-    ld    B, D          ; 1:4       8999*
+    ld    E, C          ; 1:4       8971*       
+    ld    B, D          ; 1:4       8999* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       8999*
     ld    D, H          ; 1:4       8999*
     ld    E, L          ; 1:4       8999* save 1x
@@ -33002,8 +32982,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      8999* 8192x
     add  HL, DE         ; 1:11      8999* HL + save
     ld    D, B          ; 1:4       8999*
-    ld    E, C          ; 1:4       8999*   
-    ld    B, D          ; 1:4       9001*
+    ld    E, C          ; 1:4       8999*       
+    ld    B, D          ; 1:4       9001* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9001*
     ld    D, H          ; 1:4       9001*
     ld    E, L          ; 1:4       9001* save 1x
@@ -33034,8 +33014,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9001* 8192x
     add  HL, DE         ; 1:11      9001* HL + save
     ld    D, B          ; 1:4       9001*
-    ld    E, C          ; 1:4       9001*   
-    ld    B, D          ; 1:4       9007*
+    ld    E, C          ; 1:4       9001*       
+    ld    B, D          ; 1:4       9007* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9007*
     ld    D, H          ; 1:4       9007*
     ld    E, L          ; 1:4       9007* save 1x
@@ -33072,8 +33052,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9007* 8192x
     add  HL, DE         ; 1:11      9007* HL + save
     ld    D, B          ; 1:4       9007*
-    ld    E, C          ; 1:4       9007*   
-    ld    B, D          ; 1:4       9011*
+    ld    E, C          ; 1:4       9007*       
+    ld    B, D          ; 1:4       9011* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9011*
     ld    D, H          ; 1:4       9011*
     ld    E, L          ; 1:4       9011* save 1x
@@ -33108,8 +33088,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9011* HL + save
     ld    D, B          ; 1:4       9011*
     ld    E, C          ; 1:4       9011* 
-   
-    ld    B, D          ; 1:4       9013*
+       
+    ld    B, D          ; 1:4       9013* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9013*
     ld    D, H          ; 1:4       9013*
     ld    E, L          ; 1:4       9013* save 1x
@@ -33143,8 +33123,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9013* 8192x
     add  HL, DE         ; 1:11      9013* HL + save
     ld    D, B          ; 1:4       9013*
-    ld    E, C          ; 1:4       9013*   
-    ld    B, D          ; 1:4       9029*
+    ld    E, C          ; 1:4       9013*       
+    ld    B, D          ; 1:4       9029* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9029*
     ld    D, H          ; 1:4       9029*
     ld    E, L          ; 1:4       9029* save 1x
@@ -33175,8 +33155,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9029* 8192x
     add  HL, DE         ; 1:11      9029* HL + save
     ld    D, B          ; 1:4       9029*
-    ld    E, C          ; 1:4       9029*   
-    ld    B, D          ; 1:4       9041*
+    ld    E, C          ; 1:4       9029*       
+    ld    B, D          ; 1:4       9041* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9041*
     ld    D, H          ; 1:4       9041*
     ld    E, L          ; 1:4       9041* save 1x
@@ -33207,8 +33187,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9041* 8192x
     add  HL, DE         ; 1:11      9041* HL + save
     ld    D, B          ; 1:4       9041*
-    ld    E, C          ; 1:4       9041*   
-    ld    B, D          ; 1:4       9043*
+    ld    E, C          ; 1:4       9041*       
+    ld    B, D          ; 1:4       9043* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9043*
     ld    D, H          ; 1:4       9043*
     ld    E, L          ; 1:4       9043* save 1x
@@ -33242,8 +33222,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9043* 8192x
     add  HL, DE         ; 1:11      9043* HL + save
     ld    D, B          ; 1:4       9043*
-    ld    E, C          ; 1:4       9043*   
-    ld    B, D          ; 1:4       9049*
+    ld    E, C          ; 1:4       9043*       
+    ld    B, D          ; 1:4       9049* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9049*
     ld    D, H          ; 1:4       9049*
     ld    E, L          ; 1:4       9049* save 1x
@@ -33277,8 +33257,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9049* 8192x
     add  HL, DE         ; 1:11      9049* HL + save
     ld    D, B          ; 1:4       9049*
-    ld    E, C          ; 1:4       9049*   
-    ld    B, D          ; 1:4       9059*
+    ld    E, C          ; 1:4       9049*       
+    ld    B, D          ; 1:4       9059* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9059*
     ld    D, H          ; 1:4       9059*
     ld    E, L          ; 1:4       9059* save 1x
@@ -33312,8 +33292,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9059* 8192x
     add  HL, DE         ; 1:11      9059* HL + save
     ld    D, B          ; 1:4       9059*
-    ld    E, C          ; 1:4       9059*   
-    ld    B, D          ; 1:4       9067*
+    ld    E, C          ; 1:4       9059*       
+    ld    B, D          ; 1:4       9067* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9067*
     ld    D, H          ; 1:4       9067*
     ld    E, L          ; 1:4       9067* save 1x
@@ -33350,8 +33330,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9067* 8192x
     add  HL, DE         ; 1:11      9067* HL + save
     ld    D, B          ; 1:4       9067*
-    ld    E, C          ; 1:4       9067*   
-    ld    B, D          ; 1:4       9091*
+    ld    E, C          ; 1:4       9067*       
+    ld    B, D          ; 1:4       9091* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9091*
     ld    D, H          ; 1:4       9091*
     ld    E, L          ; 1:4       9091* save 1x
@@ -33382,8 +33362,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9091* 8192x
     add  HL, DE         ; 1:11      9091* HL + save
     ld    D, B          ; 1:4       9091*
-    ld    E, C          ; 1:4       9091*   
-    ld    B, D          ; 1:4       9103*
+    ld    E, C          ; 1:4       9091*       
+    ld    B, D          ; 1:4       9103* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9103*
     ld    D, H          ; 1:4       9103*
     ld    E, L          ; 1:4       9103* save 1x
@@ -33420,8 +33400,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9103* 8192x
     add  HL, DE         ; 1:11      9103* HL + save
     ld    D, B          ; 1:4       9103*
-    ld    E, C          ; 1:4       9103*   
-    ld    B, D          ; 1:4       9109*
+    ld    E, C          ; 1:4       9103*       
+    ld    B, D          ; 1:4       9109* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9109*
     ld    D, H          ; 1:4       9109*
     ld    E, L          ; 1:4       9109* save 1x
@@ -33456,8 +33436,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9109* HL + save
     ld    D, B          ; 1:4       9109*
     ld    E, C          ; 1:4       9109* 
-   
-    ld    B, D          ; 1:4       9127*
+       
+    ld    B, D          ; 1:4       9127* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9127*
     ld    D, H          ; 1:4       9127*
     ld    E, L          ; 1:4       9127* save 1x
@@ -33494,8 +33474,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9127* 8192x
     add  HL, DE         ; 1:11      9127* HL + save
     ld    D, B          ; 1:4       9127*
-    ld    E, C          ; 1:4       9127*   
-    ld    B, D          ; 1:4       9133*
+    ld    E, C          ; 1:4       9127*       
+    ld    B, D          ; 1:4       9133* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9133*
     ld    D, H          ; 1:4       9133*
     ld    E, L          ; 1:4       9133* save 1x
@@ -33532,8 +33512,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9133* 8192x
     add  HL, DE         ; 1:11      9133* HL + save
     ld    D, B          ; 1:4       9133*
-    ld    E, C          ; 1:4       9133*   
-    ld    B, D          ; 1:4       9137*
+    ld    E, C          ; 1:4       9133*       
+    ld    B, D          ; 1:4       9137* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9137*
     ld    D, H          ; 1:4       9137*
     ld    E, L          ; 1:4       9137* save 1x
@@ -33568,7 +33548,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9137* HL + save
     ld    D, B          ; 1:4       9137*
     ld    E, C          ; 1:4       9137*   
-    ld    B, D          ; 1:4       9151*
+    ld    B, D          ; 1:4       9151* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9151*
     ld    D, H          ; 1:4       9151*
     ld    E, L          ; 1:4       9151* save 1x
@@ -33601,8 +33581,8 @@ ORG 0x6000
     or    A             ; 1:4       9151*
     sbc  HL, DE         ; 2:15      9151* HL - save
     ld    D, B          ; 1:4       9151*
-    ld    E, C          ; 1:4       9151*   
-    ld    B, D          ; 1:4       9157*
+    ld    E, C          ; 1:4       9151*       
+    ld    B, D          ; 1:4       9157* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9157*
     ld    D, H          ; 1:4       9157*
     ld    E, L          ; 1:4       9157* save 1x
@@ -33636,8 +33616,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9157* 8192x
     add  HL, DE         ; 1:11      9157* HL + save
     ld    D, B          ; 1:4       9157*
-    ld    E, C          ; 1:4       9157*   
-    ld    B, D          ; 1:4       9161*
+    ld    E, C          ; 1:4       9157*       
+    ld    B, D          ; 1:4       9161* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9161*
     ld    D, H          ; 1:4       9161*
     ld    E, L          ; 1:4       9161* save 1x
@@ -33671,8 +33651,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9161* 8192x
     add  HL, DE         ; 1:11      9161* HL + save
     ld    D, B          ; 1:4       9161*
-    ld    E, C          ; 1:4       9161*   
-    ld    B, D          ; 1:4       9173*
+    ld    E, C          ; 1:4       9161*       
+    ld    B, D          ; 1:4       9173* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9173*
     ld    D, H          ; 1:4       9173*
     ld    E, L          ; 1:4       9173* save 1x
@@ -33710,7 +33690,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9173* HL + save
     ld    D, B          ; 1:4       9173*
     ld    E, C          ; 1:4       9173*   
-    ld    B, D          ; 1:4       9181*
+    ld    B, D          ; 1:4       9181* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9181*
     ld    D, H          ; 1:4       9181*
     ld    E, L          ; 1:4       9181* save 1x
@@ -33746,8 +33726,8 @@ ORG 0x6000
     or    A             ; 1:4       9181*
     sbc  HL, DE         ; 2:15      9181* HL - save
     ld    D, B          ; 1:4       9181*
-    ld    E, C          ; 1:4       9181*   
-    ld    B, D          ; 1:4       9187*
+    ld    E, C          ; 1:4       9181*       
+    ld    B, D          ; 1:4       9187* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9187*
     ld    D, H          ; 1:4       9187*
     ld    E, L          ; 1:4       9187* save 1x
@@ -33785,7 +33765,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9187* HL + save
     ld    D, B          ; 1:4       9187*
     ld    E, C          ; 1:4       9187*   
-    ld    B, D          ; 1:4       9199*
+    ld    B, D          ; 1:4       9199* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9199*
     ld    D, H          ; 1:4       9199*
     ld    E, L          ; 1:4       9199* save 1x
@@ -33820,7 +33800,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       9199*
     ld    E, C          ; 1:4       9199* 
    
-    ld    B, D          ; 1:4       9203*
+    ld    B, D          ; 1:4       9203* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9203*
     ld    D, H          ; 1:4       9203*
     ld    E, L          ; 1:4       9203* save 1x
@@ -33833,13 +33813,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       9203* +
     add  HL, DE         ; 1:11      9203* + save 8x
     ex   DE, HL         ; 1:4       9203* +
-    add  HL, HL         ; 1:11      9203* 16x
-    add  HL, HL         ; 1:11      9203* 32x
-    add  HL, HL         ; 1:11      9203* 64x
-    add  HL, HL         ; 1:11      9203* 128x
-    add  HL, HL         ; 1:11      9203* 256x
-    add  HL, HL         ; 1:11      9203* 512x
-    add  HL, HL         ; 1:11      9203* 1024x
+    rr    H             ; 2:8       9203*
+    rr    L             ; 2:8       9203*
+    ld    H, L          ; 1:4       9203*
+    ld    L, 0x00       ; 2:7       9203* 1024x
     ex   DE, HL         ; 1:4       9203* +
     add  HL, DE         ; 1:11      9203* + save 1024x
     ex   DE, HL         ; 1:4       9203* +
@@ -33857,7 +33834,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9203* HL - save
     ld    D, B          ; 1:4       9203*
     ld    E, C          ; 1:4       9203*   
-    ld    B, D          ; 1:4       9209*
+    ld    B, D          ; 1:4       9209* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9209*
     ld    D, H          ; 1:4       9209*
     ld    E, L          ; 1:4       9209* save 1x
@@ -33887,8 +33864,8 @@ ORG 0x6000
     or    A             ; 1:4       9209*
     sbc  HL, DE         ; 2:15      9209* HL - save
     ld    D, B          ; 1:4       9209*
-    ld    E, C          ; 1:4       9209*   
-    ld    B, D          ; 1:4       9221*
+    ld    E, C          ; 1:4       9209*       
+    ld    B, D          ; 1:4       9221* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9221*
     ld    D, H          ; 1:4       9221*
     ld    E, L          ; 1:4       9221* save 1x
@@ -33907,8 +33884,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9221* 8192x
     add  HL, DE         ; 1:11      9221* HL + save
     ld    D, B          ; 1:4       9221*
-    ld    E, C          ; 1:4       9221*   
-    ld    B, D          ; 1:4       9227*
+    ld    E, C          ; 1:4       9221*       
+    ld    B, D          ; 1:4       9227* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9227*
     ld    D, H          ; 1:4       9227*
     ld    E, L          ; 1:4       9227* save 1x
@@ -33921,13 +33898,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       9227* +
     add  HL, DE         ; 1:11      9227* + save 8x
     ex   DE, HL         ; 1:4       9227* +
-    add  HL, HL         ; 1:11      9227* 16x
-    add  HL, HL         ; 1:11      9227* 32x
-    add  HL, HL         ; 1:11      9227* 64x
-    add  HL, HL         ; 1:11      9227* 128x
-    add  HL, HL         ; 1:11      9227* 256x
-    add  HL, HL         ; 1:11      9227* 512x
-    add  HL, HL         ; 1:11      9227* 1024x
+    rr    H             ; 2:8       9227*
+    rr    L             ; 2:8       9227*
+    ld    H, L          ; 1:4       9227*
+    ld    L, 0x00       ; 2:7       9227* 1024x
     ex   DE, HL         ; 1:4       9227* +
     add  HL, DE         ; 1:11      9227* + save 1024x
     ex   DE, HL         ; 1:4       9227* +
@@ -33936,8 +33910,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9227* 8192x
     add  HL, DE         ; 1:11      9227* HL + save
     ld    D, B          ; 1:4       9227*
-    ld    E, C          ; 1:4       9227*   
-    ld    B, D          ; 1:4       9239*
+    ld    E, C          ; 1:4       9227*       
+    ld    B, D          ; 1:4       9239* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9239*
     ld    D, H          ; 1:4       9239*
     ld    E, L          ; 1:4       9239* save 1x
@@ -33968,8 +33942,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9239* 8192x
     add  HL, DE         ; 1:11      9239* HL + save
     ld    D, B          ; 1:4       9239*
-    ld    E, C          ; 1:4       9239*   
-    ld    B, D          ; 1:4       9241*
+    ld    E, C          ; 1:4       9239*       
+    ld    B, D          ; 1:4       9241* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9241*
     ld    D, H          ; 1:4       9241*
     ld    E, L          ; 1:4       9241* save 1x
@@ -33997,8 +33971,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9241* 8192x
     add  HL, DE         ; 1:11      9241* HL + save
     ld    D, B          ; 1:4       9241*
-    ld    E, C          ; 1:4       9241*   
-    ld    B, D          ; 1:4       9257*
+    ld    E, C          ; 1:4       9241*       
+    ld    B, D          ; 1:4       9257* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9257*
     ld    D, H          ; 1:4       9257*
     ld    E, L          ; 1:4       9257* save 1x
@@ -34026,8 +34000,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9257* 8192x
     add  HL, DE         ; 1:11      9257* HL + save
     ld    D, B          ; 1:4       9257*
-    ld    E, C          ; 1:4       9257*   
-    ld    B, D          ; 1:4       9277*
+    ld    E, C          ; 1:4       9257*       
+    ld    B, D          ; 1:4       9277* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9277*
     ld    D, H          ; 1:4       9277*
     ld    E, L          ; 1:4       9277* save 1x
@@ -34061,8 +34035,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9277* 8192x
     add  HL, DE         ; 1:11      9277* HL + save
     ld    D, B          ; 1:4       9277*
-    ld    E, C          ; 1:4       9277*   
-    ld    B, D          ; 1:4       9281*
+    ld    E, C          ; 1:4       9277*       
+    ld    B, D          ; 1:4       9281* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9281*
     ld    D, H          ; 1:4       9281*
     ld    E, L          ; 1:4       9281* save 1x
@@ -34087,8 +34061,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9281* 8192x
     add  HL, DE         ; 1:11      9281* HL + save
     ld    D, B          ; 1:4       9281*
-    ld    E, C          ; 1:4       9281*   
-    ld    B, D          ; 1:4       9283*
+    ld    E, C          ; 1:4       9281*       
+    ld    B, D          ; 1:4       9283* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9283*
     ld    D, H          ; 1:4       9283*
     ld    E, L          ; 1:4       9283* save 1x
@@ -34117,8 +34091,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9283* HL + save
     ld    D, B          ; 1:4       9283*
     ld    E, C          ; 1:4       9283* 
-   
-    ld    B, D          ; 1:4       9293*
+       
+    ld    B, D          ; 1:4       9293* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9293*
     ld    D, H          ; 1:4       9293*
     ld    E, L          ; 1:4       9293* save 1x
@@ -34149,8 +34123,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9293* 8192x
     add  HL, DE         ; 1:11      9293* HL + save
     ld    D, B          ; 1:4       9293*
-    ld    E, C          ; 1:4       9293*   
-    ld    B, D          ; 1:4       9311*
+    ld    E, C          ; 1:4       9293*       
+    ld    B, D          ; 1:4       9311* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9311*
     ld    D, H          ; 1:4       9311*
     ld    E, L          ; 1:4       9311* save 1x
@@ -34187,8 +34161,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9311* 8192x
     add  HL, DE         ; 1:11      9311* HL + save
     ld    D, B          ; 1:4       9311*
-    ld    E, C          ; 1:4       9311*   
-    ld    B, D          ; 1:4       9319*
+    ld    E, C          ; 1:4       9311*       
+    ld    B, D          ; 1:4       9319* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9319*
     ld    D, H          ; 1:4       9319*
     ld    E, L          ; 1:4       9319* save 1x
@@ -34222,8 +34196,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9319* 8192x
     add  HL, DE         ; 1:11      9319* HL + save
     ld    D, B          ; 1:4       9319*
-    ld    E, C          ; 1:4       9319*   
-    ld    B, D          ; 1:4       9323*
+    ld    E, C          ; 1:4       9319*       
+    ld    B, D          ; 1:4       9323* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9323*
     ld    D, H          ; 1:4       9323*
     ld    E, L          ; 1:4       9323* save 1x
@@ -34257,8 +34231,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9323* 8192x
     add  HL, DE         ; 1:11      9323* HL + save
     ld    D, B          ; 1:4       9323*
-    ld    E, C          ; 1:4       9323*   
-    ld    B, D          ; 1:4       9337*
+    ld    E, C          ; 1:4       9323*       
+    ld    B, D          ; 1:4       9337* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9337*
     ld    D, H          ; 1:4       9337*
     ld    E, L          ; 1:4       9337* save 1x
@@ -34292,8 +34266,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9337* 8192x
     add  HL, DE         ; 1:11      9337* HL + save
     ld    D, B          ; 1:4       9337*
-    ld    E, C          ; 1:4       9337*   
-    ld    B, D          ; 1:4       9341*
+    ld    E, C          ; 1:4       9337*       
+    ld    B, D          ; 1:4       9341* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9341*
     ld    D, H          ; 1:4       9341*
     ld    E, L          ; 1:4       9341* save 1x
@@ -34331,7 +34305,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9341* HL + save
     ld    D, B          ; 1:4       9341*
     ld    E, C          ; 1:4       9341*   
-    ld    B, D          ; 1:4       9343*
+    ld    B, D          ; 1:4       9343* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9343*
     ld    D, H          ; 1:4       9343*
     ld    E, L          ; 1:4       9343* save 1x
@@ -34367,8 +34341,8 @@ ORG 0x6000
     or    A             ; 1:4       9343*
     sbc  HL, DE         ; 2:15      9343* HL - save
     ld    D, B          ; 1:4       9343*
-    ld    E, C          ; 1:4       9343*   
-    ld    B, D          ; 1:4       9349*
+    ld    E, C          ; 1:4       9343*       
+    ld    B, D          ; 1:4       9349* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9349*
     ld    D, H          ; 1:4       9349*
     ld    E, L          ; 1:4       9349* save 1x
@@ -34396,8 +34370,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9349* 8192x
     add  HL, DE         ; 1:11      9349* HL + save
     ld    D, B          ; 1:4       9349*
-    ld    E, C          ; 1:4       9349*   
-    ld    B, D          ; 1:4       9371*
+    ld    E, C          ; 1:4       9349*       
+    ld    B, D          ; 1:4       9371* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9371*
     ld    D, H          ; 1:4       9371*
     ld    E, L          ; 1:4       9371* save 1x
@@ -34431,8 +34405,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9371* 8192x
     add  HL, DE         ; 1:11      9371* HL + save
     ld    D, B          ; 1:4       9371*
-    ld    E, C          ; 1:4       9371*   
-    ld    B, D          ; 1:4       9377*
+    ld    E, C          ; 1:4       9371*       
+    ld    B, D          ; 1:4       9377* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9377*
     ld    D, H          ; 1:4       9377*
     ld    E, L          ; 1:4       9377* save 1x
@@ -34461,8 +34435,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9377* HL + save
     ld    D, B          ; 1:4       9377*
     ld    E, C          ; 1:4       9377* 
-   
-    ld    B, D          ; 1:4       9391*
+       
+    ld    B, D          ; 1:4       9391* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9391*
     ld    D, H          ; 1:4       9391*
     ld    E, L          ; 1:4       9391* save 1x
@@ -34499,8 +34473,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9391* 8192x
     add  HL, DE         ; 1:11      9391* HL + save
     ld    D, B          ; 1:4       9391*
-    ld    E, C          ; 1:4       9391*   
-    ld    B, D          ; 1:4       9397*
+    ld    E, C          ; 1:4       9391*       
+    ld    B, D          ; 1:4       9397* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9397*
     ld    D, H          ; 1:4       9397*
     ld    E, L          ; 1:4       9397* save 1x
@@ -34534,8 +34508,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9397* 8192x
     add  HL, DE         ; 1:11      9397* HL + save
     ld    D, B          ; 1:4       9397*
-    ld    E, C          ; 1:4       9397*   
-    ld    B, D          ; 1:4       9403*
+    ld    E, C          ; 1:4       9397*       
+    ld    B, D          ; 1:4       9403* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9403*
     ld    D, H          ; 1:4       9403*
     ld    E, L          ; 1:4       9403* save 1x
@@ -34572,8 +34546,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9403* 8192x
     add  HL, DE         ; 1:11      9403* HL + save
     ld    D, B          ; 1:4       9403*
-    ld    E, C          ; 1:4       9403*   
-    ld    B, D          ; 1:4       9413*
+    ld    E, C          ; 1:4       9403*       
+    ld    B, D          ; 1:4       9413* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9413*
     ld    D, H          ; 1:4       9413*
     ld    E, L          ; 1:4       9413* save 1x
@@ -34604,8 +34578,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9413* 8192x
     add  HL, DE         ; 1:11      9413* HL + save
     ld    D, B          ; 1:4       9413*
-    ld    E, C          ; 1:4       9413*   
-    ld    B, D          ; 1:4       9419*
+    ld    E, C          ; 1:4       9413*       
+    ld    B, D          ; 1:4       9419* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9419*
     ld    D, H          ; 1:4       9419*
     ld    E, L          ; 1:4       9419* save 1x
@@ -34639,8 +34613,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9419* 8192x
     add  HL, DE         ; 1:11      9419* HL + save
     ld    D, B          ; 1:4       9419*
-    ld    E, C          ; 1:4       9419*   
-    ld    B, D          ; 1:4       9421*
+    ld    E, C          ; 1:4       9419*       
+    ld    B, D          ; 1:4       9421* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9421*
     ld    D, H          ; 1:4       9421*
     ld    E, L          ; 1:4       9421* save 1x
@@ -34674,8 +34648,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9421* 8192x
     add  HL, DE         ; 1:11      9421* HL + save
     ld    D, B          ; 1:4       9421*
-    ld    E, C          ; 1:4       9421*   
-    ld    B, D          ; 1:4       9431*
+    ld    E, C          ; 1:4       9421*       
+    ld    B, D          ; 1:4       9431* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9431*
     ld    D, H          ; 1:4       9431*
     ld    E, L          ; 1:4       9431* save 1x
@@ -34712,8 +34686,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9431* 8192x
     add  HL, DE         ; 1:11      9431* HL + save
     ld    D, B          ; 1:4       9431*
-    ld    E, C          ; 1:4       9431*   
-    ld    B, D          ; 1:4       9433*
+    ld    E, C          ; 1:4       9431*       
+    ld    B, D          ; 1:4       9433* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9433*
     ld    D, H          ; 1:4       9433*
     ld    E, L          ; 1:4       9433* save 1x
@@ -34747,8 +34721,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9433* 8192x
     add  HL, DE         ; 1:11      9433* HL + save
     ld    D, B          ; 1:4       9433*
-    ld    E, C          ; 1:4       9433*   
-    ld    B, D          ; 1:4       9437*
+    ld    E, C          ; 1:4       9433*       
+    ld    B, D          ; 1:4       9437* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9437*
     ld    D, H          ; 1:4       9437*
     ld    E, L          ; 1:4       9437* save 1x
@@ -34786,7 +34760,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9437* HL + save
     ld    D, B          ; 1:4       9437*
     ld    E, C          ; 1:4       9437*   
-    ld    B, D          ; 1:4       9439*
+    ld    B, D          ; 1:4       9439* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9439*
     ld    D, H          ; 1:4       9439*
     ld    E, L          ; 1:4       9439* save 1x
@@ -34823,8 +34797,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9439* HL - save
     ld    D, B          ; 1:4       9439*
     ld    E, C          ; 1:4       9439* 
-   
-    ld    B, D          ; 1:4       9461*
+       
+    ld    B, D          ; 1:4       9461* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9461*
     ld    D, H          ; 1:4       9461*
     ld    E, L          ; 1:4       9461* save 1x
@@ -34862,7 +34836,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9461* HL + save
     ld    D, B          ; 1:4       9461*
     ld    E, C          ; 1:4       9461*   
-    ld    B, D          ; 1:4       9463*
+    ld    B, D          ; 1:4       9463* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9463*
     ld    D, H          ; 1:4       9463*
     ld    E, L          ; 1:4       9463* save 1x
@@ -34899,7 +34873,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9463* HL - save
     ld    D, B          ; 1:4       9463*
     ld    E, C          ; 1:4       9463*   
-    ld    B, D          ; 1:4       9467*
+    ld    B, D          ; 1:4       9467* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9467*
     ld    D, H          ; 1:4       9467*
     ld    E, L          ; 1:4       9467* save 1x
@@ -34935,8 +34909,8 @@ ORG 0x6000
     or    A             ; 1:4       9467*
     sbc  HL, DE         ; 2:15      9467* HL - save
     ld    D, B          ; 1:4       9467*
-    ld    E, C          ; 1:4       9467*   
-    ld    B, D          ; 1:4       9473*
+    ld    E, C          ; 1:4       9467*       
+    ld    B, D          ; 1:4       9473* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9473*
     ld    D, H          ; 1:4       9473*
     ld    E, L          ; 1:4       9473* save 1x
@@ -34955,8 +34929,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9473* 8192x
     add  HL, DE         ; 1:11      9473* HL + save
     ld    D, B          ; 1:4       9473*
-    ld    E, C          ; 1:4       9473*   
-    ld    B, D          ; 1:4       9479*
+    ld    E, C          ; 1:4       9473*       
+    ld    B, D          ; 1:4       9479* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9479*
     ld    D, H          ; 1:4       9479*
     ld    E, L          ; 1:4       9479* save 1x
@@ -34987,8 +34961,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9479* 8192x
     add  HL, DE         ; 1:11      9479* HL + save
     ld    D, B          ; 1:4       9479*
-    ld    E, C          ; 1:4       9479*   
-    ld    B, D          ; 1:4       9491*
+    ld    E, C          ; 1:4       9479*       
+    ld    B, D          ; 1:4       9491* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9491*
     ld    D, H          ; 1:4       9491*
     ld    E, L          ; 1:4       9491* save 1x
@@ -35019,8 +34993,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9491* 8192x
     add  HL, DE         ; 1:11      9491* HL + save
     ld    D, B          ; 1:4       9491*
-    ld    E, C          ; 1:4       9491*   
-    ld    B, D          ; 1:4       9497*
+    ld    E, C          ; 1:4       9491*       
+    ld    B, D          ; 1:4       9497* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9497*
     ld    D, H          ; 1:4       9497*
     ld    E, L          ; 1:4       9497* save 1x
@@ -35051,8 +35025,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9497* 8192x
     add  HL, DE         ; 1:11      9497* HL + save
     ld    D, B          ; 1:4       9497*
-    ld    E, C          ; 1:4       9497*   
-    ld    B, D          ; 1:4       9511*
+    ld    E, C          ; 1:4       9497*       
+    ld    B, D          ; 1:4       9511* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9511*
     ld    D, H          ; 1:4       9511*
     ld    E, L          ; 1:4       9511* save 1x
@@ -35086,8 +35060,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9511* 8192x
     add  HL, DE         ; 1:11      9511* HL + save
     ld    D, B          ; 1:4       9511*
-    ld    E, C          ; 1:4       9511*   
-    ld    B, D          ; 1:4       9521*
+    ld    E, C          ; 1:4       9511*       
+    ld    B, D          ; 1:4       9521* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9521*
     ld    D, H          ; 1:4       9521*
     ld    E, L          ; 1:4       9521* save 1x
@@ -35118,8 +35092,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9521* 8192x
     add  HL, DE         ; 1:11      9521* HL + save
     ld    D, B          ; 1:4       9521*
-    ld    E, C          ; 1:4       9521*   
-    ld    B, D          ; 1:4       9533*
+    ld    E, C          ; 1:4       9521*       
+    ld    B, D          ; 1:4       9533* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9533*
     ld    D, H          ; 1:4       9533*
     ld    E, L          ; 1:4       9533* save 1x
@@ -35157,8 +35131,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9533* HL + save
     ld    D, B          ; 1:4       9533*
     ld    E, C          ; 1:4       9533* 
-   
-    ld    B, D          ; 1:4       9539*
+       
+    ld    B, D          ; 1:4       9539* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9539*
     ld    D, H          ; 1:4       9539*
     ld    E, L          ; 1:4       9539* save 1x
@@ -35189,8 +35163,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9539* 8192x
     add  HL, DE         ; 1:11      9539* HL + save
     ld    D, B          ; 1:4       9539*
-    ld    E, C          ; 1:4       9539*   
-    ld    B, D          ; 1:4       9547*
+    ld    E, C          ; 1:4       9539*       
+    ld    B, D          ; 1:4       9547* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9547*
     ld    D, H          ; 1:4       9547*
     ld    E, L          ; 1:4       9547* save 1x
@@ -35224,8 +35198,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9547* 8192x
     add  HL, DE         ; 1:11      9547* HL + save
     ld    D, B          ; 1:4       9547*
-    ld    E, C          ; 1:4       9547*   
-    ld    B, D          ; 1:4       9551*
+    ld    E, C          ; 1:4       9547*       
+    ld    B, D          ; 1:4       9551* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9551*
     ld    D, H          ; 1:4       9551*
     ld    E, L          ; 1:4       9551* save 1x
@@ -35262,8 +35236,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9551* 8192x
     add  HL, DE         ; 1:11      9551* HL + save
     ld    D, B          ; 1:4       9551*
-    ld    E, C          ; 1:4       9551*   
-    ld    B, D          ; 1:4       9587*
+    ld    E, C          ; 1:4       9551*       
+    ld    B, D          ; 1:4       9587* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9587*
     ld    D, H          ; 1:4       9587*
     ld    E, L          ; 1:4       9587* save 1x
@@ -35300,8 +35274,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9587* 8192x
     add  HL, DE         ; 1:11      9587* HL + save
     ld    D, B          ; 1:4       9587*
-    ld    E, C          ; 1:4       9587*   
-    ld    B, D          ; 1:4       9601*
+    ld    E, C          ; 1:4       9587*       
+    ld    B, D          ; 1:4       9601* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9601*
     ld    D, H          ; 1:4       9601*
     ld    E, L          ; 1:4       9601* save 1x
@@ -35329,8 +35303,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9601* 8192x
     add  HL, DE         ; 1:11      9601* HL + save
     ld    D, B          ; 1:4       9601*
-    ld    E, C          ; 1:4       9601*   
-    ld    B, D          ; 1:4       9613*
+    ld    E, C          ; 1:4       9601*       
+    ld    B, D          ; 1:4       9613* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9613*
     ld    D, H          ; 1:4       9613*
     ld    E, L          ; 1:4       9613* save 1x
@@ -35364,8 +35338,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9613* 8192x
     add  HL, DE         ; 1:11      9613* HL + save
     ld    D, B          ; 1:4       9613*
-    ld    E, C          ; 1:4       9613*   
-    ld    B, D          ; 1:4       9619*
+    ld    E, C          ; 1:4       9613*       
+    ld    B, D          ; 1:4       9619* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9619*
     ld    D, H          ; 1:4       9619*
     ld    E, L          ; 1:4       9619* save 1x
@@ -35399,8 +35373,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9619* 8192x
     add  HL, DE         ; 1:11      9619* HL + save
     ld    D, B          ; 1:4       9619*
-    ld    E, C          ; 1:4       9619*   
-    ld    B, D          ; 1:4       9623*
+    ld    E, C          ; 1:4       9619*       
+    ld    B, D          ; 1:4       9623* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9623*
     ld    D, H          ; 1:4       9623*
     ld    E, L          ; 1:4       9623* save 1x
@@ -35437,8 +35411,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9623* 8192x
     add  HL, DE         ; 1:11      9623* HL + save
     ld    D, B          ; 1:4       9623*
-    ld    E, C          ; 1:4       9623*   
-    ld    B, D          ; 1:4       9629*
+    ld    E, C          ; 1:4       9623*       
+    ld    B, D          ; 1:4       9629* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9629*
     ld    D, H          ; 1:4       9629*
     ld    E, L          ; 1:4       9629* save 1x
@@ -35476,7 +35450,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9629* HL + save
     ld    D, B          ; 1:4       9629*
     ld    E, C          ; 1:4       9629*   
-    ld    B, D          ; 1:4       9631*
+    ld    B, D          ; 1:4       9631* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9631*
     ld    D, H          ; 1:4       9631*
     ld    E, L          ; 1:4       9631* save 1x
@@ -35513,8 +35487,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9631* HL - save
     ld    D, B          ; 1:4       9631*
     ld    E, C          ; 1:4       9631* 
-   
-    ld    B, D          ; 1:4       9643*
+       
+    ld    B, D          ; 1:4       9643* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9643*
     ld    D, H          ; 1:4       9643*
     ld    E, L          ; 1:4       9643* save 1x
@@ -35551,8 +35525,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9643* 8192x
     add  HL, DE         ; 1:11      9643* HL + save
     ld    D, B          ; 1:4       9643*
-    ld    E, C          ; 1:4       9643*   
-    ld    B, D          ; 1:4       9649*
+    ld    E, C          ; 1:4       9643*       
+    ld    B, D          ; 1:4       9649* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9649*
     ld    D, H          ; 1:4       9649*
     ld    E, L          ; 1:4       9649* save 1x
@@ -35587,7 +35561,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9649* HL + save
     ld    D, B          ; 1:4       9649*
     ld    E, C          ; 1:4       9649*   
-    ld    B, D          ; 1:4       9661*
+    ld    B, D          ; 1:4       9661* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9661*
     ld    D, H          ; 1:4       9661*
     ld    E, L          ; 1:4       9661* save 1x
@@ -35623,8 +35597,8 @@ ORG 0x6000
     or    A             ; 1:4       9661*
     sbc  HL, DE         ; 2:15      9661* HL - save
     ld    D, B          ; 1:4       9661*
-    ld    E, C          ; 1:4       9661*   
-    ld    B, D          ; 1:4       9677*
+    ld    E, C          ; 1:4       9661*       
+    ld    B, D          ; 1:4       9677* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9677*
     ld    D, H          ; 1:4       9677*
     ld    E, L          ; 1:4       9677* save 1x
@@ -35662,7 +35636,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9677* HL + save
     ld    D, B          ; 1:4       9677*
     ld    E, C          ; 1:4       9677*   
-    ld    B, D          ; 1:4       9679*
+    ld    B, D          ; 1:4       9679* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9679*
     ld    D, H          ; 1:4       9679*
     ld    E, L          ; 1:4       9679* save 1x
@@ -35698,8 +35672,8 @@ ORG 0x6000
     or    A             ; 1:4       9679*
     sbc  HL, DE         ; 2:15      9679* HL - save
     ld    D, B          ; 1:4       9679*
-    ld    E, C          ; 1:4       9679*   
-    ld    B, D          ; 1:4       9689*
+    ld    E, C          ; 1:4       9679*       
+    ld    B, D          ; 1:4       9689* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9689*
     ld    D, H          ; 1:4       9689*
     ld    E, L          ; 1:4       9689* save 1x
@@ -35736,8 +35710,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9689* 8192x
     add  HL, DE         ; 1:11      9689* HL + save
     ld    D, B          ; 1:4       9689*
-    ld    E, C          ; 1:4       9689*   
-    ld    B, D          ; 1:4       9697*
+    ld    E, C          ; 1:4       9689*       
+    ld    B, D          ; 1:4       9697* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9697*
     ld    D, H          ; 1:4       9697*
     ld    E, L          ; 1:4       9697* save 1x
@@ -35772,7 +35746,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9697* HL + save
     ld    D, B          ; 1:4       9697*
     ld    E, C          ; 1:4       9697*   
-    ld    B, D          ; 1:4       9719*
+    ld    B, D          ; 1:4       9719* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9719*
     ld    D, H          ; 1:4       9719*
     ld    E, L          ; 1:4       9719* save 1x
@@ -35806,7 +35780,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9719* HL - save
     ld    D, B          ; 1:4       9719*
     ld    E, C          ; 1:4       9719*   
-    ld    B, D          ; 1:4       9721*
+    ld    B, D          ; 1:4       9721* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9721*
     ld    D, H          ; 1:4       9721*
     ld    E, L          ; 1:4       9721* save 1x
@@ -35818,13 +35792,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       9721* +
     add  HL, DE         ; 1:11      9721* + save 4x
     ex   DE, HL         ; 1:4       9721* +
-    add  HL, HL         ; 1:11      9721* 8x
-    add  HL, HL         ; 1:11      9721* 16x
-    add  HL, HL         ; 1:11      9721* 32x
-    add  HL, HL         ; 1:11      9721* 64x
-    add  HL, HL         ; 1:11      9721* 128x
-    add  HL, HL         ; 1:11      9721* 256x
-    add  HL, HL         ; 1:11      9721* 512x
+    rr    H             ; 2:8       9721*
+    rr    L             ; 2:8       9721*
+    ld    H, L          ; 1:4       9721*
+    ld    L, 0x00       ; 2:7       9721* 512x
     ex   DE, HL         ; 1:4       9721* +
     add  HL, DE         ; 1:11      9721* + save 512x
     ex   DE, HL         ; 1:4       9721* +
@@ -35842,8 +35813,8 @@ ORG 0x6000
     or    A             ; 1:4       9721*
     sbc  HL, DE         ; 2:15      9721* HL - save
     ld    D, B          ; 1:4       9721*
-    ld    E, C          ; 1:4       9721*   
-    ld    B, D          ; 1:4       9733*
+    ld    E, C          ; 1:4       9721*       
+    ld    B, D          ; 1:4       9733* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9733*
     ld    D, H          ; 1:4       9733*
     ld    E, L          ; 1:4       9733* save 1x
@@ -35852,13 +35823,10 @@ ORG 0x6000
     ex   DE, HL         ; 1:4       9733* +
     add  HL, DE         ; 1:11      9733* + save 4x
     ex   DE, HL         ; 1:4       9733* +
-    add  HL, HL         ; 1:11      9733* 8x
-    add  HL, HL         ; 1:11      9733* 16x
-    add  HL, HL         ; 1:11      9733* 32x
-    add  HL, HL         ; 1:11      9733* 64x
-    add  HL, HL         ; 1:11      9733* 128x
-    add  HL, HL         ; 1:11      9733* 256x
-    add  HL, HL         ; 1:11      9733* 512x
+    rr    H             ; 2:8       9733*
+    rr    L             ; 2:8       9733*
+    ld    H, L          ; 1:4       9733*
+    ld    L, 0x00       ; 2:7       9733* 512x
     ex   DE, HL         ; 1:4       9733* +
     add  HL, DE         ; 1:11      9733* + save 512x
     ex   DE, HL         ; 1:4       9733* +
@@ -35872,8 +35840,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9733* HL + save
     ld    D, B          ; 1:4       9733*
     ld    E, C          ; 1:4       9733* 
-   
-    ld    B, D          ; 1:4       9739*
+       
+    ld    B, D          ; 1:4       9739* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9739*
     ld    D, H          ; 1:4       9739*
     ld    E, L          ; 1:4       9739* save 1x
@@ -35904,8 +35872,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9739* 8192x
     add  HL, DE         ; 1:11      9739* HL + save
     ld    D, B          ; 1:4       9739*
-    ld    E, C          ; 1:4       9739*   
-    ld    B, D          ; 1:4       9743*
+    ld    E, C          ; 1:4       9739*       
+    ld    B, D          ; 1:4       9743* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9743*
     ld    D, H          ; 1:4       9743*
     ld    E, L          ; 1:4       9743* save 1x
@@ -35939,8 +35907,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9743* 8192x
     add  HL, DE         ; 1:11      9743* HL + save
     ld    D, B          ; 1:4       9743*
-    ld    E, C          ; 1:4       9743*   
-    ld    B, D          ; 1:4       9749*
+    ld    E, C          ; 1:4       9743*       
+    ld    B, D          ; 1:4       9749* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9749*
     ld    D, H          ; 1:4       9749*
     ld    E, L          ; 1:4       9749* save 1x
@@ -35971,8 +35939,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9749* 8192x
     add  HL, DE         ; 1:11      9749* HL + save
     ld    D, B          ; 1:4       9749*
-    ld    E, C          ; 1:4       9749*   
-    ld    B, D          ; 1:4       9767*
+    ld    E, C          ; 1:4       9749*       
+    ld    B, D          ; 1:4       9767* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9767*
     ld    D, H          ; 1:4       9767*
     ld    E, L          ; 1:4       9767* save 1x
@@ -36006,8 +35974,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9767* 8192x
     add  HL, DE         ; 1:11      9767* HL + save
     ld    D, B          ; 1:4       9767*
-    ld    E, C          ; 1:4       9767*   
-    ld    B, D          ; 1:4       9769*
+    ld    E, C          ; 1:4       9767*       
+    ld    B, D          ; 1:4       9769* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9769*
     ld    D, H          ; 1:4       9769*
     ld    E, L          ; 1:4       9769* save 1x
@@ -36038,8 +36006,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9769* 8192x
     add  HL, DE         ; 1:11      9769* HL + save
     ld    D, B          ; 1:4       9769*
-    ld    E, C          ; 1:4       9769*   
-    ld    B, D          ; 1:4       9781*
+    ld    E, C          ; 1:4       9769*       
+    ld    B, D          ; 1:4       9781* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9781*
     ld    D, H          ; 1:4       9781*
     ld    E, L          ; 1:4       9781* save 1x
@@ -36073,8 +36041,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9781* 8192x
     add  HL, DE         ; 1:11      9781* HL + save
     ld    D, B          ; 1:4       9781*
-    ld    E, C          ; 1:4       9781*   
-    ld    B, D          ; 1:4       9787*
+    ld    E, C          ; 1:4       9781*       
+    ld    B, D          ; 1:4       9787* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9787*
     ld    D, H          ; 1:4       9787*
     ld    E, L          ; 1:4       9787* save 1x
@@ -36112,7 +36080,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9787* HL + save
     ld    D, B          ; 1:4       9787*
     ld    E, C          ; 1:4       9787*   
-    ld    B, D          ; 1:4       9791*
+    ld    B, D          ; 1:4       9791* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9791*
     ld    D, H          ; 1:4       9791*
     ld    E, L          ; 1:4       9791* save 1x
@@ -36148,8 +36116,8 @@ ORG 0x6000
     or    A             ; 1:4       9791*
     sbc  HL, DE         ; 2:15      9791* HL - save
     ld    D, B          ; 1:4       9791*
-    ld    E, C          ; 1:4       9791*   
-    ld    B, D          ; 1:4       9803*
+    ld    E, C          ; 1:4       9791*       
+    ld    B, D          ; 1:4       9803* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9803*
     ld    D, H          ; 1:4       9803*
     ld    E, L          ; 1:4       9803* save 1x
@@ -36183,8 +36151,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9803* 8192x
     add  HL, DE         ; 1:11      9803* HL + save
     ld    D, B          ; 1:4       9803*
-    ld    E, C          ; 1:4       9803*   
-    ld    B, D          ; 1:4       9811*
+    ld    E, C          ; 1:4       9803*       
+    ld    B, D          ; 1:4       9811* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9811*
     ld    D, H          ; 1:4       9811*
     ld    E, L          ; 1:4       9811* save 1x
@@ -36219,8 +36187,8 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9811* HL + save
     ld    D, B          ; 1:4       9811*
     ld    E, C          ; 1:4       9811* 
-   
-    ld    B, D          ; 1:4       9817*
+       
+    ld    B, D          ; 1:4       9817* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9817*
     ld    D, H          ; 1:4       9817*
     ld    E, L          ; 1:4       9817* save 1x
@@ -36254,8 +36222,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9817* 8192x
     add  HL, DE         ; 1:11      9817* HL + save
     ld    D, B          ; 1:4       9817*
-    ld    E, C          ; 1:4       9817*   
-    ld    B, D          ; 1:4       9829*
+    ld    E, C          ; 1:4       9817*       
+    ld    B, D          ; 1:4       9829* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9829*
     ld    D, H          ; 1:4       9829*
     ld    E, L          ; 1:4       9829* save 1x
@@ -36289,8 +36257,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9829* 8192x
     add  HL, DE         ; 1:11      9829* HL + save
     ld    D, B          ; 1:4       9829*
-    ld    E, C          ; 1:4       9829*   
-    ld    B, D          ; 1:4       9833*
+    ld    E, C          ; 1:4       9829*       
+    ld    B, D          ; 1:4       9833* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9833*
     ld    D, H          ; 1:4       9833*
     ld    E, L          ; 1:4       9833* save 1x
@@ -36325,7 +36293,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9833* HL + save
     ld    D, B          ; 1:4       9833*
     ld    E, C          ; 1:4       9833*   
-    ld    B, D          ; 1:4       9839*
+    ld    B, D          ; 1:4       9839* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9839*
     ld    D, H          ; 1:4       9839*
     ld    E, L          ; 1:4       9839* save 1x
@@ -36362,7 +36330,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9839* HL - save
     ld    D, B          ; 1:4       9839*
     ld    E, C          ; 1:4       9839*   
-    ld    B, D          ; 1:4       9851*
+    ld    B, D          ; 1:4       9851* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9851*
     ld    D, H          ; 1:4       9851*
     ld    E, L          ; 1:4       9851* save 1x
@@ -36398,8 +36366,8 @@ ORG 0x6000
     or    A             ; 1:4       9851*
     sbc  HL, DE         ; 2:15      9851* HL - save
     ld    D, B          ; 1:4       9851*
-    ld    E, C          ; 1:4       9851*   
-    ld    B, D          ; 1:4       9857*
+    ld    E, C          ; 1:4       9851*       
+    ld    B, D          ; 1:4       9857* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9857*
     ld    D, H          ; 1:4       9857*
     ld    E, L          ; 1:4       9857* save 1x
@@ -36427,8 +36395,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9857* 8192x
     add  HL, DE         ; 1:11      9857* HL + save
     ld    D, B          ; 1:4       9857*
-    ld    E, C          ; 1:4       9857*   
-    ld    B, D          ; 1:4       9859*
+    ld    E, C          ; 1:4       9857*       
+    ld    B, D          ; 1:4       9859* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9859*
     ld    D, H          ; 1:4       9859*
     ld    E, L          ; 1:4       9859* save 1x
@@ -36459,8 +36427,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9859* 8192x
     add  HL, DE         ; 1:11      9859* HL + save
     ld    D, B          ; 1:4       9859*
-    ld    E, C          ; 1:4       9859*   
-    ld    B, D          ; 1:4       9871*
+    ld    E, C          ; 1:4       9859*       
+    ld    B, D          ; 1:4       9871* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9871*
     ld    D, H          ; 1:4       9871*
     ld    E, L          ; 1:4       9871* save 1x
@@ -36497,8 +36465,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9871* 8192x
     add  HL, DE         ; 1:11      9871* HL + save
     ld    D, B          ; 1:4       9871*
-    ld    E, C          ; 1:4       9871*   
-    ld    B, D          ; 1:4       9883*
+    ld    E, C          ; 1:4       9871*       
+    ld    B, D          ; 1:4       9883* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9883*
     ld    D, H          ; 1:4       9883*
     ld    E, L          ; 1:4       9883* save 1x
@@ -36536,7 +36504,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9883* HL + save
     ld    D, B          ; 1:4       9883*
     ld    E, C          ; 1:4       9883*   
-    ld    B, D          ; 1:4       9887*
+    ld    B, D          ; 1:4       9887* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9887*
     ld    D, H          ; 1:4       9887*
     ld    E, L          ; 1:4       9887* save 1x
@@ -36573,8 +36541,8 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9887* HL - save
     ld    D, B          ; 1:4       9887*
     ld    E, C          ; 1:4       9887* 
-   
-    ld    B, D          ; 1:4       9901*
+       
+    ld    B, D          ; 1:4       9901* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9901*
     ld    D, H          ; 1:4       9901*
     ld    E, L          ; 1:4       9901* save 1x
@@ -36611,8 +36579,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9901* 8192x
     add  HL, DE         ; 1:11      9901* HL + save
     ld    D, B          ; 1:4       9901*
-    ld    E, C          ; 1:4       9901*   
-    ld    B, D          ; 1:4       9907*
+    ld    E, C          ; 1:4       9901*       
+    ld    B, D          ; 1:4       9907* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9907*
     ld    D, H          ; 1:4       9907*
     ld    E, L          ; 1:4       9907* save 1x
@@ -36649,8 +36617,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9907* 8192x
     add  HL, DE         ; 1:11      9907* HL + save
     ld    D, B          ; 1:4       9907*
-    ld    E, C          ; 1:4       9907*   
-    ld    B, D          ; 1:4       9923*
+    ld    E, C          ; 1:4       9907*       
+    ld    B, D          ; 1:4       9923* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9923*
     ld    D, H          ; 1:4       9923*
     ld    E, L          ; 1:4       9923* save 1x
@@ -36684,8 +36652,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9923* 8192x
     add  HL, DE         ; 1:11      9923* HL + save
     ld    D, B          ; 1:4       9923*
-    ld    E, C          ; 1:4       9923*   
-    ld    B, D          ; 1:4       9929*
+    ld    E, C          ; 1:4       9923*       
+    ld    B, D          ; 1:4       9929* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9929*
     ld    D, H          ; 1:4       9929*
     ld    E, L          ; 1:4       9929* save 1x
@@ -36719,8 +36687,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9929* 8192x
     add  HL, DE         ; 1:11      9929* HL + save
     ld    D, B          ; 1:4       9929*
-    ld    E, C          ; 1:4       9929*   
-    ld    B, D          ; 1:4       9931*
+    ld    E, C          ; 1:4       9929*       
+    ld    B, D          ; 1:4       9931* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9931*
     ld    D, H          ; 1:4       9931*
     ld    E, L          ; 1:4       9931* save 1x
@@ -36757,8 +36725,8 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9931* 8192x
     add  HL, DE         ; 1:11      9931* HL + save
     ld    D, B          ; 1:4       9931*
-    ld    E, C          ; 1:4       9931*   
-    ld    B, D          ; 1:4       9941*
+    ld    E, C          ; 1:4       9931*       
+    ld    B, D          ; 1:4       9941* Variant: 2^a + 2^b + 2^c + ...
     ld    C, E          ; 1:4       9941*
     ld    D, H          ; 1:4       9941*
     ld    E, L          ; 1:4       9941* save 1x
@@ -36796,7 +36764,7 @@ ORG 0x6000
     add  HL, DE         ; 1:11      9941* HL + save
     ld    D, B          ; 1:4       9941*
     ld    E, C          ; 1:4       9941*   
-    ld    B, D          ; 1:4       9949*
+    ld    B, D          ; 1:4       9949* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9949*
     ld    D, H          ; 1:4       9949*
     ld    E, L          ; 1:4       9949* save 1x
@@ -36833,7 +36801,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9949* HL - save
     ld    D, B          ; 1:4       9949*
     ld    E, C          ; 1:4       9949*   
-    ld    B, D          ; 1:4       9967*
+    ld    B, D          ; 1:4       9967* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9967*
     ld    D, H          ; 1:4       9967*
     ld    E, L          ; 1:4       9967* save 1x
@@ -36867,7 +36835,7 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      9967* HL - save
     ld    D, B          ; 1:4       9967*
     ld    E, C          ; 1:4       9967*   
-    ld    B, D          ; 1:4       9973*
+    ld    B, D          ; 1:4       9973* Variant: 2^a - 2^b - 2^c - ...
     ld    C, E          ; 1:4       9973*
     ld    D, H          ; 1:4       9973*
     ld    E, L          ; 1:4       9973* save 1x

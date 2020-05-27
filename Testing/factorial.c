@@ -3,11 +3,20 @@
 int main(){
 
     __uint16_t w = 1;
+    __int16_t *s = &w;
+  
     
-    __int16_t *s;
+#if 1
+    printf("1 ");
+    __uint16_t i;
+    for (i=3;i<=2048;i+=2) {
+        w *= i;
+        printf(" %d *", i);
+        if ( i % 11 == 0) printf("\n");
+    }
+    printf(" . PRINT(\"= %d\", 0xD)\n", *s);
     
-    s = &w;
-    
+#else
     printf("1 ");
     int i;
     for (i=2;i<100;i++) {
@@ -22,6 +31,6 @@ int main(){
     }
     w *= i;
     printf("%i . PRINT(\"= %d = %d\")\n", i, w, *s);
-    
+#endif
   
 }
