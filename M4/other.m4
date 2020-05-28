@@ -5,6 +5,8 @@ define(INIT,{
     exx
     push HL
     push DE
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
     ld   HL, ifelse($1,{},{60000
     .warning "Missing value for return address stack. The init() macro has no parameter!"},{$1})
     exx})dnl

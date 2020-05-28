@@ -6,6 +6,30 @@ dnl print number
 define(DOT,{ifdef({USE_DOT},,define({USE_DOT},{}))
     call PRINT_NUM      ; 3:17      .})dnl
 dnl
+dnl u.
+dnl ( x -- )
+dnl print number
+define(UDOT,{ifdef({USE_UDOT},,define({USE_UDOT},{}))
+    call PRINT_UNUM     ; 3:17      .})dnl
+dnl
+dnl
+dnl dup .
+dnl ( x -- )
+dnl non-destructively print number
+define(DUP_DOT,{
+    push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
+{}{}DOT
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
+dnl
+dnl
+dnl dup u.
+dnl ( x -- )
+dnl non-destructively print number
+define(DUP_UDOT,{
+    push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
+{}{}UDOT
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
+dnl
 dnl
 dnl .S
 dnl ( x3 x2 x1 -- x3 x2 x1 )
@@ -15,14 +39,6 @@ define(DOTS,{
     push HL             ; 1:11      .S  ( x1 x3 x2 x3 ){}DOT                 
     push HL             ; 1:11      .S  ( x1 x2 x3 x2 ){}DOT                    
     ex  (SP), HL        ; 1:19      .S  ( x3 x2 x1 ){}DUP_DOT})dnl
-dnl
-dnl
-dnl DUP .
-dnl ( x -- )
-dnl non-destructively print number
-define(DUP_DOT,{
-    push HL             ; 1:11      dup .   x3 x1 x2 x1{}DOT
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
 dnl
 dnl
 dnl ( -- )
@@ -41,8 +57,9 @@ dnl
 dnl
 dnl ( -- )
 dnl .( char )
-define(PUTCHAR,{
-    ld    A, format({%-11s},$1); 2:7       putchar Pollutes: AF, DE', BC'
+define(PUTCHAR,{ifelse($2,{},,{
+.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
+    ld    A, format({%-11s},{$1}); 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with 48K ROM in, this will print char in A})dnl
 dnl
 dnl
@@ -71,13 +88,9 @@ dnl ( -- )
 dnl print ( sring )
 define(PRINT,{define({PRINT_COUNT}, incr(PRINT_COUNT))
     push DE             ; 1:11      print
-    push HL             ; 1:11      print
-    ld    L, 0x1A       ; 2:7       print Upper screen
-    call 0x1605         ; 3:17      print Open channel
     ld   BC, size{}PRINT_COUNT    ; 3:10      print Length of string to print
     ld   DE, string{}PRINT_COUNT  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string
-    pop  HL             ; 1:10      print
     pop  DE             ; 1:10      print
 pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
 db STRING_POP

@@ -1,7 +1,72 @@
 dnl ## Runtime enviroment
 dnl
 dnl
-ifdef({USE_DOT},{
+ifdef({USE_DOT},{ifdef({USE_UDOT},,define({USE_UDOT},{}))
+; Input: HL
+; Output: Print signed decimal number in HL
+; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
+PRINT_NUM:
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, $+11       ; 2:7/12
+    
+    xor   A             ; 1:4
+    sub   L             ; 1:4
+    ld    L, A          ; 1:4
+    sbc   A, H          ; 1:4
+    sub   L             ; 1:4
+    ld    H, A          ; 1:4
+    ld    A, '-'        ; 2:7       Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      with 48K ROM in, this will print char in A}){}dnl
+dnl
+dnl
+ifdef({USE_UDOT},{
+; Input: HL
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
+PRINT_UNUM:
+    push DE             ; 1:11
+
+    ld   DE, STRNUM     ; 3:10
+
+    xor   A             ; 1:4
+    ld   BC, 10000      ; 3:10
+    call NEXTNUMBER     ; 3:17
+    
+    ld   BC, 1000       ; 3:10
+    call NEXTNUMBER     ; 3:17
+    
+    ld   BC, 100        ; 3:10
+    call NEXTNUMBER     ; 3:17
+    
+    ld   BC, 10         ; 3:10
+    call NEXTNUMBER     ; 3:17
+    
+    ld    A, '0'        ; 2:7
+    add   A, L          ; 1:4
+    ld  (DE), A         ; 1:7
+    
+    ex   DE, HL         ; 1:4
+    
+    inc  HL             ; 1:6
+    ld  (HL), ' '       ; 2:10
+    
+    ld   DE, STRNUM     ; 3:10
+    sbc  HL, DE         ; 2:15
+    ld   B, H           ; 1:4
+    ld   C, L           ; 1:4       Length-1 of string to print
+    ld   DE, STRNUM     ; 3:10      Address of string
+    call 0x2040         ; 3:17      Print our string
+
+                        ; x x hl ret de --> hl de ret
+    pop  HL             ; 1:10      previous DE
+    pop  BC             ; 1:10      ret
+    pop  DE             ; 1:10      previous (SP)
+    push BC             ; 1:11      ret
+    ret                 ; 1:10
+STRNUM:
+DB      "65536 "
+
 ; Input: A = or numbers, DE string index, HL = number, BC = {10000,1000,100,10,1}
 ; Output: Write number to memory
 ; Pollutes: AF, AF', HL, B, DE
@@ -26,72 +91,7 @@ NEXTNUMBER:
     ld  (DE), A         ; 1:7
     inc  DE             ; 1:6
     ex   AF, AF'        ; 1:4
-    ret                 ; 1:10
-
-; Input: HL
-; Output: Print decimal number in HL
-; Pollutes: AF, AF', BC, delete top stack
-PRINT_NUM:
-    push DE             ; 1:11
-
-    ld   DE, STRNUM     ; 3:10
-
-    bit   7, H          ; 2:8
-    jr    z, PRINT_NUM_P; 2:7/12
-    
-    ld    A, '-'        ; 2:7
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-
-    ld    A, L          ; 1:4
-    cpl                 ; 1:4
-    ld    L, A          ; 1:4
-    ld    A, H          ; 1:4
-    cpl                 ; 1:4
-    ld    H, A          ; 1:4
-    inc  HL             ; 1:6
-PRINT_NUM_P:
-    
-    xor   A             ; 1:4
-    ld   BC, 10000      ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 1000       ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 100        ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 10         ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld    A, '0'        ; 2:7
-    add   A, L          ; 1:4
-    ld  (DE), A         ; 1:7
-    
-    ex   DE, HL         ; 1:4
-    
-    inc  HL             ; 1:6
-    ld  (HL), 0x20      ; 2:10      space after
-    
-    ld   DE, STRNUM     ; 3:10
-    sbc  HL, DE         ; 2:15
-    push HL             ; 1:11
-            
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    
-    pop  BC             ; 1:10      Length-1 of string to print
-    ld   DE, STRNUM     ; 3:10      Address of string
-    call 0x2040         ; 3:17      Print our string
-
-    pop  HL             ; 1:10      last DE
-    pop  BC             ; 1:10      ret
-    pop  DE             ; 1:10
-    push BC             ; 1:11      ret
-    ret                 ; 1:10
-STRNUM:
-DB      "Dw0rkin"},{})dnl
+    ret                 ; 1:10})dnl
 dnl
 dnl
 dnl
@@ -103,19 +103,83 @@ ifdef({USE_TYPE},{
 ; Output: Print decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL
 PRINT_STRING:
-    push DE             ; 1:11      Address of string
-    push HL             ; 1:11      Length of string to print
-
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    
-    pop  BC             ; 1:10      Length of string to print
-    pop  DE             ; 3:10      Address of string
+    ld    B, H          ; 1:4       Length of string to print    
+    ld    C, L          ; 1:4       Length of string to print
     call 0x203C         ; 3:17      Print our string
     ret                 ; 1:10})dnl
 dnl
 dnl
 dnl
+ifdef({USE_LSHIFT},{
+; ( x u -- x)
+; shifts x left u places
+;  Input: HL, DE
+; Output: HL = DE << HL
+; Pollutes: AF, BC, DE, HL
+DE_LSHIFT:
+    ld    A, L          ; 1:4    
+    ld   BC, 0x0010     ; 3:10
+    sbc  HL, BC         ; 2:15
+    jr   nc, DE_LSHIFTZ ; 2:7/12
+    
+    cp    0x08          ; 2:7
+    jr    c, $+7        ; 2:7/12
+    sub   0x08          ; 2:7
+    ld    D, E          ; 1:4
+    ld    E, 0x00       ; 2:7
+    
+    ld    H, D          ; 1:4
+    ld    L, E          ; 1:4
+    or    A             ; 1:4
+    ret   z             ; 1:5/11
+
+    ld    B, A          ; 1:4
+    add  HL, HL         ; 1:11
+    djnz $-1            ; 2:8/13
+    ret                 ; 1:10
+DE_LSHIFTZ:
+    ld   HL, 0x0000     ; 3:10
+    ret                 ; 1:10})dnl
+dnl
+dnl
+dnl
+ifdef({USE_RSHIFT},{
+; ( x u -- x)
+; shifts x right u places
+;  Input: HL, DE
+; Output: HL = DE >> HL
+; Pollutes: AF, BC, DE, HL
+DE_RSHIFT:
+    ld    A, L          ; 1:4    
+    ld   BC, 0x0010     ; 3:10
+    sbc  HL, BC         ; 2:15
+    jr   nc, ifdef({USE_LSHIFT},{DE_LSHIFTZ},{DE_RSHIFTZ}) ; 2:7/12
+    
+    cp    0x08          ; 2:7
+    jr    c, $+7        ; 2:7/12
+    sub   0x08          ; 2:7
+    ld    E, D          ; 1:4
+    ld    D, 0x00       ; 2:7       unsigned
+    
+    ld    H, D          ; 1:4
+    ld    L, E          ; 1:4
+    or    A             ; 1:4
+    ret   z             ; 1:5/11
+
+    ld    B, A          ; 1:4
+    ld    A, L          ; 1:4
+    srl   H             ; 2:8       unsigned
+    rra                 ; 1:4
+    djnz $-3            ; 2:8/13
+    ld    L, A          ; 1:4
+    ret                 ; 1:10{}ifdef({USE_LSHIFT},,{
+DE_RSHIFTZ:
+    ld   HL, 0x0000     ; 3:10
+    ret                 ; 1:10})})dnl
+dnl
+dnl
+dnl
+
 ifdef({USE_MUL},{
 ; Input: HL,DE
 ; Output: HL=HL*DE

@@ -83,41 +83,35 @@ File Hello.m4
 m4 Hello.m4
 
     ORG 0x8000
-
+    
     ;   ===  b e g i n  ===
         exx
         push HL
         push DE
+        ld    L, 0x1A       ; 2:7       Upper screen
+        call 0x1605         ; 3:17      Open channel
         ld   HL, 60000
         exx
-
+    
         push DE             ; 1:11      print
-        push HL             ; 1:11      print
-        ld    L, 0x1A       ; 2:7       print Upper screen
-        call 0x1605         ; 3:17      print Open channel
         ld   BC, size101    ; 3:10      print Length of string to print
         ld   DE, string101  ; 3:10      print Address of string
         call 0x203C         ; 3:17      print Print our string
-        pop  HL             ; 1:10      print
         pop  DE             ; 1:10      print
-
-
+    
+    
         pop  DE
         pop  HL
         exx
         ret
     ;   =====  e n d  =====
-
+    
     VARIABLE_SECTION:
-
-
-
-
+    
     STRING_SECTION:
-
     string101:
     db "Hello World!"
-    size101 EQU $ - string101 
+    size101 EQU $ - string101
 
 ## Limitations of the M4 markup language
 
@@ -210,8 +204,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |    u<=     |     ULE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     u>     |     UGT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |    u>=     |     UGE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-| x1 u >> x  |  i am lazy   |                |    ( x1 u -- x1>>u )  |         |
-| x1 u << x  |  i am lazy   |                |    ( x1 u -- x1<<u )  |         |
+| x1 u >> x  |    RSHIFT    |                |    ( x1 u -- x1>>u )  |         |
+| x1 u << x  |    LSHIFT    |                |    ( x1 u -- x1<<u )  |         |
 | x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )  |         | signed
 | x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )  |         |
 | u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )  |         | unsigned
@@ -224,8 +218,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 | original   |   M4 FORTH   |  optimization  |  data stack              |  return address stack |
 | :--------: | :----------: | :------------: | :----------------------- | :-------------------- |
 |     .      |     DOT      |                |       ( x1 -- )          |                       |
+|     u.     |     UDOT     |                |       ( x1 -- )          |                       |
+|   DUP .    |              |    DUP_DOT     |       ( x1 -- x1 )       |                       |
+|   DUP u.   |              |    DUP_UDOT    |       ( x1 -- x1 )       |                       |
 |     .s     |     DOTS     |                | ( x3 x2 x1 -- x3 x2 x1 ) |                       |
-|   DUP .    |    DUP_DOT   |                |       ( x1 -- x1 )       |                       |
 |     cr     |      CR      |                |          ( -- )          |                       |
 |    emit    |     EMIT     |                |      ( 'a' -- )          |                       |
 |            | PUTCHAR('a') |                |          ( -- )          |                       |

@@ -238,15 +238,16 @@ dnl ------------- shifts ----------------
 dnl
 dnl ( x u -- x)
 dnl shifts x left u places
-define(LSHIFT,{
-    .warning Nedodelano...
-})dnl
+define(LSHIFT,{ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
+    call  DE_LSHIFT     ; 3:17      <<
+    pop   DE            ; 1:10      <<})dnl
+dnl
 dnl
 dnl ( x u -- x)
 dnl shifts x right u places
-define(RSHIFT,{
-    .warning Nedodelano...
-})dnl
+define(RSHIFT,{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
+    call  DE_RSHIFT     ; 3:17      >>
+    pop   DE            ; 1:10      >>})dnl
 dnl
 dnl
 dnl <<
