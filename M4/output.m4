@@ -8,7 +8,7 @@ ifdef({USE_DOT},{ifdef({USE_UDOT},,define({USE_UDOT},{}))
 PRINT_NUM:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
-    jr   nc, $+11       ; 2:7/12
+    jr   nc, PRINT_UNUM ; 2:7/12
     
     xor   A             ; 1:4
     sub   L             ; 1:4
@@ -16,9 +16,12 @@ PRINT_NUM:
     sbc   A, H          ; 1:4
     sub   L             ; 1:4
     ld    H, A          ; 1:4
-    ld    A, '-'        ; 2:7       Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      with 48K ROM in, this will print char in A
-    ; falls into the next function}){}dnl
+
+    PUTCHAR(' ')
+    PUTCHAR('-')
+    
+    push DE             ; 1:11
+    jp   PRINT_UNUM+4   ; 3:10}){}dnl
 dnl
 dnl
 ifdef({USE_UDOT},{
@@ -28,19 +31,21 @@ ifdef({USE_UDOT},{
 PRINT_UNUM:
     push DE             ; 1:11
 
-    ld   DE, STRNUM     ; 3:10
+    PUTCHAR(' ')
 
+    ld   DE, STRNUM     ; 3:10
+    
     xor   A             ; 1:4
-    ld   BC, 10000      ; 3:10
+    ld   BC, -10000     ; 3:10
     call NEXTNUMBER     ; 3:17
     
-    ld   BC, 1000       ; 3:10
+    ld   BC, -1000      ; 3:10
     call NEXTNUMBER     ; 3:17
     
-    ld   BC, 100        ; 3:10
+    ld   BC, -100       ; 3:10
     call NEXTNUMBER     ; 3:17
     
-    ld   BC, 10         ; 3:10
+    ld   BC, -10        ; 3:10
     call NEXTNUMBER     ; 3:17
     
     ld    A, '0'        ; 2:7
@@ -48,10 +53,6 @@ PRINT_UNUM:
     ld  (DE), A         ; 1:7
     
     ex   DE, HL         ; 1:4
-    
-    inc  HL             ; 1:6
-    ld  (HL), ' '       ; 2:10
-    
     ld   DE, STRNUM     ; 3:10
     sbc  HL, DE         ; 2:15
     ld   B, H           ; 1:4
@@ -73,14 +74,13 @@ DB      "65536 "
 ; Pollutes: AF, AF', HL, B, DE
 NEXTNUMBER:
     ex   AF, AF'        ; 1:4
-    xor   A             ; 1:4
+    ld   A, 0xFF        ; 2:7
 
     inc   A             ; 1:4
-    sbc  HL, BC         ; 2:15
-    jr   nc, $-3        ; 2:7/12
-    
     add  HL, BC         ; 1:11
-    dec   A             ; 1:4
+    jr    c, $-2        ; 2:7/12    
+    
+    sbc  HL, BC         ; 2:15
     ld    B, A          ; 1:4    
     add   A, '0'        ; 2:7       0   
     ex   AF, AF'        ; 1:4

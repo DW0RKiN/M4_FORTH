@@ -59,7 +59,7 @@ dnl ( -- )
 dnl .( char )
 define(PUTCHAR,{ifelse($2,{},,{
 .error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
-    ld    A, format({%-11s},{$1}); 2:7       putchar Pollutes: AF, DE', BC'
+    ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with 48K ROM in, this will print char in A})dnl
 dnl
 dnl
