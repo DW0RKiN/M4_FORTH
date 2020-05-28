@@ -294,6 +294,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
+    PUSH2(10,0)  DO        I DOT       LOOP    --> 0,1,2,3,4,5,6,7,8,9
+                XDO(10,0) XI DOT      XLOOP    --> 0,1,2,3,4,5,6,7,8,9
+                XDO(10,0) XI DOT  PLUSXLOOP(2) --> 0,2,4,8
+    PUSH2(10,0) SDO       SI DOT      SLOOP    --> 0,1,2,3,4,5,6,7,8,9
+    PUSH(10)   SZDO      SZI DOT     SZLOOP    --> 10,9,8,7,6,5,4,3,2,1
+
 | original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |
 |     do     |      DO      |                | ( stop index -- )            | ( -- stop index )     |
