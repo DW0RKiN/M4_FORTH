@@ -157,15 +157,15 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 
 | original   |   M4 FORTH   |  optimization  |  data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
-|     +      |     ADD      |                |    ( x2 x1 -- x )           |                       |
-|     -      |     SUB      |                |    ( x2 x1 -- x )           |                       |
-|   negate   |    NEGATE    |                |       ( x1 -- -x1 )         |                       |
-|    abs     |     ABS      |                |        ( n -- u )           |                       |
-|     *      |     MUL      |                |    ( x2 x1 -- x )           |                       |
-|     /      |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
-|    mod     |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
-|    /mod    |  i am lazy   |                |    ( x2 x1 -- x )           |                       |
-|     u*     |     UMUL     |                |    ( x2 x1 -- x )           |                       |
+|     +      |      ADD     |                |    ( x2 x1 -- x )           |                       |
+|     -      |      SUB     |                |    ( x2 x1 -- x )           |                       |
+|   negate   |     NEGATE   |                |       ( x1 -- -x1 )         |                       |
+|    abs     |      ABS     |                |        ( n -- u )           |                       |
+|     *      |      MUL     |                |    ( x2 x1 -- x )           |                       |
+|     /      |      DIV     |                |    ( x2 x1 -- x )           |                       |
+|    mod     |      MOD     |                |    ( x2 x1 -- x )           |                       |
+|    /mod    |    DIVMOD    |                |    ( x2 x1 -- x )           |                       |
+|     u*     |      MUL     |                |    ( x2 x1 -- x )           |                       |
 |  `+12` *   |              |   XMUL(`12`)   |    ( x2 x1 -- x )           |                       |
 |     u/     |     UDIV     |                |    ( x2 x1 -- x )           |                       |
 |    umod    |     UMOD     |                |    ( x2 x1 -- x )           |                       |

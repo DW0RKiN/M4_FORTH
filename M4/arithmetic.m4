@@ -45,6 +45,31 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 / x1
+define(DIV,{
+ifdef({USE_DIV},,define({USE_DIV},{}))dnl
+    call DIVIDE         ; 3:17      /
+    pop  DE             ; 1:10      /})dnl
+dnl
+dnl
+dnl ( x2 x1 -- x )
+dnl x = x2 % x1
+define(MOD,{
+ifdef({USE_DIV},,define({USE_DIV},{}))dnl
+    call DIVIDE         ; 3:17      mod
+    ex   DE, HL         ; 1:4       mod
+    pop  DE             ; 1:10      mod})dnl
+dnl
+dnl
+dnl ( x2 x1 -- r q )
+dnl x = x2 u% x1
+define(DIVMOD,{
+ifdef({USE_DIV},,define({USE_DIV},{}))dnl
+    call DIVIDE         ; 3:17      /mod})dnl
+
+dnl
+dnl
+dnl ( x2 x1 -- x )
+dnl x = x2 u/ x1
 define(UDIV,{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      u/
@@ -52,7 +77,7 @@ ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
-dnl x = x2 % x1
+dnl x = x2 u% x1
 define(UMOD,{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      umod
@@ -61,7 +86,7 @@ ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
 dnl
 dnl
 dnl ( x2 x1 -- r q )
-dnl x = x2 % x1
+dnl x = x2 u% x1
 define(UDIVMOD,{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      u/mod})dnl
