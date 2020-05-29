@@ -152,14 +152,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting.asm
 
+SCALL
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting2.asm
 
-
 | Name              |   System                             |  Forth                  |  Benchmark   | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH CALL           | Nesting 1mil | 1m2.67s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH SCALL          | Nesting 1mil | 0m16.47s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Nesting 1mil | 1m2.67s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use SCALL      | Nesting 1mil | 0m16.47s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Nest 1M      | 17s              | 1x
 | Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02      | TaliForth 2 (STC)       | Nest 1M      | 25s              | 1x
 | Thomas Woinke     | Steckschwein 8MHz 65c02              | TaliForth 2 (STC)       | Next 1M      | 3.7s             | 1x
