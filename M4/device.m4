@@ -3,13 +3,13 @@ dnl
 dnl .
 dnl ( x -- )
 dnl print number
-define(DOT,{ifdef({USE_DOT},,define({USE_DOT},{}))
+define(DOT,{ifdef({USE_S16},,define({USE_S16},{}))
     call PRINT_S16      ; 3:17      .})dnl
 dnl
 dnl u.
 dnl ( x -- )
 dnl print number
-define(UDOT,{ifdef({USE_UDOT},,define({USE_UDOT},{}))
+define(UDOT,{ifdef({USE_U16},,define({USE_U16},{}))
     call PRINT_U16      ; 3:17      .})dnl
 dnl
 dnl

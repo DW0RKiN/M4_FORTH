@@ -1,7 +1,7 @@
 dnl ## Runtime enviroment
 dnl
 dnl
-ifdef({USE_DOT},{ifdef({USE_UDOT},,define({USE_UDOT},{}))
+ifdef({USE_S16},{ifdef({USE_U16},,define({USE_U16},{}))
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
@@ -24,41 +24,30 @@ PRINT_S16:
     ; fall to PRINT_U16}){}dnl
 dnl
 dnl
-ifdef({USE_UDOT},{
+ifdef({USE_U16},{
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
 PRINT_U16:
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A})dnl
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
 
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
 PRINT_U16_ONLY:
-    push DE             ; 1:11
-    ld   DE, STRNUM     ; 3:10      Address of string
     call BIN2DEC        ; 3:17
-    
-    ex   DE, HL         ; 1:4
-    ld   DE, STRNUM     ; 3:10      Address of string
-    sbc  HL, DE         ; 2:15
-    ld   B, H           ; 1:4
-    ld   C, L           ; 1:4       Length-1 of string to print
-    call 0x2040         ; 3:17      Print our string with ZX 48K ROM
-
-                        ; de ret hl x x --> ret de hl
-    pop  HL             ; 1:10      previous DE
     pop  BC             ; 1:10      ret
-    pop  DE             ; 1:10      previous (SP)
-    push BC             ; 1:11      ret
+    ex   DE, HL         ; 1:4
+    pop  DE             ; 1:10
+    push BC             ; 1:10      ret
     ret                 ; 1:10
 STRNUM:
 DB      "65536 "
 
-; Input: DE string index, HL = number
-; Output: Write number to memory
-; Pollutes: AF, HL, BC, DE
+; Input: HL = number
+; Output: print number
+; Pollutes: AF, HL, BC
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
@@ -71,7 +60,7 @@ BIN2DEC:
     call BIN2DEC_CHAR   ; 3:17
     ld    A, L          ; 1:4
     add   A,'0'         ; 2:7
-    ld (DE), A          ; 1:7
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
     
 BIN2DEC_CHAR:
@@ -85,9 +74,8 @@ BIN2DEC_CHAR:
     ret   z             ; 1:5/11
     
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
-    ld (DE), A          ; 1:7
-    inc  DE             ; 1:6
-    ret                 ; 1:10})dnl
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl

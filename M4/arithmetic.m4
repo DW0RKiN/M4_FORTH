@@ -65,7 +65,6 @@ dnl x = x2 u% x1
 define(DIVMOD,{
 ifdef({USE_DIV},,define({USE_DIV},{}))dnl
     call DIVIDE         ; 3:17      /mod})dnl
-
 dnl
 dnl
 dnl ( x2 x1 -- x )
@@ -329,7 +328,6 @@ ___{}XMUL_NEGLOOP($1)
     sbc  HL, DE         ; 2:15      $1* HL - save
     ld    D, B          ; 1:4       $1*
     ld    E, C          ; 1:4       $1*})})dnl
-dnl
 dnl
 dnl
 dnl

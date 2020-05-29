@@ -74,7 +74,8 @@ dnl
 dnl
 dnl ( -- a ) 
 dnl push(a) ulozi na zasobnik nasledujici polozku
-define({PUSH},{
+define({PUSH},{ifelse($#,{1},,{
+.error More parameters found in macro push, you may have wanted to use push2.})
     push DE             ; 1:11      push($1)
     ex   DE, HL         ; 1:4       push($1)
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push($1)})dnl
