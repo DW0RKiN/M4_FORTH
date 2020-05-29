@@ -7,8 +7,7 @@ include(`./FIRST.M4')dnl
     COLON(gcd1,( a b -- gcd ))                                                                
     OVER IF                                                                         
             BEGIN                                                                         
-                DUP 
-            WHILE                                                                   
+            DUP_WHILE                                                                   
                 DUP2 UGT IF SWAP THEN OVER SUB                                               
             REPEAT DROP 
         ELSE                                                               

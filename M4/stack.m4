@@ -146,30 +146,45 @@ dnl
 dnl >r
 dnl ( x -- ) ( R: -- x )
 dnl Move x to the return stack.
-define({RAS_PUSH},{
-    ex  (SP), HL        ; 1:19      rpush
-    ex   DE, HL         ; 1:4       rpush
-    exx                 ; 1:4       rpush
-    pop  DE             ; 1:10      rpush
-    dec  HL             ; 1:6       rpush
-    ld  (HL),D          ; 1:7       rpush
-    dec   L             ; 1:4       rpush
-    ld  (HL),E          ; 1:7       rpush
-    exx                 ; 1:4       rpush})dnl
+define({TO_R},{
+    ex  (SP), HL        ; 1:19      to_r
+    ex   DE, HL         ; 1:4       to_r
+    exx                 ; 1:4       to_r
+    pop  DE             ; 1:10      to_r
+    dec  HL             ; 1:6       to_r
+    ld  (HL),D          ; 1:7       to_r
+    dec   L             ; 1:4       to_r
+    ld  (HL),E          ; 1:7       to_r
+    exx                 ; 1:4       to_r})dnl
 dnl
 dnl
 dnl r>
 dnl ( -- x ) ( R: x -- )
 dnl Move x from the return stack to the data stack.
-define(RAS_POP,{    
-    exx                 ; 1:4       rpop
-    ld    E,(HL)        ; 1:7       rpop
-    inc   L             ; 1:4       rpop
-    ld    D,(HL)        ; 1:7       rpop
-    inc  HL             ; 1:6       rpop
-    push DE             ; 1:11      rpop
-    exx                 ; 1:4       rpop
-    ex   DE, HL         ; 1:4       rpop
-    ex  (SP), HL        ; 1:19      rpop})dnl
+define(R_FROM,{    
+    exx                 ; 1:4       r_from
+    ld    E,(HL)        ; 1:7       r_from
+    inc   L             ; 1:4       r_from
+    ld    D,(HL)        ; 1:7       r_from
+    inc  HL             ; 1:6       r_from
+    push DE             ; 1:11      r_from
+    exx                 ; 1:4       r_from
+    ex   DE, HL         ; 1:4       r_from
+    ex  (SP), HL        ; 1:19      r_from})dnl
+dnl
+dnl
+dnl r@
+dnl ( -- x ) ( R: x -- x )
+dnl Copy x from the return stack to the data stack.
+define(R_FETCH,{    
+    exx                 ; 1:4       r_fetch
+    ld    E,(HL)        ; 1:7       r_fetch
+    inc   L             ; 1:4       r_fetch
+    ld    D,(HL)        ; 1:7       r_fetch
+    dec   L             ; 1:6       r_fetch
+    push DE             ; 1:11      r_fetch
+    exx                 ; 1:4       r_fetch
+    ex   DE, HL         ; 1:4       r_fetch
+    ex  (SP), HL        ; 1:19      r_fetch})dnl
 dnl
 dnl

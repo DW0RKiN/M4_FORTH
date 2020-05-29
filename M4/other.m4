@@ -41,8 +41,8 @@ dnl fetch 16-bit number from addr
 define({FETCH},{
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
-    ld    L, (HL)       ; 1:7       @ fetch
-    ld    H, A          ; 1:4       @ fetch})dnl
+    ld    H, (HL)       ; 1:7       @ fetch
+    ld    L, A          ; 1:4       @ fetch})dnl
 dnl
 dnl
 dnl
@@ -59,9 +59,9 @@ dnl !
 dnl ( x addr -- )
 dnl store 16-bit number at addr
 define({STORE},{
-    ld  (HL), D         ; 1:7       ! store
-    inc  HL             ; 1:6       ! store
     ld  (HL), E         ; 1:7       ! store
+    inc  HL             ; 1:6       ! store
+    ld  (HL), D         ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store})dnl
 dnl
@@ -72,5 +72,21 @@ define({XSTORE},{
     ld   format({%-15s},($1){,} HL); 3:16      ! xstore
     ex   DE, HL         ; 1:10      ! xstore
     pop  DE             ; 1:10      ! xstore})dnl
+dnl
+dnl
+dnl
+dnl +!
+dnl ( nun addr -- )
+dnl Adds num to the 16-bit number stored at addr.
+define({PLUS_STORE},{
+    ld    A, E          ; 1:4       +! plus_store
+    add   A,(HL)        ; 1:7       +! plus_store
+    ld  (HL),A          ; 1:7       +! plus_store
+    inc  HL             ; 1:6       +! plus_store
+    ld    A, D          ; 1:4       +! plus_store
+    add   A,(HL)        ; 1:7       +! plus_store
+    ld  (HL),A          ; 1:7       +! plus_store
+    pop  HL             ; 1:10      +! plus_store
+    pop  DE             ; 1:10      +! plus_store})dnl
 dnl
 dnl

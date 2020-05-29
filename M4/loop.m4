@@ -348,6 +348,13 @@ define({WHILE},{
     jp    z, repeat{}BEGIN_STACK  ; 3:10      while BEGIN_STACK})dnl
 dnl
 dnl
+dnl ( flag -- flag )
+define({DUP_WHILE},{
+    ld    A, H          ; 1:4       dup_while BEGIN_STACK
+    or    L             ; 1:4       dup_while BEGIN_STACK
+    jp    z, repeat{}BEGIN_STACK  ; 3:10      dup_while BEGIN_STACK})dnl
+dnl
+dnl
 dnl ( -- )
 define({REPEAT},{
     jp   begin{}BEGIN_STACK       ; 3:10      repeat BEGIN_STACK

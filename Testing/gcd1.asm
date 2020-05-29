@@ -4,6 +4,8 @@
     exx
     push HL
     push DE
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
     
@@ -32,16 +34,10 @@ gcd1:                   ;           ( a b -- gcd )
     jp    z, else101    ; 3:10      if                                                                         
             
 begin101:                                                                         
-                
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
             
-    ld    A, H          ; 1:4       while 101
-    or    L             ; 1:4       while 101
-    ex   DE, HL         ; 1:4       while 101
-    pop  DE             ; 1:10      while 101
-    jp    z, repeat101  ; 3:10      while 101                                                                   
+    ld    A, H          ; 1:4       dup_while 101
+    or    L             ; 1:4       dup_while 101
+    jp    z, repeat101  ; 3:10      dup_while 101                                                                   
                 
     ld    A, L          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
     sub   E             ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
@@ -186,6 +182,7 @@ gcd1_bench_end:
     ex   DE,HL          ; 1:4       ;
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----
+
 
 VARIABLE_SECTION:
 

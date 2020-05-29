@@ -11,7 +11,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/gcd1.asm
 
 | Name              |   System                         |  Forth                 | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :-------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |  GCD1  | 0m6.8s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |  GCD1  | 0m5.34s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |  GCD1  | 0m29s   | 10x
 | Thunder.Bird      | Amstrad PPC 512                  | DX-Forth                |  GCD1  | 0m48s   | 5x
 | Alexander Muller  | IBM PS/2 L40SX                   | DX-Forth                |  gcd1  | 0m15s   | 5x

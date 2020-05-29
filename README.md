@@ -148,8 +148,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |   1 pick   |              |     XPICK1     |      ( b a -- b a b )       |                       |
 |   2 pick   |              |     XPICK2     |    ( c b a -- c b a c )     |                       |
 |   3 pick   |              |     XPICK3     |  ( d c b a -- d c b a d )   |                       |
-|     >r     |   RAS_PUSH   |                |       ( x1 -- )             |    ( -- x1 )          |
-|     r>     |    RAS_POP   |                |          ( -- x1 )          | ( x1 -- )             |
+|     >r     |     TO_R     |                |       ( x1 -- )             |    ( -- x1 )          |
+|     r>     |    R_FROM    |                |          ( -- x1 )          | ( x1 -- )             |
+|     r@     |    R_FETCH   |                |          ( -- x1 )          |  (x1 -- x1 )          |
 
 ### Arithmetic
 
@@ -299,7 +300,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
                 XDO(10,0) XI UDOT PUTCHAR({','}) PLUSXLOOP(2) --> " 0, 2, 4, 8,"
     PUSH2(10,0) SDO       SI UDOT PUTCHAR({','})     SLOOP    --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
     PUSH(10)   SZDO      SZI UDOT PUTCHAR({','})    SZLOOP    --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
-
+    
+    PUSH(10) BEGIN 
+        DUP 
+        WHILE 
+            DUP_DOT PUTCHAR({','}) ONE_SUB 
+    REPEAT DROP --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
+    
 | original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |
 |     do     |      DO      |                | ( stop index -- )            | ( -- stop index )     |
@@ -324,6 +331,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |     k      |              |       XK       |            ( -- k )          | ( k j i -- k j i )    |
 |   begin    |    BEGIN     |                |            ( -- )            |                       |
 |   while    |    WHILE     |                |       ( flag -- )            |                       |
+| dup while  |              |   DUP_WHILE    |       ( flag -- flag )       |                       |
 |   repeat   |    REPEAT    |                |            ( -- )            |                       |
 |   again    |    AGAIN     |                |            ( -- )            |                       |
 |   until    |    UNTIL     |                |       ( flag -- )            |                       |
@@ -339,10 +347,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |            |     STOP      |                |        ( -- )       |  Load orig. HL'       |
 |  constant  |   CONSTANT    |                |        ( -- )       |                       |
 |  variable  | VARIABLE(PI)  |                |        ( -- index ) |                       |
-|   addr @   |    FETCH      |                |   ( addr -- x )     |                       |
-|            |               |  XFETCH(addr)  |        ( -- x )     |                       |
-|  addr x !  |    STORE      |                | ( addr x -- )       |                       | (addr) --> x |
-|            |               |  XSTORE(addr)  |      ( x -- )       |                       |  x --> (addr)|
+|   addr @   |    FETCH      |                |   ( addr -- x )     |                       | TOP = (addr) |
+|            |               |  XFETCH(addr)  |        ( -- x )     |                       | TOP = (addr) |
+|  addr x !  |    STORE      |                | ( addr x -- )       |                       | x = (addr)   |
+|            |               |  XSTORE(addr)  |      ( x -- )       |                       | (addr) = x   |
+| x addr +!  |   PLUS_STORE  |                | ( x addr -- )       |                       | (addr) += x  |
+
 
 ### Output
 
