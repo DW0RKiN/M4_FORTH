@@ -146,3 +146,38 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/fib2.asm
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Fib2 (1000) | 210s
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Fib 2 (1000)| 150s
 
+
+### Forth Nesting Benchmark
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting.asm
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting2.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/nesting2.asm
+
+
+| Name              |   System                             |  Forth                  |  Benchmark   | Time (sec/round) | Scale |
+| :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH CALL           | Nesting 1mil | 1m2.67s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH SCALL          | Nesting 1mil | 0m16.47s
+| Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Nest 1M      | 17s              | 1x
+| Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02      | TaliForth 2 (STC)       | Nest 1M      | 25s              | 1x
+| Thomas Woinke     | Steckschwein 8MHz 65c02              | TaliForth 2 (STC)       | Next 1M      | 3.7s             | 1x
+| Thorsten Schoeler | ZX Spectrum 2+                       | FIG-Forth 1.1a          | Nesting      | 3m15s
+| Thorsten Schoeler | ZX Spectrum 2+                       | Spect ZX Forth 1.1      | Nesting      | 4m13s
+| Thorsten Schoeler | Sinclair Spectrum+                   | Aber Forth (FIG-Forth)  | Nesting 1m   | 3m17s
+| Carsten Strotmann | Zilog Super-8 20Mhz                  | Super8 Forth            | Nesting 1m   | 20s
+| Thorsten Schoeler | PDP11                                | FIG-Forth 1.3           | Nesting 1m   | 49s
+| Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Nesting 1m   | 380s
+| Thorsten Schoeler | NCR 3150 486SX/25Mhz+FPU=Linux 2.0.0 | gforth 0.3.0            | Nesting 1m   | 3s
+| Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Nesting 1m   | 292s
+| Ingo Soetebier    | Nextstation 68040 33Mhz              | pfe                     | Nesting 1Mil | 340
+| KC85 Team         | KC85/4 U880 4Mhz                     | VolksForth CP/M         | Nesting 1Mil | 144
+| Thorsten Kuphaldt | Amiga 3000 68030 25Mhz               | jforth                  | Nesting 1Mil | 1.32
+| Stefan Herold     | Amstrad 6128+ Z80A 4Mhz              | Uniforth                | Nesting 1Mil | 206
+| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Nesting 1Mil | 1
+| Michael Kalus     | Rockwell R1200-14, 2Mhz 65F12        | RSC-Forth               | Nesting 1Mil | 149
+| Matthias Trute    | Atmega16 8MHz                        | amForth 4.4             | Nesting 1Mil | 15.4
+| Thorsten Schoeler | HX-20                                | Epson Forth E1.0        | Nesting 1mil | 5m08s
+| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz)  |FreeBSD 9 FICL Bootloader| Nesting 1mil | 0.66s
+| Helfried Schuerer | robotron K 1510, U 808 D (i8008), 480 kHz (auf FOSY Emulator) | FOSY V1.2P 1988 (FIG) | Nesting 1MILLION | 02:32:05 2h 32min 5s

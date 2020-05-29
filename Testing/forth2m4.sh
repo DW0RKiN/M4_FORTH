@@ -7,13 +7,22 @@ cat $1 |
 sed 's#^\([^;]*\s\+\|^\);\(\s\|$\)#\1\SEMICOLON\2#g' |
 sed -e 's#(#;(#' > $TMPFILE
 
-for (( c=1; c<=20; c++ ))
+while :
+do
+    cat $TMPFILE | sed 's#^\([^;]*\s\+\|^\):\s\+\([^ 	]\+\)\([^;]\+\)\(\s\+\);\(\s\|$\)#\1\COLON(\2)\3\4SEMICOLON\5#g'  > $TMPFILE2
+    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+    error=$?
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+    cat $TMPFILE2 > $TMPFILE
+done
+
+while :
 do
 
 cat $TMPFILE |
 
 sed 's#^\([^;]*\s\+\|^\):\s\+\([^ 	]\+\)\(\s\|$\)#\1\COLON(\2)\3#g' |
-
 
 sed 's#^\([^;]*\s\+\|^\)1+\(\s\|$\)#\1ONE_ADD\2#g' |
 sed 's#^\([^;]*\s\+\|^\)1-\(\s\|$\)#\1ONE_SUB\2#g' |
@@ -145,11 +154,46 @@ sed 's#^\([^;]*\s\+\|^\)DUP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1DUP_PUSH(\2)\3#g' |
 
 sed 's#^\([^;]*\s\+\|^\)\([+]*[0-9]\+\)\s\+MUL\(\s\|$\)#\1XMUL(\2)\3#g' > $TMPFILE2
 
+diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+error=$?
+
+[ $error -gt 1 ] && exit
+[ $error -eq 0 ] && break
+
 cat $TMPFILE2 > $TMPFILE
 
 done
 
-printf "include(\`"
+
+# numbers
+while :
+do
+    cat $TMPFILE | sed 's#^\([^;]*\s\+\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#g' > $TMPFILE2
+    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+    error=$?
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+    cat $TMPFILE2 > $TMPFILE
+done
+
+
+# unknown --> name function
+while :
+do
+    cat $TMPFILE |
+# rename badname --> _badname
+    sed 's#^\([^;]*\s\+\|^\)CALL(\([^_a-zA-Z]\)#\1CALL(_\2#g' |
+    sed 's#^\([^;]*\s\+\|^\)COLON(\([^_a-zA-Z]\)#\1COLON(_\2#g' |
+# call
+    sed 's#^\([^;]*\s\+\|^\)\([_0-9a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g' > $TMPFILE2
+    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+    error=$?
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+    cat $TMPFILE2 > $TMPFILE
+done
+
+
 
 if [ -f ./FIRST.M4 ]
 then
@@ -165,18 +209,5 @@ else
 fi
     
 printf "include(\`${DIR}FIRST.M4')dnl \nORG 0x8000\nINIT(60000)\n...\nSTOP\n"
-
-
-cat $TMPFILE |
-
-# numbers
-sed 's#^\([^;]*\s\+\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#g' |
-sed 's#^\([^;]*\s\+\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#g' |
-sed 's#^\([^;]*\s\+\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#g' |
-sed 's#^\([^;]*\s\+\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#g' |
-
-
-# call
-sed 's#^\([^;]*\s\+\|^\)\([a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g'
-
+cat $TMPFILE
 printf "\ninclude({${DIR}LAST.M4})dnl\n"
