@@ -1,10 +1,13 @@
-ORG 0x8000
+
+ORG 0x6000
 
 ;   ===  b e g i n  ===
     exx
     push HL
     push DE
-    ld   HL, 0x6000
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
+    ld   HL, 60000
     exx
 
 
@@ -25852,15 +25855,11 @@ ORG 0x8000
     add  HL, HL         ; 1:11      2047* 2048x
     or    A             ; 1:4       2047*
     sbc  HL, BC         ; 2:15      2047* HL - save 
-    call PRINT_NUM      ; 3:17      . 
+    call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      print
-    push HL             ; 1:11      print
-    ld    L, 0x1A       ; 2:7       print Upper screen
-    call 0x1605         ; 3:17      print Open channel
     ld   BC, size101    ; 3:10      print Length of string to print
     ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string
-    pop  HL             ; 1:10      print
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
 
 
@@ -25871,100 +25870,96 @@ ORG 0x8000
     ret
 ;   =====  e n d  ===== 
 
-; Input: A = or numbers, DE string index, HL = number, BC = 10000,1000,100,10,1
-; Output: Write number to memory
-; Pollutes: AF, AF', HL, B, DE
-NEXTNUMBER:
-    ex   AF, AF'        ; 1:4
-    xor   A             ; 1:4
+; Input: HL
+; Output: Print space and signed decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_S16:
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, PRINT_U16  ; 2:7/12
+    
+    xor   A             ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    L, A          ; 1:4       neg
+    sbc   A, H          ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    H, A          ; 1:4       neg
 
-    inc   A             ; 1:4
-    sbc  HL, BC         ; 2:15
-    jr   nc, $-3        ; 2:7/12
     
-    add  HL, BC         ; 1:11
-    dec   A             ; 1:4
-    ld    B, A          ; 1:4    
-    add   A, '0'        ; 2:7       0   
-    ex   AF, AF'        ; 1:4
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
+    db 0x01             ; 3:10      ld   BC, ** 
     
-    or    B             ; 1:4
-    ret   z             ; 1:5/11    zatim same nuly
-    
-    ex   AF, AF'        ; 1:4
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-    ex   AF, AF'        ; 1:4
-    ret                 ; 1:10
+    ; fall to PRINT_U16
+; Input: HL
+; Output: Print space and unsigned decimal number in HL
+; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
+PRINT_U16:
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in Adnl
 
 ; Input: HL
-; Output: Print decimal number in HL
-; Pollutes: AF, AF', BC, delete top stack
-PRINT_NUM:
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_U16_ONLY:
     push DE             ; 1:11
-
-    ld   DE, STRNUM     ; 3:10
-
-    bit   7, H          ; 2:8
-    jr    z, PRINT_NUM_P; 2:7/12
-    
-    ld    A, '-'        ; 2:7
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-
-    ld    A, L          ; 1:4
-    cpl                 ; 1:4
-    ld    L, A          ; 1:4
-    ld    A, H          ; 1:4
-    cpl                 ; 1:4
-    ld    H, A          ; 1:4
-    inc  HL             ; 1:6
-PRINT_NUM_P:
-    
-    xor   A             ; 1:4
-    ld   BC, 10000      ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 1000       ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 100        ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 10         ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld    A, '0'        ; 2:7
-    add   A, L          ; 1:4
-    ld  (DE), A         ; 1:7
+    ld   DE, STRNUM     ; 3:10      Address of string
+    call BIN2DEC        ; 3:17
     
     ex   DE, HL         ; 1:4
-    
-    inc  HL             ; 1:6
-    ld  (HL), 0x20      ; 2:10      space after
-    
-    ld   DE, STRNUM     ; 3:10
-    sbc  HL, DE         ; 2:15
-    push HL             ; 1:11
-            
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    
-    pop  BC             ; 1:10      Length-1 of string to print
     ld   DE, STRNUM     ; 3:10      Address of string
-    call 0x2040         ; 3:17      Print our string
+    sbc  HL, DE         ; 2:15
+    ld   B, H           ; 1:4
+    ld   C, L           ; 1:4       Length-1 of string to print
+    call 0x2040         ; 3:17      Print our string with ZX 48K ROM
 
-    pop  HL             ; 1:10      last DE
+                        ; de ret hl x x --> ret de hl
+    pop  HL             ; 1:10      previous DE
     pop  BC             ; 1:10      ret
-    pop  DE             ; 1:10
+    pop  DE             ; 1:10      previous (SP)
     push BC             ; 1:11      ret
     ret                 ; 1:10
 STRNUM:
-DB      "Dw0rkin"
+DB      "65536 "
+
+; Input: DE string index, HL = number
+; Output: Write number to memory
+; Pollutes: AF, HL, BC, DE
+BIN2DEC:
+    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
+    ld   BC, -10000     ; 3:10
+    call BIN2DEC_CHAR+2 ; 3:17    
+    ld   BC, -1000      ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld   BC, -100       ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld    C, -10        ; 2:7
+    call BIN2DEC_CHAR   ; 3:17
+    ld    A, L          ; 1:4
+    add   A,'0'         ; 2:7
+    ld (DE), A          ; 1:7
+    ret                 ; 1:10
+    
+BIN2DEC_CHAR:
+    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
+    
+    add  HL, BC         ; 1:11
+    inc   A             ; 1:4
+    jr    c, $-2        ; 2:7/12
+    sbc  HL, BC         ; 2:15
+    dec   A             ; 1:4
+    ret   z             ; 1:5/11
+    
+    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
+    ld (DE), A          ; 1:7
+    inc  DE             ; 1:6
+    ret                 ; 1:10})
+
 VARIABLE_SECTION:
 
 STRING_SECTION:
 string101:
-db "= -14335", 0xD
+db " = -14335", 0xD
 size101 EQU $ - string101
 

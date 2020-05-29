@@ -4,13 +4,13 @@ dnl .
 dnl ( x -- )
 dnl print number
 define(DOT,{ifdef({USE_DOT},,define({USE_DOT},{}))
-    call PRINT_NUM      ; 3:17      .})dnl
+    call PRINT_S16      ; 3:17      .})dnl
 dnl
 dnl u.
 dnl ( x -- )
 dnl print number
 define(UDOT,{ifdef({USE_UDOT},,define({USE_UDOT},{}))
-    call PRINT_UNUM     ; 3:17      .})dnl
+    call PRINT_U16      ; 3:17      .})dnl
 dnl
 dnl
 dnl dup .
@@ -60,7 +60,7 @@ dnl .( char )
 define(PUTCHAR,{ifelse($2,{},,{
 .error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
     ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with 48K ROM in, this will print char in A})dnl
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A})dnl
 dnl
 dnl
 dnl ( addr n -- )
@@ -90,7 +90,7 @@ define(PRINT,{define({PRINT_COUNT}, incr(PRINT_COUNT))
     push DE             ; 1:11      print
     ld   BC, size{}PRINT_COUNT    ; 3:10      print Length of string to print
     ld   DE, string{}PRINT_COUNT  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
 pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
 db STRING_POP

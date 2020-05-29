@@ -3,64 +3,51 @@ dnl
 dnl
 ifdef({USE_DOT},{ifdef({USE_UDOT},,define({USE_UDOT},{}))
 ; Input: HL
-; Output: Print signed decimal number in HL
-; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
-PRINT_NUM:
+; Output: Print space and signed decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_S16:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
-    jr   nc, PRINT_UNUM ; 2:7/12
+    jr   nc, PRINT_U16  ; 2:7/12
     
-    xor   A             ; 1:4
-    sub   L             ; 1:4
-    ld    L, A          ; 1:4
-    sbc   A, H          ; 1:4
-    sub   L             ; 1:4
-    ld    H, A          ; 1:4
+    xor   A             ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    L, A          ; 1:4       neg
+    sbc   A, H          ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    H, A          ; 1:4       neg
 
     PUTCHAR(' ')
-    PUTCHAR('-')
+    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
+    db 0x01             ; 3:10      ld   BC, ** 
     
-    push DE             ; 1:11
-    jp   PRINT_UNUM+4   ; 3:10}){}dnl
+    ; fall to PRINT_U16}){}dnl
 dnl
 dnl
 ifdef({USE_UDOT},{
 ; Input: HL
-; Output: Print unsigned decimal number in HL
+; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
-PRINT_UNUM:
+PRINT_U16:
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A})dnl
+
+; Input: HL
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_U16_ONLY:
     push DE             ; 1:11
-
-    PUTCHAR(' ')
-
-    ld   DE, STRNUM     ; 3:10
-    
-    xor   A             ; 1:4
-    ld   BC, -10000     ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, -1000      ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, -100       ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, -10        ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld    A, '0'        ; 2:7
-    add   A, L          ; 1:4
-    ld  (DE), A         ; 1:7
+    ld   DE, STRNUM     ; 3:10      Address of string
+    call BIN2DEC        ; 3:17
     
     ex   DE, HL         ; 1:4
-    ld   DE, STRNUM     ; 3:10
+    ld   DE, STRNUM     ; 3:10      Address of string
     sbc  HL, DE         ; 2:15
     ld   B, H           ; 1:4
     ld   C, L           ; 1:4       Length-1 of string to print
-    ld   DE, STRNUM     ; 3:10      Address of string
-    call 0x2040         ; 3:17      Print our string
+    call 0x2040         ; 3:17      Print our string with ZX 48K ROM
 
-                        ; x x hl ret de --> hl de ret
+                        ; de ret hl x x --> ret de hl
     pop  HL             ; 1:10      previous DE
     pop  BC             ; 1:10      ret
     pop  DE             ; 1:10      previous (SP)
@@ -69,29 +56,37 @@ PRINT_UNUM:
 STRNUM:
 DB      "65536 "
 
-; Input: A = or numbers, DE string index, HL = number, BC = {10000,1000,100,10,1}
+; Input: DE string index, HL = number
 ; Output: Write number to memory
-; Pollutes: AF, AF', HL, B, DE
-NEXTNUMBER:
-    ex   AF, AF'        ; 1:4
-    ld   A, 0xFF        ; 2:7
-
-    inc   A             ; 1:4
+; Pollutes: AF, HL, BC, DE
+BIN2DEC:
+    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
+    ld   BC, -10000     ; 3:10
+    call BIN2DEC_CHAR+2 ; 3:17    
+    ld   BC, -1000      ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld   BC, -100       ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld    C, -10        ; 2:7
+    call BIN2DEC_CHAR   ; 3:17
+    ld    A, L          ; 1:4
+    add   A,'0'         ; 2:7
+    ld (DE), A          ; 1:7
+    ret                 ; 1:10
+    
+BIN2DEC_CHAR:
+    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
+    
     add  HL, BC         ; 1:11
-    jr    c, $-2        ; 2:7/12    
-    
+    inc   A             ; 1:4
+    jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
-    ld    B, A          ; 1:4    
-    add   A, '0'        ; 2:7       0   
-    ex   AF, AF'        ; 1:4
+    dec   A             ; 1:4
+    ret   z             ; 1:5/11
     
-    or    B             ; 1:4
-    ret   z             ; 1:5/11    zatim same nuly
-    
-    ex   AF, AF'        ; 1:4
-    ld  (DE), A         ; 1:7
+    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
+    ld (DE), A          ; 1:7
     inc  DE             ; 1:6
-    ex   AF, AF'        ; 1:4
     ret                 ; 1:10})dnl
 dnl
 dnl
