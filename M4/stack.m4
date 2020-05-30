@@ -17,7 +17,7 @@ dnl
 dnl 2dup
 dnl ( a b -- a b a b )
 dnl over over
-define({DUP2},{
+define({_2DUP},{
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup})dnl
 dnl
@@ -30,31 +30,46 @@ define({DROP},{
 dnl
 dnl
 dnl 2drop
-dnl ( a b -- ) 
+dnl ( b a -- ) 
 dnl odstrani 2x vrchol zasobniku
-define({DROP2},{
+define({_2DROP},{
     pop  HL             ; 1:10      2drop
     pop  DE             ; 1:10      2drop})dnl
 dnl
 dnl
-dnl ( a b -- b )
+dnl ( b a -- a )
 dnl : nip swap drop ;
 dnl drop_second
 define({NIP},{
     pop  DE             ; 1:10      nip})dnl
 dnl
 dnl
-dnl ( a b -- b a b )
+dnl ( b a -- a b a )
 dnl : tuck swap over ;
 define({TUCK},{
     push HL             ; 1:11      tuck})dnl
 dnl
 dnl
-dnl ( x2 x1 -- x2 x1 x2 )
+dnl ( b a -- b a b )
 dnl vytvori kopii druhe polozky na zasobniku
 define({OVER},{
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over})dnl
+dnl
+dnl
+dnl ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
+dnl Copy cell pair a1 a2 to the top of the stack.
+define({_2OVER},{
+    pop  AF             ; 1:10      2over AF = a2
+    pop  BC             ; 1:10      2over BC = a1      
+    push BC             ; 1:11      2over
+    push AF             ; 1:11      2over a1 a2 b1 b2
+    push DE             ; 1:11      2over a1 a2 b1 b1 b2
+    push AF             ; 1:11      2over a1 a2 b1 a2 b1 b2      
+    ex  (SP),HL         ; 1:19      2over a1 a2 b1 b2 b1 a2
+    pop  HL             ; 1:10      2over       
+    ld    D, B          ; 1:4       2over
+    ld    E, C          ; 1:4       2over})dnl
 dnl
 dnl
 dnl ( x3 x2 x1 -- x2 x1 x3 )
@@ -110,37 +125,41 @@ dnl
 dnl 0 pick ( a 0 -- a a )
 dnl ( a -- a a ) 
 dnl zmeni hodnotu top
-define({XPICK0},{
+define({_0_PICK},{
     DUP})dnl
 dnl
 dnl
 dnl 1 pick ( b a 1 -- b a b )
 dnl ( b a -- b a b ) 
 dnl zmeni hodnotu top
-define({XPICK1},{
+define({_1_PICK},{
     OVER})dnl
 dnl
 dnl
 dnl 2 pick ( c b a 2 -- c b a c )
 dnl ( c b a -- c b a c )
 dnl zmeni hodnotu top
-define({XPICK2},{
-    pop  BC             ; 1:10      xpick2
-    push BC             ; 1:11      xpick2
-    ex   DE, HL         ; 1:4       xpick2
-    ex   (SP),HL        ; 1:19      xpick2})dnl
+define({_2_XPICK},{
+    pop  BC             ; 1:10      2 pick
+    push BC             ; 1:11      2 pick BC = c
+    push DE             ; 1:11      2 pick c b b a
+    ex   DE, HL         ; 1:4       2 pick c b a b
+    ld    H, B          ; 1:4       2 pick
+    ld    L, C          ; 1:4       2 pick c b a c})dnl
 dnl
 dnl
 dnl 3 pick ( d c b a 3 -- d c b a d )
 dnl ( d c b a -- d c b a d ) 
 dnl zmeni hodnotu top
-define({XPICK3},{
-    pop  AF             ; 1:10      xpick3
-    pop  BC             ; 1:10      xpick3
-    push BC             ; 1:11      xpick3
-    push AF             ; 1:11      xpick3
-    ex   DE, HL         ; 1:4       xpick3
-    ex   (SP),HL        ; 1:19      xpick3})dnl
+define({_3_PICK},{
+    pop  AF             ; 1:10      3 pick
+    pop  BC             ; 1:10      3 pick
+    push BC             ; 1:11      3 pick BC = d
+    push AF             ; 1:11      3 pick
+    push DE             ; 1:11      3 pick d c b b a
+    ex   DE, HL         ; 1:4       3 pick d c b a b
+    ld    H, B          ; 1:4       3 pick
+    ld    L, C          ; 1:4       3 pick d c b a c})dnl
 dnl
 dnl
 dnl >r

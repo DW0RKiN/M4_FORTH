@@ -129,37 +129,37 @@ define({DUP_PUSH_UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}
 dnl    
 dnl
 dnl    
-dnl ------ dup dup ucond if ---------
+dnl ------ 2dup ucond if ---------
 dnl
-define({DUP2_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       dup2 (u)< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       dup2 (u)< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       dup2 (u)< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       dup2 (u)< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    jp   nc, else{}IF_COUNT    ; 3:10      dup2 (u)< if})dnl
+define({_2DUP_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, E          ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    jp   nc, else{}IF_COUNT    ; 3:10      2dup u< if})dnl
 dnl    
 dnl
-define({DUP2_UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       dup2 (u)>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       dup2 (u)>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       dup2 (u)>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       dup2 (u)>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    jp    c, else{}IF_COUNT    ; 3:10      dup2 (u)>= if})dnl
+define({_2DUP_UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, E          ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    jp    c, else{}IF_COUNT    ; 3:10      2dup u>= if})dnl
 dnl    
 dnl
-define({DUP2_ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       dup2 (u)<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   E             ; 1:4       dup2 (u)<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, H          ; 1:4       dup2 (u)<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, D          ; 1:4       dup2 (u)<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    jp    c, else{}IF_COUNT    ; 3:10      dup2 (u)<= if})dnl
+define({_2DUP_ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, L          ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sub   E             ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, H          ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sbc   A, D          ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    jp    c, else{}IF_COUNT    ; 3:10      2dup u<= if})dnl
 dnl    
 dnl
-define({DUP2_UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    jp   nc, else{}IF_COUNT    ; 3:10      dup2 (u)> if})dnl
+define({_2DUP_UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, L          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sub   E             ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sbc   A, D          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    jp   nc, else{}IF_COUNT    ; 3:10      2dup u> if})dnl
 dnl    
 dnl

@@ -4,6 +4,8 @@
     exx
     push HL
     push DE
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
     
@@ -37,16 +39,10 @@ gcd1:                   ;           ( a b -- gcd )
     jp    z, else101    ; 3:10      if                                                                         
             
 begin101:                                                                         
-                
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
             
-    ld    A, H          ; 1:4       while 101
-    or    L             ; 1:4       while 101
-    ex   DE, HL         ; 1:4       while 101
-    pop  DE             ; 1:10      while 101
-    jp    z, repeat101  ; 3:10      while 101                                                                   
+    ld    A, H          ; 1:4       dup_while 101
+    or    L             ; 1:4       dup_while 101
+    jp    z, repeat101  ; 3:10      dup_while 101                                                                   
                 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup 
@@ -90,7 +86,7 @@ else101:
 else103: 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push 
+    ld   HL, 1          ; 3:10      drop_push(1) 
 endif103:                                                   
         
 endif101: 
@@ -123,8 +119,8 @@ gcd2:                   ;           ( a b -- gcd )
     jp   nz, else104    ; 3:10      ifz 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push 
-    jp   gcd2_end       ; 3:10 
+    ld   HL, 1          ; 3:10      drop_push(1) 
+    jp   gcd2_end       ; 3:10      exit 
 else104  EQU $          ;           = endif
 endif104:                                          
         
@@ -133,7 +129,7 @@ endif104:
     jp   nz, else105    ; 3:10      ifz 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop              
-    jp   gcd2_end       ; 3:10 
+    jp   gcd2_end       ; 3:10      exit 
 else105  EQU $          ;           = endif
 endif105:                                          
         
@@ -143,7 +139,7 @@ endif105:
     jp   nz, else106    ; 3:10      ifz 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop              
-    jp   gcd2_end       ; 3:10 
+    jp   gcd2_end       ; 3:10      exit 
 else106  EQU $          ;           = endif
 endif106:                                          
         
@@ -250,9 +246,9 @@ xdo101:                 ;           xdo 101
 ;   exx                 ; 1:4       index xi 101
 ;   ex   DE, HL         ; 1:4       index xi 101 ( i x2 x1 -- i  x1 x2 )
 ;   ex  (SP),HL         ; 1:19      index xi 101 ( i x1 x2 -- x2 x1 i ) 
-    call PRINT_NUM      ; 3:17      . 
+    call PRINT_S16      ; 3:17      . 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
             
     exx                 ; 1:4       xdo 102
     dec  HL             ; 1:6       xdo 102
@@ -296,12 +292,12 @@ xdo102:                 ;           xdo 102
 ;   ex   DE, HL         ; 1:4       index xi 102 ( i x2 x1 -- i  x1 x2 )
 ;   ex  (SP),HL         ; 1:19      index xi 102 ( i x1 x2 -- x2 x1 i ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_NUM      ; 3:17      .
+    call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     call gcd1           ; 3:17      call
     ex   DE,HL          ; 1:4       call    
     exx                 ; 1:4       call 
-    call PRINT_NUM      ; 3:17      . 
+    call PRINT_S16      ; 3:17      . 
     exx                 ; 1:4       xloop 102
     inc (HL)            ; 1:7       xloop 102 index_lo++
     ld    A, 10         ; 2:7       xloop 102
@@ -339,96 +335,80 @@ bench_end:
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----
 
-; Input: A = or numbers, DE string index, HL = number, BC = 10000,1000,100,10,1
-; Output: Write number to memory
-; Pollutes: AF, AF', HL, B, DE
-NEXTNUMBER:
-    ex   AF, AF'        ; 1:4
-    xor   A             ; 1:4
+; Input: HL
+; Output: Print space and signed decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_S16:
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, PRINT_U16  ; 2:7/12
+    
+    xor   A             ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    L, A          ; 1:4       neg
+    sbc   A, H          ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    H, A          ; 1:4       neg
 
-    inc   A             ; 1:4
-    sbc  HL, BC         ; 2:15
-    jr   nc, $-3        ; 2:7/12
     
-    add  HL, BC         ; 1:11
-    dec   A             ; 1:4
-    ld    B, A          ; 1:4    
-    add   A, '0'        ; 2:7       0   
-    ex   AF, AF'        ; 1:4
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
+    db 0x01             ; 3:10      ld   BC, ** 
     
-    or    B             ; 1:4
-    ret   z             ; 1:5/11    zatim same nuly
-    
-    ex   AF, AF'        ; 1:4
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-    ex   AF, AF'        ; 1:4
-    ret                 ; 1:10
+    ; fall to PRINT_U16
+; Input: HL
+; Output: Print space and unsigned decimal number in HL
+; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
+PRINT_U16:
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
 
 ; Input: HL
-; Output: Print decimal number in HL
-; Pollutes: AF, AF', BC, delete top stack
-PRINT_NUM:
-    push DE             ; 1:11
-
-    ld   DE, STRNUM     ; 3:10
-
-    bit   7, H          ; 2:8
-    jr    z, PRINT_NUM_P; 2:7/12
-    
-    ld    A, '-'        ; 2:7
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-
-    ld    A, L          ; 1:4
-    cpl                 ; 1:4
-    ld    L, A          ; 1:4
-    ld    A, H          ; 1:4
-    cpl                 ; 1:4
-    ld    H, A          ; 1:4
-    inc  HL             ; 1:6
-PRINT_NUM_P:
-    
-    xor   A             ; 1:4
-    ld   BC, 10000      ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 1000       ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 100        ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 10         ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld    A, '0'        ; 2:7
-    add   A, L          ; 1:4
-    ld  (DE), A         ; 1:7
-    
-    ex   DE, HL         ; 1:4
-    
-    inc  HL             ; 1:6
-    ld  (HL), 0x20      ; 2:10      space after
-    
-    ld   DE, STRNUM     ; 3:10
-    sbc  HL, DE         ; 2:15
-    push HL             ; 1:11
-            
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    
-    pop  BC             ; 1:10      Length-1 of string to print
-    ld   DE, STRNUM     ; 3:10      Address of string
-    call 0x2040         ; 3:17      Print our string
-
-    pop  HL             ; 1:10      last DE
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_U16_ONLY:
+    call BIN2DEC        ; 3:17
     pop  BC             ; 1:10      ret
+    ex   DE, HL         ; 1:4
     pop  DE             ; 1:10
-    push BC             ; 1:11      ret
+    push BC             ; 1:10      ret
     ret                 ; 1:10
 STRNUM:
-DB      "Dw0rkin"
+DB      "65536 "
+
+; Input: HL = number
+; Output: print number
+; Pollutes: AF, HL, BC
+BIN2DEC:
+    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
+    ld   BC, -10000     ; 3:10
+    call BIN2DEC_CHAR+2 ; 3:17    
+    ld   BC, -1000      ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld   BC, -100       ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld    C, -10        ; 2:7
+    call BIN2DEC_CHAR   ; 3:17
+    ld    A, L          ; 1:4
+    add   A,'0'         ; 2:7
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10
+    
+BIN2DEC_CHAR:
+    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
+    
+    add  HL, BC         ; 1:11
+    inc   A             ; 1:4
+    jr    c, $-2        ; 2:7/12
+    sbc  HL, BC         ; 2:15
+    dec   A             ; 1:4
+    ret   z             ; 1:5/11
+    
+    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10
+
 VARIABLE_SECTION:
 
 STRING_SECTION:

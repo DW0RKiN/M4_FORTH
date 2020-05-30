@@ -4,6 +4,8 @@
     exx
     push HL
     push DE
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
     
@@ -35,8 +37,8 @@ gcd2:                   ;           ( a b -- gcd )
     jp   nz, else101    ; 3:10      ifz 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push 
-    jp   gcd2_end       ; 3:10 
+    ld   HL, 1          ; 3:10      drop_push(1) 
+    jp   gcd2_end       ; 3:10      exit 
 else101  EQU $          ;           = endif
 endif101:                                          
         
@@ -45,7 +47,7 @@ endif101:
     jp   nz, else102    ; 3:10      ifz 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop              
-    jp   gcd2_end       ; 3:10 
+    jp   gcd2_end       ; 3:10      exit 
 else102  EQU $          ;           = endif
 endif102:                                          
         
@@ -55,7 +57,7 @@ endif102:
     jp   nz, else103    ; 3:10      ifz 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop              
-    jp   gcd2_end       ; 3:10 
+    jp   gcd2_end       ; 3:10      exit 
 else103  EQU $          ;           = endif
 endif103:                                          
         
@@ -220,6 +222,7 @@ gcd2_bench_end:
     ex   DE,HL          ; 1:4       ;
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----
+
 
 VARIABLE_SECTION:
 

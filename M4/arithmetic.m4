@@ -94,21 +94,21 @@ dnl
 dnl "1+"
 dnl ( x1 -- x )
 dnl x = x1 + 1
-define(ONE_ADD,{
+define(_1ADD,{
     inc  HL             ; 1:6       1+})dnl
 dnl
 dnl
 dnl "1-"
 dnl ( x1 -- x )
 dnl x = x1 - 1
-define(ONE_SUB,{
+define(_1SUB,{
     dec  HL             ; 1:6       1-})dnl
 dnl
 dnl
 dnl "2+"
 dnl ( x1 -- x )
 dnl x = x1 + 2
-define(TWO_ADD,{
+define(_2ADD,{
     inc  HL             ; 1:6       2+
     inc  HL             ; 1:6       2+})dnl
 dnl
@@ -116,7 +116,7 @@ dnl
 dnl "2-"
 dnl ( x1 -- x )
 dnl x = x1 - 2
-define(TWO_SUB,{
+define(_2SUB,{
     dec  HL             ; 1:6       2-
     dec  HL             ; 1:6       2-})dnl
 dnl
@@ -124,7 +124,7 @@ dnl
 dnl "2*"
 dnl ( x1 -- x )
 dnl x = x1 * 2
-define(TWO_MUL,{
+define(_2MUL,{
     add  HL, HL         ; 1:11      2*})dnl
 dnl
 dnl
@@ -158,16 +158,16 @@ ___{}ifelse(dnl
 ___{}___{}eval(XMUL_PAR & 127),{0},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/128)){}dnl
 ___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*256))
-    ld    H, L          ; 1:4       $1*
-    ld    L, 0x00       ; 2:7       $1* XMUL_SUM{}x{}dnl
+    ld    H, L          ; 1:4       $1 *
+    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
 ___{}___{}},
 ___{}___{}eval(((XMUL_PAR & 63)==0) && (XMUL_SUM > 1)),{1},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/64)){}dnl
 ___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*128))
-    rr    H             ; 2:8       $1*
-    rr    L             ; 2:8       $1*
-    ld    H, L          ; 1:4       $1*
-    ld    L, 0x00       ; 2:7       $1* XMUL_SUM{}x{}dnl
+    rr    H             ; 2:8       $1 *
+    rr    L             ; 2:8       $1 *
+    ld    H, L          ; 1:4       $1 *
+    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
 ___{}___{}},
 ___{}___{}{define({XMUL_SUM},eval(2*XMUL_SUM)){}XMUL_2X}{}dnl
 ___{}){}dnl
@@ -186,16 +186,16 @@ ___{}ifelse(dnl
 ___{}___{}eval(XMUL_PAR & 127),{127},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/128)){}dnl
 ___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*256))
-    ld    H, L          ; 1:4       $1*
-    ld    L, 0x00       ; 2:7       $1* XMUL_SUM{}x{}dnl
+    ld    H, L          ; 1:4       $1 *
+    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
 ___{}___{}},
 ___{}___{}eval(((XMUL_PAR & 63)==63) && (XMUL_SUM > 1)),{1},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/64)){}dnl
 ___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*128))
-    rr    H             ; 2:8       $1*
-    rr    L             ; 2:8       $1*
-    ld    H, L          ; 1:4       $1*
-    ld    L, 0x00       ; 2:7       $1* XMUL_SUM{}x{}dnl
+    rr    H             ; 2:8       $1 *
+    rr    L             ; 2:8       $1 *
+    ld    H, L          ; 1:4       $1 *
+    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
 ___{}___{}},
 ___{}___{}{define({XMUL_SUM},eval(2*XMUL_SUM)){}XMUL_2X}{}dnl
 ___{}){}dnl
@@ -206,7 +206,7 @@ dnl
 dnl 
 dnl "const *"
 dnl ( x1 -- const*x1 )
-define({XMUL},{define({XMUL_1BITS},SUM_1BITS($1)){}define({XMUL_0BITS},SUM_0BITS($1-1))dnl
+define({PUSH_MUL},{define({XMUL_1BITS},SUM_1BITS($1)){}define({XMUL_0BITS},SUM_0BITS($1-1))dnl
 dnl
 dnl
 ifelse(eval($1==0),{1},{
@@ -219,9 +219,9 @@ dnl n = 2^a
 dnl 1,2,4,8,16,32,...
 dnl 
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x  Variant: 2^a{}dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x  Variant: 2^a{}dnl
 ___{}___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})})dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x})})dnl
 ___{}XMUL_LOOP($1){}dnl
 },XMUL_1BITS,{2},{dnl
 dnl n = 2^a + 2^b
@@ -229,112 +229,112 @@ dnl 3,5,6,9,10,12,17,18,20,24,...
 dnl Not all variants are optimal. For example, 258.
 dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1* Variant: 2^a + 2^b
-    ld    C, L          ; 1:4       $1* save XMUL_SUM{}x}){}dnl
+    ld    B, H          ; 1:4       $1 * Variant: 2^a + 2^b
+    ld    C, L          ; 1:4       $1 * save XMUL_SUM{}x}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
 ___{}XMUL_LOOP($1)
-    add  HL, BC         ; 1:11      $1* HL + save{}dnl
+    add  HL, BC         ; 1:11      $1 * HL + save{}dnl
 },XMUL_0BITS,{1},{dnl
 dnl n = 2^a - 2^b, a > b
 dnl 60=64-4
 dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1* Variant: 2^a - 2^b
-    ld    C, L          ; 1:4       $1* save XMUL_SUM{}x}){}dnl
+    ld    B, H          ; 1:4       $1 * Variant: 2^a - 2^b
+    ld    C, L          ; 1:4       $1 * save XMUL_SUM{}x}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x})dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x})dnl
 ___{}XMUL_NEGLOOP($1)
-    or    A             ; 1:4       $1*
-    sbc  HL, BC         ; 2:15      $1* HL - save{}dnl
+    or    A             ; 1:4       $1 *
+    sbc  HL, BC         ; 2:15      $1 * HL - save{}dnl
 },XMUL_1BITS,{3},{dnl
 dnl
 dnl n = 2^a + 2^b + 2^c
 dnl 11=8+2+1,69=64+4+1
 dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1* Variant: 2^a + 2^b + 2^c
-    ld    A, L          ; 1:4       $1* save XMUL_SUM{}x{}define({XMUL_SAVE},{
-    add   A, L          ; 1:4       $1* +
-    ld    C, A          ; 1:4       $1* +
-    ld    A, B          ; 1:4       $1* +
-    adc   A, H          ; 1:4       $1* +
-    ld    B, A          ; 1:4       $1* + save XMUL_SUM{}x})}){}dnl
+    ld    B, H          ; 1:4       $1 * Variant: 2^a + 2^b + 2^c
+    ld    A, L          ; 1:4       $1 * save XMUL_SUM{}x{}define({XMUL_SAVE},{
+    add   A, L          ; 1:4       $1 * +
+    ld    C, A          ; 1:4       $1 * +
+    ld    A, B          ; 1:4       $1 * +
+    adc   A, H          ; 1:4       $1 * +
+    ld    B, A          ; 1:4       $1 * + save XMUL_SUM{}x})}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
 ___{}XMUL_LOOP($1)
-    add  HL, BC         ; 1:11      $1* HL + save{}dnl
+    add  HL, BC         ; 1:11      $1 * HL + save{}dnl
 },XMUL_0BITS,{2},{dnl
 dnl
 dnl n = 2^a - 2^b - 2^c, a > b > c
 dnl 27=32-4-1,54=64-8-2
 dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1* Variant: 2^a - 2^b - 2^c
-    ld    A, L          ; 1:4       $1* save XMUL_SUM{}x{}dnl
+    ld    B, H          ; 1:4       $1 * Variant: 2^a - 2^b - 2^c
+    ld    A, L          ; 1:4       $1 * save XMUL_SUM{}x{}dnl
 ___{}___{}define({XMUL_SAVE},{
-    add   A, L          ; 1:4       $1*
-    ld    C, A          ; 1:4       $1* +
-    ld    A, B          ; 1:4       $1* +
-    adc   A, H          ; 1:4       $1* +
-    ld    B, A          ; 1:4       $1* + save XMUL_SUM{}x{}dnl
+    add   A, L          ; 1:4       $1 *
+    ld    C, A          ; 1:4       $1 * +
+    ld    A, B          ; 1:4       $1 * +
+    adc   A, H          ; 1:4       $1 * +
+    ld    B, A          ; 1:4       $1 * + save XMUL_SUM{}x{}dnl
 ___{}___{}}){}dnl
 ___{}}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
 ___{}XMUL_NEGLOOP($1)
-    or    A             ; 1:4       $1*
-    sbc  HL, BC         ; 2:15      $1* HL - save{}dnl
+    or    A             ; 1:4       $1 *
+    sbc  HL, BC         ; 2:15      $1 * HL - save{}dnl
 },eval(XMUL_1BITS <= XMUL_0BITS + 2),{1},{dnl
 dnl n = 2^a + 2^b + 2^c + ...
 dnl
 ___{}define({XMUL_SAVE},{
-    ld    D, H          ; 1:4       $1*
-    ld    E, L          ; 1:4       $1* save XMUL_SUM{}x{}dnl
+    ld    D, H          ; 1:4       $1 *
+    ld    E, L          ; 1:4       $1 * save XMUL_SUM{}x{}dnl
 ___{}___{}define({XMUL_SAVE},{
-    ex   DE, HL         ; 1:4       $1* +
-    add  HL, DE         ; 1:11      $1* + save XMUL_SUM{}x
-    ex   DE, HL         ; 1:4       $1* +{}dnl
+    ex   DE, HL         ; 1:4       $1 * +
+    add  HL, DE         ; 1:11      $1 * + save XMUL_SUM{}x
+    ex   DE, HL         ; 1:4       $1 * +{}dnl
 ___{}___{}}){}dnl
 ___{}}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
     
-    ld    B, D          ; 1:4       $1* Variant: 2^a + 2^b + 2^c + ...
-    ld    C, E          ; 1:4       $1*{}dnl
+    ld    B, D          ; 1:4       $1 * Variant: 2^a + 2^b + 2^c + ...
+    ld    C, E          ; 1:4       $1 *{}dnl
 ___{}XMUL_LOOP($1)
-    add  HL, DE         ; 1:11      $1* HL + save
-    ld    D, B          ; 1:4       $1*
-    ld    E, C          ; 1:4       $1*{}dnl
+    add  HL, DE         ; 1:11      $1 * HL + save
+    ld    D, B          ; 1:4       $1 *
+    ld    E, C          ; 1:4       $1 *{}dnl
 },{dnl
 dnl 187=128+32+16+8+2+1=256-64-4-1
 dnl
 ___{}define({XMUL_SAVE},{
-    ld    D, H          ; 1:4       $1*
-    ld    E, L          ; 1:4       $1* save XMUL_SUM{}x{}dnl
+    ld    D, H          ; 1:4       $1 *
+    ld    E, L          ; 1:4       $1 * save XMUL_SUM{}x{}dnl
 ___{}___{}define({XMUL_SAVE},{
-    ex   DE, HL         ; 1:4       $1* +
-    add  HL, DE         ; 1:11      $1* + save XMUL_SUM{}x
-    ex   DE, HL         ; 1:4       $1* +{}dnl
+    ex   DE, HL         ; 1:4       $1 * +
+    add  HL, DE         ; 1:11      $1 * + save XMUL_SUM{}x
+    ex   DE, HL         ; 1:4       $1 * +{}dnl
 ___{}___{}}){}dnl
 ___{}}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1* XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
 
-    ld    B, D          ; 1:4       $1* Variant: 2^a - 2^b - 2^c - ...
-    ld    C, E          ; 1:4       $1*{}dnl
+    ld    B, D          ; 1:4       $1 * Variant: 2^a - 2^b - 2^c - ...
+    ld    C, E          ; 1:4       $1 *{}dnl
 ___{}XMUL_NEGLOOP($1)
-    or    A             ; 1:4       $1*
-    sbc  HL, DE         ; 2:15      $1* HL - save
-    ld    D, B          ; 1:4       $1*
-    ld    E, C          ; 1:4       $1*})})dnl
+    or    A             ; 1:4       $1 *
+    sbc  HL, DE         ; 2:15      $1 * HL - save
+    ld    D, B          ; 1:4       $1 *
+    ld    E, C          ; 1:4       $1 *})})dnl
 dnl
 dnl
 dnl
 dnl "2/"
 dnl ( x1 -- x )
 dnl x = x1 / 2
-define(TWO_DIV,{
+define({_2DIV},{
     sra   H             ; 2:8       2/   with sign
     rr    L             ; 2:8       2/})dnl
 dnl

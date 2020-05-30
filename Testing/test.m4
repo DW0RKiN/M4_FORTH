@@ -8,7 +8,7 @@ include(`./FIRST.M4')dnl
     OVER IF                                                                         
             BEGIN                                                                         
             DUP_WHILE                                                                   
-                DUP2 UGT IF SWAP THEN OVER SUB                                               
+                _2DUP UGT IF SWAP THEN OVER SUB                                               
             REPEAT DROP 
         ELSE                                                               
             DUP IF NIP ELSE DROP DROP_PUSH(1) THEN                                                   
@@ -19,8 +19,8 @@ include(`./FIRST.M4')dnl
         DCP0     IFZ DROP DROP_PUSH(1) EXIT THEN                                          
         CP0      IFZ DROP              EXIT THEN                                          
         SWAP CP0 IFZ DROP              EXIT THEN                                          
-        BEGIN  DUP2 SUB                                                                    
-        WHILE  DUP2 LT  IF OVER SUB                                                          
+        BEGIN  _2DUP SUB                                                                    
+        WHILE  _2DUP LT  IF OVER SUB                                                          
                  ELSE SWAP OVER SUB SWAP                                              
                  THEN                                                               
         REPEAT NIP 

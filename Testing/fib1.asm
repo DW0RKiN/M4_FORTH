@@ -4,6 +4,8 @@
     exx
     push HL
     push DE
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
     ld   HL, 35000
     exx
     
@@ -159,6 +161,7 @@ fib1_bench_end:
     ex   DE,HL          ; 1:4       ;
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----
+
 
 VARIABLE_SECTION:
 

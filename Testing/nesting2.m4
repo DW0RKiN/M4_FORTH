@@ -17,7 +17,7 @@ SCOLON(_19th) SCALL(_18th)  SCALL(_18th)  SSEMICOLON   SCOLON(_20th) SCALL(_19th
 SCOLON(_22th) SCALL(_21th)  SCALL(_21th)  SSEMICOLON   SCOLON(_23th) SCALL(_22th) SCALL(_22th) SSEMICOLON   SCOLON(_24th) SCALL(_23th) SCALL(_23th) SSEMICOLON
 SCOLON(_25th) SCALL(_24th)  SCALL(_24th)  SSEMICOLON            
 
-SCOLON(_32million)  PRINT({"32 million nest/unnest operations"}, 0xD) SCALL(_25th) SSEMICOLON
-SCOLON(_1million)   PRINT({" 1 million nest/unnest operations"}, 0xD) SCALL(_20th) SSEMICOLON
+SCOLON(_32million)  PRINT({"32 million nest/unnest operations", 0xD}) SCALL(_25th) SSEMICOLON
+SCOLON(_1million)   PRINT({" 1 million nest/unnest operations", 0xD}) SCALL(_20th) SSEMICOLON
 
 include({./LAST.M4})dnl

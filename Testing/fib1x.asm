@@ -4,6 +4,8 @@
     exx
     push HL
     push DE
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
     ld   HL, 35000
     exx
     
@@ -88,6 +90,7 @@ sdo102:                 ;           sdo 102 stack: ( stop index )
 fib1_bench_end:
     ret                 ; 1:10      s;
 ;   -----  e n d  -----
+
 
 VARIABLE_SECTION:
 

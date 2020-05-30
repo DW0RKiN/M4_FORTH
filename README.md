@@ -130,9 +130,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
 |    swap    |     SWAP     |                |    ( x2 x1 -- x1 x2 )       |                       |
 |    dup     |      DUP     |                |       ( x1 -- x1 x1 )       |                       |
-|    2dup    |     DUP2     |                |    ( x2 x1 -- x2 x1 x2 x1 ) |                       |
+|    2dup    |    _2DUP     |                |    ( x2 x1 -- x2 x1 x2 x1 ) |                       |
 |    drop    |     DROP     |                |       ( x1 -- )             |                       |
-|   2drop    |     DROP2    |                |    ( x2 x1 -- )             |                       |
+|   2drop    |    _2DROP    |                |    ( x2 x1 -- )             |                       |
 |    nip     |      NIP     |                |    ( x2 x1 -- x1 )          |                       |
 |   tuck     |     TUCK     |                |    ( x2 x1 -- x1 x2 x1 )    |                       |
 |   over     |     OVER     |                |    ( x2 x1 -- x2 x1 x2 )    |                       |
@@ -144,10 +144,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |            |              | PUSH2((A),`2`) |  *A = 4 --> ( -- `4` `2` )  |                       |
 | drop `5`   |              | DROP_PUSH(`5`) |       ( x1 -- `5`)          |                       |
 |  dup `4`   |              |  DUP_PUSH(`4`) |       ( x1 -- x1 x1 `4`)    |                       |
-|   0 pick   |              |     XPICK0     |        ( a -- a a )         |                       |
-|   1 pick   |              |     XPICK1     |      ( b a -- b a b )       |                       |
-|   2 pick   |              |     XPICK2     |    ( c b a -- c b a c )     |                       |
-|   3 pick   |              |     XPICK3     |  ( d c b a -- d c b a d )   |                       |
+|   0 pick   |              |    _0_PICK     |        ( a -- a a )         |                       |
+|   1 pick   |              |    _1_PICK     |      ( b a -- b a b )       |                       |
+|   2 pick   |              |    _2_PICK     |    ( c b a -- c b a c )     |                       |
+|   3 pick   |              |    _3_PICK     |  ( d c b a -- d c b a d )   |                       |
 |     >r     |     TO_R     |                |       ( x1 -- )             |    ( -- x1 )          |
 |     r>     |    R_FROM    |                |          ( -- x1 )          | ( x1 -- )             |
 |     r@     |    R_FETCH   |                |          ( -- x1 )          |  (x1 -- x1 )          |
@@ -167,16 +167,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 |    mod     |      MOD     |                |    ( x2 x1 -- x )           |                       |
 |    /mod    |    DIVMOD    |                |    ( x2 x1 -- x )           |                       |
 |     u*     |      MUL     |                |    ( x2 x1 -- x )           |                       |
-|  `+12` *   |              |   XMUL(`12`)   |    ( x2 x1 -- x )           |                       |
+|  `+12` *   |              | PUSH_MUL(`12`) |    ( x2 x1 -- x )           |                       |
 |     u/     |     UDIV     |                |    ( x2 x1 -- x )           |                       |
 |    umod    |     UMOD     |                |    ( x2 x1 -- x )           |                       |
 |    u/mod   |    UDIVMOD   |                |    ( x2 x1 -- rem quot )    |                       |
-|     1+     |    ONE_ADD   |                |       ( x1 -- x1++ )        |                       |
-|     1-     |    ONE_SUB   |                |       ( x1 -- x1-- )        |                       |
-|     2+     |    TWO_ADD   |                |       ( x1 -- x1+2 )        |                       |
-|     2-     |    TWO_SUB   |                |       ( x1 -- x1-2 )        |                       |
-|     2*     |    TWO_MUL   |                |       ( x1 -- x1*2 )        |                       |
-|     2/     |    TWO_DIV   |                |       ( x1 -- x1/2 )        |                       |
+|     1+     |    _1ADD     |                |       ( x1 -- x1++ )        |                       |
+|     1-     |    _1SUB     |                |       ( x1 -- x1-- )        |                       |
+|     2+     |    _2ADD     |                |       ( x1 -- x1+2 )        |                       |
+|     2-     |    _2SUB     |                |       ( x1 -- x1-2 )        |                       |
+|     2*     |    _2MUL     |                |       ( x1 -- x1*2 )        |                       |
+|     2/     |    _2DIV     |                |       ( x1 -- x1/2 )        |                       |
 
 ### Logic
 
@@ -227,7 +227,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |    emit    |     EMIT     |                |      ( 'a' -- )          |                       |
 |  'a' emit  | PUTCHAR('a') |                |          ( -- )          |                       |
 |    type    |     TYPE     |                |   ( addr n -- )          |                       |
-| 2dup type  |  DUP2_TYPE   |                |   ( addr n -- addr n )   |                       |
+| 2dup type  |  _2DUP_TYPE  |                |   ( addr n -- addr n )   |                       |
 | .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
@@ -270,10 +270,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u> if |              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|dup dup u< if |              |   DUP_DUP_ULT_IF   |         ( -- )      |         |
-|dup dup u<= if|              |   DUP_DUP_ULE_IF   |         ( -- )      |         |
-|dup dup u> if |              |   DUP_DUP_UGT_IF   |         ( -- )      |         |
-|dup dup u>= if|              |   DUP_DUP_UGE_IF   |         ( -- )      |         |
+|  2dup u< if  |              |    _2DUP_ULT_IF    |         ( -- )      |         |
+|  2dup u<= if |              |    _2DUP_ULE_IF    |         ( -- )      |         |
+|  2dup u> if  |              |    _2DUP_UGT_IF    |         ( -- )      |         |
+|  2dup u>= if |              |    _2DUP_UGE_IF    |         ( -- )      |         |
 
 ### Function
 
@@ -324,7 +324,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |            |              |      SZI       |          ( i -- i i )        | ( -- )                |
 | `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )            | ( -- `1` )            |
 |            |              |     XLOOP      |            ( -- )            | ( index -- index++ )  |
-| `2` +LOOP  |              | PLUSXLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|
+| `2` +loop  |              | PLUSXLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|
 |            |              |    UNXLOOP     |            ( -- )            | ( index -- )          |
 |     i      |              |       XI       |            ( -- i )          | ( i -- i )            |
 |     j      |              |       XJ       |            ( -- j )          | ( j i -- j i )        |

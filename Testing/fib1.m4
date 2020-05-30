@@ -5,8 +5,8 @@ include(`./FIRST.M4')dnl
     STOP   
     COLON(fib1,( a -- b ))
         DUP_PUSH_LT_IF(2) DROP_PUSH(1) EXIT THEN
-        DUP  ONE_SUB CALL(fib1) 
-        SWAP TWO_SUB CALL(fib1) ADD
+        DUP  _1SUB CALL(fib1) 
+        SWAP _2SUB CALL(fib1) ADD
     SEMICOLON
     COLON(fib1_bench,( -- ))
         XDO(1000,0)

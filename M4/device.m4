@@ -74,7 +74,7 @@ dnl
 dnl
 dnl ( addr n -- addr n )
 dnl non-destructively print string 
-define(DUP2_TYPE,{
+define(_2DUP_TYPE,{
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup{}TYPE
     pop  HL             ; 1:10      2dup

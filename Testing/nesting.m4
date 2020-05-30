@@ -17,7 +17,7 @@ COLON(_19th) CALL(_18th)  CALL(_18th)  SEMICOLON  COLON(_20th) CALL(_19th) CALL(
 COLON(_22th) CALL(_21th)  CALL(_21th)  SEMICOLON  COLON(_23th) CALL(_22th) CALL(_22th) SEMICOLON   COLON(_24th) CALL(_23th) CALL(_23th) SEMICOLON
 COLON(_25th) CALL(_24th)  CALL(_24th)  SEMICOLON            
 
-COLON(_32million)  PRINT({"32 million nest/unnest operations"}, 0xD) CALL(_25th) SEMICOLON
-COLON(_1million)   PRINT({" 1 million nest/unnest operations"}, 0xD) CALL(_20th) SEMICOLON
+COLON(_32million)  PRINT({"32 million nest/unnest operations", 0xD}) CALL(_25th) SEMICOLON
+COLON(_1million)   PRINT({" 1 million nest/unnest operations", 0xD}) CALL(_20th) SEMICOLON
 
 include({./LAST.M4})dnl
