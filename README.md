@@ -231,6 +231,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |    type    |     TYPE     |                |   ( addr n -- )          |                       |
 | 2dup type  |  _2DUP_TYPE  |                |   ( addr n -- addr n )   |                       |
 | .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
+|     key    |      KEY     |                |          ( -- key )      |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
@@ -297,17 +298,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
-    PUSH2(10,0)  DO        I UDOT PUTCHAR({','})      LOOP    --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
-                XDO(10,0) XI UDOT PUTCHAR({','})     XLOOP    --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
-                XDO(10,0) XI UDOT PUTCHAR({','}) PLUSXLOOP(2) --> " 0, 2, 4, 8,"
-    PUSH2(10,0) SDO       SI UDOT PUTCHAR({','})     SLOOP    --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
-    PUSH(10)   SZDO      SZI UDOT PUTCHAR({','})    SZLOOP    --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
+    PUSH2(10,0)  DO        I UDOT PUTCHAR({','})      LOOP            --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
+                XDO(10,0) XI UDOT PUTCHAR({','})     XLOOP            --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
+                XDO(10,0) XI UDOT PUTCHAR({','}) PLUSXLOOP(2)         --> " 0, 2, 4, 8,"
+    PUSH2(10,0) SDO       SI UDOT PUTCHAR({','})     SLOOP            --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
+    PUSH(10)   SZDO      SZI UDOT PUTCHAR({','})    SZLOOP            --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
     
-    PUSH(10) BEGIN 
-        DUP 
-        WHILE 
-            DUP_DOT PUTCHAR({','}) ONE_SUB 
-    REPEAT DROP --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
+    PUSH(10) BEGIN DUP_WHILE DUP_DOT PUTCHAR({','}) _1SUB REPEAT DROP --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
     
 | original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |

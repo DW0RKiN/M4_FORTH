@@ -90,7 +90,7 @@ PRINT_STRING:
     ld    B, H          ; 1:4       Length of string to print    
     ld    C, L          ; 1:4       Length of string to print
     call 0x203C         ; 3:17      Print our string
-    ret                 ; 1:10})dnl
+    ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl
@@ -123,7 +123,7 @@ DE_LSHIFT:
     ret                 ; 1:10
 DE_LSHIFTZ:
     ld   HL, 0x0000     ; 3:10
-    ret                 ; 1:10})dnl
+    ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl
@@ -159,7 +159,7 @@ DE_RSHIFT:
     ret                 ; 1:10{}ifdef({USE_LSHIFT},,{
 DE_RSHIFTZ:
     ld   HL, 0x0000     ; 3:10
-    ret                 ; 1:10})})dnl
+    ret                 ; 1:10})}){}dnl
 dnl
 dnl
 dnl
@@ -200,7 +200,7 @@ MUL_LOOP2:
     jr    c, MUL_LOOP2  ; 2:7/12
     jp   nz, MUL_LOOP2+1; 3:10      A = ?
 
-    ret                 ; 1:10})dnl
+    ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl
@@ -257,7 +257,7 @@ DIVIDE:
     sbc   A, H          ; 1:4
     sub   L             ; 1:4
     ld    H, A          ; 1:4
-    ret                 ; 1:10})dnl
+    ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl
@@ -301,7 +301,29 @@ UDIVIDE_HI:
     ex   DE, HL         ; 1:4
     ld    H, C          ; 1:4
     ld    L, A          ; 1:4
-    ret                 ; 1:10})dnl
+    ret                 ; 1:10}){}dnl
+dnl
+dnl
+dnl
+dnl
+ifdef({USE_KEY},{
+; Read key from keyboard
+; In: 
+; Out: push stack, TOP = HL = key
+READKEY:
+    ex   DE, HL         ; 1:4       readkey
+    ex  (SP),HL         ; 1:19      readkey
+    push HL             ; 1:11      readkey
+    ld   BC, 0x5C08     ; 3:10      readkey ZX Spectrum LAST K system variable
+    xor   A             ; 1:4       readkey
+    ld    H, A          ; 1:4       readkey
+    ld  (BC),A          ; 1:7       readkey
+    ld    A,(BC)        ; 1:7       readkey read new value of LAST K
+    cp    H             ; 1:4       readkey is it still zero?
+    jr    z, $-2        ; 2:7/12    readkey
+    ld    L, A          ; 1:4       readkey
+    ret                 ; 1:10      readkey}){}dnl
+dnl
 dnl
 ALL_VARIABLE
 STRING_SECTION:

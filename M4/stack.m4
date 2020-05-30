@@ -5,10 +5,16 @@ dnl prohodi vrchol zasobniku s druhou polozkou
 define({SWAP},{
     ex   DE, HL         ; 1:4       swap})dnl
 dnl
-dnl ( x1 x2 x3 x4 -- x3 x4 x1 x2 )
+dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{
-    ex   DE, HL         ; 1:4       2swap})dnl
+    ex  (SP),HL         ; 1:19      2swap d a b c
+    pop  AF             ; 1:10      2swap d b c
+    pop  BC             ; 1:10      2swap b c
+    push DE             ; 1:11      2swap b b c 
+    push AF             ; 1:11      2swap b a b c
+    ld    D, B          ; 1:4       2swap
+    ld    E, C          ; 1:4       2swap})dnl
 dnl
 dnl
 dnl ( x1 -- x1 x1 )

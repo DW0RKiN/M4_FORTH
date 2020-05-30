@@ -84,8 +84,10 @@ dnl
 define(PRINT_COUNT,100)dnl
 pushdef({ALL_STRING_STACK},{})dnl
 dnl
+dnl ." string"
+dnl .( string)
 dnl ( -- )
-dnl print ( sring )
+dnl print string
 define(PRINT,{define({PRINT_COUNT}, incr(PRINT_COUNT))
     push DE             ; 1:11      print
     ld   BC, size{}PRINT_COUNT    ; 3:10      print Length of string to print
@@ -96,5 +98,12 @@ pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
 db STRING_POP
 size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
 ALL_STRING_STACK)})dnl
+dnl
+dnl 
+dnl ( -- key )
+dnl print number
+define(KEY,{ifdef({USE_KEY},,define({USE_KEY},{}))
+    call READKEY        ; 3:17      key})dnl
+dnl
 dnl
 dnl

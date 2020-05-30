@@ -35,6 +35,8 @@ define(XOR,{
 dnl
 dnl ( x1 -- x )
 dnl x = ~x1
+dnl -1   -> false
+dnl false-> true
 define(INVERT,{
     ld    A, L          ; 1:4       invert
     cpl                 ; 1:4       invert
