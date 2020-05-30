@@ -84,9 +84,8 @@ else101:
     pop  DE             ; 1:10      nip 
     jp   endif103       ; 3:10      else
 else103: 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push(1) 
+    pop  DE             ; 1:10      2drop 1
+    ld   HL, 1          ; 3:10      2drop 1 
 endif103:                                                   
         
 endif101: 
@@ -110,40 +109,39 @@ gcd2:                   ;           ( a b -- gcd )
     ld  (HL),D          ; 1:7       :
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       :                                                              
-        
-    ld    A, H          ; 1:4       dcp0
-    or    L             ; 1:4       dcp0
-    or    D             ; 1:4       dcp0
-    or    E             ; 1:4       dcp0     
-    jp   nz, else104    ; 3:10      ifz 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push(1) 
+    exx                 ; 1:4       :
+      
+    ld    A, H          ; 1:4       2dup D0= if
+    or    L             ; 1:4       2dup D0= if
+    or    D             ; 1:4       2dup D0= if
+    or    E             ; 1:4       2dup D0= if
+    jp   nz, else104    ; 3:10      2dup D0= if 
+    pop  DE             ; 1:10      2drop 1
+    ld   HL, 1          ; 3:10      2drop 1 
     jp   gcd2_end       ; 3:10      exit 
 else104  EQU $          ;           = endif
 endif104:                                          
-        
-    ld    A, H          ; 1:4       cp0
-    or    L             ; 1:4       cp0      
-    jp   nz, else105    ; 3:10      ifz 
+         
+    ld    A, H          ; 1:4       dup 0= if
+    or    L             ; 1:4       dup 0= if
+    jp   nz, else105    ; 3:10      dup 0= if   
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop              
+    pop  DE             ; 1:10      drop         
     jp   gcd2_end       ; 3:10      exit 
 else105  EQU $          ;           = endif
 endif105:                                          
-        
+    
     ex   DE, HL         ; 1:4       swap 
-    ld    A, H          ; 1:4       cp0
-    or    L             ; 1:4       cp0 
-    jp   nz, else106    ; 3:10      ifz 
+    ld    A, H          ; 1:4       dup 0= if
+    or    L             ; 1:4       dup 0= if
+    jp   nz, else106    ; 3:10      dup 0= if   
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop              
+    pop  DE             ; 1:10      drop         
     jp   gcd2_end       ; 3:10      exit 
 else106  EQU $          ;           = endif
 endif106:                                          
         
-begin102:  
+begin102: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup 
     ex   DE, HL         ; 1:4       -
@@ -155,7 +153,7 @@ begin102:
     or    L             ; 1:4       while 102
     ex   DE, HL         ; 1:4       while 102
     pop  DE             ; 1:10      while 102
-    jp    z, repeat102  ; 3:10      while 102  
+    jp    z, repeat102  ; 3:10      while 102 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup 
     ld    A, H          ; 1:4       <
@@ -166,7 +164,7 @@ begin102:
     ex   DE, HL         ; 1:4       <
     sbc  HL, DE         ; 2:15      <
     sbc  HL, HL         ; 2:15      <
-    pop  DE             ; 1:10      <  
+    pop  DE             ; 1:10      < 
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
@@ -178,7 +176,7 @@ begin102:
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -                                                          
-                 
+                       
     jp   endif107       ; 3:10      else
 else107: 
     ex   DE, HL         ; 1:4       swap 
@@ -189,12 +187,12 @@ else107:
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      - 
     ex   DE, HL         ; 1:4       swap                                              
-                 
+                       
 endif107:                                                               
         
     jp   begin102       ; 3:10      repeat 102
 repeat102: 
-    pop  DE             ; 1:10      nip 
+    pop  DE             ; 1:10      nip
     
 gcd2_end:
     exx                 ; 1:4       ;

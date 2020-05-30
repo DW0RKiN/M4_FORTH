@@ -10,7 +10,7 @@ include(`./FIRST.M4')dnl
                 _2DUP_UGT_IF SWAP THEN OVER SUB                                               
             REPEAT DROP 
         ELSE                                                               
-            DUP_IF NIP ELSE DROP DROP_PUSH(1) THEN                                                   
+            DUP_IF NIP ELSE _2DROP_PUSH(1) THEN                                                   
         THEN 
     SEMICOLON 
     COLON(gcd1_bench,( -- ))

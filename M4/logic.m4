@@ -61,47 +61,35 @@ define(FALSE,{
     ex   DE, HL         ; 1:4       false
     ld   HL, 0x0000     ; 3:10      false})dnl
 dnl
-dnl --------- nedestruktivni ------------
-dnl
-dnl ( x -- x )
-dnl set zero flag ( x | x )
-define(CP0,{
-    ld    A, H          ; 1:4       cp0
-    or    L             ; 1:4       cp0})dnl
-dnl
-dnl ------------ 32 bitove --------------
-dnl
-dnl ( x2 x1 -- x2 x1 )
-dnl if ( x1x2 ) x = 0; else x = 0xFFFF;
-dnl set zero flag ( x1x2 | x1x2 )
-define(DCP0,{
-    ld    A, H          ; 1:4       dcp0
-    or    L             ; 1:4       dcp0
-    or    D             ; 1:4       dcp0
-    or    E             ; 1:4       dcp0})dnl
-dnl
 dnl -------------------------------------
 dnl
-dnl ( x1 -- x )
-dnl if ( x1 ) x = 0; else x = 0xFFFF;
-dnl 0 if not equal to zero, -1 if equal
-define(EQ0,{
-    ld    A, H          ; 1:4       eq0
-    or    L             ; 1:4       eq0
-    ld   HL, 0x0000     ; 3:10      eq0
-    jr   nz, $+3        ; 2:7/12    eq0
-    dec  HL             ; 1:6       eq0})dnl
+dnl D0=
+dnl ( x2 x1 -- flag )
+dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
+dnl 0 if 32-bit number not equal to zero, -1 if equal
+define(D0EQ,{
+    ld    A, D          ; 1:4       D0=
+    or    E             ; 1:4       D0=
+    pop   DE            ; 1:10      D0=
+    or    H             ; 1:4       D0=
+    or    L             ; 1:4       D0=
+    ld   HL, 0x0000     ; 3:10      D0=
+    jr   nz, $+3        ; 2:7/12    D0=
+    dec  HL             ; 1:6       D0=})dnl
 dnl
-dnl ( x1 -- x )
-dnl if ( x1 ) x = 0; else x = 0xFFFF;
-dnl 0 if equal to zero, -1 if not equal
-dnl Lepsi nepouzivat! Neni potreba, protoze cokoliv nenuloveho je TRUE.
-define(NE0,{
-    .warning Better not to use! No need, because anything non-zero is TRUE.
-    ld    A, H          ; 1:4       ne0
-    or    L             ; 1:4       ne0
-    jr    z, $+5        ; 2:7/12    ne0
-    ld   HL, 0xFFFF     ; 3:10      ne0})dnl
+dnl
+dnl 0=
+dnl ( x1 -- flag )
+dnl if ( x1 ) flag = 0; else flag = 0xFFFF;
+dnl 0 if 16-bit number not equal to zero, -1 if equal
+define(_0EQ,{
+    ld    A, H          ; 1:4       0=
+    or    L             ; 1:4       0=
+    ld   HL, 0x0000     ; 3:10      0=
+    jr   nz, $+3        ; 2:7/12    0=
+    dec  HL             ; 1:6       0=})dnl
+dnl
+dnl
 dnl
 dnl ------------ signed -----------------
 dnl

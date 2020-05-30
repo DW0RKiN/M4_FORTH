@@ -193,11 +193,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |   invert   |    INVERT    |                |       ( x1 -- ~x1 )   |         |
 |    true    |     TRUE     |                |          ( -- -1 )    |         |
 |   false    |    FALSE     |                |          ( -- 0 )     |         |
-|            |              |      CP0       |       ( x1 -- x1 )    |         | x1-0 --> set zero flag
-|            |              |     DCP0       |    ( x2 x1 -- x2 x1 ) |         | x2x1-0 --> set zero flag
-|   `0` =    |              |      EQ0       |       ( x1 -- x )     |         |
-|  `0` <>    |              |      NE0       |       ( x1 -- x )     |         | Do not use! Change True `3` to True `-1`
 |      =     |      EQ      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     0=     |     _0EQ     |                |       ( x1 -- f )     |         | f=(x1 == 0)
+|     0=     |     D0EQ     |                |    ( x1 x2 -- f )     |         | f=((x1|x2) == 0)
 |     <>     |      NE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |      <     |      LT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     <=     |      LE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
@@ -261,10 +259,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 | :----------: | :----------: |  :---------------: | :------------------ | :------ | :--------------- |
 |      if      |      IF      |                    |    ( flag -- )      |         |
 |    dup if    |              |      DUP_IF        |    ( flag -- flag ) |         |
-|              |     IFNZ     |                    |         ( -- )      |         | IF not zero flag
-|              |     IFZ      |                    |         ( -- )      |         | IF zero flag
 |     else     |     ELSE     |                    |         ( -- )      |         |
 |     then     |     THEN     |                    |         ( -- )      |         |
+|     0= if    |              |      _0EQ_IF       |      ( x1 -- )      |         |
+|  dup 0= if   |              |     DUP_0EQ_IF     |      ( x1 -- x1 )   |         |
+|    D0= if    |              |      D0EQ_IF       |    (x1 x2 -- )      |         |
+| 2dup D0= if  |              |   _2DUP_D0EQ_IF    |    (x1 x2 -- x1 x2) |         |
 | dup `5` < if |              | DUP_PUSH_LT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 | dup `5` <= if|              | DUP_PUSH_LE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 | dup `5` > if |              | DUP_PUSH_GT_IF(`5`)|         ( -- )      |         |`(addr)` not supported

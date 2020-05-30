@@ -11,19 +11,19 @@ include(`./FIRST.M4')dnl
                 _2DUP UGT IF SWAP THEN OVER SUB                                               
             REPEAT DROP 
         ELSE                                                               
-            DUP IF NIP ELSE DROP DROP_PUSH(1) THEN                                                   
+            DUP IF NIP ELSE _2DROP_PUSH(1) THEN                                                   
         THEN 
     SEMICOLON
     
-    COLON(gcd2,( a b -- gcd ))                                                              
-        DCP0     IFZ DROP DROP_PUSH(1) EXIT THEN                                          
-        CP0      IFZ DROP              EXIT THEN                                          
-        SWAP CP0 IFZ DROP              EXIT THEN                                          
-        BEGIN  _2DUP SUB                                                                    
-        WHILE  _2DUP LT  IF OVER SUB                                                          
-                 ELSE SWAP OVER SUB SWAP                                              
-                 THEN                                                               
-        REPEAT NIP 
+    COLON(gcd2,( a b -- gcd ))
+      _2DUP_D0EQ_IF _2DROP_PUSH(1) EXIT THEN                                          
+         DUP_0EQ_IF   DROP         EXIT THEN                                          
+    SWAP DUP_0EQ_IF   DROP         EXIT THEN                                          
+        BEGIN _2DUP SUB                                                                    
+        WHILE _2DUP LT IF OVER SUB                                                          
+                       ELSE SWAP OVER SUB SWAP                                              
+                       THEN                                                               
+        REPEAT NIP
     SEMICOLON
 
     COLON(bench,( -- ))

@@ -1,5 +1,6 @@
-    ORG 32768
     
+ORG 32768
+
 ;   ===  b e g i n  ===
     exx
     push HL
@@ -8,18 +9,18 @@
     call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
-    
+
     call gcd2_bench     ; 3:17      call
     ex   DE,HL          ; 1:4       call    
     exx                 ; 1:4       call
-    
+
     pop  DE
     pop  HL
     exx
     ret
 ;   =====  e n d  =====   
         
-    
+
 ;   ---  b e g i n  ---
 gcd2:                   ;           ( a b -- gcd )
     exx                 ; 1:4       :
@@ -28,52 +29,53 @@ gcd2:                   ;           ( a b -- gcd )
     ld  (HL),D          ; 1:7       :
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       :                                                              
-        
-    ld    A, H          ; 1:4       dcp0
-    or    L             ; 1:4       dcp0
-    or    D             ; 1:4       dcp0
-    or    E             ; 1:4       dcp0     
-    jp   nz, else101    ; 3:10      ifz 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push(1) 
+    exx                 ; 1:4       :
+      
+    ld    A, H          ; 1:4       2dup D0= if
+    or    L             ; 1:4       2dup D0= if
+    or    D             ; 1:4       2dup D0= if
+    or    E             ; 1:4       2dup D0= if
+    jp   nz, else101    ; 3:10      2dup D0= if 
+    pop  DE             ; 1:10      2drop 1
+    ld   HL, 1          ; 3:10      2drop 1 
     jp   gcd2_end       ; 3:10      exit 
 else101  EQU $          ;           = endif
 endif101:                                          
-        
-    ld    A, H          ; 1:4       cp0
-    or    L             ; 1:4       cp0      
-    jp   nz, else102    ; 3:10      ifz 
+         
+    ld    A, H          ; 1:4       dup 0= if
+    or    L             ; 1:4       dup 0= if
+    jp   nz, else102    ; 3:10      dup 0= if   
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop              
+    pop  DE             ; 1:10      drop         
     jp   gcd2_end       ; 3:10      exit 
 else102  EQU $          ;           = endif
 endif102:                                          
-        
+    
     ex   DE, HL         ; 1:4       swap 
-    ld    A, H          ; 1:4       cp0
-    or    L             ; 1:4       cp0 
-    jp   nz, else103    ; 3:10      ifz 
+    ld    A, H          ; 1:4       dup 0= if
+    or    L             ; 1:4       dup 0= if
+    jp   nz, else103    ; 3:10      dup 0= if   
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop              
+    pop  DE             ; 1:10      drop         
     jp   gcd2_end       ; 3:10      exit 
 else103  EQU $          ;           = endif
 endif103:                                          
+    
+begin101: 
         
-begin101:  
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup 
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -                                                                    
-        
+    
     ld    A, H          ; 1:4       while 101
     or    L             ; 1:4       while 101
     ex   DE, HL         ; 1:4       while 101
     pop  DE             ; 1:10      while 101
     jp    z, repeat101  ; 3:10      while 101  
+        
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup 
     ld    A, H          ; 1:4       <
@@ -84,21 +86,24 @@ begin101:
     ex   DE, HL         ; 1:4       <
     sbc  HL, DE         ; 2:15      <
     sbc  HL, HL         ; 2:15      <
-    pop  DE             ; 1:10      <  
+    pop  DE             ; 1:10      < 
+        
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else104    ; 3:10      if 
+            
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over 
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -                                                          
-                 
+        
     jp   endif104       ; 3:10      else
 else104: 
+            
     ex   DE, HL         ; 1:4       swap 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over 
@@ -107,13 +112,14 @@ else104:
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      - 
     ex   DE, HL         ; 1:4       swap                                              
-                 
-endif104:                                                               
         
+endif104:                                                               
+    
     jp   begin101       ; 3:10      repeat 101
 repeat101: 
-    pop  DE             ; 1:10      nip 
     
+    pop  DE             ; 1:10      nip
+
 gcd2_end:
     exx                 ; 1:4       ;
     ld   E,(HL)         ; 1:7       ;
@@ -122,9 +128,9 @@ gcd2_end:
     inc  HL             ; 1:6       ;
     ex   DE,HL          ; 1:4       ;
     jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+;   -----  e n d  -----          
 
-    
+
 ;   ---  b e g i n  ---
 gcd2_bench:             ;           ( -- )
     exx                 ; 1:4       :
@@ -134,7 +140,7 @@ gcd2_bench:             ;           ( -- )
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
     exx                 ; 1:4       :
-        
+    
     exx                 ; 1:4       xdo 101
     dec  HL             ; 1:6       xdo 101
     ld  (HL),high 0     ; 2:10      xdo 101
@@ -142,7 +148,7 @@ gcd2_bench:             ;           ( -- )
     ld  (HL),low 0      ; 2:10      xdo 101
     exx                 ; 1:4       xdo 101
 xdo101:                 ;           xdo 101
-            
+        
     exx                 ; 1:4       xdo 102
     dec  HL             ; 1:6       xdo 102
     ld  (HL),high 0     ; 2:10      xdo 102
@@ -200,7 +206,7 @@ xdo102:                 ;           xdo 102
     inc   L             ; 1:4       xloop 102
     inc  HL             ; 1:6       xloop 102
     exx                 ; 1:4       xloop 102
-        
+    
     exx                 ; 1:4       xloop 101
     inc (HL)            ; 1:7       xloop 101 index_lo++
     ld    A, 100        ; 2:7       xloop 101
@@ -212,7 +218,7 @@ xdo102:                 ;           xdo 102
     inc   L             ; 1:4       xloop 101
     inc  HL             ; 1:6       xloop 101
     exx                 ; 1:4       xloop 101
-    
+
 gcd2_bench_end:
     exx                 ; 1:4       ;
     ld   E,(HL)         ; 1:7       ;

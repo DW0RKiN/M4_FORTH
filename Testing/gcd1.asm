@@ -31,7 +31,7 @@ gcd1:                   ;           ( a b -- gcd )
     
     ld    A, D          ; 1:4       over if
     or    E             ; 1:4       over if
-    jp    z, else101    ; 3:10      if                                                                         
+    jp    z, else101    ; 3:10      over if                                                                         
             
 begin101:                                                                         
             
@@ -39,11 +39,11 @@ begin101:
     or    L             ; 1:4       dup_while 101
     jp    z, repeat101  ; 3:10      dup_while 101                                                                   
                 
-    ld    A, L          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       dup2 (u)> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    jp   nc, else102    ; 3:10      dup2 (u)> if 
+    ld    A, L          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sub   E             ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sbc   A, D          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    jp   nc, else102    ; 3:10      2dup u> if 
     ex   DE, HL         ; 1:4       swap 
 else102  EQU $          ;           = endif
 endif102: 
@@ -64,13 +64,12 @@ else101:
             
     ld    A, H          ; 1:4       dup if
     or    L             ; 1:4       dup if
-    jp    z, else103    ; 3:10      if 
+    jp    z, else103    ; 3:10      dup if 
     pop  DE             ; 1:10      nip 
     jp   endif103       ; 3:10      else
 else103: 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
-    ld   HL, 1          ; 3:10      drop_push(1) 
+    pop  DE             ; 1:10      2drop 1
+    ld   HL, 1          ; 3:10      2drop 1 
 endif103:                                                   
         
 endif101: 

@@ -116,21 +116,29 @@ define({PUSH2},{
     ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)})dnl
 dnl
 dnl
-dnl DROP_PUSH(50)
+dnl drop 50
 dnl ( a -- 50 ) 
 dnl zmeni hodnotu top
 define({DROP_PUSH},{
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      drop_push($1)})dnl
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      drop $1})dnl
 dnl
 dnl
-dnl DUP_PUSH(50)
+dnl 2drop 50
+dnl ( a -- 50 ) 
+dnl zmeni hodnotu top
+define({_2DROP_PUSH},{
+    pop  DE             ; 1:10      2drop $1
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      2drop $1})dnl
+dnl
+dnl
+dnl dup 50
 dnl ( a -- a a 50 ) 
 dnl zmeni hodnotu top
 define({DUP_PUSH},{
-    push DE             ; 1:11      dup_push($1)
-    push HL             ; 1:11      dup_push($1)
-    ex   DE, HL         ; 1:4       dup_push($1)
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup_push($1)})dnl
+    push DE             ; 1:11      dup $1
+    push HL             ; 1:11      dup $1
+    ex   DE, HL         ; 1:4       dup $1
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1})dnl
 dnl
 dnl
 dnl 0 pick ( a 0 -- a a )

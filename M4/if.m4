@@ -9,15 +9,6 @@ define(IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)push
     jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
 dnl
 dnl
-dnl if not zero
-define(IFNZ,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    jp    z, else{}IF_COUNT    ; 3:10      ifnz})dnl
-dnl
-dnl
-dnl if zero
-define(IFZ,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    jp   nz, else{}IF_COUNT    ; 3:10      ifz})dnl
-dnl
 dnl
 define({ELSE},{
     jp   endif{}THEN_STACK       ; 3:10      else
@@ -30,16 +21,59 @@ popdef({ELSE_STACK})})endif{}THEN_STACK:dnl
 popdef({THEN_STACK})})dnl
 dnl
 dnl
+dnl 0= if
+dnl ( x1 -- )
+define(_0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       0= if
+    or    L             ; 1:4       0= if
+    ex   DE, HL         ; 1:4       0= if      
+    pop  DE             ; 1:10      0= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      0= if)dnl
+dnl
+dnl
+dnl ( x1 -- x1 )
+dnl dup 0= if
+define(DUP_0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       dup 0= if
+    or    L             ; 1:4       dup 0= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      dup 0= if)dnl
+dnl
+dnl
+dnl D0= if
+dnl ( x1 x2 -- )
+define(D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       D0= if
+    or    L             ; 1:4       D0= if
+    pop  HL             ; 1:10      D0= if
+    or    D             ; 1:4       D0= if
+    or    E             ; 1:4       D0= if
+    pop  DE             ; 1:10      D0= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      D0= if)dnl
+dnl
+dnl
+dnl ( x1 x2 -- x1 x2 )
+dnl 2dup D0= if
+define(_2DUP_D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       2dup D0= if
+    or    L             ; 1:4       2dup D0= if
+    or    D             ; 1:4       2dup D0= if
+    or    E             ; 1:4       2dup D0= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      2dup D0= if)dnl
+dnl
+dnl
+dnl ( x1 -- x1 ) 
+dnl dup if
 define(DUP_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup if
     or    L             ; 1:4       dup if
-    jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
+    jp    z, else{}IF_COUNT}    ; 3:10      dup if)dnl
 dnl
 dnl
+dnl over if
 define(OVER_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, D          ; 1:4       over if
     or    E             ; 1:4       over if
-    jp    z, else{}IF_COUNT}    ; 3:10      if)dnl
+    jp    z, else{}IF_COUNT}    ; 3:10      over if)dnl
 dnl
 dnl -------- signed ---------
 dnl
