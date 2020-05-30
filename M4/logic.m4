@@ -132,6 +132,13 @@ define(LT,{
     pop  DE             ; 1:10      <})dnl
 dnl
 dnl
+dnl 0<
+dnl ( x1 -- flag )
+define(_0LT,{
+    rl    H             ; 2:8       0<
+    sbc  HL, HL         ; 2:15      0<})dnl
+dnl
+dnl
 dnl <=
 dnl ( x2 x1 -- x )
 dnl signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
@@ -166,15 +173,24 @@ dnl >=
 dnl ( x2 x1 -- x )
 dnl signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 define({GE},{
-    ld    A, H          ; 1:4       <
-    xor   D             ; 1:4       <
-    jp    p, $+7        ; 3:10      <
-    rl    H             ; 2:8       < sign x1
-    jr   $+5            ; 2:12      <
-    scf                 ; 1:4       <
-    sbc  HL, DE         ; 2:15      <
-    sbc  HL, HL         ; 2:15      <
-    pop  DE             ; 1:10      <})dnl
+    ld    A, H          ; 1:4       >=
+    xor   D             ; 1:4       >=
+    jp    p, $+7        ; 3:10      >=
+    rl    H             ; 2:8       >= sign x1
+    jr   $+5            ; 2:12      >=
+    scf                 ; 1:4       >=
+    sbc  HL, DE         ; 2:15      >=
+    sbc  HL, HL         ; 2:15      >=
+    pop  DE             ; 1:10      >=})dnl
+dnl
+dnl
+dnl 0>=
+dnl ( x1 -- flag )
+define(_0GE,{
+    ld    A, H          ; 1:4       0>=
+    sub   0x80          ; 2:7       0>=
+    sbc  HL, HL         ; 2:15      0>=
+    pop  DE             ; 1:10      0>=})dnl
 dnl
 dnl ------------ unsigned ---------------
 dnl

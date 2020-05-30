@@ -198,9 +198,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |     0=     |     D0EQ     |                |    ( x1 x2 -- f )     |         | f=((x1|x2) == 0)
 |     <>     |      NE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |      <     |      LT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     0<     |     _0LT     |                |       ( x1 -- f )     |         | f=(x1 < 0)
 |     <=     |      LE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |      >     |      GT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     >=     |      GE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
+|     0>=    |     _0GE     |                |       ( x1 -- f )     |         | f=(x1 >= 0)
 |     u<     |     ULT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |    u<=     |     ULE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     u>     |     UGT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
