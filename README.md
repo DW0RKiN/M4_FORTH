@@ -265,6 +265,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |     then     |     THEN     |                    |         ( -- )      |         |
 |     0= if    |              |      _0EQ_IF       |      ( x1 -- )      |         |
 |  dup 0= if   |              |     DUP_0EQ_IF     |      ( x1 -- x1 )   |         |
+|     0< if    |              |      _0LT_IF       |      ( x1 -- )      |         |
+|  dup 0< if   |              |     DUP_0LT_IF     |      ( x1 -- x1 )   |         |
+|     0>= if   |              |      _0GE_IF       |      ( x1 -- )      |         |
+|  dup 0>= if  |              |     DUP_0GE_IF     |      ( x1 -- x1 )   |         |
 |    D0= if    |              |      D0EQ_IF       |    (x1 x2 -- )      |         |
 | 2dup D0= if  |              |   _2DUP_D0EQ_IF    |    (x1 x2 -- x1 x2) |         |
 | dup `5` < if |              | DUP_PUSH_LT_IF(`5`)|         ( -- )      |         |`(addr)` not supported

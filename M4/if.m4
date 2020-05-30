@@ -39,6 +39,38 @@ define(DUP_0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_CO
     jp   nz, else{}IF_COUNT}    ; 3:10      dup 0= if)dnl
 dnl
 dnl
+dnl 0< if
+dnl ( x1 -- )
+define(_0LT_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    bit   7, H          ; 2:8       0< if
+    ex   DE, HL         ; 1:4       0< if      
+    pop  DE             ; 1:10      0< if
+    jp    z, else{}IF_COUNT}    ; 3:10      0< if)dnl
+dnl
+dnl
+dnl ( x1 -- x1 )
+dnl dup 0< if
+define(DUP_0LT_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    bit   7, H          ; 2:8       dup 0< if
+    jp    z, else{}IF_COUNT}    ; 3:10      dup 0< if)dnl
+dnl
+dnl
+dnl 0>= if
+dnl ( x1 -- )
+define(_0GE_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    bit   7, H          ; 2:8       0>= if
+    ex   DE, HL         ; 1:4       0>= if      
+    pop  DE             ; 1:10      0>= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      0>= if)dnl
+dnl
+dnl
+dnl ( x1 -- x1 )
+dnl dup 0>= if
+define(DUP_0GE_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    bit   7, H          ; 2:8       dup 0>= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      dup 0>= if)dnl
+dnl
+dnl
 dnl D0= if
 dnl ( x1 x2 -- )
 define(D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
