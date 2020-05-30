@@ -129,7 +129,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 | original   |   M4 FORTH   |  optimization  |   data stack                |  return address stack |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
 |    swap    |     SWAP     |                |     ( x2 x1 -- x1 x2 )      |                       |
-|   2swap    |    2SWAP     |                |(x1 x2 x3 x4 -- x3 x4 x1 x2) |                       |
+|   2swap    |    _2SWAP    |                |(x1 x2 x3 x4 -- x3 x4 x1 x2) |                       |
 |    dup     |      DUP     |                |        ( x1 -- x1 x1 )      |                       |
 |    2dup    |    _2DUP     |                |     ( x2 x1 -- x2 x1 x2 x1 )|                       |
 |    drop    |     DROP     |                |        ( x1 -- )            |                       |
