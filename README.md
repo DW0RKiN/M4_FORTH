@@ -120,6 +120,10 @@ All FORTH words must be capitalized! Because `+` is written as `ADD`. And `add` 
     
 Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
 
+A compiler from Forth to M4 FORTH is written in bash. Manual adjustments are still needed. For example, move functions below STOP. Unknown words will try to be called as function names.
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/forth2m4.sh
+
 ## Implemented words FORTH
 
 ### Stack manipulation
@@ -195,7 +199,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |   false    |    FALSE     |                |          ( -- 0 )     |         |
 |      =     |      EQ      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     0=     |     _0EQ     |                |       ( x1 -- f )     |         | f=(x1 == 0)
-|     0=     |     D0EQ     |                |    ( x1 x2 -- f )     |         | f=((x1|x2) == 0)
+|    D0=     |     D0EQ     |                |    ( x1 x2 -- f )     |         | f=((x1|x2) == 0)
 |     <>     |      NE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |      <     |      LT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
 |     0<     |     _0LT     |                |       ( x1 -- f )     |         | f=(x1 < 0)
