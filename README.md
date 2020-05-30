@@ -115,7 +115,7 @@ m4 Hello.m4
 
 ## Limitations of the M4 markup language
 
-Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. 
+Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. `2dup` to `_2DUP`. `3` to `PUSH(3)`.
 All FORTH words must be capitalized! Because `+` is written as `ADD`. And `add` is reserved for assembler instructions.
     
 Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
@@ -128,29 +128,31 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 
 | original   |   M4 FORTH   |  optimization  |   data stack                |  return address stack |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
-|    swap    |     SWAP     |                |    ( x2 x1 -- x1 x2 )       |                       |
-|    dup     |      DUP     |                |       ( x1 -- x1 x1 )       |                       |
-|    2dup    |    _2DUP     |                |    ( x2 x1 -- x2 x1 x2 x1 ) |                       |
-|    drop    |     DROP     |                |       ( x1 -- )             |                       |
-|   2drop    |    _2DROP    |                |    ( x2 x1 -- )             |                       |
-|    nip     |      NIP     |                |    ( x2 x1 -- x1 )          |                       |
-|   tuck     |     TUCK     |                |    ( x2 x1 -- x1 x2 x1 )    |                       |
-|   over     |     OVER     |                |    ( x2 x1 -- x2 x1 x2 )    |                       |
-|    rot     |      ROT     |                | ( x3 x2 x1 -- x2 x1 x3 )    |                       |
-|   -rot     |     RROT     |                | ( x3 x2 x1 -- x1 x3 x2 )    |                       |
-|   `123`    |  PUSH(`123`) |   PUSH2()      |          ( -- `123` )       |                       |
-|   `2` `1`  |PUSH2(`2`,`1`)|                |          ( -- `2` `1` )     |                       |
-| addr `7` ! | PUSH((addr)) |                |  *addr = 7 --> ( -- `7`)    |                       |
-|            |              | PUSH2((A),`2`) |  *A = 4 --> ( -- `4` `2` )  |                       |
-| drop `5`   |              | DROP_PUSH(`5`) |       ( x1 -- `5`)          |                       |
-|  dup `4`   |              |  DUP_PUSH(`4`) |       ( x1 -- x1 x1 `4`)    |                       |
-|   0 pick   |              |    _0_PICK     |        ( a -- a a )         |                       |
-|   1 pick   |              |    _1_PICK     |      ( b a -- b a b )       |                       |
-|   2 pick   |              |    _2_PICK     |    ( c b a -- c b a c )     |                       |
-|   3 pick   |              |    _3_PICK     |  ( d c b a -- d c b a d )   |                       |
-|     >r     |     TO_R     |                |       ( x1 -- )             |    ( -- x1 )          |
-|     r>     |    R_FROM    |                |          ( -- x1 )          | ( x1 -- )             |
-|     r@     |    R_FETCH   |                |          ( -- x1 )          |  (x1 -- x1 )          |
+|    swap    |     SWAP     |                |     ( x2 x1 -- x1 x2 )      |                       |
+|   2swap    |    2SWAP     |                |(x1 x2 x3 x4 -- x3 x4 x1 x2) |                       |
+|    dup     |      DUP     |                |        ( x1 -- x1 x1 )      |                       |
+|    2dup    |    _2DUP     |                |     ( x2 x1 -- x2 x1 x2 x1 )|                       |
+|    drop    |     DROP     |                |        ( x1 -- )            |                       |
+|   2drop    |    _2DROP    |                |     ( x2 x1 -- )            |                       |
+|    nip     |      NIP     |                |     ( x2 x1 -- x1 )         |                       |
+|   tuck     |     TUCK     |                |     ( x2 x1 -- x1 x2 x1 )   |                       |
+|   over     |     OVER     |                |     ( x2 x1 -- x2 x1 x2 )   |                       |
+|   2over    |    2OVER     |                |   ( a b c d -- a b c d a b )|                       |
+|    rot     |     ROT      |                |  ( x3 x2 x1 -- x2 x1 x3 )   |                       |
+|   -rot     |     RROT     |                |  ( x3 x2 x1 -- x1 x3 x2 )   |                       |
+|   `123`    |  PUSH(`123`) |   PUSH2()      |           ( -- `123` )      |                       |
+|   `2` `1`  |PUSH2(`2`,`1`)|                |           ( -- `2` `1` )    |                       |
+| addr `7` ! | PUSH((addr)) |                |   *addr = 7 --> ( -- `7`)   |                       |
+|            |              | PUSH2((A),`2`) |   *A = 4 --> ( -- `4` `2` ) |                       |
+| drop `5`   |              | DROP_PUSH(`5`) |        ( x1 -- `5`)         |                       |
+|  dup `4`   |              |  DUP_PUSH(`4`) |        ( x1 -- x1 x1 `4`)   |                       |
+|   0 pick   |              |    _0_PICK     |         ( a -- a a )        |                       |
+|   1 pick   |              |    _1_PICK     |       ( b a -- b a b )      |                       |
+|   2 pick   |              |    _2_PICK     |     ( c b a -- c b a c )    |                       |
+|   3 pick   |              |    _3_PICK     |   ( d c b a -- d c b a d )  |                       |
+|     >r     |     TO_R     |                |        ( x1 -- )            |    ( -- x1 )          |
+|     r>     |    R_FROM    |                |           ( -- x1 )         | ( x1 -- )             |
+|     r@     |    R_FETCH   |                |           ( -- x1 )         |  (x1 -- x1 )          |
 
 ### Arithmetic
 

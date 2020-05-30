@@ -93,7 +93,7 @@ define({DUP_PUSH_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK},
     ld    A, high format({%-6s},$1); 2:7       dup $1 > if    (HL>$1) --> (0>$1-HL) --> carry if true
     sbc   A, H          ; 1:4       dup $1 > if    (HL>$1) --> (0>$1-HL) --> carry if true
     jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})dnl
-dnl    
+dnl
 dnl -------- unsigned ---------
 dnl
 define({DUP_PUSH_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)

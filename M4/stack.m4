@@ -5,6 +5,11 @@ dnl prohodi vrchol zasobniku s druhou polozkou
 define({SWAP},{
     ex   DE, HL         ; 1:4       swap})dnl
 dnl
+dnl ( x1 x2 x3 x4 -- x3 x4 x1 x2 )
+dnl Exchange the top two cell pairs.
+define({_2SWAP},{
+    ex   DE, HL         ; 1:4       2swap})dnl
+dnl
 dnl
 dnl ( x1 -- x1 x1 )
 dnl vytvori kopii vrcholu zasobniku

@@ -3,7 +3,7 @@
 TMPFILE=$(mktemp)
 TMPFILE2=$(mktemp)
 
-cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1\SEMICOLON\2#g' > $TMPFILE
+cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#g'| sed 's#\(\s\|^\)\\\(\s\|$\)#\1;\2#g' > $TMPFILE
 
 # ( comment ) ... ( comment ) ...
 while :
@@ -131,8 +131,10 @@ sed 's#^\([^;{]*\s\|^\)\(type\)\(\s\|$\)#\1\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)\(emit\)\(\s\|$\)#\1\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)\(tuck\)\(\s\|$\)#\1\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)\(over\)\(\s\|$\)#\1\U\2\3#g' |
+sed 's#^\([^;{]*\s\|^\)2\(over\)\(\s\|$\)#\1_2\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)\(nip\)\(\s\|$\)#\1\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)\(swap\)\(\s\|$\)#\1\U\2\3#g' |
+sed 's#^\([^;{]*\s\|^\)2\(swap\)\(\s\|$\)#\1_2\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)\(rot\)\(\s\|$\)#\1\U\2\3#g' |
 sed 's#^\([^;{]*\s\|^\)-\(rot\)\(\s\|$\)#\1R\U\2\3#g' |
 
@@ -239,7 +241,7 @@ do
     sed 's#^\([^;{]*\s\|^\)CALL(\([^_a-zA-Z]\)#\1CALL(_\2#g' |
     sed 's#^\([^;{]*\s\|^\)COLON(\([^_a-zA-Z]\)#\1COLON(_\2#g' |
 # call
-    sed 's#^\([^;{]*\s\|^\)\([_0-9a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g' > $TMPFILE2
+    sed 's#^\([^;{]*\s\|^\)\([0-9a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
     error=$?
     cat $TMPFILE2 > $TMPFILE
