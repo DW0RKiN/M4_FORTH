@@ -308,36 +308,32 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
-    PUSH2(10,0)  DO        I UDOT PUTCHAR({','})      LOOP            --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
-                XDO(10,0) XI UDOT PUTCHAR({','})     XLOOP            --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
-                XDO(10,0) XI UDOT PUTCHAR({','}) PLUSXLOOP(2)         --> " 0, 2, 4, 8,"
-    PUSH2(10,0) SDO       SI UDOT PUTCHAR({','})     SLOOP            --> " 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"
-    PUSH(10)   SZDO      SZI UDOT PUTCHAR({','})    SZLOOP            --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
+    PUSH2(5,0)  DO        I DOT PUTCHAR({','})     LOOP             --> " 0, 1, 2, 3, 4,"
+                XDO(5,0) XI DOT PUTCHAR({','})    XLOOP             --> " 0, 1, 2, 3, 4,"
+                XDO(5,0) XI DOT PUTCHAR({','}) XADDLOOP(2)          --> " 0, 2, 4,"
+    PUSH2(5,0) SDO       SI DOT PUTCHAR({','})    SLOOP             --> " 0, 1, 2, 3, 4,"
+    PUSH(5)   SFOR       SI DOT PUTCHAR({','})    SNEXT             --> " 5, 4, 3, 2, 1, 0,"
     
-    PUSH(10) BEGIN DUP_WHILE DUP_DOT PUTCHAR({','}) _1SUB REPEAT DROP --> " 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,"
+    PUSH(5) BEGIN DUP_WHILE DUP_DOT PUTCHAR({','}) _1SUB REPEAT DROP --> " 5, 4, 3, 2, 1,"
     
 | original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |
 |     do     |      DO      |                | ( stop index -- )            | ( -- stop index )     |
-|    loop    |     LOOP     |                |            ( -- )            | ( s i -- s i-1 )      |
+|    loop    |     LOOP     |                |            ( -- )            | ( s i -- s i+1 )      |
 |   unloop   |    UNLOOP    |                |            ( -- )            | ( stop index -- )     |
 |   leave    |    LEAVE     |                |            ( -- )            | ( stop index -- )     |
 |      i     |       I      |                |            ( -- index )      | ( index -- index )    |
 |      j     |       J      |                |            ( -- j )          | ( j s i -- j s i )    |
-|            |              |      SDO       | ( stop index -- stop index ) | ( -- )                |
-|            |              |     SLOOP      | ( stop index -- stop index+1)| ( -- )                |
+|            |              |       SDO      | ( stop index -- stop index ) | ( -- )                |
+|            |              |      SLOOP     | ( stop index -- stop index+1)| ( -- )                |
 |            |              |     UNSLOOP    | ( stop index -- )            | ( -- )                |
 |            |              |     SLEAVE     | ( stop index -- )            | ( -- )                |
-|            |              |       SI       |        ( s i -- s i i )      | ( -- )                |
-|            |              |      SZDO      |      ( index -- index )      | ( -- )                |
-|            |              |     SZLOOP     |      ( index -- index-1 )    | ( -- )                |
-|            |              |    UNSZLOOP    |      ( index -- )            | ( -- )                |
-|            |              |     SZLEAVE    |      ( index -- )            | ( -- )                |
-|            |              |      SZI       |          ( i -- i i )        | ( -- )                |
+|            |              |       SI       |          ( i -- i i )        | ( -- )                |
+|    for     |              |      SFOR      |      ( index -- index )      | ( -- )                |
+|    next    |              |      SNEXT     |      ( index -- index-1 )    | ( -- )                |
 | `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )            | ( -- `1` )            |
-|            |              |     XLOOP      |            ( -- )            | ( index -- index++ )  |
-| `2` +loop  |              | PLUSXLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|
-|            |              |    UNXLOOP     |            ( -- )            | ( index -- )          |
+|            |              |     XLOOP      |            ( -- )            | ( index -- index+1 )  |
+| `2` +loop  |              |  XADDLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|
 |     i      |              |       XI       |            ( -- i )          | ( i -- i )            |
 |     j      |              |       XJ       |            ( -- j )          | ( j i -- j i )        |
 |     k      |              |       XK       |            ( -- k )          | ( k j i -- k j i )    |

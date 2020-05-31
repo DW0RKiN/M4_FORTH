@@ -1,4 +1,6 @@
 dnl ## Arithmetic
+define({___},{})dnl
+dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 + x1
@@ -128,7 +130,6 @@ define(_2MUL,{
     add  HL, HL         ; 1:11      2*})dnl
 dnl
 dnl
-define({___},{})dnl
 dnl
 dnl
 define({SUM_1BITS},{define({TEMP},eval((($1) & 0x5555) + (($1) & 0xAAAA)/2)){}dnl

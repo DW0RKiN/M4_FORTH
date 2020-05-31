@@ -1,4 +1,7 @@
 
+    
+
+
     ORG 32768
     
 ;   ===  b e g i n  ===
@@ -55,16 +58,17 @@ fib1x_end:
 ;   ---  b e g i n  ---
 fib1_bench:             ;           ( -- )
         
-    push DE             ; 1:11      push(1000)
-    ex   DE, HL         ; 1:4       push(1000)
-    ld   HL, 1000       ; 3:10      push(1000) 
-szdo101:                ;           szdo 101 stack: ( index )
+    push DE             ; 1:11      push(999)
+    ex   DE, HL         ; 1:4       push(999)
+    ld   HL, 999        ; 3:10      push(999) 
+sfor101:                ;           sfor 101 ( index -- index )
             
     push DE             ; 1:11      push2(20,0)
     ld   DE, 20         ; 3:10      push2(20,0)
     push HL             ; 1:11      push2(20,0)
     ld   HL, 0          ; 3:10      push2(20,0) 
-sdo102:                 ;           sdo 102 stack: ( stop index ) 
+
+sdo102:                 ;           sdo 102 ( stop index -- stop index ) 
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -82,13 +86,13 @@ sleave102:              ;           sloop 102
     pop  HL             ; 1:10      unsloop 102 index out
     pop  DE             ; 1:10      unsloop 102 stop  out
         
-    dec  HL             ; 1:6       szloop 101 index--
-    ld   A, H           ; 1:4       szloop 101
-    or   L              ; 1:4       szloop 101
-    jp  nz, szdo101     ; 3:10      szloop 101
-szleave101:             ;           szloop 101
-    ex   DE, HL         ; 1:4       unszloop 101
-    pop  DE             ; 1:10      unszloop 101
+    ld   A, H           ; 1:4       snext 101
+    or   L              ; 1:4       snext 101
+    dec  HL             ; 1:6       snext 101 index--
+    jp  nz, sfor101     ; 3:10      snext 101
+snext101:               ;           snext 101
+    ex   DE, HL         ; 1:4       sfor unloop 101
+    pop  DE             ; 1:10      sfor unloop 101
     
 fib1_bench_end:
     ret                 ; 1:10      s;
