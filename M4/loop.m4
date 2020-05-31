@@ -9,9 +9,9 @@ dnl Leaves the loop.
 define({LEAVE},{LEAVE_STACK}){}dnl
 dnl
 dnl
-dnl
-dnl ( stop index -- ) r:( -- stop index )
+dnl ---------  do ... loop  -----------
 dnl 5 0 do i . loop --> 0 1 2 3 4 
+dnl ( stop index -- ) r:( -- stop index )
 define(DO,{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
@@ -107,17 +107,13 @@ __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
 })dnl
-
-    
 dnl
 dnl
-dnl ---------  s l o o p  -----------
-dnl Stack Loop
+dnl ---------  sdo ... sloop  -----------
 dnl 5 0 sdo . sloop --> 0 1 2 3 4 
-dnl Use data stack
-dnl
 dnl ( stop index -- stop index )
-define({SDO}, {
+define({SDO}, {ifelse($#,{0},,{
+.error Unexpected parameter: sdo($@) --> push($@) sdo ?})
 dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
@@ -136,6 +132,13 @@ define({SI}, {
     DUP})dnl
 dnl
 dnl
+dnl ( j s i -- j s i j )
+dnl 2 pick 
+dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
+define({SJ}, {
+    _2_PICK})dnl
+dnl
+dnl
 dnl
 dnl ( stop index -- stop index++ )
 define({SLOOP},{
@@ -151,15 +154,64 @@ __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
 })dnl
-
-
+dnl
+dnl
+dnl ---------  for ... next  -----------
+dnl 5 for dup . next --> 5 4 3 2 1 0
+dnl ( index -- ) r: ( -- index )
+dnl stop = 0
+define({FOR}, {dnl
+__{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
+__{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{
+__{}    exx                 ; 1:4       for leave LOOP_STACK
+__{}    inc  L              ; 1:4       for leave LOOP_STACK
+__{}    jp   next{}LOOP_STACK       ;           for leave LOOP_STACK})dnl
+__{}pushdef({UNLOOP_STACK},{
+__{}    exx                 ; 1:4       for unloop LOOP_STACK
+__{}    inc  L              ; 1:4       for unloop LOOP_STACK
+__{}    inc  HL             ; 1:6       for unloop LOOP_STACK
+__{}    exx                 ; 1:4       for unloop LOOP_STACK})
+    push HL             ; 1:11      for LOOP_STACK index
+    exx                 ; 1:4       for LOOP_STACK
+    pop  DE             ; 1:10      for LOOP_STACK stop
+    dec  HL             ; 1:6       for LOOP_STACK
+    ld  (HL),D          ; 1:7       for LOOP_STACK
+    dec  L              ; 1:4       for LOOP_STACK
+    ld  (HL),E          ; 1:7       for LOOP_STACK stop
+    exx                 ; 1:4       for LOOP_STACK
+    ex   DE, HL         ; 1:4       for LOOP_STACK
+    pop  DE             ; 1:10      for LOOP_STACK ( index -- ) r: ( -- index )
+for{}LOOP_STACK:                 ;           for LOOP_STACK})dnl
 dnl
 dnl
 dnl
-dnl ---------  s f o r  -----------
+dnl ( index -- index-1 )
+define({NEXT},{
+    exx                 ; 1:4       next LOOP_STACK
+    ld    E,(HL)        ; 1:7       next LOOP_STACK
+    inc   L             ; 1:4       next LOOP_STACK
+    ld    D,(HL)        ; 1:7       next LOOP_STACK DE = index   
+    ld    A, E          ; 1:4       next LOOP_STACK
+    or    D             ; 1:4       next LOOP_STACK
+    jr    z, next{}LOOP_STACK    ; 2:7/12    next LOOP_STACK exit
+    dec  DE             ; 1:6       next LOOP_STACK index--
+    ld  (HL),D          ; 1:7       next LOOP_STACK
+    dec   L             ; 1:4       next LOOP_STACK
+    ld  (HL),E          ; 1:7       next LOOP_STACK
+    exx                 ; 1:4       next LOOP_STACK
+    jp   for{}LOOP_STACK         ; 3:10      next LOOP_STACK
+next{}LOOP_STACK:                ;           next LOOP_STACK
+    inc  HL             ; 1:6       next LOOP_STACK
+    exx                 ; 1:4       next LOOP_STACK{}dnl
+__{}popdef({LEAVE_STACK}){}dnl
+__{}popdef({UNLOOP_STACK}){}dnl
+__{}popdef({LOOP_STACK}){}dnl
+})dnl
+dnl
+dnl
+dnl ---------  sfor ... snext -----------
 dnl 5 sfor dup . snext --> 5 4 3 2 1 0
-dnl Use data stack
-dnl
 dnl ( index -- index )
 dnl stop = 0
 define({SFOR}, {dnl
@@ -189,10 +241,8 @@ __{}popdef({LOOP_STACK}){}dnl
 dnl
 dnl
 dnl
-dnl ---------- X L O O P ------------
+dnl ---------- xdo(stop,index) ... xloop ------------
 dnl Napevno zadavana optimalizovana konstantni smycka, jejiz rozsah je znam uz v dobe kompilace a kterou nelze programove menit
-dnl
-dnl
 dnl ( -- ) 
 dnl xdo(stop,index) ... xloop
 dnl xdo(stop,index) ... xaddloop(step)
@@ -210,47 +260,46 @@ __{}    inc   L             ; 1:4       xunloop LOOP_STACK
 __{}    inc  HL             ; 1:6       xunloop LOOP_STACK
 __{}    exx                 ; 1:4       xunloop LOOP_STACK ( index -- )}){}dnl
 __{}pushdef({STOP_STACK}, $1)pushdef({INDEX_STACK}, $2)
-    exx                 ; 1:4       xdo LOOP_STACK
-    dec  HL             ; 1:6       xdo LOOP_STACK
-    ld  (HL),high format({%-6s},$2); 2:10      xdo LOOP_STACK
-    dec   L             ; 1:4       xdo LOOP_STACK
-    ld  (HL),low format({%-7s},$2); 2:10      xdo LOOP_STACK
-    exx                 ; 1:4       xdo LOOP_STACK
-xdo{}LOOP_STACK:                 ;           xdo LOOP_STACK})dnl
+    exx                 ; 1:4       xdo($1,$2) LOOP_STACK
+    dec  HL             ; 1:6       xdo($1,$2) LOOP_STACK
+    ld  (HL),high format({%-6s},$2); 2:10      xdo($1,$2) LOOP_STACK
+    dec   L             ; 1:4       xdo($1,$2) LOOP_STACK
+    ld  (HL),low format({%-7s},$2); 2:10      xdo($1,$2) LOOP_STACK
+    exx                 ; 1:4       xdo($1,$2) LOOP_STACK
+xdo{}LOOP_STACK:                 ;           xdo($1,$2) LOOP_STACK})dnl
 dnl
 dnl
 dnl
 dnl ( -- )
 define({XLOOP},{
-    exx                 ; 1:4       xloop LOOP_STACK
+    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
 __{}ifelse({1},eval((STOP_STACK<256)&&(INDEX_STACK<STOP_STACK)),{dnl
-__{}    inc (HL)            ; 1:7       xloop LOOP_STACK index_lo++
-__{}    ld    A, format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK
-__{}    scf                 ; 1:4       xloop LOOP_STACK
-__{}    sbc   A, (HL)       ; 1:7       xloop LOOP_STACK stop_lo - index_lo - 1
-__{}    exx                 ; 1:4       xloop LOOP_STACK
-__{}    jp   nc,xdo{}LOOP_STACK      ; 3:10      xloop LOOP_STACK again
-__{}    exx                 ; 1:4       xloop LOOP_STACK
-__{}    inc   L             ; 1:4       xloop LOOP_STACK{}dnl
+__{}    inc (HL)            ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index_lo++
+__{}    ld    A, (HL)       ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index_lo
+__{}    sub  format({%-15s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index_lo - stop_lo
+__{}    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK again
+__{}    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    inc   L             ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK{}dnl
 __{}},{
-__{}    ld    E,(HL)        ; 1:7       xloop LOOP_STACK
-__{}    inc   L             ; 1:4       xloop LOOP_STACK
-__{}    ld    D,(HL)        ; 1:7       xloop LOOP_STACK
-__{}    inc  DE             ; 1:6       xloop LOOP_STACK index++
-__{}    ld    A, low format({%-7s},STOP_STACK); 2:7       xloop LOOP_STACK
-__{}    scf                 ; 1:4       xloop LOOP_STACK
-__{}    sbc   A, E          ; 1:4       xloop LOOP_STACK stop_lo - index_lo - 1
-__{}    ld    A, high format({%-6s},STOP_STACK); 2:7       xloop LOOP_STACK
-__{}    sbc   A, D          ; 1:4       xloop LOOP_STACK stop_hi - index_hi - 1
-__{}    jr    c, xleave{}LOOP_STACK  ; 2:7/12    xloop LOOP_STACK exit
-__{}    ld  (HL), D         ; 1:7       xloop LOOP_STACK
-__{}    dec   L             ; 1:4       xloop LOOP_STACK
-__{}    ld  (HL), E         ; 1:6       xloop LOOP_STACK
-__{}    exx                 ; 1:4       xloop LOOP_STACK
+__{}    ld    E,(HL)        ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    inc   L             ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    ld    D,(HL)        ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    inc  DE             ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
+__{}    ld    A, low format({%-7s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    scf                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    sbc   A, E          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK stop_lo - index_lo - 1
+__{}    ld    A, high format({%-6s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    sbc   A, D          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK stop_hi - index_hi - 1
+__{}    jr    c, xleave{}LOOP_STACK  ; 2:7/12    xloop(STOP_STACK,INDEX_STACK) LOOP_STACK exit
+__{}    ld  (HL), D         ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    dec   L             ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    ld  (HL), E         ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
 __{}    jp   xdo{}LOOP_STACK         ; 3:10      xloop LOOP_STACK})
-xleave{}LOOP_STACK:
-    inc  HL             ; 1:6       xloop LOOP_STACK
-    exx                 ; 1:4       xloop LOOP_STACK{}dnl
+xleave{}LOOP_STACK:              ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+    inc  HL             ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -361,24 +410,23 @@ define({XK},{
     exx                 ; 1:4       index xk LOOP_STACK
     ex   DE, HL         ; 1:4       index xk LOOP_STACK ( k x2 x1 -- k  x1 x2 )
     ex  (SP),HL         ; 1:19      index xk LOOP_STACK ( k x1 x2 -- x2 x1 k )
-
-;   exx                 ; 1:4    
-;   ld    A, 0x04       ; 2:7
-;   add   A, L          ; 1:4
-;   ld    E, A          ; 1:4
-;   adc   A, H          ; 1:4
-;   sub   E             ; 1:4
-;   ld    D, A          ; 1:4
-;   ld    A,(DE)        ; 1:7       lo    
-;   inc   E             ; 1:4
-;   ex   AF, AF'        ; 1:4
-;   ld    A,(DE)        ; 1:7       hi
-;   exx                 ; 1:4    
-;   push DE             ; 1:11
-;   ex   DE, HL         ; 1:4    
-;   ld    H, A          ; 1:4
-;   ex   AF, AF'        ; 1:4    
-;   ld    L, A          ; 1:4})dnl
+dnl;   exx                 ; 1:4    
+dnl;   ld    A, 0x04       ; 2:7
+dnl;   add   A, L          ; 1:4
+dnl;   ld    E, A          ; 1:4
+dnl;   adc   A, H          ; 1:4
+dnl;   sub   E             ; 1:4
+dnl;   ld    D, A          ; 1:4
+dnl;   ld    A,(DE)        ; 1:7       lo    
+dnl;   inc   E             ; 1:4
+dnl;   ex   AF, AF'        ; 1:4
+dnl;   ld    A,(DE)        ; 1:7       hi
+dnl;   exx                 ; 1:4    
+dnl;   push DE             ; 1:11
+dnl;   ex   DE, HL         ; 1:4    
+dnl;   ld    H, A          ; 1:4
+dnl;   ex   AF, AF'        ; 1:4    
+dnl;   ld    L, A          ; 1:4})dnl
 dnl
 dnl
 dnl --------- begin while repeat ------------

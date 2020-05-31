@@ -101,7 +101,7 @@ dnl
 dnl ( -- a ) 
 dnl push(a) ulozi na zasobnik nasledujici polozku
 define({PUSH},{ifelse($#,{1},,{
-.error More parameters found in macro push, you may have wanted to use push2.})
+.error More parameters found in macro! push($@) --> push2($@) ?})
     push DE             ; 1:11      push($1)
     ex   DE, HL         ; 1:4       push($1)
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push($1)})dnl
@@ -158,7 +158,7 @@ dnl
 dnl 2 pick ( c b a 2 -- c b a c )
 dnl ( c b a -- c b a c )
 dnl zmeni hodnotu top
-define({_2_XPICK},{
+define({_2_PICK},{
     pop  BC             ; 1:10      2 pick
     push BC             ; 1:11      2 pick BC = c
     push DE             ; 1:11      2 pick c b b a

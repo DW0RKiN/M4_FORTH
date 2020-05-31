@@ -327,8 +327,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |            |              |       SDO      | ( stop index -- stop index ) | ( -- )                |
 |            |              |      SLOOP     | ( stop index -- stop index+1)| ( -- )                |
 |            |              |       SI       |          ( i -- i i )        | ( -- )                |
-|    for     |              |      SFOR      |      ( index -- index )      | ( -- )                |
-|    next    |              |      SNEXT     |      ( index -- index-1 )    | ( -- )                |
+|    for     |     FOR      |                |      ( index -- )            | ( -- index )          |
+|    next    |     NEXT     |                |            ( -- )            | ( index -- index+1 )  |
+|            |              |      SFOR      |      ( index -- index )      | ( -- )                |
+|            |              |      SNEXT     |      ( index -- index-1 )    | ( -- )                |
 | `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )            | ( -- `1` )            |
 |            |              |     XLOOP      |            ( -- )            | ( index -- index+1 )  |
 | `2` +loop  |              |  XADDLOOP(`2`) |            ( -- )            | ( index -- index+`2` )|
