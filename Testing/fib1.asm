@@ -1,3 +1,4 @@
+
     ORG 32768
     
 ;   ===  b e g i n  ===
@@ -38,7 +39,7 @@ fib1:                   ;           ( a -- b )
     ld    A, H          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
     sbc   A, high 2     ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
     jp   nc, else101    ; 3:10      dup 2 < if 
-    ld   HL, 1          ; 3:10      drop_push(1) 
+    ld   HL, 1          ; 3:10      drop 1 
     jp   fib1_end       ; 3:10      exit 
 else101  EQU $          ;           = endif
 endif101:

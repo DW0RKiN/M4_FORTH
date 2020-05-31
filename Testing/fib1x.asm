@@ -1,3 +1,4 @@
+
     ORG 32768
     
 ;   ===  b e g i n  ===
@@ -29,7 +30,7 @@ fib1x:                  ;           ( a -- b )
     ld    A, H          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
     sbc   A, high 2     ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
     jp   nc, else101    ; 3:10      dup 2 < if 
-    ld   HL, 1          ; 3:10      drop_push(1) 
+    ld   HL, 1          ; 3:10      drop 1 
     ret                 ; 1:10      sexit 
 else101  EQU $          ;           = endif
 endif101:
@@ -77,15 +78,17 @@ sdo102:                 ;           sdo 102 stack: ( stop index )
     ld   A, H           ; 1:4       sloop 102
     sbc  A, D           ; 1:4       sloop 102 hi index - stop
     jp   c, sdo102      ; 3:10      sloop 102
-    pop  HL             ; 1:10      unsloop 101 index out
-    pop  DE             ; 1:10      unsloop 101 stop  out
+sleave102:              ;           sloop 102
+    pop  HL             ; 1:10      unsloop 102 index out
+    pop  DE             ; 1:10      unsloop 102 stop  out
         
     dec  HL             ; 1:6       szloop 101 index--
     ld   A, H           ; 1:4       szloop 101
     or   L              ; 1:4       szloop 101
     jp  nz, szdo101     ; 3:10      szloop 101
-    ex   DE, HL         ; 1:4       unszloop LOOP_STACK
-    pop  DE             ; 1:10      unszloop LOOP_STACK
+szleave101:             ;           szloop 101
+    ex   DE, HL         ; 1:4       unszloop 101
+    pop  DE             ; 1:10      unszloop 101
     
 fib1_bench_end:
     ret                 ; 1:10      s;

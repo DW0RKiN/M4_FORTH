@@ -319,17 +319,20 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 | original   |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :--------------------------- | :-------------------- |
 |     do     |      DO      |                | ( stop index -- )            | ( -- stop index )     |
-|    loop    |     LOOP     |                |            ( -- )            | ( stop index -- )     |
-|   unloop   |    UNLOOP    |                |            ( -- )            | ( x -- )              |
+|    loop    |     LOOP     |                |            ( -- )            | ( s i -- s i-1 )      |
+|   unloop   |    UNLOOP    |                |            ( -- )            | ( stop index -- )     |
+|   leave    |    LEAVE     |                |            ( -- )            | ( stop index -- )     |
 |      i     |       I      |                |            ( -- index )      | ( index -- index )    |
 |      j     |       J      |                |            ( -- j )          | ( j s i -- j s i )    |
 |            |              |      SDO       | ( stop index -- stop index ) | ( -- )                |
 |            |              |     SLOOP      | ( stop index -- stop index+1)| ( -- )                |
-|            |              |    UNSLOOP     | ( stop index -- )            | ( -- )                |
+|            |              |     UNSLOOP    | ( stop index -- )            | ( -- )                |
+|            |              |     SLEAVE     | ( stop index -- )            | ( -- )                |
 |            |              |       SI       |        ( s i -- s i i )      | ( -- )                |
 |            |              |      SZDO      |      ( index -- index )      | ( -- )                |
 |            |              |     SZLOOP     |      ( index -- index-1 )    | ( -- )                |
 |            |              |    UNSZLOOP    |      ( index -- )            | ( -- )                |
+|            |              |     SZLEAVE    |      ( index -- )            | ( -- )                |
 |            |              |      SZI       |          ( i -- i i )        | ( -- )                |
 | `5` `1` do |              |  XDO(`5`,`1`)  |            ( -- )            | ( -- `1` )            |
 |            |              |     XLOOP      |            ( -- )            | ( index -- index++ )  |

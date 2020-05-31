@@ -21,6 +21,7 @@ define(DO,{define({LOOP_COUNT}, incr(LOOP_COUNT))pushdef({LOOP_STACK}, LOOP_COUN
     pop  DE             ; 1:10      do LOOP_STACK
 do{}LOOP_STACK:})dnl
 dnl
+dnl
 define(UNLOOP,{
     exx                 ; 1:4       unloop LOOP_STACK
     inc  L              ; 1:4       unloop LOOP_STACK
@@ -28,6 +29,15 @@ define(UNLOOP,{
     inc  L              ; 1:4       unloop LOOP_STACK
     inc  HL             ; 1:6       unloop LOOP_STACK
     exx                 ; 1:4       unloop LOOP_STACK})dnl
+dnl
+dnl
+dnl
+define(LEAVE,{
+    exx                 ; 1:4       leave LOOP_STACK
+    inc  L              ; 1:4       leave LOOP_STACK
+    inc  HL             ; 1:6       leave LOOP_STACK
+    inc  L              ; 1:4       leave LOOP_STACK
+    jp   leave{}LOOP_STACK       ;           leave LOOP_STACK})dnl
 dnl
 dnl
 dnl ( -- i )
@@ -74,7 +84,7 @@ define(LOOP,{
     ld    A, D          ; 1:4       loop LOOP_STACK
     inc   L             ; 1:4       loop LOOP_STACK
     sbc  A,(HL)         ; 1:7       loop LOOP_STACK hi index - stop
-    jr  nc, $+11        ; 2:7/12    loop LOOP_STACK exit
+    jr  nc, leave{}LOOP_STACK    ; 2:7/12    loop LOOP_STACK exit
     dec  L              ; 1:4       loop LOOP_STACK
     dec  HL             ; 1:6       loop LOOP_STACK
     ld  (HL), D         ; 1:7       loop LOOP_STACK
@@ -82,6 +92,7 @@ define(LOOP,{
     ld  (HL), E         ; 1:7       loop LOOP_STACK
     exx                 ; 1:4       loop LOOP_STACK
     jp   do{}LOOP_STACK          ; 3:10      loop LOOP_STACK
+leave{}LOOP_STACK:
     inc  HL             ; 1:6       loop LOOP_STACK
     exx                 ; 1:4       loop LOOP_STACK{}popdef({LOOP_STACK})})dnl
 dnl
@@ -103,6 +114,11 @@ define({UNSLOOP},{
     pop  DE             ; 1:10      unsloop LOOP_STACK stop  out})dnl
 dnl
 dnl
+dnl Leaves the loop.
+define({SLEAVE},{
+    jp   sleave{}LOOP_STACK      ; 3:10      sleave LOOP_STACK})dnl
+dnl
+dnl
 dnl ( i -- i i )
 dnl To same co DUP
 dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
@@ -118,7 +134,10 @@ define({SLOOP},{
     sub  E              ; 1:4       sloop LOOP_STACK lo index - stop
     ld   A, H           ; 1:4       sloop LOOP_STACK
     sbc  A, D           ; 1:4       sloop LOOP_STACK hi index - stop
-    jp   c, sdo{}LOOP_STACK      ; 3:10      sloop LOOP_STACK{}popdef({LOOP_STACK}){}UNSLOOP})dnl
+    jp   c, sdo{}LOOP_STACK      ; 3:10      sloop LOOP_STACK
+sleave{}LOOP_STACK:              ;           sloop LOOP_STACK{}dnl
+UNSLOOP{}popdef({LOOP_STACK})})dnl
+
 dnl
 dnl
 dnl
@@ -140,6 +159,11 @@ define({UNSZLOOP},{
     pop  DE             ; 1:10      unszloop LOOP_STACK})dnl
 dnl
 dnl
+dnl Leaves the loop.
+define({SZLEAVE},{
+    jp   szleave{}LOOP_STACK     ; 3:10      szleave LOOP_STACK})dnl
+dnl
+dnl
 dnl ( i -- i i )
 dnl To same co DUP
 dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi v DE, K lezi na (SP)
@@ -153,7 +177,9 @@ define({SZLOOP},{
     dec  HL             ; 1:6       szloop LOOP_STACK index--
     ld   A, H           ; 1:4       szloop LOOP_STACK
     or   L              ; 1:4       szloop LOOP_STACK
-    jp  nz, szdo{}LOOP_STACK     ; 3:10      szloop LOOP_STACK{}popdef({LOOP_STACK}){}UNSZLOOP})dnl
+    jp  nz, szdo{}LOOP_STACK     ; 3:10      szloop LOOP_STACK
+szleave{}LOOP_STACK:             ;           szloop LOOP_STACK{}dnl
+UNSZLOOP{}popdef({LOOP_STACK})})dnl
 dnl
 dnl
 dnl
@@ -194,6 +220,7 @@ ifelse({1},eval((STOP_STACK<256)&&(INDEX_STACK<STOP_STACK)),{    inc (HL)       
     sbc   A, (HL)       ; 1:7       xloop LOOP_STACK stop_lo - index_lo - 1
     exx                 ; 1:4       xloop LOOP_STACK
     jp   nc,xdo{}LOOP_STACK      ; 3:10      xloop LOOP_STACK again
+xleave{}LOOP_STACK:
     exx                 ; 1:4       xloop LOOP_STACK
     inc   L             ; 1:4       xloop LOOP_STACK},{    ld    E,(HL)        ; 1:7       xloop LOOP_STACK
     inc   L             ; 1:4       xloop LOOP_STACK
@@ -204,14 +231,22 @@ ifelse({1},eval((STOP_STACK<256)&&(INDEX_STACK<STOP_STACK)),{    inc (HL)       
     sbc   A, E          ; 1:4       xloop LOOP_STACK stop_lo - index_lo - 1
     ld    A, high format({%-6s},STOP_STACK); 2:7       xloop LOOP_STACK
     sbc   A, D          ; 1:4       xloop LOOP_STACK stop_hi - index_hi - 1
-    jr    c, $+9        ; 2:7/12    xloop LOOP_STACK exit
+    jr    c, xleave{}LOOP_STACK  ; 2:7/12    xloop LOOP_STACK exit
     ld  (HL), D         ; 1:7       xloop LOOP_STACK
     dec   L             ; 1:4       xloop LOOP_STACK
     ld  (HL), E         ; 1:6       xloop LOOP_STACK
     exx                 ; 1:4       xloop LOOP_STACK
-    jp   xdo{}LOOP_STACK         ; 3:10      xloop LOOP_STACK})
+    jp   xdo{}LOOP_STACK         ; 3:10      xloop LOOP_STACK
+xleave{}LOOP_STACK:})
     inc  HL             ; 1:6       xloop LOOP_STACK
     exx                 ; 1:4       xloop LOOP_STACK{}popdef({LOOP_STACK})popdef({STOP_STACK})popdef({INDEX_STACK})})dnl
+dnl
+dnl
+define(XLEAVE,{
+ifelse({1},eval((STOP_STACK<256)&&(INDEX_STACK<STOP_STACK)),{    jp  xleave{}LOOP_STACK       ;           xleave LOOP_STACK},{
+    exx                 ; 1:4       xleave LOOP_STACK
+    inc  L              ; 1:4       xleave LOOP_STACK
+    jp   xleave{}LOOP_STACK      ;           xleave LOOP_STACK})})dnl
 dnl
 dnl
 dnl
