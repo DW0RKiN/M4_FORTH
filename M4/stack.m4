@@ -109,7 +109,8 @@ dnl
 dnl
 dnl ( -- b a) 
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
-define({PUSH2},{
+define({PUSH2},{ifelse($#,{2},,{
+.error The wrong number of parameters in the push2 macro! push2($@)})
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)

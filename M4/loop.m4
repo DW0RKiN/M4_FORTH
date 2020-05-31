@@ -273,7 +273,7 @@ dnl
 dnl ( -- )
 define({XLOOP},{
     exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}ifelse({1},eval((STOP_STACK<256)&&(INDEX_STACK<STOP_STACK)),{dnl
+__{}ifelse({1},eval((STOP_STACK<256)&&(INDEX_STACK<255)),{dnl
 __{}    inc (HL)            ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index_lo++
 __{}    ld    A, (HL)       ; 1:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index_lo
 __{}    sub  format({%-15s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index_lo - stop_lo

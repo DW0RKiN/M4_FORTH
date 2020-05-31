@@ -313,6 +313,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
                 XDO(5,0) XI DOT PUTCHAR({','}) XADDLOOP(2)          --> " 0, 2, 4,"
     PUSH2(5,0) SDO       SI DOT PUTCHAR({','})    SLOOP             --> " 0, 1, 2, 3, 4,"
     PUSH(5)   SFOR       SI DOT PUTCHAR({','})    SNEXT             --> " 5, 4, 3, 2, 1, 0,"
+    PUSH(5)    FOR        I DOT PUTCHAR({','})     NEXT             --> " 5, 4, 3, 2, 1, 0,"
     
     PUSH(5) BEGIN DUP_WHILE DUP_DOT PUTCHAR({','}) _1SUB REPEAT DROP --> " 5, 4, 3, 2, 1,"
     
