@@ -98,12 +98,12 @@ dnl =
 dnl ( x1 x2 -- x )
 dnl equal ( x1 == x2 )
 define({EQ},{
-    or    A             ; 1:4       eq
-    sbc  HL, DE         ; 2:15      eq
-    ld   HL, 0x0000     ; 3:10      eq
-    jr   nz, $+3        ; 2:7/12    eq
-    dec  HL             ; 1:6       eq
-    pop  DE             ; 1:10      eq})dnl
+    or    A             ; 1:4       =
+    sbc  HL, DE         ; 2:15      =
+    ld   HL, 0x0000     ; 3:10      =
+    jr   nz, $+3        ; 2:7/12    =
+    dec  HL             ; 1:6       =
+    pop  DE             ; 1:10      =})dnl
 dnl
 dnl
 dnl <>

@@ -275,17 +275,25 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |  dup 0>= if  |              |     DUP_0GE_IF     |      ( x1 -- x1 )   |         |
 |    D0= if    |              |      D0EQ_IF       |    (x1 x2 -- )      |         |
 | 2dup D0= if  |              |   _2DUP_D0EQ_IF    |    (x1 x2 -- x1 x2) |         |
-| dup `5` < if |              | DUP_PUSH_LT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-| dup `5` <= if|              | DUP_PUSH_LE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-| dup `5` > if |              | DUP_PUSH_GT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-| dup `5` >= if|              | DUP_PUSH_GE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|dup `5` u< if |              |DUP_PUSH_ULT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
+|dup `5`  <  if|              |DUP_PUSH_LT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
+|dup `5`  <= if|              |DUP_PUSH_LE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
+|dup `5`  >  if|              |DUP_PUSH_GT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
+|dup `5`  >= if|              |DUP_PUSH_GE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
+|dup `5` u<  if|              |DUP_PUSH_ULT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|dup `5` u> if |              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
+|dup `5` u>  if|              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|  2dup u< if  |              |    _2DUP_ULT_IF    |         ( -- )      |         |
+|  2dup  =  if |              |    _2DUP_EQ_IF     |         ( -- )      |         |
+|  2dup  <> if |              |    _2DUP_NE_IF     |         ( -- )      |         |
+|  2dup  <  if |              |    _2DUP_LT_IF     |         ( -- )      |         |
+|  2dup  <= if |              |    _2DUP_LE_IF     |         ( -- )      |         |
+|  2dup  >  if |              |    _2DUP_GT_IF     |         ( -- )      |         |
+|  2dup  >= if |              |    _2DUP_GE_IF     |         ( -- )      |         |
+|  2dup u=  if |              |    _2DUP_UEQ_IF    |         ( -- )      |         |
+|  2dup u<> if |              |    _2DUP_UNE_IF    |         ( -- )      |         |
+|  2dup u<  if |              |    _2DUP_ULT_IF    |         ( -- )      |         |
 |  2dup u<= if |              |    _2DUP_ULE_IF    |         ( -- )      |         |
-|  2dup u> if  |              |    _2DUP_UGT_IF    |         ( -- )      |         |
+|  2dup u>  if |              |    _2DUP_UGT_IF    |         ( -- )      |         |
 |  2dup u>= if |              |    _2DUP_UGE_IF    |         ( -- )      |         |
 
 ### Function

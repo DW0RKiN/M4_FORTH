@@ -138,6 +138,10 @@ sed 's#^\([^;{]*\s\|^\)2dup\(\s\|$\)#\1_2DUP\2#gi' |
 sed 's#^\([^;{]*\s\|^\)2drop\(\s\|$\)#\1_2DROP\2#gi' |
 sed 's#^\([^;{]*\s\|^\)\.s\(\s\|$\)#\1DOTS\2#gi' |
 
+sed 's#^\([^;{]*\s\|^\)cell+\(\s\|$\)#\1\_2ADD\2#gi' |
+sed 's#^\([^;{]*\s\|^\)cell-\(\s\|$\)#\1\_2SUB\2#gi' |
+sed 's#^\([^;{]*\s\|^\)cells\(\s\|$\)#\1\_2MUL\2#gi' |
+
 sed 's#^\([^;{]*\s\|^\)\(type\)\(\s\|$\)#\1\U\2\3#gi' |
 sed 's#^\([^;{]*\s\|^\)\(emit\)\(\s\|$\)#\1\U\2\3#gi' |
 sed 's#^\([^;{]*\s\|^\)\(key\)\(\s\|$\)#\1\U\2\3#gi' |
@@ -209,6 +213,15 @@ sed 's#^\([^;{]*\s\|^\)DUP\sUDOT\(\s\|$\)#\1DUP_UDOT\2#gi' |
 sed 's#^\([^;{]*\s\|^\)DUP\sDOT\(\s\|$\)#\1DUP_DOT\2#gi' |
 sed 's#^\([^;{]*\s\|^\)_2DUP\sTYPE\(\s\|$\)#\1_2DUP_TYPE\2#gi' |
 
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+IF\(\s\|$\)#\1_2DUP_EQ_IF\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE\s\+IF\(\s\|$\)#\1_2DUP_NE_IF\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LT\s\+IF\(\s\|$\)#\1_2DUP_LT_IF\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LE\s\+IF\(\s\|$\)#\1_2DUP_LE_IF\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GT\s\+IF\(\s\|$\)#\1_2DUP_GT_IF\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GE\s\+IF\(\s\|$\)#\1_2DUP_GE_IF\2#gi' |
+
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UEQ\s\+IF\(\s\|$\)#\1_2DUP_UEQ_IF\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UNE\s\+IF\(\s\|$\)#\1_2DUP_UNE_IF\2#gi' |
 sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULT\s\+IF\(\s\|$\)#\1_2DUP_ULT_IF\2#gi' |
 sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULE\s\+IF\(\s\|$\)#\1_2DUP_ULE_IF\2#gi' |
 sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGT\s\+IF\(\s\|$\)#\1_2DUP_UGT_IF\2#gi' |
