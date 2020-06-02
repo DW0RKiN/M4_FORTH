@@ -1,4 +1,5 @@
 dnl ## Stack manipulation
+define({--},{})dnl
 dnl
 dnl ( x2 x1 -- x1 x2 )
 dnl prohodi vrchol zasobniku s druhou polozkou
@@ -142,36 +143,38 @@ define({DUP_PUSH},{
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1})dnl
 dnl
 dnl
+dnl
+dnl ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu ) 
+dnl Remove u. Copy the xu to the top of the stack.
+define({PICK},{
+    push DE             ; 1:11      pick
+    add  HL, HL         ; 1:11      pick
+    add  HL, SP         ; 1:11      pick
+    ld    E,(HL)        ; 1:7       pick
+    inc  HL             ; 1:6       pick
+    ld    D,(HL)        ; 1:7       pick
+    ex   DE, HL         ; 1:4       pick
+    pop  DE             ; 1:10      pick})dnl
+dnl
+dnl
 dnl 0 pick ( a 0 -- a a )
-dnl ( a -- a a ) 
-dnl zmeni hodnotu top
-define({_0_PICK},{
-    DUP})dnl
-dnl
-dnl
 dnl 1 pick ( b a 1 -- b a b )
-dnl ( b a -- b a b ) 
-dnl zmeni hodnotu top
-define({_1_PICK},{
-    OVER})dnl
-dnl
-dnl
 dnl 2 pick ( c b a 2 -- c b a c )
-dnl ( c b a -- c b a c )
-dnl zmeni hodnotu top
-define({_2_PICK},{
+dnl 3 pick ( d c b a 3 -- d c b a d )
+dnl 4 pick ( e d c b a 4 -- e d c b a e )
+dnl u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu ) 
+dnl Remove u. Copy the xu to the top of the stack.
+define({PUSH_PICK},{ifelse($#,{0},{.error _push_pick(): Parameter is missing!},
+__{}eval($1),{0},{DUP},
+__{}eval($1),{1},{OVER},
+__{}eval($1),{2},{ 
     pop  BC             ; 1:10      2 pick
     push BC             ; 1:11      2 pick BC = c
     push DE             ; 1:11      2 pick c b b a
     ex   DE, HL         ; 1:4       2 pick c b a b
     ld    H, B          ; 1:4       2 pick
-    ld    L, C          ; 1:4       2 pick c b a c})dnl
-dnl
-dnl
-dnl 3 pick ( d c b a 3 -- d c b a d )
-dnl ( d c b a -- d c b a d ) 
-dnl zmeni hodnotu top
-define({_3_PICK},{
+    ld    L, C          ; 1:4       2 pick c b a c},
+__{}eval($1),{3},{ 
     pop  AF             ; 1:10      3 pick
     pop  BC             ; 1:10      3 pick
     push BC             ; 1:11      3 pick BC = d
@@ -179,7 +182,16 @@ define({_3_PICK},{
     push DE             ; 1:11      3 pick d c b b a
     ex   DE, HL         ; 1:4       3 pick d c b a b
     ld    H, B          ; 1:4       3 pick
-    ld    L, C          ; 1:4       3 pick d c b a c})dnl
+    ld    L, C          ; 1:4       3 pick d c b a c},
+__{}{
+    push DE             ; 1:11      $1 pick
+    ex   DE, HL         ; 1:4       $1 pick
+    ld   HL, 0x{}format({%04x},eval(2*(($1)-1)))     ; 3:10      $1 pick
+    add  HL, SP         ; 1:11      $1 pick
+    ld    A,(HL)        ; 1:7       $1 pick
+    inc  HL             ; 1:6       $1 pick
+    ld    H,(HL)        ; 1:7       $1 pick
+    ld    L, A          ; 1:4       $1 pick})})dnl
 dnl
 dnl
 dnl >r

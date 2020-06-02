@@ -150,10 +150,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |            |              | PUSH2((A),`2`) |   *A = 4 --> ( -- `4` `2` ) |                       |
 | drop `5`   |              | DROP_PUSH(`5`) |        ( x1 -- `5`)         |                       |
 |  dup `4`   |              |  DUP_PUSH(`4`) |        ( x1 -- x1 x1 `4`)   |                       |
-|   0 pick   |              |    _0_PICK     |         ( a -- a a )        |                       |
-|   1 pick   |              |    _1_PICK     |       ( b a -- b a b )      |                       |
-|   2 pick   |              |    _2_PICK     |     ( c b a -- c b a c )    |                       |
-|   3 pick   |              |    _3_PICK     |   ( d c b a -- d c b a d )  |                       |
+|    pick    |     PICK     |                |         ( u -- xu )         |                       |
+|  `2` pick  |              | PUSH_PICK(`2`) |  ( x2 x1 x0 -- x2 x1 x0 x2 )|                       |
 |     >r     |     TO_R     |                |        ( x1 -- )            |    ( -- x1 )          |
 |     r>     |    R_FROM    |                |           ( -- x1 )         | ( x1 -- )             |
 |     r@     |    R_FETCH   |                |           ( -- x1 )         |  (x1 -- x1 )          |
