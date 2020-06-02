@@ -49,6 +49,16 @@ define({_2DROP},{
     pop  DE             ; 1:10      2drop})dnl
 dnl
 dnl
+dnl rdrop
+dnl r:( a -- ) 
+dnl odstrani vrchol zasobniku navratovych adres
+define({RDROP},{
+    exx                 ; 1:4       rdrop
+    inc   L             ; 1:4       rdrop
+    inc   H             ; 1:6       rdrop
+    exx                 ; 1:4       rdrop})dnl
+dnl
+dnl
 dnl ( b a -- a )
 dnl : nip swap drop ;
 dnl drop_second

@@ -90,3 +90,18 @@ define({PLUS_STORE},{
     pop  DE             ; 1:10      +! plus_store})dnl
 dnl
 dnl
+dnl cmove
+dnl ( addr1 addr2 u -- )
+dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+define({CMOVE},{
+    ld    A, H          ; 1:4       move
+    or    L             ; 1:4       move
+    ld    B, H          ; 1:4       move
+    ld    C, L          ; 1:4       move BC = u
+    pop   HL            ; 1:10      move from = addr1
+    jr    z, $+4        ; 2:7/12    move
+    ldir                ; 2:x*21/16 move
+    pop   HL            ; 1:10      move
+    pop   DE            ; 1:10      move})dnl
+dnl
+dnl

@@ -155,6 +155,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |     >r     |     TO_R     |                |        ( x1 -- )            |    ( -- x1 )          |
 |     r>     |    R_FROM    |                |           ( -- x1 )         | ( x1 -- )             |
 |     r@     |    R_FETCH   |                |           ( -- x1 )         |  (x1 -- x1 )          |
+|   rdrop    |     RDROP    |                |           ( -- )            | ( x1 -- )             |
 
 ### Arithmetic
 
@@ -384,6 +385,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |  addr x !  |    STORE      |                | ( addr x -- )       |                       | x = (addr)   |
 |            |               |  XSTORE(addr)  |      ( x -- )       |                       | (addr) = x   |
 | x addr +!  |   PLUS_STORE  |                | ( x addr -- )       |                       | (addr) += x  |
+|   cmove    |     CMOVE     |                |( a1 a2 u -- )       |                       |              |
 
 
 ### Output
