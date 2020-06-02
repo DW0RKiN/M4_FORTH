@@ -450,25 +450,31 @@ define({WHILE},{
     or    L             ; 1:4       while BEGIN_STACK
     ex   DE, HL         ; 1:4       while BEGIN_STACK
     pop  DE             ; 1:10      while BEGIN_STACK
-    jp    z, repeat{}BEGIN_STACK  ; 3:10      while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      while BEGIN_STACK})dnl
 dnl
 dnl
 dnl ( flag -- flag )
 define({DUP_WHILE},{
     ld    A, H          ; 1:4       dup_while BEGIN_STACK
     or    L             ; 1:4       dup_while BEGIN_STACK
-    jp    z, repeat{}BEGIN_STACK  ; 3:10      dup_while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      dup_while BEGIN_STACK})dnl
+dnl
+dnl
+dnl ( -- )
+define({BREAK},{
+    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK})dnl
 dnl
 dnl
 dnl ( -- )
 define({REPEAT},{
     jp   begin{}BEGIN_STACK       ; 3:10      repeat BEGIN_STACK
-repeat{}BEGIN_STACK:{}popdef({BEGIN_STACK})})dnl
+break{}BEGIN_STACK:               ;           repeat BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( -- )
 define({AGAIN},{
-    jp   begin{}BEGIN_STACK       ; 3:10      again BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+    jp   begin{}BEGIN_STACK       ; 3:10      again BEGIN_STACK
+break{}BEGIN_STACK:               ;           again BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( flag -- )
@@ -477,7 +483,16 @@ define({UNTIL},{
     or    L             ; 1:4       until BEGIN_STACK
     ex   DE, HL         ; 1:4       until BEGIN_STACK
     pop  DE             ; 1:10      until BEGIN_STACK
-    jp    z, begin{}BEGIN_STACK   ; 3:10      until BEGIN_STACK})dnl
+    jp    z, begin{}BEGIN_STACK   ; 3:10      until BEGIN_STACK
+break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+dnl
+dnl
+dnl ( flag -- flag )
+define({DUP_UNTIL},{
+    ld    A, H          ; 1:4       dup until BEGIN_STACK
+    or    L             ; 1:4       dup until BEGIN_STACK
+    jp    z, begin{}BEGIN_STACK   ; 3:10      dup until BEGIN_STACK
+break{}BEGIN_STACK:               ;           dup until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
 dnl
 dnl
 dnl
@@ -488,10 +503,10 @@ dnl
 define({_2DUP_UEQ_WHILE},{
     ld    A, E          ; 1:4       2dup u= while BEGIN_STACK
     sub   L             ; 1:4       2dup u= while BEGIN_STACK
-    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup u= while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup u= while BEGIN_STACK
     ld    A, D          ; 1:4       2dup u= while BEGIN_STACK
     sub   H             ; 1:4       2dup u= while BEGIN_STACK
-    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup u= while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup u= while BEGIN_STACK})dnl
 dnl
 dnl
 define({_2DUP_UNE_WHILE},{
@@ -500,7 +515,7 @@ define({_2DUP_UNE_WHILE},{
     jr   nz, $+7        ; 2:7/12    2dup u<> while BEGIN_STACK
     ld    A, D          ; 1:4       2dup u<> while BEGIN_STACK
     sbc   A, H          ; 1:4       2dup u<> while BEGIN_STACK
-    jp    z, repeat{}BEGIN_STACK  ; 3:10      2dup u<> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup u<> while BEGIN_STACK})dnl
 dnl
 dnl
 define({_2DUP_ULT_WHILE},{
@@ -508,7 +523,7 @@ define({_2DUP_ULT_WHILE},{
     sub   L             ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
     ld    A, D          ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
     sbc   A, H          ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
-    jp   nc, repeat{}BEGIN_STACK  ; 3:10      2dup u< while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      2dup u< while BEGIN_STACK})dnl
 dnl    
 dnl
 define({_2DUP_UGE_WHILE},{
@@ -516,7 +531,7 @@ define({_2DUP_UGE_WHILE},{
     sub   L             ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
     ld    A, D          ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
     sbc   A, H          ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    jp    c, repeat{}BEGIN_STACK  ; 3:10      2dup u>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      2dup u>= while BEGIN_STACK})dnl
 dnl    
 dnl
 define({_2DUP_ULE_WHILE},{
@@ -524,7 +539,7 @@ define({_2DUP_ULE_WHILE},{
     sub   E             ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
     ld    A, H          ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
     sbc   A, D          ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    jp    c, repeat{}BEGIN_STACK  ; 3:10      2dup u<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      2dup u<= while BEGIN_STACK})dnl
 dnl    
 dnl
 define({_2DUP_UGT_WHILE},{
@@ -532,7 +547,7 @@ define({_2DUP_UGT_WHILE},{
     sub   E             ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
     ld    A, H          ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
     sbc   A, D          ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
-    jp   nc, repeat{}BEGIN_STACK  ; 3:10      2dup u> while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      2dup u> while BEGIN_STACK})dnl
 dnl
 dnl    
 dnl ------ 2dup scond while ( b a -- b a ) ---------
@@ -541,10 +556,10 @@ dnl 2dup = while
 define({_2DUP_EQ_WHILE},{
     ld    A, E          ; 1:4       2dup = while BEGIN_STACK
     sub   L             ; 1:4       2dup = while BEGIN_STACK
-    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup = while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup = while BEGIN_STACK
     ld    A, D          ; 1:4       2dup = while BEGIN_STACK
     sub   H             ; 1:4       2dup = while BEGIN_STACK
-    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup = while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup = while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup <> while
@@ -554,7 +569,7 @@ define({_2DUP_NE_WHILE},{
     jr   nz, $+7        ; 2:7/12    2dup <> while BEGIN_STACK
     ld    A, D          ; 1:4       2dup <> while BEGIN_STACK
     sub   H             ; 1:4       2dup <> while BEGIN_STACK
-    jp    z, repeat{}BEGIN_STACK  ; 3:10      2dup <> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup <> while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup < while
@@ -568,7 +583,7 @@ define({_2DUP_LT_WHILE},{
     sbc   A, H          ; 1:4       2dup < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
     rra                 ; 1:4       2dup < while BEGIN_STACK
     xor   C             ; 1:4       2dup < while BEGIN_STACK
-    jp    p, repeat{}BEGIN_STACK  ; 3:10      2dup < while BEGIN_STACK})dnl
+    jp    p, break{}BEGIN_STACK   ; 3:10      2dup < while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup >= while
@@ -582,7 +597,7 @@ define({_2DUP_GE_WHILE},{
     sbc   A, H          ; 1:4       2dup >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
     rra                 ; 1:4       2dup >= while BEGIN_STACK
     xor   C             ; 1:4       2dup >= while BEGIN_STACK
-    jp    m, repeat{}BEGIN_STACK  ; 3:10      2dup >= while BEGIN_STACK})dnl
+    jp    m, break{}BEGIN_STACK   ; 3:10      2dup >= while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup <= while
@@ -596,7 +611,7 @@ define({_2DUP_LE_WHILE},{
     sbc   A, D          ; 1:4       2dup <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
     rra                 ; 1:4       2dup <= while BEGIN_STACK
     xor   C             ; 1:4       2dup <= while BEGIN_STACK
-    jp    m, repeat{}BEGIN_STACK  ; 3:10      2dup <= while BEGIN_STACK})dnl
+    jp    m, break{}BEGIN_STACK   ; 3:10      2dup <= while BEGIN_STACK})dnl
 dnl    
 dnl
 dnl 2dup > while
@@ -610,6 +625,6 @@ define({_2DUP_GT_WHILE},{
     sbc   A, D          ; 1:4       2dup > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
     rra                 ; 1:4       2dup > while BEGIN_STACK
     xor   C             ; 1:4       2dup > while BEGIN_STACK
-    jp    p, repeat{}BEGIN_STACK  ; 3:10      2dup > while BEGIN_STACK})dnl
+    jp    p, break{}BEGIN_STACK   ; 3:10      2dup > while BEGIN_STACK})dnl
 dnl
 dnl

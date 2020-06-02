@@ -324,6 +324,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
     PUSH(5) BEGIN DUP_DOT            DUP_WHILE _1SUB PUTCHAR({','}) REPEAT DROP CR ;--> " 5, 4, 3, 2, 1, 0"
     PUSH(0) BEGIN DUP_DOT DUP PUSH(4) LT WHILE _1ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 1, 2, 3, 4"
     PUSH(0) BEGIN DUP_DOT DUP PUSH(4) LT WHILE _2ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 2, 4"
+    
+    BEGIN ... flag WHILE ... flag WHILE ... BREAK ... REPEAT|AGAIN|flag UNTIL
 
 |  original    |   M4 FORTH   |  optimization  |   data stack                 |  return address stack |
 |  :--------:  | :----------: | :------------: | :--------------------------- | :-------------------- |
@@ -347,6 +349,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |      j       |              |       XJ       |            ( -- j )          | ( j i -- j i )        |
 |      k       |              |       XK       |            ( -- k )          | ( k j i -- k j i )    |
 |    begin     |    BEGIN     |                |            ( -- )            |                       |
+|              |    BREAK     |                |            ( -- )            |                       |
 |    while     |    WHILE     |                |       ( flag -- )            |                       |
 |  dup while   |              |   DUP_WHILE    |       ( flag -- flag )       |                       |
 |2dup  =  while|              | _2DUP_EQ_WHILE |            ( -- )            |                       |
