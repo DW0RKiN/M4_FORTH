@@ -13,6 +13,8 @@
     call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
+
+
     
     
     push DE             ; 1:11      push2(4,0)
@@ -152,7 +154,7 @@ sdo103:                 ;           sdo 103 ( stop index -- stop index )
     ld   HL, 0          ; 3:10      push(0) 
 
 sdo104:                 ;           sdo 104 ( stop index -- stop index ) 
-    
+     
     pop  BC             ; 1:10      2 pick
     push BC             ; 1:11      2 pick BC = c
     push DE             ; 1:11      2 pick c b b a
@@ -169,7 +171,7 @@ sdo104:                 ;           sdo 104 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 104
     sub  E              ; 1:4       sloop 104 lo index - stop
     ld   A, H           ; 1:4       sloop 104
-    sbc  A, D           ; 1:4       sloop 104 hi index - stop
+    sbc  A, D           ; 1:4       sloop 104 hi index - stop - carry
     jp   c, sdo104      ; 3:10      sloop 104
 sleave104:              ;           sloop 104
     pop  HL             ; 1:10      unsloop 104 index out
@@ -180,7 +182,7 @@ sleave104:              ;           sloop 104
     ld   A, L           ; 1:4       sloop 103
     sub  E              ; 1:4       sloop 103 lo index - stop
     ld   A, H           ; 1:4       sloop 103
-    sbc  A, D           ; 1:4       sloop 103 hi index - stop
+    sbc  A, D           ; 1:4       sloop 103 hi index - stop - carry
     jp   c, sdo103      ; 3:10      sloop 103
 sleave103:              ;           sloop 103
     pop  HL             ; 1:10      unsloop 103 index out
@@ -235,7 +237,7 @@ sdo106:                 ;           sdo 106 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 106
     sub  E              ; 1:4       sloop 106 lo index - stop
     ld   A, H           ; 1:4       sloop 106
-    sbc  A, D           ; 1:4       sloop 106 hi index - stop
+    sbc  A, D           ; 1:4       sloop 106 hi index - stop - carry
     jp   c, sdo106      ; 3:10      sloop 106
 sleave106:              ;           sloop 106
     pop  HL             ; 1:10      unsloop 106 index out
@@ -314,7 +316,7 @@ next108:                ;           next 108
     ld   A, L           ; 1:4       sloop 107
     sub  E              ; 1:4       sloop 107 lo index - stop
     ld   A, H           ; 1:4       sloop 107
-    sbc  A, D           ; 1:4       sloop 107 hi index - stop
+    sbc  A, D           ; 1:4       sloop 107 hi index - stop - carry
     jp   c, sdo107      ; 3:10      sloop 107
 sleave107:              ;           sloop 107
     pop  HL             ; 1:10      unsloop 107 index out
@@ -401,19 +403,19 @@ leave109:
     exx                 ; 1:4       loop 109 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
+
     
     push DE             ; 1:11      push(5)
     ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5)   
-sfor111:                ;           sfor 111 ( index -- index )       
+    ld   HL, 5          ; 3:10      push(5)          
+sfor111:                ;           sfor 111 ( index -- index )    
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup 
-    call PRINT_S16      ; 3:17      . 
+    call PRINT_S16      ; 3:17      .       
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A    
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A          
     ld   A, H           ; 1:4       snext 111
     or   L              ; 1:4       snext 111
     dec  HL             ; 1:6       snext 111 index--
@@ -426,7 +428,7 @@ snext111:               ;           snext 111
     
     push DE             ; 1:11      push(5)
     ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5)    
+    ld   HL, 5          ; 3:10      push(5)           
     push HL             ; 1:11      for 112 index
     exx                 ; 1:4       for 112
     pop  DE             ; 1:10      for 112 stop
@@ -437,7 +439,7 @@ snext111:               ;           snext 111
     exx                 ; 1:4       for 112
     ex   DE, HL         ; 1:4       for 112
     pop  DE             ; 1:10      for 112 ( index -- ) r: ( -- index )
-for112:                 ;           for 112        
+for112:                 ;           for 112     
     exx                 ; 1:4       index 112 i    
     ld   E,(HL)         ; 1:7       index 112 i
     inc  L              ; 1:4       index 112 i
@@ -447,9 +449,9 @@ for112:                 ;           for 112
     exx                 ; 1:4       index 112 i
     ex   DE, HL         ; 1:4       index 112 i
     ex  (SP), HL        ; 1:19      index 112 i 
-    call PRINT_S16      ; 3:17      . 
+    call PRINT_S16      ; 3:17      .       
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A     
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A           
     exx                 ; 1:4       next 112
     ld    E,(HL)        ; 1:7       next 112
     inc   L             ; 1:4       next 112
@@ -468,7 +470,98 @@ next112:                ;           next 112
     exx                 ; 1:4       next 112 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-   
+    
+    push DE             ; 1:11      push(5)
+    ex   DE, HL         ; 1:4       push(5)
+    ld   HL, 5          ; 3:10      push(5) 
+begin101: 
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRINT_S16      ; 3:17      .
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    ld    A, H          ; 1:4       dup_while 101
+    or    L             ; 1:4       dup_while 101
+    jp    z, repeat101  ; 3:10      dup_while 101 
+    dec  HL             ; 1:6       1- 
+    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    jp   begin101       ; 3:10      repeat 101
+repeat101: 
+    ex   DE, HL         ; 1:4       drop
+    pop  DE             ; 1:10      drop 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A ;--> " 5, 4, 3, 2, 1, 0"
+    
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0) 
+begin102: 
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRINT_S16      ; 3:17      .
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push DE             ; 1:11      dup 4
+    push HL             ; 1:11      dup 4
+    ex   DE, HL         ; 1:4       dup 4
+    ld   HL, 4          ; 3:10      dup 4 
+    ld    A, H          ; 1:4       <
+    xor   D             ; 1:4       <
+    jp    p, $+7        ; 3:10      <
+    rl    D             ; 2:8       < sign x2
+    jr   $+5            ; 2:12      <
+    ex   DE, HL         ; 1:4       <
+    sbc  HL, DE         ; 2:15      <
+    sbc  HL, HL         ; 2:15      <
+    pop  DE             ; 1:10      < 
+    ld    A, H          ; 1:4       while 102
+    or    L             ; 1:4       while 102
+    ex   DE, HL         ; 1:4       while 102
+    pop  DE             ; 1:10      while 102
+    jp    z, repeat102  ; 3:10      while 102 
+    inc  HL             ; 1:6       1+ 
+    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    jp   begin102       ; 3:10      repeat 102
+repeat102: 
+    ex   DE, HL         ; 1:4       drop
+    pop  DE             ; 1:10      drop 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A ;--> " 0, 1, 2, 3, 4"
+    
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0) 
+begin103: 
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRINT_S16      ; 3:17      .
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push DE             ; 1:11      dup 4
+    push HL             ; 1:11      dup 4
+    ex   DE, HL         ; 1:4       dup 4
+    ld   HL, 4          ; 3:10      dup 4 
+    ld    A, H          ; 1:4       <
+    xor   D             ; 1:4       <
+    jp    p, $+7        ; 3:10      <
+    rl    D             ; 2:8       < sign x2
+    jr   $+5            ; 2:12      <
+    ex   DE, HL         ; 1:4       <
+    sbc  HL, DE         ; 2:15      <
+    sbc  HL, HL         ; 2:15      <
+    pop  DE             ; 1:10      < 
+    ld    A, H          ; 1:4       while 103
+    or    L             ; 1:4       while 103
+    ex   DE, HL         ; 1:4       while 103
+    pop  DE             ; 1:10      while 103
+    jp    z, repeat103  ; 3:10      while 103 
+    inc  HL             ; 1:6       2+
+    inc  HL             ; 1:6       2+ 
+    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    jp   begin103       ; 3:10      repeat 103
+repeat103: 
+    ex   DE, HL         ; 1:4       drop
+    pop  DE             ; 1:10      drop 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A ;--> " 0, 2, 4"
+    
     
     push DE             ; 1:11      print
     ld   BC, size101    ; 3:10      print Length of string to print
@@ -687,7 +780,7 @@ sdo119:                 ;           sdo 119 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 119
     sub  E              ; 1:4       sloop 119 lo index - stop
     ld   A, H           ; 1:4       sloop 119
-    sbc  A, D           ; 1:4       sloop 119 hi index - stop
+    sbc  A, D           ; 1:4       sloop 119 hi index - stop - carry
     jp   c, sdo119      ; 3:10      sloop 119
 sleave119:              ;           sloop 119
     pop  HL             ; 1:10      unsloop 119 index out
@@ -705,7 +798,7 @@ sdo120:                 ;           sdo 120 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 120
     sub  E              ; 1:4       sloop 120 lo index - stop
     ld   A, H           ; 1:4       sloop 120
-    sbc  A, D           ; 1:4       sloop 120 hi index - stop
+    sbc  A, D           ; 1:4       sloop 120 hi index - stop - carry
     jp   c, sdo120      ; 3:10      sloop 120
 sleave120:              ;           sloop 120
     pop  HL             ; 1:10      unsloop 120 index out
@@ -723,7 +816,7 @@ sdo121:                 ;           sdo 121 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 121
     sub  E              ; 1:4       sloop 121 lo index - stop
     ld   A, H           ; 1:4       sloop 121
-    sbc  A, D           ; 1:4       sloop 121 hi index - stop
+    sbc  A, D           ; 1:4       sloop 121 hi index - stop - carry
     jp   c, sdo121      ; 3:10      sloop 121
 sleave121:              ;           sloop 121
     pop  HL             ; 1:10      unsloop 121 index out
@@ -741,7 +834,7 @@ sdo122:                 ;           sdo 122 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 122
     sub  E              ; 1:4       sloop 122 lo index - stop
     ld   A, H           ; 1:4       sloop 122
-    sbc  A, D           ; 1:4       sloop 122 hi index - stop
+    sbc  A, D           ; 1:4       sloop 122 hi index - stop - carry
     jp   c, sdo122      ; 3:10      sloop 122
 sleave122:              ;           sloop 122
     pop  HL             ; 1:10      unsloop 122 index out
@@ -936,7 +1029,7 @@ endif102:
     ld   A, L           ; 1:4       sloop 126
     sub  E              ; 1:4       sloop 126 lo index - stop
     ld   A, H           ; 1:4       sloop 126
-    sbc  A, D           ; 1:4       sloop 126 hi index - stop
+    sbc  A, D           ; 1:4       sloop 126 hi index - stop - carry
     jp   c, sdo126      ; 3:10      sloop 126
 sleave126:              ;           sloop 126
     pop  HL             ; 1:10      unsloop 126 index out
@@ -1535,7 +1628,7 @@ sdo139:                 ;           sdo 139 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 139
     sub  E              ; 1:4       sloop 139 lo index - stop
     ld   A, H           ; 1:4       sloop 139
-    sbc  A, D           ; 1:4       sloop 139 hi index - stop
+    sbc  A, D           ; 1:4       sloop 139 hi index - stop - carry
     jp   c, sdo139      ; 3:10      sloop 139
 sleave139:              ;           sloop 139
     pop  HL             ; 1:10      unsloop 139 index out
@@ -1553,7 +1646,7 @@ sdo140:                 ;           sdo 140 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 140
     sub  E              ; 1:4       sloop 140 lo index - stop
     ld   A, H           ; 1:4       sloop 140
-    sbc  A, D           ; 1:4       sloop 140 hi index - stop
+    sbc  A, D           ; 1:4       sloop 140 hi index - stop - carry
     jp   c, sdo140      ; 3:10      sloop 140
 sleave140:              ;           sloop 140
     pop  HL             ; 1:10      unsloop 140 index out
@@ -1571,7 +1664,7 @@ sdo141:                 ;           sdo 141 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 141
     sub  E              ; 1:4       sloop 141 lo index - stop
     ld   A, H           ; 1:4       sloop 141
-    sbc  A, D           ; 1:4       sloop 141 hi index - stop
+    sbc  A, D           ; 1:4       sloop 141 hi index - stop - carry
     jp   c, sdo141      ; 3:10      sloop 141
 sleave141:              ;           sloop 141
     pop  HL             ; 1:10      unsloop 141 index out
@@ -1589,7 +1682,7 @@ sdo142:                 ;           sdo 142 ( stop index -- stop index )
     ld   A, L           ; 1:4       sloop 142
     sub  E              ; 1:4       sloop 142 lo index - stop
     ld   A, H           ; 1:4       sloop 142
-    sbc  A, D           ; 1:4       sloop 142 hi index - stop
+    sbc  A, D           ; 1:4       sloop 142 hi index - stop - carry
     jp   c, sdo142      ; 3:10      sloop 142
 sleave142:              ;           sloop 142
     pop  HL             ; 1:10      unsloop 142 index out

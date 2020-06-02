@@ -136,7 +136,7 @@ dnl ( j s i -- j s i j )
 dnl 2 pick 
 dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
 define({SJ}, {
-    _2_PICK})dnl
+    PUSH_PICK(2)})dnl
 dnl
 dnl
 dnl
@@ -146,7 +146,7 @@ define({SLOOP},{
     ld   A, L           ; 1:4       sloop LOOP_STACK
     sub  E              ; 1:4       sloop LOOP_STACK lo index - stop
     ld   A, H           ; 1:4       sloop LOOP_STACK
-    sbc  A, D           ; 1:4       sloop LOOP_STACK hi index - stop
+    sbc  A, D           ; 1:4       sloop LOOP_STACK hi index - stop - carry
     jp   c, sdo{}LOOP_STACK      ; 3:10      sloop LOOP_STACK
 sleave{}LOOP_STACK:              ;           sloop LOOP_STACK{}dnl
 __{}UNLOOP_STACK{}dnl
@@ -478,5 +478,138 @@ define({UNTIL},{
     ex   DE, HL         ; 1:4       until BEGIN_STACK
     pop  DE             ; 1:10      until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      until BEGIN_STACK})dnl
+dnl
+dnl
+dnl
+dnl
+dnl    
+dnl ------ 2dup ucond while ( b a -- b a ) ---------
+dnl
+define({_2DUP_UEQ_WHILE},{
+    ld    A, E          ; 1:4       2dup u= while BEGIN_STACK
+    sub   L             ; 1:4       2dup u= while BEGIN_STACK
+    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup u= while BEGIN_STACK
+    ld    A, D          ; 1:4       2dup u= while BEGIN_STACK
+    sub   H             ; 1:4       2dup u= while BEGIN_STACK
+    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup u= while BEGIN_STACK})dnl
+dnl
+dnl
+define({_2DUP_UNE_WHILE},{
+    ld    A, E          ; 1:4       2dup u<> while BEGIN_STACK
+    sub   L             ; 1:4       2dup u<> while BEGIN_STACK
+    jr   nz, $+7        ; 2:7/12    2dup u<> while BEGIN_STACK
+    ld    A, D          ; 1:4       2dup u<> while BEGIN_STACK
+    sbc   A, H          ; 1:4       2dup u<> while BEGIN_STACK
+    jp    z, repeat{}BEGIN_STACK  ; 3:10      2dup u<> while BEGIN_STACK})dnl
+dnl
+dnl
+define({_2DUP_ULT_WHILE},{
+    ld    A, E          ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       2dup u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    jp   nc, repeat{}BEGIN_STACK  ; 3:10      2dup u< while BEGIN_STACK})dnl
+dnl    
+dnl
+define({_2DUP_UGE_WHILE},{
+    ld    A, E          ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       2dup u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    jp    c, repeat{}BEGIN_STACK  ; 3:10      2dup u>= while BEGIN_STACK})dnl
+dnl    
+dnl
+define({_2DUP_ULE_WHILE},{
+    ld    A, L          ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sub   E             ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, H          ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sbc   A, D          ; 1:4       2dup u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    jp    c, repeat{}BEGIN_STACK  ; 3:10      2dup u<= while BEGIN_STACK})dnl
+dnl    
+dnl
+define({_2DUP_UGT_WHILE},{
+    ld    A, L          ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    sub   E             ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    sbc   A, D          ; 1:4       2dup u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    jp   nc, repeat{}BEGIN_STACK  ; 3:10      2dup u> while BEGIN_STACK})dnl
+dnl
+dnl    
+dnl ------ 2dup scond while ( b a -- b a ) ---------
+dnl
+dnl 2dup = while
+define({_2DUP_EQ_WHILE},{
+    ld    A, E          ; 1:4       2dup = while BEGIN_STACK
+    sub   L             ; 1:4       2dup = while BEGIN_STACK
+    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup = while BEGIN_STACK
+    ld    A, D          ; 1:4       2dup = while BEGIN_STACK
+    sub   H             ; 1:4       2dup = while BEGIN_STACK
+    jp   nz, repeat{}BEGIN_STACK  ; 3:10      2dup = while BEGIN_STACK})dnl
+dnl
+dnl
+dnl 2dup <> while
+define({_2DUP_NE_WHILE},{
+    ld    A, E          ; 1:4       2dup <> while BEGIN_STACK
+    sub   L             ; 1:4       2dup <> while BEGIN_STACK
+    jr   nz, $+7        ; 2:7/12    2dup <> while BEGIN_STACK
+    ld    A, D          ; 1:4       2dup <> while BEGIN_STACK
+    sub   H             ; 1:4       2dup <> while BEGIN_STACK
+    jp    z, repeat{}BEGIN_STACK  ; 3:10      2dup <> while BEGIN_STACK})dnl
+dnl
+dnl
+dnl 2dup < while
+define({_2DUP_LT_WHILE},{
+    ld    A, H          ; 1:4       2dup < while BEGIN_STACK
+    xor   D             ; 1:4       2dup < while BEGIN_STACK
+    ld    C, A          ; 1:4       2dup < while BEGIN_STACK
+    ld    A, E          ; 1:4       2dup < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       2dup < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       2dup < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       2dup < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    rra                 ; 1:4       2dup < while BEGIN_STACK
+    xor   C             ; 1:4       2dup < while BEGIN_STACK
+    jp    p, repeat{}BEGIN_STACK  ; 3:10      2dup < while BEGIN_STACK})dnl
+dnl
+dnl
+dnl 2dup >= while
+define({_2DUP_GE_WHILE},{
+    ld    A, H          ; 1:4       2dup >= while BEGIN_STACK
+    xor   D             ; 1:4       2dup >= while BEGIN_STACK
+    ld    C, A          ; 1:4       2dup >= while BEGIN_STACK
+    ld    A, E          ; 1:4       2dup >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       2dup >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       2dup >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       2dup >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    rra                 ; 1:4       2dup >= while BEGIN_STACK
+    xor   C             ; 1:4       2dup >= while BEGIN_STACK
+    jp    m, repeat{}BEGIN_STACK  ; 3:10      2dup >= while BEGIN_STACK})dnl
+dnl
+dnl
+dnl 2dup <= while
+define({_2DUP_LE_WHILE},{
+    ld    A, H          ; 1:4       2dup <= while BEGIN_STACK
+    xor   D             ; 1:4       2dup <= while BEGIN_STACK
+    ld    C, A          ; 1:4       2dup <= while BEGIN_STACK
+    ld    A, L          ; 1:4       2dup <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    sub   E             ; 1:4       2dup <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, H          ; 1:4       2dup <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    sbc   A, D          ; 1:4       2dup <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    rra                 ; 1:4       2dup <= while BEGIN_STACK
+    xor   C             ; 1:4       2dup <= while BEGIN_STACK
+    jp    m, repeat{}BEGIN_STACK  ; 3:10      2dup <= while BEGIN_STACK})dnl
+dnl    
+dnl
+dnl 2dup > while
+define({_2DUP_GT_WHILE},{
+    ld    A, H          ; 1:4       2dup > while BEGIN_STACK
+    xor   D             ; 1:4       2dup > while BEGIN_STACK
+    ld    C, A          ; 1:4       2dup > while BEGIN_STACK
+    ld    A, L          ; 1:4       2dup > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    sub   E             ; 1:4       2dup > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    ld    A, H          ; 1:4       2dup > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    sbc   A, D          ; 1:4       2dup > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    rra                 ; 1:4       2dup > while BEGIN_STACK
+    xor   C             ; 1:4       2dup > while BEGIN_STACK
+    jp    p, repeat{}BEGIN_STACK  ; 3:10      2dup > while BEGIN_STACK})dnl
 dnl
 dnl

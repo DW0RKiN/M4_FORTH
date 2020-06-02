@@ -146,7 +146,8 @@ dnl
 dnl
 dnl ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu ) 
 dnl Remove u. Copy the xu to the top of the stack.
-define({PICK},{
+define({PICK},{ifelse($#,{0},,{
+.error pick: Unexpected parameter $@, pick uses a parameter from the stack!})
     push DE             ; 1:11      pick
     add  HL, HL         ; 1:11      pick
     add  HL, SP         ; 1:11      pick

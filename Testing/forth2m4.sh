@@ -224,6 +224,20 @@ sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULE\s\+IF\(\s\|$\)#\1_2DUP_ULE_IF\2#gi' |
 sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGT\s\+IF\(\s\|$\)#\1_2DUP_UGT_IF\2#gi' |
 sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGE\s\+IF\(\s\|$\)#\1_2DUP_UGE_IF\2#gi' |
 
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+WHILE\(\s\|$\)#\1_2DUP_EQ_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE\s\+WHILE\(\s\|$\)#\1_2DUP_NE_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LT\s\+WHILE\(\s\|$\)#\1_2DUP_LT_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LE\s\+WHILE\(\s\|$\)#\1_2DUP_LE_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GT\s\+WHILE\(\s\|$\)#\1_2DUP_GT_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GE\s\+WHILE\(\s\|$\)#\1_2DUP_GE_WHILE\2#gi' |
+
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UEQ\s\+WHILE\(\s\|$\)#\1_2DUP_UEQ_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UNE\s\+WHILE\(\s\|$\)#\1_2DUP_UNE_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULT\s\+WHILE\(\s\|$\)#\1_2DUP_ULT_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULE\s\+WHILE\(\s\|$\)#\1_2DUP_ULE_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGT\s\+WHILE\(\s\|$\)#\1_2DUP_UGT_WHILE\2#gi' |
+sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGE\s\+WHILE\(\s\|$\)#\1_2DUP_UGE_WHILE\2#gi' |
+
 sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+EMIT\(\s\|$\)#\1PUTCHAR(\2)\3#gi' |
 
 sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LT\s\+IF\(\s\|$\)#\1DUP_PUSH_LT_IF(\2)\3#gi' |

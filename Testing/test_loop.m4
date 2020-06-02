@@ -6,16 +6,21 @@ include(`./FIRST.M4')dnl
     ld  hl, stack_test
     push hl
     INIT(60000)
+
+
     
     PUSH2(4, 0)  DO  I PUSH(0)  DO  J DOT  I DOT  LOOP PUTCHAR({','})  LOOP CR
     PUSH2(4, 0) SDO SI PUSH(0) SDO SJ DOT SI DOT SLOOP PUTCHAR({','}) SLOOP CR
       XDO(4, 0)     XI PUSH(0) SDO XI DOT SI DOT SLOOP PUTCHAR({','}) XLOOP CR
     PUSH2(3, 0) SDO SI         FOR SI DOT  I DOT  NEXT PUTCHAR({','}) SLOOP CR
     PUSH2(3, 0)  DO  I        SFOR  I DOT SI DOT SNEXT PUTCHAR({','})  LOOP CR
+
+    PUSH(5)          SFOR    SI DOT       PUTCHAR({','})          SNEXT CR
+    PUSH(5)           FOR     I DOT       PUTCHAR({','})           NEXT CR
+    PUSH(5) BEGIN DUP_DOT DUP_WHILE _1SUB PUTCHAR({','}) REPEAT DROP CR ;--> " 5, 4, 3, 2, 1, 0"
+    PUSH(0) BEGIN DUP_DOT DUP_PUSH(4) LT WHILE _1ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 1, 2, 3, 4"
+    PUSH(0) BEGIN DUP_DOT DUP_PUSH(4) LT WHILE _2ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 2, 4"
     
-    PUSH(5)   SFOR       SI DOT PUTCHAR({','})    SNEXT CR
-    PUSH(5)    FOR        I DOT PUTCHAR({','})     NEXT CR
-   
     PRINT("Exit:")
     PUSH2(0,0) DO PUTCHAR('a') LOOP 
     PUSH2(0,1) DO PUTCHAR('b') LOOP 
