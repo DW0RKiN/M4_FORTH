@@ -2,6 +2,7 @@
 
 TMPFILE=$(mktemp)
 TMPFILE2=$(mktemp)
+TMPFILE3=$(mktemp)
 
 cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#gi'| sed 's#\(\s\|^\)\\\(\s\|$\)#\1;\2#gi' > $TMPFILE
 
@@ -133,7 +134,8 @@ sed 's#^\([^;{]*\s\|^\)!\(\s\|$\)#\1STORE\2#gi' |
 sed 's#^\([^;{]*\s\|^\)cr\(\s\|$\)#\1CR\2#gi' |
 sed 's#^\([^;{]*\s\|^\)\.s\(\s\|$\)#\1DOTS\2#gi' |
 
-sed 's#^\([^;{]*\s\|^\)cell\(\s\|$\)#\12\2#gi' |
+sed 's#^\([^;{]*\s\|^\)-cell\(\s\|$\)#\1-2\2#gi' |
+sed 's#^\([^;{]*\s\|^\)+*cell\(\s\|$\)#\12\2#gi' |
 sed 's#^\([^;{]*\s\|^\)cell+\(\s\|$\)#\1_2ADD\2#gi' |
 sed 's#^\([^;{]*\s\|^\)cell-\(\s\|$\)#\1_2SUB\2#gi' |
 sed 's#^\([^;{]*\s\|^\)cells\(\s\|$\)#\1_2MUL\2#gi' |
@@ -187,6 +189,8 @@ sed 's#^\([^;{]*\s\|^\)cmove>\(\s\|$\)#\1CMOVEGT\2#gi' |
 
 sed 's#^\([^;{]*\s\|^\)[Dd]o\(\s\|$\)#\1DO\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Ll]oop\(\s\|$\)#\1LOOP\2#g' |
+sed 's#^\([^;{]*\s\|^\)[0]*2\s\++[Ll]oop\(\s\|$\)#\1_2ADDLOOP\2#g' |
+
 sed 's#^\([^;{]*\s\|^\)[Ff]or\(\s\|$\)#\1FOR\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Nn]ext\(\s\|$\)#\1NEXT\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Ii]f\(\s\|$\)#\1IF\2#g' |
@@ -288,6 +292,66 @@ sed 's#^\([^;{]*\s\|^\)DUP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1DUP_PUSH(\2)\3#gi' |
 
 sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+MUL\(\s\|$\)#\1PUSH_MUL(\2)\3#gi' > $TMPFILE2
 
+    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+    error=$?
+    cat $TMPFILE2 > $TMPFILE
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+done
+
+
+cat $TMPFILE | sed 's#o#_____0_____#g' | sed 's#O#_____00_____#g' > $TMPFILE2
+cat $TMPFILE2 > $TMPFILE
+
+while :
+do
+    cat $TMPFILE |
+    sed 's#^\([^;{]*\s\|^\)D_____00_____\(\s\|$\)#\1DO\2#g' |
+    sed 's#^\([^;{]*\s\|^\)L_____00__________00_____P\(\s\|$\)#\1LOOP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)+\([Ll]\)_____00__________00_____\([Pp]\)\(\s\|$\)#\1+\2OO\3\4#g' |
+    sed 's#^\([^;{]*\s\|^\)+\([Ll]\)_____0__________0_____\([Pp]\)\(\s\|$\)#\1+\2OO\3\4#g' |
+    sed 's#^\([^;{]*\s\|^\)+\([Ll]\)_____00__________0_____\([Pp]\)\(\s\|$\)#\1+\2OO\3\4#g' |
+    sed 's#^\([^;{]*\s\|^\)+\([Ll]\)_____0__________00_____\([Pp]\)\(\s\|$\)#\1+\2OO\3\4#g' > $TMPFILE2
+    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+    error=$?
+    cat $TMPFILE2 > $TMPFILE
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+done
+
+# xloop
+while :
+do
+    cat $TMPFILE > $TMPFILE3
+
+
+    # xloop
+    while :
+    do
+        cat $TMPFILE | sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)LOOP\(\s\|$\)#\1XD_____00_____(\2,\3)\4XL_____00__________00_____P\5#g' |
+    sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)\([-+]*[0-9]\+\)\s\++LOOP\(\s\|$\)#\1XD_____00_____(\2,\3)\4XADDL_____00__________00_____P(\5)\6#gi' > $TMPFILE2
+        diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+        error=$?
+        cat $TMPFILE2 > $TMPFILE
+        [ $error -gt 1 ] && exit
+        [ $error -eq 0 ] && break
+    done
+
+    cat $TMPFILE | sed 's#^\([^;{]*\s\|^\)DO\(\s\+[^oO]*\s\++*[Lo]\)OO\([Pp]\s\|$\)#\1D_____00_____\2_____00__________00_____\3#' > $TMPFILE2
+    cat $TMPFILE2 > $TMPFILE
+    
+    diff $TMPFILE $TMPFILE3 > /dev/null 2>&1
+    error=$?
+    cat $TMPFILE > $TMPFILE3
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+done
+
+
+# xloop
+while :
+do
+    cat $TMPFILE | sed 's#_____0_____#o#g' | sed 's#_____00_____#O#g' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
     error=$?
     cat $TMPFILE2 > $TMPFILE

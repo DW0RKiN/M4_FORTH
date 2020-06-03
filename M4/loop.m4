@@ -109,6 +109,38 @@ __{}popdef({LOOP_STACK}){}dnl
 })dnl
 dnl
 dnl
+dnl
+dnl ( -- )
+define(_2ADDLOOP,{
+    exx                 ; 1:4       loop LOOP_STACK
+    ld   E,(HL)         ; 1:7       loop LOOP_STACK
+    inc  L              ; 1:4       loop LOOP_STACK
+    ld   D,(HL)         ; 1:7       loop LOOP_STACK DE = index   
+    inc  HL             ; 1:6       loop LOOP_STACK
+    inc  DE             ; 1:6       loop LOOP_STACK
+    inc  DE             ; 1:6       loop LOOP_STACK index + 2
+    ld    A, E          ; 1:4       loop LOOP_STACK
+    sub (HL)            ; 1:7       loop LOOP_STACK lo index - stop
+    ld    A, D          ; 1:4       loop LOOP_STACK
+    inc   L             ; 1:4       loop LOOP_STACK
+    sbc  A,(HL)         ; 1:7       loop LOOP_STACK hi index - stop
+    jr  nc, leave{}LOOP_STACK    ; 2:7/12    loop LOOP_STACK exit
+    dec  L              ; 1:4       loop LOOP_STACK
+    dec  HL             ; 1:6       loop LOOP_STACK
+    ld  (HL), D         ; 1:7       loop LOOP_STACK
+    dec  L              ; 1:4       loop LOOP_STACK
+    ld  (HL), E         ; 1:7       loop LOOP_STACK
+    exx                 ; 1:4       loop LOOP_STACK
+    jp   do{}LOOP_STACK          ; 3:10      loop LOOP_STACK
+leave{}LOOP_STACK:
+    inc  HL             ; 1:6       loop LOOP_STACK
+    exx                 ; 1:4       loop LOOP_STACK{}dnl
+__{}popdef({LEAVE_STACK}){}dnl
+__{}popdef({UNLOOP_STACK}){}dnl
+__{}popdef({LOOP_STACK}){}dnl
+})dnl
+dnl
+dnl
 dnl ---------  sdo ... sloop  -----------
 dnl 5 0 sdo . sloop --> 0 1 2 3 4 
 dnl ( stop index -- stop index )

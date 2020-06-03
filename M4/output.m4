@@ -306,6 +306,51 @@ dnl
 dnl
 dnl
 dnl
+ifdef({USE_RAND},{
+; ( -- rand )
+; 16-bit pseudorandom generator
+; In: DE / HL
+; Out: HL = DE / HL, DE = DE % HL
+RAND:
+    ex   DE, HL         ; 1:4
+    ex  (SP),HL         ; 1:19
+    push HL             ; 1:11
+RAND_16 EQU $+1
+    ld   HL, 0x0001     ; 3:10      seed must not be 0
+    ld    A, H          ; 1:4
+    rra                 ; 1:4
+    ld    A, L          ; 1:4
+    rra                 ; 1:4
+    xor   H             ; 1:4
+    ld    H, A          ; 1:4       xs ^= xs << 7;
+    rra                 ; 1:4
+    xor   L             ; 1:4
+    ld    L, A          ; 1:4       xs ^= xs >> 9;
+    xor   H             ; 1:4
+    ld    H, A          ; 1:4       xs ^= xs << 8;
+    ld  (RAND_16), HL ; 3:16
+
+RAND_8 EQU $+1
+    ld    A, 0x01       ; 2:7
+    ld    B, A          ; 1:4 
+    rrca                ; 1:4       multiply by 32
+    rrca                ; 1:4
+    rrca                ; 1:4
+    xor  0x1F           ; 2:7
+    add   A, B          ; 1:4
+    sbc   A, 0xFF       ; 1:4       carry
+    ld  (RAND_8), A     ; 3:13
+    
+    xor   H             ; 1:4
+    ld    H, A          ; 1:4
+    ld    A, R          ; 2:9
+    xor   L             ; 1:4
+    ld    L, A          ; 1:4
+    ret                 ; 1:10}){}dnl
+dnl
+dnl
+dnl
+dnl
 ifdef({USE_KEY},{
 ; Read key from keyboard
 ; In: 

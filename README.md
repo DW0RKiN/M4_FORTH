@@ -336,6 +336,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |  :--------:  | :----------: | :------------: | :--------------------------- | :-------------------- |
 |      do      |      DO      |                | ( stop index -- )            | ( -- stop index )     |
 |     loop     |     LOOP     |                |            ( -- )            | ( s i -- s i+1 )      |
+|   `2` +loop  |              |   _2ADDLOOP    |            ( -- )            | ( s i -- s i+2 )      |
 |    unloop    |    UNLOOP    |                |          ( ? -- )            | ( ? -- )              |
 |    leave     |    LEAVE     |                |          ( ? -- )            | ( ? -- )              |
 |       i      |       I      |                |            ( -- index )      | ( index -- index )    |
@@ -386,14 +387,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |  variable  | VARIABLE(PI)  |                |          ( -- index ) |                       |
 |   addr @   |    FETCH      |                |     ( addr -- x )     |                       | TOP = (addr) |
 |            |               |  XFETCH(addr)  |          ( -- x )     |                       | TOP = (addr) |
-|  addr x !  |    STORE      |                |   ( addr x -- )       |                       | x = (addr)   |
+|  x addr !  |    STORE      |                |   ( x addr -- )       |                       | x = (addr)   |
 |            |               |  XSTORE(addr)  |        ( x -- )       |                       | (addr) = x   |
 | x addr +!  |   PLUS_STORE  |                |   ( x addr -- )       |                       | (addr) += x  |
 |   cmove    |     CMOVE     |                |( from to u -- )       |                       | 8bit, addr++ |
 |   cmove>   |    CMOVEGT    |                |( from to u -- )       |                       | 8bit, addr-- |
 |    move    |      MOVE     |                |( from to u -- )       |                       | 16bit, addr++|
 |    move>   |     MOVEGT    |                |( from to u -- )       |                       | 16bit, addr++|
-
+|            |     RANDOM    |                |          ( -- random )|                       |              |
 
 ### Output
 
