@@ -228,14 +228,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 | :--------: | :----------: | :------------: | :----------------------- | :-------------------- |
 |     .      |     DOT      |   UDOT if > 0  |       ( x1 -- )          |                       |
 |     u.     |     UDOT     |                |       ( x1 -- )          |                       |
-|   DUP .    |              |    DUP_DOT     |       ( x1 -- x1 )       |                       |
-|   DUP u.   |              |    DUP_UDOT    |       ( x1 -- x1 )       |                       |
+|   dup .    |              |    DUP_DOT     |       ( x1 -- x1 )       |                       |
+|   dup u.   |              |    DUP_UDOT    |       ( x1 -- x1 )       |                       |
 |     .s     |     DOTS     |                | ( x3 x2 x1 -- x3 x2 x1 ) |                       |
 |     cr     |      CR      |                |          ( -- )          |                       |
 |    emit    |     EMIT     |                |      ( 'a' -- )          |                       |
 |  'a' emit  |              |  PUTCHAR('a')  |          ( -- )          |                       |
 |    type    |     TYPE     |                |   ( addr n -- )          |                       |
-| 2dup type  |  _2DUP_TYPE  |                |   ( addr n -- addr n )   |                       |
+| 2dup type  |              |   _2DUP_TYPE   |   ( addr n -- addr n )   |                       |
 | .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
 |     key    |      KEY     |                |          ( -- key )      |                       |
 |   accept   |    ACCEPT    |                | ( addr max -- loaded )   |                       |
