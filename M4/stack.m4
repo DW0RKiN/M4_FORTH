@@ -50,7 +50,7 @@ define({_2DROP},{
 dnl
 dnl
 dnl rdrop
-dnl r:( a -- ) 
+dnl r:( a -- )
 dnl odstrani vrchol zasobniku navratovych adres
 define({RDROP},{
     exx                 ; 1:4       rdrop
@@ -63,20 +63,39 @@ dnl ( b a -- a )
 dnl : nip swap drop ;
 dnl drop_second
 define({NIP},{
-    pop  DE             ; 1:10      nip})dnl
+    pop  DE             ; 1:10      nip ( b a -- a )})dnl
+dnl
+dnl
+dnl ( d c b a – b a )
+dnl : 2nip 2swap 2drop ;
+dnl drop_second
+define({_2NIP},{
+    pop  AF             ; 1:10      2nip
+    pop  AF             ; 1:10      2nip ( d c b a – b a )})dnl
 dnl
 dnl
 dnl ( b a -- a b a )
 dnl : tuck swap over ;
 define({TUCK},{
-    push HL             ; 1:11      tuck})dnl
+    push HL             ; 1:11      tuck ( b a -- a b a )})dnl
+dnl
+dnl
+dnl ( d c b a -- b a d c b a )
+dnl : 2tuck 2swap 2over ;
+define({_2TUCK},{
+    pop  AF             ; 1:10      2tuck c
+    pop  BC             ; 1:10      2tuck d
+    push DE             ; 1:11      2tuck b
+    push HL             ; 1:11      2tuck a
+    push BC             ; 1:11      2tuck d
+    push AF             ; 1:11      2tuck c ( d c b a -- b a d c b a )})dnl
 dnl
 dnl
 dnl ( b a -- b a b )
 dnl vytvori kopii druhe polozky na zasobniku
 define({OVER},{
     push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over})dnl
+    ex   DE, HL         ; 1:4       over ( b a -- b a b )})dnl
 dnl
 dnl
 dnl ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
@@ -91,7 +110,7 @@ define({_2OVER},{
     ex  (SP),HL         ; 1:19      2over a1 a2 b1 b2 b1 a2
     pop  HL             ; 1:10      2over       
     ld    D, B          ; 1:4       2over
-    ld    E, C          ; 1:4       2over})dnl
+    ld    E, C          ; 1:4       2over ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )})dnl
 dnl
 dnl
 dnl ( x3 x2 x1 -- x2 x1 x3 )
@@ -99,6 +118,26 @@ dnl vyjme treti polozku a ulozi ji na vrchol
 define({ROT},{
     ex   DE, HL         ; 1:4       rot ( x3 x1 x2 )
     ex  (SP), HL        ; 1:19      rot ( x2 x1 x3 )})dnl
+dnl
+dnl
+dnl ( f e d c b a -- d c b a f e )
+dnl vyjme treti 16-bit polozku a ulozi ji na vrchol
+define({_2ROT},{
+    exx                 ; 1:4       2rot f e d c b a
+    pop  DE             ; 1:10      2rot f e d   b a
+    pop  BC             ; 1:10      2rot f e     b a    
+    exx                 ; 1:4       2rot 
+    ex  (SP), HL        ; 1:19      2rot f a     b e
+    pop  AF             ; 1:10      2rot f       b e
+    pop  BC             ; 1:10      2rot         b e    
+    exx                 ; 1:4       2rot 
+    push BC             ; 1:11      2rot d       b e    
+    push DE             ; 1:11      2rot d c     b e
+    exx                 ; 1:4       2rot 
+    push DE             ; 1:11      2rot d c b   b e    
+    ld    D, B          ; 1:4       2rot
+    ld    E, C          ; 1:4       2rot d c b   f e
+    push AF             ; 1:11      2rot d c b a b e})dnl
 dnl
 dnl
 dnl -rot
