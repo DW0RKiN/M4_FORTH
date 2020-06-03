@@ -94,14 +94,59 @@ dnl cmove
 dnl ( addr1 addr2 u -- )
 dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVE},{
-    ld    A, H          ; 1:4       move
-    or    L             ; 1:4       move
+    ld    A, H          ; 1:4       cmove
+    or    L             ; 1:4       cmove
+    ld    B, H          ; 1:4       cmove
+    ld    C, L          ; 1:4       cmove BC = u
+    pop  HL             ; 1:10      cmove HL = from = addr1
+    jr    z, $+4        ; 2:7/12    cmove
+    ldir                ; 2:u*21/16 cmove
+    pop  HL             ; 1:10      cmove
+    pop  DE             ; 1:10      cmove})dnl
+dnl
+dnl
+dnl cmove>
+dnl ( addr1 addr2 u -- )
+dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+define({CMOVEGT},{
+    ld    A, H          ; 1:4       cmove>
+    or    L             ; 1:4       cmove>
+    ld    B, H          ; 1:4       cmove>
+    ld    C, L          ; 1:4       cmove> BC = u
+    pop  HL             ; 1:10      cmove> HL = from = addr1
+    jr    z, $+4        ; 2:7/12    cmove>
+    lddr                ; 2:u*21/16 cmove>
+    pop  HL             ; 1:10      cmove>
+    pop  DE             ; 1:10      cmove>})dnl
+dnl
+dnl
+dnl move
+dnl ( addr1 addr2 u -- )
+dnl If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
+define({MOVE},{
+    or    A             ; 1:4       move
+    adc  HL, HL         ; 1:11      move
     ld    B, H          ; 1:4       move
-    ld    C, L          ; 1:4       move BC = u
-    pop   HL            ; 1:10      move from = addr1
+    ld    C, L          ; 1:4       move BC = 2*u
+    pop  HL             ; 1:10      move HL = from = addr1
     jr    z, $+4        ; 2:7/12    move
-    ldir                ; 2:x*21/16 move
-    pop   HL            ; 1:10      move
-    pop   DE            ; 1:10      move})dnl
+    ldir                ; 2:u*42/32 move
+    pop  HL             ; 1:10      move
+    pop  DE             ; 1:10      move})dnl
+dnl
+dnl
+dnl move>
+dnl ( addr1 addr2 u -- )
+dnl If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
+define({MOVEGT},{
+    or    A             ; 1:4       move>
+    adc  HL, HL         ; 1:11      move>
+    ld    B, H          ; 1:4       move>
+    ld    C, L          ; 1:4       move> BC = 2*u
+    pop  HL             ; 1:10      move> HL = from = addr1
+    jr    z, $+4        ; 2:7/12    move>
+    lddr                ; 2:u*42/32 move>
+    pop  HL             ; 1:10      move>
+    pop  DE             ; 1:10      move>})dnl
 dnl
 dnl

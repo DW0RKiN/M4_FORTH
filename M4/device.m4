@@ -101,9 +101,16 @@ ALL_STRING_STACK)})dnl
 dnl
 dnl 
 dnl ( -- key )
-dnl print number
+dnl readchar
 define(KEY,{ifdef({USE_KEY},,define({USE_KEY},{}))
     call READKEY        ; 3:17      key})dnl
+dnl
+dnl
+dnl 
+dnl ( addr umax -- uloaded )
+dnl readstring
+define(ACCEPT,{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{}))
+    call READSTRING     ; 3:17      accept})dnl
 dnl
 dnl
 dnl

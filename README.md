@@ -141,12 +141,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |    nip     |      NIP     |                |      ( x2 x1 -- x1 )         |                       |
 |    2nip    |     2NIP     |                |    ( d c b a -- b a )        |                       |
 |    tuck    |     TUCK     |                |      ( x2 x1 -- x1 x2 x1 )   |                       |
-|   2tuck    |    2TUCK     |                |    ( d c b a -- b a d c b a )|                       |
+|   2tuck    |   _2TUCK     |                |    ( d c b a -- b a d c b a )|                       |
 |    over    |     OVER     |                |      ( x2 x1 -- x2 x1 x2 )   |                       |
-|   2over    |    2OVER     |                |    ( a b c d -- a b c d a b )|                       |
+|   2over    |   _2OVER     |                |    ( a b c d -- a b c d a b )|                       |
 |    rot     |     ROT      |                |   ( x3 x2 x1 -- x2 x1 x3 )   |                       |
-|   2rot     |     2ROT     |                |( f e d c b a -- d c b a f e )|                       |
-|   -rot     |     RROT     |                |   ( x3 x2 x1 -- x1 x3 x2 )   |                       |
+|   2rot     |    _2ROT     |                |( f e d c b a -- d c b a f e )|                       |
+|   -rot     |     NROT     |                |   ( x3 x2 x1 -- x1 x3 x2 )   |                       |
 |   `123`    |  PUSH(`123`) |   PUSH2()      |            ( -- `123` )      |                       |
 |   `2` `1`  |PUSH2(`2`,`1`)|                |            ( -- `2` `1` )    |                       |
 | addr `7` ! | PUSH((addr)) |                |    *addr = 7 --> ( -- `7`)   |                       |
@@ -238,6 +238,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 | 2dup type  |  _2DUP_TYPE  |                |   ( addr n -- addr n )   |                       |
 | .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
 |     key    |      KEY     |                |          ( -- key )      |                       |
+|   accept   |    ACCEPT    |                | ( addr max -- loaded )   |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
@@ -377,18 +378,21 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 
-| original   |    M4 FORTH   |  optimization  |   data stack        |  return address stack | comment      |
-| :--------: | :-----------: | :------------: | :------------------ | :-------------------- | :----------- |
-|            | INIT(RAS_addr)|                |                     |  Init HL' = RAS_addr  |              |
-|            |     STOP      |                |        ( -- )       |  Load orig. HL'       |
-|  constant  |   CONSTANT    |                |        ( -- )       |                       |
-|  variable  | VARIABLE(PI)  |                |        ( -- index ) |                       |
-|   addr @   |    FETCH      |                |   ( addr -- x )     |                       | TOP = (addr) |
-|            |               |  XFETCH(addr)  |        ( -- x )     |                       | TOP = (addr) |
-|  addr x !  |    STORE      |                | ( addr x -- )       |                       | x = (addr)   |
-|            |               |  XSTORE(addr)  |      ( x -- )       |                       | (addr) = x   |
-| x addr +!  |   PLUS_STORE  |                | ( x addr -- )       |                       | (addr) += x  |
-|   cmove    |     CMOVE     |                |( a1 a2 u -- )       |                       |              |
+| original   |    M4 FORTH   |  optimization  |   data stack          |  return address stack | comment      |
+| :--------: | :-----------: | :------------: | :-------------------- | :-------------------- | :----------- |
+|            | INIT(RAS_addr)|                |                       |  Init HL' = RAS_addr  |              |
+|            |     STOP      |                |          ( -- )       |  Load orig. HL'       |
+|  constant  |   CONSTANT    |                |          ( -- )       |                       |
+|  variable  | VARIABLE(PI)  |                |          ( -- index ) |                       |
+|   addr @   |    FETCH      |                |     ( addr -- x )     |                       | TOP = (addr) |
+|            |               |  XFETCH(addr)  |          ( -- x )     |                       | TOP = (addr) |
+|  addr x !  |    STORE      |                |   ( addr x -- )       |                       | x = (addr)   |
+|            |               |  XSTORE(addr)  |        ( x -- )       |                       | (addr) = x   |
+| x addr +!  |   PLUS_STORE  |                |   ( x addr -- )       |                       | (addr) += x  |
+|   cmove    |     CMOVE     |                |( from to u -- )       |                       | 8bit, addr++ |
+|   cmove>   |    CMOVEGT    |                |( from to u -- )       |                       | 8bit, addr-- |
+|    move    |      MOVE     |                |( from to u -- )       |                       | 16bit, addr++|
+|    move>   |     MOVEGT    |                |( from to u -- )       |                       | 16bit, addr++|
 
 
 ### Output

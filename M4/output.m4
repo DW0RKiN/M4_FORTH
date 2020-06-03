@@ -325,6 +325,42 @@ READKEY:
     ret                 ; 1:10      readkey}){}dnl
 dnl
 dnl
+dnl
+ifdef({USE_ACCEPT},{
+; Read string from keyboard
+; In: DE = addr, HL = length 
+; Out: 2x pop stack, TOP = HL = loaded
+READSTRING:
+    ld    B, D          ; 1:4       readstring
+    ld    C, E          ; 1:4       readstring BC = addr
+    ex   DE, HL         ; 1:4       readstring 
+READSTRING2:
+    xor   A             ; 1:4       readstring
+    ld    (0x5C08),A    ; 3:13      readstring ZX Spectrum LAST K system variable
+    
+    ld    A,(0x5C08)    ; 3:13      readstring read new value of LAST K
+    or    A             ; 1:4       readstring is it still zero?
+    jr    z, $-4        ; 2:7/12    readstring
+
+    cp  0x0D            ; 2:7       readstring enter?
+    jr    z, READSTRING3; 2:7/12    readstring
+    ld  (HL),A          ; 1:7       readstring
+    inc  HL             ; 1:6       readstring
+    dec  DE             ; 1:6       readstring
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A    
+    ld    A, D          ; 1:4       readstring
+    or    E             ; 1:4       readstring
+    jr   nz, READSTRING2; 2:7/12    readstring
+READSTRING3:
+    or    A             ; 1:4       readstring
+    sbc  HL, BC         ; 2:15      readstring
+    
+    pop  BC             ; 1:10      readstring ret
+    pop  DE             ; 1:10      readstring
+    push BC             ; 1:11      readstring ret
+    ret                 ; 1:10      readstring}){}dnl
+dnl
+dnl
 ALL_VARIABLE
 STRING_SECTION:
 define({STRING_POP},{STRING_STACK{}popdef({STRING_STACK})})ALL_STRING_STACK
