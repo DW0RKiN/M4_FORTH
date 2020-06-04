@@ -4,8 +4,8 @@ dnl ( -- )
 dnl call function
 define(CALL,{
     call format({%-15s},$1); 3:17      call
-    ex   DE,HL          ; 1:4       call    
-    exx                 ; 1:4       call})dnl
+    ex   DE, HL         ; 1:4       call    
+    exx                 ; 1:4       call R:( ret -- )}){}dnl
 dnl
 dnl
 dnl ( -- )
@@ -20,7 +20,7 @@ format({%-24s;           $2},FCE_STACK:)
     ld  (HL),D          ; 1:7       :
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       :})dnl
+    exx                 ; 1:4       : R:( -- ret )}){}dnl
 dnl
 dnl
 dnl ( -- )
@@ -34,11 +34,11 @@ dnl return from function
 define(SEMICOLON,{
 FCE_STACK{}_end:popdef({FCE_STACK})
     exx                 ; 1:4       ;
-    ld   E,(HL)         ; 1:7       ;
-    inc  L              ; 1:4       ;
-    ld   D,(HL)         ; 1:7       ; DE = ret
+    ld    E,(HL)        ; 1:7       ;
+    inc   L             ; 1:4       ;
+    ld    D,(HL)        ; 1:7       ; DE = ret
     inc  HL             ; 1:6       ;
-    ex   DE,HL          ; 1:4       ;
+    ex   DE, HL         ; 1:4       ;
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----})dnl
 dnl

@@ -130,6 +130,32 @@ define(_2MUL,{
     add  HL, HL         ; 1:11      2*})dnl
 dnl
 dnl
+dnl "2/"
+dnl ( x1 -- x )
+dnl x = x1 / 2
+define({_2DIV},{
+    sra   H             ; 2:8       2/   with sign
+    rr    L             ; 2:8       2/})dnl
+dnl
+dnl
+dnl "256 *"
+dnl ( x1 -- x )
+dnl x = x1 * 256
+define(_256MUL,{
+    ld    H, L          ; 1:4       256*
+    ld    L, 0x00       ; 2:7       256*})dnl
+dnl
+dnl
+dnl "256 /"
+dnl ( x1 -- x )
+dnl x = x1 / 256
+define({_256DIV},{
+    ld    L, H          ; 1:4       256/   with sign
+    rl    H             ; 2:8       256/
+    sbc   A, A          ; 1:4       256/
+    ld    H, A          ; 1:4       256/})dnl
+dnl
+dnl
 dnl
 dnl
 define({SUM_1BITS},{define({TEMP},eval((($1) & 0x5555) + (($1) & 0xAAAA)/2)){}dnl
@@ -330,13 +356,5 @@ ___{}XMUL_NEGLOOP($1)
     ld    D, B          ; 1:4       $1 *
     ld    E, C          ; 1:4       $1 *})})dnl
 dnl
-dnl
-dnl
-dnl "2/"
-dnl ( x1 -- x )
-dnl x = x1 / 2
-define({_2DIV},{
-    sra   H             ; 2:8       2/   with sign
-    rr    L             ; 2:8       2/})dnl
 dnl
 dnl

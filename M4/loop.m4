@@ -290,14 +290,14 @@ __{}pushdef({UNLOOP_STACK},{
 __{}    exx                 ; 1:4       xunloop LOOP_STACK
 __{}    inc   L             ; 1:4       xunloop LOOP_STACK
 __{}    inc  HL             ; 1:6       xunloop LOOP_STACK
-__{}    exx                 ; 1:4       xunloop LOOP_STACK ( index -- )}){}dnl
+__{}    exx                 ; 1:4       xunloop LOOP_STACK R:( index -- )}){}dnl
 __{}pushdef({STOP_STACK}, $1)pushdef({INDEX_STACK}, $2)
     exx                 ; 1:4       xdo($1,$2) LOOP_STACK
     dec  HL             ; 1:6       xdo($1,$2) LOOP_STACK
     ld  (HL),high format({%-6s},$2); 2:10      xdo($1,$2) LOOP_STACK
     dec   L             ; 1:4       xdo($1,$2) LOOP_STACK
     ld  (HL),low format({%-7s},$2); 2:10      xdo($1,$2) LOOP_STACK
-    exx                 ; 1:4       xdo($1,$2) LOOP_STACK
+    exx                 ; 1:4       xdo($1,$2) LOOP_STACK R:( -- $2 )
 xdo{}LOOP_STACK:                 ;           xdo($1,$2) LOOP_STACK})dnl
 dnl
 dnl
@@ -331,7 +331,7 @@ __{}    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
 __{}    jp   xdo{}LOOP_STACK         ; 3:10      xloop LOOP_STACK})
 xleave{}LOOP_STACK:              ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
     inc  HL             ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK{}dnl
+    exx                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK R:( index -- ){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -372,7 +372,7 @@ __{}    exx                 ; 1:4       xaddloop LOOP_STACK
 __{}    inc   L             ; 1:4       xaddloop LOOP_STACK})
 __{}xleave{}LOOP_STACK:
     inc  HL             ; 1:6       xaddloop LOOP_STACK
-    exx                 ; 1:4       xaddloop LOOP_STACK{}dnl
+    exx                 ; 1:4       xaddloop LOOP_STACK R:( index -- ){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -383,7 +383,7 @@ dnl
 dnl
 dnl ( -- i )
 dnl hodnota indexu vnitrni smycky
-define({XI},{
+define({XI},{ifelse({slow},{fast},{
     exx                 ; 1:4       index xi LOOP_STACK    
     ld    A,(HL)        ; 1:7       index xi LOOP_STACK lo
     inc   L             ; 1:4       index xi LOOP_STACK
@@ -395,16 +395,17 @@ define({XI},{
     ex   DE, HL         ; 1:4       index xi LOOP_STACK
     ld    H, A          ; 1:4       index xi LOOP_STACK
     ex   AF, AF'        ; 1:4       index xi LOOP_STACK
-    ld    L, A          ; 1:4       index xi LOOP_STACK}){}dnl
-dnl;   exx                 ; 1:4       index xi LOOP_STACK
-dnl;   ld    E,(HL)        ; 1:7       index xi LOOP_STACK
-dnl;   inc   L             ; 1:4       index xi LOOP_STACK
-dnl;   ld    D,(HL)        ; 1:7       index xi LOOP_STACK
-dnl;   push DE             ; 1:11      index xi LOOP_STACK
-dnl;   dec   L             ; 1:4       index xi LOOP_STACK
-dnl;   exx                 ; 1:4       index xi LOOP_STACK
-dnl;   ex   DE, HL         ; 1:4       index xi LOOP_STACK ( i x2 x1 -- i  x1 x2 )
-dnl;   ex  (SP),HL         ; 1:19      index xi LOOP_STACK ( i x1 x2 -- x2 x1 i )
+    ld    L, A          ; 1:4       index xi LOOP_STACK}{}dnl
+,{
+    exx                 ; 1:4       index xi LOOP_STACK
+    ld    E,(HL)        ; 1:7       index xi LOOP_STACK
+    inc   L             ; 1:4       index xi LOOP_STACK
+    ld    D,(HL)        ; 1:7       index xi LOOP_STACK
+    push DE             ; 1:11      index xi LOOP_STACK
+    dec   L             ; 1:4       index xi LOOP_STACK
+    exx                 ; 1:4       index xi LOOP_STACK R:( x -- x )
+    ex   DE, HL         ; 1:4       index xi LOOP_STACK
+    ex  (SP),HL         ; 1:19      index xi LOOP_STACK ( -- x )})}){}dnl
 dnl
 dnl
 dnl

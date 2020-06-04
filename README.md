@@ -185,6 +185,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 |     2-     |    _2SUB     |                |       ( x1 -- x1-2 )        |                       |
 |     2*     |    _2MUL     |                |       ( x1 -- x1*2 )        |                       |
 |     2/     |    _2DIV     |                |       ( x1 -- x1/2 )        |                       |
+|    256*    |   _256MUL    |                |       ( x1 -- x1*256 )      |                       |
+|    256/    |   _256DIV    |                |       ( x1 -- x1/256 )      |                       |
 
 ### Logic
 
@@ -395,7 +397,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |    move    |      MOVE     |                |( from to u -- )       |                       | 16bit, addr++|
 |    move>   |     MOVEGT    |                |( from to u -- )       |                       | 16bit, addr++|
 |            |     RANDOM    |                |          ( -- random )|                       |              |
-
+|            |    PUTPIXEL   |                |       ( yx -- HL )    |                       |              |
 ### Output
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4

@@ -152,7 +152,13 @@ dnl
 dnl
 dnl
 dnl ( -- random )
-define(RANDOM,{ifdef({USE_RAND},,define({USE_RAND},{}))
+define({RANDOM},{ifdef({USE_RAND},,define({USE_RAND},{}))
     call RAND           ; 3:17      random})dnl
+dnl
+dnl
+dnl
+dnl ( yx -- addr )
+define({PUTPIXEL},{ifdef({USE_PIXEL},,define({USE_PIXEL},{}))
+    call PIXEL          ; 3:17      pixel})dnl
 dnl
 dnl

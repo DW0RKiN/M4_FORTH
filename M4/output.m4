@@ -163,7 +163,6 @@ DE_RSHIFTZ:
 dnl
 dnl
 dnl
-
 ifdef({USE_MUL},{
 ; Input: HL,DE
 ; Output: HL=HL*DE
