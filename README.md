@@ -1,6 +1,6 @@
 # M4 FORTH (ZX Spectrum, Z80)
 
-A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup constant condition if`.
+A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup number condition if`.
 The small Runtime library for listing numbers and text is intended for the ZX Spectrum computer.
 
 Due to its simplicity, the compiler is suitable for study purposes. Can be easily edited. For the most part, it is merely a substitution of the FORTH word for a sequence of instructions.
@@ -381,23 +381,24 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 
-| original   |    M4 FORTH   |  optimization  |   data stack          |  return address stack | comment      |
-| :--------: | :-----------: | :------------: | :-------------------- | :-------------------- | :----------- |
-|            | INIT(RAS_addr)|                |                       |  Init HL' = RAS_addr  |              |
-|            |     STOP      |                |          ( -- )       |  Load orig. HL'       |
-|  constant  |   CONSTANT    |                |          ( -- )       |                       |
-|  variable  | VARIABLE(PI)  |                |          ( -- index ) |                       |
-|   addr @   |    FETCH      |                |     ( addr -- x )     |                       | TOP = (addr) |
-|            |               |  XFETCH(addr)  |          ( -- x )     |                       | TOP = (addr) |
-|  x addr !  |    STORE      |                |   ( x addr -- )       |                       | x = (addr)   |
-|            |               |  XSTORE(addr)  |        ( x -- )       |                       | (addr) = x   |
-| x addr +!  |   PLUS_STORE  |                |   ( x addr -- )       |                       | (addr) += x  |
-|   cmove    |     CMOVE     |                |( from to u -- )       |                       | 8bit, addr++ |
-|   cmove>   |    CMOVEGT    |                |( from to u -- )       |                       | 8bit, addr-- |
-|    move    |      MOVE     |                |( from to u -- )       |                       | 16bit, addr++|
-|    move>   |     MOVEGT    |                |( from to u -- )       |                       | 16bit, addr++|
-|            |     RANDOM    |                |          ( -- random )|                       |              |
-|            |    PUTPIXEL   |                |       ( yx -- HL )    |                       |              |
+|    original    |     M4 FORTH    |  optimization  |   data stack          |  return address stack | comment      |
+| :------------: | :-------------: | :------------: | :-------------------- | :-------------------- | :----------- |
+|                |  INIT(RAS_addr) |                |                       |  Init HL' = RAS_addr  |              |
+|                |      STOP       |                |          ( -- )       |  Load orig. HL'       |              |
+|`1` constant ONE|CONSTANT(ONE,`1`)|                |          ( -- )       |                       |              |
+|    `3` var X   | VARIABLE(X,`1`) |                |          ( -- )       |                       |              |
+|   variable X   |   VARIABLE(X)   |                |          ( -- )       |                       |              |
+|     addr @     |     FETCH       |                |     ( addr -- x )     |                       | TOP = (addr) |
+|                |                 |  XFETCH(addr)  |          ( -- x )     |                       | TOP = (addr) |
+|    x addr !    |     STORE       |                |   ( x addr -- )       |                       | x = (addr)   |
+|                |                 |  XSTORE(addr)  |        ( x -- )       |                       | (addr) = x   |
+|   x addr +!    |    PLUS_STORE   |                |   ( x addr -- )       |                       | (addr) += x  |
+|     cmove      |      CMOVE      |                |( from to u -- )       |                       | 8bit, addr++ |
+|     cmove>     |     CMOVEGT     |                |( from to u -- )       |                       | 8bit, addr-- |
+|      move      |       MOVE      |                |( from to u -- )       |                       | 16bit, addr++|
+|      move>     |      MOVEGT     |                |( from to u -- )       |                       | 16bit, addr++|
+|                |      RANDOM     |                |          ( -- random )|                       |              |
+|                |     PUTPIXEL    |                |       ( yx -- HL )    |                       |              |
 ### Output
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4
