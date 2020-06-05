@@ -42,8 +42,6 @@ PRINT_U16_ONLY:
     pop  DE             ; 1:10
     push BC             ; 1:10      ret
     ret                 ; 1:10
-STRNUM:
-DB      "65536 "
 
 ; Input: HL = number
 ; Output: print number

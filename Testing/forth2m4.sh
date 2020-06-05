@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Protection against:    sed 's#^\([^;{]*\s\|^\)COLON(\([^_a-zA-Z[.ch.][.CH.]]\)#\1COLON(xxx_\2#gi'
+# and then error messages for non-Czech settings
+export LC_ALL=en_US.UTF-8 
+export LANG=en_US.UTF-8 
+export LANGUAGE=en_US.UTF-8
+
 TMPFILE=$(mktemp)
 TMPFILE2=$(mktemp)
 TMPFILE3=$(mktemp)
@@ -196,9 +202,14 @@ sed 's#^\([^;{]*\s\|^\)i\(\s\|$\)#\1I\2#g' |
 sed 's#^\([^;{]*\s\|^\)j\(\s\|$\)#\1J\2#g' |
 sed 's#^\([^;{]*\s\|^\)k\(\s\|$\)#\1K\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Uu]nloop\(\s\|$\)#\1UNLOOP\2#g' |
-sed 's#^\([^;{]*\s\|^\)\([0-9]\+\)\s\+constant\s\+\([^ 	]\+\)\(\s\|$\)#\1___\3___EQU___\2___\4#gi' |
+
+sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+const\s\+\([^ 	]\+\)\(\s\|$\)#\1CONSTANT(\3,\2)\4#gi' |
+sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+constant\s\+\([^ 	]\+\)\(\s\|$\)#\1CONSTANT(\3,\2)\4#gi' |
+sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+var\s\+\([^ 	]\+\)\(\s\|$\)#\1VARIABLE(\3,\2)\4#gi' |
+
 sed 's#^\([^;{]*\s\|^\)[Vv]ariable\(\s\|$\)#\1VARIABLE\2#g' |
 sed 's#^\([^;{]*\s\|^\)VARIABLE\s\+\([^ 	]\+\)\(\s\|$\)#\1VARIABLE(\2)\3#g' |
+
 sed 's#^\([^;{]*\s\|^\)[Ee]xit\(\s\|$\)#\1EXIT\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Ff]alse\(\s\|$\)#\1FALSE\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Tt]rue\(\s\|$\)#\1TRUE\2#g' |
@@ -404,8 +415,11 @@ while :
 do
     cat $TMPFILE |
 # rename badname --> _badname
+    sed 's#^\([^;{]*\s\|^\)\(CALL([_a-zA-Z]\+\)-#\1\2_#g' |
+    sed 's#^\([^;{]*\s\|^\)\(COLON([_a-zA-Z]\+\)-#\1\2_#g' |
+
     sed 's#^\([^;{]*\s\|^\)CALL(\([^_a-zA-Z]\)#\1CALL(_\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)COLON(\([^_a-zA-Z]\)#\1COLON(_\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)COLON(\([^_a-zA-Z]\)#\1COLON(xxx_\2#gi' |
 # call
     sed 's#^\([^;{]*\s\|^\)\([0-9a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1

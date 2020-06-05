@@ -22,7 +22,9 @@ define(STOP,{
 dnl
 dnl
 dnl
-define({CONSTANT},{EQU})dnl
+define({CONSTANT},{ifelse($#,{2},{
+format({%-20s},$1) EQU $2},{
+.error constant: No parameter or redundant parameter!})})dnl
 dnl
 dnl
 define({ALL_VARIABLE},{
@@ -31,7 +33,8 @@ VARIABLE_SECTION:
 dnl
 define({VARIABLE},{define({ALL_VARIABLE},{
 }ALL_VARIABLE{
-$1: dw 0x0000})})dnl
+$1: dw ifelse($#,{0},{
+.error variable without parameter!},$#,{1},{0x0000},$2)})})dnl
 dnl
 dnl ## Memory access
 dnl
