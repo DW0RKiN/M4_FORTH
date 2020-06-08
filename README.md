@@ -188,6 +188,28 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 |    256*    |   _256MUL    |                |       ( x1 -- x1*256 )      |                       |
 |    256/    |   _256DIV    |                |       ( x1 -- x1/256 )      |                       |
 
+### Floating-point
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/floating.m4
+
+Danagy format `S EEE EEEE MMMM MMMM`
+
+https://github.com/DW0RKiN/Floating-point-Library-for-Z80
+
+| original   |   M4 FORTH   |  optimization  |  data stack                 |  return address stack |
+| :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
+|    s>f     |      S2F     |                |       ( s1 -- f1 )          |                       |
+|    u>f     |      U2F     |                |       ( u1 -- f1 )          |                       |
+|    f>s     |      F2S     |                |       ( f1 -- s1 )          |                       |
+|    f>u     |      F2U     |                |       ( f1 -- u1 )          |                       |
+|     f+     |     FADD     |                |    ( f2 f1 -- (f2+f1) )     |                       |
+|     f-     |     FSUB     |                |    ( f2 f1 -- (f2-f1) )     |                       |
+|  fnegate   |    FNEGATE   |                |       ( f1 -- -f1 )         |                       |
+|    fabs    |     FABS     |                |       ( f1 -- abs(f2) )     |                       |
+|     f.     |     FDOT     |                |       ( f1 -- )             |                       |
+|     f*     |     FMUL     |                |    ( f2 f1 -- (f2*f1) )     |                       |
+|     f/     |     FDIV     |                |    ( f2 f1 -- (f2/f1) )     |                       |
+
 ### Logic
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
