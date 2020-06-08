@@ -1,20 +1,4 @@
 define({carry_flow_warning},{1})dnl
-;#define({SIGN_MASK},0x80)dnl
-;#define({EXP_MASK},0x7F)dnl
-;#define({MANT_BITS},0x08)dnl
-;#define({BIAS},0x40)dnl
-dnl
-dnl
-dnl ( f1 -- -f1 )
-define({FNEGATE},{
-    ld    A, H          ; 1:4       fnegate
-    xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate})dnl
-dnl
-dnl
-dnl ( f1 -- f2 )
-define({FABS},{
-    res   7, H          ; 2:8       fabs})dnl
 dnl
 dnl
 dnl ( s1 -- f1 )
@@ -41,12 +25,6 @@ ifdef({USE_fWst},,define({USE_fWst},{}))dnl
     call fWst           ; 3:17      f>u})dnl
 dnl
 dnl
-dnl ( f1 -- )
-define({FDOT},{
-ifdef({USE_fDot},,define({USE_fDot},{}))dnl
-    call fDot           ; 3:17      f.})dnl
-dnl
-dnl
 dnl ( f2 f1 -- f )
 dnl f = f2 + f1
 define({FADD},{
@@ -61,6 +39,24 @@ define({FSUB},{
 ifdef({USE_fSub},,define({USE_fSub},{}))dnl
     call fSub           ; 3:17      f-
     pop  DE             ; 1:10      f-})dnl
+dnl
+dnl
+dnl ( f1 -- -f1 )
+define({FNEGATE},{
+    ld    A, H          ; 1:4       fnegate
+    xor  0x80           ; 2:7       fnegate
+    ld    H, A          ; 1:4       fnegate})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+define({FABS},{
+    res   7, H          ; 2:8       fabs})dnl
+dnl
+dnl
+dnl ( f1 -- )
+define({FDOT},{
+ifdef({USE_fDot},,define({USE_fDot},{}))dnl
+    call fDot           ; 3:17      f.})dnl
 dnl
 dnl
 dnl ( f2 f1 -- f )
