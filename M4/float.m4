@@ -79,6 +79,27 @@ ifdef({USE_fDiv},,define({USE_fDiv},{}))dnl
     pop  DE             ; 1:10      f/})dnl
 dnl
 dnl
+dnl ( f2 f1 -- f )
+dnl f = f2 / f1
+define({FSQRT},{
+ifdef({USE_fSqrt},,define({USE_fSqrt},{}))dnl
+    call fSqrt          ; 3:17      fsqrt})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl "round towards zero" 
+define({FTRUNC},{
+ifdef({USE_fTrunc},,define({USE_fTrunc},{}))dnl
+    call fTrunc         ; 3:17      ftrunc})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = f1 % 1.0
+define({FFRAC},{
+ifdef({USE_fFrac},,define({USE_fFrac},{}))dnl
+    call fFrac          ; 3:17      ffrac})dnl
+dnl
+dnl
 ifdef({__pathfloat__},,define({__pathfloat__},{__pathlib__{}float/}))dnl
 dnl
 dnl

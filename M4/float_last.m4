@@ -1,3 +1,5 @@
+include(__pathfloat__{}{ftrunc.m4}){}dnl
+include(__pathfloat__{}{fsqrt.m4}){}dnl
 include(__pathfloat__{}{fwld.m4}){}dnl
 include(__pathfloat__{}{fwst.m4}){}dnl
 include(__pathfloat__{}{faddsub.m4}){}dnl
@@ -28,5 +30,6 @@ dnl
 dnl
 ifdef({USE_fMul},{include(__pathfloat__{}{fmul.tab})})dnl
 ifdef({USE_fDiv},{include(__pathfloat__{}{fdiv.tab})})dnl
+ifdef({USE_fSqrt},{include(__pathfloat__{}{fsqrt.tab})})dnl
 dnl
 dnl
