@@ -196,7 +196,7 @@ Danagy format `S EEE EEEE MMMM MMMM`
 
 https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 
-| original   |   M4 FORTH   |  optimization  |  data stack                 |  return address stack |
+| original   |   M4 FORTH   |  optimization  |  data stack                 |  comment              |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
 |    s>f     |      S2F     |                |       ( s1 -- f1 )          |                       |
 |    u>f     |      U2F     |                |       ( u1 -- f1 )          |                       |
@@ -209,6 +209,9 @@ https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 |     f.     |     FDOT     |                |       ( f1 -- )             |                       |
 |     f*     |     FMUL     |                |    ( f2 f1 -- (f2*f1) )     |                       |
 |     f/     |     FDIV     |                |    ( f2 f1 -- (f2/f1) )     |                       |
+|   fsqrt    |    FSQRT     |                |       ( f1 -- f2 )          |                       |
+|   ftrunc   |    FTRUNC    |                |       ( f1 -- int(f2) )     | round to zero         |
+|            |    FFRAC     |                |       ( f1 -- (f1 % 1.0) )  |                       |
 
 ### Logic
 
