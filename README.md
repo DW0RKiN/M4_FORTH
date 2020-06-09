@@ -212,7 +212,7 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 |     f*     |     FMUL     |                |    ( f2 f1 -- f3 )   | f3 = f2 * f1               |
 |     f/     |     FDIV     |                |    ( f2 f1 -- f3 )   | f3 = f2 / f1               |
 |   fsqrt    |    FSQRT     |                |       ( f1 -- f2 )   |                            |
-|   ftrunc   |    FTRUNC    |                |       ( f1 -- f2 )   | f2 = int(f1) round to zero |
+|   ftrunc   |    FTRUNC    |                |       ( f1 -- f2 )   | f2 = int(f1), round to zero|
 |            |    FFRAC     |                |       ( f1 -- f2 )   | f2 = f1 % 1.0              |
 |    fexp    |     FEXP     |                |       ( f1 -- f2 )   | f2 = e^(f1)                |
 |     fln    |      FLN     |                |       ( f1 -- f2 )   | f2 = ln(f1)                |
