@@ -196,6 +196,8 @@ Danagy format `S EEE EEEE MMMM MMMM`
 
 https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 
+For a logical comparison of two numbers as f1> f2, exactly the same result applies as for a comparison of two integer numbers with a sign. 
+
 | original   |   M4 FORTH   |  optimization  |  data stack          |  comment                   |
 | :--------: | :----------: | :------------: | :------------------- | :------------------------- |
 |    s>f     |      S2F     |                |       ( s1 -- f1 )   |                            |
