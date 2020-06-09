@@ -100,8 +100,7 @@ generate:               ;           (addr len -- )
     pop  HL             ; 1:10      do 101
     pop  DE             ; 1:10      do 101 ( stop index -- ) r: ( -- stop index )
 do101: 
-        
-    call RAND           ; 3:17      random
+        RND
         
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
@@ -724,6 +723,7 @@ stack_test_end:
 ;   -----  e n d  -----
 
 
+
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
@@ -763,8 +763,6 @@ PRINT_U16_ONLY:
     pop  DE             ; 1:10
     push BC             ; 1:10      ret
     ret                 ; 1:10
-STRNUM:
-DB      "65536 "
 
 ; Input: HL = number
 ; Output: print number
@@ -796,46 +794,6 @@ BIN2DEC_CHAR:
     
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
-; ( -- rand )
-; 16-bit pseudorandom generator
-; In: DE / HL
-; Out: HL = DE / HL, DE = DE % HL
-RAND:
-    ex   DE, HL         ; 1:4
-    ex  (SP),HL         ; 1:19
-    push HL             ; 1:11
-RAND_16 EQU $+1
-    ld   HL, 0x0001     ; 3:10      seed must not be 0
-    ld    A, H          ; 1:4
-    rra                 ; 1:4
-    ld    A, L          ; 1:4
-    rra                 ; 1:4
-    xor   H             ; 1:4
-    ld    H, A          ; 1:4       xs ^= xs << 7;
-    rra                 ; 1:4
-    xor   L             ; 1:4
-    ld    L, A          ; 1:4       xs ^= xs >> 9;
-    xor   H             ; 1:4
-    ld    H, A          ; 1:4       xs ^= xs << 8;
-    ld  (RAND_16), HL ; 3:16
-
-RAND_8 EQU $+1
-    ld    A, 0x01       ; 2:7
-    ld    B, A          ; 1:4 
-    rrca                ; 1:4       multiply by 32
-    rrca                ; 1:4
-    rrca                ; 1:4
-    xor  0x1F           ; 2:7
-    add   A, B          ; 1:4
-    sbc   A, 0xFF       ; 1:4       carry
-    ld  (RAND_8), A     ; 3:13
-    
-    xor   H             ; 1:4
-    ld    H, A          ; 1:4
-    ld    A, R          ; 2:9
-    xor   L             ; 1:4
-    ld    L, A          ; 1:4
     ret                 ; 1:10
 VARIABLE_SECTION:
 

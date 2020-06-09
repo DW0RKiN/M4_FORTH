@@ -24,7 +24,7 @@ ORG 0x8000
 COLON(generate,(addr len -- ))
     _2MUL OVER ADD SWAP ; ( addr+len addr )
     DO 
-        RANDOM
+        RND
         DUP_DOT I STORE
     _2ADDLOOP
     CR
