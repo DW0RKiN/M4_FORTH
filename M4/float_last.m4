@@ -7,6 +7,7 @@ include(__pathfloat__{}{faddsub.m4}){}dnl
 include(__pathfloat__{}{fln.m4}){}dnl
 include(__pathfloat__{}{fexp.m4}){}dnl
 include(__pathfloat__{}{fdivmul.m4}){}dnl
+include(__pathfloat__{}{fsin.m4}){}dnl
 dnl
 ifdef({USE_fDot},{
 fDot:
@@ -31,6 +32,7 @@ fDot:
     ret                 ; 1:10})dnl
 dnl
 dnl
+ifdef({USE_fSin},{include(__pathfloat__{}{fsin.tab})})dnl
 ifdef({USE_fExp},{include(__pathfloat__{}{fexp.tab})})dnl
 ifdef({USE_fMul},{include(__pathfloat__{}{fmul.tab})})dnl
 ifdef({USE_fDiv},{include(__pathfloat__{}{fdiv.tab})})dnl

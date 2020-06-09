@@ -219,6 +219,7 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 |    fmod    |     FMOD     |                |    ( f2 f1 -- f3 )   | f3 = f2 % f1               |
 |     f2*    |     F2MUL    |                |       ( f1 -- f2 )   | f2 = f1 * 2.0              |
 |     f2/    |     F2DIV    |                |       ( f1 -- f2 )   | f2 = f1 / 2.0              |
+|    fsin    |     FSIN     |                |       ( f1 -- f2 )   | f2 = sin(f1) f1 < ±π/2     |
 
 ### Logic
 

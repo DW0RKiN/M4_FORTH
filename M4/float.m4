@@ -118,6 +118,15 @@ ifdef({USE_fLn},,define({USE_fLn},{}))dnl
     pop  DE             ; 1:10      fln})dnl
 dnl
 dnl
+dnl ( f1 -- f2 )
+dnl f2 = sin(f1)
+define({FSIN},{
+ifdef({USE_fSin},,define({USE_fSin},{}))dnl
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin})dnl
+dnl
+dnl
 dnl ( f1 f2 -- f3 )
 dnl f3 = f1 % f2
 define({FMOD},{
@@ -401,6 +410,7 @@ define({FM5},0xc240)dnl     ;-5.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantis
 define({FM4},0xc200)dnl     ;-4.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantisa(  0=0x00)
 define({FM3},0xc180)dnl     ;-3.000000e+00 sign(1=0x8000) exp(  1=0x4100) mantisa(128=0x80)
 define({FM2},0xc100)dnl     ;-2.000000e+00 sign(1=0x8000) exp(  1=0x4100) mantisa(  0=0x00)
+define({FM1_5},0xc080)dnl   ;-1.500000e+00 sign(1=0x8000) exp(  0=0x4000) mantisa(  0=0x80)
 define({FM1},0xc000)dnl     ;-1.000000e+00 sign(1=0x8000) exp(  0=0x4000) mantisa(  0=0x00)
 define({FM0_9},0xbfcd)dnl   ;-9.003906e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(205=0xCD)
 define({FM0_8},0xbf9a)dnl   ;-8.007812e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(154=0x9A)
@@ -421,6 +431,7 @@ define({FP0_7},0x3f66)dnl   ; 6.992188e-01 sign(0=0x0000) exp( -1=0x3F00) mantis
 define({FP0_8},0x3f9a)dnl   ; 8.007812e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(154=0x9A)
 define({FP0_9},0x3fcd)dnl   ; 9.003906e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(205=0xCD)
 define({FP1},0x4000)dnl     ; 1.000000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(  0=0x00)
+define({FP1_5},0x4080)dnl   ; 1.500000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(  0=0x80)
 define({FP2},0x4100)dnl     ; 2.000000e+00 sign(0=0x0000) exp(  1=0x4100) mantisa(  0=0x00)
 define({FP3},0x4180)dnl     ; 3.000000e+00 sign(0=0x0000) exp(  1=0x4100) mantisa(128=0x80)
 define({FP4},0x4200)dnl     ; 4.000000e+00 sign(0=0x0000) exp(  2=0x4200) mantisa(  0=0x00)
