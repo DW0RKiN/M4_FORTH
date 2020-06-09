@@ -149,7 +149,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |   -rot     |     NROT     |                |   ( x3 x2 x1 -- x1 x3 x2 )   |                       |
 |   `123`    |  PUSH(`123`) |   PUSH2()      |            ( -- `123` )      |                       |
 |   `2` `1`  |PUSH2(`2`,`1`)|                |            ( -- `2` `1` )    |                       |
-| addr `7` ! | PUSH((addr)) |                |    *addr = 7 --> ( -- `7`)   |                       |
+| addr `7` @ | PUSH((addr)) |                |    *addr = 7 --> ( -- `7`)   |                       |
 |            |              | PUSH2((A),`2`) |    *A = 4 --> ( -- `4` `2` ) |                       |
 | drop `5`   |              | DROP_PUSH(`5`) |         ( x1 -- `5`)         |                       |
 |  dup `4`   |              |  DUP_PUSH(`4`) |         ( x1 -- x1 x1 `4`)   |                       |
@@ -430,7 +430,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |     cmove>     |     CMOVEGT     |                |( from to u -- )       |                       | 8bit, addr-- |
 |      move      |       MOVE      |                |( from to u -- )       |                       | 16bit, addr++|
 |      move>     |      MOVEGT     |                |( from to u -- )       |                       | 16bit, addr++|
-|                |      RANDOM     |                |          ( -- random )|                       |              |
+| `seed` seed !  |                 |  XSTORE(SEED)  |     ( seed -- )       |                       |              |
+|       rnd      |       RND       |                |          ( -- random )|                       |              |
+|     random     |      RANDOM     |                |      ( max -- random )|                       | random < max |
 |                |     PUTPIXEL    |                |       ( yx -- HL )    |                       |              |
 ### Output
 

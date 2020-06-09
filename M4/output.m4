@@ -303,16 +303,63 @@ dnl
 dnl
 dnl
 dnl
-ifdef({USE_RAND},{
+ifdef({USE_Random},{ifdef({USE_Rnd},,define({USE_Rnd},{}))
+; ( max -- rand )
+; 16-bit pseudorandom generator
+; HL = random < max, or HL = 0
+Random:
+    ld    A, H          ; 1:4
+    or    A             ; 1:4
+    jr    z, Random_H0  ; 2:7/11
+    
+    ld    C, 0xFF       ; 2:7
+    xor   A             ; 1:4
+    adc   A, A          ; 1:4
+    cp    H             ; 1:4
+    jr    c, $-2        ; 2:7/11
+    ld    B, A          ; 1:4       BC = mask = 0x??FF
+    jr   Random_Begin   ; 2:12
+    
+Random_H0:
+    ld    B, A          ; 1:4
+    or    L             ; 1:4
+    ret   z             ; 1:5/11
+
+    xor   A             ; 1:4
+    adc   A, A          ; 1:4
+    cp    L             ; 1:4
+    jr    c, $-2        ; 2:7/11
+    ld    C, A          ; 1:4       BC = mask = 0x00??
+    
+Random_Begin:
+    push  DE            ; 1:11
+    ex    DE, HL        ; 1:4
+Random_new:
+    call Rnd            ; 3:17
+    
+    ld    A, C          ; 1:4
+    and   L             ; 1:4
+    ld    L, A          ; 1:4
+    ld    A, B          ; 1:4
+    and   H             ; 1:4
+    ld    H, A          ; 1:4
+    
+    sbc  HL, DE         ; 2:15
+    jr   nc, Random_new ; 2:7/11
+    
+Rnd_Exit:
+    add  HL, DE         ; 1:11
+    pop  DE             ; 1:10
+    ret                 ; 1:10}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_Rnd},{
 ; ( -- rand )
 ; 16-bit pseudorandom generator
-; In: DE / HL
-; Out: HL = DE / HL, DE = DE % HL
-RAND:
-    ex   DE, HL         ; 1:4
-    ex  (SP),HL         ; 1:19
-    push HL             ; 1:11
-RAND_16 EQU $+1
+; Out: HL = 0..65535
+Rnd:
+SEED EQU $+1
     ld   HL, 0x0001     ; 3:10      seed must not be 0
     ld    A, H          ; 1:4
     rra                 ; 1:4
@@ -325,18 +372,19 @@ RAND_16 EQU $+1
     ld    L, A          ; 1:4       xs ^= xs >> 9;
     xor   H             ; 1:4
     ld    H, A          ; 1:4       xs ^= xs << 8;
-    ld  (RAND_16), HL ; 3:16
+    ld  (SEED), HL      ; 3:16
 
-RAND_8 EQU $+1
+Rnd_8a EQU $+1
     ld    A, 0x01       ; 2:7
-    ld    B, A          ; 1:4 
     rrca                ; 1:4       multiply by 32
     rrca                ; 1:4
     rrca                ; 1:4
     xor  0x1F           ; 2:7
-    add   A, B          ; 1:4
+Rnd_8b EQU $+1
+    add   A, 0x01       ; 2:7
     sbc   A, 0xFF       ; 1:4       carry
-    ld  (RAND_8), A     ; 3:13
+    ld  (Rnd_8a), A     ; 3:13
+    ld  (Rnd_8b), A     ; 3:13
     
     xor   H             ; 1:4
     ld    H, A          ; 1:4

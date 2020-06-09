@@ -2,9 +2,7 @@ dnl ( -- )
 dnl Save shadow reg.
 define(INIT,{
 ;   ===  b e g i n  ===
-    exx                 ; 1:4
-    push HL             ; 1:11
-    push DE             ; 1:11
+    ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
     ld   HL, ifelse($1,{},{60000
@@ -14,8 +12,9 @@ dnl
 dnl ( -- )
 dnl Save shadow reg.
 define(STOP,{
-    pop  DE             ; 1:10
-    pop  HL             ; 1:10
+Stop:
+    ld   SP, 0x0000     ; 3:10      not need
+    ld   HL, 0x2758     ; 3:10
     exx                 ; 1:4
     ret                 ; 1:10
 ;   =====  e n d  =====})dnl
@@ -155,8 +154,15 @@ dnl
 dnl
 dnl
 dnl ( -- random )
-define({RANDOM},{ifdef({USE_RAND},,define({USE_RAND},{}))
-    call RAND           ; 3:17      random})dnl
+define({RND},{ifdef({USE_Rnd},,define({USE_Rnd},{}))
+    ex   DE, HL         ; 1:4       rnd
+    push HL             ; 1:11      rnd
+    call Rnd            ; 3:17      rnd})dnl
+dnl
+dnl
+dnl ( max -- random )
+define({RANDOM},{ifdef({USE_Random},,define({USE_Random},{}))
+    call Random         ; 3:17      random})dnl
 dnl
 dnl
 dnl
