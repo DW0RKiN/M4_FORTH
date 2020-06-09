@@ -187,6 +187,228 @@ snext102:               ;           snext 102
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
     
+    push DE             ; 1:11      push(0x0000 )
+    ex   DE, HL         ; 1:4       push(0x0000 )
+    ld   HL, 0x0000     ; 3:10      push(0x0000 ) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size101    ; 3:10      print Length of string to print
+    ld   DE, string101  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0x3c9a)
+    ex   DE, HL         ; 1:4       push(0x3c9a)
+    ld   HL, 0x3c9a     ; 3:10      push(0x3c9a) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size102    ; 3:10      print Length of string to print
+    ld   DE, string102  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0x3f00)
+    ex   DE, HL         ; 1:4       push(0x3f00)
+    ld   HL, 0x3f00     ; 3:10      push(0x3f00) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size103    ; 3:10      print Length of string to print
+    ld   DE, string103  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0x3f9a)
+    ex   DE, HL         ; 1:4       push(0x3f9a)
+    ld   HL, 0x3f9a     ; 3:10      push(0x3f9a) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size104    ; 3:10      print Length of string to print
+    ld   DE, string104  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0x4000)
+    ex   DE, HL         ; 1:4       push(0x4000)
+    ld   HL, 0x4000     ; 3:10      push(0x4000) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size105    ; 3:10      print Length of string to print
+    ld   DE, string105  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0x4080)
+    ex   DE, HL         ; 1:4       push(0x4080)
+    ld   HL, 0x4080     ; 3:10      push(0x4080) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size106    ; 3:10      print Length of string to print
+    ld   DE, string106  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0xbc9a)
+    ex   DE, HL         ; 1:4       push(0xbc9a)
+    ld   HL, 0xbc9a     ; 3:10      push(0xbc9a) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size107    ; 3:10      print Length of string to print
+    ld   DE, string107  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0xbf00)
+    ex   DE, HL         ; 1:4       push(0xbf00)
+    ld   HL, 0xbf00     ; 3:10      push(0xbf00) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size108    ; 3:10      print Length of string to print
+    ld   DE, string108  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0xbf9a)
+    ex   DE, HL         ; 1:4       push(0xbf9a)
+    ld   HL, 0xbf9a     ; 3:10      push(0xbf9a) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size109    ; 3:10      print Length of string to print
+    ld   DE, string109  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0xc000)
+    ex   DE, HL         ; 1:4       push(0xc000)
+    ld   HL, 0xc000     ; 3:10      push(0xc000) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size110    ; 3:10      print Length of string to print
+    ld   DE, string110  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0xc080)
+    ex   DE, HL         ; 1:4       push(0xc080)
+    ld   HL, 0xc080     ; 3:10      push(0xc080) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size111    ; 3:10      print Length of string to print
+    ld   DE, string111  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+
+    
+    
     push DE             ; 1:11      push(5)
     ex   DE, HL         ; 1:4       push(5)
     ld   HL, 5          ; 3:10      push(5)   
@@ -197,8 +419,8 @@ snext102:               ;           snext 102
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
     push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
+    ld   BC, size112    ; 3:10      print Length of string to print
+    ld   DE, string112  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
  
@@ -219,8 +441,8 @@ snext102:               ;           snext 102
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
     push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
+    ld   BC, size113    ; 3:10      print Length of string to print
+    ld   DE, string113  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
  
@@ -241,8 +463,8 @@ snext102:               ;           snext 102
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
     push DE             ; 1:11      print
-    ld   BC, size103    ; 3:10      print Length of string to print
-    ld   DE, string103  ; 3:10      print Address of string
+    ld   BC, size114    ; 3:10      print Length of string to print
+    ld   DE, string114  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
  
@@ -254,8 +476,8 @@ snext102:               ;           snext 102
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
     push DE             ; 1:11      print
-    ld   BC, size104    ; 3:10      print Length of string to print
-    ld   DE, string104  ; 3:10      print Address of string
+    ld   BC, size115    ; 3:10      print Length of string to print
+    ld   DE, string115  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
  
@@ -576,8 +798,8 @@ xleave103:
     
     
     push DE             ; 1:11      print
-    ld   BC, size105    ; 3:10      print Length of string to print
-    ld   DE, string105  ; 3:10      print Address of string
+    ld   BC, size116    ; 3:10      print Length of string to print
+    ld   DE, string116  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
 
@@ -631,8 +853,8 @@ test_end:
 stack_test:             ;           
     
     push DE             ; 1:11      print
-    ld   BC, size106    ; 3:10      print Length of string to print
-    ld   DE, string106  ; 3:10      print Address of string
+    ld   BC, size117    ; 3:10      print Length of string to print
+    ld   DE, string117  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
@@ -1490,6 +1712,62 @@ fMul_UNDER:
     ld   HL, 0x0100     ; 3:10
     rr    H             ; 2:8       sign in, set carry
     ret                 ; 1:10
+; Trigonometric function sine
+; Input: HL -π/2..π/2
+; Output: HL = sin(HL)
+; Pollutes: AF, DE
+; *****************************************
+                    fSin                ; *
+; *****************************************
+
+    ld    A, H          ; 1:4 
+    and  0x7F           ; 2:7       abs(HL)
+    sub  0x3F           ; 2:7 
+    jr   nc, fSin_3F40  ; 2:12/7 
+    add   A, 0x02       ; 2:7 
+    jr    c, fSin_3D3E  ; 2:12/7 
+    inc   A             ; 1:4 
+    ret   nz            ; 1:5/11 
+    ld    A, 0x71       ; 2:7 
+    sub   L             ; 1:4 
+    ret   nc            ; 1:5/11
+    or    A             ; 1:4       reset carry
+    dec   L             ; 1:4 
+    ret                 ; 1:10 
+fSin_3D3E:
+    ld    D, SinTab_3D3E/256; 2:7 
+    rra                 ; 1:4 
+    ld    A, L          ; 1:4 
+    rra                 ; 1:4 
+    ld    E, A          ; 1:4 
+    ld    A, (DE)       ; 1:7 
+    jr    c, $+6        ; 2:12/7         
+    rra                 ; 1:4 
+    rra                 ; 1:4 
+    rra                 ; 1:4 
+    rra                 ; 1:4 
+    or   0xF0           ; 2:7 
+    rl    E             ; 2:8 
+        
+    jr   nc, fSin_OK    ; 2:12/7 
+    jp    p, fSin_OK    ; 3:10 
+    sub  0x08           ; 2:7 
+fSin_OK:
+    ld    E, A          ; 1:4 
+    ld    D, 0xFF       ; 2:7 
+    add  HL, DE         ; 1:11
+    or    A             ; 1:4       reset carry
+    ret                 ; 1:10 
+fSin_3F40:
+    add   A, high SinTab_3F ; 2:7 
+    ex   DE, HL         ; 1:4 
+    ld    H, A          ; 1:4 
+    ld    L, E          ; 1:4 
+    ld    L, (HL)       ; 1:7 
+    ld    H, 0xFF       ; 2:7 
+    add  HL, DE         ; 1:11
+    or    A             ; 1:4       reset carry
+    ret                 ; 1:10
 fDot:
     push DE             ; 1:11
 
@@ -1511,7 +1789,76 @@ fDot:
     ex   DE, HL         ; 1:4
     ret                 ; 1:10
 ; Align to 256-byte page boundary
-DEFS    (($ + $FF) / $100) * $100 - $
+DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
+
+; y = (x-0x3D00)/2
+; z = SinTab[y]    // 512*nibble
+; if ( x & 1 == 0 ) z >>= 4
+; z |= 0xf0
+; if ( y >= 0xc0 ) z -= 8
+; Sin[x] = res = x + 0xff00 + z
+; hi = 0xff
+SinTab_3D3E:
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db 0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff   ; 0_  0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff 0_
+db 0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff   ; 1_  0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff 1_
+db 0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee   ; 2_  0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ff,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee 2_
+db 0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xee   ; 3_  0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0ee 3_
+db 0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd   ; 4_  0ee,0ee,0ee,0ee,0ee,0ee,0ee,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd 4_
+db 0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xcc   ; 5_  0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0cc 5_
+db 0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc   ; 6_  0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc 6_
+db 0xcc,0xcc,0xcb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb   ; 7_  0cc,0cc,0cb,0bb,0bb,0bb,0bb,0bb,0bb,0bb,0bb,0bb,0bb,0bb,0bb,0bb 7_
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db 0xbc,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdc,0xcc,0xcc,0xcc   ; 0_  0bc,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dd,0dc,0cc,0cc,0cc 0_
+db 0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb   ; 1_  0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0cc,0bb,0bb,0bb,0bb,0bb,0bb,0bb 1_
+db 0xbb,0xbb,0xbb,0xba,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0x99,0x99,0x99   ; 2_  0bb,0bb,0bb,0ba,0aa,0aa,0aa,0aa,0aa,0aa,0aa,0aa,0aa,099,099,099 2_
+db 0x99,0x99,0x99,0x99,0x99,0x98,0x88,0x88,0x88,0x88,0x88,0x88,0x88,0x77,0x77,0x77   ; 3_  099,099,099,099,099,098,088,088,088,088,088,088,088,077,077,0ff 3_
+db 0xff,0xff,0xff,0xff,0xee,0xee,0xee,0xee,0xee,0xee,0xee,0xdd,0xdd,0xdd,0xdd,0xdd   ; 4_  0ff,0ff,0ff,0ff,0ee,0ee,0ee,0ee,0ee,0ee,0ee,0dd,0dd,0dd,0dd,0dd 4_
+db 0xdd,0xcc,0xcc,0xcc,0xcc,0xcc,0xcc,0xbb,0xbb,0xbb,0xbb,0xbb,0xba,0xaa,0xaa,0xaa   ; 5_  0dd,0cc,0cc,0cc,0cc,0cc,0cc,0bb,0bb,0bb,0bb,0bb,0ba,0aa,0aa,0aa 5_
+db 0xaa,0xaa,0x99,0x99,0x99,0x99,0x99,0x88,0x88,0x88,0x88,0x88,0x77,0x77,0x77,0x77   ; 6_  0aa,0aa,099,099,099,099,099,088,088,088,088,088,077,077,077,077 6_
+db 0x77,0x66,0x66,0x66,0x66,0x65,0x55,0x55,0x55,0x54,0x44,0x44,0x44,0x44,0x33,0x33   ; 7_  077,066,066,066,066,065,055,055,055,054,044,044,044,044,033,033 7_
+
+; hi = 0xff
+SinTab_3F:
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db 0xeb,0xec,0xec,0xed,0xee,0xef,0xef,0xf0,0xf1,0xf2,0xf2,0xf3,0xf4,0xf4,0xf4,0xf4  ; 0_  ffeb,ffec,ffec,ffed,ffee,ffef,ffef,fff0,fff1,fff2,fff2,fff3,fff4,fff4,fff4,fff4 0_
+db 0xf3,0xf3,0xf3,0xf3,0xf3,0xf3,0xf3,0xf2,0xf2,0xf2,0xf2,0xf2,0xf2,0xf2,0xf1,0xf1  ; 1_  fff3,fff3,fff3,fff3,fff3,fff3,fff3,fff2,fff2,fff2,fff2,fff2,fff2,fff2,fff1,fff1 1_
+db 0xf1,0xf1,0xf1,0xf1,0xf0,0xf0,0xf0,0xf0,0xf0,0xf0,0xef,0xef,0xef,0xef,0xef,0xef  ; 2_  fff1,fff1,fff1,fff1,fff0,fff0,fff0,fff0,fff0,fff0,ffef,ffef,ffef,ffef,ffef,ffef 2_
+db 0xee,0xee,0xee,0xee,0xee,0xee,0xed,0xed,0xed,0xed,0xed,0xed,0xec,0xec,0xec,0xec  ; 3_  ffee,ffee,ffee,ffee,ffee,ffee,ffed,ffed,ffed,ffed,ffed,ffed,ffec,ffec,ffec,ffec 3_
+db 0xec,0xeb,0xeb,0xeb,0xeb,0xeb,0xea,0xea,0xea,0xea,0xea,0xe9,0xe9,0xe9,0xe9,0xe9  ; 4_  ffec,ffeb,ffeb,ffeb,ffeb,ffeb,ffea,ffea,ffea,ffea,ffea,ffe9,ffe9,ffe9,ffe9,ffe9 4_
+db 0xe8,0xe8,0xe8,0xe8,0xe8,0xe7,0xe7,0xe7,0xe7,0xe6,0xe6,0xe6,0xe6,0xe6,0xe5,0xe5  ; 5_  ffe8,ffe8,ffe8,ffe8,ffe8,ffe7,ffe7,ffe7,ffe7,ffe6,ffe6,ffe6,ffe6,ffe6,ffe5,ffe5 5_
+db 0xe5,0xe5,0xe4,0xe4,0xe4,0xe4,0xe4,0xe3,0xe3,0xe3,0xe3,0xe2,0xe2,0xe2,0xe2,0xe1  ; 6_  ffe5,ffe5,ffe4,ffe4,ffe4,ffe4,ffe4,ffe3,ffe3,ffe3,ffe3,ffe2,ffe2,ffe2,ffe2,ffe1 6_
+db 0xe1,0xe1,0xe1,0xe0,0xe0,0xe0,0xe0,0xdf,0xdf,0xdf,0xdf,0xde,0xde,0xde,0xde,0xdd  ; 7_  ffe1,ffe1,ffe1,ffe0,ffe0,ffe0,ffe0,ffdf,ffdf,ffdf,ffdf,ffde,ffde,ffde,ffde,ffdd 7_
+db 0xdd,0xdd,0xdc,0xdc,0xdc,0xdc,0xdb,0xdb,0xdb,0xdb,0xda,0xda,0xda,0xd9,0xd9,0xd9  ; 8_  ffdd,ffdd,ffdc,ffdc,ffdc,ffdc,ffdb,ffdb,ffdb,ffdb,ffda,ffda,ffda,ffd9,ffd9,ffd9 8_
+db 0xd9,0xd8,0xd8,0xd8,0xd7,0xd7,0xd7,0xd6,0xd6,0xd6,0xd6,0xd5,0xd5,0xd5,0xd4,0xd4  ; 9_  ffd9,ffd8,ffd8,ffd8,ffd7,ffd7,ffd7,ffd6,ffd6,ffd6,ffd6,ffd5,ffd5,ffd5,ffd4,ffd4 9_
+db 0xd4,0xd3,0xd3,0xd3,0xd2,0xd2,0xd2,0xd1,0xd1,0xd1,0xd1,0xd0,0xd0,0xd0,0xcf,0xcf  ; A_  ffd4,ffd3,ffd3,ffd3,ffd2,ffd2,ffd2,ffd1,ffd1,ffd1,ffd1,ffd0,ffd0,ffd0,ffcf,ffcf A_
+db 0xcf,0xce,0xce,0xce,0xcd,0xcd,0xcc,0xcc,0xcc,0xcb,0xcb,0xcb,0xca,0xca,0xca,0xc9  ; B_  ffcf,ffce,ffce,ffce,ffcd,ffcd,ffcc,ffcc,ffcc,ffcb,ffcb,ffcb,ffca,ffca,ffca,ffc9 B_
+db 0xc9,0xc9,0xc8,0xc8,0xc8,0xc7,0xc7,0xc6,0xc6,0xc6,0xc5,0xc5,0xc5,0xc4,0xc4,0xc3  ; C_  ffc9,ffc9,ffc8,ffc8,ffc8,ffc7,ffc7,ffc6,ffc6,ffc6,ffc5,ffc5,ffc5,ffc4,ffc4,ffc3 C_
+db 0xc3,0xc3,0xc2,0xc2,0xc1,0xc1,0xc1,0xc0,0xc0,0xc0,0xbf,0xbf,0xbe,0xbe,0xbe,0xbd  ; D_  ffc3,ffc3,ffc2,ffc2,ffc1,ffc1,ffc1,ffc0,ffc0,ffc0,ffbf,ffbf,ffbe,ffbe,ffbe,ffbd D_
+db 0xbd,0xbc,0xbc,0xbb,0xbb,0xbb,0xba,0xba,0xb9,0xb9,0xb9,0xb8,0xb8,0xb7,0xb7,0xb6  ; E_  ffbd,ffbc,ffbc,ffbb,ffbb,ffbb,ffba,ffba,ffb9,ffb9,ffb9,ffb8,ffb8,ffb7,ffb7,ffb6 E_
+db 0xb6,0xb6,0xb5,0xb5,0xb4,0xb4,0xb3,0xb3,0xb2,0xb2,0xb2,0xb1,0xb1,0xb0,0xb0,0xaf  ; F_  ffb6,ffb6,ffb5,ffb5,ffb4,ffb4,ffb3,ffb3,ffb2,ffb2,ffb2,ffb1,ffb1,ffb0,ffb0,ffaf F_
+; hi = 0xff
+SinTab_40:
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db 0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf  ; 0_  ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf 0_
+db 0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xaf,0xae,0xae,0xae,0xae  ; 1_  ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffae,ffae,ffae,ffae 1_
+db 0xae,0xae,0xae,0xae,0xad,0xad,0xad,0xad,0xad,0xac,0xac,0xac,0xac,0xac,0xab,0xab  ; 2_  ffae,ffae,ffae,ffae,ffad,ffad,ffad,ffad,ffad,ffac,ffac,ffac,ffac,ffac,ffab,ffab 2_
+db 0xab,0xab,0xaa,0xaa,0xaa,0xa9,0xa9,0xa9,0xa9,0xa8,0xa8,0xa8,0xa7,0xa7,0xa7,0xa6  ; 3_  ffab,ffab,ffaa,ffaa,ffaa,ffa9,ffa9,ffa9,ffa9,ffa8,ffa8,ffa8,ffa7,ffa7,ffa7,ffa6 3_
+db 0xa6,0xa6,0xa5,0xa5,0xa4,0xa4,0xa4,0xa3,0xa3,0xa2,0xa2,0xa1,0xa1,0xa0,0xa0,0xa0  ; 4_  ffa6,ffa6,ffa5,ffa5,ffa4,ffa4,ffa4,ffa3,ffa3,ffa2,ffa2,ffa1,ffa1,ffa0,ffa0,ffa0 4_
+db 0x9f,0x9f,0x9e,0x9e,0x9d,0x9c,0x9c,0x9b,0x9b,0x9a,0x9a,0x99,0x99,0x98,0x97,0x97  ; 5_  ff9f,ff9f,ff9e,ff9e,ff9d,ff9c,ff9c,ff9b,ff9b,ff9a,ff9a,ff99,ff99,ff98,ff97,ff97 5_
+db 0x96,0x96,0x95,0x94,0x94,0x93,0x92,0x92,0x91,0x90,0x90,0x8f,0x8e,0x8e,0x8d,0x8c  ; 6_  ff96,ff96,ff95,ff94,ff94,ff93,ff92,ff92,ff91,ff90,ff90,ff8f,ff8e,ff8e,ff8d,ff8c 6_
+db 0x8b,0x8b,0x8a,0x89,0x88,0x88,0x87,0x86,0x85,0x85,0x84,0x83,0x82,0x81,0x80,0x80  ; 7_  ff8b,ff8b,ff8a,ff89,ff88,ff88,ff87,ff86,ff85,ff85,ff84,ff83,ff82,ff81,ff80,ff80 7_
+db 0x7f,0x7e,0x7d,0x7c,0x7b,0x7a,0x79,0x79,0x78,0x77,0x76,0x75,0x74,0x73,0x72,0x71  ; 8_  ff7f,ff7e,ff7d,ff7c,ff7b,ff7a,ff79,ff79,ff78,ff77,ff76,ff75,ff74,ff73,ff72,ff71 8_
+db 0x70,0x6f,0x6e,0x6d,0x6c,0x6b,0x6a,0x69,0x68,0x67,0x66,0x65,0x64,0x63,0x61,0x60  ; 9_  ff70,ff6f,ff6e,ff6d,ff6c,ff6b,ff6a,ff69,ff68,ff67,ff66,ff65,ff64,ff63,ff61,ff60 9_
+db 0x5f,0x5e,0x5d,0x5c,0x5b,0x5a,0x58,0x57,0x56,0x55,0x54,0x53,0x51,0x50,0x4f,0x4e  ; A_  ff5f,ff5e,ff5d,ff5c,ff5b,ff5a,ff58,ff57,ff56,ff55,ff54,ff53,ff51,ff50,ff4f,ff4e A_
+db 0x4d,0x4b,0x4a,0x49,0x48,0x46,0x45,0x44,0x42,0x41,0x40,0x3e,0x3d,0x3c,0x3a,0x39  ; B_  ff4d,ff4b,ff4a,ff49,ff48,ff46,ff45,ff44,ff42,ff41,ff40,ff3e,ff3d,ff3c,ff3a,ff39 B_
+db 0x38,0x36,0x35,0x34,0x32,0x31,0x30,0x2e,0x2d,0x2b,0x2a,0x28,0x27,0x26,0x24,0x23  ; C_  ff38,ff36,ff35,ff34,ff32,ff31,ff30,ff2e,ff2d,ff2b,ff2a,ff28,ff27,ff26,ff24,ff23 C_
+db 0x21,0x20,0x1e,0x1d,0x1b,0x1a,0x18,0x17,0x15,0x14,0x12,0x10,0x0f,0x0d,0x0c,0x0a  ; D_  ff21,ff20,ff1e,ff1d,ff1b,ff1a,ff18,ff17,ff15,ff14,ff12,ff10,ff0f,ff0d,ff0c,ff0a D_
+db 0x08,0x07,0x05,0x04,0x02,0x00,0xff,0xfd,0xfb,0xfa,0xf8,0xf6,0xf5,0xf3,0xf1,0xf0  ; E_  ff08,ff07,ff05,ff04,ff02,ff00,feff,fefd,fefb,fefa,fef8,fef6,fef5,fef3,fef1,fef0 E_
+db 0xee,0xec,0xeb,0xe9,0xe7,0xe5,0xe4,0xe2,0xe0,0xde,0xdc,0xdb,0xd9,0xd7,0xd5,0xd3  ; F_  feee,feec,feeb,fee9,fee7,fee5,fee4,fee2,fee0,fede,fedc,fedb,fed9,fed7,fed5,fed3 F_
+
+; Align to 256-byte page boundary
+DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
 ; e^((2^e)*m) = 
 ; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625)) 
@@ -1522,24 +1869,24 @@ DEFS    (($ + $FF) / $100) * $100 - $
 EXP_TAB:
 ; plus
 ;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 0_  
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 1_  
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 2_  
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4001,$4001,$4002,$4004,$4008,$4011,$4022,$4049,$40a6   ; 3_  
-dw $415c,$42d9,$45b5,$4b75,$570f,$6e1f,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 4_  
-dw $7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 5_  
-dw $7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 6_  
-dw $7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 7_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 0_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 1_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 2_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4001,0x4001,0x4002,0x4004,0x4008,0x4011,0x4022,0x4049,0x40a6   ; 3_  
+dw 0x415c,0x42d9,0x45b5,0x4b75,0x570f,0x6e1f,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 4_  
+dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 5_  
+dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 6_  
+dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 7_  
 ; minus
 ;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 0_  
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 1_  
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 2_  
-dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$3fff,$3ffe,$3ffc,$3ff8,$3ff0,$3fe1,$3fc4,$3f8f,$3f37   ; 3_  
-dw $3e79,$3d15,$3a2c,$3460,$28e3,$11c8,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 4_  
-dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 5_  
-dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 6_  
-dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 7_ 
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 0_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 1_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 2_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x3fff,0x3ffe,0x3ffc,0x3ff8,0x3ff0,0x3fe1,0x3fc4,0x3f8f,0x3f37   ; 3_  
+dw 0x3e79,0x3d15,0x3a2c,0x3460,0x28e3,0x11c8,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 4_  
+dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 5_  
+dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 6_  
+dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 7_ 
 
 ; rozdíl: má být mínus jest, nemohu se splést...
 ; nepřesnost: 2963 (4.521179 %)
@@ -1718,7 +2065,7 @@ db 0x08,0x08,0x07,0x07,0x06,0x06,0x05,0x05,0x04,0x04,0x03,0x03,0x02,0x02,0x01,0x
 ;       chyb: 0 (0.000%)
 
 ; Align to 256-byte page boundary
-DEFS    (($ + $FF) / $100) * $100 - $
+DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
 ; Mantissas of square roots
 ; (2**-3 * mantisa)**0.5 = 2**-1 * mantisa**0.5 * 2**-0.5 = 2**-2 * 2**0.5
@@ -1737,213 +2084,213 @@ DEFS    (($ + $FF) / $100) * $100 - $
 SQR_TAB:
 ; lo exp=2*x
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db $00,$00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07   ; 0_     00,00,01,01,02,02,03,03,04,04,05,05,06,06,07,07 0_
-db $08,$08,$09,$09,$0a,$0a,$0b,$0b,$0c,$0c,$0d,$0d,$0e,$0e,$0f,$0f   ; 1_     08,08,09,09,0a,0a,0b,0b,0c,0c,0d,0d,0e,0e,0f,0f 1_
-db $10,$10,$10,$11,$11,$12,$12,$13,$13,$14,$14,$15,$15,$16,$16,$17   ; 2_     10,10,10,11,11,12,12,13,13,14,14,15,15,16,16,17 2_
-db $17,$17,$18,$18,$19,$19,$1a,$1a,$1b,$1b,$1c,$1c,$1c,$1d,$1d,$1e   ; 3_     17,17,18,18,19,19,1a,1a,1b,1b,1c,1c,1c,1d,1d,1e 3_
-db $1e,$1f,$1f,$20,$20,$20,$21,$21,$22,$22,$23,$23,$24,$24,$24,$25   ; 4_     1e,1f,1f,20,20,20,21,21,22,22,23,23,24,24,24,25 4_
-db $25,$26,$26,$27,$27,$27,$28,$28,$29,$29,$2a,$2a,$2a,$2b,$2b,$2c   ; 5_     25,26,26,27,27,27,28,28,29,29,2a,2a,2a,2b,2b,2c 5_
-db $2c,$2d,$2d,$2d,$2e,$2e,$2f,$2f,$30,$30,$30,$31,$31,$32,$32,$33   ; 6_     2c,2d,2d,2d,2e,2e,2f,2f,30,30,30,31,31,32,32,33 6_
-db $33,$33,$34,$34,$35,$35,$35,$36,$36,$37,$37,$37,$38,$38,$39,$39   ; 7_     33,33,34,34,35,35,35,36,36,37,37,37,38,38,39,39 7_
-db $3a,$3a,$3a,$3b,$3b,$3c,$3c,$3c,$3d,$3d,$3e,$3e,$3e,$3f,$3f,$40   ; 8_     3a,3a,3a,3b,3b,3c,3c,3c,3d,3d,3e,3e,3e,3f,3f,40 8_
-db $40,$40,$41,$41,$42,$42,$42,$43,$43,$44,$44,$44,$45,$45,$46,$46   ; 9_     40,40,41,41,42,42,42,43,43,44,44,44,45,45,46,46 9_
-db $46,$47,$47,$48,$48,$48,$49,$49,$49,$4a,$4a,$4b,$4b,$4b,$4c,$4c   ; A_     46,47,47,48,48,48,49,49,49,4a,4a,4b,4b,4b,4c,4c A_
-db $4d,$4d,$4d,$4e,$4e,$4e,$4f,$4f,$50,$50,$50,$51,$51,$52,$52,$52   ; B_     4d,4d,4d,4e,4e,4e,4f,4f,50,50,50,51,51,52,52,52 B_
-db $53,$53,$53,$54,$54,$55,$55,$55,$56,$56,$56,$57,$57,$58,$58,$58   ; C_     53,53,53,54,54,55,55,55,56,56,56,57,57,58,58,58 C_
-db $59,$59,$59,$5a,$5a,$5b,$5b,$5b,$5c,$5c,$5c,$5d,$5d,$5d,$5e,$5e   ; D_     59,59,59,5a,5a,5b,5b,5b,5c,5c,5c,5d,5d,5d,5e,5e D_
-db $5f,$5f,$5f,$60,$60,$60,$61,$61,$61,$62,$62,$63,$63,$63,$64,$64   ; E_     5f,5f,5f,60,60,60,61,61,61,62,62,63,63,63,64,64 E_
-db $64,$65,$65,$65,$66,$66,$66,$67,$67,$68,$68,$68,$69,$69,$69,$6a   ; F_     64,65,65,65,66,66,66,67,67,68,68,68,69,69,69,6a F_
+db 0x00,0x00,0x01,0x01,0x02,0x02,0x03,0x03,0x04,0x04,0x05,0x05,0x06,0x06,0x07,0x07   ; 0_     00,00,01,01,02,02,03,03,04,04,05,05,06,06,07,07 0_
+db 0x08,0x08,0x09,0x09,0x0a,0x0a,0x0b,0x0b,0x0c,0x0c,0x0d,0x0d,0x0e,0x0e,0x0f,0x0f   ; 1_     08,08,09,09,0a,0a,0b,0b,0c,0c,0d,0d,0e,0e,0f,0f 1_
+db 0x10,0x10,0x10,0x11,0x11,0x12,0x12,0x13,0x13,0x14,0x14,0x15,0x15,0x16,0x16,0x17   ; 2_     10,10,10,11,11,12,12,13,13,14,14,15,15,16,16,17 2_
+db 0x17,0x17,0x18,0x18,0x19,0x19,0x1a,0x1a,0x1b,0x1b,0x1c,0x1c,0x1c,0x1d,0x1d,0x1e   ; 3_     17,17,18,18,19,19,1a,1a,1b,1b,1c,1c,1c,1d,1d,1e 3_
+db 0x1e,0x1f,0x1f,0x20,0x20,0x20,0x21,0x21,0x22,0x22,0x23,0x23,0x24,0x24,0x24,0x25   ; 4_     1e,1f,1f,20,20,20,21,21,22,22,23,23,24,24,24,25 4_
+db 0x25,0x26,0x26,0x27,0x27,0x27,0x28,0x28,0x29,0x29,0x2a,0x2a,0x2a,0x2b,0x2b,0x2c   ; 5_     25,26,26,27,27,27,28,28,29,29,2a,2a,2a,2b,2b,2c 5_
+db 0x2c,0x2d,0x2d,0x2d,0x2e,0x2e,0x2f,0x2f,0x30,0x30,0x30,0x31,0x31,0x32,0x32,0x33   ; 6_     2c,2d,2d,2d,2e,2e,2f,2f,30,30,30,31,31,32,32,33 6_
+db 0x33,0x33,0x34,0x34,0x35,0x35,0x35,0x36,0x36,0x37,0x37,0x37,0x38,0x38,0x39,0x39   ; 7_     33,33,34,34,35,35,35,36,36,37,37,37,38,38,39,39 7_
+db 0x3a,0x3a,0x3a,0x3b,0x3b,0x3c,0x3c,0x3c,0x3d,0x3d,0x3e,0x3e,0x3e,0x3f,0x3f,0x40   ; 8_     3a,3a,3a,3b,3b,3c,3c,3c,3d,3d,3e,3e,3e,3f,3f,40 8_
+db 0x40,0x40,0x41,0x41,0x42,0x42,0x42,0x43,0x43,0x44,0x44,0x44,0x45,0x45,0x46,0x46   ; 9_     40,40,41,41,42,42,42,43,43,44,44,44,45,45,46,46 9_
+db 0x46,0x47,0x47,0x48,0x48,0x48,0x49,0x49,0x49,0x4a,0x4a,0x4b,0x4b,0x4b,0x4c,0x4c   ; A_     46,47,47,48,48,48,49,49,49,4a,4a,4b,4b,4b,4c,4c A_
+db 0x4d,0x4d,0x4d,0x4e,0x4e,0x4e,0x4f,0x4f,0x50,0x50,0x50,0x51,0x51,0x52,0x52,0x52   ; B_     4d,4d,4d,4e,4e,4e,4f,4f,50,50,50,51,51,52,52,52 B_
+db 0x53,0x53,0x53,0x54,0x54,0x55,0x55,0x55,0x56,0x56,0x56,0x57,0x57,0x58,0x58,0x58   ; C_     53,53,53,54,54,55,55,55,56,56,56,57,57,58,58,58 C_
+db 0x59,0x59,0x59,0x5a,0x5a,0x5b,0x5b,0x5b,0x5c,0x5c,0x5c,0x5d,0x5d,0x5d,0x5e,0x5e   ; D_     59,59,59,5a,5a,5b,5b,5b,5c,5c,5c,5d,5d,5d,5e,5e D_
+db 0x5f,0x5f,0x5f,0x60,0x60,0x60,0x61,0x61,0x61,0x62,0x62,0x63,0x63,0x63,0x64,0x64   ; E_     5f,5f,5f,60,60,60,61,61,61,62,62,63,63,63,64,64 E_
+db 0x64,0x65,0x65,0x65,0x66,0x66,0x66,0x67,0x67,0x68,0x68,0x68,0x69,0x69,0x69,0x6a   ; F_     64,65,65,65,66,66,66,67,67,68,68,68,69,69,69,6a F_
 ; lo exp=2*x+1
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db $6a,$6b,$6b,$6c,$6d,$6e,$6e,$6f,$70,$70,$71,$72,$72,$73,$74,$74   ; 0_     6a,6b,6b,6c,6d,6e,6e,6f,70,70,71,72,72,73,74,74 0_
-db $75,$76,$77,$77,$78,$79,$79,$7a,$7b,$7b,$7c,$7d,$7d,$7e,$7f,$7f   ; 1_     75,76,77,77,78,79,79,7a,7b,7b,7c,7d,7d,7e,7f,7f 1_
-db $80,$81,$81,$82,$83,$83,$84,$85,$85,$86,$87,$87,$88,$89,$89,$8a   ; 2_     80,81,81,82,83,83,84,85,85,86,87,87,88,89,89,8a 2_
-db $8b,$8b,$8c,$8c,$8d,$8e,$8e,$8f,$90,$90,$91,$92,$92,$93,$94,$94   ; 3_     8b,8b,8c,8c,8d,8e,8e,8f,90,90,91,92,92,93,94,94 3_
-db $95,$95,$96,$97,$97,$98,$99,$99,$9a,$9a,$9b,$9c,$9c,$9d,$9e,$9e   ; 4_     95,95,96,97,97,98,99,99,9a,9a,9b,9c,9c,9d,9e,9e 4_
-db $9f,$9f,$a0,$a1,$a1,$a2,$a2,$a3,$a4,$a4,$a5,$a6,$a6,$a7,$a7,$a8   ; 5_     9f,9f,a0,a1,a1,a2,a2,a3,a4,a4,a5,a6,a6,a7,a7,a8 5_
-db $a9,$a9,$aa,$aa,$ab,$ac,$ac,$ad,$ad,$ae,$af,$af,$b0,$b0,$b1,$b1   ; 6_     a9,a9,aa,aa,ab,ac,ac,ad,ad,ae,af,af,b0,b0,b1,b1 6_
-db $b2,$b3,$b3,$b4,$b4,$b5,$b6,$b6,$b7,$b7,$b8,$b9,$b9,$ba,$ba,$bb   ; 7_     b2,b3,b3,b4,b4,b5,b6,b6,b7,b7,b8,b9,b9,ba,ba,bb 7_
-db $bb,$bc,$bd,$bd,$be,$be,$bf,$bf,$c0,$c1,$c1,$c2,$c2,$c3,$c3,$c4   ; 8_     bb,bc,bd,bd,be,be,bf,bf,c0,c1,c1,c2,c2,c3,c3,c4 8_
-db $c5,$c5,$c6,$c6,$c7,$c7,$c8,$c8,$c9,$ca,$ca,$cb,$cb,$cc,$cc,$cd   ; 9_     c5,c5,c6,c6,c7,c7,c8,c8,c9,ca,ca,cb,cb,cc,cc,cd 9_
-db $ce,$ce,$cf,$cf,$d0,$d0,$d1,$d1,$d2,$d2,$d3,$d4,$d4,$d5,$d5,$d6   ; A_     ce,ce,cf,cf,d0,d0,d1,d1,d2,d2,d3,d4,d4,d5,d5,d6 A_
-db $d6,$d7,$d7,$d8,$d8,$d9,$da,$da,$db,$db,$dc,$dc,$dd,$dd,$de,$de   ; B_     d6,d7,d7,d8,d8,d9,da,da,db,db,dc,dc,dd,dd,de,de B_
-db $df,$df,$e0,$e1,$e1,$e2,$e2,$e3,$e3,$e4,$e4,$e5,$e5,$e6,$e6,$e7   ; C_     df,df,e0,e1,e1,e2,e2,e3,e3,e4,e4,e5,e5,e6,e6,e7 C_
-db $e7,$e8,$e8,$e9,$ea,$ea,$eb,$eb,$ec,$ec,$ed,$ed,$ee,$ee,$ef,$ef   ; D_     e7,e8,e8,e9,ea,ea,eb,eb,ec,ec,ed,ed,ee,ee,ef,ef D_
-db $f0,$f0,$f1,$f1,$f2,$f2,$f3,$f3,$f4,$f4,$f5,$f5,$f6,$f6,$f7,$f7   ; E_     f0,f0,f1,f1,f2,f2,f3,f3,f4,f4,f5,f5,f6,f6,f7,f7 E_
-db $f8,$f8,$f9,$f9,$fa,$fa,$fb,$fb,$fc,$fc,$fd,$fd,$fe,$fe,$ff,$ff   ; F_     f8,f8,f9,f9,fa,fa,fb,fb,fc,fc,fd,fd,fe,fe,ff,ff F_
+db 0x6a,0x6b,0x6b,0x6c,0x6d,0x6e,0x6e,0x6f,0x70,0x70,0x71,0x72,0x72,0x73,0x74,0x74   ; 0_     6a,6b,6b,6c,6d,6e,6e,6f,70,70,71,72,72,73,74,74 0_
+db 0x75,0x76,0x77,0x77,0x78,0x79,0x79,0x7a,0x7b,0x7b,0x7c,0x7d,0x7d,0x7e,0x7f,0x7f   ; 1_     75,76,77,77,78,79,79,7a,7b,7b,7c,7d,7d,7e,7f,7f 1_
+db 0x80,0x81,0x81,0x82,0x83,0x83,0x84,0x85,0x85,0x86,0x87,0x87,0x88,0x89,0x89,0x8a   ; 2_     80,81,81,82,83,83,84,85,85,86,87,87,88,89,89,8a 2_
+db 0x8b,0x8b,0x8c,0x8c,0x8d,0x8e,0x8e,0x8f,0x90,0x90,0x91,0x92,0x92,0x93,0x94,0x94   ; 3_     8b,8b,8c,8c,8d,8e,8e,8f,90,90,91,92,92,93,94,94 3_
+db 0x95,0x95,0x96,0x97,0x97,0x98,0x99,0x99,0x9a,0x9a,0x9b,0x9c,0x9c,0x9d,0x9e,0x9e   ; 4_     95,95,96,97,97,98,99,99,9a,9a,9b,9c,9c,9d,9e,9e 4_
+db 0x9f,0x9f,0xa0,0xa1,0xa1,0xa2,0xa2,0xa3,0xa4,0xa4,0xa5,0xa6,0xa6,0xa7,0xa7,0xa8   ; 5_     9f,9f,a0,a1,a1,a2,a2,a3,a4,a4,a5,a6,a6,a7,a7,a8 5_
+db 0xa9,0xa9,0xaa,0xaa,0xab,0xac,0xac,0xad,0xad,0xae,0xaf,0xaf,0xb0,0xb0,0xb1,0xb1   ; 6_     a9,a9,aa,aa,ab,ac,ac,ad,ad,ae,af,af,b0,b0,b1,b1 6_
+db 0xb2,0xb3,0xb3,0xb4,0xb4,0xb5,0xb6,0xb6,0xb7,0xb7,0xb8,0xb9,0xb9,0xba,0xba,0xbb   ; 7_     b2,b3,b3,b4,b4,b5,b6,b6,b7,b7,b8,b9,b9,ba,ba,bb 7_
+db 0xbb,0xbc,0xbd,0xbd,0xbe,0xbe,0xbf,0xbf,0xc0,0xc1,0xc1,0xc2,0xc2,0xc3,0xc3,0xc4   ; 8_     bb,bc,bd,bd,be,be,bf,bf,c0,c1,c1,c2,c2,c3,c3,c4 8_
+db 0xc5,0xc5,0xc6,0xc6,0xc7,0xc7,0xc8,0xc8,0xc9,0xca,0xca,0xcb,0xcb,0xcc,0xcc,0xcd   ; 9_     c5,c5,c6,c6,c7,c7,c8,c8,c9,ca,ca,cb,cb,cc,cc,cd 9_
+db 0xce,0xce,0xcf,0xcf,0xd0,0xd0,0xd1,0xd1,0xd2,0xd2,0xd3,0xd4,0xd4,0xd5,0xd5,0xd6   ; A_     ce,ce,cf,cf,d0,d0,d1,d1,d2,d2,d3,d4,d4,d5,d5,d6 A_
+db 0xd6,0xd7,0xd7,0xd8,0xd8,0xd9,0xda,0xda,0xdb,0xdb,0xdc,0xdc,0xdd,0xdd,0xde,0xde   ; B_     d6,d7,d7,d8,d8,d9,da,da,db,db,dc,dc,dd,dd,de,de B_
+db 0xdf,0xdf,0xe0,0xe1,0xe1,0xe2,0xe2,0xe3,0xe3,0xe4,0xe4,0xe5,0xe5,0xe6,0xe6,0xe7   ; C_     df,df,e0,e1,e1,e2,e2,e3,e3,e4,e4,e5,e5,e6,e6,e7 C_
+db 0xe7,0xe8,0xe8,0xe9,0xea,0xea,0xeb,0xeb,0xec,0xec,0xed,0xed,0xee,0xee,0xef,0xef   ; D_     e7,e8,e8,e9,ea,ea,eb,eb,ec,ec,ed,ed,ee,ee,ef,ef D_
+db 0xf0,0xf0,0xf1,0xf1,0xf2,0xf2,0xf3,0xf3,0xf4,0xf4,0xf5,0xf5,0xf6,0xf6,0xf7,0xf7   ; E_     f0,f0,f1,f1,f2,f2,f3,f3,f4,f4,f5,f5,f6,f6,f7,f7 E_
+db 0xf8,0xf8,0xf9,0xf9,0xfa,0xfa,0xfb,0xfb,0xfc,0xfc,0xfd,0xfd,0xfe,0xfe,0xff,0xff   ; F_     f8,f8,f9,f9,fa,fa,fb,fb,fc,fc,fd,fd,fe,fe,ff,ff F_
 
 ; Align to 256-byte page boundary
-DEFS    (($ + $FF) / $100) * $100 - $
+DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
 ; ln(2^exp*man) = ln(2^exp) + ln(man) = ln(2)*exp + ln(man) = ln2_exp[e] + ln_m[m]
 Ln_M:
 ; lo
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db $00,$ff,$fe,$7e,$fc,$3d,$7c,$ba,$f8,$1b,$3a,$59,$77,$96,$b4,$d2   ; 0_     0000,37ff,38fe,397e,39fc,3a3d,3a7c,3aba,3af8,3b1b,3b3a,3b59,3b77,3b96,3bb4,3bd2 0_
-db $f1,$07,$16,$25,$34,$43,$52,$60,$6f,$7e,$8c,$9b,$a9,$b8,$c6,$d4   ; 1_     3bf1,3c07,3c16,3c25,3c34,3c43,3c52,3c60,3c6f,3c7e,3c8c,3c9b,3ca9,3cb8,3cc6,3cd4 1_
-db $e2,$f1,$ff,$06,$0d,$14,$1b,$22,$29,$30,$37,$3e,$45,$4c,$52,$59   ; 2_     3ce2,3cf1,3cff,3d06,3d0d,3d14,3d1b,3d22,3d29,3d30,3d37,3d3e,3d45,3d4c,3d52,3d59 2_
-db $60,$67,$6d,$74,$7b,$81,$88,$8f,$95,$9c,$a2,$a9,$af,$b6,$bc,$c3   ; 3_     3d60,3d67,3d6d,3d74,3d7b,3d81,3d88,3d8f,3d95,3d9c,3da2,3da9,3daf,3db6,3dbc,3dc3 3_
-db $c9,$cf,$d6,$dc,$e2,$e9,$ef,$f5,$fc,$01,$04,$07,$0a,$0d,$10,$13   ; 4_     3dc9,3dcf,3dd6,3ddc,3de2,3de9,3def,3df5,3dfc,3e01,3e04,3e07,3e0a,3e0d,3e10,3e13 4_
-db $16,$1a,$1d,$20,$23,$26,$29,$2c,$2f,$32,$34,$37,$3a,$3d,$40,$43   ; 5_     3e16,3e1a,3e1d,3e20,3e23,3e26,3e29,3e2c,3e2f,3e32,3e34,3e37,3e3a,3e3d,3e40,3e43 5_
-db $46,$49,$4c,$4f,$52,$55,$57,$5a,$5d,$60,$63,$66,$68,$6b,$6e,$71   ; 6_     3e46,3e49,3e4c,3e4f,3e52,3e55,3e57,3e5a,3e5d,3e60,3e63,3e66,3e68,3e6b,3e6e,3e71 6_
-db $74,$76,$79,$7c,$7f,$81,$84,$87,$8a,$8c,$8f,$92,$94,$97,$9a,$9d   ; 7_     3e74,3e76,3e79,3e7c,3e7f,3e81,3e84,3e87,3e8a,3e8c,3e8f,3e92,3e94,3e97,3e9a,3e9d 7_
-db $9f,$a2,$a5,$a7,$aa,$ac,$af,$b2,$b4,$b7,$ba,$bc,$bf,$c1,$c4,$c6   ; 8_     3e9f,3ea2,3ea5,3ea7,3eaa,3eac,3eaf,3eb2,3eb4,3eb7,3eba,3ebc,3ebf,3ec1,3ec4,3ec6 8_
-db $c9,$cc,$ce,$d1,$d3,$d6,$d8,$db,$dd,$e0,$e2,$e5,$e7,$ea,$ec,$ef   ; 9_     3ec9,3ecc,3ece,3ed1,3ed3,3ed6,3ed8,3edb,3edd,3ee0,3ee2,3ee5,3ee7,3eea,3eec,3eef 9_
-db $f1,$f4,$f6,$f9,$fb,$fd,$00,$01,$02,$04,$05,$06,$07,$08,$0a,$0b   ; A_     3ef1,3ef4,3ef6,3ef9,3efb,3efd,3f00,3f01,3f02,3f04,3f05,3f06,3f07,3f08,3f0a,3f0b A_
-db $0c,$0d,$0e,$0f,$11,$12,$13,$14,$15,$16,$18,$19,$1a,$1b,$1c,$1d   ; B_     3f0c,3f0d,3f0e,3f0f,3f11,3f12,3f13,3f14,3f15,3f16,3f18,3f19,3f1a,3f1b,3f1c,3f1d B_
-db $1f,$20,$21,$22,$23,$24,$25,$26,$28,$29,$2a,$2b,$2c,$2d,$2e,$2f   ; C_     3f1f,3f20,3f21,3f22,3f23,3f24,3f25,3f26,3f28,3f29,3f2a,3f2b,3f2c,3f2d,3f2e,3f2f C_
-db $30,$32,$33,$34,$35,$36,$37,$38,$39,$3a,$3b,$3c,$3e,$3f,$40,$41   ; D_     3f30,3f32,3f33,3f34,3f35,3f36,3f37,3f38,3f39,3f3a,3f3b,3f3c,3f3e,3f3f,3f40,3f41 D_
-db $42,$43,$44,$45,$46,$47,$48,$49,$4a,$4b,$4c,$4d,$4e,$50,$51,$52   ; E_     3f42,3f43,3f44,3f45,3f46,3f47,3f48,3f49,3f4a,3f4b,3f4c,3f4d,3f4e,3f50,3f51,3f52 E_
-db $53,$54,$55,$56,$57,$58,$59,$5a,$5b,$5c,$5d,$5e,$5f,$60,$61,$62   ; F_     3f53,3f54,3f55,3f56,3f57,3f58,3f59,3f5a,3f5b,3f5c,3f5d,3f5e,3f5f,3f60,3f61,3f62 F_
+db 0x00,0xff,0xfe,0x7e,0xfc,0x3d,0x7c,0xba,0xf8,0x1b,0x3a,0x59,0x77,0x96,0xb4,0xd2   ; 0_     0000,37ff,38fe,397e,39fc,3a3d,3a7c,3aba,3af8,3b1b,3b3a,3b59,3b77,3b96,3bb4,3bd2 0_
+db 0xf1,0x07,0x16,0x25,0x34,0x43,0x52,0x60,0x6f,0x7e,0x8c,0x9b,0xa9,0xb8,0xc6,0xd4   ; 1_     3bf1,3c07,3c16,3c25,3c34,3c43,3c52,3c60,3c6f,3c7e,3c8c,3c9b,3ca9,3cb8,3cc6,3cd4 1_
+db 0xe2,0xf1,0xff,0x06,0x0d,0x14,0x1b,0x22,0x29,0x30,0x37,0x3e,0x45,0x4c,0x52,0x59   ; 2_     3ce2,3cf1,3cff,3d06,3d0d,3d14,3d1b,3d22,3d29,3d30,3d37,3d3e,3d45,3d4c,3d52,3d59 2_
+db 0x60,0x67,0x6d,0x74,0x7b,0x81,0x88,0x8f,0x95,0x9c,0xa2,0xa9,0xaf,0xb6,0xbc,0xc3   ; 3_     3d60,3d67,3d6d,3d74,3d7b,3d81,3d88,3d8f,3d95,3d9c,3da2,3da9,3daf,3db6,3dbc,3dc3 3_
+db 0xc9,0xcf,0xd6,0xdc,0xe2,0xe9,0xef,0xf5,0xfc,0x01,0x04,0x07,0x0a,0x0d,0x10,0x13   ; 4_     3dc9,3dcf,3dd6,3ddc,3de2,3de9,3def,3df5,3dfc,3e01,3e04,3e07,3e0a,3e0d,3e10,3e13 4_
+db 0x16,0x1a,0x1d,0x20,0x23,0x26,0x29,0x2c,0x2f,0x32,0x34,0x37,0x3a,0x3d,0x40,0x43   ; 5_     3e16,3e1a,3e1d,3e20,3e23,3e26,3e29,3e2c,3e2f,3e32,3e34,3e37,3e3a,3e3d,3e40,3e43 5_
+db 0x46,0x49,0x4c,0x4f,0x52,0x55,0x57,0x5a,0x5d,0x60,0x63,0x66,0x68,0x6b,0x6e,0x71   ; 6_     3e46,3e49,3e4c,3e4f,3e52,3e55,3e57,3e5a,3e5d,3e60,3e63,3e66,3e68,3e6b,3e6e,3e71 6_
+db 0x74,0x76,0x79,0x7c,0x7f,0x81,0x84,0x87,0x8a,0x8c,0x8f,0x92,0x94,0x97,0x9a,0x9d   ; 7_     3e74,3e76,3e79,3e7c,3e7f,3e81,3e84,3e87,3e8a,3e8c,3e8f,3e92,3e94,3e97,3e9a,3e9d 7_
+db 0x9f,0xa2,0xa5,0xa7,0xaa,0xac,0xaf,0xb2,0xb4,0xb7,0xba,0xbc,0xbf,0xc1,0xc4,0xc6   ; 8_     3e9f,3ea2,3ea5,3ea7,3eaa,3eac,3eaf,3eb2,3eb4,3eb7,3eba,3ebc,3ebf,3ec1,3ec4,3ec6 8_
+db 0xc9,0xcc,0xce,0xd1,0xd3,0xd6,0xd8,0xdb,0xdd,0xe0,0xe2,0xe5,0xe7,0xea,0xec,0xef   ; 9_     3ec9,3ecc,3ece,3ed1,3ed3,3ed6,3ed8,3edb,3edd,3ee0,3ee2,3ee5,3ee7,3eea,3eec,3eef 9_
+db 0xf1,0xf4,0xf6,0xf9,0xfb,0xfd,0x00,0x01,0x02,0x04,0x05,0x06,0x07,0x08,0x0a,0x0b   ; A_     3ef1,3ef4,3ef6,3ef9,3efb,3efd,3f00,3f01,3f02,3f04,3f05,3f06,3f07,3f08,3f0a,3f0b A_
+db 0x0c,0x0d,0x0e,0x0f,0x11,0x12,0x13,0x14,0x15,0x16,0x18,0x19,0x1a,0x1b,0x1c,0x1d   ; B_     3f0c,3f0d,3f0e,3f0f,3f11,3f12,3f13,3f14,3f15,3f16,3f18,3f19,3f1a,3f1b,3f1c,3f1d B_
+db 0x1f,0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f   ; C_     3f1f,3f20,3f21,3f22,3f23,3f24,3f25,3f26,3f28,3f29,3f2a,3f2b,3f2c,3f2d,3f2e,3f2f C_
+db 0x30,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3a,0x3b,0x3c,0x3e,0x3f,0x40,0x41   ; D_     3f30,3f32,3f33,3f34,3f35,3f36,3f37,3f38,3f39,3f3a,3f3b,3f3c,3f3e,3f3f,3f40,3f41 D_
+db 0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x50,0x51,0x52   ; E_     3f42,3f43,3f44,3f45,3f46,3f47,3f48,3f49,3f4a,3f4b,3f4c,3f4d,3f4e,3f50,3f51,3f52 E_
+db 0x53,0x54,0x55,0x56,0x57,0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,0x60,0x61,0x62   ; F_     3f53,3f54,3f55,3f56,3f57,3f58,3f59,3f5a,3f5b,3f5c,3f5d,3f5e,3f5f,3f60,3f61,3f62 F_
 ; hi
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db $00,$37,$38,$39,$39,$3a,$3a,$3a,$3a,$3b,$3b,$3b,$3b,$3b,$3b,$3b   ; 0_  
-db $3b,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c   ; 1_  
-db $3c,$3c,$3c,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d   ; 2_  
-db $3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d   ; 3_  
-db $3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 4_  
-db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 5_  
-db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 6_  
-db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 7_  
-db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 8_  
-db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 9_  
-db $3e,$3e,$3e,$3e,$3e,$3e,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; A_  
-db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; B_  
-db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; C_  
-db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; D_  
-db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; E_  
-db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; F_  
+db 0x00,0x37,0x38,0x39,0x39,0x3a,0x3a,0x3a,0x3a,0x3b,0x3b,0x3b,0x3b,0x3b,0x3b,0x3b   ; 0_  
+db 0x3b,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c   ; 1_  
+db 0x3c,0x3c,0x3c,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d   ; 2_  
+db 0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d   ; 3_  
+db 0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 4_  
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 5_  
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 6_  
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 7_  
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 8_  
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 9_  
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; A_  
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; B_  
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; C_  
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; D_  
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; E_  
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; F_  
 
 ; Numbers with exponent -1 ($3f) have lower result accuracy
 Ln2_Exp:
-dw $c563	; -64*ln(2) = -44.3614
-dw $c55d	; -63*ln(2) = -43.6683
-dw $c558	; -62*ln(2) = -42.9751
-dw $c552	; -61*ln(2) = -42.2820
-dw $c54d	; -60*ln(2) = -41.5888
-dw $c547	; -59*ln(2) = -40.8957
-dw $c542	; -58*ln(2) = -40.2025
-dw $c53c	; -57*ln(2) = -39.5094
-dw $c537	; -56*ln(2) = -38.8162
-dw $c531	; -55*ln(2) = -38.1231
-dw $c52b	; -54*ln(2) = -37.4299
-dw $c526	; -53*ln(2) = -36.7368
-dw $c520	; -52*ln(2) = -36.0437
-dw $c51b	; -51*ln(2) = -35.3505
-dw $c515	; -50*ln(2) = -34.6574
-dw $c510	; -49*ln(2) = -33.9642
-dw $c50a	; -48*ln(2) = -33.2711
-dw $c505	; -47*ln(2) = -32.5779
-dw $c4fe	; -46*ln(2) = -31.8848
-dw $c4f3	; -45*ln(2) = -31.1916
-dw $c4e8	; -44*ln(2) = -30.4985
-dw $c4dd	; -43*ln(2) = -29.8053
-dw $c4d2	; -42*ln(2) = -29.1122
-dw $c4c7	; -41*ln(2) = -28.4190
-dw $c4bc	; -40*ln(2) = -27.7259
-dw $c4b1	; -39*ln(2) = -27.0327
-dw $c4a5	; -38*ln(2) = -26.3396
-dw $c49a	; -37*ln(2) = -25.6464
-dw $c48f	; -36*ln(2) = -24.9533
-dw $c484	; -35*ln(2) = -24.2602
-dw $c479	; -34*ln(2) = -23.5670
-dw $c46e	; -33*ln(2) = -22.8739
-dw $c463	; -32*ln(2) = -22.1807
-dw $c458	; -31*ln(2) = -21.4876
-dw $c44d	; -30*ln(2) = -20.7944
-dw $c442	; -29*ln(2) = -20.1013
-dw $c437	; -28*ln(2) = -19.4081
-dw $c42b	; -27*ln(2) = -18.7150
-dw $c420	; -26*ln(2) = -18.0218
-dw $c415	; -25*ln(2) = -17.3287
-dw $c40a	; -24*ln(2) = -16.6355
-dw $c3fe	; -23*ln(2) = -15.9424
-dw $c3e8	; -22*ln(2) = -15.2492
-dw $c3d2	; -21*ln(2) = -14.5561
-dw $c3bc	; -20*ln(2) = -13.8629
-dw $c3a5	; -19*ln(2) = -13.1698
-dw $c38f	; -18*ln(2) = -12.4766
-dw $c379	; -17*ln(2) = -11.7835
-dw $c363	; -16*ln(2) = -11.0904
-dw $c34d	; -15*ln(2) = -10.3972
-dw $c337	; -14*ln(2) = -9.7041
-dw $c320	; -13*ln(2) = -9.0109
-dw $c30a	; -12*ln(2) = -8.3178
-dw $c2e8	; -11*ln(2) = -7.6246
-dw $c2bc	; -10*ln(2) = -6.9315
-dw $c28f	; -9*ln(2) = -6.2383
-dw $c263	; -8*ln(2) = -5.5452
-dw $c237	; -7*ln(2) = -4.8520
-dw $c20a	; -6*ln(2) = -4.1589
-dw $c1bc	; -5*ln(2) = -3.4657
-dw $c163	; -4*ln(2) = -2.7726
-dw $c10a	; -3*ln(2) = -2.0794
-dw $c063	; -2*ln(2) = -1.3863
-dw $bf63	; -1*ln(2) = -0.6931
-dw $0000	; 0*ln(2) = 0.0000
-dw $3f63	; 1*ln(2) = 0.6931
-dw $4063	; 2*ln(2) = 1.3863
-dw $410a	; 3*ln(2) = 2.0794
-dw $4163	; 4*ln(2) = 2.7726
-dw $41bc	; 5*ln(2) = 3.4657
-dw $420a	; 6*ln(2) = 4.1589
-dw $4237	; 7*ln(2) = 4.8520
-dw $4263	; 8*ln(2) = 5.5452
-dw $428f	; 9*ln(2) = 6.2383
-dw $42bc	; 10*ln(2) = 6.9315
-dw $42e8	; 11*ln(2) = 7.6246
-dw $430a	; 12*ln(2) = 8.3178
-dw $4320	; 13*ln(2) = 9.0109
-dw $4337	; 14*ln(2) = 9.7041
-dw $434d	; 15*ln(2) = 10.3972
-dw $4363	; 16*ln(2) = 11.0904
-dw $4379	; 17*ln(2) = 11.7835
-dw $438f	; 18*ln(2) = 12.4766
-dw $43a5	; 19*ln(2) = 13.1698
-dw $43bc	; 20*ln(2) = 13.8629
-dw $43d2	; 21*ln(2) = 14.5561
-dw $43e8	; 22*ln(2) = 15.2492
-dw $43fe	; 23*ln(2) = 15.9424
-dw $440a	; 24*ln(2) = 16.6355
-dw $4415	; 25*ln(2) = 17.3287
-dw $4420	; 26*ln(2) = 18.0218
-dw $442b	; 27*ln(2) = 18.7150
-dw $4437	; 28*ln(2) = 19.4081
-dw $4442	; 29*ln(2) = 20.1013
-dw $444d	; 30*ln(2) = 20.7944
-dw $4458	; 31*ln(2) = 21.4876
-dw $4463	; 32*ln(2) = 22.1807
-dw $446e	; 33*ln(2) = 22.8739
-dw $4479	; 34*ln(2) = 23.5670
-dw $4484	; 35*ln(2) = 24.2602
-dw $448f	; 36*ln(2) = 24.9533
-dw $449a	; 37*ln(2) = 25.6464
-dw $44a5	; 38*ln(2) = 26.3396
-dw $44b1	; 39*ln(2) = 27.0327
-dw $44bc	; 40*ln(2) = 27.7259
-dw $44c7	; 41*ln(2) = 28.4190
-dw $44d2	; 42*ln(2) = 29.1122
-dw $44dd	; 43*ln(2) = 29.8053
-dw $44e8	; 44*ln(2) = 30.4985
-dw $44f3	; 45*ln(2) = 31.1916
-dw $44fe	; 46*ln(2) = 31.8848
-dw $4505	; 47*ln(2) = 32.5779
-dw $450a	; 48*ln(2) = 33.2711
-dw $4510	; 49*ln(2) = 33.9642
-dw $4515	; 50*ln(2) = 34.6574
-dw $451b	; 51*ln(2) = 35.3505
-dw $4520	; 52*ln(2) = 36.0437
-dw $4526	; 53*ln(2) = 36.7368
-dw $452b	; 54*ln(2) = 37.4299
-dw $4531	; 55*ln(2) = 38.1231
-dw $4537	; 56*ln(2) = 38.8162
-dw $453c	; 57*ln(2) = 39.5094
-dw $4542	; 58*ln(2) = 40.2025
-dw $4547	; 59*ln(2) = 40.8957
-dw $454d	; 60*ln(2) = 41.5888
-dw $4552	; 61*ln(2) = 42.2820
-dw $4558	; 62*ln(2) = 42.9751
-dw $455d	; 63*ln(2) = 43.6683
+dw 0xc563	; -64*ln(2) = -44.3614
+dw 0xc55d	; -63*ln(2) = -43.6683
+dw 0xc558	; -62*ln(2) = -42.9751
+dw 0xc552	; -61*ln(2) = -42.2820
+dw 0xc54d	; -60*ln(2) = -41.5888
+dw 0xc547	; -59*ln(2) = -40.8957
+dw 0xc542	; -58*ln(2) = -40.2025
+dw 0xc53c	; -57*ln(2) = -39.5094
+dw 0xc537	; -56*ln(2) = -38.8162
+dw 0xc531	; -55*ln(2) = -38.1231
+dw 0xc52b	; -54*ln(2) = -37.4299
+dw 0xc526	; -53*ln(2) = -36.7368
+dw 0xc520	; -52*ln(2) = -36.0437
+dw 0xc51b	; -51*ln(2) = -35.3505
+dw 0xc515	; -50*ln(2) = -34.6574
+dw 0xc510	; -49*ln(2) = -33.9642
+dw 0xc50a	; -48*ln(2) = -33.2711
+dw 0xc505	; -47*ln(2) = -32.5779
+dw 0xc4fe	; -46*ln(2) = -31.8848
+dw 0xc4f3	; -45*ln(2) = -31.1916
+dw 0xc4e8	; -44*ln(2) = -30.4985
+dw 0xc4dd	; -43*ln(2) = -29.8053
+dw 0xc4d2	; -42*ln(2) = -29.1122
+dw 0xc4c7	; -41*ln(2) = -28.4190
+dw 0xc4bc	; -40*ln(2) = -27.7259
+dw 0xc4b1	; -39*ln(2) = -27.0327
+dw 0xc4a5	; -38*ln(2) = -26.3396
+dw 0xc49a	; -37*ln(2) = -25.6464
+dw 0xc48f	; -36*ln(2) = -24.9533
+dw 0xc484	; -35*ln(2) = -24.2602
+dw 0xc479	; -34*ln(2) = -23.5670
+dw 0xc46e	; -33*ln(2) = -22.8739
+dw 0xc463	; -32*ln(2) = -22.1807
+dw 0xc458	; -31*ln(2) = -21.4876
+dw 0xc44d	; -30*ln(2) = -20.7944
+dw 0xc442	; -29*ln(2) = -20.1013
+dw 0xc437	; -28*ln(2) = -19.4081
+dw 0xc42b	; -27*ln(2) = -18.7150
+dw 0xc420	; -26*ln(2) = -18.0218
+dw 0xc415	; -25*ln(2) = -17.3287
+dw 0xc40a	; -24*ln(2) = -16.6355
+dw 0xc3fe	; -23*ln(2) = -15.9424
+dw 0xc3e8	; -22*ln(2) = -15.2492
+dw 0xc3d2	; -21*ln(2) = -14.5561
+dw 0xc3bc	; -20*ln(2) = -13.8629
+dw 0xc3a5	; -19*ln(2) = -13.1698
+dw 0xc38f	; -18*ln(2) = -12.4766
+dw 0xc379	; -17*ln(2) = -11.7835
+dw 0xc363	; -16*ln(2) = -11.0904
+dw 0xc34d	; -15*ln(2) = -10.3972
+dw 0xc337	; -14*ln(2) = -9.7041
+dw 0xc320	; -13*ln(2) = -9.0109
+dw 0xc30a	; -12*ln(2) = -8.3178
+dw 0xc2e8	; -11*ln(2) = -7.6246
+dw 0xc2bc	; -10*ln(2) = -6.9315
+dw 0xc28f	; -9*ln(2) = -6.2383
+dw 0xc263	; -8*ln(2) = -5.5452
+dw 0xc237	; -7*ln(2) = -4.8520
+dw 0xc20a	; -6*ln(2) = -4.1589
+dw 0xc1bc	; -5*ln(2) = -3.4657
+dw 0xc163	; -4*ln(2) = -2.7726
+dw 0xc10a	; -3*ln(2) = -2.0794
+dw 0xc063	; -2*ln(2) = -1.3863
+dw 0xbf63	; -1*ln(2) = -0.6931
+dw 0x0000	; 0*ln(2) = 0.0000
+dw 0x3f63	; 1*ln(2) = 0.6931
+dw 0x4063	; 2*ln(2) = 1.3863
+dw 0x410a	; 3*ln(2) = 2.0794
+dw 0x4163	; 4*ln(2) = 2.7726
+dw 0x41bc	; 5*ln(2) = 3.4657
+dw 0x420a	; 6*ln(2) = 4.1589
+dw 0x4237	; 7*ln(2) = 4.8520
+dw 0x4263	; 8*ln(2) = 5.5452
+dw 0x428f	; 9*ln(2) = 6.2383
+dw 0x42bc	; 10*ln(2) = 6.9315
+dw 0x42e8	; 11*ln(2) = 7.6246
+dw 0x430a	; 12*ln(2) = 8.3178
+dw 0x4320	; 13*ln(2) = 9.0109
+dw 0x4337	; 14*ln(2) = 9.7041
+dw 0x434d	; 15*ln(2) = 10.3972
+dw 0x4363	; 16*ln(2) = 11.0904
+dw 0x4379	; 17*ln(2) = 11.7835
+dw 0x438f	; 18*ln(2) = 12.4766
+dw 0x43a5	; 19*ln(2) = 13.1698
+dw 0x43bc	; 20*ln(2) = 13.8629
+dw 0x43d2	; 21*ln(2) = 14.5561
+dw 0x43e8	; 22*ln(2) = 15.2492
+dw 0x43fe	; 23*ln(2) = 15.9424
+dw 0x440a	; 24*ln(2) = 16.6355
+dw 0x4415	; 25*ln(2) = 17.3287
+dw 0x4420	; 26*ln(2) = 18.0218
+dw 0x442b	; 27*ln(2) = 18.7150
+dw 0x4437	; 28*ln(2) = 19.4081
+dw 0x4442	; 29*ln(2) = 20.1013
+dw 0x444d	; 30*ln(2) = 20.7944
+dw 0x4458	; 31*ln(2) = 21.4876
+dw 0x4463	; 32*ln(2) = 22.1807
+dw 0x446e	; 33*ln(2) = 22.8739
+dw 0x4479	; 34*ln(2) = 23.5670
+dw 0x4484	; 35*ln(2) = 24.2602
+dw 0x448f	; 36*ln(2) = 24.9533
+dw 0x449a	; 37*ln(2) = 25.6464
+dw 0x44a5	; 38*ln(2) = 26.3396
+dw 0x44b1	; 39*ln(2) = 27.0327
+dw 0x44bc	; 40*ln(2) = 27.7259
+dw 0x44c7	; 41*ln(2) = 28.4190
+dw 0x44d2	; 42*ln(2) = 29.1122
+dw 0x44dd	; 43*ln(2) = 29.8053
+dw 0x44e8	; 44*ln(2) = 30.4985
+dw 0x44f3	; 45*ln(2) = 31.1916
+dw 0x44fe	; 46*ln(2) = 31.8848
+dw 0x4505	; 47*ln(2) = 32.5779
+dw 0x450a	; 48*ln(2) = 33.2711
+dw 0x4510	; 49*ln(2) = 33.9642
+dw 0x4515	; 50*ln(2) = 34.6574
+dw 0x451b	; 51*ln(2) = 35.3505
+dw 0x4520	; 52*ln(2) = 36.0437
+dw 0x4526	; 53*ln(2) = 36.7368
+dw 0x452b	; 54*ln(2) = 37.4299
+dw 0x4531	; 55*ln(2) = 38.1231
+dw 0x4537	; 56*ln(2) = 38.8162
+dw 0x453c	; 57*ln(2) = 39.5094
+dw 0x4542	; 58*ln(2) = 40.2025
+dw 0x4547	; 59*ln(2) = 40.8957
+dw 0x454d	; 60*ln(2) = 41.5888
+dw 0x4552	; 61*ln(2) = 42.2820
+dw 0x4558	; 62*ln(2) = 42.9751
+dw 0x455d	; 63*ln(2) = 43.6683
 
 
 ; rozdíl: má být mínus jest, nemohu se splést...
@@ -1953,40 +2300,40 @@ dw $455d	; 63*ln(2) = 43.6683
 Ln_FIX:
 ; lo
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db $63,$61,$5f,$5d,$5b,$59,$57,$55,$53,$51,$4f,$4d,$4b,$4a,$48,$46   ; 0_     bf63,bf61,bf5f,bf5d,bf5b,bf59,bf57,bf55,bf53,bf51,bf4f,bf4d,bf4b,bf4a,bf48,bf46 0_
-db $44,$42,$40,$3e,$3c,$3b,$39,$37,$35,$33,$31,$30,$2e,$2c,$2a,$28   ; 1_     bf44,bf42,bf40,bf3e,bf3c,bf3b,bf39,bf37,bf35,bf33,bf31,bf30,bf2e,bf2c,bf2a,bf28 1_
-db $27,$25,$23,$21,$20,$1e,$1c,$1a,$19,$17,$15,$13,$12,$10,$0e,$0d   ; 2_     bf27,bf25,bf23,bf21,bf20,bf1e,bf1c,bf1a,bf19,bf17,bf15,bf13,bf12,bf10,bf0e,bf0d 2_
-db $0b,$09,$08,$06,$04,$03,$01,$fe,$fb,$f8,$f5,$f1,$ee,$eb,$e8,$e4   ; 3_     bf0b,bf09,bf08,bf06,bf04,bf03,bf01,befe,befb,bef8,bef5,bef1,beee,beeb,bee8,bee4 3_
-db $e1,$de,$db,$d8,$d5,$d1,$ce,$cb,$c8,$c5,$c2,$bf,$bc,$b9,$b5,$b2   ; 4_     bee1,bede,bedb,bed8,bed5,bed1,bece,becb,bec8,bec5,bec2,bebf,bebc,beb9,beb5,beb2 4_
-db $af,$ac,$a9,$a6,$a3,$a0,$9d,$9a,$97,$94,$91,$8e,$8b,$88,$86,$83   ; 5_     beaf,beac,bea9,bea6,bea3,bea0,be9d,be9a,be97,be94,be91,be8e,be8b,be88,be86,be83 5_
-db $80,$7d,$7a,$77,$74,$71,$6e,$6c,$69,$66,$63,$60,$5d,$5b,$58,$55   ; 6_     be80,be7d,be7a,be77,be74,be71,be6e,be6c,be69,be66,be63,be60,be5d,be5b,be58,be55 6_
-db $52,$4f,$4d,$4a,$47,$44,$42,$3f,$3c,$39,$37,$34,$31,$2f,$2c,$29   ; 7_     be52,be4f,be4d,be4a,be47,be44,be42,be3f,be3c,be39,be37,be34,be31,be2f,be2c,be29 7_
-db $27,$24,$21,$1f,$1c,$19,$17,$14,$11,$0f,$0c,$0a,$07,$04,$02,$ff   ; 8_     be27,be24,be21,be1f,be1c,be19,be17,be14,be11,be0f,be0c,be0a,be07,be04,be02,bdff 8_
-db $fa,$f4,$ef,$ea,$e5,$e0,$db,$d6,$d1,$cc,$c7,$c2,$bd,$b8,$b3,$ae   ; 9_     bdfa,bdf4,bdef,bdea,bde5,bde0,bddb,bdd6,bdd1,bdcc,bdc7,bdc2,bdbd,bdb8,bdb3,bdae 9_
-db $a9,$a4,$9f,$9b,$96,$91,$8c,$87,$82,$7d,$79,$74,$6f,$6a,$65,$61   ; A_     bda9,bda4,bd9f,bd9b,bd96,bd91,bd8c,bd87,bd82,bd7d,bd79,bd74,bd6f,bd6a,bd65,bd61 A_
-db $5c,$57,$52,$4e,$49,$44,$40,$3b,$36,$32,$2d,$28,$24,$1f,$1b,$16   ; B_     bd5c,bd57,bd52,bd4e,bd49,bd44,bd40,bd3b,bd36,bd32,bd2d,bd28,bd24,bd1f,bd1b,bd16 B_
-db $11,$0d,$08,$04,$ff,$f5,$ec,$e3,$da,$d1,$c9,$c0,$b7,$ae,$a5,$9c   ; C_     bd11,bd0d,bd08,bd04,bcff,bcf5,bcec,bce3,bcda,bcd1,bcc9,bcc0,bcb7,bcae,bca5,bc9c C_
-db $93,$8a,$82,$79,$70,$67,$5f,$56,$4d,$45,$3c,$33,$2b,$22,$19,$11   ; D_     bc93,bc8a,bc82,bc79,bc70,bc67,bc5f,bc56,bc4d,bc45,bc3c,bc33,bc2b,bc22,bc19,bc11 D_
-db $08,$00,$ef,$de,$cd,$bc,$ab,$9a,$89,$79,$68,$57,$46,$36,$25,$15   ; E_     bc08,bc00,bbef,bbde,bbcd,bbbc,bbab,bb9a,bb89,bb79,bb68,bb57,bb46,bb36,bb25,bb15 E_
-db $04,$e7,$c6,$a5,$85,$64,$43,$23,$02,$c3,$82,$42,$01,$81,$01,$00   ; F_     bb04,bae7,bac6,baa5,ba85,ba64,ba43,ba23,ba02,b9c3,b982,b942,b901,b881,b801,b700 F_
+db 0x63,0x61,0x5f,0x5d,0x5b,0x59,0x57,0x55,0x53,0x51,0x4f,0x4d,0x4b,0x4a,0x48,0x46   ; 0_     bf63,bf61,bf5f,bf5d,bf5b,bf59,bf57,bf55,bf53,bf51,bf4f,bf4d,bf4b,bf4a,bf48,bf46 0_
+db 0x44,0x42,0x40,0x3e,0x3c,0x3b,0x39,0x37,0x35,0x33,0x31,0x30,0x2e,0x2c,0x2a,0x28   ; 1_     bf44,bf42,bf40,bf3e,bf3c,bf3b,bf39,bf37,bf35,bf33,bf31,bf30,bf2e,bf2c,bf2a,bf28 1_
+db 0x27,0x25,0x23,0x21,0x20,0x1e,0x1c,0x1a,0x19,0x17,0x15,0x13,0x12,0x10,0x0e,0x0d   ; 2_     bf27,bf25,bf23,bf21,bf20,bf1e,bf1c,bf1a,bf19,bf17,bf15,bf13,bf12,bf10,bf0e,bf0d 2_
+db 0x0b,0x09,0x08,0x06,0x04,0x03,0x01,0xfe,0xfb,0xf8,0xf5,0xf1,0xee,0xeb,0xe8,0xe4   ; 3_     bf0b,bf09,bf08,bf06,bf04,bf03,bf01,befe,befb,bef8,bef5,bef1,beee,beeb,bee8,bee4 3_
+db 0xe1,0xde,0xdb,0xd8,0xd5,0xd1,0xce,0xcb,0xc8,0xc5,0xc2,0xbf,0xbc,0xb9,0xb5,0xb2   ; 4_     bee1,bede,bedb,bed8,bed5,bed1,bece,becb,bec8,bec5,bec2,bebf,bebc,beb9,beb5,beb2 4_
+db 0xaf,0xac,0xa9,0xa6,0xa3,0xa0,0x9d,0x9a,0x97,0x94,0x91,0x8e,0x8b,0x88,0x86,0x83   ; 5_     beaf,beac,bea9,bea6,bea3,bea0,be9d,be9a,be97,be94,be91,be8e,be8b,be88,be86,be83 5_
+db 0x80,0x7d,0x7a,0x77,0x74,0x71,0x6e,0x6c,0x69,0x66,0x63,0x60,0x5d,0x5b,0x58,0x55   ; 6_     be80,be7d,be7a,be77,be74,be71,be6e,be6c,be69,be66,be63,be60,be5d,be5b,be58,be55 6_
+db 0x52,0x4f,0x4d,0x4a,0x47,0x44,0x42,0x3f,0x3c,0x39,0x37,0x34,0x31,0x2f,0x2c,0x29   ; 7_     be52,be4f,be4d,be4a,be47,be44,be42,be3f,be3c,be39,be37,be34,be31,be2f,be2c,be29 7_
+db 0x27,0x24,0x21,0x1f,0x1c,0x19,0x17,0x14,0x11,0x0f,0x0c,0x0a,0x07,0x04,0x02,0xff   ; 8_     be27,be24,be21,be1f,be1c,be19,be17,be14,be11,be0f,be0c,be0a,be07,be04,be02,bdff 8_
+db 0xfa,0xf4,0xef,0xea,0xe5,0xe0,0xdb,0xd6,0xd1,0xcc,0xc7,0xc2,0xbd,0xb8,0xb3,0xae   ; 9_     bdfa,bdf4,bdef,bdea,bde5,bde0,bddb,bdd6,bdd1,bdcc,bdc7,bdc2,bdbd,bdb8,bdb3,bdae 9_
+db 0xa9,0xa4,0x9f,0x9b,0x96,0x91,0x8c,0x87,0x82,0x7d,0x79,0x74,0x6f,0x6a,0x65,0x61   ; A_     bda9,bda4,bd9f,bd9b,bd96,bd91,bd8c,bd87,bd82,bd7d,bd79,bd74,bd6f,bd6a,bd65,bd61 A_
+db 0x5c,0x57,0x52,0x4e,0x49,0x44,0x40,0x3b,0x36,0x32,0x2d,0x28,0x24,0x1f,0x1b,0x16   ; B_     bd5c,bd57,bd52,bd4e,bd49,bd44,bd40,bd3b,bd36,bd32,bd2d,bd28,bd24,bd1f,bd1b,bd16 B_
+db 0x11,0x0d,0x08,0x04,0xff,0xf5,0xec,0xe3,0xda,0xd1,0xc9,0xc0,0xb7,0xae,0xa5,0x9c   ; C_     bd11,bd0d,bd08,bd04,bcff,bcf5,bcec,bce3,bcda,bcd1,bcc9,bcc0,bcb7,bcae,bca5,bc9c C_
+db 0x93,0x8a,0x82,0x79,0x70,0x67,0x5f,0x56,0x4d,0x45,0x3c,0x33,0x2b,0x22,0x19,0x11   ; D_     bc93,bc8a,bc82,bc79,bc70,bc67,bc5f,bc56,bc4d,bc45,bc3c,bc33,bc2b,bc22,bc19,bc11 D_
+db 0x08,0x00,0xef,0xde,0xcd,0xbc,0xab,0x9a,0x89,0x79,0x68,0x57,0x46,0x36,0x25,0x15   ; E_     bc08,bc00,bbef,bbde,bbcd,bbbc,bbab,bb9a,bb89,bb79,bb68,bb57,bb46,bb36,bb25,bb15 E_
+db 0x04,0xe7,0xc6,0xa5,0x85,0x64,0x43,0x23,0x02,0xc3,0x82,0x42,0x01,0x81,0x01,0x00   ; F_     bb04,bae7,bac6,baa5,ba85,ba64,ba43,ba23,ba02,b9c3,b982,b942,b901,b881,b801,b700 F_
 ; hi
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 0_  
-db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 1_  
-db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 2_  
-db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 3_  
-db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 4_  
-db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 5_  
-db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 6_  
-db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 7_  
-db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$bd   ; 8_  
-db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; 9_  
-db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; A_  
-db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; B_  
-db $bd,$bd,$bd,$bd,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc   ; C_  
-db $bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc   ; D_  
-db $bc,$bc,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb   ; E_  
-db $bb,$ba,$ba,$ba,$ba,$ba,$ba,$ba,$ba,$b9,$b9,$b9,$b9,$b8,$b8,$b7   ; F_
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 0_  
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 1_  
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 2_  
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 3_  
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 4_  
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 5_  
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 6_  
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 7_  
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbd   ; 8_  
+db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; 9_  
+db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; A_  
+db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; B_  
+db 0xbd,0xbd,0xbd,0xbd,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc   ; C_  
+db 0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc   ; D_  
+db 0xbc,0xbc,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb   ; E_  
+db 0xbb,0xba,0xba,0xba,0xba,0xba,0xba,0xba,0xba,0xb9,0xb9,0xb9,0xb9,0xb8,0xb8,0xb7   ; F_
 
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
@@ -2062,23 +2409,56 @@ BIN2DEC_CHAR:
 VARIABLE_SECTION:
 
 STRING_SECTION:
-string106:
+string117:
 db 0xD, "Data stack OK!", 0xD
+size117 EQU $ - string117
+string116:
+db "RAS:"
+size116 EQU $ - string116
+string115:
+db ":  a%b -> "
+size115 EQU $ - string115
+string114:
+db " % "
+size114 EQU $ - string114
+string113:
+db ":  ln -> "
+size113 EQU $ - string113
+string112:
+db ": exp -> "
+size112 EQU $ - string112
+string111:
+db ": sin -> "
+size111 EQU $ - string111
+string110:
+db ": sin -> "
+size110 EQU $ - string110
+string109:
+db ": sin -> "
+size109 EQU $ - string109
+string108:
+db ": sin -> "
+size108 EQU $ - string108
+string107:
+db ": sin -> "
+size107 EQU $ - string107
+string106:
+db ": sin -> "
 size106 EQU $ - string106
 string105:
-db "RAS:"
+db ": sin -> "
 size105 EQU $ - string105
 string104:
-db ":  a%b -> "
+db ": sin -> "
 size104 EQU $ - string104
 string103:
-db " % "
+db ": sin -> "
 size103 EQU $ - string103
 string102:
-db ":  ln -> "
+db ": sin -> "
 size102 EQU $ - string102
 string101:
-db ": exp -> "
+db ": sin -> "
 size101 EQU $ - string101
 
 
