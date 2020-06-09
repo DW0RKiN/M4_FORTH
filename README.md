@@ -196,25 +196,25 @@ Danagy format `S EEE EEEE MMMM MMMM`
 
 https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 
-| original   |   M4 FORTH   |  optimization  |  data stack                 |  comment              |
-| :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
-|    s>f     |      S2F     |                |       ( s1 -- f1 )          |                       |
-|    u>f     |      U2F     |                |       ( u1 -- f1 )          |                       |
-|    f>s     |      F2S     |                |       ( f1 -- s1 )          |                       |
-|    f>u     |      F2U     |                |       ( f1 -- u1 )          |                       |
-|     f+     |     FADD     |                |    ( f2 f1 -- (f2+f1) )     |                       |
-|     f-     |     FSUB     |                |    ( f2 f1 -- (f2-f1) )     |                       |
-|  fnegate   |    FNEGATE   |                |       ( f1 -- -f1 )         |                       |
-|    fabs    |     FABS     |                |       ( f1 -- abs(f2) )     |                       |
-|     f.     |     FDOT     |                |       ( f1 -- )             |                       |
-|     f*     |     FMUL     |                |    ( f2 f1 -- (f2*f1) )     |                       |
-|     f/     |     FDIV     |                |    ( f2 f1 -- (f2/f1) )     |                       |
-|   fsqrt    |    FSQRT     |                |       ( f1 -- f2 )          |                       |
-|   ftrunc   |    FTRUNC    |                |       ( f1 -- int(f2) )     | round to zero         |
-|            |    FFRAC     |                |       ( f1 -- (f1 % 1.0) )  |                       |
-|    fexp    |     FEXP     |                |       ( f1 -- (e^f1) )      |                       |
-|     fln    |      FLN     |                |       ( f1 -- (ln(f1) )     |                       |
-|    fmod    |      FMOD    |                |    ( f2 f1 -- ((f2 % f1) )  |                       |
+| original   |   M4 FORTH   |  optimization  |  data stack          |  comment                   |
+| :--------: | :----------: | :------------: | :------------------- | :------------------------- |
+|    s>f     |      S2F     |                |       ( s1 -- f1 )   |                            |
+|    u>f     |      U2F     |                |       ( u1 -- f1 )   |                            |
+|    f>s     |      F2S     |                |       ( f1 -- s1 )   |                            |
+|    f>u     |      F2U     |                |       ( f1 -- u1 )   |                            |
+|     f+     |     FADD     |                |    ( f2 f1 -- f3 )   | f3 = f2 + f1               |
+|     f-     |     FSUB     |                |    ( f2 f1 -- f3 )   | f3 = f2 - f1               |
+|  fnegate   |    FNEGATE   |                |       ( f1 -- f2 )   | f2 = -f1                   |
+|    fabs    |     FABS     |                |       ( f1 -- f2 )   | f2 = abs(f1)               |
+|     f.     |     FDOT     |                |       ( f1 -- )      |                            |
+|     f*     |     FMUL     |                |    ( f2 f1 -- f3 )   | f3 = f2 * f1               |
+|     f/     |     FDIV     |                |    ( f2 f1 -- f3 )   | f3 = f2 / f1               |
+|   fsqrt    |    FSQRT     |                |       ( f1 -- f2 )   |                            |
+|   ftrunc   |    FTRUNC    |                |       ( f1 -- f2 )   | f2 = int(f1) round to zero |
+|            |    FFRAC     |                |       ( f1 -- f2 )   | f2 = f1 % 1.0              |
+|    fexp    |     FEXP     |                |       ( f1 -- f2 )   | f2 = e^(f1)                |
+|     fln    |      FLN     |                |       ( f1 -- f2 )   | f2 = ln(f1)                |
+|    fmod    |      FMOD    |                |    ( f2 f1 -- f3 )   | f3 = f2 % f1               |
 
 ### Logic
 
