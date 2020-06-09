@@ -216,7 +216,9 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 |            |    FFRAC     |                |       ( f1 -- f2 )   | f2 = f1 % 1.0              |
 |    fexp    |     FEXP     |                |       ( f1 -- f2 )   | f2 = e^(f1)                |
 |     fln    |      FLN     |                |       ( f1 -- f2 )   | f2 = ln(f1)                |
-|    fmod    |      FMOD    |                |    ( f2 f1 -- f3 )   | f3 = f2 % f1               |
+|    fmod    |     FMOD     |                |    ( f2 f1 -- f3 )   | f3 = f2 % f1               |
+|     f2*    |     F2MUL    |                |       ( f1 -- f2 )   | f2 = f1 * 2.0              |
+|     f2/    |     F2DIV    |                |       ( f1 -- f2 )   | f2 = f1 / 2.0              |
 
 ### Logic
 

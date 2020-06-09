@@ -128,6 +128,20 @@ ifdef({USE_fMod},,define({USE_fMod},{}))dnl
     pop  DE             ; 1:10      fmod})dnl
 dnl
 dnl
+dnl ( f1 -- f2 )
+dnl f2 = f1 * 2.0
+define({F2MUL},{
+    inc   H             ;  1:4      f2*
+    .WARNING The exponent is not tested and may overflow!})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = f1 / 2.0
+define({F2DIV},{
+    dec   H             ;  1:4      f2/
+    .WARNING The exponent is not tested and may underflow!})dnl
+dnl
+dnl
 ifdef({__pathfloat__},,define({__pathfloat__},{__pathlib__{}float/}))dnl
 dnl
 dnl
