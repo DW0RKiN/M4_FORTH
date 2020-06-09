@@ -1,6 +1,6 @@
 dnl
 dnl
-ifdef({USE_fDiv},{
+ifdef({USE_fDiv},{ifdef({USE_fMul},,define({USE_fMul},{}))
 ;  Input:  BC, HL with a mantissa equal to 1.0 (eeee eeee s000 0000)
 ; Output: HL = BC / HL = BC / (1.0 * 2^HL_exp) = BC * 1.0 * 2^-HL_exp, if ( overflow or underflow ) set carry
 ; Pollutes: AF, BC, DE
@@ -62,7 +62,7 @@ fDiv_OVER:
 
     ld    H, DIVTAB/256 ; 2:7 
     ld    E, (HL)       ; 1:7 
-    ; continues with fMul (HL = BC * DE), DE = 1 / HL{}ifdef({USE_fMul},,define({USE_fMul},{}))}){}dnl
+    ; continues with fMul (HL = BC * DE), DE = 1 / HL}){}dnl
 dnl
 dnl
 ifdef({USE_fMul},{

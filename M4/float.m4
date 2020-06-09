@@ -63,8 +63,8 @@ dnl ( f2 f1 -- f )
 dnl f = f2 * f1
 define({FMUL},{
 ifdef({USE_fMul},,define({USE_fMul},{}))dnl
-    ld   B, H           ; 1:4       f*
-    ld   C, L           ; 1:4       f*
+    ld    B, H          ; 1:4       f*
+    ld    C, L          ; 1:4       f*
     call fMul           ; 3:17      f* HL = BC*DE
     pop  DE             ; 1:10      f*})dnl
 dnl
@@ -73,8 +73,8 @@ dnl ( f2 f1 -- f )
 dnl f = f2 / f1
 define({FDIV},{
 ifdef({USE_fDiv},,define({USE_fDiv},{}))dnl
-    ld   B, D           ; 1:4       f/
-    ld   C, E           ; 1:4       f/
+    ld    B, D          ; 1:4       f/
+    ld    C, E          ; 1:4       f/
     call fDiv           ; 3:17      f/ HL = BC/HL
     pop  DE             ; 1:10      f/})dnl
 dnl
@@ -98,6 +98,34 @@ dnl f2 = f1 % 1.0
 define({FFRAC},{
 ifdef({USE_fFrac},,define({USE_fFrac},{}))dnl
     call fFrac          ; 3:17      ffrac})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = e^f1
+define({FEXP},{
+ifdef({USE_fExp},,define({USE_fExp},{}))dnl
+    push DE             ; 1:11      fexp
+    call fExp           ; 3:17      fexp HL = e^HL
+    pop  DE             ; 1:10      fexp})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = ln(f1)
+define({FLN},{
+ifdef({USE_fLn},,define({USE_fLn},{}))dnl
+    push DE             ; 1:11      fln
+    call fLn            ; 3:17      fln HL = ln(HL)
+    pop  DE             ; 1:10      fln})dnl
+dnl
+dnl
+dnl ( f1 f2 -- f3 )
+dnl f3 = f1 % f2
+define({FMOD},{
+ifdef({USE_fMod},,define({USE_fMod},{}))dnl
+    ld    B, D          ; 1:4       fmod
+    ld    C, E          ; 1:4       fmod
+    call fMod           ; 3:17      fmod HL = BC % HL
+    pop  DE             ; 1:10      fmod})dnl
 dnl
 dnl
 ifdef({__pathfloat__},,define({__pathfloat__},{__pathlib__{}float/}))dnl
