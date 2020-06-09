@@ -212,6 +212,9 @@ https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 |   fsqrt    |    FSQRT     |                |       ( f1 -- f2 )          |                       |
 |   ftrunc   |    FTRUNC    |                |       ( f1 -- int(f2) )     | round to zero         |
 |            |    FFRAC     |                |       ( f1 -- (f1 % 1.0) )  |                       |
+|    fexp    |     FEXP     |                |       ( f1 -- (e^f1) )      |                       |
+|     fln    |      FLN     |                |       ( f1 -- (ln(f1) )     |                       |
+|    fmod    |      FMOD    |                |    ( f2 f1 -- ((f2 % f1) )  |                       |
 
 ### Logic
 

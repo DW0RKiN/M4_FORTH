@@ -32,8 +32,8 @@ sfor101:                ;           sfor 101 ( index -- index )
     ex   DE, HL         ; 1:4       push(0x4100)
     ld   HL, 0x4100     ; 3:10      push(0x4100)
         
-    ld   B, D           ; 1:4       f/
-    ld   C, E           ; 1:4       f/
+    ld    B, D          ; 1:4       f/
+    ld    C, E          ; 1:4       f/
     call fDiv           ; 3:17      f/ HL = BC/HL
     pop  DE             ; 1:10      f/
         
@@ -186,6 +186,87 @@ snext102:               ;           snext 102
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
+    
+    push DE             ; 1:11      push(5)
+    ex   DE, HL         ; 1:4       push(5)
+    ld   HL, 5          ; 3:10      push(5)   
+    call fIld           ; 3:17      s>f 
+    call fSqrt          ; 3:17      fsqrt 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size101    ; 3:10      print Length of string to print
+    ld   DE, string101  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fexp
+    call fExp           ; 3:17      fexp HL = e^HL
+    pop  DE             ; 1:10      fexp 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(5)
+    ex   DE, HL         ; 1:4       push(5)
+    ld   HL, 5          ; 3:10      push(5)   
+    call fIld           ; 3:17      s>f 
+    call fSqrt          ; 3:17      fsqrt 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size102    ; 3:10      print Length of string to print
+    ld   DE, string102  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    push DE             ; 1:11      fln
+    call fLn            ; 3:17      fln HL = ln(HL)
+    pop  DE             ; 1:10      fln  
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push2(5,3)
+    ld   DE, 5          ; 3:10      push2(5,3)
+    push HL             ; 1:11      push2(5,3)
+    ld   HL, 3          ; 3:10      push2(5,3) 
+    call fIld           ; 3:17      s>f 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size103    ; 3:10      print Length of string to print
+    ld   DE, string103  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
+    call fIld           ; 3:17      s>f 
+    call fSqrt          ; 3:17      fsqrt 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      print
+    ld   BC, size104    ; 3:10      print Length of string to print
+    ld   DE, string104  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+ 
+    ld    B, D          ; 1:4       fmod
+    ld    C, E          ; 1:4       fmod
+    call fMod           ; 3:17      fmod HL = BC % HL
+    pop  DE             ; 1:10      fmod  
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
     
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
@@ -495,8 +576,8 @@ xleave103:
     
     
     push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
+    ld   BC, size105    ; 3:10      print Length of string to print
+    ld   DE, string105  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
 
@@ -550,8 +631,8 @@ test_end:
 stack_test:             ;           
     
     push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
+    ld   BC, size106    ; 3:10      print Length of string to print
+    ld   DE, string106  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
@@ -560,6 +641,87 @@ stack_test_end:
     ret                 ; 1:10      s;
 ;   -----  e n d  -----
 
+; Remainder after division
+;  In: BC dividend, HL modulus
+; Out: HL = BC % HL = BC - int(BC/HL) * HL = frac(BC/HL) * HL  => does not return correct results with larger exponent difference
+; Pollutes: AF, BC, DE
+; *****************************************
+                    fMod                ; *
+; *****************************************
+
+    res   7, H          ; 2:8       HL = abs(HL), exp HL will be used for the result
+    ld    A, B          ; 1:4 
+    and  0x80           ; 2:7       sign mask
+    ld    D, A          ; 1:4       Result sign only
+    xor   B             ; 1:4 
+    sub   H             ; 1:4 
+    jr    c, fMod_HL_GR ; 2:12/7 
+    ld    E, A          ; 1:4       diff exp        
+    ld    A, C          ; 1:4  
+    jr   nz, fMod_Sub   ; 2:12/7 
+        
+    cp    L             ; 1:4 
+    jr    z, fMod_FPmin ; 2:12/7 
+    jr    c, fMod_HL_GR ; 2:12/7 
+
+fMod_Sub:               ;           BC_mantis - HL_mantis
+    sub   L             ; 1:4 
+    jr    z, fMod_FPmin ; 2:7/11    fpmin
+    jr   nc, fMod_NORM  ; 2:7/11 
+        
+; fMod_Add_HALF:           
+    dec   E             ; 1:4        
+    jp    m, fMod_STOP  ; 3:10 
+        
+    add   A, A          ; 1:4 
+    jr   nc, fMod_X     ; 2:7/11 
+    add   A, L          ; 1:4 
+    jr    c, fMod_Sub   ; 2:7/11 
+    db   0x06           ;           ld B, $85
+fMod_X:
+    add   A, L          ; 1:4 
+        
+fMod_NORM:
+    add   A, A          ; 1:4 
+    dec   E             ; 1:4        
+    jr   nc, fMod_NORM  ; 2:7/11 
+        
+    jp    p, fMod_Sub   ; 3:10      E >= 0
+
+    ld    L, A          ; 1:4 
+    ld    A, H          ; 1:4 
+    add   A, E          ; 1:4 
+    xor   D             ; 1:4 
+    ld    H, A          ; 1:4 
+    xor   D             ; 1:4 
+    ret   p             ; 1:5/11 
+;       fall
+
+; Input: D = sign only        
+fMod_UNDERFLOW:
+    ld    H, D          ; 1:4 
+    ld    L, 0x00       ; 2:7 
+    scf                 ; 1:4       carry = error
+    ret                 ; 1:10 
+        
+fMod_STOP:
+    add   A, L          ; 1:4 
+    ld    L, A          ; 1:4 
+    ld    A, H          ; 1:4 
+    xor   D             ; 1:4 
+    ld    H, A          ; 1:4 
+    ret                 ; 1:10 
+        
+fMod_HL_GR:
+    or    A             ; 1:4
+    ld    H, B          ; 1:4 
+    ld    L, C          ; 1:4 
+    ret                 ; 1:10 
+
+fMod_FPmin:             ;           RET with reset carry
+    ld    L, 0x00       ; 2:7 
+    ld    H, D          ; 1:4 
+    ret                 ; 1:10
 ; Fractional part, remainder after division by 1
 ;  In: HL any floating-point number
 ; Out: HL fractional part, with sign intact
@@ -787,7 +949,11 @@ fWst_ZERO:
     ld    H, A          ; 1:4 
     ld    L, A          ; 1:4
     ret                 ; 1:10      RET with carry
-        ; continue from @FMOD (if it was included)
+        ; continue from @
+    ld    B, D          ; 1:4       fmod
+    ld    C, E          ; 1:4       fmod
+    call fMod           ; 3:17      fmod HL = BC % HL
+    pop  DE             ; 1:10      fmod (if it was included)
 ; Subtract two floating-point numbers
 ;  In: HL, DE numbers to subtract, no restrictions
 ; Out: HL = DE - HL
@@ -1028,6 +1194,123 @@ fSub_TOOBIG:
     dec   H             ; 1:4       HL_exp = 8 + 1 + DE_exp  => HL_exp >= 9 => not underflow
     ret                 ; 1:10 
 
+; logaritmus naturalis
+; Input: HL 
+; Output: HL = ln(abs(HL)) +- lowest bit (with exponent -1($7E) the error is bigger...)
+; ln(2^e*m) = ln(2^e) + ln(m) = e*ln(2) + ln(m) = ln2_exp[e] + ln_m[m]
+; Pollutes: AF, B, DE
+; *****************************************
+                     fLn                ; *
+; *****************************************
+                        ;           fixes input errors with exponent equal to -1 
+    ld    A, H          ; 1:4        
+    add   A, A          ; 1:4 
+    xor  2*0x3F         ; 2:7 
+    jr    z, fLn_FIX    ; 2:12/7  
+
+    ld    A, H          ; 1:4       save
+
+    ld    H, high Ln_M  ; 2:7       Ln_M[]        
+    ld    E, (HL)       ; 1:7 
+    inc   H             ; 1:4       hi Ln_M[]
+    ld    D, (HL)       ; 1:7 
+
+    add   A, A          ; 1:4       sign out, HL = abs(HL)
+    ld    L, A          ; 1:4 
+    cp   0x80           ; 2:7       2*bias 
+    jr    z, fLn_NO_Add ; 2:7/11 
+
+    inc   H             ; 1:4       Ln2_Exp[]
+
+    ld    A, (HL)       ; 1:7 
+    inc   L             ; 1:4 
+    ld    H, (HL)       ; 1:7 
+    ld    L, A          ; 1:4 
+        
+    ld    A, D          ; 1:4 
+    or    E             ; 1:4 
+    jp   nz, fAdd       ; 3:10      HL = HL + DE = +-Ln2_Exp[] + Ln_M[]
+    ret                 ; 1:10 
+        
+fLn_FIX:
+    ld    H, high Ln_FIX; 2:7 
+    ld    E, (HL)       ; 1:7 
+    inc   H             ; 1:4 
+    ld    D, (HL)       ; 1:7 
+
+fLn_NO_Add:
+    ex   DE, HL         ; 1:4 
+    ret                 ; 1:10
+    
+; Natural exponential function
+; Input: HL 
+; Output: HL = exp(HL)) +- lowest 2 bit
+; e^((2^e)*m) = 
+; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625)) 
+; m1 => b1 = 1, m0.5 => b0.5 = 0 or 1, m0.25 => b0.25 = 0 or 1, ...
+; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) = 
+;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ... 
+; Pollutes: AF, BC, DE
+; *****************************************
+                    fExp                ; *
+; *****************************************
+    ld    D, EXP_TAB/256; 2:7 
+    ld    A, H          ; 1:4 
+    add   A, A          ; 1:4 
+    ld    E, A          ; 1:4 
+    jr   nc, $+3        ; 2:7/11 
+    inc   D             ; 1:4 
+
+    cp   2*0x37         ; 2:7 
+    jr    c, fExp_ONE   ; 2:7/11 
+    cp   2*0x46         ; 2:7 
+    jr   nc, fExp_FLOW  ; 2:7/11 
+
+    ld    A, L          ; 1:4       fraction
+
+    ex   DE, HL         ; 1:4 
+    inc   L             ; 1:4 
+    ld    D, (HL)       ; 1:7 
+    dec   L             ; 1:4 
+    ld    E, (HL)       ; 1:7 
+
+fExp_0_BIT:
+    jr    z, fExp_EXIT  ; 2:7/11 
+fExp_Loop:
+    dec   L             ; 1:4       exp--
+    ld    B, (HL)       ; 1:7 
+    dec   L             ; 1:4 
+    add   A, A          ; 1:4 
+    jr   nc, fExp_0_BIT ; 2:7/11 
+    ld    C, (HL)       ; 1:7 
+        
+    push HL             ; 1:11
+    push AF             ; 1:11
+    call fMul           ; 3:17      HL = BC * DE
+    pop  AF             ; 1:10
+    ex   DE, HL         ; 1:4 
+    pop  HL             ; 1:10
+        
+    jp  fExp_Loop       ; 3:10 
+        
+fExp_ONE:
+    ld    DE, 0x4000    ; 3:10      bias*256
+fExp_EXIT:
+    ex   DE, HL         ; 1:4 
+    ret                 ; 1:10 
+        
+fExp_FLOW:
+    ld    A, H          ; 1:4 
+    add   A, A          ; 1:4       sign out
+    jr    c, fExp_UNDER ; 2:7/11 
+fExp_OVER:              ;
+    scf                 ; 1:4
+    ld    HL, 0x7FFF    ; 3:10      fpmax 
+    ret                 ; 1:10 
+
+fExp_UNDER:
+    ld    HL, 0x0000    ; 3:10      fpmin 
+    ret                 ; 1:10
 ;  Input:  BC, HL with a mantissa equal to 1.0 (eeee eeee s000 0000)
 ; Output: HL = BC / HL = BC / (1.0 * 2^HL_exp) = BC * 1.0 * 2^-HL_exp, if ( overflow or underflow ) set carry
 ; Pollutes: AF, BC, DE
@@ -1227,6 +1510,41 @@ fDot:
     ex  (SP),HL         ; 1:19
     ex   DE, HL         ; 1:4
     ret                 ; 1:10
+; Align to 256-byte page boundary
+DEFS    (($ + $FF) / $100) * $100 - $
+
+; e^((2^e)*m) = 
+; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625)) 
+; m1 => b1 = 1, m0.5 => b0.5 = 0 or 1, m0.25 => b0.25 = 0 or 1, ...
+; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) = 
+;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ... 
+
+EXP_TAB:
+; plus
+;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 0_  
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 1_  
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 2_  
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4001,$4001,$4002,$4004,$4008,$4011,$4022,$4049,$40a6   ; 3_  
+dw $415c,$42d9,$45b5,$4b75,$570f,$6e1f,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 4_  
+dw $7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 5_  
+dw $7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 6_  
+dw $7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff,$7fff   ; 7_  
+; minus
+;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 0_  
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 1_  
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000,$4000   ; 2_  
+dw $4000,$4000,$4000,$4000,$4000,$4000,$4000,$3fff,$3ffe,$3ffc,$3ff8,$3ff0,$3fe1,$3fc4,$3f8f,$3f37   ; 3_  
+dw $3e79,$3d15,$3a2c,$3460,$28e3,$11c8,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 4_  
+dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 5_  
+dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 6_  
+dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000   ; 7_ 
+
+; rozdíl: má být mínus jest, nemohu se splést...
+; nepřesnost: 2963 (4.521179 %)
+;       chyb: 399 (0.608826 %)
+
 ; Align to 256-byte page boundary
 DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
@@ -1454,6 +1772,222 @@ db $e7,$e8,$e8,$e9,$ea,$ea,$eb,$eb,$ec,$ec,$ed,$ed,$ee,$ee,$ef,$ef   ; D_     e7
 db $f0,$f0,$f1,$f1,$f2,$f2,$f3,$f3,$f4,$f4,$f5,$f5,$f6,$f6,$f7,$f7   ; E_     f0,f0,f1,f1,f2,f2,f3,f3,f4,f4,f5,f5,f6,f6,f7,f7 E_
 db $f8,$f8,$f9,$f9,$fa,$fa,$fb,$fb,$fc,$fc,$fd,$fd,$fe,$fe,$ff,$ff   ; F_     f8,f8,f9,f9,fa,fa,fb,fb,fc,fc,fd,fd,fe,fe,ff,ff F_
 
+; Align to 256-byte page boundary
+DEFS    (($ + $FF) / $100) * $100 - $
+
+; ln(2^exp*man) = ln(2^exp) + ln(man) = ln(2)*exp + ln(man) = ln2_exp[e] + ln_m[m]
+Ln_M:
+; lo
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $00,$ff,$fe,$7e,$fc,$3d,$7c,$ba,$f8,$1b,$3a,$59,$77,$96,$b4,$d2   ; 0_     0000,37ff,38fe,397e,39fc,3a3d,3a7c,3aba,3af8,3b1b,3b3a,3b59,3b77,3b96,3bb4,3bd2 0_
+db $f1,$07,$16,$25,$34,$43,$52,$60,$6f,$7e,$8c,$9b,$a9,$b8,$c6,$d4   ; 1_     3bf1,3c07,3c16,3c25,3c34,3c43,3c52,3c60,3c6f,3c7e,3c8c,3c9b,3ca9,3cb8,3cc6,3cd4 1_
+db $e2,$f1,$ff,$06,$0d,$14,$1b,$22,$29,$30,$37,$3e,$45,$4c,$52,$59   ; 2_     3ce2,3cf1,3cff,3d06,3d0d,3d14,3d1b,3d22,3d29,3d30,3d37,3d3e,3d45,3d4c,3d52,3d59 2_
+db $60,$67,$6d,$74,$7b,$81,$88,$8f,$95,$9c,$a2,$a9,$af,$b6,$bc,$c3   ; 3_     3d60,3d67,3d6d,3d74,3d7b,3d81,3d88,3d8f,3d95,3d9c,3da2,3da9,3daf,3db6,3dbc,3dc3 3_
+db $c9,$cf,$d6,$dc,$e2,$e9,$ef,$f5,$fc,$01,$04,$07,$0a,$0d,$10,$13   ; 4_     3dc9,3dcf,3dd6,3ddc,3de2,3de9,3def,3df5,3dfc,3e01,3e04,3e07,3e0a,3e0d,3e10,3e13 4_
+db $16,$1a,$1d,$20,$23,$26,$29,$2c,$2f,$32,$34,$37,$3a,$3d,$40,$43   ; 5_     3e16,3e1a,3e1d,3e20,3e23,3e26,3e29,3e2c,3e2f,3e32,3e34,3e37,3e3a,3e3d,3e40,3e43 5_
+db $46,$49,$4c,$4f,$52,$55,$57,$5a,$5d,$60,$63,$66,$68,$6b,$6e,$71   ; 6_     3e46,3e49,3e4c,3e4f,3e52,3e55,3e57,3e5a,3e5d,3e60,3e63,3e66,3e68,3e6b,3e6e,3e71 6_
+db $74,$76,$79,$7c,$7f,$81,$84,$87,$8a,$8c,$8f,$92,$94,$97,$9a,$9d   ; 7_     3e74,3e76,3e79,3e7c,3e7f,3e81,3e84,3e87,3e8a,3e8c,3e8f,3e92,3e94,3e97,3e9a,3e9d 7_
+db $9f,$a2,$a5,$a7,$aa,$ac,$af,$b2,$b4,$b7,$ba,$bc,$bf,$c1,$c4,$c6   ; 8_     3e9f,3ea2,3ea5,3ea7,3eaa,3eac,3eaf,3eb2,3eb4,3eb7,3eba,3ebc,3ebf,3ec1,3ec4,3ec6 8_
+db $c9,$cc,$ce,$d1,$d3,$d6,$d8,$db,$dd,$e0,$e2,$e5,$e7,$ea,$ec,$ef   ; 9_     3ec9,3ecc,3ece,3ed1,3ed3,3ed6,3ed8,3edb,3edd,3ee0,3ee2,3ee5,3ee7,3eea,3eec,3eef 9_
+db $f1,$f4,$f6,$f9,$fb,$fd,$00,$01,$02,$04,$05,$06,$07,$08,$0a,$0b   ; A_     3ef1,3ef4,3ef6,3ef9,3efb,3efd,3f00,3f01,3f02,3f04,3f05,3f06,3f07,3f08,3f0a,3f0b A_
+db $0c,$0d,$0e,$0f,$11,$12,$13,$14,$15,$16,$18,$19,$1a,$1b,$1c,$1d   ; B_     3f0c,3f0d,3f0e,3f0f,3f11,3f12,3f13,3f14,3f15,3f16,3f18,3f19,3f1a,3f1b,3f1c,3f1d B_
+db $1f,$20,$21,$22,$23,$24,$25,$26,$28,$29,$2a,$2b,$2c,$2d,$2e,$2f   ; C_     3f1f,3f20,3f21,3f22,3f23,3f24,3f25,3f26,3f28,3f29,3f2a,3f2b,3f2c,3f2d,3f2e,3f2f C_
+db $30,$32,$33,$34,$35,$36,$37,$38,$39,$3a,$3b,$3c,$3e,$3f,$40,$41   ; D_     3f30,3f32,3f33,3f34,3f35,3f36,3f37,3f38,3f39,3f3a,3f3b,3f3c,3f3e,3f3f,3f40,3f41 D_
+db $42,$43,$44,$45,$46,$47,$48,$49,$4a,$4b,$4c,$4d,$4e,$50,$51,$52   ; E_     3f42,3f43,3f44,3f45,3f46,3f47,3f48,3f49,3f4a,3f4b,3f4c,3f4d,3f4e,3f50,3f51,3f52 E_
+db $53,$54,$55,$56,$57,$58,$59,$5a,$5b,$5c,$5d,$5e,$5f,$60,$61,$62   ; F_     3f53,3f54,3f55,3f56,3f57,3f58,3f59,3f5a,3f5b,3f5c,3f5d,3f5e,3f5f,3f60,3f61,3f62 F_
+; hi
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $00,$37,$38,$39,$39,$3a,$3a,$3a,$3a,$3b,$3b,$3b,$3b,$3b,$3b,$3b   ; 0_  
+db $3b,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c,$3c   ; 1_  
+db $3c,$3c,$3c,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d   ; 2_  
+db $3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d   ; 3_  
+db $3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3d,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 4_  
+db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 5_  
+db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 6_  
+db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 7_  
+db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 8_  
+db $3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e,$3e   ; 9_  
+db $3e,$3e,$3e,$3e,$3e,$3e,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; A_  
+db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; B_  
+db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; C_  
+db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; D_  
+db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; E_  
+db $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f   ; F_  
+
+; Numbers with exponent -1 ($3f) have lower result accuracy
+Ln2_Exp:
+dw $c563	; -64*ln(2) = -44.3614
+dw $c55d	; -63*ln(2) = -43.6683
+dw $c558	; -62*ln(2) = -42.9751
+dw $c552	; -61*ln(2) = -42.2820
+dw $c54d	; -60*ln(2) = -41.5888
+dw $c547	; -59*ln(2) = -40.8957
+dw $c542	; -58*ln(2) = -40.2025
+dw $c53c	; -57*ln(2) = -39.5094
+dw $c537	; -56*ln(2) = -38.8162
+dw $c531	; -55*ln(2) = -38.1231
+dw $c52b	; -54*ln(2) = -37.4299
+dw $c526	; -53*ln(2) = -36.7368
+dw $c520	; -52*ln(2) = -36.0437
+dw $c51b	; -51*ln(2) = -35.3505
+dw $c515	; -50*ln(2) = -34.6574
+dw $c510	; -49*ln(2) = -33.9642
+dw $c50a	; -48*ln(2) = -33.2711
+dw $c505	; -47*ln(2) = -32.5779
+dw $c4fe	; -46*ln(2) = -31.8848
+dw $c4f3	; -45*ln(2) = -31.1916
+dw $c4e8	; -44*ln(2) = -30.4985
+dw $c4dd	; -43*ln(2) = -29.8053
+dw $c4d2	; -42*ln(2) = -29.1122
+dw $c4c7	; -41*ln(2) = -28.4190
+dw $c4bc	; -40*ln(2) = -27.7259
+dw $c4b1	; -39*ln(2) = -27.0327
+dw $c4a5	; -38*ln(2) = -26.3396
+dw $c49a	; -37*ln(2) = -25.6464
+dw $c48f	; -36*ln(2) = -24.9533
+dw $c484	; -35*ln(2) = -24.2602
+dw $c479	; -34*ln(2) = -23.5670
+dw $c46e	; -33*ln(2) = -22.8739
+dw $c463	; -32*ln(2) = -22.1807
+dw $c458	; -31*ln(2) = -21.4876
+dw $c44d	; -30*ln(2) = -20.7944
+dw $c442	; -29*ln(2) = -20.1013
+dw $c437	; -28*ln(2) = -19.4081
+dw $c42b	; -27*ln(2) = -18.7150
+dw $c420	; -26*ln(2) = -18.0218
+dw $c415	; -25*ln(2) = -17.3287
+dw $c40a	; -24*ln(2) = -16.6355
+dw $c3fe	; -23*ln(2) = -15.9424
+dw $c3e8	; -22*ln(2) = -15.2492
+dw $c3d2	; -21*ln(2) = -14.5561
+dw $c3bc	; -20*ln(2) = -13.8629
+dw $c3a5	; -19*ln(2) = -13.1698
+dw $c38f	; -18*ln(2) = -12.4766
+dw $c379	; -17*ln(2) = -11.7835
+dw $c363	; -16*ln(2) = -11.0904
+dw $c34d	; -15*ln(2) = -10.3972
+dw $c337	; -14*ln(2) = -9.7041
+dw $c320	; -13*ln(2) = -9.0109
+dw $c30a	; -12*ln(2) = -8.3178
+dw $c2e8	; -11*ln(2) = -7.6246
+dw $c2bc	; -10*ln(2) = -6.9315
+dw $c28f	; -9*ln(2) = -6.2383
+dw $c263	; -8*ln(2) = -5.5452
+dw $c237	; -7*ln(2) = -4.8520
+dw $c20a	; -6*ln(2) = -4.1589
+dw $c1bc	; -5*ln(2) = -3.4657
+dw $c163	; -4*ln(2) = -2.7726
+dw $c10a	; -3*ln(2) = -2.0794
+dw $c063	; -2*ln(2) = -1.3863
+dw $bf63	; -1*ln(2) = -0.6931
+dw $0000	; 0*ln(2) = 0.0000
+dw $3f63	; 1*ln(2) = 0.6931
+dw $4063	; 2*ln(2) = 1.3863
+dw $410a	; 3*ln(2) = 2.0794
+dw $4163	; 4*ln(2) = 2.7726
+dw $41bc	; 5*ln(2) = 3.4657
+dw $420a	; 6*ln(2) = 4.1589
+dw $4237	; 7*ln(2) = 4.8520
+dw $4263	; 8*ln(2) = 5.5452
+dw $428f	; 9*ln(2) = 6.2383
+dw $42bc	; 10*ln(2) = 6.9315
+dw $42e8	; 11*ln(2) = 7.6246
+dw $430a	; 12*ln(2) = 8.3178
+dw $4320	; 13*ln(2) = 9.0109
+dw $4337	; 14*ln(2) = 9.7041
+dw $434d	; 15*ln(2) = 10.3972
+dw $4363	; 16*ln(2) = 11.0904
+dw $4379	; 17*ln(2) = 11.7835
+dw $438f	; 18*ln(2) = 12.4766
+dw $43a5	; 19*ln(2) = 13.1698
+dw $43bc	; 20*ln(2) = 13.8629
+dw $43d2	; 21*ln(2) = 14.5561
+dw $43e8	; 22*ln(2) = 15.2492
+dw $43fe	; 23*ln(2) = 15.9424
+dw $440a	; 24*ln(2) = 16.6355
+dw $4415	; 25*ln(2) = 17.3287
+dw $4420	; 26*ln(2) = 18.0218
+dw $442b	; 27*ln(2) = 18.7150
+dw $4437	; 28*ln(2) = 19.4081
+dw $4442	; 29*ln(2) = 20.1013
+dw $444d	; 30*ln(2) = 20.7944
+dw $4458	; 31*ln(2) = 21.4876
+dw $4463	; 32*ln(2) = 22.1807
+dw $446e	; 33*ln(2) = 22.8739
+dw $4479	; 34*ln(2) = 23.5670
+dw $4484	; 35*ln(2) = 24.2602
+dw $448f	; 36*ln(2) = 24.9533
+dw $449a	; 37*ln(2) = 25.6464
+dw $44a5	; 38*ln(2) = 26.3396
+dw $44b1	; 39*ln(2) = 27.0327
+dw $44bc	; 40*ln(2) = 27.7259
+dw $44c7	; 41*ln(2) = 28.4190
+dw $44d2	; 42*ln(2) = 29.1122
+dw $44dd	; 43*ln(2) = 29.8053
+dw $44e8	; 44*ln(2) = 30.4985
+dw $44f3	; 45*ln(2) = 31.1916
+dw $44fe	; 46*ln(2) = 31.8848
+dw $4505	; 47*ln(2) = 32.5779
+dw $450a	; 48*ln(2) = 33.2711
+dw $4510	; 49*ln(2) = 33.9642
+dw $4515	; 50*ln(2) = 34.6574
+dw $451b	; 51*ln(2) = 35.3505
+dw $4520	; 52*ln(2) = 36.0437
+dw $4526	; 53*ln(2) = 36.7368
+dw $452b	; 54*ln(2) = 37.4299
+dw $4531	; 55*ln(2) = 38.1231
+dw $4537	; 56*ln(2) = 38.8162
+dw $453c	; 57*ln(2) = 39.5094
+dw $4542	; 58*ln(2) = 40.2025
+dw $4547	; 59*ln(2) = 40.8957
+dw $454d	; 60*ln(2) = 41.5888
+dw $4552	; 61*ln(2) = 42.2820
+dw $4558	; 62*ln(2) = 42.9751
+dw $455d	; 63*ln(2) = 43.6683
+
+
+; rozdíl: má být mínus jest, nemohu se splést...
+; nepřesnost: 7888 (24.0723 %)
+;       chyb: 49 (0.1495 %)
+
+Ln_FIX:
+; lo
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $63,$61,$5f,$5d,$5b,$59,$57,$55,$53,$51,$4f,$4d,$4b,$4a,$48,$46   ; 0_     bf63,bf61,bf5f,bf5d,bf5b,bf59,bf57,bf55,bf53,bf51,bf4f,bf4d,bf4b,bf4a,bf48,bf46 0_
+db $44,$42,$40,$3e,$3c,$3b,$39,$37,$35,$33,$31,$30,$2e,$2c,$2a,$28   ; 1_     bf44,bf42,bf40,bf3e,bf3c,bf3b,bf39,bf37,bf35,bf33,bf31,bf30,bf2e,bf2c,bf2a,bf28 1_
+db $27,$25,$23,$21,$20,$1e,$1c,$1a,$19,$17,$15,$13,$12,$10,$0e,$0d   ; 2_     bf27,bf25,bf23,bf21,bf20,bf1e,bf1c,bf1a,bf19,bf17,bf15,bf13,bf12,bf10,bf0e,bf0d 2_
+db $0b,$09,$08,$06,$04,$03,$01,$fe,$fb,$f8,$f5,$f1,$ee,$eb,$e8,$e4   ; 3_     bf0b,bf09,bf08,bf06,bf04,bf03,bf01,befe,befb,bef8,bef5,bef1,beee,beeb,bee8,bee4 3_
+db $e1,$de,$db,$d8,$d5,$d1,$ce,$cb,$c8,$c5,$c2,$bf,$bc,$b9,$b5,$b2   ; 4_     bee1,bede,bedb,bed8,bed5,bed1,bece,becb,bec8,bec5,bec2,bebf,bebc,beb9,beb5,beb2 4_
+db $af,$ac,$a9,$a6,$a3,$a0,$9d,$9a,$97,$94,$91,$8e,$8b,$88,$86,$83   ; 5_     beaf,beac,bea9,bea6,bea3,bea0,be9d,be9a,be97,be94,be91,be8e,be8b,be88,be86,be83 5_
+db $80,$7d,$7a,$77,$74,$71,$6e,$6c,$69,$66,$63,$60,$5d,$5b,$58,$55   ; 6_     be80,be7d,be7a,be77,be74,be71,be6e,be6c,be69,be66,be63,be60,be5d,be5b,be58,be55 6_
+db $52,$4f,$4d,$4a,$47,$44,$42,$3f,$3c,$39,$37,$34,$31,$2f,$2c,$29   ; 7_     be52,be4f,be4d,be4a,be47,be44,be42,be3f,be3c,be39,be37,be34,be31,be2f,be2c,be29 7_
+db $27,$24,$21,$1f,$1c,$19,$17,$14,$11,$0f,$0c,$0a,$07,$04,$02,$ff   ; 8_     be27,be24,be21,be1f,be1c,be19,be17,be14,be11,be0f,be0c,be0a,be07,be04,be02,bdff 8_
+db $fa,$f4,$ef,$ea,$e5,$e0,$db,$d6,$d1,$cc,$c7,$c2,$bd,$b8,$b3,$ae   ; 9_     bdfa,bdf4,bdef,bdea,bde5,bde0,bddb,bdd6,bdd1,bdcc,bdc7,bdc2,bdbd,bdb8,bdb3,bdae 9_
+db $a9,$a4,$9f,$9b,$96,$91,$8c,$87,$82,$7d,$79,$74,$6f,$6a,$65,$61   ; A_     bda9,bda4,bd9f,bd9b,bd96,bd91,bd8c,bd87,bd82,bd7d,bd79,bd74,bd6f,bd6a,bd65,bd61 A_
+db $5c,$57,$52,$4e,$49,$44,$40,$3b,$36,$32,$2d,$28,$24,$1f,$1b,$16   ; B_     bd5c,bd57,bd52,bd4e,bd49,bd44,bd40,bd3b,bd36,bd32,bd2d,bd28,bd24,bd1f,bd1b,bd16 B_
+db $11,$0d,$08,$04,$ff,$f5,$ec,$e3,$da,$d1,$c9,$c0,$b7,$ae,$a5,$9c   ; C_     bd11,bd0d,bd08,bd04,bcff,bcf5,bcec,bce3,bcda,bcd1,bcc9,bcc0,bcb7,bcae,bca5,bc9c C_
+db $93,$8a,$82,$79,$70,$67,$5f,$56,$4d,$45,$3c,$33,$2b,$22,$19,$11   ; D_     bc93,bc8a,bc82,bc79,bc70,bc67,bc5f,bc56,bc4d,bc45,bc3c,bc33,bc2b,bc22,bc19,bc11 D_
+db $08,$00,$ef,$de,$cd,$bc,$ab,$9a,$89,$79,$68,$57,$46,$36,$25,$15   ; E_     bc08,bc00,bbef,bbde,bbcd,bbbc,bbab,bb9a,bb89,bb79,bb68,bb57,bb46,bb36,bb25,bb15 E_
+db $04,$e7,$c6,$a5,$85,$64,$43,$23,$02,$c3,$82,$42,$01,$81,$01,$00   ; F_     bb04,bae7,bac6,baa5,ba85,ba64,ba43,ba23,ba02,b9c3,b982,b942,b901,b881,b801,b700 F_
+; hi
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 0_  
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 1_  
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 2_  
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 3_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 4_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 5_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 6_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 7_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$bd   ; 8_  
+db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; 9_  
+db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; A_  
+db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; B_  
+db $bd,$bd,$bd,$bd,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc   ; C_  
+db $bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc   ; D_  
+db $bc,$bc,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb   ; E_  
+db $bb,$ba,$ba,$ba,$ba,$ba,$ba,$ba,$ba,$b9,$b9,$b9,$b9,$b8,$b8,$b7   ; F_
+
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
@@ -1528,11 +2062,23 @@ BIN2DEC_CHAR:
 VARIABLE_SECTION:
 
 STRING_SECTION:
-string102:
+string106:
 db 0xD, "Data stack OK!", 0xD
+size106 EQU $ - string106
+string105:
+db "RAS:"
+size105 EQU $ - string105
+string104:
+db ":  a%b -> "
+size104 EQU $ - string104
+string103:
+db " % "
+size103 EQU $ - string103
+string102:
+db ":  ln -> "
 size102 EQU $ - string102
 string101:
-db "RAS:"
+db ": exp -> "
 size101 EQU $ - string101
 
 
