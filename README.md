@@ -434,7 +434,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |     cmove>     |     CMOVEGT     |                 |( from to u -- )       | 8bit, addr--     |
 |      move      |       MOVE      |                 |( from to u -- )       | 16bit, addr++    |
 |      move>     |      MOVEGT     |                 |( from to u -- )       | 16bit, addr++    |
-| `seed` seed !  |                 |  XSTORE(SEED)   |     ( seed -- )       |                  |
+| `seed` seed !  |                 | PUSH_STORE(SEED)|     ( seed -- )       |                  |
 |       rnd      |       RND       |                 |          ( -- random )|                  |
 |     random     |      RANDOM     |                 |      ( max -- random )| random < max     |
 |                |     PUTPIXEL    |                 |       ( yx -- HL )    |                  |
