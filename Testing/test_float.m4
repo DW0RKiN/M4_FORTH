@@ -8,9 +8,10 @@ include(`./FIRST.M4')dnl
 ;# m*2^n = m*10^(n*log10(2)) = m*10^(int+mod) = m * 10^int * 10^mod = m * 10^mod * Eint = 1 .. 1.9 10^mod * Eint = 1.0 .. 19.99 Eint
 
 ORG 0x8000
+    INIT(60000)
     ld  hl, stack_test
     push hl
-    INIT(60000)
+
     PUSH2(FP1,49)
     SFOR
         SWAP
@@ -77,7 +78,7 @@ ORG 0x8000
     exx
     pop  HL
     DUP_UDOT    
-    STOP
+    ret
     
 SCOLON(test)
     S2F FSQRT DUP FDOT FFRAC PUTCHAR(':') DUP FDOT F2S DUP DOT CR
@@ -85,6 +86,7 @@ SSEMICOLON
 
     
 SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})    
+    PRINT({0xD, "Data stack OK!", 0xD})
+    STOP
 SSEMICOLON
 include({./LAST.M4})

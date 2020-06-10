@@ -2,9 +2,10 @@
 include(`FIRST.M4')dnl
 ; ^^^^^
 ORG 0x8000
+    INIT(60000)
     ld  hl, stack_test
     push hl
-    INIT(60000)
+    
     PUSH2( 5,-5) CALL(test)
     PUSH2( 5, 5) CALL(test)
     PUSH2(-5,-5) CALL(test)
@@ -15,7 +16,7 @@ ORG 0x8000
     exx
     pop HL
     DUP_UDOT
-    STOP
+    ret
 
 COLON(test)
     OVER DOT DUP DOT CR 
@@ -51,6 +52,7 @@ SEMICOLON
     
 SCOLON(stack_test)
     PRINT({0xD, "Data stack OK!", 0xD})    
+    STOP
 SSEMICOLON
 
 include({LAST.M4})

@@ -1,8 +1,8 @@
 include(`FIRST.M4')dnl 
 ORG 0x8000
+    INIT(60000)
     ld  hl, stack_test
     push hl
-    INIT(60000)
 
 ;#  PUSH2(orig,test) PUSH(2*10) CMOVE
 ;#  PUSH2(test,10) CALL(print)
@@ -18,8 +18,7 @@ ORG 0x8000
     exx
     pop HL
     DUP_UDOT
-    STOP
-
+    ret
     
 COLON(generate,(addr len -- ))
     _2MUL OVER ADD SWAP ; ( addr+len addr )
@@ -82,7 +81,8 @@ COLON(sort),( array len -- ))
 SEMICOLON
 
 SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})    
+    PRINT({0xD, "Data stack OK!", 0xD})
+    STOP
 SSEMICOLON
 
 include({LAST.M4})dnl

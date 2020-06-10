@@ -2,9 +2,10 @@
 include(`./FIRST.M4')dnl
 ; ^^^^
     ORG 32768  
+    INIT(60000)
     ld  hl, stack_test
     push hl
-    INIT(60000)
+
     CALL(test)
     
     PRINT({"RAS:"})
@@ -13,10 +14,11 @@ include(`./FIRST.M4')dnl
     exx
     pop HL
     DUP_UDOT
-    STOP
+    ret
     
 SCOLON(stack_test)
     PRINT({0xD, "Data stack OK!", 0xD})    
+    STOP
 SSEMICOLON
 
 COLON(test)

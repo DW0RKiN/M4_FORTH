@@ -2,18 +2,15 @@
 ; ^^^^
     ORG 32768
     
-    ld  hl, stack_test
-    push hl
     
 ;   ===  b e g i n  ===
-    exx
-    push HL
-    push DE
+    ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
-
+    ld  hl, stack_test
+    push hl
 
     
     
@@ -148,7 +145,7 @@ sdo103:                 ;           sdo 103 ( stop index -- stop index )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
@@ -156,16 +153,16 @@ sdo103:                 ;           sdo 103 ( stop index -- stop index )
 sdo104:                 ;           sdo 104 ( stop index -- stop index ) 
      
     pop  BC             ; 1:10      2 pick
-    push BC             ; 1:11      2 pick BC = c
-    push DE             ; 1:11      2 pick c b b a
-    ex   DE, HL         ; 1:4       2 pick c b a b
+    push BC             ; 1:11      2 pick
+    push DE             ; 1:11      2 pick
+    ex   DE, HL         ; 1:4       2 pick
     ld    H, B          ; 1:4       2 pick
-    ld    L, C          ; 1:4       2 pick c b a c 
+    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c ) 
     call PRINT_S16      ; 3:17      . 
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      . 
     inc  HL             ; 1:6       sloop 104 index++
     ld   A, L           ; 1:4       sloop 104
@@ -196,42 +193,36 @@ sleave103:              ;           sloop 103
     ld  (HL),high 0     ; 2:10      xdo(4,0) 105
     dec   L             ; 1:4       xdo(4,0) 105
     ld  (HL),low 0      ; 2:10      xdo(4,0) 105
-    exx                 ; 1:4       xdo(4,0) 105
+    exx                 ; 1:4       xdo(4,0) 105 R:( -- 0 )
 xdo105:                 ;           xdo(4,0) 105     
-    exx                 ; 1:4       index xi 105    
-    ld    A,(HL)        ; 1:7       index xi 105 lo
-    inc   L             ; 1:4       index xi 105
-    ex   AF, AF'        ; 1:4       index xi 105
-    ld    A,(HL)        ; 1:7       index xi 105 hi
-    dec   L             ; 1:4       index xi 105
     exx                 ; 1:4       index xi 105
+    ld    E,(HL)        ; 1:7       index xi 105
+    inc   L             ; 1:4       index xi 105
+    ld    D,(HL)        ; 1:7       index xi 105
     push DE             ; 1:11      index xi 105
+    dec   L             ; 1:4       index xi 105
+    exx                 ; 1:4       index xi 105 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 105
-    ld    H, A          ; 1:4       index xi 105
-    ex   AF, AF'        ; 1:4       index xi 105
-    ld    L, A          ; 1:4       index xi 105 
+    ex  (SP),HL         ; 1:19      index xi 105 ( -- x ) 
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
 
 sdo106:                 ;           sdo 106 ( stop index -- stop index ) 
-    exx                 ; 1:4       index xi 106    
-    ld    A,(HL)        ; 1:7       index xi 106 lo
-    inc   L             ; 1:4       index xi 106
-    ex   AF, AF'        ; 1:4       index xi 106
-    ld    A,(HL)        ; 1:7       index xi 106 hi
-    dec   L             ; 1:4       index xi 106
     exx                 ; 1:4       index xi 106
+    ld    E,(HL)        ; 1:7       index xi 106
+    inc   L             ; 1:4       index xi 106
+    ld    D,(HL)        ; 1:7       index xi 106
     push DE             ; 1:11      index xi 106
+    dec   L             ; 1:4       index xi 106
+    exx                 ; 1:4       index xi 106 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 106
-    ld    H, A          ; 1:4       index xi 106
-    ex   AF, AF'        ; 1:4       index xi 106
-    ld    L, A          ; 1:4       index xi 106 
+    ex  (SP),HL         ; 1:19      index xi 106 ( -- x ) 
     call PRINT_S16      ; 3:17      . 
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      . 
     inc  HL             ; 1:6       sloop 106 index++
     ld   A, L           ; 1:4       sloop 106
@@ -254,7 +245,7 @@ sleave106:              ;           sloop 106
     inc   L             ; 1:4       xloop(4,0) 105
 xleave105:              ;           xloop(4,0) 105
     inc  HL             ; 1:6       xloop(4,0) 105
-    exx                 ; 1:4       xloop(4,0) 105 
+    exx                 ; 1:4       xloop(4,0) 105 R:( index -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -267,7 +258,7 @@ sdo107:                 ;           sdo 107 ( stop index -- stop index )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup         
+    ld    E, L          ; 1:4       dup ( a -- a a )         
     push HL             ; 1:11      for 108 index
     exx                 ; 1:4       for 108
     pop  DE             ; 1:10      for 108 stop
@@ -282,7 +273,7 @@ for108:                 ;           for 108
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      .  
     exx                 ; 1:4       index 108 i    
     ld   E,(HL)         ; 1:7       index 108 i
@@ -368,7 +359,7 @@ sfor110:                ;           sfor 110 ( index -- index )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      . 
     ld   A, H           ; 1:4       snext 110
     or   L              ; 1:4       snext 110
@@ -412,7 +403,7 @@ sfor111:                ;           sfor 111 ( index -- index )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      .       
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A          
@@ -480,14 +471,14 @@ begin101:
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, H          ; 1:4       dup_while 101
     or    L             ; 1:4       dup_while 101
-    jp    z, repeat101  ; 3:10      dup_while 101 
+    jp    z, break101   ; 3:10      dup_while 101 
     dec  HL             ; 1:6       1- 
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     jp   begin101       ; 3:10      repeat 101
-repeat101: 
+break101:               ;           repeat 101 
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
+    pop  DE             ; 1:10      drop ( a -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A ;--> " 5, 4, 3, 2, 1, 0"
     
@@ -515,14 +506,14 @@ begin102:
     or    L             ; 1:4       while 102
     ex   DE, HL         ; 1:4       while 102
     pop  DE             ; 1:10      while 102
-    jp    z, repeat102  ; 3:10      while 102 
+    jp    z, break102   ; 3:10      while 102 
     inc  HL             ; 1:6       1+ 
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     jp   begin102       ; 3:10      repeat 102
-repeat102: 
+break102:               ;           repeat 102 
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
+    pop  DE             ; 1:10      drop ( a -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A ;--> " 0, 1, 2, 3, 4"
     
@@ -550,15 +541,15 @@ begin103:
     or    L             ; 1:4       while 103
     ex   DE, HL         ; 1:4       while 103
     pop  DE             ; 1:10      while 103
-    jp    z, repeat103  ; 3:10      while 103 
+    jp    z, break103   ; 3:10      while 103 
     inc  HL             ; 1:6       2+
     inc  HL             ; 1:6       2+ 
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     jp   begin103       ; 3:10      repeat 103
-repeat103: 
+break103:               ;           repeat 103 
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop 
+    pop  DE             ; 1:10      drop ( a -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A ;--> " 0, 2, 4"
     
@@ -668,7 +659,7 @@ leave114:
     ld  (HL),high 0     ; 2:10      xdo(0,0) 115
     dec   L             ; 1:4       xdo(0,0) 115
     ld  (HL),low 0      ; 2:10      xdo(0,0) 115
-    exx                 ; 1:4       xdo(0,0) 115
+    exx                 ; 1:4       xdo(0,0) 115 R:( -- 0 )
 xdo115:                 ;           xdo(0,0) 115      
     ld    A, 'c'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -682,7 +673,7 @@ xdo115:                 ;           xdo(0,0) 115
     inc   L             ; 1:4       xloop(0,0) 115
 xleave115:              ;           xloop(0,0) 115
     inc  HL             ; 1:6       xloop(0,0) 115
-    exx                 ; 1:4       xloop(0,0) 115 
+    exx                 ; 1:4       xloop(0,0) 115 R:( index -- ) 
     
 
     exx                 ; 1:4       xdo(254,254) 116
@@ -690,7 +681,7 @@ xleave115:              ;           xloop(0,0) 115
     ld  (HL),high 254   ; 2:10      xdo(254,254) 116
     dec   L             ; 1:4       xdo(254,254) 116
     ld  (HL),low 254    ; 2:10      xdo(254,254) 116
-    exx                 ; 1:4       xdo(254,254) 116
+    exx                 ; 1:4       xdo(254,254) 116 R:( -- 254 )
 xdo116:                 ;           xdo(254,254) 116  
     ld    A, 'd'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -704,7 +695,7 @@ xdo116:                 ;           xdo(254,254) 116
     inc   L             ; 1:4       xloop(254,254) 116
 xleave116:              ;           xloop(254,254) 116
     inc  HL             ; 1:6       xloop(254,254) 116
-    exx                 ; 1:4       xloop(254,254) 116 
+    exx                 ; 1:4       xloop(254,254) 116 R:( index -- ) 
     
 
     exx                 ; 1:4       xdo(255,255) 117
@@ -712,7 +703,7 @@ xleave116:              ;           xloop(254,254) 116
     ld  (HL),high 255   ; 2:10      xdo(255,255) 117
     dec   L             ; 1:4       xdo(255,255) 117
     ld  (HL),low 255    ; 2:10      xdo(255,255) 117
-    exx                 ; 1:4       xdo(255,255) 117
+    exx                 ; 1:4       xdo(255,255) 117 R:( -- 255 )
 xdo117:                 ;           xdo(255,255) 117  
     ld    A, 'e'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -735,7 +726,7 @@ xdo117:                 ;           xdo(255,255) 117
     jp   xdo117         ; 3:10      xloop 117
 xleave117:              ;           xloop(255,255) 117
     inc  HL             ; 1:6       xloop(255,255) 117
-    exx                 ; 1:4       xloop(255,255) 117 
+    exx                 ; 1:4       xloop(255,255) 117 R:( index -- ) 
     
 
     exx                 ; 1:4       xdo(256,256) 118
@@ -743,7 +734,7 @@ xleave117:              ;           xloop(255,255) 117
     ld  (HL),high 256   ; 2:10      xdo(256,256) 118
     dec   L             ; 1:4       xdo(256,256) 118
     ld  (HL),low 256    ; 2:10      xdo(256,256) 118
-    exx                 ; 1:4       xdo(256,256) 118
+    exx                 ; 1:4       xdo(256,256) 118 R:( -- 256 )
 xdo118:                 ;           xdo(256,256) 118  
     ld    A, 'f'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -766,7 +757,7 @@ xdo118:                 ;           xdo(256,256) 118
     jp   xdo118         ; 3:10      xloop 118
 xleave118:              ;           xloop(256,256) 118
     inc  HL             ; 1:6       xloop(256,256) 118
-    exx                 ; 1:4       xloop(256,256) 118
+    exx                 ; 1:4       xloop(256,256) 118 R:( index -- )
     
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
@@ -846,7 +837,7 @@ sleave122:              ;           sloop 122
     ld  (HL),high 60000 ; 2:10      xdo(60000,60000) 123
     dec   L             ; 1:4       xdo(60000,60000) 123
     ld  (HL),low 60000  ; 2:10      xdo(60000,60000) 123
-    exx                 ; 1:4       xdo(60000,60000) 123
+    exx                 ; 1:4       xdo(60000,60000) 123 R:( -- 60000 )
 xdo123:                 ;           xdo(60000,60000) 123 
     ld    A, 'k'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -869,7 +860,7 @@ xdo123:                 ;           xdo(60000,60000) 123
     jp   xdo123         ; 3:10      xaddloop 123
 xleave123:
     inc  HL             ; 1:6       xaddloop 123
-    exx                 ; 1:4       xaddloop 123
+    exx                 ; 1:4       xaddloop 123 R:( index -- )
     
 
     exx                 ; 1:4       xdo(60000,60000) 124
@@ -877,7 +868,7 @@ xleave123:
     ld  (HL),high 60000 ; 2:10      xdo(60000,60000) 124
     dec   L             ; 1:4       xdo(60000,60000) 124
     ld  (HL),low 60000  ; 2:10      xdo(60000,60000) 124
-    exx                 ; 1:4       xdo(60000,60000) 124
+    exx                 ; 1:4       xdo(60000,60000) 124 R:( -- 60000 )
 xdo124:                 ;           xdo(60000,60000) 124 
     ld    A, 'l'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -900,7 +891,7 @@ xdo124:                 ;           xdo(60000,60000) 124
     jp   xdo124         ; 3:10      xaddloop 124
 xleave124:
     inc  HL             ; 1:6       xaddloop 124
-    exx                 ; 1:4       xaddloop 124
+    exx                 ; 1:4       xaddloop 124 R:( index -- )
     
     
     push DE             ; 1:11      print
@@ -1001,7 +992,7 @@ sdo126:                 ;           sdo 126 ( stop index -- stop index )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -1043,20 +1034,17 @@ sleave126:              ;           sloop 126
     ld  (HL),high 3     ; 2:10      xdo(12,3) 127
     dec   L             ; 1:4       xdo(12,3) 127
     ld  (HL),low 3      ; 2:10      xdo(12,3) 127
-    exx                 ; 1:4       xdo(12,3) 127
+    exx                 ; 1:4       xdo(12,3) 127 R:( -- 3 )
 xdo127:                 ;           xdo(12,3) 127  
-    exx                 ; 1:4       index xi 127    
-    ld    A,(HL)        ; 1:7       index xi 127 lo
-    inc   L             ; 1:4       index xi 127
-    ex   AF, AF'        ; 1:4       index xi 127
-    ld    A,(HL)        ; 1:7       index xi 127 hi
-    dec   L             ; 1:4       index xi 127
     exx                 ; 1:4       index xi 127
+    ld    E,(HL)        ; 1:7       index xi 127
+    inc   L             ; 1:4       index xi 127
+    ld    D,(HL)        ; 1:7       index xi 127
     push DE             ; 1:11      index xi 127
+    dec   L             ; 1:4       index xi 127
+    exx                 ; 1:4       index xi 127 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 127
-    ld    H, A          ; 1:4       index xi 127
-    ex   AF, AF'        ; 1:4       index xi 127
-    ld    L, A          ; 1:4       index xi 127 
+    ex  (SP),HL         ; 1:19      index xi 127 ( -- x ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -1092,7 +1080,7 @@ endif103:
     inc   L             ; 1:4       xloop(12,3) 127
 xleave127:              ;           xloop(12,3) 127
     inc  HL             ; 1:6       xloop(12,3) 127
-    exx                 ; 1:4       xloop(12,3) 127 
+    exx                 ; 1:4       xloop(12,3) 127 R:( index -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1102,20 +1090,17 @@ xleave127:              ;           xloop(12,3) 127
     ld  (HL),high 3     ; 2:10      xdo(550,3) 128
     dec   L             ; 1:4       xdo(550,3) 128
     ld  (HL),low 3      ; 2:10      xdo(550,3) 128
-    exx                 ; 1:4       xdo(550,3) 128
+    exx                 ; 1:4       xdo(550,3) 128 R:( -- 3 )
 xdo128:                 ;           xdo(550,3) 128 
-    exx                 ; 1:4       index xi 128    
-    ld    A,(HL)        ; 1:7       index xi 128 lo
-    inc   L             ; 1:4       index xi 128
-    ex   AF, AF'        ; 1:4       index xi 128
-    ld    A,(HL)        ; 1:7       index xi 128 hi
-    dec   L             ; 1:4       index xi 128
     exx                 ; 1:4       index xi 128
+    ld    E,(HL)        ; 1:7       index xi 128
+    inc   L             ; 1:4       index xi 128
+    ld    D,(HL)        ; 1:7       index xi 128
     push DE             ; 1:11      index xi 128
+    dec   L             ; 1:4       index xi 128
+    exx                 ; 1:4       index xi 128 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 128
-    ld    H, A          ; 1:4       index xi 128
-    ex   AF, AF'        ; 1:4       index xi 128
-    ld    L, A          ; 1:4       index xi 128 
+    ex  (SP),HL         ; 1:19      index xi 128 ( -- x ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -1160,7 +1145,7 @@ endif104:
     jp   xdo128         ; 3:10      xloop 128
 xleave128:              ;           xloop(550,3) 128
     inc  HL             ; 1:6       xloop(550,3) 128
-    exx                 ; 1:4       xloop(550,3) 128 
+    exx                 ; 1:4       xloop(550,3) 128 R:( index -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1170,20 +1155,17 @@ xleave128:              ;           xloop(550,3) 128
     ld  (HL),high 3     ; 2:10      xdo(12,3) 129
     dec   L             ; 1:4       xdo(12,3) 129
     ld  (HL),low 3      ; 2:10      xdo(12,3) 129
-    exx                 ; 1:4       xdo(12,3) 129
+    exx                 ; 1:4       xdo(12,3) 129 R:( -- 3 )
 xdo129:                 ;           xdo(12,3) 129  
-    exx                 ; 1:4       index xi 129    
-    ld    A,(HL)        ; 1:7       index xi 129 lo
-    inc   L             ; 1:4       index xi 129
-    ex   AF, AF'        ; 1:4       index xi 129
-    ld    A,(HL)        ; 1:7       index xi 129 hi
-    dec   L             ; 1:4       index xi 129
     exx                 ; 1:4       index xi 129
+    ld    E,(HL)        ; 1:7       index xi 129
+    inc   L             ; 1:4       index xi 129
+    ld    D,(HL)        ; 1:7       index xi 129
     push DE             ; 1:11      index xi 129
+    dec   L             ; 1:4       index xi 129
+    exx                 ; 1:4       index xi 129 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 129
-    ld    H, A          ; 1:4       index xi 129
-    ex   AF, AF'        ; 1:4       index xi 129
-    ld    L, A          ; 1:4       index xi 129 
+    ex  (SP),HL         ; 1:19      index xi 129 ( -- x ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -1228,7 +1210,7 @@ endif105:
     jp   xdo129         ; 3:10      xaddloop 129
 xleave129:
     inc  HL             ; 1:6       xaddloop 129
-    exx                 ; 1:4       xaddloop 129 
+    exx                 ; 1:4       xaddloop 129 R:( index -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1238,20 +1220,17 @@ xleave129:
     ld  (HL),high 3     ; 2:10      xdo(550,3) 130
     dec   L             ; 1:4       xdo(550,3) 130
     ld  (HL),low 3      ; 2:10      xdo(550,3) 130
-    exx                 ; 1:4       xdo(550,3) 130
+    exx                 ; 1:4       xdo(550,3) 130 R:( -- 3 )
 xdo130:                 ;           xdo(550,3) 130 
-    exx                 ; 1:4       index xi 130    
-    ld    A,(HL)        ; 1:7       index xi 130 lo
-    inc   L             ; 1:4       index xi 130
-    ex   AF, AF'        ; 1:4       index xi 130
-    ld    A,(HL)        ; 1:7       index xi 130 hi
-    dec   L             ; 1:4       index xi 130
     exx                 ; 1:4       index xi 130
+    ld    E,(HL)        ; 1:7       index xi 130
+    inc   L             ; 1:4       index xi 130
+    ld    D,(HL)        ; 1:7       index xi 130
     push DE             ; 1:11      index xi 130
+    dec   L             ; 1:4       index xi 130
+    exx                 ; 1:4       index xi 130 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 130
-    ld    H, A          ; 1:4       index xi 130
-    ex   AF, AF'        ; 1:4       index xi 130
-    ld    L, A          ; 1:4       index xi 130 
+    ex  (SP),HL         ; 1:19      index xi 130 ( -- x ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -1296,7 +1275,7 @@ endif106:
     jp   xdo130         ; 3:10      xaddloop 130
 xleave130:
     inc  HL             ; 1:6       xaddloop 130
-    exx                 ; 1:4       xaddloop 130 
+    exx                 ; 1:4       xaddloop 130 R:( index -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1375,7 +1354,7 @@ sfor132:                ;           sfor 132 ( index -- index )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup 
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -1516,7 +1495,7 @@ leave134:
     ld  (HL),high 0     ; 2:10      xdo(1,0) 135
     dec   L             ; 1:4       xdo(1,0) 135
     ld  (HL),low 0      ; 2:10      xdo(1,0) 135
-    exx                 ; 1:4       xdo(1,0) 135
+    exx                 ; 1:4       xdo(1,0) 135 R:( -- 0 )
 xdo135:                 ;           xdo(1,0) 135      
     ld    A, 'c'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -1530,7 +1509,7 @@ xdo135:                 ;           xdo(1,0) 135
     inc   L             ; 1:4       xloop(1,0) 135
 xleave135:              ;           xloop(1,0) 135
     inc  HL             ; 1:6       xloop(1,0) 135
-    exx                 ; 1:4       xloop(1,0) 135 
+    exx                 ; 1:4       xloop(1,0) 135 R:( index -- ) 
     
 
     exx                 ; 1:4       xdo(255,254) 136
@@ -1538,7 +1517,7 @@ xleave135:              ;           xloop(1,0) 135
     ld  (HL),high 254   ; 2:10      xdo(255,254) 136
     dec   L             ; 1:4       xdo(255,254) 136
     ld  (HL),low 254    ; 2:10      xdo(255,254) 136
-    exx                 ; 1:4       xdo(255,254) 136
+    exx                 ; 1:4       xdo(255,254) 136 R:( -- 254 )
 xdo136:                 ;           xdo(255,254) 136  
     ld    A, 'd'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -1552,7 +1531,7 @@ xdo136:                 ;           xdo(255,254) 136
     inc   L             ; 1:4       xloop(255,254) 136
 xleave136:              ;           xloop(255,254) 136
     inc  HL             ; 1:6       xloop(255,254) 136
-    exx                 ; 1:4       xloop(255,254) 136 
+    exx                 ; 1:4       xloop(255,254) 136 R:( index -- ) 
     
 
     exx                 ; 1:4       xdo(256,255) 137
@@ -1560,7 +1539,7 @@ xleave136:              ;           xloop(255,254) 136
     ld  (HL),high 255   ; 2:10      xdo(256,255) 137
     dec   L             ; 1:4       xdo(256,255) 137
     ld  (HL),low 255    ; 2:10      xdo(256,255) 137
-    exx                 ; 1:4       xdo(256,255) 137
+    exx                 ; 1:4       xdo(256,255) 137 R:( -- 255 )
 xdo137:                 ;           xdo(256,255) 137  
     ld    A, 'e'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -1583,7 +1562,7 @@ xdo137:                 ;           xdo(256,255) 137
     jp   xdo137         ; 3:10      xloop 137
 xleave137:              ;           xloop(256,255) 137
     inc  HL             ; 1:6       xloop(256,255) 137
-    exx                 ; 1:4       xloop(256,255) 137 
+    exx                 ; 1:4       xloop(256,255) 137 R:( index -- ) 
     
 
     exx                 ; 1:4       xdo(257,256) 138
@@ -1591,7 +1570,7 @@ xleave137:              ;           xloop(256,255) 137
     ld  (HL),high 256   ; 2:10      xdo(257,256) 138
     dec   L             ; 1:4       xdo(257,256) 138
     ld  (HL),low 256    ; 2:10      xdo(257,256) 138
-    exx                 ; 1:4       xdo(257,256) 138
+    exx                 ; 1:4       xdo(257,256) 138 R:( -- 256 )
 xdo138:                 ;           xdo(257,256) 138  
     ld    A, 'f'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -1614,7 +1593,7 @@ xdo138:                 ;           xdo(257,256) 138
     jp   xdo138         ; 3:10      xloop 138
 xleave138:              ;           xloop(257,256) 138
     inc  HL             ; 1:6       xloop(257,256) 138
-    exx                 ; 1:4       xloop(257,256) 138
+    exx                 ; 1:4       xloop(257,256) 138 R:( index -- )
     
     push DE             ; 1:11      push2(1,0)
     ld   DE, 1          ; 3:10      push2(1,0)
@@ -1694,7 +1673,7 @@ sleave142:              ;           sloop 142
     ld  (HL),high 30000 ; 2:10      xdo(60000,30000) 143
     dec   L             ; 1:4       xdo(60000,30000) 143
     ld  (HL),low 30000  ; 2:10      xdo(60000,30000) 143
-    exx                 ; 1:4       xdo(60000,30000) 143
+    exx                 ; 1:4       xdo(60000,30000) 143 R:( -- 30000 )
 xdo143:                 ;           xdo(60000,30000) 143 
     ld    A, 'k'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -1715,7 +1694,7 @@ xdo143:                 ;           xdo(60000,30000) 143
     inc   L             ; 1:4       xaddloop 143
 xleave143:
     inc  HL             ; 1:6       xaddloop 143
-    exx                 ; 1:4       xaddloop 143
+    exx                 ; 1:4       xaddloop 143 R:( index -- )
     
 
     exx                 ; 1:4       xdo(60000,30000) 144
@@ -1723,7 +1702,7 @@ xleave143:
     ld  (HL),high 30000 ; 2:10      xdo(60000,30000) 144
     dec   L             ; 1:4       xdo(60000,30000) 144
     ld  (HL),low 30000  ; 2:10      xdo(60000,30000) 144
-    exx                 ; 1:4       xdo(60000,30000) 144
+    exx                 ; 1:4       xdo(60000,30000) 144 R:( -- 30000 )
 xdo144:                 ;           xdo(60000,30000) 144 
     ld    A, 'l'        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
@@ -1746,7 +1725,7 @@ xdo144:                 ;           xdo(60000,30000) 144
     jp   xdo144         ; 3:10      xaddloop 144
 xleave144:
     inc  HL             ; 1:6       xaddloop 144
-    exx                 ; 1:4       xaddloop 144
+    exx                 ; 1:4       xaddloop 144 R:( index -- )
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1766,12 +1745,7 @@ xleave144:
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_U16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1
-    
-    pop  DE
-    pop  HL
-    exx
     ret
-;   =====  e n d  =====
     
 
 ;   ---  b e g i n  ---
@@ -1783,12 +1757,20 @@ stack_test:             ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
+    
+Stop:
+    ld   SP, 0x0000     ; 3:10      not need
+    ld   HL, 0x2758     ; 3:10
+    exx                 ; 1:4
+    ret                 ; 1:10
+;   =====  e n d  =====
 
 stack_test_end:
     ret                 ; 1:10      s;
 ;   -----  e n d  -----
     
     
+
 
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
@@ -1829,8 +1811,6 @@ PRINT_U16_ONLY:
     pop  DE             ; 1:10
     push BC             ; 1:10      ret
     ret                 ; 1:10
-STRNUM:
-DB      "65536 "
 
 ; Input: HL = number
 ; Output: print number
@@ -1863,7 +1843,6 @@ BIN2DEC_CHAR:
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-
 VARIABLE_SECTION:
 
 STRING_SECTION:

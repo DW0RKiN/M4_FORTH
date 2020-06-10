@@ -1,17 +1,16 @@
-ORG 0x8000
-    ld  hl, stack_test
-    push hl
 
+    ORG 0x8000
+    
 ;   ===  b e g i n  ===
-    exx                 ; 1:4
-    push HL             ; 1:11
-    push DE             ; 1:11
+    ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
+    ld  hl, stack_test
+    push hl
 
-
+    
     push DE             ; 1:11      push2(orig,test)
     ld   DE, orig       ; 3:10      push2(orig,test)
     push HL             ; 1:11      push2(orig,test)
@@ -28,7 +27,7 @@ ORG 0x8000
     ldir                ; 2:u*21/16 cmove
     pop  HL             ; 1:10      cmove
     pop  DE             ; 1:10      cmove
-
+    
     push DE             ; 1:11      push2(test,10)
     ld   DE, test       ; 3:10      push2(test,10)
     push HL             ; 1:11      push2(test,10)
@@ -36,7 +35,7 @@ ORG 0x8000
     call print          ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
-
+    
     push DE             ; 1:11      push2(test,10)
     ld   DE, test       ; 3:10      push2(test,10)
     push HL             ; 1:11      push2(test,10)
@@ -44,7 +43,7 @@ ORG 0x8000
     call sort           ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
-
+    
     push DE             ; 1:11      push2(test,10)
     ld   DE, test       ; 3:10      push2(test,10)
     push HL             ; 1:11      push2(test,10)
@@ -52,10 +51,10 @@ ORG 0x8000
     call print          ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
-
+    
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
+    
     push DE             ; 1:11      print
     ld   BC, size101    ; 3:10      print Length of string to print
     ld   DE, string101  ; 3:10      print Address of string
@@ -66,16 +65,11 @@ ORG 0x8000
     push HL
     exx
     pop HL
-
+    
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_U16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1
-
-    pop  DE             ; 1:10
-    pop  HL             ; 1:10
-    exx                 ; 1:4
-    ret                 ; 1:10
-;   =====  e n d  =====
+    ret
     
 
 ;   ---  b e g i n  ---
@@ -397,11 +391,19 @@ stack_test:             ;
     ld   DE, string102  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
+
     
+Stop:
+    ld   SP, 0x0000     ; 3:10      not need
+    ld   HL, 0x2758     ; 3:10
+    exx                 ; 1:4
+    ret                 ; 1:10
+;   =====  e n d  =====
 
 stack_test_end:
     ret                 ; 1:10      s;
 ;   -----  e n d  -----
+
 
 
 ; Input: HL
@@ -421,8 +423,6 @@ PRINT_U16_ONLY:
     pop  DE             ; 1:10
     push BC             ; 1:10      ret
     ret                 ; 1:10
-STRNUM:
-DB      "65536 "
 
 ; Input: HL = number
 ; Output: print number

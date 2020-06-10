@@ -1,21 +1,22 @@
 include(`FIRST.M4')dnl 
-ORG 0x8000
+
+    ORG 0x8000
+    INIT(60000)
     ld  hl, stack_test
     push hl
-INIT(60000)
 
-PUSH2(orig,test) PUSH(2*10) CMOVE
-PUSH2(test,10) CALL(print)
-PUSH2(test,10) CALL(sort)
-PUSH2(test,10) CALL(print)
-CR
-PRINT({"RAS:"})
+    PUSH2(orig,test) PUSH(2*10) CMOVE
+    PUSH2(test,10) CALL(print)
+    PUSH2(test,10) CALL(sort)
+    PUSH2(test,10) CALL(print)
+    CR
+    PRINT({"RAS:"})
     exx
     push HL
     exx
     pop HL
-DUP_UDOT
-STOP
+    DUP_UDOT
+    ret
     
 COLON(print,(addr len -- ))
   PUSH(0) ; addr len 1
@@ -47,7 +48,8 @@ COLON(sort,( array len -- ))
 SEMICOLON
 
 SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})    
+    PRINT({0xD, "Data stack OK!", 0xD})
+    STOP
 SSEMICOLON
 
 include({LAST.M4})dnl

@@ -3,10 +3,9 @@ include(`./FIRST.M4')dnl
 ; ^^^^
     ORG 32768
     
+    INIT(60000)
     ld  hl, stack_test
     push hl
-    INIT(60000)
-
 
     
     PUSH2(4, 0)  DO  I PUSH(0)  DO  J DOT  I DOT  LOOP PUTCHAR({','})  LOOP CR
@@ -66,10 +65,11 @@ include(`./FIRST.M4')dnl
     exx
     pop HL
     DUP_UDOT
-    STOP
+    ret
     
 SCOLON(stack_test)
     PRINT({0xD, "Data stack OK!", 0xD})    
+    STOP
 SSEMICOLON
     
     

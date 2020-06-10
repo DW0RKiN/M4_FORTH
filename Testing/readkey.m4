@@ -1,9 +1,10 @@
 include(`FIRST.M4')dnl
 dnl
     ORG 0x8000
+    INIT(60000)
     ld  hl, stack_test
     push hl
-    INIT(60000)
+
     BEGIN PRINT({"Press any key: "}) KEY DUP PUSH(0xD) XOR WHILE DUP EMIT PUTCHAR('=') UDOT CR REPEAT DROP
     PRINT({0xD,"10 char string: "})
     PUSH2(BUFFER,10) ACCEPT CR
@@ -15,10 +16,11 @@ dnl
     exx
     pop HL
     DUP_UDOT
-    STOP
+    ret
     
 SCOLON(stack_test)
     PRINT({0xD, "Data stack OK!", 0xD})    
+    STOP
 SSEMICOLON
 
 include({LAST.M4})dnl

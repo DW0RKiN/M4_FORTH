@@ -1,15 +1,13 @@
 ORG 0x8000
-    ld  hl, stack_test
-    push hl
     
 ;   ===  b e g i n  ===
-    exx                 ; 1:4
-    push HL             ; 1:11
-    push DE             ; 1:11
+    ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
     exx
+    ld  hl, stack_test
+    push hl
 
 ;#  PUSH2(orig,test) PUSH(2*10) CMOVE
 ;#  PUSH2(test,10) CALL(print)
@@ -57,13 +55,7 @@ ORG 0x8000
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_U16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1
-    
-    pop  DE             ; 1:10
-    pop  HL             ; 1:10
-    exx                 ; 1:4
-    ret                 ; 1:10
-;   =====  e n d  =====
-
+    ret
     
 
 ;   ---  b e g i n  ---
@@ -100,7 +92,10 @@ generate:               ;           (addr len -- )
     pop  HL             ; 1:10      do 101
     pop  DE             ; 1:10      do 101 ( stop index -- ) r: ( -- stop index )
 do101: 
-        RND
+        
+    ex   DE, HL         ; 1:4       rnd
+    push HL             ; 1:11      rnd
+    call Rnd            ; 3:17      rnd
         
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
@@ -716,7 +711,14 @@ stack_test:             ;
     ld   DE, string102  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
+
     
+Stop:
+    ld   SP, 0x0000     ; 3:10      not need
+    ld   HL, 0x2758     ; 3:10
+    exx                 ; 1:4
+    ret                 ; 1:10
+;   =====  e n d  =====
 
 stack_test_end:
     ret                 ; 1:10      s;
@@ -794,6 +796,43 @@ BIN2DEC_CHAR:
     
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10
+; ( -- rand )
+; 16-bit pseudorandom generator
+; Out: HL = 0..65535
+Rnd:
+SEED EQU $+1
+    ld   HL, 0x0001     ; 3:10      seed must not be 0
+    ld    A, H          ; 1:4
+    rra                 ; 1:4
+    ld    A, L          ; 1:4
+    rra                 ; 1:4
+    xor   H             ; 1:4
+    ld    H, A          ; 1:4       xs ^= xs << 7;
+    rra                 ; 1:4
+    xor   L             ; 1:4
+    ld    L, A          ; 1:4       xs ^= xs >> 9;
+    xor   H             ; 1:4
+    ld    H, A          ; 1:4       xs ^= xs << 8;
+    ld  (SEED), HL      ; 3:16
+
+Rnd_8a EQU $+1
+    ld    A, 0x01       ; 2:7
+    rrca                ; 1:4       multiply by 32
+    rrca                ; 1:4
+    rrca                ; 1:4
+    xor  0x1F           ; 2:7
+Rnd_8b EQU $+1
+    add   A, 0x01       ; 2:7
+    sbc   A, 0xFF       ; 1:4       carry
+    ld  (Rnd_8a), A     ; 3:13
+    ld  (Rnd_8b), A     ; 3:13
+    
+    xor   H             ; 1:4
+    ld    H, A          ; 1:4
+    ld    A, R          ; 2:9
+    xor   L             ; 1:4
+    ld    L, A          ; 1:4
     ret                 ; 1:10
 VARIABLE_SECTION:
 
