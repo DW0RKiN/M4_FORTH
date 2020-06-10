@@ -47,14 +47,31 @@ define({FETCH},{
     ld    L, A          ; 1:4       @ fetch})dnl
 dnl
 dnl
+dnl C@
+dnl ( addr -- char )
+dnl fetch 8-bit char from addr
+define({CFETCH},{
+    ld    L, (HL)       ; 1:7       C@ cfetch 
+    ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl
+dnl
+dnl addr @
 dnl ( -- x )
-dnl xfetch(addr) load 16-bit number from addr
-define({XFETCH},{
-    push DE             ; 1:11      @ xfetch 
-    ex   DE, HL         ; 1:4       @ xfetch
-    ld   HL,format({%-12s},($1)); 3:16      @ xfetch})dnl
+dnl push_fetch(addr), load 16-bit number from addr
+define({PUSH_FETCH},{
+    push DE             ; 1:11      $1 @ push($1) fetch 
+    ex   DE, HL         ; 1:4       $1 @ push($1) fetch
+    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
 dnl
+dnl
+dnl addr C@
+dnl ( -- x )
+dnl push_cfetch(addr), load 8-bit char from addr
+define({PUSH_CFETCH},{
+    push DE             ; 1:11      $1 @ push($1) cfetch 
+    ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
+    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
+    ld    H, 0x00       ; 2:7       $1 @ push($1) cfetch})dnl
 dnl
 dnl
 dnl !
@@ -68,12 +85,32 @@ define({STORE},{
     pop  DE             ; 1:10      ! store})dnl
 dnl
 dnl
+dnl C!
+dnl ( char addr -- )
+dnl store 8-bit char at addr
+define({CSTORE},{
+    ld  (HL), E         ; 1:7       C! cstore
+    pop  HL             ; 1:10      C! cstore
+    pop  DE             ; 1:10      C! cstore})dnl
+dnl
+dnl
+dnl addr !
 dnl ( x -- )
 dnl store(addr) store 16-bit number at addr
-define({XSTORE},{
-    ld   format({%-15s},($1){,} HL); 3:16      ! xstore
-    ex   DE, HL         ; 1:10      ! xstore
-    pop  DE             ; 1:10      ! xstore})dnl
+define({PUSH_STORE},{
+    ld   format({%-15s},($1){,} HL); 3:16      $1 ! push($1) store
+    ex   DE, HL         ; 1:4       $1 ! push($1) store
+    pop  DE             ; 1:10      $1 ! push($1) store})dnl
+dnl
+dnl
+dnl addr C!
+dnl ( char -- )
+dnl store(addr) store 8-bit char at addr
+define({PUSH_CSTORE},{
+    ld    A, L          ; 1:4       $1 C! push($1) cstore
+    ld    format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
+    ex   DE, HL         ; 1:4       $1 C! push($1) cstore
+    pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
 dnl
 dnl
 dnl
@@ -86,7 +123,7 @@ define({PLUS_STORE},{
     ld  (HL),A          ; 1:7       +! plus_store
     inc  HL             ; 1:6       +! plus_store
     ld    A, D          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
+    adc   A,(HL)        ; 1:7       +! plus_store
     ld  (HL),A          ; 1:7       +! plus_store
     pop  HL             ; 1:10      +! plus_store
     pop  DE             ; 1:10      +! plus_store})dnl
