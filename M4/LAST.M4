@@ -1,4 +1,13 @@
-include(__pathlib__{float_last.m4})dnl
-include(__pathlib__{graphic.m4})dnl
-include(__pathlib__{output.m4})dnl
+sinclude(./float_last.m4)dnl
+sinclude(./graphic.m4)dnl
+sinclude(./output.m4)dnl
+dnl
+sinclude(./M4/float_last.m4)dnl
+sinclude(./M4/graphic.m4)dnl
+sinclude(./M4/output.m4)dnl
+dnl
+sinclude(../M4/float_last.m4)dnl
+sinclude(../M4/graphic.m4)dnl
+sinclude(../M4/output.m4)dnl
+dnl
 dnl

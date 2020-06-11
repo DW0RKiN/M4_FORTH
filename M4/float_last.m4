@@ -1,13 +1,35 @@
-include(__pathfloat__{}{fmod.m4}){}dnl
-include(__pathfloat__{}{ftrunc.m4}){}dnl
-include(__pathfloat__{}{fsqrt.m4}){}dnl
-include(__pathfloat__{}{fwld.m4}){}dnl
-include(__pathfloat__{}{fwst.m4}){}dnl
-include(__pathfloat__{}{faddsub.m4}){}dnl
-include(__pathfloat__{}{fln.m4}){}dnl
-include(__pathfloat__{}{fexp.m4}){}dnl
-include(__pathfloat__{}{fdivmul.m4}){}dnl
-include(__pathfloat__{}{fsin.m4}){}dnl
+sinclude(./float/fmod.m4){}dnl
+sinclude(./float/ftrunc.m4){}dnl
+sinclude(./float/fsqrt.m4){}dnl
+sinclude(./float/fwld.m4){}dnl
+sinclude(./float/fwst.m4){}dnl
+sinclude(./float/faddsub.m4){}dnl
+sinclude(./float/fln.m4){}dnl
+sinclude(./float/fexp.m4){}dnl
+sinclude(./float/fdivmul.m4){}dnl
+sinclude(./float/fsin.m4){}dnl
+dnl
+sinclude(./M4/float/fmod.m4){}dnl
+sinclude(./M4/float/ftrunc.m4){}dnl
+sinclude(./M4/float/fsqrt.m4){}dnl
+sinclude(./M4/float/fwld.m4){}dnl
+sinclude(./M4/float/fwst.m4){}dnl
+sinclude(./M4/float/faddsub.m4){}dnl
+sinclude(./M4/float/fln.m4){}dnl
+sinclude(./M4/float/fexp.m4){}dnl
+sinclude(./M4/float/fdivmul.m4){}dnl
+sinclude(./M4/float/fsin.m4){}dnl
+dnl
+sinclude(../M4/float/fmod.m4){}dnl
+sinclude(../M4/float/ftrunc.m4){}dnl
+sinclude(../M4/float/fsqrt.m4){}dnl
+sinclude(../M4/float/fwld.m4){}dnl
+sinclude(../M4/float/fwst.m4){}dnl
+sinclude(../M4/float/faddsub.m4){}dnl
+sinclude(../M4/float/fln.m4){}dnl
+sinclude(../M4/float/fexp.m4){}dnl
+sinclude(../M4/float/fdivmul.m4){}dnl
+sinclude(../M4/float/fsin.m4){}dnl
 dnl
 ifdef({USE_fDot},{
 fDot:
@@ -32,12 +54,26 @@ fDot:
     ret                 ; 1:10})dnl
 dnl
 dnl
-ifdef({USE_fSin},{include(__pathfloat__{}{fsin.tab})})dnl
-ifdef({USE_fExp},{include(__pathfloat__{}{fexp.tab})})dnl
-ifdef({USE_fMul},{include(__pathfloat__{}{fmul.tab})})dnl
-ifdef({USE_fDiv},{include(__pathfloat__{}{fdiv.tab})})dnl
-ifdef({USE_fSqrt},{include(__pathfloat__{}{fsqrt.tab})})dnl
-ifdef({USE_fLn},{include(__pathfloat__{}{fln.tab})})dnl
+ifdef( {USE_fSin},{sinclude(./float/fsin.tab)})dnl
+ifdef( {USE_fExp},{sinclude(./float/fexp.tab)})dnl
+ifdef( {USE_fMul},{sinclude(./float/fmul.tab)})dnl
+ifdef( {USE_fDiv},{sinclude(./float/fdiv.tab)})dnl
+ifdef({USE_fSqrt},{sinclude(./float/fsqrt.tab)})dnl
+ifdef(  {USE_fLn},{sinclude(./float/fln.tab)})dnl
+dnl
+ifdef( {USE_fSin},{sinclude(./M4/float/fsin.tab)})dnl
+ifdef( {USE_fExp},{sinclude(./M4/float/fexp.tab)})dnl
+ifdef( {USE_fMul},{sinclude(./M4/float/fmul.tab)})dnl
+ifdef( {USE_fDiv},{sinclude(./M4/float/fdiv.tab)})dnl
+ifdef({USE_fSqrt},{sinclude(./M4/float/fsqrt.tab)})dnl
+ifdef(  {USE_fLn},{sinclude(./M4/float/fln.tab)})dnl
+dnl
+ifdef( {USE_fSin},{sinclude(../M4/float/fsin.tab)})dnl
+ifdef( {USE_fExp},{sinclude(../M4/float/fexp.tab)})dnl
+ifdef( {USE_fMul},{sinclude(../M4/float/fmul.tab)})dnl
+ifdef( {USE_fDiv},{sinclude(../M4/float/fdiv.tab)})dnl
+ifdef({USE_fSqrt},{sinclude(../M4/float/fsqrt.tab)})dnl
+ifdef(  {USE_fLn},{sinclude(../M4/float/fln.tab)})dnl
 dnl
 dnl
 dnl
