@@ -120,7 +120,7 @@ All FORTH words must be capitalized! Because `+` is written as `ADD`. And `add` 
     
 Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
 
-https://github.com/DW0RKiN/M4_FORTH/blob/master/Testing/forth2m4.sh
+https://github.com/DW0RKiN/M4_FORTH/blob/master/forth2m4.sh
 
 This is a compiler from Forth to M4 FORTH written in bash. Manual adjustments are still needed. For example, move functions below STOP. Unknown words will try to be called as function names. It will try to find and combine optimized words, but only if they are on the same line and are separated only by white characters.
 
