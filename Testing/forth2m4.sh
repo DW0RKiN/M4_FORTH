@@ -223,7 +223,8 @@ sed 's#^\([^;{]*\s\|^\)[Aa]nd\(\s\|$\)#\1AND\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Nn]egate\(\s\|$\)#\1NEGATE\2#g' |
 sed 's#^\([^;{]*\s\|^\)[Ll]eave\(\s\|$\)#\1LEAVE\2#g' |
 
-
+sed 's#^\([^;{]*\s\|^\)[Rr]andom\(\s\|$\)#\1RANDOM\2#g' |
+sed 's#^\([^;{]*\s\|^\)[Rr]nd\(\s\|$\)#\1RND\2#g' |
 
 # optimize
 
@@ -417,23 +418,50 @@ do
 done
 
 
-# unknown --> name function
-while :
-do
-    cat $TMPFILE |
-# rename badname --> _badname
-    sed 's#^\([^;{]*\s\|^\)\(CALL([_a-zA-Z]\+\)-#\1\2_#g' |
-    sed 's#^\([^;{]*\s\|^\)\(COLON([_a-zA-Z]\+\)-#\1\2_#g' |
+# variable
+VAR=""
+VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)VARIABLE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)VARIABLE(\([^,)]\+\)[,)].*#\2#p'`"
+VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)CONSTANT(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)CONSTANT(\([^,)]\+\)[,)].*#\2#p'`"
 
-    sed 's#^\([^;{]*\s\|^\)CALL(\([^_a-zA-Z]\)#\1CALL(_\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)COLON(\([^_a-zA-Z]\)#\1COLON(xxx_\2#gi' |
-# call
-    sed 's#^\([^;{]*\s\|^\)\([0-9a-z]\+[^ 	]*\)\(\s\|$\)#\1CALL(\2)\3#g' > $TMPFILE2
-    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
-    error=$?
+for x in $VAR
+do
+    y=`printf "${x}" | sed 's#[^_a-zA-Z]#_#g'`
+
+    cat $TMPFILE | sed "s#(${x})#(${y})#g" > $TMPFILE2
     cat $TMPFILE2 > $TMPFILE
-    [ $error -gt 1 ] && exit
-    [ $error -eq 0 ] && break
+
+    while :
+    do
+        cat $TMPFILE | sed "s#^\([^;{]*\s\|^\)${x}\(\s\|$\)#\1PUSH(${y})\2#g" > $TMPFILE2
+        diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+        error=$?
+        cat $TMPFILE2 > $TMPFILE
+        [ $error -gt 1 ] && exit
+        [ $error -eq 0 ] && break
+    done
+done
+
+
+# word/function
+VAR=""
+VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)COLON(\([^)]\+\)).*' | sed 's#^\([^;{]*\s\|^\)COLON(\([^)]\+\)).*#\2#p'`"
+
+for x in $VAR
+do
+    y=`printf "${x}" | sed 's#[^_a-zA-Z]#_#g'`
+
+    cat $TMPFILE | sed "s#(${x})#(${y})#g" > $TMPFILE2
+    cat $TMPFILE2 > $TMPFILE
+
+    while :
+    do
+        cat $TMPFILE | sed "s#^\([^;{]*\s\|^\)${x}\(\s\|$\)#\1CALL(${y})\2#g" > $TMPFILE2
+        diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+        error=$?
+        cat $TMPFILE2 > $TMPFILE
+        [ $error -gt 1 ] && exit
+        [ $error -eq 0 ] && break
+    done
 done
 
 # other
