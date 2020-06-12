@@ -233,18 +233,19 @@ VAR=""
 VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)VARIABLE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)VARIABLE(\([^,)]\+\)[,)].*#\2#g'`"
 VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)CONSTANT(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)CONSTANT(\([^,)]\+\)[,)].*#\2#g'`"
 
+oddelovac="`printf "\a"`"
 NUM="0"
 for x in $VAR
 do
     NUM="$(($NUM+1))"
     name="0000000000$NUM"
     
-    cat $TMPFILE | sed "s#^\([^;{]*\)(${x}\([,)]\)#\1(${name}\2#g" > $TMPFILE2
+    cat $TMPFILE | sed "s${oddelovac}^\([^;{]*\)(${x}\([,)]\)${oddelovac}\1(${name}\2${oddelovac}g" > $TMPFILE2
     cat $TMPFILE2 > $TMPFILE
 
     while :
     do
-        cat $TMPFILE | sed "s#^\([^;{]*\s\|^\)${x}\(\s\|$\)#\1${name}\2#g" > $TMPFILE2
+        cat $TMPFILE | sed "s${oddelovac}^\([^;{]*\s\|^\)${x}\(\s\|$\)${oddelovac}\1${name}\2${oddelovac}g" > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
         error=$?
         cat $TMPFILE2 > $TMPFILE
@@ -462,7 +463,7 @@ do
     
     while :
     do
-        cat $TMPFILE | sed "s#^\([^;{]*[(,]\)0000000000${NUM}\([,)]\)#\1${name}\2#g" > $TMPFILE2
+        cat $TMPFILE | sed "s${oddelovac}^\([^;{]*[(,]\)0000000000${NUM}\([,)]\)${oddelovac}\1${name}\2${oddelovac}g" > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
         error=$?
         cat $TMPFILE2 > $TMPFILE
