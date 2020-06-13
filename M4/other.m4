@@ -22,7 +22,8 @@ dnl
 dnl
 dnl
 define({CONSTANT},{ifelse($#,{2},{
-format({%-20s},$1) EQU $2},{
+format({%-20s},$1) EQU $2
+define({$1},{$2})},{
 .error constant: No parameter or redundant parameter!})})dnl
 dnl
 dnl
@@ -117,16 +118,16 @@ dnl
 dnl +!
 dnl ( nun addr -- )
 dnl Adds num to the 16-bit number stored at addr.
-define({PLUS_STORE},{
-    ld    A, E          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    inc  HL             ; 1:6       +! plus_store
-    ld    A, D          ; 1:4       +! plus_store
-    adc   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    pop  HL             ; 1:10      +! plus_store
-    pop  DE             ; 1:10      +! plus_store})dnl
+define({ADDSTORE},{
+    ld    A, E          ; 1:4       +! addstore
+    add   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    inc  HL             ; 1:6       +! addstore
+    ld    A, D          ; 1:4       +! addstore
+    adc   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    pop  HL             ; 1:10      +! addstore
+    pop  DE             ; 1:10      +! addstore})dnl
 dnl
 dnl
 dnl cmove
