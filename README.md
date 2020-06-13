@@ -83,35 +83,36 @@ File Hello.m4
 m4 Hello.m4
 
     ORG 0x8000
-    
+
     ;   ===  b e g i n  ===
-        exx
-        push HL
-        push DE
+        ld  (Stop+1), SP    ; 4:20      not need
         ld    L, 0x1A       ; 2:7       Upper screen
         call 0x1605         ; 3:17      Open channel
         ld   HL, 60000
         exx
-    
+
         push DE             ; 1:11      print
         ld   BC, size101    ; 3:10      print Length of string to print
         ld   DE, string101  ; 3:10      print Address of string
-        call 0x203C         ; 3:17      print Print our string
+        call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
         pop  DE             ; 1:10      print
-    
-    
-        pop  DE
-        pop  HL
-        exx
-        ret
+
+
+    Stop:
+        ld   SP, 0x0000     ; 3:10      not need
+        ld   HL, 0x2758     ; 3:10
+        exx                 ; 1:4
+        ret                 ; 1:10
     ;   =====  e n d  =====
-    
+
     VARIABLE_SECTION:
-    
+
     STRING_SECTION:
     string101:
     db "Hello World!"
     size101 EQU $ - string101
+
+
 
 ## Limitations of the M4 markup language
 
