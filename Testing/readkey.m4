@@ -1,4 +1,4 @@
-include(`FIRST.M4')dnl
+include(`../M4/FIRST.M4')dnl
 dnl
     ORG 0x8000
     INIT(60000)
@@ -23,7 +23,7 @@ SCOLON(stack_test)
     STOP
 SSEMICOLON
 
-include({LAST.M4})dnl
+include({../M4/LAST.M4})dnl
 
 BUFFER:
 DS 10

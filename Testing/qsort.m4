@@ -1,4 +1,4 @@
-include(`FIRST.M4')dnl 
+include(`../M4/FIRST.M4')dnl 
 ORG 0x8000
     INIT(60000)
     ld  hl, stack_test
@@ -85,7 +85,7 @@ SCOLON(stack_test)
     STOP
 SSEMICOLON
 
-include({LAST.M4})dnl
+include({../M4/LAST.M4})dnl
 
 test:
 dw 700 , 3 , 0 , 2 , 9 , 1 , 6 , 8 , 4 , 5

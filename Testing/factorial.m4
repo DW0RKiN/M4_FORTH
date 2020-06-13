@@ -1,4 +1,4 @@
-include(`./FIRST.M4')dnl 
+include(`../M4/FIRST.M4')dnl 
 ORG 0x6000
 INIT(60000)
 
@@ -110,4 +110,4 @@ PUSH_MUL(2029) PUSH_MUL(2031) PUSH_MUL(2033) PUSH_MUL(2035) PUSH_MUL(2037) PUSH_
 PUSH_MUL(2047) DOT PRINT({" = -14335", 0xD})
 
 STOP 
-include({./LAST.M4})dnl
+include({../M4/LAST.M4})dnl

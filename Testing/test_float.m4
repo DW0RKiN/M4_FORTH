@@ -1,5 +1,5 @@
 ; vvvvv
-include(`./FIRST.M4')dnl
+include(`../M4/FIRST.M4')dnl
 ; ^^^^^
 ;# log10(2^n) = y
 ;# 10^y = 2^n
@@ -89,4 +89,4 @@ SCOLON(stack_test)
     PRINT({0xD, "Data stack OK!", 0xD})
     STOP
 SSEMICOLON
-include({./LAST.M4})
+include({../M4/LAST.M4})

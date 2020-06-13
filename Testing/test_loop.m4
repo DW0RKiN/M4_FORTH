@@ -1,5 +1,5 @@
 ; vvvv
-include(`./FIRST.M4')dnl
+include(`../M4/FIRST.M4')dnl
 ; ^^^^
     ORG 32768
     
@@ -73,4 +73,4 @@ SCOLON(stack_test)
 SSEMICOLON
     
     
-include({./LAST.M4})dnl
+include({../M4/LAST.M4})dnl

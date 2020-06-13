@@ -1,4 +1,4 @@
-include(`./FIRST.M4')dnl 
+include(`../M4/FIRST.M4')dnl 
 ORG 0x8000
 INIT(60000)
 PRINT({"enter 1million or 32million", 0xD})
@@ -20,4 +20,4 @@ COLON(_25th) CALL(_24th)  CALL(_24th)  SEMICOLON
 COLON(_32million)  PRINT({"32 million nest/unnest operations", 0xD}) CALL(_25th) SEMICOLON
 COLON(_1million)   PRINT({" 1 million nest/unnest operations", 0xD}) CALL(_20th) SEMICOLON
 
-include({./LAST.M4})dnl
+include({../M4/LAST.M4})dnl

@@ -1,5 +1,5 @@
 ; vvvv
-include(`./FIRST.M4')dnl
+include(`../M4/FIRST.M4')dnl
 ; ^^^^
     ORG 32768  
     INIT(60000)
@@ -45,4 +45,4 @@ COLON(test)
     
 SEMICOLON
     
-include({./LAST.M4})dnl
+include({../M4/LAST.M4})dnl
