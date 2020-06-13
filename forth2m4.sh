@@ -479,7 +479,7 @@ done
 NUM="0"
 for x in $VAR
 do
-    name=`printf "${x}" | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^\([0-9]\)#_\1#g'`
+    name=`printf "${x}" | sed 's#@#load#g' | sed 's#!#save#g' | sed 's#+#1add#g' | sed 's#-#1sub#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^\([0-9]\)#_\1#g'`
     NUM="$(($NUM+1))"
     
     while :
@@ -500,7 +500,7 @@ FCE="$FCE `cat $TMPFILE | grep '^\([^;{]*\s\|^\)COLON(\([^)]\+\)).*' | sed 's#^\
 
 for x in $FCE
 do
-    name=`printf "${x}" | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^\([0-9]\)#_\1#g'`
+    name=`printf "${x}" | sed 's#@#load#g' | sed 's#!#save#g' | sed 's#+#1add#g' | sed 's#-#1sub#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^\([0-9]\)#_\1#g'`
 
     cat $TMPFILE | sed "s#^\([^;{]*\)(${x}\([,)]\)#\1(${name}\2#g" > $TMPFILE2
     cat $TMPFILE2 > $TMPFILE
