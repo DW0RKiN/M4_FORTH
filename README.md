@@ -429,7 +429,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |     addr C@    |                 |PUSH_CFETCH(addr)|          ( -- char )  | TOP = (addr)     |
 |       C!       |      CSTORE     |                 |( char addr -- )       | (addr) = char    |
 |     addr C!    |                 |PUSH_CSTORE(addr)|     ( char -- )       | (addr) = char    |
-|   x addr +!    |    PLUS_STORE   |                 |   ( x addr -- )       | (addr) += x      |
+|   x addr +!    |     ADDSTORE    |                 |   ( x addr -- )       | (addr) += x      |
 |     cmove      |      CMOVE      |                 |( from to u -- )       | 8bit, addr++     |
 |     cmove>     |     CMOVEGT     |                 |( from to u -- )       | 8bit, addr--     |
 |      move      |       MOVE      |                 |( from to u -- )       | 16bit, addr++    |

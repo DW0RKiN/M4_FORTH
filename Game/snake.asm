@@ -22,29 +22,40 @@ Stop:
   
   
 
-left                 EQU 0  
+left                 EQU 0
+  
 
-up                   EQU 1  
+up                   EQU 1
+  
 
-right                EQU 2  
+right                EQU 2
+  
 
-down                 EQU 3  
+down                 EQU 3
+  
 
-width                EQU 32  
+width                EQU 32
+  
 
-height               EQU 24  
+height               EQU 24
+  
 
 white                EQU 0x3F
 
-red                  EQU 0x24 
 
-black                EQU 0  
+red                  EQU 0x24
+ 
+
+black                EQU 0
+  
   
   
 
 graphics             EQU 0x5800
 
+
 last_key             EQU 0x5C08
+
 
 ;( x y -- )
 ; C = color
@@ -57,7 +68,7 @@ put_color:
     add  HL, HL         ; 1:11      16x 192->384
     add  HL, HL         ; 1:11      32x 384->768
     add  HL, DE         ; 1:11      
-    ld   DE, graphics   ; 3:10
+    ld   DE, 0x5800   ; 3:10
     add  HL, DE         ; 1:11      
     ld   (HL), C        ; 1:7
     ret                 ; 1:10
@@ -72,7 +83,7 @@ get_color:
     add  HL, HL         ; 1:11      16x 192->384
     add  HL, HL         ; 1:11      32x 384->768
     add  HL, DE         ; 1:11      
-    ld   DE, graphics   ; 3:10
+    ld   DE, 0x5800   ; 3:10
     add  HL, DE         ; 1:11      
     ld   L, (HL)        ; 1:7
     ld   H, 0x00        ; 2:7
@@ -88,7 +99,7 @@ draw_white:             ;           ( x y -- )
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
     exx                 ; 1:4       : R:( -- ret )
-    ld    C, white      ; 2:7
+    ld    C, 0x3F      ; 2:7
     call put_color      ; 3:17
     pop  HL             ; 1:10
     pop  DE             ; 1:10
@@ -113,7 +124,7 @@ draw_black:             ;           ( x y -- )
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
     exx                 ; 1:4       : R:( -- ret )
-    ld    C, black      ; 2:7
+    ld    C, 0      ; 2:7
     call put_color      ; 3:17
     pop  HL             ; 1:10
     pop  DE             ; 1:10
@@ -157,9 +168,9 @@ draw_end:
 ;   ---  b e g i n  ---
 draw_walls:             ;            
     
-    push DE             ; 1:11      push(width-1)
-    ex   DE, HL         ; 1:4       push(width-1)
-    ld   HL, width-1    ; 3:10      push(width-1) 
+    push DE             ; 1:11      push(32-1)
+    ex   DE, HL         ; 1:4       push(32-1)
+    ld   HL, 32-1       ; 3:10      push(32-1) 
     push HL             ; 1:11      for 101 index
     exx                 ; 1:4       for 101
     pop  DE             ; 1:10      for 101 stop
@@ -197,9 +208,9 @@ for101:                 ;           for 101
     exx                 ; 1:4       index 101 i
     ex   DE, HL         ; 1:4       index 101 i
     ex  (SP), HL        ; 1:19      index 101 i 
-    push DE             ; 1:11      push(height-1)
-    ex   DE, HL         ; 1:4       push(height-1)
-    ld   HL, height-1   ; 3:10      push(height-1) 
+    push DE             ; 1:11      push(24-1)
+    ex   DE, HL         ; 1:4       push(24-1)
+    ld   HL, 24-1       ; 3:10      push(24-1) 
     call draw_black     ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -222,9 +233,9 @@ next101:                ;           next 101
     exx                 ; 1:4       next 101
 
     
-    push DE             ; 1:11      push(height-1)
-    ex   DE, HL         ; 1:4       push(height-1)
-    ld   HL, height-1   ; 3:10      push(height-1) 
+    push DE             ; 1:11      push(24-1)
+    ex   DE, HL         ; 1:4       push(24-1)
+    ld   HL, 24-1       ; 3:10      push(24-1) 
     push HL             ; 1:11      for 102 index
     exx                 ; 1:4       for 102
     pop  DE             ; 1:10      for 102 stop
@@ -253,9 +264,9 @@ for102:                 ;           for 102
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
         
-    push DE             ; 1:11      push(width-1)
-    ex   DE, HL         ; 1:4       push(width-1)
-    ld   HL, width-1    ; 3:10      push(width-1) 
+    push DE             ; 1:11      push(32-1)
+    ex   DE, HL         ; 1:4       push(32-1)
+    ld   HL, 32-1       ; 3:10      push(32-1) 
     exx                 ; 1:4       index 102 i    
     ld   E,(HL)         ; 1:7       index 102 i
     inc  L              ; 1:4       index 102 i
@@ -459,9 +470,9 @@ leave103:
     inc  HL             ; 1:6       loop 103
     exx                 ; 1:4       loop 103 
     
-    push DE             ; 1:11      push(right)
-    ex   DE, HL         ; 1:4       push(right)
-    ld   HL, right      ; 3:10      push(right) 
+    push DE             ; 1:11      push(2)
+    ex   DE, HL         ; 1:4       push(2)
+    ld   HL, 2          ; 3:10      push(2) 
     push DE             ; 1:11      push(direction)
     ex   DE, HL         ; 1:4       push(direction)
     ld   HL, direction  ; 3:10      push(direction) 
@@ -533,9 +544,9 @@ initialize_apple_end:
 ;   ---  b e g i n  ---
 initialize:             ;            
     
-    push DE             ; 1:11      push(width-1)
-    ex   DE, HL         ; 1:4       push(width-1)
-    ld   HL, width-1    ; 3:10      push(width-1) 
+    push DE             ; 1:11      push(32-1)
+    ex   DE, HL         ; 1:4       push(32-1)
+    ld   HL, 32-1       ; 3:10      push(32-1) 
     push HL             ; 1:11      for 104 index
     exx                 ; 1:4       for 104
     pop  DE             ; 1:10      for 104 stop
@@ -548,9 +559,9 @@ initialize:             ;
     pop  DE             ; 1:10      for 104 ( index -- ) r: ( -- index )
 for104:                 ;           for 104 
         
-    push DE             ; 1:11      push(height-1)
-    ex   DE, HL         ; 1:4       push(height-1)
-    ld   HL, height-1   ; 3:10      push(height-1) 
+    push DE             ; 1:11      push(24-1)
+    ex   DE, HL         ; 1:4       push(24-1)
+    ld   HL, 24-1       ; 3:10      push(24-1) 
     push HL             ; 1:11      for 105 index
     exx                 ; 1:4       for 105
     pop  DE             ; 1:10      for 105 stop
@@ -636,21 +647,19 @@ initialize_end:
 ;   ---  b e g i n  ---
 move_up:                ;             
     
-    push DE             ; 1:11      push(-1)
-    ex   DE, HL         ; 1:4       push(-1)
-    ld   HL, -1         ; 3:10      push(-1) 
-    push DE             ; 1:11      push(snake_y_head)
-    ex   DE, HL         ; 1:4       push(snake_y_head)
-    ld   HL, snake_y_head; 3:10      push(snake_y_head) 
-    ld    A, E          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    inc  HL             ; 1:6       +! plus_store
-    ld    A, D          ; 1:4       +! plus_store
-    adc   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    pop  HL             ; 1:10      +! plus_store
-    pop  DE             ; 1:10      +! plus_store 
+    push DE             ; 1:11      push2(-1,snake_y_head)
+    ld   DE, -1         ; 3:10      push2(-1,snake_y_head)
+    push HL             ; 1:11      push2(-1,snake_y_head)
+    ld   HL, snake_y_head; 3:10      push2(-1,snake_y_head) 
+    ld    A, E          ; 1:4       +! addstore
+    add   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    inc  HL             ; 1:6       +! addstore
+    ld    A, D          ; 1:4       +! addstore
+    adc   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    pop  HL             ; 1:10      +! addstore
+    pop  DE             ; 1:10      +! addstore 
 
 move_up_end:
     ret                 ; 1:10      s;
@@ -660,21 +669,19 @@ move_up_end:
 ;   ---  b e g i n  ---
 move_left:              ;             
     
-    push DE             ; 1:11      push(-1)
-    ex   DE, HL         ; 1:4       push(-1)
-    ld   HL, -1         ; 3:10      push(-1) 
-    push DE             ; 1:11      push(snake_x_head)
-    ex   DE, HL         ; 1:4       push(snake_x_head)
-    ld   HL, snake_x_head; 3:10      push(snake_x_head) 
-    ld    A, E          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    inc  HL             ; 1:6       +! plus_store
-    ld    A, D          ; 1:4       +! plus_store
-    adc   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    pop  HL             ; 1:10      +! plus_store
-    pop  DE             ; 1:10      +! plus_store 
+    push DE             ; 1:11      push2(-1,snake_x_head)
+    ld   DE, -1         ; 3:10      push2(-1,snake_x_head)
+    push HL             ; 1:11      push2(-1,snake_x_head)
+    ld   HL, snake_x_head; 3:10      push2(-1,snake_x_head) 
+    ld    A, E          ; 1:4       +! addstore
+    add   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    inc  HL             ; 1:6       +! addstore
+    ld    A, D          ; 1:4       +! addstore
+    adc   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    pop  HL             ; 1:10      +! addstore
+    pop  DE             ; 1:10      +! addstore 
 
 move_left_end:
     ret                 ; 1:10      s;
@@ -684,21 +691,19 @@ move_left_end:
 ;   ---  b e g i n  ---
 move_down:              ;             
     
-    push DE             ; 1:11      push(1)
-    ex   DE, HL         ; 1:4       push(1)
-    ld   HL, 1          ; 3:10      push(1) 
-    push DE             ; 1:11      push(snake_y_head)
-    ex   DE, HL         ; 1:4       push(snake_y_head)
-    ld   HL, snake_y_head; 3:10      push(snake_y_head) 
-    ld    A, E          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    inc  HL             ; 1:6       +! plus_store
-    ld    A, D          ; 1:4       +! plus_store
-    adc   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    pop  HL             ; 1:10      +! plus_store
-    pop  DE             ; 1:10      +! plus_store 
+    push DE             ; 1:11      push2(1,snake_y_head)
+    ld   DE, 1          ; 3:10      push2(1,snake_y_head)
+    push HL             ; 1:11      push2(1,snake_y_head)
+    ld   HL, snake_y_head; 3:10      push2(1,snake_y_head) 
+    ld    A, E          ; 1:4       +! addstore
+    add   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    inc  HL             ; 1:6       +! addstore
+    ld    A, D          ; 1:4       +! addstore
+    adc   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    pop  HL             ; 1:10      +! addstore
+    pop  DE             ; 1:10      +! addstore 
 
 move_down_end:
     ret                 ; 1:10      s;
@@ -708,21 +713,19 @@ move_down_end:
 ;   ---  b e g i n  ---
 move_right:             ;             
     
-    push DE             ; 1:11      push(1)
-    ex   DE, HL         ; 1:4       push(1)
-    ld   HL, 1          ; 3:10      push(1) 
-    push DE             ; 1:11      push(snake_x_head)
-    ex   DE, HL         ; 1:4       push(snake_x_head)
-    ld   HL, snake_x_head; 3:10      push(snake_x_head) 
-    ld    A, E          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    inc  HL             ; 1:6       +! plus_store
-    ld    A, D          ; 1:4       +! plus_store
-    adc   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    pop  HL             ; 1:10      +! plus_store
-    pop  DE             ; 1:10      +! plus_store 
+    push DE             ; 1:11      push2(1,snake_x_head)
+    ld   DE, 1          ; 3:10      push2(1,snake_x_head)
+    push HL             ; 1:11      push2(1,snake_x_head)
+    ld   HL, snake_x_head; 3:10      push2(1,snake_x_head) 
+    ld    A, E          ; 1:4       +! addstore
+    add   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    inc  HL             ; 1:6       +! addstore
+    ld    A, D          ; 1:4       +! addstore
+    adc   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    pop  HL             ; 1:10      +! addstore
+    pop  DE             ; 1:10      +! addstore 
 
 move_right_end:
     ret                 ; 1:10      s;
@@ -740,9 +743,9 @@ move_snake_head:        ;
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     
-    push DE             ; 1:11      push(left)
-    ex   DE, HL         ; 1:4       push(left)
-    ld   HL, left       ; 3:10      push(left)  
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0)  
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     or    A             ; 1:4       =
@@ -760,9 +763,9 @@ move_snake_head:        ;
     jp   endif101       ; 3:10      else
 else101: 
     
-    push DE             ; 1:11      push(up)
-    ex   DE, HL         ; 1:4       push(up)
-    ld   HL, up         ; 3:10      push(up)    
+    push DE             ; 1:11      push(1)
+    ex   DE, HL         ; 1:4       push(1)
+    ld   HL, 1          ; 3:10      push(1)    
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     or    A             ; 1:4       =
@@ -780,9 +783,9 @@ else101:
     jp   endif102       ; 3:10      else
 else102: 
     
-    push DE             ; 1:11      push(right)
-    ex   DE, HL         ; 1:4       push(right)
-    ld   HL, right      ; 3:10      push(right) 
+    push DE             ; 1:11      push(2)
+    ex   DE, HL         ; 1:4       push(2)
+    ld   HL, 2          ; 3:10      push(2) 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     or    A             ; 1:4       =
@@ -800,9 +803,9 @@ else102:
     jp   endif103       ; 3:10      else
 else103: 
     
-    push DE             ; 1:11      push(down)
-    ex   DE, HL         ; 1:4       push(down)
-    ld   HL, down       ; 3:10      push(down)  
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3)  
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     or    A             ; 1:4       =
@@ -920,9 +923,9 @@ is_horizontal:          ;           ( -- flag )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     
-    push DE             ; 1:11      push(left)
-    ex   DE, HL         ; 1:4       push(left)
-    ld   HL, left       ; 3:10      push(left)  
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0)  
     or    A             ; 1:4       =
     sbc  HL, DE         ; 2:15      =
     ld   HL, 0x0000     ; 3:10      =
@@ -931,9 +934,9 @@ is_horizontal:          ;           ( -- flag )
     pop  DE             ; 1:10      = 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     
-    push DE             ; 1:11      push(right)
-    ex   DE, HL         ; 1:4       push(right)
-    ld   HL, right      ; 3:10      push(right) 
+    push DE             ; 1:11      push(2)
+    ex   DE, HL         ; 1:4       push(2)
+    ld   HL, 2          ; 3:10      push(2) 
     or    A             ; 1:4       =
     sbc  HL, DE         ; 2:15      =
     ld   HL, 0x0000     ; 3:10      =
@@ -976,9 +979,9 @@ is_vertical:            ;           ( -- flag )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     
-    push DE             ; 1:11      push(up)
-    ex   DE, HL         ; 1:4       push(up)
-    ld   HL, up         ; 3:10      push(up)    
+    push DE             ; 1:11      push(1)
+    ex   DE, HL         ; 1:4       push(1)
+    ld   HL, 1          ; 3:10      push(1)    
     or    A             ; 1:4       =
     sbc  HL, DE         ; 2:15      =
     ld   HL, 0x0000     ; 3:10      =
@@ -987,9 +990,9 @@ is_vertical:            ;           ( -- flag )
     pop  DE             ; 1:10      = 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     
-    push DE             ; 1:11      push(down)
-    ex   DE, HL         ; 1:4       push(down)
-    ld   HL, down       ; 3:10      push(down)  
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3)  
     or    A             ; 1:4       =
     sbc  HL, DE         ; 2:15      =
     ld   HL, 0x0000     ; 3:10      =
@@ -1025,9 +1028,9 @@ turn_up:                ;
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else105    ; 3:10      if 
-    push DE             ; 1:11      push(up)
-    ex   DE, HL         ; 1:4       push(up)
-    ld   HL, up         ; 3:10      push(up)    
+    push DE             ; 1:11      push(1)
+    ex   DE, HL         ; 1:4       push(1)
+    ld   HL, 1          ; 3:10      push(1)    
     ld   (direction), HL; 3:16      direction ! push(direction) store
     ex   DE, HL         ; 1:4       direction ! push(direction) store
     pop  DE             ; 1:10      direction ! push(direction) store 
@@ -1048,9 +1051,9 @@ turn_left:              ;
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else106    ; 3:10      if 
-    push DE             ; 1:11      push(left)
-    ex   DE, HL         ; 1:4       push(left)
-    ld   HL, left       ; 3:10      push(left)  
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0)  
     ld   (direction), HL; 3:16      direction ! push(direction) store
     ex   DE, HL         ; 1:4       direction ! push(direction) store
     pop  DE             ; 1:10      direction ! push(direction) store 
@@ -1071,9 +1074,9 @@ turn_down:              ;
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else107    ; 3:10      if 
-    push DE             ; 1:11      push(down)
-    ex   DE, HL         ; 1:4       push(down)
-    ld   HL, down       ; 3:10      push(down)  
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3)  
     ld   (direction), HL; 3:16      direction ! push(direction) store
     ex   DE, HL         ; 1:4       direction ! push(direction) store
     pop  DE             ; 1:10      direction ! push(direction) store 
@@ -1094,9 +1097,9 @@ turn_right:             ;
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else108    ; 3:10      if 
-    push DE             ; 1:11      push(right)
-    ex   DE, HL         ; 1:4       push(right)
-    ld   HL, right      ; 3:10      push(right) 
+    push DE             ; 1:11      push(2)
+    ex   DE, HL         ; 1:4       push(2)
+    ld   HL, 2          ; 3:10      push(2) 
     ld   (direction), HL; 3:16      direction ! push(direction) store
     ex   DE, HL         ; 1:4       direction ! push(direction) store
     pop  DE             ; 1:10      direction ! push(direction) store 
@@ -1217,10 +1220,10 @@ change_direction_end:
 ;   ---  b e g i n  ---
 check_input:            ;            
     
-    push DE             ; 1:11      last_key @ push(last_key) cfetch 
-    ex   DE, HL         ; 1:4       last_key @ push(last_key) cfetch
-    ld   HL,(last_key)  ; 3:16      last_key @ push(last_key) cfetch
-    ld    H, 0x00       ; 2:7       last_key @ push(last_key) cfetch
+    push DE             ; 1:11      0x5C08 @ push(0x5C08) cfetch 
+    ex   DE, HL         ; 1:4       0x5C08 @ push(0x5C08) cfetch
+    ld   HL,(0x5C08)    ; 3:16      0x5C08 @ push(0x5C08) cfetch
+    ld    H, 0x00       ; 2:7       0x5C08 @ push(0x5C08) cfetch
     
     call change_direction; 3:17      call
     ex   DE, HL         ; 1:4       call    
@@ -1229,10 +1232,10 @@ check_input:            ;
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
-    ld    A, L          ; 1:4       last_key C! push(last_key) cstore
-    ld    (last_key), A  ; 3:13      last_key C! push(last_key) cstore
-    ex   DE, HL         ; 1:4       last_key C! push(last_key) cstore
-    pop  DE             ; 1:10      last_key C! push(last_key) cstore
+    ld    A, L          ; 1:4       0x5C08 C! push(0x5C08) cstore
+    ld    (0x5C08), A    ; 3:13      0x5C08 C! push(0x5C08) cstore
+    ex   DE, HL         ; 1:4       0x5C08 C! push(0x5C08) cstore
+    pop  DE             ; 1:10      0x5C08 C! push(0x5C08) cstore
 
 check_input_end:
     ret                 ; 1:10      s;
@@ -1306,15 +1309,15 @@ grow_snake:             ;
     push DE             ; 1:11      push(length)
     ex   DE, HL         ; 1:4       push(length)
     ld   HL, length     ; 3:10      push(length) 
-    ld    A, E          ; 1:4       +! plus_store
-    add   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    inc  HL             ; 1:6       +! plus_store
-    ld    A, D          ; 1:4       +! plus_store
-    adc   A,(HL)        ; 1:7       +! plus_store
-    ld  (HL),A          ; 1:7       +! plus_store
-    pop  HL             ; 1:10      +! plus_store
-    pop  DE             ; 1:10      +! plus_store 
+    ld    A, E          ; 1:4       +! addstore
+    add   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    inc  HL             ; 1:6       +! addstore
+    ld    A, D          ; 1:4       +! addstore
+    adc   A,(HL)        ; 1:7       +! addstore
+    ld  (HL),A          ; 1:7       +! addstore
+    pop  HL             ; 1:10      +! addstore
+    pop  DE             ; 1:10      +! addstore 
 
 grow_snake_end:
     ret                 ; 1:10      s;
@@ -1542,9 +1545,9 @@ draw_snake_end:
 ;   ---  b e g i n  ---
 draw_apple:             ;            
     
-    push DE             ; 1:11      push(red)
-    ex   DE, HL         ; 1:4       push(red)
-    ld   HL, red        ; 3:10      push(red) 
+    push DE             ; 1:11      push(0x24)
+    ex   DE, HL         ; 1:4       push(0x24)
+    ld   HL, 0x24       ; 3:10      push(0x24) 
     push DE             ; 1:11      push(apple_x)
     ex   DE, HL         ; 1:4       push(apple_x)
     ld   HL, apple_x    ; 3:10      push(apple_x) 
@@ -1655,6 +1658,7 @@ start:                  ;
 start_end:
     ret                 ; 1:10      s;
 ;   -----  e n d  ----- 
+
 
 
 ; ( max -- rand )

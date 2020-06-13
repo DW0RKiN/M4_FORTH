@@ -2,9 +2,7 @@ variable snake-x-head
 
 500 cells allot  
 
-variable snake-y-head  
-
-500 cells allot  
+variable snake-y-head 500 cells allot  
 
 variable apple-x  
 

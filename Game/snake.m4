@@ -125,19 +125,19 @@ SCOLON(initialize)
 SSEMICOLON  
 
 SCOLON(move_up)  
-    PUSH(-1) PUSH(snake_y_head) PLUS_STORE 
+    PUSH2(-1,snake_y_head) ADDSTORE 
 SSEMICOLON  
 
 SCOLON(move_left)  
-    PUSH(-1) PUSH(snake_x_head) PLUS_STORE 
+    PUSH2(-1,snake_x_head) ADDSTORE 
 SSEMICOLON  
 
 SCOLON(move_down)  
-    PUSH(1) PUSH(snake_y_head) PLUS_STORE 
+    PUSH2(1,snake_y_head) ADDSTORE 
 SSEMICOLON  
 
 SCOLON(move_right)  
-    PUSH(1) PUSH(snake_x_head) PLUS_STORE 
+    PUSH2(1,snake_x_head) ADDSTORE 
 SSEMICOLON  
 
 SCOLON(move_snake_head)  
@@ -202,7 +202,7 @@ SCOLON(move_apple)
 SSEMICOLON  
 
 SCOLON(grow_snake)  
-    PUSH(1) PUSH(length) PLUS_STORE 
+    PUSH(1) PUSH(length) ADDSTORE 
 SSEMICOLON  
 
 SCOLON(check_apple) 
