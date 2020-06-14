@@ -647,19 +647,12 @@ initialize_end:
 ;   ---  b e g i n  ---
 move_up:                ;             
     
-    push DE             ; 1:11      push2(-1,snake_y_head)
-    ld   DE, -1         ; 3:10      push2(-1,snake_y_head)
-    push HL             ; 1:11      push2(-1,snake_y_head)
-    ld   HL, snake_y_head; 3:10      push2(-1,snake_y_head) 
-    ld    A, E          ; 1:4       +! addstore
-    add   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    inc  HL             ; 1:6       +! addstore
-    ld    A, D          ; 1:4       +! addstore
-    adc   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore 
+    push HL             ; 1:11      push2_addstore(-1,snake_y_head)
+    ld   BC, -1         ; 3:10      push2_addstore(-1,snake_y_head)
+    ld   HL, (snake_y_head); 3:16      push2_addstore(-1,snake_y_head)
+    add  HL, BC         ; 1:11      push2_addstore(-1,snake_y_head)
+    ld   (snake_y_head), HL; 3:16      push2_addstore(-1,snake_y_head)
+    pop  HL             ; 1:10      push2_addstore(-1,snake_y_head) 
 
 move_up_end:
     ret                 ; 1:10      s;
@@ -669,19 +662,12 @@ move_up_end:
 ;   ---  b e g i n  ---
 move_left:              ;             
     
-    push DE             ; 1:11      push2(-1,snake_x_head)
-    ld   DE, -1         ; 3:10      push2(-1,snake_x_head)
-    push HL             ; 1:11      push2(-1,snake_x_head)
-    ld   HL, snake_x_head; 3:10      push2(-1,snake_x_head) 
-    ld    A, E          ; 1:4       +! addstore
-    add   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    inc  HL             ; 1:6       +! addstore
-    ld    A, D          ; 1:4       +! addstore
-    adc   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore 
+    push HL             ; 1:11      push2_addstore(-1,snake_x_head)
+    ld   BC, -1         ; 3:10      push2_addstore(-1,snake_x_head)
+    ld   HL, (snake_x_head); 3:16      push2_addstore(-1,snake_x_head)
+    add  HL, BC         ; 1:11      push2_addstore(-1,snake_x_head)
+    ld   (snake_x_head), HL; 3:16      push2_addstore(-1,snake_x_head)
+    pop  HL             ; 1:10      push2_addstore(-1,snake_x_head) 
 
 move_left_end:
     ret                 ; 1:10      s;
@@ -691,19 +677,12 @@ move_left_end:
 ;   ---  b e g i n  ---
 move_down:              ;             
     
-    push DE             ; 1:11      push2(1,snake_y_head)
-    ld   DE, 1          ; 3:10      push2(1,snake_y_head)
-    push HL             ; 1:11      push2(1,snake_y_head)
-    ld   HL, snake_y_head; 3:10      push2(1,snake_y_head) 
-    ld    A, E          ; 1:4       +! addstore
-    add   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    inc  HL             ; 1:6       +! addstore
-    ld    A, D          ; 1:4       +! addstore
-    adc   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore 
+    push HL             ; 1:11      push2_addstore(1,snake_y_head)
+    ld   BC, 1          ; 3:10      push2_addstore(1,snake_y_head)
+    ld   HL, (snake_y_head); 3:16      push2_addstore(1,snake_y_head)
+    add  HL, BC         ; 1:11      push2_addstore(1,snake_y_head)
+    ld   (snake_y_head), HL; 3:16      push2_addstore(1,snake_y_head)
+    pop  HL             ; 1:10      push2_addstore(1,snake_y_head) 
 
 move_down_end:
     ret                 ; 1:10      s;
@@ -713,19 +692,12 @@ move_down_end:
 ;   ---  b e g i n  ---
 move_right:             ;             
     
-    push DE             ; 1:11      push2(1,snake_x_head)
-    ld   DE, 1          ; 3:10      push2(1,snake_x_head)
-    push HL             ; 1:11      push2(1,snake_x_head)
-    ld   HL, snake_x_head; 3:10      push2(1,snake_x_head) 
-    ld    A, E          ; 1:4       +! addstore
-    add   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    inc  HL             ; 1:6       +! addstore
-    ld    A, D          ; 1:4       +! addstore
-    adc   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore 
+    push HL             ; 1:11      push2_addstore(1,snake_x_head)
+    ld   BC, 1          ; 3:10      push2_addstore(1,snake_x_head)
+    ld   HL, (snake_x_head); 3:16      push2_addstore(1,snake_x_head)
+    add  HL, BC         ; 1:11      push2_addstore(1,snake_x_head)
+    ld   (snake_x_head), HL; 3:16      push2_addstore(1,snake_x_head)
+    pop  HL             ; 1:10      push2_addstore(1,snake_x_head) 
 
 move_right_end:
     ret                 ; 1:10      s;
@@ -1303,21 +1275,12 @@ move_apple_end:
 ;   ---  b e g i n  ---
 grow_snake:             ;             
     
-    push DE             ; 1:11      push(1)
-    ex   DE, HL         ; 1:4       push(1)
-    ld   HL, 1          ; 3:10      push(1) 
-    push DE             ; 1:11      push(length)
-    ex   DE, HL         ; 1:4       push(length)
-    ld   HL, length     ; 3:10      push(length) 
-    ld    A, E          ; 1:4       +! addstore
-    add   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    inc  HL             ; 1:6       +! addstore
-    ld    A, D          ; 1:4       +! addstore
-    adc   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore 
+    push HL             ; 1:11      push2_addstore(1,length)
+    ld   BC, 1          ; 3:10      push2_addstore(1,length)
+    ld   HL, (length)   ; 3:16      push2_addstore(1,length)
+    add  HL, BC         ; 1:11      push2_addstore(1,length)
+    ld   (length), HL   ; 3:16      push2_addstore(1,length)
+    pop  HL             ; 1:10      push2_addstore(1,length) 
 
 grow_snake_end:
     ret                 ; 1:10      s;
@@ -1644,7 +1607,6 @@ break101:               ;           until 101
     ld   DE, string101  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
 
 game_loop_end:
     ret                 ; 1:10      s;
