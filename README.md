@@ -417,32 +417,33 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 
-|    original    |     M4 FORTH    |    optimization    |   data stack          | comment          |
-| :------------: | :-------------: | :----------------: | :-------------------- | :--------------- |
-|                |  INIT(RAS_addr) |                    |                       | save SP, set RAS |
-|                |      STOP       |                    |          ( -- )       | load SP & HL'    |
-|`1` constant ONE|CONSTANT(ONE,`1`)|                    |          ( -- )       |                  |
-|    `3` var X   | VARIABLE(X,`1`) |                    |          ( -- )       |                  |
-|   variable X   |   VARIABLE(X)   |                    |          ( -- )       |                  |
-|        @       |      FETCH      |                    |     ( addr -- x )     | TOP = (addr)     |
-|     addr @     |                 |  PUSH_FETCH(addr)  |          ( -- x )     | TOP = (addr)     |
-|        !       |      STORE      |                    |   ( x addr -- )       | (addr) = x       |
-|     addr !     |                 |  PUSH_STORE(addr)  |        ( x -- )       | (addr) = x       |
-|    x addr !    |                 |PUSH2_STORE(x,addr) |          ( -- )       | (addr) = x       |
-|       C@       |      CFETCH     |                    |     ( addr -- char )  | TOP = (addr)     |
-|     addr C@    |                 | PUSH_CFETCH(addr)  |          ( -- char )  | TOP = (addr)     |
-|       C!       |      CSTORE     |                    |( char addr -- )       | (addr) = char    |
-|     addr C!    |                 | PUSH_CSTORE(addr)  |     ( char -- )       | (addr) = char    |
-|    x addr C!   |                 |PUSH2_CSTORE(x,addr)|          ( -- )       | (addr) = char    |
-|   x addr +!    |     ADDSTORE    |                    |   ( x addr -- )       | (addr) += x      |
-|     cmove      |      CMOVE      |                    |( from to u -- )       | 8bit, addr++     |
-|     cmove>     |     CMOVEGT     |                    |( from to u -- )       | 8bit, addr--     |
-|      move      |       MOVE      |                    |( from to u -- )       | 16bit, addr++    |
-|      move>     |      MOVEGT     |                    |( from to u -- )       | 16bit, addr++    |
-| `seed` seed !  |                 |  PUSH_STORE(SEED)  |     ( seed -- )       |                  |
-|       rnd      |       RND       |                    |          ( -- random )|                  |
-|     random     |      RANDOM     |                    |      ( max -- random )| random < max     |
-|                |     PUTPIXEL    |                    |       ( yx -- HL )    |                  |
+|    original    |      M4 FORTH     |    optimization    |   data stack          | comment          |
+| :------------: | :---------------: | :----------------: | :-------------------- | :--------------- |
+|                |   INIT(RAS_addr)  |                    |                       | save SP, set RAS |
+|                |       STOP        |                    |          ( -- )       | load SP & HL'    |
+|`1` constant ONE| CONSTANT(ONE,`1`) |                    |          ( -- )       |                  |
+|    `3` var X   |  VARIABLE(X,`1`)  |                    |          ( -- )       |                  |
+|   variable X   |    VARIABLE(X)    |                    |          ( -- )       |                  |
+|        @       |       FETCH       |                    |     ( addr -- x )     | TOP = (addr)     |
+|     addr @     |                   |  PUSH_FETCH(addr)  |          ( -- x )     | TOP = (addr)     |
+|        !       |       STORE       |                    |   ( x addr -- )       | (addr) = x       |
+|     addr !     |                   |  PUSH_STORE(addr)  |        ( x -- )       | (addr) = x       |
+|    x addr !    |                   |PUSH2_STORE(x,addr) |          ( -- )       | (addr) = x       |
+|       C@       |       CFETCH      |                    |     ( addr -- char )  | TOP = (addr)     |
+|     addr C@    |                   | PUSH_CFETCH(addr)  |          ( -- char )  | TOP = (addr)     |
+|       C!       |       CSTORE      |                    |( char addr -- )       | (addr) = char    |
+|     addr C!    |                   | PUSH_CSTORE(addr)  |     ( char -- )       | (addr) = char    |
+|    x addr C!   |                   |PUSH2_CSTORE(x,addr)|          ( -- )       | (addr) = char    |
+|       +!       |      ADDSTORE     |                    |   ( x addr -- )       | (addr) += x      |
+|   x addr +!    |PUSH2_ADDSTORE(x,a)|                    |          ( -- )       | (a) += x         |
+|     cmove      |       CMOVE       |                    |( from to u -- )       | 8bit, addr++     |
+|     cmove>     |      CMOVEGT      |                    |( from to u -- )       | 8bit, addr--     |
+|      move      |        MOVE       |                    |( from to u -- )       | 16bit, addr++    |
+|      move>     |       MOVEGT      |                    |( from to u -- )       | 16bit, addr++    |
+| `seed` seed !  |                   |  PUSH_STORE(SEED)  |     ( seed -- )       |                  |
+|       rnd      |        RND        |                    |          ( -- random )|                  |
+|     random     |       RANDOM      |                    |      ( max -- random )| random < max     |
+|                |      PUTPIXEL     |                    |       ( yx -- HL )    |                  |
 ### Output
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4
