@@ -260,21 +260,23 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
-| original   |   M4 FORTH   |  optimization  |  data stack              |  return address stack |
-| :--------: | :----------: | :------------: | :----------------------- | :-------------------- |
-|     .      |     DOT      |   UDOT if > 0  |       ( x1 -- )          |                       |
-|     u.     |     UDOT     |                |       ( x1 -- )          |                       |
-|   dup .    |              |    DUP_DOT     |       ( x1 -- x1 )       |                       |
-|   dup u.   |              |    DUP_UDOT    |       ( x1 -- x1 )       |                       |
-|     .s     |     DOTS     |                | ( x3 x2 x1 -- x3 x2 x1 ) |                       |
-|     cr     |      CR      |                |          ( -- )          |                       |
-|    emit    |     EMIT     |                |      ( 'a' -- )          |                       |
-|  'a' emit  |              |  PUTCHAR('a')  |          ( -- )          |                       |
-|    type    |     TYPE     |                |   ( addr n -- )          |                       |
-| 2dup type  |              |   _2DUP_TYPE   |   ( addr n -- addr n )   |                       |
-| .( Hello)  |PRINT("Hello")|                |          ( -- )          |                       |
-|     key    |      KEY     |                |          ( -- key )      |                       |
-|   accept   |    ACCEPT    |                | ( addr max -- loaded )   |                       |
+| original   |   M4 FORTH    |  optimization  |  data stack              |  return address stack |
+| :--------: | :-----------: | :------------: | :----------------------- | :-------------------- |
+|     .      |      DOT      |   UDOT if > 0  |       ( x1 -- )          |                       |
+|     u.     |     UDOT      |                |       ( x1 -- )          |                       |
+|   dup .    |               |    DUP_DOT     |       ( x1 -- x1 )       |                       |
+|   dup u.   |               |    DUP_UDOT    |       ( x1 -- x1 )       |                       |
+|     .s     |     DOTS      |                | ( x3 x2 x1 -- x3 x2 x1 ) |                       |
+|     cr     |      CR       |                |          ( -- )          |                       |
+|    emit    |     EMIT      |                |      ( 'a' -- )          |                       |
+|  'a' emit  |               |  PUTCHAR('a')  |          ( -- )          |                       |
+|    type    |     TYPE      |                |   ( addr n -- )          |                       |
+| 2dup type  |               |   _2DUP_TYPE   |   ( addr n -- addr n )   |                       |
+| .( Hello)  | PRINT("Hello")|                |          ( -- )          |                       |
+| ." Hello"  | PRINT("Hello")|                |          ( -- )          |                       |
+| s" Hello"  |STRING("Hello")|                |          ( -- addr n )   |                       |
+|     key    |      KEY      |                |          ( -- key )      |                       |
+|   accept   |     ACCEPT    |                | ( addr max -- loaded )   |                       |
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
@@ -415,30 +417,32 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 
-|    original    |     M4 FORTH    |  optimization   |   data stack          | comment          |
-| :------------: | :-------------: | :-------------: | :-------------------- | :--------------- |
-|                |  INIT(RAS_addr) |                 |                       | save SP, set RAS |
-|                |      STOP       |                 |          ( -- )       | load SP & HL'    |
-|`1` constant ONE|CONSTANT(ONE,`1`)|                 |          ( -- )       |                  |
-|    `3` var X   | VARIABLE(X,`1`) |                 |          ( -- )       |                  |
-|   variable X   |   VARIABLE(X)   |                 |          ( -- )       |                  |
-|        @       |      FETCH      |                 |     ( addr -- x )     | TOP = (addr)     |
-|     addr @     |                 | PUSH_FETCH(addr)|          ( -- x )     | TOP = (addr)     |
-|        !       |      STORE      |                 |   ( x addr -- )       | (addr) = x       |
-|     addr !     |                 | PUSH_STORE(addr)|        ( x -- )       | (addr) = x       |
-|       C@       |      CFETCH     |                 |     ( addr -- char )  | TOP = (addr)     |
-|     addr C@    |                 |PUSH_CFETCH(addr)|          ( -- char )  | TOP = (addr)     |
-|       C!       |      CSTORE     |                 |( char addr -- )       | (addr) = char    |
-|     addr C!    |                 |PUSH_CSTORE(addr)|     ( char -- )       | (addr) = char    |
-|   x addr +!    |     ADDSTORE    |                 |   ( x addr -- )       | (addr) += x      |
-|     cmove      |      CMOVE      |                 |( from to u -- )       | 8bit, addr++     |
-|     cmove>     |     CMOVEGT     |                 |( from to u -- )       | 8bit, addr--     |
-|      move      |       MOVE      |                 |( from to u -- )       | 16bit, addr++    |
-|      move>     |      MOVEGT     |                 |( from to u -- )       | 16bit, addr++    |
-| `seed` seed !  |                 | PUSH_STORE(SEED)|     ( seed -- )       |                  |
-|       rnd      |       RND       |                 |          ( -- random )|                  |
-|     random     |      RANDOM     |                 |      ( max -- random )| random < max     |
-|                |     PUTPIXEL    |                 |       ( yx -- HL )    |                  |
+|    original    |     M4 FORTH    |    optimization    |   data stack          | comment          |
+| :------------: | :-------------: | :----------------: | :-------------------- | :--------------- |
+|                |  INIT(RAS_addr) |                    |                       | save SP, set RAS |
+|                |      STOP       |                    |          ( -- )       | load SP & HL'    |
+|`1` constant ONE|CONSTANT(ONE,`1`)|                    |          ( -- )       |                  |
+|    `3` var X   | VARIABLE(X,`1`) |                    |          ( -- )       |                  |
+|   variable X   |   VARIABLE(X)   |                    |          ( -- )       |                  |
+|        @       |      FETCH      |                    |     ( addr -- x )     | TOP = (addr)     |
+|     addr @     |                 |  PUSH_FETCH(addr)  |          ( -- x )     | TOP = (addr)     |
+|        !       |      STORE      |                    |   ( x addr -- )       | (addr) = x       |
+|     addr !     |                 |  PUSH_STORE(addr)  |        ( x -- )       | (addr) = x       |
+|    x addr !    |                 |PUSH2_STORE(x,addr) |          ( -- )       | (addr) = x       |
+|       C@       |      CFETCH     |                    |     ( addr -- char )  | TOP = (addr)     |
+|     addr C@    |                 | PUSH_CFETCH(addr)  |          ( -- char )  | TOP = (addr)     |
+|       C!       |      CSTORE     |                    |( char addr -- )       | (addr) = char    |
+|     addr C!    |                 | PUSH_CSTORE(addr)  |     ( char -- )       | (addr) = char    |
+|    x addr C!   |                 |PUSH2_CSTORE(x,addr)|          ( -- )       | (addr) = char    |
+|   x addr +!    |     ADDSTORE    |                    |   ( x addr -- )       | (addr) += x      |
+|     cmove      |      CMOVE      |                    |( from to u -- )       | 8bit, addr++     |
+|     cmove>     |     CMOVEGT     |                    |( from to u -- )       | 8bit, addr--     |
+|      move      |       MOVE      |                    |( from to u -- )       | 16bit, addr++    |
+|      move>     |      MOVEGT     |                    |( from to u -- )       | 16bit, addr++    |
+| `seed` seed !  |                 |  PUSH_STORE(SEED)  |     ( seed -- )       |                  |
+|       rnd      |       RND       |                    |          ( -- random )|                  |
+|     random     |      RANDOM     |                    |      ( max -- random )| random < max     |
+|                |     PUTPIXEL    |                    |       ( yx -- HL )    |                  |
 ### Output
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4
