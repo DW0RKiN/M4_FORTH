@@ -114,9 +114,24 @@ define({PUSH_CSTORE},{
     pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
 dnl
 dnl
+dnl x addr !
+dnl ( -- )
+dnl store(addr) store 16-bit number at addr
+define({PUSH2_STORE},{
+    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_store($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_store($1,$2)})dnl
+dnl
+dnl
+dnl char addr C!
+dnl ( -- )
+dnl store(addr) store 8-bit number at addr
+define({PUSH2_CSTORE},{
+    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      push2_cstore($1,$2)
+    ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)})dnl
+dnl
 dnl
 dnl +!
-dnl ( nun addr -- )
+dnl ( num addr -- )
 dnl Adds num to the 16-bit number stored at addr.
 define({ADDSTORE},{
     ld    A, E          ; 1:4       +! addstore
@@ -128,6 +143,18 @@ define({ADDSTORE},{
     ld  (HL),A          ; 1:7       +! addstore
     pop  HL             ; 1:10      +! addstore
     pop  DE             ; 1:10      +! addstore})dnl
+dnl
+dnl
+dnl num addr +!
+dnl ( -- )
+dnl Adds num to the 16-bit number stored at addr.
+define({PUSH2_ADDSTORE},{
+    push HL             ; 1:11      push2_addstore($1,$2)
+    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_addstore($1,$2)
+    ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
+    add  HL, BC         ; 1:11      push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} HL); 3:16      push2_addstore($1,$2)
+    pop  HL             ; 1:10      push2_addstore($1,$2)})dnl
 dnl
 dnl
 dnl cmove
@@ -207,5 +234,6 @@ dnl
 dnl ( yx -- addr )
 define({PUTPIXEL},{ifdef({USE_PIXEL},,define({USE_PIXEL},{}))
     call PIXEL          ; 3:17      pixel})dnl
+dnl
 dnl
 dnl

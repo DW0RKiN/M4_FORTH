@@ -93,7 +93,21 @@ define(PRINT,{define({PRINT_COUNT}, incr(PRINT_COUNT))
     ld   BC, size{}PRINT_COUNT    ; 3:10      print Length of string to print
     ld   DE, string{}PRINT_COUNT  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    pop  DE             ; 1:10      print{}dnl
+pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
+db STRING_POP
+size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
+ALL_STRING_STACK)})dnl
+dnl
+dnl 
+dnl s" string"
+dnl ( -- addr n )
+dnl addr = address string, n = lenght(string)
+define(STRING,{define({PRINT_COUNT}, incr(PRINT_COUNT))
+    push DE             ; 1:11      string
+    push HL             ; 1:11      string
+    ld   HL, size{}PRINT_COUNT    ; 3:10      string Length of string
+    ld   DE, string{}PRINT_COUNT  ; 3:10      string Address of string{}dnl
 pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
 db STRING_POP
 size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
