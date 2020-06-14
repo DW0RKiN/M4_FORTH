@@ -422,8 +422,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |                |   INIT(RAS_addr)  |                    |                       | save SP, set RAS |
 |                |       STOP        |                    |          ( -- )       | load SP & HL'    |
 |`1` constant ONE| CONSTANT(ONE,`1`) |                    |          ( -- )       |                  |
-|    `3` var X   |  VARIABLE(X,`1`)  |                    |          ( -- )       |                  |
-|   variable X   |    VARIABLE(X)    |                    |          ( -- )       |                  |
+|    `3` var X   |  VARIABLE(X,`1`)  |                    |          ( -- )       | X: dw `3`        |
+|   variable X   |    VARIABLE(X)    |                    |          ( -- )       | X: dw 0x00       |
+|   'a' cvar X   |  CVARIABLE(X,'a') |                    |          ( -- )       | X: db 'a'        |
+|   `4` dvar X   |  DVARIABLE(X,`4`) |                    |          ( -- )       | X: dw `4`, 0x0000|
 |        @       |       FETCH       |                    |     ( addr -- x )     | TOP = (addr)     |
 |     addr @     |                   |  PUSH_FETCH(addr)  |          ( -- x )     | TOP = (addr)     |
 |        !       |       STORE       |                    |   ( x addr -- )       | (addr) = x       |

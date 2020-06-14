@@ -212,6 +212,7 @@ do
     sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+const\s\+\([^ 	]\+\)\(\s\|$\)#\1CONSTANT(\3,\2)\4#gi' |
     sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+constant\s\+\([^ 	]\+\)\(\s\|$\)#\1CONSTANT(\3,\2)\4#gi' |
     sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+var\s\+\([^ 	]\+\)\(\s\|$\)#\1VARIABLE(\3,\2)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+dvar\s\+\([^ 	]\+\)\(\s\|$\)#\1DVARIABLE(\3,\2)\4#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Vv]ariable\(\s\|$\)#\1VARIABLE\2#g' |
     sed 's#^\([^;{]*\s\|^\)VARIABLE\s\+\([^ 	]\+\)\(\s\|$\)#\1VARIABLE(\2)\3#g' |
@@ -280,6 +281,7 @@ done
 
 # variable --> 0000000000xxx
 VAR=""
+VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)DVARIABLE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)DVARIABLE(\([^,)]\+\)[,)].*#\2#g'`"
 VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)VARIABLE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)VARIABLE(\([^,)]\+\)[,)].*#\2#g'`"
 VAR="$VAR `cat $TMPFILE | grep '^\([^;{]*\s\|^\)CONSTANT(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)CONSTANT(\([^,)]\+\)[,)].*#\2#g'`"
 
