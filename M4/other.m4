@@ -31,10 +31,25 @@ define({ALL_VARIABLE},{
 VARIABLE_SECTION:
 })dnl
 dnl
+define({CVARIABLE},{define({ALL_VARIABLE},{
+}ALL_VARIABLE{
+$1: db ifelse($#,{0},{
+.error variable without parameter!},$#,{1},{0x00},{$2})})})dnl
+dnl
+dnl
+define({DVARIABLE},{define({ALL_VARIABLE},{
+}ALL_VARIABLE{
+$1: dw ifelse($#,{0},{
+.error variable without parameter!},$#,{1},{0x0000
+dw 0x0000},{$2
+dw 0x0000})})})dnl
+dnl
+dnl
 define({VARIABLE},{define({ALL_VARIABLE},{
 }ALL_VARIABLE{
 $1: dw ifelse($#,{0},{
 .error variable without parameter!},$#,{1},{0x0000},$2)})})dnl
+dnl
 dnl
 dnl ## Memory access
 dnl
