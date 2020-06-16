@@ -26,6 +26,18 @@ define({DUP},{
     ld    E, L          ; 1:4       dup ( a -- a a )})dnl
 dnl
 dnl
+dnl ?dup
+dnl ( a -- a a ) or ( 0 -- 0 )
+dnl vytvori kopii vrcholu zasobniku pokud je nenulovy
+define({QUESTIONDUP},{
+    ld    A, H          ; 1:4       ?dup
+    or    L             ; 1:4       ?dup
+    jr    z, $+5        ; 2:7/12    ?dup
+    push DE             ; 1:11      ?dup
+    ld    D, H          ; 1:4       ?dup
+    ld    E, L          ; 1:4       ?dup ( a -- 0 | a a )})dnl
+dnl
+dnl
 dnl 2dup
 dnl ( a b -- a b a b )
 dnl over over
@@ -309,5 +321,6 @@ define({RDROP},{
     inc   L             ; 1:4       rdrop
     inc   H             ; 1:6       rdrop
     exx                 ; 1:4       rdrop r:( a -- )})dnl
+dnl
 dnl
 dnl
