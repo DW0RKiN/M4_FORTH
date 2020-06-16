@@ -142,10 +142,10 @@ SSEMICOLON
 
 SCOLON(move_snake_head)  
     PUSH(direction) FETCH 
-    PUSH(left)  OVER EQ IF SCALL(move_left)  ELSE 
-    PUSH(up)    OVER EQ IF SCALL(move_up)    ELSE 
-    PUSH(right) OVER EQ IF SCALL(move_right) ELSE 
-    PUSH(down)  OVER EQ IF SCALL(move_down) 
+    PUSH(left)  OVER EQ_IF SCALL(move_left)  ELSE 
+    PUSH(up)    OVER EQ_IF SCALL(move_up)    ELSE 
+    PUSH(right) OVER EQ_IF SCALL(move_right) ELSE 
+    PUSH(down)  OVER EQ_IF SCALL(move_down) 
     THEN THEN THEN THEN DROP 
 SSEMICOLON  
 
@@ -178,10 +178,10 @@ SCOLON(turn_down)  CALL(is_horizontal) IF PUSH(down)  PUSH_STORE(direction) THEN
 SCOLON(turn_right) CALL(is_vertical)   IF PUSH(right) PUSH_STORE(direction) THEN SSEMICOLON  
   
 COLON(change_direction,( key -- ))
-  PUSH('o') OVER EQ IF SCALL(turn_left)  ELSE 
-  PUSH('q') OVER EQ IF SCALL(turn_up)    ELSE 
-  PUSH('p') OVER EQ IF SCALL(turn_right) ELSE 
-  PUSH('a') OVER EQ IF SCALL(turn_down) 
+  PUSH('o') OVER EQ_IF SCALL(turn_left)  ELSE 
+  PUSH('q') OVER EQ_IF SCALL(turn_up)    ELSE 
+  PUSH('p') OVER EQ_IF SCALL(turn_right) ELSE 
+  PUSH('a') OVER EQ_IF SCALL(turn_down) 
   THEN THEN THEN THEN DROP 
 SEMICOLON  
 

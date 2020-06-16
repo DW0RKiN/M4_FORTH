@@ -720,17 +720,11 @@ move_snake_head:        ;
     ld   HL, 0          ; 3:10      push(0)  
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else101    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else101    ; 3:10      = if 
     call move_left      ; 3:17      scall  
     jp   endif101       ; 3:10      else
 else101: 
@@ -740,17 +734,11 @@ else101:
     ld   HL, 1          ; 3:10      push(1)    
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else102    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else102    ; 3:10      = if 
     call move_up        ; 3:17      scall    
     jp   endif102       ; 3:10      else
 else102: 
@@ -760,17 +748,11 @@ else102:
     ld   HL, 2          ; 3:10      push(2) 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else103    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else103    ; 3:10      = if 
     call move_right     ; 3:17      scall 
     jp   endif103       ; 3:10      else
 else103: 
@@ -780,17 +762,11 @@ else103:
     ld   HL, 3          ; 3:10      push(3)  
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else104    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else104    ; 3:10      = if 
     call move_down      ; 3:17      scall 
     
 else104  EQU $          ;           = endif
@@ -1097,17 +1073,11 @@ change_direction:       ;           ( key -- )
     ld   HL, 'o'        ; 3:10      push('o') 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else109    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else109    ; 3:10      = if 
     call turn_left      ; 3:17      scall  
     jp   endif109       ; 3:10      else
 else109: 
@@ -1117,17 +1087,11 @@ else109:
     ld   HL, 'q'        ; 3:10      push('q') 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else110    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else110    ; 3:10      = if 
     call turn_up        ; 3:17      scall    
     jp   endif110       ; 3:10      else
 else110: 
@@ -1137,17 +1101,11 @@ else110:
     ld   HL, 'p'        ; 3:10      push('p') 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else111    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else111    ; 3:10      = if 
     call turn_right     ; 3:17      scall 
     jp   endif111       ; 3:10      else
 else111: 
@@ -1157,17 +1115,11 @@ else111:
     ld   HL, 'a'        ; 3:10      push('a') 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    or    A             ; 1:4       =
-    sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
-    pop  DE             ; 1:10      = 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else112    ; 3:10      if 
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else112    ; 3:10      = if 
     call turn_down      ; 3:17      scall 
   
 else112  EQU $          ;           = endif
