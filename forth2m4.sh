@@ -225,6 +225,7 @@ do
     sed 's#^\([^;{]*\s\|^\)[Ff]alse\(\s\|$\)#\1FALSE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Tt]rue\(\s\|$\)#\1TRUE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ii]nvert\(\s\|$\)#\1INVERT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Ww]ithin\(\s\|$\)#\1WITHIN\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Aa]bs\(\s\|$\)#\1ABS\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Xx]or\(\s\|$\)#\1XOR\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Oo]r\(\s\|$\)#\1OR\2#g' |

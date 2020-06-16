@@ -234,6 +234,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |    xor     |     XOR      |                |       ( x1 -- -x1 )   |         |
 |    abs     |     ABS      |                |        ( n -- u )     |         |
 |   invert   |    INVERT    |                |       ( x1 -- ~x1 )   |         |
+|   within   |    WITHIN    |                |    ( c b a -- flag )  |         |(a-b) (c-b) U<
 |    true    |     TRUE     |                |          ( -- -1 )    |         |
 |   false    |    FALSE     |                |          ( -- 0 )     |         |
 |      =     |      EQ      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0

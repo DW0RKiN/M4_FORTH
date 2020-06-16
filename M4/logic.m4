@@ -45,6 +45,23 @@ define(INVERT,{
     cpl                 ; 1:4       invert
     ld    H, A          ; 1:4       invert})dnl
 dnl
+dnl
+dnl ( a b c -- ((a-b) (c-b) U<) )
+define(WITHIN,{
+    ld    A, L          ; 1:4       within
+    sub   E             ; 1:4       within
+    ld    C, A          ; 1:4       within
+    ld    A, H          ; 1:4       within
+    sbc   A, D          ; 1:4       within
+    ld    B, A          ; 1:4       within c-b
+    pop  HL             ; 1:10      within
+    or    A             ; 1:4       within
+    sbc  HL, DE         ; 2:15      within a-b
+    or    A             ; 1:4       within
+    sbc  HL, BC         ; 2:15      within (a-b) - (c-B) < 0
+    sbc  HL, HL         ; 2:15      within
+    pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )})dnl
+dnl
 dnl -------------------------------------
 dnl
 dnl ( -- x )
