@@ -316,6 +316,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |  dup 0>= if  |              |     DUP_0GE_IF     |      ( x1 -- x1 )   |         |
 |    D0= if    |              |      D0EQ_IF       |    (x1 x2 -- )      |         |
 | 2dup D0= if  |              |   _2DUP_D0EQ_IF    |    (x1 x2 -- x1 x2) |         |
+|     =  if    |              |       EQ_IF        |    (x1 x2 -- )      |         |
+|     <> if    |              |       NE_IF        |    (x1 x2 -- )      |         |
+|     <  if    |              |       LT_IF        |    (x1 x2 -- )      |         |
+|     <= if    |              |       LE_IF        |    (x1 x2 -- )      |         |
+|     >  if    |              |       GT_IF        |    (x1 x2 -- )      |         |
+|     >= if    |              |       GE_IF        |    (x1 x2 -- )      |         |
+|    u=  if    |              |       UEQ_IF       |    (x1 x2 -- )      |         |
+|    u<> if    |              |       UNE_IF       |    (x1 x2 -- )      |         |
+|    u<  if    |              |       ULT_IF       |    (x1 x2 -- )      |         |
+|    u<= if    |              |       ULE_IF       |    (x1 x2 -- )      |         |
+|    u>  if    |              |       UGT_IF       |    (x1 x2 -- )      |         |
+|    u>= if    |              |       UGE_IF       |    (x1 x2 -- )      |         |
 |dup `5`  <  if|              |DUP_PUSH_LT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
 |dup `5`  <= if|              |DUP_PUSH_LE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
 |dup `5`  >  if|              |DUP_PUSH_GT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
@@ -423,7 +435,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |                |       STOP        |                    |          ( -- )       | load SP & HL'    |
 |`1` constant ONE| CONSTANT(ONE,`1`) |                    |          ( -- )       |                  |
 |    `3` var X   |  VARIABLE(X,`1`)  |                    |          ( -- )       | X: dw `3`        |
-|   variable X   |    VARIABLE(X)    |                    |          ( -- )       | X: dw 0x00       |
+|   variable X   |    VARIABLE(X)    |                    |          ( -- )       | X: dw 0x0000     |
 |   'a' cvar X   |  CVARIABLE(X,'a') |                    |          ( -- )       | X: db 'a'        |
 |   `4` dvar X   |  DVARIABLE(X,`4`) |                    |          ( -- )       | X: dw `4`, 0x0000|
 |        @       |       FETCH       |                    |     ( addr -- x )     | TOP = (addr)     |

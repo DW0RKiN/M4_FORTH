@@ -320,35 +320,43 @@ do
     sed 's#^\([^;{]*\s\|^\)DUP\s\+IF\(\s\|$\)#\1DUP_IF\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)_0EQ\s\+IF\(\s\|$\)#\1_0EQ_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0EQ_IF\(\s\|$\)#\1DUP_0EQ_IF\2#gi' |
-
     sed 's#^\([^;{]*\s\|^\)_0LT\s\+IF\(\s\|$\)#\1_0LT_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0LT_IF\(\s\|$\)#\1DUP_0LT_IF\2#gi' |
-
     sed 's#^\([^;{]*\s\|^\)_0GE\s\+IF\(\s\|$\)#\1_0GE_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0GE_IF\(\s\|$\)#\1DUP_0GE_IF\2#gi' |
-
     sed 's#^\([^;{]*\s\|^\)D0EQ\s\+IF\(\s\|$\)#\1D0EQ_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+D0EQ_IF\(\s\|$\)#\1_2DUP_D0EQ_IF\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)LT\s\+IF\(\s\|$\)#\1LT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)LE\s\+IF\(\s\|$\)#\1LE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)GT\s\+IF\(\s\|$\)#\1GT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)GE\s\+IF\(\s\|$\)#\1GE_IF\2#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)ULT\s\+IF\(\s\|$\)#\1ULT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)ULE\s\+IF\(\s\|$\)#\1ULE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)UGT\s\+IF\(\s\|$\)#\1UGT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)UGE\s\+IF\(\s\|$\)#\1UGE_IF\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0EQ_IF\(\s\|$\)#\1DUP_0EQ_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0LT_IF\(\s\|$\)#\1DUP_0LT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0GE_IF\(\s\|$\)#\1DUP_0GE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+D0EQ_IF\(\s\|$\)#\1_2DUP_D0EQ_IF\2#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)DUP\sWHILE\(\s\|$\)#\1DUP_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\sUDOT\(\s\|$\)#\1DUP_UDOT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\sDOT\(\s\|$\)#\1DUP_DOT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\sTYPE\(\s\|$\)#\1_2DUP_TYPE\2#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+IF\(\s\|$\)#\1_2DUP_EQ_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE\s\+IF\(\s\|$\)#\1_2DUP_NE_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LT\s\+IF\(\s\|$\)#\1_2DUP_LT_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LE\s\+IF\(\s\|$\)#\1_2DUP_LE_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GT\s\+IF\(\s\|$\)#\1_2DUP_GT_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GE\s\+IF\(\s\|$\)#\1_2DUP_GE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ_IF\(\s\|$\)#\1_2DUP_EQ_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE_IF\(\s\|$\)#\1_2DUP_NE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LT_IF\(\s\|$\)#\1_2DUP_LT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LE_IF\(\s\|$\)#\1_2DUP_LE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GT_IF\(\s\|$\)#\1_2DUP_GT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GE_IF\(\s\|$\)#\1_2DUP_GE_IF\2#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UEQ\s\+IF\(\s\|$\)#\1_2DUP_UEQ_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UNE\s\+IF\(\s\|$\)#\1_2DUP_UNE_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULT\s\+IF\(\s\|$\)#\1_2DUP_ULT_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULE\s\+IF\(\s\|$\)#\1_2DUP_ULE_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGT\s\+IF\(\s\|$\)#\1_2DUP_UGT_IF\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGE\s\+IF\(\s\|$\)#\1_2DUP_UGE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UEQ_IF\(\s\|$\)#\1_2DUP_UEQ_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UNE_IF\(\s\|$\)#\1_2DUP_UNE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULT_IF\(\s\|$\)#\1_2DUP_ULT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULE_IF\(\s\|$\)#\1_2DUP_ULE_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGT_IF\(\s\|$\)#\1_2DUP_UGT_IF\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGE_IF\(\s\|$\)#\1_2DUP_UGE_IF\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+WHILE\(\s\|$\)#\1_2DUP_EQ_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE\s\+WHILE\(\s\|$\)#\1_2DUP_NE_WHILE\2#gi' |
@@ -375,20 +383,19 @@ do
     
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+EMIT\(\s\|$\)#\1PUTCHAR(\2)\3#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LT\s\+IF\(\s\|$\)#\1DUP_PUSH_LT_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LE\s\+IF\(\s\|$\)#\1DUP_PUSH_LE_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GT\s\+IF\(\s\|$\)#\1DUP_PUSH_GT_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GE\s\+IF\(\s\|$\)#\1DUP_PUSH_GE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LT_IF\(\s\|$\)#\1DUP_PUSH_LT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LE_IF\(\s\|$\)#\1DUP_PUSH_LE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GT_IF\(\s\|$\)#\1DUP_PUSH_GT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GE_IF\(\s\|$\)#\1DUP_PUSH_GE_IF(\2)\3#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULT\s\+IF\(\s\|$\)#\1DUP_PUSH_ULT_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULE\s\+IF\(\s\|$\)#\1DUP_PUSH_ULE_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGT\s\+IF\(\s\|$\)#\1DUP_PUSH_UGT_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGE\s\+IF\(\s\|$\)#\1DUP_PUSH_UGE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULT_IF\(\s\|$\)#\1DUP_PUSH_ULT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULE_IF\(\s\|$\)#\1DUP_PUSH_ULE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGT_IF\(\s\|$\)#\1DUP_PUSH_UGT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGE_IF\(\s\|$\)#\1DUP_PUSH_UGE_IF(\2)\3#gi' |
 
     sed 's#^\([^;{]*\s\|^\)DROP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1DROP_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DROP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1_2DROP_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1DUP_PUSH(\2)\3#gi' |
-
 
     sed 's#^\([^;{]*\s\|^\)1+\(\s\|$\)#\1_1ADD\2#gi' |
     sed 's#^\([^;{]*\s\|^\)1-\(\s\|$\)#\1_1SUB\2#gi' |
