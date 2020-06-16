@@ -333,4 +333,138 @@ define({_2DUP_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF
     xor   C             ; 1:4       2dup > if
     jp    p, else{}IF_COUNT    ; 3:10      2dup > if})dnl
 dnl
+dnl    
+dnl ------ ucond if ---------
+dnl
+define({UEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    or    A             ; 1:4       u= if
+    sbc  HL, DE         ; 2:15      u= if
+    pop  HL             ; 1:10      u= if
+    pop  DE             ; 1:10      u= if
+    jp   nz, else{}IF_COUNT    ; 3:10      u= if})dnl
+dnl
+dnl
+define({UNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    or    A             ; 1:4       u<> if
+    sbc  HL, DE         ; 2:15      u<> if
+    pop  HL             ; 1:10      u<> if
+    pop  DE             ; 1:10      u<> if
+    jp    z, else{}IF_COUNT    ; 3:10      u<> if})dnl
+dnl
+dnl
+define({ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, E          ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    pop  HL             ; 1:10      u< if
+    pop  DE             ; 1:10      u< if
+    jp   nc, else{}IF_COUNT    ; 3:10      u< if})dnl
+dnl    
+dnl
+define({UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, E          ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    pop  HL             ; 1:10      u>= if
+    pop  DE             ; 1:10      u>= if
+    jp    c, else{}IF_COUNT    ; 3:10      u>= if})dnl
+dnl    
+dnl
+define({ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, L          ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sub   E             ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, H          ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sbc   A, D          ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    pop  HL             ; 1:10      u<= if
+    pop  DE             ; 1:10      u<= if
+    jp    c, else{}IF_COUNT    ; 3:10      u<= if})dnl
+dnl    
+dnl
+define({UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, L          ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sub   E             ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    sbc   A, D          ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    pop  HL             ; 1:10      u> if
+    pop  DE             ; 1:10      u> if
+    jp   nc, else{}IF_COUNT    ; 3:10      u> if})dnl
+dnl
+dnl    
+dnl ------ scond if ---------
+dnl
+dnl = if
+define({EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else{}IF_COUNT    ; 3:10      = if})dnl
+dnl
+dnl
+dnl <> if
+define({NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    or    A             ; 1:4       <> if
+    sbc  HL, DE         ; 2:15      <> if
+    pop  HL             ; 1:10      <> if
+    pop  DE             ; 1:10      <> if
+    jp    z, else{}IF_COUNT    ; 3:10      <> if})dnl
+dnl
+dnl
+dnl < if
+define({LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       < if
+    xor   D             ; 1:4       < if
+    ld    C, A          ; 1:4       < if
+    ld    A, E          ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    rra                 ; 1:4       < if
+    xor   C             ; 1:4       < if
+    pop  HL             ; 1:10      < if
+    pop  DE             ; 1:10      < if
+    jp    p, else{}IF_COUNT    ; 3:10      < if})dnl
+dnl
+dnl
+dnl >= if
+define({GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       >= if
+    xor   D             ; 1:4       >= if
+    ld    C, A          ; 1:4       >= if
+    ld    A, E          ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    rra                 ; 1:4       >= if
+    xor   C             ; 1:4       >= if
+    pop  HL             ; 1:10      >= if
+    pop  DE             ; 1:10      >= if
+    jp    m, else{}IF_COUNT    ; 3:10      >= if})dnl
+dnl
+dnl
+dnl <= if
+define({LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       <= if
+    xor   D             ; 1:4       <= if
+    sbc  HL, DE         ; 2:15      <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    rra                 ; 1:4       <= if
+    add   A, 0x40       ; 2:7       <= if
+    pop  HL             ; 1:10      <= if
+    pop  DE             ; 1:10      <= if
+    jp    m, else{}IF_COUNT    ; 3:10      <= if})dnl
+dnl    
+dnl
+dnl > if
+define({GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       > if
+    xor   D             ; 1:4       > if
+    sbc  HL, DE         ; 2:15      > if    (DE>HL) --> (HL-DE<0) --> carry if true
+    rra                 ; 1:4       > if
+    add   A, 0x40       ; 2:7       > if
+    pop  HL             ; 1:10      > if
+    pop  DE             ; 1:10      > if
+    jp    p, else{}IF_COUNT    ; 3:10      > if})dnl
+dnl
 dnl
