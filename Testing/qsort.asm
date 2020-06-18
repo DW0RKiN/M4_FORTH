@@ -46,7 +46,6 @@ ORG 0x8000
     ld   DE, string101  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     exx
     push HL
     exx
@@ -90,7 +89,7 @@ generate:               ;           (addr len -- )
     ld  (HL),E          ; 1:7       do 101 index
     exx                 ; 1:4       do 101
     pop  HL             ; 1:10      do 101
-    pop  DE             ; 1:10      do 101 ( stop index -- ) r: ( -- stop index )
+    pop  DE             ; 1:10      do 101 ( stop index -- ) R: ( -- stop index )
 do101: 
         
     ex   DE, HL         ; 1:4       rnd
@@ -101,43 +100,48 @@ do101:
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     exx                 ; 1:4       index 101 i    
-    ld   E,(HL)         ; 1:7       index 101 i
-    inc  L              ; 1:4       index 101 i
-    ld   D,(HL)         ; 1:7       index 101 i
+    ld    E,(HL)        ; 1:7       index 101 i
+    inc   L             ; 1:4       index 101 i
+    ld    D,(HL)        ; 1:7       index 101 i
     push DE             ; 1:11      index 101 i
-    dec  L              ; 1:4       index 101 i
+    dec   L             ; 1:4       index 101 i
     exx                 ; 1:4       index 101 i
     ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP), HL        ; 1:19      index 101 i 
+    ex  (SP),HL         ; 1:19      index 101 i 
     ld  (HL), E         ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL), D         ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store
     
-    exx                 ; 1:4       loop 101
-    ld   E,(HL)         ; 1:7       loop 101
-    inc  L              ; 1:4       loop 101
-    ld   D,(HL)         ; 1:7       loop 101 DE = index   
-    inc  HL             ; 1:6       loop 101
-    inc  DE             ; 1:6       loop 101
-    inc  DE             ; 1:6       loop 101 index + 2
-    ld    A, E          ; 1:4       loop 101
-    sub (HL)            ; 1:7       loop 101 lo index - stop
-    ld    A, D          ; 1:4       loop 101
-    inc   L             ; 1:4       loop 101
-    sbc  A,(HL)         ; 1:7       loop 101 hi index - stop
-    jr  nc, leave101    ; 2:7/12    loop 101 exit
-    dec  L              ; 1:4       loop 101
-    dec  HL             ; 1:6       loop 101
-    ld  (HL), D         ; 1:7       loop 101
-    dec  L              ; 1:4       loop 101
-    ld  (HL), E         ; 1:7       loop 101
-    exx                 ; 1:4       loop 101
-    jp   do101          ; 3:10      loop 101
+                        ;           push_addloop(2) 101
+    exx                 ; 1:4       2 +loop 101
+    ld    E,(HL)        ; 1:7       2 +loop 101
+    inc   L             ; 1:4       2 +loop 101
+    ld    D,(HL)        ; 1:7       2 +loop 101 DE = index
+    inc  DE             ; 1:6       2 +loop 101
+    inc  DE             ; 1:6       2 +loop 101 DE = index+2
+    inc  HL             ; 1:6       2 +loop 101
+    ld    A, E          ; 1:4       2 +loop 101    
+    sub (HL)            ; 1:7       2 +loop 101 lo index+2-stop
+    rra                 ; 1:4       2 +loop 101
+    add   A, A          ; 1:4       2 +loop 101 and 0xFE with save carry
+    jr   nz, $+8        ; 2:7/12    2 +loop 101
+    ld    A, D          ; 1:4       2 +loop 101
+    inc   L             ; 1:4       2 +loop 101
+    sbc   A,(HL)        ; 1:7       2 +loop 101 hi index+2-stop
+    jr    z, leave101   ; 2:7/12    2 +loop 101
+    dec   L             ; 1:4       2 +loop 101   
+    dec  HL             ; 1:6       2 +loop 101
+    ld  (HL),D          ; 1:7       2 +loop 101
+    dec   L             ; 1:4       2 +loop 101
+    ld  (HL),E          ; 1:7       2 +loop 101
+    exx                 ; 1:4       2 +loop 101
+    jp    p, do101      ; 3:10      2 +loop 101 ( -- ) R:( stop index -- stop index+ )
 leave101:
-    inc  HL             ; 1:6       loop 101
-    exx                 ; 1:4       loop 101
+    inc  HL             ; 1:6       2 +loop 101
+    exx                 ; 1:4       2 +loop 101
+exit101 EQU $
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -185,47 +189,52 @@ print:                  ;           (addr len -- )
     ld  (HL),E          ; 1:7       do 102 index
     exx                 ; 1:4       do 102
     pop  HL             ; 1:10      do 102
-    pop  DE             ; 1:10      do 102 ( stop index -- ) r: ( -- stop index )
+    pop  DE             ; 1:10      do 102 ( stop index -- ) R: ( -- stop index )
 do102: 
         
     exx                 ; 1:4       index 102 i    
-    ld   E,(HL)         ; 1:7       index 102 i
-    inc  L              ; 1:4       index 102 i
-    ld   D,(HL)         ; 1:7       index 102 i
+    ld    E,(HL)        ; 1:7       index 102 i
+    inc   L             ; 1:4       index 102 i
+    ld    D,(HL)        ; 1:7       index 102 i
     push DE             ; 1:11      index 102 i
-    dec  L              ; 1:4       index 102 i
+    dec   L             ; 1:4       index 102 i
     exx                 ; 1:4       index 102 i
     ex   DE, HL         ; 1:4       index 102 i
-    ex  (SP), HL        ; 1:19      index 102 i 
+    ex  (SP),HL         ; 1:19      index 102 i 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     call PRINT_S16      ; 3:17      .
     
-    exx                 ; 1:4       loop 102
-    ld   E,(HL)         ; 1:7       loop 102
-    inc  L              ; 1:4       loop 102
-    ld   D,(HL)         ; 1:7       loop 102 DE = index   
-    inc  HL             ; 1:6       loop 102
-    inc  DE             ; 1:6       loop 102
-    inc  DE             ; 1:6       loop 102 index + 2
-    ld    A, E          ; 1:4       loop 102
-    sub (HL)            ; 1:7       loop 102 lo index - stop
-    ld    A, D          ; 1:4       loop 102
-    inc   L             ; 1:4       loop 102
-    sbc  A,(HL)         ; 1:7       loop 102 hi index - stop
-    jr  nc, leave102    ; 2:7/12    loop 102 exit
-    dec  L              ; 1:4       loop 102
-    dec  HL             ; 1:6       loop 102
-    ld  (HL), D         ; 1:7       loop 102
-    dec  L              ; 1:4       loop 102
-    ld  (HL), E         ; 1:7       loop 102
-    exx                 ; 1:4       loop 102
-    jp   do102          ; 3:10      loop 102
+                        ;           push_addloop(2) 102
+    exx                 ; 1:4       2 +loop 102
+    ld    E,(HL)        ; 1:7       2 +loop 102
+    inc   L             ; 1:4       2 +loop 102
+    ld    D,(HL)        ; 1:7       2 +loop 102 DE = index
+    inc  DE             ; 1:6       2 +loop 102
+    inc  DE             ; 1:6       2 +loop 102 DE = index+2
+    inc  HL             ; 1:6       2 +loop 102
+    ld    A, E          ; 1:4       2 +loop 102    
+    sub (HL)            ; 1:7       2 +loop 102 lo index+2-stop
+    rra                 ; 1:4       2 +loop 102
+    add   A, A          ; 1:4       2 +loop 102 and 0xFE with save carry
+    jr   nz, $+8        ; 2:7/12    2 +loop 102
+    ld    A, D          ; 1:4       2 +loop 102
+    inc   L             ; 1:4       2 +loop 102
+    sbc   A,(HL)        ; 1:7       2 +loop 102 hi index+2-stop
+    jr    z, leave102   ; 2:7/12    2 +loop 102
+    dec   L             ; 1:4       2 +loop 102   
+    dec  HL             ; 1:6       2 +loop 102
+    ld  (HL),D          ; 1:7       2 +loop 102
+    dec   L             ; 1:4       2 +loop 102
+    ld  (HL),E          ; 1:7       2 +loop 102
+    exx                 ; 1:4       2 +loop 102
+    jp    p, do102      ; 3:10      2 +loop 102 ( -- ) R:( stop index -- stop index+ )
 leave102:
-    inc  HL             ; 1:6       loop 102
-    exx                 ; 1:4       loop 102
+    inc  HL             ; 1:6       2 +loop 102
+    exx                 ; 1:4       2 +loop 102
+exit102 EQU $
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -711,7 +720,6 @@ stack_test:             ;
     ld   DE, string102  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     
 Stop:
     ld   SP, 0x0000     ; 3:10      not need

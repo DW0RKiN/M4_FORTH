@@ -25,7 +25,7 @@ COLON(generate,(addr len -- ))
     DO 
         RND
         DUP_DOT I STORE
-    _2ADDLOOP
+    PUSH_ADDLOOP(2)
     CR
 SEMICOLON
     
@@ -33,7 +33,7 @@ COLON(print,(addr len -- ))
     _2MUL OVER ADD SWAP ; ( addr+len addr )
     DO 
         I FETCH DOT
-    _2ADDLOOP
+    PUSH_ADDLOOP(2)
     CR
 SEMICOLON
 
