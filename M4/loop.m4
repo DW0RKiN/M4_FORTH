@@ -427,7 +427,7 @@ define({SUB1_ADDSLOOP},{
     ld    A, L          ; 1:4       -1 +sloop LOOP_STACK
     xor   E             ; 1:4       -1 +sloop LOOP_STACK lo index - stop
     ld    A, H          ; 1:4       -1 +sloop LOOP_STACK
-    dec  HL             ; 1:6       -1 +sloop LOOP_STACK index++
+    dec  HL             ; 1:6       -1 +sloop LOOP_STACK index--
     jp   nz, sdo{}LOOP_STACK     ; 3:10      -1 +sloop LOOP_STACK
     xor   D             ; 1:4       -1 +sloop LOOP_STACK hi index - stop
     jp   nz, sdo{}LOOP_STACK     ; 3:10      -1 +sloop LOOP_STACK
