@@ -22,7 +22,6 @@
     ld   DE, string101  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     exx
     push HL
     exx
@@ -41,8 +40,7 @@ stack_test:             ;
     ld   BC, size102    ; 3:10      print Length of string to print
     ld   DE, string102  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
-    
+    pop  DE             ; 1:10      print    
     
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -91,35 +89,39 @@ xdo101:                 ;           xdo(25700,0) 101
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
-    exx                 ; 1:4       xaddloop 101
-    ld    A, low 256+1  ; 2:7       xaddloop 101
-    add   A, (HL)       ; 1:7       xaddloop 101
-    ld    E, A          ; 1:4       xaddloop 101 lo index
-    inc   L             ; 1:4       xaddloop 101
-    ld    A, high 256+1 ; 2:7       xaddloop 101
-    adc   A, (HL)       ; 1:7       xaddloop 101
-    ld  (HL), A         ; 1:7       xaddloop 101 hi index
-    ld    A, E          ; 1:4       xaddloop 101
-    sub   low 25700     ; 2:7       xaddloop 101
-    ld    A, (HL)       ; 1:7       xaddloop 101
-    sbc   A, high 25700 ; 2:7       xaddloop 101 index - stop
-    jr   nc, xleave101  ; 2:7/12    xaddloop 101
-    dec   L             ; 1:4       xaddloop 101
-    ld  (HL), E         ; 1:7       xaddloop 101
-    exx                 ; 1:4       xaddloop 101
-    jp   xdo101         ; 3:10      xaddloop 101
-xleave101:
-    inc  HL             ; 1:6       xaddloop 101
-    exx                 ; 1:4       xaddloop 101 R:( index -- )
+    exx                 ; 1:4       push_addxloop(256+1) 101
+    ld    E,(HL)        ; 1:7       push_addxloop(256+1) 101
+    inc   L             ; 1:4       push_addxloop(256+1) 101
+    ld    D,(HL)        ; 1:7       push_addxloop(256+1) 101 DE = index
+    push HL             ; 1:11      push_addxloop(256+1) 101
+    ld   HL, -25700     ; 3:10      push_addxloop(256+1) 101 HL = -stop = -(25700)
+    add  HL, DE         ; 1:11      push_addxloop(256+1) 101 index-stop
+    ld   BC, 257        ; 3:10      push_addxloop(256+1) 101 BC = step
+    add  HL, BC         ; 1:11      push_addxloop(256+1) 101 index-stop+step
+    jr    c, xleave101-1; 2:7/12    push_addxloop(256+1) 101 +step
+    ex   DE, HL         ; 1:4       push_addxloop(256+1) 101
+    add  HL, BC         ; 1:11      push_addxloop(256+1) 101 index+step
+    ex   DE, HL         ; 1:4       push_addxloop(256+1) 101    
+    pop  HL             ; 1:10      push_addxloop(256+1) 101
+    ld  (HL),D          ; 1:7       push_addxloop(256+1) 101
+    dec   L             ; 1:4       push_addxloop(256+1) 101
+    ld  (HL),E          ; 1:7       push_addxloop(256+1) 101
+    exx                 ; 1:4       push_addxloop(256+1) 101    
+    jp   xdo101         ; 3:10      push_addxloop(256+1) 101 ( -- ) R:( index -- index+256+1 )
+    pop  HL             ; 1:10      push_addxloop(256+1) 101
+xleave101:              ;           push_addxloop(256+1) 101    
+    inc  HL             ; 1:6       push_addxloop(256+1) 101    
+    exx                 ; 1:4       push_addxloop(256+1) 101 ( -- ) R:( index -- )
+xexit101 EQU $
     
 ; horizontalni(y,x) 50,0 -> 50,199
     
 
     exx                 ; 1:4       xdo(256*50+200,256*50) 102
     dec  HL             ; 1:6       xdo(256*50+200,256*50) 102
-    ld  (HL),high 256*50; 2:10      xdo(256*50+200,256*50) 102
+    ld  (HL),high 12800 ; 2:10      xdo(256*50+200,256*50) 102
     dec   L             ; 1:4       xdo(256*50+200,256*50) 102
-    ld  (HL),low 256*50 ; 2:10      xdo(256*50+200,256*50) 102
+    ld  (HL),low 12800  ; 2:10      xdo(256*50+200,256*50) 102
     exx                 ; 1:4       xdo(256*50+200,256*50) 102 R:( -- 256*50 )
 xdo102:                 ;           xdo(256*50+200,256*50) 102
         
@@ -139,25 +141,26 @@ xdo102:                 ;           xdo(256*50+200,256*50) 102
     pop  DE             ; 1:10      drop ( a -- )
     
     exx                 ; 1:4       xloop(256*50+200,256*50) 102
-
     ld    E,(HL)        ; 1:7       xloop(256*50+200,256*50) 102
     inc   L             ; 1:4       xloop(256*50+200,256*50) 102
     ld    D,(HL)        ; 1:7       xloop(256*50+200,256*50) 102
     inc  DE             ; 1:6       xloop(256*50+200,256*50) 102 index++
-    ld    A, low 256*50+200; 2:7       xloop(256*50+200,256*50) 102
-    scf                 ; 1:4       xloop(256*50+200,256*50) 102
-    sbc   A, E          ; 1:4       xloop(256*50+200,256*50) 102 stop_lo - index_lo - 1
-    ld    A, high 256*50+200; 2:7       xloop(256*50+200,256*50) 102
-    sbc   A, D          ; 1:4       xloop(256*50+200,256*50) 102 stop_hi - index_hi - 1
-    jr    c, xleave102  ; 2:7/12    xloop(256*50+200,256*50) 102 exit
+    ld    A, low 13000  ; 2:7       xloop(256*50+200,256*50) 102
+    xor   E             ; 1:4       xloop(256*50+200,256*50) 102
+    ld    C, A          ; 1:4       xloop(256*50+200,256*50) 102
+    ld    A, high 13000 ; 2:7       xloop(256*50+200,256*50) 102
+    xor   D             ; 1:4       xloop(256*50+200,256*50) 102
+    or    C             ; 1:4       xloop(256*50+200,256*50) 102
+    jr    z, xleave102  ; 2:7/12    xloop(256*50+200,256*50) 102 exit
     ld  (HL), D         ; 1:7       xloop(256*50+200,256*50) 102
     dec   L             ; 1:4       xloop(256*50+200,256*50) 102
     ld  (HL), E         ; 1:6       xloop(256*50+200,256*50) 102
     exx                 ; 1:4       xloop(256*50+200,256*50) 102
-    jp   xdo102         ; 3:10      xloop 102
+    jp   xdo102         ; 3:10      xloop(256*50+200,256*50) 102
 xleave102:              ;           xloop(256*50+200,256*50) 102
     inc  HL             ; 1:6       xloop(256*50+200,256*50) 102
     exx                 ; 1:4       xloop(256*50+200,256*50) 102 R:( index -- )
+xexit102 EQU $
     
 ; vertikalni(y,x) 0,200 -> 49,200
     
@@ -185,26 +188,30 @@ xdo103:                 ;           xdo(256*50+200,200) 103
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
-    exx                 ; 1:4       xaddloop 103
-    ld    A, low 256    ; 2:7       xaddloop 103
-    add   A, (HL)       ; 1:7       xaddloop 103
-    ld    E, A          ; 1:4       xaddloop 103 lo index
-    inc   L             ; 1:4       xaddloop 103
-    ld    A, high 256   ; 2:7       xaddloop 103
-    adc   A, (HL)       ; 1:7       xaddloop 103
-    ld  (HL), A         ; 1:7       xaddloop 103 hi index
-    ld    A, E          ; 1:4       xaddloop 103
-    sub   low 256*50+200; 2:7       xaddloop 103
-    ld    A, (HL)       ; 1:7       xaddloop 103
-    sbc   A, high 256*50+200; 2:7       xaddloop 103 index - stop
-    jr   nc, xleave103  ; 2:7/12    xaddloop 103
-    dec   L             ; 1:4       xaddloop 103
-    ld  (HL), E         ; 1:7       xaddloop 103
-    exx                 ; 1:4       xaddloop 103
-    jp   xdo103         ; 3:10      xaddloop 103
-xleave103:
-    inc  HL             ; 1:6       xaddloop 103
-    exx                 ; 1:4       xaddloop 103 R:( index -- )
+    exx                 ; 1:4       push_addxloop(256) 103
+    ld    E,(HL)        ; 1:7       push_addxloop(256) 103
+    inc   L             ; 1:4       push_addxloop(256) 103
+    ld    D,(HL)        ; 1:7       push_addxloop(256) 103 DE = index
+    push HL             ; 1:11      push_addxloop(256) 103
+    ld   HL, -13000     ; 3:10      push_addxloop(256) 103 HL = -stop = -(256*50+200)
+    add  HL, DE         ; 1:11      push_addxloop(256) 103 index-stop
+    ld   BC, 256        ; 3:10      push_addxloop(256) 103 BC = step
+    add  HL, BC         ; 1:11      push_addxloop(256) 103 index-stop+step
+    jr    c, xleave103-1; 2:7/12    push_addxloop(256) 103 +step
+    ex   DE, HL         ; 1:4       push_addxloop(256) 103
+    add  HL, BC         ; 1:11      push_addxloop(256) 103 index+step
+    ex   DE, HL         ; 1:4       push_addxloop(256) 103    
+    pop  HL             ; 1:10      push_addxloop(256) 103
+    ld  (HL),D          ; 1:7       push_addxloop(256) 103
+    dec   L             ; 1:4       push_addxloop(256) 103
+    ld  (HL),E          ; 1:7       push_addxloop(256) 103
+    exx                 ; 1:4       push_addxloop(256) 103    
+    jp   xdo103         ; 3:10      push_addxloop(256) 103 ( -- ) R:( index -- index+256 )
+    pop  HL             ; 1:10      push_addxloop(256) 103
+xleave103:              ;           push_addxloop(256) 103    
+    inc  HL             ; 1:6       push_addxloop(256) 103    
+    exx                 ; 1:4       push_addxloop(256) 103 ( -- ) R:( index -- )
+xexit103 EQU $
     
 
 test_end:

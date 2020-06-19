@@ -27,7 +27,7 @@ COLON(test)
         XI 
         PUTPIXEL 
         DROP
-    XADDLOOP(256+1)
+    PUSH_ADDXLOOP(256+1)
     
 ; horizontalni(y,x) 50,0 -> 50,199
     XDO(256*50+200,256*50)
@@ -41,7 +41,7 @@ COLON(test)
         XI 
         PUTPIXEL 
         DROP
-    XADDLOOP(256)
+    PUSH_ADDXLOOP(256)
     
 SEMICOLON
     

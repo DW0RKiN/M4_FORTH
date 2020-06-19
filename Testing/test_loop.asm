@@ -98,7 +98,7 @@ do102:
     inc   L             ; 1:4       loop 102
     ld    D,(HL)        ; 1:7       loop 102 DE = index   
     inc  HL             ; 1:6       loop 102
-    inc  DE             ; 1:6       loop 102 index + 1
+    inc  DE             ; 1:6       loop 102 index++
     ld    A,(HL)        ; 1:4       loop 102
     xor   E             ; 1:4       loop 102 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 102
@@ -124,7 +124,7 @@ exit102 EQU $
     inc   L             ; 1:4       loop 101
     ld    D,(HL)        ; 1:7       loop 101 DE = index   
     inc  HL             ; 1:6       loop 101
-    inc  DE             ; 1:6       loop 101 index + 1
+    inc  DE             ; 1:6       loop 101 index++
     ld    A,(HL)        ; 1:4       loop 101
     xor   E             ; 1:4       loop 101 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 101
@@ -268,10 +268,9 @@ sleave106:              ;           sloop 106
     inc  DE             ; 1:6       xloop(4,0) 105 index++
     ld    A, low 4      ; 2:7       xloop(4,0) 105
     xor   E             ; 1:4       xloop(4,0) 105
-    ld    C, A          ; 1:4       xloop(4,0) 105
+    jr   nz, $+7        ; 2:7/12    xloop(4,0) 105
     ld    A, high 4     ; 2:7       xloop(4,0) 105
     xor   D             ; 1:4       xloop(4,0) 105
-    or    C             ; 1:4       xloop(4,0) 105
     jr    z, xleave105  ; 2:7/12    xloop(4,0) 105 exit
     ld  (HL), D         ; 1:7       xloop(4,0) 105
     dec   L             ; 1:4       xloop(4,0) 105
@@ -413,7 +412,7 @@ snext110:               ;           snext 110
     inc   L             ; 1:4       loop 109
     ld    D,(HL)        ; 1:7       loop 109 DE = index   
     inc  HL             ; 1:6       loop 109
-    inc  DE             ; 1:6       loop 109 index + 1
+    inc  DE             ; 1:6       loop 109 index++
     ld    A,(HL)        ; 1:4       loop 109
     xor   E             ; 1:4       loop 109 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 109
@@ -633,7 +632,7 @@ do113:
     inc   L             ; 1:4       loop 113
     ld    D,(HL)        ; 1:7       loop 113 DE = index   
     inc  HL             ; 1:6       loop 113
-    inc  DE             ; 1:6       loop 113 index + 1
+    inc  DE             ; 1:6       loop 113 index++
     ld    A,(HL)        ; 1:4       loop 113
     xor   E             ; 1:4       loop 113 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 113
@@ -686,7 +685,7 @@ do114:
     inc   L             ; 1:4       loop 114
     ld    D,(HL)        ; 1:7       loop 114 DE = index   
     inc  HL             ; 1:6       loop 114
-    inc  DE             ; 1:6       loop 114 index + 1
+    inc  DE             ; 1:6       loop 114 index++
     ld    A,(HL)        ; 1:4       loop 114
     xor   E             ; 1:4       loop 114 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 114
@@ -726,10 +725,9 @@ xdo115:                 ;           xdo(0,0) 115
     inc  DE             ; 1:6       xloop(0,0) 115 index++
     ld    A, low 0      ; 2:7       xloop(0,0) 115
     xor   E             ; 1:4       xloop(0,0) 115
-    ld    C, A          ; 1:4       xloop(0,0) 115
+    jr   nz, $+7        ; 2:7/12    xloop(0,0) 115
     ld    A, high 0     ; 2:7       xloop(0,0) 115
     xor   D             ; 1:4       xloop(0,0) 115
-    or    C             ; 1:4       xloop(0,0) 115
     jr    z, xleave115  ; 2:7/12    xloop(0,0) 115 exit
     ld  (HL), D         ; 1:7       xloop(0,0) 115
     dec   L             ; 1:4       xloop(0,0) 115
@@ -761,10 +759,9 @@ xdo116:                 ;           xdo(254,254) 116
     inc  DE             ; 1:6       xloop(254,254) 116 index++
     ld    A, low 254    ; 2:7       xloop(254,254) 116
     xor   E             ; 1:4       xloop(254,254) 116
-    ld    C, A          ; 1:4       xloop(254,254) 116
+    jr   nz, $+7        ; 2:7/12    xloop(254,254) 116
     ld    A, high 254   ; 2:7       xloop(254,254) 116
     xor   D             ; 1:4       xloop(254,254) 116
-    or    C             ; 1:4       xloop(254,254) 116
     jr    z, xleave116  ; 2:7/12    xloop(254,254) 116 exit
     ld  (HL), D         ; 1:7       xloop(254,254) 116
     dec   L             ; 1:4       xloop(254,254) 116
@@ -796,10 +793,9 @@ xdo117:                 ;           xdo(255,255) 117
     inc  DE             ; 1:6       xloop(255,255) 117 index++
     ld    A, low 255    ; 2:7       xloop(255,255) 117
     xor   E             ; 1:4       xloop(255,255) 117
-    ld    C, A          ; 1:4       xloop(255,255) 117
+    jr   nz, $+7        ; 2:7/12    xloop(255,255) 117
     ld    A, high 255   ; 2:7       xloop(255,255) 117
     xor   D             ; 1:4       xloop(255,255) 117
-    or    C             ; 1:4       xloop(255,255) 117
     jr    z, xleave117  ; 2:7/12    xloop(255,255) 117 exit
     ld  (HL), D         ; 1:7       xloop(255,255) 117
     dec   L             ; 1:4       xloop(255,255) 117
@@ -831,10 +827,9 @@ xdo118:                 ;           xdo(256,256) 118
     inc  DE             ; 1:6       xloop(256,256) 118 index++
     ld    A, low 256    ; 2:7       xloop(256,256) 118
     xor   E             ; 1:4       xloop(256,256) 118
-    ld    C, A          ; 1:4       xloop(256,256) 118
+    jr   nz, $+7        ; 2:7/12    xloop(256,256) 118
     ld    A, high 256   ; 2:7       xloop(256,256) 118
     xor   D             ; 1:4       xloop(256,256) 118
-    or    C             ; 1:4       xloop(256,256) 118
     jr    z, xleave118  ; 2:7/12    xloop(256,256) 118 exit
     ld  (HL), D         ; 1:7       xloop(256,256) 118
     dec   L             ; 1:4       xloop(256,256) 118
@@ -948,7 +943,7 @@ xdo123:                 ;           xdo(60000,60000) 123
     inc   L             ; 1:4       push_addxloop(5000) 123
     ld    D,(HL)        ; 1:7       push_addxloop(5000) 123 DE = index
     push HL             ; 1:11      push_addxloop(5000) 123
-    ld   HL, -60000     ; 3:10      push_addxloop(5000) 123 HL = -stop
+    ld   HL, -60000     ; 3:10      push_addxloop(5000) 123 HL = -stop = -(60000)
     add  HL, DE         ; 1:11      push_addxloop(5000) 123 index-stop
     ld   BC, 5000       ; 3:10      push_addxloop(5000) 123 BC = step
     add  HL, BC         ; 1:11      push_addxloop(5000) 123 index-stop+step
@@ -986,7 +981,7 @@ xdo124:                 ;           xdo(60000,60000) 124
     inc   L             ; 1:4       push_addxloop(3100) 124
     ld    D,(HL)        ; 1:7       push_addxloop(3100) 124 DE = index
     push HL             ; 1:11      push_addxloop(3100) 124
-    ld   HL, -60000     ; 3:10      push_addxloop(3100) 124 HL = -stop
+    ld   HL, -60000     ; 3:10      push_addxloop(3100) 124 HL = -stop = -(60000)
     add  HL, DE         ; 1:11      push_addxloop(3100) 124 index-stop
     ld   BC, 3100       ; 3:10      push_addxloop(3100) 124 BC = step
     add  HL, BC         ; 1:11      push_addxloop(3100) 124 index-stop+step
@@ -1075,7 +1070,7 @@ endif101:
     inc   L             ; 1:4       loop 125
     ld    D,(HL)        ; 1:7       loop 125 DE = index   
     inc  HL             ; 1:6       loop 125
-    inc  DE             ; 1:6       loop 125 index + 1
+    inc  DE             ; 1:6       loop 125 index++
     ld    A,(HL)        ; 1:4       loop 125
     xor   E             ; 1:4       loop 125 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 125
@@ -1193,10 +1188,9 @@ endif103:
     inc  DE             ; 1:6       xloop(12,3) 127 index++
     ld    A, low 12     ; 2:7       xloop(12,3) 127
     xor   E             ; 1:4       xloop(12,3) 127
-    ld    C, A          ; 1:4       xloop(12,3) 127
+    jr   nz, $+7        ; 2:7/12    xloop(12,3) 127
     ld    A, high 12    ; 2:7       xloop(12,3) 127
     xor   D             ; 1:4       xloop(12,3) 127
-    or    C             ; 1:4       xloop(12,3) 127
     jr    z, xleave127  ; 2:7/12    xloop(12,3) 127 exit
     ld  (HL), D         ; 1:7       xloop(12,3) 127
     dec   L             ; 1:4       xloop(12,3) 127
@@ -1259,10 +1253,9 @@ endif104:
     inc  DE             ; 1:6       xloop(550,3) 128 index++
     ld    A, low 550    ; 2:7       xloop(550,3) 128
     xor   E             ; 1:4       xloop(550,3) 128
-    ld    C, A          ; 1:4       xloop(550,3) 128
+    jr   nz, $+7        ; 2:7/12    xloop(550,3) 128
     ld    A, high 550   ; 2:7       xloop(550,3) 128
     xor   D             ; 1:4       xloop(550,3) 128
-    or    C             ; 1:4       xloop(550,3) 128
     jr    z, xleave128  ; 2:7/12    xloop(550,3) 128 exit
     ld  (HL), D         ; 1:7       xloop(550,3) 128
     dec   L             ; 1:4       xloop(550,3) 128
@@ -1559,7 +1552,7 @@ do133:
     inc   L             ; 1:4       loop 133
     ld    D,(HL)        ; 1:7       loop 133 DE = index   
     inc  HL             ; 1:6       loop 133
-    inc  DE             ; 1:6       loop 133 index + 1
+    inc  DE             ; 1:6       loop 133 index++
     ld    A,(HL)        ; 1:4       loop 133
     xor   E             ; 1:4       loop 133 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 133
@@ -1607,7 +1600,7 @@ do134:
     inc   L             ; 1:4       loop 134
     ld    D,(HL)        ; 1:7       loop 134 DE = index   
     inc  HL             ; 1:6       loop 134
-    inc  DE             ; 1:6       loop 134 index + 1
+    inc  DE             ; 1:6       loop 134 index++
     ld    A,(HL)        ; 1:4       loop 134
     xor   E             ; 1:4       loop 134 lo index - stop
     jr   nz, $+8        ; 2:7/12    loop 134
@@ -1644,10 +1637,9 @@ xdo135:                 ;           xdo(1,0) 135
     inc  DE             ; 1:6       xloop(1,0) 135 index++
     ld    A, low 1      ; 2:7       xloop(1,0) 135
     xor   E             ; 1:4       xloop(1,0) 135
-    ld    C, A          ; 1:4       xloop(1,0) 135
+    jr   nz, $+7        ; 2:7/12    xloop(1,0) 135
     ld    A, high 1     ; 2:7       xloop(1,0) 135
     xor   D             ; 1:4       xloop(1,0) 135
-    or    C             ; 1:4       xloop(1,0) 135
     jr    z, xleave135  ; 2:7/12    xloop(1,0) 135 exit
     ld  (HL), D         ; 1:7       xloop(1,0) 135
     dec   L             ; 1:4       xloop(1,0) 135
@@ -1676,10 +1668,9 @@ xdo136:                 ;           xdo(255,254) 136
     inc  DE             ; 1:6       xloop(255,254) 136 index++
     ld    A, low 255    ; 2:7       xloop(255,254) 136
     xor   E             ; 1:4       xloop(255,254) 136
-    ld    C, A          ; 1:4       xloop(255,254) 136
+    jr   nz, $+7        ; 2:7/12    xloop(255,254) 136
     ld    A, high 255   ; 2:7       xloop(255,254) 136
     xor   D             ; 1:4       xloop(255,254) 136
-    or    C             ; 1:4       xloop(255,254) 136
     jr    z, xleave136  ; 2:7/12    xloop(255,254) 136 exit
     ld  (HL), D         ; 1:7       xloop(255,254) 136
     dec   L             ; 1:4       xloop(255,254) 136
@@ -1708,10 +1699,9 @@ xdo137:                 ;           xdo(256,255) 137
     inc  DE             ; 1:6       xloop(256,255) 137 index++
     ld    A, low 256    ; 2:7       xloop(256,255) 137
     xor   E             ; 1:4       xloop(256,255) 137
-    ld    C, A          ; 1:4       xloop(256,255) 137
+    jr   nz, $+7        ; 2:7/12    xloop(256,255) 137
     ld    A, high 256   ; 2:7       xloop(256,255) 137
     xor   D             ; 1:4       xloop(256,255) 137
-    or    C             ; 1:4       xloop(256,255) 137
     jr    z, xleave137  ; 2:7/12    xloop(256,255) 137 exit
     ld  (HL), D         ; 1:7       xloop(256,255) 137
     dec   L             ; 1:4       xloop(256,255) 137
@@ -1740,10 +1730,9 @@ xdo138:                 ;           xdo(257,256) 138
     inc  DE             ; 1:6       xloop(257,256) 138 index++
     ld    A, low 257    ; 2:7       xloop(257,256) 138
     xor   E             ; 1:4       xloop(257,256) 138
-    ld    C, A          ; 1:4       xloop(257,256) 138
+    jr   nz, $+7        ; 2:7/12    xloop(257,256) 138
     ld    A, high 257   ; 2:7       xloop(257,256) 138
     xor   D             ; 1:4       xloop(257,256) 138
-    or    C             ; 1:4       xloop(257,256) 138
     jr    z, xleave138  ; 2:7/12    xloop(257,256) 138 exit
     ld  (HL), D         ; 1:7       xloop(257,256) 138
     dec   L             ; 1:4       xloop(257,256) 138
@@ -1850,7 +1839,7 @@ xdo143:                 ;           xdo(60000,30000) 143
     inc   L             ; 1:4       push_addxloop(40000) 143
     ld    D,(HL)        ; 1:7       push_addxloop(40000) 143 DE = index
     push HL             ; 1:11      push_addxloop(40000) 143
-    ld   HL, -60000     ; 3:10      push_addxloop(40000) 143 HL = -stop
+    ld   HL, -60000     ; 3:10      push_addxloop(40000) 143 HL = -stop = -(60000)
     add  HL, DE         ; 1:11      push_addxloop(40000) 143 index-stop
     ld   BC, 40000      ; 3:10      push_addxloop(40000) 143 BC = step
     add  HL, BC         ; 1:11      push_addxloop(40000) 143 index-stop+step
@@ -1885,7 +1874,7 @@ xdo144:                 ;           xdo(60000,30000) 144
     inc   L             ; 1:4       push_addxloop(31000) 144
     ld    D,(HL)        ; 1:7       push_addxloop(31000) 144 DE = index
     push HL             ; 1:11      push_addxloop(31000) 144
-    ld   HL, -60000     ; 3:10      push_addxloop(31000) 144 HL = -stop
+    ld   HL, -60000     ; 3:10      push_addxloop(31000) 144 HL = -stop = -(60000)
     add  HL, DE         ; 1:11      push_addxloop(31000) 144 index-stop
     ld   BC, 31000      ; 3:10      push_addxloop(31000) 144 BC = step
     add  HL, BC         ; 1:11      push_addxloop(31000) 144 index-stop+step
