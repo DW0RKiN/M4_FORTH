@@ -371,12 +371,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 
-    PUSH2(5,0)  DO        I DOT PUTCHAR({','})     LOOP             --> " 0, 1, 2, 3, 4,"
-                XDO(5,0) XI DOT PUTCHAR({','})    XLOOP             --> " 0, 1, 2, 3, 4,"
-                XDO(5,0) XI DOT PUTCHAR({','}) XADDLOOP(2)          --> " 0, 2, 4,"
-    PUSH2(5,0) SDO       SI DOT PUTCHAR({','})    SLOOP             --> " 0, 1, 2, 3, 4,"
-    PUSH(5)   SFOR       SI DOT PUTCHAR({','})    SNEXT             --> " 5, 4, 3, 2, 1, 0,"
-    PUSH(5)    FOR        I DOT PUTCHAR({','})     NEXT             --> " 5, 4, 3, 2, 1, 0,"
+    PUSH2(5,0)  DO        I DOT PUTCHAR({','})          LOOP       --> " 0, 1, 2, 3, 4,"
+                XDO(5,0) XI DOT PUTCHAR({','})         XLOOP       --> " 0, 1, 2, 3, 4,"
+                XDO(5,0) XI DOT PUTCHAR({','}) PUSH_ADDXLOOP(2)    --> " 0, 2, 4,"
+    PUSH2(5,0) SDO       SI DOT PUTCHAR({','})         SLOOP       --> " 0, 1, 2, 3, 4,"
+    PUSH(5)   SFOR       SI DOT PUTCHAR({','})         SNEXT       --> " 5, 4, 3, 2, 1, 0,"
+    PUSH(5)    FOR        I DOT PUTCHAR({','})          NEXT       --> " 5, 4, 3, 2, 1, 0,"
     
     PUSH(5) BEGIN DUP_DOT            DUP_WHILE _1SUB PUTCHAR({','}) REPEAT DROP CR ;--> " 5, 4, 3, 2, 1, 0"
     PUSH(0) BEGIN DUP_DOT DUP PUSH(4) LT WHILE _1ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 1, 2, 3, 4"
