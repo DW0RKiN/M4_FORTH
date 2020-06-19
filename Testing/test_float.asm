@@ -197,8 +197,7 @@ snext102:               ;           snext 102
     ld   BC, size101    ; 3:10      print Length of string to print
     ld   DE, string101  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -217,8 +216,7 @@ snext102:               ;           snext 102
     ld   BC, size102    ; 3:10      print Length of string to print
     ld   DE, string102  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -237,8 +235,7 @@ snext102:               ;           snext 102
     ld   BC, size103    ; 3:10      print Length of string to print
     ld   DE, string103  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -257,8 +254,7 @@ snext102:               ;           snext 102
     ld   BC, size104    ; 3:10      print Length of string to print
     ld   DE, string104  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -277,8 +273,7 @@ snext102:               ;           snext 102
     ld   BC, size105    ; 3:10      print Length of string to print
     ld   DE, string105  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -297,8 +292,7 @@ snext102:               ;           snext 102
     ld   BC, size106    ; 3:10      print Length of string to print
     ld   DE, string106  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -317,8 +311,7 @@ snext102:               ;           snext 102
     ld   BC, size107    ; 3:10      print Length of string to print
     ld   DE, string107  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -337,8 +330,7 @@ snext102:               ;           snext 102
     ld   BC, size108    ; 3:10      print Length of string to print
     ld   DE, string108  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -357,8 +349,7 @@ snext102:               ;           snext 102
     ld   BC, size109    ; 3:10      print Length of string to print
     ld   DE, string109  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -377,8 +368,7 @@ snext102:               ;           snext 102
     ld   BC, size110    ; 3:10      print Length of string to print
     ld   DE, string110  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -397,8 +387,7 @@ snext102:               ;           snext 102
     ld   BC, size111    ; 3:10      print Length of string to print
     ld   DE, string111  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -421,8 +410,7 @@ snext102:               ;           snext 102
     ld   BC, size112    ; 3:10      print Length of string to print
     ld   DE, string112  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fexp
     call fExp           ; 3:17      fexp HL = e^HL
     pop  DE             ; 1:10      fexp 
@@ -443,8 +431,7 @@ snext102:               ;           snext 102
     ld   BC, size113    ; 3:10      print Length of string to print
     ld   DE, string113  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      fln
     call fLn            ; 3:17      fln HL = ln(HL)
     pop  DE             ; 1:10      fln  
@@ -465,8 +452,7 @@ snext102:               ;           snext 102
     ld   BC, size114    ; 3:10      print Length of string to print
     ld   DE, string114  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     call fIld           ; 3:17      s>f 
     call fSqrt          ; 3:17      fsqrt 
@@ -478,8 +464,7 @@ snext102:               ;           snext 102
     ld   BC, size115    ; 3:10      print Length of string to print
     ld   DE, string115  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     ld    B, D          ; 1:4       fmod
     ld    C, E          ; 1:4       fmod
     call fMod           ; 3:17      fmod HL = BC % HL
@@ -570,24 +555,30 @@ xdo103:                 ;           xdo(65535,0 ) 103
     call PRINT_S16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
-    exx                 ; 1:4       xaddloop 103
-    ld    A, low 777    ; 2:7       xaddloop 103
-    add   A, (HL)       ; 1:7       xaddloop 103
-    ld    E, A          ; 1:4       xaddloop 103 lo index
-    inc   L             ; 1:4       xaddloop 103
-    ld    A, high 777   ; 2:7       xaddloop 103
-    adc   A, (HL)       ; 1:7       xaddloop 103
-    ld  (HL), A         ; 1:7       xaddloop 103 hi index
-
-    dec   L             ; 1:4       xaddloop 103
-    ld  (HL), E         ; 1:7       xaddloop 103
-    exx                 ; 1:4       xaddloop 103
-    jp   nc, xdo103     ; 3:10      xaddloop 103
-    exx                 ; 1:4       xaddloop 103
-    inc   L             ; 1:4       xaddloop 103
-xleave103:
-    inc  HL             ; 1:6       xaddloop 103
-    exx                 ; 1:4       xaddloop 103 R:( index -- )
+    exx                 ; 1:4       push_addxloop(777) 103
+    ld    E,(HL)        ; 1:7       push_addxloop(777) 103
+    inc   L             ; 1:4       push_addxloop(777) 103
+    ld    D,(HL)        ; 1:7       push_addxloop(777) 103 DE = index
+    push HL             ; 1:11      push_addxloop(777) 103
+    ld   HL, -65535     ; 3:10      push_addxloop(777) 103 HL = -stop = -(65535)
+    add  HL, DE         ; 1:11      push_addxloop(777) 103 index-stop
+    ld   BC, 777        ; 3:10      push_addxloop(777) 103 BC = step
+    add  HL, BC         ; 1:11      push_addxloop(777) 103 index-stop+step
+    jr    c, xleave103-1; 2:7/12    push_addxloop(777) 103 +step
+    ex   DE, HL         ; 1:4       push_addxloop(777) 103
+    add  HL, BC         ; 1:11      push_addxloop(777) 103 index+step
+    ex   DE, HL         ; 1:4       push_addxloop(777) 103    
+    pop  HL             ; 1:10      push_addxloop(777) 103
+    ld  (HL),D          ; 1:7       push_addxloop(777) 103
+    dec   L             ; 1:4       push_addxloop(777) 103
+    ld  (HL),E          ; 1:7       push_addxloop(777) 103
+    exx                 ; 1:4       push_addxloop(777) 103    
+    jp   xdo103         ; 3:10      push_addxloop(777) 103 ( -- ) R:( index -- index+777 )
+    pop  HL             ; 1:10      push_addxloop(777) 103
+xleave103:              ;           push_addxloop(777) 103    
+    inc  HL             ; 1:6       push_addxloop(777) 103    
+    exx                 ; 1:4       push_addxloop(777) 103 ( -- ) R:( index -- )
+xexit103 EQU $
     
     
     push DE             ; 1:11      push(32736 )
@@ -801,7 +792,6 @@ xleave103:
     ld   DE, string116  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     exx
     push HL
     exx
@@ -851,7 +841,6 @@ stack_test:             ;
     ld   DE, string117  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     
 Stop:
     ld   SP, 0x0000     ; 3:10      not need

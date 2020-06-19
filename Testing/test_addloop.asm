@@ -2387,7 +2387,7 @@ endif115:
     ld    A, L          ; 1:4       -1 +sloop 128
     xor   E             ; 1:4       -1 +sloop 128 lo index - stop
     ld    A, H          ; 1:4       -1 +sloop 128
-    dec  HL             ; 1:6       -1 +sloop 128 index++
+    dec  HL             ; 1:6       -1 +sloop 128 index--
     jp   nz, sdo128     ; 3:10      -1 +sloop 128
     xor   D             ; 1:4       -1 +sloop 128 hi index - stop
     jp   nz, sdo128     ; 3:10      -1 +sloop 128
