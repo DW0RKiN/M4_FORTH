@@ -180,18 +180,18 @@ draw_walls:             ;
     ld  (HL),E          ; 1:7       for 101 stop
     exx                 ; 1:4       for 101
     ex   DE, HL         ; 1:4       for 101
-    pop  DE             ; 1:10      for 101 ( index -- ) r: ( -- index )
+    pop  DE             ; 1:10      for 101 ( index -- ) R: ( -- index )
 for101:                 ;           for 101 
         
     exx                 ; 1:4       index 101 i    
-    ld   E,(HL)         ; 1:7       index 101 i
-    inc  L              ; 1:4       index 101 i
-    ld   D,(HL)         ; 1:7       index 101 i
+    ld    E,(HL)        ; 1:7       index 101 i
+    inc   L             ; 1:4       index 101 i
+    ld    D,(HL)        ; 1:7       index 101 i
     push DE             ; 1:11      index 101 i
-    dec  L              ; 1:4       index 101 i
+    dec   L             ; 1:4       index 101 i
     exx                 ; 1:4       index 101 i
     ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP), HL        ; 1:19      index 101 i 
+    ex  (SP),HL         ; 1:19      index 101 i 
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0)        
@@ -200,14 +200,14 @@ for101:                 ;           for 101
     exx                 ; 1:4       call R:( ret -- ) 
         
     exx                 ; 1:4       index 101 i    
-    ld   E,(HL)         ; 1:7       index 101 i
-    inc  L              ; 1:4       index 101 i
-    ld   D,(HL)         ; 1:7       index 101 i
+    ld    E,(HL)        ; 1:7       index 101 i
+    inc   L             ; 1:4       index 101 i
+    ld    D,(HL)        ; 1:7       index 101 i
     push DE             ; 1:11      index 101 i
-    dec  L              ; 1:4       index 101 i
+    dec   L             ; 1:4       index 101 i
     exx                 ; 1:4       index 101 i
     ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP), HL        ; 1:19      index 101 i 
+    ex  (SP),HL         ; 1:19      index 101 i 
     push DE             ; 1:11      push(24-1)
     ex   DE, HL         ; 1:4       push(24-1)
     ld   HL, 24-1       ; 3:10      push(24-1) 
@@ -245,21 +245,21 @@ next101:                ;           next 101
     ld  (HL),E          ; 1:7       for 102 stop
     exx                 ; 1:4       for 102
     ex   DE, HL         ; 1:4       for 102
-    pop  DE             ; 1:10      for 102 ( index -- ) r: ( -- index )
+    pop  DE             ; 1:10      for 102 ( index -- ) R: ( -- index )
 for102:                 ;           for 102 
         
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0)       
     exx                 ; 1:4       index 102 i    
-    ld   E,(HL)         ; 1:7       index 102 i
-    inc  L              ; 1:4       index 102 i
-    ld   D,(HL)         ; 1:7       index 102 i
+    ld    E,(HL)        ; 1:7       index 102 i
+    inc   L             ; 1:4       index 102 i
+    ld    D,(HL)        ; 1:7       index 102 i
     push DE             ; 1:11      index 102 i
-    dec  L              ; 1:4       index 102 i
+    dec   L             ; 1:4       index 102 i
     exx                 ; 1:4       index 102 i
     ex   DE, HL         ; 1:4       index 102 i
-    ex  (SP), HL        ; 1:19      index 102 i  
+    ex  (SP),HL         ; 1:19      index 102 i  
     call draw_black     ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -268,14 +268,14 @@ for102:                 ;           for 102
     ex   DE, HL         ; 1:4       push(32-1)
     ld   HL, 32-1       ; 3:10      push(32-1) 
     exx                 ; 1:4       index 102 i    
-    ld   E,(HL)         ; 1:7       index 102 i
-    inc  L              ; 1:4       index 102 i
-    ld   D,(HL)         ; 1:7       index 102 i
+    ld    E,(HL)        ; 1:7       index 102 i
+    inc   L             ; 1:4       index 102 i
+    ld    D,(HL)        ; 1:7       index 102 i
     push DE             ; 1:11      index 102 i
-    dec  L              ; 1:4       index 102 i
+    dec   L             ; 1:4       index 102 i
     exx                 ; 1:4       index 102 i
     ex   DE, HL         ; 1:4       index 102 i
-    ex  (SP), HL        ; 1:19      index 102 i  
+    ex  (SP),HL         ; 1:19      index 102 i  
     call draw_black     ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -389,34 +389,34 @@ initialize_snake:       ;
     ld  (HL),E          ; 1:7       do 103 index
     exx                 ; 1:4       do 103
     pop  HL             ; 1:10      do 103
-    pop  DE             ; 1:10      do 103 ( stop index -- ) r: ( -- stop index )
+    pop  DE             ; 1:10      do 103 ( stop index -- ) R: ( -- stop index )
 do103: 
         
     push DE             ; 1:11      push(12)
     ex   DE, HL         ; 1:4       push(12)
     ld   HL, 12         ; 3:10      push(12) 
     exx                 ; 1:4       index 103 i    
-    ld   E,(HL)         ; 1:7       index 103 i
-    inc  L              ; 1:4       index 103 i
-    ld   D,(HL)         ; 1:7       index 103 i
+    ld    E,(HL)        ; 1:7       index 103 i
+    inc   L             ; 1:4       index 103 i
+    ld    D,(HL)        ; 1:7       index 103 i
     push DE             ; 1:11      index 103 i
-    dec  L              ; 1:4       index 103 i
+    dec   L             ; 1:4       index 103 i
     exx                 ; 1:4       index 103 i
     ex   DE, HL         ; 1:4       index 103 i
-    ex  (SP), HL        ; 1:19      index 103 i 
+    ex  (SP),HL         ; 1:19      index 103 i 
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      - 
     exx                 ; 1:4       index 103 i    
-    ld   E,(HL)         ; 1:7       index 103 i
-    inc  L              ; 1:4       index 103 i
-    ld   D,(HL)         ; 1:7       index 103 i
+    ld    E,(HL)        ; 1:7       index 103 i
+    inc   L             ; 1:4       index 103 i
+    ld    D,(HL)        ; 1:7       index 103 i
     push DE             ; 1:11      index 103 i
-    dec  L              ; 1:4       index 103 i
+    dec   L             ; 1:4       index 103 i
     exx                 ; 1:4       index 103 i
     ex   DE, HL         ; 1:4       index 103 i
-    ex  (SP), HL        ; 1:19      index 103 i 
+    ex  (SP),HL         ; 1:19      index 103 i 
     call snake_x        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -430,14 +430,14 @@ do103:
     ex   DE, HL         ; 1:4       push(12)
     ld   HL, 12         ; 3:10      push(12) 
     exx                 ; 1:4       index 103 i    
-    ld   E,(HL)         ; 1:7       index 103 i
-    inc  L              ; 1:4       index 103 i
-    ld   D,(HL)         ; 1:7       index 103 i
+    ld    E,(HL)        ; 1:7       index 103 i
+    inc   L             ; 1:4       index 103 i
+    ld    D,(HL)        ; 1:7       index 103 i
     push DE             ; 1:11      index 103 i
-    dec  L              ; 1:4       index 103 i
+    dec   L             ; 1:4       index 103 i
     exx                 ; 1:4       index 103 i
     ex   DE, HL         ; 1:4       index 103 i
-    ex  (SP), HL        ; 1:19      index 103 i       
+    ex  (SP),HL         ; 1:19      index 103 i       
     call snake_y        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -448,27 +448,29 @@ do103:
     pop  DE             ; 1:10      ! store 
     
     exx                 ; 1:4       loop 103
-    ld   E,(HL)         ; 1:7       loop 103
-    inc  L              ; 1:4       loop 103
-    ld   D,(HL)         ; 1:7       loop 103 DE = index   
+    ld    E,(HL)        ; 1:7       loop 103
+    inc   L             ; 1:4       loop 103
+    ld    D,(HL)        ; 1:7       loop 103 DE = index   
     inc  HL             ; 1:6       loop 103
-    inc  DE             ; 1:6       loop 103 index + 1
-    ld    A, E          ; 1:4       loop 103
-    sub (HL)            ; 1:7       loop 103 lo index - stop
+    inc  DE             ; 1:6       loop 103 index++
+    ld    A,(HL)        ; 1:4       loop 103
+    xor   E             ; 1:4       loop 103 lo index - stop
+    jr   nz, $+8        ; 2:7/12    loop 103
     ld    A, D          ; 1:4       loop 103
     inc   L             ; 1:4       loop 103
-    sbc  A,(HL)         ; 1:7       loop 103 hi index - stop
-    jr  nc, leave103    ; 2:7/12    loop 103 exit
-    dec  L              ; 1:4       loop 103
+    xor (HL)            ; 1:7       loop 103 hi index - stop
+    jr    z, leave103   ; 2:7/12    loop 103 exit    
+    dec   L             ; 1:4       loop 103
     dec  HL             ; 1:6       loop 103
     ld  (HL), D         ; 1:7       loop 103
-    dec  L              ; 1:4       loop 103
+    dec   L             ; 1:4       loop 103
     ld  (HL), E         ; 1:7       loop 103
     exx                 ; 1:4       loop 103
     jp   do103          ; 3:10      loop 103
 leave103:
     inc  HL             ; 1:6       loop 103
-    exx                 ; 1:4       loop 103 
+    exx                 ; 1:4       loop 103
+exit103 EQU $ 
     
     push DE             ; 1:11      push(2)
     ex   DE, HL         ; 1:4       push(2)
@@ -556,7 +558,7 @@ initialize:             ;
     ld  (HL),E          ; 1:7       for 104 stop
     exx                 ; 1:4       for 104
     ex   DE, HL         ; 1:4       for 104
-    pop  DE             ; 1:10      for 104 ( index -- ) r: ( -- index )
+    pop  DE             ; 1:10      for 104 ( index -- ) R: ( -- index )
 for104:                 ;           for 104 
         
     push DE             ; 1:11      push(24-1)
@@ -571,30 +573,30 @@ for104:                 ;           for 104
     ld  (HL),E          ; 1:7       for 105 stop
     exx                 ; 1:4       for 105
     ex   DE, HL         ; 1:4       for 105
-    pop  DE             ; 1:10      for 105 ( index -- ) r: ( -- index )
+    pop  DE             ; 1:10      for 105 ( index -- ) R: ( -- index )
 for105:                 ;           for 105 
             
     exx                 ; 1:4       index 105 j
     ld   DE, 0x0004     ; 3:10      index 105 j
     ex   DE, HL         ; 1:4       index 105 j
     add  HL, DE         ; 1:11      index 105 j
-    ld   C,(HL)         ; 1:7       index 105 j lo    
-    inc  L              ; 1:4       index 105 j
-    ld   B,(HL)         ; 1:7       index 105 j hi
+    ld    C,(HL)        ; 1:7       index 105 j lo    
+    inc   L             ; 1:4       index 105 j
+    ld    B,(HL)        ; 1:7       index 105 j hi
     ex   DE, HL         ; 1:4       index 105 j
     push BC             ; 1:11      index 105 j
     exx                 ; 1:4       index 105 j
     ex   DE, HL         ; 1:4       index 105 j
-    ex  (SP), HL        ; 1:19      index 105 j 
+    ex  (SP),HL         ; 1:19      index 105 j 
     exx                 ; 1:4       index 105 i    
-    ld   E,(HL)         ; 1:7       index 105 i
-    inc  L              ; 1:4       index 105 i
-    ld   D,(HL)         ; 1:7       index 105 i
+    ld    E,(HL)        ; 1:7       index 105 i
+    inc   L             ; 1:4       index 105 i
+    ld    D,(HL)        ; 1:7       index 105 i
     push DE             ; 1:11      index 105 i
-    dec  L              ; 1:4       index 105 i
+    dec   L             ; 1:4       index 105 i
     exx                 ; 1:4       index 105 i
     ex   DE, HL         ; 1:4       index 105 i
-    ex  (SP), HL        ; 1:19      index 105 i 
+    ex  (SP),HL         ; 1:19      index 105 i 
     call draw_white     ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -1363,18 +1365,18 @@ draw_snake:             ;
     ld  (HL),E          ; 1:7       do 107 index
     exx                 ; 1:4       do 107
     pop  HL             ; 1:10      do 107
-    pop  DE             ; 1:10      do 107 ( stop index -- ) r: ( -- stop index )
+    pop  DE             ; 1:10      do 107 ( stop index -- ) R: ( -- stop index )
 do107: 
         
     exx                 ; 1:4       index 107 i    
-    ld   E,(HL)         ; 1:7       index 107 i
-    inc  L              ; 1:4       index 107 i
-    ld   D,(HL)         ; 1:7       index 107 i
+    ld    E,(HL)        ; 1:7       index 107 i
+    inc   L             ; 1:4       index 107 i
+    ld    D,(HL)        ; 1:7       index 107 i
     push DE             ; 1:11      index 107 i
-    dec  L              ; 1:4       index 107 i
+    dec   L             ; 1:4       index 107 i
     exx                 ; 1:4       index 107 i
     ex   DE, HL         ; 1:4       index 107 i
-    ex  (SP), HL        ; 1:19      index 107 i 
+    ex  (SP),HL         ; 1:19      index 107 i 
     call snake_x        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -1383,14 +1385,14 @@ do107:
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     exx                 ; 1:4       index 107 i    
-    ld   E,(HL)         ; 1:7       index 107 i
-    inc  L              ; 1:4       index 107 i
-    ld   D,(HL)         ; 1:7       index 107 i
+    ld    E,(HL)        ; 1:7       index 107 i
+    inc   L             ; 1:4       index 107 i
+    ld    D,(HL)        ; 1:7       index 107 i
     push DE             ; 1:11      index 107 i
-    dec  L              ; 1:4       index 107 i
+    dec   L             ; 1:4       index 107 i
     exx                 ; 1:4       index 107 i
     ex   DE, HL         ; 1:4       index 107 i
-    ex  (SP), HL        ; 1:19      index 107 i 
+    ex  (SP),HL         ; 1:19      index 107 i 
     call snake_y        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
@@ -1403,27 +1405,29 @@ do107:
     exx                 ; 1:4       call R:( ret -- ) 
     
     exx                 ; 1:4       loop 107
-    ld   E,(HL)         ; 1:7       loop 107
-    inc  L              ; 1:4       loop 107
-    ld   D,(HL)         ; 1:7       loop 107 DE = index   
+    ld    E,(HL)        ; 1:7       loop 107
+    inc   L             ; 1:4       loop 107
+    ld    D,(HL)        ; 1:7       loop 107 DE = index   
     inc  HL             ; 1:6       loop 107
-    inc  DE             ; 1:6       loop 107 index + 1
-    ld    A, E          ; 1:4       loop 107
-    sub (HL)            ; 1:7       loop 107 lo index - stop
+    inc  DE             ; 1:6       loop 107 index++
+    ld    A,(HL)        ; 1:4       loop 107
+    xor   E             ; 1:4       loop 107 lo index - stop
+    jr   nz, $+8        ; 2:7/12    loop 107
     ld    A, D          ; 1:4       loop 107
     inc   L             ; 1:4       loop 107
-    sbc  A,(HL)         ; 1:7       loop 107 hi index - stop
-    jr  nc, leave107    ; 2:7/12    loop 107 exit
-    dec  L              ; 1:4       loop 107
+    xor (HL)            ; 1:7       loop 107 hi index - stop
+    jr    z, leave107   ; 2:7/12    loop 107 exit    
+    dec   L             ; 1:4       loop 107
     dec  HL             ; 1:6       loop 107
     ld  (HL), D         ; 1:7       loop 107
-    dec  L              ; 1:4       loop 107
+    dec   L             ; 1:4       loop 107
     ld  (HL), E         ; 1:7       loop 107
     exx                 ; 1:4       loop 107
     jp   do107          ; 3:10      loop 107
 leave107:
     inc  HL             ; 1:6       loop 107
-    exx                 ; 1:4       loop 107 
+    exx                 ; 1:4       loop 107
+exit107 EQU $ 
 
     
     push DE             ; 1:11      length @ push(length) fetch 

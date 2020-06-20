@@ -2,6 +2,8 @@
 
 ### Snake
 
+![Snake Game screenshot](https://github.com/DW0RKiN/M4_FORTH/blob/master/Game/snake.png)
+
 Eat the food at the coordinate point, but don't eat yourself!
 
     q   up
