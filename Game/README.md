@@ -17,6 +17,13 @@ Eat the food at the coordinate point, but don't eat yourself!
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Game/life.m4
 ![Conway's Game of Life screenshot](https://github.com/DW0RKiN/M4_FORTH/blob/master/Game/life.png)
 
+    q       up
+    a       down
+    o       left
+    p       right
+    e       exit
+    enter   swap
+
 Rules:
 - Any live cell with two or three live neighbours survives. 
 - Any dead cell with three live neighbours becomes a live cell.
