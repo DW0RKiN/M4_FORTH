@@ -11,6 +11,21 @@ define(AND,{
     ld    H, A          ; 1:4       and
     pop  DE             ; 1:10      and})dnl    
 dnl
+dnl
+dnl ( x -- x&n )
+dnl x = x & n
+define(PUSH_AND,{ifelse(eval(($1) & 0xFF00),{0},{
+    ld    H, 0x00       ; 2:7       $1 and},{
+    ld    A, high format({%-6s},$1); 2:7       $1 and
+    and   H             ; 1:4       $1 and
+    ld    H, A          ; 1:4       $1 and}){}dnl
+{}{}ifelse(eval(($1) & 0x00FF),{0},{
+    ld    L, 0x00       ; 2:7       $1 and},{
+    ld    A, low format({%-7s},$1); 2:7       $1 and
+    and   L             ; 1:4       $1 and
+    ld    L, A          ; 1:4       $1 and})})dnl    
+dnl
+dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 | x2
 define(OR,{
@@ -22,6 +37,20 @@ define(OR,{
     ld    H, A          ; 1:4       or
     pop  DE             ; 1:10      or})dnl
 dnl
+dnl
+dnl ( x  -- x|n )
+dnl x = x | n
+define(PUSH_OR,{ifelse(eval(($1) & 0xFF00),{0},,{
+    ld    A, high format({%-6s},$1); 2:7       $1 or
+    or    H             ; 1:4       $1 or
+    ld    H, A          ; 1:4       $1 or}){}dnl
+{}{}ifelse(eval(($1) & 0x00FF),{0},,eval(($1) & 0x00FF),{1},{
+    set   0, L          ; 2:8       $1 or},{
+    ld    A, low format({%-7s},$1); 2:7       $1 or
+    or    L             ; 1:4       $1 or
+    ld    L, A          ; 1:4       $1 or})})dnl
+dnl
+dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 ^ x2
 define(XOR,{
@@ -32,6 +61,19 @@ define(XOR,{
     xor   H             ; 1:4       xor
     ld    H, A          ; 1:4       xor
     pop  DE             ; 1:10      xor})dnl
+dnl
+dnl
+dnl ( x  -- x^n )
+dnl x = x ^ n
+define(PUSH_XOR,{ifelse(eval(($1) & 0xFF00),{0},,{
+    ld    A, high format({%-6s},$1); 2:7       $1 xor
+    xor   H             ; 1:4       $1 xor
+    ld    H, A          ; 1:4       $1 xor}){}dnl
+{}{}ifelse(eval(($1) & 0x00FF),{0},,{
+    ld    A, low format({%-7s},$1); 2:7       $1 xor
+    xor   L             ; 1:4       $1 xor
+    ld    L, A          ; 1:4       $1 xor})})dnl
+dnl
 dnl
 dnl ( x1 -- x )
 dnl x = ~x1
