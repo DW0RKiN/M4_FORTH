@@ -16,32 +16,33 @@ CONSTANT(_cursor,0x5990)
 CONSTANT(_stop,0x5B00)
 CONSTANT(last_key,0x5C08)
 
+; kurzor doleva, pozadi doprava
 SCOLON(_left,( -- ))
     PUSH2(_stop,_screen) SDO
-        SI SI PUSH(buff-_screen+1) ADD PUSH(_w-1) CMOVE
-        SI PUSH(_w-1) ADD CFETCH OVER PUSH(buff-_screen) ADD CSTORE
+        SI SI PUSH_ADD(buff-_screen+1) PUSH_CMOVE(_w-1)
+        SI PUSH_ADD(_w-1) CFETCH OVER PUSH_ADD(buff-_screen) CSTORE
     PUSH_ADDSLOOP(_w)
 SSEMICOLON
 
 SCOLON(_right,( -- ))
     PUSH2(_stop,_screen) SDO
-        SI _1ADD OVER PUSH(buff-_screen) ADD PUSH(_w-1) CMOVE
-        SI CFETCH OVER PUSH(buff-_screen+_w-1) ADD CSTORE
+        SI _1ADD OVER PUSH_ADD(buff-_screen) PUSH_CMOVE(_w-1)
+        SI CFETCH OVER PUSH_ADD(buff-_screen+_w-1) CSTORE
     PUSH_ADDSLOOP(_w)
 SSEMICOLON
 
 SCOLON(_down,( -- ))
-    PUSH(_screen+_w) PUSH2(buff       , _wh-_w) CMOVE
-    PUSH(_screen   ) PUSH2(buff+_wh-_w, _w    ) CMOVE
+    PUSH2(_screen+_w, buff       ) PUSH_CMOVE(_wh-_w)
+    PUSH2(_screen   , buff+_wh-_w) PUSH_CMOVE(_w    )
 SSEMICOLON
 
 SCOLON(_up,( -- ))
-    PUSH(_screen  ) PUSH2(buff+_w, _wh-_w) CMOVE
-    PUSH(_stop-_w ) PUSH2(buff   , _w    ) CMOVE
+    PUSH2(_screen , buff+_w) PUSH_CMOVE(_wh-_w)
+    PUSH2(_stop-_w, buff   ) PUSH_CMOVE(_w    )
 SSEMICOLON
 
 SCOLON(_copy,( -- ))
-    PUSH(buff) PUSH2(_screen, _wh) CMOVE
+    PUSH2(buff, _screen) PUSH_CMOVE(_wh)
 SSEMICOLON
 
 define({SWAP_CURSOR},{
@@ -58,7 +59,7 @@ SCOLON(_readkey,( -- ))
             PUSH_CFETCH(last_key)
         UNTIL
         PUSH_CFETCH(last_key) 
-        PUSH2(0,last_key) CSTORE
+        PUSH2_CSTORE(0,last_key)
         SWAP_CURSOR    
         DUP_PUSH_CEQ_IF('q') DROP_PUSH(0) SCALL(_up  )  THEN
         DUP_PUSH_CEQ_IF('a') DROP_PUSH(0) SCALL(_down)  THEN
@@ -81,29 +82,29 @@ SSEMICOLON
 SCOLON(_init,( -- ))
     PRINT({0x16, 0, 0})
     PUSH(_w*8) SFOR PUTCHAR('O') SNEXT
-    PUSH(0x4000) PUSH2(0x4800, 8*256) CMOVE
-    PUSH(0x4800) PUSH2(0x5000, 8*256) CMOVE
-    PUSH2(0,last_key) CSTORE
+    PUSH2(0x4000, 0x4800) PUSH_CMOVE(8*256)
+    PUSH2(0x4800, 0x5000) PUSH_CMOVE(8*256)
+    PUSH2_CSTORE(0,last_key) 
     PUSH2(_screen+_wh,_screen) SDO RND PUSH(1) AND OVER CSTORE SLOOP 
 SSEMICOLON
 
 SCOLON(_generation,( -- ))
     PUSH(_wh-1) SFOR 
-        SI PUSH(_screen) ADD
+        SI PUSH_ADD(_screen)
         SCALL(_alive) 
-        OVER PUSH(buff) ADD CSTORE
+        OVER PUSH_ADD(buff) CSTORE
     SNEXT
 SSEMICOLON
 
 SCOLON(_alive,( addr -- alive ))
     DUP
     CFETCH _0EQ_IF
-        SCALL(sum_neighbors) PUSH(0x07) AND
-        PUSH(3) EQ_IF PUSH(1) EXIT THEN
+        SCALL(sum_neighbors)
+        PUSH_EQ_IF(3) PUSH(1) SEXIT THEN
     ELSE
-        SCALL(sum_neighbors) PUSH(0x07) AND 
+        SCALL(sum_neighbors) 
         PUSH(0x01) OR 
-        PUSH(3) EQ_IF PUSH(1) EXIT THEN
+        PUSH_EQ_IF(3) PUSH(1) SEXIT THEN
     THEN
     PUSH(0)
 SSEMICOLON
@@ -132,18 +133,18 @@ SCOLON(sum_neighbors,( addr -- sum ))
     ; [+1]
     SWAP RIGHT
     ; [+33]
-    DUP PUSH(_w) ADD
-    DUP_PUSH_GE_IF(_stop)
-        PUSH(-_wh) ADD
+    DUP PUSH_ADD(_w)
+    DUP_PUSH_UGE_IF(_stop)
+        PUSH_ADD(-_wh)
     THEN
     ; [+32]
     DUP  LEFT
     ; [+31]
     DUP  LEFT
     ; [-33]
-    DUP PUSH(-2*_w) ADD
-    DUP_PUSH_LT_IF(_screen)
-        PUSH(_wh) ADD
+    DUP PUSH_ADD(-2*_w)
+    DUP_PUSH_ULT_IF(_screen)
+        PUSH_ADD(_wh)
     THEN
     ; [-32]
     DUP  RIGHT
@@ -158,6 +159,8 @@ SCOLON(sum_neighbors,( addr -- sum ))
     SWAP FETCH ADD
     SWAP FETCH ADD
     SWAP FETCH ADD
+    ; 16 bit --> 8 bit
+    PUSH(0xFF) AND
 SSEMICOLON
 
 include({../M4/LAST.M4})dnl

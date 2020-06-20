@@ -42,6 +42,7 @@ _stop                EQU 0x5B00
 last_key             EQU 0x5C08
 
 
+; kurzor doleva, pozadi doprava
 
 ;   ---  b e g i n  ---
 _left:                  ;           ( -- )
@@ -61,42 +62,26 @@ sdo101:                 ;           sdo 101 ( stop index -- stop index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      push(buff-0x5800+1)
-    ex   DE, HL         ; 1:4       push(buff-0x5800+1)
-    ld   HL, buff-0x5800+1; 3:10      push(buff-0x5800+1) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
-    push DE             ; 1:11      push(32-1)
-    ex   DE, HL         ; 1:4       push(32-1)
-    ld   HL, 32-1       ; 3:10      push(32-1) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    ld   BC, buff-0x5800+1; 3:10      buff-0x5800+1 +
+    add  HL, BC         ; 1:4       buff-0x5800+1 + 
+    ld   BC, 32-1       ; 3:10      32-1 cmove BC = u
+    ex   DE, HL         ; 1:4       32-1 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32-1 cmove
+    pop  HL             ; 1:10      32-1 cmove
+    pop  DE             ; 1:10      32-1 cmove
         
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      push(32-1)
-    ex   DE, HL         ; 1:4       push(32-1)
-    ld   HL, 32-1       ; 3:10      push(32-1) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
+    ld   BC, 32-1       ; 3:10      32-1 +
+    add  HL, BC         ; 1:4       32-1 + 
     ld    L, (HL)       ; 1:7       C@ cfetch 
     ld    H, 0x00       ; 2:7       C@ cfetch 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    push DE             ; 1:11      push(buff-0x5800)
-    ex   DE, HL         ; 1:4       push(buff-0x5800)
-    ld   HL, buff-0x5800; 3:10      push(buff-0x5800) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
+    ld   BC, buff-0x5800; 3:10      buff-0x5800 +
+    add  HL, BC         ; 1:4       buff-0x5800 + 
     ld  (HL), E         ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
@@ -136,23 +121,13 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     inc  HL             ; 1:6       1+ 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    push DE             ; 1:11      push(buff-0x5800)
-    ex   DE, HL         ; 1:4       push(buff-0x5800)
-    ld   HL, buff-0x5800; 3:10      push(buff-0x5800) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
-    push DE             ; 1:11      push(32-1)
-    ex   DE, HL         ; 1:4       push(32-1)
-    ld   HL, 32-1       ; 3:10      push(32-1) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    ld   BC, buff-0x5800; 3:10      buff-0x5800 +
+    add  HL, BC         ; 1:4       buff-0x5800 + 
+    ld   BC, 32-1       ; 3:10      32-1 cmove BC = u
+    ex   DE, HL         ; 1:4       32-1 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32-1 cmove
+    pop  HL             ; 1:10      32-1 cmove
+    pop  DE             ; 1:10      32-1 cmove
         
     
     push DE             ; 1:11      dup
@@ -162,11 +137,8 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     ld    H, 0x00       ; 2:7       C@ cfetch 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    push DE             ; 1:11      push(buff-0x5800+32-1)
-    ex   DE, HL         ; 1:4       push(buff-0x5800+32-1)
-    ld   HL, buff-0x5800+32-1; 3:10      push(buff-0x5800+32-1) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
+    ld   BC, buff-0x5800+32-1; 3:10      buff-0x5800+32-1 +
+    add  HL, BC         ; 1:4       buff-0x5800+32-1 + 
     ld  (HL), E         ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
@@ -192,39 +164,25 @@ _right_end:
 ;   ---  b e g i n  ---
 _down:                  ;           ( -- )
     
-    push DE             ; 1:11      push(0x5800+32)
-    ex   DE, HL         ; 1:4       push(0x5800+32)
-    ld   HL, 0x5800+32  ; 3:10      push(0x5800+32) 
-    push DE             ; 1:11      push2(buff       ,32*24-32)
-    ld   DE, buff       ; 3:10      push2(buff       ,32*24-32)
-    push HL             ; 1:11      push2(buff       ,32*24-32)
-    ld   HL, 32*24-32   ; 3:10      push2(buff       ,32*24-32) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(0x5800+32,buff       )
+    ld   DE, 0x5800+32  ; 3:10      push2(0x5800+32,buff       )
+    push HL             ; 1:11      push2(0x5800+32,buff       )
+    ld   HL, buff       ; 3:10      push2(0x5800+32,buff       ) 
+    ld   BC, 32*24-32   ; 3:10      32*24-32 cmove BC = u
+    ex   DE, HL         ; 1:4       32*24-32 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32*24-32 cmove
+    pop  HL             ; 1:10      32*24-32 cmove
+    pop  DE             ; 1:10      32*24-32 cmove
     
-    push DE             ; 1:11      push(0x5800   )
-    ex   DE, HL         ; 1:4       push(0x5800   )
-    ld   HL, 0x5800     ; 3:10      push(0x5800   ) 
-    push DE             ; 1:11      push2(buff+32*24-32,32    )
-    ld   DE, buff+32*24-32; 3:10      push2(buff+32*24-32,32    )
-    push HL             ; 1:11      push2(buff+32*24-32,32    )
-    ld   HL, 32         ; 3:10      push2(buff+32*24-32,32    ) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(0x5800   ,buff+32*24-32)
+    ld   DE, 0x5800     ; 3:10      push2(0x5800   ,buff+32*24-32)
+    push HL             ; 1:11      push2(0x5800   ,buff+32*24-32)
+    ld   HL, buff+32*24-32; 3:10      push2(0x5800   ,buff+32*24-32) 
+    ld   BC, 32         ; 3:10      32     cmove BC = u
+    ex   DE, HL         ; 1:4       32     cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32     cmove
+    pop  HL             ; 1:10      32     cmove
+    pop  DE             ; 1:10      32     cmove
 
 _down_end:
     ret                 ; 1:10      s;
@@ -234,39 +192,25 @@ _down_end:
 ;   ---  b e g i n  ---
 _up:                    ;           ( -- )
     
-    push DE             ; 1:11      push(0x5800  )
-    ex   DE, HL         ; 1:4       push(0x5800  )
-    ld   HL, 0x5800     ; 3:10      push(0x5800  ) 
-    push DE             ; 1:11      push2(buff+32,32*24-32)
-    ld   DE, buff+32    ; 3:10      push2(buff+32,32*24-32)
-    push HL             ; 1:11      push2(buff+32,32*24-32)
-    ld   HL, 32*24-32   ; 3:10      push2(buff+32,32*24-32) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(0x5800 ,buff+32)
+    ld   DE, 0x5800     ; 3:10      push2(0x5800 ,buff+32)
+    push HL             ; 1:11      push2(0x5800 ,buff+32)
+    ld   HL, buff+32    ; 3:10      push2(0x5800 ,buff+32) 
+    ld   BC, 32*24-32   ; 3:10      32*24-32 cmove BC = u
+    ex   DE, HL         ; 1:4       32*24-32 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32*24-32 cmove
+    pop  HL             ; 1:10      32*24-32 cmove
+    pop  DE             ; 1:10      32*24-32 cmove
     
-    push DE             ; 1:11      push(0x5B00-32 )
-    ex   DE, HL         ; 1:4       push(0x5B00-32 )
-    ld   HL, 0x5B00-32  ; 3:10      push(0x5B00-32 ) 
-    push DE             ; 1:11      push2(buff   ,32    )
-    ld   DE, buff       ; 3:10      push2(buff   ,32    )
-    push HL             ; 1:11      push2(buff   ,32    )
-    ld   HL, 32         ; 3:10      push2(buff   ,32    ) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(0x5B00-32,buff   )
+    ld   DE, 0x5B00-32  ; 3:10      push2(0x5B00-32,buff   )
+    push HL             ; 1:11      push2(0x5B00-32,buff   )
+    ld   HL, buff       ; 3:10      push2(0x5B00-32,buff   ) 
+    ld   BC, 32         ; 3:10      32     cmove BC = u
+    ex   DE, HL         ; 1:4       32     cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32     cmove
+    pop  HL             ; 1:10      32     cmove
+    pop  DE             ; 1:10      32     cmove
 
 _up_end:
     ret                 ; 1:10      s;
@@ -276,22 +220,15 @@ _up_end:
 ;   ---  b e g i n  ---
 _copy:                  ;           ( -- )
     
-    push DE             ; 1:11      push(buff)
-    ex   DE, HL         ; 1:4       push(buff)
-    ld   HL, buff       ; 3:10      push(buff) 
-    push DE             ; 1:11      push2(0x5800,32*24)
-    ld   DE, 0x5800     ; 3:10      push2(0x5800,32*24)
-    push HL             ; 1:11      push2(0x5800,32*24)
-    ld   HL, 32*24      ; 3:10      push2(0x5800,32*24) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(buff,0x5800)
+    ld   DE, buff       ; 3:10      push2(buff,0x5800)
+    push HL             ; 1:11      push2(buff,0x5800)
+    ld   HL, 0x5800     ; 3:10      push2(buff,0x5800) 
+    ld   BC, 32*24      ; 3:10      32*24 cmove BC = u
+    ex   DE, HL         ; 1:4       32*24 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 32*24 cmove
+    pop  HL             ; 1:10      32*24 cmove
+    pop  DE             ; 1:10      32*24 cmove
 
 _copy_end:
     ret                 ; 1:10      s;
@@ -338,13 +275,8 @@ break103:               ;           until 103
     ld   HL,(0x5C08)    ; 3:16      0x5C08 @ push(0x5C08) cfetch
     ld    H, 0x00       ; 2:7       0x5C08 @ push(0x5C08) cfetch 
         
-    push DE             ; 1:11      push2(0,0x5C08)
-    ld   DE, 0          ; 3:10      push2(0,0x5C08)
-    push HL             ; 1:11      push2(0,0x5C08)
-    ld   HL, 0x5C08     ; 3:10      push2(0,0x5C08) 
-    ld  (HL), E         ; 1:7       C! cstore
-    pop  HL             ; 1:10      C! cstore
-    pop  DE             ; 1:10      C! cstore
+    ld    A, 0          ; 2:7       push2_cstore(0,0x5C08)
+    ld   (0x5C08), A    ; 3:13      push2_cstore(0,0x5C08)
         
     ld   BC, 0x5990     ; 3:10      swap_cursor
     ld    A,(BC)        ; 1:7       swap_cursor
@@ -411,7 +343,7 @@ endif105:
     pop  DE             ; 1:10      xor 
             
     ld    A, L          ; 1:4       buff+400 C! push(buff+400) cstore
-    ld    (buff+400), A  ; 3:13      buff+400 C! push(buff+400) cstore
+    ld   (buff+400), A  ; 3:13      buff+400 C! push(buff+400) cstore
     ex   DE, HL         ; 1:4       buff+400 C! push(buff+400) cstore
     pop  DE             ; 1:10      buff+400 C! push(buff+400) cstore 
         
@@ -477,47 +409,28 @@ snext103:               ;           snext 103
     ex   DE, HL         ; 1:4       sfor unloop 103
     pop  DE             ; 1:10      sfor unloop 103
     
-    push DE             ; 1:11      push(0x4000)
-    ex   DE, HL         ; 1:4       push(0x4000)
-    ld   HL, 0x4000     ; 3:10      push(0x4000) 
-    push DE             ; 1:11      push2(0x4800,8*256)
-    ld   DE, 0x4800     ; 3:10      push2(0x4800,8*256)
-    push HL             ; 1:11      push2(0x4800,8*256)
-    ld   HL, 8*256      ; 3:10      push2(0x4800,8*256) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(0x4000,0x4800)
+    ld   DE, 0x4000     ; 3:10      push2(0x4000,0x4800)
+    push HL             ; 1:11      push2(0x4000,0x4800)
+    ld   HL, 0x4800     ; 3:10      push2(0x4000,0x4800) 
+    ld   BC, 8*256      ; 3:10      8*256 cmove BC = u
+    ex   DE, HL         ; 1:4       8*256 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 8*256 cmove
+    pop  HL             ; 1:10      8*256 cmove
+    pop  DE             ; 1:10      8*256 cmove
     
-    push DE             ; 1:11      push(0x4800)
-    ex   DE, HL         ; 1:4       push(0x4800)
-    ld   HL, 0x4800     ; 3:10      push(0x4800) 
-    push DE             ; 1:11      push2(0x5000,8*256)
-    ld   DE, 0x5000     ; 3:10      push2(0x5000,8*256)
-    push HL             ; 1:11      push2(0x5000,8*256)
-    ld   HL, 8*256      ; 3:10      push2(0x5000,8*256) 
-    ld    A, H          ; 1:4       cmove
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
-    pop  HL             ; 1:10      cmove HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove
+    push DE             ; 1:11      push2(0x4800,0x5000)
+    ld   DE, 0x4800     ; 3:10      push2(0x4800,0x5000)
+    push HL             ; 1:11      push2(0x4800,0x5000)
+    ld   HL, 0x5000     ; 3:10      push2(0x4800,0x5000) 
+    ld   BC, 8*256      ; 3:10      8*256 cmove BC = u
+    ex   DE, HL         ; 1:4       8*256 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 8*256 cmove
+    pop  HL             ; 1:10      8*256 cmove
+    pop  DE             ; 1:10      8*256 cmove
     
-    push DE             ; 1:11      push2(0,0x5C08)
-    ld   DE, 0          ; 3:10      push2(0,0x5C08)
-    push HL             ; 1:11      push2(0,0x5C08)
-    ld   HL, 0x5C08     ; 3:10      push2(0,0x5C08) 
-    ld  (HL), E         ; 1:7       C! cstore
-    pop  HL             ; 1:10      C! cstore
-    pop  DE             ; 1:10      C! cstore
+    ld    A, 0          ; 2:7       push2_cstore(0,0x5C08)
+    ld   (0x5C08), A    ; 3:13      push2_cstore(0,0x5C08) 
     
     push DE             ; 1:11      push2(0x5800+32*24,0x5800)
     ld   DE, 0x5800+32*24; 3:10      push2(0x5800+32*24,0x5800)
@@ -572,21 +485,15 @@ sfor105:                ;           sfor 105 ( index -- index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      push(0x5800)
-    ex   DE, HL         ; 1:4       push(0x5800)
-    ld   HL, 0x5800     ; 3:10      push(0x5800) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      +
+    ld   BC, 0x5800     ; 3:10      0x5800 +
+    add  HL, BC         ; 1:4       0x5800 +
         
     call _alive         ; 3:17      scall 
         
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    push DE             ; 1:11      push(buff)
-    ex   DE, HL         ; 1:4       push(buff)
-    ld   HL, buff       ; 3:10      push(buff) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
+    ld   BC, buff       ; 3:10      buff +
+    add  HL, BC         ; 1:4       buff + 
     ld  (HL), E         ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
@@ -619,30 +526,18 @@ _alive:                 ;           ( addr -- alive )
     pop  DE             ; 1:10      0= if
     jp   nz, else109    ; 3:10      0= if
         
-    call sum_neighbors  ; 3:17      scall 
-    push DE             ; 1:11      push(0x07)
-    ex   DE, HL         ; 1:4       push(0x07)
-    ld   HL, 0x07       ; 3:10      push(0x07) 
-    ld    A, E          ; 1:4       and
-    and   L             ; 1:4       and
-    ld    L, A          ; 1:4       and
-    ld    A, D          ; 1:4       and
-    and   H             ; 1:4       and
-    ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and
+    call sum_neighbors  ; 3:17      scall
         
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    or    A             ; 1:4       = if
-    sbc  HL, DE         ; 2:15      = if
-    pop  HL             ; 1:10      = if
-    pop  DE             ; 1:10      = if
-    jp   nz, else110    ; 3:10      = if 
+    ld   BC, 3          ; 3:10      3 = if
+    or    A             ; 1:4       3 = if
+    sbc  HL, BC         ; 2:15      3 = if
+    ex   DE, HL         ; 1:4       3 = if
+    pop  DE             ; 1:10      3 = if
+    jp   nz, else110    ; 3:10      3 = if 
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
     ld   HL, 1          ; 3:10      push(1) 
-    jp   _alive_end     ; 3:10      exit 
+    ret                 ; 1:10      sexit 
 else110  EQU $          ;           = endif
 endif110:
     
@@ -650,16 +545,6 @@ endif110:
 else109:
         
     call sum_neighbors  ; 3:17      scall 
-    push DE             ; 1:11      push(0x07)
-    ex   DE, HL         ; 1:4       push(0x07)
-    ld   HL, 0x07       ; 3:10      push(0x07) 
-    ld    A, E          ; 1:4       and
-    and   L             ; 1:4       and
-    ld    L, A          ; 1:4       and
-    ld    A, D          ; 1:4       and
-    and   H             ; 1:4       and
-    ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and 
         
     push DE             ; 1:11      push(0x01)
     ex   DE, HL         ; 1:4       push(0x01)
@@ -672,18 +557,16 @@ else109:
     ld    H, A          ; 1:4       or
     pop  DE             ; 1:10      or 
         
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    or    A             ; 1:4       = if
-    sbc  HL, DE         ; 2:15      = if
-    pop  HL             ; 1:10      = if
-    pop  DE             ; 1:10      = if
-    jp   nz, else111    ; 3:10      = if 
+    ld   BC, 3          ; 3:10      3 = if
+    or    A             ; 1:4       3 = if
+    sbc  HL, BC         ; 2:15      3 = if
+    ex   DE, HL         ; 1:4       3 = if
+    pop  DE             ; 1:10      3 = if
+    jp   nz, else111    ; 3:10      3 = if 
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
     ld   HL, 1          ; 3:10      push(1) 
-    jp   _alive_end     ; 3:10      exit 
+    ret                 ; 1:10      sexit 
 else111  EQU $          ;           = endif
 endif111:
     
@@ -729,26 +612,17 @@ sum_neighbors:          ;           ( addr -- sum )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      push(32)
-    ex   DE, HL         ; 1:4       push(32)
-    ld   HL, 32         ; 3:10      push(32) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      +
+    ld   BC, 32         ; 3:10      32 +
+    add  HL, BC         ; 1:4       32 +
     
-    ld    A, H          ; 1:4       dup 0x5B00 >= if
-    add   A, A          ; 1:4       dup 0x5B00 >= if
-    jp    c, else112    ; 3:10      dup 0x5B00 >= if    positive constant
-    ld    A, L          ; 1:4       dup 0x5B00 >= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    sub   low 0x5B00    ; 2:7       dup 0x5B00 >= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup 0x5B00 >= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    sbc   A, high 0x5B00; 2:7       dup 0x5B00 >= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    jp    c, else112    ; 3:10      dup 0x5B00 >= if
+    ld    A, L          ; 1:4       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
+    sub   low 0x5B00    ; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
+    sbc   A, high 0x5B00; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
+    jp    c, else112    ; 3:10      dup 0x5B00 (u)>= if
         
-    push DE             ; 1:11      push(-32*24)
-    ex   DE, HL         ; 1:4       push(-32*24)
-    ld   HL, -32*24     ; 3:10      push(-32*24) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      +
+    ld   BC, -32*24     ; 3:10      -32*24 +
+    add  HL, BC         ; 1:4       -32*24 +
     
 else112  EQU $          ;           = endif
 endif112:
@@ -779,26 +653,17 @@ endif112:
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      push(-2*32)
-    ex   DE, HL         ; 1:4       push(-2*32)
-    ld   HL, -2*32      ; 3:10      push(-2*32) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      +
+    ld   BC, -2*32      ; 3:10      -2*32 +
+    add  HL, BC         ; 1:4       -2*32 +
     
-    ld    A, H          ; 1:4       dup 0x5800 < if
-    add   A, A          ; 1:4       dup 0x5800 < if
-    jr    c, $+11       ; 2:7/12    dup 0x5800 < if    positive constant
-    ld    A, L          ; 1:4       dup 0x5800 < if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    sub   low 0x5800    ; 2:7       dup 0x5800 < if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    ld    A, H          ; 1:4       dup 0x5800 < if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    sbc   A, high 0x5800; 2:7       dup 0x5800 < if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    jp   nc, else113    ; 3:10      dup 0x5800 < if
+    ld    A, L          ; 1:4       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
+    sub   low 0x5800    ; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
+    ld    A, H          ; 1:4       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
+    sbc   A, high 0x5800; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
+    jp   nc, else113    ; 3:10      dup 0x5800 (u)< if
         
-    push DE             ; 1:11      push(32*24)
-    ex   DE, HL         ; 1:4       push(32*24)
-    ld   HL, 32*24      ; 3:10      push(32*24) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      +
+    ld   BC, 32*24      ; 3:10      32*24 +
+    add  HL, BC         ; 1:4       32*24 +
     
 else113  EQU $          ;           = endif
 endif113:
@@ -886,6 +751,18 @@ endif113:
     ld    L, A          ; 1:4       @ fetch 
     add  HL, DE         ; 1:4       +
     pop  DE             ; 1:10      +
+    ; 16 bit --> 8 bit
+    
+    push DE             ; 1:11      push(0xFF)
+    ex   DE, HL         ; 1:4       push(0xFF)
+    ld   HL, 0xFF       ; 3:10      push(0xFF) 
+    ld    A, E          ; 1:4       and
+    and   L             ; 1:4       and
+    ld    L, A          ; 1:4       and
+    ld    A, D          ; 1:4       and
+    and   H             ; 1:4       and
+    ld    H, A          ; 1:4       and
+    pop  DE             ; 1:10      and
 
 sum_neighbors_end:
     ret                 ; 1:10      s;
