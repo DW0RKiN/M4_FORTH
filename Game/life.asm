@@ -149,10 +149,19 @@ snext101:               ;           snext 101
     ld   HL, 0x5800     ; 3:10      push2(0x5800+32*24,0x5800) 
 
 sdo102:                 ;           sdo 102 ( stop index -- stop index ) 
-    push DE             ; 1:11      push(2)
-    ex   DE, HL         ; 1:4       push(2)
-    ld   HL, 2          ; 3:10      push(2) 
-    call Random         ; 3:17      random 
+    ex   DE, HL         ; 1:4       rnd
+    push HL             ; 1:11      rnd
+    call Rnd            ; 3:17      rnd 
+    push DE             ; 1:11      push(1)
+    ex   DE, HL         ; 1:4       push(1)
+    ld   HL, 1          ; 3:10      push(1) 
+    ld    A, E          ; 1:4       and
+    and   L             ; 1:4       and
+    ld    L, A          ; 1:4       and
+    ld    A, D          ; 1:4       and
+    and   H             ; 1:4       and
+    ld    H, A          ; 1:4       and
+    pop  DE             ; 1:10      and 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     ld  (HL), E         ; 1:7       C! cstore
@@ -510,53 +519,6 @@ sum_neighbors_end:
 
 
 
-; ( max -- rand )
-; 16-bit pseudorandom generator
-; HL = random < max, or HL = 0
-Random:
-    ld    A, H          ; 1:4
-    or    A             ; 1:4
-    jr    z, Random_H0  ; 2:7/11
-    
-    ld    C, 0xFF       ; 2:7
-    xor   A             ; 1:4
-    adc   A, A          ; 1:4
-    cp    H             ; 1:4
-    jr    c, $-2        ; 2:7/11
-    ld    B, A          ; 1:4       BC = mask = 0x??FF
-    jr   Random_Begin   ; 2:12
-    
-Random_H0:
-    ld    B, A          ; 1:4
-    or    L             ; 1:4
-    ret   z             ; 1:5/11
-
-    xor   A             ; 1:4
-    adc   A, A          ; 1:4
-    cp    L             ; 1:4
-    jr    c, $-2        ; 2:7/11
-    ld    C, A          ; 1:4       BC = mask = 0x00??
-    
-Random_Begin:
-    push  DE            ; 1:11
-    ex    DE, HL        ; 1:4
-Random_new:
-    call Rnd            ; 3:17
-    
-    ld    A, C          ; 1:4
-    and   L             ; 1:4
-    ld    L, A          ; 1:4
-    ld    A, B          ; 1:4
-    and   H             ; 1:4
-    ld    H, A          ; 1:4
-    
-    sbc  HL, DE         ; 2:15
-    jr   nc, Random_new ; 2:7/11
-    
-Rnd_Exit:
-    add  HL, DE         ; 1:11
-    pop  DE             ; 1:10
-    ret                 ; 1:10
 ; ( -- rand )
 ; 16-bit pseudorandom generator
 ; Out: HL = 0..65535

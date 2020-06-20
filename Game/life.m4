@@ -24,7 +24,7 @@ SCOLON(_init,( -- ))
     PUSH(0x4000) PUSH2(0x4800, 8*256) CMOVE
     PUSH(0x4800) PUSH2(0x5000, 8*256) CMOVE
     PUSH2(0,last_key) CSTORE
-    PUSH2(_screen+_w*_h,_screen) SDO PUSH(2) RANDOM OVER CSTORE SLOOP 
+    PUSH2(_screen+_w*_h,_screen) SDO RND PUSH(1) AND OVER CSTORE SLOOP 
 SSEMICOLON
 
 SCOLON(_generation,( -- ))
