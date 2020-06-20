@@ -331,16 +331,9 @@ endif105:
     ld   HL,(buff+400)  ; 3:16      buff+400 @ push(buff+400) cfetch
     ld    H, 0x00       ; 2:7       buff+400 @ push(buff+400) cfetch 
             
-    push DE             ; 1:11      push(1)
-    ex   DE, HL         ; 1:4       push(1)
-    ld   HL, 1          ; 3:10      push(1) 
-    ld    A, E          ; 1:4       xor
-    xor   L             ; 1:4       xor
-    ld    L, A          ; 1:4       xor
-    ld    A, D          ; 1:4       xor
-    xor   H             ; 1:4       xor
-    ld    H, A          ; 1:4       xor
-    pop  DE             ; 1:10      xor 
+    ld    A, low 1      ; 2:7       1 xor
+    xor   L             ; 1:4       1 xor
+    ld    L, A          ; 1:4       1 xor 
             
     ld    A, L          ; 1:4       buff+400 C! push(buff+400) cstore
     ld   (buff+400), A  ; 3:13      buff+400 C! push(buff+400) cstore
@@ -441,16 +434,10 @@ sdo104:                 ;           sdo 104 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       rnd
     push HL             ; 1:11      rnd
     call Rnd            ; 3:17      rnd 
-    push DE             ; 1:11      push(1)
-    ex   DE, HL         ; 1:4       push(1)
-    ld   HL, 1          ; 3:10      push(1) 
-    ld    A, E          ; 1:4       and
-    and   L             ; 1:4       and
-    ld    L, A          ; 1:4       and
-    ld    A, D          ; 1:4       and
-    and   H             ; 1:4       and
-    ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and 
+    ld    H, 0x00       ; 2:7       1 and
+    ld    A, low 1      ; 2:7       1 and
+    and   L             ; 1:4       1 and
+    ld    L, A          ; 1:4       1 and 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     ld  (HL), E         ; 1:7       C! cstore
@@ -546,16 +533,7 @@ else109:
         
     call sum_neighbors  ; 3:17      scall 
         
-    push DE             ; 1:11      push(0x01)
-    ex   DE, HL         ; 1:4       push(0x01)
-    ld   HL, 0x01       ; 3:10      push(0x01) 
-    ld    A, E          ; 1:4       or
-    or    L             ; 1:4       or
-    ld    L, A          ; 1:4       or
-    ld    A, D          ; 1:4       or
-    or    H             ; 1:4       or
-    ld    H, A          ; 1:4       or
-    pop  DE             ; 1:10      or 
+    set   0, L          ; 2:8       0x01 or 
         
     ld   BC, 3          ; 3:10      3 = if
     or    A             ; 1:4       3 = if
@@ -753,16 +731,10 @@ endif113:
     pop  DE             ; 1:10      +
     ; 16 bit --> 8 bit
     
-    push DE             ; 1:11      push(0xFF)
-    ex   DE, HL         ; 1:4       push(0xFF)
-    ld   HL, 0xFF       ; 3:10      push(0xFF) 
-    ld    A, E          ; 1:4       and
-    and   L             ; 1:4       and
-    ld    L, A          ; 1:4       and
-    ld    A, D          ; 1:4       and
-    and   H             ; 1:4       and
-    ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and
+    ld    H, 0x00       ; 2:7       0xFF and
+    ld    A, low 0xFF   ; 2:7       0xFF and
+    and   L             ; 1:4       0xFF and
+    ld    L, A          ; 1:4       0xFF and
 
 sum_neighbors_end:
     ret                 ; 1:10      s;

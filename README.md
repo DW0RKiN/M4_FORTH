@@ -232,8 +232,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 | original   |   M4 FORTH   |  optimization  |  data stack           |  r.a.s. | comment      |
 | :--------: | :----------: | :------------: | :-------------------- | :------ | :----------- |
 |    and     |     AND      |                |    ( x2 x1 -- x )     |         |              |
-|     or     |      OR      |                |    ( x2 x1 -- x )     |         |
-|    xor     |     XOR      |                |       ( x1 -- -x1 )   |         |
+|   `3` and  |              |  PUSH_AND(`3`) |        ( x -- x & `3`)|         |              |
+|     or     |      OR      |                |    ( x2 x1 -- x )     |         |              |
+|   `3` or   |              |  PUSH_OR(`3`)  |        ( x -- x | `3`)|         |              |
+|    xor     |     XOR      |                |       ( x1 -- -x1 )   |         |              |
+|   `3` xor  |              |  PUSH_XOR(`3`) |        ( x -- x ^ `3`)|         |              |
 |    abs     |     ABS      |                |        ( n -- u )     |         |
 |   invert   |    INVERT    |                |       ( x1 -- ~x1 )   |         |
 |   within   |    WITHIN    |                |    ( c b a -- flag )  |         |(a-b) (c-b) U<

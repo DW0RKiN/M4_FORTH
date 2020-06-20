@@ -68,7 +68,7 @@ SCOLON(_readkey,( -- ))
         DUP_PUSH_CEQ_IF('m') 
             DROP_PUSH(0)
             PUSH_CFETCH(buff+400) 
-            PUSH(1) XOR 
+            PUSH_XOR(1) 
             PUSH_CSTORE(buff+400) 
         THEN
         DUP_PUSH_CEQ_IF('e')
@@ -85,7 +85,7 @@ SCOLON(_init,( -- ))
     PUSH2(0x4000, 0x4800) PUSH_CMOVE(8*256)
     PUSH2(0x4800, 0x5000) PUSH_CMOVE(8*256)
     PUSH2_CSTORE(0,last_key) 
-    PUSH2(_screen+_wh,_screen) SDO RND PUSH(1) AND OVER CSTORE SLOOP 
+    PUSH2(_screen+_wh,_screen) SDO RND PUSH_AND(1) OVER CSTORE SLOOP 
 SSEMICOLON
 
 SCOLON(_generation,( -- ))
@@ -103,7 +103,7 @@ SCOLON(_alive,( addr -- alive ))
         PUSH_EQ_IF(3) PUSH(1) SEXIT THEN
     ELSE
         SCALL(sum_neighbors) 
-        PUSH(0x01) OR 
+        PUSH_OR(0x01) 
         PUSH_EQ_IF(3) PUSH(1) SEXIT THEN
     THEN
     PUSH(0)
@@ -160,7 +160,7 @@ SCOLON(sum_neighbors,( addr -- sum ))
     SWAP FETCH ADD
     SWAP FETCH ADD
     ; 16 bit --> 8 bit
-    PUSH(0xFF) AND
+    PUSH_AND(0xFF)
 SSEMICOLON
 
 include({../M4/LAST.M4})dnl
