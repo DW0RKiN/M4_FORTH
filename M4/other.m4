@@ -124,7 +124,7 @@ dnl ( char -- )
 dnl store(addr) store 8-bit char at addr
 define({PUSH_CSTORE},{
     ld    A, L          ; 1:4       $1 C! push($1) cstore
-    ld    format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
+    ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
     ex   DE, HL         ; 1:4       $1 C! push($1) cstore
     pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
 dnl
@@ -173,7 +173,7 @@ define({PUSH2_ADDSTORE},{
 dnl
 dnl
 dnl cmove
-dnl ( addr1 addr2 u -- )
+dnl ( from to u -- )
 dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVE},{
     ld    A, H          ; 1:4       cmove
@@ -185,6 +185,17 @@ define({CMOVE},{
     ldir                ; 2:u*21/16 cmove
     pop  HL             ; 1:10      cmove
     pop  DE             ; 1:10      cmove})dnl
+dnl
+dnl
+dnl u cmove
+dnl ( from to -- )
+dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+define({PUSH_CMOVE},{ifelse(eval($1),{0},{},{
+    ld   BC, format({%-11s},$1); 3:10      $1 cmove BC = u
+    ex   DE, HL         ; 1:4       $1 cmove HL = from = addr1, DE = to
+    ldir                ; 2:u*21/16 $1 cmove
+    pop  HL             ; 1:10      $1 cmove
+    pop  DE             ; 1:10      $1 cmove})})dnl
 dnl
 dnl
 dnl cmove>

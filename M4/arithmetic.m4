@@ -8,6 +8,14 @@ define(ADD,{
     add  HL, DE         ; 1:4       +
     pop  DE             ; 1:10      +})dnl
 dnl
+dnl
+dnl ( x -- x+n )
+dnl x = x + n
+define(PUSH_ADD,{
+    ld   BC, format({%-11s},$1); 3:10      $1 +
+    add  HL, BC         ; 1:4       $1 +})dnl
+dnl
+dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 - x1
 define({SUB},{
@@ -15,6 +23,14 @@ define({SUB},{
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -})dnl
+dnl
+dnl
+dnl ( x -- x-n )
+dnl x = x - n
+define({PUSH_SUB},{
+    ld   BC, format({%-11s},$1); 3:10      $1 -
+    or    A             ; 1:4       $1 -
+    sbc  HL, BC         ; 2:15      $1 -})dnl
 dnl
 dnl
 dnl ( x -- -x )

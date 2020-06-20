@@ -510,3 +510,26 @@ define({GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
     jp    p, else{}IF_COUNT    ; 3:10      > if})dnl
 dnl
 dnl
+dnl ------ push scond if ---------
+dnl
+dnl num = if
+define({PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld   BC, format({%-11s},$1); 3:10      $1 = if
+    or    A             ; 1:4       $1 = if
+    sbc  HL, BC         ; 2:15      $1 = if
+    ex   DE, HL         ; 1:4       $1 = if
+    pop  DE             ; 1:10      $1 = if
+    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if})dnl
+dnl
+dnl
+dnl num <> if
+define({PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld   BC, format({%-11s},$1); 3:10      $1 <> if
+    or    A             ; 1:4       $1 <> if
+    sbc  HL, DE         ; 2:15      $1 <> if
+    ex   DE, HL         ; 1:4       $1 <> if
+    pop  DE             ; 1:10      $1 <> if
+    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})dnl
+dnl
+dnl
+dnl
