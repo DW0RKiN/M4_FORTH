@@ -315,7 +315,10 @@ done
 while :
 do
     cat $TMPFILE |
-    
+
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+ADD\(\s\|$\)#\1PUSH_ADD(\2)\3#g' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+SUB\(\s\|$\)#\1PUSH_SUB(\2)\3#g' |
+
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+ADDLOOP\(\s\|$\)#\1PUSH_ADDLOOP(\2)\3#g' |
 
     sed 's#^\([^;{]*\s\|^\)\([0-9]\+\)\(\s\+\)MOVE\(\s\|$\)#\1PUSH(2*(\2))\3CMOVE\4#g' |
@@ -392,8 +395,11 @@ do
     
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+EMIT\(\s\|$\)#\1PUTCHAR(\2)\3#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+EQ_IF\(\s\|$\)#\1DUP_PUSH_EQ_IF(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+NE_IF\(\s\|$\)#\1DUP_PUSH_NE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+EQ_IF\(\s\|$\)#\1PUSH_EQ_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+NE_IF\(\s\|$\)#\1PUSH_NE_IF(\2)\3#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+PUSH_EQ_IF(#\1DUP_PUSH_EQ_IF(#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+PUSH_NE_IF(#\1DUP_PUSH_NE_IF(#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LT_IF\(\s\|$\)#\1DUP_PUSH_LT_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LE_IF\(\s\|$\)#\1DUP_PUSH_LE_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GT_IF\(\s\|$\)#\1DUP_PUSH_GT_IF(\2)\3#gi' |

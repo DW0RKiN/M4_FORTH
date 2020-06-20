@@ -169,7 +169,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 | original   |   M4 FORTH   |  optimization  |  data stack                 |  return address stack |
 | :--------: | :----------: | :------------: | :-------------------------- | :-------------------- |
 |     +      |      ADD     |                |    ( x2 x1 -- x )           |                       |
+|   `3` +    |              |  PUSH_ADD(`3`) |        ( x -- x+`3` )       |                       |
 |     -      |      SUB     |                |    ( x2 x1 -- x )           |                       |
+|   `3` -    |              |  PUSH_SUB(`3`) |        ( x -- x-`3` )       |                       |
 |   negate   |     NEGATE   |                |       ( x1 -- -x1 )         |                       |
 |    abs     |      ABS     |                |        ( n -- u )           |                       |
 |     *      |      MUL     |                |    ( x2 x1 -- x )           |                       |
@@ -330,6 +332,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |    u<= if    |              |       ULE_IF       |    (x1 x2 -- )      |         |
 |    u>  if    |              |       UGT_IF       |    (x1 x2 -- )      |         |
 |    u>= if    |              |       UGE_IF       |    (x1 x2 -- )      |         |
+|  `3` =  if   |              |    PUSH_EQ_IF      |       (x1 -- )      |         |
+|  `3` <> if   |              |    PUSH_NE_IF      |       (x1 -- )      |         |
 |dup `5`  =  if|              |DUP_PUSH_CEQ_IF(`5`)|         ( -- )      |         |unsigned char
 |dup `5`  <> if|              |DUP_PUSH_CNE_IF(`5`)|         ( -- )      |         |unsigned char
 |dup `5`  =  if|              |DUP_PUSH_EQ_IF(`5`) |         ( -- )      |         |`(addr)` not supported
@@ -462,6 +466,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |       +!       |      ADDSTORE     |                    |   ( x addr -- )       | (addr) += x      |
 |   x addr +!    |PUSH2_ADDSTORE(x,a)|                    |          ( -- )       | (a) += x         |
 |     cmove      |       CMOVE       |                    |( from to u -- )       | 8bit, addr++     |
+|    `3` cmove   |                   |  PUSH_CMOVE(`3`)   |  ( from to -- )       | 8bit, addr++     |
 |     cmove>     |      CMOVEGT      |                    |( from to u -- )       | 8bit, addr--     |
 |      move      |        MOVE       |                    |( from to u -- )       | 16bit, addr++    |
 |      move>     |       MOVEGT      |                    |( from to u -- )       | 16bit, addr--    |
