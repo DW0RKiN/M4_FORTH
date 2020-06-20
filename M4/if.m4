@@ -110,6 +110,48 @@ define(OVER_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
 dnl
 dnl -------- signed ---------
 dnl
+dnl
+dnl dup char = if
+define({DUP_PUSH_CEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, format({%-11s},$1); 2:7       dup $1 = if
+    xor   L             ; 1:4       dup $1 = if
+    or    H             ; 1:4       dup $1 = if
+    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
+dnl
+dnl
+dnl
+dnl dup char <> if
+define({DUP_PUSH_CNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, format({%-11s},$1); 2:7       dup $1 <> if
+    xor   L             ; 1:4       dup $1 <> if
+    or    H             ; 1:4       dup $1 <> if
+    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
+dnl
+dnl
+dnl
+dnl
+dnl dup num = if
+define({DUP_PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, high format({%-6s},$1); 2:7       dup $1 = if
+    xor   H             ; 1:4       dup $1 = if
+    ld    B, A          ; 1:4       dup $1 = if
+    ld    A, low format({%-7s},$1); 2:7       dup $1 = if
+    xor   L             ; 1:4       dup $1 = if
+    or    B             ; 1:4       dup $1 = if
+    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
+dnl
+dnl
+dnl
+dnl dup num <> if
+define({DUP_PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, low format({%-7s},$1); 2:7       dup $1 <> if
+    xor   L             ; 1:4       dup $1 <> if
+    jr   nz, $+8        ; 2:7/12    dup $1 <> if
+    ld    A, high format({%-6s},$1); 2:7       dup $1 <> if
+    xor   H             ; 1:4       dup $1 <> if
+    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
+dnl
+dnl
 dnl dup num < if
 define({DUP_PUSH_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup $1 < if
