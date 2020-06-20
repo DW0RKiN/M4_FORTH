@@ -330,6 +330,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |    u<= if    |              |       ULE_IF       |    (x1 x2 -- )      |         |
 |    u>  if    |              |       UGT_IF       |    (x1 x2 -- )      |         |
 |    u>= if    |              |       UGE_IF       |    (x1 x2 -- )      |         |
+|dup `5`  =  if|              |DUP_PUSH_CEQ_IF(`5`)|         ( -- )      |         |unsigned char
+|dup `5`  <> if|              |DUP_PUSH_CNE_IF(`5`)|         ( -- )      |         |unsigned char
+|dup `5`  =  if|              |DUP_PUSH_EQ_IF(`5`) |         ( -- )      |         |`(addr)` not supported
+|dup `5`  <> if|              |DUP_PUSH_NE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
 |dup `5`  <  if|              |DUP_PUSH_LT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
 |dup `5`  <= if|              |DUP_PUSH_LE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
 |dup `5`  >  if|              |DUP_PUSH_GT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
@@ -460,7 +464,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |     cmove      |       CMOVE       |                    |( from to u -- )       | 8bit, addr++     |
 |     cmove>     |      CMOVEGT      |                    |( from to u -- )       | 8bit, addr--     |
 |      move      |        MOVE       |                    |( from to u -- )       | 16bit, addr++    |
-|      move>     |       MOVEGT      |                    |( from to u -- )       | 16bit, addr++    |
+|      move>     |       MOVEGT      |                    |( from to u -- )       | 16bit, addr--    |
 | `seed` seed !  |                   |  PUSH_STORE(SEED)  |     ( seed -- )       |                  |
 |       rnd      |        RND        |                    |          ( -- random )|                  |
 |     random     |       RANDOM      |                    |      ( max -- random )| random < max     |
