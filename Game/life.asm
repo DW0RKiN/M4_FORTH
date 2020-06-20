@@ -387,10 +387,10 @@ endif104:
 else105  EQU $          ;           = endif
 endif105:
         
-    ld    A, ' '        ; 2:7       dup ' ' = if
-    xor   L             ; 1:4       dup ' ' = if
-    or    H             ; 1:4       dup ' ' = if
-    jp   nz, else106    ; 3:10      dup ' ' = if 
+    ld    A, 'm'        ; 2:7       dup 'm' = if
+    xor   L             ; 1:4       dup 'm' = if
+    or    H             ; 1:4       dup 'm' = if
+    jp   nz, else106    ; 3:10      dup 'm' = if 
             
     ld   HL, 0          ; 3:10      drop 0
             
@@ -453,7 +453,6 @@ _readkey_end:
     ret                 ; 1:10      s;
 ;   -----  e n d  -----
     
-
 
 ;   ---  b e g i n  ---
 _init:                  ;           ( -- )
