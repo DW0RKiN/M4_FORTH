@@ -82,7 +82,7 @@ sdo101:                 ;           sdo 101 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     ld   BC, buff-0x5800; 3:10      buff-0x5800 +
     add  HL, BC         ; 1:4       buff-0x5800 + 
-    ld  (HL), E         ; 1:7       C! cstore
+    ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
     
@@ -139,7 +139,7 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     ld   BC, buff-0x5800+32-1; 3:10      buff-0x5800+32-1 +
     add  HL, BC         ; 1:4       buff-0x5800+32-1 + 
-    ld  (HL), E         ; 1:7       C! cstore
+    ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
     
@@ -319,10 +319,50 @@ endif104:
 else105  EQU $          ;           = endif
 endif105:
         
-    ld    A, 'm'        ; 2:7       dup 'm' = if
-    xor   L             ; 1:4       dup 'm' = if
-    or    H             ; 1:4       dup 'm' = if
-    jp   nz, else106    ; 3:10      dup 'm' = if 
+    ld    A, 'c'        ; 2:7       dup 'c' = if
+    xor   L             ; 1:4       dup 'c' = if
+    or    H             ; 1:4       dup 'c' = if
+    jp   nz, else106    ; 3:10      dup 'c' = if 
+    ld   HL, 0          ; 3:10      drop 0 
+    push DE             ; 1:11      push(buff)
+    ex   DE, HL         ; 1:4       push(buff)
+    ld   HL, buff       ; 3:10      push(buff) 
+    ld  (HL), 0         ; 2:10      32*24 0 fill
+    ld   BC, 768-1      ; 3:10      32*24 0 fill
+    push DE             ; 1:11      32*24 0 fill
+    ld   D, H           ; 1:4       32*24 0 fill
+    ld   E, L           ; 1:4       32*24 0 fill
+    inc  DE             ; 1:6       32*24 0 fill DE = to
+    ldir                ; 2:u*21/16 32*24 0 fill
+    pop  HL             ; 1:10      32*24 0 fill
+    pop  DE             ; 1:10      32*24 0 fill 
+else106  EQU $          ;           = endif
+endif106:
+        
+    ld    A, 'f'        ; 2:7       dup 'f' = if
+    xor   L             ; 1:4       dup 'f' = if
+    or    H             ; 1:4       dup 'f' = if
+    jp   nz, else107    ; 3:10      dup 'f' = if 
+    ld   HL, 0          ; 3:10      drop 0 
+    push DE             ; 1:11      push(buff)
+    ex   DE, HL         ; 1:4       push(buff)
+    ld   HL, buff       ; 3:10      push(buff) 
+    ld  (HL), 1         ; 2:10      32*24 1 fill
+    ld   BC, 768-1      ; 3:10      32*24 1 fill
+    push DE             ; 1:11      32*24 1 fill
+    ld   D, H           ; 1:4       32*24 1 fill
+    ld   E, L           ; 1:4       32*24 1 fill
+    inc  DE             ; 1:6       32*24 1 fill DE = to
+    ldir                ; 2:u*21/16 32*24 1 fill
+    pop  HL             ; 1:10      32*24 1 fill
+    pop  DE             ; 1:10      32*24 1 fill 
+else107  EQU $          ;           = endif
+endif107:
+        
+    ld    A, 's'        ; 2:7       dup 's' = if
+    xor   L             ; 1:4       dup 's' = if
+    or    H             ; 1:4       dup 's' = if
+    jp   nz, else108    ; 3:10      dup 's' = if 
             
     ld   HL, 0          ; 3:10      drop 0
             
@@ -340,13 +380,13 @@ endif105:
     ex   DE, HL         ; 1:4       buff+400 C! push(buff+400) cstore
     pop  DE             ; 1:10      buff+400 C! push(buff+400) cstore 
         
-else106  EQU $          ;           = endif
-endif106:
+else108  EQU $          ;           = endif
+endif108:
         
     ld    A, 'e'        ; 2:7       dup 'e' = if
     xor   L             ; 1:4       dup 'e' = if
     or    H             ; 1:4       dup 'e' = if
-    jp   nz, else107    ; 3:10      dup 'e' = if
+    jp   nz, else109    ; 3:10      dup 'e' = if
             
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -355,8 +395,8 @@ Stop:
     ret                 ; 1:10
 ;   =====  e n d  =====
         
-else107  EQU $          ;           = endif
-endif107:
+else109  EQU $          ;           = endif
+endif109:
         
     call _copy          ; 3:17      scall
         
@@ -364,10 +404,10 @@ endif107:
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
-    jp    z, else108    ; 3:10      if 
+    jp    z, else110    ; 3:10      if 
     jp   break102       ; 3:10      break 102 
-else108  EQU $          ;           = endif
-endif108:
+else110  EQU $          ;           = endif
+endif110:
     
     jp   begin102       ; 3:10      again 102
 break102:               ;           again 102 
@@ -440,7 +480,7 @@ sdo104:                 ;           sdo 104 ( stop index -- stop index )
     ld    L, A          ; 1:4       1 and 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ld  (HL), E         ; 1:7       C! cstore
+    ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore 
     inc  HL             ; 1:6       sloop 104 index++
@@ -481,7 +521,7 @@ sfor105:                ;           sfor 105 ( index -- index )
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     ld   BC, buff       ; 3:10      buff +
     add  HL, BC         ; 1:4       buff + 
-    ld  (HL), E         ; 1:7       C! cstore
+    ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
     
@@ -511,7 +551,7 @@ _alive:                 ;           ( addr -- alive )
     or    L             ; 1:4       0= if
     ex   DE, HL         ; 1:4       0= if      
     pop  DE             ; 1:10      0= if
-    jp   nz, else109    ; 3:10      0= if
+    jp   nz, else111    ; 3:10      0= if
         
     call sum_neighbors  ; 3:17      scall
         
@@ -520,16 +560,16 @@ _alive:                 ;           ( addr -- alive )
     sbc  HL, BC         ; 2:15      3 = if
     ex   DE, HL         ; 1:4       3 = if
     pop  DE             ; 1:10      3 = if
-    jp   nz, else110    ; 3:10      3 = if 
+    jp   nz, else112    ; 3:10      3 = if 
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
     ld   HL, 1          ; 3:10      push(1) 
     ret                 ; 1:10      sexit 
-else110  EQU $          ;           = endif
-endif110:
+else112  EQU $          ;           = endif
+endif112:
     
-    jp   endif109       ; 3:10      else
-else109:
+    jp   endif111       ; 3:10      else
+else111:
         
     call sum_neighbors  ; 3:17      scall 
         
@@ -540,15 +580,15 @@ else109:
     sbc  HL, BC         ; 2:15      3 = if
     ex   DE, HL         ; 1:4       3 = if
     pop  DE             ; 1:10      3 = if
-    jp   nz, else111    ; 3:10      3 = if 
+    jp   nz, else113    ; 3:10      3 = if 
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
     ld   HL, 1          ; 3:10      push(1) 
     ret                 ; 1:10      sexit 
-else111  EQU $          ;           = endif
-endif111:
+else113  EQU $          ;           = endif
+endif113:
     
-endif109:
+endif111:
     
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
@@ -597,13 +637,13 @@ sum_neighbors:          ;           ( addr -- sum )
     sub   low 0x5B00    ; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
     ld    A, H          ; 1:4       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
     sbc   A, high 0x5B00; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    jp    c, else112    ; 3:10      dup 0x5B00 (u)>= if
+    jp    c, else114    ; 3:10      dup 0x5B00 (u)>= if
         
     ld   BC, -32*24     ; 3:10      -32*24 +
     add  HL, BC         ; 1:4       -32*24 +
     
-else112  EQU $          ;           = endif
-endif112:
+else114  EQU $          ;           = endif
+endif114:
     ; [+32]
     
     push DE             ; 1:11      dup
@@ -638,13 +678,13 @@ endif112:
     sub   low 0x5800    ; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
     ld    A, H          ; 1:4       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
     sbc   A, high 0x5800; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    jp   nc, else113    ; 3:10      dup 0x5800 (u)< if
+    jp   nc, else115    ; 3:10      dup 0x5800 (u)< if
         
     ld   BC, 32*24      ; 3:10      32*24 +
     add  HL, BC         ; 1:4       32*24 +
     
-else113  EQU $          ;           = endif
-endif113:
+else115  EQU $          ;           = endif
+endif115:
     ; [-32]
     
     push DE             ; 1:11      dup
@@ -732,9 +772,6 @@ endif113:
     ; 16 bit --> 8 bit
     
     ld    H, 0x00       ; 2:7       0xFF and
-    ld    A, low 0xFF   ; 2:7       0xFF and
-    and   L             ; 1:4       0xFF and
-    ld    L, A          ; 1:4       0xFF and
 
 sum_neighbors_end:
     ret                 ; 1:10      s;

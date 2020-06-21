@@ -15,12 +15,14 @@ dnl
 dnl ( x -- x&n )
 dnl x = x & n
 define(PUSH_AND,{ifelse(eval(($1) & 0xFF00),{0},{
-    ld    H, 0x00       ; 2:7       $1 and},{
+    ld    H, 0x00       ; 2:7       $1 and},
+eval(0xFF00 - (($1) & 0xFF00)),{0},,{
     ld    A, high format({%-6s},$1); 2:7       $1 and
     and   H             ; 1:4       $1 and
     ld    H, A          ; 1:4       $1 and}){}dnl
 {}{}ifelse(eval(($1) & 0x00FF),{0},{
-    ld    L, 0x00       ; 2:7       $1 and},{
+    ld    L, 0x00       ; 2:7       $1 and},
+eval(0xFF-(($1) & 0xFF)),{0},,{
     ld    A, low format({%-7s},$1); 2:7       $1 and
     and   L             ; 1:4       $1 and
     ld    L, A          ; 1:4       $1 and})})dnl    

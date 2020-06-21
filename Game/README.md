@@ -21,8 +21,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Game/life.m4
     a   down
     o   left
     p   right
+    s   swap cell
+    c   clear all
+    f   fill all
     e   exit
-    m   swap
 
 Rules:
 - Any live cell with two or three live neighbours survives. 

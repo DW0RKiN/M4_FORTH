@@ -94,9 +94,9 @@ dnl !
 dnl ( x addr -- )
 dnl store 16-bit number at addr
 define({STORE},{
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store})dnl
 dnl
@@ -105,7 +105,7 @@ dnl C!
 dnl ( char addr -- )
 dnl store 8-bit char at addr
 define({CSTORE},{
-    ld  (HL), E         ; 1:7       C! cstore
+    ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore})dnl
 dnl
@@ -241,6 +241,28 @@ define({MOVEGT},{
     lddr                ; 2:u*42/32 move>
     pop  HL             ; 1:10      move>
     pop  DE             ; 1:10      move>})dnl
+dnl
+dnl
+dnl addr u char fill
+dnl ( to -- )
+dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+define({PUSH2_FILL},{ifelse(eval($1),{0},{
+    ex  DE, HL          ; 1:4       $1 $2 fill
+    pop DE              ; 1:10      $1 $2 fill},
+eval($1),{1},{
+    ld  (HL), format({%-10s},$2); 2:10      $1 $2 fill
+    ex  DE, HL          ; 1:4       $1 $2 fill
+    pop DE              ; 1:10      $1 $2 fill{}dnl
+},{
+    ld  (HL), format({%-10s},$2); 2:10      $1 $2 fill
+    ld   BC, format({%-11s},eval($1)-1); 3:10      $1 $2 fill
+    push DE             ; 1:11      $1 $2 fill
+    ld   D, H           ; 1:4       $1 $2 fill
+    ld   E, L           ; 1:4       $1 $2 fill
+    inc  DE             ; 1:6       $1 $2 fill DE = to
+    ldir                ; 2:u*21/16 $1 $2 fill
+    pop  HL             ; 1:10      $1 $2 fill
+    pop  DE             ; 1:10      $1 $2 fill})})dnl
 dnl
 dnl
 dnl

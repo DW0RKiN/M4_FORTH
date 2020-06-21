@@ -65,7 +65,9 @@ SCOLON(_readkey,( -- ))
         DUP_PUSH_CEQ_IF('a') DROP_PUSH(0) SCALL(_down)  THEN
         DUP_PUSH_CEQ_IF('p') DROP_PUSH(0) SCALL(_right) THEN
         DUP_PUSH_CEQ_IF('o') DROP_PUSH(0) SCALL(_left)  THEN
-        DUP_PUSH_CEQ_IF('m') 
+        DUP_PUSH_CEQ_IF('c') DROP_PUSH(0) PUSH(buff) PUSH2_FILL(_wh, 0) THEN
+        DUP_PUSH_CEQ_IF('f') DROP_PUSH(0) PUSH(buff) PUSH2_FILL(_wh, 1) THEN
+        DUP_PUSH_CEQ_IF('s') 
             DROP_PUSH(0)
             PUSH_CFETCH(buff+400) 
             PUSH_XOR(1) 
