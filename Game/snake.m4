@@ -77,36 +77,36 @@ COLON(draw,( color x y -- ))
 SEMICOLON  
 
 SCOLON(draw_walls) 
-    PUSH(width-1) FOR 
-        I PUSH(0)        CALL(draw_black) 
-        I PUSH(height-1) CALL(draw_black) 
-    NEXT
+    PUSH(width-1) SFOR 
+        SI PUSH(0)        CALL(draw_black) 
+        SI PUSH(height-1) CALL(draw_black) 
+    SNEXT
 
-    PUSH(height-1) FOR 
-        PUSH(0)       I  CALL(draw_black) 
-        PUSH(width-1) I  CALL(draw_black) 
-    NEXT
+    PUSH(height-1) SFOR 
+        PUSH(0)       OVER CALL(draw_black) 
+        PUSH(width-1) OVER CALL(draw_black) 
+    SNEXT
 SSEMICOLON
 
 COLON(snake_x,( offset -- address ))
-  _2MUL PUSH(snake_x_head) ADD 
+  _2MUL PUSH_ADD(snake_x_head) 
 SEMICOLON
   
 COLON(snake_y,( offset -- address ))
-  _2MUL PUSH(snake_y_head) ADD 
+  _2MUL PUSH_ADD(snake_y_head)
 SEMICOLON  
 
 SCOLON(initialize_snake) 
-    PUSH(4) PUSH_STORE(length) 
-    PUSH(4+1) PUSH(0) DO 
+    PUSH2_STORE(4,length) 
+    PUSH2(4+1,0) DO 
         PUSH(12) I SUB I CALL(snake_x) STORE 
         PUSH(12) I       CALL(snake_y) STORE 
     LOOP 
-    PUSH(right) PUSH(direction) STORE 
+    PUSH2_STORE(right,direction) 
 SSEMICOLON  
 
 COLON(set_apple_position,( y x -- ))
-    PUSH(apple_x) STORE PUSH(apple_y) STORE 
+    PUSH_STORE(apple_x) PUSH_STORE(apple_y) 
 SEMICOLON  
 
 SCOLON(initialize_apple)  
@@ -141,11 +141,11 @@ SCOLON(move_right)
 SSEMICOLON  
 
 SCOLON(move_snake_head)  
-    PUSH(direction) FETCH 
-    PUSH(left)  OVER EQ_IF SCALL(move_left)  ELSE 
-    PUSH(up)    OVER EQ_IF SCALL(move_up)    ELSE 
-    PUSH(right) OVER EQ_IF SCALL(move_right) ELSE 
-    PUSH(down)  OVER EQ_IF SCALL(move_down) 
+    PUSH_FETCH(direction) 
+    DUP_PUSH_EQ_IF(left)  SCALL(move_left)  ELSE 
+    DUP_PUSH_EQ_IF(up)    SCALL(move_up)    ELSE 
+    DUP_PUSH_EQ_IF(right) SCALL(move_right) ELSE 
+    DUP_PUSH_EQ_IF(down)  SCALL(move_down) 
     THEN THEN THEN THEN DROP 
 SSEMICOLON  
 
@@ -169,35 +169,35 @@ COLON(is_vertical,( -- flag ))
     PUSH(down)  EQ OR 
 SEMICOLON  
 
-SCOLON(turn_up)    CALL(is_horizontal) IF PUSH(up)    PUSH_STORE(direction) THEN SSEMICOLON  
+SCOLON(turn_up)    CALL(is_horizontal) IF PUSH2_STORE(up   ,direction) THEN SSEMICOLON  
 
-SCOLON(turn_left)  CALL(is_vertical)   IF PUSH(left)  PUSH_STORE(direction) THEN SSEMICOLON  
+SCOLON(turn_left)  CALL(is_vertical)   IF PUSH2_STORE(left ,direction) THEN SSEMICOLON  
 
-SCOLON(turn_down)  CALL(is_horizontal) IF PUSH(down)  PUSH_STORE(direction) THEN SSEMICOLON  
+SCOLON(turn_down)  CALL(is_horizontal) IF PUSH2_STORE(down ,direction) THEN SSEMICOLON  
 
-SCOLON(turn_right) CALL(is_vertical)   IF PUSH(right) PUSH_STORE(direction) THEN SSEMICOLON  
-  
+SCOLON(turn_right) CALL(is_vertical)   IF PUSH2_STORE(right,direction) THEN SSEMICOLON  
+
 COLON(change_direction,( key -- ))
-  PUSH('o') OVER EQ_IF SCALL(turn_left)  ELSE 
-  PUSH('q') OVER EQ_IF SCALL(turn_up)    ELSE 
-  PUSH('p') OVER EQ_IF SCALL(turn_right) ELSE 
-  PUSH('a') OVER EQ_IF SCALL(turn_down) 
+  DUP_PUSH_EQ_IF('o') SCALL(turn_left)  ELSE 
+  DUP_PUSH_EQ_IF('q') SCALL(turn_up)    ELSE 
+  DUP_PUSH_EQ_IF('p') SCALL(turn_right) ELSE 
+  DUP_PUSH_EQ_IF('a') SCALL(turn_down) 
   THEN THEN THEN THEN DROP 
 SEMICOLON  
 
 SCOLON(check_input) 
     PUSH_CFETCH(last_key)
     CALL(change_direction)
-    PUSH(0) PUSH_CSTORE(last_key)
+    PUSH2_CSTORE(0,last_key)
 SSEMICOLON  
 
 ; get random x or y position within playable area  
-COLON(random_position,( n -- 2..n-3 ))
-    PUSH(4) SUB RANDOM _2ADD 
-SEMICOLON  
+SCOLON(random_position,( n -- 2..n-3 ))
+    PUSH_SUB(4) RANDOM _2ADD 
+SSEMICOLON  
 
 SCOLON(move_apple) 
-    PUSH(24) CALL(random_position) PUSH(32) CALL(random_position) 
+    PUSH(24) SCALL(random_position) PUSH(32) SCALL(random_position) 
     CALL(set_apple_position) 
 SSEMICOLON  
 
@@ -228,7 +228,7 @@ COLON(check_collision) ;( -- flag )
 SEMICOLON
 
 SCOLON(draw_snake) 
-    PUSH(length) FETCH PUSH(0) DO 
+    PUSH_FETCH(length) PUSH(0) DO 
         I CALL(snake_x) FETCH I CALL(snake_y) FETCH CALL(draw_black) 
     LOOP 
 
@@ -238,7 +238,7 @@ SCOLON(draw_snake)
 SSEMICOLON  
 
 SCOLON(draw_apple) 
-    PUSH(red) PUSH(apple_x) FETCH PUSH(apple_y) FETCH CALL(draw)
+    PUSH(red) PUSH_FETCH(apple_x) PUSH_FETCH(apple_y) CALL(draw)
 SSEMICOLON  
 
 ; x = 20*x ms

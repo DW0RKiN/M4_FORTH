@@ -21,6 +21,7 @@ variable apple-y
 
 24 constant height  
 
+0x5C08 constant last-key
   
 variable direction  
 
