@@ -66,18 +66,18 @@ So the part that counts living neighbors looks like this:
         ; [+1]
         SWAP RIGHT
         ; [+33]
-        DUP PUSH(_w) ADD
-        DUP_PUSH_GE_IF(_stop)
-            PUSH(-_w*_h) ADD
+        DUP PUSH_ADD(_w)
+        DUP_PUSH_UGE_IF(_stop)
+            PUSH_ADD(-_wh)
         THEN
         ; [+32]
         DUP  LEFT
         ; [+31]
         DUP  LEFT
         ; [-33]
-        DUP PUSH(-2*_w) ADD
-        DUP_PUSH_LT_IF(_screen)
-            PUSH(_w*_h) ADD
+        DUP PUSH_ADD(-2*_w)
+        DUP_PUSH_ULT_IF(_screen)
+            PUSH_ADD(_wh)
         THEN
         ; [-32]
         DUP  RIGHT
@@ -92,4 +92,6 @@ So the part that counts living neighbors looks like this:
         SWAP FETCH ADD
         SWAP FETCH ADD
         SWAP FETCH ADD
+        ; 16 bit --> 8 bit
+        PUSH_AND(0xFF)
     SSEMICOLON
