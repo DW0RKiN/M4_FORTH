@@ -349,6 +349,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u>  if|              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
 |dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
+|`3` over <> if|              | DUP_PUSH_NE_IF(`3`)|       (x1 -- )      |         |
+|     dtto     |              |        dtto        |                     |         |
 |  2dup  =  if |              |    _2DUP_EQ_IF     |         ( -- )      |         |
 |  2dup  <> if |              |    _2DUP_NE_IF     |         ( -- )      |         |
 |  2dup  <  if |              |    _2DUP_LT_IF     |         ( -- )      |         |

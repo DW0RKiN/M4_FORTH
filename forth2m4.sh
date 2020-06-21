@@ -316,6 +316,16 @@ while :
 do
     cat $TMPFILE |
 
+    sed 's#^\([^;{]*\s\|^\)1+\(\s\|$\)#\1_1ADD\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)1-\(\s\|$\)#\1_1SUB\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2+\(\s\|$\)#\1_2ADD\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2-\(\s\|$\)#\1_2SUB\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)1\s\+ADD\(\s\|$\)#\1_1ADD\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)1\s\+SUB\(\s\|$\)#\1_1SUB\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2\s\+ADD\(\s\|$\)#\1_2ADD\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2\s\+SUB\(\s\|$\)#\1_2SUB\2#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+ADD\(\s\|$\)#\1PUSH_ADD(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+SUB\(\s\|$\)#\1PUSH_SUB(\2)\3#g' |
 
@@ -409,24 +419,28 @@ do
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GT_IF\(\s\|$\)#\1DUP_PUSH_GT_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GE_IF\(\s\|$\)#\1DUP_PUSH_GE_IF(\2)\3#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+EQ_IF\(\s\|$\)#\1DUP_PUSH_EQ_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+NE_IF\(\s\|$\)#\1DUP_PUSH_NE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+LT_IF\(\s\|$\)#\1DUP_PUSH_LT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+LE_IF\(\s\|$\)#\1DUP_PUSH_LE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+GT_IF\(\s\|$\)#\1DUP_PUSH_GT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+GE_IF\(\s\|$\)#\1DUP_PUSH_GE_IF(\2)\3#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULT_IF\(\s\|$\)#\1DUP_PUSH_ULT_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULE_IF\(\s\|$\)#\1DUP_PUSH_ULE_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGT_IF\(\s\|$\)#\1DUP_PUSH_UGT_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGE_IF\(\s\|$\)#\1DUP_PUSH_UGE_IF(\2)\3#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+UEQ_IF\(\s\|$\)#\1DUP_PUSH_UEQ_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+UNE_IF\(\s\|$\)#\1DUP_PUSH_UNE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+ULT_IF\(\s\|$\)#\1DUP_PUSH_ULT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+ULE_IF\(\s\|$\)#\1DUP_PUSH_ULE_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+UGT_IF\(\s\|$\)#\1DUP_PUSH_UGT_IF(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\s\+UGE_IF\(\s\|$\)#\1DUP_PUSH_UGE_IF(\2)\3#gi' |
+
     sed 's#^\([^;{]*\s\|^\)DROP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1DROP_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DROP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1_2DROP_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1DUP_PUSH(\2)\3#gi' |
-
-    sed 's#^\([^;{]*\s\|^\)1+\(\s\|$\)#\1_1ADD\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)1-\(\s\|$\)#\1_1SUB\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2+\(\s\|$\)#\1_2ADD\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2-\(\s\|$\)#\1_2SUB\2#gi' |
-
-    sed 's#^\([^;{]*\s\|^\)1\s\+ADD\(\s\|$\)#\1_1ADD\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)1\s\+SUB\(\s\|$\)#\1_1SUB\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2\s\+ADD\(\s\|$\)#\1_2ADD\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2\s\+SUB\(\s\|$\)#\1_2SUB\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)cell\(\s\|$\)#\12\2#gi' |
     sed 's#^\([^;{]*\s\|^\)-cell\(\s\|$\)#\1-2\2#gi' |
@@ -560,7 +574,7 @@ done
 # 0000000000xxx --> name variable
 for x in $VAR
 do
-    name=`printf "${x}" | sed 's#@#_load#g' | sed 's#!#_save#g' | sed 's#+#_add_#g' | sed 's#-#_sub_#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^#_#g'`
+    name=`printf "${x}" | sed 's#@#_load#g' | sed 's#!#_save#g' | sed 's#+#_p_#g' | sed 's#-#_m_#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^#_#g'`
     NUM="$(($NUM+1))"
     
     while :
@@ -581,7 +595,7 @@ FCE="$FCE `cat $TMPFILE | grep '^\([^;{]*\s\|^\)COLON(\([^)]\+\)).*' | sed 's#^\
 
 for x in $FCE
 do
-    name=`printf "${x}" | sed 's#@#_load#g' | sed 's#!#_save#g' | sed 's#+#_add_#g' | sed 's#-#_sub_#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^#_#g'`
+    name=`printf "${x}" | sed 's#@#_load#g' | sed 's#!#_save#g' | sed 's#+#_p_#g' | sed 's#-#_m_#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^#_#g'`
 
     cat $TMPFILE | sed "s#^\([^;{]*\)(${x}\([,)]\)#\1(${name}\2#g" > $TMPFILE2
     cat $TMPFILE2 > $TMPFILE
