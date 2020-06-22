@@ -1,4 +1,5 @@
 dnl ## Logic
+define({__},{})dnl
 dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 & x2
@@ -14,18 +15,21 @@ dnl
 dnl
 dnl ( x -- x&n )
 dnl x = x & n
-define(PUSH_AND,{ifelse(eval(($1) & 0xFF00),{0},{
-    ld    H, 0x00       ; 2:7       $1 and},
-eval(0xFF00 - (($1) & 0xFF00)),{0},,{
-    ld    A, high format({%-6s},$1); 2:7       $1 and
-    and   H             ; 1:4       $1 and
-    ld    H, A          ; 1:4       $1 and}){}dnl
-{}{}ifelse(eval(($1) & 0x00FF),{0},{
-    ld    L, 0x00       ; 2:7       $1 and},
-eval(0xFF-(($1) & 0xFF)),{0},,{
-    ld    A, low format({%-7s},$1); 2:7       $1 and
-    and   L             ; 1:4       $1 and
-    ld    L, A          ; 1:4       $1 and})})dnl    
+define(PUSH_AND,{ifelse(eval($1),{0},{
+__{}    ld   HL, 0x0000     ; 3:10      $1 and},
+__{}eval(($1) & 0xFF00),{0},{
+__{}    ld    H, 0x00       ; 2:7       $1 and},
+__{}eval(0xFF00 - (($1) & 0xFF00)),{0},,{
+__{}    ld    A, high format({%-6s},$1); 2:7       $1 and
+__{}    and   H             ; 1:4       $1 and
+__{}    ld    H, A          ; 1:4       $1 and}){}dnl
+__{}ifelse(eval($1),{0},,
+__{}eval(($1) & 0x00FF),{0},{
+__{}    ld    L, 0x00       ; 2:7       $1 and},
+__{}eval(0xFF-(($1) & 0xFF)),{0},,{
+__{}    ld    A, low format({%-7s},$1); 2:7       $1 and
+__{}    and   L             ; 1:4       $1 and
+__{}    ld    L, A          ; 1:4       $1 and})})dnl    
 dnl
 dnl
 dnl ( x1 x2 -- x )
@@ -42,15 +46,48 @@ dnl
 dnl
 dnl ( x  -- x|n )
 dnl x = x | n
-define(PUSH_OR,{ifelse(eval(($1) & 0xFF00),{0},,{
-    ld    A, high format({%-6s},$1); 2:7       $1 or
-    or    H             ; 1:4       $1 or
-    ld    H, A          ; 1:4       $1 or}){}dnl
-{}{}ifelse(eval(($1) & 0x00FF),{0},,eval(($1) & 0x00FF),{1},{
-    set   0, L          ; 2:8       $1 or},{
-    ld    A, low format({%-7s},$1); 2:7       $1 or
-    or    L             ; 1:4       $1 or
-    ld    L, A          ; 1:4       $1 or})})dnl
+define(PUSH_OR,{ifelse(eval(($1) & 0xFF00),{0},,
+__{}eval(($1) - 0x0100),{0},{
+__{}    set   0, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x0200),{0},{
+__{}    set   1, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x0400),{0},{
+__{}    set   2, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x0800),{0},{
+__{}    set   3, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x1000),{0},{
+__{}    set   4, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x2000),{0},{
+__{}    set   5, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x4000),{0},{
+__{}    set   6, H          ; 2:8       $1 or},
+__{}eval(($1) - 0x8000),{0},{
+__{}    set   7, H          ; 2:8       $1 or},
+__{}{
+__{}    ld    A, high format({%-6s},$1); 2:7       $1 or
+__{}    or    H             ; 1:4       $1 or
+__{}    ld    H, A          ; 1:4       $1 or}){}dnl
+__{}ifelse(eval(($1) & 0x00FF),{0},,
+__{}eval(($1) & 0xFF),{1},{
+__{}    set   0, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{2},{
+__{}    set   1, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{4},{
+__{}    set   2, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{8},{
+__{}    set   3, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{16},{
+__{}    set   4, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{32},{
+__{}    set   5, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{64},{
+__{}    set   6, L          ; 2:8       $1 or},
+__{}eval(($1) & 0xFF),{128},{
+__{}    set   7, L          ; 2:8       $1 or},
+__{}{
+__{}    ld    A, low format({%-7s},$1); 2:7       $1 or
+__{}    or    L             ; 1:4       $1 or
+__{}    ld    L, A          ; 1:4       $1 or})})dnl
 dnl
 dnl
 dnl ( x1 x2 -- x )
@@ -68,13 +105,13 @@ dnl
 dnl ( x  -- x^n )
 dnl x = x ^ n
 define(PUSH_XOR,{ifelse(eval(($1) & 0xFF00),{0},,{
-    ld    A, high format({%-6s},$1); 2:7       $1 xor
-    xor   H             ; 1:4       $1 xor
-    ld    H, A          ; 1:4       $1 xor}){}dnl
-{}{}ifelse(eval(($1) & 0x00FF),{0},,{
-    ld    A, low format({%-7s},$1); 2:7       $1 xor
-    xor   L             ; 1:4       $1 xor
-    ld    L, A          ; 1:4       $1 xor})})dnl
+__{}    ld    A, high format({%-6s},$1); 2:7       $1 xor
+__{}    xor   H             ; 1:4       $1 xor
+__{}    ld    H, A          ; 1:4       $1 xor}){}dnl
+__{}ifelse(eval(($1) & 0x00FF),{0},,{
+__{}    ld    A, low format({%-7s},$1); 2:7       $1 xor
+__{}    xor   L             ; 1:4       $1 xor
+__{}    ld    L, A          ; 1:4       $1 xor})})dnl
 dnl
 dnl
 dnl ( x1 -- x )

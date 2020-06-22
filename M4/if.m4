@@ -156,7 +156,14 @@ dnl dup num < if
 define({DUP_PUSH_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup $1 < if
     add   A, A          ; 1:4       dup $1 < if{}dnl
-__{}ifelse(eval($1>=0x8000 || $1<0),{0},{
+__{}ifelse(eval($1),{},{
+__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}    jr c, $+11
+__{}  else
+__{}    jp   nc, else{}IF_COUNT
+__{}  endif
+__{}  .warning The condition ($1) cannot be evaluated},
+__{}eval(($1)>=0x8000 || ($1)<0),{0},{
 __{}    jr    c, $+11       ; 2:7/12    dup $1 < if    positive constant{}dnl
 __{}},{
 __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if    negative constant})
@@ -171,7 +178,14 @@ dnl dup num >= if
 define({DUP_PUSH_GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup $1 >= if
     add   A, A          ; 1:4       dup $1 >= if{}dnl
-__{}ifelse(eval($1>=0x8000 || $1<0),{0},{
+__{}ifelse(eval($1),{},{
+__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}    jp c, else{}IF_COUNT
+__{}  else
+__{}    jr   nc, $+11
+__{}  endif
+__{}  .warning The condition ($1) cannot be evaluated},
+__{}eval(($1)>=0x8000 || ($1)<0),{0},{
 __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if    positive constant{}dnl
 __{}},{
 __{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    negative constant})
@@ -186,7 +200,14 @@ dnl dup num <= if
 define({DUP_PUSH_LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup $1 <= if
     add   A, A          ; 1:4       dup $1 <= if{}dnl
-__{}ifelse(eval($1>=0x8000 || $1<0),{0},{
+__{}ifelse(eval($1),{},{
+__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}    jr c, $+11
+__{}  else
+__{}    jp   nc, else{}IF_COUNT
+__{}  endif
+__{}  .warning The condition ($1) cannot be evaluated},
+__{}eval(($1)>=0x8000 || ($1)<0),{0},{
 __{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    positive constant{}dnl
 __{}},{
 __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    negative constant})
@@ -201,7 +222,14 @@ dnl dup num > if
 define({DUP_PUSH_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup $1 > if
     add   A, A          ; 1:4       dup $1 > if{}dnl
-__{}ifelse(eval($1>=0x8000 || $1<0),{0},{
+__{}ifelse(eval($1),{},{
+__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}    jp c, else{}IF_COUNT
+__{}  else
+__{}    jr   nc, $+11
+__{}  endif
+__{}  .warning The condition ($1) cannot be evaluated},
+__{}eval(($1)>=0x8000 || ($1)<0),{0},{
 __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    positive constant{}dnl
 __{}},{
 __{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    negative constant})
@@ -212,6 +240,26 @@ __{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    negative constant})
     jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})dnl
 dnl
 dnl -------- unsigned ---------
+dnl
+dnl dup unum u= if
+define({DUP_PUSH_UEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u= if
+    xor   L             ; 1:4       dup $1 u= if
+    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u= if
+    xor   H             ; 1:4       dup $1 u= if
+    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if})dnl
+dnl
+dnl
+dnl dup unum u<> if
+define({DUP_PUSH_UNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> if
+    xor   L             ; 1:4       dup $1 u<> if
+    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> if
+    xor   H             ; 1:4       dup $1 u<> if
+    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if})dnl
+dnl
 dnl
 define({DUP_PUSH_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       dup $1 (u)< if    (HL<$1) --> (HL-$1<0) --> carry if true

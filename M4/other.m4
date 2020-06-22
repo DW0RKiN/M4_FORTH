@@ -281,7 +281,8 @@ __{}    djnz $-2            ; 2:13/8    fill
 __{}    dec   D             ; 1:4       fill
 __{}    jr   nz, $-5        ; 2:7/12    fill 
 __{}    pop  HL             ; 1:10      fill
-__{}    pop  DE             ; 1:10      fill})})dnldnl
+__{}    pop  DE             ; 1:10      fill})})dnl
+dnl
 dnl
 dnl
 dnl addr u char fill
