@@ -16,7 +16,7 @@ ORG 0x8000
     ld   DE, 5          ; 3:10      push2(5,-5)
     push HL             ; 1:11      push2(5,-5)
     ld   HL, -5         ; 3:10      push2(5,-5) 
-    call test           ; 3:17      call
+    call dtest          ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
     
@@ -24,7 +24,7 @@ ORG 0x8000
     ld   DE, 5          ; 3:10      push2(5,5)
     push HL             ; 1:11      push2(5,5)
     ld   HL, 5          ; 3:10      push2(5,5) 
-    call test           ; 3:17      call
+    call dtest          ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
     
@@ -32,7 +32,7 @@ ORG 0x8000
     ld   DE, -5         ; 3:10      push2(-5,-5)
     push HL             ; 1:11      push2(-5,-5)
     ld   HL, -5         ; 3:10      push2(-5,-5) 
-    call test           ; 3:17      call
+    call dtest          ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
     
@@ -40,9 +40,39 @@ ORG 0x8000
     ld   DE, -5         ; 3:10      push2(-5,5)
     push HL             ; 1:11      push2(-5,5)
     ld   HL, 5          ; 3:10      push2(-5,5) 
-    call test           ; 3:17      call
+    call dtest          ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- )
+
+    
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call ptestp3        ; 3:17      call
+    ex   DE, HL         ; 1:4       call    
+    exx                 ; 1:4       call R:( ret -- )
+    
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
+    call ptestp3        ; 3:17      call
+    ex   DE, HL         ; 1:4       call    
+    exx                 ; 1:4       call R:( ret -- )
+    
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call ptestm3        ; 3:17      call
+    ex   DE, HL         ; 1:4       call    
+    exx                 ; 1:4       call R:( ret -- )
+    
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
+    call ptestm3        ; 3:17      call
+    ex   DE, HL         ; 1:4       call    
+    exx                 ; 1:4       call R:( ret -- )
+
     
     push DE             ; 1:11      print
     ld   BC, size101    ; 3:10      print Length of string to print
@@ -61,7 +91,7 @@ ORG 0x8000
     
 
 ;   ---  b e g i n  ---
-test:                   ;           
+dtest:                  ;           
     exx                 ; 1:4       :
     pop  DE             ; 1:10      : ret
     dec  HL             ; 1:6       :
@@ -69,16 +99,6 @@ test:                   ;
     dec   L             ; 1:4       :
     ld  (HL),E          ; 1:7       : (HL') = ret
     exx                 ; 1:4       : R:( -- ret )
-    
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
      
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -427,18 +447,15 @@ endif117:
 else118  EQU $          ;           = endif
 endif118:
     
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    call PRINT_U16      ; 3:17      . 
+    call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    call PRINT_S16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A  
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -735,15 +752,15 @@ endif135:
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 else136  EQU $          ;           = endif
-endif136:    
+endif136:
     
+    ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
+    call PRINT_U16      ; 3:17      . 
+    call PRINT_U16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    pop  HL             ; 1:10      2drop
-    pop  DE             ; 1:10      2drop ( b a -- )
 
-test_end:
+dtest_end:
     exx                 ; 1:4       ;
     ld    E,(HL)        ; 1:7       ;
     inc   L             ; 1:4       ;
@@ -752,14 +769,442 @@ test_end:
     ex   DE, HL         ; 1:4       ;
     jp  (HL)            ; 1:4       ;
 ;   -----  e n d  -----
+
+
+;   ---  b e g i n  ---
+ptestp3:                ;           
+    exx                 ; 1:4       :
+    pop  DE             ; 1:10      : ret
+    dec  HL             ; 1:6       :
+    ld  (HL),D          ; 1:7       :
+    dec   L             ; 1:4       :
+    ld  (HL),E          ; 1:7       : (HL') = ret
+    exx                 ; 1:4       : R:( -- ret )
     
+    ld    A, high 3     ; 2:7       dup 3 = if
+    xor   H             ; 1:4       dup 3 = if
+    ld    B, A          ; 1:4       dup 3 = if
+    ld    A, low 3      ; 2:7       dup 3 = if
+    xor   L             ; 1:4       dup 3 = if
+    or    B             ; 1:4       dup 3 = if
+    jp   nz, else137    ; 3:10      dup 3 = if 
+    push DE             ; 1:11      print
+    ld   BC, size138    ; 3:10      print Length of string to print
+    ld   DE, string138  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else137  EQU $          ;           = endif
+endif137:
+    
+    ld    A, low 3      ; 2:7       dup 3 <> if
+    xor   L             ; 1:4       dup 3 <> if
+    jr   nz, $+8        ; 2:7/12    dup 3 <> if
+    ld    A, high 3     ; 2:7       dup 3 <> if
+    xor   H             ; 1:4       dup 3 <> if
+    jp    z, else138    ; 3:10      dup 3 <> if 
+    push DE             ; 1:11      print
+    ld   BC, size139    ; 3:10      print Length of string to print
+    ld   DE, string139  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else138  EQU $          ;           = endif
+endif138:
+    
+    ld    A, H          ; 1:4       dup 3 < if
+    add   A, A          ; 1:4       dup 3 < if
+    jr    c, $+11       ; 2:7/12    dup 3 < if    positive constant
+    ld    A, L          ; 1:4       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
+    sub   low 3         ; 2:7       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
+    ld    A, H          ; 1:4       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
+    jp   nc, else139    ; 3:10      dup 3 < if 
+    push DE             ; 1:11      print
+    ld   BC, size140    ; 3:10      print Length of string to print
+    ld   DE, string140  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else139  EQU $          ;           = endif
+endif139:
+    
+    ld    A, H          ; 1:4       dup 3 <= if
+    add   A, A          ; 1:4       dup 3 <= if
+    jr    c, $+11       ; 2:7/12    dup 3 <= if    positive constant
+    ld    A, low 3      ; 2:7       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    sub   L             ; 1:4       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    jp    c, else140    ; 3:10      dup 3 <= if 
+    push DE             ; 1:11      print
+    ld   BC, size141    ; 3:10      print Length of string to print
+    ld   DE, string141  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else140  EQU $          ;           = endif
+endif140:
+    
+    ld    A, H          ; 1:4       dup 3 > if
+    add   A, A          ; 1:4       dup 3 > if
+    jp    c, else141    ; 3:10      dup 3 > if    positive constant
+    ld    A, low 3      ; 2:7       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
+    sub   L             ; 1:4       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
+    sbc   A, H          ; 1:4       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
+    jp   nc, else141    ; 3:10      dup 3 > if 
+    push DE             ; 1:11      print
+    ld   BC, size142    ; 3:10      print Length of string to print
+    ld   DE, string142  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else141  EQU $          ;           = endif
+endif141:
+    
+    ld    A, H          ; 1:4       dup 3 >= if
+    add   A, A          ; 1:4       dup 3 >= if
+    jp    c, else142    ; 3:10      dup 3 >= if    positive constant
+    ld    A, L          ; 1:4       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    sub   low 3         ; 2:7       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    jp    c, else142    ; 3:10      dup 3 >= if 
+    push DE             ; 1:11      print
+    ld   BC, size143    ; 3:10      print Length of string to print
+    ld   DE, string143  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else142  EQU $          ;           = endif
+endif142:
+    
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call PRINT_S16      ; 3:17      . 
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call PRINT_S16      ; 3:17      . 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
+    
+    ld    A, low 3      ; 2:7       dup 3 u= if
+    xor   L             ; 1:4       dup 3 u= if
+    jp   nz, else143    ; 3:10      dup 3 u= if
+    ld    A, high 3     ; 2:7       dup 3 u= if
+    xor   H             ; 1:4       dup 3 u= if
+    jp   nz, else143    ; 3:10      dup 3 u= if 
+    push DE             ; 1:11      print
+    ld   BC, size144    ; 3:10      print Length of string to print
+    ld   DE, string144  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else143  EQU $          ;           = endif
+endif143:
+    
+    ld    A, low 3      ; 2:7       dup 3 u<> if
+    xor   L             ; 1:4       dup 3 u<> if
+    jr   nz, $+8        ; 2:7/12    dup 3 u<> if
+    ld    A, high 3     ; 2:7       dup 3 u<> if
+    xor   H             ; 1:4       dup 3 u<> if
+    jp    z, else144    ; 3:10      dup 3 u<> if 
+    push DE             ; 1:11      print
+    ld   BC, size145    ; 3:10      print Length of string to print
+    ld   DE, string145  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else144  EQU $          ;           = endif
+endif144:
+    
+    ld    A, L          ; 1:4       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
+    sub   low 3         ; 2:7       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
+    ld    A, H          ; 1:4       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
+    jp   nc, else145    ; 3:10      dup 3 (u)< if 
+    push DE             ; 1:11      print
+    ld   BC, size146    ; 3:10      print Length of string to print
+    ld   DE, string146  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else145  EQU $          ;           = endif
+endif145:
+    
+    ld    A, low 3      ; 2:7       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    sub   L             ; 1:4       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    jp    c, else146    ; 3:10      dup 3 (u)<= if 
+    push DE             ; 1:11      print
+    ld   BC, size147    ; 3:10      print Length of string to print
+    ld   DE, string147  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else146  EQU $          ;           = endif
+endif146:
+    
+    ld    A, low 3      ; 2:7       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
+    sub   L             ; 1:4       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
+    sbc   A, H          ; 1:4       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
+    jp   nc, else147    ; 3:10      dup 3 (u)> if 
+    push DE             ; 1:11      print
+    ld   BC, size148    ; 3:10      print Length of string to print
+    ld   DE, string148  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else147  EQU $          ;           = endif
+endif147:
+    
+    ld    A, L          ; 1:4       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    sub   low 3         ; 2:7       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    jp    c, else148    ; 3:10      dup 3 (u)>= if 
+    push DE             ; 1:11      print
+    ld   BC, size149    ; 3:10      print Length of string to print
+    ld   DE, string149  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else148  EQU $          ;           = endif
+endif148:
+    
+    call PRINT_U16      ; 3:17      . 
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call PRINT_U16      ; 3:17      . 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+
+ptestp3_end:
+    exx                 ; 1:4       ;
+    ld    E,(HL)        ; 1:7       ;
+    inc   L             ; 1:4       ;
+    ld    D,(HL)        ; 1:7       ; DE = ret
+    inc  HL             ; 1:6       ;
+    ex   DE, HL         ; 1:4       ;
+    jp  (HL)            ; 1:4       ;
+;   -----  e n d  -----
+
+
+
+;   ---  b e g i n  ---
+ptestm3:                ;           
+    exx                 ; 1:4       :
+    pop  DE             ; 1:10      : ret
+    dec  HL             ; 1:6       :
+    ld  (HL),D          ; 1:7       :
+    dec   L             ; 1:4       :
+    ld  (HL),E          ; 1:7       : (HL') = ret
+    exx                 ; 1:4       : R:( -- ret )
+    
+    ld    A, high -3    ; 2:7       dup -3 = if
+    xor   H             ; 1:4       dup -3 = if
+    ld    B, A          ; 1:4       dup -3 = if
+    ld    A, low -3     ; 2:7       dup -3 = if
+    xor   L             ; 1:4       dup -3 = if
+    or    B             ; 1:4       dup -3 = if
+    jp   nz, else149    ; 3:10      dup -3 = if 
+    push DE             ; 1:11      print
+    ld   BC, size150    ; 3:10      print Length of string to print
+    ld   DE, string150  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else149  EQU $          ;           = endif
+endif149:
+    
+    ld    A, low -3     ; 2:7       dup -3 <> if
+    xor   L             ; 1:4       dup -3 <> if
+    jr   nz, $+8        ; 2:7/12    dup -3 <> if
+    ld    A, high -3    ; 2:7       dup -3 <> if
+    xor   H             ; 1:4       dup -3 <> if
+    jp    z, else150    ; 3:10      dup -3 <> if 
+    push DE             ; 1:11      print
+    ld   BC, size151    ; 3:10      print Length of string to print
+    ld   DE, string151  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else150  EQU $          ;           = endif
+endif150:
+    
+    ld    A, H          ; 1:4       dup -3 < if
+    add   A, A          ; 1:4       dup -3 < if
+    jp   nc, else151    ; 3:10      dup -3 < if    negative constant
+    ld    A, L          ; 1:4       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
+    sub   low -3        ; 2:7       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
+    ld    A, H          ; 1:4       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
+    jp   nc, else151    ; 3:10      dup -3 < if 
+    push DE             ; 1:11      print
+    ld   BC, size152    ; 3:10      print Length of string to print
+    ld   DE, string152  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else151  EQU $          ;           = endif
+endif151:
+    
+    ld    A, H          ; 1:4       dup -3 <= if
+    add   A, A          ; 1:4       dup -3 <= if
+    jp   nc, else152    ; 3:10      dup -3 <= if    negative constant
+    ld    A, low -3     ; 2:7       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    sub   L             ; 1:4       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    jp    c, else152    ; 3:10      dup -3 <= if 
+    push DE             ; 1:11      print
+    ld   BC, size153    ; 3:10      print Length of string to print
+    ld   DE, string153  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else152  EQU $          ;           = endif
+endif152:
+    
+    ld    A, H          ; 1:4       dup -3 > if
+    add   A, A          ; 1:4       dup -3 > if
+    jr   nc, $+11       ; 2:7/12    dup -3 > if    negative constant
+    ld    A, low -3     ; 2:7       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
+    sub   L             ; 1:4       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
+    sbc   A, H          ; 1:4       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
+    jp   nc, else153    ; 3:10      dup -3 > if 
+    push DE             ; 1:11      print
+    ld   BC, size154    ; 3:10      print Length of string to print
+    ld   DE, string154  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else153  EQU $          ;           = endif
+endif153:
+    
+    ld    A, H          ; 1:4       dup -3 >= if
+    add   A, A          ; 1:4       dup -3 >= if
+    jr   nc, $+11       ; 2:7/12    dup -3 >= if    negative constant
+    ld    A, L          ; 1:4       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    sub   low -3        ; 2:7       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    jp    c, else154    ; 3:10      dup -3 >= if 
+    push DE             ; 1:11      print
+    ld   BC, size155    ; 3:10      print Length of string to print
+    ld   DE, string155  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else154  EQU $          ;           = endif
+endif154:
+    
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call PRINT_S16      ; 3:17      . 
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call PRINT_S16      ; 3:17      . 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
+    
+    ld    A, low -3     ; 2:7       dup -3 u= if
+    xor   L             ; 1:4       dup -3 u= if
+    jp   nz, else155    ; 3:10      dup -3 u= if
+    ld    A, high -3    ; 2:7       dup -3 u= if
+    xor   H             ; 1:4       dup -3 u= if
+    jp   nz, else155    ; 3:10      dup -3 u= if 
+    push DE             ; 1:11      print
+    ld   BC, size156    ; 3:10      print Length of string to print
+    ld   DE, string156  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else155  EQU $          ;           = endif
+endif155:
+    
+    ld    A, low -3     ; 2:7       dup -3 u<> if
+    xor   L             ; 1:4       dup -3 u<> if
+    jr   nz, $+8        ; 2:7/12    dup -3 u<> if
+    ld    A, high -3    ; 2:7       dup -3 u<> if
+    xor   H             ; 1:4       dup -3 u<> if
+    jp    z, else156    ; 3:10      dup -3 u<> if 
+    push DE             ; 1:11      print
+    ld   BC, size157    ; 3:10      print Length of string to print
+    ld   DE, string157  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else156  EQU $          ;           = endif
+endif156:
+    
+    ld    A, L          ; 1:4       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
+    sub   low -3        ; 2:7       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
+    ld    A, H          ; 1:4       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
+    jp   nc, else157    ; 3:10      dup -3 (u)< if 
+    push DE             ; 1:11      print
+    ld   BC, size158    ; 3:10      print Length of string to print
+    ld   DE, string158  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else157  EQU $          ;           = endif
+endif157:
+    
+    ld    A, low -3     ; 2:7       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    sub   L             ; 1:4       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    jp    c, else158    ; 3:10      dup -3 (u)<= if 
+    push DE             ; 1:11      print
+    ld   BC, size159    ; 3:10      print Length of string to print
+    ld   DE, string159  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else158  EQU $          ;           = endif
+endif158:
+    
+    ld    A, low -3     ; 2:7       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
+    sub   L             ; 1:4       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
+    sbc   A, H          ; 1:4       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
+    jp   nc, else159    ; 3:10      dup -3 (u)> if 
+    push DE             ; 1:11      print
+    ld   BC, size160    ; 3:10      print Length of string to print
+    ld   DE, string160  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else159  EQU $          ;           = endif
+endif159:
+    
+    ld    A, L          ; 1:4       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    sub   low -3        ; 2:7       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    jp    c, else160    ; 3:10      dup -3 (u)>= if 
+    push DE             ; 1:11      print
+    ld   BC, size161    ; 3:10      print Length of string to print
+    ld   DE, string161  ; 3:10      print Address of string
+    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print 
+else160  EQU $          ;           = endif
+endif160:
+    
+    call PRINT_U16      ; 3:17      . 
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call PRINT_U16      ; 3:17      . 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+
+ptestm3_end:
+    exx                 ; 1:4       ;
+    ld    E,(HL)        ; 1:7       ;
+    inc   L             ; 1:4       ;
+    ld    D,(HL)        ; 1:7       ; DE = ret
+    inc  HL             ; 1:6       ;
+    ex   DE, HL         ; 1:4       ;
+    jp  (HL)            ; 1:4       ;
+;   -----  e n d  -----
+
+
 
 ;   ---  b e g i n  ---
 stack_test:             ;           
     
     push DE             ; 1:11      print
-    ld   BC, size138    ; 3:10      print Length of string to print
-    ld   DE, string138  ; 3:10      print Address of string
+    ld   BC, size162    ; 3:10      print Length of string to print
+    ld   DE, string162  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
@@ -850,116 +1295,188 @@ BIN2DEC_CHAR:
 VARIABLE_SECTION:
 
 STRING_SECTION:
-string138:
+string162:
 db 0xD, "Data stack OK!", 0xD
+size162 EQU $ - string162
+string161:
+db ">=,"
+size161 EQU $ - string161
+string160:
+db ">,"
+size160 EQU $ - string160
+string159:
+db "<=,"
+size159 EQU $ - string159
+string158:
+db "<,"
+size158 EQU $ - string158
+string157:
+db "<>,"
+size157 EQU $ - string157
+string156:
+db "=,"
+size156 EQU $ - string156
+string155:
+db ">=,"
+size155 EQU $ - string155
+string154:
+db ">,"
+size154 EQU $ - string154
+string153:
+db "<=,"
+size153 EQU $ - string153
+string152:
+db "<,"
+size152 EQU $ - string152
+string151:
+db "<>,"
+size151 EQU $ - string151
+string150:
+db "=,"
+size150 EQU $ - string150
+string149:
+db ">=,"
+size149 EQU $ - string149
+string148:
+db ">,"
+size148 EQU $ - string148
+string147:
+db "<=,"
+size147 EQU $ - string147
+string146:
+db "<,"
+size146 EQU $ - string146
+string145:
+db "<>,"
+size145 EQU $ - string145
+string144:
+db "=,"
+size144 EQU $ - string144
+string143:
+db ">=,"
+size143 EQU $ - string143
+string142:
+db ">,"
+size142 EQU $ - string142
+string141:
+db "<=,"
+size141 EQU $ - string141
+string140:
+db "<,"
+size140 EQU $ - string140
+string139:
+db "<>,"
+size139 EQU $ - string139
+string138:
+db "=,"
 size138 EQU $ - string138
 string137:
 db ">=,"
 size137 EQU $ - string137
 string136:
-db ">=,"
+db ">=" 
 size136 EQU $ - string136
 string135:
-db ">=,"
+db ">=" 
 size135 EQU $ - string135
 string134:
 db ">,"
 size134 EQU $ - string134
 string133:
-db ">,"
+db ">" 
 size133 EQU $ - string133
 string132:
-db ">,"
+db ">" 
 size132 EQU $ - string132
 string131:
 db "<=,"
 size131 EQU $ - string131
 string130:
-db "<=,"
+db "<=" 
 size130 EQU $ - string130
 string129:
-db "<=,"
+db "<=" 
 size129 EQU $ - string129
 string128:
 db "<,"
 size128 EQU $ - string128
 string127:
-db "<,"
+db "<" 
 size127 EQU $ - string127
 string126:
-db "<,"
+db "<" 
 size126 EQU $ - string126
 string125:
 db "<>,"
 size125 EQU $ - string125
 string124:
-db "<>,"
+db "<>" 
 size124 EQU $ - string124
 string123:
-db "<>,"
+db "<>" 
 size123 EQU $ - string123
 string122:
 db "=,"
 size122 EQU $ - string122
 string121:
-db "=,"
+db "=" 
 size121 EQU $ - string121
 string120:
-db "=,"
+db "=" 
 size120 EQU $ - string120
 string119:
 db ">=,"
 size119 EQU $ - string119
 string118:
-db ">=,"
+db ">=" 
 size118 EQU $ - string118
 string117:
-db ">=,"
+db ">=" 
 size117 EQU $ - string117
 string116:
 db ">,"
 size116 EQU $ - string116
 string115:
-db ">,"
+db ">" 
 size115 EQU $ - string115
 string114:
-db ">,"
+db ">" 
 size114 EQU $ - string114
 string113:
 db "<=,"
 size113 EQU $ - string113
 string112:
-db "<=,"
+db "<=" 
 size112 EQU $ - string112
 string111:
-db "<=,"
+db "<=" 
 size111 EQU $ - string111
 string110:
 db "<,"
 size110 EQU $ - string110
 string109:
-db "<,"
+db "<" 
 size109 EQU $ - string109
 string108:
-db "<,"
+db "<" 
 size108 EQU $ - string108
 string107:
 db "<>,"
 size107 EQU $ - string107
 string106:
-db "<>,"
+db "<>" 
 size106 EQU $ - string106
 string105:
-db "<>,"
+db "<>" 
 size105 EQU $ - string105
 string104:
 db "=,"
 size104 EQU $ - string104
 string103:
-db "=,"
+db "=" 
 size103 EQU $ - string103
 string102:
-db "=,"
+db "=" 
 size102 EQU $ - string102
 string101:
 db "RAS:"
