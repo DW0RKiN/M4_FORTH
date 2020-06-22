@@ -3,9 +3,9 @@ include(`../M4/FIRST.M4')dnl
     INIT(60000)
     SCALL(_init)
     BEGIN
+        SCALL(_copy)
         SCALL(_generation)
         SCALL(_readkey)
-        SCALL(_copy)
     AGAIN
 
 CONSTANT(_w,32)
@@ -65,8 +65,10 @@ SCOLON(_readkey,( -- ))
         DUP_PUSH_CEQ_IF('a') DROP_PUSH(0) SCALL(_down)  THEN
         DUP_PUSH_CEQ_IF('p') DROP_PUSH(0) SCALL(_right) THEN
         DUP_PUSH_CEQ_IF('o') DROP_PUSH(0) SCALL(_left)  THEN
-        DUP_PUSH_CEQ_IF('c') DROP_PUSH(0) PUSH(buff) PUSH2_FILL(_wh, 0) THEN
-        DUP_PUSH_CEQ_IF('f') DROP_PUSH(0) PUSH(buff) PUSH2_FILL(_wh, 1) THEN
+        DUP_PUSH_CEQ_IF('r') DROP_PUSH(0) SCALL(_random_all) THEN
+        DUP_PUSH_CEQ_IF('i') DROP_PUSH(0) SCALL(_invert_all) THEN
+        DUP_PUSH_CEQ_IF('c') DROP_PUSH(0) PUSH3_FILL(buff,_wh, 0) THEN
+        DUP_PUSH_CEQ_IF('f') DROP_PUSH(0) PUSH3_FILL(buff,_wh, 1) THEN
         DUP_PUSH_CEQ_IF('s') 
             DROP_PUSH(0)
             PUSH_CFETCH(buff+400) 
@@ -80,14 +82,23 @@ SCOLON(_readkey,( -- ))
         IF BREAK THEN
     AGAIN THEN
 SSEMICOLON
-    
+
+SCOLON(_random_all,( -- ))
+    PUSH2(buff+_wh,buff) SDO RND PUSH_AND(1) OVER CSTORE SLOOP
+SSEMICOLON
+
+SCOLON(_invert_all,( -- ))
+    PUSH2(buff+_wh,buff) SDO SI CFETCH PUSH_XOR(1) OVER CSTORE SLOOP
+SSEMICOLON
+
+
 SCOLON(_init,( -- ))
     PRINT({0x16, 0, 0})
     PUSH(_w*8) SFOR PUTCHAR('O') SNEXT
     PUSH2(0x4000, 0x4800) PUSH_CMOVE(8*256)
     PUSH2(0x4800, 0x5000) PUSH_CMOVE(8*256)
     PUSH2_CSTORE(0,last_key) 
-    PUSH2(_screen+_wh,_screen) SDO RND PUSH_AND(1) OVER CSTORE SLOOP 
+    SCALL(_random_all)
 SSEMICOLON
 
 SCOLON(_generation,( -- ))
