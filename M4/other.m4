@@ -322,6 +322,29 @@ dnl
 dnl
 dnl
 dnl addr u char fill
+dnl ( addr -- )
+dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+define({PUSH2_FILL},{ifelse(eval($1),{0},{
+__{}    ex   DE, HL         ; 1:4       $1 $2 fill
+__{}    pop  DE             ; 1:10      $1 $2 fill},
+__{}eval($1),{1},{
+__{}    ld  (HL),format({%-11s},$2); 2:10      $1 $2 fill
+__{}    ex   DE, HL         ; 1:4       $1 $2 fill
+__{}    pop  DE             ; 1:10      $1 $2 fill},
+__{}{
+__{}    ld  (HL),format({%-11s},$2); 2:10      $1 $2 fill
+__{}    ld   BC, format({%-11s},eval($1)-1); 3:10      $1 $2 fill
+__{}    push DE             ; 1:11      $1 $2 fill
+__{}    ld    D, H          ; 1:4       $1 $2 fill
+__{}    ld    E, L          ; 1:4       $1 $2 fill
+__{}    inc  DE             ; 1:6       $1 $2 fill DE = to
+__{}    ldir                ; 2:u*21/16 $1 $2 fill
+__{}    pop  HL             ; 1:10      $1 $2 fill
+__{}    pop  DE             ; 1:10      $1 $2 fill})})dnl
+dnl
+dnl
+dnl
+dnl addr u char fill
 dnl ( -- )
 dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH3_FILL},{ifelse(eval($2),{0},{
