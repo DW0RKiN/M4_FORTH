@@ -475,7 +475,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |     cmove>     |      CMOVEGT      |                    |( from to u -- )       | 8bit, addr--     |
 |      move      |        MOVE       |                    |( from to u -- )       | 16bit, addr++    |
 |      move>     |       MOVEGT      |                    |( from to u -- )       | 16bit, addr--    |
-| addr u c fill  |  PUSH2_FILL(u,c)  |                    |    ( addr  -- )       | 8bit, addr++     |
+|      fill      |        FILL       |                    | ( addr u c -- )       | 8bit, addr++     |
+|     c fill     |  PUSH_FILL(u,c)   |                    |   ( addr u -- )       | 8bit, addr++     |
+|    u c fill    |  PUSH2_FILL(u,c)  |                    |     ( addr -- )       | 8bit, addr++     |
+|   a u c fill   | PUSH3_FILL(a,u,c) |                    |          ( -- )       | 8bit, addr++     |
 | `seed` seed !  |                   |  PUSH_STORE(SEED)  |     ( seed -- )       |                  |
 |       rnd      |        RND        |                    |          ( -- random )|                  |
 |     random     |       RANDOM      |                    |      ( max -- random )| random < max     |
