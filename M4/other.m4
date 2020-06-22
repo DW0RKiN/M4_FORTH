@@ -1,3 +1,4 @@
+define({__},{})dnl
 dnl ( -- )
 dnl Save shadow reg.
 define(INIT,{
@@ -243,26 +244,101 @@ define({MOVEGT},{
     pop  DE             ; 1:10      move>})dnl
 dnl
 dnl
+dnl
 dnl addr u char fill
-dnl ( to -- )
-dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
-define({PUSH2_FILL},{ifelse(eval($1),{0},{
-    ex  DE, HL          ; 1:4       $1 $2 fill
-    pop DE              ; 1:10      $1 $2 fill},
-eval($1),{1},{
-    ld  (HL), format({%-10s},$2); 2:10      $1 $2 fill
-    ex  DE, HL          ; 1:4       $1 $2 fill
-    pop DE              ; 1:10      $1 $2 fill{}dnl
-},{
-    ld  (HL), format({%-10s},$2); 2:10      $1 $2 fill
-    ld   BC, format({%-11s},eval($1)-1); 3:10      $1 $2 fill
-    push DE             ; 1:11      $1 $2 fill
-    ld   D, H           ; 1:4       $1 $2 fill
-    ld   E, L           ; 1:4       $1 $2 fill
-    inc  DE             ; 1:6       $1 $2 fill DE = to
-    ldir                ; 2:u*21/16 $1 $2 fill
-    pop  HL             ; 1:10      $1 $2 fill
-    pop  DE             ; 1:10      $1 $2 fill})})dnl
+dnl ( addr u char -- )
+dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+define({FILL},{ifelse({fast},{fast},{
+__{}    ld    A, D          ; 1:4       fill
+__{}    or    E             ; 1:4       fill
+__{}    ld    A, L          ; 1:4       fill
+__{}    pop  HL             ; 1:10      fill HL = from
+__{}    jr    z, $+15       ; 2:7/12    fill
+__{}    ld  (HL),A          ; 1:7       fill
+__{}    dec  DE             ; 1:6       fill
+__{}    ld    A, D          ; 1:4       fill
+__{}    or    E             ; 1:4       fill
+__{}    jr    z, $+9        ; 2:7/12    fill
+__{}    ld    C, E          ; 1:4       fill
+__{}    ld    B, D          ; 1:4       fill
+__{}    ld    E, L          ; 1:4       fill
+__{}    ld    D, H          ; 1:4       fill
+__{}    inc  DE             ; 1:6       fill DE = to
+__{}    ldir                ; 2:u*21/16 fill
+__{}    pop  HL             ; 1:10      fill
+__{}    pop  DE             ; 1:10      fill},
+__{}{
+__{}    ld    A, L          ; 1:4       fill A  = char
+__{}    pop  HL             ; 1:10      fill HL = addr
+__{}    ld    B, E          ; 1:4       fill
+__{}    inc   D             ; 1:4       fill
+__{}    inc   E             ; 1:4       fill
+__{}    dec   E             ; 1:4       fill
+__{}    jr    z, $+6        ; 2:7/12    fill
+__{}    ld  (HL),A          ; 1:7       fill
+__{}    inc  HL             ; 1:6       fill
+__{}    djnz $-2            ; 2:13/8    fill
+__{}    dec   D             ; 1:4       fill
+__{}    jr   nz, $-5        ; 2:7/12    fill 
+__{}    pop  HL             ; 1:10      fill
+__{}    pop  DE             ; 1:10      fill})})dnldnl
+dnl
+dnl
+dnl addr u char fill
+dnl ( addr u -- )
+dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+define({PUSH_FILL},{ifelse({fast},{fast},{
+__{}    ld    A, H          ; 1:4       $1 fill
+__{}    or    L             ; 1:4       $1 fill
+__{}    jr    z, $+16       ; 2:7/12    $1 fill
+__{}    ld    C, L          ; 1:4       $1 fill
+__{}    ld    B, H          ; 1:4       $1 fill
+__{}    ld    L, E          ; 1:4       $1 fill
+__{}    ld    H, D          ; 1:4       $1 fill HL = from
+__{}    ld  (HL),format({%-11s},$1); 2:10      $1 fill
+__{}    dec  BC             ; 1:6       $1 fill
+__{}    ld    A, B          ; 1:4       $1 fill
+__{}    or    C             ; 1:4       $1 fill
+__{}    jr    z, $+5        ; 2:7/12    $1 fill
+__{}    inc  DE             ; 1:6       $1 fill DE = to
+__{}    ldir                ; 2:u*21/16 $1 fill
+__{}    pop  HL             ; 1:10      $1 fill
+__{}    pop  DE             ; 1:10      $1 fill},
+__{}{
+__{}    ld    A, format({%-11s},$1); 2:7       $1 fill
+__{}    ld    B, L          ; 1:4       $1 fill
+__{}    inc   H             ; 1:4       $1 fill
+__{}    inc   L             ; 1:4       $1 fill
+__{}    dec   L             ; 1:4       $1 fill
+__{}    jr    z, $+6        ; 2:7/12    $1 fill
+__{}    ld  (DE),A          ; 1:7       $1 fill
+__{}    inc  DE             ; 1:6       $1 fill
+__{}    djnz $-2            ; 2:13/8    $1 fill
+__{}    dec   H             ; 1:4       $1 fill
+__{}    jr   nz, $-5        ; 2:7/12    $1 fill 
+__{}    pop  HL             ; 1:10      $1 fill
+__{}    pop  DE             ; 1:10      $1 fill})})dnl
+dnl
+dnl
+dnl
+dnl addr u char fill
+dnl ( -- )
+dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+define({PUSH3_FILL},{ifelse(eval($2),{0},{
+__{}                                  ;           $1 $2 $3 fill},
+__{}eval($2),{1},{
+__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill
+__{}    ld   format({%-15s},($2){,} A); 3:13      $1 $2 $3 fill},
+__{}{
+__{}    push DE             ; 1:11      $1 $2 $3 fill
+__{}    push HL             ; 1:11      $1 $2 $3 fill
+__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill HL = from
+__{}    ld   DE, format({%-11s},$1+1); 3:10      $1 $2 $3 fill DE = to
+__{}    ld   BC, format({%-11s},$2-1); 3:10      $1 $2 $3 fill
+__{}    ld  (HL),format({%-11s},$3); 2:10      $1 $2 $3 fill
+__{}    ldir                ; 2:u*21/16 $1 $2 $3 fill
+__{}    pop  HL             ; 1:10      $1 $2 $3 fill
+__{}    pop  DE             ; 1:10      $1 $2 $3 fill})})dnl
 dnl
 dnl
 dnl
