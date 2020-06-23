@@ -190,3 +190,19 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting2.asm
 | Thorsten Schoeler | HX-20                                | Epson Forth E1.0        | Nesting 1mil | 5m08s
 | Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz)  |FreeBSD 9 FICL Bootloader| Nesting 1mil | 0.66s
 | Helfried Schuerer | robotron K 1510, U 808 D (i8008), 480 kHz (auf FOSY Emulator) | FOSY V1.2P 1988 (FIG) | Nesting 1MILLION | 02:32:05 2h 32min 5s
+
+| Name              |   System                             |  Forth                  |  Benchmark   | Time (sec/round) | Scale |
+| :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.9s
+| Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Sieve/Prime  | 10s              | 1x
+| Alexander Muller  | Raspberry Pi ARM 700Mhz              | Gforth 0.7.0            | Sieve        | 0m08s            | 100x
+| Andreas Boehm     | Commodore C64 6510                   | Audiogenic Forth-64     | Sieve Bench  | 18.1             | 
+| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-fast, Linux      | Sieve Bench  | 0.015            | 
+| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-dtc, Linux       | Sieve Bench  | 0.025            | 
+| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-itc, Linux       | Sieve Bench  | 0.028            | 
+| Thorsten Kuphaldt | Amiga 3000 68030 25Mhz               | jforth                  | Sieve Bench  | 0.148            | 
+| Stefan Herold     | Amstrad 6128+ Z80A 4Mhz              | Uniforth                | Sieve Bench  | 12               | 
+| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Sieve Bench  | 0.031            | 
+| Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Sieve        | 22s              | 
+| Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Sieve        | 15s              | 
+
