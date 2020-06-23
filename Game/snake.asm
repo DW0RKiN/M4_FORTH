@@ -251,8 +251,9 @@ snake_x:                ;           ( offset -- address )
     exx                 ; 1:4       : R:( -- ret )
   
     add  HL, HL         ; 1:11      2* 
+    ; warning The condition (snake_x_head) cannot be evaluated
     ld   BC, snake_x_head; 3:10      snake_x_head +
-    add  HL, BC         ; 1:4       snake_x_head + 
+    add  HL, BC         ; 1:11      snake_x_head + 
 
 snake_x_end:
     exx                 ; 1:4       ;
@@ -276,8 +277,9 @@ snake_y:                ;           ( offset -- address )
     exx                 ; 1:4       : R:( -- ret )
   
     add  HL, HL         ; 1:11      2* 
+    ; warning The condition (snake_y_head) cannot be evaluated
     ld   BC, snake_y_head; 3:10      snake_y_head +
-    add  HL, BC         ; 1:4       snake_y_head +
+    add  HL, BC         ; 1:11      snake_y_head +
 
 snake_y_end:
     exx                 ; 1:4       ;
@@ -346,9 +348,9 @@ do103:
     call snake_x        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
         
@@ -367,9 +369,9 @@ do103:
     call snake_y        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
     
@@ -703,9 +705,9 @@ sfor106:                ;           sfor 106 ( index -- index )
     call snake_x        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
         
@@ -728,9 +730,9 @@ sfor106:                ;           sfor 106 ( index -- index )
     call snake_y        ; 3:17      call
     ex   DE, HL         ; 1:4       call    
     exx                 ; 1:4       call R:( ret -- ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
     
@@ -1030,9 +1032,8 @@ check_input_end:
 ;   ---  b e g i n  ---
 random_position:        ;           ( n -- 2..n-3 )
     
-    ld   BC, 4          ; 3:10      4 -
-    or    A             ; 1:4       4 -
-    sbc  HL, BC         ; 2:15      4 - 
+    ld   BC, -4         ; 3:10      4 -
+    add  HL, BC         ; 1:11      4 - 
     call Random         ; 3:17      random 
     inc  HL             ; 1:6       2+
     inc  HL             ; 1:6       2+ 
