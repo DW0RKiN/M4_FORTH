@@ -1103,3 +1103,147 @@ define({_2DUP_GT_WHILE},{
 dnl
 dnl
 dnl
+dnl    
+dnl ------ ucond while ( b a -- b a ) ---------
+dnl
+define({UEQ_WHILE},{
+    or    A             ; 1:4       u= while BEGIN_STACK
+    sbc  HL, DE         ; 2:15      u= while BEGIN_STACK
+    pop  HL             ; 1:10      u= while BEGIN_STACK
+    pop  DE             ; 1:10      u= while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      u= while BEGIN_STACK})dnl
+dnl
+dnl
+define({UNE_WHILE},{
+    or    A             ; 1:4       u<> while BEGIN_STACK
+    sbc  HL, DE         ; 2:15      u<> while BEGIN_STACK
+    pop  HL             ; 1:10      u<> while BEGIN_STACK
+    pop  DE             ; 1:10      u<> while BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      u<> while BEGIN_STACK})dnl
+dnl
+dnl
+define({ULT_WHILE},{
+    ld    A, E          ; 1:4       u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       u< while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    pop  HL             ; 1:10      u< while BEGIN_STACK
+    pop  DE             ; 1:10      u< while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      u< while BEGIN_STACK})dnl
+dnl    
+dnl
+define({UGE_WHILE},{
+    ld    A, E          ; 1:4       u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       u>= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    pop  HL             ; 1:10      u>= while BEGIN_STACK
+    pop  DE             ; 1:10      u>= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      u>= while BEGIN_STACK})dnl
+dnl    
+dnl
+define({ULE_WHILE},{
+    ld    A, L          ; 1:4       u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sub   E             ; 1:4       u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, H          ; 1:4       u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    sbc   A, D          ; 1:4       u<= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    pop  HL             ; 1:10      u<= while BEGIN_STACK
+    pop  DE             ; 1:10      u<= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      u<= while BEGIN_STACK})dnl
+dnl    
+dnl
+define({UGT_WHILE},{
+    ld    A, L          ; 1:4       u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    sub   E             ; 1:4       u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    sbc   A, D          ; 1:4       u> while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+    pop  HL             ; 1:10      u> while BEGIN_STACK
+    pop  DE             ; 1:10      u> while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      u> while BEGIN_STACK})dnl
+dnl
+dnl    
+dnl ------ scond while ( b a -- b a ) ---------
+dnl
+dnl = while
+define({EQ_WHILE},{
+    or    A             ; 1:4       = while BEGIN_STACK
+    sbc  HL, DE         ; 2:15      = while BEGIN_STACK
+    pop  HL             ; 1:10      = while BEGIN_STACK
+    pop  DE             ; 1:10      = while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      = while BEGIN_STACK})dnl
+dnl
+dnl
+dnl <> while
+define({NE_WHILE},{
+    or    A             ; 1:4       <> while BEGIN_STACK
+    sbc  HL, DE         ; 2:15      <> while BEGIN_STACK
+    pop  HL             ; 1:10      <> while BEGIN_STACK
+    pop  DE             ; 1:10      <> while BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      <> while BEGIN_STACK})dnl
+dnl
+dnl
+dnl < while
+define({LT_WHILE},{
+    ld    A, H          ; 1:4       < while BEGIN_STACK
+    xor   D             ; 1:4       < while BEGIN_STACK
+    ld    C, A          ; 1:4       < while BEGIN_STACK
+    ld    A, E          ; 1:4       < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sub   L             ; 1:4       < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, D          ; 1:4       < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    sbc   A, H          ; 1:4       < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+    rra                 ; 1:4       < while BEGIN_STACK
+    xor   C             ; 1:4       < while BEGIN_STACK
+    pop  HL             ; 1:10      < while BEGIN_STACK
+    pop  DE             ; 1:10      < while BEGIN_STACK
+    jp    p, break{}BEGIN_STACK   ; 3:10      < while BEGIN_STACK})dnl
+dnl
+dnl
+dnl >= while
+define({GE_WHILE},{
+    ld    A, H          ; 1:4       >= while BEGIN_STACK
+    xor   D             ; 1:4       >= while BEGIN_STACK
+    ld    C, A          ; 1:4       >= while BEGIN_STACK
+    ld    A, E          ; 1:4       >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sub   L             ; 1:4       >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, D          ; 1:4       >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    sbc   A, H          ; 1:4       >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    rra                 ; 1:4       >= while BEGIN_STACK
+    xor   C             ; 1:4       >= while BEGIN_STACK
+    pop  HL             ; 1:10      >= while BEGIN_STACK
+    pop  DE             ; 1:10      >= while BEGIN_STACK
+    jp    m, break{}BEGIN_STACK   ; 3:10      >= while BEGIN_STACK})dnl
+dnl
+dnl
+dnl <= while
+define({LE_WHILE},{
+    ld    A, H          ; 1:4       <= while BEGIN_STACK
+    xor   D             ; 1:4       <= while BEGIN_STACK
+    ld    C, A          ; 1:4       <= while BEGIN_STACK
+    ld    A, L          ; 1:4       <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    sub   E             ; 1:4       <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, H          ; 1:4       <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    sbc   A, D          ; 1:4       <= while BEGIN_STACK    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    rra                 ; 1:4       <= while BEGIN_STACK
+    xor   C             ; 1:4       <= while BEGIN_STACK
+    pop  HL             ; 1:10      <= while BEGIN_STACK
+    pop  DE             ; 1:10      <= while BEGIN_STACK
+    jp    m, break{}BEGIN_STACK   ; 3:10      <= while BEGIN_STACK})dnl
+dnl    
+dnl
+dnl > while
+define({GT_WHILE},{
+    ld    A, H          ; 1:4       > while BEGIN_STACK
+    xor   D             ; 1:4       > while BEGIN_STACK
+    ld    C, A          ; 1:4       > while BEGIN_STACK
+    ld    A, L          ; 1:4       > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    sub   E             ; 1:4       > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    ld    A, H          ; 1:4       > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    sbc   A, D          ; 1:4       > while BEGIN_STACK    (DE>HL) --> (HL-DE<0) --> carry if true
+    rra                 ; 1:4       > while BEGIN_STACK
+    xor   C             ; 1:4       > while BEGIN_STACK
+    pop  HL             ; 1:10      > while BEGIN_STACK
+    pop  DE             ; 1:10      > while BEGIN_STACK
+    jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})dnl
+dnl
+dnl
+dnl

@@ -5,15 +5,30 @@ dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 + x1
 define(ADD,{
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +})dnl
 dnl
 dnl
 dnl ( x -- x+n )
 dnl x = x + n
-define(PUSH_ADD,{
-    ld   BC, format({%-11s},$1); 3:10      $1 +
-    add  HL, BC         ; 1:4       $1 +})dnl
+define(PUSH_ADD,{ifelse(eval($1),{},{
+__{}    ; warning The condition ($1) cannot be evaluated
+__{}    ld   BC, format({%-11s},$1); 3:10      $1 +
+__{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
+__{}eval($1),{0},{
+__{}                        ;           $1 +},
+__{}eval(($1)-1),{0},{
+__{}    inc  HL             ; 1:6       $1 +},
+__{}eval(($1)-2),{0},{
+__{}    inc  HL             ; 1:6       $1 +
+__{}    inc  HL             ; 1:6       $1 +},
+__{}eval(($1)-3),{0},{
+__{}    inc  HL             ; 1:6       $1 +
+__{}    inc  HL             ; 1:6       $1 +
+__{}    inc  HL             ; 1:6       $1 +},
+__{}{
+__{}    ld   BC, format({%-11s},$1); 3:10      $1 +
+__{}    add  HL, BC         ; 1:11      $1 +})})})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
@@ -27,10 +42,25 @@ dnl
 dnl
 dnl ( x -- x-n )
 dnl x = x - n
-define({PUSH_SUB},{
-    ld   BC, format({%-11s},$1); 3:10      $1 -
-    or    A             ; 1:4       $1 -
-    sbc  HL, BC         ; 2:15      $1 -})dnl
+define({PUSH_SUB},{ifelse(eval($1),{},{
+__{}    ; warning The condition ($1) cannot be evaluated
+__{}    ld   BC, format({%-11s},$1); 3:10      $1 -
+__{}    or    A             ; 1:4       $1 -
+__{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
+__{}eval($1),{0},{
+__{}                        ;           $1 -},
+__{}eval(($1)-1),{0},{
+__{}    dec  HL             ; 1:6       $1 -},
+__{}eval(($1)-1),{0},{
+__{}    dec  HL             ; 1:6       $1 -
+__{}    dec  HL             ; 1:6       $1 -},
+__{}eval(($1)-1),{0},{
+__{}    dec  HL             ; 1:6       $1 -
+__{}    dec  HL             ; 1:6       $1 -
+__{}    dec  HL             ; 1:6       $1 -},
+__{}{
+__{}    ld   BC, format({%-11s},eval(-($1))); 3:10      $1 -
+__{}    add  HL, BC         ; 1:11      $1 -})})})dnl
 dnl
 dnl
 dnl ( x -- -x )
