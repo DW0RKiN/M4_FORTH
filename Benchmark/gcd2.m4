@@ -9,8 +9,7 @@ COLON(gcd2,( a b -- gcd ))
          DUP_0EQ_IF   DROP         EXIT THEN                                          
     SWAP DUP_0EQ_IF   DROP         EXIT THEN                                          
     BEGIN 
-        _2DUP SUB                                                                    
-    WHILE  
+    _2DUP_NE_WHILE  
         _2DUP_LT_IF 
             OVER SUB                                                          
         ELSE 

@@ -48,7 +48,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.asm
 
 | Name              |   System                         |  Forth                 | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :-------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |  GCD2  | 0m11.76s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |  GCD2  | 0m6.46s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |  GCD2  | 0m42s    | 10x
 | Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |  GCD2  | 0,65s    | 
 | Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac   | OpenBoot 3.25           |  GCD2  | 0,11s    | 
@@ -96,6 +96,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1x.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.asm
+
+Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 65536!
+
+    : fib2 ( n1 -- n2 )
+        0 1 ROT 0 ?DO 
+            OVER ADD SWAP LOOP 
+        DROP
+    ;
 
 
 | Name              |   System                             |  Forth                  |  Benchmark  | Time (sec/round) | Scale |

@@ -60,19 +60,13 @@ else103  EQU $          ;           = endif
 endif103:                                          
     
 begin101: 
-        
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ex   DE, HL         ; 1:4       -
-    or    A             ; 1:4       -
-    sbc  HL, DE         ; 2:15      -
-    pop  DE             ; 1:10      -                                                                    
     
-    ld    A, H          ; 1:4       while 101
-    or    L             ; 1:4       while 101
-    ex   DE, HL         ; 1:4       while 101
-    pop  DE             ; 1:10      while 101
-    jp    z, break101   ; 3:10      while 101  
+    ld    A, E          ; 1:4       2dup <> while 101
+    sub   L             ; 1:4       2dup <> while 101
+    jr   nz, $+7        ; 2:7/12    2dup <> while 101
+    ld    A, D          ; 1:4       2dup <> while 101
+    sub   H             ; 1:4       2dup <> while 101
+    jp    z, break101   ; 3:10      2dup <> while 101  
         
     ld    A, H          ; 1:4       2dup < if
     xor   D             ; 1:4       2dup < if
@@ -177,28 +171,46 @@ xdo102:                 ;           xdo(100,0) 102
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
     exx                 ; 1:4       xloop(100,0) 102
-    inc (HL)            ; 1:7       xloop(100,0) 102 index_lo++
-    ld    A, (HL)       ; 1:7       xloop(100,0) 102 index_lo
-    sub  100            ; 2:7       xloop(100,0) 102 index_lo - stop_lo
-    exx                 ; 1:4       xloop(100,0) 102
-    jp    c, xdo102     ; 3:10      xloop(100,0) 102 again
-    exx                 ; 1:4       xloop(100,0) 102
+    ld    E,(HL)        ; 1:7       xloop(100,0) 102
     inc   L             ; 1:4       xloop(100,0) 102
+    ld    D,(HL)        ; 1:7       xloop(100,0) 102
+    inc  DE             ; 1:6       xloop(100,0) 102 index++
+    ld    A, low 100    ; 2:7       xloop(100,0) 102
+    xor   E             ; 1:4       xloop(100,0) 102
+    jr   nz, $+7        ; 2:7/12    xloop(100,0) 102
+    ld    A, high 100   ; 2:7       xloop(100,0) 102
+    xor   D             ; 1:4       xloop(100,0) 102
+    jr    z, xleave102  ; 2:7/12    xloop(100,0) 102 exit
+    ld  (HL), D         ; 1:7       xloop(100,0) 102
+    dec   L             ; 1:4       xloop(100,0) 102
+    ld  (HL), E         ; 1:6       xloop(100,0) 102
+    exx                 ; 1:4       xloop(100,0) 102
+    jp   xdo102         ; 3:10      xloop(100,0) 102
 xleave102:              ;           xloop(100,0) 102
     inc  HL             ; 1:6       xloop(100,0) 102
     exx                 ; 1:4       xloop(100,0) 102 R:( index -- )
+xexit102 EQU $
     
     exx                 ; 1:4       xloop(100,0) 101
-    inc (HL)            ; 1:7       xloop(100,0) 101 index_lo++
-    ld    A, (HL)       ; 1:7       xloop(100,0) 101 index_lo
-    sub  100            ; 2:7       xloop(100,0) 101 index_lo - stop_lo
-    exx                 ; 1:4       xloop(100,0) 101
-    jp    c, xdo101     ; 3:10      xloop(100,0) 101 again
-    exx                 ; 1:4       xloop(100,0) 101
+    ld    E,(HL)        ; 1:7       xloop(100,0) 101
     inc   L             ; 1:4       xloop(100,0) 101
+    ld    D,(HL)        ; 1:7       xloop(100,0) 101
+    inc  DE             ; 1:6       xloop(100,0) 101 index++
+    ld    A, low 100    ; 2:7       xloop(100,0) 101
+    xor   E             ; 1:4       xloop(100,0) 101
+    jr   nz, $+7        ; 2:7/12    xloop(100,0) 101
+    ld    A, high 100   ; 2:7       xloop(100,0) 101
+    xor   D             ; 1:4       xloop(100,0) 101
+    jr    z, xleave101  ; 2:7/12    xloop(100,0) 101 exit
+    ld  (HL), D         ; 1:7       xloop(100,0) 101
+    dec   L             ; 1:4       xloop(100,0) 101
+    ld  (HL), E         ; 1:6       xloop(100,0) 101
+    exx                 ; 1:4       xloop(100,0) 101
+    jp   xdo101         ; 3:10      xloop(100,0) 101
 xleave101:              ;           xloop(100,0) 101
     inc  HL             ; 1:6       xloop(100,0) 101
     exx                 ; 1:4       xloop(100,0) 101 R:( index -- )
+xexit101 EQU $
 
 gcd2_bench_end:
     exx                 ; 1:4       ;
