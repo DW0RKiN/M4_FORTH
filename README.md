@@ -428,6 +428,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 |              |    BREAK     |                  |           ( -- )           |                       |
 |    while     |    WHILE     |                  |      ( flag -- )           |                       |
 |  dup while   |              |     DUP_WHILE    |      ( flag -- flag )      |                       |
+|    =  while  |              |    EQ_WHILE      |     ( x2 x1 -- )           |                       |
+|    <> while  |              |    NE_WHILE      |     ( x2 x1 -- )           |                       |
+|    <  while  |              |    LT_WHILE      |     ( x2 x1 -- )           |                       |
+|    <= while  |              |    LE_WHILE      |     ( x2 x1 -- )           |                       |
+|    >  while  |              |    GT_WHILE      |     ( x2 x1 -- )           |                       |
+|    >= while  |              |    GE_WHILE      |     ( x2 x1 -- )           |                       |
+|   u=  while  |              |   UEQ_WHILE      |     ( x2 x1 -- )           |                       |
+|   u<> while  |              |   UNE_WHILE      |     ( x2 x1 -- )           |                       |
+|   u<  while  |              |   ULT_WHILE      |     ( x2 x1 -- )           |                       |
+|   u<= while  |              |   ULE_WHILE      |     ( x2 x1 -- )           |                       |
+|   u>  while  |              |   UGT_WHILE      |     ( x2 x1 -- )           |                       |
+|   u>= while  |              |   UGE_WHILE      |     ( x2 x1 -- )           |                       |
 |2dup  =  while|              |  _2DUP_EQ_WHILE  |           ( -- )           |                       |
 |2dup  <> while|              |  _2DUP_NE_WHILE  |           ( -- )           |                       |
 |2dup  <  while|              |  _2DUP_LT_WHILE  |           ( -- )           |                       |
