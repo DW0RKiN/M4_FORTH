@@ -196,9 +196,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.asm
 
-| Name              |   System                             |  Forth                  |  Benchmark   | Time (sec/round) | Scale |
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.c
+
+| Name              |   System                             |  Forth / C              |  Benchmark   | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.9s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.51s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Sieve Bench  | 5.94s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Sieve/Prime  | 10s              | 1x
 | Alexander Muller  | Raspberry Pi ARM 700Mhz              | Gforth 0.7.0            | Sieve        | 0m08s            | 100x
 | Andreas Boehm     | Commodore C64 6510                   | Audiogenic Forth-64     | Sieve Bench  | 18.1             | 

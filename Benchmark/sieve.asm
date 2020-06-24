@@ -104,44 +104,22 @@ do101:
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    add  HL, DE         ; 1:11      +
-    pop  DE             ; 1:10      + 
-    inc  HL             ; 1:6       3 +
-    inc  HL             ; 1:6       3 +
-    inc  HL             ; 1:6       3 + 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    exx                 ; 1:4       index 101 i    
-    ld    E,(HL)        ; 1:7       index 101 i
-    inc   L             ; 1:4       index 101 i
-    ld    D,(HL)        ; 1:7       index 101 i
-    push DE             ; 1:11      index 101 i
-    dec   L             ; 1:4       index 101 i
-    exx                 ; 1:4       index 101 i
-    ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP),HL         ; 1:19      index 101 i 
+    inc  HL             ; 1:6       1+ 
+    add  HL, HL         ; 1:11      dup + 
+    inc  HL             ; 1:6       1+ 
+    ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
+    push DE             ; 1:11      over
+    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
         
 begin101: 
         
-    push DE             ; 1:11      dup 8191
-    push HL             ; 1:11      dup 8191
-    ex   DE, HL         ; 1:4       dup 8191
-    ld   HL, 8191       ; 3:10      dup 8191 
-    ld    A, H          ; 1:4       < while 101
-    xor   D             ; 1:4       < while 101
-    ld    C, A          ; 1:4       < while 101
-    ld    A, E          ; 1:4       < while 101    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       < while 101    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       < while 101    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       < while 101    (DE<HL) --> (DE-HL<0) --> carry if true
-    rra                 ; 1:4       < while 101
-    xor   C             ; 1:4       < while 101
-    pop  HL             ; 1:10      < while 101
-    pop  DE             ; 1:10      < while 101
-    jp    p, break101   ; 3:10      < while 101 
+    ld    A, L          ; 1:4       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
+    sub   low 8191      ; 2:7       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
+    ld    A, H          ; 1:4       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
+    sbc   A, high 8191  ; 2:7       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
+    jp   nc, break101   ; 3:10      dup 8191 u< while 101
             
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)

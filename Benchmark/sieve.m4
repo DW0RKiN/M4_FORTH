@@ -10,9 +10,9 @@ COLON(do_prime)
 PUSH3_FILL(flags,_size_add1,1)
 PUSH(0) PUSH2(_size,0) DO 
     PUSH(flags) I ADD CFETCH
-    IF I DUP ADD PUSH_ADD(3) DUP I ADD
+    IF I DUP _1ADD DUP_ADD _1ADD SWAP OVER ADD
         BEGIN 
-        DUP_PUSH(_size_add1) LT_WHILE 
+        DUP_PUSH_ULT_WHILE(_size_add1)
             PUSH(0) OVER PUSH_ADD(flags) CSTORE OVER ADD 
         REPEAT
         _2DROP _1ADD
