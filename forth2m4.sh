@@ -405,8 +405,23 @@ do
     sed 's#^\([^;{]*\s\|^\)UGT\s\+WHILE\(\s\|$\)#\1UGT_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)UGE\s\+WHILE\(\s\|$\)#\1UGE_WHILE\2#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+EQ_WHILE\(\s\|$\)#\1DUP_PUSH_EQ_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+NE_WHILE\(\s\|$\)#\1DUP_PUSH_NE_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LT_WHILE\(\s\|$\)#\1DUP_PUSH_LT_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LE_WHILE\(\s\|$\)#\1DUP_PUSH_LE_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GT_WHILE\(\s\|$\)#\1DUP_PUSH_GT_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+GE_WHILE\(\s\|$\)#\1DUP_PUSH_GE_WHILE(\2)\3#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UEQ_WHILE\(\s\|$\)#\1DUP_PUSH_UEQ_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UNE_WHILE\(\s\|$\)#\1DUP_PUSH_UNE_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULT_WHILE\(\s\|$\)#\1DUP_PUSH_ULT_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULE_WHILE\(\s\|$\)#\1DUP_PUSH_ULE_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGT_WHILE\(\s\|$\)#\1DUP_PUSH_UGT_WHILE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGE_WHILE\(\s\|$\)#\1DUP_PUSH_UGE_WHILE(\2)\3#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ_WHILE\(\s\|$\)#\1_2DUP_EQ_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE_WHILE\(\s\|$\)#\1_2DUP_NE_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+SUB\s\+WHILE\(\s\|$\)#\1_2DUP_NE_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LT_WHILE\(\s\|$\)#\1_2DUP_LT_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+LE_WHILE\(\s\|$\)#\1_2DUP_LE_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+GT_WHILE\(\s\|$\)#\1_2DUP_GT_WHILE\2#gi' |
@@ -477,6 +492,8 @@ do
     sed 's#^\([^;{]*\s\|^\)0*256\s\+MUL\(\s\|$\)#\1_256MUL\2#gi' |
     sed 's#^\([^;{]*\s\|^\)0*256\s\+DIV\(\s\|$\)#\1_256DIV\2#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+ADD\(\s\|$\)#\1DUP_ADD\2#gi' |
+        
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+MUL\(\s\|$\)#\1PUSH_MUL(\2)\3#gi' > $TMPFILE2
 
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
