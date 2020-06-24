@@ -1391,14 +1391,14 @@ __{}{
 __{}    ld    A, H          ; 1:4       dup $1 <= while
 __{}    add   A, A          ; 1:4       dup $1 <= while{}dnl
 __{}__{}ifelse(eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    positive constant{}dnl
+__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= while    positive constant{}dnl
 __{}__{}},{
-__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 <= if    negative constant})
+__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 <= while   negative constant})
 __{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
 __{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
 __{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK})})dnl
+__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK})})dnl
 dnl    
 dnl
 dnl dup const > while
@@ -1418,9 +1418,9 @@ __{}{
 __{}    ld    A, H          ; 1:4       dup $1 > while
 __{}    add   A, A          ; 1:4       dup $1 > while{}dnl
 __{}__{}ifelse(eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 > if    positive constant{}dnl
+__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 > while    positive constant{}dnl
 __{}__{}},{
-__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    negative constant})
+__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > while    negative constant})
 __{}    ld    A, low format({%-7s},$1); 2:7       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
 __{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
 __{}    ld    A, high format({%-6s},$1); 2:7       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
