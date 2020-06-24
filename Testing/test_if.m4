@@ -90,14 +90,14 @@ COLON(ptestm3)
     DUP_PUSH_LE_IF(-3) PRINT({"<=,"}) THEN
     DUP_PUSH_GT_IF(-3) PRINT( {">,"}) THEN
     DUP_PUSH_GE_IF(-3) PRINT({">=,"}) THEN
-    DUP DOT PUSH(3) DOT CR 
+    DUP DOT PUSH(-3) DOT CR 
     DUP_PUSH_UEQ_IF(-3) PRINT( {"=,"}) THEN
     DUP_PUSH_UNE_IF(-3) PRINT({"<>,"}) THEN
     DUP_PUSH_ULT_IF(-3) PRINT( {"<,"}) THEN
     DUP_PUSH_ULE_IF(-3) PRINT({"<=,"}) THEN
     DUP_PUSH_UGT_IF(-3) PRINT( {">,"}) THEN
     DUP_PUSH_UGE_IF(-3) PRINT({">=,"}) THEN
-    UDOT PUSH(3) UDOT CR
+    UDOT PUSH(-3) UDOT CR
 SEMICOLON
 
 

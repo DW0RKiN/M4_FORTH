@@ -1092,9 +1092,9 @@ endif154:
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
     call PRINT_S16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -1180,9 +1180,9 @@ else160  EQU $          ;           = endif
 endif160:
     
     call PRINT_U16      ; 3:17      . 
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
     call PRINT_U16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
