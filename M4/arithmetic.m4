@@ -176,6 +176,13 @@ define(_2MUL,{
     add  HL, HL         ; 1:11      2*})dnl
 dnl
 dnl
+dnl "dup +"
+dnl ( x1 -- x2 )
+dnl x2 = x1 + x1
+define(DUP_ADD,{
+    add  HL, HL         ; 1:11      dup +})dnl
+dnl
+dnl
 dnl "2/"
 dnl ( x1 -- x )
 dnl x = x1 / 2

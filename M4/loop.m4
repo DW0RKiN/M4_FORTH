@@ -1247,3 +1247,185 @@ define({GT_WHILE},{
 dnl
 dnl
 dnl
+dnl ------ dup const ucond while ( b a -- b a ) ---------
+dnl
+define({DUP_PUSH_UEQ_WHILE},{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u= while BEGIN_STACK
+    xor   L             ; 1:4       dup $1 u= while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u= while BEGIN_STACK
+    xor   H             ; 1:4       dup $1 u= while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK})dnl
+dnl
+dnl
+define({DUP_PUSH_UNE_WHILE},{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> while BEGIN_STACK
+    xor   L             ; 1:4       dup $1 u<> while BEGIN_STACK
+    jr   nz, $+8        ; 2:7/12    dup $1 u<> while BEGIN_STACK
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> while BEGIN_STACK
+    xor   H             ; 1:4       dup $1 u<> while BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 u<> while BEGIN_STACK})dnl
+dnl
+dnl
+define({DUP_PUSH_ULT_WHILE},{
+    ld    A, L          ; 1:4       dup $1 u< while BEGIN_STACK    (HL<$1) --> (HL-$1<0) --> carry if true
+    sub   low format({%-10s},$1); 2:7       dup $1 u< while BEGIN_STACK    (HL<$1) --> (HL-$1<0) --> carry if true
+    ld    A, H          ; 1:4       dup $1 u< while BEGIN_STACK    (HL<$1) --> (HL-$1<0) --> carry if true
+    sbc   A, high format({%-6s},$1); 2:7       dup $1 u< while BEGIN_STACK    (HL<$1) --> (HL-$1<0) --> carry if true
+    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u< while BEGIN_STACK})dnl
+dnl    
+dnl
+define({DUP_PUSH_UGE_WHILE},{
+    ld    A, L          ; 1:4       dup $1 u>= while BEGIN_STACK    (HL>=$1) --> (HL-$1>=0) --> not carry if true
+    sub   low format({%-10s},$1); 2:7       dup $1 u>= while BEGIN_STACK    (HL>=$1) --> (HL-$1>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup $1 u>= while BEGIN_STACK    (HL>=$1) --> (HL-$1>=0) --> not carry if true
+    sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= while BEGIN_STACK    (HL>=$1) --> (HL-$1>=0) --> not carry if true
+    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u>= while BEGIN_STACK})dnl
+dnl    
+dnl
+define({DUP_PUSH_ULE_WHILE},{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u<= while BEGIN_STACK    (HL<=$1) --> (0<=$1-HL) --> not carry if true
+    sub   L             ; 1:4       dup $1 u<= while BEGIN_STACK    (HL<=$1) --> (0<=$1-HL) --> not carry if true
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u<= while BEGIN_STACK    (HL<=$1) --> (0<=$1-HL) --> not carry if true
+    sbc   A, H          ; 1:4       dup $1 u<= while BEGIN_STACK    (HL<=$1) --> (0<=$1-HL) --> not carry if true
+    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u<= while BEGIN_STACK})dnl
+dnl    
+dnl
+define({DUP_PUSH_UGT_WHILE},{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u> while BEGIN_STACK    (HL>$1) --> (0>$1-HL) --> carry if true
+    sub   L             ; 1:4       dup $1 u> while BEGIN_STACK    (HL>$1) --> (0>$1-HL) --> carry if true
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u> while BEGIN_STACK    (HL>$1) --> (0>$1-HL) --> carry if true
+    sbc   A, H          ; 1:4       dup $1 u> while BEGIN_STACK    (HL>$1) --> (0>$1-HL) --> carry if true
+    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u> while BEGIN_STACK})dnl
+dnl
+dnl    
+dnl ------ dup const scond while ( b a -- b a ) ---------
+dnl
+dnl dup const = while
+define({DUP_PUSH_EQ_WHILE},{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 = while BEGIN_STACK
+    xor   L             ; 1:4       dup $1 = while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK
+    ld    A, high format({%-6s},$1); 2:7       dup $1 = while BEGIN_STACK
+    xor   H             ; 1:4       dup $1 = while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK})dnl
+dnl
+dnl
+define({DUP_PUSH_NE_WHILE},{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 <> while BEGIN_STACK
+    xor   L             ; 1:4       dup $1 <> while BEGIN_STACK
+    jr   nz, $+8        ; 2:7/12    dup $1 <> while BEGIN_STACK
+    ld    A, high format({%-6s},$1); 2:7       dup $1 <> while BEGIN_STACK
+    xor   H             ; 1:4       dup $1 <> while BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 <> while BEGIN_STACK})dnl
+dnl
+dnl
+dnl dup const < while
+define({DUP_PUSH_LT_WHILE},{ifelse(eval($1),{},{
+__{}    ; warning The condition ($1) cannot be evaluated
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK
+__{}    xor   H             ; 1:4       dup $1 < while BEGIN_STACK
+__{}    ld    C, A          ; 1:4       dup $1 < while BEGIN_STACK
+__{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    sub   low format({%-10s},$1); 2:7       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    rra                 ; 1:4       dup $1 < while BEGIN_STACK
+__{}    xor   C             ; 1:4       dup $1 < while BEGIN_STACK
+__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK},
+__{}{
+__{}    ld    A, H          ; 1:4       dup $1 < while
+__{}    add   A, A          ; 1:4       dup $1 < while{}dnl
+__{}__{}ifelse(eval(($1)>=0x8000 || ($1)<0),{0},{
+__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 < while    positive constant{}dnl
+__{}__{}},{
+__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 < while    negative constant})
+__{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    sub   low format({%-10s},$1); 2:7       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK    (DE<HL) --> (DE-HL<0) --> carry if true
+__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK})})dnl
+dnl
+dnl
+dnl dup const >= while
+define({DUP_PUSH_GE_WHILE},{ifelse(eval($1),{},{
+__{}    ; warning The condition ($1) cannot be evaluated
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK
+__{}    xor   H             ; 1:4       dup $1 >= while BEGIN_STACK
+__{}    ld    C, A          ; 1:4       dup $1 >= while BEGIN_STACK
+__{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    rra                 ; 1:4       dup $1 >= while BEGIN_STACK
+__{}    xor   C             ; 1:4       dup $1 >= while BEGIN_STACK
+__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK},
+__{}{
+__{}    ld    A, H          ; 1:4       dup $1 >= while
+__{}    add   A, A          ; 1:4       dup $1 >= while{}dnl
+__{}__{}ifelse(eval(($1)>=0x8000 || ($1)<0),{0},{
+__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 >= while    positive constant{}dnl
+__{}__{}},{
+__{}__{}    jr   nc, $+11       ; 2:7/11    dup $1 >= while    negative constant})
+__{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK})})dnl
+dnl
+dnl
+dnl dup const <= while
+define({DUP_PUSH_LE_WHILE},{ifelse(eval($1),{},{
+__{}    ; warning The condition ($1) cannot be evaluated
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <= while BEGIN_STACK
+__{}    xor   H             ; 1:4       dup $1 <= while BEGIN_STACK
+__{}    ld    C, A          ; 1:4       dup $1 <= while BEGIN_STACK
+__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    rra                 ; 1:4       dup $1 <= while BEGIN_STACK
+__{}    xor   C             ; 1:4       dup $1 <= while BEGIN_STACK
+__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK},
+__{}{
+__{}    ld    A, H          ; 1:4       dup $1 <= while
+__{}    add   A, A          ; 1:4       dup $1 <= while{}dnl
+__{}__{}ifelse(eval(($1)>=0x8000 || ($1)<0),{0},{
+__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    positive constant{}dnl
+__{}__{}},{
+__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 <= if    negative constant})
+__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK})})dnl
+dnl    
+dnl
+dnl dup const > while
+define({DUP_PUSH_GT_WHILE},{ifelse(eval($1),{},{
+__{}    ; warning The condition ($1) cannot be evaluated
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 > while BEGIN_STACK
+__{}    xor   H             ; 1:4       dup $1 > while BEGIN_STACK
+__{}    ld    C, A          ; 1:4       dup $1 > while BEGIN_STACK
+__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    rra                 ; 1:4       dup $1 > while BEGIN_STACK
+__{}    xor   C             ; 1:4       dup $1 > while BEGIN_STACK
+__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK},
+__{}{
+__{}    ld    A, H          ; 1:4       dup $1 > while
+__{}    add   A, A          ; 1:4       dup $1 > while{}dnl
+__{}__{}ifelse(eval(($1)>=0x8000 || ($1)<0),{0},{
+__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 > if    positive constant{}dnl
+__{}__{}},{
+__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    negative constant})
+__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    (DE>HL) --> (0>HL-DE) --> carry if true
+__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK})})dnl
+dnl
+dnl
+dnl
