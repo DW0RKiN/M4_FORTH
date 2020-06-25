@@ -371,16 +371,20 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
-| original   |     M4 FORTH     |    optimization   |   data stack               |  return address stack |
-| :--------: | :--------------: | :---------------: | :------------------------- | :-------------------- |
-|    name    |    CALL(name)    |                   |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
-|     :      |COLON(name,coment)|                   | ( ret x2 x1 -- x2 x1 )     | ( -- ret )            |
-|     ;      |     SEMICOLON    |                   |           ( -- )           | ( ret -- )            |
-|    exit    |       EXIT       |                   |           ( -- )           | ( ret -- )            |
-|    name    |                  |    SCALL(name)    |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
-|     :      |                  |SCOLON(name,coment)| ( ret x2 x1 -- ret x2 x1 ) | ( -- )                |
-|     ;      |                  |     SSEMICOLON    | ( ret x2 x1 -- x2 x1 )     | ( -- )                |
-|    exit    |                  |       SEXIT       | ( ret x2 x1 -- x2 x1 )     | ( -- )                |
+| original   |     M4 FORTH      |    optimization   |   data stack               |  return address stack |
+| :--------: | :---------------: | :---------------: | :------------------------- | :-------------------- |
+|    name    |    RCALL(name)    |                   |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
+|    name    |                   |    SCALL(name)    |     ( x2 x1 -- ret x2 x1 ) | ( -- )                |
+|    name    |                   |     CALL(name)    |           ( -- ret )       | ( -- ) non-recursive  |
+|     :      |RCOLON(name,coment)|                   | ( ret x2 x1 -- x2 x1 )     | ( -- ret )            |
+|     :      |                   |SCOLON(name,coment)| ( ret x2 x1 -- ret x2 x1 ) | ( -- )                |
+|     :      |                   | COLON(name,coment)|       ( ret -- )           | ( -- ) non-recursive  |
+|     ;      |     RSEMICOLON    |                   |           ( -- )           | ( ret -- )            |
+|     ;      |                   |     SSEMICOLON    | ( ret x2 x1 -- x2 x1 )     | ( -- )                |
+|     ;      |                   |     SEMICOLON     |           ( -- )           | ( -- ) non-recursive  |
+|    exit    |       REXIT       |                   |           ( -- )           | ( ret -- )            |
+|    exit    |                   |       SEXIT       | ( ret x2 x1 -- x2 x1 )     | ( -- )                |
+|    exit    |                   |        EXIT       |           ( -- )           | ( -- ) non-recursive  |
 
 
 ### LOOP
