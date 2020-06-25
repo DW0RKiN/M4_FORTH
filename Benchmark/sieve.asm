@@ -108,10 +108,7 @@ do101:
     add  HL, HL         ; 1:11      dup + 
     inc  HL             ; 1:6       1+ 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    add  HL, DE         ; 1:11      +
-    pop  DE             ; 1:10      +
+    add  HL, DE         ; 1:11      over +
         
 begin101: 
         
@@ -121,21 +118,16 @@ begin101:
     sbc   A, high 8191  ; 2:7       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
     jp   nc, break101   ; 3:10      dup 8191 u< while 101
             
-    push DE             ; 1:11      push(0)
-    ex   DE, HL         ; 1:4       push(0)
-    ld   HL, 0          ; 3:10      push(0) 
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    push DE             ; 1:11      0 over
+    push HL             ; 1:11      0 over
+    ld   DE, 0          ; 3:10      0 over ( a -- a 0 a ) 
     ; warning The condition (flags) cannot be evaluated
     ld   BC, flags      ; 3:10      flags +
     add  HL, BC         ; 1:11      flags + 
     ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore 
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    add  HL, DE         ; 1:11      +
-    pop  DE             ; 1:10      + 
+    add  HL, DE         ; 1:11      over + 
         
     jp   begin101       ; 3:10      repeat 101
 break101:               ;           repeat 101

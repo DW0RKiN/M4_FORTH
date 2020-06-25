@@ -99,10 +99,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 
 ### Fib 2
 
+Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 65536!
+
+    : fib2 ( n1 -- n2 )
+        0 1 ROT 0 ?DO 
+            OVER_ADD SWAP LOOP 
+        DROP
+    ;
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.asm
 
-Use data stack for function:
+Use data stack for function, do loop --> for next:
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2s.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2s.asm
@@ -114,20 +122,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2a.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 
-Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 65536!
-
-    : fib2 ( n1 -- n2 )
-        0 1 ROT 0 ?DO 
-            OVER ADD SWAP LOOP 
-        DROP
-    ;
-
-
 | Name              |   System                             |  Forth / C              |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m10.44s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m10s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m2.98s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m9.07s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m6.92s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use assembler  | Fib2a       | 0m2.98s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a = a+c| 0m49.19s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a+= c  | 0m43.97s
 | Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz     | VolksForth MS-DOS (ITC) | Fibonacci2  | 8
@@ -221,7 +220,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.c
 
 | Name              |   System                             |  Forth / C              |  Benchmark   | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.51s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.36s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Sieve Bench  | 5.94s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Sieve/Prime  | 10s              | 1x
 | Alexander Muller  | Raspberry Pi ARM 700Mhz              | Gforth 0.7.0            | Sieve        | 0m08s            | 100x

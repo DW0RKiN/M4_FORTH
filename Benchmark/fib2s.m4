@@ -4,8 +4,11 @@ include(`../M4/FIRST.M4')dnl
     SCALL(fib2s_bench)
     STOP   
     SCOLON(fib2s,( n1 -- n2 ))
-        PUSH2(0, 1) ROT PUSH(0) QUESTIONDO 
-            OVER ADD SWAP LOOP 
+        DUP_0EQ_IF SEXIT THEN
+        PUSH2(0, 1) ROT _1SUB 
+        FOR 
+            OVER_ADD SWAP
+        NEXT
         DROP
     SSEMICOLON
     SCOLON(fib2s_bench,( -- ))

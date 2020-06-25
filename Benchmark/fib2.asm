@@ -33,7 +33,7 @@ fib2:                   ;           ( n1 -- n2 )
     push HL             ; 1:11      push2(0,1)
     ld   HL, 1          ; 3:10      push2(0,1) 
     ex   DE, HL         ; 1:4       rot
-    ex  (SP), HL        ; 1:19      rot ( c b a -- b a c ) 
+    ex  (SP),HL         ; 1:19      rot ( c b a -- b a c ) 
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
@@ -62,10 +62,7 @@ fib2:                   ;           ( n1 -- n2 )
     pop  DE             ; 1:10      ?do 101 ( stop index -- ) R: ( -- stop index )
 do101: 
             
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    add  HL, DE         ; 1:4       +
-    pop  DE             ; 1:10      + 
+    add  HL, DE         ; 1:11      over + 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     exx                 ; 1:4       loop 101
     ld    E,(HL)        ; 1:7       loop 101
