@@ -16,15 +16,15 @@ Stop:
     ret                 ; 1:10
 ;   =====  e n d  =====   
     
-;   ---  b e g i n  ---
+;   ---  the beginning of a recursive function  ---
 fib1:                   ;           ( a -- b )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    exx                 ; 1:4       : rcolon
+    pop  DE             ; 1:10      : rcolon ret
+    dec  HL             ; 1:6       : rcolon
+    ld  (HL),D          ; 1:7       : rcolon
+    dec   L             ; 1:4       : rcolon
+    ld  (HL),E          ; 1:7       : rcolon (HL') = ret
+    exx                 ; 1:4       : rcolon R:( -- ret )
         
     ld    A, H          ; 1:4       dup 2 < if
     add   A, A          ; 1:4       dup 2 < if
@@ -35,7 +35,7 @@ fib1:                   ;           ( a -- b )
     sbc   A, high 2     ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
     jp   nc, else101    ; 3:10      dup 2 < if 
     ld   HL, 1          ; 3:10      drop 1 
-    jp   fib1_end       ; 3:10      exit 
+    jp   fib1_end       ; 3:10      rexit 
 else101  EQU $          ;           = endif
 endif101:
         
@@ -43,30 +43,30 @@ endif101:
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a )  
     dec  HL             ; 1:6       1- 
-    call fib1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call fib1           ; 3:17      rcall
+    ex   DE, HL         ; 1:4       rcall    
+    exx                 ; 1:4       rcall R:( ret -- ) 
         
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     dec  HL             ; 1:6       2-
     dec  HL             ; 1:6       2- 
-    call fib1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
-    add  HL, DE         ; 1:4       +
+    call fib1           ; 3:17      rcall
+    ex   DE, HL         ; 1:4       rcall    
+    exx                 ; 1:4       rcall R:( ret -- ) 
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
 fib1_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    exx                 ; 1:4       ; rsemicilon
+    ld    E,(HL)        ; 1:7       ; rsemicilon
+    inc   L             ; 1:4       ; rsemicilon
+    ld    D,(HL)        ; 1:7       ; rsemicilon DE = ret
+    inc  HL             ; 1:6       ; rsemicilon
+    ex   DE, HL         ; 1:4       ; rsemicilon
+    jp  (HL)            ; 1:4       ; rsemicilon
+;   ---------  end of recursive function  ---------
     
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 fib1_bench:             ;           ( -- )
         
     push DE             ; 1:11      push(999)
@@ -82,9 +82,9 @@ sfor102:                ;           sfor 102 ( index -- index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fib1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call fib1           ; 3:17      rcall
+    ex   DE, HL         ; 1:4       rcall    
+    exx                 ; 1:4       rcall R:( ret -- ) 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
     ld   A, H           ; 1:4       snext 102
@@ -105,7 +105,7 @@ snext101:               ;           snext 101
     
 fib1_bench_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 VARIABLE_SECTION:

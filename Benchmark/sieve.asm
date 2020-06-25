@@ -7,9 +7,7 @@ ORG 0x8000
     ld   HL, 60000
     exx
 
-    call do_prime       ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call do_prime       ; 3:17      call ( -- ret ) R:( -- )
 
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -25,15 +23,10 @@ _size_add1           EQU 8191
 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 do_prime:               ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (do_prime_end+1),BC; 4:20      : ( ret -- ) R:( -- )
 
     push DE             ; 1:11      flags 8191 1 fill
     push HL             ; 1:11      flags 8191 1 fill
@@ -174,14 +167,8 @@ exit101 EQU $
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 do_prime_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 

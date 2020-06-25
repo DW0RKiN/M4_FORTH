@@ -7,9 +7,7 @@
     ld   HL, 60000
     exx
     
-    call gcd2_bench     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call gcd2_bench     ; 3:17      call ( -- ret ) R:( -- )
     
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -19,15 +17,10 @@ Stop:
 ;   =====  e n d  =====   
         
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 gcd2:                   ;           ( a b -- gcd )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (gcd2_end+1),BC ; 4:20      : ( ret -- ) R:( -- )
       
     ld    A, H          ; 1:4       2dup D0= if
     or    L             ; 1:4       2dup D0= if
@@ -98,25 +91,14 @@ break101:               ;           repeat 101
     pop  DE             ; 1:10      nip ( b a -- a )
 
 gcd2_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----          
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------          
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 gcd2_bench:             ;           ( -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (gcd2_bench_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
 
     exx                 ; 1:4       xdo(100,0) 101
@@ -157,9 +139,7 @@ xdo102:                 ;           xdo(100,0) 102
     exx                 ; 1:4       index xi 102 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 102
     ex  (SP),HL         ; 1:19      index xi 102 ( -- x ) 
-    call gcd2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call gcd2           ; 3:17      call ( -- ret ) R:( -- ) 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
     exx                 ; 1:4       xloop(100,0) 102
@@ -205,14 +185,8 @@ xleave101:              ;           xloop(100,0) 101
 xexit101 EQU $
 
 gcd2_bench_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 VARIABLE_SECTION:

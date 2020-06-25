@@ -4,7 +4,7 @@ include(`../M4/FIRST.M4')dnl
     CALL(gcd1_bench)
     STOP   
     COLON(gcd1,( a b -- gcd ))                                                                
-    OVER_IF                                                                         
+        OVER_IF                                                                         
             BEGIN                                                                         
             DUP_WHILE                                                                   
                 _2DUP_UGT_IF SWAP THEN OVER_SUB                                               

@@ -5,7 +5,7 @@ PRINT({"enter 1million or 32million", 0xD})
 CALL(_1million)
 STOP
 
-;( Forth nesting (NEXT) Benchmark     cas20101204 )
+;# ( Forth nesting (NEXT) Benchmark     cas20101204 )
 COLON(bottom) SEMICOLON    
 COLON(_1st)  CALL(bottom) CALL(bottom) SEMICOLON  COLON(_2nd)  CALL(_1st)  CALL(_1st)  SEMICOLON   COLON(_3rd)  CALL(_2nd)  CALL(_2nd)  SEMICOLON
 COLON(_4th)  CALL(_3rd)   CALL(_3rd)   SEMICOLON  COLON(_5th)  CALL(_4th)  CALL(_4th)  SEMICOLON   COLON(_6th)  CALL(_5th)  CALL(_5th)  SEMICOLON
