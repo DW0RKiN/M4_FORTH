@@ -80,8 +80,7 @@ else104:
             
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     or    A             ; 1:4       over -
-    sbc  HL, DE         ; 2:15      over - 
-    ex   DE, HL         ; 1:4       swap ( b a -- a b )                                              
+    sbc  HL, DE         ; 2:15      over -  ; swap                                              
         
 endif104:                                                               
     

@@ -13,7 +13,7 @@ COLON(gcd2,( a b -- gcd ))
         _2DUP_LT_IF 
             OVER_SUB                                                          
         ELSE 
-            SWAP OVER_SUB SWAP                                              
+            SWAP OVER_SUB  ; swap                                              
         THEN                                                               
     REPEAT 
     NIP
