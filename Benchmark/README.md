@@ -69,8 +69,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.asm
 
-https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1x.m4
-https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1x.asm
+Use data stack for function:
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1s.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1s.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 
@@ -78,7 +80,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 | Name              |   System                             |  Forth / C              |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib1        | 32m40.27s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib1x       | 18m49.03s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib1s       | 18m49.03s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib1        | 41m50.97s
 | Johan Kotlinski   | DEC 3000-600 Alpha 21064 175Mhz      | pForth                  | Fibonacci 1 | 0.0038
 | Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Fibonacci 1 | 0.0026
@@ -100,6 +102,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.asm
 
+Use data stack for function:
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2s.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2s.asm
+
+To get an idea of how far the resulting code is from one of the best. Handwritten M4 word in assembler replacing C function "fib2":
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2a.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2a.asm
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 
 Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 65536!
@@ -114,6 +126,8 @@ Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 6
 | Name              |   System                             |  Forth / C              |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m10.44s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m10s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m2.98s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a = a+c| 0m49.19s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a+= c  | 0m43.97s
 | Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz     | VolksForth MS-DOS (ITC) | Fibonacci2  | 8
@@ -167,7 +181,7 @@ Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 6
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.asm
 
-SCALL
+Use data stack for function:
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting2.asm
@@ -175,7 +189,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting2.asm
 | Name              |   System                             |  Forth                  |  Benchmark   | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Nesting 1mil | 1m2.67s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use SCALL      | Nesting 1mil | 0m16.47s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Nesting 1mil | 0m16.47s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Nest 1M      | 17s              | 1x
 | Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02      | TaliForth 2 (STC)       | Nest 1M      | 25s              | 1x
 | Thomas Woinke     | Steckschwein 8MHz 65c02              | TaliForth 2 (STC)       | Next 1M      | 3.7s             | 1x
