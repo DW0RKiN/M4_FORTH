@@ -72,11 +72,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1x.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1x.asm
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 
-| Name              |   System                             |  Forth                  |  Benchmark  | Time (sec/round) | Scale |
+
+| Name              |   System                             |  Forth / C              |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib1        | 32m40.27s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib1x       | 18m49.03s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib1        | 41m50.97s
 | Johan Kotlinski   | DEC 3000-600 Alpha 21064 175Mhz      | pForth                  | Fibonacci 1 | 0.0038
 | Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Fibonacci 1 | 0.0026
 | Michael Kalus     | Rockwell R1200-14, 2Mhz 65F12        | RSC-Forth               | Fibonacci 1 | 16.09
