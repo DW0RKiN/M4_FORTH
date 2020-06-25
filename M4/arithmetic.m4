@@ -31,6 +31,19 @@ __{}    ld   BC, format({%-11s},$1); 3:10      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +})})})dnl
 dnl
 dnl
+dnl "dup +"
+dnl ( x1 -- x2 )
+dnl x2 = x1 + x1
+define(DUP_ADD,{
+    add  HL, HL         ; 1:11      dup +})dnl
+dnl
+dnl
+dnl over +
+dnl ( x2 x1 -- x2 x1+x2 )
+define(OVER_ADD,{
+    add  HL, DE         ; 1:11      over +})dnl
+dnl
+dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 - x1
 define({SUB},{
@@ -38,6 +51,13 @@ define({SUB},{
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -})dnl
+dnl
+dnl
+dnl over -
+dnl ( x2 x1 -- x2 x1-x2 )
+define(OVER_SUB,{
+    or    A             ; 1:4       over -
+    sbc  HL, DE         ; 2:15      over -})dnl
 dnl
 dnl
 dnl ( x -- x-n )
@@ -174,13 +194,6 @@ dnl ( x1 -- x )
 dnl x = x1 * 2
 define(_2MUL,{
     add  HL, HL         ; 1:11      2*})dnl
-dnl
-dnl
-dnl "dup +"
-dnl ( x1 -- x2 )
-dnl x2 = x1 + x1
-define(DUP_ADD,{
-    add  HL, HL         ; 1:11      dup +})dnl
 dnl
 dnl
 dnl "2/"

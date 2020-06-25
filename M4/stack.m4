@@ -100,6 +100,14 @@ define({OVER},{
     ex   DE, HL         ; 1:4       over ( b a -- b a b )})dnl
 dnl
 dnl
+dnl 3 over
+dnl ( a -- a 3 a )
+define({PUSH_OVER},{
+    push DE             ; 1:11      $1 over
+    push HL             ; 1:11      $1 over
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
+dnl
+dnl
 dnl ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
 dnl Copy cell pair a1 a2 to the top of the stack.
 define({_2OVER},{
@@ -119,7 +127,7 @@ dnl ( c b a -- b a c )
 dnl vyjme treti polozku a ulozi ji na vrchol
 define({ROT},{
     ex   DE, HL         ; 1:4       rot
-    ex  (SP), HL        ; 1:19      rot ( c b a -- b a c )})dnl
+    ex  (SP),HL         ; 1:19      rot ( c b a -- b a c )})dnl
 dnl
 dnl
 dnl ( f e d c b a -- d c b a f e )
