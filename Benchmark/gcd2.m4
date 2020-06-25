@@ -11,9 +11,9 @@ COLON(gcd2,( a b -- gcd ))
     BEGIN 
     _2DUP_NE_WHILE  
         _2DUP_LT_IF 
-            OVER SUB                                                          
+            OVER_SUB                                                          
         ELSE 
-            SWAP OVER SUB SWAP                                              
+            SWAP OVER_SUB SWAP                                              
         THEN                                                               
     REPEAT 
     NIP

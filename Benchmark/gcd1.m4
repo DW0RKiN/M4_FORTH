@@ -7,7 +7,7 @@ include(`../M4/FIRST.M4')dnl
     OVER_IF                                                                         
             BEGIN                                                                         
             DUP_WHILE                                                                   
-                _2DUP_UGT_IF SWAP THEN OVER SUB                                               
+                _2DUP_UGT_IF SWAP THEN OVER_SUB                                               
             REPEAT DROP 
         ELSE                                                               
             DUP_IF NIP ELSE _2DROP_PUSH(1) THEN                                                   

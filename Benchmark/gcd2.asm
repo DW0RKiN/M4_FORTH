@@ -79,23 +79,15 @@ begin101:
     xor   C             ; 1:4       2dup < if
     jp    p, else104    ; 3:10      2dup < if 
             
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ex   DE, HL         ; 1:4       -
-    or    A             ; 1:4       -
-    sbc  HL, DE         ; 2:15      -
-    pop  DE             ; 1:10      -                                                          
+    or    A             ; 1:4       over -
+    sbc  HL, DE         ; 2:15      over -                                                          
         
     jp   endif104       ; 3:10      else
 else104: 
             
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ex   DE, HL         ; 1:4       -
-    or    A             ; 1:4       -
-    sbc  HL, DE         ; 2:15      -
-    pop  DE             ; 1:10      - 
+    or    A             ; 1:4       over -
+    sbc  HL, DE         ; 2:15      over - 
     ex   DE, HL         ; 1:4       swap ( b a -- a b )                                              
         
 endif104:                                                               
