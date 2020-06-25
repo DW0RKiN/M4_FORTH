@@ -100,6 +100,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.asm
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
+
 Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 65536!
 
     : fib2 ( n1 -- n2 )
@@ -109,9 +111,11 @@ Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 6
     ;
 
 
-| Name              |   System                             |  Forth                  |  Benchmark  | Time (sec/round) | Scale |
+| Name              |   System                             |  Forth / C              |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m10.44s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a = a+c| 0m49.19s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a+= c  | 0m43.97s
 | Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz     | VolksForth MS-DOS (ITC) | Fibonacci2  | 8
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Fibonacci 2 | 1m57s   | 1x
 | Carsten Fulde     | Amiga 500 mit ACA1233n-Turbokarte (68030 @ 40 MHz) | JForth 3.1 Delta Research (Phil Burk) | Fibonacci 2 | 0.35s | 1x
