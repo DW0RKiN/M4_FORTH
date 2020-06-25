@@ -1,4 +1,3 @@
-dnldnl
     ORG 0x8000
     
 ;   ===  b e g i n  ===
@@ -45,7 +44,7 @@ last_key             EQU 0x5C08
 
 ; kurzor doleva, pozadi doprava
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _left:                  ;           ( -- )
     
     push DE             ; 1:11      push2(0x5B00,0x5800)
@@ -63,8 +62,9 @@ sdo101:                 ;           sdo 101 ( stop index -- stop index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
+    ; warning The condition (buff-0x5800+1) cannot be evaluated
     ld   BC, buff-0x5800+1; 3:10      buff-0x5800+1 +
-    add  HL, BC         ; 1:4       buff-0x5800+1 + 
+    add  HL, BC         ; 1:11      buff-0x5800+1 + 
     ld   BC, 32-1       ; 3:10      32-1 cmove BC = u
     ex   DE, HL         ; 1:4       32-1 cmove HL = from = addr1, DE = to
     ldir                ; 2:u*21/16 32-1 cmove
@@ -76,13 +76,14 @@ sdo101:                 ;           sdo 101 ( stop index -- stop index )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     ld   BC, 32-1       ; 3:10      32-1 +
-    add  HL, BC         ; 1:4       32-1 + 
+    add  HL, BC         ; 1:11      32-1 + 
     ld    L, (HL)       ; 1:7       C@ cfetch 
     ld    H, 0x00       ; 2:7       C@ cfetch 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    ; warning The condition (buff-0x5800) cannot be evaluated
     ld   BC, buff-0x5800; 3:10      buff-0x5800 +
-    add  HL, BC         ; 1:4       buff-0x5800 + 
+    add  HL, BC         ; 1:11      buff-0x5800 + 
     ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
@@ -102,10 +103,10 @@ sleave101:              ;           push_addsloop(32) 101
 
 _left_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _right:                 ;           ( -- )
     
     push DE             ; 1:11      push2(0x5B00,0x5800)
@@ -122,8 +123,9 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     inc  HL             ; 1:6       1+ 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    ; warning The condition (buff-0x5800) cannot be evaluated
     ld   BC, buff-0x5800; 3:10      buff-0x5800 +
-    add  HL, BC         ; 1:4       buff-0x5800 + 
+    add  HL, BC         ; 1:11      buff-0x5800 + 
     ld   BC, 32-1       ; 3:10      32-1 cmove BC = u
     ex   DE, HL         ; 1:4       32-1 cmove HL = from = addr1, DE = to
     ldir                ; 2:u*21/16 32-1 cmove
@@ -138,8 +140,9 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     ld    H, 0x00       ; 2:7       C@ cfetch 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    ; warning The condition (buff-0x5800+32-1) cannot be evaluated
     ld   BC, buff-0x5800+32-1; 3:10      buff-0x5800+32-1 +
-    add  HL, BC         ; 1:4       buff-0x5800+32-1 + 
+    add  HL, BC         ; 1:11      buff-0x5800+32-1 + 
     ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
@@ -159,10 +162,10 @@ sleave102:              ;           push_addsloop(32) 102
 
 _right_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _down:                  ;           ( -- )
     
     push DE             ; 1:11      push2(0x5800+32,buff       )
@@ -187,10 +190,10 @@ _down:                  ;           ( -- )
 
 _down_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _up:                    ;           ( -- )
     
     push DE             ; 1:11      push2(0x5800 ,buff+32)
@@ -215,10 +218,10 @@ _up:                    ;           ( -- )
 
 _up_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _copy:                  ;           ( -- )
     
     push DE             ; 1:11      push2(buff,0x5800)
@@ -233,11 +236,11 @@ _copy:                  ;           ( -- )
 
 _copy_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _readkey:               ;           ( -- )
     
     push DE             ; 1:11      0x5C08 @ push(0x5C08) cfetch 
@@ -429,10 +432,10 @@ endif101:
 
 _readkey_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _random_all:            ;           ( -- )
     
     push DE             ; 1:11      push2(buff+32*24,buff)
@@ -467,10 +470,10 @@ sleave103:              ;           sloop 103
 
 _random_all_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _invert_all:            ;           ( -- )
     
     push DE             ; 1:11      push2(buff+32*24,buff)
@@ -507,11 +510,11 @@ sleave104:              ;           sloop 104
 
 _invert_all_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _init:                  ;           ( -- )
     
     push DE             ; 1:11      print
@@ -561,10 +564,10 @@ snext105:               ;           snext 105
 
 _init_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _generation:            ;           ( -- )
     
     push DE             ; 1:11      push(32*24-1)
@@ -577,14 +580,15 @@ sfor106:                ;           sfor 106 ( index -- index )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     ld   BC, 0x5800     ; 3:10      0x5800 +
-    add  HL, BC         ; 1:4       0x5800 +
+    add  HL, BC         ; 1:11      0x5800 +
         
     call _alive         ; 3:17      scall 
         
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    ; warning The condition (buff) cannot be evaluated
     ld   BC, buff       ; 3:10      buff +
-    add  HL, BC         ; 1:4       buff + 
+    add  HL, BC         ; 1:11      buff + 
     ld  (HL),E          ; 1:7       C! cstore
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore
@@ -599,10 +603,10 @@ snext106:               ;           snext 106
 
 _generation_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 _alive:                 ;           ( addr -- alive )
     
     push DE             ; 1:11      dup
@@ -660,14 +664,14 @@ endif113:
 
 _alive_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 ; dup 1- 0x1F and swap 0xFFE0 and + 
 
 ; dup 1+ 0x1F and swap 0xFFE0 and + 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 sum_neighbors:          ;           ( addr -- sum )
     ; [-1]
     
@@ -695,7 +699,7 @@ sum_neighbors:          ;           ( addr -- sum )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     ld   BC, 32         ; 3:10      32 +
-    add  HL, BC         ; 1:4       32 +
+    add  HL, BC         ; 1:11      32 +
     
     ld    A, L          ; 1:4       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
     sub   low 0x5B00    ; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
@@ -704,7 +708,7 @@ sum_neighbors:          ;           ( addr -- sum )
     jp    c, else116    ; 3:10      dup 0x5B00 (u)>= if
         
     ld   BC, -32*24     ; 3:10      -32*24 +
-    add  HL, BC         ; 1:4       -32*24 +
+    add  HL, BC         ; 1:11      -32*24 +
     
 else116  EQU $          ;           = endif
 endif116:
@@ -736,7 +740,7 @@ endif116:
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     ld   BC, -2*32      ; 3:10      -2*32 +
-    add  HL, BC         ; 1:4       -2*32 +
+    add  HL, BC         ; 1:11      -2*32 +
     
     ld    A, L          ; 1:4       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
     sub   low 0x5800    ; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
@@ -745,7 +749,7 @@ endif116:
     jp   nc, else117    ; 3:10      dup 0x5800 (u)< if
         
     ld   BC, 32*24      ; 3:10      32*24 +
-    add  HL, BC         ; 1:4       32*24 +
+    add  HL, BC         ; 1:11      32*24 +
     
 else117  EQU $          ;           = endif
 endif117:
@@ -783,7 +787,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
@@ -791,7 +795,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
@@ -799,7 +803,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
@@ -807,7 +811,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
@@ -815,7 +819,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
@@ -823,7 +827,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
@@ -831,7 +835,7 @@ endif117:
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
     ; 16 bit --> 8 bit
     
@@ -839,7 +843,7 @@ endif117:
 
 sum_neighbors_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 

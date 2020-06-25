@@ -90,82 +90,49 @@ get_color:
     ret                 ; 1:10
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 draw_white:             ;           ( x y -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (draw_white_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     ld    C, 0x3F      ; 2:7
     call put_color      ; 3:17
     pop  HL             ; 1:10
     pop  DE             ; 1:10
 
 draw_white_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 draw_black:             ;           ( x y -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (draw_black_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     ld    C, 0      ; 2:7
     call put_color      ; 3:17
     pop  HL             ; 1:10
     pop  DE             ; 1:10
 
 draw_black_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 draw:                   ;           ( color x y -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (draw_end+1),BC ; 4:20      : ( ret -- ) R:( -- )
     pop   BC            ; 1:10
     call put_color      ; 3:17
     pop  HL             ; 1:10
     pop  DE             ; 1:10
 
 draw_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 draw_walls:             ;            
     
     push DE             ; 1:11      push(32-1)
@@ -180,9 +147,7 @@ sfor101:                ;           sfor 101 ( index -- index )
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0)        
-    call draw_black     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call draw_black     ; 3:17      call ( -- ret ) R:( -- ) 
         
     
     push DE             ; 1:11      dup
@@ -191,9 +156,7 @@ sfor101:                ;           sfor 101 ( index -- index )
     push DE             ; 1:11      push(24-1)
     ex   DE, HL         ; 1:4       push(24-1)
     ld   HL, 24-1       ; 3:10      push(24-1) 
-    call draw_black     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call draw_black     ; 3:17      call ( -- ret ) R:( -- ) 
     
     ld   A, H           ; 1:4       snext 101
     or   L              ; 1:4       snext 101
@@ -214,18 +177,14 @@ sfor102:                ;           sfor 102 ( index -- index )
     ld   HL, 0          ; 3:10      push(0)       
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    call draw_black     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call draw_black     ; 3:17      call ( -- ret ) R:( -- ) 
         
     push DE             ; 1:11      push(32-1)
     ex   DE, HL         ; 1:4       push(32-1)
     ld   HL, 32-1       ; 3:10      push(32-1) 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    call draw_black     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call draw_black     ; 3:17      call ( -- ret ) R:( -- ) 
     
     ld   A, H           ; 1:4       snext 102
     or   L              ; 1:4       snext 102
@@ -237,18 +196,13 @@ snext102:               ;           snext 102
 
 draw_walls_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 snake_x:                ;           ( offset -- address )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (snake_x_end+1),BC; 4:20      : ( ret -- ) R:( -- )
   
     add  HL, HL         ; 1:11      2* 
     ; warning The condition (snake_x_head) cannot be evaluated
@@ -256,25 +210,14 @@ snake_x:                ;           ( offset -- address )
     add  HL, BC         ; 1:11      snake_x_head + 
 
 snake_x_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
   
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 snake_y:                ;           ( offset -- address )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (snake_y_end+1),BC; 4:20      : ( ret -- ) R:( -- )
   
     add  HL, HL         ; 1:11      2* 
     ; warning The condition (snake_y_head) cannot be evaluated
@@ -282,17 +225,11 @@ snake_y:                ;           ( offset -- address )
     add  HL, BC         ; 1:11      snake_y_head +
 
 snake_y_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 initialize_snake:       ;            
     
     ld   BC, 4          ; 3:10      push2_store(4,length)
@@ -345,9 +282,7 @@ do103:
     exx                 ; 1:4       index 103 i
     ex   DE, HL         ; 1:4       index 103 i
     ex  (SP),HL         ; 1:19      index 103 i 
-    call snake_x        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -366,9 +301,7 @@ do103:
     exx                 ; 1:4       index 103 i
     ex   DE, HL         ; 1:4       index 103 i
     ex  (SP),HL         ; 1:19      index 103 i       
-    call snake_y        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -405,18 +338,13 @@ exit103 EQU $
 
 initialize_snake_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 set_apple_position:     ;           ( y x -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (set_apple_position_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     ld   (apple_x), HL  ; 3:16      apple_x ! push(apple_x) store
     ex   DE, HL         ; 1:4       apple_x ! push(apple_x) store
@@ -426,63 +354,53 @@ set_apple_position:     ;           ( y x -- )
     pop  DE             ; 1:10      apple_y ! push(apple_y) store 
 
 set_apple_position_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 initialize_apple:       ;             
     
     push DE             ; 1:11      push2(4,4)
     ld   DE, 4          ; 3:10      push2(4,4)
     push HL             ; 1:11      push2(4,4)
     ld   HL, 4          ; 3:10      push2(4,4) 
-    call set_apple_position; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call set_apple_position; 3:17      call ( -- ret ) R:( -- ) 
 
 initialize_apple_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 initialize:             ;            
     
     push DE             ; 1:11      push(32-1)
     ex   DE, HL         ; 1:4       push(32-1)
     ld   HL, 32-1       ; 3:10      push(32-1) 
-    push HL             ; 1:11      for 104 index
+    ex  (SP),HL         ; 1:19      for 104
+    ex   DE, HL         ; 1:4       for 104
     exx                 ; 1:4       for 104
-    pop  DE             ; 1:10      for 104 stop
+    pop  DE             ; 1:10      for 104 index
     dec  HL             ; 1:6       for 104
     ld  (HL),D          ; 1:7       for 104
     dec  L              ; 1:4       for 104
     ld  (HL),E          ; 1:7       for 104 stop
-    exx                 ; 1:4       for 104
-    ex   DE, HL         ; 1:4       for 104
-    pop  DE             ; 1:10      for 104 ( index -- ) R: ( -- index )
+    exx                 ; 1:4       for 104 ( index -- ) R: ( -- index )
 for104:                 ;           for 104 
         
     push DE             ; 1:11      push(24-1)
     ex   DE, HL         ; 1:4       push(24-1)
     ld   HL, 24-1       ; 3:10      push(24-1) 
-    push HL             ; 1:11      for 105 index
+    ex  (SP),HL         ; 1:19      for 105
+    ex   DE, HL         ; 1:4       for 105
     exx                 ; 1:4       for 105
-    pop  DE             ; 1:10      for 105 stop
+    pop  DE             ; 1:10      for 105 index
     dec  HL             ; 1:6       for 105
     ld  (HL),D          ; 1:7       for 105
     dec  L              ; 1:4       for 105
     ld  (HL),E          ; 1:7       for 105 stop
-    exx                 ; 1:4       for 105
-    ex   DE, HL         ; 1:4       for 105
-    pop  DE             ; 1:10      for 105 ( index -- ) R: ( -- index )
+    exx                 ; 1:4       for 105 ( index -- ) R: ( -- index )
 for105:                 ;           for 105 
             
     exx                 ; 1:4       index 105 j
@@ -506,9 +424,7 @@ for105:                 ;           for 105
     exx                 ; 1:4       index 105 i
     ex   DE, HL         ; 1:4       index 105 i
     ex  (SP),HL         ; 1:19      index 105 i 
-    call draw_white     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call draw_white     ; 3:17      call ( -- ret ) R:( -- ) 
         
     exx                 ; 1:4       next 105
     ld    E,(HL)        ; 1:7       next 105
@@ -552,10 +468,10 @@ next104:                ;           next 104
 
 initialize_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_up:                ;             
     
     push HL             ; 1:11      push2_addstore(-1,snake_y_head)
@@ -567,10 +483,10 @@ move_up:                ;
 
 move_up_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_left:              ;             
     
     push HL             ; 1:11      push2_addstore(-1,snake_x_head)
@@ -582,10 +498,10 @@ move_left:              ;
 
 move_left_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_down:              ;             
     
     push HL             ; 1:11      push2_addstore(1,snake_y_head)
@@ -597,10 +513,10 @@ move_down:              ;
 
 move_down_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_right:             ;             
     
     push HL             ; 1:11      push2_addstore(1,snake_x_head)
@@ -612,10 +528,10 @@ move_right:             ;
 
 move_right_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_snake_head:        ;             
     
     push DE             ; 1:11      direction @ push(direction) fetch 
@@ -674,11 +590,11 @@ endif101:
 
 move_snake_head_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 ; Move each segment of the snake forward by one  
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_snake_tail:        ;             
     
     push DE             ; 1:11      length @ push(length) fetch 
@@ -693,18 +609,14 @@ sfor106:                ;           sfor 106 ( index -- index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call snake_x        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     inc  HL             ; 1:6       1+ 
-    call snake_x        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -718,18 +630,14 @@ sfor106:                ;           sfor 106 ( index -- index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call snake_y        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     inc  HL             ; 1:6       1+ 
-    call snake_y        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -746,18 +654,13 @@ snext106:               ;           snext 106
 
 move_snake_tail_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 is_horizontal:          ;           ( -- flag )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )  
+    pop  BC             ; 1:10      : ret
+    ld  (is_horizontal_end+1),BC; 4:20      : ( ret -- ) R:( -- )  
     
     push DE             ; 1:11      direction @ push(direction) fetch 
     ex   DE, HL         ; 1:4       direction @ push(direction) fetch
@@ -795,25 +698,14 @@ is_horizontal:          ;           ( -- flag )
     pop  DE             ; 1:10      or 
 
 is_horizontal_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 is_vertical:            ;           ( -- flag )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (is_vertical_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      direction @ push(direction) fetch 
     ex   DE, HL         ; 1:4       direction @ push(direction) fetch
@@ -851,21 +743,13 @@ is_vertical:            ;           ( -- flag )
     pop  DE             ; 1:10      or 
 
 is_vertical_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 turn_up:                ;               
-    call is_horizontal  ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call is_horizontal  ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
@@ -877,14 +761,12 @@ else105  EQU $          ;           = endif
 endif105: 
 turn_up_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 turn_left:              ;             
-    call is_vertical    ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )   
+    call is_vertical    ; 3:17      call ( -- ret ) R:( -- )   
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
@@ -896,14 +778,12 @@ else106  EQU $          ;           = endif
 endif106: 
 turn_left_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 turn_down:              ;             
-    call is_horizontal  ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call is_horizontal  ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
@@ -915,14 +795,12 @@ else107  EQU $          ;           = endif
 endif107: 
 turn_down_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 turn_right:             ;            
-    call is_vertical    ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )   
+    call is_vertical    ; 3:17      call ( -- ret ) R:( -- )   
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
@@ -934,18 +812,13 @@ else108  EQU $          ;           = endif
 endif108: 
 turn_right_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 change_direction:       ;           ( key -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (change_direction_end+1),BC; 4:20      : ( ret -- ) R:( -- )
   
     ld    A, high 'o'   ; 2:7       dup 'o' = if
     xor   H             ; 1:4       dup 'o' = if
@@ -998,17 +871,11 @@ endif109:
     pop  DE             ; 1:10      drop ( a -- ) 
 
 change_direction_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 check_input:            ;            
     
     push DE             ; 1:11      0x5C08 @ push(0x5C08) cfetch 
@@ -1016,20 +883,18 @@ check_input:            ;
     ld   HL,(0x5C08)    ; 3:16      0x5C08 @ push(0x5C08) cfetch
     ld    H, 0x00       ; 2:7       0x5C08 @ push(0x5C08) cfetch
     
-    call change_direction; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call change_direction; 3:17      call ( -- ret ) R:( -- )
     
     ld    A, 0          ; 2:7       push2_cstore(0,0x5C08)
     ld   (0x5C08), A    ; 3:13      push2_cstore(0,0x5C08)
 
 check_input_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 ; get random x or y position within playable area  
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 random_position:        ;           ( n -- 2..n-3 )
     
     ld   BC, -4         ; 3:10      4 -
@@ -1040,10 +905,10 @@ random_position:        ;           ( n -- 2..n-3 )
 
 random_position_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 move_apple:             ;            
     
     push DE             ; 1:11      push(24)
@@ -1055,16 +920,14 @@ move_apple:             ;
     ld   HL, 32         ; 3:10      push(32) 
     call random_position; 3:17      scall 
     
-    call set_apple_position; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call set_apple_position; 3:17      call ( -- ret ) R:( -- ) 
 
 move_apple_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 grow_snake:             ;             
     
     push HL             ; 1:11      push2_addstore(1,length)
@@ -1076,10 +939,10 @@ grow_snake:             ;
 
 grow_snake_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 check_apple:            ;            
     
     push DE             ; 1:11      snake_x_head @ push(snake_x_head) fetch 
@@ -1131,18 +994,13 @@ endif113:
 
 check_apple_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 check_collision:        ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ) ;( -- flag )
+    pop  BC             ; 1:10      : ret
+    ld  (check_collision_end+1),BC; 4:20      : ( ret -- ) R:( -- ) ;( -- flag )
     ; get current x/y position 
     
     push DE             ; 1:11      snake_x_head @ push(snake_x_head) fetch 
@@ -1165,17 +1023,11 @@ check_collision:        ;
     dec  HL             ; 1:6       0=
 
 check_collision_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 draw_snake:             ;            
     
     push DE             ; 1:11      length @ push(length) fetch 
@@ -1211,9 +1063,7 @@ do107:
     exx                 ; 1:4       index 107 i
     ex   DE, HL         ; 1:4       index 107 i
     ex  (SP),HL         ; 1:19      index 107 i 
-    call snake_x        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
@@ -1227,16 +1077,12 @@ do107:
     exx                 ; 1:4       index 107 i
     ex   DE, HL         ; 1:4       index 107 i
     ex  (SP),HL         ; 1:19      index 107 i 
-    call snake_y        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    call draw_black     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call draw_black     ; 3:17      call ( -- ret ) R:( -- ) 
     
     exx                 ; 1:4       loop 107
     ld    E,(HL)        ; 1:7       loop 107
@@ -1267,9 +1113,7 @@ exit107 EQU $
     push DE             ; 1:11      length @ push(length) fetch 
     ex   DE, HL         ; 1:4       length @ push(length) fetch
     ld   HL,(length)    ; 3:16      length @ push(length) fetch 
-    call snake_x        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
@@ -1278,24 +1122,20 @@ exit107 EQU $
     push DE             ; 1:11      length @ push(length) fetch 
     ex   DE, HL         ; 1:4       length @ push(length) fetch
     ld   HL,(length)    ; 3:16      length @ push(length) fetch 
-    call snake_y        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     
-    call draw_white     ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call draw_white     ; 3:17      call ( -- ret ) R:( -- )
 
 draw_snake_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 draw_apple:             ;            
     
     push DE             ; 1:11      push(0x24)
@@ -1307,25 +1147,18 @@ draw_apple:             ;
     push DE             ; 1:11      apple_y @ push(apple_y) fetch 
     ex   DE, HL         ; 1:4       apple_y @ push(apple_y) fetch
     ld   HL,(apple_y)   ; 3:16      apple_y @ push(apple_y) fetch 
-    call draw           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call draw           ; 3:17      call ( -- ret ) R:( -- )
 
 draw_apple_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 ; x = 20*x ms
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 sleep:                  ;           ( x -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (sleep_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
 sfor108:                ;           sfor 108 ( index -- index )
         halt
@@ -1339,17 +1172,11 @@ snext108:               ;           snext 108
     pop  DE             ; 1:10      sfor unloop 108
 
 sleep_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 game_loop:              ;            ;( -- )
     
 begin101: 
@@ -1361,9 +1188,7 @@ begin101:
     push DE             ; 1:11      push(7)
     ex   DE, HL         ; 1:4       push(7)
     ld   HL, 7          ; 3:10      push(7) 
-    call sleep          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call sleep          ; 3:17      call ( -- ret ) R:( -- ) 
         
     call check_input    ; 3:17      scall
         
@@ -1373,9 +1198,7 @@ begin101:
         
     call check_apple    ; 3:17      scall 
         
-    call check_collision; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call check_collision; 3:17      call ( -- ret ) R:( -- ) 
     
     ld    A, H          ; 1:4       until 101
     or    L             ; 1:4       until 101
@@ -1392,16 +1215,16 @@ break101:               ;           until 101
 
 game_loop_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----  
+;   ---------  end of data stack function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 start:                  ;            
     call initialize     ; 3:17      scall 
     call game_loop      ; 3:17      scall 
 start_end:
     ret                 ; 1:10      s;
-;   -----  e n d  ----- 
+;   ---------  end of data stack function  --------- 
 
 
 
