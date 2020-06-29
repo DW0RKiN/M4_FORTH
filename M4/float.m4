@@ -151,7 +151,6 @@ define({F2DIV},{
     .WARNING The exponent is not tested and may underflow!})dnl
 dnl
 dnl
-ifdef({__pathfloat__},,define({__pathfloat__},{__pathlib__{}float/}))dnl
 dnl
 dnl
 dnl ; floating point constants

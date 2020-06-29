@@ -1,13 +1,6 @@
-sinclude(./float_last.m4)dnl
-sinclude(./graphic.m4)dnl
-sinclude(./output.m4)dnl
+sinclude(M4PATH{}float_last.m4)dnl
+sinclude(M4PATH{}graphic.m4)dnl
+sinclude(M4PATH{}output.m4)dnl
 dnl
-sinclude(./M4/float_last.m4)dnl
-sinclude(./M4/graphic.m4)dnl
-sinclude(./M4/output.m4)dnl
-dnl
-sinclude(../M4/float_last.m4)dnl
-sinclude(../M4/graphic.m4)dnl
-sinclude(../M4/output.m4)dnl
 dnl
 dnl
