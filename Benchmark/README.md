@@ -13,7 +13,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.c
 
 |        Name       |             System               |       Forth / C         | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD1   | 4.11s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD1   | 3.77s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD1   | 31.72s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD1   | 0m29s            | 10x
 | Thunder.Bird      | Amstrad PPC 512                  | DX-Forth                |    GCD1   | 0m48s            | 5x
@@ -52,7 +52,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 
 |       Name        |             System               |        Forth / C        | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD2   | 5.2s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD2   | 4.84s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD2   | 35.31s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD2   | 42s              | 10x
 | Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD2   | 0,65s            | 

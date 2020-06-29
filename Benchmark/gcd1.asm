@@ -72,88 +72,43 @@ gcd1_bench:             ;           ( -- )
     ld  (gcd1_bench_end+1),BC; 4:20      : ( ret -- ) R:( -- )
         
 
-    exx                 ; 1:4       xdo(100,0) 101
-    dec  HL             ; 1:6       xdo(100,0) 101
-    ld  (HL),high 0     ; 2:10      xdo(100,0) 101
-    dec   L             ; 1:4       xdo(100,0) 101
-    ld  (HL),low 0      ; 2:10      xdo(100,0) 101
-    exx                 ; 1:4       xdo(100,0) 101 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(100,0) 101
+    ld  (idx101),BC     ; 4:20      xdo(100,0) 101
 xdo101:                 ;           xdo(100,0) 101
+;#        PUSH2(100,0) SDO XJ OVER CALL(gcd1) DROP SLOOP
             
 
-    exx                 ; 1:4       xdo(100,0) 102
-    dec  HL             ; 1:6       xdo(100,0) 102
-    ld  (HL),high 0     ; 2:10      xdo(100,0) 102
-    dec   L             ; 1:4       xdo(100,0) 102
-    ld  (HL),low 0      ; 2:10      xdo(100,0) 102
-    exx                 ; 1:4       xdo(100,0) 102 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(100,0) 102
+    ld  (idx102),BC     ; 4:20      xdo(100,0) 102
 xdo102:                 ;           xdo(100,0) 102 
-    exx                 ; 1:4       index xj 102    
-    ld    E, L          ; 1:4       index xj 102
-    ld    D, H          ; 1:4       index xj 102
-    inc   L             ; 1:4       index xj 102
-    inc  HL             ; 1:6       index xj 102
-    ld    C,(HL)        ; 1:7       index xj 102 lo    
-    inc   L             ; 1:4       index xj 102
-    ld    B,(HL)        ; 1:7       index xj 102 hi
-    push BC             ; 1:11      index xj 102
+    push DE             ; 1:11      index xj 102
     ex   DE, HL         ; 1:4       index xj 102
-    exx                 ; 1:4       index xj 102
-    ex   DE, HL         ; 1:4       index xj 102 ( j x2 x1 -- j  x1 x2 )
-    ex  (SP),HL         ; 1:19      index xj 102 ( j x1 x2 -- x2 x1 j ) 
-    exx                 ; 1:4       index xi 102
-    ld    E,(HL)        ; 1:7       index xi 102
-    inc   L             ; 1:4       index xi 102
-    ld    D,(HL)        ; 1:7       index xi 102
+    ld   HL, (idx101)   ; 3:16      index xj 102 idx always points to a 16-bit index 
     push DE             ; 1:11      index xi 102
-    dec   L             ; 1:4       index xi 102
-    exx                 ; 1:4       index xi 102 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 102
-    ex  (SP),HL         ; 1:19      index xi 102 ( -- x ) 
+    ld   HL, (idx102)   ; 3:16      index xi 102 idx always points to a 16-bit index 
     call gcd1           ; 3:17      call ( -- ret ) R:( -- ) 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
-    exx                 ; 1:4       xloop(100,0) 102
-    ld    E,(HL)        ; 1:7       xloop(100,0) 102
-    inc   L             ; 1:4       xloop(100,0) 102
-    ld    D,(HL)        ; 1:7       xloop(100,0) 102
-    inc  DE             ; 1:6       xloop(100,0) 102 index++
-    ld    A, low 100    ; 2:7       xloop(100,0) 102
-    xor   E             ; 1:4       xloop(100,0) 102
-    jr   nz, $+7        ; 2:7/12    xloop(100,0) 102
-    ld    A, high 100   ; 2:7       xloop(100,0) 102
-    xor   D             ; 1:4       xloop(100,0) 102
-    jr    z, xleave102  ; 2:7/12    xloop(100,0) 102 exit
-    ld  (HL), D         ; 1:7       xloop(100,0) 102
-    dec   L             ; 1:4       xloop(100,0) 102
-    ld  (HL), E         ; 1:6       xloop(100,0) 102
-    exx                 ; 1:4       xloop(100,0) 102
-    jp   xdo102         ; 3:10      xloop(100,0) 102
+idx102 EQU $+1          ;           xloop(100,0) 102 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop(100,0) 102
+    nop                 ; 1:4       xloop(100,0) 102 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop(100,0) 102 index++
+    ld  (idx102),A      ; 3:13      xloop(100,0) 102
+    sub  low 100        ; 2:7       xloop(100,0) 102
+    jp    c, xdo102     ; 3:10      xloop(100,0) 102 index-stop
 xleave102:              ;           xloop(100,0) 102
-    inc  HL             ; 1:6       xloop(100,0) 102
-    exx                 ; 1:4       xloop(100,0) 102 R:( index -- )
-xexit102 EQU $
+xexit102:               ;           xloop(100,0) 102
         
-    exx                 ; 1:4       xloop(100,0) 101
-    ld    E,(HL)        ; 1:7       xloop(100,0) 101
-    inc   L             ; 1:4       xloop(100,0) 101
-    ld    D,(HL)        ; 1:7       xloop(100,0) 101
-    inc  DE             ; 1:6       xloop(100,0) 101 index++
-    ld    A, low 100    ; 2:7       xloop(100,0) 101
-    xor   E             ; 1:4       xloop(100,0) 101
-    jr   nz, $+7        ; 2:7/12    xloop(100,0) 101
-    ld    A, high 100   ; 2:7       xloop(100,0) 101
-    xor   D             ; 1:4       xloop(100,0) 101
-    jr    z, xleave101  ; 2:7/12    xloop(100,0) 101 exit
-    ld  (HL), D         ; 1:7       xloop(100,0) 101
-    dec   L             ; 1:4       xloop(100,0) 101
-    ld  (HL), E         ; 1:6       xloop(100,0) 101
-    exx                 ; 1:4       xloop(100,0) 101
-    jp   xdo101         ; 3:10      xloop(100,0) 101
+idx101 EQU $+1          ;           xloop(100,0) 101 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop(100,0) 101
+    nop                 ; 1:4       xloop(100,0) 101 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop(100,0) 101 index++
+    ld  (idx101),A      ; 3:13      xloop(100,0) 101
+    sub  low 100        ; 2:7       xloop(100,0) 101
+    jp    c, xdo101     ; 3:10      xloop(100,0) 101 index-stop
 xleave101:              ;           xloop(100,0) 101
-    inc  HL             ; 1:6       xloop(100,0) 101
-    exx                 ; 1:4       xloop(100,0) 101 R:( index -- )
-xexit101 EQU $
+xexit101:               ;           xloop(100,0) 101
     
 gcd1_bench_end:
     jp   0x0000         ; 3:10      ;

@@ -15,6 +15,7 @@ include(`../M4/FIRST.M4')dnl
     SEMICOLON 
     COLON(gcd1_bench,( -- ))
         XDO(100,0)
+;#        PUSH2(100,0) SDO XJ OVER CALL(gcd1) DROP SLOOP
             XDO(100,0) XJ XI CALL(gcd1) DROP XLOOP
         XLOOP
     SEMICOLON
