@@ -404,49 +404,55 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
     
     BEGIN ... flag WHILE ... flag WHILE ... BREAK ... REPEAT|AGAIN|flag UNTIL
 
-|     original    |   M4 FORTH   |     optimization     |  data stack                |  return address stack |
-| :-------------: | :----------: | :------------------: | :------------------------- | :-------------------- |
-|       do        |      DO      |                      |( stop index -- )           | ( -- stop index )     |
-|      ?do        |  QUESTIONDO  |                      |( stop index -- )           | ( -- stop index )     |
-|      loop       |     LOOP     |                      |           ( -- )           | ( s i -- s i+1 )      |
-|     +loop       |    ADDLOOP   |                      |      ( step -- )           | ( s i -- s i+step )   |
-|   `3` +loop     |              |   PUSH_ADDLOOP(`3`)  |           ( -- )           | ( s i -- s i+`3` )    |
-|     unloop      |    UNLOOP    |                      |         ( ? -- )           | ( ? -- )              |
-|     leave       |    LEAVE     |                      |         ( ? -- )           | ( ? -- )              |
-|        i        |       I      |                      |           ( -- index )     | ( index -- index )    |
-|        j        |       J      |                      |           ( -- j )         | ( j s i -- j s i )    |
-|                 |              |         SDO          |    ( stop i -- stop i )    | ( -- )                |
-|                 |              |     QUESTIONSDO      |    ( stop i -- stop i )    | ( -- )                |
-|                 |              |        SLOOP         |    ( stop i -- stop i+1)   | ( -- )                |
-|                 |              |       ADDSLOOP       |( end i step -- end i+step )| ( -- )                |
-|                 |              |  PUSH_ADDSLOOP(`4`)  |     ( end i -- end i+`4` ) | ( -- )                |
-|                 |              |          SI          |         ( i -- i i )       | ( -- )                |
-|      for        |     FOR      |                      |     ( index -- )           | ( -- index )          |
-|      next       |     NEXT     |                      |           ( -- )           | ( index -- index-1 )  |
-|                 |              |         SFOR         |     ( index -- index )     | ( -- )                |
-|                 |              |        SNEXT         |     ( index -- index-1 )   | ( -- )                |
-|   `5` `1` do    |              |     XDO(`5`,`1`)     |           ( -- )           | ( -- `1` )            |
-|                 |              |         XLOOP        |           ( -- )           | ( index -- index+1 )  |
-|   `2` +loop     |              |  PUSH_ADDXLOOP(`2`)  |           ( -- )           | ( index -- index+`2` )|
-|       i         |              |          XI          |           ( -- i )         | ( i -- i )            |
-|       j         |              |          XJ          |           ( -- j )         | ( j i -- j i )        |
-|       k         |              |          XK          |           ( -- k )         | ( k j i -- k j i )    |
-|     begin       |    BEGIN     |                      |           ( -- )           |                       |
-|                 |    BREAK     |                      |           ( -- )           |                       |
-|     while       |    WHILE     |                      |      ( flag -- )           |                       |
-|   dup while     |              |       DUP_WHILE      |      ( flag -- flag )      |                       |
-|     =  while    |              |      EQ_WHILE        |     ( x2 x1 -- )           |                       |
-|     <> while    |              |      NE_WHILE        |     ( x2 x1 -- )           |                       |
-|     <  while    |              |      LT_WHILE        |     ( x2 x1 -- )           |                       |
-|     <= while    |              |      LE_WHILE        |     ( x2 x1 -- )           |                       |
-|     >  while    |              |      GT_WHILE        |     ( x2 x1 -- )           |                       |
-|     >= while    |              |      GE_WHILE        |     ( x2 x1 -- )           |                       |
-|    u=  while    |              |     UEQ_WHILE        |     ( x2 x1 -- )           |                       |
-|    u<> while    |              |     UNE_WHILE        |     ( x2 x1 -- )           |                       |
-|    u<  while    |              |     ULT_WHILE        |     ( x2 x1 -- )           |                       |
-|    u<= while    |              |     ULE_WHILE        |     ( x2 x1 -- )           |                       |
-|    u>  while    |              |     UGT_WHILE        |     ( x2 x1 -- )           |                       |
-|    u>= while    |              |     UGE_WHILE        |     ( x2 x1 -- )           |                       |
+|     original    |   M4 FORTH   |     optimization      |  data stack                |  return address stack |
+| :-------------: | :----------: | :-------------------: | :------------------------- | :-------------------- |
+|       do        |      DO      |                       |( stop index -- )           | ( -- stop index )     |
+|      ?do        |  QUESTIONDO  |                       |( stop index -- )           | ( -- stop index )     |
+|      loop       |     LOOP     |                       |           ( -- )           | ( s i -- s i+1 )      |
+|     +loop       |    ADDLOOP   |                       |      ( step -- )           | ( s i -- s i+step )   |
+|   `3` +loop     |              |    PUSH_ADDLOOP(`3`)  |           ( -- )           | ( s i -- s i+`3` )    |
+|     unloop      |    UNLOOP    |                       |         ( ? -- )           | ( ? -- )              |
+|     leave       |    LEAVE     |                       |         ( ? -- )           | ( ? -- )              |
+|        i        |       I      |                       |           ( -- index )     | ( index -- index )    |
+|        j        |       J      |                       |           ( -- j )         | ( j s i -- j s i )    |
+|                 |              |          SDO          |    ( stop i -- stop i )    | ( -- )                |
+|                 |              |      QUESTIONSDO      |    ( stop i -- stop i )    | ( -- )                |
+|                 |              |         SLOOP         |    ( stop i -- stop i+1)   | ( -- )                |
+|                 |              |        ADDSLOOP       |( end i step -- end i+step )| ( -- )                |
+|                 |              |   PUSH_ADDSLOOP(`4`)  |     ( end i -- end i+`4` ) | ( -- )                |
+|                 |              |           SI          |         ( i -- i i )       | ( -- )                |
+|      for        |     FOR      |                       |     ( index -- )           | ( -- index )          |
+|      next       |     NEXT     |                       |           ( -- )           | ( index -- index-1 )  |
+|                 |              |          SFOR         |     ( index -- index )     | ( -- )                |
+|                 |              |         SNEXT         |     ( index -- index-1 )   | ( -- )                |
+|   `5` `1` do    |              |      XDO(`5`,`1`)     |           ( -- )           | ( -- ) non-recursive  |
+|                 |              |          XLOOP        |           ( -- )           | ( -- ) non-recursive  |
+|   `2` +loop     |              |   PUSH_ADDXLOOP(`2`)  |           ( -- )           | ( -- ) non-recursive  |
+|       i         |              |           XI          |           ( -- i )         | ( i -- i )            |
+|       j         |              |           XJ          |           ( -- j )         | ( j i -- j i )        |
+|       k         |              |           XK          |           ( -- k )         | ( k j i -- k j i )    |
+|   `5` `1` do    |              |      RDO(`5`,`1`)     |           ( -- )           | ( -- `1` )            |
+|                 |              |          RLOOP        |           ( -- )           | ( index -- index+1 )  |
+|   `2` +loop     |              |   PUSH_ADDRLOOP(`2`)  |           ( -- )           | ( index -- index+`2` )|
+|       i         |              |           RI          |           ( -- i )         | ( i -- i )            |
+|       j         |              |           RJ          |           ( -- j )         | ( j i -- j i )        |
+|       k         |              |           RK          |           ( -- k )         | ( k j i -- k j i )    |
+|     begin       |    BEGIN     |                       |           ( -- )           |                       |
+|                 |    BREAK     |                       |           ( -- )           |                       |
+|     while       |    WHILE     |                       |      ( flag -- )           |                       |
+|   dup while     |              |       DUP_WHILE       |      ( flag -- flag )      |                       |
+|     =  while    |              |       EQ_WHILE        |     ( x2 x1 -- )           |                       |
+|     <> while    |              |       NE_WHILE        |     ( x2 x1 -- )           |                       |
+|     <  while    |              |       LT_WHILE        |     ( x2 x1 -- )           |                       |
+|     <= while    |              |       LE_WHILE        |     ( x2 x1 -- )           |                       |
+|     >  while    |              |       GT_WHILE        |     ( x2 x1 -- )           |                       |
+|     >= while    |              |       GE_WHILE        |     ( x2 x1 -- )           |                       |
+|    u=  while    |              |      UEQ_WHILE        |     ( x2 x1 -- )           |                       |
+|    u<> while    |              |      UNE_WHILE        |     ( x2 x1 -- )           |                       |
+|    u<  while    |              |      ULT_WHILE        |     ( x2 x1 -- )           |                       |
+|    u<= while    |              |      ULE_WHILE        |     ( x2 x1 -- )           |                       |
+|    u>  while    |              |      UGT_WHILE        |     ( x2 x1 -- )           |                       |
+|    u>= while    |              |      UGE_WHILE        |     ( x2 x1 -- )           |                       |
 |dup `2`  =  while|              | DUP_PUSH_EQ_WHILE(`2`)|           ( -- )           |                       |
 |dup `2`  <> while|              | DUP_PUSH_NE_WHILE(`2`)|           ( -- )           |                       |
 |dup `2`  <  while|              | DUP_PUSH_LT_WHILE(`2`)|           ( -- )           |                       |
@@ -529,5 +535,7 @@ http://wiki.laptop.org/go/Forth_Lessons
 http://astro.pas.rochester.edu/Forth/forth-words.html
 
 https://www.tutorialspoint.com/execute_forth_online.php
+
+http://www.retroprogramming.com/2012/04/itsy-forth-primitives.html
 
 https://www.gnu.org/software/m4/manual/m4-1.4.15/html_node/index.html#Top
