@@ -143,6 +143,7 @@ define(LOOP,{
 leave{}LOOP_STACK:
     inc  HL             ; 1:6       loop LOOP_STACK
     exx                 ; 1:4       loop LOOP_STACK
+dnl                     ;26:92/113/86
 exit{}LOOP_STACK EQU ${}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl

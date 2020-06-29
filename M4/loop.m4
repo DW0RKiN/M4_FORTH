@@ -13,6 +13,7 @@ include(M4PATH{}loop/begin.m4)dnl
 include(M4PATH{}loop/do_loop.m4)dnl
 include(M4PATH{}loop/for_next.m4)dnl
 include(M4PATH{}loop/rdo_rloop.m4)dnl
+include(M4PATH{}loop/rxdo_rxloop.m4)dnl
 include(M4PATH{}loop/sdo_sloop.m4)dnl
 include(M4PATH{}loop/xdo_xloop.m4)dnl
 dnl
