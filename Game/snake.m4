@@ -98,10 +98,10 @@ SEMICOLON
 
 SCOLON(initialize_snake) 
     PUSH2_STORE(4,length) 
-    PUSH2(4+1,0) DO 
-        PUSH(12) I SUB I CALL(snake_x) STORE 
-        PUSH(12) I       CALL(snake_y) STORE 
-    LOOP 
+    XDO(4+1,0)  
+        PUSH(12) XI SUB XI CALL(snake_x) STORE 
+        PUSH(12) XI        CALL(snake_y) STORE 
+    XLOOP 
     PUSH2_STORE(right,direction) 
 SSEMICOLON  
 

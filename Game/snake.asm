@@ -235,53 +235,24 @@ initialize_snake:       ;
     ld   BC, 4          ; 3:10      push2_store(4,length)
     ld   (length), BC   ; 4:20      push2_store(4,length) 
     
-    push DE             ; 1:11      push2(4+1,0)
-    ld   DE, 4+1        ; 3:10      push2(4+1,0)
-    push HL             ; 1:11      push2(4+1,0)
-    ld   HL, 0          ; 3:10      push2(4+1,0) 
-    push HL             ; 1:11      do 103 index
-    push DE             ; 1:11      do 103 stop
-    exx                 ; 1:4       do 103
-    pop  DE             ; 1:10      do 103 stop
-    dec  HL             ; 1:6       do 103
-    ld  (HL),D          ; 1:7       do 103
-    dec  L              ; 1:4       do 103
-    ld  (HL),E          ; 1:7       do 103 stop
-    pop  DE             ; 1:10      do 103 index
-    dec  HL             ; 1:6       do 103
-    ld  (HL),D          ; 1:7       do 103
-    dec  L              ; 1:4       do 103
-    ld  (HL),E          ; 1:7       do 103 index
-    exx                 ; 1:4       do 103
-    pop  HL             ; 1:10      do 103
-    pop  DE             ; 1:10      do 103 ( stop index -- ) R: ( -- stop index )
-do103: 
+
+    ld   BC, 0          ; 3:10      xdo(4+1,0) 103
+    ld  (idx103),BC     ; 4:20      xdo(4+1,0) 103
+xdo103:                 ;           xdo(4+1,0) 103  
         
     push DE             ; 1:11      push(12)
     ex   DE, HL         ; 1:4       push(12)
     ld   HL, 12         ; 3:10      push(12) 
-    exx                 ; 1:4       index 103 i    
-    ld    E,(HL)        ; 1:7       index 103 i
-    inc   L             ; 1:4       index 103 i
-    ld    D,(HL)        ; 1:7       index 103 i
-    push DE             ; 1:11      index 103 i
-    dec   L             ; 1:4       index 103 i
-    exx                 ; 1:4       index 103 i
-    ex   DE, HL         ; 1:4       index 103 i
-    ex  (SP),HL         ; 1:19      index 103 i 
+    push DE             ; 1:11      index xi 103
+    ex   DE, HL         ; 1:4       index xi 103
+    ld   HL, (idx103)   ; 3:16      index xi 103 idx always points to a 16-bit index 
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      - 
-    exx                 ; 1:4       index 103 i    
-    ld    E,(HL)        ; 1:7       index 103 i
-    inc   L             ; 1:4       index 103 i
-    ld    D,(HL)        ; 1:7       index 103 i
-    push DE             ; 1:11      index 103 i
-    dec   L             ; 1:4       index 103 i
-    exx                 ; 1:4       index 103 i
-    ex   DE, HL         ; 1:4       index 103 i
-    ex  (SP),HL         ; 1:19      index 103 i 
+    push DE             ; 1:11      index xi 103
+    ex   DE, HL         ; 1:4       index xi 103
+    ld   HL, (idx103)   ; 3:16      index xi 103 idx always points to a 16-bit index 
     call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
@@ -292,15 +263,9 @@ do103:
     push DE             ; 1:11      push(12)
     ex   DE, HL         ; 1:4       push(12)
     ld   HL, 12         ; 3:10      push(12) 
-    exx                 ; 1:4       index 103 i    
-    ld    E,(HL)        ; 1:7       index 103 i
-    inc   L             ; 1:4       index 103 i
-    ld    D,(HL)        ; 1:7       index 103 i
-    push DE             ; 1:11      index 103 i
-    dec   L             ; 1:4       index 103 i
-    exx                 ; 1:4       index 103 i
-    ex   DE, HL         ; 1:4       index 103 i
-    ex  (SP),HL         ; 1:19      index 103 i       
+    push DE             ; 1:11      index xi 103
+    ex   DE, HL         ; 1:4       index xi 103
+    ld   HL, (idx103)   ; 3:16      index xi 103 idx always points to a 16-bit index        
     call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
@@ -308,30 +273,15 @@ do103:
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
     
-    exx                 ; 1:4       loop 103
-    ld    E,(HL)        ; 1:7       loop 103
-    inc   L             ; 1:4       loop 103
-    ld    D,(HL)        ; 1:7       loop 103 DE = index   
-    inc  HL             ; 1:6       loop 103
-    inc  DE             ; 1:6       loop 103 index++
-    ld    A,(HL)        ; 1:4       loop 103
-    xor   E             ; 1:4       loop 103 lo index - stop
-    jr   nz, $+8        ; 2:7/12    loop 103
-    ld    A, D          ; 1:4       loop 103
-    inc   L             ; 1:4       loop 103
-    xor (HL)            ; 1:7       loop 103 hi index - stop
-    jr    z, leave103   ; 2:7/12    loop 103 exit    
-    dec   L             ; 1:4       loop 103
-    dec  HL             ; 1:6       loop 103
-    ld  (HL), D         ; 1:7       loop 103
-    dec   L             ; 1:4       loop 103
-    ld  (HL), E         ; 1:7       loop 103
-    exx                 ; 1:4       loop 103
-    jp   do103          ; 3:10      loop 103
-leave103:
-    inc  HL             ; 1:6       loop 103
-    exx                 ; 1:4       loop 103
-exit103 EQU $ 
+idx103 EQU $+1          ;           xloop(4+1,0) 103 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop(4+1,0) 103
+    nop                 ; 1:4       xloop(4+1,0) 103 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop(4+1,0) 103 index++
+    ld  (idx103),A      ; 3:13      xloop(4+1,0) 103
+    sub  low 4+1        ; 2:7       xloop(4+1,0) 103
+    jp    c, xdo103     ; 3:10      xloop(4+1,0) 103 index-stop
+xleave103:              ;           xloop(4+1,0) 103
+xexit103:               ;           xloop(4+1,0) 103 
     
     ld   BC, 2          ; 3:10      push2_store(2,direction)
     ld   (direction), BC; 4:20      push2_store(2,direction) 
