@@ -404,40 +404,65 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop/
     PUSH(0) BEGIN DUP_DOT DUP PUSH(4) LT WHILE _2ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 2, 4"
     
     BEGIN ... flag WHILE ... flag WHILE ... BREAK ... REPEAT|AGAIN|flag UNTIL
+    
+#### Non-recursive
+The variables are stored in the function memory.
 
 |     original    |   M4 FORTH   |     optimization      |  data stack                |  return address stack |
 | :-------------: | :----------: | :-------------------: | :------------------------- | :-------------------- |
-|       do        |      DO      |                       |( stop index -- )           | ( -- stop index )     |
-|      ?do        |  QUESTIONDO  |                       |( stop index -- )           | ( -- stop index )     |
-|      loop       |     LOOP     |                       |           ( -- )           | ( s i -- s i+1 )      |
-|     +loop       |    ADDLOOP   |                       |      ( step -- )           | ( s i -- s i+step )   |
-|   `3` +loop     |              |    PUSH_ADDLOOP(`3`)  |           ( -- )           | ( s i -- s i+`3` )    |
 |     unloop      |    UNLOOP    |                       |         ( ? -- )           | ( ? -- )              |
 |     leave       |    LEAVE     |                       |         ( ? -- )           | ( ? -- )              |
-|        i        |       I      |                       |           ( -- index )     | ( index -- index )    |
-|        j        |       J      |                       |           ( -- j )         | ( j s i -- j s i )    |
+|        i        |       I      |                       |           ( -- index )     | ( -- ) non-recursive  |
+|        j        |       J      |                       |           ( -- j )         | ( -- ) non-recursive  |
+|        k        |       K      |                       |           ( -- k )         | ( -- ) non-recursive  |
+|       do        |      DO      |                       |( stop index -- )           | ( -- ) non-recursive  |
+|      ?do        |  QUESTIONDO  |                       |( stop index -- )           | ( -- ) non-recursive  |
+|      loop       |     LOOP     |                       |           ( -- )           | ( -- ) non-recursive  |
+|     +loop       |    ADDLOOP   |                       |      ( step -- )           | ( -- ) non-recursive  |
+|   `3` +loop     |              |    PUSH_ADDLOOP(`3`)  |           ( -- )           | ( -- ) non-recursive  |
+|      for        |     FOR      |                       |     ( index -- )           | ( -- ) non-recursive  |
+|      next       |     NEXT     |                       |           ( -- )           | ( -- ) non-recursive  |
+|   `5` `1` do    |              |      XDO(`5`,`1`)     |           ( -- )           | ( -- ) non-recursive  |
+|   `5` `1` ?do   |              |  QUESTIONXDO(`5`,`1`) |           ( -- )           | ( -- ) non-recursive  |
+|                 |              |         XLOOP         |           ( -- )           | ( -- ) non-recursive  |
+|   `2` +loop     |              |   PUSH_ADDXLOOP(`2`)  |           ( -- )           | ( -- ) non-recursive  |
+
+#### Recursive
+The variables are stored in the return address stack.
+
+|     original    |   M4 FORTH   |     optimization      |  data stack                |  return address stack |
+| :-------------: | :----------: | :-------------------: | :------------------------- | :-------------------- |
+|     unloop      |    UNLOOP    |                       |         ( ? -- )           | ( ? -- )              |
+|      leave      |    LEAVE     |                       |         ( ? -- )           | ( ? -- )              |
+|        i        |              |          RI           |           ( -- i )         | ( i -- i )            |
+|        j        |              |          RJ           |           ( -- j )         | ( j i -- j i )        |
+|        k        |              |          RK           |           ( -- k )         | ( k j i -- k j i )    |
+|       do        |      RDO     |                       |( stop index -- )           | ( -- stop index )     |
+|      ?do        |  QUESTIONRDO |                       |( stop index -- )           | ( -- stop index )     |
+|      loop       |     RLOOP    |                       |           ( -- )           | ( s i -- s i+1 )      |
+|     +loop       |   ADDRLOOP   |                       |      ( step -- )           | ( s i -- s i+step )   |
+|   `3` +loop     |              |  PUSH_ADDRLOOP(`3`)   |           ( -- )           | ( s i -- s i+`3` )    |
+|      for        |     RFOR     |                       |     ( index -- )           | ( -- index )          |
+|      next       |     RNEXT    |                       |           ( -- )           | ( -- index-1)         |
+|   `5` `1` do    |              |     RXDO(`5`,`1`)     |           ( -- )           | ( -- `5` `1` )        |
+|   `5` `1` ?do   |              | QUESTIONRXDO(`5`,`1`) |           ( -- )           | ( -- `5` `1` )        |
+|                 |              |         RLOOP         |           ( -- )           | ( index -- index+1 )  |
+|   `2` +loop     |              |  PUSH_ADDXRLOOP(`2`)  |           ( -- )           | ( index -- index+`2` )|
+
+The variables are stored in the data stack.
+
+|     original    |   M4 FORTH   |     optimization      |  data stack                |  return address stack |
+| :-------------: | :----------: | :-------------------: | :------------------------- | :-------------------- |
+|     unloop      |    UNLOOP    |                       |         ( ? -- )           | ( ? -- )              |
+|     leave       |    LEAVE     |                       |         ( ? -- )           | ( ? -- )              |
 |                 |              |          SDO          |    ( stop i -- stop i )    | ( -- )                |
 |                 |              |      QUESTIONSDO      |    ( stop i -- stop i )    | ( -- )                |
 |                 |              |         SLOOP         |    ( stop i -- stop i+1)   | ( -- )                |
 |                 |              |        ADDSLOOP       |( end i step -- end i+step )| ( -- )                |
 |                 |              |   PUSH_ADDSLOOP(`4`)  |     ( end i -- end i+`4` ) | ( -- )                |
 |                 |              |           SI          |         ( i -- i i )       | ( -- )                |
-|      for        |     FOR      |                       |     ( index -- )           | ( -- index )          |
-|      next       |     NEXT     |                       |           ( -- )           | ( index -- index-1 )  |
 |                 |              |          SFOR         |     ( index -- index )     | ( -- )                |
 |                 |              |         SNEXT         |     ( index -- index-1 )   | ( -- )                |
-|   `5` `1` do    |              |      XDO(`5`,`1`)     |           ( -- )           | ( -- ) non-recursive  |
-|                 |              |          XLOOP        |           ( -- )           | ( -- ) non-recursive  |
-|   `2` +loop     |              |   PUSH_ADDXLOOP(`2`)  |           ( -- )           | ( -- ) non-recursive  |
-|       i         |              |           XI          |           ( -- i )         | ( i -- i )            |
-|       j         |              |           XJ          |           ( -- j )         | ( j i -- j i )        |
-|       k         |              |           XK          |           ( -- k )         | ( k j i -- k j i )    |
-|   `5` `1` do    |              |      RDO(`5`,`1`)     |           ( -- )           | ( -- `1` )            |
-|                 |              |          RLOOP        |           ( -- )           | ( index -- index+1 )  |
-|   `2` +loop     |              |   PUSH_ADDRLOOP(`2`)  |           ( -- )           | ( index -- index+`2` )|
-|       i         |              |           RI          |           ( -- i )         | ( i -- i )            |
-|       j         |              |           RJ          |           ( -- j )         | ( j i -- j i )        |
-|       k         |              |           RK          |           ( -- k )         | ( k j i -- k j i )    |
 |     begin       |    BEGIN     |                       |           ( -- )           |                       |
 |                 |    BREAK     |                       |           ( -- )           |                       |
 |     while       |    WHILE     |                       |      ( flag -- )           |                       |
@@ -481,7 +506,6 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop/
 |     repeat      |    REPEAT    |                       |           ( -- )           |                       |
 |     again       |    AGAIN     |                       |           ( -- )           |                       |
 |     until       |    UNTIL     |                       |      ( flag -- )           |                       |
-
 
 ### Other
 
