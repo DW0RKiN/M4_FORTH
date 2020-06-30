@@ -13,7 +13,7 @@ __{}pushdef({LEAVE_STACK},{
 __{}    jp   leave{}LOOP_STACK       ;           leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           unloop LOOP_STACK})
-    ld  (idx{}LOOP_STACK), HL    ; 3:16      do LOOP_STACK index
+    ld  (idx{}LOOP_STACK), HL    ; 3:16      do LOOP_STACK save index
     dec  DE             ; 1:6       do LOOP_STACK stop-1
     ld    A, E          ; 1:4       do LOOP_STACK 
     ld  (stp_lo{}LOOP_STACK), A  ; 3:13      do LOOP_STACK lo stop
@@ -36,7 +36,7 @@ __{}pushdef({LEAVE_STACK},{
 __{}    jp   leave{}LOOP_STACK       ;           leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           unloop LOOP_STACK})
-    ld  (idx{}LOOP_STACK), HL    ; 3:16      ?do LOOP_STACK index
+    ld  (idx{}LOOP_STACK), HL    ; 3:16      ?do LOOP_STACK save index
     or    A             ; 1:4       ?do LOOP_STACK
     sbc  HL, DE         ; 2:15      ?do LOOP_STACK
     dec  DE             ; 1:6       ?do LOOP_STACK stop-1

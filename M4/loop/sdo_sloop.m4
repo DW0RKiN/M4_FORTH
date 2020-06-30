@@ -36,7 +36,7 @@ __{}    pop  DE             ; 1:10      unsloop LOOP_STACK stop  out})
     sbc  HL, DE         ; 2:15      ?sdo LOOP_STACK
     pop  HL             ; 1:10      ?sdo LOOP_STACK
     jp    z, sleave{}LOOP_STACK  ; 3:10      ?sdo LOOP_STACK   
-sdo{}LOOP_STACK:                 ;           sdo LOOP_STACK ( stop index -- stop index )})dnl
+sdo{}LOOP_STACK:                 ;           ?sdo LOOP_STACK ( stop index -- stop index )})dnl
 dnl
 dnl
 dnl ( i -- i i )
