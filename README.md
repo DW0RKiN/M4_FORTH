@@ -453,17 +453,17 @@ The variables are stored in the data stack.
 
 |     original    |   M4 FORTH   |     optimization      |  data stack                |  return address stack |
 | :-------------: | :----------: | :-------------------: | :------------------------- | :-------------------- |
-|     unloop      |    UNLOOP    |                       |         ( ? -- )           | ( ? -- )              |
-|     leave       |    LEAVE     |                       |         ( ? -- )           | ( ? -- )              |
-|                 |              |          SDO          |    ( stop i -- stop i )    | ( -- )                |
-|                 |              |      QUESTIONSDO      |    ( stop i -- stop i )    | ( -- )                |
-|                 |              |         SLOOP         |    ( stop i -- stop i+1)   | ( -- )                |
-|                 |              |        ADDSLOOP       |( end i step -- end i+step )| ( -- )                |
-|                 |              |   PUSH_ADDSLOOP(`4`)  |     ( end i -- end i+`4` ) | ( -- )                |
-|                 |              |           SI          |         ( i -- i i )       | ( -- )                |
-|                 |              |          SFOR         |     ( index -- index )     | ( -- )                |
-|                 |              |         SNEXT         |     ( index -- index-1 )   | ( -- )                |
-|     begin       |    BEGIN     |                       |           ( -- )           |                       |
+|      unloop     |    UNLOOP    |                       |         ( ? -- )           | ( ? -- )              |
+|      leave      |    LEAVE     |                       |         ( ? -- )           | ( ? -- )              |
+|        i        |              |           SI          |         ( i -- i i )       | ( -- )                |
+|       do        |              |          SDO          |    ( stop i -- stop i )    | ( -- )                |
+|       ?do       |              |      QUESTIONSDO      |    ( stop i -- stop i )    | ( -- )                |
+|      loop       |              |         SLOOP         |    ( stop i -- stop i+1)   | ( -- )                |
+|      +loop      |              |        ADDSLOOP       |( end i step -- end i+step )| ( -- )                |
+|    `4` +loop    |              |   PUSH_ADDSLOOP(`4`)  |     ( end i -- end i+`4` ) | ( -- )                |
+|       for       |              |          SFOR         |     ( index -- index )     | ( -- )                |
+|      next       |              |         SNEXT         |     ( index -- index-1 )   | ( -- )                |
+|      begin      |    BEGIN     |                       |           ( -- )           |                       |
 |                 |    BREAK     |                       |           ( -- )           |                       |
 |     while       |    WHILE     |                       |      ( flag -- )           |                       |
 |   dup while     |              |       DUP_WHILE       |      ( flag -- flag )      |                       |
