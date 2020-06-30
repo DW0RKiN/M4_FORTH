@@ -32,12 +32,12 @@ fDot:
     ret                 ; 1:10})dnl
 dnl
 dnl
-ifdef( {USE_fSin},{include(M4FLOAT{}float/fsin.tab)})dnl
-ifdef( {USE_fExp},{include(M4FLOAT{}float/fexp.tab)})dnl
-ifdef( {USE_fMul},{include(M4FLOAT{}float/fmul.tab)})dnl
-ifdef( {USE_fDiv},{include(M4FLOAT{}float/fdiv.tab)})dnl
-ifdef({USE_fSqrt},{include(M4FLOAT{}float/fsqrt.tab)})dnl
-ifdef(  {USE_fLn},{include(M4FLOAT{}float/fln.tab)})dnl
+ifdef( {USE_fSin},{include(M4PATH{}float/fsin.tab)})dnl
+ifdef( {USE_fExp},{include(M4PATH{}float/fexp.tab)})dnl
+ifdef( {USE_fMul},{include(M4PATH{}float/fmul.tab)})dnl
+ifdef( {USE_fDiv},{include(M4PATH{}float/fdiv.tab)})dnl
+ifdef({USE_fSqrt},{include(M4PATH{}float/fsqrt.tab)})dnl
+ifdef(  {USE_fLn},{include(M4PATH{}float/fln.tab)})dnl
 dnl
 dnl
 dnl
