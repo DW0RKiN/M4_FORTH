@@ -16,62 +16,46 @@ ORG 0x8000
     ld   DE, 5          ; 3:10      push2(5,-5)
     push HL             ; 1:11      push2(5,-5)
     ld   HL, -5         ; 3:10      push2(5,-5) 
-    call dtest          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call dtest          ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push2(5,5)
     ld   DE, 5          ; 3:10      push2(5,5)
     push HL             ; 1:11      push2(5,5)
     ld   HL, 5          ; 3:10      push2(5,5) 
-    call dtest          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call dtest          ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push2(-5,-5)
     ld   DE, -5         ; 3:10      push2(-5,-5)
     push HL             ; 1:11      push2(-5,-5)
     ld   HL, -5         ; 3:10      push2(-5,-5) 
-    call dtest          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call dtest          ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push2(-5,5)
     ld   DE, -5         ; 3:10      push2(-5,5)
     push HL             ; 1:11      push2(-5,5)
     ld   HL, 5          ; 3:10      push2(-5,5) 
-    call dtest          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call dtest          ; 3:17      call ( -- ret ) R:( -- )
 
     
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    call ptestp3        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call ptestp3        ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call ptestp3        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call ptestp3        ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    call ptestm3        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call ptestm3        ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call ptestm3        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call ptestm3        ; 3:17      call ( -- ret ) R:( -- )
 
     
     push DE             ; 1:11      print
@@ -90,15 +74,10 @@ ORG 0x8000
     ret
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 dtest:                  ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (dtest_end+1),BC; 4:20      : ( ret -- ) R:( -- )
      
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -761,25 +740,14 @@ endif136:
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 dtest_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 ptestp3:                ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (ptestp3_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     ld    A, high 3     ; 2:7       dup 3 = if
     xor   H             ; 1:4       dup 3 = if
@@ -974,26 +942,15 @@ endif148:
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 ptestp3_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 ptestm3:                ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (ptestm3_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     ld    A, high -3    ; 2:7       dup -3 = if
     xor   H             ; 1:4       dup -3 = if
@@ -1188,18 +1145,12 @@ endif160:
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 ptestm3_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
     push DE             ; 1:11      print
@@ -1217,7 +1168,7 @@ Stop:
 
 stack_test_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 
@@ -1235,14 +1186,13 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16
+    ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)

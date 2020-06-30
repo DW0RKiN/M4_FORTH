@@ -1,9 +1,7 @@
 ORG 0x6000
 
 ;   ===  b e g i n  ===
-    exx
-    push HL
-    push DE
+    ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
     ld   HL, 60000
@@ -25874,12 +25872,13 @@ ORG 0x6000
     pop  DE             ; 1:10      print
 
 
-
-    pop  DE
-    pop  HL
-    exx
-    ret
+Stop:
+    ld   SP, 0x0000     ; 3:10      not need
+    ld   HL, 0x2758     ; 3:10
+    exx                 ; 1:4
+    ret                 ; 1:10
 ;   =====  e n d  ===== 
+
 
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
@@ -25895,14 +25894,13 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16
+    ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
@@ -25920,8 +25918,6 @@ PRINT_U16_ONLY:
     pop  DE             ; 1:10
     push BC             ; 1:10      ret
     ret                 ; 1:10
-STRNUM:
-DB      "65536 "
 
 ; Input: HL = number
 ; Output: print number
@@ -25954,7 +25950,6 @@ BIN2DEC_CHAR:
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-
 VARIABLE_SECTION:
 
 STRING_SECTION:

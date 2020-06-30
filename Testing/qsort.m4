@@ -66,18 +66,18 @@ COLON(partition,( l r -- l r r2 l2 ))
     R_FROM DROP 
 SEMICOLON
  
-COLON(qsort,( l r -- ))
+RCOLON(qsort,( l r -- ))
     CALL(partition) SWAP ROT
   ; 2over 2over - + < if 2swap then
-    _2DUP_LT_IF CALL(qsort) ELSE _2DROP THEN
-    _2DUP_LT_IF CALL(qsort) ELSE _2DROP THEN 
-SEMICOLON
+    _2DUP_LT_IF RCALL(qsort) ELSE _2DROP THEN
+    _2DUP_LT_IF RCALL(qsort) ELSE _2DROP THEN 
+RSEMICOLON
  
 COLON(sort),( array len -- ))
     DUP_PUSH_LT_IF(2) 
         _2DROP EXIT 
     THEN
-    _1SUB _2MUL OVER ADD CALL(qsort) 
+    _1SUB _2MUL OVER ADD RCALL(qsort) 
 SEMICOLON
 
 SCOLON(stack_test)

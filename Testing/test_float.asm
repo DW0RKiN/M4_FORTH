@@ -511,22 +511,12 @@ snext102:               ;           snext 102
     
     
 
-    exx                 ; 1:4       xdo(65535,0 ) 103
-    dec  HL             ; 1:6       xdo(65535,0 ) 103
-    ld  (HL),high 0     ; 2:10      xdo(65535,0 ) 103
-    dec   L             ; 1:4       xdo(65535,0 ) 103
-    ld  (HL),low 0      ; 2:10      xdo(65535,0 ) 103
-    exx                 ; 1:4       xdo(65535,0 ) 103 R:( -- 0  )
+    ld   BC, 0          ; 3:10      xdo(65535,0 ) 103
+    ld  (idx103),BC     ; 4:20      xdo(65535,0 ) 103
 xdo103:                 ;           xdo(65535,0 ) 103 
-    exx                 ; 1:4       index xi 103
-    ld    E,(HL)        ; 1:7       index xi 103
-    inc   L             ; 1:4       index xi 103
-    ld    D,(HL)        ; 1:7       index xi 103
     push DE             ; 1:11      index xi 103
-    dec   L             ; 1:4       index xi 103
-    exx                 ; 1:4       index xi 103 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 103
-    ex  (SP),HL         ; 1:19      index xi 103 ( -- x ) 
+    ld   HL, (idx103)   ; 3:16      index xi 103 idx always points to a 16-bit index 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_U16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
@@ -555,30 +545,23 @@ xdo103:                 ;           xdo(65535,0 ) 103
     call PRINT_S16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
-    exx                 ; 1:4       push_addxloop(777) 103
-    ld    E,(HL)        ; 1:7       push_addxloop(777) 103
-    inc   L             ; 1:4       push_addxloop(777) 103
-    ld    D,(HL)        ; 1:7       push_addxloop(777) 103 DE = index
-    push HL             ; 1:11      push_addxloop(777) 103
-    ld   HL, -65535     ; 3:10      push_addxloop(777) 103 HL = -stop = -(65535)
-    add  HL, DE         ; 1:11      push_addxloop(777) 103 index-stop
-    ld   BC, 777        ; 3:10      push_addxloop(777) 103 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(777) 103 index-stop+step
-    jr    c, xleave103-1; 2:7/12    push_addxloop(777) 103 +step
-    ex   DE, HL         ; 1:4       push_addxloop(777) 103
-    add  HL, BC         ; 1:11      push_addxloop(777) 103 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(777) 103    
-    pop  HL             ; 1:10      push_addxloop(777) 103
-    ld  (HL),D          ; 1:7       push_addxloop(777) 103
-    dec   L             ; 1:4       push_addxloop(777) 103
-    ld  (HL),E          ; 1:7       push_addxloop(777) 103
-    exx                 ; 1:4       push_addxloop(777) 103    
-    jp   xdo103         ; 3:10      push_addxloop(777) 103 ( -- ) R:( index -- index+777 )
-    pop  HL             ; 1:10      push_addxloop(777) 103
-xleave103:              ;           push_addxloop(777) 103    
-    inc  HL             ; 1:6       push_addxloop(777) 103    
-    exx                 ; 1:4       push_addxloop(777) 103 ( -- ) R:( index -- )
-xexit103 EQU $
+    push HL             ; 1:11      777 +xloop 103
+idx103 EQU $+1          ;           777 +xloop 103
+    ld   HL, 0x0000     ; 3:10      777 +xloop 103
+    ld   BC, 777        ; 3:10      777 +xloop 103 BC = step
+    add  HL, BC         ; 1:11      777 +xloop 103 HL = index+step
+    ld  (idx103), HL    ; 3:16      777 +xloop 103 save index
+    ld    A, low 65534  ; 2:7       777 +xloop 103
+    sub   L             ; 1:4       777 +xloop 103
+    ld    L, A          ; 1:4       777 +xloop 103
+    ld    A, high 65534 ; 2:7       777 +xloop 103
+    sbc   A, H          ; 1:4       777 +xloop 103
+    ld    H, A          ; 1:4       777 +xloop 103 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      777 +xloop 103 HL = stop-index
+    pop  HL             ; 1:10      777 +xloop 103
+    jp   nc, xdo103     ; 3:10      777 +xloop 103 positive step
+xleave103:              ;           777 +xloop 103
+xexit103:               ;           777 +xloop 103
     
     
     push DE             ; 1:11      push(32736 )
@@ -803,7 +786,7 @@ xexit103 EQU $
     ret
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 test:                   ;           
     
     call fIld           ; 3:17      s>f 
@@ -829,11 +812,11 @@ test:                   ;
 
 test_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
     push DE             ; 1:11      print
@@ -851,7 +834,7 @@ Stop:
 
 stack_test_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 ; Remainder after division
 ;  In: BC dividend, HL modulus
@@ -2339,14 +2322,13 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16
+    ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)

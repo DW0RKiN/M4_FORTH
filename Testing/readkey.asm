@@ -15,8 +15,7 @@ begin101:
     ld   BC, size101    ; 3:10      print Length of string to print
     ld   DE, string101  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
- 
+    pop  DE             ; 1:10      print 
     call READKEY        ; 3:17      key 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -58,7 +57,6 @@ break101:               ;           repeat 101
     ld   DE, string102  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     
     push DE             ; 1:11      push2(BUFFER,10)
     ld   DE, BUFFER     ; 3:10      push2(BUFFER,10)
@@ -71,37 +69,22 @@ break101:               ;           repeat 101
     push DE             ; 1:11      push(BUFFER)
     ex   DE, HL         ; 1:4       push(BUFFER)
     ld   HL, BUFFER     ; 3:10      push(BUFFER) 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
     push DE             ; 1:11      push(BUFFER)
     ex   DE, HL         ; 1:4       push(BUFFER)
     ld   HL, BUFFER     ; 3:10      push(BUFFER) 
-    push HL             ; 1:11      do 101 index
-    push DE             ; 1:11      do 101 stop
-    exx                 ; 1:4       do 101
-    pop  DE             ; 1:10      do 101 stop
-    dec  HL             ; 1:6       do 101
-    ld  (HL),D          ; 1:7       do 101
-    dec  L              ; 1:4       do 101
-    ld  (HL),E          ; 1:7       do 101 stop
-    pop  DE             ; 1:10      do 101 index
-    dec  HL             ; 1:6       do 101
-    ld  (HL),D          ; 1:7       do 101
-    dec  L              ; 1:4       do 101
-    ld  (HL),E          ; 1:7       do 101 index
-    exx                 ; 1:4       do 101
+    ld  (idx101), HL    ; 3:16      do 101 index
+    ld    A, E          ; 1:4       do 101 
+    ld  (stp_lo101), A  ; 3:13      do 101 lo stop
+    ld    A, D          ; 1:4       do 101 
+    ld  (stp_hi101), A  ; 3:13      do 101 hi stop
     pop  HL             ; 1:10      do 101
-    pop  DE             ; 1:10      do 101 ( stop index -- ) r: ( -- stop index )
-do101: 
-    exx                 ; 1:4       index 101 i    
-    ld   E,(HL)         ; 1:7       index 101 i
-    inc  L              ; 1:4       index 101 i
-    ld   D,(HL)         ; 1:7       index 101 i
-    push DE             ; 1:11      index 101 i
-    dec  L              ; 1:4       index 101 i
-    exx                 ; 1:4       index 101 i
-    ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP), HL        ; 1:19      index 101 i 
+    pop  DE             ; 1:10      do 101 ( -- ) R: ( -- )
+do101:                  ;           do 101 
+    push DE             ; 1:11      index i 101
+    ex   DE, HL         ; 1:4       index i 101
+    ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
@@ -120,28 +103,19 @@ do101:
     rst   0x10          ; 1:11      emit    with 48K ROM in, this will print char in A
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
-    exx                 ; 1:4       loop 101
-    ld   E,(HL)         ; 1:7       loop 101
-    inc  L              ; 1:4       loop 101
-    ld   D,(HL)         ; 1:7       loop 101 DE = index   
-    inc  HL             ; 1:6       loop 101
-    inc  DE             ; 1:6       loop 101 index + 1
-    ld    A, E          ; 1:4       loop 101
-    sub (HL)            ; 1:7       loop 101 lo index - stop
-    ld    A, D          ; 1:4       loop 101
-    inc   L             ; 1:4       loop 101
-    sbc  A,(HL)         ; 1:7       loop 101 hi index - stop
-    jr  nc, leave101    ; 2:7/12    loop 101 exit
-    dec  L              ; 1:4       loop 101
-    dec  HL             ; 1:6       loop 101
-    ld  (HL), D         ; 1:7       loop 101
-    dec  L              ; 1:4       loop 101
-    ld  (HL), E         ; 1:7       loop 101
-    exx                 ; 1:4       loop 101
-    jp   do101          ; 3:10      loop 101
-leave101:
-    inc  HL             ; 1:6       loop 101
-    exx                 ; 1:4       loop 101 
+idx101 EQU $+1          ;           loop 101
+    ld   BC, 0x0000     ; 3:10      loop 101 idx always points to a 16-bit index
+    inc  BC             ; 1:6       loop 101 index++
+    ld  (idx101),BC     ; 4:20      loop 101 save index
+    ld    A, C          ; 1:4       loop 101
+stp_lo101 EQU $+1       ;           loop 101
+    sub  0x00           ; 2:7       loop 101 lo index - stop
+    ld    A, B          ; 1:4       loop 101
+stp_hi101 EQU $+1       ;           loop 101
+    sbc   A, 0x00       ; 2:7       loop 101 hi index - stop
+    jp    c, do101      ; 3:10      loop 101
+leave101:               ;           loop 101
+exit101:                ;           loop 101 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -151,7 +125,6 @@ leave101:
     ld   DE, string103  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-
     exx
     push HL
     exx
@@ -163,15 +136,14 @@ leave101:
     ret
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
     push DE             ; 1:11      print
     ld   BC, size104    ; 3:10      print Length of string to print
     ld   DE, string104  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
-    
+    pop  DE             ; 1:10      print    
     
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -182,7 +154,7 @@ Stop:
 
 stack_test_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 

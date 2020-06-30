@@ -12,9 +12,7 @@
     push hl
 
     
-    call test           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call test           ; 3:17      call ( -- ret ) R:( -- )
     
     
     push DE             ; 1:11      print
@@ -33,7 +31,7 @@
     ret
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
     push DE             ; 1:11      print
@@ -51,178 +49,111 @@ Stop:
 
 stack_test_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 test:                   ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (test_end+1),BC ; 4:20      : ( ret -- ) R:( -- )
 ; diagonala(y,x) 0,0 --> 99,99
     
 
-    exx                 ; 1:4       xdo(25700,0) 101
-    dec  HL             ; 1:6       xdo(25700,0) 101
-    ld  (HL),high 0     ; 2:10      xdo(25700,0) 101
-    dec   L             ; 1:4       xdo(25700,0) 101
-    ld  (HL),low 0      ; 2:10      xdo(25700,0) 101
-    exx                 ; 1:4       xdo(25700,0) 101 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(25700,0) 101
+    ld  (idx101),BC     ; 4:20      xdo(25700,0) 101
 xdo101:                 ;           xdo(25700,0) 101  
         
-    exx                 ; 1:4       index xi 101
-    ld    E,(HL)        ; 1:7       index xi 101
-    inc   L             ; 1:4       index xi 101
-    ld    D,(HL)        ; 1:7       index xi 101
     push DE             ; 1:11      index xi 101
-    dec   L             ; 1:4       index xi 101
-    exx                 ; 1:4       index xi 101 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 101
-    ex  (SP),HL         ; 1:19      index xi 101 ( -- x ) 
+    ld   HL, (idx101)   ; 3:16      index xi 101 idx always points to a 16-bit index 
         
     call PIXEL          ; 3:17      pixel 
         
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
-    exx                 ; 1:4       push_addxloop(256+1) 101
-    ld    E,(HL)        ; 1:7       push_addxloop(256+1) 101
-    inc   L             ; 1:4       push_addxloop(256+1) 101
-    ld    D,(HL)        ; 1:7       push_addxloop(256+1) 101 DE = index
-    push HL             ; 1:11      push_addxloop(256+1) 101
-    ld   HL, -25700     ; 3:10      push_addxloop(256+1) 101 HL = -stop = -(25700)
-    add  HL, DE         ; 1:11      push_addxloop(256+1) 101 index-stop
-    ld   BC, 257        ; 3:10      push_addxloop(256+1) 101 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(256+1) 101 index-stop+step
-    jr    c, xleave101-1; 2:7/12    push_addxloop(256+1) 101 +step
-    ex   DE, HL         ; 1:4       push_addxloop(256+1) 101
-    add  HL, BC         ; 1:11      push_addxloop(256+1) 101 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(256+1) 101    
-    pop  HL             ; 1:10      push_addxloop(256+1) 101
-    ld  (HL),D          ; 1:7       push_addxloop(256+1) 101
-    dec   L             ; 1:4       push_addxloop(256+1) 101
-    ld  (HL),E          ; 1:7       push_addxloop(256+1) 101
-    exx                 ; 1:4       push_addxloop(256+1) 101    
-    jp   xdo101         ; 3:10      push_addxloop(256+1) 101 ( -- ) R:( index -- index+256+1 )
-    pop  HL             ; 1:10      push_addxloop(256+1) 101
-xleave101:              ;           push_addxloop(256+1) 101    
-    inc  HL             ; 1:6       push_addxloop(256+1) 101    
-    exx                 ; 1:4       push_addxloop(256+1) 101 ( -- ) R:( index -- )
-xexit101 EQU $
+    push HL             ; 1:11      256+1 +xloop 101
+idx101 EQU $+1          ;           256+1 +xloop 101
+    ld   HL, 0x0000     ; 3:10      256+1 +xloop 101
+    ld   BC, 256+1      ; 3:10      256+1 +xloop 101 BC = step
+    add  HL, BC         ; 1:11      256+1 +xloop 101 HL = index+step
+    ld  (idx101), HL    ; 3:16      256+1 +xloop 101 save index
+    ld    A, low 25699  ; 2:7       256+1 +xloop 101
+    sub   L             ; 1:4       256+1 +xloop 101
+    ld    L, A          ; 1:4       256+1 +xloop 101
+    ld    A, high 25699 ; 2:7       256+1 +xloop 101
+    sbc   A, H          ; 1:4       256+1 +xloop 101
+    ld    H, A          ; 1:4       256+1 +xloop 101 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      256+1 +xloop 101 HL = stop-index
+    pop  HL             ; 1:10      256+1 +xloop 101
+    jp   nc, xdo101     ; 3:10      256+1 +xloop 101 positive step
+xleave101:              ;           256+1 +xloop 101
+xexit101:               ;           256+1 +xloop 101
     
 ; horizontalni(y,x) 50,0 -> 50,199
     
 
-    exx                 ; 1:4       xdo(256*50+200,256*50) 102
-    dec  HL             ; 1:6       xdo(256*50+200,256*50) 102
-    ld  (HL),high 12800 ; 2:10      xdo(256*50+200,256*50) 102
-    dec   L             ; 1:4       xdo(256*50+200,256*50) 102
-    ld  (HL),low 12800  ; 2:10      xdo(256*50+200,256*50) 102
-    exx                 ; 1:4       xdo(256*50+200,256*50) 102 R:( -- 256*50 )
+    ld   BC, 256*50     ; 3:10      xdo(256*50+200,256*50) 102
+    ld  (idx102),BC     ; 4:20      xdo(256*50+200,256*50) 102
 xdo102:                 ;           xdo(256*50+200,256*50) 102
         
-    exx                 ; 1:4       index xi 102
-    ld    E,(HL)        ; 1:7       index xi 102
-    inc   L             ; 1:4       index xi 102
-    ld    D,(HL)        ; 1:7       index xi 102
     push DE             ; 1:11      index xi 102
-    dec   L             ; 1:4       index xi 102
-    exx                 ; 1:4       index xi 102 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 102
-    ex  (SP),HL         ; 1:19      index xi 102 ( -- x ) 
+    ld   HL, (idx102)   ; 3:16      index xi 102 idx always points to a 16-bit index 
         
     call PIXEL          ; 3:17      pixel 
         
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
-    exx                 ; 1:4       xloop(256*50+200,256*50) 102
-    ld    E,(HL)        ; 1:7       xloop(256*50+200,256*50) 102
-    inc   L             ; 1:4       xloop(256*50+200,256*50) 102
-    ld    D,(HL)        ; 1:7       xloop(256*50+200,256*50) 102
-    inc  DE             ; 1:6       xloop(256*50+200,256*50) 102 index++
-    ld    A, low 13000  ; 2:7       xloop(256*50+200,256*50) 102
-    xor   E             ; 1:4       xloop(256*50+200,256*50) 102
-    ld    C, A          ; 1:4       xloop(256*50+200,256*50) 102
-    ld    A, high 13000 ; 2:7       xloop(256*50+200,256*50) 102
-    xor   D             ; 1:4       xloop(256*50+200,256*50) 102
-    or    C             ; 1:4       xloop(256*50+200,256*50) 102
-    jr    z, xleave102  ; 2:7/12    xloop(256*50+200,256*50) 102 exit
-    ld  (HL), D         ; 1:7       xloop(256*50+200,256*50) 102
-    dec   L             ; 1:4       xloop(256*50+200,256*50) 102
-    ld  (HL), E         ; 1:6       xloop(256*50+200,256*50) 102
-    exx                 ; 1:4       xloop(256*50+200,256*50) 102
-    jp   xdo102         ; 3:10      xloop(256*50+200,256*50) 102
-xleave102:              ;           xloop(256*50+200,256*50) 102
-    inc  HL             ; 1:6       xloop(256*50+200,256*50) 102
-    exx                 ; 1:4       xloop(256*50+200,256*50) 102 R:( index -- )
-xexit102 EQU $
+idx102 EQU $+1          ;           xloop 102 hi index == hi stop && index < stop
+    ld   BC, 0x0000     ; 3:10      xloop 102 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       xloop 102
+    inc   A             ; 1:4       xloop 102 index++
+    ld  (idx102),A      ; 3:13      xloop 102 save index
+    sub  low 256*50+200 ; 2:7       xloop 102 index - stop
+    jp    c, xdo102     ; 3:10      xloop 102
+xleave102:              ;           xloop 102
+xexit102:               ;           xloop 102
     
 ; vertikalni(y,x) 0,200 -> 49,200
     
 
-    exx                 ; 1:4       xdo(256*50+200,200) 103
-    dec  HL             ; 1:6       xdo(256*50+200,200) 103
-    ld  (HL),high 200   ; 2:10      xdo(256*50+200,200) 103
-    dec   L             ; 1:4       xdo(256*50+200,200) 103
-    ld  (HL),low 200    ; 2:10      xdo(256*50+200,200) 103
-    exx                 ; 1:4       xdo(256*50+200,200) 103 R:( -- 200 )
+    ld   BC, 200        ; 3:10      xdo(256*50+200,200) 103
+    ld  (idx103),BC     ; 4:20      xdo(256*50+200,200) 103
 xdo103:                 ;           xdo(256*50+200,200) 103
         
-    exx                 ; 1:4       index xi 103
-    ld    E,(HL)        ; 1:7       index xi 103
-    inc   L             ; 1:4       index xi 103
-    ld    D,(HL)        ; 1:7       index xi 103
     push DE             ; 1:11      index xi 103
-    dec   L             ; 1:4       index xi 103
-    exx                 ; 1:4       index xi 103 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 103
-    ex  (SP),HL         ; 1:19      index xi 103 ( -- x ) 
+    ld   HL, (idx103)   ; 3:16      index xi 103 idx always points to a 16-bit index 
         
     call PIXEL          ; 3:17      pixel 
         
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
-    exx                 ; 1:4       push_addxloop(256) 103
-    ld    E,(HL)        ; 1:7       push_addxloop(256) 103
-    inc   L             ; 1:4       push_addxloop(256) 103
-    ld    D,(HL)        ; 1:7       push_addxloop(256) 103 DE = index
-    push HL             ; 1:11      push_addxloop(256) 103
-    ld   HL, -13000     ; 3:10      push_addxloop(256) 103 HL = -stop = -(256*50+200)
-    add  HL, DE         ; 1:11      push_addxloop(256) 103 index-stop
-    ld   BC, 256        ; 3:10      push_addxloop(256) 103 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(256) 103 index-stop+step
-    jr    c, xleave103-1; 2:7/12    push_addxloop(256) 103 +step
-    ex   DE, HL         ; 1:4       push_addxloop(256) 103
-    add  HL, BC         ; 1:11      push_addxloop(256) 103 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(256) 103    
-    pop  HL             ; 1:10      push_addxloop(256) 103
-    ld  (HL),D          ; 1:7       push_addxloop(256) 103
-    dec   L             ; 1:4       push_addxloop(256) 103
-    ld  (HL),E          ; 1:7       push_addxloop(256) 103
-    exx                 ; 1:4       push_addxloop(256) 103    
-    jp   xdo103         ; 3:10      push_addxloop(256) 103 ( -- ) R:( index -- index+256 )
-    pop  HL             ; 1:10      push_addxloop(256) 103
-xleave103:              ;           push_addxloop(256) 103    
-    inc  HL             ; 1:6       push_addxloop(256) 103    
-    exx                 ; 1:4       push_addxloop(256) 103 ( -- ) R:( index -- )
-xexit103 EQU $
+    push HL             ; 1:11      256 +xloop 103
+idx103 EQU $+1          ;           256 +xloop 103
+    ld   HL, 0x0000     ; 3:10      256 +xloop 103
+    ld   BC, 256        ; 3:10      256 +xloop 103 BC = step
+    add  HL, BC         ; 1:11      256 +xloop 103 HL = index+step
+    ld  (idx103), HL    ; 3:16      256 +xloop 103 save index
+    ld    A, low 12999  ; 2:7       256 +xloop 103
+    sub   L             ; 1:4       256 +xloop 103
+    ld    L, A          ; 1:4       256 +xloop 103
+    ld    A, high 12999 ; 2:7       256 +xloop 103
+    sbc   A, H          ; 1:4       256 +xloop 103
+    ld    H, A          ; 1:4       256 +xloop 103 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      256 +xloop 103 HL = stop-index
+    pop  HL             ; 1:10      256 +xloop 103
+    jp   nc, xdo103     ; 3:10      256 +xloop 103 positive step
+xleave103:              ;           256 +xloop 103
+xexit103:               ;           256 +xloop 103
     
 
 test_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
     
 
 

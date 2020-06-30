@@ -15,65 +15,49 @@ ORG 0x8000
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _down3         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down3         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _up3           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up3           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _smycka        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _smycka        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,1)
     ld   DE, -1         ; 3:10      push2(-1,1)
     push HL             ; 1:11      push2(-1,1)
     ld   HL, 1          ; 3:10      push2(-1,1) 
-    call _otaznik       ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _otaznik       ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -82,65 +66,49 @@ ORG 0x8000
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _down3         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down3         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _up3           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up3           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _smycka        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _smycka        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _otaznik       ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _otaznik       ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -149,65 +117,49 @@ ORG 0x8000
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _down3         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down3         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _up3           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up3           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _smycka        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _smycka        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,-1)
     ld   DE, 1          ; 3:10      push2(1,-1)
     push HL             ; 1:11      push2(1,-1)
     ld   HL, -1         ; 3:10      push2(1,-1) 
-    call _otaznik       ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _otaznik       ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -216,81 +168,61 @@ ORG 0x8000
     ld   DE, 4          ; 3:10      push2(4,4)
     push HL             ; 1:11      push2(4,4)
     ld   HL, 4          ; 3:10      push2(4,4) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(4,4)
     ld   DE, 4          ; 3:10      push2(4,4)
     push HL             ; 1:11      push2(4,4)
     ld   HL, 4          ; 3:10      push2(4,4) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,4)
     ld   DE, 1          ; 3:10      push2(1,4)
     push HL             ; 1:11      push2(1,4)
     ld   HL, 4          ; 3:10      push2(1,4) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,4)
     ld   DE, 1          ; 3:10      push2(1,4)
     push HL             ; 1:11      push2(1,4)
     ld   HL, 4          ; 3:10      push2(1,4) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(4,1)
     ld   DE, 4          ; 3:10      push2(4,1)
     push HL             ; 1:11      push2(4,1)
     ld   HL, 1          ; 3:10      push2(4,1) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(4,1)
     ld   DE, 4          ; 3:10      push2(4,1)
     push HL             ; 1:11      push2(4,1)
     ld   HL, 1          ; 3:10      push2(4,1) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(2,-1)
     ld   DE, 2          ; 3:10      push2(2,-1)
     push HL             ; 1:11      push2(2,-1)
     ld   HL, -1         ; 3:10      push2(2,-1) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(2,-1)
     ld   DE, 2          ; 3:10      push2(2,-1)
     push HL             ; 1:11      push2(2,-1)
     ld   HL, -1         ; 3:10      push2(2,-1) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,2)
     ld   DE, -1         ; 3:10      push2(-1,2)
     push HL             ; 1:11      push2(-1,2)
     ld   HL, 2          ; 3:10      push2(-1,2) 
-    call _down1         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down1         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,2)
     ld   DE, -1         ; 3:10      push2(-1,2)
     push HL             ; 1:11      push2(-1,2)
     ld   HL, 2          ; 3:10      push2(-1,2) 
-    call _down2         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _down2         ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -299,81 +231,61 @@ ORG 0x8000
     ld   DE, 4          ; 3:10      push2(4,4)
     push HL             ; 1:11      push2(4,4)
     ld   HL, 4          ; 3:10      push2(4,4) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(4,4)
     ld   DE, 4          ; 3:10      push2(4,4)
     push HL             ; 1:11      push2(4,4)
     ld   HL, 4          ; 3:10      push2(4,4) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,4)
     ld   DE, 1          ; 3:10      push2(1,4)
     push HL             ; 1:11      push2(1,4)
     ld   HL, 4          ; 3:10      push2(1,4) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(1,4)
     ld   DE, 1          ; 3:10      push2(1,4)
     push HL             ; 1:11      push2(1,4)
     ld   HL, 4          ; 3:10      push2(1,4) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(4,1)
     ld   DE, 4          ; 3:10      push2(4,1)
     push HL             ; 1:11      push2(4,1)
     ld   HL, 1          ; 3:10      push2(4,1) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(4,1)
     ld   DE, 4          ; 3:10      push2(4,1)
     push HL             ; 1:11      push2(4,1)
     ld   HL, 1          ; 3:10      push2(4,1) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(2,-1)
     ld   DE, 2          ; 3:10      push2(2,-1)
     push HL             ; 1:11      push2(2,-1)
     ld   HL, -1         ; 3:10      push2(2,-1) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(2,-1)
     ld   DE, 2          ; 3:10      push2(2,-1)
     push HL             ; 1:11      push2(2,-1)
     ld   HL, -1         ; 3:10      push2(2,-1) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,2)
     ld   DE, -1         ; 3:10      push2(-1,2)
     push HL             ; 1:11      push2(-1,2)
     ld   HL, 2          ; 3:10      push2(-1,2) 
-    call _up1           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up1           ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push2(-1,2)
     ld   DE, -1         ; 3:10      push2(-1,2)
     push HL             ; 1:11      push2(-1,2)
     ld   HL, 2          ; 3:10      push2(-1,2) 
-    call _up2           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _up2           ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -385,9 +297,7 @@ ORG 0x8000
     ld   DE, 1          ; 3:10      push2(1,0)
     push HL             ; 1:11      push2(1,0)
     ld   HL, 0          ; 3:10      push2(1,0) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
@@ -396,9 +306,7 @@ ORG 0x8000
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
@@ -407,9 +315,7 @@ ORG 0x8000
     ld   DE, 4          ; 3:10      push2(4,0)
     push HL             ; 1:11      push2(4,0)
     ld   HL, 0          ; 3:10      push2(4,0) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(2)
     ex   DE, HL         ; 1:4       push(2)
@@ -418,9 +324,7 @@ ORG 0x8000
     ld   DE, -1         ; 3:10      push2(-1,0)
     push HL             ; 1:11      push2(-1,0)
     ld   HL, 0          ; 3:10      push2(-1,0) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(-1)
     ex   DE, HL         ; 1:4       push(-1)
@@ -429,9 +333,7 @@ ORG 0x8000
     ld   DE, 2          ; 3:10      push2(2,0)
     push HL             ; 1:11      push2(2,0)
     ld   HL, 0          ; 3:10      push2(2,0) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -443,9 +345,7 @@ ORG 0x8000
     ld   DE, 10         ; 3:10      push2(10,-10)
     push HL             ; 1:11      push2(10,-10)
     ld   HL, -10        ; 3:10      push2(10,-10) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(-20)
     ex   DE, HL         ; 1:4       push(-20)
@@ -454,9 +354,7 @@ ORG 0x8000
     ld   DE, 11         ; 3:10      push2(11,-10)
     push HL             ; 1:11      push2(11,-10)
     ld   HL, -10        ; 3:10      push2(11,-10) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(-20)
     ex   DE, HL         ; 1:4       push(-20)
@@ -465,9 +363,7 @@ ORG 0x8000
     ld   DE, 9          ; 3:10      push2(9,-10)
     push HL             ; 1:11      push2(9,-10)
     ld   HL, -10        ; 3:10      push2(9,-10) 
-    call _3loop         ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3loop         ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -479,9 +375,7 @@ ORG 0x8000
     ld   DE, 1          ; 3:10      push2(1,0)
     push HL             ; 1:11      push2(1,0)
     ld   HL, 0          ; 3:10      push2(1,0) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
@@ -490,9 +384,7 @@ ORG 0x8000
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
@@ -501,9 +393,7 @@ ORG 0x8000
     ld   DE, 4          ; 3:10      push2(4,0)
     push HL             ; 1:11      push2(4,0)
     ld   HL, 0          ; 3:10      push2(4,0) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(2)
     ex   DE, HL         ; 1:4       push(2)
@@ -512,9 +402,7 @@ ORG 0x8000
     ld   DE, -1         ; 3:10      push2(-1,0)
     push HL             ; 1:11      push2(-1,0)
     ld   HL, 0          ; 3:10      push2(-1,0) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(-1)
     ex   DE, HL         ; 1:4       push(-1)
@@ -523,9 +411,7 @@ ORG 0x8000
     ld   DE, 2          ; 3:10      push2(2,0)
     push HL             ; 1:11      push2(2,0)
     ld   HL, 0          ; 3:10      push2(2,0) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -537,9 +423,7 @@ ORG 0x8000
     ld   DE, 10         ; 3:10      push2(10,-10)
     push HL             ; 1:11      push2(10,-10)
     ld   HL, -10        ; 3:10      push2(10,-10) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(-20)
     ex   DE, HL         ; 1:4       push(-20)
@@ -548,9 +432,7 @@ ORG 0x8000
     ld   DE, 11         ; 3:10      push2(11,-10)
     push HL             ; 1:11      push2(11,-10)
     ld   HL, -10        ; 3:10      push2(11,-10) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     push DE             ; 1:11      push(-20)
     ex   DE, HL         ; 1:4       push(-20)
@@ -559,9 +441,7 @@ ORG 0x8000
     ld   DE, 9          ; 3:10      push2(9,-10)
     push HL             ; 1:11      push2(9,-10)
     ld   HL, -10        ; 3:10      push2(9,-10) 
-    call _3sloop        ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call _3sloop        ; 3:17      call ( -- ret ) R:( -- )
 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -572,44 +452,26 @@ ORG 0x8000
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(-1,1) 101
-    dec  HL             ; 1:6       xdo(-1,1) 101
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 101
-    dec   L             ; 1:4       xdo(-1,1) 101
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 101
-    exx                 ; 1:4       xdo(-1,1) 101 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 101
+    ld  (idx101),BC     ; 4:20      xdo(-1,1) 101
 xdo101:                 ;           xdo(-1,1) 101 
-    exx                 ; 1:4       index xi 101
-    ld    E,(HL)        ; 1:7       index xi 101
-    inc   L             ; 1:4       index xi 101
-    ld    D,(HL)        ; 1:7       index xi 101
-    push DE             ; 1:11      index xi 101
-    dec   L             ; 1:4       index xi 101
-    exx                 ; 1:4       index xi 101 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 101
-    ex  (SP),HL         ; 1:19      index xi 101 ( -- x ) 
+    push DE             ; 1:11      index i 101
+    ex   DE, HL         ; 1:4       index i 101
+    ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
                         ;           push_addxloop(-1) 101
-    exx                 ; 1:4       -1 +xloop(-1,1) 101
-    ld    E,(HL)        ; 1:7       -1 +xloop(-1,1) 101
-    inc   L             ; 1:4       -1 +xloop(-1,1) 101
-    ld    D,(HL)        ; 1:7       -1 +xloop(-1,1) 101
-    ld    A, low -1     ; 2:7       -1 +xloop(-1,1) 101
-    xor   E             ; 1:4       -1 +xloop(-1,1) 101
-    jr   nz, $+7        ; 2:7/12    -1 +xloop(-1,1) 101
-    ld    A, high -1    ; 2:7       -1 +xloop(-1,1) 101
-    xor   D             ; 1:4       -1 +xloop(-1,1) 101
-    jr    z, xleave101  ; 2:7/12    -1 +xloop(-1,1) 101 exit
-    dec  DE             ; 1:6       -1 +xloop(-1,1) 101 index--
-    ld  (HL), D         ; 1:7       -1 +xloop(-1,1) 101
-    dec   L             ; 1:4       -1 +xloop(-1,1) 101
-    ld  (HL), E         ; 1:6       -1 +xloop(-1,1) 101
-    exx                 ; 1:4       -1 +xloop(-1,1) 101
-    jp   xdo101         ; 3:10      -1 +xloop(-1,1) 101
-xleave101:              ;           -1 +xloop(-1,1) 101
-    inc  HL             ; 1:6       -1 +xloop(-1,1) 101
-    exx                 ; 1:4       -1 +xloop(-1,1) 101 R:( index -- )
-xexit101 EQU $ 
+idx101 EQU $+1          ;           -1 +xloop 101
+    ld   BC, 0x0000     ; 3:10      -1 +xloop 101 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       -1 +xloop 101
+    xor  low -1         ; 2:7       -1 +xloop 101
+    ld    A, B          ; 1:4       -1 +xloop 101
+    dec  BC             ; 1:6       -1 +xloop 101 index--
+    ld  (idx101),BC     ; 4:20      -1 +xloop 101 save index
+    jp   nz, xdo101     ; 3:10      -1 +xloop 101
+    xor  high -1        ; 2:7       -1 +xloop 101
+    jp   nz, xdo101     ; 3:10      -1 +xloop 101
+xleave101:              ;           -1 +xloop 101
+xexit101:               ;           xloop 101 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -619,47 +481,30 @@ xexit101 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(-1,1) 102
-    dec  HL             ; 1:6       xdo(-1,1) 102
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 102
-    dec   L             ; 1:4       xdo(-1,1) 102
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 102
-    exx                 ; 1:4       xdo(-1,1) 102 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 102
+    ld  (idx102),BC     ; 4:20      xdo(-1,1) 102
 xdo102:                 ;           xdo(-1,1) 102 
-    exx                 ; 1:4       index xi 102
-    ld    E,(HL)        ; 1:7       index xi 102
-    inc   L             ; 1:4       index xi 102
-    ld    D,(HL)        ; 1:7       index xi 102
-    push DE             ; 1:11      index xi 102
-    dec   L             ; 1:4       index xi 102
-    exx                 ; 1:4       index xi 102 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 102
-    ex  (SP),HL         ; 1:19      index xi 102 ( -- x ) 
+    push DE             ; 1:11      index i 102
+    ex   DE, HL         ; 1:4       index i 102
+    ld   HL, (idx102)   ; 3:16      index i 102 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       push_addxloop(-2) 102
-    ld    E,(HL)        ; 1:7       push_addxloop(-2) 102
-    inc   L             ; 1:4       push_addxloop(-2) 102
-    ld    D,(HL)        ; 1:7       push_addxloop(-2) 102 DE = index
-    push HL             ; 1:11      push_addxloop(-2) 102
-    ld   HL, 1          ; 3:10      push_addxloop(-2) 102 HL = -stop = -(-1)
-    add  HL, DE         ; 1:11      push_addxloop(-2) 102 index-stop
-    ld   BC, -2         ; 3:10      push_addxloop(-2) 102 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(-2) 102 index-stop+step
-    jr   nc, xleave102-1; 2:7/12    push_addxloop(-2) 102 -step
-    ex   DE, HL         ; 1:4       push_addxloop(-2) 102
-    add  HL, BC         ; 1:11      push_addxloop(-2) 102 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(-2) 102    
-    pop  HL             ; 1:10      push_addxloop(-2) 102
-    ld  (HL),D          ; 1:7       push_addxloop(-2) 102
-    dec   L             ; 1:4       push_addxloop(-2) 102
-    ld  (HL),E          ; 1:7       push_addxloop(-2) 102
-    exx                 ; 1:4       push_addxloop(-2) 102    
-    jp   xdo102         ; 3:10      push_addxloop(-2) 102 ( -- ) R:( index -- index+-2 )
-    pop  HL             ; 1:10      push_addxloop(-2) 102
-xleave102:              ;           push_addxloop(-2) 102    
-    inc  HL             ; 1:6       push_addxloop(-2) 102    
-    exx                 ; 1:4       push_addxloop(-2) 102 ( -- ) R:( index -- )
-xexit102 EQU $ 
+    push HL             ; 1:11      -2 +xloop 102
+idx102 EQU $+1          ;           -2 +xloop 102
+    ld   HL, 0x0000     ; 3:10      -2 +xloop 102
+    ld   BC, -2         ; 3:10      -2 +xloop 102 BC = step
+    add  HL, BC         ; 1:11      -2 +xloop 102 HL = index+step
+    ld  (idx102), HL    ; 3:16      -2 +xloop 102 save index
+    ld    A, low -2     ; 2:7       -2 +xloop 102
+    sub   L             ; 1:4       -2 +xloop 102
+    ld    L, A          ; 1:4       -2 +xloop 102
+    ld    A, high -2    ; 2:7       -2 +xloop 102
+    sbc   A, H          ; 1:4       -2 +xloop 102
+    ld    H, A          ; 1:4       -2 +xloop 102 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -2 +xloop 102 HL = stop-index
+    pop  HL             ; 1:10      -2 +xloop 102
+    jp    c, xdo102     ; 3:10      -2 +xloop 102 negative step
+xleave102:              ;           -2 +xloop 102
+xexit102:               ;           -2 +xloop 102 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -669,47 +514,30 @@ xexit102 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(-1,1) 103
-    dec  HL             ; 1:6       xdo(-1,1) 103
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 103
-    dec   L             ; 1:4       xdo(-1,1) 103
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 103
-    exx                 ; 1:4       xdo(-1,1) 103 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 103
+    ld  (idx103),BC     ; 4:20      xdo(-1,1) 103
 xdo103:                 ;           xdo(-1,1) 103 
-    exx                 ; 1:4       index xi 103
-    ld    E,(HL)        ; 1:7       index xi 103
-    inc   L             ; 1:4       index xi 103
-    ld    D,(HL)        ; 1:7       index xi 103
-    push DE             ; 1:11      index xi 103
-    dec   L             ; 1:4       index xi 103
-    exx                 ; 1:4       index xi 103 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 103
-    ex  (SP),HL         ; 1:19      index xi 103 ( -- x ) 
+    push DE             ; 1:11      index i 103
+    ex   DE, HL         ; 1:4       index i 103
+    ld   HL, (idx103)   ; 3:16      index i 103 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       push_addxloop(-4) 103
-    ld    E,(HL)        ; 1:7       push_addxloop(-4) 103
-    inc   L             ; 1:4       push_addxloop(-4) 103
-    ld    D,(HL)        ; 1:7       push_addxloop(-4) 103 DE = index
-    push HL             ; 1:11      push_addxloop(-4) 103
-    ld   HL, 1          ; 3:10      push_addxloop(-4) 103 HL = -stop = -(-1)
-    add  HL, DE         ; 1:11      push_addxloop(-4) 103 index-stop
-    ld   BC, -4         ; 3:10      push_addxloop(-4) 103 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(-4) 103 index-stop+step
-    jr   nc, xleave103-1; 2:7/12    push_addxloop(-4) 103 -step
-    ex   DE, HL         ; 1:4       push_addxloop(-4) 103
-    add  HL, BC         ; 1:11      push_addxloop(-4) 103 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(-4) 103    
-    pop  HL             ; 1:10      push_addxloop(-4) 103
-    ld  (HL),D          ; 1:7       push_addxloop(-4) 103
-    dec   L             ; 1:4       push_addxloop(-4) 103
-    ld  (HL),E          ; 1:7       push_addxloop(-4) 103
-    exx                 ; 1:4       push_addxloop(-4) 103    
-    jp   xdo103         ; 3:10      push_addxloop(-4) 103 ( -- ) R:( index -- index+-4 )
-    pop  HL             ; 1:10      push_addxloop(-4) 103
-xleave103:              ;           push_addxloop(-4) 103    
-    inc  HL             ; 1:6       push_addxloop(-4) 103    
-    exx                 ; 1:4       push_addxloop(-4) 103 ( -- ) R:( index -- )
-xexit103 EQU $ 
+    push HL             ; 1:11      -4 +xloop 103
+idx103 EQU $+1          ;           -4 +xloop 103
+    ld   HL, 0x0000     ; 3:10      -4 +xloop 103
+    ld   BC, -4         ; 3:10      -4 +xloop 103 BC = step
+    add  HL, BC         ; 1:11      -4 +xloop 103 HL = index+step
+    ld  (idx103), HL    ; 3:16      -4 +xloop 103 save index
+    ld    A, low -2     ; 2:7       -4 +xloop 103
+    sub   L             ; 1:4       -4 +xloop 103
+    ld    L, A          ; 1:4       -4 +xloop 103
+    ld    A, high -2    ; 2:7       -4 +xloop 103
+    sbc   A, H          ; 1:4       -4 +xloop 103
+    ld    H, A          ; 1:4       -4 +xloop 103 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -4 +xloop 103 HL = stop-index
+    pop  HL             ; 1:10      -4 +xloop 103
+    jp    c, xdo103     ; 3:10      -4 +xloop 103 negative step
+xleave103:              ;           -4 +xloop 103
+xexit103:               ;           -4 +xloop 103 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -720,44 +548,26 @@ xexit103 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(0,0) 104
-    dec  HL             ; 1:6       xdo(0,0) 104
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 104
-    dec   L             ; 1:4       xdo(0,0) 104
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 104
-    exx                 ; 1:4       xdo(0,0) 104 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 104
+    ld  (idx104),BC     ; 4:20      xdo(0,0) 104
 xdo104:                 ;           xdo(0,0) 104 
-    exx                 ; 1:4       index xi 104
-    ld    E,(HL)        ; 1:7       index xi 104
-    inc   L             ; 1:4       index xi 104
-    ld    D,(HL)        ; 1:7       index xi 104
-    push DE             ; 1:11      index xi 104
-    dec   L             ; 1:4       index xi 104
-    exx                 ; 1:4       index xi 104 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 104
-    ex  (SP),HL         ; 1:19      index xi 104 ( -- x ) 
+    push DE             ; 1:11      index i 104
+    ex   DE, HL         ; 1:4       index i 104
+    ld   HL, (idx104)   ; 3:16      index i 104 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
                         ;           push_addxloop(-1) 104
-    exx                 ; 1:4       -1 +xloop(0,0) 104
-    ld    E,(HL)        ; 1:7       -1 +xloop(0,0) 104
-    inc   L             ; 1:4       -1 +xloop(0,0) 104
-    ld    D,(HL)        ; 1:7       -1 +xloop(0,0) 104
-    ld    A, low 0      ; 2:7       -1 +xloop(0,0) 104
-    xor   E             ; 1:4       -1 +xloop(0,0) 104
-    jr   nz, $+7        ; 2:7/12    -1 +xloop(0,0) 104
-    ld    A, high 0     ; 2:7       -1 +xloop(0,0) 104
-    xor   D             ; 1:4       -1 +xloop(0,0) 104
-    jr    z, xleave104  ; 2:7/12    -1 +xloop(0,0) 104 exit
-    dec  DE             ; 1:6       -1 +xloop(0,0) 104 index--
-    ld  (HL), D         ; 1:7       -1 +xloop(0,0) 104
-    dec   L             ; 1:4       -1 +xloop(0,0) 104
-    ld  (HL), E         ; 1:6       -1 +xloop(0,0) 104
-    exx                 ; 1:4       -1 +xloop(0,0) 104
-    jp   xdo104         ; 3:10      -1 +xloop(0,0) 104
-xleave104:              ;           -1 +xloop(0,0) 104
-    inc  HL             ; 1:6       -1 +xloop(0,0) 104
-    exx                 ; 1:4       -1 +xloop(0,0) 104 R:( index -- )
-xexit104 EQU $ 
+idx104 EQU $+1          ;           -1 +xloop 104
+    ld   BC, 0x0000     ; 3:10      -1 +xloop 104 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       -1 +xloop 104
+    xor  low 0          ; 2:7       -1 +xloop 104
+    ld    A, B          ; 1:4       -1 +xloop 104
+    dec  BC             ; 1:6       -1 +xloop 104 index--
+    ld  (idx104),BC     ; 4:20      -1 +xloop 104 save index
+    jp   nz, xdo104     ; 3:10      -1 +xloop 104
+    xor  high 0         ; 2:7       -1 +xloop 104
+    jp   nz, xdo104     ; 3:10      -1 +xloop 104
+xleave104:              ;           -1 +xloop 104
+xexit104:               ;           xloop 104 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -767,47 +577,30 @@ xexit104 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(0,0) 105
-    dec  HL             ; 1:6       xdo(0,0) 105
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 105
-    dec   L             ; 1:4       xdo(0,0) 105
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 105
-    exx                 ; 1:4       xdo(0,0) 105 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 105
+    ld  (idx105),BC     ; 4:20      xdo(0,0) 105
 xdo105:                 ;           xdo(0,0) 105 
-    exx                 ; 1:4       index xi 105
-    ld    E,(HL)        ; 1:7       index xi 105
-    inc   L             ; 1:4       index xi 105
-    ld    D,(HL)        ; 1:7       index xi 105
-    push DE             ; 1:11      index xi 105
-    dec   L             ; 1:4       index xi 105
-    exx                 ; 1:4       index xi 105 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 105
-    ex  (SP),HL         ; 1:19      index xi 105 ( -- x ) 
+    push DE             ; 1:11      index i 105
+    ex   DE, HL         ; 1:4       index i 105
+    ld   HL, (idx105)   ; 3:16      index i 105 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       push_addxloop(-2) 105
-    ld    E,(HL)        ; 1:7       push_addxloop(-2) 105
-    inc   L             ; 1:4       push_addxloop(-2) 105
-    ld    D,(HL)        ; 1:7       push_addxloop(-2) 105 DE = index
-    push HL             ; 1:11      push_addxloop(-2) 105
-    ld   HL, 0          ; 3:10      push_addxloop(-2) 105 HL = -stop = -(0)
-    add  HL, DE         ; 1:11      push_addxloop(-2) 105 index-stop
-    ld   BC, -2         ; 3:10      push_addxloop(-2) 105 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(-2) 105 index-stop+step
-    jr   nc, xleave105-1; 2:7/12    push_addxloop(-2) 105 -step
-    ex   DE, HL         ; 1:4       push_addxloop(-2) 105
-    add  HL, BC         ; 1:11      push_addxloop(-2) 105 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(-2) 105    
-    pop  HL             ; 1:10      push_addxloop(-2) 105
-    ld  (HL),D          ; 1:7       push_addxloop(-2) 105
-    dec   L             ; 1:4       push_addxloop(-2) 105
-    ld  (HL),E          ; 1:7       push_addxloop(-2) 105
-    exx                 ; 1:4       push_addxloop(-2) 105    
-    jp   xdo105         ; 3:10      push_addxloop(-2) 105 ( -- ) R:( index -- index+-2 )
-    pop  HL             ; 1:10      push_addxloop(-2) 105
-xleave105:              ;           push_addxloop(-2) 105    
-    inc  HL             ; 1:6       push_addxloop(-2) 105    
-    exx                 ; 1:4       push_addxloop(-2) 105 ( -- ) R:( index -- )
-xexit105 EQU $ 
+    push HL             ; 1:11      -2 +xloop 105
+idx105 EQU $+1          ;           -2 +xloop 105
+    ld   HL, 0x0000     ; 3:10      -2 +xloop 105
+    ld   BC, -2         ; 3:10      -2 +xloop 105 BC = step
+    add  HL, BC         ; 1:11      -2 +xloop 105 HL = index+step
+    ld  (idx105), HL    ; 3:16      -2 +xloop 105 save index
+    ld    A, low -1     ; 2:7       -2 +xloop 105
+    sub   L             ; 1:4       -2 +xloop 105
+    ld    L, A          ; 1:4       -2 +xloop 105
+    ld    A, high -1    ; 2:7       -2 +xloop 105
+    sbc   A, H          ; 1:4       -2 +xloop 105
+    ld    H, A          ; 1:4       -2 +xloop 105 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -2 +xloop 105 HL = stop-index
+    pop  HL             ; 1:10      -2 +xloop 105
+    jp    c, xdo105     ; 3:10      -2 +xloop 105 negative step
+xleave105:              ;           -2 +xloop 105
+xexit105:               ;           -2 +xloop 105 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -817,47 +610,30 @@ xexit105 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(0,0) 106
-    dec  HL             ; 1:6       xdo(0,0) 106
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 106
-    dec   L             ; 1:4       xdo(0,0) 106
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 106
-    exx                 ; 1:4       xdo(0,0) 106 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 106
+    ld  (idx106),BC     ; 4:20      xdo(0,0) 106
 xdo106:                 ;           xdo(0,0) 106 
-    exx                 ; 1:4       index xi 106
-    ld    E,(HL)        ; 1:7       index xi 106
-    inc   L             ; 1:4       index xi 106
-    ld    D,(HL)        ; 1:7       index xi 106
-    push DE             ; 1:11      index xi 106
-    dec   L             ; 1:4       index xi 106
-    exx                 ; 1:4       index xi 106 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 106
-    ex  (SP),HL         ; 1:19      index xi 106 ( -- x ) 
+    push DE             ; 1:11      index i 106
+    ex   DE, HL         ; 1:4       index i 106
+    ld   HL, (idx106)   ; 3:16      index i 106 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       push_addxloop(-4) 106
-    ld    E,(HL)        ; 1:7       push_addxloop(-4) 106
-    inc   L             ; 1:4       push_addxloop(-4) 106
-    ld    D,(HL)        ; 1:7       push_addxloop(-4) 106 DE = index
-    push HL             ; 1:11      push_addxloop(-4) 106
-    ld   HL, 0          ; 3:10      push_addxloop(-4) 106 HL = -stop = -(0)
-    add  HL, DE         ; 1:11      push_addxloop(-4) 106 index-stop
-    ld   BC, -4         ; 3:10      push_addxloop(-4) 106 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(-4) 106 index-stop+step
-    jr   nc, xleave106-1; 2:7/12    push_addxloop(-4) 106 -step
-    ex   DE, HL         ; 1:4       push_addxloop(-4) 106
-    add  HL, BC         ; 1:11      push_addxloop(-4) 106 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(-4) 106    
-    pop  HL             ; 1:10      push_addxloop(-4) 106
-    ld  (HL),D          ; 1:7       push_addxloop(-4) 106
-    dec   L             ; 1:4       push_addxloop(-4) 106
-    ld  (HL),E          ; 1:7       push_addxloop(-4) 106
-    exx                 ; 1:4       push_addxloop(-4) 106    
-    jp   xdo106         ; 3:10      push_addxloop(-4) 106 ( -- ) R:( index -- index+-4 )
-    pop  HL             ; 1:10      push_addxloop(-4) 106
-xleave106:              ;           push_addxloop(-4) 106    
-    inc  HL             ; 1:6       push_addxloop(-4) 106    
-    exx                 ; 1:4       push_addxloop(-4) 106 ( -- ) R:( index -- )
-xexit106 EQU $ 
+    push HL             ; 1:11      -4 +xloop 106
+idx106 EQU $+1          ;           -4 +xloop 106
+    ld   HL, 0x0000     ; 3:10      -4 +xloop 106
+    ld   BC, -4         ; 3:10      -4 +xloop 106 BC = step
+    add  HL, BC         ; 1:11      -4 +xloop 106 HL = index+step
+    ld  (idx106), HL    ; 3:16      -4 +xloop 106 save index
+    ld    A, low -1     ; 2:7       -4 +xloop 106
+    sub   L             ; 1:4       -4 +xloop 106
+    ld    L, A          ; 1:4       -4 +xloop 106
+    ld    A, high -1    ; 2:7       -4 +xloop 106
+    sbc   A, H          ; 1:4       -4 +xloop 106
+    ld    H, A          ; 1:4       -4 +xloop 106 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -4 +xloop 106 HL = stop-index
+    pop  HL             ; 1:10      -4 +xloop 106
+    jp    c, xdo106     ; 3:10      -4 +xloop 106 negative step
+xleave106:              ;           -4 +xloop 106
+xexit106:               ;           -4 +xloop 106 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -868,44 +644,26 @@ xexit106 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(2,-1) 107
-    dec  HL             ; 1:6       xdo(2,-1) 107
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 107
-    dec   L             ; 1:4       xdo(2,-1) 107
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 107
-    exx                 ; 1:4       xdo(2,-1) 107 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 107
+    ld  (idx107),BC     ; 4:20      xdo(2,-1) 107
 xdo107:                 ;           xdo(2,-1) 107 
-    exx                 ; 1:4       index xi 107
-    ld    E,(HL)        ; 1:7       index xi 107
-    inc   L             ; 1:4       index xi 107
-    ld    D,(HL)        ; 1:7       index xi 107
-    push DE             ; 1:11      index xi 107
-    dec   L             ; 1:4       index xi 107
-    exx                 ; 1:4       index xi 107 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 107
-    ex  (SP),HL         ; 1:19      index xi 107 ( -- x ) 
+    push DE             ; 1:11      index i 107
+    ex   DE, HL         ; 1:4       index i 107
+    ld   HL, (idx107)   ; 3:16      index i 107 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
                         ;           push_addxloop(1) 107
-    exx                 ; 1:4       xloop(2,-1) 107
-    ld    E,(HL)        ; 1:7       xloop(2,-1) 107
-    inc   L             ; 1:4       xloop(2,-1) 107
-    ld    D,(HL)        ; 1:7       xloop(2,-1) 107
-    inc  DE             ; 1:6       xloop(2,-1) 107 index++
-    ld    A, low 2      ; 2:7       xloop(2,-1) 107
-    xor   E             ; 1:4       xloop(2,-1) 107
-    jr   nz, $+7        ; 2:7/12    xloop(2,-1) 107
-    ld    A, high 2     ; 2:7       xloop(2,-1) 107
-    xor   D             ; 1:4       xloop(2,-1) 107
-    jr    z, xleave107  ; 2:7/12    xloop(2,-1) 107 exit
-    ld  (HL), D         ; 1:7       xloop(2,-1) 107
-    dec   L             ; 1:4       xloop(2,-1) 107
-    ld  (HL), E         ; 1:6       xloop(2,-1) 107
-    exx                 ; 1:4       xloop(2,-1) 107
-    jp   xdo107         ; 3:10      xloop(2,-1) 107
-xleave107:              ;           xloop(2,-1) 107
-    inc  HL             ; 1:6       xloop(2,-1) 107
-    exx                 ; 1:4       xloop(2,-1) 107 R:( index -- )
-xexit107 EQU $ 
+idx107 EQU $+1          ;           xloop 107
+    ld   BC, 0x0000     ; 3:10      xloop 107 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 107 index++
+    ld  (idx107),BC     ; 4:20      xloop 107 save index
+    ld    A, C          ; 1:4       xloop 107
+    xor  low 2          ; 2:7       xloop 107
+    jp   nz, xdo107     ; 3:10      xloop 107
+    ld    A, B          ; 1:4       xloop 107
+    xor  high 2         ; 2:7       xloop 107
+    jp   nz, xdo107     ; 3:10      xloop 107
+xleave107:              ;           xloop 107
+xexit107:               ;           xloop 107 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -915,47 +673,29 @@ xexit107 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(2,-1) 108
-    dec  HL             ; 1:6       xdo(2,-1) 108
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 108
-    dec   L             ; 1:4       xdo(2,-1) 108
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 108
-    exx                 ; 1:4       xdo(2,-1) 108 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 108
+    ld  (idx108),BC     ; 4:20      xdo(2,-1) 108
 xdo108:                 ;           xdo(2,-1) 108 
-    exx                 ; 1:4       index xi 108
-    ld    E,(HL)        ; 1:7       index xi 108
-    inc   L             ; 1:4       index xi 108
-    ld    D,(HL)        ; 1:7       index xi 108
-    push DE             ; 1:11      index xi 108
-    dec   L             ; 1:4       index xi 108
-    exx                 ; 1:4       index xi 108 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 108
-    ex  (SP),HL         ; 1:19      index xi 108 ( -- x ) 
+    push DE             ; 1:11      index i 108
+    ex   DE, HL         ; 1:4       index i 108
+    ld   HL, (idx108)   ; 3:16      index i 108 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
                         ;           push_addxloop(2) 108
-    exx                 ; 1:4       2 +xloop 108
-    ld    E,(HL)        ; 1:7       2 +xloop 108
-    inc   L             ; 1:4       2 +xloop 108
-    ld    D,(HL)        ; 1:7       2 +xloop 108 DE = index
-    inc  DE             ; 1:6       2 +xloop 108
-    inc  DE             ; 1:6       2 +xloop 108 DE = index+2
-    ld    A, E          ; 1:4       2 +xloop 108    
-    sub  low 2          ; 2:7       2 +xloop 108 lo index+2-stop
+idx108 EQU $+1          ;           2 +xloop 108
+    ld   BC, 0x0000     ; 3:10      2 +xloop 108 idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +xloop 108 index++
+    inc  BC             ; 1:6       2 +xloop 108 index++
+    ld  (idx108),BC     ; 4:20      2 +xloop 108 save index
+    ld    A, C          ; 1:4       2 +xloop 108
+    sub  low 2          ; 2:7       2 +xloop 108
     rra                 ; 1:4       2 +xloop 108
     add   A, A          ; 1:4       2 +xloop 108 and 0xFE with save carry
-    jr   nz, $+7        ; 2:7/12    2 +xloop 108
-    ld    A, D          ; 1:4       2 +xloop 108
-    sbc   A, high 2     ; 2:7       2 +xloop 108 lo index+2-stop
-    jr    z, xleave108  ; 2:7/12    2 +xloop 108
-    ld  (HL),D          ; 1:7       2 +xloop 108
-    dec   L             ; 1:4       2 +xloop 108
-    ld  (HL),E          ; 1:7       2 +xloop 108
-    exx                 ; 1:4       2 +xloop 108
-    jp    p, xdo108     ; 3:10      2 +xloop 108 ( -- ) R:( stop index -- stop index+ )
+    jp   nz, xdo108     ; 3:10      2 +xloop 108
+    ld    A, B          ; 1:4       2 +xloop 108
+    sbc   A, high 2     ; 2:7       2 +xloop 108
+    jp   nz, xdo108     ; 3:10      2 +xloop 108
 xleave108:              ;           2 +xloop 108
-    inc  HL             ; 1:6       2 +xloop 108
-    exx                 ; 1:4       2 +xloop 108
-xexit108 EQU $ 
+xexit108:               ;           2 +xloop 108 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -965,47 +705,30 @@ xexit108 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(2,-1) 109
-    dec  HL             ; 1:6       xdo(2,-1) 109
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 109
-    dec   L             ; 1:4       xdo(2,-1) 109
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 109
-    exx                 ; 1:4       xdo(2,-1) 109 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 109
+    ld  (idx109),BC     ; 4:20      xdo(2,-1) 109
 xdo109:                 ;           xdo(2,-1) 109 
-    exx                 ; 1:4       index xi 109
-    ld    E,(HL)        ; 1:7       index xi 109
-    inc   L             ; 1:4       index xi 109
-    ld    D,(HL)        ; 1:7       index xi 109
-    push DE             ; 1:11      index xi 109
-    dec   L             ; 1:4       index xi 109
-    exx                 ; 1:4       index xi 109 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 109
-    ex  (SP),HL         ; 1:19      index xi 109 ( -- x ) 
+    push DE             ; 1:11      index i 109
+    ex   DE, HL         ; 1:4       index i 109
+    ld   HL, (idx109)   ; 3:16      index i 109 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       push_addxloop(4) 109
-    ld    E,(HL)        ; 1:7       push_addxloop(4) 109
-    inc   L             ; 1:4       push_addxloop(4) 109
-    ld    D,(HL)        ; 1:7       push_addxloop(4) 109 DE = index
-    push HL             ; 1:11      push_addxloop(4) 109
-    ld   HL, -2         ; 3:10      push_addxloop(4) 109 HL = -stop = -(2)
-    add  HL, DE         ; 1:11      push_addxloop(4) 109 index-stop
-    ld   BC, 4          ; 3:10      push_addxloop(4) 109 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(4) 109 index-stop+step
-    jr    c, xleave109-1; 2:7/12    push_addxloop(4) 109 +step
-    ex   DE, HL         ; 1:4       push_addxloop(4) 109
-    add  HL, BC         ; 1:11      push_addxloop(4) 109 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(4) 109    
-    pop  HL             ; 1:10      push_addxloop(4) 109
-    ld  (HL),D          ; 1:7       push_addxloop(4) 109
-    dec   L             ; 1:4       push_addxloop(4) 109
-    ld  (HL),E          ; 1:7       push_addxloop(4) 109
-    exx                 ; 1:4       push_addxloop(4) 109    
-    jp   xdo109         ; 3:10      push_addxloop(4) 109 ( -- ) R:( index -- index+4 )
-    pop  HL             ; 1:10      push_addxloop(4) 109
-xleave109:              ;           push_addxloop(4) 109    
-    inc  HL             ; 1:6       push_addxloop(4) 109    
-    exx                 ; 1:4       push_addxloop(4) 109 ( -- ) R:( index -- )
-xexit109 EQU $ 
+    push HL             ; 1:11      4 +xloop 109
+idx109 EQU $+1          ;           4 +xloop 109
+    ld   HL, 0x0000     ; 3:10      4 +xloop 109
+    ld   BC, 4          ; 3:10      4 +xloop 109 BC = step
+    add  HL, BC         ; 1:11      4 +xloop 109 HL = index+step
+    ld  (idx109), HL    ; 3:16      4 +xloop 109 save index
+    ld    A, low 1      ; 2:7       4 +xloop 109
+    sub   L             ; 1:4       4 +xloop 109
+    ld    L, A          ; 1:4       4 +xloop 109
+    ld    A, high 1     ; 2:7       4 +xloop 109
+    sbc   A, H          ; 1:4       4 +xloop 109
+    ld    H, A          ; 1:4       4 +xloop 109 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      4 +xloop 109 HL = stop-index
+    pop  HL             ; 1:10      4 +xloop 109
+    jp   nc, xdo109     ; 3:10      4 +xloop 109 positive step
+xleave109:              ;           4 +xloop 109
+xexit109:               ;           4 +xloop 109 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1020,22 +743,12 @@ xexit109 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(-1,1) 110
-    dec  HL             ; 1:6       xdo(-1,1) 110
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 110
-    dec   L             ; 1:4       xdo(-1,1) 110
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 110
-    exx                 ; 1:4       xdo(-1,1) 110 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 110
+    ld  (idx110),BC     ; 4:20      xdo(-1,1) 110
 xdo110:                 ;           xdo(-1,1) 110 
-    exx                 ; 1:4       index xi 110
-    ld    E,(HL)        ; 1:7       index xi 110
-    inc   L             ; 1:4       index xi 110
-    ld    D,(HL)        ; 1:7       index xi 110
-    push DE             ; 1:11      index xi 110
-    dec   L             ; 1:4       index xi 110
-    exx                 ; 1:4       index xi 110 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 110
-    ex  (SP),HL         ; 1:19      index xi 110 ( -- x ) 
+    push DE             ; 1:11      index i 110
+    ex   DE, HL         ; 1:4       index i 110
+    ld   HL, (idx110)   ; 3:16      index i 110 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1057,32 +770,22 @@ xdo110:                 ;           xdo(-1,1) 110
     ld   DE, string111  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 110
-    inc  L              ; 1:4       xleave 110
     jp   xleave110      ;           xleave 110 
 else101  EQU $          ;           = endif
 endif101: 
                         ;           push_addxloop(1) 110
-    exx                 ; 1:4       xloop(-1,1) 110
-    ld    E,(HL)        ; 1:7       xloop(-1,1) 110
-    inc   L             ; 1:4       xloop(-1,1) 110
-    ld    D,(HL)        ; 1:7       xloop(-1,1) 110
-    inc  DE             ; 1:6       xloop(-1,1) 110 index++
-    ld    A, low -1     ; 2:7       xloop(-1,1) 110
-    xor   E             ; 1:4       xloop(-1,1) 110
-    jr   nz, $+7        ; 2:7/12    xloop(-1,1) 110
-    ld    A, high -1    ; 2:7       xloop(-1,1) 110
-    xor   D             ; 1:4       xloop(-1,1) 110
-    jr    z, xleave110  ; 2:7/12    xloop(-1,1) 110 exit
-    ld  (HL), D         ; 1:7       xloop(-1,1) 110
-    dec   L             ; 1:4       xloop(-1,1) 110
-    ld  (HL), E         ; 1:6       xloop(-1,1) 110
-    exx                 ; 1:4       xloop(-1,1) 110
-    jp   xdo110         ; 3:10      xloop(-1,1) 110
-xleave110:              ;           xloop(-1,1) 110
-    inc  HL             ; 1:6       xloop(-1,1) 110
-    exx                 ; 1:4       xloop(-1,1) 110 R:( index -- )
-xexit110 EQU $ 
+idx110 EQU $+1          ;           xloop 110
+    ld   BC, 0x0000     ; 3:10      xloop 110 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 110 index++
+    ld  (idx110),BC     ; 4:20      xloop 110 save index
+    ld    A, C          ; 1:4       xloop 110
+    xor  low -1         ; 2:7       xloop 110
+    jp   nz, xdo110     ; 3:10      xloop 110
+    ld    A, B          ; 1:4       xloop 110
+    xor  high -1        ; 2:7       xloop 110
+    jp   nz, xdo110     ; 3:10      xloop 110
+xleave110:              ;           xloop 110
+xexit110:               ;           xloop 110 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1094,22 +797,12 @@ xexit110 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(-1,1) 111
-    dec  HL             ; 1:6       xdo(-1,1) 111
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 111
-    dec   L             ; 1:4       xdo(-1,1) 111
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 111
-    exx                 ; 1:4       xdo(-1,1) 111 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 111
+    ld  (idx111),BC     ; 4:20      xdo(-1,1) 111
 xdo111:                 ;           xdo(-1,1) 111 
-    exx                 ; 1:4       index xi 111
-    ld    E,(HL)        ; 1:7       index xi 111
-    inc   L             ; 1:4       index xi 111
-    ld    D,(HL)        ; 1:7       index xi 111
-    push DE             ; 1:11      index xi 111
-    dec   L             ; 1:4       index xi 111
-    exx                 ; 1:4       index xi 111 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 111
-    ex  (SP),HL         ; 1:19      index xi 111 ( -- x ) 
+    push DE             ; 1:11      index i 111
+    ex   DE, HL         ; 1:4       index i 111
+    ld   HL, (idx111)   ; 3:16      index i 111 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1131,35 +824,25 @@ xdo111:                 ;           xdo(-1,1) 111
     ld   DE, string113  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 111
-    inc  L              ; 1:4       xleave 111
     jp   xleave111      ;           xleave 111 
 else102  EQU $          ;           = endif
 endif102: 
                         ;           push_addxloop(2) 111
-    exx                 ; 1:4       2 +xloop 111
-    ld    E,(HL)        ; 1:7       2 +xloop 111
-    inc   L             ; 1:4       2 +xloop 111
-    ld    D,(HL)        ; 1:7       2 +xloop 111 DE = index
-    inc  DE             ; 1:6       2 +xloop 111
-    inc  DE             ; 1:6       2 +xloop 111 DE = index+2
-    ld    A, E          ; 1:4       2 +xloop 111    
-    sub  low -1         ; 2:7       2 +xloop 111 lo index+2-stop
+idx111 EQU $+1          ;           2 +xloop 111
+    ld   BC, 0x0000     ; 3:10      2 +xloop 111 idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +xloop 111 index++
+    inc  BC             ; 1:6       2 +xloop 111 index++
+    ld  (idx111),BC     ; 4:20      2 +xloop 111 save index
+    ld    A, C          ; 1:4       2 +xloop 111
+    sub  low -1         ; 2:7       2 +xloop 111
     rra                 ; 1:4       2 +xloop 111
     add   A, A          ; 1:4       2 +xloop 111 and 0xFE with save carry
-    jr   nz, $+7        ; 2:7/12    2 +xloop 111
-    ld    A, D          ; 1:4       2 +xloop 111
-    sbc   A, high -1    ; 2:7       2 +xloop 111 lo index+2-stop
-    jr    z, xleave111  ; 2:7/12    2 +xloop 111
-    ld  (HL),D          ; 1:7       2 +xloop 111
-    dec   L             ; 1:4       2 +xloop 111
-    ld  (HL),E          ; 1:7       2 +xloop 111
-    exx                 ; 1:4       2 +xloop 111
-    jp    p, xdo111     ; 3:10      2 +xloop 111 ( -- ) R:( stop index -- stop index+ )
+    jp   nz, xdo111     ; 3:10      2 +xloop 111
+    ld    A, B          ; 1:4       2 +xloop 111
+    sbc   A, high -1    ; 2:7       2 +xloop 111
+    jp   nz, xdo111     ; 3:10      2 +xloop 111
 xleave111:              ;           2 +xloop 111
-    inc  HL             ; 1:6       2 +xloop 111
-    exx                 ; 1:4       2 +xloop 111
-xexit111 EQU $ 
+xexit111:               ;           2 +xloop 111 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1171,22 +854,12 @@ xexit111 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(-1,1) 112
-    dec  HL             ; 1:6       xdo(-1,1) 112
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 112
-    dec   L             ; 1:4       xdo(-1,1) 112
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 112
-    exx                 ; 1:4       xdo(-1,1) 112 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 112
+    ld  (idx112),BC     ; 4:20      xdo(-1,1) 112
 xdo112:                 ;           xdo(-1,1) 112 
-    exx                 ; 1:4       index xi 112
-    ld    E,(HL)        ; 1:7       index xi 112
-    inc   L             ; 1:4       index xi 112
-    ld    D,(HL)        ; 1:7       index xi 112
-    push DE             ; 1:11      index xi 112
-    dec   L             ; 1:4       index xi 112
-    exx                 ; 1:4       index xi 112 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 112
-    ex  (SP),HL         ; 1:19      index xi 112 ( -- x ) 
+    push DE             ; 1:11      index i 112
+    ex   DE, HL         ; 1:4       index i 112
+    ld   HL, (idx112)   ; 3:16      index i 112 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1208,35 +881,26 @@ xdo112:                 ;           xdo(-1,1) 112
     ld   DE, string115  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 112
-    inc  L              ; 1:4       xleave 112
     jp   xleave112      ;           xleave 112 
 else103  EQU $          ;           = endif
 endif103: 
-    exx                 ; 1:4       push_addxloop(4) 112
-    ld    E,(HL)        ; 1:7       push_addxloop(4) 112
-    inc   L             ; 1:4       push_addxloop(4) 112
-    ld    D,(HL)        ; 1:7       push_addxloop(4) 112 DE = index
-    push HL             ; 1:11      push_addxloop(4) 112
-    ld   HL, 1          ; 3:10      push_addxloop(4) 112 HL = -stop = -(-1)
-    add  HL, DE         ; 1:11      push_addxloop(4) 112 index-stop
-    ld   BC, 4          ; 3:10      push_addxloop(4) 112 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(4) 112 index-stop+step
-    jr    c, xleave112-1; 2:7/12    push_addxloop(4) 112 +step
-    ex   DE, HL         ; 1:4       push_addxloop(4) 112
-    add  HL, BC         ; 1:11      push_addxloop(4) 112 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(4) 112    
-    pop  HL             ; 1:10      push_addxloop(4) 112
-    ld  (HL),D          ; 1:7       push_addxloop(4) 112
-    dec   L             ; 1:4       push_addxloop(4) 112
-    ld  (HL),E          ; 1:7       push_addxloop(4) 112
-    exx                 ; 1:4       push_addxloop(4) 112    
-    jp   xdo112         ; 3:10      push_addxloop(4) 112 ( -- ) R:( index -- index+4 )
-    pop  HL             ; 1:10      push_addxloop(4) 112
-xleave112:              ;           push_addxloop(4) 112    
-    inc  HL             ; 1:6       push_addxloop(4) 112    
-    exx                 ; 1:4       push_addxloop(4) 112 ( -- ) R:( index -- )
-xexit112 EQU $ 
+    push HL             ; 1:11      4 +xloop 112
+idx112 EQU $+1          ;           4 +xloop 112
+    ld   HL, 0x0000     ; 3:10      4 +xloop 112
+    ld   BC, 4          ; 3:10      4 +xloop 112 BC = step
+    add  HL, BC         ; 1:11      4 +xloop 112 HL = index+step
+    ld  (idx112), HL    ; 3:16      4 +xloop 112 save index
+    ld    A, low -2     ; 2:7       4 +xloop 112
+    sub   L             ; 1:4       4 +xloop 112
+    ld    L, A          ; 1:4       4 +xloop 112
+    ld    A, high -2    ; 2:7       4 +xloop 112
+    sbc   A, H          ; 1:4       4 +xloop 112
+    ld    H, A          ; 1:4       4 +xloop 112 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      4 +xloop 112 HL = stop-index
+    pop  HL             ; 1:10      4 +xloop 112
+    jp   nc, xdo112     ; 3:10      4 +xloop 112 positive step
+xleave112:              ;           4 +xloop 112
+xexit112:               ;           4 +xloop 112 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1249,22 +913,12 @@ xexit112 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(0,0) 113
-    dec  HL             ; 1:6       xdo(0,0) 113
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 113
-    dec   L             ; 1:4       xdo(0,0) 113
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 113
-    exx                 ; 1:4       xdo(0,0) 113 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 113
+    ld  (idx113),BC     ; 4:20      xdo(0,0) 113
 xdo113:                 ;           xdo(0,0) 113 
-    exx                 ; 1:4       index xi 113
-    ld    E,(HL)        ; 1:7       index xi 113
-    inc   L             ; 1:4       index xi 113
-    ld    D,(HL)        ; 1:7       index xi 113
-    push DE             ; 1:11      index xi 113
-    dec   L             ; 1:4       index xi 113
-    exx                 ; 1:4       index xi 113 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 113
-    ex  (SP),HL         ; 1:19      index xi 113 ( -- x ) 
+    push DE             ; 1:11      index i 113
+    ex   DE, HL         ; 1:4       index i 113
+    ld   HL, (idx113)   ; 3:16      index i 113 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1286,32 +940,22 @@ xdo113:                 ;           xdo(0,0) 113
     ld   DE, string117  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 113
-    inc  L              ; 1:4       xleave 113
     jp   xleave113      ;           xleave 113 
 else104  EQU $          ;           = endif
 endif104: 
                         ;           push_addxloop(1) 113
-    exx                 ; 1:4       xloop(0,0) 113
-    ld    E,(HL)        ; 1:7       xloop(0,0) 113
-    inc   L             ; 1:4       xloop(0,0) 113
-    ld    D,(HL)        ; 1:7       xloop(0,0) 113
-    inc  DE             ; 1:6       xloop(0,0) 113 index++
-    ld    A, low 0      ; 2:7       xloop(0,0) 113
-    xor   E             ; 1:4       xloop(0,0) 113
-    jr   nz, $+7        ; 2:7/12    xloop(0,0) 113
-    ld    A, high 0     ; 2:7       xloop(0,0) 113
-    xor   D             ; 1:4       xloop(0,0) 113
-    jr    z, xleave113  ; 2:7/12    xloop(0,0) 113 exit
-    ld  (HL), D         ; 1:7       xloop(0,0) 113
-    dec   L             ; 1:4       xloop(0,0) 113
-    ld  (HL), E         ; 1:6       xloop(0,0) 113
-    exx                 ; 1:4       xloop(0,0) 113
-    jp   xdo113         ; 3:10      xloop(0,0) 113
-xleave113:              ;           xloop(0,0) 113
-    inc  HL             ; 1:6       xloop(0,0) 113
-    exx                 ; 1:4       xloop(0,0) 113 R:( index -- )
-xexit113 EQU $ 
+idx113 EQU $+1          ;           xloop 113
+    ld   BC, 0x0000     ; 3:10      xloop 113 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 113 index++
+    ld  (idx113),BC     ; 4:20      xloop 113 save index
+    ld    A, C          ; 1:4       xloop 113
+    xor  low 0          ; 2:7       xloop 113
+    jp   nz, xdo113     ; 3:10      xloop 113
+    ld    A, B          ; 1:4       xloop 113
+    xor  high 0         ; 2:7       xloop 113
+    jp   nz, xdo113     ; 3:10      xloop 113
+xleave113:              ;           xloop 113
+xexit113:               ;           xloop 113 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1323,22 +967,12 @@ xexit113 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(0,0) 114
-    dec  HL             ; 1:6       xdo(0,0) 114
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 114
-    dec   L             ; 1:4       xdo(0,0) 114
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 114
-    exx                 ; 1:4       xdo(0,0) 114 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 114
+    ld  (idx114),BC     ; 4:20      xdo(0,0) 114
 xdo114:                 ;           xdo(0,0) 114 
-    exx                 ; 1:4       index xi 114
-    ld    E,(HL)        ; 1:7       index xi 114
-    inc   L             ; 1:4       index xi 114
-    ld    D,(HL)        ; 1:7       index xi 114
-    push DE             ; 1:11      index xi 114
-    dec   L             ; 1:4       index xi 114
-    exx                 ; 1:4       index xi 114 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 114
-    ex  (SP),HL         ; 1:19      index xi 114 ( -- x ) 
+    push DE             ; 1:11      index i 114
+    ex   DE, HL         ; 1:4       index i 114
+    ld   HL, (idx114)   ; 3:16      index i 114 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1360,35 +994,25 @@ xdo114:                 ;           xdo(0,0) 114
     ld   DE, string119  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 114
-    inc  L              ; 1:4       xleave 114
     jp   xleave114      ;           xleave 114 
 else105  EQU $          ;           = endif
 endif105: 
                         ;           push_addxloop(2) 114
-    exx                 ; 1:4       2 +xloop 114
-    ld    E,(HL)        ; 1:7       2 +xloop 114
-    inc   L             ; 1:4       2 +xloop 114
-    ld    D,(HL)        ; 1:7       2 +xloop 114 DE = index
-    inc  DE             ; 1:6       2 +xloop 114
-    inc  DE             ; 1:6       2 +xloop 114 DE = index+2
-    ld    A, E          ; 1:4       2 +xloop 114    
-    sub  low 0          ; 2:7       2 +xloop 114 lo index+2-stop
+idx114 EQU $+1          ;           2 +xloop 114
+    ld   BC, 0x0000     ; 3:10      2 +xloop 114 idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +xloop 114 index++
+    inc  BC             ; 1:6       2 +xloop 114 index++
+    ld  (idx114),BC     ; 4:20      2 +xloop 114 save index
+    ld    A, C          ; 1:4       2 +xloop 114
+    sub  low 0          ; 2:7       2 +xloop 114
     rra                 ; 1:4       2 +xloop 114
     add   A, A          ; 1:4       2 +xloop 114 and 0xFE with save carry
-    jr   nz, $+7        ; 2:7/12    2 +xloop 114
-    ld    A, D          ; 1:4       2 +xloop 114
-    sbc   A, high 0     ; 2:7       2 +xloop 114 lo index+2-stop
-    jr    z, xleave114  ; 2:7/12    2 +xloop 114
-    ld  (HL),D          ; 1:7       2 +xloop 114
-    dec   L             ; 1:4       2 +xloop 114
-    ld  (HL),E          ; 1:7       2 +xloop 114
-    exx                 ; 1:4       2 +xloop 114
-    jp    p, xdo114     ; 3:10      2 +xloop 114 ( -- ) R:( stop index -- stop index+ )
+    jp   nz, xdo114     ; 3:10      2 +xloop 114
+    ld    A, B          ; 1:4       2 +xloop 114
+    sbc   A, high 0     ; 2:7       2 +xloop 114
+    jp   nz, xdo114     ; 3:10      2 +xloop 114
 xleave114:              ;           2 +xloop 114
-    inc  HL             ; 1:6       2 +xloop 114
-    exx                 ; 1:4       2 +xloop 114
-xexit114 EQU $ 
+xexit114:               ;           2 +xloop 114 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1400,22 +1024,12 @@ xexit114 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(0,0) 115
-    dec  HL             ; 1:6       xdo(0,0) 115
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 115
-    dec   L             ; 1:4       xdo(0,0) 115
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 115
-    exx                 ; 1:4       xdo(0,0) 115 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 115
+    ld  (idx115),BC     ; 4:20      xdo(0,0) 115
 xdo115:                 ;           xdo(0,0) 115 
-    exx                 ; 1:4       index xi 115
-    ld    E,(HL)        ; 1:7       index xi 115
-    inc   L             ; 1:4       index xi 115
-    ld    D,(HL)        ; 1:7       index xi 115
-    push DE             ; 1:11      index xi 115
-    dec   L             ; 1:4       index xi 115
-    exx                 ; 1:4       index xi 115 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 115
-    ex  (SP),HL         ; 1:19      index xi 115 ( -- x ) 
+    push DE             ; 1:11      index i 115
+    ex   DE, HL         ; 1:4       index i 115
+    ld   HL, (idx115)   ; 3:16      index i 115 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1437,35 +1051,26 @@ xdo115:                 ;           xdo(0,0) 115
     ld   DE, string121  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 115
-    inc  L              ; 1:4       xleave 115
     jp   xleave115      ;           xleave 115 
 else106  EQU $          ;           = endif
 endif106: 
-    exx                 ; 1:4       push_addxloop(4) 115
-    ld    E,(HL)        ; 1:7       push_addxloop(4) 115
-    inc   L             ; 1:4       push_addxloop(4) 115
-    ld    D,(HL)        ; 1:7       push_addxloop(4) 115 DE = index
-    push HL             ; 1:11      push_addxloop(4) 115
-    ld   HL, 0          ; 3:10      push_addxloop(4) 115 HL = -stop = -(0)
-    add  HL, DE         ; 1:11      push_addxloop(4) 115 index-stop
-    ld   BC, 4          ; 3:10      push_addxloop(4) 115 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(4) 115 index-stop+step
-    jr    c, xleave115-1; 2:7/12    push_addxloop(4) 115 +step
-    ex   DE, HL         ; 1:4       push_addxloop(4) 115
-    add  HL, BC         ; 1:11      push_addxloop(4) 115 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(4) 115    
-    pop  HL             ; 1:10      push_addxloop(4) 115
-    ld  (HL),D          ; 1:7       push_addxloop(4) 115
-    dec   L             ; 1:4       push_addxloop(4) 115
-    ld  (HL),E          ; 1:7       push_addxloop(4) 115
-    exx                 ; 1:4       push_addxloop(4) 115    
-    jp   xdo115         ; 3:10      push_addxloop(4) 115 ( -- ) R:( index -- index+4 )
-    pop  HL             ; 1:10      push_addxloop(4) 115
-xleave115:              ;           push_addxloop(4) 115    
-    inc  HL             ; 1:6       push_addxloop(4) 115    
-    exx                 ; 1:4       push_addxloop(4) 115 ( -- ) R:( index -- )
-xexit115 EQU $ 
+    push HL             ; 1:11      4 +xloop 115
+idx115 EQU $+1          ;           4 +xloop 115
+    ld   HL, 0x0000     ; 3:10      4 +xloop 115
+    ld   BC, 4          ; 3:10      4 +xloop 115 BC = step
+    add  HL, BC         ; 1:11      4 +xloop 115 HL = index+step
+    ld  (idx115), HL    ; 3:16      4 +xloop 115 save index
+    ld    A, low -1     ; 2:7       4 +xloop 115
+    sub   L             ; 1:4       4 +xloop 115
+    ld    L, A          ; 1:4       4 +xloop 115
+    ld    A, high -1    ; 2:7       4 +xloop 115
+    sbc   A, H          ; 1:4       4 +xloop 115
+    ld    H, A          ; 1:4       4 +xloop 115 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      4 +xloop 115 HL = stop-index
+    pop  HL             ; 1:10      4 +xloop 115
+    jp   nc, xdo115     ; 3:10      4 +xloop 115 positive step
+xleave115:              ;           4 +xloop 115
+xexit115:               ;           4 +xloop 115 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1478,22 +1083,12 @@ xexit115 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(2,-1) 116
-    dec  HL             ; 1:6       xdo(2,-1) 116
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 116
-    dec   L             ; 1:4       xdo(2,-1) 116
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 116
-    exx                 ; 1:4       xdo(2,-1) 116 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 116
+    ld  (idx116),BC     ; 4:20      xdo(2,-1) 116
 xdo116:                 ;           xdo(2,-1) 116 
-    exx                 ; 1:4       index xi 116
-    ld    E,(HL)        ; 1:7       index xi 116
-    inc   L             ; 1:4       index xi 116
-    ld    D,(HL)        ; 1:7       index xi 116
-    push DE             ; 1:11      index xi 116
-    dec   L             ; 1:4       index xi 116
-    exx                 ; 1:4       index xi 116 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 116
-    ex  (SP),HL         ; 1:19      index xi 116 ( -- x ) 
+    push DE             ; 1:11      index i 116
+    ex   DE, HL         ; 1:4       index i 116
+    ld   HL, (idx116)   ; 3:16      index i 116 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1515,32 +1110,22 @@ xdo116:                 ;           xdo(2,-1) 116
     ld   DE, string123  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 116
-    inc  L              ; 1:4       xleave 116
     jp   xleave116      ;           xleave 116 
 else107  EQU $          ;           = endif
 endif107: 
                         ;           push_addxloop(-1) 116
-    exx                 ; 1:4       -1 +xloop(2,-1) 116
-    ld    E,(HL)        ; 1:7       -1 +xloop(2,-1) 116
-    inc   L             ; 1:4       -1 +xloop(2,-1) 116
-    ld    D,(HL)        ; 1:7       -1 +xloop(2,-1) 116
-    ld    A, low 2      ; 2:7       -1 +xloop(2,-1) 116
-    xor   E             ; 1:4       -1 +xloop(2,-1) 116
-    jr   nz, $+7        ; 2:7/12    -1 +xloop(2,-1) 116
-    ld    A, high 2     ; 2:7       -1 +xloop(2,-1) 116
-    xor   D             ; 1:4       -1 +xloop(2,-1) 116
-    jr    z, xleave116  ; 2:7/12    -1 +xloop(2,-1) 116 exit
-    dec  DE             ; 1:6       -1 +xloop(2,-1) 116 index--
-    ld  (HL), D         ; 1:7       -1 +xloop(2,-1) 116
-    dec   L             ; 1:4       -1 +xloop(2,-1) 116
-    ld  (HL), E         ; 1:6       -1 +xloop(2,-1) 116
-    exx                 ; 1:4       -1 +xloop(2,-1) 116
-    jp   xdo116         ; 3:10      -1 +xloop(2,-1) 116
-xleave116:              ;           -1 +xloop(2,-1) 116
-    inc  HL             ; 1:6       -1 +xloop(2,-1) 116
-    exx                 ; 1:4       -1 +xloop(2,-1) 116 R:( index -- )
-xexit116 EQU $ 
+idx116 EQU $+1          ;           -1 +xloop 116
+    ld   BC, 0x0000     ; 3:10      -1 +xloop 116 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       -1 +xloop 116
+    xor  low 2          ; 2:7       -1 +xloop 116
+    ld    A, B          ; 1:4       -1 +xloop 116
+    dec  BC             ; 1:6       -1 +xloop 116 index--
+    ld  (idx116),BC     ; 4:20      -1 +xloop 116 save index
+    jp   nz, xdo116     ; 3:10      -1 +xloop 116
+    xor  high 2         ; 2:7       -1 +xloop 116
+    jp   nz, xdo116     ; 3:10      -1 +xloop 116
+xleave116:              ;           -1 +xloop 116
+xexit116:               ;           xloop 116 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1552,22 +1137,12 @@ xexit116 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(2,-1) 117
-    dec  HL             ; 1:6       xdo(2,-1) 117
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 117
-    dec   L             ; 1:4       xdo(2,-1) 117
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 117
-    exx                 ; 1:4       xdo(2,-1) 117 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 117
+    ld  (idx117),BC     ; 4:20      xdo(2,-1) 117
 xdo117:                 ;           xdo(2,-1) 117 
-    exx                 ; 1:4       index xi 117
-    ld    E,(HL)        ; 1:7       index xi 117
-    inc   L             ; 1:4       index xi 117
-    ld    D,(HL)        ; 1:7       index xi 117
-    push DE             ; 1:11      index xi 117
-    dec   L             ; 1:4       index xi 117
-    exx                 ; 1:4       index xi 117 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 117
-    ex  (SP),HL         ; 1:19      index xi 117 ( -- x ) 
+    push DE             ; 1:11      index i 117
+    ex   DE, HL         ; 1:4       index i 117
+    ld   HL, (idx117)   ; 3:16      index i 117 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1589,35 +1164,26 @@ xdo117:                 ;           xdo(2,-1) 117
     ld   DE, string125  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 117
-    inc  L              ; 1:4       xleave 117
     jp   xleave117      ;           xleave 117 
 else108  EQU $          ;           = endif
 endif108: 
-    exx                 ; 1:4       push_addxloop(-2) 117
-    ld    E,(HL)        ; 1:7       push_addxloop(-2) 117
-    inc   L             ; 1:4       push_addxloop(-2) 117
-    ld    D,(HL)        ; 1:7       push_addxloop(-2) 117 DE = index
-    push HL             ; 1:11      push_addxloop(-2) 117
-    ld   HL, -2         ; 3:10      push_addxloop(-2) 117 HL = -stop = -(2)
-    add  HL, DE         ; 1:11      push_addxloop(-2) 117 index-stop
-    ld   BC, -2         ; 3:10      push_addxloop(-2) 117 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(-2) 117 index-stop+step
-    jr   nc, xleave117-1; 2:7/12    push_addxloop(-2) 117 -step
-    ex   DE, HL         ; 1:4       push_addxloop(-2) 117
-    add  HL, BC         ; 1:11      push_addxloop(-2) 117 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(-2) 117    
-    pop  HL             ; 1:10      push_addxloop(-2) 117
-    ld  (HL),D          ; 1:7       push_addxloop(-2) 117
-    dec   L             ; 1:4       push_addxloop(-2) 117
-    ld  (HL),E          ; 1:7       push_addxloop(-2) 117
-    exx                 ; 1:4       push_addxloop(-2) 117    
-    jp   xdo117         ; 3:10      push_addxloop(-2) 117 ( -- ) R:( index -- index+-2 )
-    pop  HL             ; 1:10      push_addxloop(-2) 117
-xleave117:              ;           push_addxloop(-2) 117    
-    inc  HL             ; 1:6       push_addxloop(-2) 117    
-    exx                 ; 1:4       push_addxloop(-2) 117 ( -- ) R:( index -- )
-xexit117 EQU $ 
+    push HL             ; 1:11      -2 +xloop 117
+idx117 EQU $+1          ;           -2 +xloop 117
+    ld   HL, 0x0000     ; 3:10      -2 +xloop 117
+    ld   BC, -2         ; 3:10      -2 +xloop 117 BC = step
+    add  HL, BC         ; 1:11      -2 +xloop 117 HL = index+step
+    ld  (idx117), HL    ; 3:16      -2 +xloop 117 save index
+    ld    A, low 1      ; 2:7       -2 +xloop 117
+    sub   L             ; 1:4       -2 +xloop 117
+    ld    L, A          ; 1:4       -2 +xloop 117
+    ld    A, high 1     ; 2:7       -2 +xloop 117
+    sbc   A, H          ; 1:4       -2 +xloop 117
+    ld    H, A          ; 1:4       -2 +xloop 117 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -2 +xloop 117 HL = stop-index
+    pop  HL             ; 1:10      -2 +xloop 117
+    jp    c, xdo117     ; 3:10      -2 +xloop 117 negative step
+xleave117:              ;           -2 +xloop 117
+xexit117:               ;           -2 +xloop 117 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1629,22 +1195,12 @@ xexit117 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(2,-1) 118
-    dec  HL             ; 1:6       xdo(2,-1) 118
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 118
-    dec   L             ; 1:4       xdo(2,-1) 118
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 118
-    exx                 ; 1:4       xdo(2,-1) 118 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 118
+    ld  (idx118),BC     ; 4:20      xdo(2,-1) 118
 xdo118:                 ;           xdo(2,-1) 118 
-    exx                 ; 1:4       index xi 118
-    ld    E,(HL)        ; 1:7       index xi 118
-    inc   L             ; 1:4       index xi 118
-    ld    D,(HL)        ; 1:7       index xi 118
-    push DE             ; 1:11      index xi 118
-    dec   L             ; 1:4       index xi 118
-    exx                 ; 1:4       index xi 118 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 118
-    ex  (SP),HL         ; 1:19      index xi 118 ( -- x ) 
+    push DE             ; 1:11      index i 118
+    ex   DE, HL         ; 1:4       index i 118
+    ld   HL, (idx118)   ; 3:16      index i 118 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1666,35 +1222,26 @@ xdo118:                 ;           xdo(2,-1) 118
     ld   DE, string127  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 118
-    inc  L              ; 1:4       xleave 118
     jp   xleave118      ;           xleave 118 
 else109  EQU $          ;           = endif
 endif109: 
-    exx                 ; 1:4       push_addxloop(-4) 118
-    ld    E,(HL)        ; 1:7       push_addxloop(-4) 118
-    inc   L             ; 1:4       push_addxloop(-4) 118
-    ld    D,(HL)        ; 1:7       push_addxloop(-4) 118 DE = index
-    push HL             ; 1:11      push_addxloop(-4) 118
-    ld   HL, -2         ; 3:10      push_addxloop(-4) 118 HL = -stop = -(2)
-    add  HL, DE         ; 1:11      push_addxloop(-4) 118 index-stop
-    ld   BC, -4         ; 3:10      push_addxloop(-4) 118 BC = step
-    add  HL, BC         ; 1:11      push_addxloop(-4) 118 index-stop+step
-    jr   nc, xleave118-1; 2:7/12    push_addxloop(-4) 118 -step
-    ex   DE, HL         ; 1:4       push_addxloop(-4) 118
-    add  HL, BC         ; 1:11      push_addxloop(-4) 118 index+step
-    ex   DE, HL         ; 1:4       push_addxloop(-4) 118    
-    pop  HL             ; 1:10      push_addxloop(-4) 118
-    ld  (HL),D          ; 1:7       push_addxloop(-4) 118
-    dec   L             ; 1:4       push_addxloop(-4) 118
-    ld  (HL),E          ; 1:7       push_addxloop(-4) 118
-    exx                 ; 1:4       push_addxloop(-4) 118    
-    jp   xdo118         ; 3:10      push_addxloop(-4) 118 ( -- ) R:( index -- index+-4 )
-    pop  HL             ; 1:10      push_addxloop(-4) 118
-xleave118:              ;           push_addxloop(-4) 118    
-    inc  HL             ; 1:6       push_addxloop(-4) 118    
-    exx                 ; 1:4       push_addxloop(-4) 118 ( -- ) R:( index -- )
-xexit118 EQU $ 
+    push HL             ; 1:11      -4 +xloop 118
+idx118 EQU $+1          ;           -4 +xloop 118
+    ld   HL, 0x0000     ; 3:10      -4 +xloop 118
+    ld   BC, -4         ; 3:10      -4 +xloop 118 BC = step
+    add  HL, BC         ; 1:11      -4 +xloop 118 HL = index+step
+    ld  (idx118), HL    ; 3:16      -4 +xloop 118 save index
+    ld    A, low 1      ; 2:7       -4 +xloop 118
+    sub   L             ; 1:4       -4 +xloop 118
+    ld    L, A          ; 1:4       -4 +xloop 118
+    ld    A, high 1     ; 2:7       -4 +xloop 118
+    sbc   A, H          ; 1:4       -4 +xloop 118
+    ld    H, A          ; 1:4       -4 +xloop 118 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -4 +xloop 118 HL = stop-index
+    pop  HL             ; 1:10      -4 +xloop 118
+    jp    c, xdo118     ; 3:10      -4 +xloop 118 negative step
+xleave118:              ;           -4 +xloop 118
+xexit118:               ;           -4 +xloop 118 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1709,36 +1256,22 @@ xexit118 EQU $
 
     jp   xexit119       ; 3:10      ?xdo(-1,-1) 119
 xdo119:                 ;           ?xdo(-1,-1) 119 
-    exx                 ; 1:4       index xi 119
-    ld    E,(HL)        ; 1:7       index xi 119
-    inc   L             ; 1:4       index xi 119
-    ld    D,(HL)        ; 1:7       index xi 119
-    push DE             ; 1:11      index xi 119
-    dec   L             ; 1:4       index xi 119
-    exx                 ; 1:4       index xi 119 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 119
-    ex  (SP),HL         ; 1:19      index xi 119 ( -- x ) 
+    push DE             ; 1:11      index i 119
+    ex   DE, HL         ; 1:4       index i 119
+    ld   HL, (idx119)   ; 3:16      index i 119 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       xloop(-1,-1) 119
-    ld    E,(HL)        ; 1:7       xloop(-1,-1) 119
-    inc   L             ; 1:4       xloop(-1,-1) 119
-    ld    D,(HL)        ; 1:7       xloop(-1,-1) 119
-    inc  DE             ; 1:6       xloop(-1,-1) 119 index++
-    ld    A, low -1     ; 2:7       xloop(-1,-1) 119
-    xor   E             ; 1:4       xloop(-1,-1) 119
-    jr   nz, $+7        ; 2:7/12    xloop(-1,-1) 119
-    ld    A, high -1    ; 2:7       xloop(-1,-1) 119
-    xor   D             ; 1:4       xloop(-1,-1) 119
-    jr    z, xleave119  ; 2:7/12    xloop(-1,-1) 119 exit
-    ld  (HL), D         ; 1:7       xloop(-1,-1) 119
-    dec   L             ; 1:4       xloop(-1,-1) 119
-    ld  (HL), E         ; 1:6       xloop(-1,-1) 119
-    exx                 ; 1:4       xloop(-1,-1) 119
-    jp   xdo119         ; 3:10      xloop(-1,-1) 119
-xleave119:              ;           xloop(-1,-1) 119
-    inc  HL             ; 1:6       xloop(-1,-1) 119
-    exx                 ; 1:4       xloop(-1,-1) 119 R:( index -- )
-xexit119 EQU $ 
+idx119 EQU $+1          ;           xloop 119
+    ld   BC, 0x0000     ; 3:10      xloop 119 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 119 index++
+    ld  (idx119),BC     ; 4:20      xloop 119 save index
+    ld    A, C          ; 1:4       xloop 119
+    xor  low -1         ; 2:7       xloop 119
+    jp   nz, xdo119     ; 3:10      xloop 119
+    ld    A, B          ; 1:4       xloop 119
+    xor  high -1        ; 2:7       xloop 119
+    jp   nz, xdo119     ; 3:10      xloop 119
+xleave119:              ;           xloop 119
+xexit119:               ;           xloop 119 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1750,36 +1283,22 @@ xexit119 EQU $
 
     jp   xexit120       ; 3:10      ?xdo(1,1) 120
 xdo120:                 ;           ?xdo(1,1) 120 
-    exx                 ; 1:4       index xi 120
-    ld    E,(HL)        ; 1:7       index xi 120
-    inc   L             ; 1:4       index xi 120
-    ld    D,(HL)        ; 1:7       index xi 120
-    push DE             ; 1:11      index xi 120
-    dec   L             ; 1:4       index xi 120
-    exx                 ; 1:4       index xi 120 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 120
-    ex  (SP),HL         ; 1:19      index xi 120 ( -- x ) 
+    push DE             ; 1:11      index i 120
+    ex   DE, HL         ; 1:4       index i 120
+    ld   HL, (idx120)   ; 3:16      index i 120 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       xloop(1,1) 120
-    ld    E,(HL)        ; 1:7       xloop(1,1) 120
-    inc   L             ; 1:4       xloop(1,1) 120
-    ld    D,(HL)        ; 1:7       xloop(1,1) 120
-    inc  DE             ; 1:6       xloop(1,1) 120 index++
-    ld    A, low 1      ; 2:7       xloop(1,1) 120
-    xor   E             ; 1:4       xloop(1,1) 120
-    jr   nz, $+7        ; 2:7/12    xloop(1,1) 120
-    ld    A, high 1     ; 2:7       xloop(1,1) 120
-    xor   D             ; 1:4       xloop(1,1) 120
-    jr    z, xleave120  ; 2:7/12    xloop(1,1) 120 exit
-    ld  (HL), D         ; 1:7       xloop(1,1) 120
-    dec   L             ; 1:4       xloop(1,1) 120
-    ld  (HL), E         ; 1:6       xloop(1,1) 120
-    exx                 ; 1:4       xloop(1,1) 120
-    jp   xdo120         ; 3:10      xloop(1,1) 120
-xleave120:              ;           xloop(1,1) 120
-    inc  HL             ; 1:6       xloop(1,1) 120
-    exx                 ; 1:4       xloop(1,1) 120 R:( index -- )
-xexit120 EQU $ 
+idx120 EQU $+1          ;           xloop 120
+    ld   BC, 0x0000     ; 3:10      xloop 120 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 120 index++
+    ld  (idx120),BC     ; 4:20      xloop 120 save index
+    ld    A, C          ; 1:4       xloop 120
+    xor  low 1          ; 2:7       xloop 120
+    jp   nz, xdo120     ; 3:10      xloop 120
+    ld    A, B          ; 1:4       xloop 120
+    xor  high 1         ; 2:7       xloop 120
+    jp   nz, xdo120     ; 3:10      xloop 120
+xleave120:              ;           xloop 120
+xexit120:               ;           xloop 120 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1792,43 +1311,25 @@ xexit120 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(2,-1) 121
-    dec  HL             ; 1:6       xdo(2,-1) 121
-    ld  (HL),high -1    ; 2:10      xdo(2,-1) 121
-    dec   L             ; 1:4       xdo(2,-1) 121
-    ld  (HL),low -1     ; 2:10      xdo(2,-1) 121
-    exx                 ; 1:4       xdo(2,-1) 121 R:( -- -1 )
+    ld   BC, -1         ; 3:10      xdo(2,-1) 121
+    ld  (idx121),BC     ; 4:20      xdo(2,-1) 121
 xdo121:                 ;           xdo(2,-1) 121 
-    exx                 ; 1:4       index xi 121
-    ld    E,(HL)        ; 1:7       index xi 121
-    inc   L             ; 1:4       index xi 121
-    ld    D,(HL)        ; 1:7       index xi 121
-    push DE             ; 1:11      index xi 121
-    dec   L             ; 1:4       index xi 121
-    exx                 ; 1:4       index xi 121 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 121
-    ex  (SP),HL         ; 1:19      index xi 121 ( -- x ) 
+    push DE             ; 1:11      index i 121
+    ex   DE, HL         ; 1:4       index i 121
+    ld   HL, (idx121)   ; 3:16      index i 121 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       xloop(2,-1) 121
-    ld    E,(HL)        ; 1:7       xloop(2,-1) 121
-    inc   L             ; 1:4       xloop(2,-1) 121
-    ld    D,(HL)        ; 1:7       xloop(2,-1) 121
-    inc  DE             ; 1:6       xloop(2,-1) 121 index++
-    ld    A, low 2      ; 2:7       xloop(2,-1) 121
-    xor   E             ; 1:4       xloop(2,-1) 121
-    jr   nz, $+7        ; 2:7/12    xloop(2,-1) 121
-    ld    A, high 2     ; 2:7       xloop(2,-1) 121
-    xor   D             ; 1:4       xloop(2,-1) 121
-    jr    z, xleave121  ; 2:7/12    xloop(2,-1) 121 exit
-    ld  (HL), D         ; 1:7       xloop(2,-1) 121
-    dec   L             ; 1:4       xloop(2,-1) 121
-    ld  (HL), E         ; 1:6       xloop(2,-1) 121
-    exx                 ; 1:4       xloop(2,-1) 121
-    jp   xdo121         ; 3:10      xloop(2,-1) 121
-xleave121:              ;           xloop(2,-1) 121
-    inc  HL             ; 1:6       xloop(2,-1) 121
-    exx                 ; 1:4       xloop(2,-1) 121 R:( index -- )
-xexit121 EQU $ 
+idx121 EQU $+1          ;           xloop 121
+    ld   BC, 0x0000     ; 3:10      xloop 121 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 121 index++
+    ld  (idx121),BC     ; 4:20      xloop 121 save index
+    ld    A, C          ; 1:4       xloop 121
+    xor  low 2          ; 2:7       xloop 121
+    jp   nz, xdo121     ; 3:10      xloop 121
+    ld    A, B          ; 1:4       xloop 121
+    xor  high 2         ; 2:7       xloop 121
+    jp   nz, xdo121     ; 3:10      xloop 121
+xleave121:              ;           xloop 121
+xexit121:               ;           xloop 121 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1838,43 +1339,22 @@ xexit121 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
 
-    exx                 ; 1:4       xdo(-1,-5) 122
-    dec  HL             ; 1:6       xdo(-1,-5) 122
-    ld  (HL),high -5    ; 2:10      xdo(-1,-5) 122
-    dec   L             ; 1:4       xdo(-1,-5) 122
-    ld  (HL),low -5     ; 2:10      xdo(-1,-5) 122
-    exx                 ; 1:4       xdo(-1,-5) 122 R:( -- -5 )
+    ld   BC, -5         ; 3:10      xdo(-1,-5) 122
+    ld  (idx122),BC     ; 4:20      xdo(-1,-5) 122
 xdo122:                 ;           xdo(-1,-5) 122 
-    exx                 ; 1:4       index xi 122
-    ld    E,(HL)        ; 1:7       index xi 122
-    inc   L             ; 1:4       index xi 122
-    ld    D,(HL)        ; 1:7       index xi 122
-    push DE             ; 1:11      index xi 122
-    dec   L             ; 1:4       index xi 122
-    exx                 ; 1:4       index xi 122 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 122
-    ex  (SP),HL         ; 1:19      index xi 122 ( -- x ) 
+    push DE             ; 1:11      index i 122
+    ex   DE, HL         ; 1:4       index i 122
+    ld   HL, (idx122)   ; 3:16      index i 122 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    exx                 ; 1:4       xloop(-1,-5) 122
-    ld    E,(HL)        ; 1:7       xloop(-1,-5) 122
-    inc   L             ; 1:4       xloop(-1,-5) 122
-    ld    D,(HL)        ; 1:7       xloop(-1,-5) 122
-    inc  DE             ; 1:6       xloop(-1,-5) 122 index++
-    ld    A, low -1     ; 2:7       xloop(-1,-5) 122
-    xor   E             ; 1:4       xloop(-1,-5) 122
-    jr   nz, $+7        ; 2:7/12    xloop(-1,-5) 122
-    ld    A, high -1    ; 2:7       xloop(-1,-5) 122
-    xor   D             ; 1:4       xloop(-1,-5) 122
-    jr    z, xleave122  ; 2:7/12    xloop(-1,-5) 122 exit
-    ld  (HL), D         ; 1:7       xloop(-1,-5) 122
-    dec   L             ; 1:4       xloop(-1,-5) 122
-    ld  (HL), E         ; 1:6       xloop(-1,-5) 122
-    exx                 ; 1:4       xloop(-1,-5) 122
-    jp   xdo122         ; 3:10      xloop(-1,-5) 122
-xleave122:              ;           xloop(-1,-5) 122
-    inc  HL             ; 1:6       xloop(-1,-5) 122
-    exx                 ; 1:4       xloop(-1,-5) 122 R:( index -- )
-xexit122 EQU $ 
+idx122 EQU $+1          ;           xloop 122 hi index == hi stop && index < stop
+    ld   BC, 0x0000     ; 3:10      xloop 122 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       xloop 122
+    inc   A             ; 1:4       xloop 122 index++
+    ld  (idx122),A      ; 3:13      xloop 122 save index
+    sub  low -1         ; 2:7       xloop 122 index - stop
+    jp    c, xdo122     ; 3:10      xloop 122
+xleave122:              ;           xloop 122
+xexit122:               ;           xloop 122 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1889,22 +1369,12 @@ xexit122 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(-1,1) 123
-    dec  HL             ; 1:6       xdo(-1,1) 123
-    ld  (HL),high 1     ; 2:10      xdo(-1,1) 123
-    dec   L             ; 1:4       xdo(-1,1) 123
-    ld  (HL),low 1      ; 2:10      xdo(-1,1) 123
-    exx                 ; 1:4       xdo(-1,1) 123 R:( -- 1 )
+    ld   BC, 1          ; 3:10      xdo(-1,1) 123
+    ld  (idx123),BC     ; 4:20      xdo(-1,1) 123
 xdo123:                 ;           xdo(-1,1) 123 
-    exx                 ; 1:4       index xi 123
-    ld    E,(HL)        ; 1:7       index xi 123
-    inc   L             ; 1:4       index xi 123
-    ld    D,(HL)        ; 1:7       index xi 123
-    push DE             ; 1:11      index xi 123
-    dec   L             ; 1:4       index xi 123
-    exx                 ; 1:4       index xi 123 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 123
-    ex  (SP),HL         ; 1:19      index xi 123 ( -- x ) 
+    push DE             ; 1:11      index i 123
+    ex   DE, HL         ; 1:4       index i 123
+    ld   HL, (idx123)   ; 3:16      index i 123 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1926,31 +1396,21 @@ xdo123:                 ;           xdo(-1,1) 123
     ld   DE, string133  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 123
-    inc  L              ; 1:4       xleave 123
     jp   xleave123      ;           xleave 123 
 else110  EQU $          ;           = endif
 endif110: 
-    exx                 ; 1:4       xloop(-1,1) 123
-    ld    E,(HL)        ; 1:7       xloop(-1,1) 123
-    inc   L             ; 1:4       xloop(-1,1) 123
-    ld    D,(HL)        ; 1:7       xloop(-1,1) 123
-    inc  DE             ; 1:6       xloop(-1,1) 123 index++
-    ld    A, low -1     ; 2:7       xloop(-1,1) 123
-    xor   E             ; 1:4       xloop(-1,1) 123
-    jr   nz, $+7        ; 2:7/12    xloop(-1,1) 123
-    ld    A, high -1    ; 2:7       xloop(-1,1) 123
-    xor   D             ; 1:4       xloop(-1,1) 123
-    jr    z, xleave123  ; 2:7/12    xloop(-1,1) 123 exit
-    ld  (HL), D         ; 1:7       xloop(-1,1) 123
-    dec   L             ; 1:4       xloop(-1,1) 123
-    ld  (HL), E         ; 1:6       xloop(-1,1) 123
-    exx                 ; 1:4       xloop(-1,1) 123
-    jp   xdo123         ; 3:10      xloop(-1,1) 123
-xleave123:              ;           xloop(-1,1) 123
-    inc  HL             ; 1:6       xloop(-1,1) 123
-    exx                 ; 1:4       xloop(-1,1) 123 R:( index -- )
-xexit123 EQU $ 
+idx123 EQU $+1          ;           xloop 123
+    ld   BC, 0x0000     ; 3:10      xloop 123 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 123 index++
+    ld  (idx123),BC     ; 4:20      xloop 123 save index
+    ld    A, C          ; 1:4       xloop 123
+    xor  low -1         ; 2:7       xloop 123
+    jp   nz, xdo123     ; 3:10      xloop 123
+    ld    A, B          ; 1:4       xloop 123
+    xor  high -1        ; 2:7       xloop 123
+    jp   nz, xdo123     ; 3:10      xloop 123
+xleave123:              ;           xloop 123
+xexit123:               ;           xloop 123 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1962,22 +1422,12 @@ xexit123 EQU $
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
-    exx                 ; 1:4       xdo(0,0) 124
-    dec  HL             ; 1:6       xdo(0,0) 124
-    ld  (HL),high 0     ; 2:10      xdo(0,0) 124
-    dec   L             ; 1:4       xdo(0,0) 124
-    ld  (HL),low 0      ; 2:10      xdo(0,0) 124
-    exx                 ; 1:4       xdo(0,0) 124 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(0,0) 124
+    ld  (idx124),BC     ; 4:20      xdo(0,0) 124
 xdo124:                 ;           xdo(0,0) 124 
-    exx                 ; 1:4       index xi 124
-    ld    E,(HL)        ; 1:7       index xi 124
-    inc   L             ; 1:4       index xi 124
-    ld    D,(HL)        ; 1:7       index xi 124
-    push DE             ; 1:11      index xi 124
-    dec   L             ; 1:4       index xi 124
-    exx                 ; 1:4       index xi 124 R:( x -- x )
-    ex   DE, HL         ; 1:4       index xi 124
-    ex  (SP),HL         ; 1:19      index xi 124 ( -- x ) 
+    push DE             ; 1:11      index i 124
+    ex   DE, HL         ; 1:4       index i 124
+    ld   HL, (idx124)   ; 3:16      index i 124 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      _stop @ push(_stop) fetch 
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
@@ -1999,31 +1449,21 @@ xdo124:                 ;           xdo(0,0) 124
     ld   DE, string135  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       xleave 124
-    inc  L              ; 1:4       xleave 124
     jp   xleave124      ;           xleave 124 
 else111  EQU $          ;           = endif
 endif111: 
-    exx                 ; 1:4       xloop(0,0) 124
-    ld    E,(HL)        ; 1:7       xloop(0,0) 124
-    inc   L             ; 1:4       xloop(0,0) 124
-    ld    D,(HL)        ; 1:7       xloop(0,0) 124
-    inc  DE             ; 1:6       xloop(0,0) 124 index++
-    ld    A, low 0      ; 2:7       xloop(0,0) 124
-    xor   E             ; 1:4       xloop(0,0) 124
-    jr   nz, $+7        ; 2:7/12    xloop(0,0) 124
-    ld    A, high 0     ; 2:7       xloop(0,0) 124
-    xor   D             ; 1:4       xloop(0,0) 124
-    jr    z, xleave124  ; 2:7/12    xloop(0,0) 124 exit
-    ld  (HL), D         ; 1:7       xloop(0,0) 124
-    dec   L             ; 1:4       xloop(0,0) 124
-    ld  (HL), E         ; 1:6       xloop(0,0) 124
-    exx                 ; 1:4       xloop(0,0) 124
-    jp   xdo124         ; 3:10      xloop(0,0) 124
-xleave124:              ;           xloop(0,0) 124
-    inc  HL             ; 1:6       xloop(0,0) 124
-    exx                 ; 1:4       xloop(0,0) 124 R:( index -- )
-xexit124 EQU $ 
+idx124 EQU $+1          ;           xloop 124
+    ld   BC, 0x0000     ; 3:10      xloop 124 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 124 index++
+    ld  (idx124),BC     ; 4:20      xloop 124 save index
+    ld    A, C          ; 1:4       xloop 124
+    xor  low 0          ; 2:7       xloop 124
+    jp   nz, xdo124     ; 3:10      xloop 124
+    ld    A, B          ; 1:4       xloop 124
+    xor  high 0         ; 2:7       xloop 124
+    jp   nz, xdo124     ; 3:10      xloop 124
+xleave124:              ;           xloop 124
+xexit124:               ;           xloop 124 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -2035,15 +1475,10 @@ Stop:
 ;   =====  e n d  =====
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _down1:                 ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_down1_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -2068,32 +1503,18 @@ _down1:                 ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 125 index
-    push DE             ; 1:11      do 125 stop
-    exx                 ; 1:4       do 125
-    pop  DE             ; 1:10      do 125 stop
-    dec  HL             ; 1:6       do 125
-    ld  (HL),D          ; 1:7       do 125
-    dec  L              ; 1:4       do 125
-    ld  (HL),E          ; 1:7       do 125 stop
-    pop  DE             ; 1:10      do 125 index
-    dec  HL             ; 1:6       do 125
-    ld  (HL),D          ; 1:7       do 125
-    dec  L              ; 1:4       do 125
-    ld  (HL),E          ; 1:7       do 125 index
-    exx                 ; 1:4       do 125
+    ld  (idx125), HL    ; 3:16      do 125 index
+    dec  DE             ; 1:6       do 125 stop-1
+    ld    A, E          ; 1:4       do 125 
+    ld  (stp_lo125), A  ; 3:13      do 125 lo stop
+    ld    A, D          ; 1:4       do 125 
+    ld  (stp_hi125), A  ; 3:13      do 125 hi stop
     pop  HL             ; 1:10      do 125
-    pop  DE             ; 1:10      do 125 ( stop index -- ) R: ( -- stop index )
-do125: 
-    exx                 ; 1:4       index 125 i    
-    ld    E,(HL)        ; 1:7       index 125 i
-    inc   L             ; 1:4       index 125 i
-    ld    D,(HL)        ; 1:7       index 125 i
-    push DE             ; 1:11      index 125 i
-    dec   L             ; 1:4       index 125 i
-    exx                 ; 1:4       index 125 i
-    ex   DE, HL         ; 1:4       index 125 i
-    ex  (SP),HL         ; 1:19      index 125 i 
+    pop  DE             ; 1:10      do 125 ( -- ) R: ( -- )
+do125:                  ;           do 125 
+    push DE             ; 1:11      index i 125
+    ex   DE, HL         ; 1:4       index i 125
+    ld   HL, (idx125)   ; 3:16      index i 125 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -2117,10 +1538,6 @@ do125:
     ld   DE, string137  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 125
-    inc  L              ; 1:4       leave 125
-    inc  HL             ; 1:6       leave 125
-    inc  L              ; 1:4       leave 125
     jp   leave125       ;           leave 125 
 else112  EQU $          ;           = endif
 endif112: 
@@ -2128,38 +1545,27 @@ endif112:
     push DE             ; 1:11      push(-1)
     ex   DE, HL         ; 1:4       push(-1)
     ld   HL, -1         ; 3:10      push(-1) 
-    ex  (SP),HL         ; 1:19      +loop 125
-    ex   DE, HL         ; 1:4       +loop 125
-    exx                 ; 1:4       +loop 125
-    ld    E,(HL)        ; 1:7       +loop 125
-    inc   L             ; 1:4       +loop 125
-    ld    D,(HL)        ; 1:7       +loop 125 DE = index
-    inc  HL             ; 1:6       +loop 125
-    ld    C,(HL)        ; 1:7       +loop 125
-    inc   L             ; 1:4       +loop 125
-    ld    B,(HL)        ; 1:7       +loop 125 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 125 HL = step
-    ex   DE, HL         ; 1:4       +loop 125
-    xor   A             ; 1:4       +loop 125
-    sbc  HL, BC         ; 2:15      +loop 125 HL = index-stop
-    ld    A, H          ; 1:4       +loop 125
-    add  HL, DE         ; 1:11      +loop 125 HL = index-stop+step
-    xor   H             ; 1:4       +loop 125
+    ld    B, H          ; 1:4       +loop 125
+    ld    C, L          ; 1:4       +loop 125 BC = step
+idx125 EQU $+1          ;           +loop 125
+    ld   HL, 0x0000     ; 3:10      +loop 125
     add  HL, BC         ; 1:11      +loop 125 HL = index+step
+    ld  (idx125), HL    ; 3:16      +loop 125 save index
+stp_lo125 EQU $+1       ;           +loop 125
+    ld    A, 0x00       ; 2:7       +loop 125 lo stop
+    sub   L             ; 1:4       +loop 125
+    ld    L, A          ; 1:4       +loop 125
+stp_hi125 EQU $+1       ;           +loop 125
+    ld    A, 0x00       ; 2:7       +loop 125 hi stop
+    sbc   A, H          ; 1:4       +loop 125
+    ld    H, A          ; 1:4       +loop 125 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 125 HL = stop-index
+    xor   H             ; 1:4       +loop 125
     ex   DE, HL         ; 1:4       +loop 125
-    pop  HL             ; 1:10      +loop 125
-    jp    m, leave125   ; 3:10      +loop 125
-    dec   L             ; 1:4       +loop 125    
-    dec  HL             ; 1:6       +loop 125
-    ld  (HL),D          ; 1:7       +loop 125    
-    dec   L             ; 1:4       +loop 125
-    ld  (HL),E          ; 1:7       +loop 125
-    exx                 ; 1:4       +loop 125
-    jp    p, do125      ; 3:10      +loop 125 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 125
+    jp    p, do125      ; 3:10      +loop 125
 leave125:               ;           +loop 125
-    inc  HL             ; 1:6       +loop 125
-    exx                 ; 1:4       +loop 125 ( step -- ) R:( stop index -- )
-exit125 EQU $ 
+exit125:                ;           +loop 125 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -2179,32 +1585,18 @@ exit125 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 126 index
-    push DE             ; 1:11      do 126 stop
-    exx                 ; 1:4       do 126
-    pop  DE             ; 1:10      do 126 stop
-    dec  HL             ; 1:6       do 126
-    ld  (HL),D          ; 1:7       do 126
-    dec  L              ; 1:4       do 126
-    ld  (HL),E          ; 1:7       do 126 stop
-    pop  DE             ; 1:10      do 126 index
-    dec  HL             ; 1:6       do 126
-    ld  (HL),D          ; 1:7       do 126
-    dec  L              ; 1:4       do 126
-    ld  (HL),E          ; 1:7       do 126 index
-    exx                 ; 1:4       do 126
+    ld  (idx126), HL    ; 3:16      do 126 index
+    dec  DE             ; 1:6       do 126 stop-1
+    ld    A, E          ; 1:4       do 126 
+    ld  (stp_lo126), A  ; 3:13      do 126 lo stop
+    ld    A, D          ; 1:4       do 126 
+    ld  (stp_hi126), A  ; 3:13      do 126 hi stop
     pop  HL             ; 1:10      do 126
-    pop  DE             ; 1:10      do 126 ( stop index -- ) R: ( -- stop index )
-do126: 
-    exx                 ; 1:4       index 126 i    
-    ld    E,(HL)        ; 1:7       index 126 i
-    inc   L             ; 1:4       index 126 i
-    ld    D,(HL)        ; 1:7       index 126 i
-    push DE             ; 1:11      index 126 i
-    dec   L             ; 1:4       index 126 i
-    exx                 ; 1:4       index 126 i
-    ex   DE, HL         ; 1:4       index 126 i
-    ex  (SP),HL         ; 1:19      index 126 i 
+    pop  DE             ; 1:10      do 126 ( -- ) R: ( -- )
+do126:                  ;           do 126 
+    push DE             ; 1:11      index i 126
+    ex   DE, HL         ; 1:4       index i 126
+    ld   HL, (idx126)   ; 3:16      index i 126 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -2228,39 +1620,25 @@ do126:
     ld   DE, string139  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 126
-    inc  L              ; 1:4       leave 126
-    inc  HL             ; 1:6       leave 126
-    inc  L              ; 1:4       leave 126
     jp   leave126       ;           leave 126 
 else113  EQU $          ;           = endif
 endif113: 
     
                         ;           push_addloop(-1) 126
-    exx                 ; 1:4       -1 +loop 126
-    ld    E,(HL)        ; 1:7       -1 +loop 126
-    inc   L             ; 1:4       -1 +loop 126
-    ld    D,(HL)        ; 1:7       -1 +loop 126 DE = index   
-    inc  HL             ; 1:6       -1 +loop 126
-    ld    A,(HL)        ; 1:7       -1 +loop 126
-    xor   E             ; 1:4       -1 +loop 126 lo index - stop
-    jr   nz, $+8        ; 2:7/12    -1 +loop 126
-    inc   L             ; 1:4       -1 +loop 126
-    ld    A,(HL)        ; 1:7       -1 +loop 126
-    xor   D             ; 1:4       -1 +loop 126 hi index - stop
-    jr    z, leave126   ; 2:7/12    -1 +loop 126 exit    
-    dec   L             ; 1:4       -1 +loop 126
-    dec  HL             ; 1:6       -1 +loop 126
-    dec  DE             ; 1:6       -1 +loop 126 index--
-    ld  (HL), D         ; 1:7       -1 +loop 126
-    dec   L             ; 1:4       -1 +loop 126
-    ld  (HL), E         ; 1:7       -1 +loop 126
-    exx                 ; 1:4       -1 +loop 126
-    jp   do126          ; 3:10      -1 +loop 126
-leave126:
-    inc  HL             ; 1:6       -1 +loop 126
-    exx                 ; 1:4       -1 +loop 126
-exit126 EQU $ 
+idx126 EQU $+1          ;           -1 +loop 126
+    ld   BC, 0x0000     ; 3:10      -1 +loop 126 idx always points to a 16-bit index
+    dec  BC             ; 1:6       -1 +loop 126 index--
+    ld  (idx126),BC     ; 4:20      -1 +loop 126 save index
+    ld    A, C          ; 1:4       -1 +loop 126
+stp_lo126 EQU $+1       ;           -1 +loop 126
+    xor  0x00           ; 2:7       -1 +loop 126 lo index - stop - 1
+    jp   nz, do126      ; 3:10      -1 +loop 126
+    ld    A, B          ; 1:4       -1 +loop 126
+stp_hi126 EQU $+1       ;           -1 +loop 126
+    xor  0x00           ; 2:7       -1 +loop 126 hi index - stop - 1
+    jp   nz, do126      ; 3:10      -1 +loop 126
+leave126:               ;           -1 +loop 126
+exit126:                ;           -1 +loop 126 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
@@ -2399,25 +1777,14 @@ sleave128:              ;           -1 +sloop 128
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
 _down1_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _up1:                   ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ) 
+    pop  BC             ; 1:10      : ret
+    ld  (_up1_end+1),BC ; 4:20      : ( ret -- ) R:( -- ) 
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -2442,32 +1809,18 @@ _up1:                   ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 129 index
-    push DE             ; 1:11      do 129 stop
-    exx                 ; 1:4       do 129
-    pop  DE             ; 1:10      do 129 stop
-    dec  HL             ; 1:6       do 129
-    ld  (HL),D          ; 1:7       do 129
-    dec  L              ; 1:4       do 129
-    ld  (HL),E          ; 1:7       do 129 stop
-    pop  DE             ; 1:10      do 129 index
-    dec  HL             ; 1:6       do 129
-    ld  (HL),D          ; 1:7       do 129
-    dec  L              ; 1:4       do 129
-    ld  (HL),E          ; 1:7       do 129 index
-    exx                 ; 1:4       do 129
+    ld  (idx129), HL    ; 3:16      do 129 index
+    dec  DE             ; 1:6       do 129 stop-1
+    ld    A, E          ; 1:4       do 129 
+    ld  (stp_lo129), A  ; 3:13      do 129 lo stop
+    ld    A, D          ; 1:4       do 129 
+    ld  (stp_hi129), A  ; 3:13      do 129 hi stop
     pop  HL             ; 1:10      do 129
-    pop  DE             ; 1:10      do 129 ( stop index -- ) R: ( -- stop index )
-do129: 
-    exx                 ; 1:4       index 129 i    
-    ld    E,(HL)        ; 1:7       index 129 i
-    inc   L             ; 1:4       index 129 i
-    ld    D,(HL)        ; 1:7       index 129 i
-    push DE             ; 1:11      index 129 i
-    dec   L             ; 1:4       index 129 i
-    exx                 ; 1:4       index 129 i
-    ex   DE, HL         ; 1:4       index 129 i
-    ex  (SP),HL         ; 1:19      index 129 i 
+    pop  DE             ; 1:10      do 129 ( -- ) R: ( -- )
+do129:                  ;           do 129 
+    push DE             ; 1:11      index i 129
+    ex   DE, HL         ; 1:4       index i 129
+    ld   HL, (idx129)   ; 3:16      index i 129 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -2491,10 +1844,6 @@ do129:
     ld   DE, string145  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 129
-    inc  L              ; 1:4       leave 129
-    inc  HL             ; 1:6       leave 129
-    inc  L              ; 1:4       leave 129
     jp   leave129       ;           leave 129 
 else116  EQU $          ;           = endif
 endif116: 
@@ -2502,38 +1851,27 @@ endif116:
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
     ld   HL, 1          ; 3:10      push(1) 
-    ex  (SP),HL         ; 1:19      +loop 129
-    ex   DE, HL         ; 1:4       +loop 129
-    exx                 ; 1:4       +loop 129
-    ld    E,(HL)        ; 1:7       +loop 129
-    inc   L             ; 1:4       +loop 129
-    ld    D,(HL)        ; 1:7       +loop 129 DE = index
-    inc  HL             ; 1:6       +loop 129
-    ld    C,(HL)        ; 1:7       +loop 129
-    inc   L             ; 1:4       +loop 129
-    ld    B,(HL)        ; 1:7       +loop 129 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 129 HL = step
-    ex   DE, HL         ; 1:4       +loop 129
-    xor   A             ; 1:4       +loop 129
-    sbc  HL, BC         ; 2:15      +loop 129 HL = index-stop
-    ld    A, H          ; 1:4       +loop 129
-    add  HL, DE         ; 1:11      +loop 129 HL = index-stop+step
-    xor   H             ; 1:4       +loop 129
+    ld    B, H          ; 1:4       +loop 129
+    ld    C, L          ; 1:4       +loop 129 BC = step
+idx129 EQU $+1          ;           +loop 129
+    ld   HL, 0x0000     ; 3:10      +loop 129
     add  HL, BC         ; 1:11      +loop 129 HL = index+step
+    ld  (idx129), HL    ; 3:16      +loop 129 save index
+stp_lo129 EQU $+1       ;           +loop 129
+    ld    A, 0x00       ; 2:7       +loop 129 lo stop
+    sub   L             ; 1:4       +loop 129
+    ld    L, A          ; 1:4       +loop 129
+stp_hi129 EQU $+1       ;           +loop 129
+    ld    A, 0x00       ; 2:7       +loop 129 hi stop
+    sbc   A, H          ; 1:4       +loop 129
+    ld    H, A          ; 1:4       +loop 129 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 129 HL = stop-index
+    xor   H             ; 1:4       +loop 129
     ex   DE, HL         ; 1:4       +loop 129
-    pop  HL             ; 1:10      +loop 129
-    jp    m, leave129   ; 3:10      +loop 129
-    dec   L             ; 1:4       +loop 129    
-    dec  HL             ; 1:6       +loop 129
-    ld  (HL),D          ; 1:7       +loop 129    
-    dec   L             ; 1:4       +loop 129
-    ld  (HL),E          ; 1:7       +loop 129
-    exx                 ; 1:4       +loop 129
-    jp    p, do129      ; 3:10      +loop 129 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 129
+    jp    p, do129      ; 3:10      +loop 129
 leave129:               ;           +loop 129
-    inc  HL             ; 1:6       +loop 129
-    exx                 ; 1:4       +loop 129 ( step -- ) R:( stop index -- )
-exit129 EQU $ 
+exit129:                ;           +loop 129 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -2553,32 +1891,18 @@ exit129 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 130 index
-    push DE             ; 1:11      do 130 stop
-    exx                 ; 1:4       do 130
-    pop  DE             ; 1:10      do 130 stop
-    dec  HL             ; 1:6       do 130
-    ld  (HL),D          ; 1:7       do 130
-    dec  L              ; 1:4       do 130
-    ld  (HL),E          ; 1:7       do 130 stop
-    pop  DE             ; 1:10      do 130 index
-    dec  HL             ; 1:6       do 130
-    ld  (HL),D          ; 1:7       do 130
-    dec  L              ; 1:4       do 130
-    ld  (HL),E          ; 1:7       do 130 index
-    exx                 ; 1:4       do 130
+    ld  (idx130), HL    ; 3:16      do 130 index
+    dec  DE             ; 1:6       do 130 stop-1
+    ld    A, E          ; 1:4       do 130 
+    ld  (stp_lo130), A  ; 3:13      do 130 lo stop
+    ld    A, D          ; 1:4       do 130 
+    ld  (stp_hi130), A  ; 3:13      do 130 hi stop
     pop  HL             ; 1:10      do 130
-    pop  DE             ; 1:10      do 130 ( stop index -- ) R: ( -- stop index )
-do130: 
-    exx                 ; 1:4       index 130 i    
-    ld    E,(HL)        ; 1:7       index 130 i
-    inc   L             ; 1:4       index 130 i
-    ld    D,(HL)        ; 1:7       index 130 i
-    push DE             ; 1:11      index 130 i
-    dec   L             ; 1:4       index 130 i
-    exx                 ; 1:4       index 130 i
-    ex   DE, HL         ; 1:4       index 130 i
-    ex  (SP),HL         ; 1:19      index 130 i 
+    pop  DE             ; 1:10      do 130 ( -- ) R: ( -- )
+do130:                  ;           do 130 
+    push DE             ; 1:11      index i 130
+    ex   DE, HL         ; 1:4       index i 130
+    ld   HL, (idx130)   ; 3:16      index i 130 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -2602,39 +1926,25 @@ do130:
     ld   DE, string147  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 130
-    inc  L              ; 1:4       leave 130
-    inc  HL             ; 1:6       leave 130
-    inc  L              ; 1:4       leave 130
     jp   leave130       ;           leave 130 
 else117  EQU $          ;           = endif
 endif117: 
     
                         ;           push_addloop(1) 130
-    exx                 ; 1:4       loop 130
-    ld    E,(HL)        ; 1:7       loop 130
-    inc   L             ; 1:4       loop 130
-    ld    D,(HL)        ; 1:7       loop 130 DE = index   
-    inc  HL             ; 1:6       loop 130
-    inc  DE             ; 1:6       loop 130 index++
-    ld    A,(HL)        ; 1:4       loop 130
-    xor   E             ; 1:4       loop 130 lo index - stop
-    jr   nz, $+8        ; 2:7/12    loop 130
-    ld    A, D          ; 1:4       loop 130
-    inc   L             ; 1:4       loop 130
-    xor (HL)            ; 1:7       loop 130 hi index - stop
-    jr    z, leave130   ; 2:7/12    loop 130 exit    
-    dec   L             ; 1:4       loop 130
-    dec  HL             ; 1:6       loop 130
-    ld  (HL), D         ; 1:7       loop 130
-    dec   L             ; 1:4       loop 130
-    ld  (HL), E         ; 1:7       loop 130
-    exx                 ; 1:4       loop 130
-    jp   do130          ; 3:10      loop 130
-leave130:
-    inc  HL             ; 1:6       loop 130
-    exx                 ; 1:4       loop 130
-exit130 EQU $ 
+idx130 EQU $+1          ;           loop 130
+    ld   BC, 0x0000     ; 3:10      loop 130 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       loop 130
+stp_lo130 EQU $+1       ;           loop 130
+    xor  0x00           ; 2:7       loop 130 lo index - stop - 1
+    ld    A, B          ; 1:4       loop 130
+    inc  BC             ; 1:6       loop 130 index++
+    ld  (idx130),BC     ; 4:20      loop 130 save index
+    jp   nz, do130      ; 3:10      loop 130    
+stp_hi130 EQU $+1       ;           loop 130
+    xor  0x00           ; 2:7       loop 130 hi index - stop - 1
+    jp   nz, do130      ; 3:10      loop 130
+leave130:               ;           loop 130
+exit130:                ;           loop 130 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -2773,25 +2083,14 @@ sleave132:              ;           sloop 132
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
 _up1_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _down2:                 ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_down2_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -2816,32 +2115,18 @@ _down2:                 ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 133 index
-    push DE             ; 1:11      do 133 stop
-    exx                 ; 1:4       do 133
-    pop  DE             ; 1:10      do 133 stop
-    dec  HL             ; 1:6       do 133
-    ld  (HL),D          ; 1:7       do 133
-    dec  L              ; 1:4       do 133
-    ld  (HL),E          ; 1:7       do 133 stop
-    pop  DE             ; 1:10      do 133 index
-    dec  HL             ; 1:6       do 133
-    ld  (HL),D          ; 1:7       do 133
-    dec  L              ; 1:4       do 133
-    ld  (HL),E          ; 1:7       do 133 index
-    exx                 ; 1:4       do 133
+    ld  (idx133), HL    ; 3:16      do 133 index
+    dec  DE             ; 1:6       do 133 stop-1
+    ld    A, E          ; 1:4       do 133 
+    ld  (stp_lo133), A  ; 3:13      do 133 lo stop
+    ld    A, D          ; 1:4       do 133 
+    ld  (stp_hi133), A  ; 3:13      do 133 hi stop
     pop  HL             ; 1:10      do 133
-    pop  DE             ; 1:10      do 133 ( stop index -- ) R: ( -- stop index )
-do133: 
-    exx                 ; 1:4       index 133 i    
-    ld    E,(HL)        ; 1:7       index 133 i
-    inc   L             ; 1:4       index 133 i
-    ld    D,(HL)        ; 1:7       index 133 i
-    push DE             ; 1:11      index 133 i
-    dec   L             ; 1:4       index 133 i
-    exx                 ; 1:4       index 133 i
-    ex   DE, HL         ; 1:4       index 133 i
-    ex  (SP),HL         ; 1:19      index 133 i 
+    pop  DE             ; 1:10      do 133 ( -- ) R: ( -- )
+do133:                  ;           do 133 
+    push DE             ; 1:11      index i 133
+    ex   DE, HL         ; 1:4       index i 133
+    ld   HL, (idx133)   ; 3:16      index i 133 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -2865,10 +2150,6 @@ do133:
     ld   DE, string153  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 133
-    inc  L              ; 1:4       leave 133
-    inc  HL             ; 1:6       leave 133
-    inc  L              ; 1:4       leave 133
     jp   leave133       ;           leave 133 
 else120  EQU $          ;           = endif
 endif120: 
@@ -2876,38 +2157,27 @@ endif120:
     push DE             ; 1:11      push(-2)
     ex   DE, HL         ; 1:4       push(-2)
     ld   HL, -2         ; 3:10      push(-2) 
-    ex  (SP),HL         ; 1:19      +loop 133
-    ex   DE, HL         ; 1:4       +loop 133
-    exx                 ; 1:4       +loop 133
-    ld    E,(HL)        ; 1:7       +loop 133
-    inc   L             ; 1:4       +loop 133
-    ld    D,(HL)        ; 1:7       +loop 133 DE = index
-    inc  HL             ; 1:6       +loop 133
-    ld    C,(HL)        ; 1:7       +loop 133
-    inc   L             ; 1:4       +loop 133
-    ld    B,(HL)        ; 1:7       +loop 133 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 133 HL = step
-    ex   DE, HL         ; 1:4       +loop 133
-    xor   A             ; 1:4       +loop 133
-    sbc  HL, BC         ; 2:15      +loop 133 HL = index-stop
-    ld    A, H          ; 1:4       +loop 133
-    add  HL, DE         ; 1:11      +loop 133 HL = index-stop+step
-    xor   H             ; 1:4       +loop 133
+    ld    B, H          ; 1:4       +loop 133
+    ld    C, L          ; 1:4       +loop 133 BC = step
+idx133 EQU $+1          ;           +loop 133
+    ld   HL, 0x0000     ; 3:10      +loop 133
     add  HL, BC         ; 1:11      +loop 133 HL = index+step
+    ld  (idx133), HL    ; 3:16      +loop 133 save index
+stp_lo133 EQU $+1       ;           +loop 133
+    ld    A, 0x00       ; 2:7       +loop 133 lo stop
+    sub   L             ; 1:4       +loop 133
+    ld    L, A          ; 1:4       +loop 133
+stp_hi133 EQU $+1       ;           +loop 133
+    ld    A, 0x00       ; 2:7       +loop 133 hi stop
+    sbc   A, H          ; 1:4       +loop 133
+    ld    H, A          ; 1:4       +loop 133 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 133 HL = stop-index
+    xor   H             ; 1:4       +loop 133
     ex   DE, HL         ; 1:4       +loop 133
-    pop  HL             ; 1:10      +loop 133
-    jp    m, leave133   ; 3:10      +loop 133
-    dec   L             ; 1:4       +loop 133    
-    dec  HL             ; 1:6       +loop 133
-    ld  (HL),D          ; 1:7       +loop 133    
-    dec   L             ; 1:4       +loop 133
-    ld  (HL),E          ; 1:7       +loop 133
-    exx                 ; 1:4       +loop 133
-    jp    p, do133      ; 3:10      +loop 133 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 133
+    jp    p, do133      ; 3:10      +loop 133
 leave133:               ;           +loop 133
-    inc  HL             ; 1:6       +loop 133
-    exx                 ; 1:4       +loop 133 ( step -- ) R:( stop index -- )
-exit133 EQU $ 
+exit133:                ;           +loop 133 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -2927,32 +2197,18 @@ exit133 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 134 index
-    push DE             ; 1:11      do 134 stop
-    exx                 ; 1:4       do 134
-    pop  DE             ; 1:10      do 134 stop
-    dec  HL             ; 1:6       do 134
-    ld  (HL),D          ; 1:7       do 134
-    dec  L              ; 1:4       do 134
-    ld  (HL),E          ; 1:7       do 134 stop
-    pop  DE             ; 1:10      do 134 index
-    dec  HL             ; 1:6       do 134
-    ld  (HL),D          ; 1:7       do 134
-    dec  L              ; 1:4       do 134
-    ld  (HL),E          ; 1:7       do 134 index
-    exx                 ; 1:4       do 134
+    ld  (idx134), HL    ; 3:16      do 134 index
+    dec  DE             ; 1:6       do 134 stop-1
+    ld    A, E          ; 1:4       do 134 
+    ld  (stp_lo134), A  ; 3:13      do 134 lo stop
+    ld    A, D          ; 1:4       do 134 
+    ld  (stp_hi134), A  ; 3:13      do 134 hi stop
     pop  HL             ; 1:10      do 134
-    pop  DE             ; 1:10      do 134 ( stop index -- ) R: ( -- stop index )
-do134: 
-    exx                 ; 1:4       index 134 i    
-    ld    E,(HL)        ; 1:7       index 134 i
-    inc   L             ; 1:4       index 134 i
-    ld    D,(HL)        ; 1:7       index 134 i
-    push DE             ; 1:11      index 134 i
-    dec   L             ; 1:4       index 134 i
-    exx                 ; 1:4       index 134 i
-    ex   DE, HL         ; 1:4       index 134 i
-    ex  (SP),HL         ; 1:19      index 134 i 
+    pop  DE             ; 1:10      do 134 ( -- ) R: ( -- )
+do134:                  ;           do 134 
+    push DE             ; 1:11      index i 134
+    ex   DE, HL         ; 1:4       index i 134
+    ld   HL, (idx134)   ; 3:16      index i 134 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -2976,48 +2232,30 @@ do134:
     ld   DE, string155  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 134
-    inc  L              ; 1:4       leave 134
-    inc  HL             ; 1:6       leave 134
-    inc  L              ; 1:4       leave 134
     jp   leave134       ;           leave 134 
 else121  EQU $          ;           = endif
 endif121: 
     
-    exx                 ; 1:4       push_addloop(-2) 134
-    ld   BC, -2         ; 3:10      push_addloop(-2) 134 BC = step
-    ld    E,(HL)        ; 1:7       push_addloop(-2) 134
-    ld    A, E          ; 1:4       push_addloop(-2) 134
-    add   A, C          ; 1:4       push_addloop(-2) 134
-    ld  (HL),A          ; 1:7       push_addloop(-2) 134
-    inc   L             ; 1:4       push_addloop(-2) 134
-    ld    D,(HL)        ; 1:7       push_addloop(-2) 134 DE = index
-    ld    A, D          ; 1:4       push_addloop(-2) 134
-    adc   A, B          ; 1:4       push_addloop(-2) 134
-    ld  (HL),A          ; 1:7       push_addloop(-2) 134
-    inc  HL             ; 1:6       push_addloop(-2) 134
-    ld    A, E          ; 1:4       push_addloop(-2) 134    
-    sub (HL)            ; 1:7       push_addloop(-2) 134
-    ld    E, A          ; 1:4       push_addloop(-2) 134    
-    inc   L             ; 1:4       push_addloop(-2) 134
-    ld    A, D          ; 1:4       push_addloop(-2) 134    
-    sbc   A,(HL)        ; 1:7       push_addloop(-2) 134
-    ld    D, A          ; 1:4       push_addloop(-2) 134 DE = index-stop
-    ld    A, E          ; 1:4       push_addloop(-2) 134    
-    add   A, C          ; 1:4       push_addloop(-2) 134
-    ld    A, D          ; 1:4       push_addloop(-2) 134    
-    adc   A, B          ; 1:4       push_addloop(-2) 134
-    xor   D             ; 1:4       push_addloop(-2) 134
-    jp    m, $+10       ; 3:10      push_addloop(-2) 134
-    dec   L             ; 1:4       push_addloop(-2) 134    
-    dec  HL             ; 1:6       push_addloop(-2) 134
-    dec   L             ; 1:4       push_addloop(-2) 134
-    exx                 ; 1:4       push_addloop(-2) 134
-    jp    p, do134      ; 3:10      push_addloop(-2) 134 ( -- ) R:( stop index -- stop index+-2 )
-leave134:               ;           push_addloop(-2) 134
-    inc  HL             ; 1:6       push_addloop(-2) 134
-    exx                 ; 1:4       push_addloop(-2) 134 ( -- ) R:( stop index -- )
-exit134 EQU $ 
+    push HL             ; 1:11      -2 +loop 134
+idx134 EQU $+1          ;           -2 +loop 134
+    ld   HL, 0x0000     ; 3:10      -2 +loop 134
+    ld   BC, -2         ; 3:10      -2 +loop 134 BC = step
+    add  HL, BC         ; 1:11      -2 +loop 134 HL = index+step
+    ld  (idx134), HL    ; 3:16      -2 +loop 134 save index
+stp_lo134 EQU $+1       ;           -2 +loop 134
+    ld    A, 0x00       ; 2:7       -2 +loop 134 lo stop
+    sub   L             ; 1:4       -2 +loop 134
+    ld    L, A          ; 1:4       -2 +loop 134
+stp_hi134 EQU $+1       ;           -2 +loop 134
+    ld    A, 0x00       ; 2:7       -2 +loop 134 hi stop
+    sbc   A, H          ; 1:4       -2 +loop 134
+    ld    H, A          ; 1:4       -2 +loop 134 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -2 +loop 134 HL = stop-index
+    xor   H             ; 1:4       -2 +loop 134
+    pop  HL             ; 1:10      -2 +loop 134
+    jp    p, do134      ; 3:10      -2 +loop 134 negative step
+leave134:               ;           -2 +loop 134
+exit134:                ;           -2 +loop 134 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
@@ -3156,25 +2394,14 @@ sleave136:              ;           push_addsloop(-2) 136
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
 _down2_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _up2:                   ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_up2_end+1),BC ; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -3199,32 +2426,18 @@ _up2:                   ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 137 index
-    push DE             ; 1:11      do 137 stop
-    exx                 ; 1:4       do 137
-    pop  DE             ; 1:10      do 137 stop
-    dec  HL             ; 1:6       do 137
-    ld  (HL),D          ; 1:7       do 137
-    dec  L              ; 1:4       do 137
-    ld  (HL),E          ; 1:7       do 137 stop
-    pop  DE             ; 1:10      do 137 index
-    dec  HL             ; 1:6       do 137
-    ld  (HL),D          ; 1:7       do 137
-    dec  L              ; 1:4       do 137
-    ld  (HL),E          ; 1:7       do 137 index
-    exx                 ; 1:4       do 137
+    ld  (idx137), HL    ; 3:16      do 137 index
+    dec  DE             ; 1:6       do 137 stop-1
+    ld    A, E          ; 1:4       do 137 
+    ld  (stp_lo137), A  ; 3:13      do 137 lo stop
+    ld    A, D          ; 1:4       do 137 
+    ld  (stp_hi137), A  ; 3:13      do 137 hi stop
     pop  HL             ; 1:10      do 137
-    pop  DE             ; 1:10      do 137 ( stop index -- ) R: ( -- stop index )
-do137: 
-    exx                 ; 1:4       index 137 i    
-    ld    E,(HL)        ; 1:7       index 137 i
-    inc   L             ; 1:4       index 137 i
-    ld    D,(HL)        ; 1:7       index 137 i
-    push DE             ; 1:11      index 137 i
-    dec   L             ; 1:4       index 137 i
-    exx                 ; 1:4       index 137 i
-    ex   DE, HL         ; 1:4       index 137 i
-    ex  (SP),HL         ; 1:19      index 137 i 
+    pop  DE             ; 1:10      do 137 ( -- ) R: ( -- )
+do137:                  ;           do 137 
+    push DE             ; 1:11      index i 137
+    ex   DE, HL         ; 1:4       index i 137
+    ld   HL, (idx137)   ; 3:16      index i 137 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -3248,10 +2461,6 @@ do137:
     ld   DE, string161  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 137
-    inc  L              ; 1:4       leave 137
-    inc  HL             ; 1:6       leave 137
-    inc  L              ; 1:4       leave 137
     jp   leave137       ;           leave 137 
 else124  EQU $          ;           = endif
 endif124: 
@@ -3259,38 +2468,27 @@ endif124:
     push DE             ; 1:11      push(2)
     ex   DE, HL         ; 1:4       push(2)
     ld   HL, 2          ; 3:10      push(2) 
-    ex  (SP),HL         ; 1:19      +loop 137
-    ex   DE, HL         ; 1:4       +loop 137
-    exx                 ; 1:4       +loop 137
-    ld    E,(HL)        ; 1:7       +loop 137
-    inc   L             ; 1:4       +loop 137
-    ld    D,(HL)        ; 1:7       +loop 137 DE = index
-    inc  HL             ; 1:6       +loop 137
-    ld    C,(HL)        ; 1:7       +loop 137
-    inc   L             ; 1:4       +loop 137
-    ld    B,(HL)        ; 1:7       +loop 137 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 137 HL = step
-    ex   DE, HL         ; 1:4       +loop 137
-    xor   A             ; 1:4       +loop 137
-    sbc  HL, BC         ; 2:15      +loop 137 HL = index-stop
-    ld    A, H          ; 1:4       +loop 137
-    add  HL, DE         ; 1:11      +loop 137 HL = index-stop+step
-    xor   H             ; 1:4       +loop 137
+    ld    B, H          ; 1:4       +loop 137
+    ld    C, L          ; 1:4       +loop 137 BC = step
+idx137 EQU $+1          ;           +loop 137
+    ld   HL, 0x0000     ; 3:10      +loop 137
     add  HL, BC         ; 1:11      +loop 137 HL = index+step
+    ld  (idx137), HL    ; 3:16      +loop 137 save index
+stp_lo137 EQU $+1       ;           +loop 137
+    ld    A, 0x00       ; 2:7       +loop 137 lo stop
+    sub   L             ; 1:4       +loop 137
+    ld    L, A          ; 1:4       +loop 137
+stp_hi137 EQU $+1       ;           +loop 137
+    ld    A, 0x00       ; 2:7       +loop 137 hi stop
+    sbc   A, H          ; 1:4       +loop 137
+    ld    H, A          ; 1:4       +loop 137 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 137 HL = stop-index
+    xor   H             ; 1:4       +loop 137
     ex   DE, HL         ; 1:4       +loop 137
-    pop  HL             ; 1:10      +loop 137
-    jp    m, leave137   ; 3:10      +loop 137
-    dec   L             ; 1:4       +loop 137    
-    dec  HL             ; 1:6       +loop 137
-    ld  (HL),D          ; 1:7       +loop 137    
-    dec   L             ; 1:4       +loop 137
-    ld  (HL),E          ; 1:7       +loop 137
-    exx                 ; 1:4       +loop 137
-    jp    p, do137      ; 3:10      +loop 137 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 137
+    jp    p, do137      ; 3:10      +loop 137
 leave137:               ;           +loop 137
-    inc  HL             ; 1:6       +loop 137
-    exx                 ; 1:4       +loop 137 ( step -- ) R:( stop index -- )
-exit137 EQU $ 
+exit137:                ;           +loop 137 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -3310,32 +2508,18 @@ exit137 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 138 index
-    push DE             ; 1:11      do 138 stop
-    exx                 ; 1:4       do 138
-    pop  DE             ; 1:10      do 138 stop
-    dec  HL             ; 1:6       do 138
-    ld  (HL),D          ; 1:7       do 138
-    dec  L              ; 1:4       do 138
-    ld  (HL),E          ; 1:7       do 138 stop
-    pop  DE             ; 1:10      do 138 index
-    dec  HL             ; 1:6       do 138
-    ld  (HL),D          ; 1:7       do 138
-    dec  L              ; 1:4       do 138
-    ld  (HL),E          ; 1:7       do 138 index
-    exx                 ; 1:4       do 138
+    ld  (idx138), HL    ; 3:16      do 138 index
+    dec  DE             ; 1:6       do 138 stop-1
+    ld    A, E          ; 1:4       do 138 
+    ld  (stp_lo138), A  ; 3:13      do 138 lo stop
+    ld    A, D          ; 1:4       do 138 
+    ld  (stp_hi138), A  ; 3:13      do 138 hi stop
     pop  HL             ; 1:10      do 138
-    pop  DE             ; 1:10      do 138 ( stop index -- ) R: ( -- stop index )
-do138: 
-    exx                 ; 1:4       index 138 i    
-    ld    E,(HL)        ; 1:7       index 138 i
-    inc   L             ; 1:4       index 138 i
-    ld    D,(HL)        ; 1:7       index 138 i
-    push DE             ; 1:11      index 138 i
-    dec   L             ; 1:4       index 138 i
-    exx                 ; 1:4       index 138 i
-    ex   DE, HL         ; 1:4       index 138 i
-    ex  (SP),HL         ; 1:19      index 138 i 
+    pop  DE             ; 1:10      do 138 ( -- ) R: ( -- )
+do138:                  ;           do 138 
+    push DE             ; 1:11      index i 138
+    ex   DE, HL         ; 1:4       index i 138
+    ld   HL, (idx138)   ; 3:16      index i 138 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -3359,42 +2543,28 @@ do138:
     ld   DE, string163  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 138
-    inc  L              ; 1:4       leave 138
-    inc  HL             ; 1:6       leave 138
-    inc  L              ; 1:4       leave 138
     jp   leave138       ;           leave 138 
 else125  EQU $          ;           = endif
 endif125: 
     
                         ;           push_addloop(2) 138
-    exx                 ; 1:4       2 +loop 138
-    ld    E,(HL)        ; 1:7       2 +loop 138
-    inc   L             ; 1:4       2 +loop 138
-    ld    D,(HL)        ; 1:7       2 +loop 138 DE = index
-    inc  DE             ; 1:6       2 +loop 138
-    inc  DE             ; 1:6       2 +loop 138 DE = index+2
-    inc  HL             ; 1:6       2 +loop 138
-    ld    A, E          ; 1:4       2 +loop 138    
-    sub (HL)            ; 1:7       2 +loop 138 lo index+2-stop
+idx138 EQU $+1          ;           2 +loop 138
+    ld   BC, 0x0000     ; 3:10      2 +loop 138 idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +loop 138 index++
+    ld    A, C          ; 1:4       2 +loop 138
+stp_lo138 EQU $+1       ;           2 +loop 138
+    sub  0x00           ; 2:7       2 +loop 138 lo index - stop
     rra                 ; 1:4       2 +loop 138
     add   A, A          ; 1:4       2 +loop 138 and 0xFE with save carry
-    jr   nz, $+8        ; 2:7/12    2 +loop 138
-    ld    A, D          ; 1:4       2 +loop 138
-    inc   L             ; 1:4       2 +loop 138
-    sbc   A,(HL)        ; 1:7       2 +loop 138 hi index+2-stop
-    jr    z, leave138   ; 2:7/12    2 +loop 138
-    dec   L             ; 1:4       2 +loop 138   
-    dec  HL             ; 1:6       2 +loop 138
-    ld  (HL),D          ; 1:7       2 +loop 138
-    dec   L             ; 1:4       2 +loop 138
-    ld  (HL),E          ; 1:7       2 +loop 138
-    exx                 ; 1:4       2 +loop 138
-    jp    p, do138      ; 3:10      2 +loop 138 ( -- ) R:( stop index -- stop index+ )
-leave138:
-    inc  HL             ; 1:6       2 +loop 138
-    exx                 ; 1:4       2 +loop 138
-exit138 EQU $ 
+    ld    A, B          ; 1:4       2 +loop 138
+    inc  BC             ; 1:6       2 +loop 138 index++
+    ld  (idx138),BC     ; 4:20      2 +loop 138 save index
+    jp   nz, do138      ; 3:10      2 +loop 138
+stp_hi138 EQU $+1       ;           2 +loop 138
+    sbc   A, 0x00       ; 2:7       2 +loop 138 hi index - stop
+    jp   nz, do138      ; 3:10      2 +loop 138
+leave138:               ;           2 +loop 138
+exit138:                ;           2 +loop 138 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
@@ -3537,25 +2707,14 @@ sleave140:              ;           2 +sloop 140
 
 
 _up2_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _down3:                 ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_down3_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -3580,32 +2739,18 @@ _down3:                 ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 141 index
-    push DE             ; 1:11      do 141 stop
-    exx                 ; 1:4       do 141
-    pop  DE             ; 1:10      do 141 stop
-    dec  HL             ; 1:6       do 141
-    ld  (HL),D          ; 1:7       do 141
-    dec  L              ; 1:4       do 141
-    ld  (HL),E          ; 1:7       do 141 stop
-    pop  DE             ; 1:10      do 141 index
-    dec  HL             ; 1:6       do 141
-    ld  (HL),D          ; 1:7       do 141
-    dec  L              ; 1:4       do 141
-    ld  (HL),E          ; 1:7       do 141 index
-    exx                 ; 1:4       do 141
+    ld  (idx141), HL    ; 3:16      do 141 index
+    dec  DE             ; 1:6       do 141 stop-1
+    ld    A, E          ; 1:4       do 141 
+    ld  (stp_lo141), A  ; 3:13      do 141 lo stop
+    ld    A, D          ; 1:4       do 141 
+    ld  (stp_hi141), A  ; 3:13      do 141 hi stop
     pop  HL             ; 1:10      do 141
-    pop  DE             ; 1:10      do 141 ( stop index -- ) R: ( -- stop index )
-do141: 
-    exx                 ; 1:4       index 141 i    
-    ld    E,(HL)        ; 1:7       index 141 i
-    inc   L             ; 1:4       index 141 i
-    ld    D,(HL)        ; 1:7       index 141 i
-    push DE             ; 1:11      index 141 i
-    dec   L             ; 1:4       index 141 i
-    exx                 ; 1:4       index 141 i
-    ex   DE, HL         ; 1:4       index 141 i
-    ex  (SP),HL         ; 1:19      index 141 i 
+    pop  DE             ; 1:10      do 141 ( -- ) R: ( -- )
+do141:                  ;           do 141 
+    push DE             ; 1:11      index i 141
+    ex   DE, HL         ; 1:4       index i 141
+    ld   HL, (idx141)   ; 3:16      index i 141 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -3629,10 +2774,6 @@ do141:
     ld   DE, string169  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 141
-    inc  L              ; 1:4       leave 141
-    inc  HL             ; 1:6       leave 141
-    inc  L              ; 1:4       leave 141
     jp   leave141       ;           leave 141 
 else128  EQU $          ;           = endif
 endif128: 
@@ -3640,38 +2781,27 @@ endif128:
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    ex  (SP),HL         ; 1:19      +loop 141
-    ex   DE, HL         ; 1:4       +loop 141
-    exx                 ; 1:4       +loop 141
-    ld    E,(HL)        ; 1:7       +loop 141
-    inc   L             ; 1:4       +loop 141
-    ld    D,(HL)        ; 1:7       +loop 141 DE = index
-    inc  HL             ; 1:6       +loop 141
-    ld    C,(HL)        ; 1:7       +loop 141
-    inc   L             ; 1:4       +loop 141
-    ld    B,(HL)        ; 1:7       +loop 141 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 141 HL = step
-    ex   DE, HL         ; 1:4       +loop 141
-    xor   A             ; 1:4       +loop 141
-    sbc  HL, BC         ; 2:15      +loop 141 HL = index-stop
-    ld    A, H          ; 1:4       +loop 141
-    add  HL, DE         ; 1:11      +loop 141 HL = index-stop+step
-    xor   H             ; 1:4       +loop 141
+    ld    B, H          ; 1:4       +loop 141
+    ld    C, L          ; 1:4       +loop 141 BC = step
+idx141 EQU $+1          ;           +loop 141
+    ld   HL, 0x0000     ; 3:10      +loop 141
     add  HL, BC         ; 1:11      +loop 141 HL = index+step
+    ld  (idx141), HL    ; 3:16      +loop 141 save index
+stp_lo141 EQU $+1       ;           +loop 141
+    ld    A, 0x00       ; 2:7       +loop 141 lo stop
+    sub   L             ; 1:4       +loop 141
+    ld    L, A          ; 1:4       +loop 141
+stp_hi141 EQU $+1       ;           +loop 141
+    ld    A, 0x00       ; 2:7       +loop 141 hi stop
+    sbc   A, H          ; 1:4       +loop 141
+    ld    H, A          ; 1:4       +loop 141 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 141 HL = stop-index
+    xor   H             ; 1:4       +loop 141
     ex   DE, HL         ; 1:4       +loop 141
-    pop  HL             ; 1:10      +loop 141
-    jp    m, leave141   ; 3:10      +loop 141
-    dec   L             ; 1:4       +loop 141    
-    dec  HL             ; 1:6       +loop 141
-    ld  (HL),D          ; 1:7       +loop 141    
-    dec   L             ; 1:4       +loop 141
-    ld  (HL),E          ; 1:7       +loop 141
-    exx                 ; 1:4       +loop 141
-    jp    p, do141      ; 3:10      +loop 141 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 141
+    jp    p, do141      ; 3:10      +loop 141
 leave141:               ;           +loop 141
-    inc  HL             ; 1:6       +loop 141
-    exx                 ; 1:4       +loop 141 ( step -- ) R:( stop index -- )
-exit141 EQU $ 
+exit141:                ;           +loop 141 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -3691,32 +2821,18 @@ exit141 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 142 index
-    push DE             ; 1:11      do 142 stop
-    exx                 ; 1:4       do 142
-    pop  DE             ; 1:10      do 142 stop
-    dec  HL             ; 1:6       do 142
-    ld  (HL),D          ; 1:7       do 142
-    dec  L              ; 1:4       do 142
-    ld  (HL),E          ; 1:7       do 142 stop
-    pop  DE             ; 1:10      do 142 index
-    dec  HL             ; 1:6       do 142
-    ld  (HL),D          ; 1:7       do 142
-    dec  L              ; 1:4       do 142
-    ld  (HL),E          ; 1:7       do 142 index
-    exx                 ; 1:4       do 142
+    ld  (idx142), HL    ; 3:16      do 142 index
+    dec  DE             ; 1:6       do 142 stop-1
+    ld    A, E          ; 1:4       do 142 
+    ld  (stp_lo142), A  ; 3:13      do 142 lo stop
+    ld    A, D          ; 1:4       do 142 
+    ld  (stp_hi142), A  ; 3:13      do 142 hi stop
     pop  HL             ; 1:10      do 142
-    pop  DE             ; 1:10      do 142 ( stop index -- ) R: ( -- stop index )
-do142: 
-    exx                 ; 1:4       index 142 i    
-    ld    E,(HL)        ; 1:7       index 142 i
-    inc   L             ; 1:4       index 142 i
-    ld    D,(HL)        ; 1:7       index 142 i
-    push DE             ; 1:11      index 142 i
-    dec   L             ; 1:4       index 142 i
-    exx                 ; 1:4       index 142 i
-    ex   DE, HL         ; 1:4       index 142 i
-    ex  (SP),HL         ; 1:19      index 142 i 
+    pop  DE             ; 1:10      do 142 ( -- ) R: ( -- )
+do142:                  ;           do 142 
+    push DE             ; 1:11      index i 142
+    ex   DE, HL         ; 1:4       index i 142
+    ld   HL, (idx142)   ; 3:16      index i 142 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -3740,48 +2856,30 @@ do142:
     ld   DE, string171  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 142
-    inc  L              ; 1:4       leave 142
-    inc  HL             ; 1:6       leave 142
-    inc  L              ; 1:4       leave 142
     jp   leave142       ;           leave 142 
 else129  EQU $          ;           = endif
 endif129: 
     
-    exx                 ; 1:4       push_addloop(-3) 142
-    ld   BC, -3         ; 3:10      push_addloop(-3) 142 BC = step
-    ld    E,(HL)        ; 1:7       push_addloop(-3) 142
-    ld    A, E          ; 1:4       push_addloop(-3) 142
-    add   A, C          ; 1:4       push_addloop(-3) 142
-    ld  (HL),A          ; 1:7       push_addloop(-3) 142
-    inc   L             ; 1:4       push_addloop(-3) 142
-    ld    D,(HL)        ; 1:7       push_addloop(-3) 142 DE = index
-    ld    A, D          ; 1:4       push_addloop(-3) 142
-    adc   A, B          ; 1:4       push_addloop(-3) 142
-    ld  (HL),A          ; 1:7       push_addloop(-3) 142
-    inc  HL             ; 1:6       push_addloop(-3) 142
-    ld    A, E          ; 1:4       push_addloop(-3) 142    
-    sub (HL)            ; 1:7       push_addloop(-3) 142
-    ld    E, A          ; 1:4       push_addloop(-3) 142    
-    inc   L             ; 1:4       push_addloop(-3) 142
-    ld    A, D          ; 1:4       push_addloop(-3) 142    
-    sbc   A,(HL)        ; 1:7       push_addloop(-3) 142
-    ld    D, A          ; 1:4       push_addloop(-3) 142 DE = index-stop
-    ld    A, E          ; 1:4       push_addloop(-3) 142    
-    add   A, C          ; 1:4       push_addloop(-3) 142
-    ld    A, D          ; 1:4       push_addloop(-3) 142    
-    adc   A, B          ; 1:4       push_addloop(-3) 142
-    xor   D             ; 1:4       push_addloop(-3) 142
-    jp    m, $+10       ; 3:10      push_addloop(-3) 142
-    dec   L             ; 1:4       push_addloop(-3) 142    
-    dec  HL             ; 1:6       push_addloop(-3) 142
-    dec   L             ; 1:4       push_addloop(-3) 142
-    exx                 ; 1:4       push_addloop(-3) 142
-    jp    p, do142      ; 3:10      push_addloop(-3) 142 ( -- ) R:( stop index -- stop index+-3 )
-leave142:               ;           push_addloop(-3) 142
-    inc  HL             ; 1:6       push_addloop(-3) 142
-    exx                 ; 1:4       push_addloop(-3) 142 ( -- ) R:( stop index -- )
-exit142 EQU $ 
+    push HL             ; 1:11      -3 +loop 142
+idx142 EQU $+1          ;           -3 +loop 142
+    ld   HL, 0x0000     ; 3:10      -3 +loop 142
+    ld   BC, -3         ; 3:10      -3 +loop 142 BC = step
+    add  HL, BC         ; 1:11      -3 +loop 142 HL = index+step
+    ld  (idx142), HL    ; 3:16      -3 +loop 142 save index
+stp_lo142 EQU $+1       ;           -3 +loop 142
+    ld    A, 0x00       ; 2:7       -3 +loop 142 lo stop
+    sub   L             ; 1:4       -3 +loop 142
+    ld    L, A          ; 1:4       -3 +loop 142
+stp_hi142 EQU $+1       ;           -3 +loop 142
+    ld    A, 0x00       ; 2:7       -3 +loop 142 hi stop
+    sbc   A, H          ; 1:4       -3 +loop 142
+    ld    H, A          ; 1:4       -3 +loop 142 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      -3 +loop 142 HL = stop-index
+    xor   H             ; 1:4       -3 +loop 142
+    pop  HL             ; 1:10      -3 +loop 142
+    jp    p, do142      ; 3:10      -3 +loop 142 negative step
+leave142:               ;           -3 +loop 142
+exit142:                ;           -3 +loop 142 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
@@ -3920,25 +3018,14 @@ sleave144:              ;           push_addsloop(-3) 144
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
 _down3_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _up3:                   ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_up3_end+1),BC ; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
@@ -3963,32 +3050,18 @@ _up3:                   ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 145 index
-    push DE             ; 1:11      do 145 stop
-    exx                 ; 1:4       do 145
-    pop  DE             ; 1:10      do 145 stop
-    dec  HL             ; 1:6       do 145
-    ld  (HL),D          ; 1:7       do 145
-    dec  L              ; 1:4       do 145
-    ld  (HL),E          ; 1:7       do 145 stop
-    pop  DE             ; 1:10      do 145 index
-    dec  HL             ; 1:6       do 145
-    ld  (HL),D          ; 1:7       do 145
-    dec  L              ; 1:4       do 145
-    ld  (HL),E          ; 1:7       do 145 index
-    exx                 ; 1:4       do 145
+    ld  (idx145), HL    ; 3:16      do 145 index
+    dec  DE             ; 1:6       do 145 stop-1
+    ld    A, E          ; 1:4       do 145 
+    ld  (stp_lo145), A  ; 3:13      do 145 lo stop
+    ld    A, D          ; 1:4       do 145 
+    ld  (stp_hi145), A  ; 3:13      do 145 hi stop
     pop  HL             ; 1:10      do 145
-    pop  DE             ; 1:10      do 145 ( stop index -- ) R: ( -- stop index )
-do145: 
-    exx                 ; 1:4       index 145 i    
-    ld    E,(HL)        ; 1:7       index 145 i
-    inc   L             ; 1:4       index 145 i
-    ld    D,(HL)        ; 1:7       index 145 i
-    push DE             ; 1:11      index 145 i
-    dec   L             ; 1:4       index 145 i
-    exx                 ; 1:4       index 145 i
-    ex   DE, HL         ; 1:4       index 145 i
-    ex  (SP),HL         ; 1:19      index 145 i 
+    pop  DE             ; 1:10      do 145 ( -- ) R: ( -- )
+do145:                  ;           do 145 
+    push DE             ; 1:11      index i 145
+    ex   DE, HL         ; 1:4       index i 145
+    ld   HL, (idx145)   ; 3:16      index i 145 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -4012,10 +3085,6 @@ do145:
     ld   DE, string177  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 145
-    inc  L              ; 1:4       leave 145
-    inc  HL             ; 1:6       leave 145
-    inc  L              ; 1:4       leave 145
     jp   leave145       ;           leave 145 
 else132  EQU $          ;           = endif
 endif132: 
@@ -4023,38 +3092,27 @@ endif132:
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    ex  (SP),HL         ; 1:19      +loop 145
-    ex   DE, HL         ; 1:4       +loop 145
-    exx                 ; 1:4       +loop 145
-    ld    E,(HL)        ; 1:7       +loop 145
-    inc   L             ; 1:4       +loop 145
-    ld    D,(HL)        ; 1:7       +loop 145 DE = index
-    inc  HL             ; 1:6       +loop 145
-    ld    C,(HL)        ; 1:7       +loop 145
-    inc   L             ; 1:4       +loop 145
-    ld    B,(HL)        ; 1:7       +loop 145 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 145 HL = step
-    ex   DE, HL         ; 1:4       +loop 145
-    xor   A             ; 1:4       +loop 145
-    sbc  HL, BC         ; 2:15      +loop 145 HL = index-stop
-    ld    A, H          ; 1:4       +loop 145
-    add  HL, DE         ; 1:11      +loop 145 HL = index-stop+step
-    xor   H             ; 1:4       +loop 145
+    ld    B, H          ; 1:4       +loop 145
+    ld    C, L          ; 1:4       +loop 145 BC = step
+idx145 EQU $+1          ;           +loop 145
+    ld   HL, 0x0000     ; 3:10      +loop 145
     add  HL, BC         ; 1:11      +loop 145 HL = index+step
+    ld  (idx145), HL    ; 3:16      +loop 145 save index
+stp_lo145 EQU $+1       ;           +loop 145
+    ld    A, 0x00       ; 2:7       +loop 145 lo stop
+    sub   L             ; 1:4       +loop 145
+    ld    L, A          ; 1:4       +loop 145
+stp_hi145 EQU $+1       ;           +loop 145
+    ld    A, 0x00       ; 2:7       +loop 145 hi stop
+    sbc   A, H          ; 1:4       +loop 145
+    ld    H, A          ; 1:4       +loop 145 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 145 HL = stop-index
+    xor   H             ; 1:4       +loop 145
     ex   DE, HL         ; 1:4       +loop 145
-    pop  HL             ; 1:10      +loop 145
-    jp    m, leave145   ; 3:10      +loop 145
-    dec   L             ; 1:4       +loop 145    
-    dec  HL             ; 1:6       +loop 145
-    ld  (HL),D          ; 1:7       +loop 145    
-    dec   L             ; 1:4       +loop 145
-    ld  (HL),E          ; 1:7       +loop 145
-    exx                 ; 1:4       +loop 145
-    jp    p, do145      ; 3:10      +loop 145 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 145
+    jp    p, do145      ; 3:10      +loop 145
 leave145:               ;           +loop 145
-    inc  HL             ; 1:6       +loop 145
-    exx                 ; 1:4       +loop 145 ( step -- ) R:( stop index -- )
-exit145 EQU $ 
+exit145:                ;           +loop 145 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -4074,32 +3132,18 @@ exit145 EQU $
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 146 index
-    push DE             ; 1:11      do 146 stop
-    exx                 ; 1:4       do 146
-    pop  DE             ; 1:10      do 146 stop
-    dec  HL             ; 1:6       do 146
-    ld  (HL),D          ; 1:7       do 146
-    dec  L              ; 1:4       do 146
-    ld  (HL),E          ; 1:7       do 146 stop
-    pop  DE             ; 1:10      do 146 index
-    dec  HL             ; 1:6       do 146
-    ld  (HL),D          ; 1:7       do 146
-    dec  L              ; 1:4       do 146
-    ld  (HL),E          ; 1:7       do 146 index
-    exx                 ; 1:4       do 146
+    ld  (idx146), HL    ; 3:16      do 146 index
+    dec  DE             ; 1:6       do 146 stop-1
+    ld    A, E          ; 1:4       do 146 
+    ld  (stp_lo146), A  ; 3:13      do 146 lo stop
+    ld    A, D          ; 1:4       do 146 
+    ld  (stp_hi146), A  ; 3:13      do 146 hi stop
     pop  HL             ; 1:10      do 146
-    pop  DE             ; 1:10      do 146 ( stop index -- ) R: ( -- stop index )
-do146: 
-    exx                 ; 1:4       index 146 i    
-    ld    E,(HL)        ; 1:7       index 146 i
-    inc   L             ; 1:4       index 146 i
-    ld    D,(HL)        ; 1:7       index 146 i
-    push DE             ; 1:11      index 146 i
-    dec   L             ; 1:4       index 146 i
-    exx                 ; 1:4       index 146 i
-    ex   DE, HL         ; 1:4       index 146 i
-    ex  (SP),HL         ; 1:19      index 146 i 
+    pop  DE             ; 1:10      do 146 ( -- ) R: ( -- )
+do146:                  ;           do 146 
+    push DE             ; 1:11      index i 146
+    ex   DE, HL         ; 1:4       index i 146
+    ld   HL, (idx146)   ; 3:16      index i 146 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -4123,48 +3167,30 @@ do146:
     ld   DE, string179  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 146
-    inc  L              ; 1:4       leave 146
-    inc  HL             ; 1:6       leave 146
-    inc  L              ; 1:4       leave 146
     jp   leave146       ;           leave 146 
 else133  EQU $          ;           = endif
 endif133: 
     
-    exx                 ; 1:4       push_addloop(3) 146
-    ld   BC, 3          ; 3:10      push_addloop(3) 146 BC = step
-    ld    E,(HL)        ; 1:7       push_addloop(3) 146
-    ld    A, E          ; 1:4       push_addloop(3) 146
-    add   A, C          ; 1:4       push_addloop(3) 146
-    ld  (HL),A          ; 1:7       push_addloop(3) 146
-    inc   L             ; 1:4       push_addloop(3) 146
-    ld    D,(HL)        ; 1:7       push_addloop(3) 146 DE = index
-    ld    A, D          ; 1:4       push_addloop(3) 146
-    adc   A, B          ; 1:4       push_addloop(3) 146
-    ld  (HL),A          ; 1:7       push_addloop(3) 146
-    inc  HL             ; 1:6       push_addloop(3) 146
-    ld    A, E          ; 1:4       push_addloop(3) 146    
-    sub (HL)            ; 1:7       push_addloop(3) 146
-    ld    E, A          ; 1:4       push_addloop(3) 146    
-    inc   L             ; 1:4       push_addloop(3) 146
-    ld    A, D          ; 1:4       push_addloop(3) 146    
-    sbc   A,(HL)        ; 1:7       push_addloop(3) 146
-    ld    D, A          ; 1:4       push_addloop(3) 146 DE = index-stop
-    ld    A, E          ; 1:4       push_addloop(3) 146    
-    add   A, C          ; 1:4       push_addloop(3) 146
-    ld    A, D          ; 1:4       push_addloop(3) 146    
-    adc   A, B          ; 1:4       push_addloop(3) 146
-    xor   D             ; 1:4       push_addloop(3) 146
-    jp    m, $+10       ; 3:10      push_addloop(3) 146
-    dec   L             ; 1:4       push_addloop(3) 146    
-    dec  HL             ; 1:6       push_addloop(3) 146
-    dec   L             ; 1:4       push_addloop(3) 146
-    exx                 ; 1:4       push_addloop(3) 146
-    jp    p, do146      ; 3:10      push_addloop(3) 146 ( -- ) R:( stop index -- stop index+3 )
-leave146:               ;           push_addloop(3) 146
-    inc  HL             ; 1:6       push_addloop(3) 146
-    exx                 ; 1:4       push_addloop(3) 146 ( -- ) R:( stop index -- )
-exit146 EQU $ 
+    push HL             ; 1:11      3 +loop 146
+idx146 EQU $+1          ;           3 +loop 146
+    ld   HL, 0x0000     ; 3:10      3 +loop 146
+    ld   BC, 3          ; 3:10      3 +loop 146 BC = step
+    add  HL, BC         ; 1:11      3 +loop 146 HL = index+step
+    ld  (idx146), HL    ; 3:16      3 +loop 146 save index
+stp_lo146 EQU $+1       ;           3 +loop 146
+    ld    A, 0x00       ; 2:7       3 +loop 146 lo stop
+    sub   L             ; 1:4       3 +loop 146
+    ld    L, A          ; 1:4       3 +loop 146
+stp_hi146 EQU $+1       ;           3 +loop 146
+    ld    A, 0x00       ; 2:7       3 +loop 146 hi stop
+    sbc   A, H          ; 1:4       3 +loop 146
+    ld    H, A          ; 1:4       3 +loop 146 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      3 +loop 146 HL = stop-index
+    xor   H             ; 1:4       3 +loop 146
+    pop  HL             ; 1:10      3 +loop 146
+    jp    p, do146      ; 3:10      3 +loop 146 negative step
+leave146:               ;           3 +loop 146
+exit146:                ;           3 +loop 146 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
@@ -4304,25 +3330,14 @@ sleave148:              ;           push_addsloop(3) 148
 
 
 _up3_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _smycka:                ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_smycka_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b )
@@ -4343,32 +3358,18 @@ _smycka:                ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 149 index
-    push DE             ; 1:11      do 149 stop
-    exx                 ; 1:4       do 149
-    pop  DE             ; 1:10      do 149 stop
-    dec  HL             ; 1:6       do 149
-    ld  (HL),D          ; 1:7       do 149
-    dec  L              ; 1:4       do 149
-    ld  (HL),E          ; 1:7       do 149 stop
-    pop  DE             ; 1:10      do 149 index
-    dec  HL             ; 1:6       do 149
-    ld  (HL),D          ; 1:7       do 149
-    dec  L              ; 1:4       do 149
-    ld  (HL),E          ; 1:7       do 149 index
-    exx                 ; 1:4       do 149
+    ld  (idx149), HL    ; 3:16      do 149 index
+    dec  DE             ; 1:6       do 149 stop-1
+    ld    A, E          ; 1:4       do 149 
+    ld  (stp_lo149), A  ; 3:13      do 149 lo stop
+    ld    A, D          ; 1:4       do 149 
+    ld  (stp_hi149), A  ; 3:13      do 149 hi stop
     pop  HL             ; 1:10      do 149
-    pop  DE             ; 1:10      do 149 ( stop index -- ) R: ( -- stop index )
-do149: 
-    exx                 ; 1:4       index 149 i    
-    ld    E,(HL)        ; 1:7       index 149 i
-    inc   L             ; 1:4       index 149 i
-    ld    D,(HL)        ; 1:7       index 149 i
-    push DE             ; 1:11      index 149 i
-    dec   L             ; 1:4       index 149 i
-    exx                 ; 1:4       index 149 i
-    ex   DE, HL         ; 1:4       index 149 i
-    ex  (SP),HL         ; 1:19      index 149 i 
+    pop  DE             ; 1:10      do 149 ( -- ) R: ( -- )
+do149:                  ;           do 149 
+    push DE             ; 1:11      index i 149
+    ex   DE, HL         ; 1:4       index i 149
+    ld   HL, (idx149)   ; 3:16      index i 149 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -4392,38 +3393,24 @@ do149:
     ld   DE, string185  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 149
-    inc  L              ; 1:4       leave 149
-    inc  HL             ; 1:6       leave 149
-    inc  L              ; 1:4       leave 149
     jp   leave149       ;           leave 149 
 else136  EQU $          ;           = endif
 endif136: 
     
-    exx                 ; 1:4       loop 149
-    ld    E,(HL)        ; 1:7       loop 149
-    inc   L             ; 1:4       loop 149
-    ld    D,(HL)        ; 1:7       loop 149 DE = index   
-    inc  HL             ; 1:6       loop 149
-    inc  DE             ; 1:6       loop 149 index++
-    ld    A,(HL)        ; 1:4       loop 149
-    xor   E             ; 1:4       loop 149 lo index - stop
-    jr   nz, $+8        ; 2:7/12    loop 149
-    ld    A, D          ; 1:4       loop 149
-    inc   L             ; 1:4       loop 149
-    xor (HL)            ; 1:7       loop 149 hi index - stop
-    jr    z, leave149   ; 2:7/12    loop 149 exit    
-    dec   L             ; 1:4       loop 149
-    dec  HL             ; 1:6       loop 149
-    ld  (HL), D         ; 1:7       loop 149
-    dec   L             ; 1:4       loop 149
-    ld  (HL), E         ; 1:7       loop 149
-    exx                 ; 1:4       loop 149
-    jp   do149          ; 3:10      loop 149
-leave149:
-    inc  HL             ; 1:6       loop 149
-    exx                 ; 1:4       loop 149
-exit149 EQU $ 
+idx149 EQU $+1          ;           loop 149
+    ld   BC, 0x0000     ; 3:10      loop 149 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       loop 149
+stp_lo149 EQU $+1       ;           loop 149
+    xor  0x00           ; 2:7       loop 149 lo index - stop - 1
+    ld    A, B          ; 1:4       loop 149
+    inc  BC             ; 1:6       loop 149 index++
+    ld  (idx149),BC     ; 4:20      loop 149 save index
+    jp   nz, do149      ; 3:10      loop 149    
+stp_hi149 EQU $+1       ;           loop 149
+    xor  0x00           ; 2:7       loop 149 hi index - stop - 1
+    jp   nz, do149      ; 3:10      loop 149
+leave149:               ;           loop 149
+exit149:                ;           loop 149 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -4491,25 +3478,14 @@ sleave150:              ;           sloop 150
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 _smycka_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _otaznik:               ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (_otaznik_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b )
@@ -4530,39 +3506,21 @@ _otaznik:               ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      ?do 151 index
+    ld  (idx151), HL    ; 3:16      ?do 151 index
     or    A             ; 1:4       ?do 151
     sbc  HL, DE         ; 2:15      ?do 151
-    jr   nz, $+8        ; 2:7/12    ?do 151
-    pop  HL             ; 1:10      ?do 151
+    dec  DE             ; 1:6       ?do 151 stop-1
+    ld    A, E          ; 1:4       ?do 151 
+    ld  (stp_lo151), A  ; 3:13      ?do 151 lo stop
+    ld    A, D          ; 1:4       ?do 151 
+    ld  (stp_hi151), A  ; 3:13      ?do 151 hi stop
     pop  HL             ; 1:10      ?do 151
     pop  DE             ; 1:10      ?do 151
-    jp   exit151        ; 3:10      ?do 151   
-    push DE             ; 1:11      ?do 151 stop
-    exx                 ; 1:4       ?do 151
-    pop  DE             ; 1:10      ?do 151 stop
-    dec  HL             ; 1:6       ?do 151
-    ld  (HL),D          ; 1:7       ?do 151
-    dec  L              ; 1:4       ?do 151
-    ld  (HL),E          ; 1:7       ?do 151 stop
-    pop  DE             ; 1:10      ?do 151 index
-    dec  HL             ; 1:6       ?do 151
-    ld  (HL),D          ; 1:7       ?do 151
-    dec  L              ; 1:4       ?do 151
-    ld  (HL),E          ; 1:7       ?do 151 index
-    exx                 ; 1:4       ?do 151
-    pop  HL             ; 1:10      ?do 151
-    pop  DE             ; 1:10      ?do 151 ( stop index -- ) R: ( -- stop index )
-do151: 
-    exx                 ; 1:4       index 151 i    
-    ld    E,(HL)        ; 1:7       index 151 i
-    inc   L             ; 1:4       index 151 i
-    ld    D,(HL)        ; 1:7       index 151 i
-    push DE             ; 1:11      index 151 i
-    dec   L             ; 1:4       index 151 i
-    exx                 ; 1:4       index 151 i
-    ex   DE, HL         ; 1:4       index 151 i
-    ex  (SP),HL         ; 1:19      index 151 i 
+    jp    z, exit151    ; 3:10      ?do 151 ( -- ) R: ( -- )
+do151:                  ;           ?do 151 
+    push DE             ; 1:11      index i 151
+    ex   DE, HL         ; 1:4       index i 151
+    ld   HL, (idx151)   ; 3:16      index i 151 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -4586,38 +3544,24 @@ do151:
     ld   DE, string189  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 151
-    inc  L              ; 1:4       leave 151
-    inc  HL             ; 1:6       leave 151
-    inc  L              ; 1:4       leave 151
     jp   leave151       ;           leave 151 
 else138  EQU $          ;           = endif
 endif138: 
     
-    exx                 ; 1:4       loop 151
-    ld    E,(HL)        ; 1:7       loop 151
-    inc   L             ; 1:4       loop 151
-    ld    D,(HL)        ; 1:7       loop 151 DE = index   
-    inc  HL             ; 1:6       loop 151
-    inc  DE             ; 1:6       loop 151 index++
-    ld    A,(HL)        ; 1:4       loop 151
-    xor   E             ; 1:4       loop 151 lo index - stop
-    jr   nz, $+8        ; 2:7/12    loop 151
-    ld    A, D          ; 1:4       loop 151
-    inc   L             ; 1:4       loop 151
-    xor (HL)            ; 1:7       loop 151 hi index - stop
-    jr    z, leave151   ; 2:7/12    loop 151 exit    
-    dec   L             ; 1:4       loop 151
-    dec  HL             ; 1:6       loop 151
-    ld  (HL), D         ; 1:7       loop 151
-    dec   L             ; 1:4       loop 151
-    ld  (HL), E         ; 1:7       loop 151
-    exx                 ; 1:4       loop 151
-    jp   do151          ; 3:10      loop 151
-leave151:
-    inc  HL             ; 1:6       loop 151
-    exx                 ; 1:4       loop 151
-exit151 EQU $ 
+idx151 EQU $+1          ;           loop 151
+    ld   BC, 0x0000     ; 3:10      loop 151 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       loop 151
+stp_lo151 EQU $+1       ;           loop 151
+    xor  0x00           ; 2:7       loop 151 lo index - stop - 1
+    ld    A, B          ; 1:4       loop 151
+    inc  BC             ; 1:6       loop 151 index++
+    ld  (idx151),BC     ; 4:20      loop 151 save index
+    jp   nz, do151      ; 3:10      loop 151    
+stp_hi151 EQU $+1       ;           loop 151
+    xor  0x00           ; 2:7       loop 151 hi index - stop - 1
+    jp   nz, do151      ; 3:10      loop 151
+leave151:               ;           loop 151
+exit151:                ;           loop 151 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -4690,28 +3634,17 @@ sleave152:              ;           sloop 152
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 _otaznik_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _3loop:                 ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ) 
+    pop  BC             ; 1:10      : ret
+    ld  (_3loop_end+1),BC; 4:20      : ( ret -- ) R:( -- ) 
     
     ld   (_krok), HL    ; 3:16      _krok ! push(_krok) store
     ex   DE, HL         ; 1:4       _krok ! push(_krok) store
@@ -4736,32 +3669,18 @@ _3loop:                 ;
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push HL             ; 1:11      do 153 index
-    push DE             ; 1:11      do 153 stop
-    exx                 ; 1:4       do 153
-    pop  DE             ; 1:10      do 153 stop
-    dec  HL             ; 1:6       do 153
-    ld  (HL),D          ; 1:7       do 153
-    dec  L              ; 1:4       do 153
-    ld  (HL),E          ; 1:7       do 153 stop
-    pop  DE             ; 1:10      do 153 index
-    dec  HL             ; 1:6       do 153
-    ld  (HL),D          ; 1:7       do 153
-    dec  L              ; 1:4       do 153
-    ld  (HL),E          ; 1:7       do 153 index
-    exx                 ; 1:4       do 153
+    ld  (idx153), HL    ; 3:16      do 153 index
+    dec  DE             ; 1:6       do 153 stop-1
+    ld    A, E          ; 1:4       do 153 
+    ld  (stp_lo153), A  ; 3:13      do 153 lo stop
+    ld    A, D          ; 1:4       do 153 
+    ld  (stp_hi153), A  ; 3:13      do 153 hi stop
     pop  HL             ; 1:10      do 153
-    pop  DE             ; 1:10      do 153 ( stop index -- ) R: ( -- stop index )
-do153: 
-    exx                 ; 1:4       index 153 i    
-    ld    E,(HL)        ; 1:7       index 153 i
-    inc   L             ; 1:4       index 153 i
-    ld    D,(HL)        ; 1:7       index 153 i
-    push DE             ; 1:11      index 153 i
-    dec   L             ; 1:4       index 153 i
-    exx                 ; 1:4       index 153 i
-    ex   DE, HL         ; 1:4       index 153 i
-    ex  (SP),HL         ; 1:19      index 153 i 
+    pop  DE             ; 1:10      do 153 ( -- ) R: ( -- )
+do153:                  ;           do 153 
+    push DE             ; 1:11      index i 153
+    ex   DE, HL         ; 1:4       index i 153
+    ld   HL, (idx153)   ; 3:16      index i 153 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
     push DE             ; 1:11      _stop @ push(_stop) fetch 
@@ -4785,10 +3704,6 @@ do153:
     ld   DE, string193  ; 3:10      print Address of string
     call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
-    exx                 ; 1:4       leave 153
-    inc  L              ; 1:4       leave 153
-    inc  HL             ; 1:6       leave 153
-    inc  L              ; 1:4       leave 153
     jp   leave153       ;           leave 153 
 else140  EQU $          ;           = endif
 endif140: 
@@ -4797,63 +3712,41 @@ endif140:
     ex   DE, HL         ; 1:4       _krok @ push(_krok) fetch
     ld   HL,(_krok)     ; 3:16      _krok @ push(_krok) fetch
     
-    ex  (SP),HL         ; 1:19      +loop 153
-    ex   DE, HL         ; 1:4       +loop 153
-    exx                 ; 1:4       +loop 153
-    ld    E,(HL)        ; 1:7       +loop 153
-    inc   L             ; 1:4       +loop 153
-    ld    D,(HL)        ; 1:7       +loop 153 DE = index
-    inc  HL             ; 1:6       +loop 153
-    ld    C,(HL)        ; 1:7       +loop 153
-    inc   L             ; 1:4       +loop 153
-    ld    B,(HL)        ; 1:7       +loop 153 BC = stop
-    ex  (SP),HL         ; 1:19      +loop 153 HL = step
-    ex   DE, HL         ; 1:4       +loop 153
-    xor   A             ; 1:4       +loop 153
-    sbc  HL, BC         ; 2:15      +loop 153 HL = index-stop
-    ld    A, H          ; 1:4       +loop 153
-    add  HL, DE         ; 1:11      +loop 153 HL = index-stop+step
-    xor   H             ; 1:4       +loop 153
+    ld    B, H          ; 1:4       +loop 153
+    ld    C, L          ; 1:4       +loop 153 BC = step
+idx153 EQU $+1          ;           +loop 153
+    ld   HL, 0x0000     ; 3:10      +loop 153
     add  HL, BC         ; 1:11      +loop 153 HL = index+step
+    ld  (idx153), HL    ; 3:16      +loop 153 save index
+stp_lo153 EQU $+1       ;           +loop 153
+    ld    A, 0x00       ; 2:7       +loop 153 lo stop
+    sub   L             ; 1:4       +loop 153
+    ld    L, A          ; 1:4       +loop 153
+stp_hi153 EQU $+1       ;           +loop 153
+    ld    A, 0x00       ; 2:7       +loop 153 hi stop
+    sbc   A, H          ; 1:4       +loop 153
+    ld    H, A          ; 1:4       +loop 153 HL = stop-(index+step)
+    add  HL, BC         ; 1:11      +loop 153 HL = stop-index
+    xor   H             ; 1:4       +loop 153
     ex   DE, HL         ; 1:4       +loop 153
-    pop  HL             ; 1:10      +loop 153
-    jp    m, leave153   ; 3:10      +loop 153
-    dec   L             ; 1:4       +loop 153    
-    dec  HL             ; 1:6       +loop 153
-    ld  (HL),D          ; 1:7       +loop 153    
-    dec   L             ; 1:4       +loop 153
-    ld  (HL),E          ; 1:7       +loop 153
-    exx                 ; 1:4       +loop 153
-    jp    p, do153      ; 3:10      +loop 153 ( step -- ) R:( stop index -- stop index+step )
+    pop  DE             ; 1:10      +loop 153
+    jp    p, do153      ; 3:10      +loop 153
 leave153:               ;           +loop 153
-    inc  HL             ; 1:6       +loop 153
-    exx                 ; 1:4       +loop 153 ( step -- ) R:( stop index -- )
-exit153 EQU $ 
+exit153:                ;           +loop 153 
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
 _3loop_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 _3sloop:                ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ) 
+    pop  BC             ; 1:10      : ret
+    ld  (_3sloop_end+1),BC; 4:20      : ( ret -- ) R:( -- ) 
     
     ld   (_krok), HL    ; 3:16      _krok ! push(_krok) store
     ex   DE, HL         ; 1:4       _krok ! push(_krok) store
@@ -4935,14 +3828,8 @@ sleave154:              ;           +sloop 154
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
 
 _3sloop_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
 
@@ -4960,14 +3847,13 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16
+    ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)

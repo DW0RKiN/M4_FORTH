@@ -16,26 +16,20 @@ ORG 0x8000
     ld   DE, test       ; 3:10      push2(test,10)
     push HL             ; 1:11      push2(test,10)
     ld   HL, 10         ; 3:10      push2(test,10) 
-    call generate       ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call generate       ; 3:17      call ( -- ret ) R:( -- )
 ;#  PUSH2(test,10) CALL(print)
     
     push DE             ; 1:11      push2(test,10)
     ld   DE, test       ; 3:10      push2(test,10)
     push HL             ; 1:11      push2(test,10)
     ld   HL, 10         ; 3:10      push2(test,10) 
-    call sort           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call sort           ; 3:17      call ( -- ret ) R:( -- )
     
     push DE             ; 1:11      push2(test,10)
     ld   DE, test       ; 3:10      push2(test,10)
     push HL             ; 1:11      push2(test,10)
     ld   HL, 10         ; 3:10      push2(test,10) 
-    call print          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- )
+    call print          ; 3:17      call ( -- ret ) R:( -- )
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -57,40 +51,26 @@ ORG 0x8000
     ret
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 generate:               ;           (addr len -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (generate_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     add  HL, HL         ; 1:11      2* 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) ; ( addr+len addr )
     
-    push HL             ; 1:11      do 101 index
-    push DE             ; 1:11      do 101 stop
-    exx                 ; 1:4       do 101
-    pop  DE             ; 1:10      do 101 stop
-    dec  HL             ; 1:6       do 101
-    ld  (HL),D          ; 1:7       do 101
-    dec  L              ; 1:4       do 101
-    ld  (HL),E          ; 1:7       do 101 stop
-    pop  DE             ; 1:10      do 101 index
-    dec  HL             ; 1:6       do 101
-    ld  (HL),D          ; 1:7       do 101
-    dec  L              ; 1:4       do 101
-    ld  (HL),E          ; 1:7       do 101 index
-    exx                 ; 1:4       do 101
+    ld  (idx101), HL    ; 3:16      do 101 index
+    ld    A, E          ; 1:4       do 101 
+    ld  (stp_lo101), A  ; 3:13      do 101 lo stop
+    ld    A, D          ; 1:4       do 101 
+    ld  (stp_hi101), A  ; 3:13      do 101 hi stop
     pop  HL             ; 1:10      do 101
-    pop  DE             ; 1:10      do 101 ( stop index -- ) R: ( -- stop index )
-do101: 
+    pop  DE             ; 1:10      do 101 ( -- ) R: ( -- )
+do101:                  ;           do 101 
         
     ex   DE, HL         ; 1:4       rnd
     push HL             ; 1:11      rnd
@@ -99,108 +79,66 @@ do101:
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    exx                 ; 1:4       index 101 i    
-    ld    E,(HL)        ; 1:7       index 101 i
-    inc   L             ; 1:4       index 101 i
-    ld    D,(HL)        ; 1:7       index 101 i
-    push DE             ; 1:11      index 101 i
-    dec   L             ; 1:4       index 101 i
-    exx                 ; 1:4       index 101 i
-    ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP),HL         ; 1:19      index 101 i 
-    ld  (HL), E         ; 1:7       ! store
+    push DE             ; 1:11      index i 101
+    ex   DE, HL         ; 1:4       index i 101
+    ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index 
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store
     
                         ;           push_addloop(2) 101
-    exx                 ; 1:4       2 +loop 101
-    ld    E,(HL)        ; 1:7       2 +loop 101
-    inc   L             ; 1:4       2 +loop 101
-    ld    D,(HL)        ; 1:7       2 +loop 101 DE = index
-    inc  DE             ; 1:6       2 +loop 101
-    inc  DE             ; 1:6       2 +loop 101 DE = index+2
-    inc  HL             ; 1:6       2 +loop 101
-    ld    A, E          ; 1:4       2 +loop 101    
-    sub (HL)            ; 1:7       2 +loop 101 lo index+2-stop
+idx101 EQU $+1          ;           2 +loop 101
+    ld   BC, 0x0000     ; 3:10      2 +loop 101 idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +loop 101 index++
+    inc  BC             ; 1:6       2 +loop 101 index++
+    ld  (idx101),BC     ; 4:20      2 +loop 101 save index
+    ld    A, C          ; 1:4       2 +loop 101
+stp_lo101 EQU $+1       ;           2 +loop 101
+    sub  0x00           ; 2:7       2 +loop 101 lo index - stop
     rra                 ; 1:4       2 +loop 101
     add   A, A          ; 1:4       2 +loop 101 and 0xFE with save carry
-    jr   nz, $+8        ; 2:7/12    2 +loop 101
-    ld    A, D          ; 1:4       2 +loop 101
-    inc   L             ; 1:4       2 +loop 101
-    sbc   A,(HL)        ; 1:7       2 +loop 101 hi index+2-stop
-    jr    z, leave101   ; 2:7/12    2 +loop 101
-    dec   L             ; 1:4       2 +loop 101   
-    dec  HL             ; 1:6       2 +loop 101
-    ld  (HL),D          ; 1:7       2 +loop 101
-    dec   L             ; 1:4       2 +loop 101
-    ld  (HL),E          ; 1:7       2 +loop 101
-    exx                 ; 1:4       2 +loop 101
-    jp    p, do101      ; 3:10      2 +loop 101 ( -- ) R:( stop index -- stop index+ )
-leave101:
-    inc  HL             ; 1:6       2 +loop 101
-    exx                 ; 1:4       2 +loop 101
-exit101 EQU $
+    jp   nz, do101      ; 3:10      2 +loop 101
+    ld    A, B          ; 1:4       2 +loop 101
+stp_hi101 EQU $+1       ;           2 +loop 101
+    sbc   A, 0x00       ; 2:7       2 +loop 101 hi index - stop
+    jp   nz, do101      ; 3:10      2 +loop 101
+xleave101:              ;           2 +loop 101
+xexit101:               ;           2 +loop 101
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 generate_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
     
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 print:                  ;           (addr len -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (print_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     add  HL, HL         ; 1:11      2* 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) ; ( addr+len addr )
     
-    push HL             ; 1:11      do 102 index
-    push DE             ; 1:11      do 102 stop
-    exx                 ; 1:4       do 102
-    pop  DE             ; 1:10      do 102 stop
-    dec  HL             ; 1:6       do 102
-    ld  (HL),D          ; 1:7       do 102
-    dec  L              ; 1:4       do 102
-    ld  (HL),E          ; 1:7       do 102 stop
-    pop  DE             ; 1:10      do 102 index
-    dec  HL             ; 1:6       do 102
-    ld  (HL),D          ; 1:7       do 102
-    dec  L              ; 1:4       do 102
-    ld  (HL),E          ; 1:7       do 102 index
-    exx                 ; 1:4       do 102
+    ld  (idx102), HL    ; 3:16      do 102 index
+    ld    A, E          ; 1:4       do 102 
+    ld  (stp_lo102), A  ; 3:13      do 102 lo stop
+    ld    A, D          ; 1:4       do 102 
+    ld  (stp_hi102), A  ; 3:13      do 102 hi stop
     pop  HL             ; 1:10      do 102
-    pop  DE             ; 1:10      do 102 ( stop index -- ) R: ( -- stop index )
-do102: 
+    pop  DE             ; 1:10      do 102 ( -- ) R: ( -- )
+do102:                  ;           do 102 
         
-    exx                 ; 1:4       index 102 i    
-    ld    E,(HL)        ; 1:7       index 102 i
-    inc   L             ; 1:4       index 102 i
-    ld    D,(HL)        ; 1:7       index 102 i
-    push DE             ; 1:11      index 102 i
-    dec   L             ; 1:4       index 102 i
-    exx                 ; 1:4       index 102 i
-    ex   DE, HL         ; 1:4       index 102 i
-    ex  (SP),HL         ; 1:19      index 102 i 
+    push DE             ; 1:11      index i 102
+    ex   DE, HL         ; 1:4       index i 102
+    ld   HL, (idx102)   ; 3:16      index i 102 idx always points to a 16-bit index 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
@@ -208,57 +146,36 @@ do102:
     call PRINT_S16      ; 3:17      .
     
                         ;           push_addloop(2) 102
-    exx                 ; 1:4       2 +loop 102
-    ld    E,(HL)        ; 1:7       2 +loop 102
-    inc   L             ; 1:4       2 +loop 102
-    ld    D,(HL)        ; 1:7       2 +loop 102 DE = index
-    inc  DE             ; 1:6       2 +loop 102
-    inc  DE             ; 1:6       2 +loop 102 DE = index+2
-    inc  HL             ; 1:6       2 +loop 102
-    ld    A, E          ; 1:4       2 +loop 102    
-    sub (HL)            ; 1:7       2 +loop 102 lo index+2-stop
+idx102 EQU $+1          ;           2 +loop 102
+    ld   BC, 0x0000     ; 3:10      2 +loop 102 idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +loop 102 index++
+    inc  BC             ; 1:6       2 +loop 102 index++
+    ld  (idx102),BC     ; 4:20      2 +loop 102 save index
+    ld    A, C          ; 1:4       2 +loop 102
+stp_lo102 EQU $+1       ;           2 +loop 102
+    sub  0x00           ; 2:7       2 +loop 102 lo index - stop
     rra                 ; 1:4       2 +loop 102
     add   A, A          ; 1:4       2 +loop 102 and 0xFE with save carry
-    jr   nz, $+8        ; 2:7/12    2 +loop 102
-    ld    A, D          ; 1:4       2 +loop 102
-    inc   L             ; 1:4       2 +loop 102
-    sbc   A,(HL)        ; 1:7       2 +loop 102 hi index+2-stop
-    jr    z, leave102   ; 2:7/12    2 +loop 102
-    dec   L             ; 1:4       2 +loop 102   
-    dec  HL             ; 1:6       2 +loop 102
-    ld  (HL),D          ; 1:7       2 +loop 102
-    dec   L             ; 1:4       2 +loop 102
-    ld  (HL),E          ; 1:7       2 +loop 102
-    exx                 ; 1:4       2 +loop 102
-    jp    p, do102      ; 3:10      2 +loop 102 ( -- ) R:( stop index -- stop index+ )
-leave102:
-    inc  HL             ; 1:6       2 +loop 102
-    exx                 ; 1:4       2 +loop 102
-exit102 EQU $
+    jp   nz, do102      ; 3:10      2 +loop 102
+    ld    A, B          ; 1:4       2 +loop 102
+stp_hi102 EQU $+1       ;           2 +loop 102
+    sbc   A, 0x00       ; 2:7       2 +loop 102 hi index - stop
+    jp   nz, do102      ; 3:10      2 +loop 102
+xleave102:              ;           2 +loop 102
+xexit102:               ;           2 +loop 102
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
 print_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 mid:                    ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ) ;( l r -- mid )
+    pop  BC             ; 1:10      : ret
+    ld  (mid_end+1),BC  ; 4:20      : ( ret -- ) R:( -- ) ;( l r -- mid )
     
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
@@ -278,29 +195,18 @@ mid:                    ;
     and   H             ; 1:4       and
     ld    H, A          ; 1:4       and
     pop  DE             ; 1:10      and 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
 
 mid_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
  
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 exch_slow:              ;           ( addr1 addr2 -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (exch_slow_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -325,9 +231,9 @@ exch_slow:              ;           ( addr1 addr2 -- )
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store     
     exx                 ; 1:4       r_from
@@ -340,32 +246,21 @@ exch_slow:              ;           ( addr1 addr2 -- )
     ex   DE, HL         ; 1:4       r_from
     ex  (SP), HL        ; 1:19      r_from 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
 
 exch_slow_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 exch:                   ;           ( addr1 addr2 -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ) 
+    pop  BC             ; 1:10      : ret
+    ld  (exch_end+1),BC ; 4:20      : ( ret -- ) R:( -- ) 
     
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
@@ -382,45 +277,32 @@ exch:                   ;           ( addr1 addr2 -- )
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     ex   DE, HL         ; 1:4       rot
-    ex  (SP), HL        ; 1:19      rot ( c b a -- b a c ) 
-    ld  (HL), E         ; 1:7       ! store
+    ex  (SP),HL         ; 1:19      rot ( c b a -- b a c ) 
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    ld  (HL), E         ; 1:7       ! store
+    ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
-    ld  (HL), D         ; 1:7       ! store
+    ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store    ;( exchange values)
 
 exch_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----  
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------  
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 partition:              ;           ( l r -- l r r2 l2 )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    pop  BC             ; 1:10      : ret
+    ld  (partition_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call mid            ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call mid            ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
@@ -529,9 +411,7 @@ break103:               ;           repeat 103
             
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call exch           ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call exch           ; 3:17      call ( -- ret ) R:( -- ) 
     ex  (SP), HL        ; 1:19      to_r
     ex   DE, HL         ; 1:4       to_r
     exx                 ; 1:4       to_r
@@ -588,32 +468,24 @@ break101:               ;           until 101
     pop  DE             ; 1:10      drop ( a -- ) 
 
 partition_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
  
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a recursive function  ---
 qsort:                  ;           ( l r -- )
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret )
+    exx                 ; 1:4       : rcolon
+    pop  DE             ; 1:10      : rcolon ret
+    dec  HL             ; 1:6       : rcolon
+    ld  (HL),D          ; 1:7       : rcolon
+    dec   L             ; 1:4       : rcolon
+    ld  (HL),E          ; 1:7       : rcolon (HL') = ret
+    exx                 ; 1:4       : rcolon R:( -- ret )
     
-    call partition      ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call partition      ; 3:17      call ( -- ret ) R:( -- ) 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     ex   DE, HL         ; 1:4       rot
-    ex  (SP), HL        ; 1:19      rot ( c b a -- b a c )
+    ex  (SP),HL         ; 1:19      rot ( c b a -- b a c )
   ; 2over 2over - + < if 2swap then
     
     ld    A, H          ; 1:4       2dup < if
@@ -626,9 +498,9 @@ qsort:                  ;           ( l r -- )
     rra                 ; 1:4       2dup < if
     xor   C             ; 1:4       2dup < if
     jp    p, else102    ; 3:10      2dup < if 
-    call qsort          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call qsort          ; 3:17      rcall
+    ex   DE, HL         ; 1:4       rcall    
+    exx                 ; 1:4       rcall R:( ret -- ) 
     jp   endif102       ; 3:10      else
 else102: 
     pop  HL             ; 1:10      2drop
@@ -645,9 +517,9 @@ endif102:
     rra                 ; 1:4       2dup < if
     xor   C             ; 1:4       2dup < if
     jp    p, else103    ; 3:10      2dup < if 
-    call qsort          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call qsort          ; 3:17      rcall
+    ex   DE, HL         ; 1:4       rcall    
+    exx                 ; 1:4       rcall R:( ret -- ) 
     jp   endif103       ; 3:10      else
 else103: 
     pop  HL             ; 1:10      2drop
@@ -655,25 +527,20 @@ else103:
 endif103: 
 
 qsort_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    exx                 ; 1:4       ; rsemicilon
+    ld    E,(HL)        ; 1:7       ; rsemicilon
+    inc   L             ; 1:4       ; rsemicilon
+    ld    D,(HL)        ; 1:7       ; rsemicilon DE = ret
+    inc  HL             ; 1:6       ; rsemicilon
+    ex   DE, HL         ; 1:4       ; rsemicilon
+    jp  (HL)            ; 1:4       ; rsemicilon
+;   ---------  end of recursive function  ---------
  
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a non-recursive function  ---
 sort:                   ;           
-    exx                 ; 1:4       :
-    pop  DE             ; 1:10      : ret
-    dec  HL             ; 1:6       :
-    ld  (HL),D          ; 1:7       :
-    dec   L             ; 1:4       :
-    ld  (HL),E          ; 1:7       : (HL') = ret
-    exx                 ; 1:4       : R:( -- ret ),( array len -- ))
+    pop  BC             ; 1:10      : ret
+    ld  (sort_end+1),BC ; 4:20      : ( ret -- ) R:( -- ),( array len -- ))
     
     ld    A, H          ; 1:4       dup 2 < if
     add   A, A          ; 1:4       dup 2 < if
@@ -695,24 +562,18 @@ endif104:
     add  HL, HL         ; 1:11      2* 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    add  HL, DE         ; 1:4       +
+    add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
-    call qsort          ; 3:17      call
-    ex   DE, HL         ; 1:4       call    
-    exx                 ; 1:4       call R:( ret -- ) 
+    call qsort          ; 3:17      rcall
+    ex   DE, HL         ; 1:4       rcall    
+    exx                 ; 1:4       rcall R:( ret -- ) 
 
 sort_end:
-    exx                 ; 1:4       ;
-    ld    E,(HL)        ; 1:7       ;
-    inc   L             ; 1:4       ;
-    ld    D,(HL)        ; 1:7       ; DE = ret
-    inc  HL             ; 1:6       ;
-    ex   DE, HL         ; 1:4       ;
-    jp  (HL)            ; 1:4       ;
-;   -----  e n d  -----
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
 
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
     push DE             ; 1:11      print
@@ -730,7 +591,7 @@ Stop:
 
 stack_test_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 
@@ -748,14 +609,13 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16
+    ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
