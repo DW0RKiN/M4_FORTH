@@ -1,11 +1,11 @@
-dnl ## rloop
+dnl ## recursive rdo rloop
 define({__},{})dnl
 dnl
 dnl
 dnl ---------  rdo ... rloop  -----------
 dnl 5 0 rdo ri . rloop --> 0 1 2 3 4 
 dnl ( stop index -- ) r:( -- stop index )
-define(RDO,{dnl
+define({RDO},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
@@ -44,7 +44,7 @@ dnl ---------  ?rdo ... rloop  -----------
 dnl 5 0 ?do i . loop --> 0 1 2 3 4 
 dnl 5 5 ?do i . loop -->  
 dnl ( stop index -- ) r:( -- stop index )
-define(QUESTIONRDO,{dnl
+define({QUESTIONRDO},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
@@ -119,7 +119,7 @@ define({RJ},{
 dnl
 dnl
 dnl ( -- )
-define(RLOOP,{
+define({RLOOP},{
     exx                 ; 1:4       rloop LOOP_STACK
     ld    E,(HL)        ; 1:7       rloop LOOP_STACK
     inc   L             ; 1:4       rloop LOOP_STACK
@@ -152,7 +152,7 @@ dnl
 dnl
 dnl
 dnl ( -- )
-define(SUB1_ADDRLOOP,{
+define({SUB1_ADDRLOOP},{
     exx                 ; 1:4       -1 +rloop LOOP_STACK
     ld    E,(HL)        ; 1:7       -1 +rloop LOOP_STACK
     inc   L             ; 1:4       -1 +rloop LOOP_STACK
@@ -256,7 +256,7 @@ dnl
 dnl
 dnl 2 +loop
 dnl ( -- )
-define(_2_ADDRLOOP,{
+define({_2_ADDRLOOP},{
     exx                 ; 1:4       2 +rloop LOOP_STACK
     ld    E,(HL)        ; 1:7       2 +rloop LOOP_STACK
     inc   L             ; 1:4       2 +rloop LOOP_STACK

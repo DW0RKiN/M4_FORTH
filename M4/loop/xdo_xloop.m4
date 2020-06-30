@@ -1,4 +1,4 @@
-dnl ## xloop
+dnl ## non-recursive xdo(stop,index) xi i xloop
 define({__},{})dnl
 dnl
 dnl ---------- xdo(stop,index) ... xloop ------------
@@ -42,57 +42,57 @@ dnl
 dnl
 dnl ( -- )
 define({XLOOP},{ifelse(eval((0<=(INDEX_STACK)) && ((INDEX_STACK)<(STOP_STACK)) && ((STOP_STACK)<256)),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK 0 <= index < stop < 256
-__{}    ld    A, 0          ; 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    nop                 ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-__{}    inc   A             ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-__{}    ld  (idx{}LOOP_STACK),A      ; 3:13      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    sub  low format({%-11s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index-stop
+__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK 0 <= index < stop < 256
+__{}    ld    A, 0          ; 2:7       xloop LOOP_STACK
+__{}    nop                 ; 1:4       xloop LOOP_STACK idx always points to a 16-bit index
+__{}    inc   A             ; 1:4       xloop LOOP_STACK index++
+__{}    ld  (idx{}LOOP_STACK),A      ; 3:13      xloop LOOP_STACK
+__{}    sub  low format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK
+__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK index-stop
 dnl                         ;12:45/45/45},
 __{}eval((((INDEX_STACK)^(STOP_STACK))&0xFF00)==0 && ((INDEX_STACK)<(STOP_STACK))),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK hi index == hi stop  && index < stop
-__{}    ld   BC, 0x0000     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-__{}    ld    A, C          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    inc   A             ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-__{}    ld  (idx{}LOOP_STACK),A      ; 3:13      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK save index
-__{}    sub  low format({%-11s},STOP_STACK); 2:7        xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index - stop
-__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK hi index == hi stop && index < stop
+__{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
+__{}    ld    A, C          ; 1:4       xloop LOOP_STACK
+__{}    inc   A             ; 1:4       xloop LOOP_STACK index++
+__{}    ld  (idx{}LOOP_STACK),A      ; 3:13      xloop LOOP_STACK save index
+__{}    sub  low format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK index - stop
+__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;13:48/48/48},
 __{}eval((((STOP_STACK) && 0xFF) == 0) && (((INDEX_STACK)^(STOP_STACK))&0xFF00)),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK lo stop == 0  && hi index != hi stop
-__{}    ld   BC, 0x0000     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-__{}    inc  BC             ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK save index
-__{}    ld    A, B          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    sub  high format({%-10s},STOP_STACK); 2:7        xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index - stop
-__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK lo stop == 0  && hi index != hi stop
+__{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
+__{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
+__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
+__{}    ld    A, B          ; 1:4       xloop LOOP_STACK
+__{}    sub  high format({%-10s},STOP_STACK); 2:7        xloop LOOP_STACK index - stop
+__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;14:57/57/57},
 __{}eval((((INDEX_STACK)^(STOP_STACK))&0x8000)==0 && ((INDEX_STACK)<(STOP_STACK))),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index < stop && same sign
-__{}    ld   BC, 0x0000     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-__{}    inc  BC             ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK save index
-__{}    ld    A, C          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    sub  low format({%-11s},STOP_STACK); 2:7        xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index - stop
-__{}    ld    A, B          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    sbc   A, high format({%-6s},STOP_STACK); 2:7        xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index - stop
-__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK index < stop && same sign
+__{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
+__{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
+__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
+__{}    ld    A, C          ; 1:4       xloop LOOP_STACK
+__{}    sub  low format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK index - stop
+__{}    ld    A, B          ; 1:4       xloop LOOP_STACK
+__{}    sbc   A, high format({%-6s},STOP_STACK); 2:7       xloop LOOP_STACK index - stop
+__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;17:68/68/68},
 __{}{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    ld   BC, 0x0000     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-__{}    inc  BC             ; 1:6       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK save index
-__{}    ld    A, C          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    xor  low format({%-11s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    ld    A, B          ; 1:4       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    xor  high format({%-10s},STOP_STACK); 2:7       xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK
+__{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
+__{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
+__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
+__{}    ld    A, C          ; 1:4       xloop LOOP_STACK
+__{}    xor  low format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
+__{}    ld    A, B          ; 1:4       xloop LOOP_STACK
+__{}    xor  high format({%-10s},STOP_STACK); 2:7       xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;20:57/78/78})
-xleave{}LOOP_STACK:              ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-xexit{}LOOP_STACK:               ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK{}dnl
+xleave{}LOOP_STACK:              ;           xloop LOOP_STACK
+xexit{}LOOP_STACK:               ;           xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -102,18 +102,18 @@ dnl
 dnl
 dnl ( -- )
 define({SUB1_ADDXLOOP},{
-idx{}LOOP_STACK EQU $+1          ;           -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    ld   BC, 0x0000     ; 3:10      -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-    dec  BC             ; 1:6       -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index--
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK save index
-    ld    A, C          ; 1:4       -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    xor  low format({%-11s},STOP_STACK); 2:7       -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    ld    A, B          ; 1:4       -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    xor  high format({%-10s},STOP_STACK); 2:7       -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-xleave{}LOOP_STACK:              ;           -1 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-xexit{}LOOP_STACK:               ;           xloop(STOP_STACK,INDEX_STACK) LOOP_STACK{}dnl
+idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK
+    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK idx always points to a 16-bit index
+    dec  BC             ; 1:6       -1 +xloop LOOP_STACK index--
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      -1 +xloop LOOP_STACK save index
+    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
+    xor  low format({%-11s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop LOOP_STACK
+    ld    A, B          ; 1:4       -1 +xloop LOOP_STACK
+    xor  high format({%-10s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop LOOP_STACK
+xleave{}LOOP_STACK:              ;           -1 +xloop LOOP_STACK
+xexit{}LOOP_STACK:               ;           xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -124,22 +124,22 @@ dnl
 dnl 2 +loop
 dnl ( -- )
 define(_ADD2_ADDXLOOP,{
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    ld   BC, 0x0000     ; 3:10      2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK idx always points to a 16-bit index
-    inc  BC             ; 1:6       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-    inc  BC             ; 1:6       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK index++
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK save index
-    ld    A, C          ; 1:4       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    sub  low format({%-11s},STOP_STACK); 2:7       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    rra                 ; 1:4       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    add   A, A          ; 1:4       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK and 0xFE with save carry
-    jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    ld    A, B          ; 1:4       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    sbc   A, high format({%-6s},STOP_STACK); 2:7       2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
+idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK
+    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +xloop LOOP_STACK index++
+    inc  BC             ; 1:6       2 +xloop LOOP_STACK index++
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      2 +xloop LOOP_STACK save index
+    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+    sub  low format({%-11s},STOP_STACK); 2:7       2 +xloop LOOP_STACK
+    rra                 ; 1:4       2 +xloop LOOP_STACK
+    add   A, A          ; 1:4       2 +xloop LOOP_STACK and 0xFE with save carry
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop LOOP_STACK
+    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
+    sbc   A, high format({%-6s},STOP_STACK); 2:7       2 +xloop LOOP_STACK
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop LOOP_STACK
 dnl                         ;23:71/92/92
-xleave{}LOOP_STACK:              ;           2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK
-xexit{}LOOP_STACK:               ;           2 +xloop(STOP_STACK,INDEX_STACK) LOOP_STACK{}dnl
+xleave{}LOOP_STACK:              ;           2 +xloop LOOP_STACK
+xexit{}LOOP_STACK:               ;           2 +xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl

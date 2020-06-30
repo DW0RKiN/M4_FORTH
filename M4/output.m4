@@ -16,12 +16,11 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     PUTCHAR(' ')
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16}){}dnl
+    ; fall to print_u16}){}dnl
 dnl
 dnl
 ifdef({USE_U16},{
@@ -30,7 +29,7 @@ ifdef({USE_U16},{
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
 PRINT_U16:
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
 
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
@@ -58,7 +57,7 @@ BIN2DEC:
     call BIN2DEC_CHAR   ; 3:17
     ld    A, L          ; 1:4
     add   A,'0'         ; 2:7
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
     ret                 ; 1:10
     
 BIN2DEC_CHAR:
@@ -72,7 +71,7 @@ BIN2DEC_CHAR:
     ret   z             ; 1:5/11
     
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
     ret                 ; 1:10}){}dnl
 dnl
 dnl
@@ -404,11 +403,11 @@ READKEY:
     ex   DE, HL         ; 1:4       readkey
     ex  (SP),HL         ; 1:19      readkey
     push HL             ; 1:11      readkey
-    ld   BC, 0x5C08     ; 3:10      readkey ZX Spectrum LAST K system variable
+    ld   BC, 0x5C08     ; 3:10      readkey {ZX Spectrum LAST K} system variable
     xor   A             ; 1:4       readkey
     ld    H, A          ; 1:4       readkey
     ld  (BC),A          ; 1:7       readkey
-    ld    A,(BC)        ; 1:7       readkey read new value of LAST K
+    ld    A,(BC)        ; 1:7       readkey read new value of {LAST K}
     cp    H             ; 1:4       readkey is it still zero?
     jr    z, $-2        ; 2:7/12    readkey
     ld    L, A          ; 1:4       readkey
@@ -426,9 +425,9 @@ READSTRING:
     ex   DE, HL         ; 1:4       readstring 
 READSTRING2:
     xor   A             ; 1:4       readstring
-    ld    (0x5C08),A    ; 3:13      readstring ZX Spectrum LAST K system variable
+    ld    (0x5C08),A    ; 3:13      readstring {ZX Spectrum LAST K} system variable
     
-    ld    A,(0x5C08)    ; 3:13      readstring read new value of LAST K
+    ld    A,(0x5C08)    ; 3:13      readstring read new value of {LAST K}
     or    A             ; 1:4       readstring is it still zero?
     jr    z, $-4        ; 2:7/12    readstring
 
@@ -437,7 +436,7 @@ READSTRING2:
     ld  (HL),A          ; 1:7       readstring
     inc  HL             ; 1:6       readstring
     dec  DE             ; 1:6       readstring
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A    
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A    
     ld    A, D          ; 1:4       readstring
     or    E             ; 1:4       readstring
     jr   nz, READSTRING2; 2:7/12    readstring

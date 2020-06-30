@@ -1,4 +1,4 @@
-dnl ## rxloop
+dnl ## recursive xdo(stop,index) xi rxloop
 define({__},{})dnl
 dnl
 dnl
@@ -153,7 +153,7 @@ __{}popdef({INDER_STACK})})dnl
 dnl
 dnl
 dnl
-dnl stop index do ... step +loop
+dnl stop index rdo ... step +rloop
 dnl ( -- )
 dnl rxdo(stop,index) ... push_addrxloop(step)
 define({X_ADDRXLOOP},{ifelse({$#},{1},,{
@@ -192,7 +192,7 @@ __{}popdef({INDER_STACK})})dnl
 dnl
 dnl
 dnl
-dnl step +loop
+dnl step +rloop
 dnl ( -- )
 define({PUSH_ADDRXLOOP},{ifelse(eval($1),{1},{
                         ;           $1 +rxloop LOOP_STACK{}RXLOOP},

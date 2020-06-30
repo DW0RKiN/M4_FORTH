@@ -14,8 +14,8 @@ ifelse(M4PATH,{},{
 include(M4PATH{}float.m4)dnl
 include(M4PATH{}if.m4)dnl
 include(M4PATH{}logic.m4)dnl
-include(M4PATH{}loop.m4)dnl
 include(M4PATH{}function.m4)dnl
+include(M4PATH{}loop.m4)dnl
 include(M4PATH{}device.m4)dnl
 include(M4PATH{}arithmetic.m4)dnl
 include(M4PATH{}other.m4)dnl

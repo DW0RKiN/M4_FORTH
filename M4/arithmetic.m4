@@ -4,14 +4,14 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 + x1
-define(ADD,{
+define({ADD},{
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +})dnl
 dnl
 dnl
 dnl ( x -- x+n )
 dnl x = x + n
-define(PUSH_ADD,{ifelse(eval($1),{},{
+define({PUSH_ADD},{ifelse(eval($1),{},{
 __{}    ; warning The condition ($1) cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
@@ -34,13 +34,13 @@ dnl
 dnl "dup +"
 dnl ( x1 -- x2 )
 dnl x2 = x1 + x1
-define(DUP_ADD,{
+define({DUP_ADD},{
     add  HL, HL         ; 1:11      dup +})dnl
 dnl
 dnl
 dnl over +
 dnl ( x2 x1 -- x2 x1+x2 )
-define(OVER_ADD,{
+define({OVER_ADD},{
     add  HL, DE         ; 1:11      over +})dnl
 dnl
 dnl
@@ -55,7 +55,7 @@ dnl
 dnl
 dnl over -
 dnl ( x2 x1 -- x2 x1-x2 )
-define(OVER_SUB,{
+define({OVER_SUB},{
     or    A             ; 1:4       over -
     sbc  HL, DE         ; 2:15      over -})dnl
 dnl
@@ -96,7 +96,7 @@ dnl
 dnl
 dnl ( x -- u )
 dnl absolute value of x
-define(ABS,{
+define({ABS},{
     ld    A, H          ; 1:4       abs
     add   A, A          ; 1:4       abs
     jr   nc, $+8        ; 2:7/12    abs
@@ -105,7 +105,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 * x1
-define(MUL,{
+define({MUL},{
 ifdef({USE_MUL},,define({USE_MUL},{}))dnl
     call MULTIPLY       ; 3:17      *
     pop  DE             ; 1:10      *})dnl
@@ -113,7 +113,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 / x1
-define(DIV,{
+define({DIV},{
 ifdef({USE_DIV},,define({USE_DIV},{}))dnl
     call DIVIDE         ; 3:17      /
     pop  DE             ; 1:10      /})dnl
@@ -121,7 +121,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 % x1
-define(MOD,{
+define({MOD},{
 ifdef({USE_DIV},,define({USE_DIV},{}))dnl
     call DIVIDE         ; 3:17      mod
     ex   DE, HL         ; 1:4       mod
@@ -130,14 +130,14 @@ dnl
 dnl
 dnl ( x2 x1 -- r q )
 dnl x = x2 u% x1
-define(DIVMOD,{
+define({DIVMOD},{
 ifdef({USE_DIV},,define({USE_DIV},{}))dnl
     call DIVIDE         ; 3:17      /mod})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 u/ x1
-define(UDIV,{
+define({UDIV},{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      u/
     pop  DE             ; 1:10      u/})dnl
@@ -145,7 +145,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 u% x1
-define(UMOD,{
+define({UMOD},{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      umod
     ex   DE, HL         ; 1:4       umod
@@ -154,7 +154,7 @@ dnl
 dnl
 dnl ( x2 x1 -- r q )
 dnl x = x2 u% x1
-define(UDIVMOD,{
+define({UDIVMOD},{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      u/mod})dnl
 dnl
@@ -162,21 +162,21 @@ dnl
 dnl "1+"
 dnl ( x1 -- x )
 dnl x = x1 + 1
-define(_1ADD,{
+define({_1ADD},{
     inc  HL             ; 1:6       1+})dnl
 dnl
 dnl
 dnl "1-"
 dnl ( x1 -- x )
 dnl x = x1 - 1
-define(_1SUB,{
+define({_1SUB},{
     dec  HL             ; 1:6       1-})dnl
 dnl
 dnl
 dnl "2+"
 dnl ( x1 -- x )
 dnl x = x1 + 2
-define(_2ADD,{
+define({_2ADD},{
     inc  HL             ; 1:6       2+
     inc  HL             ; 1:6       2+})dnl
 dnl
@@ -184,7 +184,7 @@ dnl
 dnl "2-"
 dnl ( x1 -- x )
 dnl x = x1 - 2
-define(_2SUB,{
+define({_2SUB},{
     dec  HL             ; 1:6       2-
     dec  HL             ; 1:6       2-})dnl
 dnl
@@ -192,7 +192,7 @@ dnl
 dnl "2*"
 dnl ( x1 -- x )
 dnl x = x1 * 2
-define(_2MUL,{
+define({_2MUL},{
     add  HL, HL         ; 1:11      2*})dnl
 dnl
 dnl
@@ -207,7 +207,7 @@ dnl
 dnl "256 *"
 dnl ( x1 -- x )
 dnl x = x1 * 256
-define(_256MUL,{
+define({_256MUL},{
     ld    H, L          ; 1:4       256*
     ld    L, 0x00       ; 2:7       256*})dnl
 dnl

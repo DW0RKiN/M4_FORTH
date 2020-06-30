@@ -1,4 +1,4 @@
-dnl ## sloop
+dnl ## recursive sdo si sloop
 define({__},{})dnl
 dnl
 dnl
