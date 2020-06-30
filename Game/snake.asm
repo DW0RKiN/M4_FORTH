@@ -273,15 +273,15 @@ xdo103:                 ;           xdo(4+1,0) 103
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store 
     
-idx103 EQU $+1          ;           xloop(4+1,0) 103 0 <= index < stop < 256
-    ld    A, 0          ; 2:7       xloop(4+1,0) 103
-    nop                 ; 1:4       xloop(4+1,0) 103 idx always points to a 16-bit index
-    inc   A             ; 1:4       xloop(4+1,0) 103 index++
-    ld  (idx103),A      ; 3:13      xloop(4+1,0) 103
-    sub  low 4+1        ; 2:7       xloop(4+1,0) 103
-    jp    c, xdo103     ; 3:10      xloop(4+1,0) 103 index-stop
-xleave103:              ;           xloop(4+1,0) 103
-xexit103:               ;           xloop(4+1,0) 103 
+idx103 EQU $+1          ;           xloop 103 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop 103
+    nop                 ; 1:4       xloop 103 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop 103 index++
+    ld  (idx103),A      ; 3:13      xloop 103
+    sub  low 4+1        ; 2:7       xloop 103
+    jp    c, xdo103     ; 3:10      xloop 103 index-stop
+xleave103:              ;           xloop 103
+xexit103:               ;           xloop 103 
     
     ld   BC, 2          ; 3:10      push2_store(2,direction)
     ld   (direction), BC; 4:20      push2_store(2,direction) 
@@ -328,87 +328,44 @@ initialize:             ;
     push DE             ; 1:11      push(32-1)
     ex   DE, HL         ; 1:4       push(32-1)
     ld   HL, 32-1       ; 3:10      push(32-1) 
-    ex  (SP),HL         ; 1:19      for 104
+    ld  (idx104), HL    ; 3:16      for 104
     ex   DE, HL         ; 1:4       for 104
-    exx                 ; 1:4       for 104
     pop  DE             ; 1:10      for 104 index
-    dec  HL             ; 1:6       for 104
-    ld  (HL),D          ; 1:7       for 104
-    dec  L              ; 1:4       for 104
-    ld  (HL),E          ; 1:7       for 104 stop
-    exx                 ; 1:4       for 104 ( index -- ) R: ( -- index )
 for104:                 ;           for 104 
         
     push DE             ; 1:11      push(24-1)
     ex   DE, HL         ; 1:4       push(24-1)
     ld   HL, 24-1       ; 3:10      push(24-1) 
-    ex  (SP),HL         ; 1:19      for 105
+    ld  (idx105), HL    ; 3:16      for 105
     ex   DE, HL         ; 1:4       for 105
-    exx                 ; 1:4       for 105
     pop  DE             ; 1:10      for 105 index
-    dec  HL             ; 1:6       for 105
-    ld  (HL),D          ; 1:7       for 105
-    dec  L              ; 1:4       for 105
-    ld  (HL),E          ; 1:7       for 105 stop
-    exx                 ; 1:4       for 105 ( index -- ) R: ( -- index )
 for105:                 ;           for 105 
             
-    exx                 ; 1:4       index 105 j
-    ld   DE, 0x0004     ; 3:10      index 105 j
-    ex   DE, HL         ; 1:4       index 105 j
-    add  HL, DE         ; 1:11      index 105 j
-    ld    C,(HL)        ; 1:7       index 105 j lo    
-    inc   L             ; 1:4       index 105 j
-    ld    B,(HL)        ; 1:7       index 105 j hi
-    ex   DE, HL         ; 1:4       index 105 j
-    push BC             ; 1:11      index 105 j
-    exx                 ; 1:4       index 105 j
-    ex   DE, HL         ; 1:4       index 105 j
-    ex  (SP),HL         ; 1:19      index 105 j 
-    exx                 ; 1:4       index 105 i    
-    ld    E,(HL)        ; 1:7       index 105 i
-    inc   L             ; 1:4       index 105 i
-    ld    D,(HL)        ; 1:7       index 105 i
-    push DE             ; 1:11      index 105 i
-    dec   L             ; 1:4       index 105 i
-    exx                 ; 1:4       index 105 i
-    ex   DE, HL         ; 1:4       index 105 i
-    ex  (SP),HL         ; 1:19      index 105 i 
+    push DE             ; 1:11      index j 105
+    ex   DE, HL         ; 1:4       index j 105
+    ld   HL, (idx104)   ; 3:16      index j 105 idx always points to a 16-bit index 
+    push DE             ; 1:11      index i 105
+    ex   DE, HL         ; 1:4       index i 105
+    ld   HL, (idx105)   ; 3:16      index i 105 idx always points to a 16-bit index 
     call draw_white     ; 3:17      call ( -- ret ) R:( -- ) 
         
-    exx                 ; 1:4       next 105
-    ld    E,(HL)        ; 1:7       next 105
-    inc   L             ; 1:4       next 105
-    ld    D,(HL)        ; 1:7       next 105 DE = index   
-    ld    A, E          ; 1:4       next 105
-    or    D             ; 1:4       next 105
-    jr    z, next105    ; 2:7/12    next 105 exit
-    dec  DE             ; 1:6       next 105 index--
-    ld  (HL),D          ; 1:7       next 105
-    dec   L             ; 1:4       next 105
-    ld  (HL),E          ; 1:7       next 105
-    exx                 ; 1:4       next 105
-    jp   for105         ; 3:10      next 105
-next105:                ;           next 105
-    inc  HL             ; 1:6       next 105
-    exx                 ; 1:4       next 105 
+idx105 EQU $+1          ;           next 105
+    ld   BC, 0x0000     ; 3:10      next 105 idx always points to a 16-bit index
+    ld    A, B          ; 1:4       next 105
+    or    C             ; 1:4       next 105
+    dec  BC             ; 1:6       next 105 index--, zero flag unaffected
+    ld  (idx105),BC     ; 4:20      next 105 save index
+    jp   nz, for105     ; 3:10      next 105
+next105:                ;           next 105 
     
-    exx                 ; 1:4       next 104
-    ld    E,(HL)        ; 1:7       next 104
-    inc   L             ; 1:4       next 104
-    ld    D,(HL)        ; 1:7       next 104 DE = index   
-    ld    A, E          ; 1:4       next 104
-    or    D             ; 1:4       next 104
-    jr    z, next104    ; 2:7/12    next 104 exit
-    dec  DE             ; 1:6       next 104 index--
-    ld  (HL),D          ; 1:7       next 104
-    dec   L             ; 1:4       next 104
-    ld  (HL),E          ; 1:7       next 104
-    exx                 ; 1:4       next 104
-    jp   for104         ; 3:10      next 104
+idx104 EQU $+1          ;           next 104
+    ld   BC, 0x0000     ; 3:10      next 104 idx always points to a 16-bit index
+    ld    A, B          ; 1:4       next 104
+    or    C             ; 1:4       next 104
+    dec  BC             ; 1:6       next 104 index--, zero flag unaffected
+    ld  (idx104),BC     ; 4:20      next 104 save index
+    jp   nz, for104     ; 3:10      next 104
 next104:                ;           next 104
-    inc  HL             ; 1:6       next 104
-    exx                 ; 1:4       next 104
     
     call draw_walls     ; 3:17      scall 
     
@@ -986,47 +943,27 @@ draw_snake:             ;
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
-    push HL             ; 1:11      do 107 index
-    push DE             ; 1:11      do 107 stop
-    exx                 ; 1:4       do 107
-    pop  DE             ; 1:10      do 107 stop
-    dec  HL             ; 1:6       do 107
-    ld  (HL),D          ; 1:7       do 107
-    dec  L              ; 1:4       do 107
-    ld  (HL),E          ; 1:7       do 107 stop
-    pop  DE             ; 1:10      do 107 index
-    dec  HL             ; 1:6       do 107
-    ld  (HL),D          ; 1:7       do 107
-    dec  L              ; 1:4       do 107
-    ld  (HL),E          ; 1:7       do 107 index
-    exx                 ; 1:4       do 107
+    ld  (idx107), HL    ; 3:16      do 107 index
+    dec  DE             ; 1:6       do 107 stop-1
+    ld    A, E          ; 1:4       do 107 
+    ld  (stp_lo107), A  ; 3:13      do 107 lo stop
+    ld    A, D          ; 1:4       do 107 
+    ld  (stp_hi107), A  ; 3:13      do 107 hi stop
     pop  HL             ; 1:10      do 107
-    pop  DE             ; 1:10      do 107 ( stop index -- ) R: ( -- stop index )
-do107: 
+    pop  DE             ; 1:10      do 107 ( -- ) R: ( -- )
+do107:                  ;           do 107 
         
-    exx                 ; 1:4       index 107 i    
-    ld    E,(HL)        ; 1:7       index 107 i
-    inc   L             ; 1:4       index 107 i
-    ld    D,(HL)        ; 1:7       index 107 i
-    push DE             ; 1:11      index 107 i
-    dec   L             ; 1:4       index 107 i
-    exx                 ; 1:4       index 107 i
-    ex   DE, HL         ; 1:4       index 107 i
-    ex  (SP),HL         ; 1:19      index 107 i 
+    push DE             ; 1:11      index i 107
+    ex   DE, HL         ; 1:4       index i 107
+    ld   HL, (idx107)   ; 3:16      index i 107 idx always points to a 16-bit index 
     call snake_x        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    exx                 ; 1:4       index 107 i    
-    ld    E,(HL)        ; 1:7       index 107 i
-    inc   L             ; 1:4       index 107 i
-    ld    D,(HL)        ; 1:7       index 107 i
-    push DE             ; 1:11      index 107 i
-    dec   L             ; 1:4       index 107 i
-    exx                 ; 1:4       index 107 i
-    ex   DE, HL         ; 1:4       index 107 i
-    ex  (SP),HL         ; 1:19      index 107 i 
+    push DE             ; 1:11      index i 107
+    ex   DE, HL         ; 1:4       index i 107
+    ld   HL, (idx107)   ; 3:16      index i 107 idx always points to a 16-bit index 
     call snake_y        ; 3:17      call ( -- ret ) R:( -- ) 
     ld    A, (HL)       ; 1:7       @ fetch 
     inc  HL             ; 1:6       @ fetch
@@ -1034,30 +971,20 @@ do107:
     ld    L, A          ; 1:4       @ fetch 
     call draw_black     ; 3:17      call ( -- ret ) R:( -- ) 
     
-    exx                 ; 1:4       loop 107
-    ld    E,(HL)        ; 1:7       loop 107
-    inc   L             ; 1:4       loop 107
-    ld    D,(HL)        ; 1:7       loop 107 DE = index   
-    inc  HL             ; 1:6       loop 107
-    inc  DE             ; 1:6       loop 107 index++
-    ld    A,(HL)        ; 1:4       loop 107
-    xor   E             ; 1:4       loop 107 lo index - stop
-    jr   nz, $+8        ; 2:7/12    loop 107
-    ld    A, D          ; 1:4       loop 107
-    inc   L             ; 1:4       loop 107
-    xor (HL)            ; 1:7       loop 107 hi index - stop
-    jr    z, leave107   ; 2:7/12    loop 107 exit    
-    dec   L             ; 1:4       loop 107
-    dec  HL             ; 1:6       loop 107
-    ld  (HL), D         ; 1:7       loop 107
-    dec   L             ; 1:4       loop 107
-    ld  (HL), E         ; 1:7       loop 107
-    exx                 ; 1:4       loop 107
-    jp   do107          ; 3:10      loop 107
-leave107:
-    inc  HL             ; 1:6       loop 107
-    exx                 ; 1:4       loop 107
-exit107 EQU $ 
+idx107 EQU $+1          ;           loop 107
+    ld   BC, 0x0000     ; 3:10      loop 107 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       loop 107
+stp_lo107 EQU $+1       ;           loop 107
+    xor  0x00           ; 2:7       loop 107 lo index - stop - 1
+    ld    A, B          ; 1:4       loop 107
+    inc  BC             ; 1:6       loop 107 index++
+    ld  (idx107),BC     ; 4:20      loop 107 save index
+    jp   nz, do107      ; 3:10      loop 107    
+stp_hi107 EQU $+1       ;           loop 107
+    xor  0x00           ; 2:7       loop 107 hi index - stop - 1
+    jp   nz, do107      ; 3:10      loop 107
+leave107:               ;           loop 107
+exit107:                ;           loop 107 
 
     
     push DE             ; 1:11      length @ push(length) fetch 
