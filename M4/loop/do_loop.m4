@@ -14,6 +14,7 @@ __{}    jp   leave{}LOOP_STACK       ;           leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           unloop LOOP_STACK})
     ld  (idx{}LOOP_STACK), HL    ; 3:16      do LOOP_STACK index
+    dec  DE             ; 1:6       do LOOP_STACK stop-1
     ld    A, E          ; 1:4       do LOOP_STACK 
     ld  (stp_lo{}LOOP_STACK), A  ; 3:13      do LOOP_STACK lo stop
     ld    A, D          ; 1:4       do LOOP_STACK 
@@ -38,6 +39,7 @@ __{}                        ;           unloop LOOP_STACK})
     ld  (idx{}LOOP_STACK), HL    ; 3:16      ?do LOOP_STACK index
     or    A             ; 1:4       ?do LOOP_STACK
     sbc  HL, DE         ; 2:15      ?do LOOP_STACK
+    dec  DE             ; 1:6       ?do LOOP_STACK stop-1
     ld    A, E          ; 1:4       ?do LOOP_STACK 
     ld  (stp_lo{}LOOP_STACK), A  ; 3:13      ?do LOOP_STACK lo stop
     ld    A, D          ; 1:4       ?do LOOP_STACK 
@@ -85,16 +87,17 @@ dnl ( -- )
 define({LOOP},{
 idx{}LOOP_STACK EQU $+1          ;           loop LOOP_STACK
     ld   BC, 0x0000     ; 3:10      loop LOOP_STACK idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop LOOP_STACK index++
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      loop LOOP_STACK save index
     ld    A, C          ; 1:4       loop LOOP_STACK
 stp_lo{}LOOP_STACK EQU $+1       ;           loop LOOP_STACK
-    sub  0x00           ; 2:7       loop LOOP_STACK lo index - stop
+    xor  0x00           ; 2:7       loop LOOP_STACK lo index - stop - 1
     ld    A, B          ; 1:4       loop LOOP_STACK
+    inc  BC             ; 1:6       loop LOOP_STACK index++
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      loop LOOP_STACK save index
+    jp   nz, do{}LOOP_STACK      ; 3:10      loop LOOP_STACK    
 stp_hi{}LOOP_STACK EQU $+1       ;           loop LOOP_STACK
-    sbc   A, 0x00       ; 2:7       loop LOOP_STACK hi index - stop
-    jp    c, do{}LOOP_STACK      ; 3:10      loop LOOP_STACK
-dnl                     ;17:68/68/68
+    xor  0x00           ; 2:7       loop LOOP_STACK hi index - stop - 1
+    jp   nz, do{}LOOP_STACK      ; 3:10      loop LOOP_STACK
+dnl                     ;20:61/78/78
 leave{}LOOP_STACK:               ;           loop LOOP_STACK
 exit{}LOOP_STACK:                ;           loop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -107,16 +110,17 @@ dnl ( -- )
 define({SUB1_ADDLOOP},{
 idx{}LOOP_STACK EQU $+1          ;           -1 +loop LOOP_STACK
     ld   BC, 0x0000     ; 3:10      -1 +loop LOOP_STACK idx always points to a 16-bit index
-    ld    A, C          ; 1:4       -1 +loop LOOP_STACK
-stp_lo{}LOOP_STACK EQU $+1       ;           -1 +loop LOOP_STACK
-    sub  0x00           ; 2:7       -1 +loop LOOP_STACK lo index - stop
-    ld    A, B          ; 1:4       -1 +loop LOOP_STACK
-stp_hi{}LOOP_STACK EQU $+1       ;           -1 +loop LOOP_STACK
-    sbc   A, 0x00       ; 2:7       -1 +loop LOOP_STACK hi index - stop
     dec  BC             ; 1:6       -1 +loop LOOP_STACK index--
     ld  (idx{}LOOP_STACK),BC     ; 4:20      -1 +loop LOOP_STACK save index
-    jp    c, do{}LOOP_STACK      ; 3:10      -1 +loop LOOP_STACK
-dnl                     ;17:68/68/68
+    ld    A, C          ; 1:4       -1 +loop LOOP_STACK
+stp_lo{}LOOP_STACK EQU $+1       ;           -1 +loop LOOP_STACK
+    xor  0x00           ; 2:7       -1 +loop LOOP_STACK lo index - stop - 1
+    jp   nz, do{}LOOP_STACK      ; 3:10      -1 +loop LOOP_STACK
+    ld    A, B          ; 1:4       -1 +loop LOOP_STACK
+stp_hi{}LOOP_STACK EQU $+1       ;           -1 +loop LOOP_STACK
+    xor  0x00           ; 2:7       -1 +loop LOOP_STACK hi index - stop - 1
+    jp   nz, do{}LOOP_STACK      ; 3:10      -1 +loop LOOP_STACK
+dnl                     ;20:57/78/78
 leave{}LOOP_STACK:               ;           -1 +loop LOOP_STACK
 exit{}LOOP_STACK:                ;           -1 +loop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -131,21 +135,21 @@ define({_2_ADDLOOP},{
 idx{}LOOP_STACK EQU $+1          ;           2 +loop LOOP_STACK
     ld   BC, 0x0000     ; 3:10      2 +loop LOOP_STACK idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop LOOP_STACK index++
-    inc  BC             ; 1:6       2 +loop LOOP_STACK index++
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      2 +loop LOOP_STACK save index
     ld    A, C          ; 1:4       2 +loop LOOP_STACK
 stp_lo{}LOOP_STACK EQU $+1       ;           2 +loop LOOP_STACK
     sub  0x00           ; 2:7       2 +loop LOOP_STACK lo index - stop
     rra                 ; 1:4       2 +loop LOOP_STACK
     add   A, A          ; 1:4       2 +loop LOOP_STACK and 0xFE with save carry
-    jp   nz, do{}LOOP_STACK      ; 3:10      2 +loop LOOP_STACK
     ld    A, B          ; 1:4       2 +loop LOOP_STACK
+    inc  BC             ; 1:6       2 +loop LOOP_STACK index++
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      2 +loop LOOP_STACK save index
+    jp   nz, do{}LOOP_STACK      ; 3:10      2 +loop LOOP_STACK
 stp_hi{}LOOP_STACK EQU $+1       ;           2 +loop LOOP_STACK
     sbc   A, 0x00       ; 2:7       2 +loop LOOP_STACK hi index - stop
     jp   nz, do{}LOOP_STACK      ; 3:10      2 +loop LOOP_STACK
 dnl                         ;23:71/92/92
-xleave{}LOOP_STACK:              ;           2 +loop LOOP_STACK
-xexit{}LOOP_STACK:               ;           2 +loop LOOP_STACK{}dnl
+leave{}LOOP_STACK:               ;           2 +loop LOOP_STACK
+exit{}LOOP_STACK:                ;           2 +loop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl

@@ -104,12 +104,12 @@ dnl ( -- )
 define({SUB1_ADDXLOOP},{
 idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK
     ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK idx always points to a 16-bit index
-    dec  BC             ; 1:6       -1 +xloop LOOP_STACK index--
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      -1 +xloop LOOP_STACK save index
     ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
     xor  low format({%-11s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop LOOP_STACK
     ld    A, B          ; 1:4       -1 +xloop LOOP_STACK
+    dec  BC             ; 1:6       -1 +xloop LOOP_STACK index--
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      -1 +xloop LOOP_STACK save index
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop LOOP_STACK
     xor  high format({%-10s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
     jp   nz, xdo{}LOOP_STACK     ; 3:10      -1 +xloop LOOP_STACK
 xleave{}LOOP_STACK:              ;           -1 +xloop LOOP_STACK
