@@ -17,7 +17,8 @@
     ld   DE, 4          ; 3:10      push2(4,0)
     push HL             ; 1:11      push2(4,0)
     ld   HL, 0          ; 3:10      push2(4,0)  
-    ld  (idx101), HL    ; 3:16      do 101 index
+    ld  (idx101), HL    ; 3:16      do 101 save index
+    dec  DE             ; 1:6       do 101 stop-1
     ld    A, E          ; 1:4       do 101 
     ld  (stp_lo101), A  ; 3:13      do 101 lo stop
     ld    A, D          ; 1:4       do 101 
@@ -31,9 +32,10 @@ do101:                  ;           do 101
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0)  
-    ld  (idx102), HL    ; 3:16      ?do 102 index
+    ld  (idx102), HL    ; 3:16      ?do 102 save index
     or    A             ; 1:4       ?do 102
     sbc  HL, DE         ; 2:15      ?do 102
+    dec  DE             ; 1:6       ?do 102 stop-1
     ld    A, E          ; 1:4       ?do 102 
     ld  (stp_lo102), A  ; 3:13      ?do 102 lo stop
     ld    A, D          ; 1:4       ?do 102 
@@ -52,30 +54,32 @@ do102:                  ;           ?do 102
     call PRINT_S16      ; 3:17      .  
 idx102 EQU $+1          ;           loop 102
     ld   BC, 0x0000     ; 3:10      loop 102 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 102 index++
-    ld  (idx102),BC     ; 4:20      loop 102 save index
     ld    A, C          ; 1:4       loop 102
 stp_lo102 EQU $+1       ;           loop 102
-    sub  0x00           ; 2:7       loop 102 lo index - stop
+    xor  0x00           ; 2:7       loop 102 lo index - stop - 1
     ld    A, B          ; 1:4       loop 102
+    inc  BC             ; 1:6       loop 102 index++
+    ld  (idx102),BC     ; 4:20      loop 102 save index
+    jp   nz, do102      ; 3:10      loop 102    
 stp_hi102 EQU $+1       ;           loop 102
-    sbc   A, 0x00       ; 2:7       loop 102 hi index - stop
-    jp    c, do102      ; 3:10      loop 102
+    xor  0x00           ; 2:7       loop 102 hi index - stop - 1
+    jp   nz, do102      ; 3:10      loop 102
 leave102:               ;           loop 102
 exit102:                ;           loop 102 
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A  
 idx101 EQU $+1          ;           loop 101
     ld   BC, 0x0000     ; 3:10      loop 101 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 101 index++
-    ld  (idx101),BC     ; 4:20      loop 101 save index
     ld    A, C          ; 1:4       loop 101
 stp_lo101 EQU $+1       ;           loop 101
-    sub  0x00           ; 2:7       loop 101 lo index - stop
+    xor  0x00           ; 2:7       loop 101 lo index - stop - 1
     ld    A, B          ; 1:4       loop 101
+    inc  BC             ; 1:6       loop 101 index++
+    ld  (idx101),BC     ; 4:20      loop 101 save index
+    jp   nz, do101      ; 3:10      loop 101    
 stp_hi101 EQU $+1       ;           loop 101
-    sbc   A, 0x00       ; 2:7       loop 101 hi index - stop
-    jp    c, do101      ; 3:10      loop 101
+    xor  0x00           ; 2:7       loop 101 hi index - stop - 1
+    jp   nz, do101      ; 3:10      loop 101
 leave101:               ;           loop 101
 exit101:                ;           loop 101 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -100,7 +104,7 @@ sdo103:                 ;           sdo 103 ( stop index -- stop index )
     sbc  HL, DE         ; 2:15      ?sdo 104
     pop  HL             ; 1:10      ?sdo 104
     jp    z, sleave104  ; 3:10      ?sdo 104   
-sdo104:                 ;           sdo 104 ( stop index -- stop index ) 
+sdo104:                 ;           ?sdo 104 ( stop index -- stop index ) 
      
     pop  BC             ; 1:10      2 pick
     push BC             ; 1:11      2 pick
@@ -157,7 +161,7 @@ xdo105:                 ;           xdo(4,0) 105
     sbc  HL, DE         ; 2:15      ?sdo 106
     pop  HL             ; 1:10      ?sdo 106
     jp    z, sleave106  ; 3:10      ?sdo 106   
-sdo106:                 ;           sdo 106 ( stop index -- stop index )  
+sdo106:                 ;           ?sdo 106 ( stop index -- stop index )  
     push DE             ; 1:11      index j 106
     ex   DE, HL         ; 1:4       index j 106
     ld   HL, (idx105)   ; 3:16      index j 106 idx always points to a 16-bit index 
@@ -243,7 +247,8 @@ sleave107:              ;           sloop 107
     ld   DE, 3          ; 3:10      push2(3,0)
     push HL             ; 1:11      push2(3,0)
     ld   HL, 0          ; 3:10      push2(3,0)  
-    ld  (idx109), HL    ; 3:16      do 109 index
+    ld  (idx109), HL    ; 3:16      do 109 save index
+    dec  DE             ; 1:6       do 109 stop-1
     ld    A, E          ; 1:4       do 109 
     ld  (stp_lo109), A  ; 3:13      do 109 lo stop
     ld    A, D          ; 1:4       do 109 
@@ -275,15 +280,16 @@ snext110:               ;           snext 110
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A  
 idx109 EQU $+1          ;           loop 109
     ld   BC, 0x0000     ; 3:10      loop 109 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 109 index++
-    ld  (idx109),BC     ; 4:20      loop 109 save index
     ld    A, C          ; 1:4       loop 109
 stp_lo109 EQU $+1       ;           loop 109
-    sub  0x00           ; 2:7       loop 109 lo index - stop
+    xor  0x00           ; 2:7       loop 109 lo index - stop - 1
     ld    A, B          ; 1:4       loop 109
+    inc  BC             ; 1:6       loop 109 index++
+    ld  (idx109),BC     ; 4:20      loop 109 save index
+    jp   nz, do109      ; 3:10      loop 109    
 stp_hi109 EQU $+1       ;           loop 109
-    sbc   A, 0x00       ; 2:7       loop 109 hi index - stop
-    jp    c, do109      ; 3:10      loop 109
+    xor  0x00           ; 2:7       loop 109 hi index - stop - 1
+    jp   nz, do109      ; 3:10      loop 109
 leave109:               ;           loop 109
 exit109:                ;           loop 109 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -437,7 +443,8 @@ break103:               ;           repeat 103
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
     ld   HL, 0          ; 3:10      push2(0,0)      
-    ld  (idx113), HL    ; 3:16      do 113 index
+    ld  (idx113), HL    ; 3:16      do 113 save index
+    dec  DE             ; 1:6       do 113 stop-1
     ld    A, E          ; 1:4       do 113 
     ld  (stp_lo113), A  ; 3:13      do 113 lo stop
     ld    A, D          ; 1:4       do 113 
@@ -450,15 +457,16 @@ do113:                  ;           do 113
     jp   leave113       ;           leave 113          
 idx113 EQU $+1          ;           loop 113
     ld   BC, 0x0000     ; 3:10      loop 113 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 113 index++
-    ld  (idx113),BC     ; 4:20      loop 113 save index
     ld    A, C          ; 1:4       loop 113
 stp_lo113 EQU $+1       ;           loop 113
-    sub  0x00           ; 2:7       loop 113 lo index - stop
+    xor  0x00           ; 2:7       loop 113 lo index - stop - 1
     ld    A, B          ; 1:4       loop 113
+    inc  BC             ; 1:6       loop 113 index++
+    ld  (idx113),BC     ; 4:20      loop 113 save index
+    jp   nz, do113      ; 3:10      loop 113    
 stp_hi113 EQU $+1       ;           loop 113
-    sbc   A, 0x00       ; 2:7       loop 113 hi index - stop
-    jp    c, do113      ; 3:10      loop 113
+    xor  0x00           ; 2:7       loop 113 hi index - stop - 1
+    jp   nz, do113      ; 3:10      loop 113
 leave113:               ;           loop 113
 exit113:                ;           loop 113 
     
@@ -466,7 +474,8 @@ exit113:                ;           loop 113
     ld   DE, 0          ; 3:10      push2(0,1)
     push HL             ; 1:11      push2(0,1)
     ld   HL, 1          ; 3:10      push2(0,1)      
-    ld  (idx114), HL    ; 3:16      do 114 index
+    ld  (idx114), HL    ; 3:16      do 114 save index
+    dec  DE             ; 1:6       do 114 stop-1
     ld    A, E          ; 1:4       do 114 
     ld  (stp_lo114), A  ; 3:13      do 114 lo stop
     ld    A, D          ; 1:4       do 114 
@@ -479,15 +488,16 @@ do114:                  ;           do 114
     jp   leave114       ;           leave 114          
 idx114 EQU $+1          ;           loop 114
     ld   BC, 0x0000     ; 3:10      loop 114 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 114 index++
-    ld  (idx114),BC     ; 4:20      loop 114 save index
     ld    A, C          ; 1:4       loop 114
 stp_lo114 EQU $+1       ;           loop 114
-    sub  0x00           ; 2:7       loop 114 lo index - stop
+    xor  0x00           ; 2:7       loop 114 lo index - stop - 1
     ld    A, B          ; 1:4       loop 114
+    inc  BC             ; 1:6       loop 114 index++
+    ld  (idx114),BC     ; 4:20      loop 114 save index
+    jp   nz, do114      ; 3:10      loop 114    
 stp_hi114 EQU $+1       ;           loop 114
-    sbc   A, 0x00       ; 2:7       loop 114 hi index - stop
-    jp    c, do114      ; 3:10      loop 114
+    xor  0x00           ; 2:7       loop 114 hi index - stop - 1
+    jp   nz, do114      ; 3:10      loop 114
 leave114:               ;           loop 114
 exit114:                ;           loop 114 
                    
@@ -716,7 +726,8 @@ xexit124:               ;           3100 +xloop 124
     ld   DE, 12         ; 3:10      push2(12,3)
     push HL             ; 1:11      push2(12,3)
     ld   HL, 3          ; 3:10      push2(12,3)  
-    ld  (idx125), HL    ; 3:16      do 125 index
+    ld  (idx125), HL    ; 3:16      do 125 save index
+    dec  DE             ; 1:6       do 125 stop-1
     ld    A, E          ; 1:4       do 125 
     ld  (stp_lo125), A  ; 3:13      do 125 lo stop
     ld    A, D          ; 1:4       do 125 
@@ -752,15 +763,16 @@ else101  EQU $          ;           = endif
 endif101:          
 idx125 EQU $+1          ;           loop 125
     ld   BC, 0x0000     ; 3:10      loop 125 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 125 index++
-    ld  (idx125),BC     ; 4:20      loop 125 save index
     ld    A, C          ; 1:4       loop 125
 stp_lo125 EQU $+1       ;           loop 125
-    sub  0x00           ; 2:7       loop 125 lo index - stop
+    xor  0x00           ; 2:7       loop 125 lo index - stop - 1
     ld    A, B          ; 1:4       loop 125
+    inc  BC             ; 1:6       loop 125 index++
+    ld  (idx125),BC     ; 4:20      loop 125 save index
+    jp   nz, do125      ; 3:10      loop 125    
 stp_hi125 EQU $+1       ;           loop 125
-    sbc   A, 0x00       ; 2:7       loop 125 hi index - stop
-    jp    c, do125      ; 3:10      loop 125
+    xor  0x00           ; 2:7       loop 125 hi index - stop - 1
+    jp   nz, do125      ; 3:10      loop 125
 leave125:               ;           loop 125
 exit125:                ;           loop 125    
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -1095,7 +1107,8 @@ snext132:               ;           snext 132
     ld   DE, 1          ; 3:10      push2(1,0)
     push HL             ; 1:11      push2(1,0)
     ld   HL, 0          ; 3:10      push2(1,0) 
-    ld  (idx133), HL    ; 3:16      do 133 index
+    ld  (idx133), HL    ; 3:16      do 133 save index
+    dec  DE             ; 1:6       do 133 stop-1
     ld    A, E          ; 1:4       do 133 
     ld  (stp_lo133), A  ; 3:13      do 133 lo stop
     ld    A, D          ; 1:4       do 133 
@@ -1107,15 +1120,16 @@ do133:                  ;           do 133
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
 idx133 EQU $+1          ;           loop 133
     ld   BC, 0x0000     ; 3:10      loop 133 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 133 index++
-    ld  (idx133),BC     ; 4:20      loop 133 save index
     ld    A, C          ; 1:4       loop 133
 stp_lo133 EQU $+1       ;           loop 133
-    sub  0x00           ; 2:7       loop 133 lo index - stop
+    xor  0x00           ; 2:7       loop 133 lo index - stop - 1
     ld    A, B          ; 1:4       loop 133
+    inc  BC             ; 1:6       loop 133 index++
+    ld  (idx133),BC     ; 4:20      loop 133 save index
+    jp   nz, do133      ; 3:10      loop 133    
 stp_hi133 EQU $+1       ;           loop 133
-    sbc   A, 0x00       ; 2:7       loop 133 hi index - stop
-    jp    c, do133      ; 3:10      loop 133
+    xor  0x00           ; 2:7       loop 133 hi index - stop - 1
+    jp   nz, do133      ; 3:10      loop 133
 leave133:               ;           loop 133
 exit133:                ;           loop 133 
     
@@ -1123,7 +1137,8 @@ exit133:                ;           loop 133
     ld   DE, 255        ; 3:10      push2(255,254)
     push HL             ; 1:11      push2(255,254)
     ld   HL, 254        ; 3:10      push2(255,254) 
-    ld  (idx134), HL    ; 3:16      do 134 index
+    ld  (idx134), HL    ; 3:16      do 134 save index
+    dec  DE             ; 1:6       do 134 stop-1
     ld    A, E          ; 1:4       do 134 
     ld  (stp_lo134), A  ; 3:13      do 134 lo stop
     ld    A, D          ; 1:4       do 134 
@@ -1135,15 +1150,16 @@ do134:                  ;           do 134
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
 idx134 EQU $+1          ;           loop 134
     ld   BC, 0x0000     ; 3:10      loop 134 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 134 index++
-    ld  (idx134),BC     ; 4:20      loop 134 save index
     ld    A, C          ; 1:4       loop 134
 stp_lo134 EQU $+1       ;           loop 134
-    sub  0x00           ; 2:7       loop 134 lo index - stop
+    xor  0x00           ; 2:7       loop 134 lo index - stop - 1
     ld    A, B          ; 1:4       loop 134
+    inc  BC             ; 1:6       loop 134 index++
+    ld  (idx134),BC     ; 4:20      loop 134 save index
+    jp   nz, do134      ; 3:10      loop 134    
 stp_hi134 EQU $+1       ;           loop 134
-    sbc   A, 0x00       ; 2:7       loop 134 hi index - stop
-    jp    c, do134      ; 3:10      loop 134
+    xor  0x00           ; 2:7       loop 134 hi index - stop - 1
+    jp   nz, do134      ; 3:10      loop 134
 leave134:               ;           loop 134
 exit134:                ;           loop 134 
     
