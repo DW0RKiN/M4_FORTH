@@ -162,10 +162,117 @@ dnl
 dnl
 ifdef({USE_MUL},{
 ; Input: HL,DE
-; Output: HL=HL*DE
+; Output: HL=HL*DE ((un)signed)
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, B, DE
-MULTIPLY:   
+MULTIPLY:{}ifelse(TYPMUL,{small},{
+; small variant
+    ld    B, 0x10       ; 2:7
+    ld    A, H          ; 1:4
+    ld    C, L          ; 1:4
+    ld   HL, 0x0000     ; 3:10
+
+    add  HL, HL         ; 1:11
+    rl    C             ; 2:8
+    rla                 ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    djnz $-7            ; 2:13/8
+    
+    ret                 ; 1:10},
+TYPMUL,{fast},{
+; fast variant
+    ld    A, H          ; 1:4
+    ld    C, L          ; 1:4
+    ld   HL, 0x0000     ; 3:10
+    or    A             ; 1:4
+    jr    z, MULTIPLY_LO; 2:7/12
+    
+;1,2
+    add   A, A          ; 1:4
+    jr   nc, $+5        ; 2:7/12
+    ld    H, D          ; 1:4
+    ld    L, E          ; 1:4
+    add  HL, HL         ; 1:11
+
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;3        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;4        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;5        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;6        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;7        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;8        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    
+MULTIPLY_LO:
+    ld    A, C          ; 1:4
+;9
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;10        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;11        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;12        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;13        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;14        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;15        
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+;16
+    add  HL, HL         ; 1:11
+    add   A, A          ; 1:4
+    ret  nc             ; 1:5/11
+    add  HL, DE         ; 1:11
+    ret                 ; 1:10},
+{
     ld    A, H          ; 1:4
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
@@ -196,7 +303,7 @@ MUL_LOOP2:
     jr    c, MUL_LOOP2  ; 2:7/12
     jp   nz, MUL_LOOP2+1; 3:10      A = ?
 
-    ret                 ; 1:10}){}dnl
+    ret                 ; 1:10})}){}dnl
 dnl
 dnl
 dnl
