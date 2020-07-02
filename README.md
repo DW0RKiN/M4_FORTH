@@ -3,6 +3,10 @@
 A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup number condition if`.
 The small Runtime library for listing numbers and text is intended for the ZX Spectrum computer.
 
+Despite its primitivity, FORTH produces a shorter code and 2-4 times faster code than zd88k, probably the best compiler for the Z80.
+
+https://github.com/DW0RKiN/M4_FORTH/tree/master/Benchmark
+
 Due to its simplicity, the compiler is suitable for study purposes. Can be easily edited. For the most part, it is merely a substitution of the FORTH word for a sequence of instructions.
 
 The more complex parts are branches and loops.
