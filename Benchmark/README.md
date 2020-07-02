@@ -4,7 +4,7 @@
 
 There are examples of small benchmarks on the https://theultimatebenchmark.org/ website. Including speeds on individual platforms.
 
-### Forth Sieve Benchmark
+### Factorization
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.asm
