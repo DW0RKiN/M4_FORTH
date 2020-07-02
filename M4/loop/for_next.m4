@@ -11,25 +11,27 @@ __{}pushdef({LEAVE_STACK},{
 __{}    jp   next{}LOOP_STACK        ;           for leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           for unloop LOOP_STACK})
-    ld  (idx{}LOOP_STACK), HL    ; 3:16      for LOOP_STACK
+    ld    B, H          ; 1:4       for LOOP_STACK
+    ld    C, L          ; 1:4       for LOOP_STACK
     ex   DE, HL         ; 1:4       for LOOP_STACK
     pop  DE             ; 1:10      for LOOP_STACK index
-for{}LOOP_STACK:                 ;           for LOOP_STACK})dnl
+for{}LOOP_STACK:                 ;           for LOOP_STACK
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      next LOOP_STACK save index})dnl
 dnl
 dnl
 dnl
 dnl ( -- ) r: ( -- )
 dnl stop = 0
-define({XFOR}, {dnl
+define({PUSH_FOR}, {dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
 __{}    jp   next{}LOOP_STACK       ;           for leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           for unloop LOOP_STACK})
-    ld   BC, format({%-11s},$2); 3:10      $1 xfor LOOP_STACK
-    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      $1 xfor LOOP_STACK
-for{}LOOP_STACK:                 ;           xfor LOOP_STACK})dnl
+    ld   BC, format({%-11s},$2); 3:10      $1 for LOOP_STACK
+for{}LOOP_STACK:                 ;           $1 for LOOP_STACK
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 for LOOP_STACK save index})dnl
 dnl
 dnl
 dnl
@@ -46,14 +48,16 @@ __{}pushdef({LEAVE_STACK},{
 __{}    jp   next{}LOOP_STACK       ;           ?for leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           ?for unloop LOOP_STACK})
-    ld    A, H          ; 1:4       ?for LOOP_STACK
-    and   L             ; 1:4       ?for LOOP_STACK
-    ld  (idx{}LOOP_STACK), HL    ; 3:16      ?for LOOP_STACK
+    ld    B, H          ; 1:4       ?for LOOP_STACK
+    ld    C, L          ; 1:4       ?for LOOP_STACK
     ex   DE, HL         ; 1:4       ?for LOOP_STACK
     pop  DE             ; 1:10      ?for LOOP_STACK index
-    inc   A             ; 1:4       for LOOP_STACK
+    ld    A, B          ; 1:4       ?for LOOP_STACK
+    and   C             ; 1:4       ?for LOOP_STACK
+    inc   A             ; 1:4       ?for LOOP_STACK
     jp    z, next{}LOOP_STACK    ; 3:10      ?for LOOP_STACK ( index -- )
-for{}LOOP_STACK:                 ;           ?for LOOP_STACK})dnl
+for{}LOOP_STACK:                 ;           ?for LOOP_STACK
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 xfor LOOP_STACK save index})dnl
 dnl
 dnl
 dnl
@@ -64,7 +68,6 @@ idx{}LOOP_STACK EQU $+1          ;           next LOOP_STACK
     ld    A, B          ; 1:4       next LOOP_STACK
     or    C             ; 1:4       next LOOP_STACK
     dec  BC             ; 1:6       next LOOP_STACK index--, zero flag unaffected
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      next LOOP_STACK save index
     jp   nz, for{}LOOP_STACK     ; 3:10      next LOOP_STACK
 next{}LOOP_STACK:                ;           next LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
