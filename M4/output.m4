@@ -187,103 +187,133 @@ MULTIPLY:{}ifelse(TYPMUL,{small},{
     ld    A, H          ; 1:4
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
-    ex   DE, HL         ; 1:4
+    ex   DE, HL         ; 1:4       H=>D faster 7+4<12
     
     ld    A, H          ; 1:4
     ld    C, L          ; 1:4
     ld   HL, 0x0000     ; 3:10
-    or    A             ; 1:4
-    jr    z, MULTIPLY_LO; 2:7/12
     
-;1,2
     add   A, A          ; 1:4
-    jr   nc, $+5        ; 2:7/12
+    jr    c, MULTIPLY1  ; 2:7/12
+    jr    z, MULTIPLY_LO; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY2  ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY3  ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY4  ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY5  ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY6  ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY7  ; 2:7/12    
+    jp   MULTIPLY8      ; 3:10
+MULTIPLY_LO:
+    ld    A, C          ; 1:4
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY9  ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY10 ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY11 ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY12 ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY13 ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY14 ; 2:7/12
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY15 ; 2:7/12
+    add   A, A          ; 1:4
+    ret  nc             ; 1:5/11
+    ex   DE, HL         ; 1:4
+    ret                 ; 1:10
+
+MULTIPLY1:
     ld    H, D          ; 1:4
     ld    L, E          ; 1:4
     add  HL, HL         ; 1:11
-
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY2:
     add  HL, DE         ; 1:11
-;3        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY3:
     add  HL, DE         ; 1:11
-;4        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY4:
     add  HL, DE         ; 1:11
-;5        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY5:
     add  HL, DE         ; 1:11
-;6        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY6:
     add  HL, DE         ; 1:11
-;7        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY7:
     add  HL, DE         ; 1:11
-;8        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY8:
     add  HL, DE         ; 1:11
-    
-MULTIPLY_LO:
+    add  HL, HL         ; 1:11
     ld    A, C          ; 1:4
-;9
+    add   A, A          ; 1:4
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY9:
+    add  HL, DE         ; 1:11
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY10:
     add  HL, DE         ; 1:11
-;10        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY11:
     add  HL, DE         ; 1:11
-;11        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY12:
     add  HL, DE         ; 1:11
-;12        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY13:
     add  HL, DE         ; 1:11
-;13        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY14:
     add  HL, DE         ; 1:11
-;14        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
+MULTIPLY15:
     add  HL, DE         ; 1:11
-;15        
     add  HL, HL         ; 1:11
     add   A, A          ; 1:4
     jr   nc, $+3        ; 2:7/12
-    add  HL, DE         ; 1:11
-;16
-    add  HL, HL         ; 1:11
-    add   A, A          ; 1:4
-    ret  nc             ; 1:5/11
     add  HL, DE         ; 1:11
     ret                 ; 1:10},
 {
     ld    A, H          ; 1:4
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
-    ex   DE, HL         ; 1:4
+    ex   DE, HL         ; 1:4       H=>D faster 7+4<12
 
     ld    B, H          ; 1:4       
     ld    A, L          ; 1:4
