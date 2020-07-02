@@ -90,25 +90,25 @@ xdo102:                 ;           xdo(100,0) 102
     call gcd1           ; 3:17      call ( -- ret ) R:( -- ) 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
-idx102 EQU $+1          ;           xloop(100,0) 102 0 <= index < stop < 256
-    ld    A, 0          ; 2:7       xloop(100,0) 102
-    nop                 ; 1:4       xloop(100,0) 102 idx always points to a 16-bit index
-    inc   A             ; 1:4       xloop(100,0) 102 index++
-    ld  (idx102),A      ; 3:13      xloop(100,0) 102
-    sub  low 100        ; 2:7       xloop(100,0) 102
-    jp    c, xdo102     ; 3:10      xloop(100,0) 102 index-stop
-xleave102:              ;           xloop(100,0) 102
-xexit102:               ;           xloop(100,0) 102
+idx102 EQU $+1          ;           xloop 102 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop 102
+    nop                 ; 1:4       xloop 102 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop 102 index++
+    ld  (idx102),A      ; 3:13      xloop 102
+    sub  low 100        ; 2:7       xloop 102
+    jp    c, xdo102     ; 3:10      xloop 102 index-stop
+xleave102:              ;           xloop 102
+xexit102:               ;           xloop 102
         
-idx101 EQU $+1          ;           xloop(100,0) 101 0 <= index < stop < 256
-    ld    A, 0          ; 2:7       xloop(100,0) 101
-    nop                 ; 1:4       xloop(100,0) 101 idx always points to a 16-bit index
-    inc   A             ; 1:4       xloop(100,0) 101 index++
-    ld  (idx101),A      ; 3:13      xloop(100,0) 101
-    sub  low 100        ; 2:7       xloop(100,0) 101
-    jp    c, xdo101     ; 3:10      xloop(100,0) 101 index-stop
-xleave101:              ;           xloop(100,0) 101
-xexit101:               ;           xloop(100,0) 101
+idx101 EQU $+1          ;           xloop 101 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop 101
+    nop                 ; 1:4       xloop 101 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop 101 index++
+    ld  (idx101),A      ; 3:13      xloop 101
+    sub  low 100        ; 2:7       xloop 101
+    jp    c, xdo101     ; 3:10      xloop 101 index-stop
+xleave101:              ;           xloop 101
+xexit101:               ;           xloop 101
     
 gcd1_bench_end:
     jp   0x0000         ; 3:10      ;

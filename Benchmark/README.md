@@ -4,6 +4,22 @@
 
 There are examples of small benchmarks on the https://theultimatebenchmark.org/ website. Including speeds on individual platforms.
 
+### Forth Sieve Benchmark
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.asm
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp_fast.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp_fast.asm
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.c
+
+|       Name        |                System                |        Forth / C        |  Benchmark   | Time (sec/round) | Scale |
+| :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Decompose    | 58.58s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH fast mul & div | Decompose    | 44.83s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Decompose    | 1m40.47s
+
 ### Gcd 1
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.m4
