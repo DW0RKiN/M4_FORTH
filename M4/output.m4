@@ -92,6 +92,7 @@ dnl
 dnl
 dnl
 ifdef({USE_LSHIFT},{
+
 ; ( x u -- x)
 ; shifts x left u places
 ;  Input: HL, DE
@@ -125,6 +126,7 @@ dnl
 dnl
 dnl
 ifdef({USE_RSHIFT},{
+
 ; ( x u -- x)
 ; shifts x right u places
 ;  Input: HL, DE
@@ -179,9 +181,14 @@ MULTIPLY:{}ifelse(TYPMUL,{small},{
     add  HL, DE         ; 1:11
     djnz $-7            ; 2:13/8
     
-    ret                 ; 1:10},
-TYPMUL,{fast},{
+    ret                 ; 1:10},TYPMUL,{fast},
+{
 ; fast variant
+    ld    A, H          ; 1:4
+    sub   D             ; 1:4
+    jr    c, $+3        ; 2:7/12
+    ex   DE, HL         ; 1:4
+    
     ld    A, H          ; 1:4
     ld    C, L          ; 1:4
     ld   HL, 0x0000     ; 3:10
@@ -311,6 +318,7 @@ dnl
 dnl
 dnl
 ifdef({USE_DIV},{ifdef({USE_UDIV},,define({USE_UDIV},{}))
+
 ; Divide 16-bit signed values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % abs(HL)
@@ -365,46 +373,234 @@ dnl
 dnl
 dnl
 ifdef({USE_UDIV},{
+
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
-UDIVIDE:
-    ex   DE, HL         ; 1:4
-    ld    C, L          ; 1:4
-    ld    A, H          ; 1:4
-    ld   HL, 0x0000     ; 3:10
+UDIVIDE:{}ifelse(TYPDIV,{fast},{
+    ex   DE, HL         ; 1:4       HL/DE
+    ld    A, D          ; 1:4
     or    A             ; 1:4
-    jr    z, UDIVIDE_HI0; 2:7/12
-    add   A, A          ; 1:4
-    ld    B, 8          ; 2:7     
-UDIVIDE_LO:
-    rl    L             ; 2:8
-    sbc  HL,DE          ; 2:15
-    jr   nc, $+3        ; 2:7/12
-    add  HL,DE          ; 1:11      No Add 1
-    rla                 ; 1:4
-    djnz UDIVIDE_LO     ; 2:8/13
+    jr   nz, UDIVIDE_16 ; 2:7/12    HL/0E
+        
+    sub   E             ; 1:4
+    ld    E, A          ; 1:4       E = -DE
+    xor   A             ; 1:4
     
-    cpl                 ; 1:4
-UDIVIDE_HI0:
-    ld    B, A          ; 1:4
-    ld    A, C          ; 1:4
-    ld    C, B          ; 1:4
-    ld    B, 8          ; 2:7
-UDIVIDE_HI:
+    inc   H             ; 1:4
+    dec   H             ; 1:4
+    jr    z, UDIVIDE_8H ; 2:7/12
+    
+;1
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;2
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;3
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;4
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;5
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;6
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;7
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;8
+    rl    H             ; 2:8
+    rla                 ; 1:4       AH << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+    
+    rl    H             ; 2:8
+
+UDIVIDE_8H:
+;9
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;10
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;11
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;12
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;13
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;14
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;15
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+;16
+    rl    L             ; 2:8
+    rla                 ; 1:4       AL << 1
+    add   A, E          ; 1:4       A-E?
+    jr    c, $+3        ; 2:7/12
+    sub   E             ; 1:4       back
+    
+    ld    E, A          ; 1:4       DE = DE % HL
+    rl    L             ; 2:8       HL = DE / HL
+    ret                 ; 1:10
+
+UDIVIDE_16:             ;           DE >= 256
+    ld    A, L          ; 1:4
+    ld    L, H          ; 1:4
+    ld    H, 0x00       ; 2:7       00HL --> 0HLA 
+
+;1 16b/256+
     rla                 ; 1:4
-    adc  HL,HL          ; 2:15
-    sbc  HL,DE          ; 2:15
-    jr   nc, $+3        ; 2:7/12    No Add 1
-    add  HL,DE          ; 1:11
-    djnz UDIVIDE_HI     ; 2:8/13
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;2 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;3 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;4 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;5 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;6 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;7 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+;8 16b/256+
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE?
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+
+    rla                 ; 1:4
+    cpl                 ; 1:4
+    ex   DE, HL         ; 1:4
+    ld    H, 0x00       ; 2:7
+    ld    L, A          ; 1:4
+    ret                 ; 1:10},
+{
+    ex   DE, HL         ; 1:4       HL/DE
+    ld    A, D          ; 1:4
+    or    A             ; 1:4
+    jr   nz, UDIVIDE_16 ; 2:7/12
+        
+    ld    B, 16         ; 2:7     
+
+    add  HL, HL         ; 1:11      2*HL
+    rla                 ; 1:4
+    cp    E             ; 1:4
+    jr    c, $+4        ; 2:7/12
+    inc   L             ; 1:4
+    sub   E             ; 1:4
+    djnz $-7            ; 2:13/8
+
+    ld    E, A          ; 1:4       DE = DE % HL
+    ret                 ; 1:10      HL = DE / HL
+
+UDIVIDE_16:             ;           HL/256+
+    ld    A, L          ; 1:4
+    ld    L, H          ; 1:4
+    ld    H, 0x00       ; 2:7       HLA = 0HL 
+    ld    B, 0x08       ; 2:7
+    
+    rla                 ; 1:4
+    adc  HL, HL         ; 2:15
+    sbc  HL, DE         ; 2:15      HL-DE
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    djnz $-8            ; 2:8/13
     
     rla                 ; 1:4
     cpl                 ; 1:4
     ex   DE, HL         ; 1:4
-    ld    H, C          ; 1:4
+    ld    H, B          ; 1:4
     ld    L, A          ; 1:4
-    ret                 ; 1:10}){}dnl
+    ret                 ; 1:10})}){}dnl
 dnl
 dnl
 dnl
