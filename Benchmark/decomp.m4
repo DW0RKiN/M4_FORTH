@@ -5,7 +5,7 @@ SCALL(_bench)
 STOP
 
 define({TYPMUL},{})
-define({TYPDIV},{})
+define({TYPDIV},{old})
 
 COLON(_decomp,( n -- ))
     PUSH(2)

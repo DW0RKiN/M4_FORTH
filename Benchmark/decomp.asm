@@ -124,14 +124,14 @@ MULTIPLY:
     ld   HL, 0x0000     ; 3:10 
 
     srl   B             ; 2:8
-    rra                 ; 1:4       divide BA by 2
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
     jr   nc, $+3        ; 2:7/12
 MUL_LOOP:
     add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2    
     srl   B             ; 2:8
-    rra                 ; 1:4       divide BA by 2
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP   ; 2:7/12
     jp   nz, MUL_LOOP+1 ; 3:10      B = ?
 
@@ -140,7 +140,7 @@ MUL_LOOP2:
     add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2
-    srl   A             ; 2:8       divide A by 2
+    srl   A             ; 2:8       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP2  ; 2:7/12
     jp   nz, MUL_LOOP2+1; 3:10      A = ?
 
@@ -150,30 +150,38 @@ MUL_LOOP2:
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
 UDIVIDE:
-    ex   DE, HL         ; 1:4       HL/DE
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    
     ld    A, D          ; 1:4
     or    A             ; 1:4
     jr   nz, UDIVIDE_16 ; 2:7/12
         
     ld    B, 16         ; 2:7     
+    add  HL, HL         ; 1:11      2*HL
+    jr    c, $+7        ; 2:7/12
+    djnz $-3            ; 2:13/8
 
+    ld    E, A          ; 1:4       DE = 0 % 0E = 0
+    ret                 ; 1:10      HL = 0 / 0E = 0
+    
     add  HL, HL         ; 1:11      2*HL
     rla                 ; 1:4
+    jr    c, $+5        ; 2:7/12
     cp    E             ; 1:4
     jr    c, $+4        ; 2:7/12
     inc   L             ; 1:4
     sub   E             ; 1:4
-    djnz $-7            ; 2:13/8
+    djnz $-9            ; 2:13/8
 
     ld    E, A          ; 1:4       DE = DE % HL
     ret                 ; 1:10      HL = DE / HL
-
+    
 UDIVIDE_16:             ;           HL/256+
     ld    A, L          ; 1:4
     ld    L, H          ; 1:4
     ld    H, 0x00       ; 2:7       HLA = 0HL 
     ld    B, 0x08       ; 2:7
-    
+        
     rla                 ; 1:4
     adc  HL, HL         ; 2:15
     sbc  HL, DE         ; 2:15      HL-DE
