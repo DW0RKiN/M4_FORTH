@@ -834,7 +834,7 @@ UDIVIDE_LE:
     or    A             ; 1:4       HL > DE
 UDIVIDE_GT:             ;
     ex   DE, HL         ; 1:4       HL = HL / DE
-    ld    A, C          ; 1:4       CA = 0x0000
+    ld    A, C          ; 1:4       CA = 0x0000 = result
 UDIVIDE_LOOP:
     rr    D             ; 2:8
     rr    E             ; 2:8       DE >> 1
