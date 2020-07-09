@@ -65,8 +65,8 @@ __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
 __{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
 __{}    ld    A, B          ; 1:4       xloop LOOP_STACK
-__{}    sub  high format({%-10s},STOP_STACK); 2:7        xloop LOOP_STACK index - stop
-__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
+__{}    sub  high format({%-10s},STOP_STACK); 2:7       xloop LOOP_STACK index - stop
+__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;14:57/57/57},
 __{}eval((((INDEX_STACK)^(STOP_STACK))&0x8000)==0 && ((INDEX_STACK)<(STOP_STACK))),{1},{
 __{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK index < stop && same sign
