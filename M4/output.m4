@@ -309,6 +309,116 @@ MULTIPLY15:
     jr   nc, $+3        ; 2:7/12
     add  HL, DE         ; 1:11
     ret                 ; 1:10},
+TYPMUL,{test},{
+    ld    A, H          ; 1:4
+    sub   D             ; 1:4
+    jr    c, $+3        ; 2:7/12
+    ex   DE, HL         ; 1:4       H=>D faster 7+4<12
+
+    ld    A, E          ; 1:4
+    ld    B, H          ; 1:4       
+    ld    C, L          ; 1:4
+    ld   HL, 0x0000     ; 3:10 
+
+    srl   C             ; 2:8       divide old HL by 2
+    jr   nc, MUL_LOOP+1 ; 2:7/12
+MUL_LOOP:
+    add  HL, DE         ; 1:11
+
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply old DE by 2
+    srl   C             ; 2:8       divide old HL by 2
+    jr    c, MUL_LOOP   ; 2:7/12
+    jp   nz, MUL_LOOP+1 ; 3:10
+
+    ld    E, C          ; 1:4
+    srl   B             ; 2:8       divide old DE by 2
+    jr   nc, MUL_LOOP2+2; 2:7/12
+MUL_LOOP2:
+    ld    D, A          ; 1:4
+    add  HL, DE         ; 1:11
+    add   A, A          ; 1:4       multiply old DE by 2
+    srl   B             ; 2:8       divide old HL by 2
+    jr    c, MUL_LOOP2  ; 2:7/12
+    jp   nz, MUL_LOOP2+1; 3:10
+    ret                 ; 1:10},
+TYPMUL,{test2},{
+    ld    A, H          ; 1:4
+    sub   D             ; 1:4
+    jr    c, $+3        ; 2:7/12
+    ex   DE, HL         ; 1:4       H=>D faster 7+4<12
+
+    ld    B, H          ; 1:4       
+    ld    A, L          ; 1:4
+    ld   HL, 0x0000     ; 3:10 
+
+    srl   B             ; 2:8
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
+    jr   nc, $+3        ; 2:7/12
+MUL_LOOP:
+    add  HL, DE         ; 1:11
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2    
+    srl   B             ; 2:8
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
+    jr    c, MUL_LOOP   ; 2:7/12
+    jp   nz, MUL_LOOP+1 ; 3:10
+;2x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;3x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;4x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;5x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;6x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;7x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;8x E
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11
+    ret   z             ; 1:5/11
+;9x
+    sla   D             ; 2:8       multiply DE by 2
+    srl   A             ; 2:8       divide A by 2
+    ret  nc             ; 1:5/11
+    add  HL, DE         ; 1:11
+;---------------
+    ret                 ; 1:10},
 {
     ld    A, H          ; 1:4
     sub   D             ; 1:4
@@ -320,14 +430,14 @@ MULTIPLY15:
     ld   HL, 0x0000     ; 3:10 
 
     srl   B             ; 2:8
-    rra                 ; 1:4       divide BA by 2
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
     jr   nc, $+3        ; 2:7/12
 MUL_LOOP:
     add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2    
     srl   B             ; 2:8
-    rra                 ; 1:4       divide BA by 2
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP   ; 2:7/12
     jp   nz, MUL_LOOP+1 ; 3:10      B = ?
 
@@ -336,7 +446,7 @@ MUL_LOOP2:
     add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2
-    srl   A             ; 2:8       divide A by 2
+    srl   A             ; 2:8       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP2  ; 2:7/12
     jp   nz, MUL_LOOP2+1; 3:10      A = ?
 
@@ -411,119 +521,184 @@ UDIVIDE:{}ifelse(TYPDIV,{fast},{
     ex   DE, HL         ; 1:4       HL/DE
     ld    A, D          ; 1:4
     or    A             ; 1:4
-    jr   nz, UDIVIDE_16 ; 2:7/12    HL/0E
+    jp   nz, UDIVIDE_16 ; 3:10      HL/0E
         
-    sub   E             ; 1:4
-    ld    E, A          ; 1:4       E = -DE
-    xor   A             ; 1:4
-    
-    inc   H             ; 1:4
-    dec   H             ; 1:4
+    sla   H             ; 2:8       AHL = 0HL
+    jr    c, UDIVIDE1   ; 2:7/12
     jr    z, UDIVIDE_8H ; 2:7/12
-    
-;1
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;2
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;3
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;4
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;5
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;6
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;7
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-;8
-    rl    H             ; 2:8
-    rla                 ; 1:4       AH << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-    
-    rl    H             ; 2:8
-
+    sla   H             ; 2:8
+    jr    c, UDIVIDE2   ; 2:7/12
+    sla   H             ; 2:8
+    jr    c, UDIVIDE3   ; 2:7/12
+    sla   H             ; 2:8
+    jr    c, UDIVIDE4   ; 2:7/12
+    sla   H             ; 2:8
+    jr    c, UDIVIDE5   ; 2:7/12
+    sla   H             ; 2:8
+    jr    c, UDIVIDE6   ; 2:7/12
+    sla   H             ; 2:8
+    jr    c, UDIVIDE7   ; 2:7/12
+    sla   H             ; 2:8
+    jr    c, UDIVIDE8   ; 2:7/12
 UDIVIDE_8H:
+    sla   L             ; 2:8
+    jr    c, UDIVIDE9   ; 2:7/12
+    sla   L             ; 2:8
+    jr    c, UDIVIDE10  ; 2:7/12
+    sla   L             ; 2:8
+    jr    c, UDIVIDE11  ; 2:7/12
+    sla   L             ; 2:8
+    jr    c, UDIVIDE12  ; 2:7/12
+    sla   L             ; 2:8
+    jr    c, UDIVIDE13  ; 2:7/12
+    sla   L             ; 2:8
+    jr    c, UDIVIDE14  ; 2:7/12
+    sla   L             ; 2:8
+    jp    c, UDIVIDE15  ; 3:10
+    sla   L             ; 2:8
+    jp    c, UDIVIDE16  ; 3:10
+
+    ld    E, D          ; 1:4
+    ret                 ; 1:10
+
+;1
+UDIVIDE1:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;2
+    sla   H             ; 2:8
+UDIVIDE2:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;3
+    sla   H             ; 2:8
+UDIVIDE3:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;4
+    sla   H             ; 2:8
+UDIVIDE4:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;5
+    sla   H             ; 2:8
+UDIVIDE5:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;6
+    sla   H             ; 2:8
+UDIVIDE6:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;7
+    sla   H             ; 2:8
+UDIVIDE7:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+;8
+    sla   H             ; 2:8
+UDIVIDE8:
+    rla                 ; 1:4       AL << 1
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   H             ; 1:4
+
 ;9
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE9:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;10
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE10:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;11
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE11:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;12
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE12:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;13
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE13:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;14
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE14:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;15
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE15:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
 ;16
-    rl    L             ; 2:8
+    sla   L             ; 2:8
+UDIVIDE16:
     rla                 ; 1:4       AL << 1
-    add   A, E          ; 1:4       A-E?
-    jr    c, $+3        ; 2:7/12
-    sub   E             ; 1:4       back
-    
+    jr    c, $+5        ; 2:7/12
+    cp    E             ; 1:4       A-E?
+    jr    c, $+4        ; 2:7/12
+    sub   E             ; 1:4
+    inc   L             ; 1:4
+
     ld    E, A          ; 1:4       DE = DE % HL
-    rl    L             ; 2:8       HL = DE / HL
     ret                 ; 1:10
 
 UDIVIDE_16:             ;           DE >= 256
@@ -593,31 +768,40 @@ UDIVIDE_16:             ;           DE >= 256
     ld    H, 0x00       ; 2:7
     ld    L, A          ; 1:4
     ret                 ; 1:10},
+TYPDIV,{old},
 {
-    ex   DE, HL         ; 1:4       HL/DE
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    
     ld    A, D          ; 1:4
     or    A             ; 1:4
     jr   nz, UDIVIDE_16 ; 2:7/12
         
     ld    B, 16         ; 2:7     
+    add  HL, HL         ; 1:11      2*HL
+    jr    c, $+7        ; 2:7/12
+    djnz $-3            ; 2:13/8
 
+    ld    E, A          ; 1:4       DE = 0 % 0E = 0
+    ret                 ; 1:10      HL = 0 / 0E = 0
+    
     add  HL, HL         ; 1:11      2*HL
     rla                 ; 1:4
+    jr    c, $+5        ; 2:7/12
     cp    E             ; 1:4
     jr    c, $+4        ; 2:7/12
     inc   L             ; 1:4
     sub   E             ; 1:4
-    djnz $-7            ; 2:13/8
+    djnz $-9            ; 2:13/8
 
     ld    E, A          ; 1:4       DE = DE % HL
     ret                 ; 1:10      HL = DE / HL
-
+    
 UDIVIDE_16:             ;           HL/256+
     ld    A, L          ; 1:4
     ld    L, H          ; 1:4
     ld    H, 0x00       ; 2:7       HLA = 0HL 
     ld    B, 0x08       ; 2:7
-    
+        
     rla                 ; 1:4
     adc  HL, HL         ; 2:15
     sbc  HL, DE         ; 2:15      HL-DE
@@ -630,6 +814,41 @@ UDIVIDE_16:             ;           HL/256+
     ex   DE, HL         ; 1:4
     ld    H, B          ; 1:4
     ld    L, A          ; 1:4
+    ret                 ; 1:10},
+{
+    ld    A, H          ; 1:4
+    or    L             ; 1:4       HL = DE / HL
+    ret   z             ; 1:5/11    HL = DE / 0
+    ld    BC, 0x0000    ; 3:10
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    ld    A, H          ; 1:4       
+    sub   D             ; 1:4
+    jr    c, UDIVIDE_LE ; 2:7/12
+    jp   nz, UDIVIDE_GT ; 3:10
+    ld    A, E          ; 1:4
+    sub   L             ; 1:4
+    jp   nc, UDIVIDE_LE ; 3:10
+    or    A             ; 1:4       HL > DE
+UDIVIDE_GT:             ;
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    ld    A, C          ; 1:4       CA = 0x0000
+UDIVIDE_LOOP:
+    rr    D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    ccf                 ; 1:4       inverts carry flag
+    adc   A, A          ; 1:4
+    rl    C             ; 2:8
+    djnz UDIVIDE_LOOP   ; 2:8/13    B--
+    
+    ex   DE, HL         ; 1:4    
+    ld    L, A          ; 1:4
+    ld    H, C          ; 1:4
     ret                 ; 1:10})}){}dnl
 dnl
 dnl
