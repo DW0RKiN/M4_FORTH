@@ -168,8 +168,7 @@ ifdef({USE_MUL},{
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, B, DE
 MULTIPLY:{}ifelse(TYPMUL,{small},{
-; small variant
-    ld    B, 0x10       ; 2:7
+    ld    B, 0x10       ; 2:7       small version
     ld    A, H          ; 1:4
     ld    C, L          ; 1:4
     ld   HL, 0x0000     ; 3:10
@@ -181,7 +180,8 @@ MULTIPLY:{}ifelse(TYPMUL,{small},{
     add  HL, DE         ; 1:11
     djnz $-7            ; 2:13/8
     
-    ret                 ; 1:10},TYPMUL,{fast},
+    ret                 ; 1:10},
+TYPMUL,{fast},
 {
 ; fast variant
     ld    A, H          ; 1:4
@@ -310,7 +310,7 @@ MULTIPLY15:
     add  HL, DE         ; 1:11
     ret                 ; 1:10},
 TYPMUL,{test},{
-    ld    A, H          ; 1:4
+    ld    A, H          ; 1:4       test version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4       H=>D faster 7+4<12
@@ -343,7 +343,7 @@ MUL_LOOP2:
     jp   nz, MUL_LOOP2+1; 3:10
     ret                 ; 1:10},
 TYPMUL,{test2},{
-    ld    A, H          ; 1:4
+    ld    A, H          ; 1:4       test2 version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4       H=>D faster 7+4<12
@@ -420,7 +420,7 @@ MUL_LOOP:
 ;---------------
     ret                 ; 1:10},
 {
-    ld    A, H          ; 1:4
+    ld    A, H          ; 1:4       default version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4       H=>D faster 7+4<12
@@ -517,7 +517,8 @@ ifdef({USE_UDIV},{
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
-UDIVIDE:{}ifelse(TYPDIV,{fast},{
+UDIVIDE:{}ifelse(TYPDIV,{old_fast},{
+                        ;           old_fast version
     ex   DE, HL         ; 1:4       HL/DE
     ld    A, D          ; 1:4
     or    A             ; 1:4
@@ -770,8 +771,8 @@ UDIVIDE_16:             ;           DE >= 256
     ret                 ; 1:10},
 TYPDIV,{old},
 {
+                        ;           old version
     ex   DE, HL         ; 1:4       HL = HL / DE
-    
     ld    A, D          ; 1:4
     or    A             ; 1:4
     jr   nz, UDIVIDE_16 ; 2:7/12
@@ -815,18 +816,178 @@ UDIVIDE_16:             ;           HL/256+
     ld    H, B          ; 1:4
     ld    L, A          ; 1:4
     ret                 ; 1:10},
-{
-    ld    A, H          ; 1:4
+TYPDIV,{fast},
+{    
+    ld    A, H          ; 1:4       fast version
     or    L             ; 1:4       HL = DE / HL
     ret   z             ; 1:5/11    HL = DE / 0
-    ld    BC, 0x0000    ; 3:10
+    ld   BC, 0x00FF     ; 3:10
+if 1
+    ld    A, D          ; 1:4       
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    cp    H             ; 1:4       
+    jp   nc, UDIVIDE_LE ; 3:10
+    or    A             ; 1:4       HL > DE
+else
 UDIVIDE_LE:    
     inc   B             ; 1:4       B++
     add  HL, HL         ; 1:11   
     jr    c, UDIVIDE_GT ; 2:7/12
     ld    A, H          ; 1:4       
     sub   D             ; 1:4
-    jr    c, UDIVIDE_LE ; 2:7/12
+    jp    c, UDIVIDE_LE ; 3:10
+    jp   nz, UDIVIDE_GT ; 3:10
+    ld    A, E          ; 1:4
+    sub   L             ; 1:4
+    jp   nc, UDIVIDE_LE ; 3:10
+    or    A             ; 1:4       HL > DE
+endif
+UDIVIDE_GT:             ;
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    ld    A, C          ; 1:4       CA = 0xFFFF = inverted result
+;1    
+    rr    D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;2
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;3
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;4
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;5
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;6
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;7
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+;8
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    dec   B             ; 1:4       B--
+    jr    z, UDIVIDE_END; 2:7/12
+
+UDIVIDE_LOOP:
+    srl   D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    adc   A, A          ; 1:4
+    rl    C             ; 2:8
+    djnz UDIVIDE_LOOP   ; 2:8/13    B--
+
+    ex   DE, HL         ; 1:4
+    cpl                 ; 1:4
+    ld    L, A          ; 1:4
+    ld    A, C          ; 1:4
+    cpl                 ; 1:4
+    ld    H, A          ; 1:4
+    ret                 ; 1:10
+    
+UDIVIDE_END:
+    ex   DE, HL         ; 1:4
+    cpl                 ; 1:4
+    ld    L, A          ; 1:4
+    ld    H, B          ; 1:4
+    ret                 ; 1:10},
+TYPDIV,{small},{
+    ld    A, H          ; 1:4       small version
+    or    L             ; 1:4       HL = DE / HL
+    ret   z             ; 1:5/11    HL = DE / 0
+    ld   BC, 0x0000     ; 3:10
+    ld    A, D          ; 1:4       
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    cp    H             ; 1:4
+    jp   nc, UDIVIDE_LE ; 3:10
+    or    A             ; 1:4       HL > DE
+UDIVIDE_GT:             ;
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    ld    A, C          ; 1:4       CA = 0x0000 = result
+UDIVIDE_LOOP:
+    rr    D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    ccf                 ; 1:4       inverts carry flag
+    adc   A, A          ; 1:4
+    rl    C             ; 2:8
+    djnz UDIVIDE_LOOP   ; 2:8/13    B--
+    
+    ex   DE, HL         ; 1:4    
+    ld    L, A          ; 1:4
+    ld    H, C          ; 1:4
+    ret                 ; 1:10},
+{
+    ld    A, H          ; 1:4       default version
+    or    L             ; 1:4       HL = DE / HL
+    ret   z             ; 1:5/11    HL = DE / 0
+    ld   BC, 0x0000     ; 3:10
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    ld    A, H          ; 1:4       
+    sub   D             ; 1:4
+    jp    c, UDIVIDE_LE ; 3:10
     jp   nz, UDIVIDE_GT ; 3:10
     ld    A, E          ; 1:4
     sub   L             ; 1:4
