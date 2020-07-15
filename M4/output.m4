@@ -183,8 +183,7 @@ MULTIPLY:{}ifelse(TYPMUL,{small},{
     ret                 ; 1:10},
 TYPMUL,{fast},
 {
-; fast variant
-    ld    A, H          ; 1:4
+    ld    A, H          ; 1:4       fast version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4       H=>D faster 7+4<12
@@ -787,7 +786,7 @@ TYPDIV,{old},
     
     add  HL, HL         ; 1:11      2*HL
     rla                 ; 1:4
-    jr    c, $+5        ; 2:7/12
+    jr    c, $+5        ; 2:7/12    fix 256 / 129..255
     cp    E             ; 1:4
     jr    c, $+4        ; 2:7/12
     inc   L             ; 1:4
@@ -976,11 +975,113 @@ UDIVIDE_LOOP:
     ld    L, A          ; 1:4
     ld    H, C          ; 1:4
     ret                 ; 1:10},
+TYPDIV,{synthesis},
+{    
+    ld    A, H          ; 1:4       synthesis version
+    or    A             ; 1:4
+    jr    z, UDIVIDE_0L ; 2:7/12        
+    
+    ld   BC, 0x0000     ; 3:10
+    ld    A, D          ; 1:4
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    cp    H             ; 1:4
+    jp   nc, UDIVIDE_LE ; 3:10
+UDIVIDE_NC:             ;
+    or    A             ; 1:4       HL > DE
+
+UDIVIDE_GT:             ;
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    ld    A, C          ; 1:4       CA = 0x0000 = result
+UDIVIDE_LOOP:
+    rr    D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
+    jr   nc, $+3        ; 2:7/12
+    add  HL, DE         ; 1:11      back
+    ccf                 ; 1:4       inverts carry flag
+    adc   A, A          ; 1:4
+    rl    C             ; 2:8
+    djnz UDIVIDE_LOOP   ; 2:8/13    B--
+    
+    ex   DE, HL         ; 1:4    
+    ld    L, A          ; 1:4
+    ld    H, C          ; 1:4
+    ret                 ; 1:10
+
+UDIVIDE_0L:             ;           HL = DE / 0L
+    cp    L             ; 1:4
+    ret   z             ; 1:5/11    HL = DE / 0
+if 1
+    ld    A, E          ; 1:4
+    sub   L             ; 1:4
+    ld    A, D          ; 1:4
+    sbc   A, H          ; 1:4
+    jr    c, UDIVIDE_Z  ; 1:7/12
+
+    ld    A, D          ; 1:4
+    cp    L             ; 1:4
+    jr    c, UDIVIDE_LO ; 2:7/12
+    xor   A             ; 1:4
+else
+    cp    D             ; 1:4
+    jr    z, UDIVIDE_LO ; 2:7/12
+endif
+    ld    B, 0x04       ; 2:7
+UDIVIDE_D:
+    sla   D             ; 2:8
+    rla                 ; 1:4       AD << 1
+    cp    L             ; 1:4       A-L?
+    jr    c,$+4         ; 2:7/12
+    sub   L             ; 1:4
+    inc   D             ; 1:4
+    
+    sla   D             ; 2:8
+    rla                 ; 1:4       AD << 1
+    cp    L             ; 1:4       A-L?
+    jr    c,$+4         ; 2:7/12
+    sub   L             ; 1:4
+    inc   D             ; 1:4
+    djnz UDIVIDE_D      ; 2:8/13    B--
+
+    ld    H, D          ; 1:4
+    
+UDIVIDE_LO:
+    ld    B, 0x04       ; 2:7
+UDIVIDE_E:
+    sla   E             ; 2:8
+    rla                 ; 1:4       AE << 1
+    jr    c, $+5        ; 2:7/12
+    cp    L             ; 1:4       A-L?
+    jr    c, $+4        ; 2:7/12
+    sub   L             ; 1:4
+    inc   E             ; 1:4
+
+    sla   E             ; 2:8
+    rla                 ; 1:4       AE << 1
+    jr    c, $+5        ; 2:7/12
+    cp    L             ; 1:4       A-L?
+    jr    c, $+4        ; 2:7/12
+    sub   L             ; 1:4
+    inc   E             ; 1:4
+    djnz UDIVIDE_E      ; 2:8/13    B--
+    
+    ld    L, E          ; 1:4       HL = DE / HL
+    ld    D, B          ; 1:4
+    ld    E, A          ; 1:4       DE = DE % HL
+    ret                 ; 1:10
+UDIVIDE_Z:
+    ld    L, H          ; 1:4
+    ret                 ; 1:10},
 {
     ld    A, H          ; 1:4       default version
     or    L             ; 1:4       HL = DE / HL
-    ret   z             ; 1:5/11    HL = DE / 0
+    ret   z             ; 1:5/11    HL = DE / 0?
+    
     ld   BC, 0x0000     ; 3:10
+if 0
 UDIVIDE_LE:    
     inc   B             ; 1:4       B++
     add  HL, HL         ; 1:11   
@@ -991,8 +1092,17 @@ UDIVIDE_LE:
     jp   nz, UDIVIDE_GT ; 3:10
     ld    A, E          ; 1:4
     sub   L             ; 1:4
+else
+    ld    A, D          ; 1:4
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    cp    H             ; 1:4
+endif
     jp   nc, UDIVIDE_LE ; 3:10
     or    A             ; 1:4       HL > DE
+
 UDIVIDE_GT:             ;
     ex   DE, HL         ; 1:4       HL = HL / DE
     ld    A, C          ; 1:4       CA = 0x0000 = result
