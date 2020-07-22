@@ -385,3 +385,11 @@ define({PUTPIXEL},{ifdef({USE_PIXEL},,define({USE_PIXEL},{}))
 dnl
 dnl
 dnl
+dnl ( yx_from yx_to -- )
+define({LINE},{ifdef({USE_LINE},,define({USE_LINE},{}))
+    call line          ; 3:17       line
+    pop  HL            ; 1:10       line
+    pop  DE            ; 1:10       line})dnl
+dnl
+dnl
+dnl
