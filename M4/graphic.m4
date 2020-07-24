@@ -198,6 +198,7 @@ line_n_adr EQU $+1
     ld    A, D          ; 1:4       error 
     sub   C             ; 1:4       -dy
     jr    c, line_p_err ; 2:8/13
+    jr    z, line_p_err ; 2:8/13
     ld    D, A          ; 1:4
     
     djnz line_n_loop    ; 2:8/13
