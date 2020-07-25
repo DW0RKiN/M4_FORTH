@@ -102,15 +102,38 @@ line_ver_c:
 
     ld    A, C          ; 1:4       abs(dy)
     ld    C, B          ; 1:4
-    ld    B, A          ; 1:4
+    ld    B, A          ; 1:4       B <-> C
     sub   C             ; 1:4       abs(dy)-abs(dx)
     ld    E, A          ; 1:4
-    sub   C             ; 1:4       
+    
+    ld    A, B          ; 1:4       abs(dy)
+    rra                 ; 1:4       dy/2
+    ld    D, A          ; 1:4
+    ld    A, C          ; 1:4       abs(dx)
+    sub   D             ; 1:4       abs(dx)-abs(dy)/2
+
     inc   B             ; 1:4 
-    rra                 ; 1:4       dy/2-dx
-    or    A             ; 1:4
-    jp    p, line_n_in  ; 3:10 
-    jp    line_p_in     ; 3:10 
+
+    ccf                 ; 1:4
+;-----------
+
+line_n_loop:
+    jr    c, line_p_in  ; 2:7/12
+line_n_in:
+    exx                 ; 1:4
+    ex   AF, AF'        ; 1:4
+    ld    A,(DE)        ; 1:7
+    or    C             ; 1:4
+    ld  (DE),A          ; 1:7
+line_n_adr EQU $+1
+    call 0x0000         ; 3:17
+    ex   AF, AF'        ; 1:4
+    exx                 ; 1:4
+    
+    add   A, C          ; 1:4       +dy
+    
+    djnz line_n_loop    ; 2:8/13
+    ret                 ; 1:10
 
 ;------ horizontal line ------
 
@@ -146,62 +169,33 @@ line_hor_c:
     ld    A, B          ; 1:4       abs(dx)
     sub   C             ; 1:4       abs(dx)-abs(dy)
     ld    E, A          ; 1:4
-    sub   C             ; 1:4       
+
+    ld    A, B          ; 1:4       abs(dx)
+    rra                 ; 1:4       dx/2
+    ld    D, A          ; 1:4
+    ld    A, C          ; 1:4       abs(dy)
+    sub   D             ; 1:4       abs(dy)-abs(dx)/2
+        
     inc   B             ; 1:4
-    rra                 ; 1:4       dx/2-dy
-    or    A             ; 1:4
-    jp    p, line_n_in  ; 3:10 
-    jp    line_p_in     ; 3:10 
 
 ;-----------
-
-line_p_err:
-    dec   B             ; 1:4
-    ret   z             ; 1:5/11
-line_p_in:
-    neg                 ; 2:8
-    ld    D, A          ; 1:4
     
 line_p_loop:
+    jr    c, line_n_in  ; 2:7/12
+line_p_in:
     exx                 ; 1:4
+    ex   AF, AF'        ; 1:4
     ld    A,(DE)        ; 1:7
     or    C             ; 1:4
     ld  (DE),A          ; 1:7
 line_p_adr EQU $+1
     call 0x0000         ; 3:17
+    ex   AF, AF'        ; 1:4
     exx                 ; 1:4
 
-    ld    A, D          ; 1:4       error 
     sub   E             ; 1:4       error-(dx-dy)
-    jr    c, line_n_err ; 2:8/13
-    ld    D, A          ; 1:4
     
     djnz line_p_loop    ; 2:8/13
-    ret                 ; 1:10
-
-line_n_err:
-    dec   B             ; 1:4
-    ret   z             ; 1:5/11
-    neg                 ; 2:8
-line_n_in:
-    ld    D, A          ; 1:4
-
-line_n_loop:
-    exx                 ; 1:4
-    ld    A,(DE)        ; 1:7
-    or    C             ; 1:4
-    ld  (DE),A          ; 1:7
-line_n_adr EQU $+1
-    call 0x0000         ; 3:17
-    exx                 ; 1:4
-    
-    ld    A, D          ; 1:4       error 
-    sub   C             ; 1:4       -dy
-    jr    c, line_p_err ; 2:8/13
-    jr    z, line_p_err ; 2:8/13
-    ld    D, A          ; 1:4
-    
-    djnz line_n_loop    ; 2:8/13
     ret                 ; 1:10
 
 ;==================
