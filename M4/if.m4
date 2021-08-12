@@ -173,9 +173,9 @@ __{}    jp   nc, else{}IF_COUNT
 __{}  endif
 __{}  .warning The condition >>>$1<<< cannot be evaluated},
 __{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    positive constant{}dnl
+__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    negative HL < positive constant ---> true{}dnl
 __{}},{
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if    negative constant})
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if    positive HL < negative constant ---> false})
     ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
     sub   low format({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
     ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
@@ -204,9 +204,9 @@ __{}    jr   nc, $+11
 __{}  endif
 __{}  .warning The condition >>>$1<<< cannot be evaluated},
 __{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if    positive constant{}dnl
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if    negative HL >= positive constant ---> false{}dnl
 __{}},{
-__{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    negative constant})
+__{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    positive HL >= negative constant ---> true})
     ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
     sub   low format({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
     ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
@@ -235,9 +235,9 @@ __{}    jp   nc, else{}IF_COUNT
 __{}  endif
 __{}  .warning The condition >>>$1<<< cannot be evaluated},
 __{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    positive constant{}dnl
+__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    negative HL <= positive constant ---> true{}dnl
 __{}},{
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    negative constant})
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
     ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
     sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
     ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
@@ -266,9 +266,9 @@ __{}    jr   nc, $+11
 __{}  endif
 __{}  .warning The condition >>>$1<<< cannot be evaluated},
 __{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    positive constant{}dnl
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    negative HL > positive constant ---> false{}dnl
 __{}},{
-__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    negative constant})
+__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    positive HL > negative constant ---> true})
     ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
     sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
     ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
