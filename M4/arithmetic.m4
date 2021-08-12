@@ -12,8 +12,8 @@ dnl
 dnl ( x -- x+n )
 dnl x = x + n
 define({PUSH_ADD},{ifelse(eval($1),{},{
-__{}    ; warning The condition ($1) cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); 3:10      $1 +
+__{}    ; warning The condition >>>$1<<< cannot be evaluated
+__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
 __{}eval($1),{0},{
 __{}                        ;           $1 +},
@@ -63,8 +63,8 @@ dnl
 dnl ( x -- x-n )
 dnl x = x - n
 define({PUSH_SUB},{ifelse(eval($1),{},{
-__{}    ; warning The condition ($1) cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); 3:10      $1 -
+__{}    ; warning The condition >>>$1<<< cannot be evaluated
+__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 -
 __{}    or    A             ; 1:4       $1 -
 __{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
 __{}eval($1),{0},{

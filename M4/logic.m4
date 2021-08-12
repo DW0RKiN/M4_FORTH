@@ -20,14 +20,14 @@ __{}    ld   HL, 0x0000     ; 3:10      $1 and},
 __{}eval(($1) & 0xFF00),{0},{
 __{}    ld    H, 0x00       ; 2:7       $1 and},
 __{}eval(0xFF00 - (($1) & 0xFF00)),{0},,{
-__{}    ld    A, high format({%-6s},$1); 2:7       $1 and
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      $1 and
 __{}    and   H             ; 1:4       $1 and
 __{}    ld    H, A          ; 1:4       $1 and}){}dnl
 __{}ifelse(eval($1),{0},,
 __{}eval(($1) & 0x00FF),{0},{
 __{}    ld    L, 0x00       ; 2:7       $1 and},
 __{}eval(0xFF-(($1) & 0xFF)),{0},,{
-__{}    ld    A, low format({%-7s},$1); 2:7       $1 and
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      $1 and
 __{}    and   L             ; 1:4       $1 and
 __{}    ld    L, A          ; 1:4       $1 and})})dnl    
 dnl
@@ -64,7 +64,7 @@ __{}    set   6, H          ; 2:8       $1 or},
 __{}eval(($1) - 0x8000),{0},{
 __{}    set   7, H          ; 2:8       $1 or},
 __{}{
-__{}    ld    A, high format({%-6s},$1); 2:7       $1 or
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      $1 or
 __{}    or    H             ; 1:4       $1 or
 __{}    ld    H, A          ; 1:4       $1 or}){}dnl
 __{}ifelse(eval(($1) & 0x00FF),{0},,
@@ -85,7 +85,7 @@ __{}    set   6, L          ; 2:8       $1 or},
 __{}eval(($1) & 0xFF),{128},{
 __{}    set   7, L          ; 2:8       $1 or},
 __{}{
-__{}    ld    A, low format({%-7s},$1); 2:7       $1 or
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      $1 or
 __{}    or    L             ; 1:4       $1 or
 __{}    ld    L, A          ; 1:4       $1 or})})dnl
 dnl
@@ -105,11 +105,11 @@ dnl
 dnl ( x  -- x^n )
 dnl x = x ^ n
 define(PUSH_XOR,{ifelse(eval(($1) & 0xFF00),{0},,{
-__{}    ld    A, high format({%-6s},$1); 2:7       $1 xor
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      $1 xor
 __{}    xor   H             ; 1:4       $1 xor
 __{}    ld    H, A          ; 1:4       $1 xor}){}dnl
 __{}ifelse(eval(($1) & 0x00FF),{0},,{
-__{}    ld    A, low format({%-7s},$1); 2:7       $1 xor
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      $1 xor
 __{}    xor   L             ; 1:4       $1 xor
 __{}    ld    L, A          ; 1:4       $1 xor})})dnl
 dnl
