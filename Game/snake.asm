@@ -7,8 +7,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10
+    exx                 ; 1:4
     
     call start          ; 3:17      scall
     
@@ -205,7 +205,7 @@ snake_x:                ;           ( offset -- address )
     ld  (snake_x_end+1),BC; 4:20      : ( ret -- ) R:( -- )
   
     add  HL, HL         ; 1:11      2* 
-    ; warning The condition (snake_x_head) cannot be evaluated
+    ; warning The condition >>>snake_x_head<<< cannot be evaluated
     ld   BC, snake_x_head; 3:10      snake_x_head +
     add  HL, BC         ; 1:11      snake_x_head + 
 
@@ -220,7 +220,7 @@ snake_y:                ;           ( offset -- address )
     ld  (snake_y_end+1),BC; 4:20      : ( ret -- ) R:( -- )
   
     add  HL, HL         ; 1:11      2* 
-    ; warning The condition (snake_y_head) cannot be evaluated
+    ; warning The condition >>>snake_y_head<<< cannot be evaluated
     ld   BC, snake_y_head; 3:10      snake_y_head +
     add  HL, BC         ; 1:11      snake_y_head +
 
@@ -328,18 +328,22 @@ initialize:             ;
     push DE             ; 1:11      push(32-1)
     ex   DE, HL         ; 1:4       push(32-1)
     ld   HL, 32-1       ; 3:10      push(32-1) 
-    ld  (idx104), HL    ; 3:16      for 104
+    ld    B, H          ; 1:4       for 104
+    ld    C, L          ; 1:4       for 104
     ex   DE, HL         ; 1:4       for 104
     pop  DE             ; 1:10      for 104 index
-for104:                 ;           for 104 
+for104:                 ;           for 104
+    ld  (idx104),BC     ; 4:20      next 104 save index 
         
     push DE             ; 1:11      push(24-1)
     ex   DE, HL         ; 1:4       push(24-1)
     ld   HL, 24-1       ; 3:10      push(24-1) 
-    ld  (idx105), HL    ; 3:16      for 105
+    ld    B, H          ; 1:4       for 105
+    ld    C, L          ; 1:4       for 105
     ex   DE, HL         ; 1:4       for 105
     pop  DE             ; 1:10      for 105 index
-for105:                 ;           for 105 
+for105:                 ;           for 105
+    ld  (idx105),BC     ; 4:20      next 105 save index 
             
     push DE             ; 1:11      index j 105
     ex   DE, HL         ; 1:4       index j 105
@@ -354,7 +358,6 @@ idx105 EQU $+1          ;           next 105
     ld    A, B          ; 1:4       next 105
     or    C             ; 1:4       next 105
     dec  BC             ; 1:6       next 105 index--, zero flag unaffected
-    ld  (idx105),BC     ; 4:20      next 105 save index
     jp   nz, for105     ; 3:10      next 105
 next105:                ;           next 105 
     
@@ -363,7 +366,6 @@ idx104 EQU $+1          ;           next 104
     ld    A, B          ; 1:4       next 104
     or    C             ; 1:4       next 104
     dec  BC             ; 1:6       next 104 index--, zero flag unaffected
-    ld  (idx104),BC     ; 4:20      next 104 save index
     jp   nz, for104     ; 3:10      next 104
 next104:                ;           next 104
     
@@ -943,7 +945,7 @@ draw_snake:             ;
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
-    ld  (idx107), HL    ; 3:16      do 107 index
+    ld  (idx107), HL    ; 3:16      do 107 save index
     dec  DE             ; 1:6       do 107 stop-1
     ld    A, E          ; 1:4       do 107 
     ld  (stp_lo107), A  ; 3:13      do 107 lo stop

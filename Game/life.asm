@@ -4,8 +4,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10
+    exx                 ; 1:4
     
     call _init          ; 3:17      scall
     
@@ -62,7 +62,7 @@ sdo101:                 ;           sdo 101 ( stop index -- stop index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ; warning The condition (buff-0x5800+1) cannot be evaluated
+    ; warning The condition >>>buff-0x5800+1<<< cannot be evaluated
     ld   BC, buff-0x5800+1; 3:10      buff-0x5800+1 +
     add  HL, BC         ; 1:11      buff-0x5800+1 + 
     ld   BC, 32-1       ; 3:10      32-1 cmove BC = u
@@ -81,7 +81,7 @@ sdo101:                 ;           sdo 101 ( stop index -- stop index )
     ld    H, 0x00       ; 2:7       C@ cfetch 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ; warning The condition (buff-0x5800) cannot be evaluated
+    ; warning The condition >>>buff-0x5800<<< cannot be evaluated
     ld   BC, buff-0x5800; 3:10      buff-0x5800 +
     add  HL, BC         ; 1:11      buff-0x5800 + 
     ld  (HL),E          ; 1:7       C! cstore
@@ -123,7 +123,7 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     inc  HL             ; 1:6       1+ 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ; warning The condition (buff-0x5800) cannot be evaluated
+    ; warning The condition >>>buff-0x5800<<< cannot be evaluated
     ld   BC, buff-0x5800; 3:10      buff-0x5800 +
     add  HL, BC         ; 1:11      buff-0x5800 + 
     ld   BC, 32-1       ; 3:10      32-1 cmove BC = u
@@ -140,7 +140,7 @@ sdo102:                 ;           sdo 102 ( stop index -- stop index )
     ld    H, 0x00       ; 2:7       C@ cfetch 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ; warning The condition (buff-0x5800+32-1) cannot be evaluated
+    ; warning The condition >>>buff-0x5800+32-1<<< cannot be evaluated
     ld   BC, buff-0x5800+32-1; 3:10      buff-0x5800+32-1 +
     add  HL, BC         ; 1:11      buff-0x5800+32-1 + 
     ld  (HL),E          ; 1:7       C! cstore
@@ -586,7 +586,7 @@ sfor106:                ;           sfor 106 ( index -- index )
         
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    ; warning The condition (buff) cannot be evaluated
+    ; warning The condition >>>buff<<< cannot be evaluated
     ld   BC, buff       ; 3:10      buff +
     add  HL, BC         ; 1:11      buff + 
     ld  (HL),E          ; 1:7       C! cstore
@@ -617,7 +617,7 @@ _alive:                 ;           ( addr -- alive )
     ld    H, 0x00       ; 2:7       C@ cfetch 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else113    ; 3:10      0= if
         
@@ -701,10 +701,10 @@ sum_neighbors:          ;           ( addr -- sum )
     ld   BC, 32         ; 3:10      32 +
     add  HL, BC         ; 1:11      32 +
     
-    ld    A, L          ; 1:4       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    sub   low 0x5B00    ; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
-    sbc   A, high 0x5B00; 2:7       dup 0x5B00 (u)>= if    (HL>=0x5B00) --> (HL-0x5B00>=0) --> not carry if true
+    ld    A, L          ; 1:4       dup 0x5B00 (u)>= if    HL>=0x5B00 --> HL-0x5B00>=0 --> not carry if true
+    sub   low 0x5B00    ; 2:7       dup 0x5B00 (u)>= if    HL>=0x5B00 --> HL-0x5B00>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup 0x5B00 (u)>= if    HL>=0x5B00 --> HL-0x5B00>=0 --> not carry if true
+    sbc   A, high 0x5B00; 2:7       dup 0x5B00 (u)>= if    HL>=0x5B00 --> HL-0x5B00>=0 --> not carry if true
     jp    c, else116    ; 3:10      dup 0x5B00 (u)>= if
         
     ld   BC, -32*24     ; 3:10      -32*24 +
@@ -742,10 +742,10 @@ endif116:
     ld   BC, -2*32      ; 3:10      -2*32 +
     add  HL, BC         ; 1:11      -2*32 +
     
-    ld    A, L          ; 1:4       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    sub   low 0x5800    ; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    ld    A, H          ; 1:4       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
-    sbc   A, high 0x5800; 2:7       dup 0x5800 (u)< if    (HL<0x5800) --> (HL-0x5800<0) --> carry if true
+    ld    A, L          ; 1:4       dup 0x5800 (u)< if    HL<0x5800 --> HL-0x5800<0 --> carry if true
+    sub   low 0x5800    ; 2:7       dup 0x5800 (u)< if    HL<0x5800 --> HL-0x5800<0 --> carry if true
+    ld    A, H          ; 1:4       dup 0x5800 (u)< if    HL<0x5800 --> HL-0x5800<0 --> carry if true
+    sbc   A, high 0x5800; 2:7       dup 0x5800 (u)< if    HL<0x5800 --> HL-0x5800<0 --> carry if true
     jp   nc, else117    ; 3:10      dup 0x5800 (u)< if
         
     ld   BC, 32*24      ; 3:10      32*24 +
