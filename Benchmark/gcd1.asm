@@ -4,8 +4,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10
+    exx                 ; 1:4
     
     call gcd1_bench     ; 3:17      call ( -- ret ) R:( -- )
     
@@ -31,10 +31,10 @@ begin101:
     or    L             ; 1:4       dup_while 101
     jp    z, break101   ; 3:10      dup_while 101                                                                   
                 
-    ld    A, L          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, L          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     jp   nc, else102    ; 3:10      2dup u> if 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
 else102  EQU $          ;           = endif

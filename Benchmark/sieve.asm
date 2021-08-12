@@ -4,8 +4,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10
+    exx                 ; 1:4
 
     call do_prime       ; 3:17      call ( -- ret ) R:( -- )
 
@@ -45,36 +45,22 @@ do_prime:               ;
     ld   DE, 8190       ; 3:10      push2(8190,0)
     push HL             ; 1:11      push2(8190,0)
     ld   HL, 0          ; 3:10      push2(8190,0) 
-    push HL             ; 1:11      do 101 index
-    push DE             ; 1:11      do 101 stop
-    exx                 ; 1:4       do 101
-    pop  DE             ; 1:10      do 101 stop
-    dec  HL             ; 1:6       do 101
-    ld  (HL),D          ; 1:7       do 101
-    dec  L              ; 1:4       do 101
-    ld  (HL),E          ; 1:7       do 101 stop
-    pop  DE             ; 1:10      do 101 index
-    dec  HL             ; 1:6       do 101
-    ld  (HL),D          ; 1:7       do 101
-    dec  L              ; 1:4       do 101
-    ld  (HL),E          ; 1:7       do 101 index
-    exx                 ; 1:4       do 101
+    ld  (idx101), HL    ; 3:16      do 101 save index
+    dec  DE             ; 1:6       do 101 stop-1
+    ld    A, E          ; 1:4       do 101 
+    ld  (stp_lo101), A  ; 3:13      do 101 lo stop
+    ld    A, D          ; 1:4       do 101 
+    ld  (stp_hi101), A  ; 3:13      do 101 hi stop
     pop  HL             ; 1:10      do 101
-    pop  DE             ; 1:10      do 101 ( stop index -- ) R: ( -- stop index )
-do101: 
+    pop  DE             ; 1:10      do 101 ( -- ) R: ( -- )
+do101:                  ;           do 101 
     
     push DE             ; 1:11      push(flags)
     ex   DE, HL         ; 1:4       push(flags)
     ld   HL, flags      ; 3:10      push(flags) 
-    exx                 ; 1:4       index 101 i    
-    ld    E,(HL)        ; 1:7       index 101 i
-    inc   L             ; 1:4       index 101 i
-    ld    D,(HL)        ; 1:7       index 101 i
-    push DE             ; 1:11      index 101 i
-    dec   L             ; 1:4       index 101 i
-    exx                 ; 1:4       index 101 i
-    ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP),HL         ; 1:19      index 101 i 
+    push DE             ; 1:11      index i 101
+    ex   DE, HL         ; 1:4       index i 101
+    ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index 
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
     ld    L, (HL)       ; 1:7       C@ cfetch 
@@ -85,15 +71,9 @@ do101:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else101    ; 3:10      if 
-    exx                 ; 1:4       index 101 i    
-    ld    E,(HL)        ; 1:7       index 101 i
-    inc   L             ; 1:4       index 101 i
-    ld    D,(HL)        ; 1:7       index 101 i
-    push DE             ; 1:11      index 101 i
-    dec   L             ; 1:4       index 101 i
-    exx                 ; 1:4       index 101 i
-    ex   DE, HL         ; 1:4       index 101 i
-    ex  (SP),HL         ; 1:19      index 101 i 
+    push DE             ; 1:11      index i 101
+    ex   DE, HL         ; 1:4       index i 101
+    ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
@@ -105,16 +85,16 @@ do101:
         
 begin101: 
         
-    ld    A, L          ; 1:4       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
-    sub   low 8191      ; 2:7       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
-    ld    A, H          ; 1:4       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
-    sbc   A, high 8191  ; 2:7       dup 8191 u< while 101    (HL<8191) --> (HL-8191<0) --> carry if true
+    ld    A, L          ; 1:4       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> carry if true
+    sub   low 8191      ; 2:7       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> carry if true
+    ld    A, H          ; 1:4       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> carry if true
+    sbc   A, high 8191  ; 2:7       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> carry if true
     jp   nc, break101   ; 3:10      dup 8191 u< while 101
             
     push DE             ; 1:11      0 over
     push HL             ; 1:11      0 over
     ld   DE, 0          ; 3:10      0 over ( a -- a 0 a ) 
-    ; warning The condition (flags) cannot be evaluated
+    ; warning The condition >>>flags<<< cannot be evaluated
     ld   BC, flags      ; 3:10      flags +
     add  HL, BC         ; 1:11      flags + 
     ld  (HL),E          ; 1:7       C! cstore
@@ -132,30 +112,20 @@ break101:               ;           repeat 101
 else101  EQU $          ;           = endif
 endif101:
 
-    exx                 ; 1:4       loop 101
-    ld    E,(HL)        ; 1:7       loop 101
-    inc   L             ; 1:4       loop 101
-    ld    D,(HL)        ; 1:7       loop 101 DE = index   
-    inc  HL             ; 1:6       loop 101
-    inc  DE             ; 1:6       loop 101 index++
-    ld    A,(HL)        ; 1:4       loop 101
-    xor   E             ; 1:4       loop 101 lo index - stop
-    jr   nz, $+8        ; 2:7/12    loop 101
-    ld    A, D          ; 1:4       loop 101
-    inc   L             ; 1:4       loop 101
-    xor (HL)            ; 1:7       loop 101 hi index - stop
-    jr    z, leave101   ; 2:7/12    loop 101 exit    
-    dec   L             ; 1:4       loop 101
-    dec  HL             ; 1:6       loop 101
-    ld  (HL), D         ; 1:7       loop 101
-    dec   L             ; 1:4       loop 101
-    ld  (HL), E         ; 1:7       loop 101
-    exx                 ; 1:4       loop 101
-    jp   do101          ; 3:10      loop 101
-leave101:
-    inc  HL             ; 1:6       loop 101
-    exx                 ; 1:4       loop 101
-exit101 EQU $
+idx101 EQU $+1          ;           loop 101
+    ld   BC, 0x0000     ; 3:10      loop 101 idx always points to a 16-bit index
+    ld    A, C          ; 1:4       loop 101
+stp_lo101 EQU $+1       ;           loop 101
+    xor  0x00           ; 2:7       loop 101 lo index - stop - 1
+    ld    A, B          ; 1:4       loop 101
+    inc  BC             ; 1:6       loop 101 index++
+    ld  (idx101),BC     ; 4:20      loop 101 save index
+    jp   nz, do101      ; 3:10      loop 101    
+stp_hi101 EQU $+1       ;           loop 101
+    xor  0x00           ; 2:7       loop 101 hi index - stop - 1
+    jp   nz, do101      ; 3:10      loop 101
+leave101:               ;           loop 101
+exit101:                ;           loop 101
 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      print
@@ -186,14 +156,13 @@ PRINT_S16:
     sbc   A, H          ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    H, A          ; 1:4       neg
-
     
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
     db 0x01             ; 3:10      ld   BC, ** 
     
-    ; fall to PRINT_U16
+    ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)

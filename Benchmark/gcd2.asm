@@ -4,8 +4,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10
+    exx                 ; 1:4
     
     call gcd2_bench     ; 3:17      call ( -- ret ) R:( -- )
     
@@ -61,15 +61,13 @@ begin101:
     sub   H             ; 1:4       2dup <> while 101
     jp    z, break101   ; 3:10      2dup <> while 101  
         
-    ld    A, H          ; 1:4       2dup < if
-    xor   D             ; 1:4       2dup < if
-    ld    C, A          ; 1:4       2dup < if
-    ld    A, E          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       2dup < if
-    xor   C             ; 1:4       2dup < if
+    xor   D             ; 1:4       2dup < if
+    xor   H             ; 1:4       2dup < if
     jp    p, else104    ; 3:10      2dup < if 
             
     or    A             ; 1:4       over -
@@ -117,25 +115,25 @@ xdo102:                 ;           xdo(100,0) 102
     call gcd2           ; 3:17      call ( -- ret ) R:( -- ) 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
-idx102 EQU $+1          ;           xloop(100,0) 102 0 <= index < stop < 256
-    ld    A, 0          ; 2:7       xloop(100,0) 102
-    nop                 ; 1:4       xloop(100,0) 102 idx always points to a 16-bit index
-    inc   A             ; 1:4       xloop(100,0) 102 index++
-    ld  (idx102),A      ; 3:13      xloop(100,0) 102
-    sub  low 100        ; 2:7       xloop(100,0) 102
-    jp    c, xdo102     ; 3:10      xloop(100,0) 102 index-stop
-xleave102:              ;           xloop(100,0) 102
-xexit102:               ;           xloop(100,0) 102
+idx102 EQU $+1          ;           xloop 102 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop 102
+    nop                 ; 1:4       xloop 102 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop 102 index++
+    ld  (idx102),A      ; 3:13      xloop 102
+    sub  low 100        ; 2:7       xloop 102
+    jp    c, xdo102     ; 3:10      xloop 102 index-stop
+xleave102:              ;           xloop 102
+xexit102:               ;           xloop 102
     
-idx101 EQU $+1          ;           xloop(100,0) 101 0 <= index < stop < 256
-    ld    A, 0          ; 2:7       xloop(100,0) 101
-    nop                 ; 1:4       xloop(100,0) 101 idx always points to a 16-bit index
-    inc   A             ; 1:4       xloop(100,0) 101 index++
-    ld  (idx101),A      ; 3:13      xloop(100,0) 101
-    sub  low 100        ; 2:7       xloop(100,0) 101
-    jp    c, xdo101     ; 3:10      xloop(100,0) 101 index-stop
-xleave101:              ;           xloop(100,0) 101
-xexit101:               ;           xloop(100,0) 101
+idx101 EQU $+1          ;           xloop 101 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop 101
+    nop                 ; 1:4       xloop 101 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop 101 index++
+    ld  (idx101),A      ; 3:13      xloop 101
+    sub  low 100        ; 2:7       xloop 101
+    jp    c, xdo101     ; 3:10      xloop 101 index-stop
+xleave101:              ;           xloop 101
+xexit101:               ;           xloop 101
 
 gcd2_bench_end:
     jp   0x0000         ; 3:10      ;

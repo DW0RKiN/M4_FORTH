@@ -39,10 +39,10 @@ begin101:
     call MULTIPLY       ; 3:17      *
     pop  DE             ; 1:10      * 
     
-    ld    A, E          ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= while 101
     pop  DE             ; 1:10      u>= while 101
     jp    c, break101   ; 3:10      u>= while 101  
@@ -114,7 +114,7 @@ _bench_end:
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, B, DE
 MULTIPLY:
-    ld    A, H          ; 1:4
+    ld    A, H          ; 1:4       default version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4       H=>D faster 7+4<12
@@ -150,8 +150,8 @@ MUL_LOOP2:
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
 UDIVIDE:
+                        ;           old version
     ex   DE, HL         ; 1:4       HL = HL / DE
-    
     ld    A, D          ; 1:4
     or    A             ; 1:4
     jr   nz, UDIVIDE_16 ; 2:7/12
@@ -166,7 +166,7 @@ UDIVIDE:
     
     add  HL, HL         ; 1:11      2*HL
     rla                 ; 1:4
-    jr    c, $+5        ; 2:7/12
+    jr    c, $+5        ; 2:7/12    fix 256 / 129..255
     cp    E             ; 1:4
     jr    c, $+4        ; 2:7/12
     inc   L             ; 1:4

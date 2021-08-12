@@ -4,8 +4,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10
+    exx                 ; 1:4
 
     push DE             ; 1:11      print
     ld   BC, size101    ; 3:10      print Length of string to print

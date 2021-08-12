@@ -4,8 +4,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 35000
-    exx
+    ld   HL, 35000      ; 3:10
+    exx                 ; 1:4
     
     call fib1s_bench    ; 3:17      scall
     
@@ -16,16 +16,16 @@ Stop:
     ret                 ; 1:10
 ;   =====  e n d  =====   
     
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 fib1s:                  ;           ( a -- b )
         
     ld    A, H          ; 1:4       dup 2 < if
     add   A, A          ; 1:4       dup 2 < if
     jr    c, $+11       ; 2:7/12    dup 2 < if    positive constant
-    ld    A, L          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
-    sub   low 2         ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
-    ld    A, H          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
-    sbc   A, high 2     ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
+    ld    A, L          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
+    sub   low 2         ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
+    ld    A, H          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
+    sbc   A, high 2     ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
     jp   nc, else101    ; 3:10      dup 2 < if 
     ld   HL, 1          ; 3:10      drop 1 
     ret                 ; 1:10      sexit 
@@ -47,9 +47,9 @@ endif101:
     
 fib1s_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
     
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 fib1s_bench:            ;           ( -- )
         
     push DE             ; 1:11      push(999)
@@ -86,7 +86,7 @@ snext101:               ;           snext 101
     
 fib1s_bench_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 VARIABLE_SECTION:
