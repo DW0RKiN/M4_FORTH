@@ -521,6 +521,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |    original    |      M4 FORTH     |    optimization    |   data stack          | comment          |
 | :------------: | :---------------: | :----------------: | :-------------------- | :--------------- |
 |                |   INIT(RAS_addr)  |                    |                       | save SP, set RAS |
+|      bye       |        BYE        |                    |          ( -- )       | goto STOP        |
 |                |       STOP        |                    |          ( -- )       | load SP & HL'    |
 |`1` constant ONE| CONSTANT(ONE,`1`) |                    |          ( -- )       |                  |
 |    `3` var X   |  VARIABLE(X,`1`)  |                    |          ( -- )       | X: dw `3`        |
