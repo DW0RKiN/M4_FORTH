@@ -148,57 +148,49 @@ dnl
 dnl
 dnl 2dup < while
 define({_2DUP_LT_WHILE},{
-    ld    A, H          ; 1:4       2dup < while BEGIN_STACK
-    xor   D             ; 1:4       2dup < while BEGIN_STACK
-    ld    C, A          ; 1:4       2dup < while BEGIN_STACK
     ld    A, E          ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       2dup < while BEGIN_STACK
-    xor   C             ; 1:4       2dup < while BEGIN_STACK
+    xor   D             ; 1:4       2dup < while BEGIN_STACK
+    xor   H             ; 1:4       2dup < while BEGIN_STACK
     jp    p, break{}BEGIN_STACK   ; 3:10      2dup < while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup >= while
 define({_2DUP_GE_WHILE},{
-    ld    A, H          ; 1:4       2dup >= while BEGIN_STACK
-    xor   D             ; 1:4       2dup >= while BEGIN_STACK
-    ld    C, A          ; 1:4       2dup >= while BEGIN_STACK
     ld    A, E          ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     rra                 ; 1:4       2dup >= while BEGIN_STACK
-    xor   C             ; 1:4       2dup >= while BEGIN_STACK
+    xor   D             ; 1:4       2dup >= while BEGIN_STACK
+    xor   H             ; 1:4       2dup >= while BEGIN_STACK
     jp    m, break{}BEGIN_STACK   ; 3:10      2dup >= while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup <= while
 define({_2DUP_LE_WHILE},{
-    ld    A, H          ; 1:4       2dup <= while BEGIN_STACK
-    xor   D             ; 1:4       2dup <= while BEGIN_STACK
-    ld    C, A          ; 1:4       2dup <= while BEGIN_STACK
     ld    A, L          ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     sub   E             ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     ld    A, H          ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     sbc   A, D          ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     rra                 ; 1:4       2dup <= while BEGIN_STACK
-    xor   C             ; 1:4       2dup <= while BEGIN_STACK
+    xor   D             ; 1:4       2dup <= while BEGIN_STACK
+    xor   H             ; 1:4       2dup <= while BEGIN_STACK
     jp    m, break{}BEGIN_STACK   ; 3:10      2dup <= while BEGIN_STACK})dnl
 dnl
 dnl
 dnl 2dup > while
 define({_2DUP_GT_WHILE},{
-    ld    A, H          ; 1:4       2dup > while BEGIN_STACK
-    xor   D             ; 1:4       2dup > while BEGIN_STACK
-    ld    C, A          ; 1:4       2dup > while BEGIN_STACK
     ld    A, L          ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     sub   E             ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     sbc   A, D          ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     rra                 ; 1:4       2dup > while BEGIN_STACK
-    xor   C             ; 1:4       2dup > while BEGIN_STACK
+    xor   D             ; 1:4       2dup > while BEGIN_STACK
+    xor   H             ; 1:4       2dup > while BEGIN_STACK
     jp    p, break{}BEGIN_STACK   ; 3:10      2dup > while BEGIN_STACK})dnl
 dnl
 dnl
@@ -284,15 +276,13 @@ dnl
 dnl
 dnl < while
 define({LT_WHILE},{
-    ld    A, H          ; 1:4       < while BEGIN_STACK
-    xor   D             ; 1:4       < while BEGIN_STACK
-    ld    C, A          ; 1:4       < while BEGIN_STACK
     ld    A, E          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       < while BEGIN_STACK
-    xor   C             ; 1:4       < while BEGIN_STACK
+    xor   D             ; 1:4       < while BEGIN_STACK
+    xor   H             ; 1:4       < while BEGIN_STACK
     pop  HL             ; 1:10      < while BEGIN_STACK
     pop  DE             ; 1:10      < while BEGIN_STACK
     jp    p, break{}BEGIN_STACK   ; 3:10      < while BEGIN_STACK})dnl
@@ -300,15 +290,13 @@ dnl
 dnl
 dnl >= while
 define({GE_WHILE},{
-    ld    A, H          ; 1:4       >= while BEGIN_STACK
-    xor   D             ; 1:4       >= while BEGIN_STACK
-    ld    C, A          ; 1:4       >= while BEGIN_STACK
     ld    A, E          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     rra                 ; 1:4       >= while BEGIN_STACK
-    xor   C             ; 1:4       >= while BEGIN_STACK
+    xor   D             ; 1:4       >= while BEGIN_STACK
+    xor   H             ; 1:4       >= while BEGIN_STACK
     pop  HL             ; 1:10      >= while BEGIN_STACK
     pop  DE             ; 1:10      >= while BEGIN_STACK
     jp    m, break{}BEGIN_STACK   ; 3:10      >= while BEGIN_STACK})dnl
@@ -316,15 +304,13 @@ dnl
 dnl
 dnl <= while
 define({LE_WHILE},{
-    ld    A, H          ; 1:4       <= while BEGIN_STACK
-    xor   D             ; 1:4       <= while BEGIN_STACK
-    ld    C, A          ; 1:4       <= while BEGIN_STACK
     ld    A, L          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     sub   E             ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     ld    A, H          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     sbc   A, D          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     rra                 ; 1:4       <= while BEGIN_STACK
-    xor   C             ; 1:4       <= while BEGIN_STACK
+    xor   D             ; 1:4       <= while BEGIN_STACK
+    xor   H             ; 1:4       <= while BEGIN_STACK
     pop  HL             ; 1:10      <= while BEGIN_STACK
     pop  DE             ; 1:10      <= while BEGIN_STACK
     jp    m, break{}BEGIN_STACK   ; 3:10      <= while BEGIN_STACK})dnl
@@ -332,15 +318,13 @@ dnl
 dnl
 dnl > while
 define({GT_WHILE},{
-    ld    A, H          ; 1:4       > while BEGIN_STACK
-    xor   D             ; 1:4       > while BEGIN_STACK
-    ld    C, A          ; 1:4       > while BEGIN_STACK
     ld    A, L          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     sub   E             ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     sbc   A, D          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     rra                 ; 1:4       > while BEGIN_STACK
-    xor   C             ; 1:4       > while BEGIN_STACK
+    xor   D             ; 1:4       > while BEGIN_STACK
+    xor   H             ; 1:4       > while BEGIN_STACK
     pop  HL             ; 1:10      > while BEGIN_STACK
     pop  DE             ; 1:10      > while BEGIN_STACK
     jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})dnl
