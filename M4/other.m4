@@ -11,7 +11,7 @@ define(INIT,{
     exx                 ; 1:4})dnl
 dnl
 dnl ( -- )
-dnl Save shadow reg.
+dnl Load shadow reg.
 define(STOP,{
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -20,6 +20,12 @@ Stop:
     ret                 ; 1:10
 ;   =====  e n d  =====})dnl
 dnl
+dnl
+dnl
+dnl ( ? ? ? -- )
+dnl Fix back stack and register. Return to Basic.
+define({BYE},{
+    jp   Stop           ; 3:10      bye})dnl
 dnl
 dnl
 define({CONSTANT},{ifelse($#,{2},{
