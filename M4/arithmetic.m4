@@ -15,6 +15,15 @@ define({PUSH_ADD},{ifelse(eval($1),{},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
+__{}eval(($1)+3),{0},{
+__{}    dec  HL             ; 1:6       $1 +
+__{}    dec  HL             ; 1:6       $1 +
+__{}    dec  HL             ; 1:6       $1 +},
+__{}eval(($1)+2),{0},{
+__{}    dec  HL             ; 1:6       $1 +
+__{}    dec  HL             ; 1:6       $1 +},
+__{}eval(($1)+1),{0},{
+__{}    dec  HL             ; 1:6       $1 +},
 __{}eval($1),{0},{
 __{}                        ;           $1 +},
 __{}eval(($1)-1),{0},{
@@ -81,6 +90,36 @@ __{}    dec  HL             ; 1:6       $1 -},
 __{}{
 __{}    ld   BC, format({%-11s},eval(-($1))); 3:10      $1 -
 __{}    add  HL, BC         ; 1:11      $1 -})})})dnl
+dnl
+dnl
+dnl ( 5 3 -- 5 )
+dnl ( -5 -3 -- -3 )
+define({MAX},{
+    ld    A, E          ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
+    sub   L             ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
+    ld    A, D          ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
+    sbc   A, H          ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
+    rra                 ; 1:4       max
+    xor   H             ; 1:4       max
+    xor   D             ; 1:4       max
+    jp    m, $+4        ; 3:10      max
+    ex   DE, HL         ; 1:4       max
+    pop  DE             ; 1:10      max})dnl
+dnl
+dnl
+dnl ( 5 3 -- 3 )
+dnl ( -5 -3 -- -5 )
+define({MIN},{
+    ld    A, E          ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    sub   L             ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    ld    A, D          ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    sbc   A, H          ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    rra                 ; 1:4       min
+    xor   H             ; 1:4       min
+    xor   D             ; 1:4       min
+    jp    p, $+4        ; 3:10      min
+    ex   DE, HL         ; 1:4       min
+    pop  DE             ; 1:10      min})dnl
 dnl
 dnl
 dnl ( x -- -x )
