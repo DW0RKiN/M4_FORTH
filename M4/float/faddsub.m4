@@ -113,7 +113,7 @@ fAdd_Eq_Exp:            ;           HL exp = DE exp
     ; fall
 
 ; In: H = s111 1111 + 1
-; Out: HL = +- MAX
+; Out: HL = +-max
 fAdd_OVERFLOW:
     dec   H             ; 1:4      
     ld    L, $FF        ; 2:7{}ifelse(carry_flow_warning,{1},{

@@ -2,11 +2,11 @@
 ; Align to 256-byte page boundary
 DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
-; #define MAX _NUMBER 255
-; #define TOP _BIT 0x8000
+; #define MAX_NUMBER 255
+; #define TOP_BIT 0x8000
 ; #define PRICTI 0x3F
-; #define POSUN _VPRAVO 7
-; #define POCET _BITU 8
+; #define POSUN_VPRAVO 7
+; #define POCET_BITU 8
 
 ; # 1000 0000  0... ....  
 ; #              11 1111  
