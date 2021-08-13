@@ -179,6 +179,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 |     -      |      SUB     |                |    ( x2 x1 -- x )           |                       |
 |   `3` -    |              |  PUSH_SUB(`3`) |        ( x -- x-`3` )       |                       |
 |   over -   |              |    OVER_SUB    |    ( x2 x1 -- x2 x1-x2  )   |                       |
+|    max     |      MAX     |                |    ( x2 x1 -- max )         |                       |
+|    min     |      MIN     |                |    ( x2 x1 -- min )         |                       |
 |   negate   |     NEGATE   |                |       ( x1 -- -x1 )         |                       |
 |    abs     |      ABS     |                |        ( n -- u )           |                       |
 |     *      |      MUL     |                |    ( x2 x1 -- x )           |                       |
