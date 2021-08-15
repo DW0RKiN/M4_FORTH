@@ -60,6 +60,12 @@ dnl
 dnl
 dnl ## Memory access
 dnl
+dnl C@
+dnl ( addr -- char )
+dnl fetch 8-bit char from addr
+define({CFETCH},{
+    ld    L, (HL)       ; 1:7       C@ cfetch 
+    ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl @
 dnl ( addr -- x )
 dnl fetch 16-bit number from addr
@@ -69,13 +75,31 @@ define({FETCH},{
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch})dnl
 dnl
+dnl    
+dnl 2@
+dnl ( addr -- hi lo )
+dnl fetch 32-bit number from addr
+define({_2FETCH},{
+    push DE             ; 1:11      2@ _2fetch
+    ld    E, (HL)       ; 1:7       2@ _2fetch 
+    inc  HL             ; 1:6       2@ _2fetch
+    ld    D, (HL)       ; 1:7       2@ _2fetch
+    inc  HL             ; 1:6       2@ _2fetch
+    ld    A, (HL)       ; 1:7       2@ _2fetch
+    inc  HL             ; 1:6       2@ _2fetch
+    ld    H, (HL)       ; 1:7       2@ _2fetch
+    ld    L, A          ; 1:4       2@ _2fetch
+    ex   DE, HL         ; 1:4       2@ _2fetch ( adr -- lo hi )})dnl     
 dnl
-dnl C@
-dnl ( addr -- char )
-dnl fetch 8-bit char from addr
-define({CFETCH},{
-    ld    L, (HL)       ; 1:7       C@ cfetch 
-    ld    H, 0x00       ; 2:7       C@ cfetch})dnl
+dnl
+dnl addr C@
+dnl ( -- x )
+dnl push_cfetch(addr), load 8-bit char from addr
+define({PUSH_CFETCH},{
+    push DE             ; 1:11      $1 @ push($1) cfetch 
+    ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
+    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
+    ld    H, 0x00       ; 2:7       $1 @ push($1) cfetch})dnl
 dnl
 dnl
 dnl addr @
@@ -87,14 +111,24 @@ define({PUSH_FETCH},{
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
 dnl
 dnl
-dnl addr C@
-dnl ( -- x )
-dnl push_cfetch(addr), load 8-bit char from addr
-define({PUSH_CFETCH},{
-    push DE             ; 1:11      $1 @ push($1) cfetch 
-    ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
-    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
-    ld    H, 0x00       ; 2:7       $1 @ push($1) cfetch})dnl
+dnl addr 2@
+dnl ( -- hi lo )
+dnl push_2fetch(addr), load 32-bit number from addr
+define({PUSH_2FETCH},{
+    push DE             ; 1:11      $1 2@ push_2fetch($1) 
+    push HL             ; 1:11      $1 2@ push_2fetch($1){}ifelse(eval(($1)),{},{
+    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2! push_2fetch($1) hi},{
+    ld   DE,format({%-12s},(eval($1+2))); 4:20      $1 2@ push_2fetch($1) hi})
+    ld   HL,format({%-12s},($1)); 3:16      $1 2@ push_2fetch($1) lo})dnl
+dnl
+dnl
+dnl C!
+dnl ( char addr -- )
+dnl store 8-bit char at addr
+define({CSTORE},{
+    ld  (HL),E          ; 1:7       C! cstore
+    pop  HL             ; 1:10      C! cstore
+    pop  DE             ; 1:10      C! cstore})dnl
 dnl
 dnl
 dnl !
@@ -108,22 +142,20 @@ define({STORE},{
     pop  DE             ; 1:10      ! store})dnl
 dnl
 dnl
-dnl C!
-dnl ( char addr -- )
-dnl store 8-bit char at addr
-define({CSTORE},{
-    ld  (HL),E          ; 1:7       C! cstore
-    pop  HL             ; 1:10      C! cstore
-    pop  DE             ; 1:10      C! cstore})dnl
-dnl
-dnl
-dnl addr !
-dnl ( x -- )
-dnl store(addr) store 16-bit number at addr
-define({PUSH_STORE},{
-    ld   format({%-15s},($1){,} HL); 3:16      $1 ! push($1) store
-    ex   DE, HL         ; 1:4       $1 ! push($1) store
-    pop  DE             ; 1:10      $1 ! push($1) store})dnl
+dnl 2!
+dnl ( hi lo addr -- )
+dnl store 32-bit number at addr
+define({_2STORE},{
+    ld  (HL),E          ; 1:7       2! _2store
+    inc  HL             ; 1:6       2! _2store
+    ld  (HL),D          ; 1:7       2! _2store
+    inc  HL             ; 1:6       2! _2store 
+    pop  DE             ; 1:10      2! _2store 
+    ld  (HL),E          ; 1:7       2! _2store
+    inc  HL             ; 1:6       2! _2store
+    ld  (HL),D          ; 1:7       2! _2store
+    pop  HL             ; 1:10      2! _2store
+    pop  DE             ; 1:10      2! _2store})dnl
 dnl
 dnl
 dnl addr C!
@@ -136,12 +168,24 @@ define({PUSH_CSTORE},{
     pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
 dnl
 dnl
-dnl x addr !
-dnl ( -- )
+dnl addr !
+dnl ( x -- )
 dnl store(addr) store 16-bit number at addr
-define({PUSH2_STORE},{
-    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_store($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_store($1,$2)})dnl
+define({PUSH_STORE},{
+    ld   format({%-15s},($1){,} HL); 3:16      $1 ! push($1) store
+    ex   DE, HL         ; 1:4       $1 ! push($1) store
+    pop  DE             ; 1:10      $1 ! push($1) store})dnl
+dnl
+dnl
+dnl addr 2!
+dnl ( hi lo -- )
+dnl store(addr) store 32-bit number at addr
+define({PUSH_2STORE},{
+    ld   format({%-15s},($1){,} HL); 3:16      $1 2! push_2store($1) lo{}ifelse(eval(($1)),{},{
+    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2! push_2store($1) hi},{
+    ld   (format({%-14s},eval(($1)+2){),} DE); 4:20      $1 2! push_2store($1) hi})
+    pop  HL             ; 1:10      $1 2! push_2store($1)
+    pop  DE             ; 1:10      $1 2! push_2store($1)})dnl
 dnl
 dnl
 dnl char addr C!
@@ -150,6 +194,25 @@ dnl store(addr) store 8-bit number at addr
 define({PUSH2_CSTORE},{
     ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      push2_cstore($1,$2)
     ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)})dnl
+dnl
+dnl
+dnl x addr !
+dnl ( -- )
+dnl store(addr) store 16-bit number at addr
+define({PUSH2_STORE},{
+    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_store($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_store($1,$2)})dnl
+dnl
+dnl
+dnl lo addr 2!
+dnl ( hi -- )
+dnl store(addr) store 32-bit number at addr
+define({PUSH2_2STORE},{{}ifelse(eval(($1)),{},{
+    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi},{
+    ld   (format({%-14s},eval(($2)+2){),} HL); 3:16      $1 $2 2! push2_2store($1,$2) hi})
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      $1 $2 2! push2_2store($1,$2)
+    ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) lo
+    pop  HL             ; 1:10      $1 $2 2! push2_2store($1,$2)})dnl
 dnl
 dnl
 dnl +!
