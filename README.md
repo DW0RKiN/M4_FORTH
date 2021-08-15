@@ -540,6 +540,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |       C!       |       CSTORE      |                    |( char addr -- )       | (addr) = char    |
 |     addr C!    |                   | PUSH_CSTORE(addr)  |     ( char -- )       | (addr) = char    |
 |    x addr C!   |                   |PUSH2_CSTORE(x,addr)|          ( -- )       | (addr) = char    |
+|       2@       |      _2FETCH      |                    |     ( addr -- hi lo ) |                  |
+|     addr 2@    |                   | PUSH_2FETCH(addr)  |          ( -- hi lo ) |                  |
+|       2!       |      _2STORE      |                    |( hi lo adr -- )       | (addr) = 32 bit  |
+|     addr 2!    |                   | PUSH_2STORE(addr)  |    ( hi lo -- )       | (addr) = 32 bit  |
+|    x addr 2!   |                   |PUSH2_2STORE(x,addr)|       ( hi -- )       | (addr) = 32 bit  |
 |       +!       |      ADDSTORE     |                    |   ( x addr -- )       | (addr) += x      |
 |   x addr +!    |PUSH2_ADDSTORE(x,a)|                    |          ( -- )       | (a) += x         |
 |     cmove      |       CMOVE       |                    |( from to u -- )       | 8bit, addr++     |
