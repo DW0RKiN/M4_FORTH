@@ -223,8 +223,8 @@ define({DUP_PUSH},{
 dnl
 dnl
 dnl
-dnl ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu ) 
-dnl Remove u. Copy the xu to the top of the stack.
+dnl ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx ) 
+dnl Remove x. Copy the nx to the top of the stack.
 define({PICK},{ifelse($#,{0},,{
 .error pick: Unexpected parameter $@, pick uses a parameter from the stack!})
     push DE             ; 1:11      pick
@@ -245,33 +245,45 @@ dnl 4 pick ( e d c b a 4 -- e d c b a e )
 dnl u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu ) 
 dnl Remove u. Copy the xu to the top of the stack.
 define({PUSH_PICK},{ifelse($#,{0},{.error _push_pick(): Parameter is missing!},
-__{}eval($1),{0},{DUP},
-__{}eval($1),{1},{OVER},
-__{}eval($1),{2},{ 
-    pop  BC             ; 1:10      2 pick
-    push BC             ; 1:11      2 pick
-    push DE             ; 1:11      2 pick
-    ex   DE, HL         ; 1:4       2 pick
-    ld    H, B          ; 1:4       2 pick
-    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c )},
-__{}eval($1),{3},{ 
-    pop  AF             ; 1:10      3 pick
-    pop  BC             ; 1:10      3 pick
-    push BC             ; 1:11      3 pick
-    push AF             ; 1:11      3 pick
-    push DE             ; 1:11      3 pick
-    ex   DE, HL         ; 1:4       3 pick
-    ld    H, B          ; 1:4       3 pick
-    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )},
-__{}{
+__{}eval($1),{},{
+    ; warning The condition >>>$1<<< cannot be evaluated
     push DE             ; 1:11      $1 pick
-    ex   DE, HL         ; 1:4       $1 pick
-    ld   HL, 0x{}format({%04x},eval(2*(($1)-1)))     ; 3:10      $1 pick
+    push HL             ; 1:11      $1 pick
+    ld   HL, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:16},{format({%-11s},$1); 3:10})      $1 pick
+    add  HL, HL         ; 1:11      $1 pick
     add  HL, SP         ; 1:11      $1 pick
-    ld    A,(HL)        ; 1:7       $1 pick
+    ld    E,(HL)        ; 1:7       $1 pick
     inc  HL             ; 1:6       $1 pick
-    ld    H,(HL)        ; 1:7       $1 pick
-    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})dnl
+    ld    D,(HL)        ; 1:7       $1 pick
+    ex   DE, HL         ; 1:4       $1 pick
+    pop  DE             ; 1:10      $1 pick},
+__{}{ifelse(eval($1),{0},{DUP},
+__{}__{}eval($1),{1},{OVER},
+__{}__{}eval($1),{2},{ 
+__{}    pop  BC             ; 1:10      2 pick
+__{}    push BC             ; 1:11      2 pick
+__{}    push DE             ; 1:11      2 pick
+__{}    ex   DE, HL         ; 1:4       2 pick
+__{}    ld    H, B          ; 1:4       2 pick
+__{}    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c )},
+__{}__{}eval($1),{3},{ 
+__{}    pop  AF             ; 1:10      3 pick
+__{}    pop  BC             ; 1:10      3 pick
+__{}    push BC             ; 1:11      3 pick
+__{}    push AF             ; 1:11      3 pick
+__{}    push DE             ; 1:11      3 pick
+__{}    ex   DE, HL         ; 1:4       3 pick
+__{}    ld    H, B          ; 1:4       3 pick
+__{}    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )},
+__{}__{}{
+__{}    push DE             ; 1:11      $1 pick
+__{}    ex   DE, HL         ; 1:4       $1 pick
+__{}    ld   HL, 0x{}format({%04x},eval(2*($1)-2))     ; 3:10      $1 pick
+__{}    add  HL, SP         ; 1:11      $1 pick
+__{}    ld    A,(HL)        ; 1:7       $1 pick
+__{}    inc  HL             ; 1:6       $1 pick
+__{}    ld    H,(HL)        ; 1:7       $1 pick
+__{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})})dnl
 dnl
 dnl
 dnl ------------- return address stack ------------------
