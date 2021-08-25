@@ -64,14 +64,11 @@ So the first thing that needs to be done is to include this file using:
 
 On the first line immediately change quotes to `{` and `}`. All M4 macros use these new quotes.
 
-All used library functions, variables and strings are automatically added at the end of the file. If you need to place something else behind them, you must manually write:
+All used library functions are automatically added at the end of the file. For example, listing a number, multiplying or dividing. Others add variables and strings. If you need to place something else behind them, you have to manually write:
 
     include({./M4/LAST.M4})dnl
 
 And everything he writes underneath will be the last.
-
-
-Among other things, this file lists all used runtime library functions. For example, to list a string or a number. Multiplication and division functions. Lists the strings used or allocates space for used variables.
 
 In order to be able to call a program from Basic and return it again without error, the `INIT()` and `STOP` macros must be used.
 `INIT(xxx)` stores shadow registers and sets the initial value of the return address stack.
