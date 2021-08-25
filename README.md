@@ -92,7 +92,7 @@ m4 Hello.m4
         ld    L, 0x1A       ; 2:7       Upper screen
         call 0x1605         ; 3:17      Open channel
         ld   HL, 60000      ; 3:10      Init Return address stack
-        exx
+        exx                 ; 1:4
 
         push DE             ; 1:11      print
         ld   BC, size101    ; 3:10      print Length of string to print
