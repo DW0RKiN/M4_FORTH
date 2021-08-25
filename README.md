@@ -64,9 +64,12 @@ So the first thing that needs to be done is to include this file using:
 
 On the first line immediately change quotes to `{` and `}`. All M4 macros use these new quotes.
 
-`LAST.M4` must be appended to the end of the file using:
+All used library functions, variables and strings are automatically added at the end of the file. If you need to place something else behind them, you must manually write:
 
     include({./M4/LAST.M4})dnl
+
+And everything he writes underneath will be the last.
+
 
 Among other things, this file lists all used runtime library functions. For example, to list a string or a number. Multiplication and division functions. Lists the strings used or allocates space for used variables.
 
@@ -82,7 +85,6 @@ File Hello.m4
     INIT(60000)
     PRINT("Hello World!")
     STOP
-    include({./M4/LAST.M4})dnl
 
 m4 Hello.m4
 
@@ -92,7 +94,7 @@ m4 Hello.m4
         ld  (Stop+1), SP    ; 4:20      not need
         ld    L, 0x1A       ; 2:7       Upper screen
         call 0x1605         ; 3:17      Open channel
-        ld   HL, 60000
+        ld   HL, 60000      ; 3:10      Init Return address stack
         exx
 
         push DE             ; 1:11      print
@@ -527,8 +529,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |                |   INIT(RAS_addr)  |                    |                       | save SP, set RAS |
 |      bye       |        BYE        |                    |          ( -- )       | goto STOP        |
 |                |       STOP        |                    |          ( -- )       | load SP & HL'    |
-|`1` constant ONE| CONSTANT(ONE,`1`) |                    |          ( -- )       |                  |
-|    `3` var X   |  VARIABLE(X,`1`)  |                    |          ( -- )       | X: dw `3`        |
+|`1` constant ONE| CONSTANT(ONE,`1`) |                    |          ( -- )       | ONE equ `1`      |
+|    `3` var X   |  VARIABLE(X,`3`)  |                    |          ( -- )       | X: dw `3`        |
 |   variable X   |    VARIABLE(X)    |                    |          ( -- )       | X: dw 0x0000     |
 |   'a' cvar X   |  CVARIABLE(X,'a') |                    |          ( -- )       | X: db 'a'        |
 |   `4` dvar X   |  DVARIABLE(X,`4`) |                    |          ( -- )       | X: dw `4`, 0x0000|
