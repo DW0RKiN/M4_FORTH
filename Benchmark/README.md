@@ -148,7 +148,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m6.39s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m5.23s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use assembler  | Fib2a       | 0m2.98s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use assembler  | Fib2a       | 0m2.55s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a = a+c| 0m49.19s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a+= c  | 0m43.97s
 | Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz     | VolksForth MS-DOS (ITC) | Fibonacci2  | 8

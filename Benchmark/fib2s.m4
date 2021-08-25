@@ -16,4 +16,4 @@ include(`../M4/FIRST.M4')dnl
             XDO(20,0) XI SCALL(fib2s) DROP XLOOP
         XLOOP
     SSEMICOLON
-include({../M4/LAST.M4})dnl
+

@@ -4,7 +4,7 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000      ; 3:10
+    ld   HL, 60000      ; 3:10      Init Return address stack
     exx                 ; 1:4
 
     push DE             ; 1:11      print
@@ -294,7 +294,6 @@ _1million:              ;
 _1million_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-
 
 
 VARIABLE_SECTION:

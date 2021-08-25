@@ -19,5 +19,3 @@ COLON(_25th) CALL(_24th)  CALL(_24th)  SEMICOLON
 
 COLON(_32million)  PRINT({"32 million nest/unnest operations", 0xD}) CALL(_25th) SEMICOLON
 COLON(_1million)   PRINT({" 1 million nest/unnest operations", 0xD}) CALL(_20th) SEMICOLON
-
-include({../M4/LAST.M4})dnl

@@ -25,5 +25,3 @@ SEMICOLON
 SCOLON(_bench,( -- ))
     PUSH(10000) SFOR SI CALL(_decomp) SNEXT
 SSEMICOLON
-
-include({../M4/LAST.M4})dnl

@@ -28,4 +28,3 @@ dnl
             XDO(20,0) XI FIB2_ASM DROP XLOOP
         XLOOP
     SSEMICOLON
-include({../M4/LAST.M4})dnl

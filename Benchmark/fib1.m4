@@ -13,4 +13,3 @@ include(`../M4/FIRST.M4')dnl
             PUSH(19) SFOR SI RCALL(fib1) DROP SNEXT
         SNEXT
     SSEMICOLON
-include({../M4/LAST.M4})dnl

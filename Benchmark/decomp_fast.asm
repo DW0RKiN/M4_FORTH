@@ -4,7 +4,7 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000      ; 3:10
+    ld   HL, 60000      ; 3:10      Init Return address stack
     exx                 ; 1:4
 
     call _bench         ; 3:17      scall
@@ -39,10 +39,10 @@ begin101:
     call MULTIPLY       ; 3:17      *
     pop  DE             ; 1:10      * 
     
-    ld    A, E          ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       u>= while 101    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= while 101
     pop  DE             ; 1:10      u>= while 101
     jp    c, break101   ; 3:10      u>= while 101  
@@ -114,8 +114,7 @@ _bench_end:
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, B, DE
 MULTIPLY:
-; fast variant
-    ld    A, H          ; 1:4
+    ld    A, H          ; 1:4       fast version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
     ex   DE, HL         ; 1:4       H=>D faster 7+4<12
@@ -245,6 +244,7 @@ MULTIPLY15:
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
 UDIVIDE:
+                        ;           old_fast version
     ex   DE, HL         ; 1:4       HL/DE
     ld    A, D          ; 1:4
     or    A             ; 1:4

@@ -4,8 +4,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 35000
-    exx
+    ld   HL, 35000      ; 3:10
+    exx                 ; 1:4
     
     call fib2a_bench    ; 3:17      scall
     
@@ -18,35 +18,21 @@ Stop:
 
 
     
-;   ---  b e g i n  ---
+;   ---  the beginning of a data stack function  ---
 fib2a_bench:            ;           ( -- )
         
 
-    exx                 ; 1:4       xdo(1000,0) 101
-    dec  HL             ; 1:6       xdo(1000,0) 101
-    ld  (HL),high 0     ; 2:10      xdo(1000,0) 101
-    dec   L             ; 1:4       xdo(1000,0) 101
-    ld  (HL),low 0      ; 2:10      xdo(1000,0) 101
-    exx                 ; 1:4       xdo(1000,0) 101 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(1000,0) 101
+    ld  (idx101),BC     ; 4:20      xdo(1000,0) 101
 xdo101:                 ;           xdo(1000,0) 101 
             
 
-    exx                 ; 1:4       xdo(20,0) 102
-    dec  HL             ; 1:6       xdo(20,0) 102
-    ld  (HL),high 0     ; 2:10      xdo(20,0) 102
-    dec   L             ; 1:4       xdo(20,0) 102
-    ld  (HL),low 0      ; 2:10      xdo(20,0) 102
-    exx                 ; 1:4       xdo(20,0) 102 R:( -- 0 )
+    ld   BC, 0          ; 3:10      xdo(20,0) 102
+    ld  (idx102),BC     ; 4:20      xdo(20,0) 102
 xdo102:                 ;           xdo(20,0) 102 
-    exx                 ; 1:4       index xi 102
-    ld    E,(HL)        ; 1:7       index xi 102
-    inc   L             ; 1:4       index xi 102
-    ld    D,(HL)        ; 1:7       index xi 102
     push DE             ; 1:11      index xi 102
-    dec   L             ; 1:4       index xi 102
-    exx                 ; 1:4       index xi 102 R:( x -- x )
     ex   DE, HL         ; 1:4       index xi 102
-    ex  (SP),HL         ; 1:19      index xi 102 ( -- x ) 
+    ld   HL, (idx102)   ; 3:16      index xi 102 idx always points to a 16-bit index 
     push DE             ; 1:11
     ld    B, L          ; 1:4
     ld    C, H          ; 1:4       CB = counter
@@ -64,51 +50,31 @@ xdo102:                 ;           xdo(20,0) 102
     pop  DE             ; 1:10 
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
-    exx                 ; 1:4       xloop(20,0) 102
-    ld    E,(HL)        ; 1:7       xloop(20,0) 102
-    inc   L             ; 1:4       xloop(20,0) 102
-    ld    D,(HL)        ; 1:7       xloop(20,0) 102
-    inc  DE             ; 1:6       xloop(20,0) 102 index++
-    ld    A, low 20     ; 2:7       xloop(20,0) 102
-    xor   E             ; 1:4       xloop(20,0) 102
-    jr   nz, $+7        ; 2:7/12    xloop(20,0) 102
-    ld    A, high 20    ; 2:7       xloop(20,0) 102
-    xor   D             ; 1:4       xloop(20,0) 102
-    jr    z, xleave102  ; 2:7/12    xloop(20,0) 102 exit
-    ld  (HL), D         ; 1:7       xloop(20,0) 102
-    dec   L             ; 1:4       xloop(20,0) 102
-    ld  (HL), E         ; 1:6       xloop(20,0) 102
-    exx                 ; 1:4       xloop(20,0) 102
-    jp   xdo102         ; 3:10      xloop(20,0) 102
-xleave102:              ;           xloop(20,0) 102
-    inc  HL             ; 1:6       xloop(20,0) 102
-    exx                 ; 1:4       xloop(20,0) 102 R:( index -- )
-xexit102 EQU $
+idx102 EQU $+1          ;           xloop 102 0 <= index < stop < 256
+    ld    A, 0          ; 2:7       xloop 102
+    nop                 ; 1:4       xloop 102 idx always points to a 16-bit index
+    inc   A             ; 1:4       xloop 102 index++
+    ld  (idx102),A      ; 3:13      xloop 102
+    sub  low 20         ; 2:7       xloop 102
+    jp    c, xdo102     ; 3:10      xloop 102 index-stop
+xleave102:              ;           xloop 102
+xexit102:               ;           xloop 102
         
-    exx                 ; 1:4       xloop(1000,0) 101
-    ld    E,(HL)        ; 1:7       xloop(1000,0) 101
-    inc   L             ; 1:4       xloop(1000,0) 101
-    ld    D,(HL)        ; 1:7       xloop(1000,0) 101
-    inc  DE             ; 1:6       xloop(1000,0) 101 index++
-    ld    A, low 1000   ; 2:7       xloop(1000,0) 101
-    xor   E             ; 1:4       xloop(1000,0) 101
-    jr   nz, $+7        ; 2:7/12    xloop(1000,0) 101
-    ld    A, high 1000  ; 2:7       xloop(1000,0) 101
-    xor   D             ; 1:4       xloop(1000,0) 101
-    jr    z, xleave101  ; 2:7/12    xloop(1000,0) 101 exit
-    ld  (HL), D         ; 1:7       xloop(1000,0) 101
-    dec   L             ; 1:4       xloop(1000,0) 101
-    ld  (HL), E         ; 1:6       xloop(1000,0) 101
-    exx                 ; 1:4       xloop(1000,0) 101
-    jp   xdo101         ; 3:10      xloop(1000,0) 101
-xleave101:              ;           xloop(1000,0) 101
-    inc  HL             ; 1:6       xloop(1000,0) 101
-    exx                 ; 1:4       xloop(1000,0) 101 R:( index -- )
-xexit101 EQU $
+idx101 EQU $+1          ;           xloop 101 index < stop && same sign
+    ld   BC, 0x0000     ; 3:10      xloop 101 idx always points to a 16-bit index
+    inc  BC             ; 1:6       xloop 101 index++
+    ld  (idx101),BC     ; 4:20      xloop 101 save index
+    ld    A, C          ; 1:4       xloop 101
+    sub  low 1000       ; 2:7       xloop 101 index - stop
+    ld    A, B          ; 1:4       xloop 101
+    sbc   A, high 1000  ; 2:7       xloop 101 index - stop
+    jp    c, xdo101     ; 3:10      xloop 101
+xleave101:              ;           xloop 101
+xexit101:               ;           xloop 101
     
 fib2a_bench_end:
     ret                 ; 1:10      s;
-;   -----  e n d  -----
+;   ---------  end of data stack function  ---------
 
 
 VARIABLE_SECTION:

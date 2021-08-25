@@ -21,7 +21,7 @@ LOOP
 DOT PRINT({" PRIMES"}) CR
 SEMICOLON
 
+;# I need to have label flags at the end.
 include({../M4/LAST.M4})dnl
-
 
 flags:

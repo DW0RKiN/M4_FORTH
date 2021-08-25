@@ -19,4 +19,3 @@ include(`../M4/FIRST.M4')dnl
             XDO(100,0) XJ XI CALL(gcd1) DROP XLOOP
         XLOOP
     SEMICOLON
-include({../M4/LAST.M4})dnl

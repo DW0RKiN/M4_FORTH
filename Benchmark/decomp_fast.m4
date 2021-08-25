@@ -5,7 +5,7 @@ SCALL(_bench)
 STOP
 
 define({TYPMUL},{fast})
-define({TYPDIV},{fast})
+define({TYPDIV},{old_fast})
 
 COLON(_decomp,( n -- ))
     PUSH(2)
@@ -26,4 +26,3 @@ SCOLON(_bench,( -- ))
     PUSH(10000) SFOR SI CALL(_decomp) SNEXT
 SSEMICOLON
 
-include({../M4/LAST.M4})dnl

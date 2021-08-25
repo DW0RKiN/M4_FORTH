@@ -4,7 +4,7 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 35000      ; 3:10
+    ld   HL, 35000      ; 3:10      Init Return address stack
     exx                 ; 1:4
     
     call fib1s_bench    ; 3:17      scall
@@ -21,7 +21,7 @@ fib1s:                  ;           ( a -- b )
         
     ld    A, H          ; 1:4       dup 2 < if
     add   A, A          ; 1:4       dup 2 < if
-    jr    c, $+11       ; 2:7/12    dup 2 < if    positive constant
+    jr    c, $+11       ; 2:7/12    dup 2 < if    negative HL < positive constant ---> true
     ld    A, L          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
     sub   low 2         ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
     ld    A, H          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true

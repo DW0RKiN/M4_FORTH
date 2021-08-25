@@ -5,7 +5,7 @@ PRINT({"enter 1million or 32million", 0xD})
 SCALL(_1million)
 STOP
 
-;( Forth nesting (NEXT) Benchmark     cas20101204 )
+;# ( Forth nesting (NEXT) Benchmark     cas20101204 )
 SCOLON(bottom) SSEMICOLON    
 SCOLON(_1st)  SCALL(bottom) SCALL(bottom) SSEMICOLON   SCOLON(_2nd)  SCALL(_1st)  SCALL(_1st)  SSEMICOLON   SCOLON(_3rd)  SCALL(_2nd)  SCALL(_2nd)  SSEMICOLON
 SCOLON(_4th)  SCALL(_3rd)   SCALL(_3rd)   SSEMICOLON   SCOLON(_5th)  SCALL(_4th)  SCALL(_4th)  SSEMICOLON   SCOLON(_6th)  SCALL(_5th)  SCALL(_5th)  SSEMICOLON
@@ -19,5 +19,3 @@ SCOLON(_25th) SCALL(_24th)  SCALL(_24th)  SSEMICOLON
 
 SCOLON(_32million)  PRINT({"32 million nest/unnest operations", 0xD}) SCALL(_25th) SSEMICOLON
 SCOLON(_1million)   PRINT({" 1 million nest/unnest operations", 0xD}) SCALL(_20th) SSEMICOLON
-
-include({../M4/LAST.M4})dnl

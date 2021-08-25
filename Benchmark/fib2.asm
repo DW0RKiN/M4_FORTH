@@ -4,7 +4,7 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 35000      ; 3:10
+    ld   HL, 35000      ; 3:10      Init Return address stack
     exx                 ; 1:4
     
     call fib2_bench     ; 3:17      call ( -- ret ) R:( -- )

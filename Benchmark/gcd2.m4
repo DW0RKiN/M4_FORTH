@@ -24,4 +24,3 @@ COLON(gcd2_bench,( -- ))
         XDO(100,0) XJ XI CALL(gcd2) DROP XLOOP
     XLOOP
 SEMICOLON
-include({../M4/LAST.M4})dnl
