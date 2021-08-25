@@ -12,8 +12,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
     ld  hl, stack_test
     push hl
 
@@ -1250,7 +1250,7 @@ fAdd_Eq_Exp:            ;           HL exp = DE exp
     ; fall
 
 ; In: H = s111 1111 + 1
-; Out: HL = +- MAX
+; Out: HL = +-max
 fAdd_OVERFLOW:
     dec   H             ; 1:4      
     ld    L, $FF        ; 2:7
@@ -1868,11 +1868,11 @@ dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
 ; Align to 256-byte page boundary
 DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
-; #define MAX _NUMBER 255
-; #define TOP _BIT 0x8000
+; #define MAX_NUMBER 255
+; #define TOP_BIT 0x8000
 ; #define PRICTI 0x3F
-; #define POSUN _VPRAVO 7
-; #define POCET _BITU 8
+; #define POSUN_VPRAVO 7
+; #define POCET_BITU 8
 
 ; # 1000 0000  0... ....  
 ; #              11 1111  
@@ -2432,5 +2432,4 @@ size102 EQU $ - string102
 string101:
 db ": sin -> "
 size101 EQU $ - string101
-
 

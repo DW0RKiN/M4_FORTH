@@ -4,8 +4,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
     ld  hl, stack_test
     push hl
 
@@ -63,7 +63,8 @@ generate:               ;           (addr len -- )
     pop  DE             ; 1:10      + 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) ; ( addr+len addr )
     
-    ld  (idx101), HL    ; 3:16      do 101 index
+    ld  (idx101), HL    ; 3:16      do 101 save index
+    dec  DE             ; 1:6       do 101 stop-1
     ld    A, E          ; 1:4       do 101 
     ld  (stp_lo101), A  ; 3:13      do 101 lo stop
     ld    A, D          ; 1:4       do 101 
@@ -92,20 +93,20 @@ do101:                  ;           do 101
 idx101 EQU $+1          ;           2 +loop 101
     ld   BC, 0x0000     ; 3:10      2 +loop 101 idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop 101 index++
-    inc  BC             ; 1:6       2 +loop 101 index++
-    ld  (idx101),BC     ; 4:20      2 +loop 101 save index
     ld    A, C          ; 1:4       2 +loop 101
 stp_lo101 EQU $+1       ;           2 +loop 101
     sub  0x00           ; 2:7       2 +loop 101 lo index - stop
     rra                 ; 1:4       2 +loop 101
     add   A, A          ; 1:4       2 +loop 101 and 0xFE with save carry
-    jp   nz, do101      ; 3:10      2 +loop 101
     ld    A, B          ; 1:4       2 +loop 101
+    inc  BC             ; 1:6       2 +loop 101 index++
+    ld  (idx101),BC     ; 4:20      2 +loop 101 save index
+    jp   nz, do101      ; 3:10      2 +loop 101
 stp_hi101 EQU $+1       ;           2 +loop 101
     sbc   A, 0x00       ; 2:7       2 +loop 101 hi index - stop
     jp   nz, do101      ; 3:10      2 +loop 101
-xleave101:              ;           2 +loop 101
-xexit101:               ;           2 +loop 101
+leave101:               ;           2 +loop 101
+exit101:                ;           2 +loop 101
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -127,7 +128,8 @@ print:                  ;           (addr len -- )
     pop  DE             ; 1:10      + 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) ; ( addr+len addr )
     
-    ld  (idx102), HL    ; 3:16      do 102 index
+    ld  (idx102), HL    ; 3:16      do 102 save index
+    dec  DE             ; 1:6       do 102 stop-1
     ld    A, E          ; 1:4       do 102 
     ld  (stp_lo102), A  ; 3:13      do 102 lo stop
     ld    A, D          ; 1:4       do 102 
@@ -149,20 +151,20 @@ do102:                  ;           do 102
 idx102 EQU $+1          ;           2 +loop 102
     ld   BC, 0x0000     ; 3:10      2 +loop 102 idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop 102 index++
-    inc  BC             ; 1:6       2 +loop 102 index++
-    ld  (idx102),BC     ; 4:20      2 +loop 102 save index
     ld    A, C          ; 1:4       2 +loop 102
 stp_lo102 EQU $+1       ;           2 +loop 102
     sub  0x00           ; 2:7       2 +loop 102 lo index - stop
     rra                 ; 1:4       2 +loop 102
     add   A, A          ; 1:4       2 +loop 102 and 0xFE with save carry
-    jp   nz, do102      ; 3:10      2 +loop 102
     ld    A, B          ; 1:4       2 +loop 102
+    inc  BC             ; 1:6       2 +loop 102 index++
+    ld  (idx102),BC     ; 4:20      2 +loop 102 save index
+    jp   nz, do102      ; 3:10      2 +loop 102
 stp_hi102 EQU $+1       ;           2 +loop 102
     sbc   A, 0x00       ; 2:7       2 +loop 102 hi index - stop
     jp   nz, do102      ; 3:10      2 +loop 102
-xleave102:              ;           2 +loop 102
-xexit102:               ;           2 +loop 102
+leave102:               ;           2 +loop 102
+exit102:                ;           2 +loop 102
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -398,15 +400,13 @@ begin103:
     jp   begin103       ; 3:10      repeat 103
 break103:               ;           repeat 103
         
-    ld    A, H          ; 1:4       2dup <= if
-    xor   D             ; 1:4       2dup <= if
-    ld    C, A          ; 1:4       2dup <= if
-    ld    A, L          ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sub   E             ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    ld    A, H          ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sbc   A, D          ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, L          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
+    sub   E             ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
+    ld    A, H          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
+    sbc   A, D          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
     rra                 ; 1:4       2dup <= if
-    xor   C             ; 1:4       2dup <= if
+    xor   D             ; 1:4       2dup <= if
+    xor   H             ; 1:4       2dup <= if
     jp    m, else101    ; 3:10      2dup <= if 
             
     push DE             ; 1:11      2dup
@@ -488,15 +488,13 @@ qsort:                  ;           ( l r -- )
     ex  (SP),HL         ; 1:19      rot ( c b a -- b a c )
   ; 2over 2over - + < if 2swap then
     
-    ld    A, H          ; 1:4       2dup < if
-    xor   D             ; 1:4       2dup < if
-    ld    C, A          ; 1:4       2dup < if
-    ld    A, E          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       2dup < if
-    xor   C             ; 1:4       2dup < if
+    xor   D             ; 1:4       2dup < if
+    xor   H             ; 1:4       2dup < if
     jp    p, else102    ; 3:10      2dup < if 
     call qsort          ; 3:17      rcall
     ex   DE, HL         ; 1:4       rcall    
@@ -507,15 +505,13 @@ else102:
     pop  DE             ; 1:10      2drop ( b a -- ) 
 endif102:
     
-    ld    A, H          ; 1:4       2dup < if
-    xor   D             ; 1:4       2dup < if
-    ld    C, A          ; 1:4       2dup < if
-    ld    A, E          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       2dup < if
-    xor   C             ; 1:4       2dup < if
+    xor   D             ; 1:4       2dup < if
+    xor   H             ; 1:4       2dup < if
     jp    p, else103    ; 3:10      2dup < if 
     call qsort          ; 3:17      rcall
     ex   DE, HL         ; 1:4       rcall    
@@ -544,11 +540,11 @@ sort:                   ;
     
     ld    A, H          ; 1:4       dup 2 < if
     add   A, A          ; 1:4       dup 2 < if
-    jr    c, $+11       ; 2:7/12    dup 2 < if    positive constant
-    ld    A, L          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
-    sub   low 2         ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
-    ld    A, H          ; 1:4       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
-    sbc   A, high 2     ; 2:7       dup 2 < if    (HL<2) --> (HL-2<0) --> carry if true
+    jr    c, $+11       ; 2:7/12    dup 2 < if    negative HL < positive constant ---> true
+    ld    A, L          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
+    sub   low 2         ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
+    ld    A, H          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
+    sbc   A, high 2     ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
     jp   nc, else104    ; 3:10      dup 2 < if 
         
     pop  HL             ; 1:10      2drop
@@ -593,6 +589,7 @@ stack_test_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
 
+;# I need to have label test and orig at the end.
 
 
 ; Input: HL

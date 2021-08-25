@@ -6,8 +6,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
     ld  hl, stack_test
     push hl
 
@@ -202,15 +202,13 @@ endif106:
 else107  EQU $          ;           = endif
 endif107:
      
-    ld    A, H          ; 1:4       2dup < if
-    xor   D             ; 1:4       2dup < if
-    ld    C, A          ; 1:4       2dup < if
-    ld    A, E          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       2dup < if
-    xor   C             ; 1:4       2dup < if
+    xor   D             ; 1:4       2dup < if
+    xor   H             ; 1:4       2dup < if
     jp    p, else108    ; 3:10      2dup < if 
     push DE             ; 1:11      print
     ld   BC, size109    ; 3:10      print Length of string to print
@@ -222,15 +220,13 @@ endif108:
      
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       < if
-    xor   D             ; 1:4       < if
-    ld    C, A          ; 1:4       < if
-    ld    A, E          ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       < if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       < if
-    xor   C             ; 1:4       < if
+    xor   H             ; 1:4       < if
+    xor   D             ; 1:4       < if
     pop  HL             ; 1:10      < if
     pop  DE             ; 1:10      < if
     jp    p, else109    ; 3:10      < if 
@@ -267,15 +263,13 @@ endif109:
 else110  EQU $          ;           = endif
 endif110:
      
-    ld    A, H          ; 1:4       2dup <= if
-    xor   D             ; 1:4       2dup <= if
-    ld    C, A          ; 1:4       2dup <= if
-    ld    A, L          ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sub   E             ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    ld    A, H          ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sbc   A, D          ; 1:4       2dup <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, L          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
+    sub   E             ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
+    ld    A, H          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
+    sbc   A, D          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
     rra                 ; 1:4       2dup <= if
-    xor   C             ; 1:4       2dup <= if
+    xor   D             ; 1:4       2dup <= if
+    xor   H             ; 1:4       2dup <= if
     jp    m, else111    ; 3:10      2dup <= if 
     push DE             ; 1:11      print
     ld   BC, size112    ; 3:10      print Length of string to print
@@ -287,11 +281,13 @@ endif111:
      
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       <= if
-    xor   D             ; 1:4       <= if
-    sbc  HL, DE         ; 2:15      <= if    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, L          ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    sub   E             ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, H          ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    sbc   A, D          ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
     rra                 ; 1:4       <= if
-    add   A, 0x40       ; 2:7       <= if
+    xor   H             ; 1:4       <= if
+    xor   D             ; 1:4       <= if
     pop  HL             ; 1:10      <= if
     pop  DE             ; 1:10      <= if
     jp    m, else112    ; 3:10      <= if 
@@ -326,15 +322,13 @@ endif112:
 else113  EQU $          ;           = endif
 endif113:
      
-    ld    A, H          ; 1:4       2dup > if
-    xor   D             ; 1:4       2dup > if
-    ld    C, A          ; 1:4       2dup > if
-    ld    A, L          ; 1:4       2dup > if    (DE>HL) --> (HL-DE<0) --> carry if true
-    sub   E             ; 1:4       2dup > if    (DE>HL) --> (HL-DE<0) --> carry if true
-    ld    A, H          ; 1:4       2dup > if    (DE>HL) --> (HL-DE<0) --> carry if true
-    sbc   A, D          ; 1:4       2dup > if    (DE>HL) --> (HL-DE<0) --> carry if true
+    ld    A, L          ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
+    sub   E             ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
     rra                 ; 1:4       2dup > if
-    xor   C             ; 1:4       2dup > if
+    xor   D             ; 1:4       2dup > if
+    xor   H             ; 1:4       2dup > if
     jp    p, else114    ; 3:10      2dup > if 
     push DE             ; 1:11      print
     ld   BC, size115    ; 3:10      print Length of string to print
@@ -346,11 +340,13 @@ endif114:
      
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       > if
-    xor   D             ; 1:4       > if
-    sbc  HL, DE         ; 2:15      > if    (DE>HL) --> (HL-DE<0) --> carry if true
+    ld    A, L          ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
     rra                 ; 1:4       > if
-    add   A, 0x40       ; 2:7       > if
+    xor   H             ; 1:4       > if
+    xor   D             ; 1:4       > if
     pop  HL             ; 1:10      > if
     pop  DE             ; 1:10      > if
     jp    p, else115    ; 3:10      > if 
@@ -386,15 +382,13 @@ endif115:
 else116  EQU $          ;           = endif
 endif116:
      
-    ld    A, H          ; 1:4       2dup >= if
-    xor   D             ; 1:4       2dup >= if
-    ld    C, A          ; 1:4       2dup >= if
-    ld    A, E          ; 1:4       2dup >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       2dup >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       2dup >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       2dup >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
     rra                 ; 1:4       2dup >= if
-    xor   C             ; 1:4       2dup >= if
+    xor   D             ; 1:4       2dup >= if
+    xor   H             ; 1:4       2dup >= if
     jp    m, else117    ; 3:10      2dup >= if 
     push DE             ; 1:11      print
     ld   BC, size118    ; 3:10      print Length of string to print
@@ -406,15 +400,13 @@ endif117:
      
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       >= if
-    xor   D             ; 1:4       >= if
-    ld    C, A          ; 1:4       >= if
-    ld    A, E          ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       >= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
     rra                 ; 1:4       >= if
-    xor   C             ; 1:4       >= if
+    xor   H             ; 1:4       >= if
+    xor   D             ; 1:4       >= if
     pop  HL             ; 1:10      >= if
     pop  DE             ; 1:10      >= if
     jp    m, else118    ; 3:10      >= if 
@@ -555,10 +547,10 @@ endif124:
 else125  EQU $          ;           = endif
 endif125:
     
-    ld    A, E          ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     jp   nc, else126    ; 3:10      2dup u< if 
     push DE             ; 1:11      print
     ld   BC, size127    ; 3:10      print Length of string to print
@@ -570,10 +562,10 @@ endif126:
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, E          ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       u< if    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
     pop  HL             ; 1:10      u< if
     pop  DE             ; 1:10      u< if
     jp   nc, else127    ; 3:10      u< if 
@@ -605,10 +597,10 @@ endif127:
 else128  EQU $          ;           = endif
 endif128:
     
-    ld    A, L          ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   E             ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, H          ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, D          ; 1:4       2dup u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, L          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    sub   E             ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, H          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    sbc   A, D          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     jp    c, else129    ; 3:10      2dup u<= if 
     push DE             ; 1:11      print
     ld   BC, size130    ; 3:10      print Length of string to print
@@ -620,10 +612,10 @@ endif129:
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, L          ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   E             ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, H          ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, D          ; 1:4       u<= if    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, L          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    sub   E             ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, H          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
+    sbc   A, D          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     pop  HL             ; 1:10      u<= if
     pop  DE             ; 1:10      u<= if
     jp    c, else130    ; 3:10      u<= if 
@@ -654,10 +646,10 @@ endif130:
 else131  EQU $          ;           = endif
 endif131:
     
-    ld    A, L          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       2dup u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, L          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     jp   nc, else132    ; 3:10      2dup u> if 
     push DE             ; 1:11      print
     ld   BC, size133    ; 3:10      print Length of string to print
@@ -669,10 +661,10 @@ endif132:
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, L          ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       u> if    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, L          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
     pop  HL             ; 1:10      u> if
     pop  DE             ; 1:10      u> if
     jp   nc, else133    ; 3:10      u> if 
@@ -703,10 +695,10 @@ endif133:
 else134  EQU $          ;           = endif
 endif134:
     
-    ld    A, E          ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       2dup u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     jp    c, else135    ; 3:10      2dup u>= if 
     push DE             ; 1:11      print
     ld   BC, size136    ; 3:10      print Length of string to print
@@ -718,10 +710,10 @@ endif135:
     
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, E          ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       u>= if    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= if
     pop  DE             ; 1:10      u>= if
     jp    c, else136    ; 3:10      u>= if 
@@ -780,11 +772,11 @@ endif138:
     
     ld    A, H          ; 1:4       dup 3 < if
     add   A, A          ; 1:4       dup 3 < if
-    jr    c, $+11       ; 2:7/12    dup 3 < if    positive constant
-    ld    A, L          ; 1:4       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
-    sub   low 3         ; 2:7       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
-    ld    A, H          ; 1:4       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 < if    (HL<3) --> (HL-3<0) --> carry if true
+    jr    c, $+11       ; 2:7/12    dup 3 < if    negative HL < positive constant ---> true
+    ld    A, L          ; 1:4       dup 3 < if    HL<3 --> HL-3<0 --> carry if true
+    sub   low 3         ; 2:7       dup 3 < if    HL<3 --> HL-3<0 --> carry if true
+    ld    A, H          ; 1:4       dup 3 < if    HL<3 --> HL-3<0 --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 < if    HL<3 --> HL-3<0 --> carry if true
     jp   nc, else139    ; 3:10      dup 3 < if 
     push DE             ; 1:11      print
     ld   BC, size140    ; 3:10      print Length of string to print
@@ -796,11 +788,11 @@ endif139:
     
     ld    A, H          ; 1:4       dup 3 <= if
     add   A, A          ; 1:4       dup 3 <= if
-    jr    c, $+11       ; 2:7/12    dup 3 <= if    positive constant
-    ld    A, low 3      ; 2:7       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
-    sub   L             ; 1:4       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 <= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    jr    c, $+11       ; 2:7/12    dup 3 <= if    negative HL <= positive constant ---> true
+    ld    A, low 3      ; 2:7       dup 3 <= if    HL<=3 --> 0<=3-HL --> not carry if true
+    sub   L             ; 1:4       dup 3 <= if    HL<=3 --> 0<=3-HL --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 <= if    HL<=3 --> 0<=3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 <= if    HL<=3 --> 0<=3-HL --> not carry if true
     jp    c, else140    ; 3:10      dup 3 <= if 
     push DE             ; 1:11      print
     ld   BC, size141    ; 3:10      print Length of string to print
@@ -812,11 +804,11 @@ endif140:
     
     ld    A, H          ; 1:4       dup 3 > if
     add   A, A          ; 1:4       dup 3 > if
-    jp    c, else141    ; 3:10      dup 3 > if    positive constant
-    ld    A, low 3      ; 2:7       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
-    sub   L             ; 1:4       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
-    sbc   A, H          ; 1:4       dup 3 > if    (HL>3) --> (0>3-HL) --> carry if true
+    jp    c, else141    ; 3:10      dup 3 > if    negative HL > positive constant ---> false
+    ld    A, low 3      ; 2:7       dup 3 > if    HL>3 --> 0>3-HL --> carry if true
+    sub   L             ; 1:4       dup 3 > if    HL>3 --> 0>3-HL --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 > if    HL>3 --> 0>3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup 3 > if    HL>3 --> 0>3-HL --> carry if true
     jp   nc, else141    ; 3:10      dup 3 > if 
     push DE             ; 1:11      print
     ld   BC, size142    ; 3:10      print Length of string to print
@@ -828,11 +820,11 @@ endif141:
     
     ld    A, H          ; 1:4       dup 3 >= if
     add   A, A          ; 1:4       dup 3 >= if
-    jp    c, else142    ; 3:10      dup 3 >= if    positive constant
-    ld    A, L          ; 1:4       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
-    sub   low 3         ; 2:7       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 >= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    jp    c, else142    ; 3:10      dup 3 >= if    negative HL >= positive constant ---> false
+    ld    A, L          ; 1:4       dup 3 >= if    HL>=3 --> HL-3>=0 --> not carry if true
+    sub   low 3         ; 2:7       dup 3 >= if    HL>=3 --> HL-3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup 3 >= if    HL>=3 --> HL-3>=0 --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 >= if    HL>=3 --> HL-3>=0 --> not carry if true
     jp    c, else142    ; 3:10      dup 3 >= if 
     push DE             ; 1:11      print
     ld   BC, size143    ; 3:10      print Length of string to print
@@ -881,10 +873,10 @@ endif143:
 else144  EQU $          ;           = endif
 endif144:
     
-    ld    A, L          ; 1:4       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
-    sub   low 3         ; 2:7       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
-    ld    A, H          ; 1:4       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 (u)< if    (HL<3) --> (HL-3<0) --> carry if true
+    ld    A, L          ; 1:4       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
+    sub   low 3         ; 2:7       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
+    ld    A, H          ; 1:4       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
     jp   nc, else145    ; 3:10      dup 3 (u)< if 
     push DE             ; 1:11      print
     ld   BC, size146    ; 3:10      print Length of string to print
@@ -894,10 +886,10 @@ endif144:
 else145  EQU $          ;           = endif
 endif145:
     
-    ld    A, low 3      ; 2:7       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
-    sub   L             ; 1:4       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 (u)<= if    (HL<=3) --> (0<=3-HL) --> not carry if true
+    ld    A, low 3      ; 2:7       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    sub   L             ; 1:4       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
     jp    c, else146    ; 3:10      dup 3 (u)<= if 
     push DE             ; 1:11      print
     ld   BC, size147    ; 3:10      print Length of string to print
@@ -907,10 +899,10 @@ endif145:
 else146  EQU $          ;           = endif
 endif146:
     
-    ld    A, low 3      ; 2:7       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
-    sub   L             ; 1:4       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
-    sbc   A, H          ; 1:4       dup 3 (u)> if    (HL>3) --> (0>3-HL) --> carry if true
+    ld    A, low 3      ; 2:7       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
+    sub   L             ; 1:4       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
     jp   nc, else147    ; 3:10      dup 3 (u)> if 
     push DE             ; 1:11      print
     ld   BC, size148    ; 3:10      print Length of string to print
@@ -920,10 +912,10 @@ endif146:
 else147  EQU $          ;           = endif
 endif147:
     
-    ld    A, L          ; 1:4       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
-    sub   low 3         ; 2:7       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 (u)>= if    (HL>=3) --> (HL-3>=0) --> not carry if true
+    ld    A, L          ; 1:4       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    sub   low 3         ; 2:7       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
     jp    c, else148    ; 3:10      dup 3 (u)>= if 
     push DE             ; 1:11      print
     ld   BC, size149    ; 3:10      print Length of string to print
@@ -983,11 +975,11 @@ endif150:
     
     ld    A, H          ; 1:4       dup -3 < if
     add   A, A          ; 1:4       dup -3 < if
-    jp   nc, else151    ; 3:10      dup -3 < if    negative constant
-    ld    A, L          ; 1:4       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
-    sub   low -3        ; 2:7       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
-    ld    A, H          ; 1:4       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 < if    (HL<-3) --> (HL--3<0) --> carry if true
+    jp   nc, else151    ; 3:10      dup -3 < if    positive HL < negative constant ---> false
+    ld    A, L          ; 1:4       dup -3 < if    HL<-3 --> HL--3<0 --> carry if true
+    sub   low -3        ; 2:7       dup -3 < if    HL<-3 --> HL--3<0 --> carry if true
+    ld    A, H          ; 1:4       dup -3 < if    HL<-3 --> HL--3<0 --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 < if    HL<-3 --> HL--3<0 --> carry if true
     jp   nc, else151    ; 3:10      dup -3 < if 
     push DE             ; 1:11      print
     ld   BC, size152    ; 3:10      print Length of string to print
@@ -999,11 +991,11 @@ endif151:
     
     ld    A, H          ; 1:4       dup -3 <= if
     add   A, A          ; 1:4       dup -3 <= if
-    jp   nc, else152    ; 3:10      dup -3 <= if    negative constant
-    ld    A, low -3     ; 2:7       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    sub   L             ; 1:4       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 <= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    jp   nc, else152    ; 3:10      dup -3 <= if    positive HL <= negative constant ---> false
+    ld    A, low -3     ; 2:7       dup -3 <= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sub   L             ; 1:4       dup -3 <= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 <= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 <= if    HL<=-3 --> 0<=-3-HL --> not carry if true
     jp    c, else152    ; 3:10      dup -3 <= if 
     push DE             ; 1:11      print
     ld   BC, size153    ; 3:10      print Length of string to print
@@ -1015,11 +1007,11 @@ endif152:
     
     ld    A, H          ; 1:4       dup -3 > if
     add   A, A          ; 1:4       dup -3 > if
-    jr   nc, $+11       ; 2:7/12    dup -3 > if    negative constant
-    ld    A, low -3     ; 2:7       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
-    sub   L             ; 1:4       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
-    sbc   A, H          ; 1:4       dup -3 > if    (HL>-3) --> (0>-3-HL) --> carry if true
+    jr   nc, $+11       ; 2:7/12    dup -3 > if    positive HL > negative constant ---> true
+    ld    A, low -3     ; 2:7       dup -3 > if    HL>-3 --> 0>-3-HL --> carry if true
+    sub   L             ; 1:4       dup -3 > if    HL>-3 --> 0>-3-HL --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 > if    HL>-3 --> 0>-3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup -3 > if    HL>-3 --> 0>-3-HL --> carry if true
     jp   nc, else153    ; 3:10      dup -3 > if 
     push DE             ; 1:11      print
     ld   BC, size154    ; 3:10      print Length of string to print
@@ -1031,11 +1023,11 @@ endif153:
     
     ld    A, H          ; 1:4       dup -3 >= if
     add   A, A          ; 1:4       dup -3 >= if
-    jr   nc, $+11       ; 2:7/12    dup -3 >= if    negative constant
-    ld    A, L          ; 1:4       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    sub   low -3        ; 2:7       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 >= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    jr   nc, $+11       ; 2:7/12    dup -3 >= if    positive HL >= negative constant ---> true
+    ld    A, L          ; 1:4       dup -3 >= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    sub   low -3        ; 2:7       dup -3 >= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup -3 >= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 >= if    HL>=-3 --> HL--3>=0 --> not carry if true
     jp    c, else154    ; 3:10      dup -3 >= if 
     push DE             ; 1:11      print
     ld   BC, size155    ; 3:10      print Length of string to print
@@ -1084,10 +1076,10 @@ endif155:
 else156  EQU $          ;           = endif
 endif156:
     
-    ld    A, L          ; 1:4       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
-    sub   low -3        ; 2:7       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
-    ld    A, H          ; 1:4       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 (u)< if    (HL<-3) --> (HL--3<0) --> carry if true
+    ld    A, L          ; 1:4       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
+    sub   low -3        ; 2:7       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
+    ld    A, H          ; 1:4       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
     jp   nc, else157    ; 3:10      dup -3 (u)< if 
     push DE             ; 1:11      print
     ld   BC, size158    ; 3:10      print Length of string to print
@@ -1097,10 +1089,10 @@ endif156:
 else157  EQU $          ;           = endif
 endif157:
     
-    ld    A, low -3     ; 2:7       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    sub   L             ; 1:4       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 (u)<= if    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    ld    A, low -3     ; 2:7       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sub   L             ; 1:4       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
     jp    c, else158    ; 3:10      dup -3 (u)<= if 
     push DE             ; 1:11      print
     ld   BC, size159    ; 3:10      print Length of string to print
@@ -1110,10 +1102,10 @@ endif157:
 else158  EQU $          ;           = endif
 endif158:
     
-    ld    A, low -3     ; 2:7       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
-    sub   L             ; 1:4       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
-    sbc   A, H          ; 1:4       dup -3 (u)> if    (HL>-3) --> (0>-3-HL) --> carry if true
+    ld    A, low -3     ; 2:7       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
+    sub   L             ; 1:4       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
     jp   nc, else159    ; 3:10      dup -3 (u)> if 
     push DE             ; 1:11      print
     ld   BC, size160    ; 3:10      print Length of string to print
@@ -1123,10 +1115,10 @@ endif158:
 else159  EQU $          ;           = endif
 endif159:
     
-    ld    A, L          ; 1:4       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    sub   low -3        ; 2:7       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 (u)>= if    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    ld    A, L          ; 1:4       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    sub   low -3        ; 2:7       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
     jp    c, else160    ; 3:10      dup -3 (u)>= if 
     push DE             ; 1:11      print
     ld   BC, size161    ; 3:10      print Length of string to print
@@ -1169,7 +1161,6 @@ Stop:
 stack_test_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
-
 
 
 ; Input: HL
@@ -1431,5 +1422,4 @@ size102 EQU $ - string102
 string101:
 db "RAS:"
 size101 EQU $ - string101
-
 

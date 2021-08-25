@@ -7,8 +7,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
     ld  hl, stack_test
     push hl
 
@@ -206,10 +206,12 @@ sdo107:                 ;           sdo 107 ( stop index -- stop index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a )                 
-    ld  (idx108), HL    ; 3:16      for 108
+    ld    B, H          ; 1:4       for 108
+    ld    C, L          ; 1:4       for 108
     ex   DE, HL         ; 1:4       for 108
     pop  DE             ; 1:10      for 108 index
-for108:                 ;           for 108 
+for108:                 ;           for 108
+    ld  (idx108),BC     ; 4:20      next 108 save index 
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -224,7 +226,6 @@ idx108 EQU $+1          ;           next 108
     ld    A, B          ; 1:4       next 108
     or    C             ; 1:4       next 108
     dec  BC             ; 1:6       next 108 index--, zero flag unaffected
-    ld  (idx108),BC     ; 4:20      next 108 save index
     jp   nz, for108     ; 3:10      next 108
 next108:                ;           next 108 
     ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
@@ -320,10 +321,12 @@ snext111:               ;           snext 111
     push DE             ; 1:11      push(5)
     ex   DE, HL         ; 1:4       push(5)
     ld   HL, 5          ; 3:10      push(5)           
-    ld  (idx112), HL    ; 3:16      for 112
+    ld    B, H          ; 1:4       for 112
+    ld    C, L          ; 1:4       for 112
     ex   DE, HL         ; 1:4       for 112
     pop  DE             ; 1:10      for 112 index
-for112:                 ;           for 112     
+for112:                 ;           for 112
+    ld  (idx112),BC     ; 4:20      next 112 save index     
     push DE             ; 1:11      index i 112
     ex   DE, HL         ; 1:4       index i 112
     ld   HL, (idx112)   ; 3:16      index i 112 idx always points to a 16-bit index 
@@ -335,7 +338,6 @@ idx112 EQU $+1          ;           next 112
     ld    A, B          ; 1:4       next 112
     or    C             ; 1:4       next 112
     dec  BC             ; 1:6       next 112 index--, zero flag unaffected
-    ld  (idx112),BC     ; 4:20      next 112 save index
     jp   nz, for112     ; 3:10      next 112
 next112:                ;           next 112 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -1012,10 +1014,12 @@ xexit130:               ;           2 +xloop 130
     push DE             ; 1:11      push(12)
     ex   DE, HL         ; 1:4       push(12)
     ld   HL, 12         ; 3:10      push(12)    
-    ld  (idx131), HL    ; 3:16      for 131
+    ld    B, H          ; 1:4       for 131
+    ld    C, L          ; 1:4       for 131
     ex   DE, HL         ; 1:4       for 131
     pop  DE             ; 1:10      for 131 index
-for131:                 ;           for 131         
+for131:                 ;           for 131
+    ld  (idx131),BC     ; 4:20      next 131 save index         
     push DE             ; 1:11      index i 131
     ex   DE, HL         ; 1:4       index i 131
     ld   HL, (idx131)   ; 3:16      index i 131 idx always points to a 16-bit index 
@@ -1048,7 +1052,6 @@ idx131 EQU $+1          ;           next 131
     ld    A, B          ; 1:4       next 131
     or    C             ; 1:4       next 131
     dec  BC             ; 1:6       next 131 index--, zero flag unaffected
-    ld  (idx131),BC     ; 4:20      next 131 save index
     jp   nz, for131     ; 3:10      next 131
 next131:                ;           next 131    
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -1393,7 +1396,6 @@ Stop:
 stack_test_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
-
 
 
 ; Input: HL

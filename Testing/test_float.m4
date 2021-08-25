@@ -89,4 +89,3 @@ SCOLON(stack_test)
     PRINT({0xD, "Data stack OK!", 0xD})
     STOP
 SSEMICOLON
-include({../M4/LAST.M4})

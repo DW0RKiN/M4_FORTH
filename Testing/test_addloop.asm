@@ -6,8 +6,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
 
  
 
@@ -1197,7 +1197,7 @@ xdo119:                 ;           xdo(-1,1) 119
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else101    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1255,7 +1255,7 @@ do120:                  ;           -1 1 rxdo 120
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else102    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1325,7 +1325,7 @@ xdo121:                 ;           xdo(-1,1) 121
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else103    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1386,7 +1386,7 @@ do122:                  ;           -1 1 rxdo 122
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else104    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1459,7 +1459,7 @@ xdo123:                 ;           xdo(-1,1) 123
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else105    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1521,7 +1521,7 @@ do124:                  ;           -1 1 rxdo 124
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else106    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1597,7 +1597,7 @@ xdo125:                 ;           xdo(0,0) 125
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else107    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1655,7 +1655,7 @@ do126:                  ;           0 0 rxdo 126
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else108    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1725,7 +1725,7 @@ xdo127:                 ;           xdo(0,0) 127
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else109    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1786,7 +1786,7 @@ do128:                  ;           0 0 rxdo 128
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else110    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1859,7 +1859,7 @@ xdo129:                 ;           xdo(0,0) 129
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else111    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1921,7 +1921,7 @@ do130:                  ;           0 0 rxdo 130
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else112    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -1997,7 +1997,7 @@ xdo131:                 ;           xdo(2,-1) 131
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else113    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2055,7 +2055,7 @@ do132:                  ;           2 -1 rxdo 132
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else114    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2125,7 +2125,7 @@ xdo133:                 ;           xdo(2,-1) 133
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else115    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2187,7 +2187,7 @@ do134:                  ;           2 -1 rxdo 134
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else116    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2260,7 +2260,7 @@ xdo135:                 ;           xdo(2,-1) 135
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else117    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2322,7 +2322,7 @@ do136:                  ;           2 -1 rxdo 136
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else118    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2689,7 +2689,7 @@ xdo145:                 ;           xdo(-1,1) 145
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else119    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2752,7 +2752,7 @@ do146:                  ;           -1 1 rxdo 146
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else120    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2815,7 +2815,7 @@ xdo147:                 ;           xdo(0,0) 147
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else121    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2878,7 +2878,7 @@ do148:                  ;           0 0 rxdo 148
     pop  DE             ; 1:10      _stop ! push(_stop) store 
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else122    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -2985,7 +2985,7 @@ do149:                  ;           rdo 149
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else123    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3098,7 +3098,7 @@ do150:                  ;           rdo 150
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else124    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3192,7 +3192,7 @@ do151:                  ;           do 151
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else125    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3275,7 +3275,7 @@ do152:                  ;           do 152
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else126    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3342,7 +3342,7 @@ sdo153:                 ;           sdo 153 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else127    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3413,7 +3413,7 @@ sdo154:                 ;           sdo 154 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else128    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3514,7 +3514,7 @@ do155:                  ;           rdo 155
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else129    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3627,7 +3627,7 @@ do156:                  ;           rdo 156
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else130    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3721,7 +3721,7 @@ do157:                  ;           do 157
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else131    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3804,7 +3804,7 @@ do158:                  ;           do 158
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else132    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3871,7 +3871,7 @@ sdo159:                 ;           sdo 159 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else133    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -3942,7 +3942,7 @@ sdo160:                 ;           sdo 160 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else134    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4043,7 +4043,7 @@ do161:                  ;           rdo 161
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else135    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4156,7 +4156,7 @@ do162:                  ;           rdo 162
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else136    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4259,7 +4259,7 @@ do163:                  ;           do 163
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else137    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4342,7 +4342,7 @@ do164:                  ;           do 164
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else138    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4414,7 +4414,7 @@ sdo165:                 ;           sdo 165 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else139    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4485,7 +4485,7 @@ sdo166:                 ;           sdo 166 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else140    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4586,7 +4586,7 @@ do167:                  ;           rdo 167
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else141    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4699,7 +4699,7 @@ do168:                  ;           rdo 168
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else142    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4796,7 +4796,7 @@ do169:                  ;           do 169
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else143    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4879,7 +4879,7 @@ do170:                  ;           do 170
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else144    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -4949,7 +4949,7 @@ sdo171:                 ;           sdo 171 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else145    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5020,7 +5020,7 @@ sdo172:                 ;           sdo 172 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else146    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5125,7 +5125,7 @@ do173:                  ;           rdo 173
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else147    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5238,7 +5238,7 @@ do174:                  ;           rdo 174
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else148    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5341,7 +5341,7 @@ do175:                  ;           do 175
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else149    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5424,7 +5424,7 @@ do176:                  ;           do 176
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else150    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5496,7 +5496,7 @@ sdo177:                 ;           sdo 177 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else151    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5567,7 +5567,7 @@ sdo178:                 ;           sdo 178 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else152    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5668,7 +5668,7 @@ do179:                  ;           rdo 179
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else153    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5781,7 +5781,7 @@ do180:                  ;           rdo 180
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else154    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5884,7 +5884,7 @@ do181:                  ;           do 181
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else155    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -5967,7 +5967,7 @@ do182:                  ;           do 182
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else156    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6039,7 +6039,7 @@ sdo183:                 ;           sdo 183 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else157    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6110,7 +6110,7 @@ sdo184:                 ;           sdo 184 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else158    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6216,7 +6216,7 @@ do185:                  ;           rdo 185
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else159    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6302,7 +6302,7 @@ do186:                  ;           do 186
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else160    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6368,7 +6368,7 @@ sdo187:                 ;           sdo 187 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else161    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6473,7 +6473,7 @@ do188:                  ;           ?rdo 188
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else162    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6562,7 +6562,7 @@ do189:                  ;           ?do 189
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else163    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6633,7 +6633,7 @@ sdo190:                 ;           ?sdo 190 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else164    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6718,7 +6718,7 @@ do191:                  ;           do 191
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else165    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6814,7 +6814,7 @@ sdo192:                 ;           sdo 192 ( stop index -- stop index )
         
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if      
+    ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else166    ; 3:10      0= if 
     push DE             ; 1:11      print
@@ -6858,7 +6858,6 @@ sleave192:              ;           +sloop 192
 _3sloop_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-
 
 
 ; Input: HL

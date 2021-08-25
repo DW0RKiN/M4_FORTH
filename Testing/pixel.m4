@@ -44,5 +44,3 @@ COLON(test)
     PUSH_ADDXLOOP(256)
     
 SEMICOLON
-    
-include({../M4/LAST.M4})dnl

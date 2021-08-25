@@ -52,6 +52,7 @@ SCOLON(stack_test)
     STOP
 SSEMICOLON
 
+;# I need to have label test and orig at the end.
 include({../M4/LAST.M4})dnl
 
 test:

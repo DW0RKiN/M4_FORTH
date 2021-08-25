@@ -1,11 +1,11 @@
 ORG 0x6000
 
 ;   ===  b e g i n  ===
-    exx
-    push HL
-    push DE
-    ld   HL, 0xF500
-    exx
+    ld  (Stop+1), SP    ; 4:20      not need
+    ld    L, 0x1A       ; 2:7       Upper screen
+    call 0x1605         ; 3:17      Open channel
+    ld   HL, 0xF500     ; 3:10      Init Return address stack
+    exx                 ; 1:4
    
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
@@ -5050,139 +5050,120 @@ ORG 0x6000
     ld   HL, 9973       ; 3:10      push(9973) 
     call MULTIPLY       ; 3:17      *
     pop  DE             ; 1:10      * 
-    call PRINT_NUM      ; 3:17      .
+    call PRINT_S16      ; 3:17      .
 
-    pop  DE
-    pop  HL
-    exx
-    ret
+Stop:
+    ld   SP, 0x0000     ; 3:10      not need
+    ld   HL, 0x2758     ; 3:10
+    exx                 ; 1:4
+    ret                 ; 1:10
 ;   =====  e n d  =====
 
 
-; Input: A = or numbers, DE string index, HL = number, BC = 10000,1000,100,10,1
-; Output: Write number to memory
-; Pollutes: AF, AF', HL, B, DE
-NEXTNUMBER:
-    ex   AF, AF'        ; 1:4
-    xor   A             ; 1:4
-
-    inc   A             ; 1:4
-    sbc  HL, BC         ; 2:15
-    jr   nc, $-3        ; 2:7/12
+; Input: HL
+; Output: Print space and signed decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_S16:
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, PRINT_U16  ; 2:7/12
     
-    add  HL, BC         ; 1:11
-    dec   A             ; 1:4
-    ld    B, A          ; 1:4    
-    add   A, '0'        ; 2:7       0   
-    ex   AF, AF'        ; 1:4
+    xor   A             ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    L, A          ; 1:4       neg
+    sbc   A, H          ; 1:4       neg
+    sub   L             ; 1:4       neg
+    ld    H, A          ; 1:4       neg
     
-    or    B             ; 1:4
-    ret   z             ; 1:5/11    zatim same nuly
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
+    db 0x01             ; 3:10      ld   BC, ** 
     
-    ex   AF, AF'        ; 1:4
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-    ex   AF, AF'        ; 1:4
-    ret                 ; 1:10
+    ; fall to print_u16
+; Input: HL
+; Output: Print space and unsigned decimal number in HL
+; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
+PRINT_U16:
+    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
 
 ; Input: HL
-; Output: Print decimal number in HL
-; Pollutes: AF, AF', BC, delete top stack
-PRINT_NUM:
-    push DE             ; 1:11
-
-    ld   DE, STRNUM     ; 3:10
-
-    bit   7, H          ; 2:8
-    jr    z, PRINT_NUM_P; 2:7/12
-    
-    ld    A, '-'        ; 2:7
-    ld  (DE), A         ; 1:7
-    inc  DE             ; 1:6
-
-    ld    A, L          ; 1:4
-    cpl                 ; 1:4
-    ld    L, A          ; 1:4
-    ld    A, H          ; 1:4
-    cpl                 ; 1:4
-    ld    H, A          ; 1:4
-    inc  HL             ; 1:6
-PRINT_NUM_P:
-    
-    xor   A             ; 1:4
-    ld   BC, 10000      ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 1000       ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 100        ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld   BC, 10         ; 3:10
-    call NEXTNUMBER     ; 3:17
-    
-    ld    A, '0'        ; 2:7
-    add   A, L          ; 1:4
-    ld  (DE), A         ; 1:7
-    
-    ex   DE, HL         ; 1:4
-    
-    inc  HL             ; 1:6
-    ld  (HL), 0x20      ; 2:10      space after
-    
-    ld   DE, STRNUM     ; 3:10
-    sbc  HL, DE         ; 2:15
-    push HL             ; 1:11
-            
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    
-    pop  BC             ; 1:10      Length-1 of string to print
-    ld   DE, STRNUM     ; 3:10      Address of string
-    call 0x2040         ; 3:17      Print our string
-
-    pop  HL             ; 1:10      last DE
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
+PRINT_U16_ONLY:
+    call BIN2DEC        ; 3:17
     pop  BC             ; 1:10      ret
+    ex   DE, HL         ; 1:4
     pop  DE             ; 1:10
-    push BC             ; 1:11      ret
+    push BC             ; 1:10      ret
     ret                 ; 1:10
-STRNUM:
-DB      "Dw0rkin"
+
+; Input: HL = number
+; Output: print number
+; Pollutes: AF, HL, BC
+BIN2DEC:
+    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
+    ld   BC, -10000     ; 3:10
+    call BIN2DEC_CHAR+2 ; 3:17    
+    ld   BC, -1000      ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld   BC, -100       ; 3:10
+    call BIN2DEC_CHAR   ; 3:17
+    ld    C, -10        ; 2:7
+    call BIN2DEC_CHAR   ; 3:17
+    ld    A, L          ; 1:4
+    add   A,'0'         ; 2:7
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10
+    
+BIN2DEC_CHAR:
+    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
+    
+    add  HL, BC         ; 1:11
+    inc   A             ; 1:4
+    jr    c, $-2        ; 2:7/12
+    sbc  HL, BC         ; 2:15
+    dec   A             ; 1:4
+    ret   z             ; 1:5/11
+    
+    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10
 ; Input: HL,DE
-; Output: HL=HL*DE
+; Output: HL=HL*DE ((un)signed)
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, B, DE
-MULTIPLY:   
-    ld    A, H          ; 1:4
+MULTIPLY:
+    ld    A, H          ; 1:4       default version
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
-    ex   DE, HL         ; 1:4
+    ex   DE, HL         ; 1:4       H=>D faster 7+4<12
 
     ld    B, H          ; 1:4       
     ld    A, L          ; 1:4
     ld   HL, 0x0000     ; 3:10 
 
     srl   B             ; 2:8
-    rra                 ; 1:4       divide BA by 2
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
     jr   nc, $+3        ; 2:7/12
 MUL_LOOP:
     add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2    
     srl   B             ; 2:8
-    rra                 ; 1:4       divide BA by 2
+    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP   ; 2:7/12
-    jp   nz, MUL_LOOP+1 ; 3:10
+    jp   nz, MUL_LOOP+1 ; 3:10      B = ?
 
     db   0x06           ; 2:7
 MUL_LOOP2:
     add  HL, DE         ; 1:11
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2
-    srl   A             ; 2:8       divide A by 2
+    srl   A             ; 2:8       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP2  ; 2:7/12
-    jp   nz, MUL_LOOP2+1; 3:10
+    jp   nz, MUL_LOOP2+1; 3:10      A = ?
 
     ret                 ; 1:10
 VARIABLE_SECTION:

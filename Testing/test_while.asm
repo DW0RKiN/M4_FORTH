@@ -6,8 +6,8 @@ ORG 0x8000
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
     ld  hl, stack_test
     push hl
 
@@ -217,15 +217,13 @@ begin107:
 break107:               ;           again 107
      
 begin108: 
-    ld    A, H          ; 1:4       2dup < while 108
-    xor   D             ; 1:4       2dup < while 108
-    ld    C, A          ; 1:4       2dup < while 108
-    ld    A, E          ; 1:4       2dup < while 108    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup < while 108    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup < while 108    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup < while 108    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       2dup < while 108
-    xor   C             ; 1:4       2dup < while 108
+    xor   D             ; 1:4       2dup < while 108
+    xor   H             ; 1:4       2dup < while 108
     jp    p, break108   ; 3:10      2dup < while 108 
     push DE             ; 1:11      print
     ld   BC, size109    ; 3:10      print Length of string to print
@@ -239,15 +237,13 @@ break108:               ;           again 108
 begin109: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       < while 109
-    xor   D             ; 1:4       < while 109
-    ld    C, A          ; 1:4       < while 109
-    ld    A, E          ; 1:4       < while 109    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       < while 109    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       < while 109    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       < while 109    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
     rra                 ; 1:4       < while 109
-    xor   C             ; 1:4       < while 109
+    xor   D             ; 1:4       < while 109
+    xor   H             ; 1:4       < while 109
     pop  HL             ; 1:10      < while 109
     pop  DE             ; 1:10      < while 109
     jp    p, break109   ; 3:10      < while 109 
@@ -288,15 +284,13 @@ begin110:
 break110:               ;           again 110
      
 begin111: 
-    ld    A, H          ; 1:4       2dup <= while 111
-    xor   D             ; 1:4       2dup <= while 111
-    ld    C, A          ; 1:4       2dup <= while 111
-    ld    A, L          ; 1:4       2dup <= while 111    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sub   E             ; 1:4       2dup <= while 111    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    ld    A, H          ; 1:4       2dup <= while 111    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sbc   A, D          ; 1:4       2dup <= while 111    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, L          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
+    sub   E             ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
+    ld    A, H          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
+    sbc   A, D          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
     rra                 ; 1:4       2dup <= while 111
-    xor   C             ; 1:4       2dup <= while 111
+    xor   D             ; 1:4       2dup <= while 111
+    xor   H             ; 1:4       2dup <= while 111
     jp    m, break111   ; 3:10      2dup <= while 111 
     push DE             ; 1:11      print
     ld   BC, size112    ; 3:10      print Length of string to print
@@ -310,15 +304,13 @@ break111:               ;           again 111
 begin112: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       <= while 112
-    xor   D             ; 1:4       <= while 112
-    ld    C, A          ; 1:4       <= while 112
-    ld    A, L          ; 1:4       <= while 112    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sub   E             ; 1:4       <= while 112    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    ld    A, H          ; 1:4       <= while 112    (DE<=HL) --> (HL-DE>=0) --> not carry if true
-    sbc   A, D          ; 1:4       <= while 112    (DE<=HL) --> (HL-DE>=0) --> not carry if true
+    ld    A, L          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
+    sub   E             ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
+    ld    A, H          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
+    sbc   A, D          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
     rra                 ; 1:4       <= while 112
-    xor   C             ; 1:4       <= while 112
+    xor   D             ; 1:4       <= while 112
+    xor   H             ; 1:4       <= while 112
     pop  HL             ; 1:10      <= while 112
     pop  DE             ; 1:10      <= while 112
     jp    m, break112   ; 3:10      <= while 112 
@@ -357,15 +349,13 @@ begin113:
 break113:               ;           again 113
      
 begin114: 
-    ld    A, H          ; 1:4       2dup > while 114
-    xor   D             ; 1:4       2dup > while 114
-    ld    C, A          ; 1:4       2dup > while 114
-    ld    A, L          ; 1:4       2dup > while 114    (DE>HL) --> (HL-DE<0) --> carry if true
-    sub   E             ; 1:4       2dup > while 114    (DE>HL) --> (HL-DE<0) --> carry if true
-    ld    A, H          ; 1:4       2dup > while 114    (DE>HL) --> (HL-DE<0) --> carry if true
-    sbc   A, D          ; 1:4       2dup > while 114    (DE>HL) --> (HL-DE<0) --> carry if true
+    ld    A, L          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
+    sub   E             ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
     rra                 ; 1:4       2dup > while 114
-    xor   C             ; 1:4       2dup > while 114
+    xor   D             ; 1:4       2dup > while 114
+    xor   H             ; 1:4       2dup > while 114
     jp    p, break114   ; 3:10      2dup > while 114 
     push DE             ; 1:11      print
     ld   BC, size115    ; 3:10      print Length of string to print
@@ -379,15 +369,13 @@ break114:               ;           again 114
 begin115: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       > while 115
-    xor   D             ; 1:4       > while 115
-    ld    C, A          ; 1:4       > while 115
-    ld    A, L          ; 1:4       > while 115    (DE>HL) --> (HL-DE<0) --> carry if true
-    sub   E             ; 1:4       > while 115    (DE>HL) --> (HL-DE<0) --> carry if true
-    ld    A, H          ; 1:4       > while 115    (DE>HL) --> (HL-DE<0) --> carry if true
-    sbc   A, D          ; 1:4       > while 115    (DE>HL) --> (HL-DE<0) --> carry if true
+    ld    A, L          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
+    sub   E             ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
     rra                 ; 1:4       > while 115
-    xor   C             ; 1:4       > while 115
+    xor   D             ; 1:4       > while 115
+    xor   H             ; 1:4       > while 115
     pop  HL             ; 1:10      > while 115
     pop  DE             ; 1:10      > while 115
     jp    p, break115   ; 3:10      > while 115 
@@ -427,15 +415,13 @@ begin116:
 break116:               ;           again 116
      
 begin117: 
-    ld    A, H          ; 1:4       2dup >= while 117
-    xor   D             ; 1:4       2dup >= while 117
-    ld    C, A          ; 1:4       2dup >= while 117
-    ld    A, E          ; 1:4       2dup >= while 117    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       2dup >= while 117    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       2dup >= while 117    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       2dup >= while 117    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
     rra                 ; 1:4       2dup >= while 117
-    xor   C             ; 1:4       2dup >= while 117
+    xor   D             ; 1:4       2dup >= while 117
+    xor   H             ; 1:4       2dup >= while 117
     jp    m, break117   ; 3:10      2dup >= while 117 
     push DE             ; 1:11      print
     ld   BC, size118    ; 3:10      print Length of string to print
@@ -449,15 +435,13 @@ break117:               ;           again 117
 begin118: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, H          ; 1:4       >= while 118
-    xor   D             ; 1:4       >= while 118
-    ld    C, A          ; 1:4       >= while 118
-    ld    A, E          ; 1:4       >= while 118    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       >= while 118    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       >= while 118    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       >= while 118    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
     rra                 ; 1:4       >= while 118
-    xor   C             ; 1:4       >= while 118
+    xor   D             ; 1:4       >= while 118
+    xor   H             ; 1:4       >= while 118
     pop  HL             ; 1:10      >= while 118
     pop  DE             ; 1:10      >= while 118
     jp    m, break118   ; 3:10      >= while 118 
@@ -614,10 +598,10 @@ begin125:
 break125:               ;           again 125
     
 begin126: 
-    ld    A, E          ; 1:4       2dup u< while 126    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       2dup u< while 126    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       2dup u< while 126    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       2dup u< while 126    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
     jp   nc, break126   ; 3:10      2dup u< while 126 
     push DE             ; 1:11      print
     ld   BC, size127    ; 3:10      print Length of string to print
@@ -631,10 +615,10 @@ break126:               ;           again 126
 begin127: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, E          ; 1:4       u< while 127    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   L             ; 1:4       u< while 127    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, D          ; 1:4       u< while 127    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, H          ; 1:4       u< while 127    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, E          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
     pop  HL             ; 1:10      u< while 127
     pop  DE             ; 1:10      u< while 127
     jp   nc, break127   ; 3:10      u< while 127 
@@ -670,10 +654,10 @@ begin128:
 break128:               ;           again 128
     
 begin129: 
-    ld    A, L          ; 1:4       2dup u<= while 129    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   E             ; 1:4       2dup u<= while 129    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, H          ; 1:4       2dup u<= while 129    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, D          ; 1:4       2dup u<= while 129    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, L          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
+    sub   E             ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, H          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
+    sbc   A, D          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
     jp    c, break129   ; 3:10      2dup u<= while 129 
     push DE             ; 1:11      print
     ld   BC, size130    ; 3:10      print Length of string to print
@@ -687,10 +671,10 @@ break129:               ;           again 129
 begin130: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, L          ; 1:4       u<= while 130    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   E             ; 1:4       u<= while 130    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, H          ; 1:4       u<= while 130    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, D          ; 1:4       u<= while 130    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, L          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
+    sub   E             ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, H          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
+    sbc   A, D          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
     pop  HL             ; 1:10      u<= while 130
     pop  DE             ; 1:10      u<= while 130
     jp    c, break130   ; 3:10      u<= while 130 
@@ -725,10 +709,10 @@ begin131:
 break131:               ;           again 131
     
 begin132: 
-    ld    A, L          ; 1:4       2dup u> while 132    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       2dup u> while 132    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       2dup u> while 132    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       2dup u> while 132    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, L          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
     jp   nc, break132   ; 3:10      2dup u> while 132 
     push DE             ; 1:11      print
     ld   BC, size133    ; 3:10      print Length of string to print
@@ -742,10 +726,10 @@ break132:               ;           again 132
 begin133: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, L          ; 1:4       u> while 133    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   E             ; 1:4       u> while 133    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, H          ; 1:4       u> while 133    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, D          ; 1:4       u> while 133    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, L          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
     pop  HL             ; 1:10      u> while 133
     pop  DE             ; 1:10      u> while 133
     jp   nc, break133   ; 3:10      u> while 133 
@@ -780,10 +764,10 @@ begin134:
 break134:               ;           again 134
     
 begin135: 
-    ld    A, E          ; 1:4       2dup u>= while 135    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       2dup u>= while 135    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       2dup u>= while 135    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       2dup u>= while 135    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
     jp    c, break135   ; 3:10      2dup u>= while 135 
     push DE             ; 1:11      print
     ld   BC, size136    ; 3:10      print Length of string to print
@@ -797,10 +781,10 @@ break135:               ;           again 135
 begin136: 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    ld    A, E          ; 1:4       u>= while 136    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   L             ; 1:4       u>= while 136    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, D          ; 1:4       u>= while 136    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, H          ; 1:4       u>= while 136    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, E          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= while 136
     pop  DE             ; 1:10      u>= while 136
     jp    c, break136   ; 3:10      u>= while 136 
@@ -862,13 +846,13 @@ begin138:
 break138:               ;           again 138
     
 begin139: 
-    ld    A, H          ; 1:4       dup 3 < while
-    add   A, A          ; 1:4       dup 3 < while
-    jr    c, $+11       ; 2:7/12    dup 3 < while    positive constant
-    ld    A, L          ; 1:4       dup 3 < while 139    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   low 3         ; 2:7       dup 3 < while 139    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, H          ; 1:4       dup 3 < while 139    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 < while 139    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, H          ; 1:4       dup 3 < while 139
+    add   A, A          ; 1:4       dup 3 < while 139
+    jr    c, $+11       ; 2:7/12    dup 3 < while 139    negative HL < positive constant ---> true
+    ld    A, L          ; 1:4       dup 3 < while 139    HL<3 --> HL-3<0 --> carry if true
+    sub   low 3         ; 2:7       dup 3 < while 139    HL<3 --> HL-3<0 --> carry if true
+    ld    A, H          ; 1:4       dup 3 < while 139    HL<3 --> HL-3<0 --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 < while 139    HL<3 --> HL-3<0 --> carry if true
     jp   nc, break139   ; 3:10      dup 3 < while 139 
     push DE             ; 1:11      print
     ld   BC, size140    ; 3:10      print Length of string to print
@@ -880,13 +864,13 @@ begin139:
 break139:               ;           again 139
     
 begin140: 
-    ld    A, H          ; 1:4       dup 3 <= while
-    add   A, A          ; 1:4       dup 3 <= while
-    jr    c, $+11       ; 2:7/12    dup 3 <= while    positive constant
-    ld    A, low 3      ; 2:7       dup 3 <= while 140    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   L             ; 1:4       dup 3 <= while 140    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 <= while 140    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 <= while 140    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, H          ; 1:4       dup 3 <= while 140
+    add   A, A          ; 1:4       dup 3 <= while 140
+    jr    c, $+11       ; 2:7/12    dup 3 <= while 140    negative HL <= positive constant ---> true
+    ld    A, low 3      ; 2:7       dup 3 <= while 140    HL<=3 --> 0<=3-HL --> not carry if true
+    sub   L             ; 1:4       dup 3 <= while 140    HL<=3 --> 0<=3-HL --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 <= while 140    HL<=3 --> 0<=3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 <= while 140    HL<=3 --> 0<=3-HL --> not carry if true
     jp    c, break140   ; 3:10      dup 3 <= while 140 
     push DE             ; 1:11      print
     ld   BC, size141    ; 3:10      print Length of string to print
@@ -898,13 +882,13 @@ begin140:
 break140:               ;           again 140
     
 begin141: 
-    ld    A, H          ; 1:4       dup 3 > while
-    add   A, A          ; 1:4       dup 3 > while
-    jp    c, break141   ; 3:10      dup 3 > while    positive constant
-    ld    A, low 3      ; 2:7       dup 3 > while 141    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   L             ; 1:4       dup 3 > while 141    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 > while 141    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, H          ; 1:4       dup 3 > while 141    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       dup 3 > while 141
+    add   A, A          ; 1:4       dup 3 > while 141
+    jp    c, break141   ; 3:10      dup 3 > while 141    negative HL > positive constant ---> false
+    ld    A, low 3      ; 2:7       dup 3 > while 141    HL>3 --> 0>3-HL --> carry if true
+    sub   L             ; 1:4       dup 3 > while 141    HL>3 --> 0>3-HL --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 > while 141    HL>3 --> 0>3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup 3 > while 141    HL>3 --> 0>3-HL --> carry if true
     jp   nc, break141   ; 3:10      dup 3 < while 141 
     push DE             ; 1:11      print
     ld   BC, size142    ; 3:10      print Length of string to print
@@ -916,13 +900,13 @@ begin141:
 break141:               ;           again 141
     
 begin142: 
-    ld    A, H          ; 1:4       dup 3 >= while
-    add   A, A          ; 1:4       dup 3 >= while
-    jp    c, break142   ; 3:10      dup 3 >= while    positive constant
-    ld    A, L          ; 1:4       dup 3 >= while 142    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   low 3         ; 2:7       dup 3 >= while 142    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup 3 >= while 142    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 >= while 142    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup 3 >= while 142
+    add   A, A          ; 1:4       dup 3 >= while 142
+    jp    c, break142   ; 3:10      dup 3 >= while 142    negative HL >= positive constant ---> false
+    ld    A, L          ; 1:4       dup 3 >= while 142    HL>=3 --> HL-3>=0 --> not carry if true
+    sub   low 3         ; 2:7       dup 3 >= while 142    HL>=3 --> HL-3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup 3 >= while 142    HL>=3 --> HL-3>=0 --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 >= while 142    HL>=3 --> HL-3>=0 --> not carry if true
     jp    c, break142   ; 3:10      dup 3 >= while 142 
     push DE             ; 1:11      print
     ld   BC, size143    ; 3:10      print Length of string to print
@@ -977,10 +961,10 @@ begin144:
 break144:               ;           again 144
     
 begin145: 
-    ld    A, L          ; 1:4       dup 3 u< while 145    (HL<3) --> (HL-3<0) --> carry if true
-    sub   low 3         ; 2:7       dup 3 u< while 145    (HL<3) --> (HL-3<0) --> carry if true
-    ld    A, H          ; 1:4       dup 3 u< while 145    (HL<3) --> (HL-3<0) --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 u< while 145    (HL<3) --> (HL-3<0) --> carry if true
+    ld    A, L          ; 1:4       dup 3 u< while 145    HL<3 --> HL-3<0 --> carry if true
+    sub   low 3         ; 2:7       dup 3 u< while 145    HL<3 --> HL-3<0 --> carry if true
+    ld    A, H          ; 1:4       dup 3 u< while 145    HL<3 --> HL-3<0 --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 u< while 145    HL<3 --> HL-3<0 --> carry if true
     jp   nc, break145   ; 3:10      dup 3 u< while 145 
     push DE             ; 1:11      print
     ld   BC, size146    ; 3:10      print Length of string to print
@@ -992,10 +976,10 @@ begin145:
 break145:               ;           again 145
     
 begin146: 
-    ld    A, low 3      ; 2:7       dup 3 u<= while 146    (HL<=3) --> (0<=3-HL) --> not carry if true
-    sub   L             ; 1:4       dup 3 u<= while 146    (HL<=3) --> (0<=3-HL) --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 u<= while 146    (HL<=3) --> (0<=3-HL) --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 u<= while 146    (HL<=3) --> (0<=3-HL) --> not carry if true
+    ld    A, low 3      ; 2:7       dup 3 u<= while 146    HL<=3 --> 0<=3-HL --> not carry if true
+    sub   L             ; 1:4       dup 3 u<= while 146    HL<=3 --> 0<=3-HL --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 u<= while 146    HL<=3 --> 0<=3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 u<= while 146    HL<=3 --> 0<=3-HL --> not carry if true
     jp    c, break146   ; 3:10      dup 3 u<= while 146 
     push DE             ; 1:11      print
     ld   BC, size147    ; 3:10      print Length of string to print
@@ -1007,10 +991,10 @@ begin146:
 break146:               ;           again 146
     
 begin147: 
-    ld    A, low 3      ; 2:7       dup 3 u> while 147    (HL>3) --> (0>3-HL) --> carry if true
-    sub   L             ; 1:4       dup 3 u> while 147    (HL>3) --> (0>3-HL) --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 u> while 147    (HL>3) --> (0>3-HL) --> carry if true
-    sbc   A, H          ; 1:4       dup 3 u> while 147    (HL>3) --> (0>3-HL) --> carry if true
+    ld    A, low 3      ; 2:7       dup 3 u> while 147    HL>3 --> 0>3-HL --> carry if true
+    sub   L             ; 1:4       dup 3 u> while 147    HL>3 --> 0>3-HL --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 u> while 147    HL>3 --> 0>3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup 3 u> while 147    HL>3 --> 0>3-HL --> carry if true
     jp   nc, break147   ; 3:10      dup 3 u> while 147 
     push DE             ; 1:11      print
     ld   BC, size148    ; 3:10      print Length of string to print
@@ -1022,10 +1006,10 @@ begin147:
 break147:               ;           again 147
     
 begin148: 
-    ld    A, L          ; 1:4       dup 3 u>= while 148    (HL>=3) --> (HL-3>=0) --> not carry if true
-    sub   low 3         ; 2:7       dup 3 u>= while 148    (HL>=3) --> (HL-3>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup 3 u>= while 148    (HL>=3) --> (HL-3>=0) --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 u>= while 148    (HL>=3) --> (HL-3>=0) --> not carry if true
+    ld    A, L          ; 1:4       dup 3 u>= while 148    HL>=3 --> HL-3>=0 --> not carry if true
+    sub   low 3         ; 2:7       dup 3 u>= while 148    HL>=3 --> HL-3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup 3 u>= while 148    HL>=3 --> HL-3>=0 --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 u>= while 148    HL>=3 --> HL-3>=0 --> not carry if true
     jp    c, break148   ; 3:10      dup 3 u>= while 148 
     push DE             ; 1:11      print
     ld   BC, size149    ; 3:10      print Length of string to print
@@ -1088,13 +1072,13 @@ begin150:
 break150:               ;           again 150
     
 begin151: 
-    ld    A, H          ; 1:4       dup -3 < while
-    add   A, A          ; 1:4       dup -3 < while
-    jp   nc, break151   ; 3:10      dup -3 < while    negative constant
-    ld    A, L          ; 1:4       dup -3 < while 151    (DE<HL) --> (DE-HL<0) --> carry if true
-    sub   low -3        ; 2:7       dup -3 < while 151    (DE<HL) --> (DE-HL<0) --> carry if true
-    ld    A, H          ; 1:4       dup -3 < while 151    (DE<HL) --> (DE-HL<0) --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 < while 151    (DE<HL) --> (DE-HL<0) --> carry if true
+    ld    A, H          ; 1:4       dup -3 < while 151
+    add   A, A          ; 1:4       dup -3 < while 151
+    jp   nc, break151   ; 3:10      dup -3 < while 151    positive HL < negative constant ---> false
+    ld    A, L          ; 1:4       dup -3 < while 151    HL<-3 --> HL--3<0 --> carry if true
+    sub   low -3        ; 2:7       dup -3 < while 151    HL<-3 --> HL--3<0 --> carry if true
+    ld    A, H          ; 1:4       dup -3 < while 151    HL<-3 --> HL--3<0 --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 < while 151    HL<-3 --> HL--3<0 --> carry if true
     jp   nc, break151   ; 3:10      dup -3 < while 151 
     push DE             ; 1:11      print
     ld   BC, size152    ; 3:10      print Length of string to print
@@ -1106,13 +1090,13 @@ begin151:
 break151:               ;           again 151
     
 begin152: 
-    ld    A, H          ; 1:4       dup -3 <= while
-    add   A, A          ; 1:4       dup -3 <= while
-    jp   nc, break152   ; 3:10      dup -3 <= while   negative constant
-    ld    A, low -3     ; 2:7       dup -3 <= while 152    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sub   L             ; 1:4       dup -3 <= while 152    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 <= while 152    (DE<=HL) --> (0<=HL-DE) --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 <= while 152    (DE<=HL) --> (0<=HL-DE) --> not carry if true
+    ld    A, H          ; 1:4       dup -3 <= while 152
+    add   A, A          ; 1:4       dup -3 <= while 152
+    jp   nc, break152   ; 3:10      dup -3 <= while 152    positive HL <= negative constant ---> false
+    ld    A, low -3     ; 2:7       dup -3 <= while 152    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sub   L             ; 1:4       dup -3 <= while 152    HL<=-3 --> 0<=-3-HL --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 <= while 152    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 <= while 152    HL<=-3 --> 0<=-3-HL --> not carry if true
     jp    c, break152   ; 3:10      dup -3 <= while 152 
     push DE             ; 1:11      print
     ld   BC, size153    ; 3:10      print Length of string to print
@@ -1124,13 +1108,13 @@ begin152:
 break152:               ;           again 152
     
 begin153: 
-    ld    A, H          ; 1:4       dup -3 > while
-    add   A, A          ; 1:4       dup -3 > while
-    jr   nc, $+11       ; 2:7/12    dup -3 > while    negative constant
-    ld    A, low -3     ; 2:7       dup -3 > while 153    (DE>HL) --> (0>HL-DE) --> carry if true
-    sub   L             ; 1:4       dup -3 > while 153    (DE>HL) --> (0>HL-DE) --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 > while 153    (DE>HL) --> (0>HL-DE) --> carry if true
-    sbc   A, H          ; 1:4       dup -3 > while 153    (DE>HL) --> (0>HL-DE) --> carry if true
+    ld    A, H          ; 1:4       dup -3 > while 153
+    add   A, A          ; 1:4       dup -3 > while 153
+    jr   nc, $+11       ; 2:7/12    dup -3 > while 153    positive HL > negative constant ---> true
+    ld    A, low -3     ; 2:7       dup -3 > while 153    HL>-3 --> 0>-3-HL --> carry if true
+    sub   L             ; 1:4       dup -3 > while 153    HL>-3 --> 0>-3-HL --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 > while 153    HL>-3 --> 0>-3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup -3 > while 153    HL>-3 --> 0>-3-HL --> carry if true
     jp   nc, break153   ; 3:10      dup -3 < while 153 
     push DE             ; 1:11      print
     ld   BC, size154    ; 3:10      print Length of string to print
@@ -1142,13 +1126,13 @@ begin153:
 break153:               ;           again 153
     
 begin154: 
-    ld    A, H          ; 1:4       dup -3 >= while
-    add   A, A          ; 1:4       dup -3 >= while
-    jr   nc, $+11       ; 2:7/11    dup -3 >= while    negative constant
-    ld    A, L          ; 1:4       dup -3 >= while 154    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sub   low -3        ; 2:7       dup -3 >= while 154    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup -3 >= while 154    (DE>=HL) --> (DE-HL>=0) --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 >= while 154    (DE>=HL) --> (DE-HL>=0) --> not carry if true
+    ld    A, H          ; 1:4       dup -3 >= while 154
+    add   A, A          ; 1:4       dup -3 >= while 154
+    jr   nc, $+11       ; 2:7/11    dup -3 >= while 154    positive HL >= negative constant ---> true
+    ld    A, L          ; 1:4       dup -3 >= while 154    HL>=-3 --> HL--3>=0 --> not carry if true
+    sub   low -3        ; 2:7       dup -3 >= while 154    HL>=-3 --> HL--3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup -3 >= while 154    HL>=-3 --> HL--3>=0 --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 >= while 154    HL>=-3 --> HL--3>=0 --> not carry if true
     jp    c, break154   ; 3:10      dup -3 >= while 154 
     push DE             ; 1:11      print
     ld   BC, size155    ; 3:10      print Length of string to print
@@ -1203,10 +1187,10 @@ begin156:
 break156:               ;           again 156
     
 begin157: 
-    ld    A, L          ; 1:4       dup -3 u< while 157    (HL<-3) --> (HL--3<0) --> carry if true
-    sub   low -3        ; 2:7       dup -3 u< while 157    (HL<-3) --> (HL--3<0) --> carry if true
-    ld    A, H          ; 1:4       dup -3 u< while 157    (HL<-3) --> (HL--3<0) --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 u< while 157    (HL<-3) --> (HL--3<0) --> carry if true
+    ld    A, L          ; 1:4       dup -3 u< while 157    HL<-3 --> HL--3<0 --> carry if true
+    sub   low -3        ; 2:7       dup -3 u< while 157    HL<-3 --> HL--3<0 --> carry if true
+    ld    A, H          ; 1:4       dup -3 u< while 157    HL<-3 --> HL--3<0 --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 u< while 157    HL<-3 --> HL--3<0 --> carry if true
     jp   nc, break157   ; 3:10      dup -3 u< while 157 
     push DE             ; 1:11      print
     ld   BC, size158    ; 3:10      print Length of string to print
@@ -1218,10 +1202,10 @@ begin157:
 break157:               ;           again 157
     
 begin158: 
-    ld    A, low -3     ; 2:7       dup -3 u<= while 158    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    sub   L             ; 1:4       dup -3 u<= while 158    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 u<= while 158    (HL<=-3) --> (0<=-3-HL) --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 u<= while 158    (HL<=-3) --> (0<=-3-HL) --> not carry if true
+    ld    A, low -3     ; 2:7       dup -3 u<= while 158    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sub   L             ; 1:4       dup -3 u<= while 158    HL<=-3 --> 0<=-3-HL --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 u<= while 158    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 u<= while 158    HL<=-3 --> 0<=-3-HL --> not carry if true
     jp    c, break158   ; 3:10      dup -3 u<= while 158 
     push DE             ; 1:11      print
     ld   BC, size159    ; 3:10      print Length of string to print
@@ -1233,10 +1217,10 @@ begin158:
 break158:               ;           again 158
     
 begin159: 
-    ld    A, low -3     ; 2:7       dup -3 u> while 159    (HL>-3) --> (0>-3-HL) --> carry if true
-    sub   L             ; 1:4       dup -3 u> while 159    (HL>-3) --> (0>-3-HL) --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 u> while 159    (HL>-3) --> (0>-3-HL) --> carry if true
-    sbc   A, H          ; 1:4       dup -3 u> while 159    (HL>-3) --> (0>-3-HL) --> carry if true
+    ld    A, low -3     ; 2:7       dup -3 u> while 159    HL>-3 --> 0>-3-HL --> carry if true
+    sub   L             ; 1:4       dup -3 u> while 159    HL>-3 --> 0>-3-HL --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 u> while 159    HL>-3 --> 0>-3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup -3 u> while 159    HL>-3 --> 0>-3-HL --> carry if true
     jp   nc, break159   ; 3:10      dup -3 u> while 159 
     push DE             ; 1:11      print
     ld   BC, size160    ; 3:10      print Length of string to print
@@ -1248,10 +1232,10 @@ begin159:
 break159:               ;           again 159
     
 begin160: 
-    ld    A, L          ; 1:4       dup -3 u>= while 160    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    sub   low -3        ; 2:7       dup -3 u>= while 160    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    ld    A, H          ; 1:4       dup -3 u>= while 160    (HL>=-3) --> (HL--3>=0) --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 u>= while 160    (HL>=-3) --> (HL--3>=0) --> not carry if true
+    ld    A, L          ; 1:4       dup -3 u>= while 160    HL>=-3 --> HL--3>=0 --> not carry if true
+    sub   low -3        ; 2:7       dup -3 u>= while 160    HL>=-3 --> HL--3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup -3 u>= while 160    HL>=-3 --> HL--3>=0 --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 u>= while 160    HL>=-3 --> HL--3>=0 --> not carry if true
     jp    c, break160   ; 3:10      dup -3 u>= while 160 
     push DE             ; 1:11      print
     ld   BC, size161    ; 3:10      print Length of string to print
@@ -1295,7 +1279,6 @@ Stop:
 stack_test_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
-
 
 
 ; Input: HL
@@ -1557,5 +1540,4 @@ size102 EQU $ - string102
 string101:
 db "RAS:"
 size101 EQU $ - string101
-
 

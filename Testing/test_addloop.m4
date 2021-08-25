@@ -523,5 +523,3 @@ COLON(_3sloop)
     ADDSLOOP 
     CR 
 SEMICOLON
-
-include({../M4/LAST.M4})dnl

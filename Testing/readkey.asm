@@ -4,8 +4,8 @@
     ld  (Stop+1), SP    ; 4:20      not need
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000
-    exx
+    ld   HL, 60000      ; 3:10      Init Return address stack
+    exx                 ; 1:4
     ld  hl, stack_test
     push hl
 
@@ -74,7 +74,8 @@ break101:               ;           repeat 101
     push DE             ; 1:11      push(BUFFER)
     ex   DE, HL         ; 1:4       push(BUFFER)
     ld   HL, BUFFER     ; 3:10      push(BUFFER) 
-    ld  (idx101), HL    ; 3:16      do 101 index
+    ld  (idx101), HL    ; 3:16      do 101 save index
+    dec  DE             ; 1:6       do 101 stop-1
     ld    A, E          ; 1:4       do 101 
     ld  (stp_lo101), A  ; 3:13      do 101 lo stop
     ld    A, D          ; 1:4       do 101 
@@ -105,15 +106,16 @@ do101:                  ;           do 101
     pop  DE             ; 1:10      drop ( a -- ) 
 idx101 EQU $+1          ;           loop 101
     ld   BC, 0x0000     ; 3:10      loop 101 idx always points to a 16-bit index
-    inc  BC             ; 1:6       loop 101 index++
-    ld  (idx101),BC     ; 4:20      loop 101 save index
     ld    A, C          ; 1:4       loop 101
 stp_lo101 EQU $+1       ;           loop 101
-    sub  0x00           ; 2:7       loop 101 lo index - stop
+    xor  0x00           ; 2:7       loop 101 lo index - stop - 1
     ld    A, B          ; 1:4       loop 101
+    inc  BC             ; 1:6       loop 101 index++
+    ld  (idx101),BC     ; 4:20      loop 101 save index
+    jp   nz, do101      ; 3:10      loop 101    
 stp_hi101 EQU $+1       ;           loop 101
-    sbc   A, 0x00       ; 2:7       loop 101 hi index - stop
-    jp    c, do101      ; 3:10      loop 101
+    xor  0x00           ; 2:7       loop 101 hi index - stop - 1
+    jp   nz, do101      ; 3:10      loop 101
 leave101:               ;           loop 101
 exit101:                ;           loop 101 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -156,6 +158,7 @@ stack_test_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
 
+;# I need to have label buffer at the end.
 
 
 ; Input: HL
