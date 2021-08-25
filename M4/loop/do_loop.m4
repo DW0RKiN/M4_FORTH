@@ -3,7 +3,8 @@ define({__},{})dnl
 dnl
 dnl
 dnl ---------  do ... loop  -----------
-dnl 5 0 do i . loop --> 0 1 2 3 4 
+dnl 5 0 do i . loop --> 0 1 2 3 4
+dnl 5 5 do i . loop --> 5 6 7 ... -2 -1 0 1 2 3 4 
 dnl ( stop index -- ) r:( -- stop index )
 define({DO},{ifelse($#,{0},,{
 .error Unexpected parameter: do($@) --> push2($@) do ?}){}dnl
@@ -107,6 +108,8 @@ dnl
 dnl
 dnl
 dnl ( -- )
+dnl 2 5 do i . -1 +loop --> 5 4 3 2
+dnl 2 2 do i . -1 +loop --> 2 
 define({SUB1_ADDLOOP},{
 idx{}LOOP_STACK EQU $+1          ;           -1 +loop LOOP_STACK
     ld   BC, 0x0000     ; 3:10      -1 +loop LOOP_STACK idx always points to a 16-bit index
@@ -131,6 +134,11 @@ dnl
 dnl
 dnl 2 +loop
 dnl ( -- )
+dnl 6 0 do i . 2 +loop --> 0 2 4
+dnl 5 0 do i . 2 +loop --> 0 2 4
+dnl 6 4 do i . 2 +loop --> 4
+dnl 6 5 do i . 2 +loop --> 5 
+dnl 6 6 do i . 2 +loop --> 6 8 10 12 ... 
 define({_2_ADDLOOP},{
 idx{}LOOP_STACK EQU $+1          ;           2 +loop LOOP_STACK
     ld   BC, 0x0000     ; 3:10      2 +loop LOOP_STACK idx always points to a 16-bit index

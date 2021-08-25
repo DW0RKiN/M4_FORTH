@@ -322,6 +322,28 @@ define({_256DIV},{
 dnl
 dnl
 dnl
+define({PRINT_NIBBLE},{ifelse(eval(TEMP_BIN),{0},,{dnl
+___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+___{}define({TEMP_BIN_OUT},{_}eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+___{}ifelse(eval(TEMP_BIN),{0},,{PRINT_NIBBLE}){}dnl
+})})dnl
+dnl
+dnl
+dnl
+define({PRINT_BINARY},{dnl
+___{}define({TEMP_BIN},eval(($1) & 0xffff)){}dnl
+___{}define({TEMP_BIN_OUT},{}){}dnl
+___{}PRINT_NIBBLE{}dnl
+___{}b{}TEMP_BIN_OUT{}dnl
+})dnl
+dnl
+dnl
 dnl
 define({SUM_1BITS},{define({TEMP},eval((($1) & 0x5555) + (($1) & 0xAAAA)/2)){}dnl
 ___{}define({TEMP},eval((TEMP & 0x3333) + (TEMP & 0xCCCC)/4)){}dnl
@@ -341,7 +363,7 @@ dnl
 dnl
 dnl
 dnl
-define({XMUL_LOOP},{define({XMUL_PAR},eval($1)){}define({XMUL_SUM},{1}){}_XMUL_LOOP($1)})dnl
+define({XMUL_LOOP},{define({XMUL_PAR},eval($1)){}define({XMUL_BIT},{1}){}define({XMUL_SUM_BIT},{0}){}_XMUL_LOOP($1)})dnl
 dnl
 define({_XMUL_LOOP},{ifelse(eval(XMUL_PAR>1),{1},{dnl
 ___{}ifelse(eval(XMUL_PAR & 1),{1},{XMUL_SAVE}){}dnl
@@ -349,19 +371,19 @@ ___{}define({XMUL_PAR},eval(XMUL_PAR/2)){}dnl
 ___{}ifelse(dnl
 ___{}___{}eval(XMUL_PAR & 127),{0},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/128)){}dnl
-___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*256))
+___{}___{}___{}define({XMUL_BIT},eval(XMUL_BIT*256))
     ld    H, L          ; 1:4       $1 *
-    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
+    ld    L, 0x00       ; 2:7       $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}},
-___{}___{}eval(((XMUL_PAR & 63)==0) && (XMUL_SUM > 1)),{1},{dnl
+___{}___{}eval(((XMUL_PAR & 63)==0) && (XMUL_BIT > 1)),{1},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/64)){}dnl
-___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*128))
+___{}___{}___{}define({XMUL_BIT},eval(XMUL_BIT*128))
     rr    H             ; 2:8       $1 *
     rr    L             ; 2:8       $1 *
     ld    H, L          ; 1:4       $1 *
-    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
+    ld    L, 0x00       ; 2:7       $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}},
-___{}___{}{define({XMUL_SUM},eval(2*XMUL_SUM)){}XMUL_2X}{}dnl
+___{}___{}{define({XMUL_BIT},eval(2*XMUL_BIT)){}XMUL_2X}{}dnl
 ___{}){}dnl
 ___{}_XMUL_LOOP($1){}dnl
 })})dnl
@@ -369,7 +391,7 @@ dnl
 dnl
 dnl
 dnl
-define({XMUL_NEGLOOP},{define({XMUL_PAR},eval($1-1)){}define({XMUL_SUM},{1}){}_XMUL_NEGLOOP($1)})dnl
+define({XMUL_NEGLOOP},{define({XMUL_PAR},eval($1-1)){}define({XMUL_BIT},{1}){}define({XMUL_SUM_BIT},{0}){}_XMUL_NEGLOOP($1)})dnl
 dnl
 define({_XMUL_NEGLOOP},{ifelse(eval(XMUL_PAR>=1),{1},{dnl
 ___{}ifelse(eval(XMUL_PAR & 1),{0},{XMUL_SAVE}){}dnl
@@ -377,19 +399,19 @@ ___{}define({XMUL_PAR},eval(XMUL_PAR/2)){}dnl
 ___{}ifelse(dnl
 ___{}___{}eval(XMUL_PAR & 127),{127},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/128)){}dnl
-___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*256))
+___{}___{}___{}define({XMUL_BIT},eval(XMUL_BIT*256))
     ld    H, L          ; 1:4       $1 *
-    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
+    ld    L, 0x00       ; 2:7       $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}},
-___{}___{}eval(((XMUL_PAR & 63)==63) && (XMUL_SUM > 1)),{1},{dnl
+___{}___{}eval(((XMUL_PAR & 63)==63) && (XMUL_BIT > 1)),{1},{dnl
 ___{}___{}___{}define({XMUL_PAR},eval(XMUL_PAR/64)){}dnl
-___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM*128))
+___{}___{}___{}define({XMUL_BIT},eval(XMUL_BIT*128))
     rr    H             ; 2:8       $1 *
     rr    L             ; 2:8       $1 *
     ld    H, L          ; 1:4       $1 *
-    ld    L, 0x00       ; 2:7       $1 * XMUL_SUM{}x{}dnl
+    ld    L, 0x00       ; 2:7       $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}},
-___{}___{}{define({XMUL_SUM},eval(2*XMUL_SUM)){}XMUL_2X}{}dnl
+___{}___{}{define({XMUL_BIT},eval(2*XMUL_BIT)){}XMUL_2X}{}dnl
 ___{}){}dnl
 ___{}_XMUL_NEGLOOP($1){}dnl
 })})dnl
@@ -404,120 +426,118 @@ dnl
 ifelse(eval($1==0),{1},{
 dnl n = 0
 dnl
-
+                        ;           $1 *   Variant: HL * 0{}dnl
     ld   HL, 0x0000     ; 3:10      0*{}dnl
-},XMUL_1BITS,{1},{dnl
+},XMUL_1BITS,{1},{
 dnl n = 2^a
 dnl 1,2,4,8,16,32,...
-dnl 
+                        ;           $1 *   Variant: HL * 2^a = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x  Variant: 2^a{}dnl
-___{}___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x})})dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x})dnl
 ___{}XMUL_LOOP($1){}dnl
-},XMUL_1BITS,{2},{dnl
+},XMUL_1BITS,{2},{
 dnl n = 2^a + 2^b
 dnl 3,5,6,9,10,12,17,18,20,24,...
 dnl Not all variants are optimal. For example, 258.
-dnl
+                        ;           $1 *   Variant: HL * (2^a + 2^b) = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1 * Variant: 2^a + 2^b
-    ld    C, L          ; 1:4       $1 * save XMUL_SUM{}x}){}dnl
+    ld    B, H          ; 1:4       $1 *
+    ld    C, L          ; 1:4       $1 *   define({XMUL_SUM_BIT},XMUL_BIT){}XMUL_SUM_BIT{}x}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x}){}dnl
 ___{}XMUL_LOOP($1)
-    add  HL, BC         ; 1:11      $1 * HL + save{}dnl
-},XMUL_0BITS,{1},{dnl
+    add  HL, BC         ; 1:11      $1 *   XMUL_BIT{}x + XMUL_SUM_BIT{}x = eval(XMUL_BIT+XMUL_SUM_BIT){}x{}dnl
+},XMUL_0BITS,{1},{
 dnl n = 2^a - 2^b, a > b
 dnl 60=64-4
-dnl
+                        ;           $1 *   Variant: HL * (2^a - 2^b) = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1 * Variant: 2^a - 2^b
-    ld    C, L          ; 1:4       $1 * save XMUL_SUM{}x}){}dnl
+    ld    B, H          ; 1:4       $1 *
+    ld    C, L          ; 1:4       $1 *   define({XMUL_SUM_BIT},XMUL_BIT){}XMUL_SUM_BIT{}x}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x})dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x})dnl
 ___{}XMUL_NEGLOOP($1)
     or    A             ; 1:4       $1 *
-    sbc  HL, BC         ; 2:15      $1 * HL - save{}dnl
-},XMUL_1BITS,{3},{dnl
+    sbc  HL, BC         ; 2:15      $1 *   XMUL_BIT{}x - XMUL_SUM_BIT{}x = eval(XMUL_BIT-XMUL_SUM_BIT){}x{}dnl
+},XMUL_1BITS,{3},{
 dnl
 dnl n = 2^a + 2^b + 2^c
 dnl 11=8+2+1,69=64+4+1
-dnl
+                        ;           $1 *   Variant: HL * (2^a + 2^b + 2^c) = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1 * Variant: 2^a + 2^b + 2^c
-    ld    A, L          ; 1:4       $1 * save XMUL_SUM{}x{}define({XMUL_SAVE},{
-    add   A, L          ; 1:4       $1 * +
-    ld    C, A          ; 1:4       $1 * +
-    ld    A, B          ; 1:4       $1 * +
-    adc   A, H          ; 1:4       $1 * +
-    ld    B, A          ; 1:4       $1 * + save XMUL_SUM{}x})}){}dnl
+    ld    B, H          ; 1:4       $1 *
+    ld    A, L          ; 1:4       $1 *   define({XMUL_SUM_BIT},XMUL_BIT){}XMUL_SUM_BIT{}x{}define({XMUL_SAVE},{
+    add   A, L          ; 1:4       $1 *   
+    ld    C, A          ; 1:4       $1 *   
+    ld    A, B          ; 1:4       $1 *   
+    adc   A, H          ; 1:4       $1 *   
+    ld    B, A          ; 1:4       $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x})}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x}){}dnl
 ___{}XMUL_LOOP($1)
-    add  HL, BC         ; 1:11      $1 * HL + save{}dnl
-},XMUL_0BITS,{2},{dnl
+    add  HL, BC         ; 1:11      $1 *   XMUL_BIT{}x + XMUL_SUM_BIT{}x = eval(XMUL_BIT+XMUL_SUM_BIT){}x{}dnl
+},XMUL_0BITS,{2},{
 dnl
 dnl n = 2^a - 2^b - 2^c, a > b > c
 dnl 27=32-4-1,54=64-8-2
-dnl
+                        ;           $1 *   Variant: HL * (2^a - 2^b - 2^c) = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_SAVE},{
-    ld    B, H          ; 1:4       $1 * Variant: 2^a - 2^b - 2^c
-    ld    A, L          ; 1:4       $1 * save XMUL_SUM{}x{}dnl
+    ld    B, H          ; 1:4       $1 *
+    ld    A, L          ; 1:4       $1 *   define({XMUL_SUM_BIT},XMUL_BIT){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}define({XMUL_SAVE},{
     add   A, L          ; 1:4       $1 *
-    ld    C, A          ; 1:4       $1 * +
-    ld    A, B          ; 1:4       $1 * +
-    adc   A, H          ; 1:4       $1 * +
-    ld    B, A          ; 1:4       $1 * + save XMUL_SUM{}x{}dnl
+    ld    C, A          ; 1:4       $1 *
+    ld    A, B          ; 1:4       $1 *
+    adc   A, H          ; 1:4       $1 *
+    ld    B, A          ; 1:4       $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}}){}dnl
 ___{}}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x}){}dnl
 ___{}XMUL_NEGLOOP($1)
     or    A             ; 1:4       $1 *
-    sbc  HL, BC         ; 2:15      $1 * HL - save{}dnl
-},eval(XMUL_1BITS <= XMUL_0BITS + 2),{1},{dnl
+    sbc  HL, BC         ; 2:15      $1 *   XMUL_BIT{}x - XMUL_SUM_BIT{}x = eval(XMUL_BIT-XMUL_SUM_BIT){}x{}dnl
+},eval(XMUL_1BITS <= XMUL_0BITS + 2),{1},{
 dnl n = 2^a + 2^b + 2^c + ...
-dnl
+                        ;           $1 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_SAVE},{
     ld    D, H          ; 1:4       $1 *
-    ld    E, L          ; 1:4       $1 * save XMUL_SUM{}x{}dnl
+    ld    E, L          ; 1:4       $1 *   define({XMUL_SUM_BIT},XMUL_BIT){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}define({XMUL_SAVE},{
-    ex   DE, HL         ; 1:4       $1 * +
-    add  HL, DE         ; 1:11      $1 * + save XMUL_SUM{}x
-    ex   DE, HL         ; 1:4       $1 * +{}dnl
+    ex   DE, HL         ; 1:4       $1 *
+    add  HL, DE         ; 1:11      $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x
+    ex   DE, HL         ; 1:4       $1 *{}dnl
 ___{}___{}}){}dnl
 ___{}}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x}){}dnl
     
-    ld    B, D          ; 1:4       $1 * Variant: 2^a + 2^b + 2^c + ...
+    ld    B, D          ; 1:4       $1 *
     ld    C, E          ; 1:4       $1 *{}dnl
 ___{}XMUL_LOOP($1)
-    add  HL, DE         ; 1:11      $1 * HL + save
+    add  HL, DE         ; 1:11      $1 *   XMUL_BIT{}x + XMUL_SUM_BIT{}x = eval(XMUL_BIT+XMUL_SUM_BIT){}x
     ld    D, B          ; 1:4       $1 *
     ld    E, C          ; 1:4       $1 *{}dnl
-},{dnl
+},{
 dnl 187=128+32+16+8+2+1=256-64-4-1
-dnl
+                        ;           $1 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * PRINT_BINARY($1){}dnl
 ___{}define({XMUL_SAVE},{
     ld    D, H          ; 1:4       $1 *
-    ld    E, L          ; 1:4       $1 * save XMUL_SUM{}x{}dnl
+    ld    E, L          ; 1:4       $1 *   define({XMUL_SUM_BIT},XMUL_BIT){}XMUL_SUM_BIT{}x{}dnl
 ___{}___{}define({XMUL_SAVE},{
-    ex   DE, HL         ; 1:4       $1 * +
-    add  HL, DE         ; 1:11      $1 * + save XMUL_SUM{}x
-    ex   DE, HL         ; 1:4       $1 * +{}dnl
+    ex   DE, HL         ; 1:4       $1 *
+    add  HL, DE         ; 1:11      $1 *   define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}XMUL_SUM_BIT{}x
+    ex   DE, HL         ; 1:4       $1 *{}dnl
 ___{}___{}}){}dnl
 ___{}}){}dnl
 ___{}define({XMUL_2X},{
-    add  HL, HL         ; 1:11      $1 * XMUL_SUM{}x}){}dnl
+    add  HL, HL         ; 1:11      $1 *   XMUL_BIT{}x}){}dnl
 
-    ld    B, D          ; 1:4       $1 * Variant: 2^a - 2^b - 2^c - ...
+    ld    B, D          ; 1:4       $1 *
     ld    C, E          ; 1:4       $1 *{}dnl
 ___{}XMUL_NEGLOOP($1)
     or    A             ; 1:4       $1 *
-    sbc  HL, DE         ; 2:15      $1 * HL - save
+    sbc  HL, DE         ; 2:15      $1 *   XMUL_BIT{}x - XMUL_SUM_BIT{}x = eval(XMUL_BIT-XMUL_SUM_BIT){}x
     ld    D, B          ; 1:4       $1 *
     ld    E, C          ; 1:4       $1 *})})dnl
 dnl
