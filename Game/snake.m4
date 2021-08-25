@@ -264,6 +264,7 @@ SSEMICOLON
 
 SCOLON(start) SCALL(initialize) SCALL(game_loop) SSEMICOLON 
 
+;# I need to have label snake_x_head and snake_y_head at the end.
 include({../M4/LAST.M4})dnl
 
 snake_x_head EQU $

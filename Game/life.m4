@@ -176,6 +176,7 @@ SCOLON(sum_neighbors,( addr -- sum ))
     PUSH_AND(0xFF)
 SSEMICOLON
 
+;# I need to have label buff at the end.
 include({../M4/LAST.M4})dnl
 
 buff:
