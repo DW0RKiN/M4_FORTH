@@ -11,20 +11,20 @@ ORG 0x6000
     push DE             ; 1:11      push(1)
     ex   DE, HL         ; 1:4       push(1)
     ld   HL, 1          ; 3:10      push(1)       
-                        ;           3 *   Variant: HL * (2^a + 2^b) = HL * b_0011 
+                        ;           3 *   Variant: HL * (2^a + 2^b) = HL * b_0011  
     ld    B, H          ; 1:4       3 *
     ld    C, L          ; 1:4       3 *   1x 
     add  HL, HL         ; 1:11      3 *   2x 
     add  HL, BC         ; 1:11      3 *   2x + 1x = 3x
                         ;[4:30]   
-                        ;           5 *   Variant: HL * (2^a + 2^b) = HL * b_0101 
+                        ;           5 *   Variant: HL * (2^a + 2^b) = HL * b_0101  
     ld    B, H          ; 1:4       5 *
     ld    C, L          ; 1:4       5 *   1x 
     add  HL, HL         ; 1:11      5 *   2x 
     add  HL, HL         ; 1:11      5 *   4x 
     add  HL, BC         ; 1:11      5 *   4x + 1x = 5x
                         ;[5:41]   
-                        ;           7 *   Variant: HL * (2^a - 2^b) = HL * b_0111 
+                        ;           7 *   Variant: HL * (2^a - 2^b) = HL * b_0111  
     ld    B, H          ; 1:4       7 *
     ld    C, L          ; 1:4       7 *   1x 
     add  HL, HL         ; 1:11      7 *   2x 
@@ -33,7 +33,7 @@ ORG 0x6000
     or    A             ; 1:4       7 *
     sbc  HL, BC         ; 2:15      7 *   8x - 1x = 7x
                         ;[8:60]   
-                        ;           9 *   Variant: HL * (2^a + 2^b) = HL * b_1001 
+                        ;           9 *   Variant: HL * (2^a + 2^b) = HL * b_1001  
     ld    B, H          ; 1:4       9 *
     ld    C, L          ; 1:4       9 *   1x 
     add  HL, HL         ; 1:11      9 *   2x 
@@ -41,34 +41,34 @@ ORG 0x6000
     add  HL, HL         ; 1:11      9 *   8x 
     add  HL, BC         ; 1:11      9 *   8x + 1x = 9x
                         ;[6:52]   
-                        ;           11 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1011 
+                        ;           11 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1011  
     ld    B, H          ; 1:4       11 *
     ld    A, L          ; 1:4       11 *   1x 
     add  HL, HL         ; 1:11      11 *   2x 
     add   A, L          ; 1:4       11 *
-    ld    C, A          ; 1:4       11 *   
-    ld    A, B          ; 1:4       11 *   
-    adc   A, H          ; 1:4       11 *   
+    ld    C, A          ; 1:4       11 *
+    ld    A, B          ; 1:4       11 *
+    adc   A, H          ; 1:4       11 *
     ld    B, A          ; 1:4       11 *   3x 
     add  HL, HL         ; 1:11      11 *   4x 
     add  HL, HL         ; 1:11      11 *   8x 
     add  HL, BC         ; 1:11      11 *   8x + 3x = 11x
                         ;[11:72]
 
-                        ;           13 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1101 
+                        ;           13 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1101  
     ld    B, H          ; 1:4       13 *
     ld    A, L          ; 1:4       13 *   1x 
     add  HL, HL         ; 1:11      13 *   2x 
     add  HL, HL         ; 1:11      13 *   4x 
     add   A, L          ; 1:4       13 *
-    ld    C, A          ; 1:4       13 *   
-    ld    A, B          ; 1:4       13 *   
-    adc   A, H          ; 1:4       13 *   
+    ld    C, A          ; 1:4       13 *
+    ld    A, B          ; 1:4       13 *
+    adc   A, H          ; 1:4       13 *
     ld    B, A          ; 1:4       13 *   5x 
     add  HL, HL         ; 1:11      13 *   8x 
     add  HL, BC         ; 1:11      13 *   8x + 5x = 13x
                         ;[11:72]  
-                        ;           15 *   Variant: HL * (2^a - 2^b) = HL * b_1111 
+                        ;           15 *   Variant: HL * (2^a - 2^b) = HL * b_1111  
     ld    B, H          ; 1:4       15 *
     ld    C, L          ; 1:4       15 *   1x 
     add  HL, HL         ; 1:11      15 *   2x 
@@ -78,7 +78,7 @@ ORG 0x6000
     or    A             ; 1:4       15 *
     sbc  HL, BC         ; 2:15      15 *   16x - 1x = 15x
                         ;[9:71]  
-                        ;           17 *   Variant: HL * (2^a + 2^b) = HL * b_0001_0001 
+                        ;           17 *   Variant: HL * (2^a + 2^b) = HL * b_0001_0001  
     ld    B, H          ; 1:4       17 *
     ld    C, L          ; 1:4       17 *   1x 
     add  HL, HL         ; 1:11      17 *   2x 
@@ -87,73 +87,73 @@ ORG 0x6000
     add  HL, HL         ; 1:11      17 *   16x 
     add  HL, BC         ; 1:11      17 *   16x + 1x = 17x
                         ;[7:63]  
-                        ;           19 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0011 
+                        ;           19 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0011  
     ld    B, H          ; 1:4       19 *
     ld    A, L          ; 1:4       19 *   1x 
     add  HL, HL         ; 1:11      19 *   2x 
     add   A, L          ; 1:4       19 *
-    ld    C, A          ; 1:4       19 *   
-    ld    A, B          ; 1:4       19 *   
-    adc   A, H          ; 1:4       19 *   
+    ld    C, A          ; 1:4       19 *
+    ld    A, B          ; 1:4       19 *
+    adc   A, H          ; 1:4       19 *
     ld    B, A          ; 1:4       19 *   3x 
     add  HL, HL         ; 1:11      19 *   4x 
     add  HL, HL         ; 1:11      19 *   8x 
     add  HL, HL         ; 1:11      19 *   16x 
     add  HL, BC         ; 1:11      19 *   16x + 3x = 19x
                         ;[12:83]  
-                        ;           21 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0101 
+                        ;           21 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0101  
     ld    B, H          ; 1:4       21 *
     ld    A, L          ; 1:4       21 *   1x 
     add  HL, HL         ; 1:11      21 *   2x 
     add  HL, HL         ; 1:11      21 *   4x 
     add   A, L          ; 1:4       21 *
-    ld    C, A          ; 1:4       21 *   
-    ld    A, B          ; 1:4       21 *   
-    adc   A, H          ; 1:4       21 *   
+    ld    C, A          ; 1:4       21 *
+    ld    A, B          ; 1:4       21 *
+    adc   A, H          ; 1:4       21 *
     ld    B, A          ; 1:4       21 *   5x 
     add  HL, HL         ; 1:11      21 *   8x 
     add  HL, HL         ; 1:11      21 *   16x 
     add  HL, BC         ; 1:11      21 *   16x + 5x = 21x
                         ;[12:83]  
-                        ;           23 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_0111 
+                        ;           23 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_0111  
     ld    B, H          ; 1:4       23 *
     ld    A, L          ; 1:4       23 *   1x 
     add  HL, HL         ; 1:11      23 *   2x 
     add  HL, HL         ; 1:11      23 *   4x 
     add  HL, HL         ; 1:11      23 *   8x 
     add   A, L          ; 1:4       23 *
-    ld    C, A          ; 1:4       23 *   
-    ld    A, B          ; 1:4       23 *   
-    adc   A, H          ; 1:4       23 *   
+    ld    C, A          ; 1:4       23 *
+    ld    A, B          ; 1:4       23 *
+    adc   A, H          ; 1:4       23 *
     ld    B, A          ; 1:4       23 *   9x 
     add  HL, HL         ; 1:11      23 *   16x 
     add  HL, HL         ; 1:11      23 *   32x 
     or    A             ; 1:4       23 *
     sbc  HL, BC         ; 2:15      23 *   32x - 9x = 23x
                         ;[15:102]  
-                        ;           25 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_1001 
+                        ;           25 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_1001  
     ld    B, H          ; 1:4       25 *
     ld    A, L          ; 1:4       25 *   1x 
     add  HL, HL         ; 1:11      25 *   2x 
     add  HL, HL         ; 1:11      25 *   4x 
     add  HL, HL         ; 1:11      25 *   8x 
     add   A, L          ; 1:4       25 *
-    ld    C, A          ; 1:4       25 *   
-    ld    A, B          ; 1:4       25 *   
-    adc   A, H          ; 1:4       25 *   
+    ld    C, A          ; 1:4       25 *
+    ld    A, B          ; 1:4       25 *
+    adc   A, H          ; 1:4       25 *
     ld    B, A          ; 1:4       25 *   9x 
     add  HL, HL         ; 1:11      25 *   16x 
     add  HL, BC         ; 1:11      25 *   16x + 9x = 25x
                         ;[12:83]  
-                        ;           27 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1011 
+                        ;           27 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1011  
     ld    B, H          ; 1:4       27 *
     ld    A, L          ; 1:4       27 *   1x 
     add  HL, HL         ; 1:11      27 *   2x 
     add  HL, HL         ; 1:11      27 *   4x 
     add   A, L          ; 1:4       27 *
-    ld    C, A          ; 1:4       27 *   
-    ld    A, B          ; 1:4       27 *   
-    adc   A, H          ; 1:4       27 *   
+    ld    C, A          ; 1:4       27 *
+    ld    A, B          ; 1:4       27 *
+    adc   A, H          ; 1:4       27 *
     ld    B, A          ; 1:4       27 *   5x 
     add  HL, HL         ; 1:11      27 *   8x 
     add  HL, HL         ; 1:11      27 *   16x 
@@ -161,14 +161,14 @@ ORG 0x6000
     or    A             ; 1:4       27 *
     sbc  HL, BC         ; 2:15      27 *   32x - 5x = 27x
                         ;[15:102]  
-                        ;           29 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1101 
+                        ;           29 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1101  
     ld    B, H          ; 1:4       29 *
     ld    A, L          ; 1:4       29 *   1x 
     add  HL, HL         ; 1:11      29 *   2x 
     add   A, L          ; 1:4       29 *
-    ld    C, A          ; 1:4       29 *   
-    ld    A, B          ; 1:4       29 *   
-    adc   A, H          ; 1:4       29 *   
+    ld    C, A          ; 1:4       29 *
+    ld    A, B          ; 1:4       29 *
+    adc   A, H          ; 1:4       29 *
     ld    B, A          ; 1:4       29 *   3x 
     add  HL, HL         ; 1:11      29 *   4x 
     add  HL, HL         ; 1:11      29 *   8x 
@@ -177,7 +177,7 @@ ORG 0x6000
     or    A             ; 1:4       29 *
     sbc  HL, BC         ; 2:15      29 *   32x - 3x = 29x
                         ;[15:102]  
-                        ;           31 *   Variant: HL * (2^a - 2^b) = HL * b_0001_1111 
+                        ;           31 *   Variant: HL * (2^a - 2^b) = HL * b_0001_1111  
     ld    B, H          ; 1:4       31 *
     ld    C, L          ; 1:4       31 *   1x 
     add  HL, HL         ; 1:11      31 *   2x 
@@ -188,7 +188,7 @@ ORG 0x6000
     or    A             ; 1:4       31 *
     sbc  HL, BC         ; 2:15      31 *   32x - 1x = 31x
                         ;[10:82]  
-                        ;           33 *   Variant: HL * (2^a + 2^b) = HL * b_0010_0001 
+                        ;           33 *   Variant: HL * (2^a + 2^b) = HL * b_0010_0001  
     ld    B, H          ; 1:4       33 *
     ld    C, L          ; 1:4       33 *   1x 
     add  HL, HL         ; 1:11      33 *   2x 
@@ -199,14 +199,14 @@ ORG 0x6000
     add  HL, BC         ; 1:11      33 *   32x + 1x = 33x
                         ;[8:74]
 
-                        ;           35 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0011 
+                        ;           35 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0011  
     ld    B, H          ; 1:4       35 *
     ld    A, L          ; 1:4       35 *   1x 
     add  HL, HL         ; 1:11      35 *   2x 
     add   A, L          ; 1:4       35 *
-    ld    C, A          ; 1:4       35 *   
-    ld    A, B          ; 1:4       35 *   
-    adc   A, H          ; 1:4       35 *   
+    ld    C, A          ; 1:4       35 *
+    ld    A, B          ; 1:4       35 *
+    adc   A, H          ; 1:4       35 *
     ld    B, A          ; 1:4       35 *   3x 
     add  HL, HL         ; 1:11      35 *   4x 
     add  HL, HL         ; 1:11      35 *   8x 
@@ -214,24 +214,24 @@ ORG 0x6000
     add  HL, HL         ; 1:11      35 *   32x 
     add  HL, BC         ; 1:11      35 *   32x + 3x = 35x
                         ;[13:94]  
-                        ;           37 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0101 
+                        ;           37 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0101  
     ld    B, H          ; 1:4       37 *
     ld    A, L          ; 1:4       37 *   1x 
     add  HL, HL         ; 1:11      37 *   2x 
     add  HL, HL         ; 1:11      37 *   4x 
     add   A, L          ; 1:4       37 *
-    ld    C, A          ; 1:4       37 *   
-    ld    A, B          ; 1:4       37 *   
-    adc   A, H          ; 1:4       37 *   
+    ld    C, A          ; 1:4       37 *
+    ld    A, B          ; 1:4       37 *
+    adc   A, H          ; 1:4       37 *
     ld    B, A          ; 1:4       37 *   5x 
     add  HL, HL         ; 1:11      37 *   8x 
     add  HL, HL         ; 1:11      37 *   16x 
     add  HL, HL         ; 1:11      37 *   32x 
     add  HL, BC         ; 1:11      37 *   32x + 5x = 37x
                         ;[13:94]  
-                        ;           39 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111
+                        ;           39 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111 
     ld    B, D          ; 1:4       39 *
-    ld    C, E          ; 1:4       39 *  
+    ld    C, E          ; 1:4       39 * 
     ld    D, H          ; 1:4       39 *
     ld    E, L          ; 1:4       39 *   1x 
     add  HL, HL         ; 1:11      39 *   2x 
@@ -249,24 +249,24 @@ ORG 0x6000
     ld    D, B          ; 1:4       39 *
     ld    E, C          ; 1:4       39 *
                         ;[18:128]  
-                        ;           41 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_1001 
+                        ;           41 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_1001  
     ld    B, H          ; 1:4       41 *
     ld    A, L          ; 1:4       41 *   1x 
     add  HL, HL         ; 1:11      41 *   2x 
     add  HL, HL         ; 1:11      41 *   4x 
     add  HL, HL         ; 1:11      41 *   8x 
     add   A, L          ; 1:4       41 *
-    ld    C, A          ; 1:4       41 *   
-    ld    A, B          ; 1:4       41 *   
-    adc   A, H          ; 1:4       41 *   
+    ld    C, A          ; 1:4       41 *
+    ld    A, B          ; 1:4       41 *
+    adc   A, H          ; 1:4       41 *
     ld    B, A          ; 1:4       41 *   9x 
     add  HL, HL         ; 1:11      41 *   16x 
     add  HL, HL         ; 1:11      41 *   32x 
     add  HL, BC         ; 1:11      41 *   32x + 9x = 41x
                         ;[13:94]  
-                        ;           43 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011
+                        ;           43 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011 
     ld    B, D          ; 1:4       43 *
-    ld    C, E          ; 1:4       43 *  
+    ld    C, E          ; 1:4       43 * 
     ld    D, H          ; 1:4       43 *
     ld    E, L          ; 1:4       43 *   1x 
     add  HL, HL         ; 1:11      43 *   2x 
@@ -284,9 +284,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       43 *
     ld    E, C          ; 1:4       43 *
                         ;[18:128]  
-                        ;           45 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101
+                        ;           45 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101 
     ld    B, D          ; 1:4       45 *
-    ld    C, E          ; 1:4       45 *  
+    ld    C, E          ; 1:4       45 * 
     ld    D, H          ; 1:4       45 *
     ld    E, L          ; 1:4       45 *   1x 
     add  HL, HL         ; 1:11      45 *   2x 
@@ -304,7 +304,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       45 *
     ld    E, C          ; 1:4       45 *
                         ;[18:128]  
-                        ;           47 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0010_1111 
+                        ;           47 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0010_1111  
     ld    B, H          ; 1:4       47 *
     ld    A, L          ; 1:4       47 *   1x 
     add  HL, HL         ; 1:11      47 *   2x 
@@ -312,16 +312,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      47 *   8x 
     add  HL, HL         ; 1:11      47 *   16x 
     add   A, L          ; 1:4       47 *
-    ld    C, A          ; 1:4       47 *   
-    ld    A, B          ; 1:4       47 *   
-    adc   A, H          ; 1:4       47 *   
+    ld    C, A          ; 1:4       47 *
+    ld    A, B          ; 1:4       47 *
+    adc   A, H          ; 1:4       47 *
     ld    B, A          ; 1:4       47 *   17x 
     add  HL, HL         ; 1:11      47 *   32x 
     add  HL, HL         ; 1:11      47 *   64x 
     or    A             ; 1:4       47 *
     sbc  HL, BC         ; 2:15      47 *   64x - 17x = 47x
                         ;[16:113]  
-                        ;           49 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0011_0001 
+                        ;           49 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0011_0001  
     ld    B, H          ; 1:4       49 *
     ld    A, L          ; 1:4       49 *   1x 
     add  HL, HL         ; 1:11      49 *   2x 
@@ -329,16 +329,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      49 *   8x 
     add  HL, HL         ; 1:11      49 *   16x 
     add   A, L          ; 1:4       49 *
-    ld    C, A          ; 1:4       49 *   
-    ld    A, B          ; 1:4       49 *   
-    adc   A, H          ; 1:4       49 *   
+    ld    C, A          ; 1:4       49 *
+    ld    A, B          ; 1:4       49 *
+    adc   A, H          ; 1:4       49 *
     ld    B, A          ; 1:4       49 *   17x 
     add  HL, HL         ; 1:11      49 *   32x 
     add  HL, BC         ; 1:11      49 *   32x + 17x = 49x
                         ;[13:94]  
-                        ;           51 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011
+                        ;           51 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011 
     ld    B, D          ; 1:4       51 *
-    ld    C, E          ; 1:4       51 *  
+    ld    C, E          ; 1:4       51 * 
     ld    D, H          ; 1:4       51 *
     ld    E, L          ; 1:4       51 *   1x 
     add  HL, HL         ; 1:11      51 *   2x 
@@ -356,9 +356,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       51 *
     ld    E, C          ; 1:4       51 *
                         ;[18:128]  
-                        ;           53 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101
+                        ;           53 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101 
     ld    B, D          ; 1:4       53 *
-    ld    C, E          ; 1:4       53 *  
+    ld    C, E          ; 1:4       53 * 
     ld    D, H          ; 1:4       53 *
     ld    E, L          ; 1:4       53 *   1x 
     add  HL, HL         ; 1:11      53 *   2x 
@@ -376,16 +376,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       53 *
     ld    E, C          ; 1:4       53 *
                         ;[18:128]  
-                        ;           55 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_0111 
+                        ;           55 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_0111  
     ld    B, H          ; 1:4       55 *
     ld    A, L          ; 1:4       55 *   1x 
     add  HL, HL         ; 1:11      55 *   2x 
     add  HL, HL         ; 1:11      55 *   4x 
     add  HL, HL         ; 1:11      55 *   8x 
     add   A, L          ; 1:4       55 *
-    ld    C, A          ; 1:4       55 *   
-    ld    A, B          ; 1:4       55 *   
-    adc   A, H          ; 1:4       55 *   
+    ld    C, A          ; 1:4       55 *
+    ld    A, B          ; 1:4       55 *
+    adc   A, H          ; 1:4       55 *
     ld    B, A          ; 1:4       55 *   9x 
     add  HL, HL         ; 1:11      55 *   16x 
     add  HL, HL         ; 1:11      55 *   32x 
@@ -394,9 +394,9 @@ ORG 0x6000
     sbc  HL, BC         ; 2:15      55 *   64x - 9x = 55x
                         ;[16:113]
 
-                        ;           57 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001
+                        ;           57 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001 
     ld    B, D          ; 1:4       57 *
-    ld    C, E          ; 1:4       57 *  
+    ld    C, E          ; 1:4       57 * 
     ld    D, H          ; 1:4       57 *
     ld    E, L          ; 1:4       57 *   1x 
     add  HL, HL         ; 1:11      57 *   2x 
@@ -414,15 +414,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       57 *
     ld    E, C          ; 1:4       57 *
                         ;[18:128]  
-                        ;           59 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1011 
+                        ;           59 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1011  
     ld    B, H          ; 1:4       59 *
     ld    A, L          ; 1:4       59 *   1x 
     add  HL, HL         ; 1:11      59 *   2x 
     add  HL, HL         ; 1:11      59 *   4x 
     add   A, L          ; 1:4       59 *
-    ld    C, A          ; 1:4       59 *   
-    ld    A, B          ; 1:4       59 *   
-    adc   A, H          ; 1:4       59 *   
+    ld    C, A          ; 1:4       59 *
+    ld    A, B          ; 1:4       59 *
+    adc   A, H          ; 1:4       59 *
     ld    B, A          ; 1:4       59 *   5x 
     add  HL, HL         ; 1:11      59 *   8x 
     add  HL, HL         ; 1:11      59 *   16x 
@@ -431,14 +431,14 @@ ORG 0x6000
     or    A             ; 1:4       59 *
     sbc  HL, BC         ; 2:15      59 *   64x - 5x = 59x
                         ;[16:113]  
-                        ;           61 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1101 
+                        ;           61 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1101  
     ld    B, H          ; 1:4       61 *
     ld    A, L          ; 1:4       61 *   1x 
     add  HL, HL         ; 1:11      61 *   2x 
     add   A, L          ; 1:4       61 *
-    ld    C, A          ; 1:4       61 *   
-    ld    A, B          ; 1:4       61 *   
-    adc   A, H          ; 1:4       61 *   
+    ld    C, A          ; 1:4       61 *
+    ld    A, B          ; 1:4       61 *
+    adc   A, H          ; 1:4       61 *
     ld    B, A          ; 1:4       61 *   3x 
     add  HL, HL         ; 1:11      61 *   4x 
     add  HL, HL         ; 1:11      61 *   8x 
@@ -448,7 +448,7 @@ ORG 0x6000
     or    A             ; 1:4       61 *
     sbc  HL, BC         ; 2:15      61 *   64x - 3x = 61x
                         ;[16:113]  
-                        ;           63 *   Variant: HL * (2^a - 2^b) = HL * b_0011_1111 
+                        ;           63 *   Variant: HL * (2^a - 2^b) = HL * b_0011_1111  
     ld    B, H          ; 1:4       63 *
     ld    C, L          ; 1:4       63 *   1x 
     add  HL, HL         ; 1:11      63 *   2x 
@@ -460,7 +460,7 @@ ORG 0x6000
     or    A             ; 1:4       63 *
     sbc  HL, BC         ; 2:15      63 *   64x - 1x = 63x
                         ;[11:93]  
-                        ;           65 *   Variant: HL * (2^a + 2^b) = HL * b_0100_0001 
+                        ;           65 *   Variant: HL * (2^a + 2^b) = HL * b_0100_0001  
     ld    B, H          ; 1:4       65 *
     ld    C, L          ; 1:4       65 *   1x 
     add  HL, HL         ; 1:11      65 *   2x 
@@ -471,14 +471,14 @@ ORG 0x6000
     add  HL, HL         ; 1:11      65 *   64x 
     add  HL, BC         ; 1:11      65 *   64x + 1x = 65x
                         ;[9:85]  
-                        ;           67 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0011 
+                        ;           67 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0011  
     ld    B, H          ; 1:4       67 *
     ld    A, L          ; 1:4       67 *   1x 
     add  HL, HL         ; 1:11      67 *   2x 
     add   A, L          ; 1:4       67 *
-    ld    C, A          ; 1:4       67 *   
-    ld    A, B          ; 1:4       67 *   
-    adc   A, H          ; 1:4       67 *   
+    ld    C, A          ; 1:4       67 *
+    ld    A, B          ; 1:4       67 *
+    adc   A, H          ; 1:4       67 *
     ld    B, A          ; 1:4       67 *   3x 
     add  HL, HL         ; 1:11      67 *   4x 
     add  HL, HL         ; 1:11      67 *   8x 
@@ -487,15 +487,15 @@ ORG 0x6000
     add  HL, HL         ; 1:11      67 *   64x 
     add  HL, BC         ; 1:11      67 *   64x + 3x = 67x
                         ;[14:105]  
-                        ;           69 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0101 
+                        ;           69 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0101  
     ld    B, H          ; 1:4       69 *
     ld    A, L          ; 1:4       69 *   1x 
     add  HL, HL         ; 1:11      69 *   2x 
     add  HL, HL         ; 1:11      69 *   4x 
     add   A, L          ; 1:4       69 *
-    ld    C, A          ; 1:4       69 *   
-    ld    A, B          ; 1:4       69 *   
-    adc   A, H          ; 1:4       69 *   
+    ld    C, A          ; 1:4       69 *
+    ld    A, B          ; 1:4       69 *
+    adc   A, H          ; 1:4       69 *
     ld    B, A          ; 1:4       69 *   5x 
     add  HL, HL         ; 1:11      69 *   8x 
     add  HL, HL         ; 1:11      69 *   16x 
@@ -503,9 +503,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      69 *   64x 
     add  HL, BC         ; 1:11      69 *   64x + 5x = 69x
                         ;[14:105]  
-                        ;           71 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111
+                        ;           71 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111 
     ld    B, D          ; 1:4       71 *
-    ld    C, E          ; 1:4       71 *  
+    ld    C, E          ; 1:4       71 * 
     ld    D, H          ; 1:4       71 *
     ld    E, L          ; 1:4       71 *   1x 
     add  HL, HL         ; 1:11      71 *   2x 
@@ -524,25 +524,25 @@ ORG 0x6000
     ld    D, B          ; 1:4       71 *
     ld    E, C          ; 1:4       71 *
                         ;[19:139]  
-                        ;           73 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_1001 
+                        ;           73 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_1001  
     ld    B, H          ; 1:4       73 *
     ld    A, L          ; 1:4       73 *   1x 
     add  HL, HL         ; 1:11      73 *   2x 
     add  HL, HL         ; 1:11      73 *   4x 
     add  HL, HL         ; 1:11      73 *   8x 
     add   A, L          ; 1:4       73 *
-    ld    C, A          ; 1:4       73 *   
-    ld    A, B          ; 1:4       73 *   
-    adc   A, H          ; 1:4       73 *   
+    ld    C, A          ; 1:4       73 *
+    ld    A, B          ; 1:4       73 *
+    adc   A, H          ; 1:4       73 *
     ld    B, A          ; 1:4       73 *   9x 
     add  HL, HL         ; 1:11      73 *   16x 
     add  HL, HL         ; 1:11      73 *   32x 
     add  HL, HL         ; 1:11      73 *   64x 
     add  HL, BC         ; 1:11      73 *   64x + 9x = 73x
                         ;[14:105]  
-                        ;           75 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011
+                        ;           75 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011 
     ld    B, D          ; 1:4       75 *
-    ld    C, E          ; 1:4       75 *  
+    ld    C, E          ; 1:4       75 * 
     ld    D, H          ; 1:4       75 *
     ld    E, L          ; 1:4       75 *   1x 
     add  HL, HL         ; 1:11      75 *   2x 
@@ -561,9 +561,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       75 *
     ld    E, C          ; 1:4       75 *
                         ;[19:139]  
-                        ;           77 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101
+                        ;           77 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101 
     ld    B, D          ; 1:4       77 *
-    ld    C, E          ; 1:4       77 *  
+    ld    C, E          ; 1:4       77 * 
     ld    D, H          ; 1:4       77 *
     ld    E, L          ; 1:4       77 *   1x 
     add  HL, HL         ; 1:11      77 *   2x 
@@ -583,9 +583,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       77 *
                         ;[19:139]
 
-                        ;           79 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111
+                        ;           79 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111 
     ld    B, D          ; 1:4       79 *
-    ld    C, E          ; 1:4       79 *  
+    ld    C, E          ; 1:4       79 * 
     ld    D, H          ; 1:4       79 *
     ld    E, L          ; 1:4       79 *   1x 
     add  HL, HL         ; 1:11      79 *   2x 
@@ -607,7 +607,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       79 *
     ld    E, C          ; 1:4       79 *
                         ;[22:158]  
-                        ;           81 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0101_0001 
+                        ;           81 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0101_0001  
     ld    B, H          ; 1:4       81 *
     ld    A, L          ; 1:4       81 *   1x 
     add  HL, HL         ; 1:11      81 *   2x 
@@ -615,17 +615,17 @@ ORG 0x6000
     add  HL, HL         ; 1:11      81 *   8x 
     add  HL, HL         ; 1:11      81 *   16x 
     add   A, L          ; 1:4       81 *
-    ld    C, A          ; 1:4       81 *   
-    ld    A, B          ; 1:4       81 *   
-    adc   A, H          ; 1:4       81 *   
+    ld    C, A          ; 1:4       81 *
+    ld    A, B          ; 1:4       81 *
+    adc   A, H          ; 1:4       81 *
     ld    B, A          ; 1:4       81 *   17x 
     add  HL, HL         ; 1:11      81 *   32x 
     add  HL, HL         ; 1:11      81 *   64x 
     add  HL, BC         ; 1:11      81 *   64x + 17x = 81x
                         ;[14:105]  
-                        ;           83 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011
+                        ;           83 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011 
     ld    B, D          ; 1:4       83 *
-    ld    C, E          ; 1:4       83 *  
+    ld    C, E          ; 1:4       83 * 
     ld    D, H          ; 1:4       83 *
     ld    E, L          ; 1:4       83 *   1x 
     add  HL, HL         ; 1:11      83 *   2x 
@@ -644,9 +644,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       83 *
     ld    E, C          ; 1:4       83 *
                         ;[19:139]  
-                        ;           85 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101
+                        ;           85 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101 
     ld    B, D          ; 1:4       85 *
-    ld    C, E          ; 1:4       85 *  
+    ld    C, E          ; 1:4       85 * 
     ld    D, H          ; 1:4       85 *
     ld    E, L          ; 1:4       85 *   1x 
     add  HL, HL         ; 1:11      85 *   2x 
@@ -665,9 +665,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       85 *
     ld    E, C          ; 1:4       85 *
                         ;[19:139]  
-                        ;           87 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111
+                        ;           87 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111 
     ld    B, D          ; 1:4       87 *
-    ld    C, E          ; 1:4       87 *  
+    ld    C, E          ; 1:4       87 * 
     ld    D, H          ; 1:4       87 *
     ld    E, L          ; 1:4       87 *   1x 
     add  HL, HL         ; 1:11      87 *   2x 
@@ -689,9 +689,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       87 *
     ld    E, C          ; 1:4       87 *
                         ;[22:158]  
-                        ;           89 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001
+                        ;           89 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001 
     ld    B, D          ; 1:4       89 *
-    ld    C, E          ; 1:4       89 *  
+    ld    C, E          ; 1:4       89 * 
     ld    D, H          ; 1:4       89 *
     ld    E, L          ; 1:4       89 *   1x 
     add  HL, HL         ; 1:11      89 *   2x 
@@ -710,9 +710,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       89 *
     ld    E, C          ; 1:4       89 *
                         ;[19:139]  
-                        ;           91 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011
+                        ;           91 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011 
     ld    B, D          ; 1:4       91 *
-    ld    C, E          ; 1:4       91 *  
+    ld    C, E          ; 1:4       91 * 
     ld    D, H          ; 1:4       91 *
     ld    E, L          ; 1:4       91 *   1x 
     add  HL, HL         ; 1:11      91 *   2x 
@@ -734,9 +734,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       91 *
     ld    E, C          ; 1:4       91 *
                         ;[22:158]  
-                        ;           93 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101
+                        ;           93 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101 
     ld    B, D          ; 1:4       93 *
-    ld    C, E          ; 1:4       93 *  
+    ld    C, E          ; 1:4       93 * 
     ld    D, H          ; 1:4       93 *
     ld    E, L          ; 1:4       93 *   1x 
     add  HL, HL         ; 1:11      93 *   2x 
@@ -758,7 +758,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       93 *
     ld    E, C          ; 1:4       93 *
                         ;[22:158]  
-                        ;           95 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0101_1111 
+                        ;           95 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0101_1111  
     ld    B, H          ; 1:4       95 *
     ld    A, L          ; 1:4       95 *   1x 
     add  HL, HL         ; 1:11      95 *   2x 
@@ -767,16 +767,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      95 *   16x 
     add  HL, HL         ; 1:11      95 *   32x 
     add   A, L          ; 1:4       95 *
-    ld    C, A          ; 1:4       95 *   
-    ld    A, B          ; 1:4       95 *   
-    adc   A, H          ; 1:4       95 *   
+    ld    C, A          ; 1:4       95 *
+    ld    A, B          ; 1:4       95 *
+    adc   A, H          ; 1:4       95 *
     ld    B, A          ; 1:4       95 *   33x 
     add  HL, HL         ; 1:11      95 *   64x 
     add  HL, HL         ; 1:11      95 *   128x 
     or    A             ; 1:4       95 *
     sbc  HL, BC         ; 2:15      95 *   128x - 33x = 95x
                         ;[17:124]  
-                        ;           97 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0110_0001 
+                        ;           97 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0110_0001  
     ld    B, H          ; 1:4       97 *
     ld    A, L          ; 1:4       97 *   1x 
     add  HL, HL         ; 1:11      97 *   2x 
@@ -785,16 +785,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      97 *   16x 
     add  HL, HL         ; 1:11      97 *   32x 
     add   A, L          ; 1:4       97 *
-    ld    C, A          ; 1:4       97 *   
-    ld    A, B          ; 1:4       97 *   
-    adc   A, H          ; 1:4       97 *   
+    ld    C, A          ; 1:4       97 *
+    ld    A, B          ; 1:4       97 *
+    adc   A, H          ; 1:4       97 *
     ld    B, A          ; 1:4       97 *   33x 
     add  HL, HL         ; 1:11      97 *   64x 
     add  HL, BC         ; 1:11      97 *   64x + 33x = 97x
                         ;[14:105]  
-                        ;           99 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011
+                        ;           99 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011 
     ld    B, D          ; 1:4       99 *
-    ld    C, E          ; 1:4       99 *  
+    ld    C, E          ; 1:4       99 * 
     ld    D, H          ; 1:4       99 *
     ld    E, L          ; 1:4       99 *   1x 
     add  HL, HL         ; 1:11      99 *   2x 
@@ -814,9 +814,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       99 *
                         ;[19:139]
 
-                        ;           101 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101
+                        ;           101 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101 
     ld    B, D          ; 1:4       101 *
-    ld    C, E          ; 1:4       101 *  
+    ld    C, E          ; 1:4       101 * 
     ld    D, H          ; 1:4       101 *
     ld    E, L          ; 1:4       101 *   1x 
     add  HL, HL         ; 1:11      101 *   2x 
@@ -835,9 +835,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       101 *
     ld    E, C          ; 1:4       101 *
                         ;[19:139] 
-                        ;           103 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111
+                        ;           103 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111 
     ld    B, D          ; 1:4       103 *
-    ld    C, E          ; 1:4       103 *  
+    ld    C, E          ; 1:4       103 * 
     ld    D, H          ; 1:4       103 *
     ld    E, L          ; 1:4       103 *   1x 
     add  HL, HL         ; 1:11      103 *   2x 
@@ -859,9 +859,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       103 *
     ld    E, C          ; 1:4       103 *
                         ;[22:158] 
-                        ;           105 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001
+                        ;           105 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001 
     ld    B, D          ; 1:4       105 *
-    ld    C, E          ; 1:4       105 *  
+    ld    C, E          ; 1:4       105 * 
     ld    D, H          ; 1:4       105 *
     ld    E, L          ; 1:4       105 *   1x 
     add  HL, HL         ; 1:11      105 *   2x 
@@ -880,9 +880,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       105 *
     ld    E, C          ; 1:4       105 *
                         ;[19:139] 
-                        ;           107 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011
+                        ;           107 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011 
     ld    B, D          ; 1:4       107 *
-    ld    C, E          ; 1:4       107 *  
+    ld    C, E          ; 1:4       107 * 
     ld    D, H          ; 1:4       107 *
     ld    E, L          ; 1:4       107 *   1x 
     add  HL, HL         ; 1:11      107 *   2x 
@@ -904,9 +904,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       107 *
     ld    E, C          ; 1:4       107 *
                         ;[22:158] 
-                        ;           109 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101
+                        ;           109 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101 
     ld    B, D          ; 1:4       109 *
-    ld    C, E          ; 1:4       109 *  
+    ld    C, E          ; 1:4       109 * 
     ld    D, H          ; 1:4       109 *
     ld    E, L          ; 1:4       109 *   1x 
     add  HL, HL         ; 1:11      109 *   2x 
@@ -928,7 +928,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       109 *
     ld    E, C          ; 1:4       109 *
                         ;[22:158] 
-                        ;           111 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0110_1111 
+                        ;           111 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0110_1111  
     ld    B, H          ; 1:4       111 *
     ld    A, L          ; 1:4       111 *   1x 
     add  HL, HL         ; 1:11      111 *   2x 
@@ -936,9 +936,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      111 *   8x 
     add  HL, HL         ; 1:11      111 *   16x 
     add   A, L          ; 1:4       111 *
-    ld    C, A          ; 1:4       111 *   
-    ld    A, B          ; 1:4       111 *   
-    adc   A, H          ; 1:4       111 *   
+    ld    C, A          ; 1:4       111 *
+    ld    A, B          ; 1:4       111 *
+    adc   A, H          ; 1:4       111 *
     ld    B, A          ; 1:4       111 *   17x 
     add  HL, HL         ; 1:11      111 *   32x 
     add  HL, HL         ; 1:11      111 *   64x 
@@ -946,9 +946,9 @@ ORG 0x6000
     or    A             ; 1:4       111 *
     sbc  HL, BC         ; 2:15      111 *   128x - 17x = 111x
                         ;[17:124] 
-                        ;           113 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001
+                        ;           113 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001 
     ld    B, D          ; 1:4       113 *
-    ld    C, E          ; 1:4       113 *  
+    ld    C, E          ; 1:4       113 * 
     ld    D, H          ; 1:4       113 *
     ld    E, L          ; 1:4       113 *   1x 
     add  HL, HL         ; 1:11      113 *   2x 
@@ -967,9 +967,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       113 *
     ld    E, C          ; 1:4       113 *
                         ;[19:139] 
-                        ;           115 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011
+                        ;           115 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011 
     ld    B, D          ; 1:4       115 *
-    ld    C, E          ; 1:4       115 *  
+    ld    C, E          ; 1:4       115 * 
     ld    D, H          ; 1:4       115 *
     ld    E, L          ; 1:4       115 *   1x 
     add  HL, HL         ; 1:11      115 *   2x 
@@ -991,9 +991,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       115 *
     ld    E, C          ; 1:4       115 *
                         ;[22:158] 
-                        ;           117 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101
+                        ;           117 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101 
     ld    B, D          ; 1:4       117 *
-    ld    C, E          ; 1:4       117 *  
+    ld    C, E          ; 1:4       117 * 
     ld    D, H          ; 1:4       117 *
     ld    E, L          ; 1:4       117 *   1x 
     add  HL, HL         ; 1:11      117 *   2x 
@@ -1015,16 +1015,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       117 *
     ld    E, C          ; 1:4       117 *
                         ;[22:158] 
-                        ;           119 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_0111 
+                        ;           119 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_0111  
     ld    B, H          ; 1:4       119 *
     ld    A, L          ; 1:4       119 *   1x 
     add  HL, HL         ; 1:11      119 *   2x 
     add  HL, HL         ; 1:11      119 *   4x 
     add  HL, HL         ; 1:11      119 *   8x 
     add   A, L          ; 1:4       119 *
-    ld    C, A          ; 1:4       119 *   
-    ld    A, B          ; 1:4       119 *   
-    adc   A, H          ; 1:4       119 *   
+    ld    C, A          ; 1:4       119 *
+    ld    A, B          ; 1:4       119 *
+    adc   A, H          ; 1:4       119 *
     ld    B, A          ; 1:4       119 *   9x 
     add  HL, HL         ; 1:11      119 *   16x 
     add  HL, HL         ; 1:11      119 *   32x 
@@ -1033,9 +1033,9 @@ ORG 0x6000
     or    A             ; 1:4       119 *
     sbc  HL, BC         ; 2:15      119 *   128x - 9x = 119x
                         ;[17:124] 
-                        ;           121 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001
+                        ;           121 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001 
     ld    B, D          ; 1:4       121 *
-    ld    C, E          ; 1:4       121 *  
+    ld    C, E          ; 1:4       121 * 
     ld    D, H          ; 1:4       121 *
     ld    E, L          ; 1:4       121 *   1x 
     add  HL, HL         ; 1:11      121 *   2x 
@@ -1058,15 +1058,15 @@ ORG 0x6000
     ld    E, C          ; 1:4       121 *
                         ;[22:158]
 
-                        ;           123 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1011 
+                        ;           123 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1011  
     ld    B, H          ; 1:4       123 *
     ld    A, L          ; 1:4       123 *   1x 
     add  HL, HL         ; 1:11      123 *   2x 
     add  HL, HL         ; 1:11      123 *   4x 
     add   A, L          ; 1:4       123 *
-    ld    C, A          ; 1:4       123 *   
-    ld    A, B          ; 1:4       123 *   
-    adc   A, H          ; 1:4       123 *   
+    ld    C, A          ; 1:4       123 *
+    ld    A, B          ; 1:4       123 *
+    adc   A, H          ; 1:4       123 *
     ld    B, A          ; 1:4       123 *   5x 
     add  HL, HL         ; 1:11      123 *   8x 
     add  HL, HL         ; 1:11      123 *   16x 
@@ -1076,14 +1076,14 @@ ORG 0x6000
     or    A             ; 1:4       123 *
     sbc  HL, BC         ; 2:15      123 *   128x - 5x = 123x
                         ;[17:124] 
-                        ;           125 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1101 
+                        ;           125 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1101  
     ld    B, H          ; 1:4       125 *
     ld    A, L          ; 1:4       125 *   1x 
     add  HL, HL         ; 1:11      125 *   2x 
     add   A, L          ; 1:4       125 *
-    ld    C, A          ; 1:4       125 *   
-    ld    A, B          ; 1:4       125 *   
-    adc   A, H          ; 1:4       125 *   
+    ld    C, A          ; 1:4       125 *
+    ld    A, B          ; 1:4       125 *
+    adc   A, H          ; 1:4       125 *
     ld    B, A          ; 1:4       125 *   3x 
     add  HL, HL         ; 1:11      125 *   4x 
     add  HL, HL         ; 1:11      125 *   8x 
@@ -1094,7 +1094,7 @@ ORG 0x6000
     or    A             ; 1:4       125 *
     sbc  HL, BC         ; 2:15      125 *   128x - 3x = 125x
                         ;[17:124] 
-                        ;           127 *   Variant: HL * (2^a - 2^b) = HL * b_0111_1111 
+                        ;           127 *   Variant: HL * (2^a - 2^b) = HL * b_0111_1111  
     ld    B, H          ; 1:4       127 *
     ld    C, L          ; 1:4       127 *   1x 
     add  HL, HL         ; 1:11      127 *   2x 
@@ -1107,7 +1107,7 @@ ORG 0x6000
     or    A             ; 1:4       127 *
     sbc  HL, BC         ; 2:15      127 *   128x - 1x = 127x
                         ;[12:104] 
-                        ;           129 *   Variant: HL * (2^a + 2^b) = HL * b_1000_0001 
+                        ;           129 *   Variant: HL * (2^a + 2^b) = HL * b_1000_0001  
     ld    B, H          ; 1:4       129 *
     ld    C, L          ; 1:4       129 *   1x 
     add  HL, HL         ; 1:11      129 *   2x 
@@ -1119,14 +1119,14 @@ ORG 0x6000
     add  HL, HL         ; 1:11      129 *   128x 
     add  HL, BC         ; 1:11      129 *   128x + 1x = 129x
                         ;[10:96] 
-                        ;           131 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1000_0011 
+                        ;           131 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1000_0011  
     ld    B, H          ; 1:4       131 *
     ld    A, L          ; 1:4       131 *   1x 
     add  HL, HL         ; 1:11      131 *   2x 
     add   A, L          ; 1:4       131 *
-    ld    C, A          ; 1:4       131 *   
-    ld    A, B          ; 1:4       131 *   
-    adc   A, H          ; 1:4       131 *   
+    ld    C, A          ; 1:4       131 *
+    ld    A, B          ; 1:4       131 *
+    adc   A, H          ; 1:4       131 *
     ld    B, A          ; 1:4       131 *   3x 
     add  HL, HL         ; 1:11      131 *   4x 
     add  HL, HL         ; 1:11      131 *   8x 
@@ -1136,15 +1136,15 @@ ORG 0x6000
     add  HL, HL         ; 1:11      131 *   128x 
     add  HL, BC         ; 1:11      131 *   128x + 3x = 131x
                         ;[15:116] 
-                        ;           133 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1000_0101 
+                        ;           133 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1000_0101  
     ld    B, H          ; 1:4       133 *
     ld    A, L          ; 1:4       133 *   1x 
     add  HL, HL         ; 1:11      133 *   2x 
     add  HL, HL         ; 1:11      133 *   4x 
     add   A, L          ; 1:4       133 *
-    ld    C, A          ; 1:4       133 *   
-    ld    A, B          ; 1:4       133 *   
-    adc   A, H          ; 1:4       133 *   
+    ld    C, A          ; 1:4       133 *
+    ld    A, B          ; 1:4       133 *
+    adc   A, H          ; 1:4       133 *
     ld    B, A          ; 1:4       133 *   5x 
     add  HL, HL         ; 1:11      133 *   8x 
     add  HL, HL         ; 1:11      133 *   16x 
@@ -1153,9 +1153,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      133 *   128x 
     add  HL, BC         ; 1:11      133 *   128x + 5x = 133x
                         ;[15:116] 
-                        ;           135 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_0111
+                        ;           135 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_0111 
     ld    B, D          ; 1:4       135 *
-    ld    C, E          ; 1:4       135 *  
+    ld    C, E          ; 1:4       135 * 
     ld    D, H          ; 1:4       135 *
     ld    E, L          ; 1:4       135 *   1x 
     add  HL, HL         ; 1:11      135 *   2x 
@@ -1175,16 +1175,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       135 *
     ld    E, C          ; 1:4       135 *
                         ;[20:150] 
-                        ;           137 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1000_1001 
+                        ;           137 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1000_1001  
     ld    B, H          ; 1:4       137 *
     ld    A, L          ; 1:4       137 *   1x 
     add  HL, HL         ; 1:11      137 *   2x 
     add  HL, HL         ; 1:11      137 *   4x 
     add  HL, HL         ; 1:11      137 *   8x 
     add   A, L          ; 1:4       137 *
-    ld    C, A          ; 1:4       137 *   
-    ld    A, B          ; 1:4       137 *   
-    adc   A, H          ; 1:4       137 *   
+    ld    C, A          ; 1:4       137 *
+    ld    A, B          ; 1:4       137 *
+    adc   A, H          ; 1:4       137 *
     ld    B, A          ; 1:4       137 *   9x 
     add  HL, HL         ; 1:11      137 *   16x 
     add  HL, HL         ; 1:11      137 *   32x 
@@ -1192,9 +1192,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      137 *   128x 
     add  HL, BC         ; 1:11      137 *   128x + 9x = 137x
                         ;[15:116] 
-                        ;           139 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_1011
+                        ;           139 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_1011 
     ld    B, D          ; 1:4       139 *
-    ld    C, E          ; 1:4       139 *  
+    ld    C, E          ; 1:4       139 * 
     ld    D, H          ; 1:4       139 *
     ld    E, L          ; 1:4       139 *   1x 
     add  HL, HL         ; 1:11      139 *   2x 
@@ -1214,9 +1214,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       139 *
     ld    E, C          ; 1:4       139 *
                         ;[20:150] 
-                        ;           141 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_1101
+                        ;           141 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_1101 
     ld    B, D          ; 1:4       141 *
-    ld    C, E          ; 1:4       141 *  
+    ld    C, E          ; 1:4       141 * 
     ld    D, H          ; 1:4       141 *
     ld    E, L          ; 1:4       141 *   1x 
     add  HL, HL         ; 1:11      141 *   2x 
@@ -1236,9 +1236,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       141 *
     ld    E, C          ; 1:4       141 *
                         ;[20:150] 
-                        ;           143 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_1111
+                        ;           143 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1000_1111 
     ld    B, D          ; 1:4       143 *
-    ld    C, E          ; 1:4       143 *  
+    ld    C, E          ; 1:4       143 * 
     ld    D, H          ; 1:4       143 *
     ld    E, L          ; 1:4       143 *   1x 
     add  HL, HL         ; 1:11      143 *   2x 
@@ -1262,7 +1262,7 @@ ORG 0x6000
     ld    E, C          ; 1:4       143 *
                         ;[23:169]
 
-                        ;           145 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1001_0001 
+                        ;           145 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1001_0001  
     ld    B, H          ; 1:4       145 *
     ld    A, L          ; 1:4       145 *   1x 
     add  HL, HL         ; 1:11      145 *   2x 
@@ -1270,18 +1270,18 @@ ORG 0x6000
     add  HL, HL         ; 1:11      145 *   8x 
     add  HL, HL         ; 1:11      145 *   16x 
     add   A, L          ; 1:4       145 *
-    ld    C, A          ; 1:4       145 *   
-    ld    A, B          ; 1:4       145 *   
-    adc   A, H          ; 1:4       145 *   
+    ld    C, A          ; 1:4       145 *
+    ld    A, B          ; 1:4       145 *
+    adc   A, H          ; 1:4       145 *
     ld    B, A          ; 1:4       145 *   17x 
     add  HL, HL         ; 1:11      145 *   32x 
     add  HL, HL         ; 1:11      145 *   64x 
     add  HL, HL         ; 1:11      145 *   128x 
     add  HL, BC         ; 1:11      145 *   128x + 17x = 145x
                         ;[15:116] 
-                        ;           147 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_0011
+                        ;           147 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_0011 
     ld    B, D          ; 1:4       147 *
-    ld    C, E          ; 1:4       147 *  
+    ld    C, E          ; 1:4       147 * 
     ld    D, H          ; 1:4       147 *
     ld    E, L          ; 1:4       147 *   1x 
     add  HL, HL         ; 1:11      147 *   2x 
@@ -1301,9 +1301,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       147 *
     ld    E, C          ; 1:4       147 *
                         ;[20:150] 
-                        ;           149 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_0101
+                        ;           149 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_0101 
     ld    B, D          ; 1:4       149 *
-    ld    C, E          ; 1:4       149 *  
+    ld    C, E          ; 1:4       149 * 
     ld    D, H          ; 1:4       149 *
     ld    E, L          ; 1:4       149 *   1x 
     add  HL, HL         ; 1:11      149 *   2x 
@@ -1323,9 +1323,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       149 *
     ld    E, C          ; 1:4       149 *
                         ;[20:150] 
-                        ;           151 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_0111
+                        ;           151 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_0111 
     ld    B, D          ; 1:4       151 *
-    ld    C, E          ; 1:4       151 *  
+    ld    C, E          ; 1:4       151 * 
     ld    D, H          ; 1:4       151 *
     ld    E, L          ; 1:4       151 *   1x 
     add  HL, HL         ; 1:11      151 *   2x 
@@ -1348,9 +1348,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       151 *
     ld    E, C          ; 1:4       151 *
                         ;[23:169] 
-                        ;           153 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_1001
+                        ;           153 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_1001 
     ld    B, D          ; 1:4       153 *
-    ld    C, E          ; 1:4       153 *  
+    ld    C, E          ; 1:4       153 * 
     ld    D, H          ; 1:4       153 *
     ld    E, L          ; 1:4       153 *   1x 
     add  HL, HL         ; 1:11      153 *   2x 
@@ -1370,9 +1370,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       153 *
     ld    E, C          ; 1:4       153 *
                         ;[20:150] 
-                        ;           155 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_1011
+                        ;           155 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_1011 
     ld    B, D          ; 1:4       155 *
-    ld    C, E          ; 1:4       155 *  
+    ld    C, E          ; 1:4       155 * 
     ld    D, H          ; 1:4       155 *
     ld    E, L          ; 1:4       155 *   1x 
     add  HL, HL         ; 1:11      155 *   2x 
@@ -1395,9 +1395,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       155 *
     ld    E, C          ; 1:4       155 *
                         ;[23:169] 
-                        ;           157 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_1101
+                        ;           157 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1001_1101 
     ld    B, D          ; 1:4       157 *
-    ld    C, E          ; 1:4       157 *  
+    ld    C, E          ; 1:4       157 * 
     ld    D, H          ; 1:4       157 *
     ld    E, L          ; 1:4       157 *   1x 
     add  HL, HL         ; 1:11      157 *   2x 
@@ -1420,9 +1420,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       157 *
     ld    E, C          ; 1:4       157 *
                         ;[23:169] 
-                        ;           159 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1001_1111
+                        ;           159 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1001_1111 
     ld    B, D          ; 1:4       159 *
-    ld    C, E          ; 1:4       159 *  
+    ld    C, E          ; 1:4       159 * 
     ld    D, H          ; 1:4       159 *
     ld    E, L          ; 1:4       159 *   1x 
     add  HL, HL         ; 1:11      159 *   2x 
@@ -1444,7 +1444,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       159 *
     ld    E, C          ; 1:4       159 *
                         ;[50:142] 
-                        ;           161 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1010_0001 
+                        ;           161 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1010_0001  
     ld    B, H          ; 1:4       161 *
     ld    A, L          ; 1:4       161 *   1x 
     add  HL, HL         ; 1:11      161 *   2x 
@@ -1453,17 +1453,17 @@ ORG 0x6000
     add  HL, HL         ; 1:11      161 *   16x 
     add  HL, HL         ; 1:11      161 *   32x 
     add   A, L          ; 1:4       161 *
-    ld    C, A          ; 1:4       161 *   
-    ld    A, B          ; 1:4       161 *   
-    adc   A, H          ; 1:4       161 *   
+    ld    C, A          ; 1:4       161 *
+    ld    A, B          ; 1:4       161 *
+    adc   A, H          ; 1:4       161 *
     ld    B, A          ; 1:4       161 *   33x 
     add  HL, HL         ; 1:11      161 *   64x 
     add  HL, HL         ; 1:11      161 *   128x 
     add  HL, BC         ; 1:11      161 *   128x + 33x = 161x
                         ;[15:116] 
-                        ;           163 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_0011
+                        ;           163 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_0011 
     ld    B, D          ; 1:4       163 *
-    ld    C, E          ; 1:4       163 *  
+    ld    C, E          ; 1:4       163 * 
     ld    D, H          ; 1:4       163 *
     ld    E, L          ; 1:4       163 *   1x 
     add  HL, HL         ; 1:11      163 *   2x 
@@ -1483,9 +1483,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       163 *
     ld    E, C          ; 1:4       163 *
                         ;[20:150] 
-                        ;           165 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_0101
+                        ;           165 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_0101 
     ld    B, D          ; 1:4       165 *
-    ld    C, E          ; 1:4       165 *  
+    ld    C, E          ; 1:4       165 * 
     ld    D, H          ; 1:4       165 *
     ld    E, L          ; 1:4       165 *   1x 
     add  HL, HL         ; 1:11      165 *   2x 
@@ -1506,9 +1506,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       165 *
                         ;[20:150]
 
-                        ;           167 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_0111
+                        ;           167 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_0111 
     ld    B, D          ; 1:4       167 *
-    ld    C, E          ; 1:4       167 *  
+    ld    C, E          ; 1:4       167 * 
     ld    D, H          ; 1:4       167 *
     ld    E, L          ; 1:4       167 *   1x 
     add  HL, HL         ; 1:11      167 *   2x 
@@ -1531,9 +1531,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       167 *
     ld    E, C          ; 1:4       167 *
                         ;[23:169] 
-                        ;           169 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_1001
+                        ;           169 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_1001 
     ld    B, D          ; 1:4       169 *
-    ld    C, E          ; 1:4       169 *  
+    ld    C, E          ; 1:4       169 * 
     ld    D, H          ; 1:4       169 *
     ld    E, L          ; 1:4       169 *   1x 
     add  HL, HL         ; 1:11      169 *   2x 
@@ -1553,9 +1553,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       169 *
     ld    E, C          ; 1:4       169 *
                         ;[20:150] 
-                        ;           171 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_1011
+                        ;           171 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_1011 
     ld    B, D          ; 1:4       171 *
-    ld    C, E          ; 1:4       171 *  
+    ld    C, E          ; 1:4       171 * 
     ld    D, H          ; 1:4       171 *
     ld    E, L          ; 1:4       171 *   1x 
     add  HL, HL         ; 1:11      171 *   2x 
@@ -1578,9 +1578,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       171 *
     ld    E, C          ; 1:4       171 *
                         ;[23:169] 
-                        ;           173 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_1101
+                        ;           173 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1010_1101 
     ld    B, D          ; 1:4       173 *
-    ld    C, E          ; 1:4       173 *  
+    ld    C, E          ; 1:4       173 * 
     ld    D, H          ; 1:4       173 *
     ld    E, L          ; 1:4       173 *   1x 
     add  HL, HL         ; 1:11      173 *   2x 
@@ -1603,9 +1603,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       173 *
     ld    E, C          ; 1:4       173 *
                         ;[23:169] 
-                        ;           175 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1010_1111
+                        ;           175 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1010_1111 
     ld    B, D          ; 1:4       175 *
-    ld    C, E          ; 1:4       175 *  
+    ld    C, E          ; 1:4       175 * 
     ld    D, H          ; 1:4       175 *
     ld    E, L          ; 1:4       175 *   1x 
     add  HL, HL         ; 1:11      175 *   2x 
@@ -1627,9 +1627,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       175 *
     ld    E, C          ; 1:4       175 *
                         ;[50:142] 
-                        ;           177 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_0001
+                        ;           177 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_0001 
     ld    B, D          ; 1:4       177 *
-    ld    C, E          ; 1:4       177 *  
+    ld    C, E          ; 1:4       177 * 
     ld    D, H          ; 1:4       177 *
     ld    E, L          ; 1:4       177 *   1x 
     add  HL, HL         ; 1:11      177 *   2x 
@@ -1649,9 +1649,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       177 *
     ld    E, C          ; 1:4       177 *
                         ;[20:150] 
-                        ;           179 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_0011
+                        ;           179 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_0011 
     ld    B, D          ; 1:4       179 *
-    ld    C, E          ; 1:4       179 *  
+    ld    C, E          ; 1:4       179 * 
     ld    D, H          ; 1:4       179 *
     ld    E, L          ; 1:4       179 *   1x 
     add  HL, HL         ; 1:11      179 *   2x 
@@ -1674,9 +1674,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       179 *
     ld    E, C          ; 1:4       179 *
                         ;[23:169] 
-                        ;           181 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_0101
+                        ;           181 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_0101 
     ld    B, D          ; 1:4       181 *
-    ld    C, E          ; 1:4       181 *  
+    ld    C, E          ; 1:4       181 * 
     ld    D, H          ; 1:4       181 *
     ld    E, L          ; 1:4       181 *   1x 
     add  HL, HL         ; 1:11      181 *   2x 
@@ -1699,9 +1699,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       181 *
     ld    E, C          ; 1:4       181 *
                         ;[23:169] 
-                        ;           183 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1011_0111
+                        ;           183 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1011_0111 
     ld    B, D          ; 1:4       183 *
-    ld    C, E          ; 1:4       183 *  
+    ld    C, E          ; 1:4       183 * 
     ld    D, H          ; 1:4       183 *
     ld    E, L          ; 1:4       183 *   1x 
     add  HL, HL         ; 1:11      183 *   2x 
@@ -1723,9 +1723,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       183 *
     ld    E, C          ; 1:4       183 *
                         ;[50:142] 
-                        ;           185 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_1001
+                        ;           185 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1011_1001 
     ld    B, D          ; 1:4       185 *
-    ld    C, E          ; 1:4       185 *  
+    ld    C, E          ; 1:4       185 * 
     ld    D, H          ; 1:4       185 *
     ld    E, L          ; 1:4       185 *   1x 
     add  HL, HL         ; 1:11      185 *   2x 
@@ -1748,9 +1748,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       185 *
     ld    E, C          ; 1:4       185 *
                         ;[23:169] 
-                        ;           187 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1011_1011
+                        ;           187 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1011_1011 
     ld    B, D          ; 1:4       187 *
-    ld    C, E          ; 1:4       187 *  
+    ld    C, E          ; 1:4       187 * 
     ld    D, H          ; 1:4       187 *
     ld    E, L          ; 1:4       187 *   1x 
     add  HL, HL         ; 1:11      187 *   2x 
@@ -1773,9 +1773,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       187 *
                         ;[50:142]
 
-                        ;           189 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1011_1101
+                        ;           189 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1011_1101 
     ld    B, D          ; 1:4       189 *
-    ld    C, E          ; 1:4       189 *  
+    ld    C, E          ; 1:4       189 * 
     ld    D, H          ; 1:4       189 *
     ld    E, L          ; 1:4       189 *   1x 
     add  HL, HL         ; 1:11      189 *   2x 
@@ -1797,7 +1797,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       189 *
     ld    E, C          ; 1:4       189 *
                         ;[50:142] 
-                        ;           191 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1011_1111 
+                        ;           191 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1011_1111  
     ld    B, H          ; 1:4       191 *
     ld    A, L          ; 1:4       191 *   1x 
     add  HL, HL         ; 1:11      191 *   2x 
@@ -1807,16 +1807,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      191 *   32x 
     add  HL, HL         ; 1:11      191 *   64x 
     add   A, L          ; 1:4       191 *
-    ld    C, A          ; 1:4       191 *   
-    ld    A, B          ; 1:4       191 *   
-    adc   A, H          ; 1:4       191 *   
+    ld    C, A          ; 1:4       191 *
+    ld    A, B          ; 1:4       191 *
+    adc   A, H          ; 1:4       191 *
     ld    B, A          ; 1:4       191 *   65x 
     add  HL, HL         ; 1:11      191 *   128x 
     add  HL, HL         ; 1:11      191 *   256x 
     or    A             ; 1:4       191 *
     sbc  HL, BC         ; 2:15      191 *   256x - 65x = 191x
                         ;[18:135] 
-                        ;           193 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1100_0001 
+                        ;           193 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_1100_0001  
     ld    B, H          ; 1:4       193 *
     ld    A, L          ; 1:4       193 *   1x 
     add  HL, HL         ; 1:11      193 *   2x 
@@ -1826,16 +1826,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      193 *   32x 
     add  HL, HL         ; 1:11      193 *   64x 
     add   A, L          ; 1:4       193 *
-    ld    C, A          ; 1:4       193 *   
-    ld    A, B          ; 1:4       193 *   
-    adc   A, H          ; 1:4       193 *   
+    ld    C, A          ; 1:4       193 *
+    ld    A, B          ; 1:4       193 *
+    adc   A, H          ; 1:4       193 *
     ld    B, A          ; 1:4       193 *   65x 
     add  HL, HL         ; 1:11      193 *   128x 
     add  HL, BC         ; 1:11      193 *   128x + 65x = 193x
                         ;[15:116] 
-                        ;           195 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_0011
+                        ;           195 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_0011 
     ld    B, D          ; 1:4       195 *
-    ld    C, E          ; 1:4       195 *  
+    ld    C, E          ; 1:4       195 * 
     ld    D, H          ; 1:4       195 *
     ld    E, L          ; 1:4       195 *   1x 
     add  HL, HL         ; 1:11      195 *   2x 
@@ -1855,9 +1855,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       195 *
     ld    E, C          ; 1:4       195 *
                         ;[20:150] 
-                        ;           197 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_0101
+                        ;           197 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_0101 
     ld    B, D          ; 1:4       197 *
-    ld    C, E          ; 1:4       197 *  
+    ld    C, E          ; 1:4       197 * 
     ld    D, H          ; 1:4       197 *
     ld    E, L          ; 1:4       197 *   1x 
     add  HL, HL         ; 1:11      197 *   2x 
@@ -1877,9 +1877,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       197 *
     ld    E, C          ; 1:4       197 *
                         ;[20:150] 
-                        ;           199 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_0111
+                        ;           199 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_0111 
     ld    B, D          ; 1:4       199 *
-    ld    C, E          ; 1:4       199 *  
+    ld    C, E          ; 1:4       199 * 
     ld    D, H          ; 1:4       199 *
     ld    E, L          ; 1:4       199 *   1x 
     add  HL, HL         ; 1:11      199 *   2x 
@@ -1902,9 +1902,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       199 *
     ld    E, C          ; 1:4       199 *
                         ;[23:169] 
-                        ;           201 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_1001
+                        ;           201 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_1001 
     ld    B, D          ; 1:4       201 *
-    ld    C, E          ; 1:4       201 *  
+    ld    C, E          ; 1:4       201 * 
     ld    D, H          ; 1:4       201 *
     ld    E, L          ; 1:4       201 *   1x 
     add  HL, HL         ; 1:11      201 *   2x 
@@ -1924,9 +1924,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       201 *
     ld    E, C          ; 1:4       201 *
                         ;[20:150] 
-                        ;           203 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_1011
+                        ;           203 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_1011 
     ld    B, D          ; 1:4       203 *
-    ld    C, E          ; 1:4       203 *  
+    ld    C, E          ; 1:4       203 * 
     ld    D, H          ; 1:4       203 *
     ld    E, L          ; 1:4       203 *   1x 
     add  HL, HL         ; 1:11      203 *   2x 
@@ -1949,9 +1949,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       203 *
     ld    E, C          ; 1:4       203 *
                         ;[23:169] 
-                        ;           205 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_1101
+                        ;           205 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1100_1101 
     ld    B, D          ; 1:4       205 *
-    ld    C, E          ; 1:4       205 *  
+    ld    C, E          ; 1:4       205 * 
     ld    D, H          ; 1:4       205 *
     ld    E, L          ; 1:4       205 *   1x 
     add  HL, HL         ; 1:11      205 *   2x 
@@ -1974,9 +1974,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       205 *
     ld    E, C          ; 1:4       205 *
                         ;[23:169] 
-                        ;           207 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1100_1111
+                        ;           207 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1100_1111 
     ld    B, D          ; 1:4       207 *
-    ld    C, E          ; 1:4       207 *  
+    ld    C, E          ; 1:4       207 * 
     ld    D, H          ; 1:4       207 *
     ld    E, L          ; 1:4       207 *   1x 
     add  HL, HL         ; 1:11      207 *   2x 
@@ -1998,9 +1998,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       207 *
     ld    E, C          ; 1:4       207 *
                         ;[50:142] 
-                        ;           209 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_0001
+                        ;           209 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_0001 
     ld    B, D          ; 1:4       209 *
-    ld    C, E          ; 1:4       209 *  
+    ld    C, E          ; 1:4       209 * 
     ld    D, H          ; 1:4       209 *
     ld    E, L          ; 1:4       209 *   1x 
     add  HL, HL         ; 1:11      209 *   2x 
@@ -2021,9 +2021,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       209 *
                         ;[20:150]
 
-                        ;           211 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_0011
+                        ;           211 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_0011 
     ld    B, D          ; 1:4       211 *
-    ld    C, E          ; 1:4       211 *  
+    ld    C, E          ; 1:4       211 * 
     ld    D, H          ; 1:4       211 *
     ld    E, L          ; 1:4       211 *   1x 
     add  HL, HL         ; 1:11      211 *   2x 
@@ -2046,9 +2046,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       211 *
     ld    E, C          ; 1:4       211 *
                         ;[23:169] 
-                        ;           213 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_0101
+                        ;           213 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_0101 
     ld    B, D          ; 1:4       213 *
-    ld    C, E          ; 1:4       213 *  
+    ld    C, E          ; 1:4       213 * 
     ld    D, H          ; 1:4       213 *
     ld    E, L          ; 1:4       213 *   1x 
     add  HL, HL         ; 1:11      213 *   2x 
@@ -2071,9 +2071,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       213 *
     ld    E, C          ; 1:4       213 *
                         ;[23:169] 
-                        ;           215 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1101_0111
+                        ;           215 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1101_0111 
     ld    B, D          ; 1:4       215 *
-    ld    C, E          ; 1:4       215 *  
+    ld    C, E          ; 1:4       215 * 
     ld    D, H          ; 1:4       215 *
     ld    E, L          ; 1:4       215 *   1x 
     add  HL, HL         ; 1:11      215 *   2x 
@@ -2095,9 +2095,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       215 *
     ld    E, C          ; 1:4       215 *
                         ;[50:142] 
-                        ;           217 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_1001
+                        ;           217 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1101_1001 
     ld    B, D          ; 1:4       217 *
-    ld    C, E          ; 1:4       217 *  
+    ld    C, E          ; 1:4       217 * 
     ld    D, H          ; 1:4       217 *
     ld    E, L          ; 1:4       217 *   1x 
     add  HL, HL         ; 1:11      217 *   2x 
@@ -2120,9 +2120,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       217 *
     ld    E, C          ; 1:4       217 *
                         ;[23:169] 
-                        ;           219 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1101_1011
+                        ;           219 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1101_1011 
     ld    B, D          ; 1:4       219 *
-    ld    C, E          ; 1:4       219 *  
+    ld    C, E          ; 1:4       219 * 
     ld    D, H          ; 1:4       219 *
     ld    E, L          ; 1:4       219 *   1x 
     add  HL, HL         ; 1:11      219 *   2x 
@@ -2144,9 +2144,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       219 *
     ld    E, C          ; 1:4       219 *
                         ;[50:142] 
-                        ;           221 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1101_1101
+                        ;           221 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1101_1101 
     ld    B, D          ; 1:4       221 *
-    ld    C, E          ; 1:4       221 *  
+    ld    C, E          ; 1:4       221 * 
     ld    D, H          ; 1:4       221 *
     ld    E, L          ; 1:4       221 *   1x 
     add  HL, HL         ; 1:11      221 *   2x 
@@ -2168,7 +2168,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       221 *
     ld    E, C          ; 1:4       221 *
                         ;[50:142] 
-                        ;           223 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1101_1111 
+                        ;           223 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1101_1111  
     ld    B, H          ; 1:4       223 *
     ld    A, L          ; 1:4       223 *   1x 
     add  HL, HL         ; 1:11      223 *   2x 
@@ -2177,9 +2177,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      223 *   16x 
     add  HL, HL         ; 1:11      223 *   32x 
     add   A, L          ; 1:4       223 *
-    ld    C, A          ; 1:4       223 *   
-    ld    A, B          ; 1:4       223 *   
-    adc   A, H          ; 1:4       223 *   
+    ld    C, A          ; 1:4       223 *
+    ld    A, B          ; 1:4       223 *
+    adc   A, H          ; 1:4       223 *
     ld    B, A          ; 1:4       223 *   33x 
     add  HL, HL         ; 1:11      223 *   64x 
     add  HL, HL         ; 1:11      223 *   128x 
@@ -2187,9 +2187,9 @@ ORG 0x6000
     or    A             ; 1:4       223 *
     sbc  HL, BC         ; 2:15      223 *   256x - 33x = 223x
                         ;[18:135] 
-                        ;           225 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_0001
+                        ;           225 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_0001 
     ld    B, D          ; 1:4       225 *
-    ld    C, E          ; 1:4       225 *  
+    ld    C, E          ; 1:4       225 * 
     ld    D, H          ; 1:4       225 *
     ld    E, L          ; 1:4       225 *   1x 
     add  HL, HL         ; 1:11      225 *   2x 
@@ -2209,9 +2209,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       225 *
     ld    E, C          ; 1:4       225 *
                         ;[20:150] 
-                        ;           227 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_0011
+                        ;           227 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_0011 
     ld    B, D          ; 1:4       227 *
-    ld    C, E          ; 1:4       227 *  
+    ld    C, E          ; 1:4       227 * 
     ld    D, H          ; 1:4       227 *
     ld    E, L          ; 1:4       227 *   1x 
     add  HL, HL         ; 1:11      227 *   2x 
@@ -2234,9 +2234,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       227 *
     ld    E, C          ; 1:4       227 *
                         ;[23:169] 
-                        ;           229 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_0101
+                        ;           229 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_0101 
     ld    B, D          ; 1:4       229 *
-    ld    C, E          ; 1:4       229 *  
+    ld    C, E          ; 1:4       229 * 
     ld    D, H          ; 1:4       229 *
     ld    E, L          ; 1:4       229 *   1x 
     add  HL, HL         ; 1:11      229 *   2x 
@@ -2259,9 +2259,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       229 *
     ld    E, C          ; 1:4       229 *
                         ;[23:169] 
-                        ;           231 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1110_0111
+                        ;           231 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1110_0111 
     ld    B, D          ; 1:4       231 *
-    ld    C, E          ; 1:4       231 *  
+    ld    C, E          ; 1:4       231 * 
     ld    D, H          ; 1:4       231 *
     ld    E, L          ; 1:4       231 *   1x 
     add  HL, HL         ; 1:11      231 *   2x 
@@ -2284,9 +2284,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       231 *
                         ;[50:142]
 
-                        ;           233 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_1001
+                        ;           233 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1110_1001 
     ld    B, D          ; 1:4       233 *
-    ld    C, E          ; 1:4       233 *  
+    ld    C, E          ; 1:4       233 * 
     ld    D, H          ; 1:4       233 *
     ld    E, L          ; 1:4       233 *   1x 
     add  HL, HL         ; 1:11      233 *   2x 
@@ -2309,9 +2309,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       233 *
     ld    E, C          ; 1:4       233 *
                         ;[23:169] 
-                        ;           235 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1110_1011
+                        ;           235 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1110_1011 
     ld    B, D          ; 1:4       235 *
-    ld    C, E          ; 1:4       235 *  
+    ld    C, E          ; 1:4       235 * 
     ld    D, H          ; 1:4       235 *
     ld    E, L          ; 1:4       235 *   1x 
     add  HL, HL         ; 1:11      235 *   2x 
@@ -2333,9 +2333,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       235 *
     ld    E, C          ; 1:4       235 *
                         ;[50:142] 
-                        ;           237 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1110_1101
+                        ;           237 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1110_1101 
     ld    B, D          ; 1:4       237 *
-    ld    C, E          ; 1:4       237 *  
+    ld    C, E          ; 1:4       237 * 
     ld    D, H          ; 1:4       237 *
     ld    E, L          ; 1:4       237 *   1x 
     add  HL, HL         ; 1:11      237 *   2x 
@@ -2357,7 +2357,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       237 *
     ld    E, C          ; 1:4       237 *
                         ;[50:142] 
-                        ;           239 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1110_1111 
+                        ;           239 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1110_1111  
     ld    B, H          ; 1:4       239 *
     ld    A, L          ; 1:4       239 *   1x 
     add  HL, HL         ; 1:11      239 *   2x 
@@ -2365,9 +2365,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      239 *   8x 
     add  HL, HL         ; 1:11      239 *   16x 
     add   A, L          ; 1:4       239 *
-    ld    C, A          ; 1:4       239 *   
-    ld    A, B          ; 1:4       239 *   
-    adc   A, H          ; 1:4       239 *   
+    ld    C, A          ; 1:4       239 *
+    ld    A, B          ; 1:4       239 *
+    adc   A, H          ; 1:4       239 *
     ld    B, A          ; 1:4       239 *   17x 
     add  HL, HL         ; 1:11      239 *   32x 
     add  HL, HL         ; 1:11      239 *   64x 
@@ -2376,9 +2376,9 @@ ORG 0x6000
     or    A             ; 1:4       239 *
     sbc  HL, BC         ; 2:15      239 *   256x - 17x = 239x
                         ;[18:135] 
-                        ;           241 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1111_0001
+                        ;           241 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_1111_0001 
     ld    B, D          ; 1:4       241 *
-    ld    C, E          ; 1:4       241 *  
+    ld    C, E          ; 1:4       241 * 
     ld    D, H          ; 1:4       241 *
     ld    E, L          ; 1:4       241 *   1x 
     add  HL, HL         ; 1:11      241 *   2x 
@@ -2401,9 +2401,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       241 *
     ld    E, C          ; 1:4       241 *
                         ;[23:169] 
-                        ;           243 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1111_0011
+                        ;           243 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1111_0011 
     ld    B, D          ; 1:4       243 *
-    ld    C, E          ; 1:4       243 *  
+    ld    C, E          ; 1:4       243 * 
     ld    D, H          ; 1:4       243 *
     ld    E, L          ; 1:4       243 *   1x 
     add  HL, HL         ; 1:11      243 *   2x 
@@ -2425,9 +2425,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       243 *
     ld    E, C          ; 1:4       243 *
                         ;[50:142] 
-                        ;           245 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1111_0101
+                        ;           245 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1111_0101 
     ld    B, D          ; 1:4       245 *
-    ld    C, E          ; 1:4       245 *  
+    ld    C, E          ; 1:4       245 * 
     ld    D, H          ; 1:4       245 *
     ld    E, L          ; 1:4       245 *   1x 
     add  HL, HL         ; 1:11      245 *   2x 
@@ -2449,16 +2449,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       245 *
     ld    E, C          ; 1:4       245 *
                         ;[50:142] 
-                        ;           247 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1111_0111 
+                        ;           247 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1111_0111  
     ld    B, H          ; 1:4       247 *
     ld    A, L          ; 1:4       247 *   1x 
     add  HL, HL         ; 1:11      247 *   2x 
     add  HL, HL         ; 1:11      247 *   4x 
     add  HL, HL         ; 1:11      247 *   8x 
     add   A, L          ; 1:4       247 *
-    ld    C, A          ; 1:4       247 *   
-    ld    A, B          ; 1:4       247 *   
-    adc   A, H          ; 1:4       247 *   
+    ld    C, A          ; 1:4       247 *
+    ld    A, B          ; 1:4       247 *
+    adc   A, H          ; 1:4       247 *
     ld    B, A          ; 1:4       247 *   9x 
     add  HL, HL         ; 1:11      247 *   16x 
     add  HL, HL         ; 1:11      247 *   32x 
@@ -2468,9 +2468,9 @@ ORG 0x6000
     or    A             ; 1:4       247 *
     sbc  HL, BC         ; 2:15      247 *   256x - 9x = 247x
                         ;[18:135] 
-                        ;           249 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1111_1001
+                        ;           249 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_1111_1001 
     ld    B, D          ; 1:4       249 *
-    ld    C, E          ; 1:4       249 *  
+    ld    C, E          ; 1:4       249 * 
     ld    D, H          ; 1:4       249 *
     ld    E, L          ; 1:4       249 *   1x 
     add  HL, HL         ; 1:11      249 *   2x 
@@ -2492,15 +2492,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       249 *
     ld    E, C          ; 1:4       249 *
                         ;[50:142] 
-                        ;           251 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1111_1011 
+                        ;           251 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1111_1011  
     ld    B, H          ; 1:4       251 *
     ld    A, L          ; 1:4       251 *   1x 
     add  HL, HL         ; 1:11      251 *   2x 
     add  HL, HL         ; 1:11      251 *   4x 
     add   A, L          ; 1:4       251 *
-    ld    C, A          ; 1:4       251 *   
-    ld    A, B          ; 1:4       251 *   
-    adc   A, H          ; 1:4       251 *   
+    ld    C, A          ; 1:4       251 *
+    ld    A, B          ; 1:4       251 *
+    adc   A, H          ; 1:4       251 *
     ld    B, A          ; 1:4       251 *   5x 
     add  HL, HL         ; 1:11      251 *   8x 
     add  HL, HL         ; 1:11      251 *   16x 
@@ -2511,15 +2511,15 @@ ORG 0x6000
     or    A             ; 1:4       251 *
     sbc  HL, BC         ; 2:15      251 *   256x - 5x = 251x
                         ;[18:135] 
-                        ;           253 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1111_1101 
+                        ;           253 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_1111_1101  
     ld    B, H          ; 1:4       253 *
     ld    A, L          ; 1:4       253 *   1x 
     add  HL, HL         ; 1:11      253 *   2x 
     add   A, L          ; 1:4       253 *
-    ld    C, A          ; 1:4       253 *   
-    ld    A, B          ; 1:4       253 *   
-    adc   A, H          ; 1:4       253 *   
-    ld    B, A          ; 1:4       253 *   3x  
+    ld    C, A          ; 1:4       253 *
+    ld    A, B          ; 1:4       253 *
+    adc   A, H          ; 1:4       253 *
+    ld    B, A          ; 1:4       253 *   3x 
     rr    H             ; 2:8       253 *
     rr    L             ; 2:8       253 *
     ld    H, L          ; 1:4       253 *
@@ -2528,7 +2528,7 @@ ORG 0x6000
     sbc  HL, BC         ; 2:15      253 *   256x - 3x = 253x
                         ;[18:85]
 
-                        ;           255 *   Variant: HL * (2^a - 2^b) = HL * b_1111_1111 
+                        ;           255 *   Variant: HL * (2^a - 2^b) = HL * b_1111_1111  
     ld    B, H          ; 1:4       255 *
     ld    C, L          ; 1:4       255 *   1x 
     ld    H, L          ; 1:4       255 *
@@ -2536,37 +2536,37 @@ ORG 0x6000
     or    A             ; 1:4       255 *
     sbc  HL, BC         ; 2:15      255 *   256x - 1x = 255x
                         ;[8:38] 
-                        ;           257 *   Variant: HL * (2^a + 2^b) = HL * b_0001_0000_0001 
+                        ;           257 *   Variant: HL * (2^a + 2^b) = HL * b_0001_0000_0001  
     ld    B, H          ; 1:4       257 *
     ld    C, L          ; 1:4       257 *   1x 
     ld    H, L          ; 1:4       257 *
     ld    L, 0x00       ; 2:7       257 *   256x 
     add  HL, BC         ; 1:11      257 *   256x + 1x = 257x
                         ;[6:30] 
-                        ;           259 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0000_0011 
+                        ;           259 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0000_0011  
     ld    B, H          ; 1:4       259 *
     ld    A, L          ; 1:4       259 *   1x 
     add  HL, HL         ; 1:11      259 *   2x 
     add   A, L          ; 1:4       259 *
-    ld    C, A          ; 1:4       259 *   
-    ld    A, B          ; 1:4       259 *   
-    adc   A, H          ; 1:4       259 *   
-    ld    B, A          ; 1:4       259 *   3x  
+    ld    C, A          ; 1:4       259 *
+    ld    A, B          ; 1:4       259 *
+    adc   A, H          ; 1:4       259 *
+    ld    B, A          ; 1:4       259 *   3x 
     rr    H             ; 2:8       259 *
     rr    L             ; 2:8       259 *
     ld    H, L          ; 1:4       259 *
     ld    L, 0x00       ; 2:7       259 *   256x 
     add  HL, BC         ; 1:11      259 *   256x + 3x = 259x
                         ;[16:77] 
-                        ;           261 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0000_0101 
+                        ;           261 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0000_0101  
     ld    B, H          ; 1:4       261 *
     ld    A, L          ; 1:4       261 *   1x 
     add  HL, HL         ; 1:11      261 *   2x 
     add  HL, HL         ; 1:11      261 *   4x 
     add   A, L          ; 1:4       261 *
-    ld    C, A          ; 1:4       261 *   
-    ld    A, B          ; 1:4       261 *   
-    adc   A, H          ; 1:4       261 *   
+    ld    C, A          ; 1:4       261 *
+    ld    A, B          ; 1:4       261 *
+    adc   A, H          ; 1:4       261 *
     ld    B, A          ; 1:4       261 *   5x 
     add  HL, HL         ; 1:11      261 *   8x 
     add  HL, HL         ; 1:11      261 *   16x 
@@ -2576,9 +2576,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      261 *   256x 
     add  HL, BC         ; 1:11      261 *   256x + 5x = 261x
                         ;[16:127] 
-                        ;           263 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_0111
+                        ;           263 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_0111 
     ld    B, D          ; 1:4       263 *
-    ld    C, E          ; 1:4       263 *  
+    ld    C, E          ; 1:4       263 * 
     ld    D, H          ; 1:4       263 *
     ld    E, L          ; 1:4       263 *   1x 
     add  HL, HL         ; 1:11      263 *   2x 
@@ -2599,16 +2599,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       263 *
     ld    E, C          ; 1:4       263 *
                         ;[21:161] 
-                        ;           265 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0000_1001 
+                        ;           265 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0000_1001  
     ld    B, H          ; 1:4       265 *
     ld    A, L          ; 1:4       265 *   1x 
     add  HL, HL         ; 1:11      265 *   2x 
     add  HL, HL         ; 1:11      265 *   4x 
     add  HL, HL         ; 1:11      265 *   8x 
     add   A, L          ; 1:4       265 *
-    ld    C, A          ; 1:4       265 *   
-    ld    A, B          ; 1:4       265 *   
-    adc   A, H          ; 1:4       265 *   
+    ld    C, A          ; 1:4       265 *
+    ld    A, B          ; 1:4       265 *
+    adc   A, H          ; 1:4       265 *
     ld    B, A          ; 1:4       265 *   9x 
     add  HL, HL         ; 1:11      265 *   16x 
     add  HL, HL         ; 1:11      265 *   32x 
@@ -2617,9 +2617,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      265 *   256x 
     add  HL, BC         ; 1:11      265 *   256x + 9x = 265x
                         ;[16:127] 
-                        ;           267 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_1011
+                        ;           267 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_1011 
     ld    B, D          ; 1:4       267 *
-    ld    C, E          ; 1:4       267 *  
+    ld    C, E          ; 1:4       267 * 
     ld    D, H          ; 1:4       267 *
     ld    E, L          ; 1:4       267 *   1x 
     add  HL, HL         ; 1:11      267 *   2x 
@@ -2640,9 +2640,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       267 *
     ld    E, C          ; 1:4       267 *
                         ;[21:161] 
-                        ;           269 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_1101
+                        ;           269 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_1101 
     ld    B, D          ; 1:4       269 *
-    ld    C, E          ; 1:4       269 *  
+    ld    C, E          ; 1:4       269 * 
     ld    D, H          ; 1:4       269 *
     ld    E, L          ; 1:4       269 *   1x 
     add  HL, HL         ; 1:11      269 *   2x 
@@ -2663,9 +2663,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       269 *
     ld    E, C          ; 1:4       269 *
                         ;[21:161] 
-                        ;           271 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_1111
+                        ;           271 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0000_1111 
     ld    B, D          ; 1:4       271 *
-    ld    C, E          ; 1:4       271 *  
+    ld    C, E          ; 1:4       271 * 
     ld    D, H          ; 1:4       271 *
     ld    E, L          ; 1:4       271 *   1x 
     add  HL, HL         ; 1:11      271 *   2x 
@@ -2689,7 +2689,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       271 *
     ld    E, C          ; 1:4       271 *
                         ;[24:180] 
-                        ;           273 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0001_0001 
+                        ;           273 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0001_0001  
     ld    B, H          ; 1:4       273 *
     ld    A, L          ; 1:4       273 *   1x 
     add  HL, HL         ; 1:11      273 *   2x 
@@ -2697,9 +2697,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      273 *   8x 
     add  HL, HL         ; 1:11      273 *   16x 
     add   A, L          ; 1:4       273 *
-    ld    C, A          ; 1:4       273 *   
-    ld    A, B          ; 1:4       273 *   
-    adc   A, H          ; 1:4       273 *   
+    ld    C, A          ; 1:4       273 *
+    ld    A, B          ; 1:4       273 *
+    adc   A, H          ; 1:4       273 *
     ld    B, A          ; 1:4       273 *   17x 
     add  HL, HL         ; 1:11      273 *   32x 
     add  HL, HL         ; 1:11      273 *   64x 
@@ -2707,9 +2707,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      273 *   256x 
     add  HL, BC         ; 1:11      273 *   256x + 17x = 273x
                         ;[16:127] 
-                        ;           275 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_0011
+                        ;           275 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_0011 
     ld    B, D          ; 1:4       275 *
-    ld    C, E          ; 1:4       275 *  
+    ld    C, E          ; 1:4       275 * 
     ld    D, H          ; 1:4       275 *
     ld    E, L          ; 1:4       275 *   1x 
     add  HL, HL         ; 1:11      275 *   2x 
@@ -2731,9 +2731,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       275 *
                         ;[21:161]
 
-                        ;           277 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_0101
+                        ;           277 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_0101 
     ld    B, D          ; 1:4       277 *
-    ld    C, E          ; 1:4       277 *  
+    ld    C, E          ; 1:4       277 * 
     ld    D, H          ; 1:4       277 *
     ld    E, L          ; 1:4       277 *   1x 
     add  HL, HL         ; 1:11      277 *   2x 
@@ -2754,9 +2754,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       277 *
     ld    E, C          ; 1:4       277 *
                         ;[21:161] 
-                        ;           279 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_0111
+                        ;           279 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_0111 
     ld    B, D          ; 1:4       279 *
-    ld    C, E          ; 1:4       279 *  
+    ld    C, E          ; 1:4       279 * 
     ld    D, H          ; 1:4       279 *
     ld    E, L          ; 1:4       279 *   1x 
     add  HL, HL         ; 1:11      279 *   2x 
@@ -2780,9 +2780,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       279 *
     ld    E, C          ; 1:4       279 *
                         ;[24:180] 
-                        ;           281 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1001
+                        ;           281 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1001 
     ld    B, D          ; 1:4       281 *
-    ld    C, E          ; 1:4       281 *  
+    ld    C, E          ; 1:4       281 * 
     ld    D, H          ; 1:4       281 *
     ld    E, L          ; 1:4       281 *   1x 
     add  HL, HL         ; 1:11      281 *   2x 
@@ -2803,9 +2803,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       281 *
     ld    E, C          ; 1:4       281 *
                         ;[21:161] 
-                        ;           283 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1011
+                        ;           283 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1011 
     ld    B, D          ; 1:4       283 *
-    ld    C, E          ; 1:4       283 *  
+    ld    C, E          ; 1:4       283 * 
     ld    D, H          ; 1:4       283 *
     ld    E, L          ; 1:4       283 *   1x 
     add  HL, HL         ; 1:11      283 *   2x 
@@ -2829,9 +2829,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       283 *
     ld    E, C          ; 1:4       283 *
                         ;[24:180] 
-                        ;           285 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1101
+                        ;           285 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1101 
     ld    B, D          ; 1:4       285 *
-    ld    C, E          ; 1:4       285 *  
+    ld    C, E          ; 1:4       285 * 
     ld    D, H          ; 1:4       285 *
     ld    E, L          ; 1:4       285 *   1x 
     add  HL, HL         ; 1:11      285 *   2x 
@@ -2855,9 +2855,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       285 *
     ld    E, C          ; 1:4       285 *
                         ;[24:180] 
-                        ;           287 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1111
+                        ;           287 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0001_1111 
     ld    B, D          ; 1:4       287 *
-    ld    C, E          ; 1:4       287 *  
+    ld    C, E          ; 1:4       287 * 
     ld    D, H          ; 1:4       287 *
     ld    E, L          ; 1:4       287 *   1x 
     add  HL, HL         ; 1:11      287 *   2x 
@@ -2884,7 +2884,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       287 *
     ld    E, C          ; 1:4       287 *
                         ;[27:199] 
-                        ;           289 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0010_0001 
+                        ;           289 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0010_0001  
     ld    B, H          ; 1:4       289 *
     ld    A, L          ; 1:4       289 *   1x 
     add  HL, HL         ; 1:11      289 *   2x 
@@ -2893,18 +2893,18 @@ ORG 0x6000
     add  HL, HL         ; 1:11      289 *   16x 
     add  HL, HL         ; 1:11      289 *   32x 
     add   A, L          ; 1:4       289 *
-    ld    C, A          ; 1:4       289 *   
-    ld    A, B          ; 1:4       289 *   
-    adc   A, H          ; 1:4       289 *   
+    ld    C, A          ; 1:4       289 *
+    ld    A, B          ; 1:4       289 *
+    adc   A, H          ; 1:4       289 *
     ld    B, A          ; 1:4       289 *   33x 
     add  HL, HL         ; 1:11      289 *   64x 
     add  HL, HL         ; 1:11      289 *   128x 
     add  HL, HL         ; 1:11      289 *   256x 
     add  HL, BC         ; 1:11      289 *   256x + 33x = 289x
                         ;[16:127] 
-                        ;           291 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_0011
+                        ;           291 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_0011 
     ld    B, D          ; 1:4       291 *
-    ld    C, E          ; 1:4       291 *  
+    ld    C, E          ; 1:4       291 * 
     ld    D, H          ; 1:4       291 *
     ld    E, L          ; 1:4       291 *   1x 
     add  HL, HL         ; 1:11      291 *   2x 
@@ -2925,9 +2925,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       291 *
     ld    E, C          ; 1:4       291 *
                         ;[21:161] 
-                        ;           293 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_0101
+                        ;           293 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_0101 
     ld    B, D          ; 1:4       293 *
-    ld    C, E          ; 1:4       293 *  
+    ld    C, E          ; 1:4       293 * 
     ld    D, H          ; 1:4       293 *
     ld    E, L          ; 1:4       293 *   1x 
     add  HL, HL         ; 1:11      293 *   2x 
@@ -2948,9 +2948,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       293 *
     ld    E, C          ; 1:4       293 *
                         ;[21:161] 
-                        ;           295 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_0111
+                        ;           295 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_0111 
     ld    B, D          ; 1:4       295 *
-    ld    C, E          ; 1:4       295 *  
+    ld    C, E          ; 1:4       295 * 
     ld    D, H          ; 1:4       295 *
     ld    E, L          ; 1:4       295 *   1x 
     add  HL, HL         ; 1:11      295 *   2x 
@@ -2974,9 +2974,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       295 *
     ld    E, C          ; 1:4       295 *
                         ;[24:180] 
-                        ;           297 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1001
+                        ;           297 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1001 
     ld    B, D          ; 1:4       297 *
-    ld    C, E          ; 1:4       297 *  
+    ld    C, E          ; 1:4       297 * 
     ld    D, H          ; 1:4       297 *
     ld    E, L          ; 1:4       297 *   1x 
     add  HL, HL         ; 1:11      297 *   2x 
@@ -2998,9 +2998,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       297 *
                         ;[21:161]
 
-                        ;           299 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1011
+                        ;           299 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1011 
     ld    B, D          ; 1:4       299 *
-    ld    C, E          ; 1:4       299 *  
+    ld    C, E          ; 1:4       299 * 
     ld    D, H          ; 1:4       299 *
     ld    E, L          ; 1:4       299 *   1x 
     add  HL, HL         ; 1:11      299 *   2x 
@@ -3024,9 +3024,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       299 *
     ld    E, C          ; 1:4       299 *
                         ;[24:180] 
-                        ;           301 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1101
+                        ;           301 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1101 
     ld    B, D          ; 1:4       301 *
-    ld    C, E          ; 1:4       301 *  
+    ld    C, E          ; 1:4       301 * 
     ld    D, H          ; 1:4       301 *
     ld    E, L          ; 1:4       301 *   1x 
     add  HL, HL         ; 1:11      301 *   2x 
@@ -3050,9 +3050,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       301 *
     ld    E, C          ; 1:4       301 *
                         ;[24:180] 
-                        ;           303 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1111
+                        ;           303 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0010_1111 
     ld    B, D          ; 1:4       303 *
-    ld    C, E          ; 1:4       303 *  
+    ld    C, E          ; 1:4       303 * 
     ld    D, H          ; 1:4       303 *
     ld    E, L          ; 1:4       303 *   1x 
     add  HL, HL         ; 1:11      303 *   2x 
@@ -3079,9 +3079,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       303 *
     ld    E, C          ; 1:4       303 *
                         ;[27:199] 
-                        ;           305 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0001
+                        ;           305 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0001 
     ld    B, D          ; 1:4       305 *
-    ld    C, E          ; 1:4       305 *  
+    ld    C, E          ; 1:4       305 * 
     ld    D, H          ; 1:4       305 *
     ld    E, L          ; 1:4       305 *   1x 
     add  HL, HL         ; 1:11      305 *   2x 
@@ -3102,9 +3102,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       305 *
     ld    E, C          ; 1:4       305 *
                         ;[21:161] 
-                        ;           307 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0011
+                        ;           307 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0011 
     ld    B, D          ; 1:4       307 *
-    ld    C, E          ; 1:4       307 *  
+    ld    C, E          ; 1:4       307 * 
     ld    D, H          ; 1:4       307 *
     ld    E, L          ; 1:4       307 *   1x 
     add  HL, HL         ; 1:11      307 *   2x 
@@ -3128,9 +3128,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       307 *
     ld    E, C          ; 1:4       307 *
                         ;[24:180] 
-                        ;           309 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0101
+                        ;           309 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0101 
     ld    B, D          ; 1:4       309 *
-    ld    C, E          ; 1:4       309 *  
+    ld    C, E          ; 1:4       309 * 
     ld    D, H          ; 1:4       309 *
     ld    E, L          ; 1:4       309 *   1x 
     add  HL, HL         ; 1:11      309 *   2x 
@@ -3154,9 +3154,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       309 *
     ld    E, C          ; 1:4       309 *
                         ;[24:180] 
-                        ;           311 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0111
+                        ;           311 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_0111 
     ld    B, D          ; 1:4       311 *
-    ld    C, E          ; 1:4       311 *  
+    ld    C, E          ; 1:4       311 * 
     ld    D, H          ; 1:4       311 *
     ld    E, L          ; 1:4       311 *   1x 
     add  HL, HL         ; 1:11      311 *   2x 
@@ -3183,9 +3183,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       311 *
     ld    E, C          ; 1:4       311 *
                         ;[27:199] 
-                        ;           313 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_1001
+                        ;           313 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_1001 
     ld    B, D          ; 1:4       313 *
-    ld    C, E          ; 1:4       313 *  
+    ld    C, E          ; 1:4       313 * 
     ld    D, H          ; 1:4       313 *
     ld    E, L          ; 1:4       313 *   1x 
     add  HL, HL         ; 1:11      313 *   2x 
@@ -3209,9 +3209,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       313 *
     ld    E, C          ; 1:4       313 *
                         ;[24:180] 
-                        ;           315 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_1011
+                        ;           315 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_1011 
     ld    B, D          ; 1:4       315 *
-    ld    C, E          ; 1:4       315 *  
+    ld    C, E          ; 1:4       315 * 
     ld    D, H          ; 1:4       315 *
     ld    E, L          ; 1:4       315 *   1x 
     add  HL, HL         ; 1:11      315 *   2x 
@@ -3238,9 +3238,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       315 *
     ld    E, C          ; 1:4       315 *
                         ;[27:199] 
-                        ;           317 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_1101
+                        ;           317 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0011_1101 
     ld    B, D          ; 1:4       317 *
-    ld    C, E          ; 1:4       317 *  
+    ld    C, E          ; 1:4       317 * 
     ld    D, H          ; 1:4       317 *
     ld    E, L          ; 1:4       317 *   1x 
     add  HL, HL         ; 1:11      317 *   2x 
@@ -3267,9 +3267,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       317 *
     ld    E, C          ; 1:4       317 *
                         ;[27:199] 
-                        ;           319 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0011_1111
+                        ;           319 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0011_1111 
     ld    B, D          ; 1:4       319 *
-    ld    C, E          ; 1:4       319 *  
+    ld    C, E          ; 1:4       319 * 
     ld    D, H          ; 1:4       319 *
     ld    E, L          ; 1:4       319 *   1x 
     add  HL, HL         ; 1:11      319 *   2x 
@@ -3293,7 +3293,7 @@ ORG 0x6000
     ld    E, C          ; 1:4       319 *
                         ;[51:153]
 
-                        ;           321 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0100_0001 
+                        ;           321 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_0100_0001  
     ld    B, H          ; 1:4       321 *
     ld    A, L          ; 1:4       321 *   1x 
     add  HL, HL         ; 1:11      321 *   2x 
@@ -3303,17 +3303,17 @@ ORG 0x6000
     add  HL, HL         ; 1:11      321 *   32x 
     add  HL, HL         ; 1:11      321 *   64x 
     add   A, L          ; 1:4       321 *
-    ld    C, A          ; 1:4       321 *   
-    ld    A, B          ; 1:4       321 *   
-    adc   A, H          ; 1:4       321 *   
+    ld    C, A          ; 1:4       321 *
+    ld    A, B          ; 1:4       321 *
+    adc   A, H          ; 1:4       321 *
     ld    B, A          ; 1:4       321 *   65x 
     add  HL, HL         ; 1:11      321 *   128x 
     add  HL, HL         ; 1:11      321 *   256x 
     add  HL, BC         ; 1:11      321 *   256x + 65x = 321x
                         ;[16:127] 
-                        ;           323 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_0011
+                        ;           323 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_0011 
     ld    B, D          ; 1:4       323 *
-    ld    C, E          ; 1:4       323 *  
+    ld    C, E          ; 1:4       323 * 
     ld    D, H          ; 1:4       323 *
     ld    E, L          ; 1:4       323 *   1x 
     add  HL, HL         ; 1:11      323 *   2x 
@@ -3334,9 +3334,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       323 *
     ld    E, C          ; 1:4       323 *
                         ;[21:161] 
-                        ;           325 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_0101
+                        ;           325 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_0101 
     ld    B, D          ; 1:4       325 *
-    ld    C, E          ; 1:4       325 *  
+    ld    C, E          ; 1:4       325 * 
     ld    D, H          ; 1:4       325 *
     ld    E, L          ; 1:4       325 *   1x 
     add  HL, HL         ; 1:11      325 *   2x 
@@ -3357,9 +3357,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       325 *
     ld    E, C          ; 1:4       325 *
                         ;[21:161] 
-                        ;           327 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_0111
+                        ;           327 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_0111 
     ld    B, D          ; 1:4       327 *
-    ld    C, E          ; 1:4       327 *  
+    ld    C, E          ; 1:4       327 * 
     ld    D, H          ; 1:4       327 *
     ld    E, L          ; 1:4       327 *   1x 
     add  HL, HL         ; 1:11      327 *   2x 
@@ -3383,9 +3383,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       327 *
     ld    E, C          ; 1:4       327 *
                         ;[24:180] 
-                        ;           329 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1001
+                        ;           329 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1001 
     ld    B, D          ; 1:4       329 *
-    ld    C, E          ; 1:4       329 *  
+    ld    C, E          ; 1:4       329 * 
     ld    D, H          ; 1:4       329 *
     ld    E, L          ; 1:4       329 *   1x 
     add  HL, HL         ; 1:11      329 *   2x 
@@ -3406,9 +3406,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       329 *
     ld    E, C          ; 1:4       329 *
                         ;[21:161] 
-                        ;           331 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1011
+                        ;           331 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1011 
     ld    B, D          ; 1:4       331 *
-    ld    C, E          ; 1:4       331 *  
+    ld    C, E          ; 1:4       331 * 
     ld    D, H          ; 1:4       331 *
     ld    E, L          ; 1:4       331 *   1x 
     add  HL, HL         ; 1:11      331 *   2x 
@@ -3432,9 +3432,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       331 *
     ld    E, C          ; 1:4       331 *
                         ;[24:180] 
-                        ;           333 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1101
+                        ;           333 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1101 
     ld    B, D          ; 1:4       333 *
-    ld    C, E          ; 1:4       333 *  
+    ld    C, E          ; 1:4       333 * 
     ld    D, H          ; 1:4       333 *
     ld    E, L          ; 1:4       333 *   1x 
     add  HL, HL         ; 1:11      333 *   2x 
@@ -3458,9 +3458,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       333 *
     ld    E, C          ; 1:4       333 *
                         ;[24:180] 
-                        ;           335 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1111
+                        ;           335 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0100_1111 
     ld    B, D          ; 1:4       335 *
-    ld    C, E          ; 1:4       335 *  
+    ld    C, E          ; 1:4       335 * 
     ld    D, H          ; 1:4       335 *
     ld    E, L          ; 1:4       335 *   1x 
     add  HL, HL         ; 1:11      335 *   2x 
@@ -3487,9 +3487,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       335 *
     ld    E, C          ; 1:4       335 *
                         ;[27:199] 
-                        ;           337 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0001
+                        ;           337 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0001 
     ld    B, D          ; 1:4       337 *
-    ld    C, E          ; 1:4       337 *  
+    ld    C, E          ; 1:4       337 * 
     ld    D, H          ; 1:4       337 *
     ld    E, L          ; 1:4       337 *   1x 
     add  HL, HL         ; 1:11      337 *   2x 
@@ -3510,9 +3510,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       337 *
     ld    E, C          ; 1:4       337 *
                         ;[21:161] 
-                        ;           339 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0011
+                        ;           339 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0011 
     ld    B, D          ; 1:4       339 *
-    ld    C, E          ; 1:4       339 *  
+    ld    C, E          ; 1:4       339 * 
     ld    D, H          ; 1:4       339 *
     ld    E, L          ; 1:4       339 *   1x 
     add  HL, HL         ; 1:11      339 *   2x 
@@ -3536,9 +3536,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       339 *
     ld    E, C          ; 1:4       339 *
                         ;[24:180] 
-                        ;           341 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0101
+                        ;           341 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0101 
     ld    B, D          ; 1:4       341 *
-    ld    C, E          ; 1:4       341 *  
+    ld    C, E          ; 1:4       341 * 
     ld    D, H          ; 1:4       341 *
     ld    E, L          ; 1:4       341 *   1x 
     add  HL, HL         ; 1:11      341 *   2x 
@@ -3563,9 +3563,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       341 *
                         ;[24:180]
 
-                        ;           343 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0111
+                        ;           343 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_0111 
     ld    B, D          ; 1:4       343 *
-    ld    C, E          ; 1:4       343 *  
+    ld    C, E          ; 1:4       343 * 
     ld    D, H          ; 1:4       343 *
     ld    E, L          ; 1:4       343 *   1x 
     add  HL, HL         ; 1:11      343 *   2x 
@@ -3592,9 +3592,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       343 *
     ld    E, C          ; 1:4       343 *
                         ;[27:199] 
-                        ;           345 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_1001
+                        ;           345 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_1001 
     ld    B, D          ; 1:4       345 *
-    ld    C, E          ; 1:4       345 *  
+    ld    C, E          ; 1:4       345 * 
     ld    D, H          ; 1:4       345 *
     ld    E, L          ; 1:4       345 *   1x 
     add  HL, HL         ; 1:11      345 *   2x 
@@ -3618,9 +3618,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       345 *
     ld    E, C          ; 1:4       345 *
                         ;[24:180] 
-                        ;           347 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_1011
+                        ;           347 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_1011 
     ld    B, D          ; 1:4       347 *
-    ld    C, E          ; 1:4       347 *  
+    ld    C, E          ; 1:4       347 * 
     ld    D, H          ; 1:4       347 *
     ld    E, L          ; 1:4       347 *   1x 
     add  HL, HL         ; 1:11      347 *   2x 
@@ -3647,9 +3647,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       347 *
     ld    E, C          ; 1:4       347 *
                         ;[27:199] 
-                        ;           349 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_1101
+                        ;           349 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0101_1101 
     ld    B, D          ; 1:4       349 *
-    ld    C, E          ; 1:4       349 *  
+    ld    C, E          ; 1:4       349 * 
     ld    D, H          ; 1:4       349 *
     ld    E, L          ; 1:4       349 *   1x 
     add  HL, HL         ; 1:11      349 *   2x 
@@ -3676,9 +3676,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       349 *
     ld    E, C          ; 1:4       349 *
                         ;[27:199] 
-                        ;           351 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0101_1111
+                        ;           351 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0101_1111 
     ld    B, D          ; 1:4       351 *
-    ld    C, E          ; 1:4       351 *  
+    ld    C, E          ; 1:4       351 * 
     ld    D, H          ; 1:4       351 *
     ld    E, L          ; 1:4       351 *   1x 
     add  HL, HL         ; 1:11      351 *   2x 
@@ -3701,9 +3701,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       351 *
     ld    E, C          ; 1:4       351 *
                         ;[51:153] 
-                        ;           353 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0001
+                        ;           353 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0001 
     ld    B, D          ; 1:4       353 *
-    ld    C, E          ; 1:4       353 *  
+    ld    C, E          ; 1:4       353 * 
     ld    D, H          ; 1:4       353 *
     ld    E, L          ; 1:4       353 *   1x 
     add  HL, HL         ; 1:11      353 *   2x 
@@ -3724,9 +3724,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       353 *
     ld    E, C          ; 1:4       353 *
                         ;[21:161] 
-                        ;           355 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0011
+                        ;           355 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0011 
     ld    B, D          ; 1:4       355 *
-    ld    C, E          ; 1:4       355 *  
+    ld    C, E          ; 1:4       355 * 
     ld    D, H          ; 1:4       355 *
     ld    E, L          ; 1:4       355 *   1x 
     add  HL, HL         ; 1:11      355 *   2x 
@@ -3750,9 +3750,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       355 *
     ld    E, C          ; 1:4       355 *
                         ;[24:180] 
-                        ;           357 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0101
+                        ;           357 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0101 
     ld    B, D          ; 1:4       357 *
-    ld    C, E          ; 1:4       357 *  
+    ld    C, E          ; 1:4       357 * 
     ld    D, H          ; 1:4       357 *
     ld    E, L          ; 1:4       357 *   1x 
     add  HL, HL         ; 1:11      357 *   2x 
@@ -3776,9 +3776,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       357 *
     ld    E, C          ; 1:4       357 *
                         ;[24:180] 
-                        ;           359 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0111
+                        ;           359 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_0111 
     ld    B, D          ; 1:4       359 *
-    ld    C, E          ; 1:4       359 *  
+    ld    C, E          ; 1:4       359 * 
     ld    D, H          ; 1:4       359 *
     ld    E, L          ; 1:4       359 *   1x 
     add  HL, HL         ; 1:11      359 *   2x 
@@ -3805,9 +3805,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       359 *
     ld    E, C          ; 1:4       359 *
                         ;[27:199] 
-                        ;           361 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_1001
+                        ;           361 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_1001 
     ld    B, D          ; 1:4       361 *
-    ld    C, E          ; 1:4       361 *  
+    ld    C, E          ; 1:4       361 * 
     ld    D, H          ; 1:4       361 *
     ld    E, L          ; 1:4       361 *   1x 
     add  HL, HL         ; 1:11      361 *   2x 
@@ -3831,9 +3831,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       361 *
     ld    E, C          ; 1:4       361 *
                         ;[24:180] 
-                        ;           363 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_1011
+                        ;           363 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_1011 
     ld    B, D          ; 1:4       363 *
-    ld    C, E          ; 1:4       363 *  
+    ld    C, E          ; 1:4       363 * 
     ld    D, H          ; 1:4       363 *
     ld    E, L          ; 1:4       363 *   1x 
     add  HL, HL         ; 1:11      363 *   2x 
@@ -3861,9 +3861,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       363 *
                         ;[27:199]
 
-                        ;           365 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_1101
+                        ;           365 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0110_1101 
     ld    B, D          ; 1:4       365 *
-    ld    C, E          ; 1:4       365 *  
+    ld    C, E          ; 1:4       365 * 
     ld    D, H          ; 1:4       365 *
     ld    E, L          ; 1:4       365 *   1x 
     add  HL, HL         ; 1:11      365 *   2x 
@@ -3890,9 +3890,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       365 *
     ld    E, C          ; 1:4       365 *
                         ;[27:199] 
-                        ;           367 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0110_1111
+                        ;           367 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0110_1111 
     ld    B, D          ; 1:4       367 *
-    ld    C, E          ; 1:4       367 *  
+    ld    C, E          ; 1:4       367 * 
     ld    D, H          ; 1:4       367 *
     ld    E, L          ; 1:4       367 *   1x 
     add  HL, HL         ; 1:11      367 *   2x 
@@ -3915,9 +3915,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       367 *
     ld    E, C          ; 1:4       367 *
                         ;[51:153] 
-                        ;           369 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_0001
+                        ;           369 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_0001 
     ld    B, D          ; 1:4       369 *
-    ld    C, E          ; 1:4       369 *  
+    ld    C, E          ; 1:4       369 * 
     ld    D, H          ; 1:4       369 *
     ld    E, L          ; 1:4       369 *   1x 
     add  HL, HL         ; 1:11      369 *   2x 
@@ -3941,9 +3941,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       369 *
     ld    E, C          ; 1:4       369 *
                         ;[24:180] 
-                        ;           371 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_0011
+                        ;           371 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_0011 
     ld    B, D          ; 1:4       371 *
-    ld    C, E          ; 1:4       371 *  
+    ld    C, E          ; 1:4       371 * 
     ld    D, H          ; 1:4       371 *
     ld    E, L          ; 1:4       371 *   1x 
     add  HL, HL         ; 1:11      371 *   2x 
@@ -3970,9 +3970,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       371 *
     ld    E, C          ; 1:4       371 *
                         ;[27:199] 
-                        ;           373 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_0101
+                        ;           373 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_0101 
     ld    B, D          ; 1:4       373 *
-    ld    C, E          ; 1:4       373 *  
+    ld    C, E          ; 1:4       373 * 
     ld    D, H          ; 1:4       373 *
     ld    E, L          ; 1:4       373 *   1x 
     add  HL, HL         ; 1:11      373 *   2x 
@@ -3999,9 +3999,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       373 *
     ld    E, C          ; 1:4       373 *
                         ;[27:199] 
-                        ;           375 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0111_0111
+                        ;           375 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0111_0111 
     ld    B, D          ; 1:4       375 *
-    ld    C, E          ; 1:4       375 *  
+    ld    C, E          ; 1:4       375 * 
     ld    D, H          ; 1:4       375 *
     ld    E, L          ; 1:4       375 *   1x 
     add  HL, HL         ; 1:11      375 *   2x 
@@ -4024,9 +4024,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       375 *
     ld    E, C          ; 1:4       375 *
                         ;[51:153] 
-                        ;           377 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_1001
+                        ;           377 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_0111_1001 
     ld    B, D          ; 1:4       377 *
-    ld    C, E          ; 1:4       377 *  
+    ld    C, E          ; 1:4       377 * 
     ld    D, H          ; 1:4       377 *
     ld    E, L          ; 1:4       377 *   1x 
     add  HL, HL         ; 1:11      377 *   2x 
@@ -4053,9 +4053,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       377 *
     ld    E, C          ; 1:4       377 *
                         ;[27:199] 
-                        ;           379 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0111_1011
+                        ;           379 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0111_1011 
     ld    B, D          ; 1:4       379 *
-    ld    C, E          ; 1:4       379 *  
+    ld    C, E          ; 1:4       379 * 
     ld    D, H          ; 1:4       379 *
     ld    E, L          ; 1:4       379 *   1x 
     add  HL, HL         ; 1:11      379 *   2x 
@@ -4078,9 +4078,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       379 *
     ld    E, C          ; 1:4       379 *
                         ;[51:153] 
-                        ;           381 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0111_1101
+                        ;           381 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_0111_1101 
     ld    B, D          ; 1:4       381 *
-    ld    C, E          ; 1:4       381 *  
+    ld    C, E          ; 1:4       381 * 
     ld    D, H          ; 1:4       381 *
     ld    E, L          ; 1:4       381 *   1x 
     add  HL, HL         ; 1:11      381 *   2x 
@@ -4103,7 +4103,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       381 *
     ld    E, C          ; 1:4       381 *
                         ;[51:153] 
-                        ;           383 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_0111_1111 
+                        ;           383 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_0111_1111  
     ld    B, H          ; 1:4       383 *
     ld    A, L          ; 1:4       383 *   1x 
     add  HL, HL         ; 1:11      383 *   2x 
@@ -4114,16 +4114,16 @@ ORG 0x6000
     add  HL, HL         ; 1:11      383 *   64x 
     add  HL, HL         ; 1:11      383 *   128x 
     add   A, L          ; 1:4       383 *
-    ld    C, A          ; 1:4       383 *   
-    ld    A, B          ; 1:4       383 *   
-    adc   A, H          ; 1:4       383 *   
+    ld    C, A          ; 1:4       383 *
+    ld    A, B          ; 1:4       383 *
+    adc   A, H          ; 1:4       383 *
     ld    B, A          ; 1:4       383 *   129x 
     add  HL, HL         ; 1:11      383 *   256x 
     add  HL, HL         ; 1:11      383 *   512x 
     or    A             ; 1:4       383 *
     sbc  HL, BC         ; 2:15      383 *   512x - 129x = 383x
                         ;[19:146] 
-                        ;           385 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_1000_0001 
+                        ;           385 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0001_1000_0001  
     ld    B, H          ; 1:4       385 *
     ld    A, L          ; 1:4       385 *   1x 
     add  HL, HL         ; 1:11      385 *   2x 
@@ -4134,17 +4134,17 @@ ORG 0x6000
     add  HL, HL         ; 1:11      385 *   64x 
     add  HL, HL         ; 1:11      385 *   128x 
     add   A, L          ; 1:4       385 *
-    ld    C, A          ; 1:4       385 *   
-    ld    A, B          ; 1:4       385 *   
-    adc   A, H          ; 1:4       385 *   
+    ld    C, A          ; 1:4       385 *
+    ld    A, B          ; 1:4       385 *
+    adc   A, H          ; 1:4       385 *
     ld    B, A          ; 1:4       385 *   129x 
     add  HL, HL         ; 1:11      385 *   256x 
     add  HL, BC         ; 1:11      385 *   256x + 129x = 385x
                         ;[16:127]
 
-                        ;           387 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_0011
+                        ;           387 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_0011 
     ld    B, D          ; 1:4       387 *
-    ld    C, E          ; 1:4       387 *  
+    ld    C, E          ; 1:4       387 * 
     ld    D, H          ; 1:4       387 *
     ld    E, L          ; 1:4       387 *   1x 
     add  HL, HL         ; 1:11      387 *   2x 
@@ -4165,9 +4165,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       387 *
     ld    E, C          ; 1:4       387 *
                         ;[21:161] 
-                        ;           389 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_0101
+                        ;           389 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_0101 
     ld    B, D          ; 1:4       389 *
-    ld    C, E          ; 1:4       389 *  
+    ld    C, E          ; 1:4       389 * 
     ld    D, H          ; 1:4       389 *
     ld    E, L          ; 1:4       389 *   1x 
     add  HL, HL         ; 1:11      389 *   2x 
@@ -4188,9 +4188,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       389 *
     ld    E, C          ; 1:4       389 *
                         ;[21:161] 
-                        ;           391 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_0111
+                        ;           391 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_0111 
     ld    B, D          ; 1:4       391 *
-    ld    C, E          ; 1:4       391 *  
+    ld    C, E          ; 1:4       391 * 
     ld    D, H          ; 1:4       391 *
     ld    E, L          ; 1:4       391 *   1x 
     add  HL, HL         ; 1:11      391 *   2x 
@@ -4214,9 +4214,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       391 *
     ld    E, C          ; 1:4       391 *
                         ;[24:180] 
-                        ;           393 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1001
+                        ;           393 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1001 
     ld    B, D          ; 1:4       393 *
-    ld    C, E          ; 1:4       393 *  
+    ld    C, E          ; 1:4       393 * 
     ld    D, H          ; 1:4       393 *
     ld    E, L          ; 1:4       393 *   1x 
     add  HL, HL         ; 1:11      393 *   2x 
@@ -4237,9 +4237,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       393 *
     ld    E, C          ; 1:4       393 *
                         ;[21:161] 
-                        ;           395 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1011
+                        ;           395 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1011 
     ld    B, D          ; 1:4       395 *
-    ld    C, E          ; 1:4       395 *  
+    ld    C, E          ; 1:4       395 * 
     ld    D, H          ; 1:4       395 *
     ld    E, L          ; 1:4       395 *   1x 
     add  HL, HL         ; 1:11      395 *   2x 
@@ -4263,9 +4263,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       395 *
     ld    E, C          ; 1:4       395 *
                         ;[24:180] 
-                        ;           397 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1101
+                        ;           397 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1101 
     ld    B, D          ; 1:4       397 *
-    ld    C, E          ; 1:4       397 *  
+    ld    C, E          ; 1:4       397 * 
     ld    D, H          ; 1:4       397 *
     ld    E, L          ; 1:4       397 *   1x 
     add  HL, HL         ; 1:11      397 *   2x 
@@ -4289,9 +4289,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       397 *
     ld    E, C          ; 1:4       397 *
                         ;[24:180] 
-                        ;           399 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1111
+                        ;           399 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1000_1111 
     ld    B, D          ; 1:4       399 *
-    ld    C, E          ; 1:4       399 *  
+    ld    C, E          ; 1:4       399 * 
     ld    D, H          ; 1:4       399 *
     ld    E, L          ; 1:4       399 *   1x 
     add  HL, HL         ; 1:11      399 *   2x 
@@ -4318,9 +4318,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       399 *
     ld    E, C          ; 1:4       399 *
                         ;[27:199] 
-                        ;           401 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0001
+                        ;           401 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0001 
     ld    B, D          ; 1:4       401 *
-    ld    C, E          ; 1:4       401 *  
+    ld    C, E          ; 1:4       401 * 
     ld    D, H          ; 1:4       401 *
     ld    E, L          ; 1:4       401 *   1x 
     add  HL, HL         ; 1:11      401 *   2x 
@@ -4341,9 +4341,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       401 *
     ld    E, C          ; 1:4       401 *
                         ;[21:161] 
-                        ;           403 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0011
+                        ;           403 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0011 
     ld    B, D          ; 1:4       403 *
-    ld    C, E          ; 1:4       403 *  
+    ld    C, E          ; 1:4       403 * 
     ld    D, H          ; 1:4       403 *
     ld    E, L          ; 1:4       403 *   1x 
     add  HL, HL         ; 1:11      403 *   2x 
@@ -4367,9 +4367,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       403 *
     ld    E, C          ; 1:4       403 *
                         ;[24:180] 
-                        ;           405 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0101
+                        ;           405 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0101 
     ld    B, D          ; 1:4       405 *
-    ld    C, E          ; 1:4       405 *  
+    ld    C, E          ; 1:4       405 * 
     ld    D, H          ; 1:4       405 *
     ld    E, L          ; 1:4       405 *   1x 
     add  HL, HL         ; 1:11      405 *   2x 
@@ -4393,9 +4393,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       405 *
     ld    E, C          ; 1:4       405 *
                         ;[24:180] 
-                        ;           407 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0111
+                        ;           407 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_0111 
     ld    B, D          ; 1:4       407 *
-    ld    C, E          ; 1:4       407 *  
+    ld    C, E          ; 1:4       407 * 
     ld    D, H          ; 1:4       407 *
     ld    E, L          ; 1:4       407 *   1x 
     add  HL, HL         ; 1:11      407 *   2x 
@@ -4423,9 +4423,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       407 *
                         ;[27:199]
 
-                        ;           409 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_1001
+                        ;           409 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_1001 
     ld    B, D          ; 1:4       409 *
-    ld    C, E          ; 1:4       409 *  
+    ld    C, E          ; 1:4       409 * 
     ld    D, H          ; 1:4       409 *
     ld    E, L          ; 1:4       409 *   1x 
     add  HL, HL         ; 1:11      409 *   2x 
@@ -4449,9 +4449,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       409 *
     ld    E, C          ; 1:4       409 *
                         ;[24:180] 
-                        ;           411 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_1011
+                        ;           411 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_1011 
     ld    B, D          ; 1:4       411 *
-    ld    C, E          ; 1:4       411 *  
+    ld    C, E          ; 1:4       411 * 
     ld    D, H          ; 1:4       411 *
     ld    E, L          ; 1:4       411 *   1x 
     add  HL, HL         ; 1:11      411 *   2x 
@@ -4478,9 +4478,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       411 *
     ld    E, C          ; 1:4       411 *
                         ;[27:199] 
-                        ;           413 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_1101
+                        ;           413 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1001_1101 
     ld    B, D          ; 1:4       413 *
-    ld    C, E          ; 1:4       413 *  
+    ld    C, E          ; 1:4       413 * 
     ld    D, H          ; 1:4       413 *
     ld    E, L          ; 1:4       413 *   1x 
     add  HL, HL         ; 1:11      413 *   2x 
@@ -4507,9 +4507,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       413 *
     ld    E, C          ; 1:4       413 *
                         ;[27:199] 
-                        ;           415 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1001_1111
+                        ;           415 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1001_1111 
     ld    B, D          ; 1:4       415 *
-    ld    C, E          ; 1:4       415 *  
+    ld    C, E          ; 1:4       415 * 
     ld    D, H          ; 1:4       415 *
     ld    E, L          ; 1:4       415 *   1x 
     add  HL, HL         ; 1:11      415 *   2x 
@@ -4532,9 +4532,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       415 *
     ld    E, C          ; 1:4       415 *
                         ;[51:153] 
-                        ;           417 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0001
+                        ;           417 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0001 
     ld    B, D          ; 1:4       417 *
-    ld    C, E          ; 1:4       417 *  
+    ld    C, E          ; 1:4       417 * 
     ld    D, H          ; 1:4       417 *
     ld    E, L          ; 1:4       417 *   1x 
     add  HL, HL         ; 1:11      417 *   2x 
@@ -4555,9 +4555,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       417 *
     ld    E, C          ; 1:4       417 *
                         ;[21:161] 
-                        ;           419 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0011
+                        ;           419 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0011 
     ld    B, D          ; 1:4       419 *
-    ld    C, E          ; 1:4       419 *  
+    ld    C, E          ; 1:4       419 * 
     ld    D, H          ; 1:4       419 *
     ld    E, L          ; 1:4       419 *   1x 
     add  HL, HL         ; 1:11      419 *   2x 
@@ -4581,9 +4581,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       419 *
     ld    E, C          ; 1:4       419 *
                         ;[24:180] 
-                        ;           421 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0101
+                        ;           421 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0101 
     ld    B, D          ; 1:4       421 *
-    ld    C, E          ; 1:4       421 *  
+    ld    C, E          ; 1:4       421 * 
     ld    D, H          ; 1:4       421 *
     ld    E, L          ; 1:4       421 *   1x 
     add  HL, HL         ; 1:11      421 *   2x 
@@ -4607,9 +4607,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       421 *
     ld    E, C          ; 1:4       421 *
                         ;[24:180] 
-                        ;           423 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0111
+                        ;           423 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_0111 
     ld    B, D          ; 1:4       423 *
-    ld    C, E          ; 1:4       423 *  
+    ld    C, E          ; 1:4       423 * 
     ld    D, H          ; 1:4       423 *
     ld    E, L          ; 1:4       423 *   1x 
     add  HL, HL         ; 1:11      423 *   2x 
@@ -4636,9 +4636,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       423 *
     ld    E, C          ; 1:4       423 *
                         ;[27:199] 
-                        ;           425 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_1001
+                        ;           425 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_1001 
     ld    B, D          ; 1:4       425 *
-    ld    C, E          ; 1:4       425 *  
+    ld    C, E          ; 1:4       425 * 
     ld    D, H          ; 1:4       425 *
     ld    E, L          ; 1:4       425 *   1x 
     add  HL, HL         ; 1:11      425 *   2x 
@@ -4662,9 +4662,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       425 *
     ld    E, C          ; 1:4       425 *
                         ;[24:180] 
-                        ;           427 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_1011
+                        ;           427 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_1011 
     ld    B, D          ; 1:4       427 *
-    ld    C, E          ; 1:4       427 *  
+    ld    C, E          ; 1:4       427 * 
     ld    D, H          ; 1:4       427 *
     ld    E, L          ; 1:4       427 *   1x 
     add  HL, HL         ; 1:11      427 *   2x 
@@ -4691,9 +4691,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       427 *
     ld    E, C          ; 1:4       427 *
                         ;[27:199] 
-                        ;           429 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_1101
+                        ;           429 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1010_1101 
     ld    B, D          ; 1:4       429 *
-    ld    C, E          ; 1:4       429 *  
+    ld    C, E          ; 1:4       429 * 
     ld    D, H          ; 1:4       429 *
     ld    E, L          ; 1:4       429 *   1x 
     add  HL, HL         ; 1:11      429 *   2x 
@@ -4721,9 +4721,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       429 *
                         ;[27:199]
 
-                        ;           431 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1010_1111
+                        ;           431 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1010_1111 
     ld    B, D          ; 1:4       431 *
-    ld    C, E          ; 1:4       431 *  
+    ld    C, E          ; 1:4       431 * 
     ld    D, H          ; 1:4       431 *
     ld    E, L          ; 1:4       431 *   1x 
     add  HL, HL         ; 1:11      431 *   2x 
@@ -4746,9 +4746,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       431 *
     ld    E, C          ; 1:4       431 *
                         ;[51:153] 
-                        ;           433 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_0001
+                        ;           433 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_0001 
     ld    B, D          ; 1:4       433 *
-    ld    C, E          ; 1:4       433 *  
+    ld    C, E          ; 1:4       433 * 
     ld    D, H          ; 1:4       433 *
     ld    E, L          ; 1:4       433 *   1x 
     add  HL, HL         ; 1:11      433 *   2x 
@@ -4772,9 +4772,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       433 *
     ld    E, C          ; 1:4       433 *
                         ;[24:180] 
-                        ;           435 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_0011
+                        ;           435 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_0011 
     ld    B, D          ; 1:4       435 *
-    ld    C, E          ; 1:4       435 *  
+    ld    C, E          ; 1:4       435 * 
     ld    D, H          ; 1:4       435 *
     ld    E, L          ; 1:4       435 *   1x 
     add  HL, HL         ; 1:11      435 *   2x 
@@ -4801,9 +4801,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       435 *
     ld    E, C          ; 1:4       435 *
                         ;[27:199] 
-                        ;           437 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_0101
+                        ;           437 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_0101 
     ld    B, D          ; 1:4       437 *
-    ld    C, E          ; 1:4       437 *  
+    ld    C, E          ; 1:4       437 * 
     ld    D, H          ; 1:4       437 *
     ld    E, L          ; 1:4       437 *   1x 
     add  HL, HL         ; 1:11      437 *   2x 
@@ -4830,9 +4830,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       437 *
     ld    E, C          ; 1:4       437 *
                         ;[27:199] 
-                        ;           439 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1011_0111
+                        ;           439 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1011_0111 
     ld    B, D          ; 1:4       439 *
-    ld    C, E          ; 1:4       439 *  
+    ld    C, E          ; 1:4       439 * 
     ld    D, H          ; 1:4       439 *
     ld    E, L          ; 1:4       439 *   1x 
     add  HL, HL         ; 1:11      439 *   2x 
@@ -4855,9 +4855,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       439 *
     ld    E, C          ; 1:4       439 *
                         ;[51:153] 
-                        ;           441 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_1001
+                        ;           441 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1011_1001 
     ld    B, D          ; 1:4       441 *
-    ld    C, E          ; 1:4       441 *  
+    ld    C, E          ; 1:4       441 * 
     ld    D, H          ; 1:4       441 *
     ld    E, L          ; 1:4       441 *   1x 
     add  HL, HL         ; 1:11      441 *   2x 
@@ -4884,9 +4884,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       441 *
     ld    E, C          ; 1:4       441 *
                         ;[27:199] 
-                        ;           443 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1011_1011
+                        ;           443 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1011_1011 
     ld    B, D          ; 1:4       443 *
-    ld    C, E          ; 1:4       443 *  
+    ld    C, E          ; 1:4       443 * 
     ld    D, H          ; 1:4       443 *
     ld    E, L          ; 1:4       443 *   1x 
     add  HL, HL         ; 1:11      443 *   2x 
@@ -4909,9 +4909,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       443 *
     ld    E, C          ; 1:4       443 *
                         ;[51:153] 
-                        ;           445 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1011_1101
+                        ;           445 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1011_1101 
     ld    B, D          ; 1:4       445 *
-    ld    C, E          ; 1:4       445 *  
+    ld    C, E          ; 1:4       445 * 
     ld    D, H          ; 1:4       445 *
     ld    E, L          ; 1:4       445 *   1x 
     add  HL, HL         ; 1:11      445 *   2x 
@@ -4934,7 +4934,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       445 *
     ld    E, C          ; 1:4       445 *
                         ;[51:153] 
-                        ;           447 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1011_1111 
+                        ;           447 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1011_1111  
     ld    B, H          ; 1:4       447 *
     ld    A, L          ; 1:4       447 *   1x 
     add  HL, HL         ; 1:11      447 *   2x 
@@ -4944,9 +4944,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      447 *   32x 
     add  HL, HL         ; 1:11      447 *   64x 
     add   A, L          ; 1:4       447 *
-    ld    C, A          ; 1:4       447 *   
-    ld    A, B          ; 1:4       447 *   
-    adc   A, H          ; 1:4       447 *   
+    ld    C, A          ; 1:4       447 *
+    ld    A, B          ; 1:4       447 *
+    adc   A, H          ; 1:4       447 *
     ld    B, A          ; 1:4       447 *   65x 
     add  HL, HL         ; 1:11      447 *   128x 
     add  HL, HL         ; 1:11      447 *   256x 
@@ -4954,9 +4954,9 @@ ORG 0x6000
     or    A             ; 1:4       447 *
     sbc  HL, BC         ; 2:15      447 *   512x - 65x = 447x
                         ;[19:146] 
-                        ;           449 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0001
+                        ;           449 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0001 
     ld    B, D          ; 1:4       449 *
-    ld    C, E          ; 1:4       449 *  
+    ld    C, E          ; 1:4       449 * 
     ld    D, H          ; 1:4       449 *
     ld    E, L          ; 1:4       449 *   1x 
     add  HL, HL         ; 1:11      449 *   2x 
@@ -4977,9 +4977,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       449 *
     ld    E, C          ; 1:4       449 *
                         ;[21:161] 
-                        ;           451 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0011
+                        ;           451 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0011 
     ld    B, D          ; 1:4       451 *
-    ld    C, E          ; 1:4       451 *  
+    ld    C, E          ; 1:4       451 * 
     ld    D, H          ; 1:4       451 *
     ld    E, L          ; 1:4       451 *   1x 
     add  HL, HL         ; 1:11      451 *   2x 
@@ -5004,9 +5004,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       451 *
                         ;[24:180]
 
-                        ;           453 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0101
+                        ;           453 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0101 
     ld    B, D          ; 1:4       453 *
-    ld    C, E          ; 1:4       453 *  
+    ld    C, E          ; 1:4       453 * 
     ld    D, H          ; 1:4       453 *
     ld    E, L          ; 1:4       453 *   1x 
     add  HL, HL         ; 1:11      453 *   2x 
@@ -5030,9 +5030,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       453 *
     ld    E, C          ; 1:4       453 *
                         ;[24:180] 
-                        ;           455 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0111
+                        ;           455 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_0111 
     ld    B, D          ; 1:4       455 *
-    ld    C, E          ; 1:4       455 *  
+    ld    C, E          ; 1:4       455 * 
     ld    D, H          ; 1:4       455 *
     ld    E, L          ; 1:4       455 *   1x 
     add  HL, HL         ; 1:11      455 *   2x 
@@ -5059,9 +5059,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       455 *
     ld    E, C          ; 1:4       455 *
                         ;[27:199] 
-                        ;           457 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_1001
+                        ;           457 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_1001 
     ld    B, D          ; 1:4       457 *
-    ld    C, E          ; 1:4       457 *  
+    ld    C, E          ; 1:4       457 * 
     ld    D, H          ; 1:4       457 *
     ld    E, L          ; 1:4       457 *   1x 
     add  HL, HL         ; 1:11      457 *   2x 
@@ -5085,9 +5085,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       457 *
     ld    E, C          ; 1:4       457 *
                         ;[24:180] 
-                        ;           459 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_1011
+                        ;           459 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_1011 
     ld    B, D          ; 1:4       459 *
-    ld    C, E          ; 1:4       459 *  
+    ld    C, E          ; 1:4       459 * 
     ld    D, H          ; 1:4       459 *
     ld    E, L          ; 1:4       459 *   1x 
     add  HL, HL         ; 1:11      459 *   2x 
@@ -5114,9 +5114,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       459 *
     ld    E, C          ; 1:4       459 *
                         ;[27:199] 
-                        ;           461 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_1101
+                        ;           461 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1100_1101 
     ld    B, D          ; 1:4       461 *
-    ld    C, E          ; 1:4       461 *  
+    ld    C, E          ; 1:4       461 * 
     ld    D, H          ; 1:4       461 *
     ld    E, L          ; 1:4       461 *   1x 
     add  HL, HL         ; 1:11      461 *   2x 
@@ -5143,9 +5143,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       461 *
     ld    E, C          ; 1:4       461 *
                         ;[27:199] 
-                        ;           463 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1100_1111
+                        ;           463 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1100_1111 
     ld    B, D          ; 1:4       463 *
-    ld    C, E          ; 1:4       463 *  
+    ld    C, E          ; 1:4       463 * 
     ld    D, H          ; 1:4       463 *
     ld    E, L          ; 1:4       463 *   1x 
     add  HL, HL         ; 1:11      463 *   2x 
@@ -5168,9 +5168,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       463 *
     ld    E, C          ; 1:4       463 *
                         ;[51:153] 
-                        ;           465 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_0001
+                        ;           465 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_0001 
     ld    B, D          ; 1:4       465 *
-    ld    C, E          ; 1:4       465 *  
+    ld    C, E          ; 1:4       465 * 
     ld    D, H          ; 1:4       465 *
     ld    E, L          ; 1:4       465 *   1x 
     add  HL, HL         ; 1:11      465 *   2x 
@@ -5194,9 +5194,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       465 *
     ld    E, C          ; 1:4       465 *
                         ;[24:180] 
-                        ;           467 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_0011
+                        ;           467 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_0011 
     ld    B, D          ; 1:4       467 *
-    ld    C, E          ; 1:4       467 *  
+    ld    C, E          ; 1:4       467 * 
     ld    D, H          ; 1:4       467 *
     ld    E, L          ; 1:4       467 *   1x 
     add  HL, HL         ; 1:11      467 *   2x 
@@ -5223,9 +5223,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       467 *
     ld    E, C          ; 1:4       467 *
                         ;[27:199] 
-                        ;           469 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_0101
+                        ;           469 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_0101 
     ld    B, D          ; 1:4       469 *
-    ld    C, E          ; 1:4       469 *  
+    ld    C, E          ; 1:4       469 * 
     ld    D, H          ; 1:4       469 *
     ld    E, L          ; 1:4       469 *   1x 
     add  HL, HL         ; 1:11      469 *   2x 
@@ -5252,9 +5252,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       469 *
     ld    E, C          ; 1:4       469 *
                         ;[27:199] 
-                        ;           471 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1101_0111
+                        ;           471 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1101_0111 
     ld    B, D          ; 1:4       471 *
-    ld    C, E          ; 1:4       471 *  
+    ld    C, E          ; 1:4       471 * 
     ld    D, H          ; 1:4       471 *
     ld    E, L          ; 1:4       471 *   1x 
     add  HL, HL         ; 1:11      471 *   2x 
@@ -5277,9 +5277,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       471 *
     ld    E, C          ; 1:4       471 *
                         ;[51:153] 
-                        ;           473 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_1001
+                        ;           473 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1101_1001 
     ld    B, D          ; 1:4       473 *
-    ld    C, E          ; 1:4       473 *  
+    ld    C, E          ; 1:4       473 * 
     ld    D, H          ; 1:4       473 *
     ld    E, L          ; 1:4       473 *   1x 
     add  HL, HL         ; 1:11      473 *   2x 
@@ -5307,9 +5307,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       473 *
                         ;[27:199]
 
-                        ;           475 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1101_1011
+                        ;           475 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1101_1011 
     ld    B, D          ; 1:4       475 *
-    ld    C, E          ; 1:4       475 *  
+    ld    C, E          ; 1:4       475 * 
     ld    D, H          ; 1:4       475 *
     ld    E, L          ; 1:4       475 *   1x 
     add  HL, HL         ; 1:11      475 *   2x 
@@ -5332,9 +5332,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       475 *
     ld    E, C          ; 1:4       475 *
                         ;[51:153] 
-                        ;           477 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1101_1101
+                        ;           477 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1101_1101 
     ld    B, D          ; 1:4       477 *
-    ld    C, E          ; 1:4       477 *  
+    ld    C, E          ; 1:4       477 * 
     ld    D, H          ; 1:4       477 *
     ld    E, L          ; 1:4       477 *   1x 
     add  HL, HL         ; 1:11      477 *   2x 
@@ -5357,7 +5357,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       477 *
     ld    E, C          ; 1:4       477 *
                         ;[51:153] 
-                        ;           479 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1101_1111 
+                        ;           479 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1101_1111  
     ld    B, H          ; 1:4       479 *
     ld    A, L          ; 1:4       479 *   1x 
     add  HL, HL         ; 1:11      479 *   2x 
@@ -5366,9 +5366,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      479 *   16x 
     add  HL, HL         ; 1:11      479 *   32x 
     add   A, L          ; 1:4       479 *
-    ld    C, A          ; 1:4       479 *   
-    ld    A, B          ; 1:4       479 *   
-    adc   A, H          ; 1:4       479 *   
+    ld    C, A          ; 1:4       479 *
+    ld    A, B          ; 1:4       479 *
+    adc   A, H          ; 1:4       479 *
     ld    B, A          ; 1:4       479 *   33x 
     add  HL, HL         ; 1:11      479 *   64x 
     add  HL, HL         ; 1:11      479 *   128x 
@@ -5377,9 +5377,9 @@ ORG 0x6000
     or    A             ; 1:4       479 *
     sbc  HL, BC         ; 2:15      479 *   512x - 33x = 479x
                         ;[19:146] 
-                        ;           481 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_0001
+                        ;           481 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_0001 
     ld    B, D          ; 1:4       481 *
-    ld    C, E          ; 1:4       481 *  
+    ld    C, E          ; 1:4       481 * 
     ld    D, H          ; 1:4       481 *
     ld    E, L          ; 1:4       481 *   1x 
     add  HL, HL         ; 1:11      481 *   2x 
@@ -5403,9 +5403,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       481 *
     ld    E, C          ; 1:4       481 *
                         ;[24:180] 
-                        ;           483 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_0011
+                        ;           483 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_0011 
     ld    B, D          ; 1:4       483 *
-    ld    C, E          ; 1:4       483 *  
+    ld    C, E          ; 1:4       483 * 
     ld    D, H          ; 1:4       483 *
     ld    E, L          ; 1:4       483 *   1x 
     add  HL, HL         ; 1:11      483 *   2x 
@@ -5432,9 +5432,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       483 *
     ld    E, C          ; 1:4       483 *
                         ;[27:199] 
-                        ;           485 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_0101
+                        ;           485 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_0101 
     ld    B, D          ; 1:4       485 *
-    ld    C, E          ; 1:4       485 *  
+    ld    C, E          ; 1:4       485 * 
     ld    D, H          ; 1:4       485 *
     ld    E, L          ; 1:4       485 *   1x 
     add  HL, HL         ; 1:11      485 *   2x 
@@ -5461,9 +5461,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       485 *
     ld    E, C          ; 1:4       485 *
                         ;[27:199] 
-                        ;           487 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1110_0111
+                        ;           487 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1110_0111 
     ld    B, D          ; 1:4       487 *
-    ld    C, E          ; 1:4       487 *  
+    ld    C, E          ; 1:4       487 * 
     ld    D, H          ; 1:4       487 *
     ld    E, L          ; 1:4       487 *   1x 
     add  HL, HL         ; 1:11      487 *   2x 
@@ -5486,9 +5486,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       487 *
     ld    E, C          ; 1:4       487 *
                         ;[51:153] 
-                        ;           489 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_1001
+                        ;           489 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1110_1001 
     ld    B, D          ; 1:4       489 *
-    ld    C, E          ; 1:4       489 *  
+    ld    C, E          ; 1:4       489 * 
     ld    D, H          ; 1:4       489 *
     ld    E, L          ; 1:4       489 *   1x 
     add  HL, HL         ; 1:11      489 *   2x 
@@ -5515,9 +5515,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       489 *
     ld    E, C          ; 1:4       489 *
                         ;[27:199] 
-                        ;           491 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1110_1011
+                        ;           491 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1110_1011 
     ld    B, D          ; 1:4       491 *
-    ld    C, E          ; 1:4       491 *  
+    ld    C, E          ; 1:4       491 * 
     ld    D, H          ; 1:4       491 *
     ld    E, L          ; 1:4       491 *   1x 
     add  HL, HL         ; 1:11      491 *   2x 
@@ -5540,9 +5540,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       491 *
     ld    E, C          ; 1:4       491 *
                         ;[51:153] 
-                        ;           493 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1110_1101
+                        ;           493 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1110_1101 
     ld    B, D          ; 1:4       493 *
-    ld    C, E          ; 1:4       493 *  
+    ld    C, E          ; 1:4       493 * 
     ld    D, H          ; 1:4       493 *
     ld    E, L          ; 1:4       493 *   1x 
     add  HL, HL         ; 1:11      493 *   2x 
@@ -5565,7 +5565,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       493 *
     ld    E, C          ; 1:4       493 *
                         ;[51:153] 
-                        ;           495 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1110_1111 
+                        ;           495 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1110_1111  
     ld    B, H          ; 1:4       495 *
     ld    A, L          ; 1:4       495 *   1x 
     add  HL, HL         ; 1:11      495 *   2x 
@@ -5573,9 +5573,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      495 *   8x 
     add  HL, HL         ; 1:11      495 *   16x 
     add   A, L          ; 1:4       495 *
-    ld    C, A          ; 1:4       495 *   
-    ld    A, B          ; 1:4       495 *   
-    adc   A, H          ; 1:4       495 *   
+    ld    C, A          ; 1:4       495 *
+    ld    A, B          ; 1:4       495 *
+    adc   A, H          ; 1:4       495 *
     ld    B, A          ; 1:4       495 *   17x 
     add  HL, HL         ; 1:11      495 *   32x 
     add  HL, HL         ; 1:11      495 *   64x 
@@ -5586,9 +5586,9 @@ ORG 0x6000
     sbc  HL, BC         ; 2:15      495 *   512x - 17x = 495x
                         ;[19:146]
 
-                        ;           497 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1111_0001
+                        ;           497 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0001_1111_0001 
     ld    B, D          ; 1:4       497 *
-    ld    C, E          ; 1:4       497 *  
+    ld    C, E          ; 1:4       497 * 
     ld    D, H          ; 1:4       497 *
     ld    E, L          ; 1:4       497 *   1x 
     add  HL, HL         ; 1:11      497 *   2x 
@@ -5615,9 +5615,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       497 *
     ld    E, C          ; 1:4       497 *
                         ;[27:199] 
-                        ;           499 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1111_0011
+                        ;           499 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1111_0011 
     ld    B, D          ; 1:4       499 *
-    ld    C, E          ; 1:4       499 *  
+    ld    C, E          ; 1:4       499 * 
     ld    D, H          ; 1:4       499 *
     ld    E, L          ; 1:4       499 *   1x 
     add  HL, HL         ; 1:11      499 *   2x 
@@ -5640,9 +5640,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       499 *
     ld    E, C          ; 1:4       499 *
                         ;[51:153] 
-                        ;           501 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1111_0101
+                        ;           501 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1111_0101 
     ld    B, D          ; 1:4       501 *
-    ld    C, E          ; 1:4       501 *  
+    ld    C, E          ; 1:4       501 * 
     ld    D, H          ; 1:4       501 *
     ld    E, L          ; 1:4       501 *   1x 
     add  HL, HL         ; 1:11      501 *   2x 
@@ -5665,16 +5665,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       501 *
     ld    E, C          ; 1:4       501 *
                         ;[51:153] 
-                        ;           503 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1111_0111 
+                        ;           503 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1111_0111  
     ld    B, H          ; 1:4       503 *
     ld    A, L          ; 1:4       503 *   1x 
     add  HL, HL         ; 1:11      503 *   2x 
     add  HL, HL         ; 1:11      503 *   4x 
     add  HL, HL         ; 1:11      503 *   8x 
     add   A, L          ; 1:4       503 *
-    ld    C, A          ; 1:4       503 *   
-    ld    A, B          ; 1:4       503 *   
-    adc   A, H          ; 1:4       503 *   
+    ld    C, A          ; 1:4       503 *
+    ld    A, B          ; 1:4       503 *
+    adc   A, H          ; 1:4       503 *
     ld    B, A          ; 1:4       503 *   9x 
     add  HL, HL         ; 1:11      503 *   16x 
     add  HL, HL         ; 1:11      503 *   32x 
@@ -5685,9 +5685,9 @@ ORG 0x6000
     or    A             ; 1:4       503 *
     sbc  HL, BC         ; 2:15      503 *   512x - 9x = 503x
                         ;[19:146] 
-                        ;           505 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1111_1001
+                        ;           505 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0001_1111_1001 
     ld    B, D          ; 1:4       505 *
-    ld    C, E          ; 1:4       505 *  
+    ld    C, E          ; 1:4       505 * 
     ld    D, H          ; 1:4       505 *
     ld    E, L          ; 1:4       505 *   1x 
     add  HL, HL         ; 1:11      505 *   2x 
@@ -5697,7 +5697,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      505 *   4x 
     ex   DE, HL         ; 1:4       505 *
     add  HL, DE         ; 1:11      505 *   7x
-    ex   DE, HL         ; 1:4       505 *  
+    ex   DE, HL         ; 1:4       505 * 
     rr    H             ; 2:8       505 *
     rr    L             ; 2:8       505 *
     ld    H, L          ; 1:4       505 *
@@ -5707,16 +5707,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       505 *
     ld    E, C          ; 1:4       505 *
                         ;[51:103] 
-                        ;           507 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1111_1011 
+                        ;           507 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1111_1011  
     ld    B, H          ; 1:4       507 *
     ld    A, L          ; 1:4       507 *   1x 
     add  HL, HL         ; 1:11      507 *   2x 
     add  HL, HL         ; 1:11      507 *   4x 
     add   A, L          ; 1:4       507 *
-    ld    C, A          ; 1:4       507 *   
-    ld    A, B          ; 1:4       507 *   
-    adc   A, H          ; 1:4       507 *   
-    ld    B, A          ; 1:4       507 *   5x  
+    ld    C, A          ; 1:4       507 *
+    ld    A, B          ; 1:4       507 *
+    adc   A, H          ; 1:4       507 *
+    ld    B, A          ; 1:4       507 *   5x 
     rr    H             ; 2:8       507 *
     rr    L             ; 2:8       507 *
     ld    H, L          ; 1:4       507 *
@@ -5724,21 +5724,21 @@ ORG 0x6000
     or    A             ; 1:4       507 *
     sbc  HL, BC         ; 2:15      507 *   512x - 5x = 507x
                         ;[19:96] 
-                        ;           509 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1111_1101 
+                        ;           509 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0001_1111_1101  
     ld    B, H          ; 1:4       509 *
     ld    A, L          ; 1:4       509 *   1x 
     add  HL, HL         ; 1:11      509 *   2x 
     add   A, L          ; 1:4       509 *
-    ld    C, A          ; 1:4       509 *   
-    ld    A, B          ; 1:4       509 *   
-    adc   A, H          ; 1:4       509 *   
+    ld    C, A          ; 1:4       509 *
+    ld    A, B          ; 1:4       509 *
+    adc   A, H          ; 1:4       509 *
     ld    B, A          ; 1:4       509 *   3x 
     ld    H, L          ; 1:4       509 *
     ld    L, 0x00       ; 2:7       509 *   512x 
     or    A             ; 1:4       509 *
     sbc  HL, BC         ; 2:15      509 *   512x - 3x = 509x
                         ;[14:69] 
-                        ;           511 *   Variant: HL * (2^a - 2^b) = HL * b_0001_1111_1111 
+                        ;           511 *   Variant: HL * (2^a - 2^b) = HL * b_0001_1111_1111  
     ld    B, H          ; 1:4       511 *
     ld    C, L          ; 1:4       511 *   1x 
     ld    H, L          ; 1:4       511 *
@@ -5747,7 +5747,7 @@ ORG 0x6000
     or    A             ; 1:4       511 *
     sbc  HL, BC         ; 2:15      511 *   512x - 1x = 511x
                         ;[9:49] 
-                        ;           513 *   Variant: HL * (2^a + 2^b) = HL * b_0010_0000_0001 
+                        ;           513 *   Variant: HL * (2^a + 2^b) = HL * b_0010_0000_0001  
     ld    B, H          ; 1:4       513 *
     ld    C, L          ; 1:4       513 *   1x 
     ld    H, L          ; 1:4       513 *
@@ -5755,29 +5755,29 @@ ORG 0x6000
     add  HL, HL         ; 1:11      513 *   512x 
     add  HL, BC         ; 1:11      513 *   512x + 1x = 513x
                         ;[7:41] 
-                        ;           515 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0000_0011 
+                        ;           515 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0000_0011  
     ld    B, H          ; 1:4       515 *
     ld    A, L          ; 1:4       515 *   1x 
     add  HL, HL         ; 1:11      515 *   2x 
     add   A, L          ; 1:4       515 *
-    ld    C, A          ; 1:4       515 *   
-    ld    A, B          ; 1:4       515 *   
-    adc   A, H          ; 1:4       515 *   
+    ld    C, A          ; 1:4       515 *
+    ld    A, B          ; 1:4       515 *
+    adc   A, H          ; 1:4       515 *
     ld    B, A          ; 1:4       515 *   3x 
     ld    H, L          ; 1:4       515 *
     ld    L, 0x00       ; 2:7       515 *   512x 
     add  HL, BC         ; 1:11      515 *   512x + 3x = 515x
                         ;[12:61] 
-                        ;           517 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0000_0101 
+                        ;           517 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0000_0101  
     ld    B, H          ; 1:4       517 *
     ld    A, L          ; 1:4       517 *   1x 
     add  HL, HL         ; 1:11      517 *   2x 
     add  HL, HL         ; 1:11      517 *   4x 
     add   A, L          ; 1:4       517 *
-    ld    C, A          ; 1:4       517 *   
-    ld    A, B          ; 1:4       517 *   
-    adc   A, H          ; 1:4       517 *   
-    ld    B, A          ; 1:4       517 *   5x  
+    ld    C, A          ; 1:4       517 *
+    ld    A, B          ; 1:4       517 *
+    adc   A, H          ; 1:4       517 *
+    ld    B, A          ; 1:4       517 *   5x 
     rr    H             ; 2:8       517 *
     rr    L             ; 2:8       517 *
     ld    H, L          ; 1:4       517 *
@@ -5785,9 +5785,9 @@ ORG 0x6000
     add  HL, BC         ; 1:11      517 *   512x + 5x = 517x
                         ;[17:88]
 
-                        ;           519 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_0111
+                        ;           519 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_0111 
     ld    B, D          ; 1:4       519 *
-    ld    C, E          ; 1:4       519 *  
+    ld    C, E          ; 1:4       519 * 
     ld    D, H          ; 1:4       519 *
     ld    E, L          ; 1:4       519 *   1x 
     add  HL, HL         ; 1:11      519 *   2x 
@@ -5797,7 +5797,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      519 *   4x 
     ex   DE, HL         ; 1:4       519 *
     add  HL, DE         ; 1:11      519 *   7x
-    ex   DE, HL         ; 1:4       519 *  
+    ex   DE, HL         ; 1:4       519 * 
     rr    H             ; 2:8       519 *
     rr    L             ; 2:8       519 *
     ld    H, L          ; 1:4       519 *
@@ -5806,16 +5806,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       519 *
     ld    E, C          ; 1:4       519 *
                         ;[22:122] 
-                        ;           521 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0000_1001 
+                        ;           521 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0000_1001  
     ld    B, H          ; 1:4       521 *
     ld    A, L          ; 1:4       521 *   1x 
     add  HL, HL         ; 1:11      521 *   2x 
     add  HL, HL         ; 1:11      521 *   4x 
     add  HL, HL         ; 1:11      521 *   8x 
     add   A, L          ; 1:4       521 *
-    ld    C, A          ; 1:4       521 *   
-    ld    A, B          ; 1:4       521 *   
-    adc   A, H          ; 1:4       521 *   
+    ld    C, A          ; 1:4       521 *
+    ld    A, B          ; 1:4       521 *
+    adc   A, H          ; 1:4       521 *
     ld    B, A          ; 1:4       521 *   9x 
     add  HL, HL         ; 1:11      521 *   16x 
     add  HL, HL         ; 1:11      521 *   32x 
@@ -5825,9 +5825,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      521 *   512x 
     add  HL, BC         ; 1:11      521 *   512x + 9x = 521x
                         ;[17:138] 
-                        ;           523 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_1011
+                        ;           523 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_1011 
     ld    B, D          ; 1:4       523 *
-    ld    C, E          ; 1:4       523 *  
+    ld    C, E          ; 1:4       523 * 
     ld    D, H          ; 1:4       523 *
     ld    E, L          ; 1:4       523 *   1x 
     add  HL, HL         ; 1:11      523 *   2x 
@@ -5849,9 +5849,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       523 *
     ld    E, C          ; 1:4       523 *
                         ;[22:172] 
-                        ;           525 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_1101
+                        ;           525 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_1101 
     ld    B, D          ; 1:4       525 *
-    ld    C, E          ; 1:4       525 *  
+    ld    C, E          ; 1:4       525 * 
     ld    D, H          ; 1:4       525 *
     ld    E, L          ; 1:4       525 *   1x 
     add  HL, HL         ; 1:11      525 *   2x 
@@ -5873,9 +5873,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       525 *
     ld    E, C          ; 1:4       525 *
                         ;[22:172] 
-                        ;           527 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_1111
+                        ;           527 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0000_1111 
     ld    B, D          ; 1:4       527 *
-    ld    C, E          ; 1:4       527 *  
+    ld    C, E          ; 1:4       527 * 
     ld    D, H          ; 1:4       527 *
     ld    E, L          ; 1:4       527 *   1x 
     add  HL, HL         ; 1:11      527 *   2x 
@@ -5900,7 +5900,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       527 *
     ld    E, C          ; 1:4       527 *
                         ;[25:191] 
-                        ;           529 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0001_0001 
+                        ;           529 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0001_0001  
     ld    B, H          ; 1:4       529 *
     ld    A, L          ; 1:4       529 *   1x 
     add  HL, HL         ; 1:11      529 *   2x 
@@ -5908,9 +5908,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      529 *   8x 
     add  HL, HL         ; 1:11      529 *   16x 
     add   A, L          ; 1:4       529 *
-    ld    C, A          ; 1:4       529 *   
-    ld    A, B          ; 1:4       529 *   
-    adc   A, H          ; 1:4       529 *   
+    ld    C, A          ; 1:4       529 *
+    ld    A, B          ; 1:4       529 *
+    adc   A, H          ; 1:4       529 *
     ld    B, A          ; 1:4       529 *   17x 
     add  HL, HL         ; 1:11      529 *   32x 
     add  HL, HL         ; 1:11      529 *   64x 
@@ -5919,9 +5919,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      529 *   512x 
     add  HL, BC         ; 1:11      529 *   512x + 17x = 529x
                         ;[17:138] 
-                        ;           531 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_0011
+                        ;           531 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_0011 
     ld    B, D          ; 1:4       531 *
-    ld    C, E          ; 1:4       531 *  
+    ld    C, E          ; 1:4       531 * 
     ld    D, H          ; 1:4       531 *
     ld    E, L          ; 1:4       531 *   1x 
     add  HL, HL         ; 1:11      531 *   2x 
@@ -5943,9 +5943,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       531 *
     ld    E, C          ; 1:4       531 *
                         ;[22:172] 
-                        ;           533 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_0101
+                        ;           533 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_0101 
     ld    B, D          ; 1:4       533 *
-    ld    C, E          ; 1:4       533 *  
+    ld    C, E          ; 1:4       533 * 
     ld    D, H          ; 1:4       533 *
     ld    E, L          ; 1:4       533 *   1x 
     add  HL, HL         ; 1:11      533 *   2x 
@@ -5967,9 +5967,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       533 *
     ld    E, C          ; 1:4       533 *
                         ;[22:172] 
-                        ;           535 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_0111
+                        ;           535 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_0111 
     ld    B, D          ; 1:4       535 *
-    ld    C, E          ; 1:4       535 *  
+    ld    C, E          ; 1:4       535 * 
     ld    D, H          ; 1:4       535 *
     ld    E, L          ; 1:4       535 *   1x 
     add  HL, HL         ; 1:11      535 *   2x 
@@ -5994,9 +5994,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       535 *
     ld    E, C          ; 1:4       535 *
                         ;[25:191] 
-                        ;           537 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1001
+                        ;           537 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1001 
     ld    B, D          ; 1:4       537 *
-    ld    C, E          ; 1:4       537 *  
+    ld    C, E          ; 1:4       537 * 
     ld    D, H          ; 1:4       537 *
     ld    E, L          ; 1:4       537 *   1x 
     add  HL, HL         ; 1:11      537 *   2x 
@@ -6018,9 +6018,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       537 *
     ld    E, C          ; 1:4       537 *
                         ;[22:172] 
-                        ;           539 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1011
+                        ;           539 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1011 
     ld    B, D          ; 1:4       539 *
-    ld    C, E          ; 1:4       539 *  
+    ld    C, E          ; 1:4       539 * 
     ld    D, H          ; 1:4       539 *
     ld    E, L          ; 1:4       539 *   1x 
     add  HL, HL         ; 1:11      539 *   2x 
@@ -6046,9 +6046,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       539 *
                         ;[25:191]
 
-                        ;           541 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1101
+                        ;           541 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1101 
     ld    B, D          ; 1:4       541 *
-    ld    C, E          ; 1:4       541 *  
+    ld    C, E          ; 1:4       541 * 
     ld    D, H          ; 1:4       541 *
     ld    E, L          ; 1:4       541 *   1x 
     add  HL, HL         ; 1:11      541 *   2x 
@@ -6073,9 +6073,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       541 *
     ld    E, C          ; 1:4       541 *
                         ;[25:191] 
-                        ;           543 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1111
+                        ;           543 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0001_1111 
     ld    B, D          ; 1:4       543 *
-    ld    C, E          ; 1:4       543 *  
+    ld    C, E          ; 1:4       543 * 
     ld    D, H          ; 1:4       543 *
     ld    E, L          ; 1:4       543 *   1x 
     add  HL, HL         ; 1:11      543 *   2x 
@@ -6103,7 +6103,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       543 *
     ld    E, C          ; 1:4       543 *
                         ;[28:210] 
-                        ;           545 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0010_0001 
+                        ;           545 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0010_0001  
     ld    B, H          ; 1:4       545 *
     ld    A, L          ; 1:4       545 *   1x 
     add  HL, HL         ; 1:11      545 *   2x 
@@ -6112,9 +6112,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      545 *   16x 
     add  HL, HL         ; 1:11      545 *   32x 
     add   A, L          ; 1:4       545 *
-    ld    C, A          ; 1:4       545 *   
-    ld    A, B          ; 1:4       545 *   
-    adc   A, H          ; 1:4       545 *   
+    ld    C, A          ; 1:4       545 *
+    ld    A, B          ; 1:4       545 *
+    adc   A, H          ; 1:4       545 *
     ld    B, A          ; 1:4       545 *   33x 
     add  HL, HL         ; 1:11      545 *   64x 
     add  HL, HL         ; 1:11      545 *   128x 
@@ -6122,9 +6122,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      545 *   512x 
     add  HL, BC         ; 1:11      545 *   512x + 33x = 545x
                         ;[17:138] 
-                        ;           547 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_0011
+                        ;           547 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_0011 
     ld    B, D          ; 1:4       547 *
-    ld    C, E          ; 1:4       547 *  
+    ld    C, E          ; 1:4       547 * 
     ld    D, H          ; 1:4       547 *
     ld    E, L          ; 1:4       547 *   1x 
     add  HL, HL         ; 1:11      547 *   2x 
@@ -6146,9 +6146,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       547 *
     ld    E, C          ; 1:4       547 *
                         ;[22:172] 
-                        ;           549 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_0101
+                        ;           549 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_0101 
     ld    B, D          ; 1:4       549 *
-    ld    C, E          ; 1:4       549 *  
+    ld    C, E          ; 1:4       549 * 
     ld    D, H          ; 1:4       549 *
     ld    E, L          ; 1:4       549 *   1x 
     add  HL, HL         ; 1:11      549 *   2x 
@@ -6170,9 +6170,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       549 *
     ld    E, C          ; 1:4       549 *
                         ;[22:172] 
-                        ;           551 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_0111
+                        ;           551 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_0111 
     ld    B, D          ; 1:4       551 *
-    ld    C, E          ; 1:4       551 *  
+    ld    C, E          ; 1:4       551 * 
     ld    D, H          ; 1:4       551 *
     ld    E, L          ; 1:4       551 *   1x 
     add  HL, HL         ; 1:11      551 *   2x 
@@ -6197,9 +6197,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       551 *
     ld    E, C          ; 1:4       551 *
                         ;[25:191] 
-                        ;           553 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1001
+                        ;           553 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1001 
     ld    B, D          ; 1:4       553 *
-    ld    C, E          ; 1:4       553 *  
+    ld    C, E          ; 1:4       553 * 
     ld    D, H          ; 1:4       553 *
     ld    E, L          ; 1:4       553 *   1x 
     add  HL, HL         ; 1:11      553 *   2x 
@@ -6221,9 +6221,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       553 *
     ld    E, C          ; 1:4       553 *
                         ;[22:172] 
-                        ;           555 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1011
+                        ;           555 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1011 
     ld    B, D          ; 1:4       555 *
-    ld    C, E          ; 1:4       555 *  
+    ld    C, E          ; 1:4       555 * 
     ld    D, H          ; 1:4       555 *
     ld    E, L          ; 1:4       555 *   1x 
     add  HL, HL         ; 1:11      555 *   2x 
@@ -6248,9 +6248,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       555 *
     ld    E, C          ; 1:4       555 *
                         ;[25:191] 
-                        ;           557 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1101
+                        ;           557 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1101 
     ld    B, D          ; 1:4       557 *
-    ld    C, E          ; 1:4       557 *  
+    ld    C, E          ; 1:4       557 * 
     ld    D, H          ; 1:4       557 *
     ld    E, L          ; 1:4       557 *   1x 
     add  HL, HL         ; 1:11      557 *   2x 
@@ -6275,9 +6275,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       557 *
     ld    E, C          ; 1:4       557 *
                         ;[25:191] 
-                        ;           559 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1111
+                        ;           559 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0010_1111 
     ld    B, D          ; 1:4       559 *
-    ld    C, E          ; 1:4       559 *  
+    ld    C, E          ; 1:4       559 * 
     ld    D, H          ; 1:4       559 *
     ld    E, L          ; 1:4       559 *   1x 
     add  HL, HL         ; 1:11      559 *   2x 
@@ -6305,9 +6305,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       559 *
     ld    E, C          ; 1:4       559 *
                         ;[28:210] 
-                        ;           561 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0001
+                        ;           561 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0001 
     ld    B, D          ; 1:4       561 *
-    ld    C, E          ; 1:4       561 *  
+    ld    C, E          ; 1:4       561 * 
     ld    D, H          ; 1:4       561 *
     ld    E, L          ; 1:4       561 *   1x 
     add  HL, HL         ; 1:11      561 *   2x 
@@ -6330,9 +6330,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       561 *
                         ;[22:172]
 
-                        ;           563 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0011
+                        ;           563 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0011 
     ld    B, D          ; 1:4       563 *
-    ld    C, E          ; 1:4       563 *  
+    ld    C, E          ; 1:4       563 * 
     ld    D, H          ; 1:4       563 *
     ld    E, L          ; 1:4       563 *   1x 
     add  HL, HL         ; 1:11      563 *   2x 
@@ -6357,9 +6357,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       563 *
     ld    E, C          ; 1:4       563 *
                         ;[25:191] 
-                        ;           565 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0101
+                        ;           565 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0101 
     ld    B, D          ; 1:4       565 *
-    ld    C, E          ; 1:4       565 *  
+    ld    C, E          ; 1:4       565 * 
     ld    D, H          ; 1:4       565 *
     ld    E, L          ; 1:4       565 *   1x 
     add  HL, HL         ; 1:11      565 *   2x 
@@ -6384,9 +6384,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       565 *
     ld    E, C          ; 1:4       565 *
                         ;[25:191] 
-                        ;           567 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0111
+                        ;           567 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_0111 
     ld    B, D          ; 1:4       567 *
-    ld    C, E          ; 1:4       567 *  
+    ld    C, E          ; 1:4       567 * 
     ld    D, H          ; 1:4       567 *
     ld    E, L          ; 1:4       567 *   1x 
     add  HL, HL         ; 1:11      567 *   2x 
@@ -6414,9 +6414,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       567 *
     ld    E, C          ; 1:4       567 *
                         ;[28:210] 
-                        ;           569 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_1001
+                        ;           569 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_1001 
     ld    B, D          ; 1:4       569 *
-    ld    C, E          ; 1:4       569 *  
+    ld    C, E          ; 1:4       569 * 
     ld    D, H          ; 1:4       569 *
     ld    E, L          ; 1:4       569 *   1x 
     add  HL, HL         ; 1:11      569 *   2x 
@@ -6441,9 +6441,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       569 *
     ld    E, C          ; 1:4       569 *
                         ;[25:191] 
-                        ;           571 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_1011
+                        ;           571 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_1011 
     ld    B, D          ; 1:4       571 *
-    ld    C, E          ; 1:4       571 *  
+    ld    C, E          ; 1:4       571 * 
     ld    D, H          ; 1:4       571 *
     ld    E, L          ; 1:4       571 *   1x 
     add  HL, HL         ; 1:11      571 *   2x 
@@ -6471,9 +6471,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       571 *
     ld    E, C          ; 1:4       571 *
                         ;[28:210] 
-                        ;           573 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_1101
+                        ;           573 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0011_1101 
     ld    B, D          ; 1:4       573 *
-    ld    C, E          ; 1:4       573 *  
+    ld    C, E          ; 1:4       573 * 
     ld    D, H          ; 1:4       573 *
     ld    E, L          ; 1:4       573 *   1x 
     add  HL, HL         ; 1:11      573 *   2x 
@@ -6501,9 +6501,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       573 *
     ld    E, C          ; 1:4       573 *
                         ;[28:210] 
-                        ;           575 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0011_1111
+                        ;           575 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0011_1111 
     ld    B, D          ; 1:4       575 *
-    ld    C, E          ; 1:4       575 *  
+    ld    C, E          ; 1:4       575 * 
     ld    D, H          ; 1:4       575 *
     ld    E, L          ; 1:4       575 *   1x 
     add  HL, HL         ; 1:11      575 *   2x 
@@ -6530,7 +6530,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       575 *
     ld    E, C          ; 1:4       575 *
                         ;[55:183] 
-                        ;           577 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0100_0001 
+                        ;           577 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_0100_0001  
     ld    B, H          ; 1:4       577 *
     ld    A, L          ; 1:4       577 *   1x 
     add  HL, HL         ; 1:11      577 *   2x 
@@ -6540,18 +6540,18 @@ ORG 0x6000
     add  HL, HL         ; 1:11      577 *   32x 
     add  HL, HL         ; 1:11      577 *   64x 
     add   A, L          ; 1:4       577 *
-    ld    C, A          ; 1:4       577 *   
-    ld    A, B          ; 1:4       577 *   
-    adc   A, H          ; 1:4       577 *   
+    ld    C, A          ; 1:4       577 *
+    ld    A, B          ; 1:4       577 *
+    adc   A, H          ; 1:4       577 *
     ld    B, A          ; 1:4       577 *   65x 
     add  HL, HL         ; 1:11      577 *   128x 
     add  HL, HL         ; 1:11      577 *   256x 
     add  HL, HL         ; 1:11      577 *   512x 
     add  HL, BC         ; 1:11      577 *   512x + 65x = 577x
                         ;[17:138] 
-                        ;           579 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_0011
+                        ;           579 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_0011 
     ld    B, D          ; 1:4       579 *
-    ld    C, E          ; 1:4       579 *  
+    ld    C, E          ; 1:4       579 * 
     ld    D, H          ; 1:4       579 *
     ld    E, L          ; 1:4       579 *   1x 
     add  HL, HL         ; 1:11      579 *   2x 
@@ -6573,9 +6573,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       579 *
     ld    E, C          ; 1:4       579 *
                         ;[22:172] 
-                        ;           581 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_0101
+                        ;           581 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_0101 
     ld    B, D          ; 1:4       581 *
-    ld    C, E          ; 1:4       581 *  
+    ld    C, E          ; 1:4       581 * 
     ld    D, H          ; 1:4       581 *
     ld    E, L          ; 1:4       581 *   1x 
     add  HL, HL         ; 1:11      581 *   2x 
@@ -6597,9 +6597,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       581 *
     ld    E, C          ; 1:4       581 *
                         ;[22:172] 
-                        ;           583 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_0111
+                        ;           583 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_0111 
     ld    B, D          ; 1:4       583 *
-    ld    C, E          ; 1:4       583 *  
+    ld    C, E          ; 1:4       583 * 
     ld    D, H          ; 1:4       583 *
     ld    E, L          ; 1:4       583 *   1x 
     add  HL, HL         ; 1:11      583 *   2x 
@@ -6625,9 +6625,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       583 *
                         ;[25:191]
 
-                        ;           585 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1001
+                        ;           585 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1001 
     ld    B, D          ; 1:4       585 *
-    ld    C, E          ; 1:4       585 *  
+    ld    C, E          ; 1:4       585 * 
     ld    D, H          ; 1:4       585 *
     ld    E, L          ; 1:4       585 *   1x 
     add  HL, HL         ; 1:11      585 *   2x 
@@ -6649,9 +6649,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       585 *
     ld    E, C          ; 1:4       585 *
                         ;[22:172] 
-                        ;           587 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1011
+                        ;           587 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1011 
     ld    B, D          ; 1:4       587 *
-    ld    C, E          ; 1:4       587 *  
+    ld    C, E          ; 1:4       587 * 
     ld    D, H          ; 1:4       587 *
     ld    E, L          ; 1:4       587 *   1x 
     add  HL, HL         ; 1:11      587 *   2x 
@@ -6676,9 +6676,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       587 *
     ld    E, C          ; 1:4       587 *
                         ;[25:191] 
-                        ;           589 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1101
+                        ;           589 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1101 
     ld    B, D          ; 1:4       589 *
-    ld    C, E          ; 1:4       589 *  
+    ld    C, E          ; 1:4       589 * 
     ld    D, H          ; 1:4       589 *
     ld    E, L          ; 1:4       589 *   1x 
     add  HL, HL         ; 1:11      589 *   2x 
@@ -6703,9 +6703,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       589 *
     ld    E, C          ; 1:4       589 *
                         ;[25:191] 
-                        ;           591 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1111
+                        ;           591 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0100_1111 
     ld    B, D          ; 1:4       591 *
-    ld    C, E          ; 1:4       591 *  
+    ld    C, E          ; 1:4       591 * 
     ld    D, H          ; 1:4       591 *
     ld    E, L          ; 1:4       591 *   1x 
     add  HL, HL         ; 1:11      591 *   2x 
@@ -6733,9 +6733,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       591 *
     ld    E, C          ; 1:4       591 *
                         ;[28:210] 
-                        ;           593 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0001
+                        ;           593 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0001 
     ld    B, D          ; 1:4       593 *
-    ld    C, E          ; 1:4       593 *  
+    ld    C, E          ; 1:4       593 * 
     ld    D, H          ; 1:4       593 *
     ld    E, L          ; 1:4       593 *   1x 
     add  HL, HL         ; 1:11      593 *   2x 
@@ -6757,9 +6757,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       593 *
     ld    E, C          ; 1:4       593 *
                         ;[22:172] 
-                        ;           595 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0011
+                        ;           595 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0011 
     ld    B, D          ; 1:4       595 *
-    ld    C, E          ; 1:4       595 *  
+    ld    C, E          ; 1:4       595 * 
     ld    D, H          ; 1:4       595 *
     ld    E, L          ; 1:4       595 *   1x 
     add  HL, HL         ; 1:11      595 *   2x 
@@ -6784,9 +6784,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       595 *
     ld    E, C          ; 1:4       595 *
                         ;[25:191] 
-                        ;           597 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0101
+                        ;           597 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0101 
     ld    B, D          ; 1:4       597 *
-    ld    C, E          ; 1:4       597 *  
+    ld    C, E          ; 1:4       597 * 
     ld    D, H          ; 1:4       597 *
     ld    E, L          ; 1:4       597 *   1x 
     add  HL, HL         ; 1:11      597 *   2x 
@@ -6811,9 +6811,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       597 *
     ld    E, C          ; 1:4       597 *
                         ;[25:191] 
-                        ;           599 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0111
+                        ;           599 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_0111 
     ld    B, D          ; 1:4       599 *
-    ld    C, E          ; 1:4       599 *  
+    ld    C, E          ; 1:4       599 * 
     ld    D, H          ; 1:4       599 *
     ld    E, L          ; 1:4       599 *   1x 
     add  HL, HL         ; 1:11      599 *   2x 
@@ -6841,9 +6841,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       599 *
     ld    E, C          ; 1:4       599 *
                         ;[28:210] 
-                        ;           601 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_1001
+                        ;           601 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_1001 
     ld    B, D          ; 1:4       601 *
-    ld    C, E          ; 1:4       601 *  
+    ld    C, E          ; 1:4       601 * 
     ld    D, H          ; 1:4       601 *
     ld    E, L          ; 1:4       601 *   1x 
     add  HL, HL         ; 1:11      601 *   2x 
@@ -6868,9 +6868,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       601 *
     ld    E, C          ; 1:4       601 *
                         ;[25:191] 
-                        ;           603 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_1011
+                        ;           603 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_1011 
     ld    B, D          ; 1:4       603 *
-    ld    C, E          ; 1:4       603 *  
+    ld    C, E          ; 1:4       603 * 
     ld    D, H          ; 1:4       603 *
     ld    E, L          ; 1:4       603 *   1x 
     add  HL, HL         ; 1:11      603 *   2x 
@@ -6898,9 +6898,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       603 *
     ld    E, C          ; 1:4       603 *
                         ;[28:210] 
-                        ;           605 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_1101
+                        ;           605 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0101_1101 
     ld    B, D          ; 1:4       605 *
-    ld    C, E          ; 1:4       605 *  
+    ld    C, E          ; 1:4       605 * 
     ld    D, H          ; 1:4       605 *
     ld    E, L          ; 1:4       605 *   1x 
     add  HL, HL         ; 1:11      605 *   2x 
@@ -6929,9 +6929,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       605 *
                         ;[28:210]
 
-                        ;           607 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0101_1111
+                        ;           607 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0101_1111 
     ld    B, D          ; 1:4       607 *
-    ld    C, E          ; 1:4       607 *  
+    ld    C, E          ; 1:4       607 * 
     ld    D, H          ; 1:4       607 *
     ld    E, L          ; 1:4       607 *   1x 
     add  HL, HL         ; 1:11      607 *   2x 
@@ -6958,9 +6958,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       607 *
     ld    E, C          ; 1:4       607 *
                         ;[55:183] 
-                        ;           609 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0001
+                        ;           609 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0001 
     ld    B, D          ; 1:4       609 *
-    ld    C, E          ; 1:4       609 *  
+    ld    C, E          ; 1:4       609 * 
     ld    D, H          ; 1:4       609 *
     ld    E, L          ; 1:4       609 *   1x 
     add  HL, HL         ; 1:11      609 *   2x 
@@ -6982,9 +6982,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       609 *
     ld    E, C          ; 1:4       609 *
                         ;[22:172] 
-                        ;           611 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0011
+                        ;           611 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0011 
     ld    B, D          ; 1:4       611 *
-    ld    C, E          ; 1:4       611 *  
+    ld    C, E          ; 1:4       611 * 
     ld    D, H          ; 1:4       611 *
     ld    E, L          ; 1:4       611 *   1x 
     add  HL, HL         ; 1:11      611 *   2x 
@@ -7009,9 +7009,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       611 *
     ld    E, C          ; 1:4       611 *
                         ;[25:191] 
-                        ;           613 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0101
+                        ;           613 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0101 
     ld    B, D          ; 1:4       613 *
-    ld    C, E          ; 1:4       613 *  
+    ld    C, E          ; 1:4       613 * 
     ld    D, H          ; 1:4       613 *
     ld    E, L          ; 1:4       613 *   1x 
     add  HL, HL         ; 1:11      613 *   2x 
@@ -7036,9 +7036,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       613 *
     ld    E, C          ; 1:4       613 *
                         ;[25:191] 
-                        ;           615 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0111
+                        ;           615 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_0111 
     ld    B, D          ; 1:4       615 *
-    ld    C, E          ; 1:4       615 *  
+    ld    C, E          ; 1:4       615 * 
     ld    D, H          ; 1:4       615 *
     ld    E, L          ; 1:4       615 *   1x 
     add  HL, HL         ; 1:11      615 *   2x 
@@ -7066,9 +7066,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       615 *
     ld    E, C          ; 1:4       615 *
                         ;[28:210] 
-                        ;           617 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_1001
+                        ;           617 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_1001 
     ld    B, D          ; 1:4       617 *
-    ld    C, E          ; 1:4       617 *  
+    ld    C, E          ; 1:4       617 * 
     ld    D, H          ; 1:4       617 *
     ld    E, L          ; 1:4       617 *   1x 
     add  HL, HL         ; 1:11      617 *   2x 
@@ -7093,9 +7093,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       617 *
     ld    E, C          ; 1:4       617 *
                         ;[25:191] 
-                        ;           619 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_1011
+                        ;           619 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_1011 
     ld    B, D          ; 1:4       619 *
-    ld    C, E          ; 1:4       619 *  
+    ld    C, E          ; 1:4       619 * 
     ld    D, H          ; 1:4       619 *
     ld    E, L          ; 1:4       619 *   1x 
     add  HL, HL         ; 1:11      619 *   2x 
@@ -7123,9 +7123,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       619 *
     ld    E, C          ; 1:4       619 *
                         ;[28:210] 
-                        ;           621 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_1101
+                        ;           621 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0110_1101 
     ld    B, D          ; 1:4       621 *
-    ld    C, E          ; 1:4       621 *  
+    ld    C, E          ; 1:4       621 * 
     ld    D, H          ; 1:4       621 *
     ld    E, L          ; 1:4       621 *   1x 
     add  HL, HL         ; 1:11      621 *   2x 
@@ -7153,9 +7153,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       621 *
     ld    E, C          ; 1:4       621 *
                         ;[28:210] 
-                        ;           623 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0110_1111
+                        ;           623 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0110_1111 
     ld    B, D          ; 1:4       623 *
-    ld    C, E          ; 1:4       623 *  
+    ld    C, E          ; 1:4       623 * 
     ld    D, H          ; 1:4       623 *
     ld    E, L          ; 1:4       623 *   1x 
     add  HL, HL         ; 1:11      623 *   2x 
@@ -7182,9 +7182,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       623 *
     ld    E, C          ; 1:4       623 *
                         ;[55:183] 
-                        ;           625 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_0001
+                        ;           625 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_0001 
     ld    B, D          ; 1:4       625 *
-    ld    C, E          ; 1:4       625 *  
+    ld    C, E          ; 1:4       625 * 
     ld    D, H          ; 1:4       625 *
     ld    E, L          ; 1:4       625 *   1x 
     add  HL, HL         ; 1:11      625 *   2x 
@@ -7209,9 +7209,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       625 *
     ld    E, C          ; 1:4       625 *
                         ;[25:191] 
-                        ;           627 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_0011
+                        ;           627 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_0011 
     ld    B, D          ; 1:4       627 *
-    ld    C, E          ; 1:4       627 *  
+    ld    C, E          ; 1:4       627 * 
     ld    D, H          ; 1:4       627 *
     ld    E, L          ; 1:4       627 *   1x 
     add  HL, HL         ; 1:11      627 *   2x 
@@ -7240,9 +7240,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       627 *
                         ;[28:210]
 
-                        ;           629 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_0101
+                        ;           629 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_0101 
     ld    B, D          ; 1:4       629 *
-    ld    C, E          ; 1:4       629 *  
+    ld    C, E          ; 1:4       629 * 
     ld    D, H          ; 1:4       629 *
     ld    E, L          ; 1:4       629 *   1x 
     add  HL, HL         ; 1:11      629 *   2x 
@@ -7270,9 +7270,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       629 *
     ld    E, C          ; 1:4       629 *
                         ;[28:210] 
-                        ;           631 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_0111
+                        ;           631 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_0111 
     ld    B, D          ; 1:4       631 *
-    ld    C, E          ; 1:4       631 *  
+    ld    C, E          ; 1:4       631 * 
     ld    D, H          ; 1:4       631 *
     ld    E, L          ; 1:4       631 *   1x 
     add  HL, HL         ; 1:11      631 *   2x 
@@ -7299,9 +7299,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       631 *
     ld    E, C          ; 1:4       631 *
                         ;[55:183] 
-                        ;           633 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_1001
+                        ;           633 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_0111_1001 
     ld    B, D          ; 1:4       633 *
-    ld    C, E          ; 1:4       633 *  
+    ld    C, E          ; 1:4       633 * 
     ld    D, H          ; 1:4       633 *
     ld    E, L          ; 1:4       633 *   1x 
     add  HL, HL         ; 1:11      633 *   2x 
@@ -7329,9 +7329,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       633 *
     ld    E, C          ; 1:4       633 *
                         ;[28:210] 
-                        ;           635 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_1011
+                        ;           635 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_1011 
     ld    B, D          ; 1:4       635 *
-    ld    C, E          ; 1:4       635 *  
+    ld    C, E          ; 1:4       635 * 
     ld    D, H          ; 1:4       635 *
     ld    E, L          ; 1:4       635 *   1x 
     add  HL, HL         ; 1:11      635 *   2x 
@@ -7358,9 +7358,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       635 *
     ld    E, C          ; 1:4       635 *
                         ;[55:183] 
-                        ;           637 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_1101
+                        ;           637 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_1101 
     ld    B, D          ; 1:4       637 *
-    ld    C, E          ; 1:4       637 *  
+    ld    C, E          ; 1:4       637 * 
     ld    D, H          ; 1:4       637 *
     ld    E, L          ; 1:4       637 *   1x 
     add  HL, HL         ; 1:11      637 *   2x 
@@ -7387,9 +7387,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       637 *
     ld    E, C          ; 1:4       637 *
                         ;[55:183] 
-                        ;           639 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_1111
+                        ;           639 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_0111_1111 
     ld    B, D          ; 1:4       639 *
-    ld    C, E          ; 1:4       639 *  
+    ld    C, E          ; 1:4       639 * 
     ld    D, H          ; 1:4       639 *
     ld    E, L          ; 1:4       639 *   1x 
     add  HL, HL         ; 1:11      639 *   2x 
@@ -7413,7 +7413,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       639 *
     ld    E, C          ; 1:4       639 *
                         ;[52:164] 
-                        ;           641 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_1000_0001 
+                        ;           641 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0010_1000_0001  
     ld    B, H          ; 1:4       641 *
     ld    A, L          ; 1:4       641 *   1x 
     add  HL, HL         ; 1:11      641 *   2x 
@@ -7424,17 +7424,17 @@ ORG 0x6000
     add  HL, HL         ; 1:11      641 *   64x 
     add  HL, HL         ; 1:11      641 *   128x 
     add   A, L          ; 1:4       641 *
-    ld    C, A          ; 1:4       641 *   
-    ld    A, B          ; 1:4       641 *   
-    adc   A, H          ; 1:4       641 *   
+    ld    C, A          ; 1:4       641 *
+    ld    A, B          ; 1:4       641 *
+    adc   A, H          ; 1:4       641 *
     ld    B, A          ; 1:4       641 *   129x 
     add  HL, HL         ; 1:11      641 *   256x 
     add  HL, HL         ; 1:11      641 *   512x 
     add  HL, BC         ; 1:11      641 *   512x + 129x = 641x
                         ;[17:138] 
-                        ;           643 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_0011
+                        ;           643 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_0011 
     ld    B, D          ; 1:4       643 *
-    ld    C, E          ; 1:4       643 *  
+    ld    C, E          ; 1:4       643 * 
     ld    D, H          ; 1:4       643 *
     ld    E, L          ; 1:4       643 *   1x 
     add  HL, HL         ; 1:11      643 *   2x 
@@ -7456,9 +7456,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       643 *
     ld    E, C          ; 1:4       643 *
                         ;[22:172] 
-                        ;           645 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_0101
+                        ;           645 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_0101 
     ld    B, D          ; 1:4       645 *
-    ld    C, E          ; 1:4       645 *  
+    ld    C, E          ; 1:4       645 * 
     ld    D, H          ; 1:4       645 *
     ld    E, L          ; 1:4       645 *   1x 
     add  HL, HL         ; 1:11      645 *   2x 
@@ -7480,9 +7480,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       645 *
     ld    E, C          ; 1:4       645 *
                         ;[22:172] 
-                        ;           647 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_0111
+                        ;           647 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_0111 
     ld    B, D          ; 1:4       647 *
-    ld    C, E          ; 1:4       647 *  
+    ld    C, E          ; 1:4       647 * 
     ld    D, H          ; 1:4       647 *
     ld    E, L          ; 1:4       647 *   1x 
     add  HL, HL         ; 1:11      647 *   2x 
@@ -7507,9 +7507,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       647 *
     ld    E, C          ; 1:4       647 *
                         ;[25:191] 
-                        ;           649 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1001
+                        ;           649 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1001 
     ld    B, D          ; 1:4       649 *
-    ld    C, E          ; 1:4       649 *  
+    ld    C, E          ; 1:4       649 * 
     ld    D, H          ; 1:4       649 *
     ld    E, L          ; 1:4       649 *   1x 
     add  HL, HL         ; 1:11      649 *   2x 
@@ -7532,9 +7532,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       649 *
                         ;[22:172]
 
-                        ;           651 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1011
+                        ;           651 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1011 
     ld    B, D          ; 1:4       651 *
-    ld    C, E          ; 1:4       651 *  
+    ld    C, E          ; 1:4       651 * 
     ld    D, H          ; 1:4       651 *
     ld    E, L          ; 1:4       651 *   1x 
     add  HL, HL         ; 1:11      651 *   2x 
@@ -7559,9 +7559,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       651 *
     ld    E, C          ; 1:4       651 *
                         ;[25:191] 
-                        ;           653 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1101
+                        ;           653 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1101 
     ld    B, D          ; 1:4       653 *
-    ld    C, E          ; 1:4       653 *  
+    ld    C, E          ; 1:4       653 * 
     ld    D, H          ; 1:4       653 *
     ld    E, L          ; 1:4       653 *   1x 
     add  HL, HL         ; 1:11      653 *   2x 
@@ -7586,9 +7586,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       653 *
     ld    E, C          ; 1:4       653 *
                         ;[25:191] 
-                        ;           655 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1111
+                        ;           655 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1000_1111 
     ld    B, D          ; 1:4       655 *
-    ld    C, E          ; 1:4       655 *  
+    ld    C, E          ; 1:4       655 * 
     ld    D, H          ; 1:4       655 *
     ld    E, L          ; 1:4       655 *   1x 
     add  HL, HL         ; 1:11      655 *   2x 
@@ -7616,9 +7616,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       655 *
     ld    E, C          ; 1:4       655 *
                         ;[28:210] 
-                        ;           657 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0001
+                        ;           657 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0001 
     ld    B, D          ; 1:4       657 *
-    ld    C, E          ; 1:4       657 *  
+    ld    C, E          ; 1:4       657 * 
     ld    D, H          ; 1:4       657 *
     ld    E, L          ; 1:4       657 *   1x 
     add  HL, HL         ; 1:11      657 *   2x 
@@ -7640,9 +7640,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       657 *
     ld    E, C          ; 1:4       657 *
                         ;[22:172] 
-                        ;           659 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0011
+                        ;           659 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0011 
     ld    B, D          ; 1:4       659 *
-    ld    C, E          ; 1:4       659 *  
+    ld    C, E          ; 1:4       659 * 
     ld    D, H          ; 1:4       659 *
     ld    E, L          ; 1:4       659 *   1x 
     add  HL, HL         ; 1:11      659 *   2x 
@@ -7667,9 +7667,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       659 *
     ld    E, C          ; 1:4       659 *
                         ;[25:191] 
-                        ;           661 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0101
+                        ;           661 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0101 
     ld    B, D          ; 1:4       661 *
-    ld    C, E          ; 1:4       661 *  
+    ld    C, E          ; 1:4       661 * 
     ld    D, H          ; 1:4       661 *
     ld    E, L          ; 1:4       661 *   1x 
     add  HL, HL         ; 1:11      661 *   2x 
@@ -7694,9 +7694,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       661 *
     ld    E, C          ; 1:4       661 *
                         ;[25:191] 
-                        ;           663 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0111
+                        ;           663 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_0111 
     ld    B, D          ; 1:4       663 *
-    ld    C, E          ; 1:4       663 *  
+    ld    C, E          ; 1:4       663 * 
     ld    D, H          ; 1:4       663 *
     ld    E, L          ; 1:4       663 *   1x 
     add  HL, HL         ; 1:11      663 *   2x 
@@ -7724,9 +7724,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       663 *
     ld    E, C          ; 1:4       663 *
                         ;[28:210] 
-                        ;           665 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_1001
+                        ;           665 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_1001 
     ld    B, D          ; 1:4       665 *
-    ld    C, E          ; 1:4       665 *  
+    ld    C, E          ; 1:4       665 * 
     ld    D, H          ; 1:4       665 *
     ld    E, L          ; 1:4       665 *   1x 
     add  HL, HL         ; 1:11      665 *   2x 
@@ -7751,9 +7751,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       665 *
     ld    E, C          ; 1:4       665 *
                         ;[25:191] 
-                        ;           667 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_1011
+                        ;           667 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_1011 
     ld    B, D          ; 1:4       667 *
-    ld    C, E          ; 1:4       667 *  
+    ld    C, E          ; 1:4       667 * 
     ld    D, H          ; 1:4       667 *
     ld    E, L          ; 1:4       667 *   1x 
     add  HL, HL         ; 1:11      667 *   2x 
@@ -7781,9 +7781,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       667 *
     ld    E, C          ; 1:4       667 *
                         ;[28:210] 
-                        ;           669 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_1101
+                        ;           669 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1001_1101 
     ld    B, D          ; 1:4       669 *
-    ld    C, E          ; 1:4       669 *  
+    ld    C, E          ; 1:4       669 * 
     ld    D, H          ; 1:4       669 *
     ld    E, L          ; 1:4       669 *   1x 
     add  HL, HL         ; 1:11      669 *   2x 
@@ -7811,9 +7811,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       669 *
     ld    E, C          ; 1:4       669 *
                         ;[28:210] 
-                        ;           671 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1001_1111
+                        ;           671 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1001_1111 
     ld    B, D          ; 1:4       671 *
-    ld    C, E          ; 1:4       671 *  
+    ld    C, E          ; 1:4       671 * 
     ld    D, H          ; 1:4       671 *
     ld    E, L          ; 1:4       671 *   1x 
     add  HL, HL         ; 1:11      671 *   2x 
@@ -7841,9 +7841,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       671 *
                         ;[55:183]
 
-                        ;           673 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0001
+                        ;           673 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0001 
     ld    B, D          ; 1:4       673 *
-    ld    C, E          ; 1:4       673 *  
+    ld    C, E          ; 1:4       673 * 
     ld    D, H          ; 1:4       673 *
     ld    E, L          ; 1:4       673 *   1x 
     add  HL, HL         ; 1:11      673 *   2x 
@@ -7865,9 +7865,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       673 *
     ld    E, C          ; 1:4       673 *
                         ;[22:172] 
-                        ;           675 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0011
+                        ;           675 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0011 
     ld    B, D          ; 1:4       675 *
-    ld    C, E          ; 1:4       675 *  
+    ld    C, E          ; 1:4       675 * 
     ld    D, H          ; 1:4       675 *
     ld    E, L          ; 1:4       675 *   1x 
     add  HL, HL         ; 1:11      675 *   2x 
@@ -7892,9 +7892,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       675 *
     ld    E, C          ; 1:4       675 *
                         ;[25:191] 
-                        ;           677 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0101
+                        ;           677 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0101 
     ld    B, D          ; 1:4       677 *
-    ld    C, E          ; 1:4       677 *  
+    ld    C, E          ; 1:4       677 * 
     ld    D, H          ; 1:4       677 *
     ld    E, L          ; 1:4       677 *   1x 
     add  HL, HL         ; 1:11      677 *   2x 
@@ -7919,9 +7919,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       677 *
     ld    E, C          ; 1:4       677 *
                         ;[25:191] 
-                        ;           679 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0111
+                        ;           679 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_0111 
     ld    B, D          ; 1:4       679 *
-    ld    C, E          ; 1:4       679 *  
+    ld    C, E          ; 1:4       679 * 
     ld    D, H          ; 1:4       679 *
     ld    E, L          ; 1:4       679 *   1x 
     add  HL, HL         ; 1:11      679 *   2x 
@@ -7949,9 +7949,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       679 *
     ld    E, C          ; 1:4       679 *
                         ;[28:210] 
-                        ;           681 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_1001
+                        ;           681 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_1001 
     ld    B, D          ; 1:4       681 *
-    ld    C, E          ; 1:4       681 *  
+    ld    C, E          ; 1:4       681 * 
     ld    D, H          ; 1:4       681 *
     ld    E, L          ; 1:4       681 *   1x 
     add  HL, HL         ; 1:11      681 *   2x 
@@ -7976,9 +7976,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       681 *
     ld    E, C          ; 1:4       681 *
                         ;[25:191] 
-                        ;           683 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_1011
+                        ;           683 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_1011 
     ld    B, D          ; 1:4       683 *
-    ld    C, E          ; 1:4       683 *  
+    ld    C, E          ; 1:4       683 * 
     ld    D, H          ; 1:4       683 *
     ld    E, L          ; 1:4       683 *   1x 
     add  HL, HL         ; 1:11      683 *   2x 
@@ -8006,9 +8006,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       683 *
     ld    E, C          ; 1:4       683 *
                         ;[28:210] 
-                        ;           685 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_1101
+                        ;           685 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1010_1101 
     ld    B, D          ; 1:4       685 *
-    ld    C, E          ; 1:4       685 *  
+    ld    C, E          ; 1:4       685 * 
     ld    D, H          ; 1:4       685 *
     ld    E, L          ; 1:4       685 *   1x 
     add  HL, HL         ; 1:11      685 *   2x 
@@ -8036,9 +8036,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       685 *
     ld    E, C          ; 1:4       685 *
                         ;[28:210] 
-                        ;           687 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1010_1111
+                        ;           687 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1010_1111 
     ld    B, D          ; 1:4       687 *
-    ld    C, E          ; 1:4       687 *  
+    ld    C, E          ; 1:4       687 * 
     ld    D, H          ; 1:4       687 *
     ld    E, L          ; 1:4       687 *   1x 
     add  HL, HL         ; 1:11      687 *   2x 
@@ -8065,9 +8065,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       687 *
     ld    E, C          ; 1:4       687 *
                         ;[55:183] 
-                        ;           689 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_0001
+                        ;           689 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_0001 
     ld    B, D          ; 1:4       689 *
-    ld    C, E          ; 1:4       689 *  
+    ld    C, E          ; 1:4       689 * 
     ld    D, H          ; 1:4       689 *
     ld    E, L          ; 1:4       689 *   1x 
     add  HL, HL         ; 1:11      689 *   2x 
@@ -8092,9 +8092,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       689 *
     ld    E, C          ; 1:4       689 *
                         ;[25:191] 
-                        ;           691 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_0011
+                        ;           691 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_0011 
     ld    B, D          ; 1:4       691 *
-    ld    C, E          ; 1:4       691 *  
+    ld    C, E          ; 1:4       691 * 
     ld    D, H          ; 1:4       691 *
     ld    E, L          ; 1:4       691 *   1x 
     add  HL, HL         ; 1:11      691 *   2x 
@@ -8122,9 +8122,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       691 *
     ld    E, C          ; 1:4       691 *
                         ;[28:210] 
-                        ;           693 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_0101
+                        ;           693 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_0101 
     ld    B, D          ; 1:4       693 *
-    ld    C, E          ; 1:4       693 *  
+    ld    C, E          ; 1:4       693 * 
     ld    D, H          ; 1:4       693 *
     ld    E, L          ; 1:4       693 *   1x 
     add  HL, HL         ; 1:11      693 *   2x 
@@ -8153,9 +8153,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       693 *
                         ;[28:210]
 
-                        ;           695 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_0111
+                        ;           695 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_0111 
     ld    B, D          ; 1:4       695 *
-    ld    C, E          ; 1:4       695 *  
+    ld    C, E          ; 1:4       695 * 
     ld    D, H          ; 1:4       695 *
     ld    E, L          ; 1:4       695 *   1x 
     add  HL, HL         ; 1:11      695 *   2x 
@@ -8182,9 +8182,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       695 *
     ld    E, C          ; 1:4       695 *
                         ;[55:183] 
-                        ;           697 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_1001
+                        ;           697 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1011_1001 
     ld    B, D          ; 1:4       697 *
-    ld    C, E          ; 1:4       697 *  
+    ld    C, E          ; 1:4       697 * 
     ld    D, H          ; 1:4       697 *
     ld    E, L          ; 1:4       697 *   1x 
     add  HL, HL         ; 1:11      697 *   2x 
@@ -8212,9 +8212,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       697 *
     ld    E, C          ; 1:4       697 *
                         ;[28:210] 
-                        ;           699 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_1011
+                        ;           699 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_1011 
     ld    B, D          ; 1:4       699 *
-    ld    C, E          ; 1:4       699 *  
+    ld    C, E          ; 1:4       699 * 
     ld    D, H          ; 1:4       699 *
     ld    E, L          ; 1:4       699 *   1x 
     add  HL, HL         ; 1:11      699 *   2x 
@@ -8241,9 +8241,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       699 *
     ld    E, C          ; 1:4       699 *
                         ;[55:183] 
-                        ;           701 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_1101
+                        ;           701 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_1101 
     ld    B, D          ; 1:4       701 *
-    ld    C, E          ; 1:4       701 *  
+    ld    C, E          ; 1:4       701 * 
     ld    D, H          ; 1:4       701 *
     ld    E, L          ; 1:4       701 *   1x 
     add  HL, HL         ; 1:11      701 *   2x 
@@ -8270,9 +8270,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       701 *
     ld    E, C          ; 1:4       701 *
                         ;[55:183] 
-                        ;           703 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_1111
+                        ;           703 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1011_1111 
     ld    B, D          ; 1:4       703 *
-    ld    C, E          ; 1:4       703 *  
+    ld    C, E          ; 1:4       703 * 
     ld    D, H          ; 1:4       703 *
     ld    E, L          ; 1:4       703 *   1x 
     add  HL, HL         ; 1:11      703 *   2x 
@@ -8296,9 +8296,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       703 *
     ld    E, C          ; 1:4       703 *
                         ;[52:164] 
-                        ;           705 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0001
+                        ;           705 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0001 
     ld    B, D          ; 1:4       705 *
-    ld    C, E          ; 1:4       705 *  
+    ld    C, E          ; 1:4       705 * 
     ld    D, H          ; 1:4       705 *
     ld    E, L          ; 1:4       705 *   1x 
     add  HL, HL         ; 1:11      705 *   2x 
@@ -8320,9 +8320,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       705 *
     ld    E, C          ; 1:4       705 *
                         ;[22:172] 
-                        ;           707 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0011
+                        ;           707 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0011 
     ld    B, D          ; 1:4       707 *
-    ld    C, E          ; 1:4       707 *  
+    ld    C, E          ; 1:4       707 * 
     ld    D, H          ; 1:4       707 *
     ld    E, L          ; 1:4       707 *   1x 
     add  HL, HL         ; 1:11      707 *   2x 
@@ -8347,9 +8347,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       707 *
     ld    E, C          ; 1:4       707 *
                         ;[25:191] 
-                        ;           709 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0101
+                        ;           709 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0101 
     ld    B, D          ; 1:4       709 *
-    ld    C, E          ; 1:4       709 *  
+    ld    C, E          ; 1:4       709 * 
     ld    D, H          ; 1:4       709 *
     ld    E, L          ; 1:4       709 *   1x 
     add  HL, HL         ; 1:11      709 *   2x 
@@ -8374,9 +8374,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       709 *
     ld    E, C          ; 1:4       709 *
                         ;[25:191] 
-                        ;           711 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0111
+                        ;           711 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_0111 
     ld    B, D          ; 1:4       711 *
-    ld    C, E          ; 1:4       711 *  
+    ld    C, E          ; 1:4       711 * 
     ld    D, H          ; 1:4       711 *
     ld    E, L          ; 1:4       711 *   1x 
     add  HL, HL         ; 1:11      711 *   2x 
@@ -8404,9 +8404,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       711 *
     ld    E, C          ; 1:4       711 *
                         ;[28:210] 
-                        ;           713 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_1001
+                        ;           713 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_1001 
     ld    B, D          ; 1:4       713 *
-    ld    C, E          ; 1:4       713 *  
+    ld    C, E          ; 1:4       713 * 
     ld    D, H          ; 1:4       713 *
     ld    E, L          ; 1:4       713 *   1x 
     add  HL, HL         ; 1:11      713 *   2x 
@@ -8431,9 +8431,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       713 *
     ld    E, C          ; 1:4       713 *
                         ;[25:191] 
-                        ;           715 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_1011
+                        ;           715 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_1011 
     ld    B, D          ; 1:4       715 *
-    ld    C, E          ; 1:4       715 *  
+    ld    C, E          ; 1:4       715 * 
     ld    D, H          ; 1:4       715 *
     ld    E, L          ; 1:4       715 *   1x 
     add  HL, HL         ; 1:11      715 *   2x 
@@ -8462,9 +8462,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       715 *
                         ;[28:210]
 
-                        ;           717 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_1101
+                        ;           717 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1100_1101 
     ld    B, D          ; 1:4       717 *
-    ld    C, E          ; 1:4       717 *  
+    ld    C, E          ; 1:4       717 * 
     ld    D, H          ; 1:4       717 *
     ld    E, L          ; 1:4       717 *   1x 
     add  HL, HL         ; 1:11      717 *   2x 
@@ -8492,9 +8492,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       717 *
     ld    E, C          ; 1:4       717 *
                         ;[28:210] 
-                        ;           719 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1100_1111
+                        ;           719 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1100_1111 
     ld    B, D          ; 1:4       719 *
-    ld    C, E          ; 1:4       719 *  
+    ld    C, E          ; 1:4       719 * 
     ld    D, H          ; 1:4       719 *
     ld    E, L          ; 1:4       719 *   1x 
     add  HL, HL         ; 1:11      719 *   2x 
@@ -8521,9 +8521,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       719 *
     ld    E, C          ; 1:4       719 *
                         ;[55:183] 
-                        ;           721 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_0001
+                        ;           721 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_0001 
     ld    B, D          ; 1:4       721 *
-    ld    C, E          ; 1:4       721 *  
+    ld    C, E          ; 1:4       721 * 
     ld    D, H          ; 1:4       721 *
     ld    E, L          ; 1:4       721 *   1x 
     add  HL, HL         ; 1:11      721 *   2x 
@@ -8548,9 +8548,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       721 *
     ld    E, C          ; 1:4       721 *
                         ;[25:191] 
-                        ;           723 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_0011
+                        ;           723 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_0011 
     ld    B, D          ; 1:4       723 *
-    ld    C, E          ; 1:4       723 *  
+    ld    C, E          ; 1:4       723 * 
     ld    D, H          ; 1:4       723 *
     ld    E, L          ; 1:4       723 *   1x 
     add  HL, HL         ; 1:11      723 *   2x 
@@ -8578,9 +8578,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       723 *
     ld    E, C          ; 1:4       723 *
                         ;[28:210] 
-                        ;           725 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_0101
+                        ;           725 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_0101 
     ld    B, D          ; 1:4       725 *
-    ld    C, E          ; 1:4       725 *  
+    ld    C, E          ; 1:4       725 * 
     ld    D, H          ; 1:4       725 *
     ld    E, L          ; 1:4       725 *   1x 
     add  HL, HL         ; 1:11      725 *   2x 
@@ -8608,9 +8608,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       725 *
     ld    E, C          ; 1:4       725 *
                         ;[28:210] 
-                        ;           727 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_0111
+                        ;           727 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_0111 
     ld    B, D          ; 1:4       727 *
-    ld    C, E          ; 1:4       727 *  
+    ld    C, E          ; 1:4       727 * 
     ld    D, H          ; 1:4       727 *
     ld    E, L          ; 1:4       727 *   1x 
     add  HL, HL         ; 1:11      727 *   2x 
@@ -8637,9 +8637,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       727 *
     ld    E, C          ; 1:4       727 *
                         ;[55:183] 
-                        ;           729 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_1001
+                        ;           729 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1101_1001 
     ld    B, D          ; 1:4       729 *
-    ld    C, E          ; 1:4       729 *  
+    ld    C, E          ; 1:4       729 * 
     ld    D, H          ; 1:4       729 *
     ld    E, L          ; 1:4       729 *   1x 
     add  HL, HL         ; 1:11      729 *   2x 
@@ -8667,9 +8667,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       729 *
     ld    E, C          ; 1:4       729 *
                         ;[28:210] 
-                        ;           731 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_1011
+                        ;           731 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_1011 
     ld    B, D          ; 1:4       731 *
-    ld    C, E          ; 1:4       731 *  
+    ld    C, E          ; 1:4       731 * 
     ld    D, H          ; 1:4       731 *
     ld    E, L          ; 1:4       731 *   1x 
     add  HL, HL         ; 1:11      731 *   2x 
@@ -8696,9 +8696,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       731 *
     ld    E, C          ; 1:4       731 *
                         ;[55:183] 
-                        ;           733 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_1101
+                        ;           733 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_1101 
     ld    B, D          ; 1:4       733 *
-    ld    C, E          ; 1:4       733 *  
+    ld    C, E          ; 1:4       733 * 
     ld    D, H          ; 1:4       733 *
     ld    E, L          ; 1:4       733 *   1x 
     add  HL, HL         ; 1:11      733 *   2x 
@@ -8725,9 +8725,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       733 *
     ld    E, C          ; 1:4       733 *
                         ;[55:183] 
-                        ;           735 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_1111
+                        ;           735 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1101_1111 
     ld    B, D          ; 1:4       735 *
-    ld    C, E          ; 1:4       735 *  
+    ld    C, E          ; 1:4       735 * 
     ld    D, H          ; 1:4       735 *
     ld    E, L          ; 1:4       735 *   1x 
     add  HL, HL         ; 1:11      735 *   2x 
@@ -8751,9 +8751,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       735 *
     ld    E, C          ; 1:4       735 *
                         ;[52:164] 
-                        ;           737 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_0001
+                        ;           737 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_0001 
     ld    B, D          ; 1:4       737 *
-    ld    C, E          ; 1:4       737 *  
+    ld    C, E          ; 1:4       737 * 
     ld    D, H          ; 1:4       737 *
     ld    E, L          ; 1:4       737 *   1x 
     add  HL, HL         ; 1:11      737 *   2x 
@@ -8779,9 +8779,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       737 *
                         ;[25:191]
 
-                        ;           739 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_0011
+                        ;           739 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_0011 
     ld    B, D          ; 1:4       739 *
-    ld    C, E          ; 1:4       739 *  
+    ld    C, E          ; 1:4       739 * 
     ld    D, H          ; 1:4       739 *
     ld    E, L          ; 1:4       739 *   1x 
     add  HL, HL         ; 1:11      739 *   2x 
@@ -8809,9 +8809,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       739 *
     ld    E, C          ; 1:4       739 *
                         ;[28:210] 
-                        ;           741 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_0101
+                        ;           741 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_0101 
     ld    B, D          ; 1:4       741 *
-    ld    C, E          ; 1:4       741 *  
+    ld    C, E          ; 1:4       741 * 
     ld    D, H          ; 1:4       741 *
     ld    E, L          ; 1:4       741 *   1x 
     add  HL, HL         ; 1:11      741 *   2x 
@@ -8839,9 +8839,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       741 *
     ld    E, C          ; 1:4       741 *
                         ;[28:210] 
-                        ;           743 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_0111
+                        ;           743 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_0111 
     ld    B, D          ; 1:4       743 *
-    ld    C, E          ; 1:4       743 *  
+    ld    C, E          ; 1:4       743 * 
     ld    D, H          ; 1:4       743 *
     ld    E, L          ; 1:4       743 *   1x 
     add  HL, HL         ; 1:11      743 *   2x 
@@ -8868,9 +8868,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       743 *
     ld    E, C          ; 1:4       743 *
                         ;[55:183] 
-                        ;           745 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_1001
+                        ;           745 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1110_1001 
     ld    B, D          ; 1:4       745 *
-    ld    C, E          ; 1:4       745 *  
+    ld    C, E          ; 1:4       745 * 
     ld    D, H          ; 1:4       745 *
     ld    E, L          ; 1:4       745 *   1x 
     add  HL, HL         ; 1:11      745 *   2x 
@@ -8898,9 +8898,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       745 *
     ld    E, C          ; 1:4       745 *
                         ;[28:210] 
-                        ;           747 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_1011
+                        ;           747 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_1011 
     ld    B, D          ; 1:4       747 *
-    ld    C, E          ; 1:4       747 *  
+    ld    C, E          ; 1:4       747 * 
     ld    D, H          ; 1:4       747 *
     ld    E, L          ; 1:4       747 *   1x 
     add  HL, HL         ; 1:11      747 *   2x 
@@ -8927,9 +8927,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       747 *
     ld    E, C          ; 1:4       747 *
                         ;[55:183] 
-                        ;           749 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_1101
+                        ;           749 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_1101 
     ld    B, D          ; 1:4       749 *
-    ld    C, E          ; 1:4       749 *  
+    ld    C, E          ; 1:4       749 * 
     ld    D, H          ; 1:4       749 *
     ld    E, L          ; 1:4       749 *   1x 
     add  HL, HL         ; 1:11      749 *   2x 
@@ -8956,9 +8956,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       749 *
     ld    E, C          ; 1:4       749 *
                         ;[55:183] 
-                        ;           751 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_1111
+                        ;           751 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1110_1111 
     ld    B, D          ; 1:4       751 *
-    ld    C, E          ; 1:4       751 *  
+    ld    C, E          ; 1:4       751 * 
     ld    D, H          ; 1:4       751 *
     ld    E, L          ; 1:4       751 *   1x 
     add  HL, HL         ; 1:11      751 *   2x 
@@ -8982,9 +8982,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       751 *
     ld    E, C          ; 1:4       751 *
                         ;[52:164] 
-                        ;           753 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1111_0001
+                        ;           753 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0010_1111_0001 
     ld    B, D          ; 1:4       753 *
-    ld    C, E          ; 1:4       753 *  
+    ld    C, E          ; 1:4       753 * 
     ld    D, H          ; 1:4       753 *
     ld    E, L          ; 1:4       753 *   1x 
     add  HL, HL         ; 1:11      753 *   2x 
@@ -9012,9 +9012,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       753 *
     ld    E, C          ; 1:4       753 *
                         ;[28:210] 
-                        ;           755 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_0011
+                        ;           755 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_0011 
     ld    B, D          ; 1:4       755 *
-    ld    C, E          ; 1:4       755 *  
+    ld    C, E          ; 1:4       755 * 
     ld    D, H          ; 1:4       755 *
     ld    E, L          ; 1:4       755 *   1x 
     add  HL, HL         ; 1:11      755 *   2x 
@@ -9041,9 +9041,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       755 *
     ld    E, C          ; 1:4       755 *
                         ;[55:183] 
-                        ;           757 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_0101
+                        ;           757 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_0101 
     ld    B, D          ; 1:4       757 *
-    ld    C, E          ; 1:4       757 *  
+    ld    C, E          ; 1:4       757 * 
     ld    D, H          ; 1:4       757 *
     ld    E, L          ; 1:4       757 *   1x 
     add  HL, HL         ; 1:11      757 *   2x 
@@ -9070,9 +9070,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       757 *
     ld    E, C          ; 1:4       757 *
                         ;[55:183] 
-                        ;           759 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_0111
+                        ;           759 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_0111 
     ld    B, D          ; 1:4       759 *
-    ld    C, E          ; 1:4       759 *  
+    ld    C, E          ; 1:4       759 * 
     ld    D, H          ; 1:4       759 *
     ld    E, L          ; 1:4       759 *   1x 
     add  HL, HL         ; 1:11      759 *   2x 
@@ -9097,9 +9097,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       759 *
                         ;[52:164]
 
-                        ;           761 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_1001
+                        ;           761 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_1001 
     ld    B, D          ; 1:4       761 *
-    ld    C, E          ; 1:4       761 *  
+    ld    C, E          ; 1:4       761 * 
     ld    D, H          ; 1:4       761 *
     ld    E, L          ; 1:4       761 *   1x 
     add  HL, HL         ; 1:11      761 *   2x 
@@ -9126,9 +9126,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       761 *
     ld    E, C          ; 1:4       761 *
                         ;[55:183] 
-                        ;           763 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_1011
+                        ;           763 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_1011 
     ld    B, D          ; 1:4       763 *
-    ld    C, E          ; 1:4       763 *  
+    ld    C, E          ; 1:4       763 * 
     ld    D, H          ; 1:4       763 *
     ld    E, L          ; 1:4       763 *   1x 
     add  HL, HL         ; 1:11      763 *   2x 
@@ -9152,15 +9152,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       763 *
     ld    E, C          ; 1:4       763 *
                         ;[52:164] 
-                        ;           765 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_1101
+                        ;           765 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0010_1111_1101 
     ld    B, D          ; 1:4       765 *
-    ld    C, E          ; 1:4       765 *  
+    ld    C, E          ; 1:4       765 * 
     ld    D, H          ; 1:4       765 *
     ld    E, L          ; 1:4       765 *   1x 
     add  HL, HL         ; 1:11      765 *   2x 
     ex   DE, HL         ; 1:4       765 *
     add  HL, DE         ; 1:11      765 *   3x
-    ex   DE, HL         ; 1:4       765 *  
+    ex   DE, HL         ; 1:4       765 * 
     rr    H             ; 2:8       765 *
     rr    L             ; 2:8       765 *
     ld    H, L          ; 1:4       765 *
@@ -9175,43 +9175,43 @@ ORG 0x6000
     ld    D, B          ; 1:4       765 *
     ld    E, C          ; 1:4       765 *
                         ;[52:114] 
-                        ;           767 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0010_1111_1111 
+                        ;           767 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0010_1111_1111  
     ld    B, H          ; 1:4       767 *
     ld    A, L          ; 1:4       767 *   1x 
     ld    H, L          ; 1:4       767 *
     ld    L, 0x00       ; 2:7       767 *   256x 
     add   A, L          ; 1:4       767 *
-    ld    C, A          ; 1:4       767 *   
-    ld    A, B          ; 1:4       767 *   
-    adc   A, H          ; 1:4       767 *   
+    ld    C, A          ; 1:4       767 *
+    ld    A, B          ; 1:4       767 *
+    adc   A, H          ; 1:4       767 *
     ld    B, A          ; 1:4       767 *   257x 
     add  HL, HL         ; 1:11      767 *   512x 
     add  HL, HL         ; 1:11      767 *   1024x 
     or    A             ; 1:4       767 *
     sbc  HL, BC         ; 2:15      767 *   1024x - 257x = 767x
                         ;[15:80] 
-                        ;           769 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0011_0000_0001 
+                        ;           769 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0011_0000_0001  
     ld    B, H          ; 1:4       769 *
     ld    A, L          ; 1:4       769 *   1x 
     ld    H, L          ; 1:4       769 *
     ld    L, 0x00       ; 2:7       769 *   256x 
     add   A, L          ; 1:4       769 *
-    ld    C, A          ; 1:4       769 *   
-    ld    A, B          ; 1:4       769 *   
-    adc   A, H          ; 1:4       769 *   
+    ld    C, A          ; 1:4       769 *
+    ld    A, B          ; 1:4       769 *
+    adc   A, H          ; 1:4       769 *
     ld    B, A          ; 1:4       769 *   257x 
     add  HL, HL         ; 1:11      769 *   512x 
     add  HL, BC         ; 1:11      769 *   512x + 257x = 769x
                         ;[12:61] 
-                        ;           771 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_0011
+                        ;           771 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_0011 
     ld    B, D          ; 1:4       771 *
-    ld    C, E          ; 1:4       771 *  
+    ld    C, E          ; 1:4       771 * 
     ld    D, H          ; 1:4       771 *
     ld    E, L          ; 1:4       771 *   1x 
     add  HL, HL         ; 1:11      771 *   2x 
     ex   DE, HL         ; 1:4       771 *
     add  HL, DE         ; 1:11      771 *   3x
-    ex   DE, HL         ; 1:4       771 *  
+    ex   DE, HL         ; 1:4       771 * 
     rr    H             ; 2:8       771 *
     rr    L             ; 2:8       771 *
     ld    H, L          ; 1:4       771 *
@@ -9224,9 +9224,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       771 *
     ld    E, C          ; 1:4       771 *
                         ;[22:122] 
-                        ;           773 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_0101
+                        ;           773 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_0101 
     ld    B, D          ; 1:4       773 *
-    ld    C, E          ; 1:4       773 *  
+    ld    C, E          ; 1:4       773 * 
     ld    D, H          ; 1:4       773 *
     ld    E, L          ; 1:4       773 *   1x 
     add  HL, HL         ; 1:11      773 *   2x 
@@ -9248,9 +9248,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       773 *
     ld    E, C          ; 1:4       773 *
                         ;[22:172] 
-                        ;           775 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_0111
+                        ;           775 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_0111 
     ld    B, D          ; 1:4       775 *
-    ld    C, E          ; 1:4       775 *  
+    ld    C, E          ; 1:4       775 * 
     ld    D, H          ; 1:4       775 *
     ld    E, L          ; 1:4       775 *   1x 
     add  HL, HL         ; 1:11      775 *   2x 
@@ -9275,9 +9275,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       775 *
     ld    E, C          ; 1:4       775 *
                         ;[25:191] 
-                        ;           777 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1001
+                        ;           777 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1001 
     ld    B, D          ; 1:4       777 *
-    ld    C, E          ; 1:4       777 *  
+    ld    C, E          ; 1:4       777 * 
     ld    D, H          ; 1:4       777 *
     ld    E, L          ; 1:4       777 *   1x 
     add  HL, HL         ; 1:11      777 *   2x 
@@ -9299,9 +9299,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       777 *
     ld    E, C          ; 1:4       777 *
                         ;[22:172] 
-                        ;           779 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1011
+                        ;           779 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1011 
     ld    B, D          ; 1:4       779 *
-    ld    C, E          ; 1:4       779 *  
+    ld    C, E          ; 1:4       779 * 
     ld    D, H          ; 1:4       779 *
     ld    E, L          ; 1:4       779 *   1x 
     add  HL, HL         ; 1:11      779 *   2x 
@@ -9326,9 +9326,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       779 *
     ld    E, C          ; 1:4       779 *
                         ;[25:191] 
-                        ;           781 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1101
+                        ;           781 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1101 
     ld    B, D          ; 1:4       781 *
-    ld    C, E          ; 1:4       781 *  
+    ld    C, E          ; 1:4       781 * 
     ld    D, H          ; 1:4       781 *
     ld    E, L          ; 1:4       781 *   1x 
     add  HL, HL         ; 1:11      781 *   2x 
@@ -9354,9 +9354,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       781 *
                         ;[25:191]
 
-                        ;           783 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1111
+                        ;           783 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0000_1111 
     ld    B, D          ; 1:4       783 *
-    ld    C, E          ; 1:4       783 *  
+    ld    C, E          ; 1:4       783 * 
     ld    D, H          ; 1:4       783 *
     ld    E, L          ; 1:4       783 *   1x 
     add  HL, HL         ; 1:11      783 *   2x 
@@ -9384,9 +9384,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       783 *
     ld    E, C          ; 1:4       783 *
                         ;[28:210] 
-                        ;           785 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0001
+                        ;           785 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0001 
     ld    B, D          ; 1:4       785 *
-    ld    C, E          ; 1:4       785 *  
+    ld    C, E          ; 1:4       785 * 
     ld    D, H          ; 1:4       785 *
     ld    E, L          ; 1:4       785 *   1x 
     add  HL, HL         ; 1:11      785 *   2x 
@@ -9408,9 +9408,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       785 *
     ld    E, C          ; 1:4       785 *
                         ;[22:172] 
-                        ;           787 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0011
+                        ;           787 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0011 
     ld    B, D          ; 1:4       787 *
-    ld    C, E          ; 1:4       787 *  
+    ld    C, E          ; 1:4       787 * 
     ld    D, H          ; 1:4       787 *
     ld    E, L          ; 1:4       787 *   1x 
     add  HL, HL         ; 1:11      787 *   2x 
@@ -9435,9 +9435,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       787 *
     ld    E, C          ; 1:4       787 *
                         ;[25:191] 
-                        ;           789 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0101
+                        ;           789 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0101 
     ld    B, D          ; 1:4       789 *
-    ld    C, E          ; 1:4       789 *  
+    ld    C, E          ; 1:4       789 * 
     ld    D, H          ; 1:4       789 *
     ld    E, L          ; 1:4       789 *   1x 
     add  HL, HL         ; 1:11      789 *   2x 
@@ -9462,9 +9462,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       789 *
     ld    E, C          ; 1:4       789 *
                         ;[25:191] 
-                        ;           791 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0111
+                        ;           791 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_0111 
     ld    B, D          ; 1:4       791 *
-    ld    C, E          ; 1:4       791 *  
+    ld    C, E          ; 1:4       791 * 
     ld    D, H          ; 1:4       791 *
     ld    E, L          ; 1:4       791 *   1x 
     add  HL, HL         ; 1:11      791 *   2x 
@@ -9492,9 +9492,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       791 *
     ld    E, C          ; 1:4       791 *
                         ;[28:210] 
-                        ;           793 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_1001
+                        ;           793 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_1001 
     ld    B, D          ; 1:4       793 *
-    ld    C, E          ; 1:4       793 *  
+    ld    C, E          ; 1:4       793 * 
     ld    D, H          ; 1:4       793 *
     ld    E, L          ; 1:4       793 *   1x 
     add  HL, HL         ; 1:11      793 *   2x 
@@ -9519,9 +9519,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       793 *
     ld    E, C          ; 1:4       793 *
                         ;[25:191] 
-                        ;           795 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_1011
+                        ;           795 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_1011 
     ld    B, D          ; 1:4       795 *
-    ld    C, E          ; 1:4       795 *  
+    ld    C, E          ; 1:4       795 * 
     ld    D, H          ; 1:4       795 *
     ld    E, L          ; 1:4       795 *   1x 
     add  HL, HL         ; 1:11      795 *   2x 
@@ -9549,9 +9549,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       795 *
     ld    E, C          ; 1:4       795 *
                         ;[28:210] 
-                        ;           797 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_1101
+                        ;           797 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0001_1101 
     ld    B, D          ; 1:4       797 *
-    ld    C, E          ; 1:4       797 *  
+    ld    C, E          ; 1:4       797 * 
     ld    D, H          ; 1:4       797 *
     ld    E, L          ; 1:4       797 *   1x 
     add  HL, HL         ; 1:11      797 *   2x 
@@ -9579,9 +9579,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       797 *
     ld    E, C          ; 1:4       797 *
                         ;[28:210] 
-                        ;           799 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0001_1111
+                        ;           799 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0001_1111 
     ld    B, D          ; 1:4       799 *
-    ld    C, E          ; 1:4       799 *  
+    ld    C, E          ; 1:4       799 * 
     ld    D, H          ; 1:4       799 *
     ld    E, L          ; 1:4       799 *   1x 
     add  HL, HL         ; 1:11      799 *   2x 
@@ -9608,9 +9608,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       799 *
     ld    E, C          ; 1:4       799 *
                         ;[55:183] 
-                        ;           801 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0001
+                        ;           801 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0001 
     ld    B, D          ; 1:4       801 *
-    ld    C, E          ; 1:4       801 *  
+    ld    C, E          ; 1:4       801 * 
     ld    D, H          ; 1:4       801 *
     ld    E, L          ; 1:4       801 *   1x 
     add  HL, HL         ; 1:11      801 *   2x 
@@ -9632,9 +9632,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       801 *
     ld    E, C          ; 1:4       801 *
                         ;[22:172] 
-                        ;           803 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0011
+                        ;           803 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0011 
     ld    B, D          ; 1:4       803 *
-    ld    C, E          ; 1:4       803 *  
+    ld    C, E          ; 1:4       803 * 
     ld    D, H          ; 1:4       803 *
     ld    E, L          ; 1:4       803 *   1x 
     add  HL, HL         ; 1:11      803 *   2x 
@@ -9660,9 +9660,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       803 *
                         ;[25:191]
 
-                        ;           805 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0101
+                        ;           805 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0101 
     ld    B, D          ; 1:4       805 *
-    ld    C, E          ; 1:4       805 *  
+    ld    C, E          ; 1:4       805 * 
     ld    D, H          ; 1:4       805 *
     ld    E, L          ; 1:4       805 *   1x 
     add  HL, HL         ; 1:11      805 *   2x 
@@ -9687,9 +9687,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       805 *
     ld    E, C          ; 1:4       805 *
                         ;[25:191] 
-                        ;           807 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0111
+                        ;           807 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_0111 
     ld    B, D          ; 1:4       807 *
-    ld    C, E          ; 1:4       807 *  
+    ld    C, E          ; 1:4       807 * 
     ld    D, H          ; 1:4       807 *
     ld    E, L          ; 1:4       807 *   1x 
     add  HL, HL         ; 1:11      807 *   2x 
@@ -9717,9 +9717,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       807 *
     ld    E, C          ; 1:4       807 *
                         ;[28:210] 
-                        ;           809 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_1001
+                        ;           809 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_1001 
     ld    B, D          ; 1:4       809 *
-    ld    C, E          ; 1:4       809 *  
+    ld    C, E          ; 1:4       809 * 
     ld    D, H          ; 1:4       809 *
     ld    E, L          ; 1:4       809 *   1x 
     add  HL, HL         ; 1:11      809 *   2x 
@@ -9744,9 +9744,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       809 *
     ld    E, C          ; 1:4       809 *
                         ;[25:191] 
-                        ;           811 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_1011
+                        ;           811 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_1011 
     ld    B, D          ; 1:4       811 *
-    ld    C, E          ; 1:4       811 *  
+    ld    C, E          ; 1:4       811 * 
     ld    D, H          ; 1:4       811 *
     ld    E, L          ; 1:4       811 *   1x 
     add  HL, HL         ; 1:11      811 *   2x 
@@ -9774,9 +9774,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       811 *
     ld    E, C          ; 1:4       811 *
                         ;[28:210] 
-                        ;           813 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_1101
+                        ;           813 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0010_1101 
     ld    B, D          ; 1:4       813 *
-    ld    C, E          ; 1:4       813 *  
+    ld    C, E          ; 1:4       813 * 
     ld    D, H          ; 1:4       813 *
     ld    E, L          ; 1:4       813 *   1x 
     add  HL, HL         ; 1:11      813 *   2x 
@@ -9804,9 +9804,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       813 *
     ld    E, C          ; 1:4       813 *
                         ;[28:210] 
-                        ;           815 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0010_1111
+                        ;           815 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0010_1111 
     ld    B, D          ; 1:4       815 *
-    ld    C, E          ; 1:4       815 *  
+    ld    C, E          ; 1:4       815 * 
     ld    D, H          ; 1:4       815 *
     ld    E, L          ; 1:4       815 *   1x 
     add  HL, HL         ; 1:11      815 *   2x 
@@ -9833,9 +9833,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       815 *
     ld    E, C          ; 1:4       815 *
                         ;[55:183] 
-                        ;           817 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_0001
+                        ;           817 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_0001 
     ld    B, D          ; 1:4       817 *
-    ld    C, E          ; 1:4       817 *  
+    ld    C, E          ; 1:4       817 * 
     ld    D, H          ; 1:4       817 *
     ld    E, L          ; 1:4       817 *   1x 
     add  HL, HL         ; 1:11      817 *   2x 
@@ -9860,9 +9860,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       817 *
     ld    E, C          ; 1:4       817 *
                         ;[25:191] 
-                        ;           819 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_0011
+                        ;           819 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_0011 
     ld    B, D          ; 1:4       819 *
-    ld    C, E          ; 1:4       819 *  
+    ld    C, E          ; 1:4       819 * 
     ld    D, H          ; 1:4       819 *
     ld    E, L          ; 1:4       819 *   1x 
     add  HL, HL         ; 1:11      819 *   2x 
@@ -9890,9 +9890,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       819 *
     ld    E, C          ; 1:4       819 *
                         ;[28:210] 
-                        ;           821 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_0101
+                        ;           821 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_0101 
     ld    B, D          ; 1:4       821 *
-    ld    C, E          ; 1:4       821 *  
+    ld    C, E          ; 1:4       821 * 
     ld    D, H          ; 1:4       821 *
     ld    E, L          ; 1:4       821 *   1x 
     add  HL, HL         ; 1:11      821 *   2x 
@@ -9920,9 +9920,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       821 *
     ld    E, C          ; 1:4       821 *
                         ;[28:210] 
-                        ;           823 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_0111
+                        ;           823 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_0111 
     ld    B, D          ; 1:4       823 *
-    ld    C, E          ; 1:4       823 *  
+    ld    C, E          ; 1:4       823 * 
     ld    D, H          ; 1:4       823 *
     ld    E, L          ; 1:4       823 *   1x 
     add  HL, HL         ; 1:11      823 *   2x 
@@ -9949,9 +9949,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       823 *
     ld    E, C          ; 1:4       823 *
                         ;[55:183] 
-                        ;           825 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_1001
+                        ;           825 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0011_1001 
     ld    B, D          ; 1:4       825 *
-    ld    C, E          ; 1:4       825 *  
+    ld    C, E          ; 1:4       825 * 
     ld    D, H          ; 1:4       825 *
     ld    E, L          ; 1:4       825 *   1x 
     add  HL, HL         ; 1:11      825 *   2x 
@@ -9980,9 +9980,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       825 *
                         ;[28:210]
 
-                        ;           827 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_1011
+                        ;           827 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_1011 
     ld    B, D          ; 1:4       827 *
-    ld    C, E          ; 1:4       827 *  
+    ld    C, E          ; 1:4       827 * 
     ld    D, H          ; 1:4       827 *
     ld    E, L          ; 1:4       827 *   1x 
     add  HL, HL         ; 1:11      827 *   2x 
@@ -10009,9 +10009,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       827 *
     ld    E, C          ; 1:4       827 *
                         ;[55:183] 
-                        ;           829 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_1101
+                        ;           829 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_1101 
     ld    B, D          ; 1:4       829 *
-    ld    C, E          ; 1:4       829 *  
+    ld    C, E          ; 1:4       829 * 
     ld    D, H          ; 1:4       829 *
     ld    E, L          ; 1:4       829 *   1x 
     add  HL, HL         ; 1:11      829 *   2x 
@@ -10038,9 +10038,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       829 *
     ld    E, C          ; 1:4       829 *
                         ;[55:183] 
-                        ;           831 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_1111
+                        ;           831 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0011_1111 
     ld    B, D          ; 1:4       831 *
-    ld    C, E          ; 1:4       831 *  
+    ld    C, E          ; 1:4       831 * 
     ld    D, H          ; 1:4       831 *
     ld    E, L          ; 1:4       831 *   1x 
     add  HL, HL         ; 1:11      831 *   2x 
@@ -10064,9 +10064,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       831 *
     ld    E, C          ; 1:4       831 *
                         ;[52:164] 
-                        ;           833 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0001
+                        ;           833 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0001 
     ld    B, D          ; 1:4       833 *
-    ld    C, E          ; 1:4       833 *  
+    ld    C, E          ; 1:4       833 * 
     ld    D, H          ; 1:4       833 *
     ld    E, L          ; 1:4       833 *   1x 
     add  HL, HL         ; 1:11      833 *   2x 
@@ -10088,9 +10088,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       833 *
     ld    E, C          ; 1:4       833 *
                         ;[22:172] 
-                        ;           835 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0011
+                        ;           835 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0011 
     ld    B, D          ; 1:4       835 *
-    ld    C, E          ; 1:4       835 *  
+    ld    C, E          ; 1:4       835 * 
     ld    D, H          ; 1:4       835 *
     ld    E, L          ; 1:4       835 *   1x 
     add  HL, HL         ; 1:11      835 *   2x 
@@ -10115,9 +10115,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       835 *
     ld    E, C          ; 1:4       835 *
                         ;[25:191] 
-                        ;           837 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0101
+                        ;           837 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0101 
     ld    B, D          ; 1:4       837 *
-    ld    C, E          ; 1:4       837 *  
+    ld    C, E          ; 1:4       837 * 
     ld    D, H          ; 1:4       837 *
     ld    E, L          ; 1:4       837 *   1x 
     add  HL, HL         ; 1:11      837 *   2x 
@@ -10142,9 +10142,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       837 *
     ld    E, C          ; 1:4       837 *
                         ;[25:191] 
-                        ;           839 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0111
+                        ;           839 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_0111 
     ld    B, D          ; 1:4       839 *
-    ld    C, E          ; 1:4       839 *  
+    ld    C, E          ; 1:4       839 * 
     ld    D, H          ; 1:4       839 *
     ld    E, L          ; 1:4       839 *   1x 
     add  HL, HL         ; 1:11      839 *   2x 
@@ -10172,9 +10172,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       839 *
     ld    E, C          ; 1:4       839 *
                         ;[28:210] 
-                        ;           841 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_1001
+                        ;           841 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_1001 
     ld    B, D          ; 1:4       841 *
-    ld    C, E          ; 1:4       841 *  
+    ld    C, E          ; 1:4       841 * 
     ld    D, H          ; 1:4       841 *
     ld    E, L          ; 1:4       841 *   1x 
     add  HL, HL         ; 1:11      841 *   2x 
@@ -10199,9 +10199,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       841 *
     ld    E, C          ; 1:4       841 *
                         ;[25:191] 
-                        ;           843 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_1011
+                        ;           843 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_1011 
     ld    B, D          ; 1:4       843 *
-    ld    C, E          ; 1:4       843 *  
+    ld    C, E          ; 1:4       843 * 
     ld    D, H          ; 1:4       843 *
     ld    E, L          ; 1:4       843 *   1x 
     add  HL, HL         ; 1:11      843 *   2x 
@@ -10229,9 +10229,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       843 *
     ld    E, C          ; 1:4       843 *
                         ;[28:210] 
-                        ;           845 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_1101
+                        ;           845 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0100_1101 
     ld    B, D          ; 1:4       845 *
-    ld    C, E          ; 1:4       845 *  
+    ld    C, E          ; 1:4       845 * 
     ld    D, H          ; 1:4       845 *
     ld    E, L          ; 1:4       845 *   1x 
     add  HL, HL         ; 1:11      845 *   2x 
@@ -10259,9 +10259,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       845 *
     ld    E, C          ; 1:4       845 *
                         ;[28:210] 
-                        ;           847 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0100_1111
+                        ;           847 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0100_1111 
     ld    B, D          ; 1:4       847 *
-    ld    C, E          ; 1:4       847 *  
+    ld    C, E          ; 1:4       847 * 
     ld    D, H          ; 1:4       847 *
     ld    E, L          ; 1:4       847 *   1x 
     add  HL, HL         ; 1:11      847 *   2x 
@@ -10289,9 +10289,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       847 *
                         ;[55:183]
 
-                        ;           849 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_0001
+                        ;           849 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_0001 
     ld    B, D          ; 1:4       849 *
-    ld    C, E          ; 1:4       849 *  
+    ld    C, E          ; 1:4       849 * 
     ld    D, H          ; 1:4       849 *
     ld    E, L          ; 1:4       849 *   1x 
     add  HL, HL         ; 1:11      849 *   2x 
@@ -10316,9 +10316,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       849 *
     ld    E, C          ; 1:4       849 *
                         ;[25:191] 
-                        ;           851 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_0011
+                        ;           851 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_0011 
     ld    B, D          ; 1:4       851 *
-    ld    C, E          ; 1:4       851 *  
+    ld    C, E          ; 1:4       851 * 
     ld    D, H          ; 1:4       851 *
     ld    E, L          ; 1:4       851 *   1x 
     add  HL, HL         ; 1:11      851 *   2x 
@@ -10346,9 +10346,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       851 *
     ld    E, C          ; 1:4       851 *
                         ;[28:210] 
-                        ;           853 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_0101
+                        ;           853 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_0101 
     ld    B, D          ; 1:4       853 *
-    ld    C, E          ; 1:4       853 *  
+    ld    C, E          ; 1:4       853 * 
     ld    D, H          ; 1:4       853 *
     ld    E, L          ; 1:4       853 *   1x 
     add  HL, HL         ; 1:11      853 *   2x 
@@ -10376,9 +10376,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       853 *
     ld    E, C          ; 1:4       853 *
                         ;[28:210] 
-                        ;           855 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_0111
+                        ;           855 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_0111 
     ld    B, D          ; 1:4       855 *
-    ld    C, E          ; 1:4       855 *  
+    ld    C, E          ; 1:4       855 * 
     ld    D, H          ; 1:4       855 *
     ld    E, L          ; 1:4       855 *   1x 
     add  HL, HL         ; 1:11      855 *   2x 
@@ -10405,9 +10405,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       855 *
     ld    E, C          ; 1:4       855 *
                         ;[55:183] 
-                        ;           857 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_1001
+                        ;           857 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0101_1001 
     ld    B, D          ; 1:4       857 *
-    ld    C, E          ; 1:4       857 *  
+    ld    C, E          ; 1:4       857 * 
     ld    D, H          ; 1:4       857 *
     ld    E, L          ; 1:4       857 *   1x 
     add  HL, HL         ; 1:11      857 *   2x 
@@ -10435,9 +10435,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       857 *
     ld    E, C          ; 1:4       857 *
                         ;[28:210] 
-                        ;           859 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_1011
+                        ;           859 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_1011 
     ld    B, D          ; 1:4       859 *
-    ld    C, E          ; 1:4       859 *  
+    ld    C, E          ; 1:4       859 * 
     ld    D, H          ; 1:4       859 *
     ld    E, L          ; 1:4       859 *   1x 
     add  HL, HL         ; 1:11      859 *   2x 
@@ -10464,9 +10464,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       859 *
     ld    E, C          ; 1:4       859 *
                         ;[55:183] 
-                        ;           861 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_1101
+                        ;           861 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_1101 
     ld    B, D          ; 1:4       861 *
-    ld    C, E          ; 1:4       861 *  
+    ld    C, E          ; 1:4       861 * 
     ld    D, H          ; 1:4       861 *
     ld    E, L          ; 1:4       861 *   1x 
     add  HL, HL         ; 1:11      861 *   2x 
@@ -10493,9 +10493,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       861 *
     ld    E, C          ; 1:4       861 *
                         ;[55:183] 
-                        ;           863 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_1111
+                        ;           863 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0101_1111 
     ld    B, D          ; 1:4       863 *
-    ld    C, E          ; 1:4       863 *  
+    ld    C, E          ; 1:4       863 * 
     ld    D, H          ; 1:4       863 *
     ld    E, L          ; 1:4       863 *   1x 
     add  HL, HL         ; 1:11      863 *   2x 
@@ -10519,9 +10519,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       863 *
     ld    E, C          ; 1:4       863 *
                         ;[52:164] 
-                        ;           865 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_0001
+                        ;           865 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_0001 
     ld    B, D          ; 1:4       865 *
-    ld    C, E          ; 1:4       865 *  
+    ld    C, E          ; 1:4       865 * 
     ld    D, H          ; 1:4       865 *
     ld    E, L          ; 1:4       865 *   1x 
     add  HL, HL         ; 1:11      865 *   2x 
@@ -10546,9 +10546,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       865 *
     ld    E, C          ; 1:4       865 *
                         ;[25:191] 
-                        ;           867 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_0011
+                        ;           867 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_0011 
     ld    B, D          ; 1:4       867 *
-    ld    C, E          ; 1:4       867 *  
+    ld    C, E          ; 1:4       867 * 
     ld    D, H          ; 1:4       867 *
     ld    E, L          ; 1:4       867 *   1x 
     add  HL, HL         ; 1:11      867 *   2x 
@@ -10576,9 +10576,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       867 *
     ld    E, C          ; 1:4       867 *
                         ;[28:210] 
-                        ;           869 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_0101
+                        ;           869 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_0101 
     ld    B, D          ; 1:4       869 *
-    ld    C, E          ; 1:4       869 *  
+    ld    C, E          ; 1:4       869 * 
     ld    D, H          ; 1:4       869 *
     ld    E, L          ; 1:4       869 *   1x 
     add  HL, HL         ; 1:11      869 *   2x 
@@ -10607,9 +10607,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       869 *
                         ;[28:210]
 
-                        ;           871 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_0111
+                        ;           871 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_0111 
     ld    B, D          ; 1:4       871 *
-    ld    C, E          ; 1:4       871 *  
+    ld    C, E          ; 1:4       871 * 
     ld    D, H          ; 1:4       871 *
     ld    E, L          ; 1:4       871 *   1x 
     add  HL, HL         ; 1:11      871 *   2x 
@@ -10636,9 +10636,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       871 *
     ld    E, C          ; 1:4       871 *
                         ;[55:183] 
-                        ;           873 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_1001
+                        ;           873 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0110_1001 
     ld    B, D          ; 1:4       873 *
-    ld    C, E          ; 1:4       873 *  
+    ld    C, E          ; 1:4       873 * 
     ld    D, H          ; 1:4       873 *
     ld    E, L          ; 1:4       873 *   1x 
     add  HL, HL         ; 1:11      873 *   2x 
@@ -10666,9 +10666,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       873 *
     ld    E, C          ; 1:4       873 *
                         ;[28:210] 
-                        ;           875 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_1011
+                        ;           875 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_1011 
     ld    B, D          ; 1:4       875 *
-    ld    C, E          ; 1:4       875 *  
+    ld    C, E          ; 1:4       875 * 
     ld    D, H          ; 1:4       875 *
     ld    E, L          ; 1:4       875 *   1x 
     add  HL, HL         ; 1:11      875 *   2x 
@@ -10695,9 +10695,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       875 *
     ld    E, C          ; 1:4       875 *
                         ;[55:183] 
-                        ;           877 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_1101
+                        ;           877 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_1101 
     ld    B, D          ; 1:4       877 *
-    ld    C, E          ; 1:4       877 *  
+    ld    C, E          ; 1:4       877 * 
     ld    D, H          ; 1:4       877 *
     ld    E, L          ; 1:4       877 *   1x 
     add  HL, HL         ; 1:11      877 *   2x 
@@ -10724,9 +10724,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       877 *
     ld    E, C          ; 1:4       877 *
                         ;[55:183] 
-                        ;           879 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_1111
+                        ;           879 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0110_1111 
     ld    B, D          ; 1:4       879 *
-    ld    C, E          ; 1:4       879 *  
+    ld    C, E          ; 1:4       879 * 
     ld    D, H          ; 1:4       879 *
     ld    E, L          ; 1:4       879 *   1x 
     add  HL, HL         ; 1:11      879 *   2x 
@@ -10750,9 +10750,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       879 *
     ld    E, C          ; 1:4       879 *
                         ;[52:164] 
-                        ;           881 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0111_0001
+                        ;           881 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_0111_0001 
     ld    B, D          ; 1:4       881 *
-    ld    C, E          ; 1:4       881 *  
+    ld    C, E          ; 1:4       881 * 
     ld    D, H          ; 1:4       881 *
     ld    E, L          ; 1:4       881 *   1x 
     add  HL, HL         ; 1:11      881 *   2x 
@@ -10780,9 +10780,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       881 *
     ld    E, C          ; 1:4       881 *
                         ;[28:210] 
-                        ;           883 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_0011
+                        ;           883 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_0011 
     ld    B, D          ; 1:4       883 *
-    ld    C, E          ; 1:4       883 *  
+    ld    C, E          ; 1:4       883 * 
     ld    D, H          ; 1:4       883 *
     ld    E, L          ; 1:4       883 *   1x 
     add  HL, HL         ; 1:11      883 *   2x 
@@ -10809,9 +10809,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       883 *
     ld    E, C          ; 1:4       883 *
                         ;[55:183] 
-                        ;           885 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_0101
+                        ;           885 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_0101 
     ld    B, D          ; 1:4       885 *
-    ld    C, E          ; 1:4       885 *  
+    ld    C, E          ; 1:4       885 * 
     ld    D, H          ; 1:4       885 *
     ld    E, L          ; 1:4       885 *   1x 
     add  HL, HL         ; 1:11      885 *   2x 
@@ -10838,9 +10838,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       885 *
     ld    E, C          ; 1:4       885 *
                         ;[55:183] 
-                        ;           887 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_0111
+                        ;           887 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_0111 
     ld    B, D          ; 1:4       887 *
-    ld    C, E          ; 1:4       887 *  
+    ld    C, E          ; 1:4       887 * 
     ld    D, H          ; 1:4       887 *
     ld    E, L          ; 1:4       887 *   1x 
     add  HL, HL         ; 1:11      887 *   2x 
@@ -10864,9 +10864,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       887 *
     ld    E, C          ; 1:4       887 *
                         ;[52:164] 
-                        ;           889 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_1001
+                        ;           889 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_1001 
     ld    B, D          ; 1:4       889 *
-    ld    C, E          ; 1:4       889 *  
+    ld    C, E          ; 1:4       889 * 
     ld    D, H          ; 1:4       889 *
     ld    E, L          ; 1:4       889 *   1x 
     add  HL, HL         ; 1:11      889 *   2x 
@@ -10893,9 +10893,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       889 *
     ld    E, C          ; 1:4       889 *
                         ;[55:183] 
-                        ;           891 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_1011
+                        ;           891 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_1011 
     ld    B, D          ; 1:4       891 *
-    ld    C, E          ; 1:4       891 *  
+    ld    C, E          ; 1:4       891 * 
     ld    D, H          ; 1:4       891 *
     ld    E, L          ; 1:4       891 *   1x 
     add  HL, HL         ; 1:11      891 *   2x 
@@ -10920,9 +10920,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       891 *
                         ;[52:164]
 
-                        ;           893 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_1101
+                        ;           893 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_0111_1101 
     ld    B, D          ; 1:4       893 *
-    ld    C, E          ; 1:4       893 *  
+    ld    C, E          ; 1:4       893 * 
     ld    D, H          ; 1:4       893 *
     ld    E, L          ; 1:4       893 *   1x 
     add  HL, HL         ; 1:11      893 *   2x 
@@ -10946,7 +10946,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       893 *
     ld    E, C          ; 1:4       893 *
                         ;[52:164] 
-                        ;           895 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_0111_1111 
+                        ;           895 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_0111_1111  
     ld    B, H          ; 1:4       895 *
     ld    A, L          ; 1:4       895 *   1x 
     add  HL, HL         ; 1:11      895 *   2x 
@@ -10957,9 +10957,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      895 *   64x 
     add  HL, HL         ; 1:11      895 *   128x 
     add   A, L          ; 1:4       895 *
-    ld    C, A          ; 1:4       895 *   
-    ld    A, B          ; 1:4       895 *   
-    adc   A, H          ; 1:4       895 *   
+    ld    C, A          ; 1:4       895 *
+    ld    A, B          ; 1:4       895 *
+    adc   A, H          ; 1:4       895 *
     ld    B, A          ; 1:4       895 *   129x 
     add  HL, HL         ; 1:11      895 *   256x 
     add  HL, HL         ; 1:11      895 *   512x 
@@ -10967,9 +10967,9 @@ ORG 0x6000
     or    A             ; 1:4       895 *
     sbc  HL, BC         ; 2:15      895 *   1024x - 129x = 895x
                         ;[20:157] 
-                        ;           897 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0001
+                        ;           897 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0001 
     ld    B, D          ; 1:4       897 *
-    ld    C, E          ; 1:4       897 *  
+    ld    C, E          ; 1:4       897 * 
     ld    D, H          ; 1:4       897 *
     ld    E, L          ; 1:4       897 *   1x 
     add  HL, HL         ; 1:11      897 *   2x 
@@ -10991,9 +10991,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       897 *
     ld    E, C          ; 1:4       897 *
                         ;[22:172] 
-                        ;           899 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0011
+                        ;           899 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0011 
     ld    B, D          ; 1:4       899 *
-    ld    C, E          ; 1:4       899 *  
+    ld    C, E          ; 1:4       899 * 
     ld    D, H          ; 1:4       899 *
     ld    E, L          ; 1:4       899 *   1x 
     add  HL, HL         ; 1:11      899 *   2x 
@@ -11018,9 +11018,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       899 *
     ld    E, C          ; 1:4       899 *
                         ;[25:191] 
-                        ;           901 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0101
+                        ;           901 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0101 
     ld    B, D          ; 1:4       901 *
-    ld    C, E          ; 1:4       901 *  
+    ld    C, E          ; 1:4       901 * 
     ld    D, H          ; 1:4       901 *
     ld    E, L          ; 1:4       901 *   1x 
     add  HL, HL         ; 1:11      901 *   2x 
@@ -11045,9 +11045,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       901 *
     ld    E, C          ; 1:4       901 *
                         ;[25:191] 
-                        ;           903 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0111
+                        ;           903 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_0111 
     ld    B, D          ; 1:4       903 *
-    ld    C, E          ; 1:4       903 *  
+    ld    C, E          ; 1:4       903 * 
     ld    D, H          ; 1:4       903 *
     ld    E, L          ; 1:4       903 *   1x 
     add  HL, HL         ; 1:11      903 *   2x 
@@ -11075,9 +11075,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       903 *
     ld    E, C          ; 1:4       903 *
                         ;[28:210] 
-                        ;           905 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_1001
+                        ;           905 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_1001 
     ld    B, D          ; 1:4       905 *
-    ld    C, E          ; 1:4       905 *  
+    ld    C, E          ; 1:4       905 * 
     ld    D, H          ; 1:4       905 *
     ld    E, L          ; 1:4       905 *   1x 
     add  HL, HL         ; 1:11      905 *   2x 
@@ -11102,9 +11102,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       905 *
     ld    E, C          ; 1:4       905 *
                         ;[25:191] 
-                        ;           907 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_1011
+                        ;           907 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_1011 
     ld    B, D          ; 1:4       907 *
-    ld    C, E          ; 1:4       907 *  
+    ld    C, E          ; 1:4       907 * 
     ld    D, H          ; 1:4       907 *
     ld    E, L          ; 1:4       907 *   1x 
     add  HL, HL         ; 1:11      907 *   2x 
@@ -11132,9 +11132,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       907 *
     ld    E, C          ; 1:4       907 *
                         ;[28:210] 
-                        ;           909 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_1101
+                        ;           909 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1000_1101 
     ld    B, D          ; 1:4       909 *
-    ld    C, E          ; 1:4       909 *  
+    ld    C, E          ; 1:4       909 * 
     ld    D, H          ; 1:4       909 *
     ld    E, L          ; 1:4       909 *   1x 
     add  HL, HL         ; 1:11      909 *   2x 
@@ -11162,9 +11162,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       909 *
     ld    E, C          ; 1:4       909 *
                         ;[28:210] 
-                        ;           911 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1000_1111
+                        ;           911 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1000_1111 
     ld    B, D          ; 1:4       911 *
-    ld    C, E          ; 1:4       911 *  
+    ld    C, E          ; 1:4       911 * 
     ld    D, H          ; 1:4       911 *
     ld    E, L          ; 1:4       911 *   1x 
     add  HL, HL         ; 1:11      911 *   2x 
@@ -11191,9 +11191,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       911 *
     ld    E, C          ; 1:4       911 *
                         ;[55:183] 
-                        ;           913 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_0001
+                        ;           913 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_0001 
     ld    B, D          ; 1:4       913 *
-    ld    C, E          ; 1:4       913 *  
+    ld    C, E          ; 1:4       913 * 
     ld    D, H          ; 1:4       913 *
     ld    E, L          ; 1:4       913 *   1x 
     add  HL, HL         ; 1:11      913 *   2x 
@@ -11219,9 +11219,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       913 *
                         ;[25:191]
 
-                        ;           915 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_0011
+                        ;           915 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_0011 
     ld    B, D          ; 1:4       915 *
-    ld    C, E          ; 1:4       915 *  
+    ld    C, E          ; 1:4       915 * 
     ld    D, H          ; 1:4       915 *
     ld    E, L          ; 1:4       915 *   1x 
     add  HL, HL         ; 1:11      915 *   2x 
@@ -11249,9 +11249,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       915 *
     ld    E, C          ; 1:4       915 *
                         ;[28:210] 
-                        ;           917 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_0101
+                        ;           917 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_0101 
     ld    B, D          ; 1:4       917 *
-    ld    C, E          ; 1:4       917 *  
+    ld    C, E          ; 1:4       917 * 
     ld    D, H          ; 1:4       917 *
     ld    E, L          ; 1:4       917 *   1x 
     add  HL, HL         ; 1:11      917 *   2x 
@@ -11279,9 +11279,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       917 *
     ld    E, C          ; 1:4       917 *
                         ;[28:210] 
-                        ;           919 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_0111
+                        ;           919 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_0111 
     ld    B, D          ; 1:4       919 *
-    ld    C, E          ; 1:4       919 *  
+    ld    C, E          ; 1:4       919 * 
     ld    D, H          ; 1:4       919 *
     ld    E, L          ; 1:4       919 *   1x 
     add  HL, HL         ; 1:11      919 *   2x 
@@ -11308,9 +11308,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       919 *
     ld    E, C          ; 1:4       919 *
                         ;[55:183] 
-                        ;           921 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_1001
+                        ;           921 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1001_1001 
     ld    B, D          ; 1:4       921 *
-    ld    C, E          ; 1:4       921 *  
+    ld    C, E          ; 1:4       921 * 
     ld    D, H          ; 1:4       921 *
     ld    E, L          ; 1:4       921 *   1x 
     add  HL, HL         ; 1:11      921 *   2x 
@@ -11338,9 +11338,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       921 *
     ld    E, C          ; 1:4       921 *
                         ;[28:210] 
-                        ;           923 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_1011
+                        ;           923 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_1011 
     ld    B, D          ; 1:4       923 *
-    ld    C, E          ; 1:4       923 *  
+    ld    C, E          ; 1:4       923 * 
     ld    D, H          ; 1:4       923 *
     ld    E, L          ; 1:4       923 *   1x 
     add  HL, HL         ; 1:11      923 *   2x 
@@ -11367,9 +11367,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       923 *
     ld    E, C          ; 1:4       923 *
                         ;[55:183] 
-                        ;           925 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_1101
+                        ;           925 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_1101 
     ld    B, D          ; 1:4       925 *
-    ld    C, E          ; 1:4       925 *  
+    ld    C, E          ; 1:4       925 * 
     ld    D, H          ; 1:4       925 *
     ld    E, L          ; 1:4       925 *   1x 
     add  HL, HL         ; 1:11      925 *   2x 
@@ -11396,9 +11396,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       925 *
     ld    E, C          ; 1:4       925 *
                         ;[55:183] 
-                        ;           927 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_1111
+                        ;           927 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1001_1111 
     ld    B, D          ; 1:4       927 *
-    ld    C, E          ; 1:4       927 *  
+    ld    C, E          ; 1:4       927 * 
     ld    D, H          ; 1:4       927 *
     ld    E, L          ; 1:4       927 *   1x 
     add  HL, HL         ; 1:11      927 *   2x 
@@ -11422,9 +11422,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       927 *
     ld    E, C          ; 1:4       927 *
                         ;[52:164] 
-                        ;           929 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_0001
+                        ;           929 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_0001 
     ld    B, D          ; 1:4       929 *
-    ld    C, E          ; 1:4       929 *  
+    ld    C, E          ; 1:4       929 * 
     ld    D, H          ; 1:4       929 *
     ld    E, L          ; 1:4       929 *   1x 
     add  HL, HL         ; 1:11      929 *   2x 
@@ -11449,9 +11449,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       929 *
     ld    E, C          ; 1:4       929 *
                         ;[25:191] 
-                        ;           931 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_0011
+                        ;           931 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_0011 
     ld    B, D          ; 1:4       931 *
-    ld    C, E          ; 1:4       931 *  
+    ld    C, E          ; 1:4       931 * 
     ld    D, H          ; 1:4       931 *
     ld    E, L          ; 1:4       931 *   1x 
     add  HL, HL         ; 1:11      931 *   2x 
@@ -11479,9 +11479,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       931 *
     ld    E, C          ; 1:4       931 *
                         ;[28:210] 
-                        ;           933 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_0101
+                        ;           933 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_0101 
     ld    B, D          ; 1:4       933 *
-    ld    C, E          ; 1:4       933 *  
+    ld    C, E          ; 1:4       933 * 
     ld    D, H          ; 1:4       933 *
     ld    E, L          ; 1:4       933 *   1x 
     add  HL, HL         ; 1:11      933 *   2x 
@@ -11509,9 +11509,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       933 *
     ld    E, C          ; 1:4       933 *
                         ;[28:210] 
-                        ;           935 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_0111
+                        ;           935 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_0111 
     ld    B, D          ; 1:4       935 *
-    ld    C, E          ; 1:4       935 *  
+    ld    C, E          ; 1:4       935 * 
     ld    D, H          ; 1:4       935 *
     ld    E, L          ; 1:4       935 *   1x 
     add  HL, HL         ; 1:11      935 *   2x 
@@ -11539,9 +11539,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       935 *
                         ;[55:183]
 
-                        ;           937 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_1001
+                        ;           937 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1010_1001 
     ld    B, D          ; 1:4       937 *
-    ld    C, E          ; 1:4       937 *  
+    ld    C, E          ; 1:4       937 * 
     ld    D, H          ; 1:4       937 *
     ld    E, L          ; 1:4       937 *   1x 
     add  HL, HL         ; 1:11      937 *   2x 
@@ -11569,9 +11569,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       937 *
     ld    E, C          ; 1:4       937 *
                         ;[28:210] 
-                        ;           939 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_1011
+                        ;           939 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_1011 
     ld    B, D          ; 1:4       939 *
-    ld    C, E          ; 1:4       939 *  
+    ld    C, E          ; 1:4       939 * 
     ld    D, H          ; 1:4       939 *
     ld    E, L          ; 1:4       939 *   1x 
     add  HL, HL         ; 1:11      939 *   2x 
@@ -11598,9 +11598,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       939 *
     ld    E, C          ; 1:4       939 *
                         ;[55:183] 
-                        ;           941 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_1101
+                        ;           941 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_1101 
     ld    B, D          ; 1:4       941 *
-    ld    C, E          ; 1:4       941 *  
+    ld    C, E          ; 1:4       941 * 
     ld    D, H          ; 1:4       941 *
     ld    E, L          ; 1:4       941 *   1x 
     add  HL, HL         ; 1:11      941 *   2x 
@@ -11627,9 +11627,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       941 *
     ld    E, C          ; 1:4       941 *
                         ;[55:183] 
-                        ;           943 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_1111
+                        ;           943 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1010_1111 
     ld    B, D          ; 1:4       943 *
-    ld    C, E          ; 1:4       943 *  
+    ld    C, E          ; 1:4       943 * 
     ld    D, H          ; 1:4       943 *
     ld    E, L          ; 1:4       943 *   1x 
     add  HL, HL         ; 1:11      943 *   2x 
@@ -11653,9 +11653,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       943 *
     ld    E, C          ; 1:4       943 *
                         ;[52:164] 
-                        ;           945 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1011_0001
+                        ;           945 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1011_0001 
     ld    B, D          ; 1:4       945 *
-    ld    C, E          ; 1:4       945 *  
+    ld    C, E          ; 1:4       945 * 
     ld    D, H          ; 1:4       945 *
     ld    E, L          ; 1:4       945 *   1x 
     add  HL, HL         ; 1:11      945 *   2x 
@@ -11683,9 +11683,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       945 *
     ld    E, C          ; 1:4       945 *
                         ;[28:210] 
-                        ;           947 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_0011
+                        ;           947 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_0011 
     ld    B, D          ; 1:4       947 *
-    ld    C, E          ; 1:4       947 *  
+    ld    C, E          ; 1:4       947 * 
     ld    D, H          ; 1:4       947 *
     ld    E, L          ; 1:4       947 *   1x 
     add  HL, HL         ; 1:11      947 *   2x 
@@ -11712,9 +11712,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       947 *
     ld    E, C          ; 1:4       947 *
                         ;[55:183] 
-                        ;           949 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_0101
+                        ;           949 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_0101 
     ld    B, D          ; 1:4       949 *
-    ld    C, E          ; 1:4       949 *  
+    ld    C, E          ; 1:4       949 * 
     ld    D, H          ; 1:4       949 *
     ld    E, L          ; 1:4       949 *   1x 
     add  HL, HL         ; 1:11      949 *   2x 
@@ -11741,9 +11741,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       949 *
     ld    E, C          ; 1:4       949 *
                         ;[55:183] 
-                        ;           951 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_0111
+                        ;           951 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_0111 
     ld    B, D          ; 1:4       951 *
-    ld    C, E          ; 1:4       951 *  
+    ld    C, E          ; 1:4       951 * 
     ld    D, H          ; 1:4       951 *
     ld    E, L          ; 1:4       951 *   1x 
     add  HL, HL         ; 1:11      951 *   2x 
@@ -11767,9 +11767,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       951 *
     ld    E, C          ; 1:4       951 *
                         ;[52:164] 
-                        ;           953 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_1001
+                        ;           953 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_1001 
     ld    B, D          ; 1:4       953 *
-    ld    C, E          ; 1:4       953 *  
+    ld    C, E          ; 1:4       953 * 
     ld    D, H          ; 1:4       953 *
     ld    E, L          ; 1:4       953 *   1x 
     add  HL, HL         ; 1:11      953 *   2x 
@@ -11796,9 +11796,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       953 *
     ld    E, C          ; 1:4       953 *
                         ;[55:183] 
-                        ;           955 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_1011
+                        ;           955 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_1011 
     ld    B, D          ; 1:4       955 *
-    ld    C, E          ; 1:4       955 *  
+    ld    C, E          ; 1:4       955 * 
     ld    D, H          ; 1:4       955 *
     ld    E, L          ; 1:4       955 *   1x 
     add  HL, HL         ; 1:11      955 *   2x 
@@ -11822,9 +11822,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       955 *
     ld    E, C          ; 1:4       955 *
                         ;[52:164] 
-                        ;           957 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_1101
+                        ;           957 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1011_1101 
     ld    B, D          ; 1:4       957 *
-    ld    C, E          ; 1:4       957 *  
+    ld    C, E          ; 1:4       957 * 
     ld    D, H          ; 1:4       957 *
     ld    E, L          ; 1:4       957 *   1x 
     add  HL, HL         ; 1:11      957 *   2x 
@@ -11849,7 +11849,7 @@ ORG 0x6000
     ld    E, C          ; 1:4       957 *
                         ;[52:164]
 
-                        ;           959 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1011_1111 
+                        ;           959 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1011_1111  
     ld    B, H          ; 1:4       959 *
     ld    A, L          ; 1:4       959 *   1x 
     add  HL, HL         ; 1:11      959 *   2x 
@@ -11859,9 +11859,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      959 *   32x 
     add  HL, HL         ; 1:11      959 *   64x 
     add   A, L          ; 1:4       959 *
-    ld    C, A          ; 1:4       959 *   
-    ld    A, B          ; 1:4       959 *   
-    adc   A, H          ; 1:4       959 *   
+    ld    C, A          ; 1:4       959 *
+    ld    A, B          ; 1:4       959 *
+    adc   A, H          ; 1:4       959 *
     ld    B, A          ; 1:4       959 *   65x 
     add  HL, HL         ; 1:11      959 *   128x 
     add  HL, HL         ; 1:11      959 *   256x 
@@ -11870,9 +11870,9 @@ ORG 0x6000
     or    A             ; 1:4       959 *
     sbc  HL, BC         ; 2:15      959 *   1024x - 65x = 959x
                         ;[20:157] 
-                        ;           961 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_0001
+                        ;           961 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_0001 
     ld    B, D          ; 1:4       961 *
-    ld    C, E          ; 1:4       961 *  
+    ld    C, E          ; 1:4       961 * 
     ld    D, H          ; 1:4       961 *
     ld    E, L          ; 1:4       961 *   1x 
     add  HL, HL         ; 1:11      961 *   2x 
@@ -11897,9 +11897,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       961 *
     ld    E, C          ; 1:4       961 *
                         ;[25:191] 
-                        ;           963 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_0011
+                        ;           963 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_0011 
     ld    B, D          ; 1:4       963 *
-    ld    C, E          ; 1:4       963 *  
+    ld    C, E          ; 1:4       963 * 
     ld    D, H          ; 1:4       963 *
     ld    E, L          ; 1:4       963 *   1x 
     add  HL, HL         ; 1:11      963 *   2x 
@@ -11927,9 +11927,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       963 *
     ld    E, C          ; 1:4       963 *
                         ;[28:210] 
-                        ;           965 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_0101
+                        ;           965 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_0101 
     ld    B, D          ; 1:4       965 *
-    ld    C, E          ; 1:4       965 *  
+    ld    C, E          ; 1:4       965 * 
     ld    D, H          ; 1:4       965 *
     ld    E, L          ; 1:4       965 *   1x 
     add  HL, HL         ; 1:11      965 *   2x 
@@ -11957,9 +11957,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       965 *
     ld    E, C          ; 1:4       965 *
                         ;[28:210] 
-                        ;           967 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_0111
+                        ;           967 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_0111 
     ld    B, D          ; 1:4       967 *
-    ld    C, E          ; 1:4       967 *  
+    ld    C, E          ; 1:4       967 * 
     ld    D, H          ; 1:4       967 *
     ld    E, L          ; 1:4       967 *   1x 
     add  HL, HL         ; 1:11      967 *   2x 
@@ -11986,9 +11986,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       967 *
     ld    E, C          ; 1:4       967 *
                         ;[55:183] 
-                        ;           969 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_1001
+                        ;           969 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1100_1001 
     ld    B, D          ; 1:4       969 *
-    ld    C, E          ; 1:4       969 *  
+    ld    C, E          ; 1:4       969 * 
     ld    D, H          ; 1:4       969 *
     ld    E, L          ; 1:4       969 *   1x 
     add  HL, HL         ; 1:11      969 *   2x 
@@ -12016,9 +12016,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       969 *
     ld    E, C          ; 1:4       969 *
                         ;[28:210] 
-                        ;           971 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_1011
+                        ;           971 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_1011 
     ld    B, D          ; 1:4       971 *
-    ld    C, E          ; 1:4       971 *  
+    ld    C, E          ; 1:4       971 * 
     ld    D, H          ; 1:4       971 *
     ld    E, L          ; 1:4       971 *   1x 
     add  HL, HL         ; 1:11      971 *   2x 
@@ -12045,9 +12045,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       971 *
     ld    E, C          ; 1:4       971 *
                         ;[55:183] 
-                        ;           973 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_1101
+                        ;           973 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_1101 
     ld    B, D          ; 1:4       973 *
-    ld    C, E          ; 1:4       973 *  
+    ld    C, E          ; 1:4       973 * 
     ld    D, H          ; 1:4       973 *
     ld    E, L          ; 1:4       973 *   1x 
     add  HL, HL         ; 1:11      973 *   2x 
@@ -12074,9 +12074,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       973 *
     ld    E, C          ; 1:4       973 *
                         ;[55:183] 
-                        ;           975 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_1111
+                        ;           975 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1100_1111 
     ld    B, D          ; 1:4       975 *
-    ld    C, E          ; 1:4       975 *  
+    ld    C, E          ; 1:4       975 * 
     ld    D, H          ; 1:4       975 *
     ld    E, L          ; 1:4       975 *   1x 
     add  HL, HL         ; 1:11      975 *   2x 
@@ -12100,9 +12100,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       975 *
     ld    E, C          ; 1:4       975 *
                         ;[52:164] 
-                        ;           977 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1101_0001
+                        ;           977 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1101_0001 
     ld    B, D          ; 1:4       977 *
-    ld    C, E          ; 1:4       977 *  
+    ld    C, E          ; 1:4       977 * 
     ld    D, H          ; 1:4       977 *
     ld    E, L          ; 1:4       977 *   1x 
     add  HL, HL         ; 1:11      977 *   2x 
@@ -12130,9 +12130,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       977 *
     ld    E, C          ; 1:4       977 *
                         ;[28:210] 
-                        ;           979 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_0011
+                        ;           979 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_0011 
     ld    B, D          ; 1:4       979 *
-    ld    C, E          ; 1:4       979 *  
+    ld    C, E          ; 1:4       979 * 
     ld    D, H          ; 1:4       979 *
     ld    E, L          ; 1:4       979 *   1x 
     add  HL, HL         ; 1:11      979 *   2x 
@@ -12160,9 +12160,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       979 *
                         ;[55:183]
 
-                        ;           981 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_0101
+                        ;           981 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_0101 
     ld    B, D          ; 1:4       981 *
-    ld    C, E          ; 1:4       981 *  
+    ld    C, E          ; 1:4       981 * 
     ld    D, H          ; 1:4       981 *
     ld    E, L          ; 1:4       981 *   1x 
     add  HL, HL         ; 1:11      981 *   2x 
@@ -12189,9 +12189,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       981 *
     ld    E, C          ; 1:4       981 *
                         ;[55:183] 
-                        ;           983 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_0111
+                        ;           983 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_0111 
     ld    B, D          ; 1:4       983 *
-    ld    C, E          ; 1:4       983 *  
+    ld    C, E          ; 1:4       983 * 
     ld    D, H          ; 1:4       983 *
     ld    E, L          ; 1:4       983 *   1x 
     add  HL, HL         ; 1:11      983 *   2x 
@@ -12215,9 +12215,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       983 *
     ld    E, C          ; 1:4       983 *
                         ;[52:164] 
-                        ;           985 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_1001
+                        ;           985 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_1001 
     ld    B, D          ; 1:4       985 *
-    ld    C, E          ; 1:4       985 *  
+    ld    C, E          ; 1:4       985 * 
     ld    D, H          ; 1:4       985 *
     ld    E, L          ; 1:4       985 *   1x 
     add  HL, HL         ; 1:11      985 *   2x 
@@ -12244,9 +12244,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       985 *
     ld    E, C          ; 1:4       985 *
                         ;[55:183] 
-                        ;           987 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_1011
+                        ;           987 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_1011 
     ld    B, D          ; 1:4       987 *
-    ld    C, E          ; 1:4       987 *  
+    ld    C, E          ; 1:4       987 * 
     ld    D, H          ; 1:4       987 *
     ld    E, L          ; 1:4       987 *   1x 
     add  HL, HL         ; 1:11      987 *   2x 
@@ -12270,9 +12270,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       987 *
     ld    E, C          ; 1:4       987 *
                         ;[52:164] 
-                        ;           989 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_1101
+                        ;           989 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1101_1101 
     ld    B, D          ; 1:4       989 *
-    ld    C, E          ; 1:4       989 *  
+    ld    C, E          ; 1:4       989 * 
     ld    D, H          ; 1:4       989 *
     ld    E, L          ; 1:4       989 *   1x 
     add  HL, HL         ; 1:11      989 *   2x 
@@ -12296,7 +12296,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       989 *
     ld    E, C          ; 1:4       989 *
                         ;[52:164] 
-                        ;           991 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1101_1111 
+                        ;           991 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1101_1111  
     ld    B, H          ; 1:4       991 *
     ld    A, L          ; 1:4       991 *   1x 
     add  HL, HL         ; 1:11      991 *   2x 
@@ -12305,9 +12305,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      991 *   16x 
     add  HL, HL         ; 1:11      991 *   32x 
     add   A, L          ; 1:4       991 *
-    ld    C, A          ; 1:4       991 *   
-    ld    A, B          ; 1:4       991 *   
-    adc   A, H          ; 1:4       991 *   
+    ld    C, A          ; 1:4       991 *
+    ld    A, B          ; 1:4       991 *
+    adc   A, H          ; 1:4       991 *
     ld    B, A          ; 1:4       991 *   33x 
     add  HL, HL         ; 1:11      991 *   64x 
     add  HL, HL         ; 1:11      991 *   128x 
@@ -12317,9 +12317,9 @@ ORG 0x6000
     or    A             ; 1:4       991 *
     sbc  HL, BC         ; 2:15      991 *   1024x - 33x = 991x
                         ;[20:157] 
-                        ;           993 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1110_0001
+                        ;           993 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0011_1110_0001 
     ld    B, D          ; 1:4       993 *
-    ld    C, E          ; 1:4       993 *  
+    ld    C, E          ; 1:4       993 * 
     ld    D, H          ; 1:4       993 *
     ld    E, L          ; 1:4       993 *   1x 
     add  HL, HL         ; 1:11      993 *   2x 
@@ -12347,9 +12347,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       993 *
     ld    E, C          ; 1:4       993 *
                         ;[28:210] 
-                        ;           995 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_0011
+                        ;           995 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_0011 
     ld    B, D          ; 1:4       995 *
-    ld    C, E          ; 1:4       995 *  
+    ld    C, E          ; 1:4       995 * 
     ld    D, H          ; 1:4       995 *
     ld    E, L          ; 1:4       995 *   1x 
     add  HL, HL         ; 1:11      995 *   2x 
@@ -12376,9 +12376,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       995 *
     ld    E, C          ; 1:4       995 *
                         ;[55:183] 
-                        ;           997 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_0101
+                        ;           997 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_0101 
     ld    B, D          ; 1:4       997 *
-    ld    C, E          ; 1:4       997 *  
+    ld    C, E          ; 1:4       997 * 
     ld    D, H          ; 1:4       997 *
     ld    E, L          ; 1:4       997 *   1x 
     add  HL, HL         ; 1:11      997 *   2x 
@@ -12405,9 +12405,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       997 *
     ld    E, C          ; 1:4       997 *
                         ;[55:183] 
-                        ;           999 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_0111
+                        ;           999 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_0111 
     ld    B, D          ; 1:4       999 *
-    ld    C, E          ; 1:4       999 *  
+    ld    C, E          ; 1:4       999 * 
     ld    D, H          ; 1:4       999 *
     ld    E, L          ; 1:4       999 *   1x 
     add  HL, HL         ; 1:11      999 *   2x 
@@ -12431,9 +12431,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       999 *
     ld    E, C          ; 1:4       999 *
                         ;[52:164] 
-                        ;           1001 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_1001
+                        ;           1001 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_1001 
     ld    B, D          ; 1:4       1001 *
-    ld    C, E          ; 1:4       1001 *  
+    ld    C, E          ; 1:4       1001 * 
     ld    D, H          ; 1:4       1001 *
     ld    E, L          ; 1:4       1001 *   1x 
     add  HL, HL         ; 1:11      1001 *   2x 
@@ -12462,9 +12462,9 @@ ORG 0x6000
                         ;[55:183]
 
 
-                        ;           1003 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_1011
+                        ;           1003 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_1011 
     ld    B, D          ; 1:4       1003 *
-    ld    C, E          ; 1:4       1003 *  
+    ld    C, E          ; 1:4       1003 * 
     ld    D, H          ; 1:4       1003 *
     ld    E, L          ; 1:4       1003 *   1x 
     add  HL, HL         ; 1:11      1003 *   2x 
@@ -12488,9 +12488,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1003 *
     ld    E, C          ; 1:4       1003 *
                         ;[52:164] 
-                        ;           1005 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_1101
+                        ;           1005 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1110_1101 
     ld    B, D          ; 1:4       1005 *
-    ld    C, E          ; 1:4       1005 *  
+    ld    C, E          ; 1:4       1005 * 
     ld    D, H          ; 1:4       1005 *
     ld    E, L          ; 1:4       1005 *   1x 
     add  HL, HL         ; 1:11      1005 *   2x 
@@ -12514,7 +12514,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1005 *
     ld    E, C          ; 1:4       1005 *
                         ;[52:164] 
-                        ;           1007 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1110_1111 
+                        ;           1007 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1110_1111  
     ld    B, H          ; 1:4       1007 *
     ld    A, L          ; 1:4       1007 *   1x 
     add  HL, HL         ; 1:11      1007 *   2x 
@@ -12522,9 +12522,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1007 *   8x 
     add  HL, HL         ; 1:11      1007 *   16x 
     add   A, L          ; 1:4       1007 *
-    ld    C, A          ; 1:4       1007 *   
-    ld    A, B          ; 1:4       1007 *   
-    adc   A, H          ; 1:4       1007 *   
+    ld    C, A          ; 1:4       1007 *
+    ld    A, B          ; 1:4       1007 *
+    adc   A, H          ; 1:4       1007 *
     ld    B, A          ; 1:4       1007 *   17x 
     add  HL, HL         ; 1:11      1007 *   32x 
     add  HL, HL         ; 1:11      1007 *   64x 
@@ -12535,9 +12535,9 @@ ORG 0x6000
     or    A             ; 1:4       1007 *
     sbc  HL, BC         ; 2:15      1007 *   1024x - 17x = 1007x
                         ;[20:157] 
-                        ;           1009 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_0001
+                        ;           1009 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_0001 
     ld    B, D          ; 1:4       1009 *
-    ld    C, E          ; 1:4       1009 *  
+    ld    C, E          ; 1:4       1009 * 
     ld    D, H          ; 1:4       1009 *
     ld    E, L          ; 1:4       1009 *   1x 
     add  HL, HL         ; 1:11      1009 *   2x 
@@ -12551,7 +12551,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1009 *   8x 
     ex   DE, HL         ; 1:4       1009 *
     add  HL, DE         ; 1:11      1009 *   15x
-    ex   DE, HL         ; 1:4       1009 *  
+    ex   DE, HL         ; 1:4       1009 * 
     rr    H             ; 2:8       1009 *
     rr    L             ; 2:8       1009 *
     ld    H, L          ; 1:4       1009 *
@@ -12561,9 +12561,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1009 *
     ld    E, C          ; 1:4       1009 *
                         ;[55:133] 
-                        ;           1011 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_0011
+                        ;           1011 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_0011 
     ld    B, D          ; 1:4       1011 *
-    ld    C, E          ; 1:4       1011 *  
+    ld    C, E          ; 1:4       1011 * 
     ld    D, H          ; 1:4       1011 *
     ld    E, L          ; 1:4       1011 *   1x 
     add  HL, HL         ; 1:11      1011 *   2x 
@@ -12574,7 +12574,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1011 *   8x 
     ex   DE, HL         ; 1:4       1011 *
     add  HL, DE         ; 1:11      1011 *   13x
-    ex   DE, HL         ; 1:4       1011 *  
+    ex   DE, HL         ; 1:4       1011 * 
     rr    H             ; 2:8       1011 *
     rr    L             ; 2:8       1011 *
     ld    H, L          ; 1:4       1011 *
@@ -12584,9 +12584,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1011 *
     ld    E, C          ; 1:4       1011 *
                         ;[52:114] 
-                        ;           1013 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_0101
+                        ;           1013 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_0101 
     ld    B, D          ; 1:4       1013 *
-    ld    C, E          ; 1:4       1013 *  
+    ld    C, E          ; 1:4       1013 * 
     ld    D, H          ; 1:4       1013 *
     ld    E, L          ; 1:4       1013 *   1x 
     add  HL, HL         ; 1:11      1013 *   2x 
@@ -12597,7 +12597,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1013 *   8x 
     ex   DE, HL         ; 1:4       1013 *
     add  HL, DE         ; 1:11      1013 *   11x
-    ex   DE, HL         ; 1:4       1013 *  
+    ex   DE, HL         ; 1:4       1013 * 
     rr    H             ; 2:8       1013 *
     rr    L             ; 2:8       1013 *
     ld    H, L          ; 1:4       1013 *
@@ -12607,17 +12607,17 @@ ORG 0x6000
     ld    D, B          ; 1:4       1013 *
     ld    E, C          ; 1:4       1013 *
                         ;[52:114] 
-                        ;           1015 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1111_0111 
+                        ;           1015 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1111_0111  
     ld    B, H          ; 1:4       1015 *
     ld    A, L          ; 1:4       1015 *   1x 
     add  HL, HL         ; 1:11      1015 *   2x 
     add  HL, HL         ; 1:11      1015 *   4x 
     add  HL, HL         ; 1:11      1015 *   8x 
     add   A, L          ; 1:4       1015 *
-    ld    C, A          ; 1:4       1015 *   
-    ld    A, B          ; 1:4       1015 *   
-    adc   A, H          ; 1:4       1015 *   
-    ld    B, A          ; 1:4       1015 *   9x  
+    ld    C, A          ; 1:4       1015 *
+    ld    A, B          ; 1:4       1015 *
+    adc   A, H          ; 1:4       1015 *
+    ld    B, A          ; 1:4       1015 *   9x 
     rr    H             ; 2:8       1015 *
     rr    L             ; 2:8       1015 *
     ld    H, L          ; 1:4       1015 *
@@ -12625,9 +12625,9 @@ ORG 0x6000
     or    A             ; 1:4       1015 *
     sbc  HL, BC         ; 2:15      1015 *   1024x - 9x = 1015x
                         ;[20:107] 
-                        ;           1017 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_1001
+                        ;           1017 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0011_1111_1001 
     ld    B, D          ; 1:4       1017 *
-    ld    C, E          ; 1:4       1017 *  
+    ld    C, E          ; 1:4       1017 * 
     ld    D, H          ; 1:4       1017 *
     ld    E, L          ; 1:4       1017 *   1x 
     add  HL, HL         ; 1:11      1017 *   2x 
@@ -12645,15 +12645,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       1017 *
     ld    E, C          ; 1:4       1017 *
                         ;[47:87] 
-                        ;           1019 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1111_1011 
+                        ;           1019 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1111_1011  
     ld    B, H          ; 1:4       1019 *
     ld    A, L          ; 1:4       1019 *   1x 
     add  HL, HL         ; 1:11      1019 *   2x 
     add  HL, HL         ; 1:11      1019 *   4x 
     add   A, L          ; 1:4       1019 *
-    ld    C, A          ; 1:4       1019 *   
-    ld    A, B          ; 1:4       1019 *   
-    adc   A, H          ; 1:4       1019 *   
+    ld    C, A          ; 1:4       1019 *
+    ld    A, B          ; 1:4       1019 *
+    adc   A, H          ; 1:4       1019 *
     ld    B, A          ; 1:4       1019 *   5x 
     ld    H, L          ; 1:4       1019 *
     ld    L, 0x00       ; 2:7       1019 *   1024x 
@@ -12661,14 +12661,14 @@ ORG 0x6000
     sbc  HL, BC         ; 2:15      1019 *   1024x - 5x = 1019x
                         ;[15:80]
 
-                        ;           1021 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1111_1101 
+                        ;           1021 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0011_1111_1101  
     ld    B, H          ; 1:4       1021 *
     ld    A, L          ; 1:4       1021 *   1x 
     add  HL, HL         ; 1:11      1021 *   2x 
     add   A, L          ; 1:4       1021 *
-    ld    C, A          ; 1:4       1021 *   
-    ld    A, B          ; 1:4       1021 *   
-    adc   A, H          ; 1:4       1021 *   
+    ld    C, A          ; 1:4       1021 *
+    ld    A, B          ; 1:4       1021 *
+    adc   A, H          ; 1:4       1021 *
     ld    B, A          ; 1:4       1021 *   3x 
     ld    H, L          ; 1:4       1021 *
     ld    L, 0x00       ; 2:7       1021 *   512x 
@@ -12676,7 +12676,7 @@ ORG 0x6000
     or    A             ; 1:4       1021 *
     sbc  HL, BC         ; 2:15      1021 *   1024x - 3x = 1021x
                         ;[15:80] 
-                        ;           1023 *   Variant: HL * (2^a - 2^b) = HL * b_0011_1111_1111 
+                        ;           1023 *   Variant: HL * (2^a - 2^b) = HL * b_0011_1111_1111  
     ld    B, H          ; 1:4       1023 *
     ld    C, L          ; 1:4       1023 *   1x 
     ld    H, L          ; 1:4       1023 *
@@ -12686,7 +12686,7 @@ ORG 0x6000
     or    A             ; 1:4       1023 *
     sbc  HL, BC         ; 2:15      1023 *   1024x - 1x = 1023x
                         ;[10:60] 
-                        ;           1025 *   Variant: HL * (2^a + 2^b) = HL * b_0100_0000_0001 
+                        ;           1025 *   Variant: HL * (2^a + 2^b) = HL * b_0100_0000_0001  
     ld    B, H          ; 1:4       1025 *
     ld    C, L          ; 1:4       1025 *   1x 
     ld    H, L          ; 1:4       1025 *
@@ -12695,37 +12695,37 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1025 *   1024x 
     add  HL, BC         ; 1:11      1025 *   1024x + 1x = 1025x
                         ;[8:52] 
-                        ;           1027 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0000_0011 
+                        ;           1027 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0000_0011  
     ld    B, H          ; 1:4       1027 *
     ld    A, L          ; 1:4       1027 *   1x 
     add  HL, HL         ; 1:11      1027 *   2x 
     add   A, L          ; 1:4       1027 *
-    ld    C, A          ; 1:4       1027 *   
-    ld    A, B          ; 1:4       1027 *   
-    adc   A, H          ; 1:4       1027 *   
+    ld    C, A          ; 1:4       1027 *
+    ld    A, B          ; 1:4       1027 *
+    adc   A, H          ; 1:4       1027 *
     ld    B, A          ; 1:4       1027 *   3x 
     ld    H, L          ; 1:4       1027 *
     ld    L, 0x00       ; 2:7       1027 *   512x 
     add  HL, HL         ; 1:11      1027 *   1024x 
     add  HL, BC         ; 1:11      1027 *   1024x + 3x = 1027x
                         ;[13:72] 
-                        ;           1029 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0000_0101 
+                        ;           1029 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0000_0101  
     ld    B, H          ; 1:4       1029 *
     ld    A, L          ; 1:4       1029 *   1x 
     add  HL, HL         ; 1:11      1029 *   2x 
     add  HL, HL         ; 1:11      1029 *   4x 
     add   A, L          ; 1:4       1029 *
-    ld    C, A          ; 1:4       1029 *   
-    ld    A, B          ; 1:4       1029 *   
-    adc   A, H          ; 1:4       1029 *   
+    ld    C, A          ; 1:4       1029 *
+    ld    A, B          ; 1:4       1029 *
+    adc   A, H          ; 1:4       1029 *
     ld    B, A          ; 1:4       1029 *   5x 
     ld    H, L          ; 1:4       1029 *
     ld    L, 0x00       ; 2:7       1029 *   1024x 
     add  HL, BC         ; 1:11      1029 *   1024x + 5x = 1029x
                         ;[13:72] 
-                        ;           1031 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_0111
+                        ;           1031 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_0111 
     ld    B, D          ; 1:4       1031 *
-    ld    C, E          ; 1:4       1031 *  
+    ld    C, E          ; 1:4       1031 * 
     ld    D, H          ; 1:4       1031 *
     ld    E, L          ; 1:4       1031 *   1x 
     add  HL, HL         ; 1:11      1031 *   2x 
@@ -12742,26 +12742,26 @@ ORG 0x6000
     ld    D, B          ; 1:4       1031 *
     ld    E, C          ; 1:4       1031 *
                         ;[18:106] 
-                        ;           1033 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0000_1001 
+                        ;           1033 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0000_1001  
     ld    B, H          ; 1:4       1033 *
     ld    A, L          ; 1:4       1033 *   1x 
     add  HL, HL         ; 1:11      1033 *   2x 
     add  HL, HL         ; 1:11      1033 *   4x 
     add  HL, HL         ; 1:11      1033 *   8x 
     add   A, L          ; 1:4       1033 *
-    ld    C, A          ; 1:4       1033 *   
-    ld    A, B          ; 1:4       1033 *   
-    adc   A, H          ; 1:4       1033 *   
-    ld    B, A          ; 1:4       1033 *   9x  
+    ld    C, A          ; 1:4       1033 *
+    ld    A, B          ; 1:4       1033 *
+    adc   A, H          ; 1:4       1033 *
+    ld    B, A          ; 1:4       1033 *   9x 
     rr    H             ; 2:8       1033 *
     rr    L             ; 2:8       1033 *
     ld    H, L          ; 1:4       1033 *
     ld    L, 0x00       ; 2:7       1033 *   1024x 
     add  HL, BC         ; 1:11      1033 *   1024x + 9x = 1033x
                         ;[18:99] 
-                        ;           1035 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_1011
+                        ;           1035 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_1011 
     ld    B, D          ; 1:4       1035 *
-    ld    C, E          ; 1:4       1035 *  
+    ld    C, E          ; 1:4       1035 * 
     ld    D, H          ; 1:4       1035 *
     ld    E, L          ; 1:4       1035 *   1x 
     add  HL, HL         ; 1:11      1035 *   2x 
@@ -12772,7 +12772,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1035 *   8x 
     ex   DE, HL         ; 1:4       1035 *
     add  HL, DE         ; 1:11      1035 *   11x
-    ex   DE, HL         ; 1:4       1035 *  
+    ex   DE, HL         ; 1:4       1035 * 
     rr    H             ; 2:8       1035 *
     rr    L             ; 2:8       1035 *
     ld    H, L          ; 1:4       1035 *
@@ -12781,9 +12781,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1035 *
     ld    E, C          ; 1:4       1035 *
                         ;[23:133] 
-                        ;           1037 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_1101
+                        ;           1037 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_1101 
     ld    B, D          ; 1:4       1037 *
-    ld    C, E          ; 1:4       1037 *  
+    ld    C, E          ; 1:4       1037 * 
     ld    D, H          ; 1:4       1037 *
     ld    E, L          ; 1:4       1037 *   1x 
     add  HL, HL         ; 1:11      1037 *   2x 
@@ -12794,7 +12794,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1037 *   8x 
     ex   DE, HL         ; 1:4       1037 *
     add  HL, DE         ; 1:11      1037 *   13x
-    ex   DE, HL         ; 1:4       1037 *  
+    ex   DE, HL         ; 1:4       1037 * 
     rr    H             ; 2:8       1037 *
     rr    L             ; 2:8       1037 *
     ld    H, L          ; 1:4       1037 *
@@ -12804,9 +12804,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1037 *
                         ;[23:133]
 
-                        ;           1039 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_1111
+                        ;           1039 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0000_1111 
     ld    B, D          ; 1:4       1039 *
-    ld    C, E          ; 1:4       1039 *  
+    ld    C, E          ; 1:4       1039 * 
     ld    D, H          ; 1:4       1039 *
     ld    E, L          ; 1:4       1039 *   1x 
     add  HL, HL         ; 1:11      1039 *   2x 
@@ -12820,7 +12820,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1039 *   8x 
     ex   DE, HL         ; 1:4       1039 *
     add  HL, DE         ; 1:11      1039 *   15x
-    ex   DE, HL         ; 1:4       1039 *  
+    ex   DE, HL         ; 1:4       1039 * 
     rr    H             ; 2:8       1039 *
     rr    L             ; 2:8       1039 *
     ld    H, L          ; 1:4       1039 *
@@ -12829,7 +12829,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1039 *
     ld    E, C          ; 1:4       1039 *
                         ;[26:152] 
-                        ;           1041 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0001_0001 
+                        ;           1041 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0001_0001  
     ld    B, H          ; 1:4       1041 *
     ld    A, L          ; 1:4       1041 *   1x 
     add  HL, HL         ; 1:11      1041 *   2x 
@@ -12837,9 +12837,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1041 *   8x 
     add  HL, HL         ; 1:11      1041 *   16x 
     add   A, L          ; 1:4       1041 *
-    ld    C, A          ; 1:4       1041 *   
-    ld    A, B          ; 1:4       1041 *   
-    adc   A, H          ; 1:4       1041 *   
+    ld    C, A          ; 1:4       1041 *
+    ld    A, B          ; 1:4       1041 *
+    adc   A, H          ; 1:4       1041 *
     ld    B, A          ; 1:4       1041 *   17x 
     add  HL, HL         ; 1:11      1041 *   32x 
     add  HL, HL         ; 1:11      1041 *   64x 
@@ -12849,9 +12849,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1041 *   1024x 
     add  HL, BC         ; 1:11      1041 *   1024x + 17x = 1041x
                         ;[18:149] 
-                        ;           1043 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_0011
+                        ;           1043 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_0011 
     ld    B, D          ; 1:4       1043 *
-    ld    C, E          ; 1:4       1043 *  
+    ld    C, E          ; 1:4       1043 * 
     ld    D, H          ; 1:4       1043 *
     ld    E, L          ; 1:4       1043 *   1x 
     add  HL, HL         ; 1:11      1043 *   2x 
@@ -12874,9 +12874,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1043 *
     ld    E, C          ; 1:4       1043 *
                         ;[23:183] 
-                        ;           1045 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_0101
+                        ;           1045 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_0101 
     ld    B, D          ; 1:4       1045 *
-    ld    C, E          ; 1:4       1045 *  
+    ld    C, E          ; 1:4       1045 * 
     ld    D, H          ; 1:4       1045 *
     ld    E, L          ; 1:4       1045 *   1x 
     add  HL, HL         ; 1:11      1045 *   2x 
@@ -12899,9 +12899,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1045 *
     ld    E, C          ; 1:4       1045 *
                         ;[23:183] 
-                        ;           1047 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_0111
+                        ;           1047 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_0111 
     ld    B, D          ; 1:4       1047 *
-    ld    C, E          ; 1:4       1047 *  
+    ld    C, E          ; 1:4       1047 * 
     ld    D, H          ; 1:4       1047 *
     ld    E, L          ; 1:4       1047 *   1x 
     add  HL, HL         ; 1:11      1047 *   2x 
@@ -12927,9 +12927,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1047 *
     ld    E, C          ; 1:4       1047 *
                         ;[26:202] 
-                        ;           1049 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1001
+                        ;           1049 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1001 
     ld    B, D          ; 1:4       1049 *
-    ld    C, E          ; 1:4       1049 *  
+    ld    C, E          ; 1:4       1049 * 
     ld    D, H          ; 1:4       1049 *
     ld    E, L          ; 1:4       1049 *   1x 
     add  HL, HL         ; 1:11      1049 *   2x 
@@ -12952,9 +12952,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1049 *
     ld    E, C          ; 1:4       1049 *
                         ;[23:183] 
-                        ;           1051 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1011
+                        ;           1051 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1011 
     ld    B, D          ; 1:4       1051 *
-    ld    C, E          ; 1:4       1051 *  
+    ld    C, E          ; 1:4       1051 * 
     ld    D, H          ; 1:4       1051 *
     ld    E, L          ; 1:4       1051 *   1x 
     add  HL, HL         ; 1:11      1051 *   2x 
@@ -12980,9 +12980,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1051 *
     ld    E, C          ; 1:4       1051 *
                         ;[26:202] 
-                        ;           1053 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1101
+                        ;           1053 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1101 
     ld    B, D          ; 1:4       1053 *
-    ld    C, E          ; 1:4       1053 *  
+    ld    C, E          ; 1:4       1053 * 
     ld    D, H          ; 1:4       1053 *
     ld    E, L          ; 1:4       1053 *   1x 
     add  HL, HL         ; 1:11      1053 *   2x 
@@ -13008,9 +13008,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1053 *
     ld    E, C          ; 1:4       1053 *
                         ;[26:202] 
-                        ;           1055 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1111
+                        ;           1055 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0001_1111 
     ld    B, D          ; 1:4       1055 *
-    ld    C, E          ; 1:4       1055 *  
+    ld    C, E          ; 1:4       1055 * 
     ld    D, H          ; 1:4       1055 *
     ld    E, L          ; 1:4       1055 *   1x 
     add  HL, HL         ; 1:11      1055 *   2x 
@@ -13040,7 +13040,7 @@ ORG 0x6000
     ld    E, C          ; 1:4       1055 *
                         ;[29:221]
 
-                        ;           1057 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0010_0001 
+                        ;           1057 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0010_0001  
     ld    B, H          ; 1:4       1057 *
     ld    A, L          ; 1:4       1057 *   1x 
     add  HL, HL         ; 1:11      1057 *   2x 
@@ -13049,9 +13049,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1057 *   16x 
     add  HL, HL         ; 1:11      1057 *   32x 
     add   A, L          ; 1:4       1057 *
-    ld    C, A          ; 1:4       1057 *   
-    ld    A, B          ; 1:4       1057 *   
-    adc   A, H          ; 1:4       1057 *   
+    ld    C, A          ; 1:4       1057 *
+    ld    A, B          ; 1:4       1057 *
+    adc   A, H          ; 1:4       1057 *
     ld    B, A          ; 1:4       1057 *   33x 
     add  HL, HL         ; 1:11      1057 *   64x 
     add  HL, HL         ; 1:11      1057 *   128x 
@@ -13060,9 +13060,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1057 *   1024x 
     add  HL, BC         ; 1:11      1057 *   1024x + 33x = 1057x
                         ;[18:149] 
-                        ;           1059 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_0011
+                        ;           1059 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_0011 
     ld    B, D          ; 1:4       1059 *
-    ld    C, E          ; 1:4       1059 *  
+    ld    C, E          ; 1:4       1059 * 
     ld    D, H          ; 1:4       1059 *
     ld    E, L          ; 1:4       1059 *   1x 
     add  HL, HL         ; 1:11      1059 *   2x 
@@ -13085,9 +13085,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1059 *
     ld    E, C          ; 1:4       1059 *
                         ;[23:183] 
-                        ;           1061 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_0101
+                        ;           1061 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_0101 
     ld    B, D          ; 1:4       1061 *
-    ld    C, E          ; 1:4       1061 *  
+    ld    C, E          ; 1:4       1061 * 
     ld    D, H          ; 1:4       1061 *
     ld    E, L          ; 1:4       1061 *   1x 
     add  HL, HL         ; 1:11      1061 *   2x 
@@ -13110,9 +13110,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1061 *
     ld    E, C          ; 1:4       1061 *
                         ;[23:183] 
-                        ;           1063 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_0111
+                        ;           1063 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_0111 
     ld    B, D          ; 1:4       1063 *
-    ld    C, E          ; 1:4       1063 *  
+    ld    C, E          ; 1:4       1063 * 
     ld    D, H          ; 1:4       1063 *
     ld    E, L          ; 1:4       1063 *   1x 
     add  HL, HL         ; 1:11      1063 *   2x 
@@ -13138,9 +13138,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1063 *
     ld    E, C          ; 1:4       1063 *
                         ;[26:202] 
-                        ;           1065 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1001
+                        ;           1065 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1001 
     ld    B, D          ; 1:4       1065 *
-    ld    C, E          ; 1:4       1065 *  
+    ld    C, E          ; 1:4       1065 * 
     ld    D, H          ; 1:4       1065 *
     ld    E, L          ; 1:4       1065 *   1x 
     add  HL, HL         ; 1:11      1065 *   2x 
@@ -13163,9 +13163,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1065 *
     ld    E, C          ; 1:4       1065 *
                         ;[23:183] 
-                        ;           1067 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1011
+                        ;           1067 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1011 
     ld    B, D          ; 1:4       1067 *
-    ld    C, E          ; 1:4       1067 *  
+    ld    C, E          ; 1:4       1067 * 
     ld    D, H          ; 1:4       1067 *
     ld    E, L          ; 1:4       1067 *   1x 
     add  HL, HL         ; 1:11      1067 *   2x 
@@ -13191,9 +13191,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1067 *
     ld    E, C          ; 1:4       1067 *
                         ;[26:202] 
-                        ;           1069 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1101
+                        ;           1069 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1101 
     ld    B, D          ; 1:4       1069 *
-    ld    C, E          ; 1:4       1069 *  
+    ld    C, E          ; 1:4       1069 * 
     ld    D, H          ; 1:4       1069 *
     ld    E, L          ; 1:4       1069 *   1x 
     add  HL, HL         ; 1:11      1069 *   2x 
@@ -13219,9 +13219,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1069 *
     ld    E, C          ; 1:4       1069 *
                         ;[26:202] 
-                        ;           1071 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1111
+                        ;           1071 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0010_1111 
     ld    B, D          ; 1:4       1071 *
-    ld    C, E          ; 1:4       1071 *  
+    ld    C, E          ; 1:4       1071 * 
     ld    D, H          ; 1:4       1071 *
     ld    E, L          ; 1:4       1071 *   1x 
     add  HL, HL         ; 1:11      1071 *   2x 
@@ -13250,9 +13250,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1071 *
     ld    E, C          ; 1:4       1071 *
                         ;[29:221] 
-                        ;           1073 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0001
+                        ;           1073 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0001 
     ld    B, D          ; 1:4       1073 *
-    ld    C, E          ; 1:4       1073 *  
+    ld    C, E          ; 1:4       1073 * 
     ld    D, H          ; 1:4       1073 *
     ld    E, L          ; 1:4       1073 *   1x 
     add  HL, HL         ; 1:11      1073 *   2x 
@@ -13276,9 +13276,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1073 *
                         ;[23:183]
 
-                        ;           1075 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0011
+                        ;           1075 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0011 
     ld    B, D          ; 1:4       1075 *
-    ld    C, E          ; 1:4       1075 *  
+    ld    C, E          ; 1:4       1075 * 
     ld    D, H          ; 1:4       1075 *
     ld    E, L          ; 1:4       1075 *   1x 
     add  HL, HL         ; 1:11      1075 *   2x 
@@ -13304,9 +13304,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1075 *
     ld    E, C          ; 1:4       1075 *
                         ;[26:202] 
-                        ;           1077 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0101
+                        ;           1077 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0101 
     ld    B, D          ; 1:4       1077 *
-    ld    C, E          ; 1:4       1077 *  
+    ld    C, E          ; 1:4       1077 * 
     ld    D, H          ; 1:4       1077 *
     ld    E, L          ; 1:4       1077 *   1x 
     add  HL, HL         ; 1:11      1077 *   2x 
@@ -13332,9 +13332,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1077 *
     ld    E, C          ; 1:4       1077 *
                         ;[26:202] 
-                        ;           1079 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0111
+                        ;           1079 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_0111 
     ld    B, D          ; 1:4       1079 *
-    ld    C, E          ; 1:4       1079 *  
+    ld    C, E          ; 1:4       1079 * 
     ld    D, H          ; 1:4       1079 *
     ld    E, L          ; 1:4       1079 *   1x 
     add  HL, HL         ; 1:11      1079 *   2x 
@@ -13363,9 +13363,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1079 *
     ld    E, C          ; 1:4       1079 *
                         ;[29:221] 
-                        ;           1081 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1001
+                        ;           1081 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1001 
     ld    B, D          ; 1:4       1081 *
-    ld    C, E          ; 1:4       1081 *  
+    ld    C, E          ; 1:4       1081 * 
     ld    D, H          ; 1:4       1081 *
     ld    E, L          ; 1:4       1081 *   1x 
     add  HL, HL         ; 1:11      1081 *   2x 
@@ -13391,9 +13391,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1081 *
     ld    E, C          ; 1:4       1081 *
                         ;[26:202] 
-                        ;           1083 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1011
+                        ;           1083 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1011 
     ld    B, D          ; 1:4       1083 *
-    ld    C, E          ; 1:4       1083 *  
+    ld    C, E          ; 1:4       1083 * 
     ld    D, H          ; 1:4       1083 *
     ld    E, L          ; 1:4       1083 *   1x 
     add  HL, HL         ; 1:11      1083 *   2x 
@@ -13422,9 +13422,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1083 *
     ld    E, C          ; 1:4       1083 *
                         ;[29:221] 
-                        ;           1085 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1101
+                        ;           1085 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1101 
     ld    B, D          ; 1:4       1085 *
-    ld    C, E          ; 1:4       1085 *  
+    ld    C, E          ; 1:4       1085 * 
     ld    D, H          ; 1:4       1085 *
     ld    E, L          ; 1:4       1085 *   1x 
     add  HL, HL         ; 1:11      1085 *   2x 
@@ -13453,9 +13453,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1085 *
     ld    E, C          ; 1:4       1085 *
                         ;[29:221] 
-                        ;           1087 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1111
+                        ;           1087 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0011_1111 
     ld    B, D          ; 1:4       1087 *
-    ld    C, E          ; 1:4       1087 *  
+    ld    C, E          ; 1:4       1087 * 
     ld    D, H          ; 1:4       1087 *
     ld    E, L          ; 1:4       1087 *   1x 
     add  HL, HL         ; 1:11      1087 *   2x 
@@ -13487,7 +13487,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1087 *
     ld    E, C          ; 1:4       1087 *
                         ;[32:240] 
-                        ;           1089 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0100_0001 
+                        ;           1089 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_0100_0001  
     ld    B, H          ; 1:4       1089 *
     ld    A, L          ; 1:4       1089 *   1x 
     add  HL, HL         ; 1:11      1089 *   2x 
@@ -13497,9 +13497,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1089 *   32x 
     add  HL, HL         ; 1:11      1089 *   64x 
     add   A, L          ; 1:4       1089 *
-    ld    C, A          ; 1:4       1089 *   
-    ld    A, B          ; 1:4       1089 *   
-    adc   A, H          ; 1:4       1089 *   
+    ld    C, A          ; 1:4       1089 *
+    ld    A, B          ; 1:4       1089 *
+    adc   A, H          ; 1:4       1089 *
     ld    B, A          ; 1:4       1089 *   65x 
     add  HL, HL         ; 1:11      1089 *   128x 
     add  HL, HL         ; 1:11      1089 *   256x 
@@ -13507,9 +13507,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1089 *   1024x 
     add  HL, BC         ; 1:11      1089 *   1024x + 65x = 1089x
                         ;[18:149] 
-                        ;           1091 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_0011
+                        ;           1091 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_0011 
     ld    B, D          ; 1:4       1091 *
-    ld    C, E          ; 1:4       1091 *  
+    ld    C, E          ; 1:4       1091 * 
     ld    D, H          ; 1:4       1091 *
     ld    E, L          ; 1:4       1091 *   1x 
     add  HL, HL         ; 1:11      1091 *   2x 
@@ -13533,9 +13533,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1091 *
                         ;[23:183]
 
-                        ;           1093 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_0101
+                        ;           1093 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_0101 
     ld    B, D          ; 1:4       1093 *
-    ld    C, E          ; 1:4       1093 *  
+    ld    C, E          ; 1:4       1093 * 
     ld    D, H          ; 1:4       1093 *
     ld    E, L          ; 1:4       1093 *   1x 
     add  HL, HL         ; 1:11      1093 *   2x 
@@ -13558,9 +13558,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1093 *
     ld    E, C          ; 1:4       1093 *
                         ;[23:183] 
-                        ;           1095 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_0111
+                        ;           1095 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_0111 
     ld    B, D          ; 1:4       1095 *
-    ld    C, E          ; 1:4       1095 *  
+    ld    C, E          ; 1:4       1095 * 
     ld    D, H          ; 1:4       1095 *
     ld    E, L          ; 1:4       1095 *   1x 
     add  HL, HL         ; 1:11      1095 *   2x 
@@ -13586,9 +13586,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1095 *
     ld    E, C          ; 1:4       1095 *
                         ;[26:202] 
-                        ;           1097 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1001
+                        ;           1097 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1001 
     ld    B, D          ; 1:4       1097 *
-    ld    C, E          ; 1:4       1097 *  
+    ld    C, E          ; 1:4       1097 * 
     ld    D, H          ; 1:4       1097 *
     ld    E, L          ; 1:4       1097 *   1x 
     add  HL, HL         ; 1:11      1097 *   2x 
@@ -13611,9 +13611,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1097 *
     ld    E, C          ; 1:4       1097 *
                         ;[23:183] 
-                        ;           1099 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1011
+                        ;           1099 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1011 
     ld    B, D          ; 1:4       1099 *
-    ld    C, E          ; 1:4       1099 *  
+    ld    C, E          ; 1:4       1099 * 
     ld    D, H          ; 1:4       1099 *
     ld    E, L          ; 1:4       1099 *   1x 
     add  HL, HL         ; 1:11      1099 *   2x 
@@ -13639,9 +13639,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1099 *
     ld    E, C          ; 1:4       1099 *
                         ;[26:202] 
-                        ;           1101 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1101
+                        ;           1101 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1101 
     ld    B, D          ; 1:4       1101 *
-    ld    C, E          ; 1:4       1101 *  
+    ld    C, E          ; 1:4       1101 * 
     ld    D, H          ; 1:4       1101 *
     ld    E, L          ; 1:4       1101 *   1x 
     add  HL, HL         ; 1:11      1101 *   2x 
@@ -13667,9 +13667,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1101 *
     ld    E, C          ; 1:4       1101 *
                         ;[26:202] 
-                        ;           1103 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1111
+                        ;           1103 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0100_1111 
     ld    B, D          ; 1:4       1103 *
-    ld    C, E          ; 1:4       1103 *  
+    ld    C, E          ; 1:4       1103 * 
     ld    D, H          ; 1:4       1103 *
     ld    E, L          ; 1:4       1103 *   1x 
     add  HL, HL         ; 1:11      1103 *   2x 
@@ -13698,9 +13698,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1103 *
     ld    E, C          ; 1:4       1103 *
                         ;[29:221] 
-                        ;           1105 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0001
+                        ;           1105 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0001 
     ld    B, D          ; 1:4       1105 *
-    ld    C, E          ; 1:4       1105 *  
+    ld    C, E          ; 1:4       1105 * 
     ld    D, H          ; 1:4       1105 *
     ld    E, L          ; 1:4       1105 *   1x 
     add  HL, HL         ; 1:11      1105 *   2x 
@@ -13723,9 +13723,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1105 *
     ld    E, C          ; 1:4       1105 *
                         ;[23:183] 
-                        ;           1107 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0011
+                        ;           1107 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0011 
     ld    B, D          ; 1:4       1107 *
-    ld    C, E          ; 1:4       1107 *  
+    ld    C, E          ; 1:4       1107 * 
     ld    D, H          ; 1:4       1107 *
     ld    E, L          ; 1:4       1107 *   1x 
     add  HL, HL         ; 1:11      1107 *   2x 
@@ -13751,9 +13751,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1107 *
     ld    E, C          ; 1:4       1107 *
                         ;[26:202] 
-                        ;           1109 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0101
+                        ;           1109 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0101 
     ld    B, D          ; 1:4       1109 *
-    ld    C, E          ; 1:4       1109 *  
+    ld    C, E          ; 1:4       1109 * 
     ld    D, H          ; 1:4       1109 *
     ld    E, L          ; 1:4       1109 *   1x 
     add  HL, HL         ; 1:11      1109 *   2x 
@@ -13780,9 +13780,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1109 *
                         ;[26:202]
 
-                        ;           1111 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0111
+                        ;           1111 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_0111 
     ld    B, D          ; 1:4       1111 *
-    ld    C, E          ; 1:4       1111 *  
+    ld    C, E          ; 1:4       1111 * 
     ld    D, H          ; 1:4       1111 *
     ld    E, L          ; 1:4       1111 *   1x 
     add  HL, HL         ; 1:11      1111 *   2x 
@@ -13811,9 +13811,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1111 *
     ld    E, C          ; 1:4       1111 *
                         ;[29:221] 
-                        ;           1113 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1001
+                        ;           1113 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1001 
     ld    B, D          ; 1:4       1113 *
-    ld    C, E          ; 1:4       1113 *  
+    ld    C, E          ; 1:4       1113 * 
     ld    D, H          ; 1:4       1113 *
     ld    E, L          ; 1:4       1113 *   1x 
     add  HL, HL         ; 1:11      1113 *   2x 
@@ -13839,9 +13839,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1113 *
     ld    E, C          ; 1:4       1113 *
                         ;[26:202] 
-                        ;           1115 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1011
+                        ;           1115 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1011 
     ld    B, D          ; 1:4       1115 *
-    ld    C, E          ; 1:4       1115 *  
+    ld    C, E          ; 1:4       1115 * 
     ld    D, H          ; 1:4       1115 *
     ld    E, L          ; 1:4       1115 *   1x 
     add  HL, HL         ; 1:11      1115 *   2x 
@@ -13870,9 +13870,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1115 *
     ld    E, C          ; 1:4       1115 *
                         ;[29:221] 
-                        ;           1117 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1101
+                        ;           1117 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1101 
     ld    B, D          ; 1:4       1117 *
-    ld    C, E          ; 1:4       1117 *  
+    ld    C, E          ; 1:4       1117 * 
     ld    D, H          ; 1:4       1117 *
     ld    E, L          ; 1:4       1117 *   1x 
     add  HL, HL         ; 1:11      1117 *   2x 
@@ -13901,9 +13901,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1117 *
     ld    E, C          ; 1:4       1117 *
                         ;[29:221] 
-                        ;           1119 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1111
+                        ;           1119 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0101_1111 
     ld    B, D          ; 1:4       1119 *
-    ld    C, E          ; 1:4       1119 *  
+    ld    C, E          ; 1:4       1119 * 
     ld    D, H          ; 1:4       1119 *
     ld    E, L          ; 1:4       1119 *   1x 
     add  HL, HL         ; 1:11      1119 *   2x 
@@ -13935,9 +13935,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1119 *
     ld    E, C          ; 1:4       1119 *
                         ;[32:240] 
-                        ;           1121 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0001
+                        ;           1121 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0001 
     ld    B, D          ; 1:4       1121 *
-    ld    C, E          ; 1:4       1121 *  
+    ld    C, E          ; 1:4       1121 * 
     ld    D, H          ; 1:4       1121 *
     ld    E, L          ; 1:4       1121 *   1x 
     add  HL, HL         ; 1:11      1121 *   2x 
@@ -13960,9 +13960,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1121 *
     ld    E, C          ; 1:4       1121 *
                         ;[23:183] 
-                        ;           1123 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0011
+                        ;           1123 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0011 
     ld    B, D          ; 1:4       1123 *
-    ld    C, E          ; 1:4       1123 *  
+    ld    C, E          ; 1:4       1123 * 
     ld    D, H          ; 1:4       1123 *
     ld    E, L          ; 1:4       1123 *   1x 
     add  HL, HL         ; 1:11      1123 *   2x 
@@ -13988,9 +13988,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1123 *
     ld    E, C          ; 1:4       1123 *
                         ;[26:202] 
-                        ;           1125 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0101
+                        ;           1125 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0101 
     ld    B, D          ; 1:4       1125 *
-    ld    C, E          ; 1:4       1125 *  
+    ld    C, E          ; 1:4       1125 * 
     ld    D, H          ; 1:4       1125 *
     ld    E, L          ; 1:4       1125 *   1x 
     add  HL, HL         ; 1:11      1125 *   2x 
@@ -14016,9 +14016,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1125 *
     ld    E, C          ; 1:4       1125 *
                         ;[26:202] 
-                        ;           1127 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0111
+                        ;           1127 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_0111 
     ld    B, D          ; 1:4       1127 *
-    ld    C, E          ; 1:4       1127 *  
+    ld    C, E          ; 1:4       1127 * 
     ld    D, H          ; 1:4       1127 *
     ld    E, L          ; 1:4       1127 *   1x 
     add  HL, HL         ; 1:11      1127 *   2x 
@@ -14048,9 +14048,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1127 *
                         ;[29:221]
 
-                        ;           1129 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1001
+                        ;           1129 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1001 
     ld    B, D          ; 1:4       1129 *
-    ld    C, E          ; 1:4       1129 *  
+    ld    C, E          ; 1:4       1129 * 
     ld    D, H          ; 1:4       1129 *
     ld    E, L          ; 1:4       1129 *   1x 
     add  HL, HL         ; 1:11      1129 *   2x 
@@ -14076,9 +14076,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1129 *
     ld    E, C          ; 1:4       1129 *
                         ;[26:202] 
-                        ;           1131 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1011
+                        ;           1131 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1011 
     ld    B, D          ; 1:4       1131 *
-    ld    C, E          ; 1:4       1131 *  
+    ld    C, E          ; 1:4       1131 * 
     ld    D, H          ; 1:4       1131 *
     ld    E, L          ; 1:4       1131 *   1x 
     add  HL, HL         ; 1:11      1131 *   2x 
@@ -14107,9 +14107,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1131 *
     ld    E, C          ; 1:4       1131 *
                         ;[29:221] 
-                        ;           1133 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1101
+                        ;           1133 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1101 
     ld    B, D          ; 1:4       1133 *
-    ld    C, E          ; 1:4       1133 *  
+    ld    C, E          ; 1:4       1133 * 
     ld    D, H          ; 1:4       1133 *
     ld    E, L          ; 1:4       1133 *   1x 
     add  HL, HL         ; 1:11      1133 *   2x 
@@ -14138,9 +14138,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1133 *
     ld    E, C          ; 1:4       1133 *
                         ;[29:221] 
-                        ;           1135 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1111
+                        ;           1135 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0110_1111 
     ld    B, D          ; 1:4       1135 *
-    ld    C, E          ; 1:4       1135 *  
+    ld    C, E          ; 1:4       1135 * 
     ld    D, H          ; 1:4       1135 *
     ld    E, L          ; 1:4       1135 *   1x 
     add  HL, HL         ; 1:11      1135 *   2x 
@@ -14172,9 +14172,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1135 *
     ld    E, C          ; 1:4       1135 *
                         ;[32:240] 
-                        ;           1137 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0001
+                        ;           1137 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0001 
     ld    B, D          ; 1:4       1137 *
-    ld    C, E          ; 1:4       1137 *  
+    ld    C, E          ; 1:4       1137 * 
     ld    D, H          ; 1:4       1137 *
     ld    E, L          ; 1:4       1137 *   1x 
     add  HL, HL         ; 1:11      1137 *   2x 
@@ -14200,9 +14200,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1137 *
     ld    E, C          ; 1:4       1137 *
                         ;[26:202] 
-                        ;           1139 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0011
+                        ;           1139 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0011 
     ld    B, D          ; 1:4       1139 *
-    ld    C, E          ; 1:4       1139 *  
+    ld    C, E          ; 1:4       1139 * 
     ld    D, H          ; 1:4       1139 *
     ld    E, L          ; 1:4       1139 *   1x 
     add  HL, HL         ; 1:11      1139 *   2x 
@@ -14231,9 +14231,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1139 *
     ld    E, C          ; 1:4       1139 *
                         ;[29:221] 
-                        ;           1141 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0101
+                        ;           1141 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0101 
     ld    B, D          ; 1:4       1141 *
-    ld    C, E          ; 1:4       1141 *  
+    ld    C, E          ; 1:4       1141 * 
     ld    D, H          ; 1:4       1141 *
     ld    E, L          ; 1:4       1141 *   1x 
     add  HL, HL         ; 1:11      1141 *   2x 
@@ -14262,9 +14262,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1141 *
     ld    E, C          ; 1:4       1141 *
                         ;[29:221] 
-                        ;           1143 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0111
+                        ;           1143 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_0111 
     ld    B, D          ; 1:4       1143 *
-    ld    C, E          ; 1:4       1143 *  
+    ld    C, E          ; 1:4       1143 * 
     ld    D, H          ; 1:4       1143 *
     ld    E, L          ; 1:4       1143 *   1x 
     add  HL, HL         ; 1:11      1143 *   2x 
@@ -14296,9 +14296,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1143 *
     ld    E, C          ; 1:4       1143 *
                         ;[32:240] 
-                        ;           1145 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_1001
+                        ;           1145 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_1001 
     ld    B, D          ; 1:4       1145 *
-    ld    C, E          ; 1:4       1145 *  
+    ld    C, E          ; 1:4       1145 * 
     ld    D, H          ; 1:4       1145 *
     ld    E, L          ; 1:4       1145 *   1x 
     add  HL, HL         ; 1:11      1145 *   2x 
@@ -14328,9 +14328,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1145 *
                         ;[29:221]
 
-                        ;           1147 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_1011
+                        ;           1147 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_1011 
     ld    B, D          ; 1:4       1147 *
-    ld    C, E          ; 1:4       1147 *  
+    ld    C, E          ; 1:4       1147 * 
     ld    D, H          ; 1:4       1147 *
     ld    E, L          ; 1:4       1147 *   1x 
     add  HL, HL         ; 1:11      1147 *   2x 
@@ -14362,9 +14362,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1147 *
     ld    E, C          ; 1:4       1147 *
                         ;[32:240] 
-                        ;           1149 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_1101
+                        ;           1149 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_0111_1101 
     ld    B, D          ; 1:4       1149 *
-    ld    C, E          ; 1:4       1149 *  
+    ld    C, E          ; 1:4       1149 * 
     ld    D, H          ; 1:4       1149 *
     ld    E, L          ; 1:4       1149 *   1x 
     add  HL, HL         ; 1:11      1149 *   2x 
@@ -14396,9 +14396,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1149 *
     ld    E, C          ; 1:4       1149 *
                         ;[32:240] 
-                        ;           1151 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_0111_1111
+                        ;           1151 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_0111_1111 
     ld    B, D          ; 1:4       1151 *
-    ld    C, E          ; 1:4       1151 *  
+    ld    C, E          ; 1:4       1151 * 
     ld    D, H          ; 1:4       1151 *
     ld    E, L          ; 1:4       1151 *   1x 
     add  HL, HL         ; 1:11      1151 *   2x 
@@ -14426,7 +14426,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1151 *
     ld    E, C          ; 1:4       1151 *
                         ;[56:194] 
-                        ;           1153 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_1000_0001 
+                        ;           1153 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0100_1000_0001  
     ld    B, H          ; 1:4       1153 *
     ld    A, L          ; 1:4       1153 *   1x 
     add  HL, HL         ; 1:11      1153 *   2x 
@@ -14437,18 +14437,18 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1153 *   64x 
     add  HL, HL         ; 1:11      1153 *   128x 
     add   A, L          ; 1:4       1153 *
-    ld    C, A          ; 1:4       1153 *   
-    ld    A, B          ; 1:4       1153 *   
-    adc   A, H          ; 1:4       1153 *   
+    ld    C, A          ; 1:4       1153 *
+    ld    A, B          ; 1:4       1153 *
+    adc   A, H          ; 1:4       1153 *
     ld    B, A          ; 1:4       1153 *   129x 
     add  HL, HL         ; 1:11      1153 *   256x 
     add  HL, HL         ; 1:11      1153 *   512x 
     add  HL, HL         ; 1:11      1153 *   1024x 
     add  HL, BC         ; 1:11      1153 *   1024x + 129x = 1153x
                         ;[18:149] 
-                        ;           1155 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_0011
+                        ;           1155 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_0011 
     ld    B, D          ; 1:4       1155 *
-    ld    C, E          ; 1:4       1155 *  
+    ld    C, E          ; 1:4       1155 * 
     ld    D, H          ; 1:4       1155 *
     ld    E, L          ; 1:4       1155 *   1x 
     add  HL, HL         ; 1:11      1155 *   2x 
@@ -14471,9 +14471,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1155 *
     ld    E, C          ; 1:4       1155 *
                         ;[23:183] 
-                        ;           1157 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_0101
+                        ;           1157 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_0101 
     ld    B, D          ; 1:4       1157 *
-    ld    C, E          ; 1:4       1157 *  
+    ld    C, E          ; 1:4       1157 * 
     ld    D, H          ; 1:4       1157 *
     ld    E, L          ; 1:4       1157 *   1x 
     add  HL, HL         ; 1:11      1157 *   2x 
@@ -14496,9 +14496,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1157 *
     ld    E, C          ; 1:4       1157 *
                         ;[23:183] 
-                        ;           1159 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_0111
+                        ;           1159 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_0111 
     ld    B, D          ; 1:4       1159 *
-    ld    C, E          ; 1:4       1159 *  
+    ld    C, E          ; 1:4       1159 * 
     ld    D, H          ; 1:4       1159 *
     ld    E, L          ; 1:4       1159 *   1x 
     add  HL, HL         ; 1:11      1159 *   2x 
@@ -14524,9 +14524,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1159 *
     ld    E, C          ; 1:4       1159 *
                         ;[26:202] 
-                        ;           1161 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1001
+                        ;           1161 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1001 
     ld    B, D          ; 1:4       1161 *
-    ld    C, E          ; 1:4       1161 *  
+    ld    C, E          ; 1:4       1161 * 
     ld    D, H          ; 1:4       1161 *
     ld    E, L          ; 1:4       1161 *   1x 
     add  HL, HL         ; 1:11      1161 *   2x 
@@ -14549,9 +14549,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1161 *
     ld    E, C          ; 1:4       1161 *
                         ;[23:183] 
-                        ;           1163 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1011
+                        ;           1163 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1011 
     ld    B, D          ; 1:4       1163 *
-    ld    C, E          ; 1:4       1163 *  
+    ld    C, E          ; 1:4       1163 * 
     ld    D, H          ; 1:4       1163 *
     ld    E, L          ; 1:4       1163 *   1x 
     add  HL, HL         ; 1:11      1163 *   2x 
@@ -14578,9 +14578,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1163 *
                         ;[26:202]
 
-                        ;           1165 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1101
+                        ;           1165 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1101 
     ld    B, D          ; 1:4       1165 *
-    ld    C, E          ; 1:4       1165 *  
+    ld    C, E          ; 1:4       1165 * 
     ld    D, H          ; 1:4       1165 *
     ld    E, L          ; 1:4       1165 *   1x 
     add  HL, HL         ; 1:11      1165 *   2x 
@@ -14606,9 +14606,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1165 *
     ld    E, C          ; 1:4       1165 *
                         ;[26:202] 
-                        ;           1167 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1111
+                        ;           1167 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1000_1111 
     ld    B, D          ; 1:4       1167 *
-    ld    C, E          ; 1:4       1167 *  
+    ld    C, E          ; 1:4       1167 * 
     ld    D, H          ; 1:4       1167 *
     ld    E, L          ; 1:4       1167 *   1x 
     add  HL, HL         ; 1:11      1167 *   2x 
@@ -14637,9 +14637,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1167 *
     ld    E, C          ; 1:4       1167 *
                         ;[29:221] 
-                        ;           1169 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0001
+                        ;           1169 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0001 
     ld    B, D          ; 1:4       1169 *
-    ld    C, E          ; 1:4       1169 *  
+    ld    C, E          ; 1:4       1169 * 
     ld    D, H          ; 1:4       1169 *
     ld    E, L          ; 1:4       1169 *   1x 
     add  HL, HL         ; 1:11      1169 *   2x 
@@ -14662,9 +14662,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1169 *
     ld    E, C          ; 1:4       1169 *
                         ;[23:183] 
-                        ;           1171 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0011
+                        ;           1171 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0011 
     ld    B, D          ; 1:4       1171 *
-    ld    C, E          ; 1:4       1171 *  
+    ld    C, E          ; 1:4       1171 * 
     ld    D, H          ; 1:4       1171 *
     ld    E, L          ; 1:4       1171 *   1x 
     add  HL, HL         ; 1:11      1171 *   2x 
@@ -14690,9 +14690,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1171 *
     ld    E, C          ; 1:4       1171 *
                         ;[26:202] 
-                        ;           1173 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0101
+                        ;           1173 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0101 
     ld    B, D          ; 1:4       1173 *
-    ld    C, E          ; 1:4       1173 *  
+    ld    C, E          ; 1:4       1173 * 
     ld    D, H          ; 1:4       1173 *
     ld    E, L          ; 1:4       1173 *   1x 
     add  HL, HL         ; 1:11      1173 *   2x 
@@ -14718,9 +14718,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1173 *
     ld    E, C          ; 1:4       1173 *
                         ;[26:202] 
-                        ;           1175 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0111
+                        ;           1175 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_0111 
     ld    B, D          ; 1:4       1175 *
-    ld    C, E          ; 1:4       1175 *  
+    ld    C, E          ; 1:4       1175 * 
     ld    D, H          ; 1:4       1175 *
     ld    E, L          ; 1:4       1175 *   1x 
     add  HL, HL         ; 1:11      1175 *   2x 
@@ -14749,9 +14749,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1175 *
     ld    E, C          ; 1:4       1175 *
                         ;[29:221] 
-                        ;           1177 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1001
+                        ;           1177 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1001 
     ld    B, D          ; 1:4       1177 *
-    ld    C, E          ; 1:4       1177 *  
+    ld    C, E          ; 1:4       1177 * 
     ld    D, H          ; 1:4       1177 *
     ld    E, L          ; 1:4       1177 *   1x 
     add  HL, HL         ; 1:11      1177 *   2x 
@@ -14777,9 +14777,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1177 *
     ld    E, C          ; 1:4       1177 *
                         ;[26:202] 
-                        ;           1179 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1011
+                        ;           1179 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1011 
     ld    B, D          ; 1:4       1179 *
-    ld    C, E          ; 1:4       1179 *  
+    ld    C, E          ; 1:4       1179 * 
     ld    D, H          ; 1:4       1179 *
     ld    E, L          ; 1:4       1179 *   1x 
     add  HL, HL         ; 1:11      1179 *   2x 
@@ -14808,9 +14808,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1179 *
     ld    E, C          ; 1:4       1179 *
                         ;[29:221] 
-                        ;           1181 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1101
+                        ;           1181 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1101 
     ld    B, D          ; 1:4       1181 *
-    ld    C, E          ; 1:4       1181 *  
+    ld    C, E          ; 1:4       1181 * 
     ld    D, H          ; 1:4       1181 *
     ld    E, L          ; 1:4       1181 *   1x 
     add  HL, HL         ; 1:11      1181 *   2x 
@@ -14840,9 +14840,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1181 *
                         ;[29:221]
 
-                        ;           1183 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1111
+                        ;           1183 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1001_1111 
     ld    B, D          ; 1:4       1183 *
-    ld    C, E          ; 1:4       1183 *  
+    ld    C, E          ; 1:4       1183 * 
     ld    D, H          ; 1:4       1183 *
     ld    E, L          ; 1:4       1183 *   1x 
     add  HL, HL         ; 1:11      1183 *   2x 
@@ -14874,9 +14874,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1183 *
     ld    E, C          ; 1:4       1183 *
                         ;[32:240] 
-                        ;           1185 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0001
+                        ;           1185 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0001 
     ld    B, D          ; 1:4       1185 *
-    ld    C, E          ; 1:4       1185 *  
+    ld    C, E          ; 1:4       1185 * 
     ld    D, H          ; 1:4       1185 *
     ld    E, L          ; 1:4       1185 *   1x 
     add  HL, HL         ; 1:11      1185 *   2x 
@@ -14899,9 +14899,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1185 *
     ld    E, C          ; 1:4       1185 *
                         ;[23:183] 
-                        ;           1187 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0011
+                        ;           1187 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0011 
     ld    B, D          ; 1:4       1187 *
-    ld    C, E          ; 1:4       1187 *  
+    ld    C, E          ; 1:4       1187 * 
     ld    D, H          ; 1:4       1187 *
     ld    E, L          ; 1:4       1187 *   1x 
     add  HL, HL         ; 1:11      1187 *   2x 
@@ -14927,9 +14927,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1187 *
     ld    E, C          ; 1:4       1187 *
                         ;[26:202] 
-                        ;           1189 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0101
+                        ;           1189 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0101 
     ld    B, D          ; 1:4       1189 *
-    ld    C, E          ; 1:4       1189 *  
+    ld    C, E          ; 1:4       1189 * 
     ld    D, H          ; 1:4       1189 *
     ld    E, L          ; 1:4       1189 *   1x 
     add  HL, HL         ; 1:11      1189 *   2x 
@@ -14955,9 +14955,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1189 *
     ld    E, C          ; 1:4       1189 *
                         ;[26:202] 
-                        ;           1191 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0111
+                        ;           1191 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_0111 
     ld    B, D          ; 1:4       1191 *
-    ld    C, E          ; 1:4       1191 *  
+    ld    C, E          ; 1:4       1191 * 
     ld    D, H          ; 1:4       1191 *
     ld    E, L          ; 1:4       1191 *   1x 
     add  HL, HL         ; 1:11      1191 *   2x 
@@ -14986,9 +14986,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1191 *
     ld    E, C          ; 1:4       1191 *
                         ;[29:221] 
-                        ;           1193 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1001
+                        ;           1193 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1001 
     ld    B, D          ; 1:4       1193 *
-    ld    C, E          ; 1:4       1193 *  
+    ld    C, E          ; 1:4       1193 * 
     ld    D, H          ; 1:4       1193 *
     ld    E, L          ; 1:4       1193 *   1x 
     add  HL, HL         ; 1:11      1193 *   2x 
@@ -15014,9 +15014,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1193 *
     ld    E, C          ; 1:4       1193 *
                         ;[26:202] 
-                        ;           1195 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1011
+                        ;           1195 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1011 
     ld    B, D          ; 1:4       1195 *
-    ld    C, E          ; 1:4       1195 *  
+    ld    C, E          ; 1:4       1195 * 
     ld    D, H          ; 1:4       1195 *
     ld    E, L          ; 1:4       1195 *   1x 
     add  HL, HL         ; 1:11      1195 *   2x 
@@ -15045,9 +15045,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1195 *
     ld    E, C          ; 1:4       1195 *
                         ;[29:221] 
-                        ;           1197 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1101
+                        ;           1197 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1101 
     ld    B, D          ; 1:4       1197 *
-    ld    C, E          ; 1:4       1197 *  
+    ld    C, E          ; 1:4       1197 * 
     ld    D, H          ; 1:4       1197 *
     ld    E, L          ; 1:4       1197 *   1x 
     add  HL, HL         ; 1:11      1197 *   2x 
@@ -15076,9 +15076,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1197 *
     ld    E, C          ; 1:4       1197 *
                         ;[29:221] 
-                        ;           1199 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1111
+                        ;           1199 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1010_1111 
     ld    B, D          ; 1:4       1199 *
-    ld    C, E          ; 1:4       1199 *  
+    ld    C, E          ; 1:4       1199 * 
     ld    D, H          ; 1:4       1199 *
     ld    E, L          ; 1:4       1199 *   1x 
     add  HL, HL         ; 1:11      1199 *   2x 
@@ -15111,9 +15111,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1199 *
                         ;[32:240]
 
-                        ;           1201 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0001
+                        ;           1201 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0001 
     ld    B, D          ; 1:4       1201 *
-    ld    C, E          ; 1:4       1201 *  
+    ld    C, E          ; 1:4       1201 * 
     ld    D, H          ; 1:4       1201 *
     ld    E, L          ; 1:4       1201 *   1x 
     add  HL, HL         ; 1:11      1201 *   2x 
@@ -15139,9 +15139,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1201 *
     ld    E, C          ; 1:4       1201 *
                         ;[26:202] 
-                        ;           1203 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0011
+                        ;           1203 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0011 
     ld    B, D          ; 1:4       1203 *
-    ld    C, E          ; 1:4       1203 *  
+    ld    C, E          ; 1:4       1203 * 
     ld    D, H          ; 1:4       1203 *
     ld    E, L          ; 1:4       1203 *   1x 
     add  HL, HL         ; 1:11      1203 *   2x 
@@ -15170,9 +15170,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1203 *
     ld    E, C          ; 1:4       1203 *
                         ;[29:221] 
-                        ;           1205 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0101
+                        ;           1205 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0101 
     ld    B, D          ; 1:4       1205 *
-    ld    C, E          ; 1:4       1205 *  
+    ld    C, E          ; 1:4       1205 * 
     ld    D, H          ; 1:4       1205 *
     ld    E, L          ; 1:4       1205 *   1x 
     add  HL, HL         ; 1:11      1205 *   2x 
@@ -15201,9 +15201,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1205 *
     ld    E, C          ; 1:4       1205 *
                         ;[29:221] 
-                        ;           1207 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0111
+                        ;           1207 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_0111 
     ld    B, D          ; 1:4       1207 *
-    ld    C, E          ; 1:4       1207 *  
+    ld    C, E          ; 1:4       1207 * 
     ld    D, H          ; 1:4       1207 *
     ld    E, L          ; 1:4       1207 *   1x 
     add  HL, HL         ; 1:11      1207 *   2x 
@@ -15235,9 +15235,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1207 *
     ld    E, C          ; 1:4       1207 *
                         ;[32:240] 
-                        ;           1209 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_1001
+                        ;           1209 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_1001 
     ld    B, D          ; 1:4       1209 *
-    ld    C, E          ; 1:4       1209 *  
+    ld    C, E          ; 1:4       1209 * 
     ld    D, H          ; 1:4       1209 *
     ld    E, L          ; 1:4       1209 *   1x 
     add  HL, HL         ; 1:11      1209 *   2x 
@@ -15266,9 +15266,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1209 *
     ld    E, C          ; 1:4       1209 *
                         ;[29:221] 
-                        ;           1211 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_1011
+                        ;           1211 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_1011 
     ld    B, D          ; 1:4       1211 *
-    ld    C, E          ; 1:4       1211 *  
+    ld    C, E          ; 1:4       1211 * 
     ld    D, H          ; 1:4       1211 *
     ld    E, L          ; 1:4       1211 *   1x 
     add  HL, HL         ; 1:11      1211 *   2x 
@@ -15300,9 +15300,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1211 *
     ld    E, C          ; 1:4       1211 *
                         ;[32:240] 
-                        ;           1213 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_1101
+                        ;           1213 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1011_1101 
     ld    B, D          ; 1:4       1213 *
-    ld    C, E          ; 1:4       1213 *  
+    ld    C, E          ; 1:4       1213 * 
     ld    D, H          ; 1:4       1213 *
     ld    E, L          ; 1:4       1213 *   1x 
     add  HL, HL         ; 1:11      1213 *   2x 
@@ -15334,9 +15334,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1213 *
     ld    E, C          ; 1:4       1213 *
                         ;[32:240] 
-                        ;           1215 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1011_1111
+                        ;           1215 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1011_1111 
     ld    B, D          ; 1:4       1215 *
-    ld    C, E          ; 1:4       1215 *  
+    ld    C, E          ; 1:4       1215 * 
     ld    D, H          ; 1:4       1215 *
     ld    E, L          ; 1:4       1215 *   1x 
     add  HL, HL         ; 1:11      1215 *   2x 
@@ -15364,9 +15364,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1215 *
     ld    E, C          ; 1:4       1215 *
                         ;[56:194] 
-                        ;           1217 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0001
+                        ;           1217 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0001 
     ld    B, D          ; 1:4       1217 *
-    ld    C, E          ; 1:4       1217 *  
+    ld    C, E          ; 1:4       1217 * 
     ld    D, H          ; 1:4       1217 *
     ld    E, L          ; 1:4       1217 *   1x 
     add  HL, HL         ; 1:11      1217 *   2x 
@@ -15390,9 +15390,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1217 *
                         ;[23:183]
 
-                        ;           1219 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0011
+                        ;           1219 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0011 
     ld    B, D          ; 1:4       1219 *
-    ld    C, E          ; 1:4       1219 *  
+    ld    C, E          ; 1:4       1219 * 
     ld    D, H          ; 1:4       1219 *
     ld    E, L          ; 1:4       1219 *   1x 
     add  HL, HL         ; 1:11      1219 *   2x 
@@ -15418,9 +15418,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1219 *
     ld    E, C          ; 1:4       1219 *
                         ;[26:202] 
-                        ;           1221 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0101
+                        ;           1221 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0101 
     ld    B, D          ; 1:4       1221 *
-    ld    C, E          ; 1:4       1221 *  
+    ld    C, E          ; 1:4       1221 * 
     ld    D, H          ; 1:4       1221 *
     ld    E, L          ; 1:4       1221 *   1x 
     add  HL, HL         ; 1:11      1221 *   2x 
@@ -15446,9 +15446,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1221 *
     ld    E, C          ; 1:4       1221 *
                         ;[26:202] 
-                        ;           1223 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0111
+                        ;           1223 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_0111 
     ld    B, D          ; 1:4       1223 *
-    ld    C, E          ; 1:4       1223 *  
+    ld    C, E          ; 1:4       1223 * 
     ld    D, H          ; 1:4       1223 *
     ld    E, L          ; 1:4       1223 *   1x 
     add  HL, HL         ; 1:11      1223 *   2x 
@@ -15477,9 +15477,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1223 *
     ld    E, C          ; 1:4       1223 *
                         ;[29:221] 
-                        ;           1225 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1001
+                        ;           1225 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1001 
     ld    B, D          ; 1:4       1225 *
-    ld    C, E          ; 1:4       1225 *  
+    ld    C, E          ; 1:4       1225 * 
     ld    D, H          ; 1:4       1225 *
     ld    E, L          ; 1:4       1225 *   1x 
     add  HL, HL         ; 1:11      1225 *   2x 
@@ -15505,9 +15505,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1225 *
     ld    E, C          ; 1:4       1225 *
                         ;[26:202] 
-                        ;           1227 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1011
+                        ;           1227 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1011 
     ld    B, D          ; 1:4       1227 *
-    ld    C, E          ; 1:4       1227 *  
+    ld    C, E          ; 1:4       1227 * 
     ld    D, H          ; 1:4       1227 *
     ld    E, L          ; 1:4       1227 *   1x 
     add  HL, HL         ; 1:11      1227 *   2x 
@@ -15536,9 +15536,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1227 *
     ld    E, C          ; 1:4       1227 *
                         ;[29:221] 
-                        ;           1229 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1101
+                        ;           1229 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1101 
     ld    B, D          ; 1:4       1229 *
-    ld    C, E          ; 1:4       1229 *  
+    ld    C, E          ; 1:4       1229 * 
     ld    D, H          ; 1:4       1229 *
     ld    E, L          ; 1:4       1229 *   1x 
     add  HL, HL         ; 1:11      1229 *   2x 
@@ -15567,9 +15567,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1229 *
     ld    E, C          ; 1:4       1229 *
                         ;[29:221] 
-                        ;           1231 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1111
+                        ;           1231 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1100_1111 
     ld    B, D          ; 1:4       1231 *
-    ld    C, E          ; 1:4       1231 *  
+    ld    C, E          ; 1:4       1231 * 
     ld    D, H          ; 1:4       1231 *
     ld    E, L          ; 1:4       1231 *   1x 
     add  HL, HL         ; 1:11      1231 *   2x 
@@ -15601,9 +15601,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1231 *
     ld    E, C          ; 1:4       1231 *
                         ;[32:240] 
-                        ;           1233 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0001
+                        ;           1233 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0001 
     ld    B, D          ; 1:4       1233 *
-    ld    C, E          ; 1:4       1233 *  
+    ld    C, E          ; 1:4       1233 * 
     ld    D, H          ; 1:4       1233 *
     ld    E, L          ; 1:4       1233 *   1x 
     add  HL, HL         ; 1:11      1233 *   2x 
@@ -15629,9 +15629,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1233 *
     ld    E, C          ; 1:4       1233 *
                         ;[26:202] 
-                        ;           1235 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0011
+                        ;           1235 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0011 
     ld    B, D          ; 1:4       1235 *
-    ld    C, E          ; 1:4       1235 *  
+    ld    C, E          ; 1:4       1235 * 
     ld    D, H          ; 1:4       1235 *
     ld    E, L          ; 1:4       1235 *   1x 
     add  HL, HL         ; 1:11      1235 *   2x 
@@ -15661,9 +15661,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1235 *
                         ;[29:221]
 
-                        ;           1237 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0101
+                        ;           1237 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0101 
     ld    B, D          ; 1:4       1237 *
-    ld    C, E          ; 1:4       1237 *  
+    ld    C, E          ; 1:4       1237 * 
     ld    D, H          ; 1:4       1237 *
     ld    E, L          ; 1:4       1237 *   1x 
     add  HL, HL         ; 1:11      1237 *   2x 
@@ -15692,9 +15692,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1237 *
     ld    E, C          ; 1:4       1237 *
                         ;[29:221] 
-                        ;           1239 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0111
+                        ;           1239 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_0111 
     ld    B, D          ; 1:4       1239 *
-    ld    C, E          ; 1:4       1239 *  
+    ld    C, E          ; 1:4       1239 * 
     ld    D, H          ; 1:4       1239 *
     ld    E, L          ; 1:4       1239 *   1x 
     add  HL, HL         ; 1:11      1239 *   2x 
@@ -15726,9 +15726,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1239 *
     ld    E, C          ; 1:4       1239 *
                         ;[32:240] 
-                        ;           1241 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_1001
+                        ;           1241 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_1001 
     ld    B, D          ; 1:4       1241 *
-    ld    C, E          ; 1:4       1241 *  
+    ld    C, E          ; 1:4       1241 * 
     ld    D, H          ; 1:4       1241 *
     ld    E, L          ; 1:4       1241 *   1x 
     add  HL, HL         ; 1:11      1241 *   2x 
@@ -15757,9 +15757,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1241 *
     ld    E, C          ; 1:4       1241 *
                         ;[29:221] 
-                        ;           1243 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_1011
+                        ;           1243 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_1011 
     ld    B, D          ; 1:4       1243 *
-    ld    C, E          ; 1:4       1243 *  
+    ld    C, E          ; 1:4       1243 * 
     ld    D, H          ; 1:4       1243 *
     ld    E, L          ; 1:4       1243 *   1x 
     add  HL, HL         ; 1:11      1243 *   2x 
@@ -15791,9 +15791,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1243 *
     ld    E, C          ; 1:4       1243 *
                         ;[32:240] 
-                        ;           1245 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_1101
+                        ;           1245 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1101_1101 
     ld    B, D          ; 1:4       1245 *
-    ld    C, E          ; 1:4       1245 *  
+    ld    C, E          ; 1:4       1245 * 
     ld    D, H          ; 1:4       1245 *
     ld    E, L          ; 1:4       1245 *   1x 
     add  HL, HL         ; 1:11      1245 *   2x 
@@ -15825,9 +15825,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1245 *
     ld    E, C          ; 1:4       1245 *
                         ;[32:240] 
-                        ;           1247 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1101_1111
+                        ;           1247 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1101_1111 
     ld    B, D          ; 1:4       1247 *
-    ld    C, E          ; 1:4       1247 *  
+    ld    C, E          ; 1:4       1247 * 
     ld    D, H          ; 1:4       1247 *
     ld    E, L          ; 1:4       1247 *   1x 
     add  HL, HL         ; 1:11      1247 *   2x 
@@ -15855,9 +15855,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1247 *
     ld    E, C          ; 1:4       1247 *
                         ;[56:194] 
-                        ;           1249 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0001
+                        ;           1249 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0001 
     ld    B, D          ; 1:4       1249 *
-    ld    C, E          ; 1:4       1249 *  
+    ld    C, E          ; 1:4       1249 * 
     ld    D, H          ; 1:4       1249 *
     ld    E, L          ; 1:4       1249 *   1x 
     add  HL, HL         ; 1:11      1249 *   2x 
@@ -15883,9 +15883,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1249 *
     ld    E, C          ; 1:4       1249 *
                         ;[26:202] 
-                        ;           1251 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0011
+                        ;           1251 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0011 
     ld    B, D          ; 1:4       1251 *
-    ld    C, E          ; 1:4       1251 *  
+    ld    C, E          ; 1:4       1251 * 
     ld    D, H          ; 1:4       1251 *
     ld    E, L          ; 1:4       1251 *   1x 
     add  HL, HL         ; 1:11      1251 *   2x 
@@ -15914,9 +15914,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1251 *
     ld    E, C          ; 1:4       1251 *
                         ;[29:221] 
-                        ;           1253 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0101
+                        ;           1253 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0101 
     ld    B, D          ; 1:4       1253 *
-    ld    C, E          ; 1:4       1253 *  
+    ld    C, E          ; 1:4       1253 * 
     ld    D, H          ; 1:4       1253 *
     ld    E, L          ; 1:4       1253 *   1x 
     add  HL, HL         ; 1:11      1253 *   2x 
@@ -15946,9 +15946,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1253 *
                         ;[29:221]
 
-                        ;           1255 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0111
+                        ;           1255 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_0111 
     ld    B, D          ; 1:4       1255 *
-    ld    C, E          ; 1:4       1255 *  
+    ld    C, E          ; 1:4       1255 * 
     ld    D, H          ; 1:4       1255 *
     ld    E, L          ; 1:4       1255 *   1x 
     add  HL, HL         ; 1:11      1255 *   2x 
@@ -15980,9 +15980,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1255 *
     ld    E, C          ; 1:4       1255 *
                         ;[32:240] 
-                        ;           1257 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_1001
+                        ;           1257 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_1001 
     ld    B, D          ; 1:4       1257 *
-    ld    C, E          ; 1:4       1257 *  
+    ld    C, E          ; 1:4       1257 * 
     ld    D, H          ; 1:4       1257 *
     ld    E, L          ; 1:4       1257 *   1x 
     add  HL, HL         ; 1:11      1257 *   2x 
@@ -16011,9 +16011,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1257 *
     ld    E, C          ; 1:4       1257 *
                         ;[29:221] 
-                        ;           1259 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_1011
+                        ;           1259 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_1011 
     ld    B, D          ; 1:4       1259 *
-    ld    C, E          ; 1:4       1259 *  
+    ld    C, E          ; 1:4       1259 * 
     ld    D, H          ; 1:4       1259 *
     ld    E, L          ; 1:4       1259 *   1x 
     add  HL, HL         ; 1:11      1259 *   2x 
@@ -16045,9 +16045,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1259 *
     ld    E, C          ; 1:4       1259 *
                         ;[32:240] 
-                        ;           1261 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_1101
+                        ;           1261 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1110_1101 
     ld    B, D          ; 1:4       1261 *
-    ld    C, E          ; 1:4       1261 *  
+    ld    C, E          ; 1:4       1261 * 
     ld    D, H          ; 1:4       1261 *
     ld    E, L          ; 1:4       1261 *   1x 
     add  HL, HL         ; 1:11      1261 *   2x 
@@ -16079,9 +16079,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1261 *
     ld    E, C          ; 1:4       1261 *
                         ;[32:240] 
-                        ;           1263 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1110_1111
+                        ;           1263 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1110_1111 
     ld    B, D          ; 1:4       1263 *
-    ld    C, E          ; 1:4       1263 *  
+    ld    C, E          ; 1:4       1263 * 
     ld    D, H          ; 1:4       1263 *
     ld    E, L          ; 1:4       1263 *   1x 
     add  HL, HL         ; 1:11      1263 *   2x 
@@ -16109,9 +16109,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1263 *
     ld    E, C          ; 1:4       1263 *
                         ;[56:194] 
-                        ;           1265 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_0001
+                        ;           1265 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_0001 
     ld    B, D          ; 1:4       1265 *
-    ld    C, E          ; 1:4       1265 *  
+    ld    C, E          ; 1:4       1265 * 
     ld    D, H          ; 1:4       1265 *
     ld    E, L          ; 1:4       1265 *   1x 
     add  HL, HL         ; 1:11      1265 *   2x 
@@ -16140,9 +16140,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1265 *
     ld    E, C          ; 1:4       1265 *
                         ;[29:221] 
-                        ;           1267 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_0011
+                        ;           1267 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_0011 
     ld    B, D          ; 1:4       1267 *
-    ld    C, E          ; 1:4       1267 *  
+    ld    C, E          ; 1:4       1267 * 
     ld    D, H          ; 1:4       1267 *
     ld    E, L          ; 1:4       1267 *   1x 
     add  HL, HL         ; 1:11      1267 *   2x 
@@ -16174,9 +16174,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1267 *
     ld    E, C          ; 1:4       1267 *
                         ;[32:240] 
-                        ;           1269 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_0101
+                        ;           1269 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_0101 
     ld    B, D          ; 1:4       1269 *
-    ld    C, E          ; 1:4       1269 *  
+    ld    C, E          ; 1:4       1269 * 
     ld    D, H          ; 1:4       1269 *
     ld    E, L          ; 1:4       1269 *   1x 
     add  HL, HL         ; 1:11      1269 *   2x 
@@ -16208,9 +16208,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1269 *
     ld    E, C          ; 1:4       1269 *
                         ;[32:240] 
-                        ;           1271 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_0111
+                        ;           1271 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_0111 
     ld    B, D          ; 1:4       1271 *
-    ld    C, E          ; 1:4       1271 *  
+    ld    C, E          ; 1:4       1271 * 
     ld    D, H          ; 1:4       1271 *
     ld    E, L          ; 1:4       1271 *   1x 
     add  HL, HL         ; 1:11      1271 *   2x 
@@ -16239,9 +16239,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1271 *
                         ;[56:194]
 
-                        ;           1273 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_1001
+                        ;           1273 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0100_1111_1001 
     ld    B, D          ; 1:4       1273 *
-    ld    C, E          ; 1:4       1273 *  
+    ld    C, E          ; 1:4       1273 * 
     ld    D, H          ; 1:4       1273 *
     ld    E, L          ; 1:4       1273 *   1x 
     add  HL, HL         ; 1:11      1273 *   2x 
@@ -16273,9 +16273,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1273 *
     ld    E, C          ; 1:4       1273 *
                         ;[32:240] 
-                        ;           1275 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_1011
+                        ;           1275 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_1011 
     ld    B, D          ; 1:4       1275 *
-    ld    C, E          ; 1:4       1275 *  
+    ld    C, E          ; 1:4       1275 * 
     ld    D, H          ; 1:4       1275 *
     ld    E, L          ; 1:4       1275 *   1x 
     add  HL, HL         ; 1:11      1275 *   2x 
@@ -16303,15 +16303,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       1275 *
     ld    E, C          ; 1:4       1275 *
                         ;[56:194] 
-                        ;           1277 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_1101
+                        ;           1277 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_1101 
     ld    B, D          ; 1:4       1277 *
-    ld    C, E          ; 1:4       1277 *  
+    ld    C, E          ; 1:4       1277 * 
     ld    D, H          ; 1:4       1277 *
     ld    E, L          ; 1:4       1277 *   1x 
     add  HL, HL         ; 1:11      1277 *   2x 
     ex   DE, HL         ; 1:4       1277 *
     add  HL, DE         ; 1:11      1277 *   3x
-    ex   DE, HL         ; 1:4       1277 *  
+    ex   DE, HL         ; 1:4       1277 * 
     rr    H             ; 2:8       1277 *
     rr    L             ; 2:8       1277 *
     ld    H, L          ; 1:4       1277 *
@@ -16330,9 +16330,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1277 *
     ld    E, C          ; 1:4       1277 *
                         ;[56:144] 
-                        ;           1279 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_1111
+                        ;           1279 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0100_1111_1111 
     ld    B, D          ; 1:4       1279 *
-    ld    C, E          ; 1:4       1279 *  
+    ld    C, E          ; 1:4       1279 * 
     ld    D, H          ; 1:4       1279 *
     ld    E, L          ; 1:4       1279 *   1x 
     ld    H, L          ; 1:4       1279 *
@@ -16351,29 +16351,29 @@ ORG 0x6000
     ld    D, B          ; 1:4       1279 *
     ld    E, C          ; 1:4       1279 *
                         ;[48:98] 
-                        ;           1281 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0101_0000_0001 
+                        ;           1281 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0101_0000_0001  
     ld    B, H          ; 1:4       1281 *
     ld    A, L          ; 1:4       1281 *   1x 
     ld    H, L          ; 1:4       1281 *
     ld    L, 0x00       ; 2:7       1281 *   256x 
     add   A, L          ; 1:4       1281 *
-    ld    C, A          ; 1:4       1281 *   
-    ld    A, B          ; 1:4       1281 *   
-    adc   A, H          ; 1:4       1281 *   
+    ld    C, A          ; 1:4       1281 *
+    ld    A, B          ; 1:4       1281 *
+    adc   A, H          ; 1:4       1281 *
     ld    B, A          ; 1:4       1281 *   257x 
     add  HL, HL         ; 1:11      1281 *   512x 
     add  HL, HL         ; 1:11      1281 *   1024x 
     add  HL, BC         ; 1:11      1281 *   1024x + 257x = 1281x
                         ;[13:72] 
-                        ;           1283 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_0011
+                        ;           1283 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_0011 
     ld    B, D          ; 1:4       1283 *
-    ld    C, E          ; 1:4       1283 *  
+    ld    C, E          ; 1:4       1283 * 
     ld    D, H          ; 1:4       1283 *
     ld    E, L          ; 1:4       1283 *   1x 
     add  HL, HL         ; 1:11      1283 *   2x 
     ex   DE, HL         ; 1:4       1283 *
     add  HL, DE         ; 1:11      1283 *   3x
-    ex   DE, HL         ; 1:4       1283 *  
+    ex   DE, HL         ; 1:4       1283 * 
     rr    H             ; 2:8       1283 *
     rr    L             ; 2:8       1283 *
     ld    H, L          ; 1:4       1283 *
@@ -16387,9 +16387,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1283 *
     ld    E, C          ; 1:4       1283 *
                         ;[23:133] 
-                        ;           1285 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_0101
+                        ;           1285 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_0101 
     ld    B, D          ; 1:4       1285 *
-    ld    C, E          ; 1:4       1285 *  
+    ld    C, E          ; 1:4       1285 * 
     ld    D, H          ; 1:4       1285 *
     ld    E, L          ; 1:4       1285 *   1x 
     add  HL, HL         ; 1:11      1285 *   2x 
@@ -16412,9 +16412,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1285 *
     ld    E, C          ; 1:4       1285 *
                         ;[23:183] 
-                        ;           1287 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_0111
+                        ;           1287 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_0111 
     ld    B, D          ; 1:4       1287 *
-    ld    C, E          ; 1:4       1287 *  
+    ld    C, E          ; 1:4       1287 * 
     ld    D, H          ; 1:4       1287 *
     ld    E, L          ; 1:4       1287 *   1x 
     add  HL, HL         ; 1:11      1287 *   2x 
@@ -16440,9 +16440,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1287 *
     ld    E, C          ; 1:4       1287 *
                         ;[26:202] 
-                        ;           1289 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1001
+                        ;           1289 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1001 
     ld    B, D          ; 1:4       1289 *
-    ld    C, E          ; 1:4       1289 *  
+    ld    C, E          ; 1:4       1289 * 
     ld    D, H          ; 1:4       1289 *
     ld    E, L          ; 1:4       1289 *   1x 
     add  HL, HL         ; 1:11      1289 *   2x 
@@ -16466,9 +16466,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1289 *
                         ;[23:183]
 
-                        ;           1291 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1011
+                        ;           1291 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1011 
     ld    B, D          ; 1:4       1291 *
-    ld    C, E          ; 1:4       1291 *  
+    ld    C, E          ; 1:4       1291 * 
     ld    D, H          ; 1:4       1291 *
     ld    E, L          ; 1:4       1291 *   1x 
     add  HL, HL         ; 1:11      1291 *   2x 
@@ -16494,9 +16494,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1291 *
     ld    E, C          ; 1:4       1291 *
                         ;[26:202] 
-                        ;           1293 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1101
+                        ;           1293 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1101 
     ld    B, D          ; 1:4       1293 *
-    ld    C, E          ; 1:4       1293 *  
+    ld    C, E          ; 1:4       1293 * 
     ld    D, H          ; 1:4       1293 *
     ld    E, L          ; 1:4       1293 *   1x 
     add  HL, HL         ; 1:11      1293 *   2x 
@@ -16522,9 +16522,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1293 *
     ld    E, C          ; 1:4       1293 *
                         ;[26:202] 
-                        ;           1295 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1111
+                        ;           1295 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0000_1111 
     ld    B, D          ; 1:4       1295 *
-    ld    C, E          ; 1:4       1295 *  
+    ld    C, E          ; 1:4       1295 * 
     ld    D, H          ; 1:4       1295 *
     ld    E, L          ; 1:4       1295 *   1x 
     add  HL, HL         ; 1:11      1295 *   2x 
@@ -16553,9 +16553,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1295 *
     ld    E, C          ; 1:4       1295 *
                         ;[29:221] 
-                        ;           1297 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0001
+                        ;           1297 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0001 
     ld    B, D          ; 1:4       1297 *
-    ld    C, E          ; 1:4       1297 *  
+    ld    C, E          ; 1:4       1297 * 
     ld    D, H          ; 1:4       1297 *
     ld    E, L          ; 1:4       1297 *   1x 
     add  HL, HL         ; 1:11      1297 *   2x 
@@ -16578,9 +16578,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1297 *
     ld    E, C          ; 1:4       1297 *
                         ;[23:183] 
-                        ;           1299 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0011
+                        ;           1299 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0011 
     ld    B, D          ; 1:4       1299 *
-    ld    C, E          ; 1:4       1299 *  
+    ld    C, E          ; 1:4       1299 * 
     ld    D, H          ; 1:4       1299 *
     ld    E, L          ; 1:4       1299 *   1x 
     add  HL, HL         ; 1:11      1299 *   2x 
@@ -16606,9 +16606,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1299 *
     ld    E, C          ; 1:4       1299 *
                         ;[26:202] 
-                        ;           1301 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0101
+                        ;           1301 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0101 
     ld    B, D          ; 1:4       1301 *
-    ld    C, E          ; 1:4       1301 *  
+    ld    C, E          ; 1:4       1301 * 
     ld    D, H          ; 1:4       1301 *
     ld    E, L          ; 1:4       1301 *   1x 
     add  HL, HL         ; 1:11      1301 *   2x 
@@ -16634,9 +16634,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1301 *
     ld    E, C          ; 1:4       1301 *
                         ;[26:202] 
-                        ;           1303 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0111
+                        ;           1303 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_0111 
     ld    B, D          ; 1:4       1303 *
-    ld    C, E          ; 1:4       1303 *  
+    ld    C, E          ; 1:4       1303 * 
     ld    D, H          ; 1:4       1303 *
     ld    E, L          ; 1:4       1303 *   1x 
     add  HL, HL         ; 1:11      1303 *   2x 
@@ -16665,9 +16665,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1303 *
     ld    E, C          ; 1:4       1303 *
                         ;[29:221] 
-                        ;           1305 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1001
+                        ;           1305 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1001 
     ld    B, D          ; 1:4       1305 *
-    ld    C, E          ; 1:4       1305 *  
+    ld    C, E          ; 1:4       1305 * 
     ld    D, H          ; 1:4       1305 *
     ld    E, L          ; 1:4       1305 *   1x 
     add  HL, HL         ; 1:11      1305 *   2x 
@@ -16693,9 +16693,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1305 *
     ld    E, C          ; 1:4       1305 *
                         ;[26:202] 
-                        ;           1307 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1011
+                        ;           1307 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1011 
     ld    B, D          ; 1:4       1307 *
-    ld    C, E          ; 1:4       1307 *  
+    ld    C, E          ; 1:4       1307 * 
     ld    D, H          ; 1:4       1307 *
     ld    E, L          ; 1:4       1307 *   1x 
     add  HL, HL         ; 1:11      1307 *   2x 
@@ -16725,9 +16725,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1307 *
                         ;[29:221]
 
-                        ;           1309 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1101
+                        ;           1309 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1101 
     ld    B, D          ; 1:4       1309 *
-    ld    C, E          ; 1:4       1309 *  
+    ld    C, E          ; 1:4       1309 * 
     ld    D, H          ; 1:4       1309 *
     ld    E, L          ; 1:4       1309 *   1x 
     add  HL, HL         ; 1:11      1309 *   2x 
@@ -16756,9 +16756,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1309 *
     ld    E, C          ; 1:4       1309 *
                         ;[29:221] 
-                        ;           1311 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1111
+                        ;           1311 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0001_1111 
     ld    B, D          ; 1:4       1311 *
-    ld    C, E          ; 1:4       1311 *  
+    ld    C, E          ; 1:4       1311 * 
     ld    D, H          ; 1:4       1311 *
     ld    E, L          ; 1:4       1311 *   1x 
     add  HL, HL         ; 1:11      1311 *   2x 
@@ -16790,9 +16790,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1311 *
     ld    E, C          ; 1:4       1311 *
                         ;[32:240] 
-                        ;           1313 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0001
+                        ;           1313 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0001 
     ld    B, D          ; 1:4       1313 *
-    ld    C, E          ; 1:4       1313 *  
+    ld    C, E          ; 1:4       1313 * 
     ld    D, H          ; 1:4       1313 *
     ld    E, L          ; 1:4       1313 *   1x 
     add  HL, HL         ; 1:11      1313 *   2x 
@@ -16815,9 +16815,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1313 *
     ld    E, C          ; 1:4       1313 *
                         ;[23:183] 
-                        ;           1315 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0011
+                        ;           1315 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0011 
     ld    B, D          ; 1:4       1315 *
-    ld    C, E          ; 1:4       1315 *  
+    ld    C, E          ; 1:4       1315 * 
     ld    D, H          ; 1:4       1315 *
     ld    E, L          ; 1:4       1315 *   1x 
     add  HL, HL         ; 1:11      1315 *   2x 
@@ -16843,9 +16843,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1315 *
     ld    E, C          ; 1:4       1315 *
                         ;[26:202] 
-                        ;           1317 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0101
+                        ;           1317 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0101 
     ld    B, D          ; 1:4       1317 *
-    ld    C, E          ; 1:4       1317 *  
+    ld    C, E          ; 1:4       1317 * 
     ld    D, H          ; 1:4       1317 *
     ld    E, L          ; 1:4       1317 *   1x 
     add  HL, HL         ; 1:11      1317 *   2x 
@@ -16871,9 +16871,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1317 *
     ld    E, C          ; 1:4       1317 *
                         ;[26:202] 
-                        ;           1319 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0111
+                        ;           1319 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_0111 
     ld    B, D          ; 1:4       1319 *
-    ld    C, E          ; 1:4       1319 *  
+    ld    C, E          ; 1:4       1319 * 
     ld    D, H          ; 1:4       1319 *
     ld    E, L          ; 1:4       1319 *   1x 
     add  HL, HL         ; 1:11      1319 *   2x 
@@ -16902,9 +16902,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1319 *
     ld    E, C          ; 1:4       1319 *
                         ;[29:221] 
-                        ;           1321 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1001
+                        ;           1321 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1001 
     ld    B, D          ; 1:4       1321 *
-    ld    C, E          ; 1:4       1321 *  
+    ld    C, E          ; 1:4       1321 * 
     ld    D, H          ; 1:4       1321 *
     ld    E, L          ; 1:4       1321 *   1x 
     add  HL, HL         ; 1:11      1321 *   2x 
@@ -16930,9 +16930,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1321 *
     ld    E, C          ; 1:4       1321 *
                         ;[26:202] 
-                        ;           1323 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1011
+                        ;           1323 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1011 
     ld    B, D          ; 1:4       1323 *
-    ld    C, E          ; 1:4       1323 *  
+    ld    C, E          ; 1:4       1323 * 
     ld    D, H          ; 1:4       1323 *
     ld    E, L          ; 1:4       1323 *   1x 
     add  HL, HL         ; 1:11      1323 *   2x 
@@ -16961,9 +16961,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1323 *
     ld    E, C          ; 1:4       1323 *
                         ;[29:221] 
-                        ;           1325 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1101
+                        ;           1325 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1101 
     ld    B, D          ; 1:4       1325 *
-    ld    C, E          ; 1:4       1325 *  
+    ld    C, E          ; 1:4       1325 * 
     ld    D, H          ; 1:4       1325 *
     ld    E, L          ; 1:4       1325 *   1x 
     add  HL, HL         ; 1:11      1325 *   2x 
@@ -16993,9 +16993,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1325 *
                         ;[29:221]
 
-                        ;           1327 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1111
+                        ;           1327 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0010_1111 
     ld    B, D          ; 1:4       1327 *
-    ld    C, E          ; 1:4       1327 *  
+    ld    C, E          ; 1:4       1327 * 
     ld    D, H          ; 1:4       1327 *
     ld    E, L          ; 1:4       1327 *   1x 
     add  HL, HL         ; 1:11      1327 *   2x 
@@ -17027,9 +17027,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1327 *
     ld    E, C          ; 1:4       1327 *
                         ;[32:240] 
-                        ;           1329 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0001
+                        ;           1329 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0001 
     ld    B, D          ; 1:4       1329 *
-    ld    C, E          ; 1:4       1329 *  
+    ld    C, E          ; 1:4       1329 * 
     ld    D, H          ; 1:4       1329 *
     ld    E, L          ; 1:4       1329 *   1x 
     add  HL, HL         ; 1:11      1329 *   2x 
@@ -17055,9 +17055,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1329 *
     ld    E, C          ; 1:4       1329 *
                         ;[26:202] 
-                        ;           1331 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0011
+                        ;           1331 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0011 
     ld    B, D          ; 1:4       1331 *
-    ld    C, E          ; 1:4       1331 *  
+    ld    C, E          ; 1:4       1331 * 
     ld    D, H          ; 1:4       1331 *
     ld    E, L          ; 1:4       1331 *   1x 
     add  HL, HL         ; 1:11      1331 *   2x 
@@ -17086,9 +17086,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1331 *
     ld    E, C          ; 1:4       1331 *
                         ;[29:221] 
-                        ;           1333 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0101
+                        ;           1333 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0101 
     ld    B, D          ; 1:4       1333 *
-    ld    C, E          ; 1:4       1333 *  
+    ld    C, E          ; 1:4       1333 * 
     ld    D, H          ; 1:4       1333 *
     ld    E, L          ; 1:4       1333 *   1x 
     add  HL, HL         ; 1:11      1333 *   2x 
@@ -17117,9 +17117,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1333 *
     ld    E, C          ; 1:4       1333 *
                         ;[29:221] 
-                        ;           1335 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0111
+                        ;           1335 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_0111 
     ld    B, D          ; 1:4       1335 *
-    ld    C, E          ; 1:4       1335 *  
+    ld    C, E          ; 1:4       1335 * 
     ld    D, H          ; 1:4       1335 *
     ld    E, L          ; 1:4       1335 *   1x 
     add  HL, HL         ; 1:11      1335 *   2x 
@@ -17151,9 +17151,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1335 *
     ld    E, C          ; 1:4       1335 *
                         ;[32:240] 
-                        ;           1337 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_1001
+                        ;           1337 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_1001 
     ld    B, D          ; 1:4       1337 *
-    ld    C, E          ; 1:4       1337 *  
+    ld    C, E          ; 1:4       1337 * 
     ld    D, H          ; 1:4       1337 *
     ld    E, L          ; 1:4       1337 *   1x 
     add  HL, HL         ; 1:11      1337 *   2x 
@@ -17182,9 +17182,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1337 *
     ld    E, C          ; 1:4       1337 *
                         ;[29:221] 
-                        ;           1339 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_1011
+                        ;           1339 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_1011 
     ld    B, D          ; 1:4       1339 *
-    ld    C, E          ; 1:4       1339 *  
+    ld    C, E          ; 1:4       1339 * 
     ld    D, H          ; 1:4       1339 *
     ld    E, L          ; 1:4       1339 *   1x 
     add  HL, HL         ; 1:11      1339 *   2x 
@@ -17216,9 +17216,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1339 *
     ld    E, C          ; 1:4       1339 *
                         ;[32:240] 
-                        ;           1341 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_1101
+                        ;           1341 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0011_1101 
     ld    B, D          ; 1:4       1341 *
-    ld    C, E          ; 1:4       1341 *  
+    ld    C, E          ; 1:4       1341 * 
     ld    D, H          ; 1:4       1341 *
     ld    E, L          ; 1:4       1341 *   1x 
     add  HL, HL         ; 1:11      1341 *   2x 
@@ -17250,9 +17250,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1341 *
     ld    E, C          ; 1:4       1341 *
                         ;[32:240] 
-                        ;           1343 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0011_1111
+                        ;           1343 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0011_1111 
     ld    B, D          ; 1:4       1343 *
-    ld    C, E          ; 1:4       1343 *  
+    ld    C, E          ; 1:4       1343 * 
     ld    D, H          ; 1:4       1343 *
     ld    E, L          ; 1:4       1343 *   1x 
     add  HL, HL         ; 1:11      1343 *   2x 
@@ -17281,9 +17281,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1343 *
                         ;[56:194]
 
-                        ;           1345 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0001
+                        ;           1345 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0001 
     ld    B, D          ; 1:4       1345 *
-    ld    C, E          ; 1:4       1345 *  
+    ld    C, E          ; 1:4       1345 * 
     ld    D, H          ; 1:4       1345 *
     ld    E, L          ; 1:4       1345 *   1x 
     add  HL, HL         ; 1:11      1345 *   2x 
@@ -17306,9 +17306,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1345 *
     ld    E, C          ; 1:4       1345 *
                         ;[23:183] 
-                        ;           1347 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0011
+                        ;           1347 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0011 
     ld    B, D          ; 1:4       1347 *
-    ld    C, E          ; 1:4       1347 *  
+    ld    C, E          ; 1:4       1347 * 
     ld    D, H          ; 1:4       1347 *
     ld    E, L          ; 1:4       1347 *   1x 
     add  HL, HL         ; 1:11      1347 *   2x 
@@ -17334,9 +17334,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1347 *
     ld    E, C          ; 1:4       1347 *
                         ;[26:202] 
-                        ;           1349 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0101
+                        ;           1349 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0101 
     ld    B, D          ; 1:4       1349 *
-    ld    C, E          ; 1:4       1349 *  
+    ld    C, E          ; 1:4       1349 * 
     ld    D, H          ; 1:4       1349 *
     ld    E, L          ; 1:4       1349 *   1x 
     add  HL, HL         ; 1:11      1349 *   2x 
@@ -17362,9 +17362,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1349 *
     ld    E, C          ; 1:4       1349 *
                         ;[26:202] 
-                        ;           1351 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0111
+                        ;           1351 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_0111 
     ld    B, D          ; 1:4       1351 *
-    ld    C, E          ; 1:4       1351 *  
+    ld    C, E          ; 1:4       1351 * 
     ld    D, H          ; 1:4       1351 *
     ld    E, L          ; 1:4       1351 *   1x 
     add  HL, HL         ; 1:11      1351 *   2x 
@@ -17393,9 +17393,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1351 *
     ld    E, C          ; 1:4       1351 *
                         ;[29:221] 
-                        ;           1353 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1001
+                        ;           1353 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1001 
     ld    B, D          ; 1:4       1353 *
-    ld    C, E          ; 1:4       1353 *  
+    ld    C, E          ; 1:4       1353 * 
     ld    D, H          ; 1:4       1353 *
     ld    E, L          ; 1:4       1353 *   1x 
     add  HL, HL         ; 1:11      1353 *   2x 
@@ -17421,9 +17421,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1353 *
     ld    E, C          ; 1:4       1353 *
                         ;[26:202] 
-                        ;           1355 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1011
+                        ;           1355 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1011 
     ld    B, D          ; 1:4       1355 *
-    ld    C, E          ; 1:4       1355 *  
+    ld    C, E          ; 1:4       1355 * 
     ld    D, H          ; 1:4       1355 *
     ld    E, L          ; 1:4       1355 *   1x 
     add  HL, HL         ; 1:11      1355 *   2x 
@@ -17452,9 +17452,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1355 *
     ld    E, C          ; 1:4       1355 *
                         ;[29:221] 
-                        ;           1357 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1101
+                        ;           1357 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1101 
     ld    B, D          ; 1:4       1357 *
-    ld    C, E          ; 1:4       1357 *  
+    ld    C, E          ; 1:4       1357 * 
     ld    D, H          ; 1:4       1357 *
     ld    E, L          ; 1:4       1357 *   1x 
     add  HL, HL         ; 1:11      1357 *   2x 
@@ -17483,9 +17483,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1357 *
     ld    E, C          ; 1:4       1357 *
                         ;[29:221] 
-                        ;           1359 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1111
+                        ;           1359 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0100_1111 
     ld    B, D          ; 1:4       1359 *
-    ld    C, E          ; 1:4       1359 *  
+    ld    C, E          ; 1:4       1359 * 
     ld    D, H          ; 1:4       1359 *
     ld    E, L          ; 1:4       1359 *   1x 
     add  HL, HL         ; 1:11      1359 *   2x 
@@ -17517,9 +17517,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1359 *
     ld    E, C          ; 1:4       1359 *
                         ;[32:240] 
-                        ;           1361 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0001
+                        ;           1361 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0001 
     ld    B, D          ; 1:4       1361 *
-    ld    C, E          ; 1:4       1361 *  
+    ld    C, E          ; 1:4       1361 * 
     ld    D, H          ; 1:4       1361 *
     ld    E, L          ; 1:4       1361 *   1x 
     add  HL, HL         ; 1:11      1361 *   2x 
@@ -17546,9 +17546,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1361 *
                         ;[26:202]
 
-                        ;           1363 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0011
+                        ;           1363 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0011 
     ld    B, D          ; 1:4       1363 *
-    ld    C, E          ; 1:4       1363 *  
+    ld    C, E          ; 1:4       1363 * 
     ld    D, H          ; 1:4       1363 *
     ld    E, L          ; 1:4       1363 *   1x 
     add  HL, HL         ; 1:11      1363 *   2x 
@@ -17577,9 +17577,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1363 *
     ld    E, C          ; 1:4       1363 *
                         ;[29:221] 
-                        ;           1365 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0101
+                        ;           1365 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0101 
     ld    B, D          ; 1:4       1365 *
-    ld    C, E          ; 1:4       1365 *  
+    ld    C, E          ; 1:4       1365 * 
     ld    D, H          ; 1:4       1365 *
     ld    E, L          ; 1:4       1365 *   1x 
     add  HL, HL         ; 1:11      1365 *   2x 
@@ -17608,9 +17608,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1365 *
     ld    E, C          ; 1:4       1365 *
                         ;[29:221] 
-                        ;           1367 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0111
+                        ;           1367 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_0111 
     ld    B, D          ; 1:4       1367 *
-    ld    C, E          ; 1:4       1367 *  
+    ld    C, E          ; 1:4       1367 * 
     ld    D, H          ; 1:4       1367 *
     ld    E, L          ; 1:4       1367 *   1x 
     add  HL, HL         ; 1:11      1367 *   2x 
@@ -17642,9 +17642,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1367 *
     ld    E, C          ; 1:4       1367 *
                         ;[32:240] 
-                        ;           1369 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_1001
+                        ;           1369 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_1001 
     ld    B, D          ; 1:4       1369 *
-    ld    C, E          ; 1:4       1369 *  
+    ld    C, E          ; 1:4       1369 * 
     ld    D, H          ; 1:4       1369 *
     ld    E, L          ; 1:4       1369 *   1x 
     add  HL, HL         ; 1:11      1369 *   2x 
@@ -17673,9 +17673,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1369 *
     ld    E, C          ; 1:4       1369 *
                         ;[29:221] 
-                        ;           1371 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_1011
+                        ;           1371 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_1011 
     ld    B, D          ; 1:4       1371 *
-    ld    C, E          ; 1:4       1371 *  
+    ld    C, E          ; 1:4       1371 * 
     ld    D, H          ; 1:4       1371 *
     ld    E, L          ; 1:4       1371 *   1x 
     add  HL, HL         ; 1:11      1371 *   2x 
@@ -17707,9 +17707,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1371 *
     ld    E, C          ; 1:4       1371 *
                         ;[32:240] 
-                        ;           1373 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_1101
+                        ;           1373 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0101_1101 
     ld    B, D          ; 1:4       1373 *
-    ld    C, E          ; 1:4       1373 *  
+    ld    C, E          ; 1:4       1373 * 
     ld    D, H          ; 1:4       1373 *
     ld    E, L          ; 1:4       1373 *   1x 
     add  HL, HL         ; 1:11      1373 *   2x 
@@ -17741,9 +17741,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1373 *
     ld    E, C          ; 1:4       1373 *
                         ;[32:240] 
-                        ;           1375 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0101_1111
+                        ;           1375 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0101_1111 
     ld    B, D          ; 1:4       1375 *
-    ld    C, E          ; 1:4       1375 *  
+    ld    C, E          ; 1:4       1375 * 
     ld    D, H          ; 1:4       1375 *
     ld    E, L          ; 1:4       1375 *   1x 
     add  HL, HL         ; 1:11      1375 *   2x 
@@ -17771,9 +17771,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1375 *
     ld    E, C          ; 1:4       1375 *
                         ;[56:194] 
-                        ;           1377 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0001
+                        ;           1377 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0001 
     ld    B, D          ; 1:4       1377 *
-    ld    C, E          ; 1:4       1377 *  
+    ld    C, E          ; 1:4       1377 * 
     ld    D, H          ; 1:4       1377 *
     ld    E, L          ; 1:4       1377 *   1x 
     add  HL, HL         ; 1:11      1377 *   2x 
@@ -17799,9 +17799,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1377 *
     ld    E, C          ; 1:4       1377 *
                         ;[26:202] 
-                        ;           1379 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0011
+                        ;           1379 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0011 
     ld    B, D          ; 1:4       1379 *
-    ld    C, E          ; 1:4       1379 *  
+    ld    C, E          ; 1:4       1379 * 
     ld    D, H          ; 1:4       1379 *
     ld    E, L          ; 1:4       1379 *   1x 
     add  HL, HL         ; 1:11      1379 *   2x 
@@ -17831,9 +17831,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1379 *
                         ;[29:221]
 
-                        ;           1381 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0101
+                        ;           1381 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0101 
     ld    B, D          ; 1:4       1381 *
-    ld    C, E          ; 1:4       1381 *  
+    ld    C, E          ; 1:4       1381 * 
     ld    D, H          ; 1:4       1381 *
     ld    E, L          ; 1:4       1381 *   1x 
     add  HL, HL         ; 1:11      1381 *   2x 
@@ -17862,9 +17862,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1381 *
     ld    E, C          ; 1:4       1381 *
                         ;[29:221] 
-                        ;           1383 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0111
+                        ;           1383 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_0111 
     ld    B, D          ; 1:4       1383 *
-    ld    C, E          ; 1:4       1383 *  
+    ld    C, E          ; 1:4       1383 * 
     ld    D, H          ; 1:4       1383 *
     ld    E, L          ; 1:4       1383 *   1x 
     add  HL, HL         ; 1:11      1383 *   2x 
@@ -17896,9 +17896,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1383 *
     ld    E, C          ; 1:4       1383 *
                         ;[32:240] 
-                        ;           1385 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_1001
+                        ;           1385 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_1001 
     ld    B, D          ; 1:4       1385 *
-    ld    C, E          ; 1:4       1385 *  
+    ld    C, E          ; 1:4       1385 * 
     ld    D, H          ; 1:4       1385 *
     ld    E, L          ; 1:4       1385 *   1x 
     add  HL, HL         ; 1:11      1385 *   2x 
@@ -17927,9 +17927,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1385 *
     ld    E, C          ; 1:4       1385 *
                         ;[29:221] 
-                        ;           1387 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_1011
+                        ;           1387 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_1011 
     ld    B, D          ; 1:4       1387 *
-    ld    C, E          ; 1:4       1387 *  
+    ld    C, E          ; 1:4       1387 * 
     ld    D, H          ; 1:4       1387 *
     ld    E, L          ; 1:4       1387 *   1x 
     add  HL, HL         ; 1:11      1387 *   2x 
@@ -17961,9 +17961,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1387 *
     ld    E, C          ; 1:4       1387 *
                         ;[32:240] 
-                        ;           1389 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_1101
+                        ;           1389 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0110_1101 
     ld    B, D          ; 1:4       1389 *
-    ld    C, E          ; 1:4       1389 *  
+    ld    C, E          ; 1:4       1389 * 
     ld    D, H          ; 1:4       1389 *
     ld    E, L          ; 1:4       1389 *   1x 
     add  HL, HL         ; 1:11      1389 *   2x 
@@ -17995,9 +17995,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1389 *
     ld    E, C          ; 1:4       1389 *
                         ;[32:240] 
-                        ;           1391 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0110_1111
+                        ;           1391 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0110_1111 
     ld    B, D          ; 1:4       1391 *
-    ld    C, E          ; 1:4       1391 *  
+    ld    C, E          ; 1:4       1391 * 
     ld    D, H          ; 1:4       1391 *
     ld    E, L          ; 1:4       1391 *   1x 
     add  HL, HL         ; 1:11      1391 *   2x 
@@ -18025,9 +18025,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1391 *
     ld    E, C          ; 1:4       1391 *
                         ;[56:194] 
-                        ;           1393 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_0001
+                        ;           1393 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_0001 
     ld    B, D          ; 1:4       1393 *
-    ld    C, E          ; 1:4       1393 *  
+    ld    C, E          ; 1:4       1393 * 
     ld    D, H          ; 1:4       1393 *
     ld    E, L          ; 1:4       1393 *   1x 
     add  HL, HL         ; 1:11      1393 *   2x 
@@ -18056,9 +18056,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1393 *
     ld    E, C          ; 1:4       1393 *
                         ;[29:221] 
-                        ;           1395 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_0011
+                        ;           1395 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_0011 
     ld    B, D          ; 1:4       1395 *
-    ld    C, E          ; 1:4       1395 *  
+    ld    C, E          ; 1:4       1395 * 
     ld    D, H          ; 1:4       1395 *
     ld    E, L          ; 1:4       1395 *   1x 
     add  HL, HL         ; 1:11      1395 *   2x 
@@ -18090,9 +18090,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1395 *
     ld    E, C          ; 1:4       1395 *
                         ;[32:240] 
-                        ;           1397 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_0101
+                        ;           1397 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_0101 
     ld    B, D          ; 1:4       1397 *
-    ld    C, E          ; 1:4       1397 *  
+    ld    C, E          ; 1:4       1397 * 
     ld    D, H          ; 1:4       1397 *
     ld    E, L          ; 1:4       1397 *   1x 
     add  HL, HL         ; 1:11      1397 *   2x 
@@ -18125,9 +18125,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1397 *
                         ;[32:240]
 
-                        ;           1399 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_0111
+                        ;           1399 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_0111 
     ld    B, D          ; 1:4       1399 *
-    ld    C, E          ; 1:4       1399 *  
+    ld    C, E          ; 1:4       1399 * 
     ld    D, H          ; 1:4       1399 *
     ld    E, L          ; 1:4       1399 *   1x 
     add  HL, HL         ; 1:11      1399 *   2x 
@@ -18155,9 +18155,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1399 *
     ld    E, C          ; 1:4       1399 *
                         ;[56:194] 
-                        ;           1401 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_1001
+                        ;           1401 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_0111_1001 
     ld    B, D          ; 1:4       1401 *
-    ld    C, E          ; 1:4       1401 *  
+    ld    C, E          ; 1:4       1401 * 
     ld    D, H          ; 1:4       1401 *
     ld    E, L          ; 1:4       1401 *   1x 
     add  HL, HL         ; 1:11      1401 *   2x 
@@ -18189,9 +18189,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1401 *
     ld    E, C          ; 1:4       1401 *
                         ;[32:240] 
-                        ;           1403 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_1011
+                        ;           1403 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_1011 
     ld    B, D          ; 1:4       1403 *
-    ld    C, E          ; 1:4       1403 *  
+    ld    C, E          ; 1:4       1403 * 
     ld    D, H          ; 1:4       1403 *
     ld    E, L          ; 1:4       1403 *   1x 
     add  HL, HL         ; 1:11      1403 *   2x 
@@ -18219,9 +18219,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1403 *
     ld    E, C          ; 1:4       1403 *
                         ;[56:194] 
-                        ;           1405 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_1101
+                        ;           1405 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_1101 
     ld    B, D          ; 1:4       1405 *
-    ld    C, E          ; 1:4       1405 *  
+    ld    C, E          ; 1:4       1405 * 
     ld    D, H          ; 1:4       1405 *
     ld    E, L          ; 1:4       1405 *   1x 
     add  HL, HL         ; 1:11      1405 *   2x 
@@ -18249,9 +18249,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1405 *
     ld    E, C          ; 1:4       1405 *
                         ;[56:194] 
-                        ;           1407 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_1111
+                        ;           1407 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_0111_1111 
     ld    B, D          ; 1:4       1407 *
-    ld    C, E          ; 1:4       1407 *  
+    ld    C, E          ; 1:4       1407 * 
     ld    D, H          ; 1:4       1407 *
     ld    E, L          ; 1:4       1407 *   1x 
     add  HL, HL         ; 1:11      1407 *   2x 
@@ -18276,9 +18276,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1407 *
     ld    E, C          ; 1:4       1407 *
                         ;[53:175] 
-                        ;           1409 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0001
+                        ;           1409 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0001 
     ld    B, D          ; 1:4       1409 *
-    ld    C, E          ; 1:4       1409 *  
+    ld    C, E          ; 1:4       1409 * 
     ld    D, H          ; 1:4       1409 *
     ld    E, L          ; 1:4       1409 *   1x 
     add  HL, HL         ; 1:11      1409 *   2x 
@@ -18301,9 +18301,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1409 *
     ld    E, C          ; 1:4       1409 *
                         ;[23:183] 
-                        ;           1411 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0011
+                        ;           1411 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0011 
     ld    B, D          ; 1:4       1411 *
-    ld    C, E          ; 1:4       1411 *  
+    ld    C, E          ; 1:4       1411 * 
     ld    D, H          ; 1:4       1411 *
     ld    E, L          ; 1:4       1411 *   1x 
     add  HL, HL         ; 1:11      1411 *   2x 
@@ -18329,9 +18329,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1411 *
     ld    E, C          ; 1:4       1411 *
                         ;[26:202] 
-                        ;           1413 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0101
+                        ;           1413 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0101 
     ld    B, D          ; 1:4       1413 *
-    ld    C, E          ; 1:4       1413 *  
+    ld    C, E          ; 1:4       1413 * 
     ld    D, H          ; 1:4       1413 *
     ld    E, L          ; 1:4       1413 *   1x 
     add  HL, HL         ; 1:11      1413 *   2x 
@@ -18357,9 +18357,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1413 *
     ld    E, C          ; 1:4       1413 *
                         ;[26:202] 
-                        ;           1415 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0111
+                        ;           1415 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_0111 
     ld    B, D          ; 1:4       1415 *
-    ld    C, E          ; 1:4       1415 *  
+    ld    C, E          ; 1:4       1415 * 
     ld    D, H          ; 1:4       1415 *
     ld    E, L          ; 1:4       1415 *   1x 
     add  HL, HL         ; 1:11      1415 *   2x 
@@ -18389,9 +18389,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1415 *
                         ;[29:221]
 
-                        ;           1417 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1001
+                        ;           1417 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1001 
     ld    B, D          ; 1:4       1417 *
-    ld    C, E          ; 1:4       1417 *  
+    ld    C, E          ; 1:4       1417 * 
     ld    D, H          ; 1:4       1417 *
     ld    E, L          ; 1:4       1417 *   1x 
     add  HL, HL         ; 1:11      1417 *   2x 
@@ -18417,9 +18417,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1417 *
     ld    E, C          ; 1:4       1417 *
                         ;[26:202] 
-                        ;           1419 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1011
+                        ;           1419 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1011 
     ld    B, D          ; 1:4       1419 *
-    ld    C, E          ; 1:4       1419 *  
+    ld    C, E          ; 1:4       1419 * 
     ld    D, H          ; 1:4       1419 *
     ld    E, L          ; 1:4       1419 *   1x 
     add  HL, HL         ; 1:11      1419 *   2x 
@@ -18448,9 +18448,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1419 *
     ld    E, C          ; 1:4       1419 *
                         ;[29:221] 
-                        ;           1421 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1101
+                        ;           1421 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1101 
     ld    B, D          ; 1:4       1421 *
-    ld    C, E          ; 1:4       1421 *  
+    ld    C, E          ; 1:4       1421 * 
     ld    D, H          ; 1:4       1421 *
     ld    E, L          ; 1:4       1421 *   1x 
     add  HL, HL         ; 1:11      1421 *   2x 
@@ -18479,9 +18479,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1421 *
     ld    E, C          ; 1:4       1421 *
                         ;[29:221] 
-                        ;           1423 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1111
+                        ;           1423 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1000_1111 
     ld    B, D          ; 1:4       1423 *
-    ld    C, E          ; 1:4       1423 *  
+    ld    C, E          ; 1:4       1423 * 
     ld    D, H          ; 1:4       1423 *
     ld    E, L          ; 1:4       1423 *   1x 
     add  HL, HL         ; 1:11      1423 *   2x 
@@ -18513,9 +18513,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1423 *
     ld    E, C          ; 1:4       1423 *
                         ;[32:240] 
-                        ;           1425 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0001
+                        ;           1425 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0001 
     ld    B, D          ; 1:4       1425 *
-    ld    C, E          ; 1:4       1425 *  
+    ld    C, E          ; 1:4       1425 * 
     ld    D, H          ; 1:4       1425 *
     ld    E, L          ; 1:4       1425 *   1x 
     add  HL, HL         ; 1:11      1425 *   2x 
@@ -18541,9 +18541,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1425 *
     ld    E, C          ; 1:4       1425 *
                         ;[26:202] 
-                        ;           1427 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0011
+                        ;           1427 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0011 
     ld    B, D          ; 1:4       1427 *
-    ld    C, E          ; 1:4       1427 *  
+    ld    C, E          ; 1:4       1427 * 
     ld    D, H          ; 1:4       1427 *
     ld    E, L          ; 1:4       1427 *   1x 
     add  HL, HL         ; 1:11      1427 *   2x 
@@ -18572,9 +18572,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1427 *
     ld    E, C          ; 1:4       1427 *
                         ;[29:221] 
-                        ;           1429 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0101
+                        ;           1429 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0101 
     ld    B, D          ; 1:4       1429 *
-    ld    C, E          ; 1:4       1429 *  
+    ld    C, E          ; 1:4       1429 * 
     ld    D, H          ; 1:4       1429 *
     ld    E, L          ; 1:4       1429 *   1x 
     add  HL, HL         ; 1:11      1429 *   2x 
@@ -18603,9 +18603,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1429 *
     ld    E, C          ; 1:4       1429 *
                         ;[29:221] 
-                        ;           1431 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0111
+                        ;           1431 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_0111 
     ld    B, D          ; 1:4       1431 *
-    ld    C, E          ; 1:4       1431 *  
+    ld    C, E          ; 1:4       1431 * 
     ld    D, H          ; 1:4       1431 *
     ld    E, L          ; 1:4       1431 *   1x 
     add  HL, HL         ; 1:11      1431 *   2x 
@@ -18637,9 +18637,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1431 *
     ld    E, C          ; 1:4       1431 *
                         ;[32:240] 
-                        ;           1433 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_1001
+                        ;           1433 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_1001 
     ld    B, D          ; 1:4       1433 *
-    ld    C, E          ; 1:4       1433 *  
+    ld    C, E          ; 1:4       1433 * 
     ld    D, H          ; 1:4       1433 *
     ld    E, L          ; 1:4       1433 *   1x 
     add  HL, HL         ; 1:11      1433 *   2x 
@@ -18669,9 +18669,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1433 *
                         ;[29:221]
 
-                        ;           1435 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_1011
+                        ;           1435 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_1011 
     ld    B, D          ; 1:4       1435 *
-    ld    C, E          ; 1:4       1435 *  
+    ld    C, E          ; 1:4       1435 * 
     ld    D, H          ; 1:4       1435 *
     ld    E, L          ; 1:4       1435 *   1x 
     add  HL, HL         ; 1:11      1435 *   2x 
@@ -18703,9 +18703,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1435 *
     ld    E, C          ; 1:4       1435 *
                         ;[32:240] 
-                        ;           1437 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_1101
+                        ;           1437 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1001_1101 
     ld    B, D          ; 1:4       1437 *
-    ld    C, E          ; 1:4       1437 *  
+    ld    C, E          ; 1:4       1437 * 
     ld    D, H          ; 1:4       1437 *
     ld    E, L          ; 1:4       1437 *   1x 
     add  HL, HL         ; 1:11      1437 *   2x 
@@ -18737,9 +18737,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1437 *
     ld    E, C          ; 1:4       1437 *
                         ;[32:240] 
-                        ;           1439 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1001_1111
+                        ;           1439 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1001_1111 
     ld    B, D          ; 1:4       1439 *
-    ld    C, E          ; 1:4       1439 *  
+    ld    C, E          ; 1:4       1439 * 
     ld    D, H          ; 1:4       1439 *
     ld    E, L          ; 1:4       1439 *   1x 
     add  HL, HL         ; 1:11      1439 *   2x 
@@ -18767,9 +18767,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1439 *
     ld    E, C          ; 1:4       1439 *
                         ;[56:194] 
-                        ;           1441 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0001
+                        ;           1441 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0001 
     ld    B, D          ; 1:4       1441 *
-    ld    C, E          ; 1:4       1441 *  
+    ld    C, E          ; 1:4       1441 * 
     ld    D, H          ; 1:4       1441 *
     ld    E, L          ; 1:4       1441 *   1x 
     add  HL, HL         ; 1:11      1441 *   2x 
@@ -18795,9 +18795,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1441 *
     ld    E, C          ; 1:4       1441 *
                         ;[26:202] 
-                        ;           1443 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0011
+                        ;           1443 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0011 
     ld    B, D          ; 1:4       1443 *
-    ld    C, E          ; 1:4       1443 *  
+    ld    C, E          ; 1:4       1443 * 
     ld    D, H          ; 1:4       1443 *
     ld    E, L          ; 1:4       1443 *   1x 
     add  HL, HL         ; 1:11      1443 *   2x 
@@ -18826,9 +18826,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1443 *
     ld    E, C          ; 1:4       1443 *
                         ;[29:221] 
-                        ;           1445 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0101
+                        ;           1445 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0101 
     ld    B, D          ; 1:4       1445 *
-    ld    C, E          ; 1:4       1445 *  
+    ld    C, E          ; 1:4       1445 * 
     ld    D, H          ; 1:4       1445 *
     ld    E, L          ; 1:4       1445 *   1x 
     add  HL, HL         ; 1:11      1445 *   2x 
@@ -18857,9 +18857,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1445 *
     ld    E, C          ; 1:4       1445 *
                         ;[29:221] 
-                        ;           1447 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0111
+                        ;           1447 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_0111 
     ld    B, D          ; 1:4       1447 *
-    ld    C, E          ; 1:4       1447 *  
+    ld    C, E          ; 1:4       1447 * 
     ld    D, H          ; 1:4       1447 *
     ld    E, L          ; 1:4       1447 *   1x 
     add  HL, HL         ; 1:11      1447 *   2x 
@@ -18891,9 +18891,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1447 *
     ld    E, C          ; 1:4       1447 *
                         ;[32:240] 
-                        ;           1449 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_1001
+                        ;           1449 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_1001 
     ld    B, D          ; 1:4       1449 *
-    ld    C, E          ; 1:4       1449 *  
+    ld    C, E          ; 1:4       1449 * 
     ld    D, H          ; 1:4       1449 *
     ld    E, L          ; 1:4       1449 *   1x 
     add  HL, HL         ; 1:11      1449 *   2x 
@@ -18922,9 +18922,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1449 *
     ld    E, C          ; 1:4       1449 *
                         ;[29:221] 
-                        ;           1451 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_1011
+                        ;           1451 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_1011 
     ld    B, D          ; 1:4       1451 *
-    ld    C, E          ; 1:4       1451 *  
+    ld    C, E          ; 1:4       1451 * 
     ld    D, H          ; 1:4       1451 *
     ld    E, L          ; 1:4       1451 *   1x 
     add  HL, HL         ; 1:11      1451 *   2x 
@@ -18957,9 +18957,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1451 *
                         ;[32:240]
 
-                        ;           1453 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_1101
+                        ;           1453 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1010_1101 
     ld    B, D          ; 1:4       1453 *
-    ld    C, E          ; 1:4       1453 *  
+    ld    C, E          ; 1:4       1453 * 
     ld    D, H          ; 1:4       1453 *
     ld    E, L          ; 1:4       1453 *   1x 
     add  HL, HL         ; 1:11      1453 *   2x 
@@ -18991,9 +18991,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1453 *
     ld    E, C          ; 1:4       1453 *
                         ;[32:240] 
-                        ;           1455 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1010_1111
+                        ;           1455 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1010_1111 
     ld    B, D          ; 1:4       1455 *
-    ld    C, E          ; 1:4       1455 *  
+    ld    C, E          ; 1:4       1455 * 
     ld    D, H          ; 1:4       1455 *
     ld    E, L          ; 1:4       1455 *   1x 
     add  HL, HL         ; 1:11      1455 *   2x 
@@ -19021,9 +19021,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1455 *
     ld    E, C          ; 1:4       1455 *
                         ;[56:194] 
-                        ;           1457 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_0001
+                        ;           1457 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_0001 
     ld    B, D          ; 1:4       1457 *
-    ld    C, E          ; 1:4       1457 *  
+    ld    C, E          ; 1:4       1457 * 
     ld    D, H          ; 1:4       1457 *
     ld    E, L          ; 1:4       1457 *   1x 
     add  HL, HL         ; 1:11      1457 *   2x 
@@ -19052,9 +19052,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1457 *
     ld    E, C          ; 1:4       1457 *
                         ;[29:221] 
-                        ;           1459 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_0011
+                        ;           1459 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_0011 
     ld    B, D          ; 1:4       1459 *
-    ld    C, E          ; 1:4       1459 *  
+    ld    C, E          ; 1:4       1459 * 
     ld    D, H          ; 1:4       1459 *
     ld    E, L          ; 1:4       1459 *   1x 
     add  HL, HL         ; 1:11      1459 *   2x 
@@ -19086,9 +19086,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1459 *
     ld    E, C          ; 1:4       1459 *
                         ;[32:240] 
-                        ;           1461 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_0101
+                        ;           1461 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_0101 
     ld    B, D          ; 1:4       1461 *
-    ld    C, E          ; 1:4       1461 *  
+    ld    C, E          ; 1:4       1461 * 
     ld    D, H          ; 1:4       1461 *
     ld    E, L          ; 1:4       1461 *   1x 
     add  HL, HL         ; 1:11      1461 *   2x 
@@ -19120,9 +19120,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1461 *
     ld    E, C          ; 1:4       1461 *
                         ;[32:240] 
-                        ;           1463 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_0111
+                        ;           1463 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_0111 
     ld    B, D          ; 1:4       1463 *
-    ld    C, E          ; 1:4       1463 *  
+    ld    C, E          ; 1:4       1463 * 
     ld    D, H          ; 1:4       1463 *
     ld    E, L          ; 1:4       1463 *   1x 
     add  HL, HL         ; 1:11      1463 *   2x 
@@ -19150,9 +19150,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1463 *
     ld    E, C          ; 1:4       1463 *
                         ;[56:194] 
-                        ;           1465 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_1001
+                        ;           1465 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1011_1001 
     ld    B, D          ; 1:4       1465 *
-    ld    C, E          ; 1:4       1465 *  
+    ld    C, E          ; 1:4       1465 * 
     ld    D, H          ; 1:4       1465 *
     ld    E, L          ; 1:4       1465 *   1x 
     add  HL, HL         ; 1:11      1465 *   2x 
@@ -19184,9 +19184,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1465 *
     ld    E, C          ; 1:4       1465 *
                         ;[32:240] 
-                        ;           1467 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_1011
+                        ;           1467 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_1011 
     ld    B, D          ; 1:4       1467 *
-    ld    C, E          ; 1:4       1467 *  
+    ld    C, E          ; 1:4       1467 * 
     ld    D, H          ; 1:4       1467 *
     ld    E, L          ; 1:4       1467 *   1x 
     add  HL, HL         ; 1:11      1467 *   2x 
@@ -19214,9 +19214,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1467 *
     ld    E, C          ; 1:4       1467 *
                         ;[56:194] 
-                        ;           1469 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_1101
+                        ;           1469 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_1101 
     ld    B, D          ; 1:4       1469 *
-    ld    C, E          ; 1:4       1469 *  
+    ld    C, E          ; 1:4       1469 * 
     ld    D, H          ; 1:4       1469 *
     ld    E, L          ; 1:4       1469 *   1x 
     add  HL, HL         ; 1:11      1469 *   2x 
@@ -19245,9 +19245,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1469 *
                         ;[56:194]
 
-                        ;           1471 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_1111
+                        ;           1471 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1011_1111 
     ld    B, D          ; 1:4       1471 *
-    ld    C, E          ; 1:4       1471 *  
+    ld    C, E          ; 1:4       1471 * 
     ld    D, H          ; 1:4       1471 *
     ld    E, L          ; 1:4       1471 *   1x 
     add  HL, HL         ; 1:11      1471 *   2x 
@@ -19272,9 +19272,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1471 *
     ld    E, C          ; 1:4       1471 *
                         ;[53:175] 
-                        ;           1473 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0001
+                        ;           1473 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0001 
     ld    B, D          ; 1:4       1473 *
-    ld    C, E          ; 1:4       1473 *  
+    ld    C, E          ; 1:4       1473 * 
     ld    D, H          ; 1:4       1473 *
     ld    E, L          ; 1:4       1473 *   1x 
     add  HL, HL         ; 1:11      1473 *   2x 
@@ -19300,9 +19300,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1473 *
     ld    E, C          ; 1:4       1473 *
                         ;[26:202] 
-                        ;           1475 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0011
+                        ;           1475 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0011 
     ld    B, D          ; 1:4       1475 *
-    ld    C, E          ; 1:4       1475 *  
+    ld    C, E          ; 1:4       1475 * 
     ld    D, H          ; 1:4       1475 *
     ld    E, L          ; 1:4       1475 *   1x 
     add  HL, HL         ; 1:11      1475 *   2x 
@@ -19331,9 +19331,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1475 *
     ld    E, C          ; 1:4       1475 *
                         ;[29:221] 
-                        ;           1477 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0101
+                        ;           1477 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0101 
     ld    B, D          ; 1:4       1477 *
-    ld    C, E          ; 1:4       1477 *  
+    ld    C, E          ; 1:4       1477 * 
     ld    D, H          ; 1:4       1477 *
     ld    E, L          ; 1:4       1477 *   1x 
     add  HL, HL         ; 1:11      1477 *   2x 
@@ -19362,9 +19362,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1477 *
     ld    E, C          ; 1:4       1477 *
                         ;[29:221] 
-                        ;           1479 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0111
+                        ;           1479 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_0111 
     ld    B, D          ; 1:4       1479 *
-    ld    C, E          ; 1:4       1479 *  
+    ld    C, E          ; 1:4       1479 * 
     ld    D, H          ; 1:4       1479 *
     ld    E, L          ; 1:4       1479 *   1x 
     add  HL, HL         ; 1:11      1479 *   2x 
@@ -19396,9 +19396,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1479 *
     ld    E, C          ; 1:4       1479 *
                         ;[32:240] 
-                        ;           1481 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_1001
+                        ;           1481 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_1001 
     ld    B, D          ; 1:4       1481 *
-    ld    C, E          ; 1:4       1481 *  
+    ld    C, E          ; 1:4       1481 * 
     ld    D, H          ; 1:4       1481 *
     ld    E, L          ; 1:4       1481 *   1x 
     add  HL, HL         ; 1:11      1481 *   2x 
@@ -19427,9 +19427,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1481 *
     ld    E, C          ; 1:4       1481 *
                         ;[29:221] 
-                        ;           1483 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_1011
+                        ;           1483 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_1011 
     ld    B, D          ; 1:4       1483 *
-    ld    C, E          ; 1:4       1483 *  
+    ld    C, E          ; 1:4       1483 * 
     ld    D, H          ; 1:4       1483 *
     ld    E, L          ; 1:4       1483 *   1x 
     add  HL, HL         ; 1:11      1483 *   2x 
@@ -19461,9 +19461,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1483 *
     ld    E, C          ; 1:4       1483 *
                         ;[32:240] 
-                        ;           1485 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_1101
+                        ;           1485 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1100_1101 
     ld    B, D          ; 1:4       1485 *
-    ld    C, E          ; 1:4       1485 *  
+    ld    C, E          ; 1:4       1485 * 
     ld    D, H          ; 1:4       1485 *
     ld    E, L          ; 1:4       1485 *   1x 
     add  HL, HL         ; 1:11      1485 *   2x 
@@ -19495,9 +19495,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1485 *
     ld    E, C          ; 1:4       1485 *
                         ;[32:240] 
-                        ;           1487 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1100_1111
+                        ;           1487 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1100_1111 
     ld    B, D          ; 1:4       1487 *
-    ld    C, E          ; 1:4       1487 *  
+    ld    C, E          ; 1:4       1487 * 
     ld    D, H          ; 1:4       1487 *
     ld    E, L          ; 1:4       1487 *   1x 
     add  HL, HL         ; 1:11      1487 *   2x 
@@ -19526,9 +19526,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1487 *
                         ;[56:194]
 
-                        ;           1489 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_0001
+                        ;           1489 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_0001 
     ld    B, D          ; 1:4       1489 *
-    ld    C, E          ; 1:4       1489 *  
+    ld    C, E          ; 1:4       1489 * 
     ld    D, H          ; 1:4       1489 *
     ld    E, L          ; 1:4       1489 *   1x 
     add  HL, HL         ; 1:11      1489 *   2x 
@@ -19557,9 +19557,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1489 *
     ld    E, C          ; 1:4       1489 *
                         ;[29:221] 
-                        ;           1491 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_0011
+                        ;           1491 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_0011 
     ld    B, D          ; 1:4       1491 *
-    ld    C, E          ; 1:4       1491 *  
+    ld    C, E          ; 1:4       1491 * 
     ld    D, H          ; 1:4       1491 *
     ld    E, L          ; 1:4       1491 *   1x 
     add  HL, HL         ; 1:11      1491 *   2x 
@@ -19591,9 +19591,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1491 *
     ld    E, C          ; 1:4       1491 *
                         ;[32:240] 
-                        ;           1493 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_0101
+                        ;           1493 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_0101 
     ld    B, D          ; 1:4       1493 *
-    ld    C, E          ; 1:4       1493 *  
+    ld    C, E          ; 1:4       1493 * 
     ld    D, H          ; 1:4       1493 *
     ld    E, L          ; 1:4       1493 *   1x 
     add  HL, HL         ; 1:11      1493 *   2x 
@@ -19625,9 +19625,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1493 *
     ld    E, C          ; 1:4       1493 *
                         ;[32:240] 
-                        ;           1495 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_0111
+                        ;           1495 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_0111 
     ld    B, D          ; 1:4       1495 *
-    ld    C, E          ; 1:4       1495 *  
+    ld    C, E          ; 1:4       1495 * 
     ld    D, H          ; 1:4       1495 *
     ld    E, L          ; 1:4       1495 *   1x 
     add  HL, HL         ; 1:11      1495 *   2x 
@@ -19655,9 +19655,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1495 *
     ld    E, C          ; 1:4       1495 *
                         ;[56:194] 
-                        ;           1497 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_1001
+                        ;           1497 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1101_1001 
     ld    B, D          ; 1:4       1497 *
-    ld    C, E          ; 1:4       1497 *  
+    ld    C, E          ; 1:4       1497 * 
     ld    D, H          ; 1:4       1497 *
     ld    E, L          ; 1:4       1497 *   1x 
     add  HL, HL         ; 1:11      1497 *   2x 
@@ -19689,9 +19689,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1497 *
     ld    E, C          ; 1:4       1497 *
                         ;[32:240] 
-                        ;           1499 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_1011
+                        ;           1499 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_1011 
     ld    B, D          ; 1:4       1499 *
-    ld    C, E          ; 1:4       1499 *  
+    ld    C, E          ; 1:4       1499 * 
     ld    D, H          ; 1:4       1499 *
     ld    E, L          ; 1:4       1499 *   1x 
     add  HL, HL         ; 1:11      1499 *   2x 
@@ -19719,9 +19719,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1499 *
     ld    E, C          ; 1:4       1499 *
                         ;[56:194] 
-                        ;           1501 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_1101
+                        ;           1501 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_1101 
     ld    B, D          ; 1:4       1501 *
-    ld    C, E          ; 1:4       1501 *  
+    ld    C, E          ; 1:4       1501 * 
     ld    D, H          ; 1:4       1501 *
     ld    E, L          ; 1:4       1501 *   1x 
     add  HL, HL         ; 1:11      1501 *   2x 
@@ -19749,9 +19749,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1501 *
     ld    E, C          ; 1:4       1501 *
                         ;[56:194] 
-                        ;           1503 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_1111
+                        ;           1503 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1101_1111 
     ld    B, D          ; 1:4       1503 *
-    ld    C, E          ; 1:4       1503 *  
+    ld    C, E          ; 1:4       1503 * 
     ld    D, H          ; 1:4       1503 *
     ld    E, L          ; 1:4       1503 *   1x 
     add  HL, HL         ; 1:11      1503 *   2x 
@@ -19776,9 +19776,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1503 *
     ld    E, C          ; 1:4       1503 *
                         ;[53:175] 
-                        ;           1505 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_0001
+                        ;           1505 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_0001 
     ld    B, D          ; 1:4       1505 *
-    ld    C, E          ; 1:4       1505 *  
+    ld    C, E          ; 1:4       1505 * 
     ld    D, H          ; 1:4       1505 *
     ld    E, L          ; 1:4       1505 *   1x 
     add  HL, HL         ; 1:11      1505 *   2x 
@@ -19808,9 +19808,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1505 *
                         ;[29:221]
 
-                        ;           1507 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_0011
+                        ;           1507 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_0011 
     ld    B, D          ; 1:4       1507 *
-    ld    C, E          ; 1:4       1507 *  
+    ld    C, E          ; 1:4       1507 * 
     ld    D, H          ; 1:4       1507 *
     ld    E, L          ; 1:4       1507 *   1x 
     add  HL, HL         ; 1:11      1507 *   2x 
@@ -19842,9 +19842,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1507 *
     ld    E, C          ; 1:4       1507 *
                         ;[32:240] 
-                        ;           1509 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_0101
+                        ;           1509 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_0101 
     ld    B, D          ; 1:4       1509 *
-    ld    C, E          ; 1:4       1509 *  
+    ld    C, E          ; 1:4       1509 * 
     ld    D, H          ; 1:4       1509 *
     ld    E, L          ; 1:4       1509 *   1x 
     add  HL, HL         ; 1:11      1509 *   2x 
@@ -19876,9 +19876,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1509 *
     ld    E, C          ; 1:4       1509 *
                         ;[32:240] 
-                        ;           1511 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_0111
+                        ;           1511 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_0111 
     ld    B, D          ; 1:4       1511 *
-    ld    C, E          ; 1:4       1511 *  
+    ld    C, E          ; 1:4       1511 * 
     ld    D, H          ; 1:4       1511 *
     ld    E, L          ; 1:4       1511 *   1x 
     add  HL, HL         ; 1:11      1511 *   2x 
@@ -19906,9 +19906,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1511 *
     ld    E, C          ; 1:4       1511 *
                         ;[56:194] 
-                        ;           1513 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_1001
+                        ;           1513 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1110_1001 
     ld    B, D          ; 1:4       1513 *
-    ld    C, E          ; 1:4       1513 *  
+    ld    C, E          ; 1:4       1513 * 
     ld    D, H          ; 1:4       1513 *
     ld    E, L          ; 1:4       1513 *   1x 
     add  HL, HL         ; 1:11      1513 *   2x 
@@ -19940,9 +19940,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1513 *
     ld    E, C          ; 1:4       1513 *
                         ;[32:240] 
-                        ;           1515 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_1011
+                        ;           1515 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_1011 
     ld    B, D          ; 1:4       1515 *
-    ld    C, E          ; 1:4       1515 *  
+    ld    C, E          ; 1:4       1515 * 
     ld    D, H          ; 1:4       1515 *
     ld    E, L          ; 1:4       1515 *   1x 
     add  HL, HL         ; 1:11      1515 *   2x 
@@ -19970,9 +19970,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1515 *
     ld    E, C          ; 1:4       1515 *
                         ;[56:194] 
-                        ;           1517 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_1101
+                        ;           1517 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_1101 
     ld    B, D          ; 1:4       1517 *
-    ld    C, E          ; 1:4       1517 *  
+    ld    C, E          ; 1:4       1517 * 
     ld    D, H          ; 1:4       1517 *
     ld    E, L          ; 1:4       1517 *   1x 
     add  HL, HL         ; 1:11      1517 *   2x 
@@ -20000,9 +20000,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1517 *
     ld    E, C          ; 1:4       1517 *
                         ;[56:194] 
-                        ;           1519 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_1111
+                        ;           1519 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1110_1111 
     ld    B, D          ; 1:4       1519 *
-    ld    C, E          ; 1:4       1519 *  
+    ld    C, E          ; 1:4       1519 * 
     ld    D, H          ; 1:4       1519 *
     ld    E, L          ; 1:4       1519 *   1x 
     add  HL, HL         ; 1:11      1519 *   2x 
@@ -20027,9 +20027,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1519 *
     ld    E, C          ; 1:4       1519 *
                         ;[53:175] 
-                        ;           1521 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1111_0001
+                        ;           1521 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0101_1111_0001 
     ld    B, D          ; 1:4       1521 *
-    ld    C, E          ; 1:4       1521 *  
+    ld    C, E          ; 1:4       1521 * 
     ld    D, H          ; 1:4       1521 *
     ld    E, L          ; 1:4       1521 *   1x 
     add  HL, HL         ; 1:11      1521 *   2x 
@@ -20061,9 +20061,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1521 *
     ld    E, C          ; 1:4       1521 *
                         ;[32:240] 
-                        ;           1523 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_0011
+                        ;           1523 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_0011 
     ld    B, D          ; 1:4       1523 *
-    ld    C, E          ; 1:4       1523 *  
+    ld    C, E          ; 1:4       1523 * 
     ld    D, H          ; 1:4       1523 *
     ld    E, L          ; 1:4       1523 *   1x 
     add  HL, HL         ; 1:11      1523 *   2x 
@@ -20092,9 +20092,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1523 *
                         ;[56:194]
 
-                        ;           1525 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_0101
+                        ;           1525 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_0101 
     ld    B, D          ; 1:4       1525 *
-    ld    C, E          ; 1:4       1525 *  
+    ld    C, E          ; 1:4       1525 * 
     ld    D, H          ; 1:4       1525 *
     ld    E, L          ; 1:4       1525 *   1x 
     add  HL, HL         ; 1:11      1525 *   2x 
@@ -20122,9 +20122,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1525 *
     ld    E, C          ; 1:4       1525 *
                         ;[56:194] 
-                        ;           1527 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_0111
+                        ;           1527 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_0111 
     ld    B, D          ; 1:4       1527 *
-    ld    C, E          ; 1:4       1527 *  
+    ld    C, E          ; 1:4       1527 * 
     ld    D, H          ; 1:4       1527 *
     ld    E, L          ; 1:4       1527 *   1x 
     add  HL, HL         ; 1:11      1527 *   2x 
@@ -20149,9 +20149,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1527 *
     ld    E, C          ; 1:4       1527 *
                         ;[53:175] 
-                        ;           1529 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_1001
+                        ;           1529 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_1001 
     ld    B, D          ; 1:4       1529 *
-    ld    C, E          ; 1:4       1529 *  
+    ld    C, E          ; 1:4       1529 * 
     ld    D, H          ; 1:4       1529 *
     ld    E, L          ; 1:4       1529 *   1x 
     add  HL, HL         ; 1:11      1529 *   2x 
@@ -20161,7 +20161,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1529 *   4x 
     ex   DE, HL         ; 1:4       1529 *
     add  HL, DE         ; 1:11      1529 *   7x
-    ex   DE, HL         ; 1:4       1529 *  
+    ex   DE, HL         ; 1:4       1529 * 
     rr    H             ; 2:8       1529 *
     rr    L             ; 2:8       1529 *
     ld    H, L          ; 1:4       1529 *
@@ -20176,16 +20176,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       1529 *
     ld    E, C          ; 1:4       1529 *
                         ;[56:144] 
-                        ;           1531 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_1011
+                        ;           1531 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_1011 
     ld    B, D          ; 1:4       1531 *
-    ld    C, E          ; 1:4       1531 *  
+    ld    C, E          ; 1:4       1531 * 
     ld    D, H          ; 1:4       1531 *
     ld    E, L          ; 1:4       1531 *   1x 
     add  HL, HL         ; 1:11      1531 *   2x 
     add  HL, HL         ; 1:11      1531 *   4x 
     ex   DE, HL         ; 1:4       1531 *
     add  HL, DE         ; 1:11      1531 *   5x
-    ex   DE, HL         ; 1:4       1531 *  
+    ex   DE, HL         ; 1:4       1531 * 
     rr    H             ; 2:8       1531 *
     rr    L             ; 2:8       1531 *
     ld    H, L          ; 1:4       1531 *
@@ -20200,9 +20200,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1531 *
     ld    E, C          ; 1:4       1531 *
                         ;[53:125] 
-                        ;           1533 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_1101
+                        ;           1533 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0101_1111_1101 
     ld    B, D          ; 1:4       1533 *
-    ld    C, E          ; 1:4       1533 *  
+    ld    C, E          ; 1:4       1533 * 
     ld    D, H          ; 1:4       1533 *
     ld    E, L          ; 1:4       1533 *   1x 
     add  HL, HL         ; 1:11      1533 *   2x 
@@ -20221,39 +20221,39 @@ ORG 0x6000
     ld    D, B          ; 1:4       1533 *
     ld    E, C          ; 1:4       1533 *
                         ;[48:98] 
-                        ;           1535 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0101_1111_1111 
+                        ;           1535 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0101_1111_1111  
     ld    B, H          ; 1:4       1535 *
     ld    A, L          ; 1:4       1535 *   1x 
     ld    H, L          ; 1:4       1535 *
     ld    L, 0x00       ; 2:7       1535 *   256x 
     add  HL, HL         ; 1:11      1535 *   512x 
     add   A, L          ; 1:4       1535 *
-    ld    C, A          ; 1:4       1535 *   
-    ld    A, B          ; 1:4       1535 *   
-    adc   A, H          ; 1:4       1535 *   
+    ld    C, A          ; 1:4       1535 *
+    ld    A, B          ; 1:4       1535 *
+    adc   A, H          ; 1:4       1535 *
     ld    B, A          ; 1:4       1535 *   513x 
     add  HL, HL         ; 1:11      1535 *   1024x 
     add  HL, HL         ; 1:11      1535 *   2048x 
     or    A             ; 1:4       1535 *
     sbc  HL, BC         ; 2:15      1535 *   2048x - 513x = 1535x
                         ;[16:91] 
-                        ;           1537 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0110_0000_0001 
+                        ;           1537 *   Variant: HL * (2^a + 2^b + 2^c) = HL * b_0110_0000_0001  
     ld    B, H          ; 1:4       1537 *
     ld    A, L          ; 1:4       1537 *   1x 
     ld    H, L          ; 1:4       1537 *
     ld    L, 0x00       ; 2:7       1537 *   256x 
     add  HL, HL         ; 1:11      1537 *   512x 
     add   A, L          ; 1:4       1537 *
-    ld    C, A          ; 1:4       1537 *   
-    ld    A, B          ; 1:4       1537 *   
-    adc   A, H          ; 1:4       1537 *   
+    ld    C, A          ; 1:4       1537 *
+    ld    A, B          ; 1:4       1537 *
+    adc   A, H          ; 1:4       1537 *
     ld    B, A          ; 1:4       1537 *   513x 
     add  HL, HL         ; 1:11      1537 *   1024x 
     add  HL, BC         ; 1:11      1537 *   1024x + 513x = 1537x
                         ;[13:72] 
-                        ;           1539 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_0011
+                        ;           1539 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_0011 
     ld    B, D          ; 1:4       1539 *
-    ld    C, E          ; 1:4       1539 *  
+    ld    C, E          ; 1:4       1539 * 
     ld    D, H          ; 1:4       1539 *
     ld    E, L          ; 1:4       1539 *   1x 
     add  HL, HL         ; 1:11      1539 *   2x 
@@ -20270,16 +20270,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       1539 *
     ld    E, C          ; 1:4       1539 *
                         ;[18:106] 
-                        ;           1541 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_0101
+                        ;           1541 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_0101 
     ld    B, D          ; 1:4       1541 *
-    ld    C, E          ; 1:4       1541 *  
+    ld    C, E          ; 1:4       1541 * 
     ld    D, H          ; 1:4       1541 *
     ld    E, L          ; 1:4       1541 *   1x 
     add  HL, HL         ; 1:11      1541 *   2x 
     add  HL, HL         ; 1:11      1541 *   4x 
     ex   DE, HL         ; 1:4       1541 *
     add  HL, DE         ; 1:11      1541 *   5x
-    ex   DE, HL         ; 1:4       1541 *  
+    ex   DE, HL         ; 1:4       1541 * 
     rr    H             ; 2:8       1541 *
     rr    L             ; 2:8       1541 *
     ld    H, L          ; 1:4       1541 *
@@ -20293,9 +20293,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1541 *
                         ;[23:133]
 
-                        ;           1543 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_0111
+                        ;           1543 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_0111 
     ld    B, D          ; 1:4       1543 *
-    ld    C, E          ; 1:4       1543 *  
+    ld    C, E          ; 1:4       1543 * 
     ld    D, H          ; 1:4       1543 *
     ld    E, L          ; 1:4       1543 *   1x 
     add  HL, HL         ; 1:11      1543 *   2x 
@@ -20305,7 +20305,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1543 *   4x 
     ex   DE, HL         ; 1:4       1543 *
     add  HL, DE         ; 1:11      1543 *   7x
-    ex   DE, HL         ; 1:4       1543 *  
+    ex   DE, HL         ; 1:4       1543 * 
     rr    H             ; 2:8       1543 *
     rr    L             ; 2:8       1543 *
     ld    H, L          ; 1:4       1543 *
@@ -20318,9 +20318,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1543 *
     ld    E, C          ; 1:4       1543 *
                         ;[26:152] 
-                        ;           1545 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1001
+                        ;           1545 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1001 
     ld    B, D          ; 1:4       1545 *
-    ld    C, E          ; 1:4       1545 *  
+    ld    C, E          ; 1:4       1545 * 
     ld    D, H          ; 1:4       1545 *
     ld    E, L          ; 1:4       1545 *   1x 
     add  HL, HL         ; 1:11      1545 *   2x 
@@ -20343,9 +20343,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1545 *
     ld    E, C          ; 1:4       1545 *
                         ;[23:183] 
-                        ;           1547 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1011
+                        ;           1547 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1011 
     ld    B, D          ; 1:4       1547 *
-    ld    C, E          ; 1:4       1547 *  
+    ld    C, E          ; 1:4       1547 * 
     ld    D, H          ; 1:4       1547 *
     ld    E, L          ; 1:4       1547 *   1x 
     add  HL, HL         ; 1:11      1547 *   2x 
@@ -20371,9 +20371,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1547 *
     ld    E, C          ; 1:4       1547 *
                         ;[26:202] 
-                        ;           1549 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1101
+                        ;           1549 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1101 
     ld    B, D          ; 1:4       1549 *
-    ld    C, E          ; 1:4       1549 *  
+    ld    C, E          ; 1:4       1549 * 
     ld    D, H          ; 1:4       1549 *
     ld    E, L          ; 1:4       1549 *   1x 
     add  HL, HL         ; 1:11      1549 *   2x 
@@ -20399,9 +20399,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1549 *
     ld    E, C          ; 1:4       1549 *
                         ;[26:202] 
-                        ;           1551 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1111
+                        ;           1551 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0000_1111 
     ld    B, D          ; 1:4       1551 *
-    ld    C, E          ; 1:4       1551 *  
+    ld    C, E          ; 1:4       1551 * 
     ld    D, H          ; 1:4       1551 *
     ld    E, L          ; 1:4       1551 *   1x 
     add  HL, HL         ; 1:11      1551 *   2x 
@@ -20430,9 +20430,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1551 *
     ld    E, C          ; 1:4       1551 *
                         ;[29:221] 
-                        ;           1553 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0001
+                        ;           1553 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0001 
     ld    B, D          ; 1:4       1553 *
-    ld    C, E          ; 1:4       1553 *  
+    ld    C, E          ; 1:4       1553 * 
     ld    D, H          ; 1:4       1553 *
     ld    E, L          ; 1:4       1553 *   1x 
     add  HL, HL         ; 1:11      1553 *   2x 
@@ -20455,9 +20455,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1553 *
     ld    E, C          ; 1:4       1553 *
                         ;[23:183] 
-                        ;           1555 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0011
+                        ;           1555 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0011 
     ld    B, D          ; 1:4       1555 *
-    ld    C, E          ; 1:4       1555 *  
+    ld    C, E          ; 1:4       1555 * 
     ld    D, H          ; 1:4       1555 *
     ld    E, L          ; 1:4       1555 *   1x 
     add  HL, HL         ; 1:11      1555 *   2x 
@@ -20483,9 +20483,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1555 *
     ld    E, C          ; 1:4       1555 *
                         ;[26:202] 
-                        ;           1557 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0101
+                        ;           1557 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0101 
     ld    B, D          ; 1:4       1557 *
-    ld    C, E          ; 1:4       1557 *  
+    ld    C, E          ; 1:4       1557 * 
     ld    D, H          ; 1:4       1557 *
     ld    E, L          ; 1:4       1557 *   1x 
     add  HL, HL         ; 1:11      1557 *   2x 
@@ -20511,9 +20511,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1557 *
     ld    E, C          ; 1:4       1557 *
                         ;[26:202] 
-                        ;           1559 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0111
+                        ;           1559 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_0111 
     ld    B, D          ; 1:4       1559 *
-    ld    C, E          ; 1:4       1559 *  
+    ld    C, E          ; 1:4       1559 * 
     ld    D, H          ; 1:4       1559 *
     ld    E, L          ; 1:4       1559 *   1x 
     add  HL, HL         ; 1:11      1559 *   2x 
@@ -20543,9 +20543,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1559 *
                         ;[29:221]
 
-                        ;           1561 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1001
+                        ;           1561 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1001 
     ld    B, D          ; 1:4       1561 *
-    ld    C, E          ; 1:4       1561 *  
+    ld    C, E          ; 1:4       1561 * 
     ld    D, H          ; 1:4       1561 *
     ld    E, L          ; 1:4       1561 *   1x 
     add  HL, HL         ; 1:11      1561 *   2x 
@@ -20571,9 +20571,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1561 *
     ld    E, C          ; 1:4       1561 *
                         ;[26:202] 
-                        ;           1563 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1011
+                        ;           1563 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1011 
     ld    B, D          ; 1:4       1563 *
-    ld    C, E          ; 1:4       1563 *  
+    ld    C, E          ; 1:4       1563 * 
     ld    D, H          ; 1:4       1563 *
     ld    E, L          ; 1:4       1563 *   1x 
     add  HL, HL         ; 1:11      1563 *   2x 
@@ -20602,9 +20602,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1563 *
     ld    E, C          ; 1:4       1563 *
                         ;[29:221] 
-                        ;           1565 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1101
+                        ;           1565 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1101 
     ld    B, D          ; 1:4       1565 *
-    ld    C, E          ; 1:4       1565 *  
+    ld    C, E          ; 1:4       1565 * 
     ld    D, H          ; 1:4       1565 *
     ld    E, L          ; 1:4       1565 *   1x 
     add  HL, HL         ; 1:11      1565 *   2x 
@@ -20633,9 +20633,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1565 *
     ld    E, C          ; 1:4       1565 *
                         ;[29:221] 
-                        ;           1567 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1111
+                        ;           1567 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0001_1111 
     ld    B, D          ; 1:4       1567 *
-    ld    C, E          ; 1:4       1567 *  
+    ld    C, E          ; 1:4       1567 * 
     ld    D, H          ; 1:4       1567 *
     ld    E, L          ; 1:4       1567 *   1x 
     add  HL, HL         ; 1:11      1567 *   2x 
@@ -20667,9 +20667,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1567 *
     ld    E, C          ; 1:4       1567 *
                         ;[32:240] 
-                        ;           1569 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0001
+                        ;           1569 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0001 
     ld    B, D          ; 1:4       1569 *
-    ld    C, E          ; 1:4       1569 *  
+    ld    C, E          ; 1:4       1569 * 
     ld    D, H          ; 1:4       1569 *
     ld    E, L          ; 1:4       1569 *   1x 
     add  HL, HL         ; 1:11      1569 *   2x 
@@ -20692,9 +20692,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1569 *
     ld    E, C          ; 1:4       1569 *
                         ;[23:183] 
-                        ;           1571 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0011
+                        ;           1571 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0011 
     ld    B, D          ; 1:4       1571 *
-    ld    C, E          ; 1:4       1571 *  
+    ld    C, E          ; 1:4       1571 * 
     ld    D, H          ; 1:4       1571 *
     ld    E, L          ; 1:4       1571 *   1x 
     add  HL, HL         ; 1:11      1571 *   2x 
@@ -20720,9 +20720,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1571 *
     ld    E, C          ; 1:4       1571 *
                         ;[26:202] 
-                        ;           1573 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0101
+                        ;           1573 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0101 
     ld    B, D          ; 1:4       1573 *
-    ld    C, E          ; 1:4       1573 *  
+    ld    C, E          ; 1:4       1573 * 
     ld    D, H          ; 1:4       1573 *
     ld    E, L          ; 1:4       1573 *   1x 
     add  HL, HL         ; 1:11      1573 *   2x 
@@ -20748,9 +20748,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1573 *
     ld    E, C          ; 1:4       1573 *
                         ;[26:202] 
-                        ;           1575 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0111
+                        ;           1575 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_0111 
     ld    B, D          ; 1:4       1575 *
-    ld    C, E          ; 1:4       1575 *  
+    ld    C, E          ; 1:4       1575 * 
     ld    D, H          ; 1:4       1575 *
     ld    E, L          ; 1:4       1575 *   1x 
     add  HL, HL         ; 1:11      1575 *   2x 
@@ -20779,9 +20779,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1575 *
     ld    E, C          ; 1:4       1575 *
                         ;[29:221] 
-                        ;           1577 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1001
+                        ;           1577 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1001 
     ld    B, D          ; 1:4       1577 *
-    ld    C, E          ; 1:4       1577 *  
+    ld    C, E          ; 1:4       1577 * 
     ld    D, H          ; 1:4       1577 *
     ld    E, L          ; 1:4       1577 *   1x 
     add  HL, HL         ; 1:11      1577 *   2x 
@@ -20808,9 +20808,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1577 *
                         ;[26:202]
 
-                        ;           1579 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1011
+                        ;           1579 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1011 
     ld    B, D          ; 1:4       1579 *
-    ld    C, E          ; 1:4       1579 *  
+    ld    C, E          ; 1:4       1579 * 
     ld    D, H          ; 1:4       1579 *
     ld    E, L          ; 1:4       1579 *   1x 
     add  HL, HL         ; 1:11      1579 *   2x 
@@ -20839,9 +20839,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1579 *
     ld    E, C          ; 1:4       1579 *
                         ;[29:221] 
-                        ;           1581 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1101
+                        ;           1581 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1101 
     ld    B, D          ; 1:4       1581 *
-    ld    C, E          ; 1:4       1581 *  
+    ld    C, E          ; 1:4       1581 * 
     ld    D, H          ; 1:4       1581 *
     ld    E, L          ; 1:4       1581 *   1x 
     add  HL, HL         ; 1:11      1581 *   2x 
@@ -20870,9 +20870,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1581 *
     ld    E, C          ; 1:4       1581 *
                         ;[29:221] 
-                        ;           1583 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1111
+                        ;           1583 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0010_1111 
     ld    B, D          ; 1:4       1583 *
-    ld    C, E          ; 1:4       1583 *  
+    ld    C, E          ; 1:4       1583 * 
     ld    D, H          ; 1:4       1583 *
     ld    E, L          ; 1:4       1583 *   1x 
     add  HL, HL         ; 1:11      1583 *   2x 
@@ -20904,9 +20904,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1583 *
     ld    E, C          ; 1:4       1583 *
                         ;[32:240] 
-                        ;           1585 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0001
+                        ;           1585 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0001 
     ld    B, D          ; 1:4       1585 *
-    ld    C, E          ; 1:4       1585 *  
+    ld    C, E          ; 1:4       1585 * 
     ld    D, H          ; 1:4       1585 *
     ld    E, L          ; 1:4       1585 *   1x 
     add  HL, HL         ; 1:11      1585 *   2x 
@@ -20932,9 +20932,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1585 *
     ld    E, C          ; 1:4       1585 *
                         ;[26:202] 
-                        ;           1587 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0011
+                        ;           1587 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0011 
     ld    B, D          ; 1:4       1587 *
-    ld    C, E          ; 1:4       1587 *  
+    ld    C, E          ; 1:4       1587 * 
     ld    D, H          ; 1:4       1587 *
     ld    E, L          ; 1:4       1587 *   1x 
     add  HL, HL         ; 1:11      1587 *   2x 
@@ -20963,9 +20963,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1587 *
     ld    E, C          ; 1:4       1587 *
                         ;[29:221] 
-                        ;           1589 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0101
+                        ;           1589 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0101 
     ld    B, D          ; 1:4       1589 *
-    ld    C, E          ; 1:4       1589 *  
+    ld    C, E          ; 1:4       1589 * 
     ld    D, H          ; 1:4       1589 *
     ld    E, L          ; 1:4       1589 *   1x 
     add  HL, HL         ; 1:11      1589 *   2x 
@@ -20994,9 +20994,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1589 *
     ld    E, C          ; 1:4       1589 *
                         ;[29:221] 
-                        ;           1591 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0111
+                        ;           1591 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_0111 
     ld    B, D          ; 1:4       1591 *
-    ld    C, E          ; 1:4       1591 *  
+    ld    C, E          ; 1:4       1591 * 
     ld    D, H          ; 1:4       1591 *
     ld    E, L          ; 1:4       1591 *   1x 
     add  HL, HL         ; 1:11      1591 *   2x 
@@ -21028,9 +21028,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1591 *
     ld    E, C          ; 1:4       1591 *
                         ;[32:240] 
-                        ;           1593 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_1001
+                        ;           1593 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_1001 
     ld    B, D          ; 1:4       1593 *
-    ld    C, E          ; 1:4       1593 *  
+    ld    C, E          ; 1:4       1593 * 
     ld    D, H          ; 1:4       1593 *
     ld    E, L          ; 1:4       1593 *   1x 
     add  HL, HL         ; 1:11      1593 *   2x 
@@ -21059,9 +21059,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1593 *
     ld    E, C          ; 1:4       1593 *
                         ;[29:221] 
-                        ;           1595 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_1011
+                        ;           1595 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_1011 
     ld    B, D          ; 1:4       1595 *
-    ld    C, E          ; 1:4       1595 *  
+    ld    C, E          ; 1:4       1595 * 
     ld    D, H          ; 1:4       1595 *
     ld    E, L          ; 1:4       1595 *   1x 
     add  HL, HL         ; 1:11      1595 *   2x 
@@ -21094,9 +21094,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1595 *
                         ;[32:240]
 
-                        ;           1597 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_1101
+                        ;           1597 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0011_1101 
     ld    B, D          ; 1:4       1597 *
-    ld    C, E          ; 1:4       1597 *  
+    ld    C, E          ; 1:4       1597 * 
     ld    D, H          ; 1:4       1597 *
     ld    E, L          ; 1:4       1597 *   1x 
     add  HL, HL         ; 1:11      1597 *   2x 
@@ -21128,9 +21128,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1597 *
     ld    E, C          ; 1:4       1597 *
                         ;[32:240] 
-                        ;           1599 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0011_1111
+                        ;           1599 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0011_1111 
     ld    B, D          ; 1:4       1599 *
-    ld    C, E          ; 1:4       1599 *  
+    ld    C, E          ; 1:4       1599 * 
     ld    D, H          ; 1:4       1599 *
     ld    E, L          ; 1:4       1599 *   1x 
     add  HL, HL         ; 1:11      1599 *   2x 
@@ -21158,9 +21158,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1599 *
     ld    E, C          ; 1:4       1599 *
                         ;[56:194] 
-                        ;           1601 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0001
+                        ;           1601 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0001 
     ld    B, D          ; 1:4       1601 *
-    ld    C, E          ; 1:4       1601 *  
+    ld    C, E          ; 1:4       1601 * 
     ld    D, H          ; 1:4       1601 *
     ld    E, L          ; 1:4       1601 *   1x 
     add  HL, HL         ; 1:11      1601 *   2x 
@@ -21183,9 +21183,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1601 *
     ld    E, C          ; 1:4       1601 *
                         ;[23:183] 
-                        ;           1603 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0011
+                        ;           1603 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0011 
     ld    B, D          ; 1:4       1603 *
-    ld    C, E          ; 1:4       1603 *  
+    ld    C, E          ; 1:4       1603 * 
     ld    D, H          ; 1:4       1603 *
     ld    E, L          ; 1:4       1603 *   1x 
     add  HL, HL         ; 1:11      1603 *   2x 
@@ -21211,9 +21211,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1603 *
     ld    E, C          ; 1:4       1603 *
                         ;[26:202] 
-                        ;           1605 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0101
+                        ;           1605 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0101 
     ld    B, D          ; 1:4       1605 *
-    ld    C, E          ; 1:4       1605 *  
+    ld    C, E          ; 1:4       1605 * 
     ld    D, H          ; 1:4       1605 *
     ld    E, L          ; 1:4       1605 *   1x 
     add  HL, HL         ; 1:11      1605 *   2x 
@@ -21239,9 +21239,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1605 *
     ld    E, C          ; 1:4       1605 *
                         ;[26:202] 
-                        ;           1607 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0111
+                        ;           1607 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_0111 
     ld    B, D          ; 1:4       1607 *
-    ld    C, E          ; 1:4       1607 *  
+    ld    C, E          ; 1:4       1607 * 
     ld    D, H          ; 1:4       1607 *
     ld    E, L          ; 1:4       1607 *   1x 
     add  HL, HL         ; 1:11      1607 *   2x 
@@ -21270,9 +21270,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1607 *
     ld    E, C          ; 1:4       1607 *
                         ;[29:221] 
-                        ;           1609 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1001
+                        ;           1609 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1001 
     ld    B, D          ; 1:4       1609 *
-    ld    C, E          ; 1:4       1609 *  
+    ld    C, E          ; 1:4       1609 * 
     ld    D, H          ; 1:4       1609 *
     ld    E, L          ; 1:4       1609 *   1x 
     add  HL, HL         ; 1:11      1609 *   2x 
@@ -21298,9 +21298,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1609 *
     ld    E, C          ; 1:4       1609 *
                         ;[26:202] 
-                        ;           1611 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1011
+                        ;           1611 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1011 
     ld    B, D          ; 1:4       1611 *
-    ld    C, E          ; 1:4       1611 *  
+    ld    C, E          ; 1:4       1611 * 
     ld    D, H          ; 1:4       1611 *
     ld    E, L          ; 1:4       1611 *   1x 
     add  HL, HL         ; 1:11      1611 *   2x 
@@ -21329,9 +21329,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1611 *
     ld    E, C          ; 1:4       1611 *
                         ;[29:221] 
-                        ;           1613 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1101
+                        ;           1613 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1101 
     ld    B, D          ; 1:4       1613 *
-    ld    C, E          ; 1:4       1613 *  
+    ld    C, E          ; 1:4       1613 * 
     ld    D, H          ; 1:4       1613 *
     ld    E, L          ; 1:4       1613 *   1x 
     add  HL, HL         ; 1:11      1613 *   2x 
@@ -21361,9 +21361,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1613 *
                         ;[29:221]
 
-                        ;           1615 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1111
+                        ;           1615 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0100_1111 
     ld    B, D          ; 1:4       1615 *
-    ld    C, E          ; 1:4       1615 *  
+    ld    C, E          ; 1:4       1615 * 
     ld    D, H          ; 1:4       1615 *
     ld    E, L          ; 1:4       1615 *   1x 
     add  HL, HL         ; 1:11      1615 *   2x 
@@ -21395,9 +21395,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1615 *
     ld    E, C          ; 1:4       1615 *
                         ;[32:240] 
-                        ;           1617 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0001
+                        ;           1617 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0001 
     ld    B, D          ; 1:4       1617 *
-    ld    C, E          ; 1:4       1617 *  
+    ld    C, E          ; 1:4       1617 * 
     ld    D, H          ; 1:4       1617 *
     ld    E, L          ; 1:4       1617 *   1x 
     add  HL, HL         ; 1:11      1617 *   2x 
@@ -21423,9 +21423,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1617 *
     ld    E, C          ; 1:4       1617 *
                         ;[26:202] 
-                        ;           1619 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0011
+                        ;           1619 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0011 
     ld    B, D          ; 1:4       1619 *
-    ld    C, E          ; 1:4       1619 *  
+    ld    C, E          ; 1:4       1619 * 
     ld    D, H          ; 1:4       1619 *
     ld    E, L          ; 1:4       1619 *   1x 
     add  HL, HL         ; 1:11      1619 *   2x 
@@ -21454,9 +21454,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1619 *
     ld    E, C          ; 1:4       1619 *
                         ;[29:221] 
-                        ;           1621 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0101
+                        ;           1621 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0101 
     ld    B, D          ; 1:4       1621 *
-    ld    C, E          ; 1:4       1621 *  
+    ld    C, E          ; 1:4       1621 * 
     ld    D, H          ; 1:4       1621 *
     ld    E, L          ; 1:4       1621 *   1x 
     add  HL, HL         ; 1:11      1621 *   2x 
@@ -21485,9 +21485,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1621 *
     ld    E, C          ; 1:4       1621 *
                         ;[29:221] 
-                        ;           1623 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0111
+                        ;           1623 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_0111 
     ld    B, D          ; 1:4       1623 *
-    ld    C, E          ; 1:4       1623 *  
+    ld    C, E          ; 1:4       1623 * 
     ld    D, H          ; 1:4       1623 *
     ld    E, L          ; 1:4       1623 *   1x 
     add  HL, HL         ; 1:11      1623 *   2x 
@@ -21519,9 +21519,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1623 *
     ld    E, C          ; 1:4       1623 *
                         ;[32:240] 
-                        ;           1625 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_1001
+                        ;           1625 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_1001 
     ld    B, D          ; 1:4       1625 *
-    ld    C, E          ; 1:4       1625 *  
+    ld    C, E          ; 1:4       1625 * 
     ld    D, H          ; 1:4       1625 *
     ld    E, L          ; 1:4       1625 *   1x 
     add  HL, HL         ; 1:11      1625 *   2x 
@@ -21550,9 +21550,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1625 *
     ld    E, C          ; 1:4       1625 *
                         ;[29:221] 
-                        ;           1627 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_1011
+                        ;           1627 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_1011 
     ld    B, D          ; 1:4       1627 *
-    ld    C, E          ; 1:4       1627 *  
+    ld    C, E          ; 1:4       1627 * 
     ld    D, H          ; 1:4       1627 *
     ld    E, L          ; 1:4       1627 *   1x 
     add  HL, HL         ; 1:11      1627 *   2x 
@@ -21584,9 +21584,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1627 *
     ld    E, C          ; 1:4       1627 *
                         ;[32:240] 
-                        ;           1629 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_1101
+                        ;           1629 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0101_1101 
     ld    B, D          ; 1:4       1629 *
-    ld    C, E          ; 1:4       1629 *  
+    ld    C, E          ; 1:4       1629 * 
     ld    D, H          ; 1:4       1629 *
     ld    E, L          ; 1:4       1629 *   1x 
     add  HL, HL         ; 1:11      1629 *   2x 
@@ -21618,9 +21618,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1629 *
     ld    E, C          ; 1:4       1629 *
                         ;[32:240] 
-                        ;           1631 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0101_1111
+                        ;           1631 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0101_1111 
     ld    B, D          ; 1:4       1631 *
-    ld    C, E          ; 1:4       1631 *  
+    ld    C, E          ; 1:4       1631 * 
     ld    D, H          ; 1:4       1631 *
     ld    E, L          ; 1:4       1631 *   1x 
     add  HL, HL         ; 1:11      1631 *   2x 
@@ -21649,9 +21649,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1631 *
                         ;[56:194]
 
-                        ;           1633 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0001
+                        ;           1633 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0001 
     ld    B, D          ; 1:4       1633 *
-    ld    C, E          ; 1:4       1633 *  
+    ld    C, E          ; 1:4       1633 * 
     ld    D, H          ; 1:4       1633 *
     ld    E, L          ; 1:4       1633 *   1x 
     add  HL, HL         ; 1:11      1633 *   2x 
@@ -21677,9 +21677,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1633 *
     ld    E, C          ; 1:4       1633 *
                         ;[26:202] 
-                        ;           1635 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0011
+                        ;           1635 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0011 
     ld    B, D          ; 1:4       1635 *
-    ld    C, E          ; 1:4       1635 *  
+    ld    C, E          ; 1:4       1635 * 
     ld    D, H          ; 1:4       1635 *
     ld    E, L          ; 1:4       1635 *   1x 
     add  HL, HL         ; 1:11      1635 *   2x 
@@ -21708,9 +21708,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1635 *
     ld    E, C          ; 1:4       1635 *
                         ;[29:221] 
-                        ;           1637 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0101
+                        ;           1637 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0101 
     ld    B, D          ; 1:4       1637 *
-    ld    C, E          ; 1:4       1637 *  
+    ld    C, E          ; 1:4       1637 * 
     ld    D, H          ; 1:4       1637 *
     ld    E, L          ; 1:4       1637 *   1x 
     add  HL, HL         ; 1:11      1637 *   2x 
@@ -21739,9 +21739,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1637 *
     ld    E, C          ; 1:4       1637 *
                         ;[29:221] 
-                        ;           1639 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0111
+                        ;           1639 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_0111 
     ld    B, D          ; 1:4       1639 *
-    ld    C, E          ; 1:4       1639 *  
+    ld    C, E          ; 1:4       1639 * 
     ld    D, H          ; 1:4       1639 *
     ld    E, L          ; 1:4       1639 *   1x 
     add  HL, HL         ; 1:11      1639 *   2x 
@@ -21773,9 +21773,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1639 *
     ld    E, C          ; 1:4       1639 *
                         ;[32:240] 
-                        ;           1641 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_1001
+                        ;           1641 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_1001 
     ld    B, D          ; 1:4       1641 *
-    ld    C, E          ; 1:4       1641 *  
+    ld    C, E          ; 1:4       1641 * 
     ld    D, H          ; 1:4       1641 *
     ld    E, L          ; 1:4       1641 *   1x 
     add  HL, HL         ; 1:11      1641 *   2x 
@@ -21804,9 +21804,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1641 *
     ld    E, C          ; 1:4       1641 *
                         ;[29:221] 
-                        ;           1643 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_1011
+                        ;           1643 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_1011 
     ld    B, D          ; 1:4       1643 *
-    ld    C, E          ; 1:4       1643 *  
+    ld    C, E          ; 1:4       1643 * 
     ld    D, H          ; 1:4       1643 *
     ld    E, L          ; 1:4       1643 *   1x 
     add  HL, HL         ; 1:11      1643 *   2x 
@@ -21838,9 +21838,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1643 *
     ld    E, C          ; 1:4       1643 *
                         ;[32:240] 
-                        ;           1645 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_1101
+                        ;           1645 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0110_1101 
     ld    B, D          ; 1:4       1645 *
-    ld    C, E          ; 1:4       1645 *  
+    ld    C, E          ; 1:4       1645 * 
     ld    D, H          ; 1:4       1645 *
     ld    E, L          ; 1:4       1645 *   1x 
     add  HL, HL         ; 1:11      1645 *   2x 
@@ -21872,9 +21872,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1645 *
     ld    E, C          ; 1:4       1645 *
                         ;[32:240] 
-                        ;           1647 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0110_1111
+                        ;           1647 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0110_1111 
     ld    B, D          ; 1:4       1647 *
-    ld    C, E          ; 1:4       1647 *  
+    ld    C, E          ; 1:4       1647 * 
     ld    D, H          ; 1:4       1647 *
     ld    E, L          ; 1:4       1647 *   1x 
     add  HL, HL         ; 1:11      1647 *   2x 
@@ -21902,9 +21902,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1647 *
     ld    E, C          ; 1:4       1647 *
                         ;[56:194] 
-                        ;           1649 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_0001
+                        ;           1649 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_0001 
     ld    B, D          ; 1:4       1649 *
-    ld    C, E          ; 1:4       1649 *  
+    ld    C, E          ; 1:4       1649 * 
     ld    D, H          ; 1:4       1649 *
     ld    E, L          ; 1:4       1649 *   1x 
     add  HL, HL         ; 1:11      1649 *   2x 
@@ -21934,9 +21934,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1649 *
                         ;[29:221]
 
-                        ;           1651 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_0011
+                        ;           1651 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_0011 
     ld    B, D          ; 1:4       1651 *
-    ld    C, E          ; 1:4       1651 *  
+    ld    C, E          ; 1:4       1651 * 
     ld    D, H          ; 1:4       1651 *
     ld    E, L          ; 1:4       1651 *   1x 
     add  HL, HL         ; 1:11      1651 *   2x 
@@ -21968,9 +21968,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1651 *
     ld    E, C          ; 1:4       1651 *
                         ;[32:240] 
-                        ;           1653 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_0101
+                        ;           1653 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_0101 
     ld    B, D          ; 1:4       1653 *
-    ld    C, E          ; 1:4       1653 *  
+    ld    C, E          ; 1:4       1653 * 
     ld    D, H          ; 1:4       1653 *
     ld    E, L          ; 1:4       1653 *   1x 
     add  HL, HL         ; 1:11      1653 *   2x 
@@ -22002,9 +22002,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1653 *
     ld    E, C          ; 1:4       1653 *
                         ;[32:240] 
-                        ;           1655 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_0111
+                        ;           1655 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_0111 
     ld    B, D          ; 1:4       1655 *
-    ld    C, E          ; 1:4       1655 *  
+    ld    C, E          ; 1:4       1655 * 
     ld    D, H          ; 1:4       1655 *
     ld    E, L          ; 1:4       1655 *   1x 
     add  HL, HL         ; 1:11      1655 *   2x 
@@ -22032,9 +22032,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1655 *
     ld    E, C          ; 1:4       1655 *
                         ;[56:194] 
-                        ;           1657 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_1001
+                        ;           1657 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_0111_1001 
     ld    B, D          ; 1:4       1657 *
-    ld    C, E          ; 1:4       1657 *  
+    ld    C, E          ; 1:4       1657 * 
     ld    D, H          ; 1:4       1657 *
     ld    E, L          ; 1:4       1657 *   1x 
     add  HL, HL         ; 1:11      1657 *   2x 
@@ -22066,9 +22066,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1657 *
     ld    E, C          ; 1:4       1657 *
                         ;[32:240] 
-                        ;           1659 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_1011
+                        ;           1659 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_1011 
     ld    B, D          ; 1:4       1659 *
-    ld    C, E          ; 1:4       1659 *  
+    ld    C, E          ; 1:4       1659 * 
     ld    D, H          ; 1:4       1659 *
     ld    E, L          ; 1:4       1659 *   1x 
     add  HL, HL         ; 1:11      1659 *   2x 
@@ -22096,9 +22096,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1659 *
     ld    E, C          ; 1:4       1659 *
                         ;[56:194] 
-                        ;           1661 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_1101
+                        ;           1661 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_1101 
     ld    B, D          ; 1:4       1661 *
-    ld    C, E          ; 1:4       1661 *  
+    ld    C, E          ; 1:4       1661 * 
     ld    D, H          ; 1:4       1661 *
     ld    E, L          ; 1:4       1661 *   1x 
     add  HL, HL         ; 1:11      1661 *   2x 
@@ -22126,9 +22126,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1661 *
     ld    E, C          ; 1:4       1661 *
                         ;[56:194] 
-                        ;           1663 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_1111
+                        ;           1663 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_0111_1111 
     ld    B, D          ; 1:4       1663 *
-    ld    C, E          ; 1:4       1663 *  
+    ld    C, E          ; 1:4       1663 * 
     ld    D, H          ; 1:4       1663 *
     ld    E, L          ; 1:4       1663 *   1x 
     add  HL, HL         ; 1:11      1663 *   2x 
@@ -22153,9 +22153,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1663 *
     ld    E, C          ; 1:4       1663 *
                         ;[53:175] 
-                        ;           1665 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0001
+                        ;           1665 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0001 
     ld    B, D          ; 1:4       1665 *
-    ld    C, E          ; 1:4       1665 *  
+    ld    C, E          ; 1:4       1665 * 
     ld    D, H          ; 1:4       1665 *
     ld    E, L          ; 1:4       1665 *   1x 
     add  HL, HL         ; 1:11      1665 *   2x 
@@ -22178,9 +22178,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1665 *
     ld    E, C          ; 1:4       1665 *
                         ;[23:183] 
-                        ;           1667 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0011
+                        ;           1667 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0011 
     ld    B, D          ; 1:4       1667 *
-    ld    C, E          ; 1:4       1667 *  
+    ld    C, E          ; 1:4       1667 * 
     ld    D, H          ; 1:4       1667 *
     ld    E, L          ; 1:4       1667 *   1x 
     add  HL, HL         ; 1:11      1667 *   2x 
@@ -22207,9 +22207,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1667 *
                         ;[26:202]
 
-                        ;           1669 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0101
+                        ;           1669 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0101 
     ld    B, D          ; 1:4       1669 *
-    ld    C, E          ; 1:4       1669 *  
+    ld    C, E          ; 1:4       1669 * 
     ld    D, H          ; 1:4       1669 *
     ld    E, L          ; 1:4       1669 *   1x 
     add  HL, HL         ; 1:11      1669 *   2x 
@@ -22235,9 +22235,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1669 *
     ld    E, C          ; 1:4       1669 *
                         ;[26:202] 
-                        ;           1671 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0111
+                        ;           1671 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_0111 
     ld    B, D          ; 1:4       1671 *
-    ld    C, E          ; 1:4       1671 *  
+    ld    C, E          ; 1:4       1671 * 
     ld    D, H          ; 1:4       1671 *
     ld    E, L          ; 1:4       1671 *   1x 
     add  HL, HL         ; 1:11      1671 *   2x 
@@ -22266,9 +22266,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1671 *
     ld    E, C          ; 1:4       1671 *
                         ;[29:221] 
-                        ;           1673 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1001
+                        ;           1673 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1001 
     ld    B, D          ; 1:4       1673 *
-    ld    C, E          ; 1:4       1673 *  
+    ld    C, E          ; 1:4       1673 * 
     ld    D, H          ; 1:4       1673 *
     ld    E, L          ; 1:4       1673 *   1x 
     add  HL, HL         ; 1:11      1673 *   2x 
@@ -22294,9 +22294,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1673 *
     ld    E, C          ; 1:4       1673 *
                         ;[26:202] 
-                        ;           1675 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1011
+                        ;           1675 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1011 
     ld    B, D          ; 1:4       1675 *
-    ld    C, E          ; 1:4       1675 *  
+    ld    C, E          ; 1:4       1675 * 
     ld    D, H          ; 1:4       1675 *
     ld    E, L          ; 1:4       1675 *   1x 
     add  HL, HL         ; 1:11      1675 *   2x 
@@ -22325,9 +22325,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1675 *
     ld    E, C          ; 1:4       1675 *
                         ;[29:221] 
-                        ;           1677 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1101
+                        ;           1677 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1101 
     ld    B, D          ; 1:4       1677 *
-    ld    C, E          ; 1:4       1677 *  
+    ld    C, E          ; 1:4       1677 * 
     ld    D, H          ; 1:4       1677 *
     ld    E, L          ; 1:4       1677 *   1x 
     add  HL, HL         ; 1:11      1677 *   2x 
@@ -22356,9 +22356,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1677 *
     ld    E, C          ; 1:4       1677 *
                         ;[29:221] 
-                        ;           1679 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1111
+                        ;           1679 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1000_1111 
     ld    B, D          ; 1:4       1679 *
-    ld    C, E          ; 1:4       1679 *  
+    ld    C, E          ; 1:4       1679 * 
     ld    D, H          ; 1:4       1679 *
     ld    E, L          ; 1:4       1679 *   1x 
     add  HL, HL         ; 1:11      1679 *   2x 
@@ -22390,9 +22390,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1679 *
     ld    E, C          ; 1:4       1679 *
                         ;[32:240] 
-                        ;           1681 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0001
+                        ;           1681 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0001 
     ld    B, D          ; 1:4       1681 *
-    ld    C, E          ; 1:4       1681 *  
+    ld    C, E          ; 1:4       1681 * 
     ld    D, H          ; 1:4       1681 *
     ld    E, L          ; 1:4       1681 *   1x 
     add  HL, HL         ; 1:11      1681 *   2x 
@@ -22418,9 +22418,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1681 *
     ld    E, C          ; 1:4       1681 *
                         ;[26:202] 
-                        ;           1683 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0011
+                        ;           1683 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0011 
     ld    B, D          ; 1:4       1683 *
-    ld    C, E          ; 1:4       1683 *  
+    ld    C, E          ; 1:4       1683 * 
     ld    D, H          ; 1:4       1683 *
     ld    E, L          ; 1:4       1683 *   1x 
     add  HL, HL         ; 1:11      1683 *   2x 
@@ -22449,9 +22449,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1683 *
     ld    E, C          ; 1:4       1683 *
                         ;[29:221] 
-                        ;           1685 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0101
+                        ;           1685 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0101 
     ld    B, D          ; 1:4       1685 *
-    ld    C, E          ; 1:4       1685 *  
+    ld    C, E          ; 1:4       1685 * 
     ld    D, H          ; 1:4       1685 *
     ld    E, L          ; 1:4       1685 *   1x 
     add  HL, HL         ; 1:11      1685 *   2x 
@@ -22481,9 +22481,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1685 *
                         ;[29:221]
 
-                        ;           1687 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0111
+                        ;           1687 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_0111 
     ld    B, D          ; 1:4       1687 *
-    ld    C, E          ; 1:4       1687 *  
+    ld    C, E          ; 1:4       1687 * 
     ld    D, H          ; 1:4       1687 *
     ld    E, L          ; 1:4       1687 *   1x 
     add  HL, HL         ; 1:11      1687 *   2x 
@@ -22515,9 +22515,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1687 *
     ld    E, C          ; 1:4       1687 *
                         ;[32:240] 
-                        ;           1689 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_1001
+                        ;           1689 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_1001 
     ld    B, D          ; 1:4       1689 *
-    ld    C, E          ; 1:4       1689 *  
+    ld    C, E          ; 1:4       1689 * 
     ld    D, H          ; 1:4       1689 *
     ld    E, L          ; 1:4       1689 *   1x 
     add  HL, HL         ; 1:11      1689 *   2x 
@@ -22546,9 +22546,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1689 *
     ld    E, C          ; 1:4       1689 *
                         ;[29:221] 
-                        ;           1691 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_1011
+                        ;           1691 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_1011 
     ld    B, D          ; 1:4       1691 *
-    ld    C, E          ; 1:4       1691 *  
+    ld    C, E          ; 1:4       1691 * 
     ld    D, H          ; 1:4       1691 *
     ld    E, L          ; 1:4       1691 *   1x 
     add  HL, HL         ; 1:11      1691 *   2x 
@@ -22580,9 +22580,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1691 *
     ld    E, C          ; 1:4       1691 *
                         ;[32:240] 
-                        ;           1693 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_1101
+                        ;           1693 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1001_1101 
     ld    B, D          ; 1:4       1693 *
-    ld    C, E          ; 1:4       1693 *  
+    ld    C, E          ; 1:4       1693 * 
     ld    D, H          ; 1:4       1693 *
     ld    E, L          ; 1:4       1693 *   1x 
     add  HL, HL         ; 1:11      1693 *   2x 
@@ -22614,9 +22614,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1693 *
     ld    E, C          ; 1:4       1693 *
                         ;[32:240] 
-                        ;           1695 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1001_1111
+                        ;           1695 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1001_1111 
     ld    B, D          ; 1:4       1695 *
-    ld    C, E          ; 1:4       1695 *  
+    ld    C, E          ; 1:4       1695 * 
     ld    D, H          ; 1:4       1695 *
     ld    E, L          ; 1:4       1695 *   1x 
     add  HL, HL         ; 1:11      1695 *   2x 
@@ -22644,9 +22644,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1695 *
     ld    E, C          ; 1:4       1695 *
                         ;[56:194] 
-                        ;           1697 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0001
+                        ;           1697 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0001 
     ld    B, D          ; 1:4       1697 *
-    ld    C, E          ; 1:4       1697 *  
+    ld    C, E          ; 1:4       1697 * 
     ld    D, H          ; 1:4       1697 *
     ld    E, L          ; 1:4       1697 *   1x 
     add  HL, HL         ; 1:11      1697 *   2x 
@@ -22672,9 +22672,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1697 *
     ld    E, C          ; 1:4       1697 *
                         ;[26:202] 
-                        ;           1699 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0011
+                        ;           1699 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0011 
     ld    B, D          ; 1:4       1699 *
-    ld    C, E          ; 1:4       1699 *  
+    ld    C, E          ; 1:4       1699 * 
     ld    D, H          ; 1:4       1699 *
     ld    E, L          ; 1:4       1699 *   1x 
     add  HL, HL         ; 1:11      1699 *   2x 
@@ -22703,9 +22703,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1699 *
     ld    E, C          ; 1:4       1699 *
                         ;[29:221] 
-                        ;           1701 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0101
+                        ;           1701 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0101 
     ld    B, D          ; 1:4       1701 *
-    ld    C, E          ; 1:4       1701 *  
+    ld    C, E          ; 1:4       1701 * 
     ld    D, H          ; 1:4       1701 *
     ld    E, L          ; 1:4       1701 *   1x 
     add  HL, HL         ; 1:11      1701 *   2x 
@@ -22734,9 +22734,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1701 *
     ld    E, C          ; 1:4       1701 *
                         ;[29:221] 
-                        ;           1703 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0111
+                        ;           1703 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_0111 
     ld    B, D          ; 1:4       1703 *
-    ld    C, E          ; 1:4       1703 *  
+    ld    C, E          ; 1:4       1703 * 
     ld    D, H          ; 1:4       1703 *
     ld    E, L          ; 1:4       1703 *   1x 
     add  HL, HL         ; 1:11      1703 *   2x 
@@ -22769,9 +22769,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1703 *
                         ;[32:240]
 
-                        ;           1705 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_1001
+                        ;           1705 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_1001 
     ld    B, D          ; 1:4       1705 *
-    ld    C, E          ; 1:4       1705 *  
+    ld    C, E          ; 1:4       1705 * 
     ld    D, H          ; 1:4       1705 *
     ld    E, L          ; 1:4       1705 *   1x 
     add  HL, HL         ; 1:11      1705 *   2x 
@@ -22800,9 +22800,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1705 *
     ld    E, C          ; 1:4       1705 *
                         ;[29:221] 
-                        ;           1707 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_1011
+                        ;           1707 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_1011 
     ld    B, D          ; 1:4       1707 *
-    ld    C, E          ; 1:4       1707 *  
+    ld    C, E          ; 1:4       1707 * 
     ld    D, H          ; 1:4       1707 *
     ld    E, L          ; 1:4       1707 *   1x 
     add  HL, HL         ; 1:11      1707 *   2x 
@@ -22834,9 +22834,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1707 *
     ld    E, C          ; 1:4       1707 *
                         ;[32:240] 
-                        ;           1709 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_1101
+                        ;           1709 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1010_1101 
     ld    B, D          ; 1:4       1709 *
-    ld    C, E          ; 1:4       1709 *  
+    ld    C, E          ; 1:4       1709 * 
     ld    D, H          ; 1:4       1709 *
     ld    E, L          ; 1:4       1709 *   1x 
     add  HL, HL         ; 1:11      1709 *   2x 
@@ -22868,9 +22868,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1709 *
     ld    E, C          ; 1:4       1709 *
                         ;[32:240] 
-                        ;           1711 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1010_1111
+                        ;           1711 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1010_1111 
     ld    B, D          ; 1:4       1711 *
-    ld    C, E          ; 1:4       1711 *  
+    ld    C, E          ; 1:4       1711 * 
     ld    D, H          ; 1:4       1711 *
     ld    E, L          ; 1:4       1711 *   1x 
     add  HL, HL         ; 1:11      1711 *   2x 
@@ -22898,9 +22898,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1711 *
     ld    E, C          ; 1:4       1711 *
                         ;[56:194] 
-                        ;           1713 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_0001
+                        ;           1713 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_0001 
     ld    B, D          ; 1:4       1713 *
-    ld    C, E          ; 1:4       1713 *  
+    ld    C, E          ; 1:4       1713 * 
     ld    D, H          ; 1:4       1713 *
     ld    E, L          ; 1:4       1713 *   1x 
     add  HL, HL         ; 1:11      1713 *   2x 
@@ -22929,9 +22929,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1713 *
     ld    E, C          ; 1:4       1713 *
                         ;[29:221] 
-                        ;           1715 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_0011
+                        ;           1715 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_0011 
     ld    B, D          ; 1:4       1715 *
-    ld    C, E          ; 1:4       1715 *  
+    ld    C, E          ; 1:4       1715 * 
     ld    D, H          ; 1:4       1715 *
     ld    E, L          ; 1:4       1715 *   1x 
     add  HL, HL         ; 1:11      1715 *   2x 
@@ -22963,9 +22963,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1715 *
     ld    E, C          ; 1:4       1715 *
                         ;[32:240] 
-                        ;           1717 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_0101
+                        ;           1717 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_0101 
     ld    B, D          ; 1:4       1717 *
-    ld    C, E          ; 1:4       1717 *  
+    ld    C, E          ; 1:4       1717 * 
     ld    D, H          ; 1:4       1717 *
     ld    E, L          ; 1:4       1717 *   1x 
     add  HL, HL         ; 1:11      1717 *   2x 
@@ -22997,9 +22997,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1717 *
     ld    E, C          ; 1:4       1717 *
                         ;[32:240] 
-                        ;           1719 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_0111
+                        ;           1719 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_0111 
     ld    B, D          ; 1:4       1719 *
-    ld    C, E          ; 1:4       1719 *  
+    ld    C, E          ; 1:4       1719 * 
     ld    D, H          ; 1:4       1719 *
     ld    E, L          ; 1:4       1719 *   1x 
     add  HL, HL         ; 1:11      1719 *   2x 
@@ -23027,9 +23027,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1719 *
     ld    E, C          ; 1:4       1719 *
                         ;[56:194] 
-                        ;           1721 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_1001
+                        ;           1721 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1011_1001 
     ld    B, D          ; 1:4       1721 *
-    ld    C, E          ; 1:4       1721 *  
+    ld    C, E          ; 1:4       1721 * 
     ld    D, H          ; 1:4       1721 *
     ld    E, L          ; 1:4       1721 *   1x 
     add  HL, HL         ; 1:11      1721 *   2x 
@@ -23062,9 +23062,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1721 *
                         ;[32:240]
 
-                        ;           1723 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_1011
+                        ;           1723 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_1011 
     ld    B, D          ; 1:4       1723 *
-    ld    C, E          ; 1:4       1723 *  
+    ld    C, E          ; 1:4       1723 * 
     ld    D, H          ; 1:4       1723 *
     ld    E, L          ; 1:4       1723 *   1x 
     add  HL, HL         ; 1:11      1723 *   2x 
@@ -23092,9 +23092,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1723 *
     ld    E, C          ; 1:4       1723 *
                         ;[56:194] 
-                        ;           1725 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_1101
+                        ;           1725 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_1101 
     ld    B, D          ; 1:4       1725 *
-    ld    C, E          ; 1:4       1725 *  
+    ld    C, E          ; 1:4       1725 * 
     ld    D, H          ; 1:4       1725 *
     ld    E, L          ; 1:4       1725 *   1x 
     add  HL, HL         ; 1:11      1725 *   2x 
@@ -23122,9 +23122,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1725 *
     ld    E, C          ; 1:4       1725 *
                         ;[56:194] 
-                        ;           1727 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_1111
+                        ;           1727 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1011_1111 
     ld    B, D          ; 1:4       1727 *
-    ld    C, E          ; 1:4       1727 *  
+    ld    C, E          ; 1:4       1727 * 
     ld    D, H          ; 1:4       1727 *
     ld    E, L          ; 1:4       1727 *   1x 
     add  HL, HL         ; 1:11      1727 *   2x 
@@ -23149,9 +23149,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1727 *
     ld    E, C          ; 1:4       1727 *
                         ;[53:175] 
-                        ;           1729 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0001
+                        ;           1729 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0001 
     ld    B, D          ; 1:4       1729 *
-    ld    C, E          ; 1:4       1729 *  
+    ld    C, E          ; 1:4       1729 * 
     ld    D, H          ; 1:4       1729 *
     ld    E, L          ; 1:4       1729 *   1x 
     add  HL, HL         ; 1:11      1729 *   2x 
@@ -23177,9 +23177,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1729 *
     ld    E, C          ; 1:4       1729 *
                         ;[26:202] 
-                        ;           1731 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0011
+                        ;           1731 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0011 
     ld    B, D          ; 1:4       1731 *
-    ld    C, E          ; 1:4       1731 *  
+    ld    C, E          ; 1:4       1731 * 
     ld    D, H          ; 1:4       1731 *
     ld    E, L          ; 1:4       1731 *   1x 
     add  HL, HL         ; 1:11      1731 *   2x 
@@ -23208,9 +23208,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1731 *
     ld    E, C          ; 1:4       1731 *
                         ;[29:221] 
-                        ;           1733 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0101
+                        ;           1733 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0101 
     ld    B, D          ; 1:4       1733 *
-    ld    C, E          ; 1:4       1733 *  
+    ld    C, E          ; 1:4       1733 * 
     ld    D, H          ; 1:4       1733 *
     ld    E, L          ; 1:4       1733 *   1x 
     add  HL, HL         ; 1:11      1733 *   2x 
@@ -23239,9 +23239,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1733 *
     ld    E, C          ; 1:4       1733 *
                         ;[29:221] 
-                        ;           1735 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0111
+                        ;           1735 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_0111 
     ld    B, D          ; 1:4       1735 *
-    ld    C, E          ; 1:4       1735 *  
+    ld    C, E          ; 1:4       1735 * 
     ld    D, H          ; 1:4       1735 *
     ld    E, L          ; 1:4       1735 *   1x 
     add  HL, HL         ; 1:11      1735 *   2x 
@@ -23273,9 +23273,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1735 *
     ld    E, C          ; 1:4       1735 *
                         ;[32:240] 
-                        ;           1737 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_1001
+                        ;           1737 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_1001 
     ld    B, D          ; 1:4       1737 *
-    ld    C, E          ; 1:4       1737 *  
+    ld    C, E          ; 1:4       1737 * 
     ld    D, H          ; 1:4       1737 *
     ld    E, L          ; 1:4       1737 *   1x 
     add  HL, HL         ; 1:11      1737 *   2x 
@@ -23304,9 +23304,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1737 *
     ld    E, C          ; 1:4       1737 *
                         ;[29:221] 
-                        ;           1739 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_1011
+                        ;           1739 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_1011 
     ld    B, D          ; 1:4       1739 *
-    ld    C, E          ; 1:4       1739 *  
+    ld    C, E          ; 1:4       1739 * 
     ld    D, H          ; 1:4       1739 *
     ld    E, L          ; 1:4       1739 *   1x 
     add  HL, HL         ; 1:11      1739 *   2x 
@@ -23339,9 +23339,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1739 *
                         ;[32:240]
 
-                        ;           1741 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_1101
+                        ;           1741 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1100_1101 
     ld    B, D          ; 1:4       1741 *
-    ld    C, E          ; 1:4       1741 *  
+    ld    C, E          ; 1:4       1741 * 
     ld    D, H          ; 1:4       1741 *
     ld    E, L          ; 1:4       1741 *   1x 
     add  HL, HL         ; 1:11      1741 *   2x 
@@ -23373,9 +23373,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1741 *
     ld    E, C          ; 1:4       1741 *
                         ;[32:240] 
-                        ;           1743 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1100_1111
+                        ;           1743 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1100_1111 
     ld    B, D          ; 1:4       1743 *
-    ld    C, E          ; 1:4       1743 *  
+    ld    C, E          ; 1:4       1743 * 
     ld    D, H          ; 1:4       1743 *
     ld    E, L          ; 1:4       1743 *   1x 
     add  HL, HL         ; 1:11      1743 *   2x 
@@ -23403,9 +23403,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1743 *
     ld    E, C          ; 1:4       1743 *
                         ;[56:194] 
-                        ;           1745 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_0001
+                        ;           1745 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_0001 
     ld    B, D          ; 1:4       1745 *
-    ld    C, E          ; 1:4       1745 *  
+    ld    C, E          ; 1:4       1745 * 
     ld    D, H          ; 1:4       1745 *
     ld    E, L          ; 1:4       1745 *   1x 
     add  HL, HL         ; 1:11      1745 *   2x 
@@ -23434,9 +23434,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1745 *
     ld    E, C          ; 1:4       1745 *
                         ;[29:221] 
-                        ;           1747 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_0011
+                        ;           1747 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_0011 
     ld    B, D          ; 1:4       1747 *
-    ld    C, E          ; 1:4       1747 *  
+    ld    C, E          ; 1:4       1747 * 
     ld    D, H          ; 1:4       1747 *
     ld    E, L          ; 1:4       1747 *   1x 
     add  HL, HL         ; 1:11      1747 *   2x 
@@ -23468,9 +23468,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1747 *
     ld    E, C          ; 1:4       1747 *
                         ;[32:240] 
-                        ;           1749 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_0101
+                        ;           1749 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_0101 
     ld    B, D          ; 1:4       1749 *
-    ld    C, E          ; 1:4       1749 *  
+    ld    C, E          ; 1:4       1749 * 
     ld    D, H          ; 1:4       1749 *
     ld    E, L          ; 1:4       1749 *   1x 
     add  HL, HL         ; 1:11      1749 *   2x 
@@ -23502,9 +23502,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1749 *
     ld    E, C          ; 1:4       1749 *
                         ;[32:240] 
-                        ;           1751 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_0111
+                        ;           1751 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_0111 
     ld    B, D          ; 1:4       1751 *
-    ld    C, E          ; 1:4       1751 *  
+    ld    C, E          ; 1:4       1751 * 
     ld    D, H          ; 1:4       1751 *
     ld    E, L          ; 1:4       1751 *   1x 
     add  HL, HL         ; 1:11      1751 *   2x 
@@ -23532,9 +23532,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1751 *
     ld    E, C          ; 1:4       1751 *
                         ;[56:194] 
-                        ;           1753 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_1001
+                        ;           1753 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1101_1001 
     ld    B, D          ; 1:4       1753 *
-    ld    C, E          ; 1:4       1753 *  
+    ld    C, E          ; 1:4       1753 * 
     ld    D, H          ; 1:4       1753 *
     ld    E, L          ; 1:4       1753 *   1x 
     add  HL, HL         ; 1:11      1753 *   2x 
@@ -23566,9 +23566,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1753 *
     ld    E, C          ; 1:4       1753 *
                         ;[32:240] 
-                        ;           1755 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_1011
+                        ;           1755 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_1011 
     ld    B, D          ; 1:4       1755 *
-    ld    C, E          ; 1:4       1755 *  
+    ld    C, E          ; 1:4       1755 * 
     ld    D, H          ; 1:4       1755 *
     ld    E, L          ; 1:4       1755 *   1x 
     add  HL, HL         ; 1:11      1755 *   2x 
@@ -23596,9 +23596,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1755 *
     ld    E, C          ; 1:4       1755 *
                         ;[56:194] 
-                        ;           1757 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_1101
+                        ;           1757 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_1101 
     ld    B, D          ; 1:4       1757 *
-    ld    C, E          ; 1:4       1757 *  
+    ld    C, E          ; 1:4       1757 * 
     ld    D, H          ; 1:4       1757 *
     ld    E, L          ; 1:4       1757 *   1x 
     add  HL, HL         ; 1:11      1757 *   2x 
@@ -23627,9 +23627,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1757 *
                         ;[56:194]
 
-                        ;           1759 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_1111
+                        ;           1759 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1101_1111 
     ld    B, D          ; 1:4       1759 *
-    ld    C, E          ; 1:4       1759 *  
+    ld    C, E          ; 1:4       1759 * 
     ld    D, H          ; 1:4       1759 *
     ld    E, L          ; 1:4       1759 *   1x 
     add  HL, HL         ; 1:11      1759 *   2x 
@@ -23654,9 +23654,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1759 *
     ld    E, C          ; 1:4       1759 *
                         ;[53:175] 
-                        ;           1761 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_0001
+                        ;           1761 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_0001 
     ld    B, D          ; 1:4       1761 *
-    ld    C, E          ; 1:4       1761 *  
+    ld    C, E          ; 1:4       1761 * 
     ld    D, H          ; 1:4       1761 *
     ld    E, L          ; 1:4       1761 *   1x 
     add  HL, HL         ; 1:11      1761 *   2x 
@@ -23685,9 +23685,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1761 *
     ld    E, C          ; 1:4       1761 *
                         ;[29:221] 
-                        ;           1763 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_0011
+                        ;           1763 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_0011 
     ld    B, D          ; 1:4       1763 *
-    ld    C, E          ; 1:4       1763 *  
+    ld    C, E          ; 1:4       1763 * 
     ld    D, H          ; 1:4       1763 *
     ld    E, L          ; 1:4       1763 *   1x 
     add  HL, HL         ; 1:11      1763 *   2x 
@@ -23719,9 +23719,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1763 *
     ld    E, C          ; 1:4       1763 *
                         ;[32:240] 
-                        ;           1765 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_0101
+                        ;           1765 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_0101 
     ld    B, D          ; 1:4       1765 *
-    ld    C, E          ; 1:4       1765 *  
+    ld    C, E          ; 1:4       1765 * 
     ld    D, H          ; 1:4       1765 *
     ld    E, L          ; 1:4       1765 *   1x 
     add  HL, HL         ; 1:11      1765 *   2x 
@@ -23753,9 +23753,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1765 *
     ld    E, C          ; 1:4       1765 *
                         ;[32:240] 
-                        ;           1767 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_0111
+                        ;           1767 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_0111 
     ld    B, D          ; 1:4       1767 *
-    ld    C, E          ; 1:4       1767 *  
+    ld    C, E          ; 1:4       1767 * 
     ld    D, H          ; 1:4       1767 *
     ld    E, L          ; 1:4       1767 *   1x 
     add  HL, HL         ; 1:11      1767 *   2x 
@@ -23783,9 +23783,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1767 *
     ld    E, C          ; 1:4       1767 *
                         ;[56:194] 
-                        ;           1769 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_1001
+                        ;           1769 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1110_1001 
     ld    B, D          ; 1:4       1769 *
-    ld    C, E          ; 1:4       1769 *  
+    ld    C, E          ; 1:4       1769 * 
     ld    D, H          ; 1:4       1769 *
     ld    E, L          ; 1:4       1769 *   1x 
     add  HL, HL         ; 1:11      1769 *   2x 
@@ -23817,9 +23817,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1769 *
     ld    E, C          ; 1:4       1769 *
                         ;[32:240] 
-                        ;           1771 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_1011
+                        ;           1771 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_1011 
     ld    B, D          ; 1:4       1771 *
-    ld    C, E          ; 1:4       1771 *  
+    ld    C, E          ; 1:4       1771 * 
     ld    D, H          ; 1:4       1771 *
     ld    E, L          ; 1:4       1771 *   1x 
     add  HL, HL         ; 1:11      1771 *   2x 
@@ -23847,9 +23847,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1771 *
     ld    E, C          ; 1:4       1771 *
                         ;[56:194] 
-                        ;           1773 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_1101
+                        ;           1773 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_1101 
     ld    B, D          ; 1:4       1773 *
-    ld    C, E          ; 1:4       1773 *  
+    ld    C, E          ; 1:4       1773 * 
     ld    D, H          ; 1:4       1773 *
     ld    E, L          ; 1:4       1773 *   1x 
     add  HL, HL         ; 1:11      1773 *   2x 
@@ -23877,9 +23877,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1773 *
     ld    E, C          ; 1:4       1773 *
                         ;[56:194] 
-                        ;           1775 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_1111
+                        ;           1775 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1110_1111 
     ld    B, D          ; 1:4       1775 *
-    ld    C, E          ; 1:4       1775 *  
+    ld    C, E          ; 1:4       1775 * 
     ld    D, H          ; 1:4       1775 *
     ld    E, L          ; 1:4       1775 *   1x 
     add  HL, HL         ; 1:11      1775 *   2x 
@@ -23905,9 +23905,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1775 *
                         ;[53:175]
 
-                        ;           1777 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1111_0001
+                        ;           1777 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0110_1111_0001 
     ld    B, D          ; 1:4       1777 *
-    ld    C, E          ; 1:4       1777 *  
+    ld    C, E          ; 1:4       1777 * 
     ld    D, H          ; 1:4       1777 *
     ld    E, L          ; 1:4       1777 *   1x 
     add  HL, HL         ; 1:11      1777 *   2x 
@@ -23939,9 +23939,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1777 *
     ld    E, C          ; 1:4       1777 *
                         ;[32:240] 
-                        ;           1779 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_0011
+                        ;           1779 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_0011 
     ld    B, D          ; 1:4       1779 *
-    ld    C, E          ; 1:4       1779 *  
+    ld    C, E          ; 1:4       1779 * 
     ld    D, H          ; 1:4       1779 *
     ld    E, L          ; 1:4       1779 *   1x 
     add  HL, HL         ; 1:11      1779 *   2x 
@@ -23969,9 +23969,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1779 *
     ld    E, C          ; 1:4       1779 *
                         ;[56:194] 
-                        ;           1781 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_0101
+                        ;           1781 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_0101 
     ld    B, D          ; 1:4       1781 *
-    ld    C, E          ; 1:4       1781 *  
+    ld    C, E          ; 1:4       1781 * 
     ld    D, H          ; 1:4       1781 *
     ld    E, L          ; 1:4       1781 *   1x 
     add  HL, HL         ; 1:11      1781 *   2x 
@@ -23999,9 +23999,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1781 *
     ld    E, C          ; 1:4       1781 *
                         ;[56:194] 
-                        ;           1783 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_0111
+                        ;           1783 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_0111 
     ld    B, D          ; 1:4       1783 *
-    ld    C, E          ; 1:4       1783 *  
+    ld    C, E          ; 1:4       1783 * 
     ld    D, H          ; 1:4       1783 *
     ld    E, L          ; 1:4       1783 *   1x 
     add  HL, HL         ; 1:11      1783 *   2x 
@@ -24026,9 +24026,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1783 *
     ld    E, C          ; 1:4       1783 *
                         ;[53:175] 
-                        ;           1785 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_1001
+                        ;           1785 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_1001 
     ld    B, D          ; 1:4       1785 *
-    ld    C, E          ; 1:4       1785 *  
+    ld    C, E          ; 1:4       1785 * 
     ld    D, H          ; 1:4       1785 *
     ld    E, L          ; 1:4       1785 *   1x 
     add  HL, HL         ; 1:11      1785 *   2x 
@@ -24056,9 +24056,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1785 *
     ld    E, C          ; 1:4       1785 *
                         ;[56:194] 
-                        ;           1787 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_1011
+                        ;           1787 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_1011 
     ld    B, D          ; 1:4       1787 *
-    ld    C, E          ; 1:4       1787 *  
+    ld    C, E          ; 1:4       1787 * 
     ld    D, H          ; 1:4       1787 *
     ld    E, L          ; 1:4       1787 *   1x 
     add  HL, HL         ; 1:11      1787 *   2x 
@@ -24083,15 +24083,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       1787 *
     ld    E, C          ; 1:4       1787 *
                         ;[53:175] 
-                        ;           1789 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_1101
+                        ;           1789 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0110_1111_1101 
     ld    B, D          ; 1:4       1789 *
-    ld    C, E          ; 1:4       1789 *  
+    ld    C, E          ; 1:4       1789 * 
     ld    D, H          ; 1:4       1789 *
     ld    E, L          ; 1:4       1789 *   1x 
     add  HL, HL         ; 1:11      1789 *   2x 
     ex   DE, HL         ; 1:4       1789 *
     add  HL, DE         ; 1:11      1789 *   3x
-    ex   DE, HL         ; 1:4       1789 *  
+    ex   DE, HL         ; 1:4       1789 * 
     rr    H             ; 2:8       1789 *
     rr    L             ; 2:8       1789 *
     ld    H, L          ; 1:4       1789 *
@@ -24107,15 +24107,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       1789 *
     ld    E, C          ; 1:4       1789 *
                         ;[53:125] 
-                        ;           1791 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0110_1111_1111 
+                        ;           1791 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0110_1111_1111  
     ld    B, H          ; 1:4       1791 *
     ld    A, L          ; 1:4       1791 *   1x 
     ld    H, L          ; 1:4       1791 *
     ld    L, 0x00       ; 2:7       1791 *   256x 
     add   A, L          ; 1:4       1791 *
-    ld    C, A          ; 1:4       1791 *   
-    ld    A, B          ; 1:4       1791 *   
-    adc   A, H          ; 1:4       1791 *   
+    ld    C, A          ; 1:4       1791 *
+    ld    A, B          ; 1:4       1791 *
+    adc   A, H          ; 1:4       1791 *
     ld    B, A          ; 1:4       1791 *   257x 
     add  HL, HL         ; 1:11      1791 *   512x 
     add  HL, HL         ; 1:11      1791 *   1024x 
@@ -24123,9 +24123,9 @@ ORG 0x6000
     or    A             ; 1:4       1791 *
     sbc  HL, BC         ; 2:15      1791 *   2048x - 257x = 1791x
                         ;[16:91] 
-                        ;           1793 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0001
+                        ;           1793 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0001 
     ld    B, D          ; 1:4       1793 *
-    ld    C, E          ; 1:4       1793 *  
+    ld    C, E          ; 1:4       1793 * 
     ld    D, H          ; 1:4       1793 *
     ld    E, L          ; 1:4       1793 *   1x 
     ld    H, L          ; 1:4       1793 *
@@ -24143,15 +24143,15 @@ ORG 0x6000
     ld    E, C          ; 1:4       1793 *
                         ;[18:106]
 
-                        ;           1795 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0011
+                        ;           1795 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0011 
     ld    B, D          ; 1:4       1795 *
-    ld    C, E          ; 1:4       1795 *  
+    ld    C, E          ; 1:4       1795 * 
     ld    D, H          ; 1:4       1795 *
     ld    E, L          ; 1:4       1795 *   1x 
     add  HL, HL         ; 1:11      1795 *   2x 
     ex   DE, HL         ; 1:4       1795 *
     add  HL, DE         ; 1:11      1795 *   3x
-    ex   DE, HL         ; 1:4       1795 *  
+    ex   DE, HL         ; 1:4       1795 * 
     rr    H             ; 2:8       1795 *
     rr    L             ; 2:8       1795 *
     ld    H, L          ; 1:4       1795 *
@@ -24168,9 +24168,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1795 *
     ld    E, C          ; 1:4       1795 *
                         ;[26:152] 
-                        ;           1797 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0101
+                        ;           1797 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0101 
     ld    B, D          ; 1:4       1797 *
-    ld    C, E          ; 1:4       1797 *  
+    ld    C, E          ; 1:4       1797 * 
     ld    D, H          ; 1:4       1797 *
     ld    E, L          ; 1:4       1797 *   1x 
     add  HL, HL         ; 1:11      1797 *   2x 
@@ -24196,9 +24196,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1797 *
     ld    E, C          ; 1:4       1797 *
                         ;[26:202] 
-                        ;           1799 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0111
+                        ;           1799 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_0111 
     ld    B, D          ; 1:4       1799 *
-    ld    C, E          ; 1:4       1799 *  
+    ld    C, E          ; 1:4       1799 * 
     ld    D, H          ; 1:4       1799 *
     ld    E, L          ; 1:4       1799 *   1x 
     add  HL, HL         ; 1:11      1799 *   2x 
@@ -24227,9 +24227,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1799 *
     ld    E, C          ; 1:4       1799 *
                         ;[29:221] 
-                        ;           1801 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1001
+                        ;           1801 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1001 
     ld    B, D          ; 1:4       1801 *
-    ld    C, E          ; 1:4       1801 *  
+    ld    C, E          ; 1:4       1801 * 
     ld    D, H          ; 1:4       1801 *
     ld    E, L          ; 1:4       1801 *   1x 
     add  HL, HL         ; 1:11      1801 *   2x 
@@ -24255,9 +24255,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1801 *
     ld    E, C          ; 1:4       1801 *
                         ;[26:202] 
-                        ;           1803 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1011
+                        ;           1803 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1011 
     ld    B, D          ; 1:4       1803 *
-    ld    C, E          ; 1:4       1803 *  
+    ld    C, E          ; 1:4       1803 * 
     ld    D, H          ; 1:4       1803 *
     ld    E, L          ; 1:4       1803 *   1x 
     add  HL, HL         ; 1:11      1803 *   2x 
@@ -24286,9 +24286,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1803 *
     ld    E, C          ; 1:4       1803 *
                         ;[29:221] 
-                        ;           1805 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1101
+                        ;           1805 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1101 
     ld    B, D          ; 1:4       1805 *
-    ld    C, E          ; 1:4       1805 *  
+    ld    C, E          ; 1:4       1805 * 
     ld    D, H          ; 1:4       1805 *
     ld    E, L          ; 1:4       1805 *   1x 
     add  HL, HL         ; 1:11      1805 *   2x 
@@ -24317,9 +24317,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1805 *
     ld    E, C          ; 1:4       1805 *
                         ;[29:221] 
-                        ;           1807 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1111
+                        ;           1807 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0000_1111 
     ld    B, D          ; 1:4       1807 *
-    ld    C, E          ; 1:4       1807 *  
+    ld    C, E          ; 1:4       1807 * 
     ld    D, H          ; 1:4       1807 *
     ld    E, L          ; 1:4       1807 *   1x 
     add  HL, HL         ; 1:11      1807 *   2x 
@@ -24351,9 +24351,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1807 *
     ld    E, C          ; 1:4       1807 *
                         ;[32:240] 
-                        ;           1809 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0001
+                        ;           1809 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0001 
     ld    B, D          ; 1:4       1809 *
-    ld    C, E          ; 1:4       1809 *  
+    ld    C, E          ; 1:4       1809 * 
     ld    D, H          ; 1:4       1809 *
     ld    E, L          ; 1:4       1809 *   1x 
     add  HL, HL         ; 1:11      1809 *   2x 
@@ -24379,9 +24379,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1809 *
     ld    E, C          ; 1:4       1809 *
                         ;[26:202] 
-                        ;           1811 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0011
+                        ;           1811 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0011 
     ld    B, D          ; 1:4       1811 *
-    ld    C, E          ; 1:4       1811 *  
+    ld    C, E          ; 1:4       1811 * 
     ld    D, H          ; 1:4       1811 *
     ld    E, L          ; 1:4       1811 *   1x 
     add  HL, HL         ; 1:11      1811 *   2x 
@@ -24411,9 +24411,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1811 *
                         ;[29:221]
 
-                        ;           1813 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0101
+                        ;           1813 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0101 
     ld    B, D          ; 1:4       1813 *
-    ld    C, E          ; 1:4       1813 *  
+    ld    C, E          ; 1:4       1813 * 
     ld    D, H          ; 1:4       1813 *
     ld    E, L          ; 1:4       1813 *   1x 
     add  HL, HL         ; 1:11      1813 *   2x 
@@ -24442,9 +24442,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1813 *
     ld    E, C          ; 1:4       1813 *
                         ;[29:221] 
-                        ;           1815 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0111
+                        ;           1815 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_0111 
     ld    B, D          ; 1:4       1815 *
-    ld    C, E          ; 1:4       1815 *  
+    ld    C, E          ; 1:4       1815 * 
     ld    D, H          ; 1:4       1815 *
     ld    E, L          ; 1:4       1815 *   1x 
     add  HL, HL         ; 1:11      1815 *   2x 
@@ -24476,9 +24476,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1815 *
     ld    E, C          ; 1:4       1815 *
                         ;[32:240] 
-                        ;           1817 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_1001
+                        ;           1817 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_1001 
     ld    B, D          ; 1:4       1817 *
-    ld    C, E          ; 1:4       1817 *  
+    ld    C, E          ; 1:4       1817 * 
     ld    D, H          ; 1:4       1817 *
     ld    E, L          ; 1:4       1817 *   1x 
     add  HL, HL         ; 1:11      1817 *   2x 
@@ -24507,9 +24507,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1817 *
     ld    E, C          ; 1:4       1817 *
                         ;[29:221] 
-                        ;           1819 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_1011
+                        ;           1819 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_1011 
     ld    B, D          ; 1:4       1819 *
-    ld    C, E          ; 1:4       1819 *  
+    ld    C, E          ; 1:4       1819 * 
     ld    D, H          ; 1:4       1819 *
     ld    E, L          ; 1:4       1819 *   1x 
     add  HL, HL         ; 1:11      1819 *   2x 
@@ -24541,9 +24541,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1819 *
     ld    E, C          ; 1:4       1819 *
                         ;[32:240] 
-                        ;           1821 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_1101
+                        ;           1821 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0001_1101 
     ld    B, D          ; 1:4       1821 *
-    ld    C, E          ; 1:4       1821 *  
+    ld    C, E          ; 1:4       1821 * 
     ld    D, H          ; 1:4       1821 *
     ld    E, L          ; 1:4       1821 *   1x 
     add  HL, HL         ; 1:11      1821 *   2x 
@@ -24575,9 +24575,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1821 *
     ld    E, C          ; 1:4       1821 *
                         ;[32:240] 
-                        ;           1823 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0001_1111
+                        ;           1823 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0001_1111 
     ld    B, D          ; 1:4       1823 *
-    ld    C, E          ; 1:4       1823 *  
+    ld    C, E          ; 1:4       1823 * 
     ld    D, H          ; 1:4       1823 *
     ld    E, L          ; 1:4       1823 *   1x 
     add  HL, HL         ; 1:11      1823 *   2x 
@@ -24605,9 +24605,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1823 *
     ld    E, C          ; 1:4       1823 *
                         ;[56:194] 
-                        ;           1825 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0001
+                        ;           1825 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0001 
     ld    B, D          ; 1:4       1825 *
-    ld    C, E          ; 1:4       1825 *  
+    ld    C, E          ; 1:4       1825 * 
     ld    D, H          ; 1:4       1825 *
     ld    E, L          ; 1:4       1825 *   1x 
     add  HL, HL         ; 1:11      1825 *   2x 
@@ -24633,9 +24633,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1825 *
     ld    E, C          ; 1:4       1825 *
                         ;[26:202] 
-                        ;           1827 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0011
+                        ;           1827 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0011 
     ld    B, D          ; 1:4       1827 *
-    ld    C, E          ; 1:4       1827 *  
+    ld    C, E          ; 1:4       1827 * 
     ld    D, H          ; 1:4       1827 *
     ld    E, L          ; 1:4       1827 *   1x 
     add  HL, HL         ; 1:11      1827 *   2x 
@@ -24664,9 +24664,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1827 *
     ld    E, C          ; 1:4       1827 *
                         ;[29:221] 
-                        ;           1829 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0101
+                        ;           1829 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0101 
     ld    B, D          ; 1:4       1829 *
-    ld    C, E          ; 1:4       1829 *  
+    ld    C, E          ; 1:4       1829 * 
     ld    D, H          ; 1:4       1829 *
     ld    E, L          ; 1:4       1829 *   1x 
     add  HL, HL         ; 1:11      1829 *   2x 
@@ -24696,9 +24696,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1829 *
                         ;[29:221]
 
-                        ;           1831 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0111
+                        ;           1831 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_0111 
     ld    B, D          ; 1:4       1831 *
-    ld    C, E          ; 1:4       1831 *  
+    ld    C, E          ; 1:4       1831 * 
     ld    D, H          ; 1:4       1831 *
     ld    E, L          ; 1:4       1831 *   1x 
     add  HL, HL         ; 1:11      1831 *   2x 
@@ -24730,9 +24730,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1831 *
     ld    E, C          ; 1:4       1831 *
                         ;[32:240] 
-                        ;           1833 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_1001
+                        ;           1833 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_1001 
     ld    B, D          ; 1:4       1833 *
-    ld    C, E          ; 1:4       1833 *  
+    ld    C, E          ; 1:4       1833 * 
     ld    D, H          ; 1:4       1833 *
     ld    E, L          ; 1:4       1833 *   1x 
     add  HL, HL         ; 1:11      1833 *   2x 
@@ -24761,9 +24761,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1833 *
     ld    E, C          ; 1:4       1833 *
                         ;[29:221] 
-                        ;           1835 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_1011
+                        ;           1835 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_1011 
     ld    B, D          ; 1:4       1835 *
-    ld    C, E          ; 1:4       1835 *  
+    ld    C, E          ; 1:4       1835 * 
     ld    D, H          ; 1:4       1835 *
     ld    E, L          ; 1:4       1835 *   1x 
     add  HL, HL         ; 1:11      1835 *   2x 
@@ -24795,9 +24795,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1835 *
     ld    E, C          ; 1:4       1835 *
                         ;[32:240] 
-                        ;           1837 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_1101
+                        ;           1837 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0010_1101 
     ld    B, D          ; 1:4       1837 *
-    ld    C, E          ; 1:4       1837 *  
+    ld    C, E          ; 1:4       1837 * 
     ld    D, H          ; 1:4       1837 *
     ld    E, L          ; 1:4       1837 *   1x 
     add  HL, HL         ; 1:11      1837 *   2x 
@@ -24829,9 +24829,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1837 *
     ld    E, C          ; 1:4       1837 *
                         ;[32:240] 
-                        ;           1839 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0010_1111
+                        ;           1839 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0010_1111 
     ld    B, D          ; 1:4       1839 *
-    ld    C, E          ; 1:4       1839 *  
+    ld    C, E          ; 1:4       1839 * 
     ld    D, H          ; 1:4       1839 *
     ld    E, L          ; 1:4       1839 *   1x 
     add  HL, HL         ; 1:11      1839 *   2x 
@@ -24859,9 +24859,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1839 *
     ld    E, C          ; 1:4       1839 *
                         ;[56:194] 
-                        ;           1841 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_0001
+                        ;           1841 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_0001 
     ld    B, D          ; 1:4       1841 *
-    ld    C, E          ; 1:4       1841 *  
+    ld    C, E          ; 1:4       1841 * 
     ld    D, H          ; 1:4       1841 *
     ld    E, L          ; 1:4       1841 *   1x 
     add  HL, HL         ; 1:11      1841 *   2x 
@@ -24890,9 +24890,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1841 *
     ld    E, C          ; 1:4       1841 *
                         ;[29:221] 
-                        ;           1843 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_0011
+                        ;           1843 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_0011 
     ld    B, D          ; 1:4       1843 *
-    ld    C, E          ; 1:4       1843 *  
+    ld    C, E          ; 1:4       1843 * 
     ld    D, H          ; 1:4       1843 *
     ld    E, L          ; 1:4       1843 *   1x 
     add  HL, HL         ; 1:11      1843 *   2x 
@@ -24924,9 +24924,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1843 *
     ld    E, C          ; 1:4       1843 *
                         ;[32:240] 
-                        ;           1845 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_0101
+                        ;           1845 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_0101 
     ld    B, D          ; 1:4       1845 *
-    ld    C, E          ; 1:4       1845 *  
+    ld    C, E          ; 1:4       1845 * 
     ld    D, H          ; 1:4       1845 *
     ld    E, L          ; 1:4       1845 *   1x 
     add  HL, HL         ; 1:11      1845 *   2x 
@@ -24958,9 +24958,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1845 *
     ld    E, C          ; 1:4       1845 *
                         ;[32:240] 
-                        ;           1847 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_0111
+                        ;           1847 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_0111 
     ld    B, D          ; 1:4       1847 *
-    ld    C, E          ; 1:4       1847 *  
+    ld    C, E          ; 1:4       1847 * 
     ld    D, H          ; 1:4       1847 *
     ld    E, L          ; 1:4       1847 *   1x 
     add  HL, HL         ; 1:11      1847 *   2x 
@@ -24989,9 +24989,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1847 *
                         ;[56:194]
 
-                        ;           1849 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_1001
+                        ;           1849 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0011_1001 
     ld    B, D          ; 1:4       1849 *
-    ld    C, E          ; 1:4       1849 *  
+    ld    C, E          ; 1:4       1849 * 
     ld    D, H          ; 1:4       1849 *
     ld    E, L          ; 1:4       1849 *   1x 
     add  HL, HL         ; 1:11      1849 *   2x 
@@ -25023,9 +25023,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1849 *
     ld    E, C          ; 1:4       1849 *
                         ;[32:240] 
-                        ;           1851 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_1011
+                        ;           1851 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_1011 
     ld    B, D          ; 1:4       1851 *
-    ld    C, E          ; 1:4       1851 *  
+    ld    C, E          ; 1:4       1851 * 
     ld    D, H          ; 1:4       1851 *
     ld    E, L          ; 1:4       1851 *   1x 
     add  HL, HL         ; 1:11      1851 *   2x 
@@ -25053,9 +25053,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1851 *
     ld    E, C          ; 1:4       1851 *
                         ;[56:194] 
-                        ;           1853 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_1101
+                        ;           1853 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_1101 
     ld    B, D          ; 1:4       1853 *
-    ld    C, E          ; 1:4       1853 *  
+    ld    C, E          ; 1:4       1853 * 
     ld    D, H          ; 1:4       1853 *
     ld    E, L          ; 1:4       1853 *   1x 
     add  HL, HL         ; 1:11      1853 *   2x 
@@ -25083,9 +25083,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1853 *
     ld    E, C          ; 1:4       1853 *
                         ;[56:194] 
-                        ;           1855 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_1111
+                        ;           1855 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0011_1111 
     ld    B, D          ; 1:4       1855 *
-    ld    C, E          ; 1:4       1855 *  
+    ld    C, E          ; 1:4       1855 * 
     ld    D, H          ; 1:4       1855 *
     ld    E, L          ; 1:4       1855 *   1x 
     add  HL, HL         ; 1:11      1855 *   2x 
@@ -25110,9 +25110,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1855 *
     ld    E, C          ; 1:4       1855 *
                         ;[53:175] 
-                        ;           1857 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0001
+                        ;           1857 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0001 
     ld    B, D          ; 1:4       1857 *
-    ld    C, E          ; 1:4       1857 *  
+    ld    C, E          ; 1:4       1857 * 
     ld    D, H          ; 1:4       1857 *
     ld    E, L          ; 1:4       1857 *   1x 
     add  HL, HL         ; 1:11      1857 *   2x 
@@ -25138,9 +25138,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1857 *
     ld    E, C          ; 1:4       1857 *
                         ;[26:202] 
-                        ;           1859 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0011
+                        ;           1859 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0011 
     ld    B, D          ; 1:4       1859 *
-    ld    C, E          ; 1:4       1859 *  
+    ld    C, E          ; 1:4       1859 * 
     ld    D, H          ; 1:4       1859 *
     ld    E, L          ; 1:4       1859 *   1x 
     add  HL, HL         ; 1:11      1859 *   2x 
@@ -25169,9 +25169,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1859 *
     ld    E, C          ; 1:4       1859 *
                         ;[29:221] 
-                        ;           1861 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0101
+                        ;           1861 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0101 
     ld    B, D          ; 1:4       1861 *
-    ld    C, E          ; 1:4       1861 *  
+    ld    C, E          ; 1:4       1861 * 
     ld    D, H          ; 1:4       1861 *
     ld    E, L          ; 1:4       1861 *   1x 
     add  HL, HL         ; 1:11      1861 *   2x 
@@ -25200,9 +25200,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1861 *
     ld    E, C          ; 1:4       1861 *
                         ;[29:221] 
-                        ;           1863 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0111
+                        ;           1863 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_0111 
     ld    B, D          ; 1:4       1863 *
-    ld    C, E          ; 1:4       1863 *  
+    ld    C, E          ; 1:4       1863 * 
     ld    D, H          ; 1:4       1863 *
     ld    E, L          ; 1:4       1863 *   1x 
     add  HL, HL         ; 1:11      1863 *   2x 
@@ -25234,9 +25234,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1863 *
     ld    E, C          ; 1:4       1863 *
                         ;[32:240] 
-                        ;           1865 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_1001
+                        ;           1865 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_1001 
     ld    B, D          ; 1:4       1865 *
-    ld    C, E          ; 1:4       1865 *  
+    ld    C, E          ; 1:4       1865 * 
     ld    D, H          ; 1:4       1865 *
     ld    E, L          ; 1:4       1865 *   1x 
     add  HL, HL         ; 1:11      1865 *   2x 
@@ -25266,9 +25266,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1865 *
                         ;[29:221]
 
-                        ;           1867 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_1011
+                        ;           1867 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_1011 
     ld    B, D          ; 1:4       1867 *
-    ld    C, E          ; 1:4       1867 *  
+    ld    C, E          ; 1:4       1867 * 
     ld    D, H          ; 1:4       1867 *
     ld    E, L          ; 1:4       1867 *   1x 
     add  HL, HL         ; 1:11      1867 *   2x 
@@ -25300,9 +25300,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1867 *
     ld    E, C          ; 1:4       1867 *
                         ;[32:240] 
-                        ;           1869 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_1101
+                        ;           1869 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0100_1101 
     ld    B, D          ; 1:4       1869 *
-    ld    C, E          ; 1:4       1869 *  
+    ld    C, E          ; 1:4       1869 * 
     ld    D, H          ; 1:4       1869 *
     ld    E, L          ; 1:4       1869 *   1x 
     add  HL, HL         ; 1:11      1869 *   2x 
@@ -25334,9 +25334,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1869 *
     ld    E, C          ; 1:4       1869 *
                         ;[32:240] 
-                        ;           1871 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0100_1111
+                        ;           1871 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0100_1111 
     ld    B, D          ; 1:4       1871 *
-    ld    C, E          ; 1:4       1871 *  
+    ld    C, E          ; 1:4       1871 * 
     ld    D, H          ; 1:4       1871 *
     ld    E, L          ; 1:4       1871 *   1x 
     add  HL, HL         ; 1:11      1871 *   2x 
@@ -25364,9 +25364,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1871 *
     ld    E, C          ; 1:4       1871 *
                         ;[56:194] 
-                        ;           1873 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_0001
+                        ;           1873 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_0001 
     ld    B, D          ; 1:4       1873 *
-    ld    C, E          ; 1:4       1873 *  
+    ld    C, E          ; 1:4       1873 * 
     ld    D, H          ; 1:4       1873 *
     ld    E, L          ; 1:4       1873 *   1x 
     add  HL, HL         ; 1:11      1873 *   2x 
@@ -25395,9 +25395,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1873 *
     ld    E, C          ; 1:4       1873 *
                         ;[29:221] 
-                        ;           1875 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_0011
+                        ;           1875 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_0011 
     ld    B, D          ; 1:4       1875 *
-    ld    C, E          ; 1:4       1875 *  
+    ld    C, E          ; 1:4       1875 * 
     ld    D, H          ; 1:4       1875 *
     ld    E, L          ; 1:4       1875 *   1x 
     add  HL, HL         ; 1:11      1875 *   2x 
@@ -25429,9 +25429,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1875 *
     ld    E, C          ; 1:4       1875 *
                         ;[32:240] 
-                        ;           1877 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_0101
+                        ;           1877 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_0101 
     ld    B, D          ; 1:4       1877 *
-    ld    C, E          ; 1:4       1877 *  
+    ld    C, E          ; 1:4       1877 * 
     ld    D, H          ; 1:4       1877 *
     ld    E, L          ; 1:4       1877 *   1x 
     add  HL, HL         ; 1:11      1877 *   2x 
@@ -25463,9 +25463,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1877 *
     ld    E, C          ; 1:4       1877 *
                         ;[32:240] 
-                        ;           1879 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_0111
+                        ;           1879 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_0111 
     ld    B, D          ; 1:4       1879 *
-    ld    C, E          ; 1:4       1879 *  
+    ld    C, E          ; 1:4       1879 * 
     ld    D, H          ; 1:4       1879 *
     ld    E, L          ; 1:4       1879 *   1x 
     add  HL, HL         ; 1:11      1879 *   2x 
@@ -25493,9 +25493,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1879 *
     ld    E, C          ; 1:4       1879 *
                         ;[56:194] 
-                        ;           1881 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_1001
+                        ;           1881 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0101_1001 
     ld    B, D          ; 1:4       1881 *
-    ld    C, E          ; 1:4       1881 *  
+    ld    C, E          ; 1:4       1881 * 
     ld    D, H          ; 1:4       1881 *
     ld    E, L          ; 1:4       1881 *   1x 
     add  HL, HL         ; 1:11      1881 *   2x 
@@ -25527,9 +25527,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1881 *
     ld    E, C          ; 1:4       1881 *
                         ;[32:240] 
-                        ;           1883 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_1011
+                        ;           1883 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_1011 
     ld    B, D          ; 1:4       1883 *
-    ld    C, E          ; 1:4       1883 *  
+    ld    C, E          ; 1:4       1883 * 
     ld    D, H          ; 1:4       1883 *
     ld    E, L          ; 1:4       1883 *   1x 
     add  HL, HL         ; 1:11      1883 *   2x 
@@ -25558,9 +25558,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1883 *
                         ;[56:194]
 
-                        ;           1885 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_1101
+                        ;           1885 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_1101 
     ld    B, D          ; 1:4       1885 *
-    ld    C, E          ; 1:4       1885 *  
+    ld    C, E          ; 1:4       1885 * 
     ld    D, H          ; 1:4       1885 *
     ld    E, L          ; 1:4       1885 *   1x 
     add  HL, HL         ; 1:11      1885 *   2x 
@@ -25588,9 +25588,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1885 *
     ld    E, C          ; 1:4       1885 *
                         ;[56:194] 
-                        ;           1887 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_1111
+                        ;           1887 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0101_1111 
     ld    B, D          ; 1:4       1887 *
-    ld    C, E          ; 1:4       1887 *  
+    ld    C, E          ; 1:4       1887 * 
     ld    D, H          ; 1:4       1887 *
     ld    E, L          ; 1:4       1887 *   1x 
     add  HL, HL         ; 1:11      1887 *   2x 
@@ -25615,9 +25615,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1887 *
     ld    E, C          ; 1:4       1887 *
                         ;[53:175] 
-                        ;           1889 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_0001
+                        ;           1889 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_0001 
     ld    B, D          ; 1:4       1889 *
-    ld    C, E          ; 1:4       1889 *  
+    ld    C, E          ; 1:4       1889 * 
     ld    D, H          ; 1:4       1889 *
     ld    E, L          ; 1:4       1889 *   1x 
     add  HL, HL         ; 1:11      1889 *   2x 
@@ -25646,9 +25646,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1889 *
     ld    E, C          ; 1:4       1889 *
                         ;[29:221] 
-                        ;           1891 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_0011
+                        ;           1891 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_0011 
     ld    B, D          ; 1:4       1891 *
-    ld    C, E          ; 1:4       1891 *  
+    ld    C, E          ; 1:4       1891 * 
     ld    D, H          ; 1:4       1891 *
     ld    E, L          ; 1:4       1891 *   1x 
     add  HL, HL         ; 1:11      1891 *   2x 
@@ -25680,9 +25680,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1891 *
     ld    E, C          ; 1:4       1891 *
                         ;[32:240] 
-                        ;           1893 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_0101
+                        ;           1893 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_0101 
     ld    B, D          ; 1:4       1893 *
-    ld    C, E          ; 1:4       1893 *  
+    ld    C, E          ; 1:4       1893 * 
     ld    D, H          ; 1:4       1893 *
     ld    E, L          ; 1:4       1893 *   1x 
     add  HL, HL         ; 1:11      1893 *   2x 
@@ -25714,9 +25714,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1893 *
     ld    E, C          ; 1:4       1893 *
                         ;[32:240] 
-                        ;           1895 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_0111
+                        ;           1895 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_0111 
     ld    B, D          ; 1:4       1895 *
-    ld    C, E          ; 1:4       1895 *  
+    ld    C, E          ; 1:4       1895 * 
     ld    D, H          ; 1:4       1895 *
     ld    E, L          ; 1:4       1895 *   1x 
     add  HL, HL         ; 1:11      1895 *   2x 
@@ -25744,9 +25744,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1895 *
     ld    E, C          ; 1:4       1895 *
                         ;[56:194] 
-                        ;           1897 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_1001
+                        ;           1897 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0110_1001 
     ld    B, D          ; 1:4       1897 *
-    ld    C, E          ; 1:4       1897 *  
+    ld    C, E          ; 1:4       1897 * 
     ld    D, H          ; 1:4       1897 *
     ld    E, L          ; 1:4       1897 *   1x 
     add  HL, HL         ; 1:11      1897 *   2x 
@@ -25778,9 +25778,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1897 *
     ld    E, C          ; 1:4       1897 *
                         ;[32:240] 
-                        ;           1899 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_1011
+                        ;           1899 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_1011 
     ld    B, D          ; 1:4       1899 *
-    ld    C, E          ; 1:4       1899 *  
+    ld    C, E          ; 1:4       1899 * 
     ld    D, H          ; 1:4       1899 *
     ld    E, L          ; 1:4       1899 *   1x 
     add  HL, HL         ; 1:11      1899 *   2x 
@@ -25808,9 +25808,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1899 *
     ld    E, C          ; 1:4       1899 *
                         ;[56:194] 
-                        ;           1901 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_1101
+                        ;           1901 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_1101 
     ld    B, D          ; 1:4       1901 *
-    ld    C, E          ; 1:4       1901 *  
+    ld    C, E          ; 1:4       1901 * 
     ld    D, H          ; 1:4       1901 *
     ld    E, L          ; 1:4       1901 *   1x 
     add  HL, HL         ; 1:11      1901 *   2x 
@@ -25839,9 +25839,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1901 *
                         ;[56:194]
 
-                        ;           1903 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_1111
+                        ;           1903 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0110_1111 
     ld    B, D          ; 1:4       1903 *
-    ld    C, E          ; 1:4       1903 *  
+    ld    C, E          ; 1:4       1903 * 
     ld    D, H          ; 1:4       1903 *
     ld    E, L          ; 1:4       1903 *   1x 
     add  HL, HL         ; 1:11      1903 *   2x 
@@ -25866,9 +25866,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1903 *
     ld    E, C          ; 1:4       1903 *
                         ;[53:175] 
-                        ;           1905 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0111_0001
+                        ;           1905 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_0111_0001 
     ld    B, D          ; 1:4       1905 *
-    ld    C, E          ; 1:4       1905 *  
+    ld    C, E          ; 1:4       1905 * 
     ld    D, H          ; 1:4       1905 *
     ld    E, L          ; 1:4       1905 *   1x 
     add  HL, HL         ; 1:11      1905 *   2x 
@@ -25900,9 +25900,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1905 *
     ld    E, C          ; 1:4       1905 *
                         ;[32:240] 
-                        ;           1907 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_0011
+                        ;           1907 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_0011 
     ld    B, D          ; 1:4       1907 *
-    ld    C, E          ; 1:4       1907 *  
+    ld    C, E          ; 1:4       1907 * 
     ld    D, H          ; 1:4       1907 *
     ld    E, L          ; 1:4       1907 *   1x 
     add  HL, HL         ; 1:11      1907 *   2x 
@@ -25930,9 +25930,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1907 *
     ld    E, C          ; 1:4       1907 *
                         ;[56:194] 
-                        ;           1909 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_0101
+                        ;           1909 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_0101 
     ld    B, D          ; 1:4       1909 *
-    ld    C, E          ; 1:4       1909 *  
+    ld    C, E          ; 1:4       1909 * 
     ld    D, H          ; 1:4       1909 *
     ld    E, L          ; 1:4       1909 *   1x 
     add  HL, HL         ; 1:11      1909 *   2x 
@@ -25960,9 +25960,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1909 *
     ld    E, C          ; 1:4       1909 *
                         ;[56:194] 
-                        ;           1911 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_0111
+                        ;           1911 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_0111 
     ld    B, D          ; 1:4       1911 *
-    ld    C, E          ; 1:4       1911 *  
+    ld    C, E          ; 1:4       1911 * 
     ld    D, H          ; 1:4       1911 *
     ld    E, L          ; 1:4       1911 *   1x 
     add  HL, HL         ; 1:11      1911 *   2x 
@@ -25987,9 +25987,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1911 *
     ld    E, C          ; 1:4       1911 *
                         ;[53:175] 
-                        ;           1913 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_1001
+                        ;           1913 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_1001 
     ld    B, D          ; 1:4       1913 *
-    ld    C, E          ; 1:4       1913 *  
+    ld    C, E          ; 1:4       1913 * 
     ld    D, H          ; 1:4       1913 *
     ld    E, L          ; 1:4       1913 *   1x 
     add  HL, HL         ; 1:11      1913 *   2x 
@@ -26017,9 +26017,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1913 *
     ld    E, C          ; 1:4       1913 *
                         ;[56:194] 
-                        ;           1915 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_1011
+                        ;           1915 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_1011 
     ld    B, D          ; 1:4       1915 *
-    ld    C, E          ; 1:4       1915 *  
+    ld    C, E          ; 1:4       1915 * 
     ld    D, H          ; 1:4       1915 *
     ld    E, L          ; 1:4       1915 *   1x 
     add  HL, HL         ; 1:11      1915 *   2x 
@@ -26044,9 +26044,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1915 *
     ld    E, C          ; 1:4       1915 *
                         ;[53:175] 
-                        ;           1917 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_1101
+                        ;           1917 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_0111_1101 
     ld    B, D          ; 1:4       1917 *
-    ld    C, E          ; 1:4       1917 *  
+    ld    C, E          ; 1:4       1917 * 
     ld    D, H          ; 1:4       1917 *
     ld    E, L          ; 1:4       1917 *   1x 
     add  HL, HL         ; 1:11      1917 *   2x 
@@ -26071,7 +26071,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1917 *
     ld    E, C          ; 1:4       1917 *
                         ;[53:175] 
-                        ;           1919 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_0111_1111 
+                        ;           1919 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_0111_1111  
     ld    B, H          ; 1:4       1919 *
     ld    A, L          ; 1:4       1919 *   1x 
     add  HL, HL         ; 1:11      1919 *   2x 
@@ -26082,9 +26082,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1919 *   64x 
     add  HL, HL         ; 1:11      1919 *   128x 
     add   A, L          ; 1:4       1919 *
-    ld    C, A          ; 1:4       1919 *   
-    ld    A, B          ; 1:4       1919 *   
-    adc   A, H          ; 1:4       1919 *   
+    ld    C, A          ; 1:4       1919 *
+    ld    A, B          ; 1:4       1919 *
+    adc   A, H          ; 1:4       1919 *
     ld    B, A          ; 1:4       1919 *   129x 
     add  HL, HL         ; 1:11      1919 *   256x 
     add  HL, HL         ; 1:11      1919 *   512x 
@@ -26094,9 +26094,9 @@ ORG 0x6000
     sbc  HL, BC         ; 2:15      1919 *   2048x - 129x = 1919x
                         ;[21:168]
 
-                        ;           1921 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0001
+                        ;           1921 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0001 
     ld    B, D          ; 1:4       1921 *
-    ld    C, E          ; 1:4       1921 *  
+    ld    C, E          ; 1:4       1921 * 
     ld    D, H          ; 1:4       1921 *
     ld    E, L          ; 1:4       1921 *   1x 
     add  HL, HL         ; 1:11      1921 *   2x 
@@ -26122,9 +26122,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1921 *
     ld    E, C          ; 1:4       1921 *
                         ;[26:202] 
-                        ;           1923 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0011
+                        ;           1923 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0011 
     ld    B, D          ; 1:4       1923 *
-    ld    C, E          ; 1:4       1923 *  
+    ld    C, E          ; 1:4       1923 * 
     ld    D, H          ; 1:4       1923 *
     ld    E, L          ; 1:4       1923 *   1x 
     add  HL, HL         ; 1:11      1923 *   2x 
@@ -26153,9 +26153,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1923 *
     ld    E, C          ; 1:4       1923 *
                         ;[29:221] 
-                        ;           1925 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0101
+                        ;           1925 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0101 
     ld    B, D          ; 1:4       1925 *
-    ld    C, E          ; 1:4       1925 *  
+    ld    C, E          ; 1:4       1925 * 
     ld    D, H          ; 1:4       1925 *
     ld    E, L          ; 1:4       1925 *   1x 
     add  HL, HL         ; 1:11      1925 *   2x 
@@ -26184,9 +26184,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1925 *
     ld    E, C          ; 1:4       1925 *
                         ;[29:221] 
-                        ;           1927 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0111
+                        ;           1927 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_0111 
     ld    B, D          ; 1:4       1927 *
-    ld    C, E          ; 1:4       1927 *  
+    ld    C, E          ; 1:4       1927 * 
     ld    D, H          ; 1:4       1927 *
     ld    E, L          ; 1:4       1927 *   1x 
     add  HL, HL         ; 1:11      1927 *   2x 
@@ -26218,9 +26218,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1927 *
     ld    E, C          ; 1:4       1927 *
                         ;[32:240] 
-                        ;           1929 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_1001
+                        ;           1929 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_1001 
     ld    B, D          ; 1:4       1929 *
-    ld    C, E          ; 1:4       1929 *  
+    ld    C, E          ; 1:4       1929 * 
     ld    D, H          ; 1:4       1929 *
     ld    E, L          ; 1:4       1929 *   1x 
     add  HL, HL         ; 1:11      1929 *   2x 
@@ -26249,9 +26249,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1929 *
     ld    E, C          ; 1:4       1929 *
                         ;[29:221] 
-                        ;           1931 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_1011
+                        ;           1931 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_1011 
     ld    B, D          ; 1:4       1931 *
-    ld    C, E          ; 1:4       1931 *  
+    ld    C, E          ; 1:4       1931 * 
     ld    D, H          ; 1:4       1931 *
     ld    E, L          ; 1:4       1931 *   1x 
     add  HL, HL         ; 1:11      1931 *   2x 
@@ -26283,9 +26283,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1931 *
     ld    E, C          ; 1:4       1931 *
                         ;[32:240] 
-                        ;           1933 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_1101
+                        ;           1933 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1000_1101 
     ld    B, D          ; 1:4       1933 *
-    ld    C, E          ; 1:4       1933 *  
+    ld    C, E          ; 1:4       1933 * 
     ld    D, H          ; 1:4       1933 *
     ld    E, L          ; 1:4       1933 *   1x 
     add  HL, HL         ; 1:11      1933 *   2x 
@@ -26317,9 +26317,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1933 *
     ld    E, C          ; 1:4       1933 *
                         ;[32:240] 
-                        ;           1935 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1000_1111
+                        ;           1935 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1000_1111 
     ld    B, D          ; 1:4       1935 *
-    ld    C, E          ; 1:4       1935 *  
+    ld    C, E          ; 1:4       1935 * 
     ld    D, H          ; 1:4       1935 *
     ld    E, L          ; 1:4       1935 *   1x 
     add  HL, HL         ; 1:11      1935 *   2x 
@@ -26347,9 +26347,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1935 *
     ld    E, C          ; 1:4       1935 *
                         ;[56:194] 
-                        ;           1937 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_0001
+                        ;           1937 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_0001 
     ld    B, D          ; 1:4       1937 *
-    ld    C, E          ; 1:4       1937 *  
+    ld    C, E          ; 1:4       1937 * 
     ld    D, H          ; 1:4       1937 *
     ld    E, L          ; 1:4       1937 *   1x 
     add  HL, HL         ; 1:11      1937 *   2x 
@@ -26379,9 +26379,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1937 *
                         ;[29:221]
 
-                        ;           1939 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_0011
+                        ;           1939 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_0011 
     ld    B, D          ; 1:4       1939 *
-    ld    C, E          ; 1:4       1939 *  
+    ld    C, E          ; 1:4       1939 * 
     ld    D, H          ; 1:4       1939 *
     ld    E, L          ; 1:4       1939 *   1x 
     add  HL, HL         ; 1:11      1939 *   2x 
@@ -26413,9 +26413,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1939 *
     ld    E, C          ; 1:4       1939 *
                         ;[32:240] 
-                        ;           1941 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_0101
+                        ;           1941 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_0101 
     ld    B, D          ; 1:4       1941 *
-    ld    C, E          ; 1:4       1941 *  
+    ld    C, E          ; 1:4       1941 * 
     ld    D, H          ; 1:4       1941 *
     ld    E, L          ; 1:4       1941 *   1x 
     add  HL, HL         ; 1:11      1941 *   2x 
@@ -26447,9 +26447,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1941 *
     ld    E, C          ; 1:4       1941 *
                         ;[32:240] 
-                        ;           1943 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_0111
+                        ;           1943 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_0111 
     ld    B, D          ; 1:4       1943 *
-    ld    C, E          ; 1:4       1943 *  
+    ld    C, E          ; 1:4       1943 * 
     ld    D, H          ; 1:4       1943 *
     ld    E, L          ; 1:4       1943 *   1x 
     add  HL, HL         ; 1:11      1943 *   2x 
@@ -26477,9 +26477,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1943 *
     ld    E, C          ; 1:4       1943 *
                         ;[56:194] 
-                        ;           1945 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_1001
+                        ;           1945 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1001_1001 
     ld    B, D          ; 1:4       1945 *
-    ld    C, E          ; 1:4       1945 *  
+    ld    C, E          ; 1:4       1945 * 
     ld    D, H          ; 1:4       1945 *
     ld    E, L          ; 1:4       1945 *   1x 
     add  HL, HL         ; 1:11      1945 *   2x 
@@ -26511,9 +26511,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1945 *
     ld    E, C          ; 1:4       1945 *
                         ;[32:240] 
-                        ;           1947 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_1011
+                        ;           1947 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_1011 
     ld    B, D          ; 1:4       1947 *
-    ld    C, E          ; 1:4       1947 *  
+    ld    C, E          ; 1:4       1947 * 
     ld    D, H          ; 1:4       1947 *
     ld    E, L          ; 1:4       1947 *   1x 
     add  HL, HL         ; 1:11      1947 *   2x 
@@ -26541,9 +26541,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1947 *
     ld    E, C          ; 1:4       1947 *
                         ;[56:194] 
-                        ;           1949 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_1101
+                        ;           1949 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_1101 
     ld    B, D          ; 1:4       1949 *
-    ld    C, E          ; 1:4       1949 *  
+    ld    C, E          ; 1:4       1949 * 
     ld    D, H          ; 1:4       1949 *
     ld    E, L          ; 1:4       1949 *   1x 
     add  HL, HL         ; 1:11      1949 *   2x 
@@ -26571,9 +26571,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1949 *
     ld    E, C          ; 1:4       1949 *
                         ;[56:194] 
-                        ;           1951 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_1111
+                        ;           1951 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1001_1111 
     ld    B, D          ; 1:4       1951 *
-    ld    C, E          ; 1:4       1951 *  
+    ld    C, E          ; 1:4       1951 * 
     ld    D, H          ; 1:4       1951 *
     ld    E, L          ; 1:4       1951 *   1x 
     add  HL, HL         ; 1:11      1951 *   2x 
@@ -26598,9 +26598,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1951 *
     ld    E, C          ; 1:4       1951 *
                         ;[53:175] 
-                        ;           1953 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_0001
+                        ;           1953 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_0001 
     ld    B, D          ; 1:4       1953 *
-    ld    C, E          ; 1:4       1953 *  
+    ld    C, E          ; 1:4       1953 * 
     ld    D, H          ; 1:4       1953 *
     ld    E, L          ; 1:4       1953 *   1x 
     add  HL, HL         ; 1:11      1953 *   2x 
@@ -26629,9 +26629,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1953 *
     ld    E, C          ; 1:4       1953 *
                         ;[29:221] 
-                        ;           1955 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_0011
+                        ;           1955 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_0011 
     ld    B, D          ; 1:4       1955 *
-    ld    C, E          ; 1:4       1955 *  
+    ld    C, E          ; 1:4       1955 * 
     ld    D, H          ; 1:4       1955 *
     ld    E, L          ; 1:4       1955 *   1x 
     add  HL, HL         ; 1:11      1955 *   2x 
@@ -26664,9 +26664,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1955 *
                         ;[32:240]
 
-                        ;           1957 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_0101
+                        ;           1957 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_0101 
     ld    B, D          ; 1:4       1957 *
-    ld    C, E          ; 1:4       1957 *  
+    ld    C, E          ; 1:4       1957 * 
     ld    D, H          ; 1:4       1957 *
     ld    E, L          ; 1:4       1957 *   1x 
     add  HL, HL         ; 1:11      1957 *   2x 
@@ -26698,9 +26698,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1957 *
     ld    E, C          ; 1:4       1957 *
                         ;[32:240] 
-                        ;           1959 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_0111
+                        ;           1959 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_0111 
     ld    B, D          ; 1:4       1959 *
-    ld    C, E          ; 1:4       1959 *  
+    ld    C, E          ; 1:4       1959 * 
     ld    D, H          ; 1:4       1959 *
     ld    E, L          ; 1:4       1959 *   1x 
     add  HL, HL         ; 1:11      1959 *   2x 
@@ -26728,9 +26728,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1959 *
     ld    E, C          ; 1:4       1959 *
                         ;[56:194] 
-                        ;           1961 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_1001
+                        ;           1961 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1010_1001 
     ld    B, D          ; 1:4       1961 *
-    ld    C, E          ; 1:4       1961 *  
+    ld    C, E          ; 1:4       1961 * 
     ld    D, H          ; 1:4       1961 *
     ld    E, L          ; 1:4       1961 *   1x 
     add  HL, HL         ; 1:11      1961 *   2x 
@@ -26762,9 +26762,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1961 *
     ld    E, C          ; 1:4       1961 *
                         ;[32:240] 
-                        ;           1963 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_1011
+                        ;           1963 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_1011 
     ld    B, D          ; 1:4       1963 *
-    ld    C, E          ; 1:4       1963 *  
+    ld    C, E          ; 1:4       1963 * 
     ld    D, H          ; 1:4       1963 *
     ld    E, L          ; 1:4       1963 *   1x 
     add  HL, HL         ; 1:11      1963 *   2x 
@@ -26792,9 +26792,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1963 *
     ld    E, C          ; 1:4       1963 *
                         ;[56:194] 
-                        ;           1965 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_1101
+                        ;           1965 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_1101 
     ld    B, D          ; 1:4       1965 *
-    ld    C, E          ; 1:4       1965 *  
+    ld    C, E          ; 1:4       1965 * 
     ld    D, H          ; 1:4       1965 *
     ld    E, L          ; 1:4       1965 *   1x 
     add  HL, HL         ; 1:11      1965 *   2x 
@@ -26822,9 +26822,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1965 *
     ld    E, C          ; 1:4       1965 *
                         ;[56:194] 
-                        ;           1967 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_1111
+                        ;           1967 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1010_1111 
     ld    B, D          ; 1:4       1967 *
-    ld    C, E          ; 1:4       1967 *  
+    ld    C, E          ; 1:4       1967 * 
     ld    D, H          ; 1:4       1967 *
     ld    E, L          ; 1:4       1967 *   1x 
     add  HL, HL         ; 1:11      1967 *   2x 
@@ -26849,9 +26849,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1967 *
     ld    E, C          ; 1:4       1967 *
                         ;[53:175] 
-                        ;           1969 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1011_0001
+                        ;           1969 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1011_0001 
     ld    B, D          ; 1:4       1969 *
-    ld    C, E          ; 1:4       1969 *  
+    ld    C, E          ; 1:4       1969 * 
     ld    D, H          ; 1:4       1969 *
     ld    E, L          ; 1:4       1969 *   1x 
     add  HL, HL         ; 1:11      1969 *   2x 
@@ -26883,9 +26883,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1969 *
     ld    E, C          ; 1:4       1969 *
                         ;[32:240] 
-                        ;           1971 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_0011
+                        ;           1971 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_0011 
     ld    B, D          ; 1:4       1971 *
-    ld    C, E          ; 1:4       1971 *  
+    ld    C, E          ; 1:4       1971 * 
     ld    D, H          ; 1:4       1971 *
     ld    E, L          ; 1:4       1971 *   1x 
     add  HL, HL         ; 1:11      1971 *   2x 
@@ -26913,9 +26913,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1971 *
     ld    E, C          ; 1:4       1971 *
                         ;[56:194] 
-                        ;           1973 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_0101
+                        ;           1973 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_0101 
     ld    B, D          ; 1:4       1973 *
-    ld    C, E          ; 1:4       1973 *  
+    ld    C, E          ; 1:4       1973 * 
     ld    D, H          ; 1:4       1973 *
     ld    E, L          ; 1:4       1973 *   1x 
     add  HL, HL         ; 1:11      1973 *   2x 
@@ -26944,9 +26944,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1973 *
                         ;[56:194]
 
-                        ;           1975 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_0111
+                        ;           1975 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_0111 
     ld    B, D          ; 1:4       1975 *
-    ld    C, E          ; 1:4       1975 *  
+    ld    C, E          ; 1:4       1975 * 
     ld    D, H          ; 1:4       1975 *
     ld    E, L          ; 1:4       1975 *   1x 
     add  HL, HL         ; 1:11      1975 *   2x 
@@ -26971,9 +26971,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1975 *
     ld    E, C          ; 1:4       1975 *
                         ;[53:175] 
-                        ;           1977 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_1001
+                        ;           1977 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_1001 
     ld    B, D          ; 1:4       1977 *
-    ld    C, E          ; 1:4       1977 *  
+    ld    C, E          ; 1:4       1977 * 
     ld    D, H          ; 1:4       1977 *
     ld    E, L          ; 1:4       1977 *   1x 
     add  HL, HL         ; 1:11      1977 *   2x 
@@ -27001,9 +27001,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1977 *
     ld    E, C          ; 1:4       1977 *
                         ;[56:194] 
-                        ;           1979 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_1011
+                        ;           1979 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_1011 
     ld    B, D          ; 1:4       1979 *
-    ld    C, E          ; 1:4       1979 *  
+    ld    C, E          ; 1:4       1979 * 
     ld    D, H          ; 1:4       1979 *
     ld    E, L          ; 1:4       1979 *   1x 
     add  HL, HL         ; 1:11      1979 *   2x 
@@ -27028,9 +27028,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1979 *
     ld    E, C          ; 1:4       1979 *
                         ;[53:175] 
-                        ;           1981 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_1101
+                        ;           1981 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1011_1101 
     ld    B, D          ; 1:4       1981 *
-    ld    C, E          ; 1:4       1981 *  
+    ld    C, E          ; 1:4       1981 * 
     ld    D, H          ; 1:4       1981 *
     ld    E, L          ; 1:4       1981 *   1x 
     add  HL, HL         ; 1:11      1981 *   2x 
@@ -27055,7 +27055,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       1981 *
     ld    E, C          ; 1:4       1981 *
                         ;[53:175] 
-                        ;           1983 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1011_1111 
+                        ;           1983 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1011_1111  
     ld    B, H          ; 1:4       1983 *
     ld    A, L          ; 1:4       1983 *   1x 
     add  HL, HL         ; 1:11      1983 *   2x 
@@ -27065,9 +27065,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1983 *   32x 
     add  HL, HL         ; 1:11      1983 *   64x 
     add   A, L          ; 1:4       1983 *
-    ld    C, A          ; 1:4       1983 *   
-    ld    A, B          ; 1:4       1983 *   
-    adc   A, H          ; 1:4       1983 *   
+    ld    C, A          ; 1:4       1983 *
+    ld    A, B          ; 1:4       1983 *
+    adc   A, H          ; 1:4       1983 *
     ld    B, A          ; 1:4       1983 *   65x 
     add  HL, HL         ; 1:11      1983 *   128x 
     add  HL, HL         ; 1:11      1983 *   256x 
@@ -27077,9 +27077,9 @@ ORG 0x6000
     or    A             ; 1:4       1983 *
     sbc  HL, BC         ; 2:15      1983 *   2048x - 65x = 1983x
                         ;[21:168] 
-                        ;           1985 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_0001
+                        ;           1985 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_0001 
     ld    B, D          ; 1:4       1985 *
-    ld    C, E          ; 1:4       1985 *  
+    ld    C, E          ; 1:4       1985 * 
     ld    D, H          ; 1:4       1985 *
     ld    E, L          ; 1:4       1985 *   1x 
     add  HL, HL         ; 1:11      1985 *   2x 
@@ -27108,9 +27108,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1985 *
     ld    E, C          ; 1:4       1985 *
                         ;[29:221] 
-                        ;           1987 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_0011
+                        ;           1987 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_0011 
     ld    B, D          ; 1:4       1987 *
-    ld    C, E          ; 1:4       1987 *  
+    ld    C, E          ; 1:4       1987 * 
     ld    D, H          ; 1:4       1987 *
     ld    E, L          ; 1:4       1987 *   1x 
     add  HL, HL         ; 1:11      1987 *   2x 
@@ -27142,9 +27142,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1987 *
     ld    E, C          ; 1:4       1987 *
                         ;[32:240] 
-                        ;           1989 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_0101
+                        ;           1989 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_0101 
     ld    B, D          ; 1:4       1989 *
-    ld    C, E          ; 1:4       1989 *  
+    ld    C, E          ; 1:4       1989 * 
     ld    D, H          ; 1:4       1989 *
     ld    E, L          ; 1:4       1989 *   1x 
     add  HL, HL         ; 1:11      1989 *   2x 
@@ -27176,9 +27176,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1989 *
     ld    E, C          ; 1:4       1989 *
                         ;[32:240] 
-                        ;           1991 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_0111
+                        ;           1991 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_0111 
     ld    B, D          ; 1:4       1991 *
-    ld    C, E          ; 1:4       1991 *  
+    ld    C, E          ; 1:4       1991 * 
     ld    D, H          ; 1:4       1991 *
     ld    E, L          ; 1:4       1991 *   1x 
     add  HL, HL         ; 1:11      1991 *   2x 
@@ -27207,9 +27207,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       1991 *
                         ;[56:194]
 
-                        ;           1993 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_1001
+                        ;           1993 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1100_1001 
     ld    B, D          ; 1:4       1993 *
-    ld    C, E          ; 1:4       1993 *  
+    ld    C, E          ; 1:4       1993 * 
     ld    D, H          ; 1:4       1993 *
     ld    E, L          ; 1:4       1993 *   1x 
     add  HL, HL         ; 1:11      1993 *   2x 
@@ -27241,9 +27241,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1993 *
     ld    E, C          ; 1:4       1993 *
                         ;[32:240] 
-                        ;           1995 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_1011
+                        ;           1995 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_1011 
     ld    B, D          ; 1:4       1995 *
-    ld    C, E          ; 1:4       1995 *  
+    ld    C, E          ; 1:4       1995 * 
     ld    D, H          ; 1:4       1995 *
     ld    E, L          ; 1:4       1995 *   1x 
     add  HL, HL         ; 1:11      1995 *   2x 
@@ -27271,9 +27271,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1995 *
     ld    E, C          ; 1:4       1995 *
                         ;[56:194] 
-                        ;           1997 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_1101
+                        ;           1997 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_1101 
     ld    B, D          ; 1:4       1997 *
-    ld    C, E          ; 1:4       1997 *  
+    ld    C, E          ; 1:4       1997 * 
     ld    D, H          ; 1:4       1997 *
     ld    E, L          ; 1:4       1997 *   1x 
     add  HL, HL         ; 1:11      1997 *   2x 
@@ -27301,9 +27301,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1997 *
     ld    E, C          ; 1:4       1997 *
                         ;[56:194] 
-                        ;           1999 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_1111
+                        ;           1999 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1100_1111 
     ld    B, D          ; 1:4       1999 *
-    ld    C, E          ; 1:4       1999 *  
+    ld    C, E          ; 1:4       1999 * 
     ld    D, H          ; 1:4       1999 *
     ld    E, L          ; 1:4       1999 *   1x 
     add  HL, HL         ; 1:11      1999 *   2x 
@@ -27328,9 +27328,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       1999 *
     ld    E, C          ; 1:4       1999 *
                         ;[53:175] 
-                        ;           2001 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1101_0001
+                        ;           2001 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1101_0001 
     ld    B, D          ; 1:4       2001 *
-    ld    C, E          ; 1:4       2001 *  
+    ld    C, E          ; 1:4       2001 * 
     ld    D, H          ; 1:4       2001 *
     ld    E, L          ; 1:4       2001 *   1x 
     add  HL, HL         ; 1:11      2001 *   2x 
@@ -27362,9 +27362,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2001 *
     ld    E, C          ; 1:4       2001 *
                         ;[32:240] 
-                        ;           2003 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_0011
+                        ;           2003 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_0011 
     ld    B, D          ; 1:4       2003 *
-    ld    C, E          ; 1:4       2003 *  
+    ld    C, E          ; 1:4       2003 * 
     ld    D, H          ; 1:4       2003 *
     ld    E, L          ; 1:4       2003 *   1x 
     add  HL, HL         ; 1:11      2003 *   2x 
@@ -27392,9 +27392,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2003 *
     ld    E, C          ; 1:4       2003 *
                         ;[56:194] 
-                        ;           2005 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_0101
+                        ;           2005 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_0101 
     ld    B, D          ; 1:4       2005 *
-    ld    C, E          ; 1:4       2005 *  
+    ld    C, E          ; 1:4       2005 * 
     ld    D, H          ; 1:4       2005 *
     ld    E, L          ; 1:4       2005 *   1x 
     add  HL, HL         ; 1:11      2005 *   2x 
@@ -27422,9 +27422,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2005 *
     ld    E, C          ; 1:4       2005 *
                         ;[56:194] 
-                        ;           2007 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_0111
+                        ;           2007 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_0111 
     ld    B, D          ; 1:4       2007 *
-    ld    C, E          ; 1:4       2007 *  
+    ld    C, E          ; 1:4       2007 * 
     ld    D, H          ; 1:4       2007 *
     ld    E, L          ; 1:4       2007 *   1x 
     add  HL, HL         ; 1:11      2007 *   2x 
@@ -27449,9 +27449,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2007 *
     ld    E, C          ; 1:4       2007 *
                         ;[53:175] 
-                        ;           2009 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_1001
+                        ;           2009 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_1001 
     ld    B, D          ; 1:4       2009 *
-    ld    C, E          ; 1:4       2009 *  
+    ld    C, E          ; 1:4       2009 * 
     ld    D, H          ; 1:4       2009 *
     ld    E, L          ; 1:4       2009 *   1x 
     add  HL, HL         ; 1:11      2009 *   2x 
@@ -27480,9 +27480,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       2009 *
                         ;[56:194]
 
-                        ;           2011 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_1011
+                        ;           2011 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_1011 
     ld    B, D          ; 1:4       2011 *
-    ld    C, E          ; 1:4       2011 *  
+    ld    C, E          ; 1:4       2011 * 
     ld    D, H          ; 1:4       2011 *
     ld    E, L          ; 1:4       2011 *   1x 
     add  HL, HL         ; 1:11      2011 *   2x 
@@ -27507,9 +27507,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2011 *
     ld    E, C          ; 1:4       2011 *
                         ;[53:175] 
-                        ;           2013 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_1101
+                        ;           2013 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1101_1101 
     ld    B, D          ; 1:4       2013 *
-    ld    C, E          ; 1:4       2013 *  
+    ld    C, E          ; 1:4       2013 * 
     ld    D, H          ; 1:4       2013 *
     ld    E, L          ; 1:4       2013 *   1x 
     add  HL, HL         ; 1:11      2013 *   2x 
@@ -27534,7 +27534,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       2013 *
     ld    E, C          ; 1:4       2013 *
                         ;[53:175] 
-                        ;           2015 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1101_1111 
+                        ;           2015 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1101_1111  
     ld    B, H          ; 1:4       2015 *
     ld    A, L          ; 1:4       2015 *   1x 
     add  HL, HL         ; 1:11      2015 *   2x 
@@ -27543,9 +27543,9 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2015 *   16x 
     add  HL, HL         ; 1:11      2015 *   32x 
     add   A, L          ; 1:4       2015 *
-    ld    C, A          ; 1:4       2015 *   
-    ld    A, B          ; 1:4       2015 *   
-    adc   A, H          ; 1:4       2015 *   
+    ld    C, A          ; 1:4       2015 *
+    ld    A, B          ; 1:4       2015 *
+    adc   A, H          ; 1:4       2015 *
     ld    B, A          ; 1:4       2015 *   33x 
     add  HL, HL         ; 1:11      2015 *   64x 
     add  HL, HL         ; 1:11      2015 *   128x 
@@ -27556,9 +27556,9 @@ ORG 0x6000
     or    A             ; 1:4       2015 *
     sbc  HL, BC         ; 2:15      2015 *   2048x - 33x = 2015x
                         ;[21:168] 
-                        ;           2017 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1110_0001
+                        ;           2017 *   Variant: HL * (2^a + 2^b + 2^c + ...) = HL * b_0111_1110_0001 
     ld    B, D          ; 1:4       2017 *
-    ld    C, E          ; 1:4       2017 *  
+    ld    C, E          ; 1:4       2017 * 
     ld    D, H          ; 1:4       2017 *
     ld    E, L          ; 1:4       2017 *   1x 
     add  HL, HL         ; 1:11      2017 *   2x 
@@ -27590,9 +27590,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2017 *
     ld    E, C          ; 1:4       2017 *
                         ;[32:240] 
-                        ;           2019 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_0011
+                        ;           2019 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_0011 
     ld    B, D          ; 1:4       2019 *
-    ld    C, E          ; 1:4       2019 *  
+    ld    C, E          ; 1:4       2019 * 
     ld    D, H          ; 1:4       2019 *
     ld    E, L          ; 1:4       2019 *   1x 
     add  HL, HL         ; 1:11      2019 *   2x 
@@ -27607,7 +27607,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2019 *   16x 
     ex   DE, HL         ; 1:4       2019 *
     add  HL, DE         ; 1:11      2019 *   29x
-    ex   DE, HL         ; 1:4       2019 *  
+    ex   DE, HL         ; 1:4       2019 * 
     rr    H             ; 2:8       2019 *
     rr    L             ; 2:8       2019 *
     ld    H, L          ; 1:4       2019 *
@@ -27617,9 +27617,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2019 *
     ld    E, C          ; 1:4       2019 *
                         ;[56:144] 
-                        ;           2021 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_0101
+                        ;           2021 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_0101 
     ld    B, D          ; 1:4       2021 *
-    ld    C, E          ; 1:4       2021 *  
+    ld    C, E          ; 1:4       2021 * 
     ld    D, H          ; 1:4       2021 *
     ld    E, L          ; 1:4       2021 *   1x 
     add  HL, HL         ; 1:11      2021 *   2x 
@@ -27634,7 +27634,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2021 *   16x 
     ex   DE, HL         ; 1:4       2021 *
     add  HL, DE         ; 1:11      2021 *   27x
-    ex   DE, HL         ; 1:4       2021 *  
+    ex   DE, HL         ; 1:4       2021 * 
     rr    H             ; 2:8       2021 *
     rr    L             ; 2:8       2021 *
     ld    H, L          ; 1:4       2021 *
@@ -27644,9 +27644,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2021 *
     ld    E, C          ; 1:4       2021 *
                         ;[56:144] 
-                        ;           2023 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_0111
+                        ;           2023 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_0111 
     ld    B, D          ; 1:4       2023 *
-    ld    C, E          ; 1:4       2023 *  
+    ld    C, E          ; 1:4       2023 * 
     ld    D, H          ; 1:4       2023 *
     ld    E, L          ; 1:4       2023 *   1x 
     add  HL, HL         ; 1:11      2023 *   2x 
@@ -27658,7 +27658,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2023 *   16x 
     ex   DE, HL         ; 1:4       2023 *
     add  HL, DE         ; 1:11      2023 *   25x
-    ex   DE, HL         ; 1:4       2023 *  
+    ex   DE, HL         ; 1:4       2023 * 
     rr    H             ; 2:8       2023 *
     rr    L             ; 2:8       2023 *
     ld    H, L          ; 1:4       2023 *
@@ -27668,9 +27668,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2023 *
     ld    E, C          ; 1:4       2023 *
                         ;[53:125] 
-                        ;           2025 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_1001
+                        ;           2025 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_1001 
     ld    B, D          ; 1:4       2025 *
-    ld    C, E          ; 1:4       2025 *  
+    ld    C, E          ; 1:4       2025 * 
     ld    D, H          ; 1:4       2025 *
     ld    E, L          ; 1:4       2025 *   1x 
     add  HL, HL         ; 1:11      2025 *   2x 
@@ -27685,7 +27685,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2025 *   16x 
     ex   DE, HL         ; 1:4       2025 *
     add  HL, DE         ; 1:11      2025 *   23x
-    ex   DE, HL         ; 1:4       2025 *  
+    ex   DE, HL         ; 1:4       2025 * 
     rr    H             ; 2:8       2025 *
     rr    L             ; 2:8       2025 *
     ld    H, L          ; 1:4       2025 *
@@ -27695,9 +27695,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2025 *
     ld    E, C          ; 1:4       2025 *
                         ;[56:144] 
-                        ;           2027 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_1011
+                        ;           2027 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_1011 
     ld    B, D          ; 1:4       2027 *
-    ld    C, E          ; 1:4       2027 *  
+    ld    C, E          ; 1:4       2027 * 
     ld    D, H          ; 1:4       2027 *
     ld    E, L          ; 1:4       2027 *   1x 
     add  HL, HL         ; 1:11      2027 *   2x 
@@ -27709,7 +27709,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2027 *   16x 
     ex   DE, HL         ; 1:4       2027 *
     add  HL, DE         ; 1:11      2027 *   21x
-    ex   DE, HL         ; 1:4       2027 *  
+    ex   DE, HL         ; 1:4       2027 * 
     rr    H             ; 2:8       2027 *
     rr    L             ; 2:8       2027 *
     ld    H, L          ; 1:4       2027 *
@@ -27720,9 +27720,9 @@ ORG 0x6000
     ld    E, C          ; 1:4       2027 *
                         ;[53:125]
 
-                        ;           2029 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_1101
+                        ;           2029 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1110_1101 
     ld    B, D          ; 1:4       2029 *
-    ld    C, E          ; 1:4       2029 *  
+    ld    C, E          ; 1:4       2029 * 
     ld    D, H          ; 1:4       2029 *
     ld    E, L          ; 1:4       2029 *   1x 
     add  HL, HL         ; 1:11      2029 *   2x 
@@ -27734,7 +27734,7 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2029 *   16x 
     ex   DE, HL         ; 1:4       2029 *
     add  HL, DE         ; 1:11      2029 *   19x
-    ex   DE, HL         ; 1:4       2029 *  
+    ex   DE, HL         ; 1:4       2029 * 
     rr    H             ; 2:8       2029 *
     rr    L             ; 2:8       2029 *
     ld    H, L          ; 1:4       2029 *
@@ -27744,7 +27744,7 @@ ORG 0x6000
     ld    D, B          ; 1:4       2029 *
     ld    E, C          ; 1:4       2029 *
                         ;[53:125] 
-                        ;           2031 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1110_1111 
+                        ;           2031 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1110_1111  
     ld    B, H          ; 1:4       2031 *
     ld    A, L          ; 1:4       2031 *   1x 
     add  HL, HL         ; 1:11      2031 *   2x 
@@ -27752,10 +27752,10 @@ ORG 0x6000
     add  HL, HL         ; 1:11      2031 *   8x 
     add  HL, HL         ; 1:11      2031 *   16x 
     add   A, L          ; 1:4       2031 *
-    ld    C, A          ; 1:4       2031 *   
-    ld    A, B          ; 1:4       2031 *   
-    adc   A, H          ; 1:4       2031 *   
-    ld    B, A          ; 1:4       2031 *   17x  
+    ld    C, A          ; 1:4       2031 *
+    ld    A, B          ; 1:4       2031 *
+    adc   A, H          ; 1:4       2031 *
+    ld    B, A          ; 1:4       2031 *   17x 
     rr    H             ; 2:8       2031 *
     rr    L             ; 2:8       2031 *
     ld    H, L          ; 1:4       2031 *
@@ -27763,9 +27763,9 @@ ORG 0x6000
     or    A             ; 1:4       2031 *
     sbc  HL, BC         ; 2:15      2031 *   2048x - 17x = 2031x
                         ;[21:118] 
-                        ;           2033 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_0001
+                        ;           2033 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_0001 
     ld    B, D          ; 1:4       2033 *
-    ld    C, E          ; 1:4       2033 *  
+    ld    C, E          ; 1:4       2033 * 
     ld    D, H          ; 1:4       2033 *
     ld    E, L          ; 1:4       2033 *   1x 
     add  HL, HL         ; 1:11      2033 *   2x 
@@ -27787,9 +27787,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2033 *
     ld    E, C          ; 1:4       2033 *
                         ;[51:117] 
-                        ;           2035 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_0011
+                        ;           2035 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_0011 
     ld    B, D          ; 1:4       2035 *
-    ld    C, E          ; 1:4       2035 *  
+    ld    C, E          ; 1:4       2035 * 
     ld    D, H          ; 1:4       2035 *
     ld    E, L          ; 1:4       2035 *   1x 
     add  HL, HL         ; 1:11      2035 *   2x 
@@ -27808,9 +27808,9 @@ ORG 0x6000
     ld    D, B          ; 1:4       2035 *
     ld    E, C          ; 1:4       2035 *
                         ;[48:98] 
-                        ;           2037 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_0101
+                        ;           2037 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_0101 
     ld    B, D          ; 1:4       2037 *
-    ld    C, E          ; 1:4       2037 *  
+    ld    C, E          ; 1:4       2037 * 
     ld    D, H          ; 1:4       2037 *
     ld    E, L          ; 1:4       2037 *   1x 
     add  HL, HL         ; 1:11      2037 *   2x 
@@ -27829,25 +27829,25 @@ ORG 0x6000
     ld    D, B          ; 1:4       2037 *
     ld    E, C          ; 1:4       2037 *
                         ;[48:98] 
-                        ;           2039 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1111_0111 
+                        ;           2039 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1111_0111  
     ld    B, H          ; 1:4       2039 *
     ld    A, L          ; 1:4       2039 *   1x 
     add  HL, HL         ; 1:11      2039 *   2x 
     add  HL, HL         ; 1:11      2039 *   4x 
     add  HL, HL         ; 1:11      2039 *   8x 
     add   A, L          ; 1:4       2039 *
-    ld    C, A          ; 1:4       2039 *   
-    ld    A, B          ; 1:4       2039 *   
-    adc   A, H          ; 1:4       2039 *   
+    ld    C, A          ; 1:4       2039 *
+    ld    A, B          ; 1:4       2039 *
+    adc   A, H          ; 1:4       2039 *
     ld    B, A          ; 1:4       2039 *   9x 
     ld    H, L          ; 1:4       2039 *
     ld    L, 0x00       ; 2:7       2039 *   2048x 
     or    A             ; 1:4       2039 *
     sbc  HL, BC         ; 2:15      2039 *   2048x - 9x = 2039x
                         ;[16:91] 
-                        ;           2041 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_1001
+                        ;           2041 *   Variant: HL * (2^a - 2^b - 2^c - ...) = HL * b_0111_1111_1001 
     ld    B, D          ; 1:4       2041 *
-    ld    C, E          ; 1:4       2041 *  
+    ld    C, E          ; 1:4       2041 * 
     ld    D, H          ; 1:4       2041 *
     ld    E, L          ; 1:4       2041 *   1x 
     add  HL, HL         ; 1:11      2041 *   2x 
@@ -27866,15 +27866,15 @@ ORG 0x6000
     ld    D, B          ; 1:4       2041 *
     ld    E, C          ; 1:4       2041 *
                         ;[48:98] 
-                        ;           2043 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1111_1011 
+                        ;           2043 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1111_1011  
     ld    B, H          ; 1:4       2043 *
     ld    A, L          ; 1:4       2043 *   1x 
     add  HL, HL         ; 1:11      2043 *   2x 
     add  HL, HL         ; 1:11      2043 *   4x 
     add   A, L          ; 1:4       2043 *
-    ld    C, A          ; 1:4       2043 *   
-    ld    A, B          ; 1:4       2043 *   
-    adc   A, H          ; 1:4       2043 *   
+    ld    C, A          ; 1:4       2043 *
+    ld    A, B          ; 1:4       2043 *
+    adc   A, H          ; 1:4       2043 *
     ld    B, A          ; 1:4       2043 *   5x 
     ld    H, L          ; 1:4       2043 *
     ld    L, 0x00       ; 2:7       2043 *   1024x 
@@ -27882,14 +27882,14 @@ ORG 0x6000
     or    A             ; 1:4       2043 *
     sbc  HL, BC         ; 2:15      2043 *   2048x - 5x = 2043x
                         ;[16:91] 
-                        ;           2045 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1111_1101 
+                        ;           2045 *   Variant: HL * (2^a - 2^b - 2^c) = HL * b_0111_1111_1101  
     ld    B, H          ; 1:4       2045 *
     ld    A, L          ; 1:4       2045 *   1x 
     add  HL, HL         ; 1:11      2045 *   2x 
     add   A, L          ; 1:4       2045 *
-    ld    C, A          ; 1:4       2045 *   
-    ld    A, B          ; 1:4       2045 *   
-    adc   A, H          ; 1:4       2045 *   
+    ld    C, A          ; 1:4       2045 *
+    ld    A, B          ; 1:4       2045 *
+    adc   A, H          ; 1:4       2045 *
     ld    B, A          ; 1:4       2045 *   3x 
     ld    H, L          ; 1:4       2045 *
     ld    L, 0x00       ; 2:7       2045 *   512x 
@@ -27899,7 +27899,7 @@ ORG 0x6000
     sbc  HL, BC         ; 2:15      2045 *   2048x - 3x = 2045x
                         ;[16:91]
 
-                        ;           2047 *   Variant: HL * (2^a - 2^b) = HL * b_0111_1111_1111 
+                        ;           2047 *   Variant: HL * (2^a - 2^b) = HL * b_0111_1111_1111  
     ld    B, H          ; 1:4       2047 *
     ld    C, L          ; 1:4       2047 *   1x 
     ld    H, L          ; 1:4       2047 *
