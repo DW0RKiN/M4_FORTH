@@ -363,13 +363,12 @@ dnl
 dnl
 dnl
 define({_ADD_OUTPUT},{dnl
-__{}define({_ADD_OUTPUT_TEMP},{XMUL_OUTPUT{}$1}){}dnl
-__{}define({XMUL_OUTPUT},_ADD_OUTPUT_TEMP){}dnl
+__{}ifdef({XMUL_OUTPUT},{define({XMUL_OUTPUT},XMUL_OUTPUT{}$1)},{define({XMUL_OUTPUT},$1)}){}dnl
 })dnl
 dnl
 dnl
 dnl
-define({XMUL_LOOP},{dnl
+define({XMUL_RESET},{dnl
 ___{}undefine({XMUL_INIT})dnl
 ___{}undefine({XMUL_BEGIN})dnl
 ___{}undefine({XMUL_SAVE})dnl
@@ -377,11 +376,17 @@ ___{}undefine({XMUL_2X})dnl
 ___{}undefine({XMUL_128X})dnl
 ___{}undefine({XMUL_256X})dnl
 ___{}undefine({XMUL_END})dnl
-___{}define({XMUL_PAR},eval($1))dnl
-___{}define({XMUL_OUTPUT},{ XMUL_INIT() XMUL_BEGIN()})dnl
 ___{}define({XMUL_BT},{0})dnl
 ___{}define({XMUL_BIT},{1})dnl
 ___{}define({XMUL_SUM_BIT},{0})dnl
+})dnl
+dnl
+dnl
+dnl
+define({XMUL_LOOP},{dnl
+___{}XMUL_RESET{}dnl
+___{}define({XMUL_PAR},eval($1))dnl
+___{}define({XMUL_OUTPUT},{ XMUL_INIT() XMUL_BEGIN()})dnl
 ___{}_XMUL_LOOP($1)dnl
 ___{}_ADD_OUTPUT({ XMUL_END()})dnl
 })dnl
@@ -410,18 +415,9 @@ dnl
 dnl
 dnl
 define({XMUL_NEGLOOP},{dnl
-___{}undefine({XMUL_INIT})dnl
-___{}undefine({XMUL_BEGIN})dnl
-___{}undefine({XMUL_SAVE})dnl
-___{}undefine({XMUL_2X})dnl
-___{}undefine({XMUL_128X})dnl
-___{}undefine({XMUL_256X})dnl
-___{}undefine({XMUL_END})dnl
+___{}XMUL_RESET{}dnl
 ___{}define({XMUL_PAR},eval($1-1))dnl
 ___{}define({XMUL_OUTPUT},{ XMUL_INIT() XMUL_BEGIN()})dnl
-___{}define({XMUL_BT},{0})dnl
-___{}define({XMUL_BIT},{1})dnl
-___{}define({XMUL_SUM_BIT},{0})dnl
 ___{}_XMUL_NEGLOOP($1)dnl
 ___{}_ADD_OUTPUT({ XMUL_END()})dnl
 })dnl
