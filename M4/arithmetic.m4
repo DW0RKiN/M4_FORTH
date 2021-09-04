@@ -404,7 +404,7 @@ dnl
 include(M4PATH{}push_mul/pmul_mk1.m4){}dnl
 include(M4PATH{}push_mul/pmul_mk2.m4){}dnl
 dnl
-define({PUSH_MUL},{define({XMUL_1BITS},SUM_1BITS($1)){}define({XMUL_0BITS},SUM_0BITS($1-1))dnl
+define({PUSH_MUL},{dnl
 ___{}PUSH_MUL_MK1($1){}dnl
 ___{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
 ___{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
