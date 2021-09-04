@@ -363,257 +363,61 @@ dnl
 dnl
 dnl
 define({_ADD_OUTPUT},{dnl
-__{}ifdef({XMUL_OUTPUT},{define({XMUL_OUTPUT},XMUL_OUTPUT{}$1)},{define({XMUL_OUTPUT},$1)}){}dnl
+__{}ifdef({_OUTPUT},{define({_OUTPUT},_OUTPUT{}$1)},{define({_OUTPUT},$1)}){}dnl
 })dnl
 dnl
 dnl
 dnl
-define({XMUL_RESET},{dnl
-___{}undefine({XMUL_INIT})dnl
-___{}undefine({XMUL_BEGIN})dnl
-___{}undefine({XMUL_SAVE})dnl
-___{}undefine({XMUL_2X})dnl
-___{}undefine({XMUL_128X})dnl
-___{}undefine({XMUL_256X})dnl
-___{}undefine({XMUL_END})dnl
-___{}define({XMUL_BT},{0})dnl
-___{}define({XMUL_BIT},{1})dnl
-___{}define({XMUL_SUM_BIT},{0})dnl
-})dnl
-dnl
-dnl
-dnl
-define({XMUL_LOOP},{dnl
-___{}XMUL_RESET{}dnl
-___{}define({XMUL_PAR},eval($1))dnl
-___{}define({XMUL_OUTPUT},{ XMUL_INIT() XMUL_BEGIN()})dnl
-___{}_XMUL_LOOP($1)dnl
-___{}_ADD_OUTPUT({ XMUL_END()})dnl
-})dnl
-dnl
-dnl
-dnl
-define({_XMUL_LOOP},{ifelse(eval(XMUL_PAR>1),{1},{dnl
-___{}ifelse(eval(XMUL_PAR & 1),{1},dnl
-___{}___{}{_ADD_OUTPUT({ XMUL_SAVE()})}){}dnl
-___{}define({XMUL_PAR},eval(XMUL_PAR/2)){}dnl
-___{}ifelse(eval(XMUL_PAR & 127),{0},{dnl
-___{}___{}define({XMUL_PAR},eval(XMUL_PAR/128)){}dnl
-___{}___{}define({XMUL_BIT},eval(XMUL_BIT*256)){}dnl
-___{}___{}_ADD_OUTPUT({ XMUL_256X()}){}dnl
-___{}},eval(((XMUL_PAR & 63)==0) && (XMUL_BIT > 1)),{1},{dnl
-___{}___{}define({XMUL_PAR},eval(XMUL_PAR/64)){}dnl
-___{}___{}define({XMUL_BIT},eval(XMUL_BIT*128)){}dnl
-___{}___{}_ADD_OUTPUT({ XMUL_128X()}){}dnl
-___{}},{dnl
-___{}___{}define({XMUL_BIT},eval(2*XMUL_BIT)){}dnl
-___{}___{}_ADD_OUTPUT({ XMUL_2X()}){}dnl
-___{}}){}dnl
-___{}_XMUL_LOOP($1){}dnl
+define({HI_BIT_LOOP},{ifelse(eval(($1)>0),{1},{dnl
+___{}define({HI_BIT_TEMP},eval(HI_BIT_TEMP|($1)))dnl
+___{}HI_BIT_LOOP(eval(($1)/2))dnl
 })})dnl
 dnl
 dnl
 dnl
-define({XMUL_NEGLOOP},{dnl
-___{}XMUL_RESET{}dnl
-___{}define({XMUL_PAR},eval($1-1))dnl
-___{}define({XMUL_OUTPUT},{ XMUL_INIT() XMUL_BEGIN()})dnl
-___{}_XMUL_NEGLOOP($1)dnl
-___{}_ADD_OUTPUT({ XMUL_END()})dnl
+define({HI_BIT},{dnl
+___{}define({HI_BIT_TEMP},{0})dnl
+___{}HI_BIT_LOOP(eval($1))dnl
+___{}eval((HI_BIT_TEMP+1)/2)dnl
 })dnl
 dnl
 dnl
 dnl
-define({_XMUL_NEGLOOP},{ifelse(eval(XMUL_PAR>=1),{1},{dnl
-___{}ifelse(eval(XMUL_PAR & 1),{0},dnl
-___{}___{}{_ADD_OUTPUT({ XMUL_SAVE()})}){}dnl
-___{}define({XMUL_PAR},eval(XMUL_PAR/2)){}dnl
-___{}ifelse(eval(XMUL_PAR & 127),{127},{dnl
-___{}___{}define({XMUL_PAR},eval(XMUL_PAR/128)){}dnl
-___{}___{}define({XMUL_BIT},eval(XMUL_BIT*256)){}dnl
-___{}___{}_ADD_OUTPUT({ XMUL_256X()}){}dnl
-___{}},eval(((XMUL_PAR & 63)==63) && (XMUL_BIT > 1)),{1},{dnl
-___{}___{}define({XMUL_PAR},eval(XMUL_PAR/64)){}dnl
-___{}___{}define({XMUL_BIT},eval(XMUL_BIT*128)){}dnl
-___{}___{}_ADD_OUTPUT({ XMUL_128X()}){}dnl
-___{}},{dnl
-___{}___{}define({XMUL_BIT},eval(2*XMUL_BIT)){}dnl
-___{}___{}_ADD_OUTPUT({ XMUL_2X()}){}dnl
-___{}}){}dnl
-___{}_XMUL_NEGLOOP($1){}dnl
-})})dnl
-dnl
-dnl
-dnl
-define({_MUL_DEF_ALL},{dnl
-___{}define({XMUL_INIT},{define({XMUL_BIT},{1})}){}dnl
-___{}define({XMUL_BEGIN},{}){}dnl
-___{}define({XMUL_SAVE},{define({XMUL_SUM_BIT},XMUL_BIT){}define({XMUL_BT},eval(XMUL_BT+2+256*8)){
-    ld    B, H          ; 1:4       $1 *
-    ld    C, L          ; 1:4       $1 *   }XMUL_SUM_BIT{x}}){}dnl
-___{}define({XMUL_2X},{define({XMUL_BIT},eval(2*XMUL_BIT)){}define({XMUL_BT},eval(XMUL_BT+1+256*11)){
-    add  HL, HL         ; 1:11      $1 *   }XMUL_BIT{x}}){}dnl
-___{}define({XMUL_128X},{define({XMUL_BIT},eval(128*XMUL_BIT)){}define({XMUL_BT},eval(XMUL_BT+7+256*27)){
-    rr    H             ; 2:8       $1 *
-    rr    L             ; 2:8       $1 *
-    ld    H, L          ; 1:4       $1 *
-    ld    L, 0x00       ; 2:7       $1 *   }XMUL_BIT{x}}){}dnl
-___{}define({XMUL_256X},{define({XMUL_BIT},eval(256*XMUL_BIT)){}define({XMUL_BT},eval(XMUL_BT+3+256*11)){
-    ld    H, L          ; 1:4       $1 *
-    ld    L, 0x00       ; 2:7       $1 *   }XMUL_BIT{x}}){}dnl
-___{}define({XMUL_END},{}){}dnl
+define({_ADD_COST},{dnl
+__{}ifdef({_COST},{define({_COST},eval(_COST+($1)))},{define({_COST},eval($1))}){}dnl
+dnl (eval(_COST&255):eval(_COST/256))dnl
 })dnl
 dnl
 dnl
-dnl
-define({_MUL_DEF_ADD_BC},{dnl
-___{}_MUL_DEF_ALL($1){}dnl
-___{}define({XMUL_END},{define({XMUL_BT},eval(XMUL_BT+1+256*11)){
-    add  HL{,} BC         ; 1:11      $1 *   }XMUL_BIT{x + }XMUL_SUM_BIT{x = }eval(XMUL_BIT+XMUL_SUM_BIT){x}}){}dnl
+define({PUSH_MUL_INFO_MINUS},{dnl
+___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
+                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   Variant: HL * ($3-$4) = HL * (PRINT_BINARY($3) - PRINT_BINARY($4)){}dnl
 })dnl
 dnl
 dnl
-dnl
-define({_MUL_DEF_SUB_BC},{dnl
-___{}_MUL_DEF_ALL($1){}dnl
-___{}define({XMUL_END},{define({XMUL_BT},eval(XMUL_BT+3+256*19))
-    or    A             ; 1:4       $1 *
-    sbc  HL{,} BC         ; 2:15      $1 *   XMUL_BIT{}x - XMUL_SUM_BIT{}x = eval(XMUL_BIT-XMUL_SUM_BIT){}x}){}dnl
+define({PUSH_MUL_INFO_PLUS},{dnl
+___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
+                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   Variant: HL * $3 = HL * (PRINT_BINARY($2)){}dnl
 })dnl
 dnl
 dnl
+include(M4PATH{}push_mul/pmul_mk1.m4){}dnl
+include(M4PATH{}push_mul/pmul_mk2.m4){}dnl
 dnl
-define({_MUL_DEF_ADD_BA},{dnl
-___{}_MUL_DEF_ALL($1){}dnl
-___{}define({XMUL_SAVE},{define({XMUL_SUM_BIT},XMUL_BIT){}define({XMUL_BT},eval(XMUL_BT+2+256*8))
-    ld    B{,} H          ; 1:4       $1 *
-    ld    A{,} L          ; 1:4       $1 *   XMUL_SUM_BIT{}x{}define({XMUL_SAVE},{define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}define({XMUL_BT},eval(XMUL_BT+5+256*20))
-___{}    add   A{,} L          ; 1:4       $1 *
-___{}    ld    C{,} A          ; 1:4       $1 *
-___{}    ld    A{,} B          ; 1:4       $1 *
-___{}    adc   A{,} H          ; 1:4       $1 *
-___{}    ld    B{,} A          ; 1:4       $1 *   XMUL_SUM_BIT{x}})}){}dnl
-___{}define({XMUL_END},{define({XMUL_BT},eval(XMUL_BT+1+256*11)){
-    add  HL{,} BC         ; 1:11      $1 *   }XMUL_BIT{x + }XMUL_SUM_BIT{x = }eval(XMUL_BIT+XMUL_SUM_BIT){x}}){}dnl
-})dnl
-dnl
-dnl
-dnl
-define({_MUL_DEF_SUB_BA},{dnl
-___{}_MUL_DEF_ADD_BA($1){}dnl
-___{}define({XMUL_END},{define({XMUL_BT},eval(XMUL_BT+3+256*19))
-    or    A             ; 1:4       $1 *
-    sbc  HL{,} BC         ; 2:15      $1 *   XMUL_BIT{}x - XMUL_SUM_BIT{}x = eval(XMUL_BIT-XMUL_SUM_BIT){}x}){}dnl
-})dnl
-dnl
-dnl
-dnl
-define({_MUL_DEF_ADD_DE},{dnl
-___{}_MUL_DEF_ALL($1){}dnl
-___{}define({XMUL_BEGIN},{define({XMUL_BT},eval(XMUL_BT+2+256*8))
-    ld    B{,} D          ; 1:4       $1 *
-    ld    C{,} E          ; 1:4       $1 *}){}dnl
-___{}define({XMUL_SAVE},{define({XMUL_SUM_BIT},XMUL_BIT){}define({XMUL_BT},eval(XMUL_BT+2+256*8))
-    ld    D{,} H          ; 1:4       $1 *
-    ld    E{,} L          ; 1:4       $1 *   XMUL_SUM_BIT{}x{}define({XMUL_SAVE},{define({XMUL_SUM_BIT},eval(XMUL_SUM_BIT+XMUL_BIT)){}define({XMUL_BT},eval(XMUL_BT+3+256*19))
-___{}    ex   DE{,} HL         ; 1:4       $1 *
-___{}    add  HL{,} DE         ; 1:11      $1 *   XMUL_SUM_BIT{}x
-___{}    ex   DE{,} HL         ; 1:4       $1 *})}){}dnl
-___{}define({XMUL_END},{define({XMUL_BT},eval(XMUL_BT+3+256*19))
-    add  HL{,} DE         ; 1:11      $1 *   XMUL_BIT{}x + XMUL_SUM_BIT{}x = eval(XMUL_BIT+XMUL_SUM_BIT){}x
-    ld    D{,} B          ; 1:4       $1 *
-    ld    E{,} C          ; 1:4       $1 *}){}dnl
-})dnl
-dnl
-dnl
-dnl
-define({_MUL_DEF_SUB_DE},{dnl
-___{}_MUL_DEF_ADD_DE($1){}dnl
-___{}define({XMUL_END},{define({XMUL_BT},eval(XMUL_BT+5+256*27))
-    or    A             ; 1:4       $1 *
-    sbc  HL{,} DE         ; 2:15      $1 *   XMUL_BIT{}x - XMUL_SUM_BIT{}x = eval(XMUL_BIT-XMUL_SUM_BIT){}x
-    ld    D{,} B          ; 1:4       $1 *
-    ld    E{,} C          ; 1:4       $1 *}){}dnl
-})dnl
-dnl
-dnl
-dnl
-define({XMUL_INFO},{dnl
-___{}define({XMUL_INFO_TEMP},{[}eval(XMUL_BT & 0xff){:}eval(XMUL_BT/256){]})dnl
-                        ;format({%-9s},XMUL_INFO_TEMP)  $1 *   Variant: HL * $2 = HL * PRINT_BINARY($1){}dnl
-})dnl
-dnl
-dnl
-dnl
-dnl "const *"
-dnl ( x1 -- const*x1 )
 define({PUSH_MUL},{define({XMUL_1BITS},SUM_1BITS($1)){}define({XMUL_0BITS},SUM_0BITS($1-1))dnl
-dnl
-dnl
-ifelse(eval($1==0),{1},{
-dnl n = 0
-dnl
-                        ;           $1 *   Variant: HL * 0{}dnl
-    ld   HL, 0x0000     ; 3:10      0*{}dnl
-},XMUL_1BITS,{1},{
-dnl n = 2^a
-dnl 1,2,4,8,16,32,...
-___{}XMUL_LOOP($1){}dnl
-___{}_MUL_DEF_ALL($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{2^a})dnl
-___{}{}XMUL_VAR_A
-},XMUL_1BITS,{2},{
-dnl n = 2^a + 2^b
-dnl 3,5,6,9,10,12,17,18,20,24,...
-dnl Not all variants are optimal. For example, 258.
-___{}XMUL_LOOP($1){}dnl
-___{}_MUL_DEF_ADD_BC($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{(2^a + 2^b)})dnl
-___{}{}XMUL_VAR_A
-},XMUL_0BITS,{1},{
-dnl n = 2^a - 2^b, a > b
-dnl 60=64-4
-___{}XMUL_NEGLOOP($1){}dnl
-___{}_MUL_DEF_SUB_BC($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{(2^a - 2^b)})dnl
-___{}{}XMUL_VAR_A
-},XMUL_1BITS,{3},{
-dnl
-dnl n = 2^a + 2^b + 2^c
-dnl 11=8+2+1,69=64+4+1
-___{}XMUL_LOOP($1){}dnl
-___{}_MUL_DEF_ADD_BA($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{(2^a + 2^b + 2^c)})dnl
-___{}{}XMUL_VAR_A
-},XMUL_0BITS,{2},{
-dnl
-dnl n = 2^a - 2^b - 2^c, a > b > c
-dnl 27=32-4-1,54=64-8-2
-___{}XMUL_NEGLOOP($1){}dnl
-___{}_MUL_DEF_SUB_BA($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{(2^a - 2^b - 2^c)})dnl
-___{}{}XMUL_VAR_A
-},eval(XMUL_1BITS <= XMUL_0BITS + 2),{1},{
-dnl n = 2^a + 2^b + 2^c + ...
-___{}XMUL_LOOP($1){}dnl
-___{}_MUL_DEF_ADD_DE($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{(2^a + 2^b + 2^c + ...)})dnl
-___{}{}XMUL_VAR_A
-},{
-dnl n = 2^a - 2^b - 2^c - ...
-dnl 187=128+32+16+8+2+1=256-64-4-1
-___{}XMUL_NEGLOOP($1){}dnl
-___{}_MUL_DEF_SUB_DE($1)dnl
-___{}define({XMUL_VAR_A},XMUL_OUTPUT)dnl
-___{}XMUL_INFO($1,{(2^a - 2^b - 2^c - ...)})dnl
-___{}{}XMUL_VAR_A
-})})dnl
+___{}PUSH_MUL_MK1($1){}dnl
+___{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
+___{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
+___{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
+___{}PUSH_MUL_MK2($1){}dnl
+___{}ifelse(eval((_BEST_COST & 0xff) > (PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
+___{}___{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
+___{}___{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
+___{}___{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
+___{}})dnl
+___{}_BEST_INFO{}dnl
+___{}_BEST_OUT{}dnl
+})dnl
 dnl
 dnl
 dnl
