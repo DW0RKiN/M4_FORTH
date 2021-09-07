@@ -391,18 +391,19 @@ dnl
 dnl
 define({PUSH_MUL_INFO_MINUS},{dnl
 ___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
-                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   Variant: HL * ($3-$4) = HL * (PRINT_BINARY($3) - PRINT_BINARY($4)){}dnl
+                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   $3 = HL * (PRINT_BINARY($4) - PRINT_BINARY($5)){}dnl
 })dnl
 dnl
 dnl
 define({PUSH_MUL_INFO_PLUS},{dnl
 ___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
-                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   Variant: HL * $3 = HL * (PRINT_BINARY($2)){}dnl
+                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   $3 = HL * (PRINT_BINARY($2)){}dnl
 })dnl
 dnl
 dnl
 include(M4PATH{}push_mul/pmul_mk1.m4){}dnl
 include(M4PATH{}push_mul/pmul_mk2.m4){}dnl
+include(M4PATH{}push_mul/pmul_mk3.m4){}dnl
 dnl
 define({PUSH_MUL},{dnl
 ___{}PUSH_MUL_MK1($1){}dnl
@@ -410,10 +411,26 @@ ___{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
 ___{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
 ___{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
 ___{}PUSH_MUL_MK2($1){}dnl
-___{}ifelse(eval((_BEST_COST & 0xff) > (PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
+___{}ifelse(eval((_BEST_COST & 0xff) < (PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
+___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
 ___{}___{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
 ___{}___{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
 ___{}___{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
+___{}},eval(_BEST_COST > PUSH_MUL_MK2_COST),{1},{dnl
+___{}___{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
+___{}___{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
+___{}___{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
+___{}})dnl
+___{}PUSH_MUL_MK3($1){}dnl
+___{}ifelse(eval((_BEST_COST & 0xff) < (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
+___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
+___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
+___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
+___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
+___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
 ___{}})dnl
 ___{}_BEST_INFO{}dnl
 ___{}_BEST_OUT{}dnl
