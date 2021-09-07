@@ -75,19 +75,30 @@ ___{}___{}___{}    add   A{,} B          ; 1:4       $1 *
 ___{}___{}___{}    ld    B{,} A          ; 1:4       $1 *   [XMUL_SUM{}x]})}){}dnl
 dnl
 ___{}define({_TOKEN_LAST_256X_SAVE},{dnl
-___{}___{}ifelse(eval(XMUL_256X_SUM==0),{1},{dnl
+___{}___{}ifelse(eval((XMUL_256X_SUM==0) && (XMUL_SUM==0)),{1},{dnl
 ___{}___{}___{}define({XMUL_BIT},eval(256*XMUL_BIT))dnl
 ___{}___{}___{}_ADD_COST(3+256*11)
 ___{}___{}___{}    ld    H{,} L          ; 1:4       $1 *
 ___{}___{}___{}    ld    L{,} 0x00       ; 2:7       $1 *   XMUL_BIT{}x{}dnl
+___{}___{}},eval(XMUL_256X_SUM==0),{1},{dnl
+___{}___{}___{}define({XMUL_256X_SUM},XMUL_BIT)dnl
+___{}___{}___{}define({XMUL_BIT},eval(256*XMUL_BIT+XMUL_SUM))dnl
+___{}___{}___{}_ADD_COST(4+256*16)
+___{}___{}___{}    ld    A{,} B          ; 1:4       $1 *
+___{}___{}___{}    add   A{,} L          ; 1:4       $1 *
+___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *   
+___{}___{}___{}    ld    L{,} C          ; 1:4       $1 *   [XMUL_BIT{}x] = XMUL_256X_SUM{}x + XMUL_SUM{}x{}dnl
+___{}___{}___{}define({XMUL_SUM},{0})dnl
 ___{}___{}},eval(XMUL_SUM>0),{1},{dnl
-___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM+XMUL_256X_SUM))dnl
-___{}___{}___{}define({XMUL_BIT},eval(256*XMUL_BIT))dnl
-___{}___{}___{}_ADD_COST(5+256*19)
-___{}___{}___{}    add   A{,} B          ; 1:4       $1 *
-___{}___{}___{}    ld    B{,} A          ; 1:4       $1 *   [XMUL_SUM{}x]
-___{}___{}___{}    ld    H{,} L          ; 1:4       $1 *
-___{}___{}___{}    ld    L{,} 0x00       ; 2:7       $1 *   XMUL_BIT{}x{}dnl
+___{}___{}___{}define({XMUL_256X_SUM},eval(XMUL_256X_SUM+XMUL_SUM))dnl
+___{}___{}___{}define({XMUL_SUM},eval(256*XMUL_BIT))dnl
+___{}___{}___{}define({XMUL_BIT},eval(XMUL_256X_SUM+XMUL_SUM))dnl
+___{}___{}___{}_ADD_COST(4+256*16)
+___{}___{}___{}    add   A{,} B          ; 1:4       $1 *   [XMUL_256X_SUM{}x]
+___{}___{}___{}    add   A{,} L          ; 1:4       $1 *
+___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *   
+___{}___{}___{}    ld    L{,} C          ; 1:4       $1 *   [XMUL_BIT{}x] = XMUL_SUM{}x + XMUL_256X_SUM{}x{}dnl
+___{}___{}___{}define({XMUL_SUM},{0})dnl
 ___{}___{}},{dnl
 ___{}___{}___{}define({XMUL_256X_SUM},eval(XMUL_256X_SUM+256*XMUL_BIT))dnl
 ___{}___{}___{}define({XMUL_BIT},eval(XMUL_256X_SUM))dnl
@@ -357,7 +368,12 @@ ___{}PUSH_MUL_MK3_CREATE_TOKENS(eval(4*HI_BIT($1)-$1))dnl
 ___{}TOKENS_HL_SUB_BC_MUL($1){}dnl
 ___{}define({PUSH_MUL_MK3_TEMP},_OUTPUT)dnl
 dnl
-___{}ifelse(eval((_COST & 0xff)<(PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}ifelse(eval((_COST & 0xff)>(PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}},eval((_COST & 0xff)<(PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}___{}define({PUSH_MUL_MK3_OUT},{PUSH_MUL_MK3_TEMP})dnl
+___{}___{}define({PUSH_MUL_MK3_COST},_COST)dnl
+___{}___{}define({PUSH_MUL_MK3_INFO},PUSH_MUL_INFO_MINUS(_COST,$1,{Variant mk3: HL * (256*a^2 - b^2 - ...)},eval(2*HI_BIT($1)),eval(2*HI_BIT($1)-$1)))dnl
+___{}},eval(_COST < PUSH_MUL_MK3_COST),{1},{dnl
 ___{}___{}define({PUSH_MUL_MK3_OUT},{PUSH_MUL_MK3_TEMP})dnl
 ___{}___{}define({PUSH_MUL_MK3_COST},_COST)dnl
 ___{}___{}define({PUSH_MUL_MK3_INFO},PUSH_MUL_INFO_MINUS(_COST,$1,{Variant mk3: HL * (256*a^2 - b^2 - ...)},eval(2*HI_BIT($1)),eval(2*HI_BIT($1)-$1)))dnl
