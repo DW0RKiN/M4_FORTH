@@ -2244,28 +2244,27 @@ ORG 0x6000
     ld    A, B          ; 1:4       239 *
     sbc   A, H          ; 1:4       239 *
     ld    H, A          ; 1:4       239 *   [239x] = 256x - 256x    
-                        ;[23:169]   241 *   Variant mk1: HL * (2^a + 2^b + 2^c + ...) = HL * (b_1111_0001)  
+                        ;[23:141]   241 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0001_0000_0000 - b_1111) 
     ld    B, D          ; 1:4       241 *
     ld    C, E          ; 1:4       241 * 
+    ld    A, L          ; 1:4       241 *   save --256x-- 
     ld    D, H          ; 1:4       241 *
     ld    E, L          ; 1:4       241 *   [1x] 
     add  HL, HL         ; 1:11      241 *   2x 
+    ex   DE, HL         ; 1:4       241 *
+    add  HL, DE         ; 1:11      241 *   [3x]
+    ex   DE, HL         ; 1:4       241 * 
     add  HL, HL         ; 1:11      241 *   4x 
+    ex   DE, HL         ; 1:4       241 *
+    add  HL, DE         ; 1:11      241 *   [7x]
+    ex   DE, HL         ; 1:4       241 * 
     add  HL, HL         ; 1:11      241 *   8x 
-    add  HL, HL         ; 1:11      241 *   16x 
-    ex   DE, HL         ; 1:4       241 *
-    add  HL, DE         ; 1:11      241 *   [17x]
-    ex   DE, HL         ; 1:4       241 * 
-    add  HL, HL         ; 1:11      241 *   32x 
-    ex   DE, HL         ; 1:4       241 *
-    add  HL, DE         ; 1:11      241 *   [49x]
-    ex   DE, HL         ; 1:4       241 * 
-    add  HL, HL         ; 1:11      241 *   64x 
-    ex   DE, HL         ; 1:4       241 *
-    add  HL, DE         ; 1:11      241 *   [113x]
-    ex   DE, HL         ; 1:4       241 * 
-    add  HL, HL         ; 1:11      241 *   128x 
-    add  HL, DE         ; 1:11      241 *   [241x] = 128x + 113x  
+    add  HL, DE         ; 1:11      241 *   [15x]
+    ex   DE, HL         ; 1:4       241 *   A0 - DE 
+    ld    H, A          ; 1:4       241 *
+    xor   A             ; 1:4       241 *
+    ld    L, A          ; 1:4       241 *   256x
+    sbc  HL, DE         ; 2:15      241 *   [241x] = 256x - 15x   
     ld    D, B          ; 1:4       241 *
     ld    E, C          ; 1:4       241 * 
                         ;[20:122]   243 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0001_0000_0000 - b_1101) 
@@ -3871,31 +3870,30 @@ ORG 0x6000
     add  HL, DE         ; 1:11      397 *   [397x] = 128x + 269x  
     ld    D, B          ; 1:4       397 *
     ld    E, C          ; 1:4       397 * 
-                        ;[26:181]   399 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1000_1111) 
+                        ;[26:174]   399 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0111_0001) 
     ld    B, D          ; 1:4       399 *
     ld    C, E          ; 1:4       399 * 
-    ld    A, L          ; 1:4       399 *   256x 
     ld    D, H          ; 1:4       399 *
     ld    E, L          ; 1:4       399 *   [1x] 
     add  HL, HL         ; 1:11      399 *   2x 
-    ex   DE, HL         ; 1:4       399 *
-    add  HL, DE         ; 1:11      399 *   [3x]
-    ex   DE, HL         ; 1:4       399 * 
+    ld    A, L          ; 1:4       399 *   save --512x-- 
     add  HL, HL         ; 1:11      399 *   4x 
-    ex   DE, HL         ; 1:4       399 *
-    add  HL, DE         ; 1:11      399 *   [7x]
-    ex   DE, HL         ; 1:4       399 * 
     add  HL, HL         ; 1:11      399 *   8x 
-    ex   DE, HL         ; 1:4       399 *
-    add  HL, DE         ; 1:11      399 *   [15x]
-    ex   DE, HL         ; 1:4       399 * 
     add  HL, HL         ; 1:11      399 *   16x 
+    ex   DE, HL         ; 1:4       399 *
+    add  HL, DE         ; 1:11      399 *   [17x]
+    ex   DE, HL         ; 1:4       399 * 
     add  HL, HL         ; 1:11      399 *   32x 
+    ex   DE, HL         ; 1:4       399 *
+    add  HL, DE         ; 1:11      399 *   [49x]
+    ex   DE, HL         ; 1:4       399 * 
     add  HL, HL         ; 1:11      399 *   64x 
-    add  HL, HL         ; 1:11      399 *   128x 
-    add   A, D          ; 1:4       399 *
-    ld    D, A          ; 1:4       399 *   [271x] 
-    add  HL, DE         ; 1:11      399 *   [399x] = 128x + 271x  
+    add  HL, DE         ; 1:11      399 *   [113x]
+    ex   DE, HL         ; 1:4       399 *   A0 - DE 
+    ld    H, A          ; 1:4       399 *
+    xor   A             ; 1:4       399 *
+    ld    L, A          ; 1:4       399 *   512x
+    sbc  HL, DE         ; 2:15      399 *   [399x] = 512x - 113x   
     ld    D, B          ; 1:4       399 *
     ld    E, C          ; 1:4       399 * 
                         ;[20:143]   401 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1001_0001) 
@@ -3967,31 +3965,30 @@ ORG 0x6000
     add  HL, DE         ; 1:11      405 *   [405x] = 128x + 277x  
     ld    D, B          ; 1:4       405 *
     ld    E, C          ; 1:4       405 * 
-                        ;[26:181]   407 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1001_0111) 
+                        ;[26:174]   407 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0110_1001) 
     ld    B, D          ; 1:4       407 *
     ld    C, E          ; 1:4       407 * 
-    ld    A, L          ; 1:4       407 *   256x 
     ld    D, H          ; 1:4       407 *
     ld    E, L          ; 1:4       407 *   [1x] 
     add  HL, HL         ; 1:11      407 *   2x 
-    ex   DE, HL         ; 1:4       407 *
-    add  HL, DE         ; 1:11      407 *   [3x]
-    ex   DE, HL         ; 1:4       407 * 
+    ld    A, L          ; 1:4       407 *   save --512x-- 
     add  HL, HL         ; 1:11      407 *   4x 
-    ex   DE, HL         ; 1:4       407 *
-    add  HL, DE         ; 1:11      407 *   [7x]
-    ex   DE, HL         ; 1:4       407 * 
     add  HL, HL         ; 1:11      407 *   8x 
-    add  HL, HL         ; 1:11      407 *   16x 
     ex   DE, HL         ; 1:4       407 *
-    add  HL, DE         ; 1:11      407 *   [23x]
+    add  HL, DE         ; 1:11      407 *   [9x]
     ex   DE, HL         ; 1:4       407 * 
+    add  HL, HL         ; 1:11      407 *   16x 
     add  HL, HL         ; 1:11      407 *   32x 
+    ex   DE, HL         ; 1:4       407 *
+    add  HL, DE         ; 1:11      407 *   [41x]
+    ex   DE, HL         ; 1:4       407 * 
     add  HL, HL         ; 1:11      407 *   64x 
-    add  HL, HL         ; 1:11      407 *   128x 
-    add   A, D          ; 1:4       407 *
-    ld    D, A          ; 1:4       407 *   [279x] 
-    add  HL, DE         ; 1:11      407 *   [407x] = 128x + 279x  
+    add  HL, DE         ; 1:11      407 *   [105x]
+    ex   DE, HL         ; 1:4       407 *   A0 - DE 
+    ld    H, A          ; 1:4       407 *
+    xor   A             ; 1:4       407 *
+    ld    L, A          ; 1:4       407 *   512x
+    sbc  HL, DE         ; 2:15      407 *   [407x] = 512x - 105x   
     ld    D, B          ; 1:4       407 *
     ld    E, C          ; 1:4       407 *
 
@@ -4019,58 +4016,56 @@ ORG 0x6000
     add  HL, DE         ; 1:11      409 *   [409x] = 128x + 281x  
     ld    D, B          ; 1:4       409 *
     ld    E, C          ; 1:4       409 * 
-                        ;[26:181]   411 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1001_1011) 
+                        ;[26:174]   411 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0110_0101) 
     ld    B, D          ; 1:4       411 *
     ld    C, E          ; 1:4       411 * 
-    ld    A, L          ; 1:4       411 *   256x 
     ld    D, H          ; 1:4       411 *
     ld    E, L          ; 1:4       411 *   [1x] 
     add  HL, HL         ; 1:11      411 *   2x 
-    ex   DE, HL         ; 1:4       411 *
-    add  HL, DE         ; 1:11      411 *   [3x]
-    ex   DE, HL         ; 1:4       411 * 
+    ld    A, L          ; 1:4       411 *   save --512x-- 
     add  HL, HL         ; 1:11      411 *   4x 
+    ex   DE, HL         ; 1:4       411 *
+    add  HL, DE         ; 1:11      411 *   [5x]
+    ex   DE, HL         ; 1:4       411 * 
     add  HL, HL         ; 1:11      411 *   8x 
-    ex   DE, HL         ; 1:4       411 *
-    add  HL, DE         ; 1:11      411 *   [11x]
-    ex   DE, HL         ; 1:4       411 * 
     add  HL, HL         ; 1:11      411 *   16x 
-    ex   DE, HL         ; 1:4       411 *
-    add  HL, DE         ; 1:11      411 *   [27x]
-    ex   DE, HL         ; 1:4       411 * 
     add  HL, HL         ; 1:11      411 *   32x 
+    ex   DE, HL         ; 1:4       411 *
+    add  HL, DE         ; 1:11      411 *   [37x]
+    ex   DE, HL         ; 1:4       411 * 
     add  HL, HL         ; 1:11      411 *   64x 
-    add  HL, HL         ; 1:11      411 *   128x 
-    add   A, D          ; 1:4       411 *
-    ld    D, A          ; 1:4       411 *   [283x] 
-    add  HL, DE         ; 1:11      411 *   [411x] = 128x + 283x  
+    add  HL, DE         ; 1:11      411 *   [101x]
+    ex   DE, HL         ; 1:4       411 *   A0 - DE 
+    ld    H, A          ; 1:4       411 *
+    xor   A             ; 1:4       411 *
+    ld    L, A          ; 1:4       411 *   512x
+    sbc  HL, DE         ; 2:15      411 *   [411x] = 512x - 101x   
     ld    D, B          ; 1:4       411 *
     ld    E, C          ; 1:4       411 * 
-                        ;[26:181]   413 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1001_1101) 
+                        ;[26:174]   413 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0110_0011) 
     ld    B, D          ; 1:4       413 *
     ld    C, E          ; 1:4       413 * 
-    ld    A, L          ; 1:4       413 *   256x 
     ld    D, H          ; 1:4       413 *
     ld    E, L          ; 1:4       413 *   [1x] 
     add  HL, HL         ; 1:11      413 *   2x 
+    ld    A, L          ; 1:4       413 *   save --512x-- 
+    ex   DE, HL         ; 1:4       413 *
+    add  HL, DE         ; 1:11      413 *   [3x]
+    ex   DE, HL         ; 1:4       413 * 
     add  HL, HL         ; 1:11      413 *   4x 
-    ex   DE, HL         ; 1:4       413 *
-    add  HL, DE         ; 1:11      413 *   [5x]
-    ex   DE, HL         ; 1:4       413 * 
     add  HL, HL         ; 1:11      413 *   8x 
-    ex   DE, HL         ; 1:4       413 *
-    add  HL, DE         ; 1:11      413 *   [13x]
-    ex   DE, HL         ; 1:4       413 * 
     add  HL, HL         ; 1:11      413 *   16x 
-    ex   DE, HL         ; 1:4       413 *
-    add  HL, DE         ; 1:11      413 *   [29x]
-    ex   DE, HL         ; 1:4       413 * 
     add  HL, HL         ; 1:11      413 *   32x 
+    ex   DE, HL         ; 1:4       413 *
+    add  HL, DE         ; 1:11      413 *   [35x]
+    ex   DE, HL         ; 1:4       413 * 
     add  HL, HL         ; 1:11      413 *   64x 
-    add  HL, HL         ; 1:11      413 *   128x 
-    add   A, D          ; 1:4       413 *
-    ld    D, A          ; 1:4       413 *   [285x] 
-    add  HL, DE         ; 1:11      413 *   [413x] = 128x + 285x  
+    add  HL, DE         ; 1:11      413 *   [99x]
+    ex   DE, HL         ; 1:4       413 *   A0 - DE 
+    ld    H, A          ; 1:4       413 *
+    xor   A             ; 1:4       413 *
+    ld    L, A          ; 1:4       413 *   512x
+    sbc  HL, DE         ; 2:15      413 *   [413x] = 512x - 99x   
     ld    D, B          ; 1:4       413 *
     ld    E, C          ; 1:4       413 * 
                         ;[23:155]   415 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0110_0001) 
@@ -4165,31 +4160,30 @@ ORG 0x6000
     add  HL, DE         ; 1:11      421 *   [421x] = 128x + 293x  
     ld    D, B          ; 1:4       421 *
     ld    E, C          ; 1:4       421 * 
-                        ;[26:181]   423 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1010_0111) 
+                        ;[26:174]   423 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0101_1001) 
     ld    B, D          ; 1:4       423 *
     ld    C, E          ; 1:4       423 * 
-    ld    A, L          ; 1:4       423 *   256x 
     ld    D, H          ; 1:4       423 *
     ld    E, L          ; 1:4       423 *   [1x] 
     add  HL, HL         ; 1:11      423 *   2x 
-    ex   DE, HL         ; 1:4       423 *
-    add  HL, DE         ; 1:11      423 *   [3x]
-    ex   DE, HL         ; 1:4       423 * 
+    ld    A, L          ; 1:4       423 *   save --512x-- 
     add  HL, HL         ; 1:11      423 *   4x 
-    ex   DE, HL         ; 1:4       423 *
-    add  HL, DE         ; 1:11      423 *   [7x]
-    ex   DE, HL         ; 1:4       423 * 
     add  HL, HL         ; 1:11      423 *   8x 
-    add  HL, HL         ; 1:11      423 *   16x 
-    add  HL, HL         ; 1:11      423 *   32x 
     ex   DE, HL         ; 1:4       423 *
-    add  HL, DE         ; 1:11      423 *   [39x]
+    add  HL, DE         ; 1:11      423 *   [9x]
     ex   DE, HL         ; 1:4       423 * 
+    add  HL, HL         ; 1:11      423 *   16x 
+    ex   DE, HL         ; 1:4       423 *
+    add  HL, DE         ; 1:11      423 *   [25x]
+    ex   DE, HL         ; 1:4       423 * 
+    add  HL, HL         ; 1:11      423 *   32x 
     add  HL, HL         ; 1:11      423 *   64x 
-    add  HL, HL         ; 1:11      423 *   128x 
-    add   A, D          ; 1:4       423 *
-    ld    D, A          ; 1:4       423 *   [295x] 
-    add  HL, DE         ; 1:11      423 *   [423x] = 128x + 295x  
+    add  HL, DE         ; 1:11      423 *   [89x]
+    ex   DE, HL         ; 1:4       423 *   A0 - DE 
+    ld    H, A          ; 1:4       423 *
+    xor   A             ; 1:4       423 *
+    ld    L, A          ; 1:4       423 *   512x
+    sbc  HL, DE         ; 2:15      423 *   [423x] = 512x - 89x   
     ld    D, B          ; 1:4       423 *
     ld    E, C          ; 1:4       423 * 
                         ;[23:162]   425 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1010_1001) 
@@ -4216,58 +4210,56 @@ ORG 0x6000
     add  HL, DE         ; 1:11      425 *   [425x] = 128x + 297x  
     ld    D, B          ; 1:4       425 *
     ld    E, C          ; 1:4       425 * 
-                        ;[26:181]   427 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1010_1011) 
+                        ;[26:174]   427 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0101_0101) 
     ld    B, D          ; 1:4       427 *
     ld    C, E          ; 1:4       427 * 
-    ld    A, L          ; 1:4       427 *   256x 
     ld    D, H          ; 1:4       427 *
     ld    E, L          ; 1:4       427 *   [1x] 
     add  HL, HL         ; 1:11      427 *   2x 
-    ex   DE, HL         ; 1:4       427 *
-    add  HL, DE         ; 1:11      427 *   [3x]
-    ex   DE, HL         ; 1:4       427 * 
+    ld    A, L          ; 1:4       427 *   save --512x-- 
     add  HL, HL         ; 1:11      427 *   4x 
+    ex   DE, HL         ; 1:4       427 *
+    add  HL, DE         ; 1:11      427 *   [5x]
+    ex   DE, HL         ; 1:4       427 * 
     add  HL, HL         ; 1:11      427 *   8x 
-    ex   DE, HL         ; 1:4       427 *
-    add  HL, DE         ; 1:11      427 *   [11x]
-    ex   DE, HL         ; 1:4       427 * 
     add  HL, HL         ; 1:11      427 *   16x 
-    add  HL, HL         ; 1:11      427 *   32x 
     ex   DE, HL         ; 1:4       427 *
-    add  HL, DE         ; 1:11      427 *   [43x]
+    add  HL, DE         ; 1:11      427 *   [21x]
     ex   DE, HL         ; 1:4       427 * 
+    add  HL, HL         ; 1:11      427 *   32x 
     add  HL, HL         ; 1:11      427 *   64x 
-    add  HL, HL         ; 1:11      427 *   128x 
-    add   A, D          ; 1:4       427 *
-    ld    D, A          ; 1:4       427 *   [299x] 
-    add  HL, DE         ; 1:11      427 *   [427x] = 128x + 299x  
+    add  HL, DE         ; 1:11      427 *   [85x]
+    ex   DE, HL         ; 1:4       427 *   A0 - DE 
+    ld    H, A          ; 1:4       427 *
+    xor   A             ; 1:4       427 *
+    ld    L, A          ; 1:4       427 *   512x
+    sbc  HL, DE         ; 2:15      427 *   [427x] = 512x - 85x   
     ld    D, B          ; 1:4       427 *
     ld    E, C          ; 1:4       427 * 
-                        ;[26:181]   429 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1010_1101) 
+                        ;[26:174]   429 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0101_0011) 
     ld    B, D          ; 1:4       429 *
     ld    C, E          ; 1:4       429 * 
-    ld    A, L          ; 1:4       429 *   256x 
     ld    D, H          ; 1:4       429 *
     ld    E, L          ; 1:4       429 *   [1x] 
     add  HL, HL         ; 1:11      429 *   2x 
+    ld    A, L          ; 1:4       429 *   save --512x-- 
+    ex   DE, HL         ; 1:4       429 *
+    add  HL, DE         ; 1:11      429 *   [3x]
+    ex   DE, HL         ; 1:4       429 * 
     add  HL, HL         ; 1:11      429 *   4x 
-    ex   DE, HL         ; 1:4       429 *
-    add  HL, DE         ; 1:11      429 *   [5x]
-    ex   DE, HL         ; 1:4       429 * 
     add  HL, HL         ; 1:11      429 *   8x 
-    ex   DE, HL         ; 1:4       429 *
-    add  HL, DE         ; 1:11      429 *   [13x]
-    ex   DE, HL         ; 1:4       429 * 
     add  HL, HL         ; 1:11      429 *   16x 
-    add  HL, HL         ; 1:11      429 *   32x 
     ex   DE, HL         ; 1:4       429 *
-    add  HL, DE         ; 1:11      429 *   [45x]
+    add  HL, DE         ; 1:11      429 *   [19x]
     ex   DE, HL         ; 1:4       429 * 
+    add  HL, HL         ; 1:11      429 *   32x 
     add  HL, HL         ; 1:11      429 *   64x 
-    add  HL, HL         ; 1:11      429 *   128x 
-    add   A, D          ; 1:4       429 *
-    ld    D, A          ; 1:4       429 *   [301x] 
-    add  HL, DE         ; 1:11      429 *   [429x] = 128x + 301x  
+    add  HL, DE         ; 1:11      429 *   [83x]
+    ex   DE, HL         ; 1:4       429 *   A0 - DE 
+    ld    H, A          ; 1:4       429 *
+    xor   A             ; 1:4       429 *
+    ld    L, A          ; 1:4       429 *   512x
+    sbc  HL, DE         ; 2:15      429 *   [429x] = 512x - 83x   
     ld    D, B          ; 1:4       429 *
     ld    E, C          ; 1:4       429 *
 
@@ -4318,58 +4310,56 @@ ORG 0x6000
     add  HL, DE         ; 1:11      433 *   [433x] = 128x + 305x  
     ld    D, B          ; 1:4       433 *
     ld    E, C          ; 1:4       433 * 
-                        ;[26:181]   435 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1011_0011) 
+                        ;[26:174]   435 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0100_1101) 
     ld    B, D          ; 1:4       435 *
     ld    C, E          ; 1:4       435 * 
-    ld    A, L          ; 1:4       435 *   256x 
     ld    D, H          ; 1:4       435 *
     ld    E, L          ; 1:4       435 *   [1x] 
     add  HL, HL         ; 1:11      435 *   2x 
-    ex   DE, HL         ; 1:4       435 *
-    add  HL, DE         ; 1:11      435 *   [3x]
-    ex   DE, HL         ; 1:4       435 * 
+    ld    A, L          ; 1:4       435 *   save --512x-- 
     add  HL, HL         ; 1:11      435 *   4x 
+    ex   DE, HL         ; 1:4       435 *
+    add  HL, DE         ; 1:11      435 *   [5x]
+    ex   DE, HL         ; 1:4       435 * 
     add  HL, HL         ; 1:11      435 *   8x 
+    ex   DE, HL         ; 1:4       435 *
+    add  HL, DE         ; 1:11      435 *   [13x]
+    ex   DE, HL         ; 1:4       435 * 
     add  HL, HL         ; 1:11      435 *   16x 
-    ex   DE, HL         ; 1:4       435 *
-    add  HL, DE         ; 1:11      435 *   [19x]
-    ex   DE, HL         ; 1:4       435 * 
     add  HL, HL         ; 1:11      435 *   32x 
-    ex   DE, HL         ; 1:4       435 *
-    add  HL, DE         ; 1:11      435 *   [51x]
-    ex   DE, HL         ; 1:4       435 * 
     add  HL, HL         ; 1:11      435 *   64x 
-    add  HL, HL         ; 1:11      435 *   128x 
-    add   A, D          ; 1:4       435 *
-    ld    D, A          ; 1:4       435 *   [307x] 
-    add  HL, DE         ; 1:11      435 *   [435x] = 128x + 307x  
+    add  HL, DE         ; 1:11      435 *   [77x]
+    ex   DE, HL         ; 1:4       435 *   A0 - DE 
+    ld    H, A          ; 1:4       435 *
+    xor   A             ; 1:4       435 *
+    ld    L, A          ; 1:4       435 *   512x
+    sbc  HL, DE         ; 2:15      435 *   [435x] = 512x - 77x   
     ld    D, B          ; 1:4       435 *
     ld    E, C          ; 1:4       435 * 
-                        ;[26:181]   437 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1011_0101) 
+                        ;[26:174]   437 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0100_1011) 
     ld    B, D          ; 1:4       437 *
     ld    C, E          ; 1:4       437 * 
-    ld    A, L          ; 1:4       437 *   256x 
     ld    D, H          ; 1:4       437 *
     ld    E, L          ; 1:4       437 *   [1x] 
     add  HL, HL         ; 1:11      437 *   2x 
+    ld    A, L          ; 1:4       437 *   save --512x-- 
+    ex   DE, HL         ; 1:4       437 *
+    add  HL, DE         ; 1:11      437 *   [3x]
+    ex   DE, HL         ; 1:4       437 * 
     add  HL, HL         ; 1:11      437 *   4x 
-    ex   DE, HL         ; 1:4       437 *
-    add  HL, DE         ; 1:11      437 *   [5x]
-    ex   DE, HL         ; 1:4       437 * 
     add  HL, HL         ; 1:11      437 *   8x 
+    ex   DE, HL         ; 1:4       437 *
+    add  HL, DE         ; 1:11      437 *   [11x]
+    ex   DE, HL         ; 1:4       437 * 
     add  HL, HL         ; 1:11      437 *   16x 
-    ex   DE, HL         ; 1:4       437 *
-    add  HL, DE         ; 1:11      437 *   [21x]
-    ex   DE, HL         ; 1:4       437 * 
     add  HL, HL         ; 1:11      437 *   32x 
-    ex   DE, HL         ; 1:4       437 *
-    add  HL, DE         ; 1:11      437 *   [53x]
-    ex   DE, HL         ; 1:4       437 * 
     add  HL, HL         ; 1:11      437 *   64x 
-    add  HL, HL         ; 1:11      437 *   128x 
-    add   A, D          ; 1:4       437 *
-    ld    D, A          ; 1:4       437 *   [309x] 
-    add  HL, DE         ; 1:11      437 *   [437x] = 128x + 309x  
+    add  HL, DE         ; 1:11      437 *   [75x]
+    ex   DE, HL         ; 1:4       437 *   A0 - DE 
+    ld    H, A          ; 1:4       437 *
+    xor   A             ; 1:4       437 *
+    ld    L, A          ; 1:4       437 *   512x
+    sbc  HL, DE         ; 2:15      437 *   [437x] = 512x - 75x   
     ld    D, B          ; 1:4       437 *
     ld    E, C          ; 1:4       437 * 
                         ;[23:155]   439 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0100_1001) 
@@ -4395,31 +4385,30 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      439 *   [439x] = 512x - 73x   
     ld    D, B          ; 1:4       439 *
     ld    E, C          ; 1:4       439 * 
-                        ;[26:181]   441 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0001_1011_1001) 
+                        ;[26:174]   441 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0100_0111) 
     ld    B, D          ; 1:4       441 *
     ld    C, E          ; 1:4       441 * 
-    ld    A, L          ; 1:4       441 *   256x 
     ld    D, H          ; 1:4       441 *
     ld    E, L          ; 1:4       441 *   [1x] 
     add  HL, HL         ; 1:11      441 *   2x 
+    ld    A, L          ; 1:4       441 *   save --512x-- 
+    ex   DE, HL         ; 1:4       441 *
+    add  HL, DE         ; 1:11      441 *   [3x]
+    ex   DE, HL         ; 1:4       441 * 
     add  HL, HL         ; 1:11      441 *   4x 
+    ex   DE, HL         ; 1:4       441 *
+    add  HL, DE         ; 1:11      441 *   [7x]
+    ex   DE, HL         ; 1:4       441 * 
     add  HL, HL         ; 1:11      441 *   8x 
-    ex   DE, HL         ; 1:4       441 *
-    add  HL, DE         ; 1:11      441 *   [9x]
-    ex   DE, HL         ; 1:4       441 * 
     add  HL, HL         ; 1:11      441 *   16x 
-    ex   DE, HL         ; 1:4       441 *
-    add  HL, DE         ; 1:11      441 *   [25x]
-    ex   DE, HL         ; 1:4       441 * 
     add  HL, HL         ; 1:11      441 *   32x 
-    ex   DE, HL         ; 1:4       441 *
-    add  HL, DE         ; 1:11      441 *   [57x]
-    ex   DE, HL         ; 1:4       441 * 
     add  HL, HL         ; 1:11      441 *   64x 
-    add  HL, HL         ; 1:11      441 *   128x 
-    add   A, D          ; 1:4       441 *
-    ld    D, A          ; 1:4       441 *   [313x] 
-    add  HL, DE         ; 1:11      441 *   [441x] = 128x + 313x  
+    add  HL, DE         ; 1:11      441 *   [71x]
+    ex   DE, HL         ; 1:4       441 *   A0 - DE 
+    ld    H, A          ; 1:4       441 *
+    xor   A             ; 1:4       441 *
+    ld    L, A          ; 1:4       441 *   512x
+    sbc  HL, DE         ; 2:15      441 *   [441x] = 512x - 71x   
     ld    D, B          ; 1:4       441 *
     ld    E, C          ; 1:4       441 * 
                         ;[23:155]   443 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0010_0000_0000 - b_0100_0101) 
@@ -5168,13 +5157,14 @@ ORG 0x6000
     add  HL, HL         ; 1:11      511 *   512x 
     or    A             ; 1:4       511 *
     sbc  HL, BC         ; 2:15      511 *   [511x] = 512x - 1x   
-                        ;[7:41]     513 *   Variant mk1: HL * (2^a + 2^b) = HL * (b_0010_0000_0001)   
+                        ;[7:35]     513 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_0000_0001)  
     ld    B, H          ; 1:4       513 *
     ld    C, L          ; 1:4       513 *   [1x] 
-    ld    H, L          ; 1:4       513 *
-    ld    L, 0x00       ; 2:7       513 *   256x 
-    add  HL, HL         ; 1:11      513 *   512x 
-    add  HL, BC         ; 1:11      513 *   [513x] = 512x + 1x   
+    add  HL, HL         ; 1:11      513 *   2x 
+    ld    A, B          ; 1:4       513 *
+    add   A, L          ; 1:4       513 *
+    ld    H, A          ; 1:4       513 *   
+    ld    L, C          ; 1:4       513 *   [513x] = 2x + 1x    
                         ;[7:42]     515 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_0000_0011)  
     ld    B, H          ; 1:4       515 *
     ld    C, L          ; 1:4       515 *   [1x] 
@@ -7918,31 +7908,30 @@ ORG 0x6000
     ld    A, B          ; 1:4       751 *
     sbc   A, H          ; 1:4       751 *
     ld    H, A          ; 1:4       751 *   [751x] = 1024x - 1024x    
-                        ;[26:181]   753 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_1111_0001) 
+                        ;[26:153]   753 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0000_1111) 
     ld    B, D          ; 1:4       753 *
     ld    C, E          ; 1:4       753 * 
+    ld    A, L          ; 1:4       753 *   256x 
     ld    D, H          ; 1:4       753 *
     ld    E, L          ; 1:4       753 *   [1x] 
     add  HL, HL         ; 1:11      753 *   2x 
-    ld    A, L          ; 1:4       753 *   512x 
+    ex   DE, HL         ; 1:4       753 *
+    add  HL, DE         ; 1:11      753 *   [3x]
+    ex   DE, HL         ; 1:4       753 * 
     add  HL, HL         ; 1:11      753 *   4x 
-    add  HL, HL         ; 1:11      753 *   8x 
-    add  HL, HL         ; 1:11      753 *   16x 
-    ex   DE, HL         ; 1:4       753 *
-    add  HL, DE         ; 1:11      753 *   [17x]
-    ex   DE, HL         ; 1:4       753 * 
-    add  HL, HL         ; 1:11      753 *   32x 
-    ex   DE, HL         ; 1:4       753 *
-    add  HL, DE         ; 1:11      753 *   [49x]
-    ex   DE, HL         ; 1:4       753 * 
-    add  HL, HL         ; 1:11      753 *   64x 
-    ex   DE, HL         ; 1:4       753 *
-    add  HL, DE         ; 1:11      753 *   [113x]
-    ex   DE, HL         ; 1:4       753 * 
-    add  HL, HL         ; 1:11      753 *   128x 
     add   A, D          ; 1:4       753 *
-    ld    D, A          ; 1:4       753 *   [625x] 
-    add  HL, DE         ; 1:11      753 *   [753x] = 128x + 625x  
+    ld    D, A          ; 1:4       753 *   [259x]
+    ld    A, L          ; 1:4       753 *   save --1024x-- 
+    ex   DE, HL         ; 1:4       753 *
+    add  HL, DE         ; 1:11      753 *   [263x]
+    ex   DE, HL         ; 1:4       753 * 
+    add  HL, HL         ; 1:11      753 *   8x 
+    add  HL, DE         ; 1:11      753 *   [271x]
+    ex   DE, HL         ; 1:4       753 *   A0 - DE 
+    ld    H, A          ; 1:4       753 *
+    xor   A             ; 1:4       753 *
+    ld    L, A          ; 1:4       753 *   1024x
+    sbc  HL, DE         ; 2:15      753 *   [753x] = 1024x - 271x   
     ld    D, B          ; 1:4       753 *
     ld    E, C          ; 1:4       753 * 
                         ;[23:134]   755 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0000_1101) 
@@ -9441,15 +9430,16 @@ ORG 0x6000
     ld    D, B          ; 1:4       891 *
     ld    E, C          ; 1:4       891 *
 
-                        ;[24:166]   893 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_1000_0011) 
-    ld    B, D          ; 1:4       893 *
-    ld    C, E          ; 1:4       893 * 
-    ld    D, H          ; 1:4       893 *
-    ld    E, L          ; 1:4       893 *   [1x] 
+                        ;[24:152]   893 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_1000_0011)  
+    ld    B, H          ; 1:4       893 *
+    ld    C, L          ; 1:4       893 *   [1x] 
     add  HL, HL         ; 1:11      893 *   2x 
-    ex   DE, HL         ; 1:4       893 *
-    add  HL, DE         ; 1:11      893 *   [3x]
-    ex   DE, HL         ; 1:4       893 * 
+    ld    A, C          ; 1:4       893 *
+    add   A, L          ; 1:4       893 *
+    ld    C, A          ; 1:4       893 *
+    ld    A, B          ; 1:4       893 *
+    adc   A, H          ; 1:4       893 *
+    ld    B, A          ; 1:4       893 *   [3x] 
     add  HL, HL         ; 1:11      893 *   4x 
     ld    A, L          ; 1:4       893 *   save --1024x-- 
     add  HL, HL         ; 1:11      893 *   8x 
@@ -9457,14 +9447,14 @@ ORG 0x6000
     add  HL, HL         ; 1:11      893 *   32x 
     add  HL, HL         ; 1:11      893 *   64x 
     add  HL, HL         ; 1:11      893 *   128x 
-    add  HL, DE         ; 1:11      893 *   [131x]
-    ex   DE, HL         ; 1:4       893 *   A0 - DE 
-    ld    H, A          ; 1:4       893 *
+    add  HL, BC         ; 1:11      893 *   [131x]
+    ld    B, A          ; 1:4       893 *   A0 - HL
     xor   A             ; 1:4       893 *
-    ld    L, A          ; 1:4       893 *   1024x
-    sbc  HL, DE         ; 2:15      893 *   [893x] = 1024x - 131x   
-    ld    D, B          ; 1:4       893 *
-    ld    E, C          ; 1:4       893 * 
+    sub   L             ; 1:4       893 *
+    ld    L, A          ; 1:4       893 *
+    ld    A, B          ; 1:4       893 *
+    sbc   A, H          ; 1:4       893 *
+    ld    H, A          ; 1:4       893 *   [893x] = 1024x - 1024x    
                         ;[18:128]   895 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_1000_0001)  
     ld    B, H          ; 1:4       895 *
     ld    C, L          ; 1:4       895 *   [1x] 
@@ -10213,29 +10203,30 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      955 *   [955x] = 1024x - 69x   
     ld    D, B          ; 1:4       955 *
     ld    E, C          ; 1:4       955 * 
-                        ;[23:155]   957 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0100_0011) 
-    ld    B, D          ; 1:4       957 *
-    ld    C, E          ; 1:4       957 * 
-    ld    D, H          ; 1:4       957 *
-    ld    E, L          ; 1:4       957 *   [1x] 
+                        ;[23:141]   957 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0100_0011)  
+    ld    B, H          ; 1:4       957 *
+    ld    C, L          ; 1:4       957 *   [1x] 
     add  HL, HL         ; 1:11      957 *   2x 
-    ex   DE, HL         ; 1:4       957 *
-    add  HL, DE         ; 1:11      957 *   [3x]
-    ex   DE, HL         ; 1:4       957 * 
+    ld    A, C          ; 1:4       957 *
+    add   A, L          ; 1:4       957 *
+    ld    C, A          ; 1:4       957 *
+    ld    A, B          ; 1:4       957 *
+    adc   A, H          ; 1:4       957 *
+    ld    B, A          ; 1:4       957 *   [3x] 
     add  HL, HL         ; 1:11      957 *   4x 
     ld    A, L          ; 1:4       957 *   save --1024x-- 
     add  HL, HL         ; 1:11      957 *   8x 
     add  HL, HL         ; 1:11      957 *   16x 
     add  HL, HL         ; 1:11      957 *   32x 
     add  HL, HL         ; 1:11      957 *   64x 
-    add  HL, DE         ; 1:11      957 *   [67x]
-    ex   DE, HL         ; 1:4       957 *   A0 - DE 
-    ld    H, A          ; 1:4       957 *
+    add  HL, BC         ; 1:11      957 *   [67x]
+    ld    B, A          ; 1:4       957 *   A0 - HL
     xor   A             ; 1:4       957 *
-    ld    L, A          ; 1:4       957 *   1024x
-    sbc  HL, DE         ; 2:15      957 *   [957x] = 1024x - 67x   
-    ld    D, B          ; 1:4       957 *
-    ld    E, C          ; 1:4       957 *
+    sub   L             ; 1:4       957 *
+    ld    L, A          ; 1:4       957 *
+    ld    A, B          ; 1:4       957 *
+    sbc   A, H          ; 1:4       957 *
+    ld    H, A          ; 1:4       957 *   [957x] = 1024x - 1024x   
 
                         ;[17:117]   959 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0100_0001)  
     ld    B, H          ; 1:4       959 *
@@ -10594,28 +10585,29 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      987 *   [987x] = 1024x - 37x   
     ld    D, B          ; 1:4       987 *
     ld    E, C          ; 1:4       987 * 
-                        ;[22:144]   989 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0010_0011) 
-    ld    B, D          ; 1:4       989 *
-    ld    C, E          ; 1:4       989 * 
-    ld    D, H          ; 1:4       989 *
-    ld    E, L          ; 1:4       989 *   [1x] 
+                        ;[22:130]   989 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0010_0011)  
+    ld    B, H          ; 1:4       989 *
+    ld    C, L          ; 1:4       989 *   [1x] 
     add  HL, HL         ; 1:11      989 *   2x 
-    ex   DE, HL         ; 1:4       989 *
-    add  HL, DE         ; 1:11      989 *   [3x]
-    ex   DE, HL         ; 1:4       989 * 
+    ld    A, C          ; 1:4       989 *
+    add   A, L          ; 1:4       989 *
+    ld    C, A          ; 1:4       989 *
+    ld    A, B          ; 1:4       989 *
+    adc   A, H          ; 1:4       989 *
+    ld    B, A          ; 1:4       989 *   [3x] 
     add  HL, HL         ; 1:11      989 *   4x 
     ld    A, L          ; 1:4       989 *   save --1024x-- 
     add  HL, HL         ; 1:11      989 *   8x 
     add  HL, HL         ; 1:11      989 *   16x 
     add  HL, HL         ; 1:11      989 *   32x 
-    add  HL, DE         ; 1:11      989 *   [35x]
-    ex   DE, HL         ; 1:4       989 *   A0 - DE 
-    ld    H, A          ; 1:4       989 *
+    add  HL, BC         ; 1:11      989 *   [35x]
+    ld    B, A          ; 1:4       989 *   A0 - HL
     xor   A             ; 1:4       989 *
-    ld    L, A          ; 1:4       989 *   1024x
-    sbc  HL, DE         ; 2:15      989 *   [989x] = 1024x - 35x   
-    ld    D, B          ; 1:4       989 *
-    ld    E, C          ; 1:4       989 * 
+    sub   L             ; 1:4       989 *
+    ld    L, A          ; 1:4       989 *
+    ld    A, B          ; 1:4       989 *
+    sbc   A, H          ; 1:4       989 *
+    ld    H, A          ; 1:4       989 *   [989x] = 1024x - 1024x    
                         ;[16:106]   991 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0010_0001)  
     ld    B, H          ; 1:4       991 *
     ld    C, L          ; 1:4       991 *   [1x] 
@@ -10774,27 +10766,28 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1003 *   [1003x] = 1024x - 21x   
     ld    D, B          ; 1:4       1003 *
     ld    E, C          ; 1:4       1003 * 
-                        ;[21:133]   1005 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0011) 
-    ld    B, D          ; 1:4       1005 *
-    ld    C, E          ; 1:4       1005 * 
-    ld    D, H          ; 1:4       1005 *
-    ld    E, L          ; 1:4       1005 *   [1x] 
+                        ;[21:119]   1005 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0011)  
+    ld    B, H          ; 1:4       1005 *
+    ld    C, L          ; 1:4       1005 *   [1x] 
     add  HL, HL         ; 1:11      1005 *   2x 
-    ex   DE, HL         ; 1:4       1005 *
-    add  HL, DE         ; 1:11      1005 *   [3x]
-    ex   DE, HL         ; 1:4       1005 * 
+    ld    A, C          ; 1:4       1005 *
+    add   A, L          ; 1:4       1005 *
+    ld    C, A          ; 1:4       1005 *
+    ld    A, B          ; 1:4       1005 *
+    adc   A, H          ; 1:4       1005 *
+    ld    B, A          ; 1:4       1005 *   [3x] 
     add  HL, HL         ; 1:11      1005 *   4x 
     ld    A, L          ; 1:4       1005 *   save --1024x-- 
     add  HL, HL         ; 1:11      1005 *   8x 
     add  HL, HL         ; 1:11      1005 *   16x 
-    add  HL, DE         ; 1:11      1005 *   [19x]
-    ex   DE, HL         ; 1:4       1005 *   A0 - DE 
-    ld    H, A          ; 1:4       1005 *
+    add  HL, BC         ; 1:11      1005 *   [19x]
+    ld    B, A          ; 1:4       1005 *   A0 - HL
     xor   A             ; 1:4       1005 *
-    ld    L, A          ; 1:4       1005 *   1024x
-    sbc  HL, DE         ; 2:15      1005 *   [1005x] = 1024x - 19x   
-    ld    D, B          ; 1:4       1005 *
-    ld    E, C          ; 1:4       1005 * 
+    sub   L             ; 1:4       1005 *
+    ld    L, A          ; 1:4       1005 *
+    ld    A, B          ; 1:4       1005 *
+    sbc   A, H          ; 1:4       1005 *
+    ld    H, A          ; 1:4       1005 *   [1005x] = 1024x - 1024x    
                         ;[15:95]    1007 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0001)  
     ld    B, H          ; 1:4       1007 *
     ld    C, L          ; 1:4       1007 *   [1x] 
@@ -10854,26 +10847,27 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1011 *   [1011x] = 1024x - 13x   
     ld    D, B          ; 1:4       1011 *
     ld    E, C          ; 1:4       1011 * 
-                        ;[20:122]   1013 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_1011) 
-    ld    B, D          ; 1:4       1013 *
-    ld    C, E          ; 1:4       1013 * 
-    ld    D, H          ; 1:4       1013 *
-    ld    E, L          ; 1:4       1013 *   [1x] 
+                        ;[20:108]   1013 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_1011)  
+    ld    B, H          ; 1:4       1013 *
+    ld    C, L          ; 1:4       1013 *   [1x] 
     add  HL, HL         ; 1:11      1013 *   2x 
-    ex   DE, HL         ; 1:4       1013 *
-    add  HL, DE         ; 1:11      1013 *   [3x]
-    ex   DE, HL         ; 1:4       1013 * 
+    ld    A, C          ; 1:4       1013 *
+    add   A, L          ; 1:4       1013 *
+    ld    C, A          ; 1:4       1013 *
+    ld    A, B          ; 1:4       1013 *
+    adc   A, H          ; 1:4       1013 *
+    ld    B, A          ; 1:4       1013 *   [3x] 
     add  HL, HL         ; 1:11      1013 *   4x 
     ld    A, L          ; 1:4       1013 *   save --1024x-- 
     add  HL, HL         ; 1:11      1013 *   8x 
-    add  HL, DE         ; 1:11      1013 *   [11x]
-    ex   DE, HL         ; 1:4       1013 *   A0 - DE 
-    ld    H, A          ; 1:4       1013 *
+    add  HL, BC         ; 1:11      1013 *   [11x]
+    ld    B, A          ; 1:4       1013 *   A0 - HL
     xor   A             ; 1:4       1013 *
-    ld    L, A          ; 1:4       1013 *   1024x
-    sbc  HL, DE         ; 2:15      1013 *   [1013x] = 1024x - 11x   
-    ld    D, B          ; 1:4       1013 *
-    ld    E, C          ; 1:4       1013 * 
+    sub   L             ; 1:4       1013 *
+    ld    L, A          ; 1:4       1013 *
+    ld    A, B          ; 1:4       1013 *
+    sbc   A, H          ; 1:4       1013 *
+    ld    H, A          ; 1:4       1013 *   [1013x] = 1024x - 1024x    
                         ;[14:84]    1015 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_1001)  
     ld    B, H          ; 1:4       1015 *
     ld    C, L          ; 1:4       1015 *   [1x] 
@@ -10889,26 +10883,26 @@ ORG 0x6000
     ld    A, B          ; 1:4       1015 *
     sbc   A, H          ; 1:4       1015 *
     ld    H, A          ; 1:4       1015 *   [1015x] = 1024x - 1024x    
-                        ;[19:104]   1017 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0111) 
-    ld    B, D          ; 1:4       1017 *
-    ld    C, E          ; 1:4       1017 * 
-    ld    D, H          ; 1:4       1017 *
-    ld    E, L          ; 1:4       1017 *   [1x] 
+                        ;[19:97]    1017 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0111)  
+    ld    B, H          ; 1:4       1017 *
+    ld    C, L          ; 1:4       1017 *   [1x] 
     add  HL, HL         ; 1:11      1017 *   2x 
-    ex   DE, HL         ; 1:4       1017 *
-    add  HL, DE         ; 1:11      1017 *   [3x]
-    ex   DE, HL         ; 1:4       1017 * 
+    ld    A, C          ; 1:4       1017 *
+    add   A, L          ; 1:4       1017 *
+    ld    C, A          ; 1:4       1017 *
+    ld    A, B          ; 1:4       1017 *
+    adc   A, H          ; 1:4       1017 *
+    ld    B, A          ; 1:4       1017 *   [3x] 
     add  HL, HL         ; 1:11      1017 *   4x 
-    ex   DE, HL         ; 1:4       1017 *   L0 - (DE + HL) --> E0 - (HL + DE) 
-    add  HL, DE         ; 1:11      1017 *   [7x]
+    ld    A, L          ; 1:4       1017 *   L0 - (HL + BC) --> B0 - HL
+    add  HL, BC         ; 1:11      1017 *   [7x]
+    ld    B, A          ; 1:4       1017 *
     xor   A             ; 1:4       1017 *
     sub   L             ; 1:4       1017 *
     ld    L, A          ; 1:4       1017 *
-    ld    A, E          ; 1:4       1017 *
+    ld    A, B          ; 1:4       1017 *
     sbc   A, H          ; 1:4       1017 *
-    ld    H, A          ; 1:4       1017 *   [1017x] = 1024x - 7x   
-    ld    D, B          ; 1:4       1017 *
-    ld    E, C          ; 1:4       1017 * 
+    ld    H, A          ; 1:4       1017 *   [1017x] = 1024x - 7x    
                         ;[13:73]    1019 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0101)  
     ld    B, H          ; 1:4       1019 *
     ld    C, L          ; 1:4       1019 *   [1x] 
@@ -10947,14 +10941,15 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1023 *   1024x 
     or    A             ; 1:4       1023 *
     sbc  HL, BC         ; 2:15      1023 *   [1023x] = 1024x - 1x   
-                        ;[8:52]     1025 *   Variant mk1: HL * (2^a + 2^b) = HL * (b_0100_0000_0001)   
+                        ;[8:46]     1025 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0000_0001)  
     ld    B, H          ; 1:4       1025 *
     ld    C, L          ; 1:4       1025 *   [1x] 
-    ld    H, L          ; 1:4       1025 *
-    ld    L, 0x00       ; 2:7       1025 *   256x 
-    add  HL, HL         ; 1:11      1025 *   512x 
-    add  HL, HL         ; 1:11      1025 *   1024x 
-    add  HL, BC         ; 1:11      1025 *   [1025x] = 1024x + 1x   
+    add  HL, HL         ; 1:11      1025 *   2x 
+    add  HL, HL         ; 1:11      1025 *   4x 
+    ld    A, B          ; 1:4       1025 *
+    add   A, L          ; 1:4       1025 *
+    ld    H, A          ; 1:4       1025 *   
+    ld    L, C          ; 1:4       1025 *   [1025x] = 4x + 1x    
                         ;[13:72]    1027 *   Variant mk1: HL * (2^a + 2^b + 2^c) = HL * (b_0100_0000_0011)   
     ld    B, H          ; 1:4       1027 *
     ld    A, L          ; 1:4       1027 *   [1x] 
@@ -11892,33 +11887,32 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1117 *   [1117x] = 64x + 1053x  
     ld    D, B          ; 1:4       1117 *
     ld    E, C          ; 1:4       1117 * 
-                        ;[28:189]   1119 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0101_1111) 
+                        ;[28:182]   1119 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_1010_0001) 
     ld    B, D          ; 1:4       1119 *
     ld    C, E          ; 1:4       1119 * 
+    ld    A, L          ; 1:4       1119 *   256x 
     ld    D, H          ; 1:4       1119 *
     ld    E, L          ; 1:4       1119 *   [1x] 
     add  HL, HL         ; 1:11      1119 *   2x 
-    ex   DE, HL         ; 1:4       1119 *
-    add  HL, DE         ; 1:11      1119 *   [3x]
-    ex   DE, HL         ; 1:4       1119 * 
+    add   A, L          ; 1:4       1119 *   768x 
     add  HL, HL         ; 1:11      1119 *   4x 
-    ld    A, L          ; 1:4       1119 *   1024x 
-    ex   DE, HL         ; 1:4       1119 *
-    add  HL, DE         ; 1:11      1119 *   [7x]
-    ex   DE, HL         ; 1:4       1119 * 
     add  HL, HL         ; 1:11      1119 *   8x 
-    ex   DE, HL         ; 1:4       1119 *
-    add  HL, DE         ; 1:11      1119 *   [15x]
-    ex   DE, HL         ; 1:4       1119 * 
-    add  HL, HL         ; 1:11      1119 *   16x 
-    ex   DE, HL         ; 1:4       1119 *
-    add  HL, DE         ; 1:11      1119 *   [31x]
-    ex   DE, HL         ; 1:4       1119 * 
-    add  HL, HL         ; 1:11      1119 *   32x 
-    add  HL, HL         ; 1:11      1119 *   64x 
     add   A, D          ; 1:4       1119 *
-    ld    D, A          ; 1:4       1119 *   [1055x] 
-    add  HL, DE         ; 1:11      1119 *   [1119x] = 64x + 1055x  
+    ld    D, A          ; 1:4       1119 *   [769x]
+    ld    A, L          ; 1:4       1119 *   save --2048x-- 
+    add  HL, HL         ; 1:11      1119 *   16x 
+    add  HL, HL         ; 1:11      1119 *   32x 
+    ex   DE, HL         ; 1:4       1119 *
+    add  HL, DE         ; 1:11      1119 *   [801x]
+    ex   DE, HL         ; 1:4       1119 * 
+    add  HL, HL         ; 1:11      1119 *   64x 
+    add  HL, HL         ; 1:11      1119 *   128x 
+    add  HL, DE         ; 1:11      1119 *   [929x]
+    ex   DE, HL         ; 1:4       1119 *   A0 - DE 
+    ld    H, A          ; 1:4       1119 *
+    xor   A             ; 1:4       1119 *
+    ld    L, A          ; 1:4       1119 *   2048x
+    sbc  HL, DE         ; 2:15      1119 *   [1119x] = 2048x - 929x   
     ld    D, B          ; 1:4       1119 *
     ld    E, C          ; 1:4       1119 * 
                         ;[19:132]   1121 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0110_0001) 
@@ -12089,33 +12083,32 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1133 *   [1133x] = 64x + 1069x  
     ld    D, B          ; 1:4       1133 *
     ld    E, C          ; 1:4       1133 * 
-                        ;[28:189]   1135 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0110_1111) 
+                        ;[28:182]   1135 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_1001_0001) 
     ld    B, D          ; 1:4       1135 *
     ld    C, E          ; 1:4       1135 * 
+    ld    A, L          ; 1:4       1135 *   256x 
     ld    D, H          ; 1:4       1135 *
     ld    E, L          ; 1:4       1135 *   [1x] 
     add  HL, HL         ; 1:11      1135 *   2x 
-    ex   DE, HL         ; 1:4       1135 *
-    add  HL, DE         ; 1:11      1135 *   [3x]
-    ex   DE, HL         ; 1:4       1135 * 
+    add   A, L          ; 1:4       1135 *   768x 
     add  HL, HL         ; 1:11      1135 *   4x 
-    ld    A, L          ; 1:4       1135 *   1024x 
-    ex   DE, HL         ; 1:4       1135 *
-    add  HL, DE         ; 1:11      1135 *   [7x]
-    ex   DE, HL         ; 1:4       1135 * 
     add  HL, HL         ; 1:11      1135 *   8x 
-    ex   DE, HL         ; 1:4       1135 *
-    add  HL, DE         ; 1:11      1135 *   [15x]
-    ex   DE, HL         ; 1:4       1135 * 
-    add  HL, HL         ; 1:11      1135 *   16x 
-    add  HL, HL         ; 1:11      1135 *   32x 
-    ex   DE, HL         ; 1:4       1135 *
-    add  HL, DE         ; 1:11      1135 *   [47x]
-    ex   DE, HL         ; 1:4       1135 * 
-    add  HL, HL         ; 1:11      1135 *   64x 
     add   A, D          ; 1:4       1135 *
-    ld    D, A          ; 1:4       1135 *   [1071x] 
-    add  HL, DE         ; 1:11      1135 *   [1135x] = 64x + 1071x  
+    ld    D, A          ; 1:4       1135 *   [769x]
+    ld    A, L          ; 1:4       1135 *   save --2048x-- 
+    add  HL, HL         ; 1:11      1135 *   16x 
+    ex   DE, HL         ; 1:4       1135 *
+    add  HL, DE         ; 1:11      1135 *   [785x]
+    ex   DE, HL         ; 1:4       1135 * 
+    add  HL, HL         ; 1:11      1135 *   32x 
+    add  HL, HL         ; 1:11      1135 *   64x 
+    add  HL, HL         ; 1:11      1135 *   128x 
+    add  HL, DE         ; 1:11      1135 *   [913x]
+    ex   DE, HL         ; 1:4       1135 *   A0 - DE 
+    ld    H, A          ; 1:4       1135 *
+    xor   A             ; 1:4       1135 *
+    ld    L, A          ; 1:4       1135 *   2048x
+    sbc  HL, DE         ; 2:15      1135 *   [1135x] = 2048x - 913x   
     ld    D, B          ; 1:4       1135 *
     ld    E, C          ; 1:4       1135 * 
                         ;[22:151]   1137 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0111_0001) 
@@ -12193,33 +12186,32 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1141 *   [1141x] = 64x + 1077x  
     ld    D, B          ; 1:4       1141 *
     ld    E, C          ; 1:4       1141 * 
-                        ;[28:189]   1143 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0111_0111) 
+                        ;[28:182]   1143 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_1000_1001) 
     ld    B, D          ; 1:4       1143 *
     ld    C, E          ; 1:4       1143 * 
+    ld    A, L          ; 1:4       1143 *   256x 
     ld    D, H          ; 1:4       1143 *
     ld    E, L          ; 1:4       1143 *   [1x] 
     add  HL, HL         ; 1:11      1143 *   2x 
-    ex   DE, HL         ; 1:4       1143 *
-    add  HL, DE         ; 1:11      1143 *   [3x]
-    ex   DE, HL         ; 1:4       1143 * 
+    add   A, L          ; 1:4       1143 *   768x 
     add  HL, HL         ; 1:11      1143 *   4x 
-    ld    A, L          ; 1:4       1143 *   1024x 
-    ex   DE, HL         ; 1:4       1143 *
-    add  HL, DE         ; 1:11      1143 *   [7x]
-    ex   DE, HL         ; 1:4       1143 * 
     add  HL, HL         ; 1:11      1143 *   8x 
-    add  HL, HL         ; 1:11      1143 *   16x 
-    ex   DE, HL         ; 1:4       1143 *
-    add  HL, DE         ; 1:11      1143 *   [23x]
-    ex   DE, HL         ; 1:4       1143 * 
-    add  HL, HL         ; 1:11      1143 *   32x 
-    ex   DE, HL         ; 1:4       1143 *
-    add  HL, DE         ; 1:11      1143 *   [55x]
-    ex   DE, HL         ; 1:4       1143 * 
-    add  HL, HL         ; 1:11      1143 *   64x 
     add   A, D          ; 1:4       1143 *
-    ld    D, A          ; 1:4       1143 *   [1079x] 
-    add  HL, DE         ; 1:11      1143 *   [1143x] = 64x + 1079x  
+    ld    D, A          ; 1:4       1143 *   [769x]
+    ld    A, L          ; 1:4       1143 *   save --2048x-- 
+    ex   DE, HL         ; 1:4       1143 *
+    add  HL, DE         ; 1:11      1143 *   [777x]
+    ex   DE, HL         ; 1:4       1143 * 
+    add  HL, HL         ; 1:11      1143 *   16x 
+    add  HL, HL         ; 1:11      1143 *   32x 
+    add  HL, HL         ; 1:11      1143 *   64x 
+    add  HL, HL         ; 1:11      1143 *   128x 
+    add  HL, DE         ; 1:11      1143 *   [905x]
+    ex   DE, HL         ; 1:4       1143 *   A0 - DE 
+    ld    H, A          ; 1:4       1143 *
+    xor   A             ; 1:4       1143 *
+    ld    L, A          ; 1:4       1143 *   2048x
+    sbc  HL, DE         ; 2:15      1143 *   [1143x] = 2048x - 905x   
     ld    D, B          ; 1:4       1143 *
     ld    E, C          ; 1:4       1143 * 
                         ;[25:170]   1145 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0111_1001) 
@@ -12249,62 +12241,60 @@ ORG 0x6000
     ld    D, B          ; 1:4       1145 *
     ld    E, C          ; 1:4       1145 *
 
-                        ;[28:189]   1147 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0111_1011) 
+                        ;[28:182]   1147 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_1000_0101) 
     ld    B, D          ; 1:4       1147 *
     ld    C, E          ; 1:4       1147 * 
+    ld    A, L          ; 1:4       1147 *   256x 
     ld    D, H          ; 1:4       1147 *
     ld    E, L          ; 1:4       1147 *   [1x] 
     add  HL, HL         ; 1:11      1147 *   2x 
-    ex   DE, HL         ; 1:4       1147 *
-    add  HL, DE         ; 1:11      1147 *   [3x]
-    ex   DE, HL         ; 1:4       1147 * 
+    add   A, L          ; 1:4       1147 *   768x 
     add  HL, HL         ; 1:11      1147 *   4x 
-    ld    A, L          ; 1:4       1147 *   1024x 
+    ex   DE, HL         ; 1:4       1147 *
+    add  HL, DE         ; 1:11      1147 *   [5x]
+    ex   DE, HL         ; 1:4       1147 * 
     add  HL, HL         ; 1:11      1147 *   8x 
-    ex   DE, HL         ; 1:4       1147 *
-    add  HL, DE         ; 1:11      1147 *   [11x]
-    ex   DE, HL         ; 1:4       1147 * 
-    add  HL, HL         ; 1:11      1147 *   16x 
-    ex   DE, HL         ; 1:4       1147 *
-    add  HL, DE         ; 1:11      1147 *   [27x]
-    ex   DE, HL         ; 1:4       1147 * 
-    add  HL, HL         ; 1:11      1147 *   32x 
-    ex   DE, HL         ; 1:4       1147 *
-    add  HL, DE         ; 1:11      1147 *   [59x]
-    ex   DE, HL         ; 1:4       1147 * 
-    add  HL, HL         ; 1:11      1147 *   64x 
     add   A, D          ; 1:4       1147 *
-    ld    D, A          ; 1:4       1147 *   [1083x] 
-    add  HL, DE         ; 1:11      1147 *   [1147x] = 64x + 1083x  
+    ld    D, A          ; 1:4       1147 *   [773x]
+    ld    A, L          ; 1:4       1147 *   save --2048x-- 
+    add  HL, HL         ; 1:11      1147 *   16x 
+    add  HL, HL         ; 1:11      1147 *   32x 
+    add  HL, HL         ; 1:11      1147 *   64x 
+    add  HL, HL         ; 1:11      1147 *   128x 
+    add  HL, DE         ; 1:11      1147 *   [901x]
+    ex   DE, HL         ; 1:4       1147 *   A0 - DE 
+    ld    H, A          ; 1:4       1147 *
+    xor   A             ; 1:4       1147 *
+    ld    L, A          ; 1:4       1147 *   2048x
+    sbc  HL, DE         ; 2:15      1147 *   [1147x] = 2048x - 901x   
     ld    D, B          ; 1:4       1147 *
     ld    E, C          ; 1:4       1147 * 
-                        ;[28:189]   1149 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0111_1101) 
+                        ;[28:182]   1149 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_1000_0011) 
     ld    B, D          ; 1:4       1149 *
     ld    C, E          ; 1:4       1149 * 
+    ld    A, L          ; 1:4       1149 *   256x 
     ld    D, H          ; 1:4       1149 *
     ld    E, L          ; 1:4       1149 *   [1x] 
     add  HL, HL         ; 1:11      1149 *   2x 
+    add   A, L          ; 1:4       1149 *   768x 
+    ex   DE, HL         ; 1:4       1149 *
+    add  HL, DE         ; 1:11      1149 *   [3x]
+    ex   DE, HL         ; 1:4       1149 * 
     add  HL, HL         ; 1:11      1149 *   4x 
-    ld    A, L          ; 1:4       1149 *   1024x 
-    ex   DE, HL         ; 1:4       1149 *
-    add  HL, DE         ; 1:11      1149 *   [5x]
-    ex   DE, HL         ; 1:4       1149 * 
     add  HL, HL         ; 1:11      1149 *   8x 
-    ex   DE, HL         ; 1:4       1149 *
-    add  HL, DE         ; 1:11      1149 *   [13x]
-    ex   DE, HL         ; 1:4       1149 * 
-    add  HL, HL         ; 1:11      1149 *   16x 
-    ex   DE, HL         ; 1:4       1149 *
-    add  HL, DE         ; 1:11      1149 *   [29x]
-    ex   DE, HL         ; 1:4       1149 * 
-    add  HL, HL         ; 1:11      1149 *   32x 
-    ex   DE, HL         ; 1:4       1149 *
-    add  HL, DE         ; 1:11      1149 *   [61x]
-    ex   DE, HL         ; 1:4       1149 * 
-    add  HL, HL         ; 1:11      1149 *   64x 
     add   A, D          ; 1:4       1149 *
-    ld    D, A          ; 1:4       1149 *   [1085x] 
-    add  HL, DE         ; 1:11      1149 *   [1149x] = 64x + 1085x  
+    ld    D, A          ; 1:4       1149 *   [771x]
+    ld    A, L          ; 1:4       1149 *   save --2048x-- 
+    add  HL, HL         ; 1:11      1149 *   16x 
+    add  HL, HL         ; 1:11      1149 *   32x 
+    add  HL, HL         ; 1:11      1149 *   64x 
+    add  HL, HL         ; 1:11      1149 *   128x 
+    add  HL, DE         ; 1:11      1149 *   [899x]
+    ex   DE, HL         ; 1:4       1149 *   A0 - DE 
+    ld    H, A          ; 1:4       1149 *
+    xor   A             ; 1:4       1149 *
+    ld    L, A          ; 1:4       1149 *   2048x
+    sbc  HL, DE         ; 2:15      1149 *   [1149x] = 2048x - 899x   
     ld    D, B          ; 1:4       1149 *
     ld    E, C          ; 1:4       1149 * 
                         ;[22:144]   1151 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_1000_0001)  
@@ -13725,31 +13715,31 @@ ORG 0x6000
     ld    A, B          ; 1:4       1263 *
     sbc   A, H          ; 1:4       1263 *
     ld    H, A          ; 1:4       1263 *   [1263x] = 2048x - 2048x    
-                        ;[26:181]   1265 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_1111_0001) 
+                        ;[26:148]   1265 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_0000_1111) 
     ld    B, D          ; 1:4       1265 *
     ld    C, E          ; 1:4       1265 * 
+    ld    A, L          ; 1:4       1265 *   256x 
     ld    D, H          ; 1:4       1265 *
     ld    E, L          ; 1:4       1265 *   [1x] 
     add  HL, HL         ; 1:11      1265 *   2x 
+    add   A, L          ; 1:4       1265 *   768x 
+    ex   DE, HL         ; 1:4       1265 *
+    add  HL, DE         ; 1:11      1265 *   [3x]
+    ex   DE, HL         ; 1:4       1265 * 
     add  HL, HL         ; 1:11      1265 *   4x 
-    ld    A, L          ; 1:4       1265 *   1024x 
+    ex   DE, HL         ; 1:4       1265 *
+    add  HL, DE         ; 1:11      1265 *   [7x]
+    ex   DE, HL         ; 1:4       1265 * 
     add  HL, HL         ; 1:11      1265 *   8x 
-    add  HL, HL         ; 1:11      1265 *   16x 
-    ex   DE, HL         ; 1:4       1265 *
-    add  HL, DE         ; 1:11      1265 *   [17x]
-    ex   DE, HL         ; 1:4       1265 * 
-    add  HL, HL         ; 1:11      1265 *   32x 
-    ex   DE, HL         ; 1:4       1265 *
-    add  HL, DE         ; 1:11      1265 *   [49x]
-    ex   DE, HL         ; 1:4       1265 * 
-    add  HL, HL         ; 1:11      1265 *   64x 
-    ex   DE, HL         ; 1:4       1265 *
-    add  HL, DE         ; 1:11      1265 *   [113x]
-    ex   DE, HL         ; 1:4       1265 * 
-    add  HL, HL         ; 1:11      1265 *   128x 
-    add   A, D          ; 1:4       1265 *
-    ld    D, A          ; 1:4       1265 *   [1137x] 
-    add  HL, DE         ; 1:11      1265 *   [1265x] = 128x + 1137x  
+    sub   L             ; 1:4       1265 *   L0 - (HL + DE + A0) = 0 - ((HL + DE) + (A0 - L0))
+    add  HL, DE         ; 1:11      1265 *   [15x]
+    add   A, H          ; 1:4       1265 *   [-1265x]
+    cpl                 ; 1:4       1265 *
+    ld    H, A          ; 1:4       1265 *
+    ld    A, L          ; 1:4       1265 *
+    cpl                 ; 1:4       1265 *
+    ld    L, A          ; 1:4       1265 *
+    inc  HL             ; 1:6       1265 *   [1265x] = 0-1265x   
     ld    D, B          ; 1:4       1265 *
     ld    E, C          ; 1:4       1265 * 
                         ;[23:129]   1267 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0011_0000_1101) 
@@ -16582,60 +16572,58 @@ ORG 0x6000
     ld    D, B          ; 1:4       1505 *
     ld    E, C          ; 1:4       1505 *
 
-                        ;[27:185]   1507 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_1110_0011) 
+                        ;[27:164]   1507 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0001_1101) 
     ld    B, D          ; 1:4       1507 *
     ld    C, E          ; 1:4       1507 * 
-    ld    A, L          ; 1:4       1507 *   256x 
     ld    D, H          ; 1:4       1507 *
     ld    E, L          ; 1:4       1507 *   [1x] 
     add  HL, HL         ; 1:11      1507 *   2x 
-    ex   DE, HL         ; 1:4       1507 *
-    add  HL, DE         ; 1:11      1507 *   [3x]
-    ex   DE, HL         ; 1:4       1507 * 
+    ld    A, L          ; 1:4       1507 *   512x 
     add  HL, HL         ; 1:11      1507 *   4x 
-    add   A, L          ; 1:4       1507 *   1280x 
+    ex   DE, HL         ; 1:4       1507 *
+    add  HL, DE         ; 1:11      1507 *   [5x]
+    ex   DE, HL         ; 1:4       1507 * 
     add  HL, HL         ; 1:11      1507 *   8x 
-    add  HL, HL         ; 1:11      1507 *   16x 
-    add  HL, HL         ; 1:11      1507 *   32x 
-    ex   DE, HL         ; 1:4       1507 *
-    add  HL, DE         ; 1:11      1507 *   [35x]
-    ex   DE, HL         ; 1:4       1507 * 
-    add  HL, HL         ; 1:11      1507 *   64x 
-    ex   DE, HL         ; 1:4       1507 *
-    add  HL, DE         ; 1:11      1507 *   [99x]
-    ex   DE, HL         ; 1:4       1507 * 
-    add  HL, HL         ; 1:11      1507 *   128x 
     add   A, D          ; 1:4       1507 *
-    ld    D, A          ; 1:4       1507 *   [1379x] 
-    add  HL, DE         ; 1:11      1507 *   [1507x] = 128x + 1379x  
+    ld    D, A          ; 1:4       1507 *   [517x]
+    ld    A, L          ; 1:4       1507 *   save --2048x-- 
+    ex   DE, HL         ; 1:4       1507 *
+    add  HL, DE         ; 1:11      1507 *   [525x]
+    ex   DE, HL         ; 1:4       1507 * 
+    add  HL, HL         ; 1:11      1507 *   16x 
+    add  HL, DE         ; 1:11      1507 *   [541x]
+    ex   DE, HL         ; 1:4       1507 *   A0 - DE 
+    ld    H, A          ; 1:4       1507 *
+    xor   A             ; 1:4       1507 *
+    ld    L, A          ; 1:4       1507 *   2048x
+    sbc  HL, DE         ; 2:15      1507 *   [1507x] = 2048x - 541x   
     ld    D, B          ; 1:4       1507 *
     ld    E, C          ; 1:4       1507 * 
-                        ;[27:185]   1509 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_1110_0101) 
+                        ;[27:164]   1509 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0001_1011) 
     ld    B, D          ; 1:4       1509 *
     ld    C, E          ; 1:4       1509 * 
-    ld    A, L          ; 1:4       1509 *   256x 
     ld    D, H          ; 1:4       1509 *
     ld    E, L          ; 1:4       1509 *   [1x] 
     add  HL, HL         ; 1:11      1509 *   2x 
+    ld    A, L          ; 1:4       1509 *   512x 
+    ex   DE, HL         ; 1:4       1509 *
+    add  HL, DE         ; 1:11      1509 *   [3x]
+    ex   DE, HL         ; 1:4       1509 * 
     add  HL, HL         ; 1:11      1509 *   4x 
-    add   A, L          ; 1:4       1509 *   1280x 
-    ex   DE, HL         ; 1:4       1509 *
-    add  HL, DE         ; 1:11      1509 *   [5x]
-    ex   DE, HL         ; 1:4       1509 * 
     add  HL, HL         ; 1:11      1509 *   8x 
-    add  HL, HL         ; 1:11      1509 *   16x 
-    add  HL, HL         ; 1:11      1509 *   32x 
-    ex   DE, HL         ; 1:4       1509 *
-    add  HL, DE         ; 1:11      1509 *   [37x]
-    ex   DE, HL         ; 1:4       1509 * 
-    add  HL, HL         ; 1:11      1509 *   64x 
-    ex   DE, HL         ; 1:4       1509 *
-    add  HL, DE         ; 1:11      1509 *   [101x]
-    ex   DE, HL         ; 1:4       1509 * 
-    add  HL, HL         ; 1:11      1509 *   128x 
     add   A, D          ; 1:4       1509 *
-    ld    D, A          ; 1:4       1509 *   [1381x] 
-    add  HL, DE         ; 1:11      1509 *   [1509x] = 128x + 1381x  
+    ld    D, A          ; 1:4       1509 *   [515x]
+    ld    A, L          ; 1:4       1509 *   save --2048x-- 
+    ex   DE, HL         ; 1:4       1509 *
+    add  HL, DE         ; 1:11      1509 *   [523x]
+    ex   DE, HL         ; 1:4       1509 * 
+    add  HL, HL         ; 1:11      1509 *   16x 
+    add  HL, DE         ; 1:11      1509 *   [539x]
+    ex   DE, HL         ; 1:4       1509 *   A0 - DE 
+    ld    H, A          ; 1:4       1509 *
+    xor   A             ; 1:4       1509 *
+    ld    L, A          ; 1:4       1509 *   2048x
+    sbc  HL, DE         ; 2:15      1509 *   [1509x] = 2048x - 539x   
     ld    D, B          ; 1:4       1509 *
     ld    E, C          ; 1:4       1509 * 
                         ;[24:145]   1511 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0001_1001) 
@@ -16662,32 +16650,31 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1511 *   [1511x] = 2048x - 537x   
     ld    D, B          ; 1:4       1511 *
     ld    E, C          ; 1:4       1511 * 
-                        ;[27:185]   1513 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_1110_1001) 
+                        ;[27:164]   1513 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0001_0111) 
     ld    B, D          ; 1:4       1513 *
     ld    C, E          ; 1:4       1513 * 
-    ld    A, L          ; 1:4       1513 *   256x 
     ld    D, H          ; 1:4       1513 *
     ld    E, L          ; 1:4       1513 *   [1x] 
     add  HL, HL         ; 1:11      1513 *   2x 
+    ld    A, L          ; 1:4       1513 *   512x 
+    ex   DE, HL         ; 1:4       1513 *
+    add  HL, DE         ; 1:11      1513 *   [3x]
+    ex   DE, HL         ; 1:4       1513 * 
     add  HL, HL         ; 1:11      1513 *   4x 
-    add   A, L          ; 1:4       1513 *   1280x 
+    ex   DE, HL         ; 1:4       1513 *
+    add  HL, DE         ; 1:11      1513 *   [7x]
+    ex   DE, HL         ; 1:4       1513 * 
     add  HL, HL         ; 1:11      1513 *   8x 
-    ex   DE, HL         ; 1:4       1513 *
-    add  HL, DE         ; 1:11      1513 *   [9x]
-    ex   DE, HL         ; 1:4       1513 * 
-    add  HL, HL         ; 1:11      1513 *   16x 
-    add  HL, HL         ; 1:11      1513 *   32x 
-    ex   DE, HL         ; 1:4       1513 *
-    add  HL, DE         ; 1:11      1513 *   [41x]
-    ex   DE, HL         ; 1:4       1513 * 
-    add  HL, HL         ; 1:11      1513 *   64x 
-    ex   DE, HL         ; 1:4       1513 *
-    add  HL, DE         ; 1:11      1513 *   [105x]
-    ex   DE, HL         ; 1:4       1513 * 
-    add  HL, HL         ; 1:11      1513 *   128x 
     add   A, D          ; 1:4       1513 *
-    ld    D, A          ; 1:4       1513 *   [1385x] 
-    add  HL, DE         ; 1:11      1513 *   [1513x] = 128x + 1385x  
+    ld    D, A          ; 1:4       1513 *   [519x]
+    ld    A, L          ; 1:4       1513 *   save --2048x-- 
+    add  HL, HL         ; 1:11      1513 *   16x 
+    add  HL, DE         ; 1:11      1513 *   [535x]
+    ex   DE, HL         ; 1:4       1513 *   A0 - DE 
+    ld    H, A          ; 1:4       1513 *
+    xor   A             ; 1:4       1513 *
+    ld    L, A          ; 1:4       1513 *   2048x
+    sbc  HL, DE         ; 2:15      1513 *   [1513x] = 2048x - 535x   
     ld    D, B          ; 1:4       1513 *
     ld    E, C          ; 1:4       1513 * 
                         ;[24:145]   1515 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0001_0101) 
@@ -19606,60 +19593,58 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1761 *   [1761x] = 128x + 1633x  
     ld    D, B          ; 1:4       1761 *
     ld    E, C          ; 1:4       1761 * 
-                        ;[27:185]   1763 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_1110_0011) 
+                        ;[27:164]   1763 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001_1101) 
     ld    B, D          ; 1:4       1763 *
     ld    C, E          ; 1:4       1763 * 
+    ld    A, L          ; 1:4       1763 *   256x 
     ld    D, H          ; 1:4       1763 *
     ld    E, L          ; 1:4       1763 *   [1x] 
     add  HL, HL         ; 1:11      1763 *   2x 
-    ld    A, L          ; 1:4       1763 *   512x 
-    ex   DE, HL         ; 1:4       1763 *
-    add  HL, DE         ; 1:11      1763 *   [3x]
-    ex   DE, HL         ; 1:4       1763 * 
     add  HL, HL         ; 1:11      1763 *   4x 
-    add   A, L          ; 1:4       1763 *   1536x 
+    ex   DE, HL         ; 1:4       1763 *
+    add  HL, DE         ; 1:11      1763 *   [5x]
+    ex   DE, HL         ; 1:4       1763 * 
     add  HL, HL         ; 1:11      1763 *   8x 
-    add  HL, HL         ; 1:11      1763 *   16x 
-    add  HL, HL         ; 1:11      1763 *   32x 
-    ex   DE, HL         ; 1:4       1763 *
-    add  HL, DE         ; 1:11      1763 *   [35x]
-    ex   DE, HL         ; 1:4       1763 * 
-    add  HL, HL         ; 1:11      1763 *   64x 
-    ex   DE, HL         ; 1:4       1763 *
-    add  HL, DE         ; 1:11      1763 *   [99x]
-    ex   DE, HL         ; 1:4       1763 * 
-    add  HL, HL         ; 1:11      1763 *   128x 
     add   A, D          ; 1:4       1763 *
-    ld    D, A          ; 1:4       1763 *   [1635x] 
-    add  HL, DE         ; 1:11      1763 *   [1763x] = 128x + 1635x  
+    ld    D, A          ; 1:4       1763 *   [261x]
+    ld    A, L          ; 1:4       1763 *   save --2048x-- 
+    ex   DE, HL         ; 1:4       1763 *
+    add  HL, DE         ; 1:11      1763 *   [269x]
+    ex   DE, HL         ; 1:4       1763 * 
+    add  HL, HL         ; 1:11      1763 *   16x 
+    add  HL, DE         ; 1:11      1763 *   [285x]
+    ex   DE, HL         ; 1:4       1763 *   A0 - DE 
+    ld    H, A          ; 1:4       1763 *
+    xor   A             ; 1:4       1763 *
+    ld    L, A          ; 1:4       1763 *   2048x
+    sbc  HL, DE         ; 2:15      1763 *   [1763x] = 2048x - 285x   
     ld    D, B          ; 1:4       1763 *
     ld    E, C          ; 1:4       1763 * 
-                        ;[27:185]   1765 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_1110_0101) 
+                        ;[27:164]   1765 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001_1011) 
     ld    B, D          ; 1:4       1765 *
     ld    C, E          ; 1:4       1765 * 
+    ld    A, L          ; 1:4       1765 *   256x 
     ld    D, H          ; 1:4       1765 *
     ld    E, L          ; 1:4       1765 *   [1x] 
     add  HL, HL         ; 1:11      1765 *   2x 
-    ld    A, L          ; 1:4       1765 *   512x 
+    ex   DE, HL         ; 1:4       1765 *
+    add  HL, DE         ; 1:11      1765 *   [3x]
+    ex   DE, HL         ; 1:4       1765 * 
     add  HL, HL         ; 1:11      1765 *   4x 
-    add   A, L          ; 1:4       1765 *   1536x 
-    ex   DE, HL         ; 1:4       1765 *
-    add  HL, DE         ; 1:11      1765 *   [5x]
-    ex   DE, HL         ; 1:4       1765 * 
     add  HL, HL         ; 1:11      1765 *   8x 
-    add  HL, HL         ; 1:11      1765 *   16x 
-    add  HL, HL         ; 1:11      1765 *   32x 
-    ex   DE, HL         ; 1:4       1765 *
-    add  HL, DE         ; 1:11      1765 *   [37x]
-    ex   DE, HL         ; 1:4       1765 * 
-    add  HL, HL         ; 1:11      1765 *   64x 
-    ex   DE, HL         ; 1:4       1765 *
-    add  HL, DE         ; 1:11      1765 *   [101x]
-    ex   DE, HL         ; 1:4       1765 * 
-    add  HL, HL         ; 1:11      1765 *   128x 
     add   A, D          ; 1:4       1765 *
-    ld    D, A          ; 1:4       1765 *   [1637x] 
-    add  HL, DE         ; 1:11      1765 *   [1765x] = 128x + 1637x  
+    ld    D, A          ; 1:4       1765 *   [259x]
+    ld    A, L          ; 1:4       1765 *   save --2048x-- 
+    ex   DE, HL         ; 1:4       1765 *
+    add  HL, DE         ; 1:11      1765 *   [267x]
+    ex   DE, HL         ; 1:4       1765 * 
+    add  HL, HL         ; 1:11      1765 *   16x 
+    add  HL, DE         ; 1:11      1765 *   [283x]
+    ex   DE, HL         ; 1:4       1765 *   A0 - DE 
+    ld    H, A          ; 1:4       1765 *
+    xor   A             ; 1:4       1765 *
+    ld    L, A          ; 1:4       1765 *   2048x
+    sbc  HL, DE         ; 2:15      1765 *   [1765x] = 2048x - 283x   
     ld    D, B          ; 1:4       1765 *
     ld    E, C          ; 1:4       1765 * 
                         ;[24:145]   1767 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001_1001) 
@@ -19686,32 +19671,31 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1767 *   [1767x] = 2048x - 281x   
     ld    D, B          ; 1:4       1767 *
     ld    E, C          ; 1:4       1767 * 
-                        ;[27:185]   1769 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_1110_1001) 
+                        ;[27:164]   1769 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001_0111) 
     ld    B, D          ; 1:4       1769 *
     ld    C, E          ; 1:4       1769 * 
+    ld    A, L          ; 1:4       1769 *   256x 
     ld    D, H          ; 1:4       1769 *
     ld    E, L          ; 1:4       1769 *   [1x] 
     add  HL, HL         ; 1:11      1769 *   2x 
-    ld    A, L          ; 1:4       1769 *   512x 
+    ex   DE, HL         ; 1:4       1769 *
+    add  HL, DE         ; 1:11      1769 *   [3x]
+    ex   DE, HL         ; 1:4       1769 * 
     add  HL, HL         ; 1:11      1769 *   4x 
-    add   A, L          ; 1:4       1769 *   1536x 
+    ex   DE, HL         ; 1:4       1769 *
+    add  HL, DE         ; 1:11      1769 *   [7x]
+    ex   DE, HL         ; 1:4       1769 * 
     add  HL, HL         ; 1:11      1769 *   8x 
-    ex   DE, HL         ; 1:4       1769 *
-    add  HL, DE         ; 1:11      1769 *   [9x]
-    ex   DE, HL         ; 1:4       1769 * 
-    add  HL, HL         ; 1:11      1769 *   16x 
-    add  HL, HL         ; 1:11      1769 *   32x 
-    ex   DE, HL         ; 1:4       1769 *
-    add  HL, DE         ; 1:11      1769 *   [41x]
-    ex   DE, HL         ; 1:4       1769 * 
-    add  HL, HL         ; 1:11      1769 *   64x 
-    ex   DE, HL         ; 1:4       1769 *
-    add  HL, DE         ; 1:11      1769 *   [105x]
-    ex   DE, HL         ; 1:4       1769 * 
-    add  HL, HL         ; 1:11      1769 *   128x 
     add   A, D          ; 1:4       1769 *
-    ld    D, A          ; 1:4       1769 *   [1641x] 
-    add  HL, DE         ; 1:11      1769 *   [1769x] = 128x + 1641x  
+    ld    D, A          ; 1:4       1769 *   [263x]
+    ld    A, L          ; 1:4       1769 *   save --2048x-- 
+    add  HL, HL         ; 1:11      1769 *   16x 
+    add  HL, DE         ; 1:11      1769 *   [279x]
+    ex   DE, HL         ; 1:4       1769 *   A0 - DE 
+    ld    H, A          ; 1:4       1769 *
+    xor   A             ; 1:4       1769 *
+    ld    L, A          ; 1:4       1769 *   2048x
+    sbc  HL, DE         ; 2:15      1769 *   [1769x] = 2048x - 279x   
     ld    D, B          ; 1:4       1769 *
     ld    E, C          ; 1:4       1769 * 
                         ;[24:145]   1771 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001_0101) 
@@ -21352,39 +21336,41 @@ ORG 0x6000
     add  HL, DE         ; 1:11      1913 *   [1913x] = 64x + 1849x  
     ld    D, B          ; 1:4       1913 *
     ld    E, C          ; 1:4       1913 * 
-                        ;[24:166]   1915 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1000_0101) 
-    ld    B, D          ; 1:4       1915 *
-    ld    C, E          ; 1:4       1915 * 
-    ld    D, H          ; 1:4       1915 *
-    ld    E, L          ; 1:4       1915 *   [1x] 
+                        ;[24:152]   1915 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1000_0101)  
+    ld    B, H          ; 1:4       1915 *
+    ld    C, L          ; 1:4       1915 *   [1x] 
     add  HL, HL         ; 1:11      1915 *   2x 
     add  HL, HL         ; 1:11      1915 *   4x 
-    ex   DE, HL         ; 1:4       1915 *
-    add  HL, DE         ; 1:11      1915 *   [5x]
-    ex   DE, HL         ; 1:4       1915 * 
+    ld    A, C          ; 1:4       1915 *
+    add   A, L          ; 1:4       1915 *
+    ld    C, A          ; 1:4       1915 *
+    ld    A, B          ; 1:4       1915 *
+    adc   A, H          ; 1:4       1915 *
+    ld    B, A          ; 1:4       1915 *   [5x] 
     add  HL, HL         ; 1:11      1915 *   8x 
     ld    A, L          ; 1:4       1915 *   save --2048x-- 
     add  HL, HL         ; 1:11      1915 *   16x 
     add  HL, HL         ; 1:11      1915 *   32x 
     add  HL, HL         ; 1:11      1915 *   64x 
     add  HL, HL         ; 1:11      1915 *   128x 
-    add  HL, DE         ; 1:11      1915 *   [133x]
-    ex   DE, HL         ; 1:4       1915 *   A0 - DE 
-    ld    H, A          ; 1:4       1915 *
+    add  HL, BC         ; 1:11      1915 *   [133x]
+    ld    B, A          ; 1:4       1915 *   A0 - HL
     xor   A             ; 1:4       1915 *
-    ld    L, A          ; 1:4       1915 *   2048x
-    sbc  HL, DE         ; 2:15      1915 *   [1915x] = 2048x - 133x   
-    ld    D, B          ; 1:4       1915 *
-    ld    E, C          ; 1:4       1915 * 
-                        ;[24:166]   1917 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1000_0011) 
-    ld    B, D          ; 1:4       1917 *
-    ld    C, E          ; 1:4       1917 * 
-    ld    D, H          ; 1:4       1917 *
-    ld    E, L          ; 1:4       1917 *   [1x] 
+    sub   L             ; 1:4       1915 *
+    ld    L, A          ; 1:4       1915 *
+    ld    A, B          ; 1:4       1915 *
+    sbc   A, H          ; 1:4       1915 *
+    ld    H, A          ; 1:4       1915 *   [1915x] = 2048x - 2048x    
+                        ;[24:152]   1917 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1000_0011)  
+    ld    B, H          ; 1:4       1917 *
+    ld    C, L          ; 1:4       1917 *   [1x] 
     add  HL, HL         ; 1:11      1917 *   2x 
-    ex   DE, HL         ; 1:4       1917 *
-    add  HL, DE         ; 1:11      1917 *   [3x]
-    ex   DE, HL         ; 1:4       1917 * 
+    ld    A, C          ; 1:4       1917 *
+    add   A, L          ; 1:4       1917 *
+    ld    C, A          ; 1:4       1917 *
+    ld    A, B          ; 1:4       1917 *
+    adc   A, H          ; 1:4       1917 *
+    ld    B, A          ; 1:4       1917 *   [3x] 
     add  HL, HL         ; 1:11      1917 *   4x 
     add  HL, HL         ; 1:11      1917 *   8x 
     ld    A, L          ; 1:4       1917 *   save --2048x-- 
@@ -21392,14 +21378,14 @@ ORG 0x6000
     add  HL, HL         ; 1:11      1917 *   32x 
     add  HL, HL         ; 1:11      1917 *   64x 
     add  HL, HL         ; 1:11      1917 *   128x 
-    add  HL, DE         ; 1:11      1917 *   [131x]
-    ex   DE, HL         ; 1:4       1917 *   A0 - DE 
-    ld    H, A          ; 1:4       1917 *
+    add  HL, BC         ; 1:11      1917 *   [131x]
+    ld    B, A          ; 1:4       1917 *   A0 - HL
     xor   A             ; 1:4       1917 *
-    ld    L, A          ; 1:4       1917 *   2048x
-    sbc  HL, DE         ; 2:15      1917 *   [1917x] = 2048x - 131x   
-    ld    D, B          ; 1:4       1917 *
-    ld    E, C          ; 1:4       1917 * 
+    sub   L             ; 1:4       1917 *
+    ld    L, A          ; 1:4       1917 *
+    ld    A, B          ; 1:4       1917 *
+    sbc   A, H          ; 1:4       1917 *
+    ld    H, A          ; 1:4       1917 *   [1917x] = 2048x - 2048x    
                         ;[18:128]   1919 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1000_0001)  
     ld    B, H          ; 1:4       1919 *
     ld    C, L          ; 1:4       1919 *   [1x] 
@@ -22143,52 +22129,54 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      1977 *   [1977x] = 2048x - 71x   
     ld    D, B          ; 1:4       1977 *
     ld    E, C          ; 1:4       1977 * 
-                        ;[23:155]   1979 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0100_0101) 
-    ld    B, D          ; 1:4       1979 *
-    ld    C, E          ; 1:4       1979 * 
-    ld    D, H          ; 1:4       1979 *
-    ld    E, L          ; 1:4       1979 *   [1x] 
+                        ;[23:141]   1979 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0100_0101)  
+    ld    B, H          ; 1:4       1979 *
+    ld    C, L          ; 1:4       1979 *   [1x] 
     add  HL, HL         ; 1:11      1979 *   2x 
     add  HL, HL         ; 1:11      1979 *   4x 
-    ex   DE, HL         ; 1:4       1979 *
-    add  HL, DE         ; 1:11      1979 *   [5x]
-    ex   DE, HL         ; 1:4       1979 * 
+    ld    A, C          ; 1:4       1979 *
+    add   A, L          ; 1:4       1979 *
+    ld    C, A          ; 1:4       1979 *
+    ld    A, B          ; 1:4       1979 *
+    adc   A, H          ; 1:4       1979 *
+    ld    B, A          ; 1:4       1979 *   [5x] 
     add  HL, HL         ; 1:11      1979 *   8x 
     ld    A, L          ; 1:4       1979 *   save --2048x-- 
     add  HL, HL         ; 1:11      1979 *   16x 
     add  HL, HL         ; 1:11      1979 *   32x 
     add  HL, HL         ; 1:11      1979 *   64x 
-    add  HL, DE         ; 1:11      1979 *   [69x]
-    ex   DE, HL         ; 1:4       1979 *   A0 - DE 
-    ld    H, A          ; 1:4       1979 *
+    add  HL, BC         ; 1:11      1979 *   [69x]
+    ld    B, A          ; 1:4       1979 *   A0 - HL
     xor   A             ; 1:4       1979 *
-    ld    L, A          ; 1:4       1979 *   2048x
-    sbc  HL, DE         ; 2:15      1979 *   [1979x] = 2048x - 69x   
-    ld    D, B          ; 1:4       1979 *
-    ld    E, C          ; 1:4       1979 * 
-                        ;[23:155]   1981 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0100_0011) 
-    ld    B, D          ; 1:4       1981 *
-    ld    C, E          ; 1:4       1981 * 
-    ld    D, H          ; 1:4       1981 *
-    ld    E, L          ; 1:4       1981 *   [1x] 
+    sub   L             ; 1:4       1979 *
+    ld    L, A          ; 1:4       1979 *
+    ld    A, B          ; 1:4       1979 *
+    sbc   A, H          ; 1:4       1979 *
+    ld    H, A          ; 1:4       1979 *   [1979x] = 2048x - 2048x    
+                        ;[23:141]   1981 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0100_0011)  
+    ld    B, H          ; 1:4       1981 *
+    ld    C, L          ; 1:4       1981 *   [1x] 
     add  HL, HL         ; 1:11      1981 *   2x 
-    ex   DE, HL         ; 1:4       1981 *
-    add  HL, DE         ; 1:11      1981 *   [3x]
-    ex   DE, HL         ; 1:4       1981 * 
+    ld    A, C          ; 1:4       1981 *
+    add   A, L          ; 1:4       1981 *
+    ld    C, A          ; 1:4       1981 *
+    ld    A, B          ; 1:4       1981 *
+    adc   A, H          ; 1:4       1981 *
+    ld    B, A          ; 1:4       1981 *   [3x] 
     add  HL, HL         ; 1:11      1981 *   4x 
     add  HL, HL         ; 1:11      1981 *   8x 
     ld    A, L          ; 1:4       1981 *   save --2048x-- 
     add  HL, HL         ; 1:11      1981 *   16x 
     add  HL, HL         ; 1:11      1981 *   32x 
     add  HL, HL         ; 1:11      1981 *   64x 
-    add  HL, DE         ; 1:11      1981 *   [67x]
-    ex   DE, HL         ; 1:4       1981 *   A0 - DE 
-    ld    H, A          ; 1:4       1981 *
+    add  HL, BC         ; 1:11      1981 *   [67x]
+    ld    B, A          ; 1:4       1981 *   A0 - HL
     xor   A             ; 1:4       1981 *
-    ld    L, A          ; 1:4       1981 *   2048x
-    sbc  HL, DE         ; 2:15      1981 *   [1981x] = 2048x - 67x   
-    ld    D, B          ; 1:4       1981 *
-    ld    E, C          ; 1:4       1981 * 
+    sub   L             ; 1:4       1981 *
+    ld    L, A          ; 1:4       1981 *
+    ld    A, B          ; 1:4       1981 *
+    sbc   A, H          ; 1:4       1981 *
+    ld    H, A          ; 1:4       1981 *   [1981x] = 2048x - 2048x    
                         ;[17:117]   1983 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0100_0001)  
     ld    B, H          ; 1:4       1983 *
     ld    C, L          ; 1:4       1983 *   [1x] 
@@ -22530,50 +22518,52 @@ ORG 0x6000
     ld    D, B          ; 1:4       2009 *
     ld    E, C          ; 1:4       2009 *
 
-                        ;[22:144]   2011 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0101) 
-    ld    B, D          ; 1:4       2011 *
-    ld    C, E          ; 1:4       2011 * 
-    ld    D, H          ; 1:4       2011 *
-    ld    E, L          ; 1:4       2011 *   [1x] 
+                        ;[22:130]   2011 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0101)  
+    ld    B, H          ; 1:4       2011 *
+    ld    C, L          ; 1:4       2011 *   [1x] 
     add  HL, HL         ; 1:11      2011 *   2x 
     add  HL, HL         ; 1:11      2011 *   4x 
-    ex   DE, HL         ; 1:4       2011 *
-    add  HL, DE         ; 1:11      2011 *   [5x]
-    ex   DE, HL         ; 1:4       2011 * 
+    ld    A, C          ; 1:4       2011 *
+    add   A, L          ; 1:4       2011 *
+    ld    C, A          ; 1:4       2011 *
+    ld    A, B          ; 1:4       2011 *
+    adc   A, H          ; 1:4       2011 *
+    ld    B, A          ; 1:4       2011 *   [5x] 
     add  HL, HL         ; 1:11      2011 *   8x 
     ld    A, L          ; 1:4       2011 *   save --2048x-- 
     add  HL, HL         ; 1:11      2011 *   16x 
     add  HL, HL         ; 1:11      2011 *   32x 
-    add  HL, DE         ; 1:11      2011 *   [37x]
-    ex   DE, HL         ; 1:4       2011 *   A0 - DE 
-    ld    H, A          ; 1:4       2011 *
+    add  HL, BC         ; 1:11      2011 *   [37x]
+    ld    B, A          ; 1:4       2011 *   A0 - HL
     xor   A             ; 1:4       2011 *
-    ld    L, A          ; 1:4       2011 *   2048x
-    sbc  HL, DE         ; 2:15      2011 *   [2011x] = 2048x - 37x   
-    ld    D, B          ; 1:4       2011 *
-    ld    E, C          ; 1:4       2011 * 
-                        ;[22:144]   2013 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0011) 
-    ld    B, D          ; 1:4       2013 *
-    ld    C, E          ; 1:4       2013 * 
-    ld    D, H          ; 1:4       2013 *
-    ld    E, L          ; 1:4       2013 *   [1x] 
+    sub   L             ; 1:4       2011 *
+    ld    L, A          ; 1:4       2011 *
+    ld    A, B          ; 1:4       2011 *
+    sbc   A, H          ; 1:4       2011 *
+    ld    H, A          ; 1:4       2011 *   [2011x] = 2048x - 2048x    
+                        ;[22:130]   2013 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0011)  
+    ld    B, H          ; 1:4       2013 *
+    ld    C, L          ; 1:4       2013 *   [1x] 
     add  HL, HL         ; 1:11      2013 *   2x 
-    ex   DE, HL         ; 1:4       2013 *
-    add  HL, DE         ; 1:11      2013 *   [3x]
-    ex   DE, HL         ; 1:4       2013 * 
+    ld    A, C          ; 1:4       2013 *
+    add   A, L          ; 1:4       2013 *
+    ld    C, A          ; 1:4       2013 *
+    ld    A, B          ; 1:4       2013 *
+    adc   A, H          ; 1:4       2013 *
+    ld    B, A          ; 1:4       2013 *   [3x] 
     add  HL, HL         ; 1:11      2013 *   4x 
     add  HL, HL         ; 1:11      2013 *   8x 
     ld    A, L          ; 1:4       2013 *   save --2048x-- 
     add  HL, HL         ; 1:11      2013 *   16x 
     add  HL, HL         ; 1:11      2013 *   32x 
-    add  HL, DE         ; 1:11      2013 *   [35x]
-    ex   DE, HL         ; 1:4       2013 *   A0 - DE 
-    ld    H, A          ; 1:4       2013 *
+    add  HL, BC         ; 1:11      2013 *   [35x]
+    ld    B, A          ; 1:4       2013 *   A0 - HL
     xor   A             ; 1:4       2013 *
-    ld    L, A          ; 1:4       2013 *   2048x
-    sbc  HL, DE         ; 2:15      2013 *   [2013x] = 2048x - 35x   
-    ld    D, B          ; 1:4       2013 *
-    ld    E, C          ; 1:4       2013 * 
+    sub   L             ; 1:4       2013 *
+    ld    L, A          ; 1:4       2013 *
+    ld    A, B          ; 1:4       2013 *
+    sbc   A, H          ; 1:4       2013 *
+    ld    H, A          ; 1:4       2013 *   [2013x] = 2048x - 2048x    
                         ;[16:106]   2015 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0010_0001)  
     ld    B, H          ; 1:4       2015 *
     ld    C, L          ; 1:4       2015 *   [1x] 
@@ -22710,49 +22700,51 @@ ORG 0x6000
     sbc  HL, DE         ; 2:15      2025 *   [2025x] = 2048x - 23x   
     ld    D, B          ; 1:4       2025 *
     ld    E, C          ; 1:4       2025 * 
-                        ;[21:133]   2027 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0101) 
-    ld    B, D          ; 1:4       2027 *
-    ld    C, E          ; 1:4       2027 * 
-    ld    D, H          ; 1:4       2027 *
-    ld    E, L          ; 1:4       2027 *   [1x] 
+                        ;[21:119]   2027 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0101)  
+    ld    B, H          ; 1:4       2027 *
+    ld    C, L          ; 1:4       2027 *   [1x] 
     add  HL, HL         ; 1:11      2027 *   2x 
     add  HL, HL         ; 1:11      2027 *   4x 
-    ex   DE, HL         ; 1:4       2027 *
-    add  HL, DE         ; 1:11      2027 *   [5x]
-    ex   DE, HL         ; 1:4       2027 * 
+    ld    A, C          ; 1:4       2027 *
+    add   A, L          ; 1:4       2027 *
+    ld    C, A          ; 1:4       2027 *
+    ld    A, B          ; 1:4       2027 *
+    adc   A, H          ; 1:4       2027 *
+    ld    B, A          ; 1:4       2027 *   [5x] 
     add  HL, HL         ; 1:11      2027 *   8x 
     ld    A, L          ; 1:4       2027 *   save --2048x-- 
     add  HL, HL         ; 1:11      2027 *   16x 
-    add  HL, DE         ; 1:11      2027 *   [21x]
-    ex   DE, HL         ; 1:4       2027 *   A0 - DE 
-    ld    H, A          ; 1:4       2027 *
+    add  HL, BC         ; 1:11      2027 *   [21x]
+    ld    B, A          ; 1:4       2027 *   A0 - HL
     xor   A             ; 1:4       2027 *
-    ld    L, A          ; 1:4       2027 *   2048x
-    sbc  HL, DE         ; 2:15      2027 *   [2027x] = 2048x - 21x   
-    ld    D, B          ; 1:4       2027 *
-    ld    E, C          ; 1:4       2027 *
+    sub   L             ; 1:4       2027 *
+    ld    L, A          ; 1:4       2027 *
+    ld    A, B          ; 1:4       2027 *
+    sbc   A, H          ; 1:4       2027 *
+    ld    H, A          ; 1:4       2027 *   [2027x] = 2048x - 2048x   
 
-                        ;[21:133]   2029 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0011) 
-    ld    B, D          ; 1:4       2029 *
-    ld    C, E          ; 1:4       2029 * 
-    ld    D, H          ; 1:4       2029 *
-    ld    E, L          ; 1:4       2029 *   [1x] 
+                        ;[21:119]   2029 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0011)  
+    ld    B, H          ; 1:4       2029 *
+    ld    C, L          ; 1:4       2029 *   [1x] 
     add  HL, HL         ; 1:11      2029 *   2x 
-    ex   DE, HL         ; 1:4       2029 *
-    add  HL, DE         ; 1:11      2029 *   [3x]
-    ex   DE, HL         ; 1:4       2029 * 
+    ld    A, C          ; 1:4       2029 *
+    add   A, L          ; 1:4       2029 *
+    ld    C, A          ; 1:4       2029 *
+    ld    A, B          ; 1:4       2029 *
+    adc   A, H          ; 1:4       2029 *
+    ld    B, A          ; 1:4       2029 *   [3x] 
     add  HL, HL         ; 1:11      2029 *   4x 
     add  HL, HL         ; 1:11      2029 *   8x 
     ld    A, L          ; 1:4       2029 *   save --2048x-- 
     add  HL, HL         ; 1:11      2029 *   16x 
-    add  HL, DE         ; 1:11      2029 *   [19x]
-    ex   DE, HL         ; 1:4       2029 *   A0 - DE 
-    ld    H, A          ; 1:4       2029 *
+    add  HL, BC         ; 1:11      2029 *   [19x]
+    ld    B, A          ; 1:4       2029 *   A0 - HL
     xor   A             ; 1:4       2029 *
-    ld    L, A          ; 1:4       2029 *   2048x
-    sbc  HL, DE         ; 2:15      2029 *   [2029x] = 2048x - 19x   
-    ld    D, B          ; 1:4       2029 *
-    ld    E, C          ; 1:4       2029 * 
+    sub   L             ; 1:4       2029 *
+    ld    L, A          ; 1:4       2029 *
+    ld    A, B          ; 1:4       2029 *
+    sbc   A, H          ; 1:4       2029 *
+    ld    H, A          ; 1:4       2029 *   [2029x] = 2048x - 2048x    
                         ;[15:95]    2031 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001)  
     ld    B, H          ; 1:4       2031 *
     ld    C, L          ; 1:4       2031 *   [1x] 
@@ -22793,48 +22785,48 @@ ORG 0x6000
     ld    H, A          ; 1:4       2033 *   [2033x] = 2048x - 15x   
     ld    D, B          ; 1:4       2033 *
     ld    E, C          ; 1:4       2033 * 
-                        ;[20:115]   2035 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1101) 
-    ld    B, D          ; 1:4       2035 *
-    ld    C, E          ; 1:4       2035 * 
-    ld    D, H          ; 1:4       2035 *
-    ld    E, L          ; 1:4       2035 *   [1x] 
+                        ;[20:108]   2035 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1101)  
+    ld    B, H          ; 1:4       2035 *
+    ld    C, L          ; 1:4       2035 *   [1x] 
     add  HL, HL         ; 1:11      2035 *   2x 
     add  HL, HL         ; 1:11      2035 *   4x 
-    ex   DE, HL         ; 1:4       2035 *
-    add  HL, DE         ; 1:11      2035 *   [5x]
-    ex   DE, HL         ; 1:4       2035 * 
+    ld    A, C          ; 1:4       2035 *
+    add   A, L          ; 1:4       2035 *
+    ld    C, A          ; 1:4       2035 *
+    ld    A, B          ; 1:4       2035 *
+    adc   A, H          ; 1:4       2035 *
+    ld    B, A          ; 1:4       2035 *   [5x] 
     add  HL, HL         ; 1:11      2035 *   8x 
-    ex   DE, HL         ; 1:4       2035 *   L0 - (DE + HL) --> E0 - (HL + DE) 
-    add  HL, DE         ; 1:11      2035 *   [13x]
+    ld    A, L          ; 1:4       2035 *   L0 - (HL + BC) --> B0 - HL
+    add  HL, BC         ; 1:11      2035 *   [13x]
+    ld    B, A          ; 1:4       2035 *
     xor   A             ; 1:4       2035 *
     sub   L             ; 1:4       2035 *
     ld    L, A          ; 1:4       2035 *
-    ld    A, E          ; 1:4       2035 *
+    ld    A, B          ; 1:4       2035 *
     sbc   A, H          ; 1:4       2035 *
-    ld    H, A          ; 1:4       2035 *   [2035x] = 2048x - 13x   
-    ld    D, B          ; 1:4       2035 *
-    ld    E, C          ; 1:4       2035 * 
-                        ;[20:115]   2037 *   Variant mk2: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1011) 
-    ld    B, D          ; 1:4       2037 *
-    ld    C, E          ; 1:4       2037 * 
-    ld    D, H          ; 1:4       2037 *
-    ld    E, L          ; 1:4       2037 *   [1x] 
+    ld    H, A          ; 1:4       2035 *   [2035x] = 2048x - 13x    
+                        ;[20:108]   2037 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1011)  
+    ld    B, H          ; 1:4       2037 *
+    ld    C, L          ; 1:4       2037 *   [1x] 
     add  HL, HL         ; 1:11      2037 *   2x 
-    ex   DE, HL         ; 1:4       2037 *
-    add  HL, DE         ; 1:11      2037 *   [3x]
-    ex   DE, HL         ; 1:4       2037 * 
+    ld    A, C          ; 1:4       2037 *
+    add   A, L          ; 1:4       2037 *
+    ld    C, A          ; 1:4       2037 *
+    ld    A, B          ; 1:4       2037 *
+    adc   A, H          ; 1:4       2037 *
+    ld    B, A          ; 1:4       2037 *   [3x] 
     add  HL, HL         ; 1:11      2037 *   4x 
     add  HL, HL         ; 1:11      2037 *   8x 
-    ex   DE, HL         ; 1:4       2037 *   L0 - (DE + HL) --> E0 - (HL + DE) 
-    add  HL, DE         ; 1:11      2037 *   [11x]
+    ld    A, L          ; 1:4       2037 *   L0 - (HL + BC) --> B0 - HL
+    add  HL, BC         ; 1:11      2037 *   [11x]
+    ld    B, A          ; 1:4       2037 *
     xor   A             ; 1:4       2037 *
     sub   L             ; 1:4       2037 *
     ld    L, A          ; 1:4       2037 *
-    ld    A, E          ; 1:4       2037 *
+    ld    A, B          ; 1:4       2037 *
     sbc   A, H          ; 1:4       2037 *
-    ld    H, A          ; 1:4       2037 *   [2037x] = 2048x - 11x   
-    ld    D, B          ; 1:4       2037 *
-    ld    E, C          ; 1:4       2037 * 
+    ld    H, A          ; 1:4       2037 *   [2037x] = 2048x - 11x    
                         ;[14:84]    2039 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_1001)  
     ld    B, H          ; 1:4       2039 *
     ld    C, L          ; 1:4       2039 *   [1x] 
