@@ -427,7 +427,7 @@ ___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
 ___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
 ___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
 ___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
-___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}},eval(_BEST_COST > PUSH_MUL_MK3_COST),{1},{dnl
 ___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
 ___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
 ___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
