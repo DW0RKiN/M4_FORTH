@@ -367,6 +367,12 @@ __{}ifdef({_OUTPUT},{define({_OUTPUT},_OUTPUT{}$1)},{define({_OUTPUT},$1)}){}dnl
 })dnl
 dnl
 dnl
+dnl 
+define({_PUSH_OUTPUT},{dnl
+__{}ifdef({_OUTPUT},{define({_OUTPUT},$1{}_OUTPUT)},{define({_OUTPUT},$1)}){}dnl
+})dnl
+dnl
+dnl
 dnl
 define({HI_BIT_LOOP},{ifelse(eval(($1)>0),{1},{dnl
 ___{}define({HI_BIT_TEMP},eval(HI_BIT_TEMP|($1)))dnl
@@ -401,9 +407,19 @@ ___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
 })dnl
 dnl
 dnl
+dnl
+define({PUSH_MUL_CHECK_FIRST_IS_BETTER},{dnl
+___{}eval((($1 & 0xff) < ($2 & 0xff)) || ((($1 & 0xff) == ($2 & 0xff)) && ($1 < $2))){}dnl
+___{}})dnl
+dnl
+dnl
+dnl
 include(M4PATH{}push_mul/pmul_mk1.m4){}dnl
 include(M4PATH{}push_mul/pmul_mk2.m4){}dnl
 include(M4PATH{}push_mul/pmul_mk3.m4){}dnl
+include(M4PATH{}push_mul/pmul_mk4.m4){}dnl
+dnl
+dnl
 dnl
 define({PUSH_MUL},{dnl
 ___{}PUSH_MUL_MK1($1){}dnl
@@ -411,26 +427,22 @@ ___{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
 ___{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
 ___{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
 ___{}PUSH_MUL_MK2($1){}dnl
-___{}ifelse(eval((_BEST_COST & 0xff) < (PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
-___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
-___{}___{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
-___{}___{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
-___{}___{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
-___{}},eval(_BEST_COST > PUSH_MUL_MK2_COST),{1},{dnl
+___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK2_COST,_BEST_COST),{1},{dnl
 ___{}___{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
 ___{}___{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
 ___{}___{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
 ___{}})dnl
 ___{}PUSH_MUL_MK3($1){}dnl
-___{}ifelse(eval((_BEST_COST & 0xff) < (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
-___{}},eval((_BEST_COST & 0xff) > (PUSH_MUL_MK3_COST & 0xff)),{1},{dnl
+___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK3_COST,_BEST_COST),{1},{dnl
 ___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
 ___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
 ___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
-___{}},eval(_BEST_COST > PUSH_MUL_MK3_COST),{1},{dnl
-___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
-___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
-___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
+___{}})dnl
+___{}PUSH_MUL_MK4($1){}dnl
+___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK4_COST,_BEST_COST),{1},{dnl
+___{}___{}define({_BEST_OUT},{PUSH_MUL_MK4_OUT}){}dnl
+___{}___{}define({_BEST_COST},PUSH_MUL_MK4_COST){}dnl
+___{}___{}define({_BEST_INFO},PUSH_MUL_MK4_INFO){}dnl
 ___{}})dnl
 ___{}_BEST_INFO{}dnl
 ___{}_BEST_OUT{}dnl

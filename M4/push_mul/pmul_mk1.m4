@@ -111,7 +111,7 @@ ___{}define({_TOKEN_END},{dnl
 ___{}___{}define({XMUL_RESULT},eval(XMUL_BIT))}){}dnl
 ___{}define({_TOKEN_CHECK},{dnl
 ___{}___{}ifelse(eval(XMUL_RESULT!=$1),{1},{
-___{}___{}___{}.error Error in constant multiplication function. The generated code does not have the correct result. XMUL_RESULT <> $1
+___{}___{}___{}.error Error in mk1 constant multiplication function. The generated code does not have the correct result. XMUL_RESULT <> $1
 ___{}___{}})})dnl
 })dnl
 dnl

@@ -21,7 +21,7 @@ ___{}___{}    ld    E{,} C          ; 1:4       $1 *})dnl
 dnl
 ___{}define({_TOKEN_CHECK},{dnl
 ___{}___{}ifelse(eval(XMUL_RESULT!=$1),{1},{
-___{}___{}___{}.error Error in constant multiplication function. The generated code does not have the correct result. XMUL_RESULT <> $1
+___{}___{}___{}.error Error in mk2 constant multiplication function. The generated code does not have the correct result. XMUL_RESULT <> $1
 ___{}___{}})})dnl
 dnl
 ___{}define({_TOKEN_2X},{dnl
@@ -354,12 +354,7 @@ ___{}PUSH_MUL_MK2_CREATE_TOKENS(eval(4*HI_BIT($1)-$1))dnl
 ___{}TOKENS_HL_SUB_DE_MUL($1){}dnl
 ___{}define({PUSH_MUL_MK2_TEMP},_OUTPUT)dnl
 dnl
-___{}ifelse(eval((_COST & 0xff)>(PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
-___{}},eval((_COST & 0xff)<(PUSH_MUL_MK2_COST & 0xff)),{1},{dnl
-___{}___{}define({PUSH_MUL_MK2_OUT},{PUSH_MUL_MK2_TEMP})dnl
-___{}___{}define({PUSH_MUL_MK2_COST},_COST)dnl
-___{}___{}define({PUSH_MUL_MK2_INFO},PUSH_MUL_INFO_MINUS(_COST,$1,{Variant mk2: HL * (256*a^2 - b^2 - ...)},eval(2*HI_BIT($1)),eval(2*HI_BIT($1)-$1)))dnl
-___{}},eval(_COST < PUSH_MUL_MK2_COST),{1},{dnl
+___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(_COST,PUSH_MUL_MK2_COST),{1},{dnl
 ___{}___{}define({PUSH_MUL_MK2_OUT},{PUSH_MUL_MK2_TEMP})dnl
 ___{}___{}define({PUSH_MUL_MK2_COST},_COST)dnl
 ___{}___{}define({PUSH_MUL_MK2_INFO},PUSH_MUL_INFO_MINUS(_COST,$1,{Variant mk2: HL * (256*a^2 - b^2 - ...)},eval(2*HI_BIT($1)),eval(2*HI_BIT($1)-$1)))dnl
