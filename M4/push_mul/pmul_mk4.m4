@@ -143,12 +143,8 @@ ___{}ifelse(eval(($1)>1),{1},{dnl
 ___{}___{}ifelse(eval(XMUL_HI>=($1)),{1},{dnl
 ___{}___{}___{}define({XMUL_HI},eval(XMUL_HI-($1))){}dnl
 ___{}___{}___{}_PUSH_OUTPUT({_TOKEN_256X_SAVE() })dnl
-___{}___{}___{}ifelse(eval($1 & 1),{1},{dnl
-___{}___{}___{}___{}_PUSH_OUTPUT({_TOKEN_2X_SAVE() }){}dnl
-___{}___{}___{}},{dnl
-___{}___{}___{}___{}_PUSH_OUTPUT({_TOKEN_2X() }){}dnl
-___{}___{}___{}})dnl
-___{}___{}},eval((XMUL_HI > 0) && (($1 & 1) == 1) && (XMUL_HI>=($1 - 1))),{1},{dnl
+___{}___{}})dnl
+___{}___{}ifelse(eval((XMUL_HI > 0) && (($1 & 1) == 1) && (XMUL_HI>=($1 - 1))),{1},{dnl
 ___{}___{}___{}define({XMUL_HI},eval(XMUL_HI-($1-1))){}dnl
 ___{}___{}___{}_PUSH_OUTPUT({_TOKEN_2X_256X_SAVE() }){}dnl
 ___{}___{}},eval($1 & 1),{1},{dnl
