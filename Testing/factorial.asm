@@ -3526,21 +3526,16 @@ ORG 0x6000
     ld    B, A          ; 1:4       517 *   [513x] 
     add  HL, BC         ; 1:11      517 *   [517x] = 4x + 513x  
 
-                        ;[14:140]   519 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0000_0111)
+                        ;[9:64]     519 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0000_0111)
     ld    B, H          ; 1:4       519 *
     ld    C, L          ; 1:4       519 *   1       1x = base 
-    add  HL, HL         ; 1:11      519 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      519 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      519 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      519 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      519 *   0  *2 = 32x 
-    add  HL, HL         ; 1:11      519 *   0  *2 = 64x 
-    add  HL, HL         ; 1:11      519 *   1  *2 = 128x
-    add  HL, BC         ; 1:11      519 *      +1 = 129x 
-    add  HL, HL         ; 1:11      519 *   1  *2 = 258x
-    add  HL, BC         ; 1:11      519 *      +1 = 259x 
-    add  HL, HL         ; 1:11      519 *   1  *2 = 518x
-    add  HL, BC         ; 1:11      519 *      +1 = 519x   
+    add  HL, HL         ; 1:11      519 *   1  *2 = 2x
+    ld    A, L          ; 1:4       519 *   256*L = 512x
+    add  HL, BC         ; 1:11      519 *      +1 = 3x 
+    add  HL, HL         ; 1:11      519 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      519 *      +1 = 7x 
+    add   A, H          ; 1:4       519 *
+    ld    H, A          ; 1:4       519 *     [519x] = 7x + 512x  
                         ;[9:64]     521 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_0000_1001)  
     ld    B, H          ; 1:4       521 *
     ld    C, L          ; 1:4       521 *   [1x] 
@@ -3562,37 +3557,29 @@ ORG 0x6000
     add  HL, BC         ; 1:11      523 *      +1 = 11x 
     add   A, H          ; 1:4       523 *
     ld    H, A          ; 1:4       523 *     [523x] = 11x + 512x  
-                        ;[14:140]   525 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0000_1101)
+                        ;[10:75]    525 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0000_1101)
     ld    B, H          ; 1:4       525 *
     ld    C, L          ; 1:4       525 *   1       1x = base 
-    add  HL, HL         ; 1:11      525 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      525 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      525 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      525 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      525 *   0  *2 = 32x 
-    add  HL, HL         ; 1:11      525 *   1  *2 = 64x
-    add  HL, BC         ; 1:11      525 *      +1 = 65x 
-    add  HL, HL         ; 1:11      525 *   1  *2 = 130x
-    add  HL, BC         ; 1:11      525 *      +1 = 131x 
-    add  HL, HL         ; 1:11      525 *   0  *2 = 262x 
-    add  HL, HL         ; 1:11      525 *   1  *2 = 524x
-    add  HL, BC         ; 1:11      525 *      +1 = 525x   
-                        ;[15:151]   527 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0000_1111)
+    add  HL, HL         ; 1:11      525 *   1  *2 = 2x
+    ld    A, L          ; 1:4       525 *   256*L = 512x
+    add  HL, BC         ; 1:11      525 *      +1 = 3x 
+    add  HL, HL         ; 1:11      525 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      525 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      525 *      +1 = 13x 
+    add   A, H          ; 1:4       525 *
+    ld    H, A          ; 1:4       525 *     [525x] = 13x + 512x  
+                        ;[11:86]    527 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0000_1111)
     ld    B, H          ; 1:4       527 *
     ld    C, L          ; 1:4       527 *   1       1x = base 
-    add  HL, HL         ; 1:11      527 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      527 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      527 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      527 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      527 *   0  *2 = 32x 
-    add  HL, HL         ; 1:11      527 *   1  *2 = 64x
-    add  HL, BC         ; 1:11      527 *      +1 = 65x 
-    add  HL, HL         ; 1:11      527 *   1  *2 = 130x
-    add  HL, BC         ; 1:11      527 *      +1 = 131x 
-    add  HL, HL         ; 1:11      527 *   1  *2 = 262x
-    add  HL, BC         ; 1:11      527 *      +1 = 263x 
-    add  HL, HL         ; 1:11      527 *   1  *2 = 526x
-    add  HL, BC         ; 1:11      527 *      +1 = 527x   
+    add  HL, HL         ; 1:11      527 *   1  *2 = 2x
+    ld    A, L          ; 1:4       527 *   256*L = 512x
+    add  HL, BC         ; 1:11      527 *      +1 = 3x 
+    add  HL, HL         ; 1:11      527 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      527 *      +1 = 7x 
+    add  HL, HL         ; 1:11      527 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      527 *      +1 = 15x 
+    add   A, H          ; 1:4       527 *
+    ld    H, A          ; 1:4       527 *     [527x] = 15x + 512x  
                         ;[10:75]    529 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_0001_0001)  
     ld    B, H          ; 1:4       529 *
     ld    C, L          ; 1:4       529 *   [1x] 
@@ -3641,71 +3628,59 @@ ORG 0x6000
     add  HL, BC         ; 1:11      535 *      +1 = 23x 
     add   A, H          ; 1:4       535 *
     ld    H, A          ; 1:4       535 *     [535x] = 23x + 512x  
-                        ;[14:140]   537 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0001_1001)
+                        ;[11:86]    537 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0001_1001)
     ld    B, H          ; 1:4       537 *
     ld    C, L          ; 1:4       537 *   1       1x = base 
-    add  HL, HL         ; 1:11      537 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      537 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      537 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      537 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      537 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      537 *      +1 = 33x 
-    add  HL, HL         ; 1:11      537 *   1  *2 = 66x
-    add  HL, BC         ; 1:11      537 *      +1 = 67x 
-    add  HL, HL         ; 1:11      537 *   0  *2 = 134x 
-    add  HL, HL         ; 1:11      537 *   0  *2 = 268x 
-    add  HL, HL         ; 1:11      537 *   1  *2 = 536x
-    add  HL, BC         ; 1:11      537 *      +1 = 537x   
-                        ;[15:151]   539 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0001_1011)
+    add  HL, HL         ; 1:11      537 *   1  *2 = 2x
+    ld    A, L          ; 1:4       537 *   256*L = 512x
+    add  HL, BC         ; 1:11      537 *      +1 = 3x 
+    add  HL, HL         ; 1:11      537 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      537 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      537 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      537 *      +1 = 25x 
+    add   A, H          ; 1:4       537 *
+    ld    H, A          ; 1:4       537 *     [537x] = 25x + 512x  
+                        ;[12:97]    539 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0001_1011)
     ld    B, H          ; 1:4       539 *
     ld    C, L          ; 1:4       539 *   1       1x = base 
-    add  HL, HL         ; 1:11      539 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      539 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      539 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      539 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      539 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      539 *      +1 = 33x 
-    add  HL, HL         ; 1:11      539 *   1  *2 = 66x
-    add  HL, BC         ; 1:11      539 *      +1 = 67x 
-    add  HL, HL         ; 1:11      539 *   0  *2 = 134x 
-    add  HL, HL         ; 1:11      539 *   1  *2 = 268x
-    add  HL, BC         ; 1:11      539 *      +1 = 269x 
-    add  HL, HL         ; 1:11      539 *   1  *2 = 538x
-    add  HL, BC         ; 1:11      539 *      +1 = 539x  
+    add  HL, HL         ; 1:11      539 *   1  *2 = 2x
+    ld    A, L          ; 1:4       539 *   256*L = 512x
+    add  HL, BC         ; 1:11      539 *      +1 = 3x 
+    add  HL, HL         ; 1:11      539 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      539 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      539 *      +1 = 13x 
+    add  HL, HL         ; 1:11      539 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      539 *      +1 = 27x 
+    add   A, H          ; 1:4       539 *
+    ld    H, A          ; 1:4       539 *     [539x] = 27x + 512x 
 
-                        ;[15:151]   541 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0001_1101)
+                        ;[12:97]    541 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0001_1101)
     ld    B, H          ; 1:4       541 *
     ld    C, L          ; 1:4       541 *   1       1x = base 
-    add  HL, HL         ; 1:11      541 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      541 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      541 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      541 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      541 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      541 *      +1 = 33x 
-    add  HL, HL         ; 1:11      541 *   1  *2 = 66x
-    add  HL, BC         ; 1:11      541 *      +1 = 67x 
-    add  HL, HL         ; 1:11      541 *   1  *2 = 134x
-    add  HL, BC         ; 1:11      541 *      +1 = 135x 
-    add  HL, HL         ; 1:11      541 *   0  *2 = 270x 
-    add  HL, HL         ; 1:11      541 *   1  *2 = 540x
-    add  HL, BC         ; 1:11      541 *      +1 = 541x   
-                        ;[16:162]   543 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0001_1111)
+    add  HL, HL         ; 1:11      541 *   1  *2 = 2x
+    ld    A, L          ; 1:4       541 *   256*L = 512x
+    add  HL, BC         ; 1:11      541 *      +1 = 3x 
+    add  HL, HL         ; 1:11      541 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      541 *      +1 = 7x 
+    add  HL, HL         ; 1:11      541 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      541 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      541 *      +1 = 29x 
+    add   A, H          ; 1:4       541 *
+    ld    H, A          ; 1:4       541 *     [541x] = 29x + 512x  
+                        ;[13:108]   543 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0001_1111)
     ld    B, H          ; 1:4       543 *
     ld    C, L          ; 1:4       543 *   1       1x = base 
-    add  HL, HL         ; 1:11      543 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      543 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      543 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      543 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      543 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      543 *      +1 = 33x 
-    add  HL, HL         ; 1:11      543 *   1  *2 = 66x
-    add  HL, BC         ; 1:11      543 *      +1 = 67x 
-    add  HL, HL         ; 1:11      543 *   1  *2 = 134x
-    add  HL, BC         ; 1:11      543 *      +1 = 135x 
-    add  HL, HL         ; 1:11      543 *   1  *2 = 270x
-    add  HL, BC         ; 1:11      543 *      +1 = 271x 
-    add  HL, HL         ; 1:11      543 *   1  *2 = 542x
-    add  HL, BC         ; 1:11      543 *      +1 = 543x   
+    add  HL, HL         ; 1:11      543 *   1  *2 = 2x
+    ld    A, L          ; 1:4       543 *   256*L = 512x
+    add  HL, BC         ; 1:11      543 *      +1 = 3x 
+    add  HL, HL         ; 1:11      543 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      543 *      +1 = 7x 
+    add  HL, HL         ; 1:11      543 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      543 *      +1 = 15x 
+    add  HL, HL         ; 1:11      543 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      543 *      +1 = 31x 
+    add   A, H          ; 1:4       543 *
+    ld    H, A          ; 1:4       543 *     [543x] = 31x + 512x  
                         ;[11:86]    545 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_0010_0001)  
     ld    B, H          ; 1:4       545 *
     ld    C, L          ; 1:4       545 *   [1x] 
@@ -3814,139 +3789,123 @@ ORG 0x6000
     add  HL, BC         ; 1:11      559 *      +1 = 47x 
     add   A, H          ; 1:4       559 *
     ld    H, A          ; 1:4       559 *     [559x] = 47x + 512x  
-                        ;[14:140]   561 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_0001)
+                        ;[12:97]    561 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_0001)
     ld    B, H          ; 1:4       561 *
     ld    C, L          ; 1:4       561 *   1       1x = base 
-    add  HL, HL         ; 1:11      561 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      561 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      561 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      561 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      561 *      +1 = 17x 
-    add  HL, HL         ; 1:11      561 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      561 *      +1 = 35x 
-    add  HL, HL         ; 1:11      561 *   0  *2 = 70x 
-    add  HL, HL         ; 1:11      561 *   0  *2 = 140x 
-    add  HL, HL         ; 1:11      561 *   0  *2 = 280x 
-    add  HL, HL         ; 1:11      561 *   1  *2 = 560x
-    add  HL, BC         ; 1:11      561 *      +1 = 561x  
+    add  HL, HL         ; 1:11      561 *   1  *2 = 2x
+    ld    A, L          ; 1:4       561 *   256*L = 512x
+    add  HL, BC         ; 1:11      561 *      +1 = 3x 
+    add  HL, HL         ; 1:11      561 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      561 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      561 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      561 *   1  *2 = 48x
+    add  HL, BC         ; 1:11      561 *      +1 = 49x 
+    add   A, H          ; 1:4       561 *
+    ld    H, A          ; 1:4       561 *     [561x] = 49x + 512x 
 
-                        ;[15:151]   563 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_0011)
+                        ;[13:108]   563 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_0011)
     ld    B, H          ; 1:4       563 *
     ld    C, L          ; 1:4       563 *   1       1x = base 
-    add  HL, HL         ; 1:11      563 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      563 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      563 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      563 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      563 *      +1 = 17x 
-    add  HL, HL         ; 1:11      563 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      563 *      +1 = 35x 
-    add  HL, HL         ; 1:11      563 *   0  *2 = 70x 
-    add  HL, HL         ; 1:11      563 *   0  *2 = 140x 
-    add  HL, HL         ; 1:11      563 *   1  *2 = 280x
-    add  HL, BC         ; 1:11      563 *      +1 = 281x 
-    add  HL, HL         ; 1:11      563 *   1  *2 = 562x
-    add  HL, BC         ; 1:11      563 *      +1 = 563x   
-                        ;[15:151]   565 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_0101)
+    add  HL, HL         ; 1:11      563 *   1  *2 = 2x
+    ld    A, L          ; 1:4       563 *   256*L = 512x
+    add  HL, BC         ; 1:11      563 *      +1 = 3x 
+    add  HL, HL         ; 1:11      563 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      563 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      563 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      563 *      +1 = 25x 
+    add  HL, HL         ; 1:11      563 *   1  *2 = 50x
+    add  HL, BC         ; 1:11      563 *      +1 = 51x 
+    add   A, H          ; 1:4       563 *
+    ld    H, A          ; 1:4       563 *     [563x] = 51x + 512x  
+                        ;[13:108]   565 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_0101)
     ld    B, H          ; 1:4       565 *
     ld    C, L          ; 1:4       565 *   1       1x = base 
-    add  HL, HL         ; 1:11      565 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      565 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      565 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      565 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      565 *      +1 = 17x 
-    add  HL, HL         ; 1:11      565 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      565 *      +1 = 35x 
-    add  HL, HL         ; 1:11      565 *   0  *2 = 70x 
-    add  HL, HL         ; 1:11      565 *   1  *2 = 140x
-    add  HL, BC         ; 1:11      565 *      +1 = 141x 
-    add  HL, HL         ; 1:11      565 *   0  *2 = 282x 
-    add  HL, HL         ; 1:11      565 *   1  *2 = 564x
-    add  HL, BC         ; 1:11      565 *      +1 = 565x   
-                        ;[16:162]   567 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_0111)
+    add  HL, HL         ; 1:11      565 *   1  *2 = 2x
+    ld    A, L          ; 1:4       565 *   256*L = 512x
+    add  HL, BC         ; 1:11      565 *      +1 = 3x 
+    add  HL, HL         ; 1:11      565 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      565 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      565 *      +1 = 13x 
+    add  HL, HL         ; 1:11      565 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      565 *   1  *2 = 52x
+    add  HL, BC         ; 1:11      565 *      +1 = 53x 
+    add   A, H          ; 1:4       565 *
+    ld    H, A          ; 1:4       565 *     [565x] = 53x + 512x  
+                        ;[14:119]   567 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_0111)
     ld    B, H          ; 1:4       567 *
     ld    C, L          ; 1:4       567 *   1       1x = base 
-    add  HL, HL         ; 1:11      567 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      567 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      567 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      567 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      567 *      +1 = 17x 
-    add  HL, HL         ; 1:11      567 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      567 *      +1 = 35x 
-    add  HL, HL         ; 1:11      567 *   0  *2 = 70x 
-    add  HL, HL         ; 1:11      567 *   1  *2 = 140x
-    add  HL, BC         ; 1:11      567 *      +1 = 141x 
-    add  HL, HL         ; 1:11      567 *   1  *2 = 282x
-    add  HL, BC         ; 1:11      567 *      +1 = 283x 
-    add  HL, HL         ; 1:11      567 *   1  *2 = 566x
-    add  HL, BC         ; 1:11      567 *      +1 = 567x   
-                        ;[15:151]   569 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_1001)
+    add  HL, HL         ; 1:11      567 *   1  *2 = 2x
+    ld    A, L          ; 1:4       567 *   256*L = 512x
+    add  HL, BC         ; 1:11      567 *      +1 = 3x 
+    add  HL, HL         ; 1:11      567 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      567 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      567 *      +1 = 13x 
+    add  HL, HL         ; 1:11      567 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      567 *      +1 = 27x 
+    add  HL, HL         ; 1:11      567 *   1  *2 = 54x
+    add  HL, BC         ; 1:11      567 *      +1 = 55x 
+    add   A, H          ; 1:4       567 *
+    ld    H, A          ; 1:4       567 *     [567x] = 55x + 512x  
+                        ;[13:108]   569 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_1001)
     ld    B, H          ; 1:4       569 *
     ld    C, L          ; 1:4       569 *   1       1x = base 
-    add  HL, HL         ; 1:11      569 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      569 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      569 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      569 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      569 *      +1 = 17x 
-    add  HL, HL         ; 1:11      569 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      569 *      +1 = 35x 
-    add  HL, HL         ; 1:11      569 *   1  *2 = 70x
-    add  HL, BC         ; 1:11      569 *      +1 = 71x 
-    add  HL, HL         ; 1:11      569 *   0  *2 = 142x 
-    add  HL, HL         ; 1:11      569 *   0  *2 = 284x 
-    add  HL, HL         ; 1:11      569 *   1  *2 = 568x
-    add  HL, BC         ; 1:11      569 *      +1 = 569x   
-                        ;[16:162]   571 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_1011)
+    add  HL, HL         ; 1:11      569 *   1  *2 = 2x
+    ld    A, L          ; 1:4       569 *   256*L = 512x
+    add  HL, BC         ; 1:11      569 *      +1 = 3x 
+    add  HL, HL         ; 1:11      569 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      569 *      +1 = 7x 
+    add  HL, HL         ; 1:11      569 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      569 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      569 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      569 *      +1 = 57x 
+    add   A, H          ; 1:4       569 *
+    ld    H, A          ; 1:4       569 *     [569x] = 57x + 512x  
+                        ;[14:119]   571 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_1011)
     ld    B, H          ; 1:4       571 *
     ld    C, L          ; 1:4       571 *   1       1x = base 
-    add  HL, HL         ; 1:11      571 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      571 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      571 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      571 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      571 *      +1 = 17x 
-    add  HL, HL         ; 1:11      571 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      571 *      +1 = 35x 
-    add  HL, HL         ; 1:11      571 *   1  *2 = 70x
-    add  HL, BC         ; 1:11      571 *      +1 = 71x 
-    add  HL, HL         ; 1:11      571 *   0  *2 = 142x 
-    add  HL, HL         ; 1:11      571 *   1  *2 = 284x
-    add  HL, BC         ; 1:11      571 *      +1 = 285x 
-    add  HL, HL         ; 1:11      571 *   1  *2 = 570x
-    add  HL, BC         ; 1:11      571 *      +1 = 571x   
-                        ;[16:162]   573 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_1101)
+    add  HL, HL         ; 1:11      571 *   1  *2 = 2x
+    ld    A, L          ; 1:4       571 *   256*L = 512x
+    add  HL, BC         ; 1:11      571 *      +1 = 3x 
+    add  HL, HL         ; 1:11      571 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      571 *      +1 = 7x 
+    add  HL, HL         ; 1:11      571 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      571 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      571 *      +1 = 29x 
+    add  HL, HL         ; 1:11      571 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      571 *      +1 = 59x 
+    add   A, H          ; 1:4       571 *
+    ld    H, A          ; 1:4       571 *     [571x] = 59x + 512x  
+                        ;[14:119]   573 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_1101)
     ld    B, H          ; 1:4       573 *
     ld    C, L          ; 1:4       573 *   1       1x = base 
-    add  HL, HL         ; 1:11      573 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      573 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      573 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      573 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      573 *      +1 = 17x 
-    add  HL, HL         ; 1:11      573 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      573 *      +1 = 35x 
-    add  HL, HL         ; 1:11      573 *   1  *2 = 70x
-    add  HL, BC         ; 1:11      573 *      +1 = 71x 
-    add  HL, HL         ; 1:11      573 *   1  *2 = 142x
-    add  HL, BC         ; 1:11      573 *      +1 = 143x 
-    add  HL, HL         ; 1:11      573 *   0  *2 = 286x 
-    add  HL, HL         ; 1:11      573 *   1  *2 = 572x
-    add  HL, BC         ; 1:11      573 *      +1 = 573x   
-                        ;[17:173]   575 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0011_1111)
+    add  HL, HL         ; 1:11      573 *   1  *2 = 2x
+    ld    A, L          ; 1:4       573 *   256*L = 512x
+    add  HL, BC         ; 1:11      573 *      +1 = 3x 
+    add  HL, HL         ; 1:11      573 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      573 *      +1 = 7x 
+    add  HL, HL         ; 1:11      573 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      573 *      +1 = 15x 
+    add  HL, HL         ; 1:11      573 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      573 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      573 *      +1 = 61x 
+    add   A, H          ; 1:4       573 *
+    ld    H, A          ; 1:4       573 *     [573x] = 61x + 512x  
+                        ;[15:130]   575 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0011_1111)
     ld    B, H          ; 1:4       575 *
     ld    C, L          ; 1:4       575 *   1       1x = base 
-    add  HL, HL         ; 1:11      575 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      575 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      575 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      575 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      575 *      +1 = 17x 
-    add  HL, HL         ; 1:11      575 *   1  *2 = 34x
-    add  HL, BC         ; 1:11      575 *      +1 = 35x 
-    add  HL, HL         ; 1:11      575 *   1  *2 = 70x
-    add  HL, BC         ; 1:11      575 *      +1 = 71x 
-    add  HL, HL         ; 1:11      575 *   1  *2 = 142x
-    add  HL, BC         ; 1:11      575 *      +1 = 143x 
-    add  HL, HL         ; 1:11      575 *   1  *2 = 286x
-    add  HL, BC         ; 1:11      575 *      +1 = 287x 
-    add  HL, HL         ; 1:11      575 *   1  *2 = 574x
-    add  HL, BC         ; 1:11      575 *      +1 = 575x   
+    add  HL, HL         ; 1:11      575 *   1  *2 = 2x
+    ld    A, L          ; 1:4       575 *   256*L = 512x
+    add  HL, BC         ; 1:11      575 *      +1 = 3x 
+    add  HL, HL         ; 1:11      575 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      575 *      +1 = 7x 
+    add  HL, HL         ; 1:11      575 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      575 *      +1 = 15x 
+    add  HL, HL         ; 1:11      575 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      575 *      +1 = 31x 
+    add  HL, HL         ; 1:11      575 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      575 *      +1 = 63x 
+    add   A, H          ; 1:4       575 *
+    ld    H, A          ; 1:4       575 *     [575x] = 63x + 512x  
                         ;[12:97]    577 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_0100_0001)  
     ld    B, H          ; 1:4       577 *
     ld    C, L          ; 1:4       577 *   [1x] 
@@ -4189,279 +4148,263 @@ ORG 0x6000
     add  HL, BC         ; 1:11      607 *      +1 = 95x 
     add   A, H          ; 1:4       607 *
     ld    H, A          ; 1:4       607 *     [607x] = 95x + 512x  
-                        ;[14:140]   609 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_0001)
+                        ;[13:108]   609 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_0001)
     ld    B, H          ; 1:4       609 *
     ld    C, L          ; 1:4       609 *   1       1x = base 
-    add  HL, HL         ; 1:11      609 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      609 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      609 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      609 *      +1 = 9x 
-    add  HL, HL         ; 1:11      609 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      609 *      +1 = 19x 
-    add  HL, HL         ; 1:11      609 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      609 *   0  *2 = 76x 
-    add  HL, HL         ; 1:11      609 *   0  *2 = 152x 
-    add  HL, HL         ; 1:11      609 *   0  *2 = 304x 
-    add  HL, HL         ; 1:11      609 *   1  *2 = 608x
-    add  HL, BC         ; 1:11      609 *      +1 = 609x   
-                        ;[15:151]   611 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_0011)
+    add  HL, HL         ; 1:11      609 *   1  *2 = 2x
+    ld    A, L          ; 1:4       609 *   256*L = 512x
+    add  HL, BC         ; 1:11      609 *      +1 = 3x 
+    add  HL, HL         ; 1:11      609 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      609 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      609 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      609 *   0  *2 = 48x 
+    add  HL, HL         ; 1:11      609 *   1  *2 = 96x
+    add  HL, BC         ; 1:11      609 *      +1 = 97x 
+    add   A, H          ; 1:4       609 *
+    ld    H, A          ; 1:4       609 *     [609x] = 97x + 512x  
+                        ;[14:119]   611 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_0011)
     ld    B, H          ; 1:4       611 *
     ld    C, L          ; 1:4       611 *   1       1x = base 
-    add  HL, HL         ; 1:11      611 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      611 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      611 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      611 *      +1 = 9x 
-    add  HL, HL         ; 1:11      611 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      611 *      +1 = 19x 
-    add  HL, HL         ; 1:11      611 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      611 *   0  *2 = 76x 
-    add  HL, HL         ; 1:11      611 *   0  *2 = 152x 
-    add  HL, HL         ; 1:11      611 *   1  *2 = 304x
-    add  HL, BC         ; 1:11      611 *      +1 = 305x 
-    add  HL, HL         ; 1:11      611 *   1  *2 = 610x
-    add  HL, BC         ; 1:11      611 *      +1 = 611x   
-                        ;[15:151]   613 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_0101)
+    add  HL, HL         ; 1:11      611 *   1  *2 = 2x
+    ld    A, L          ; 1:4       611 *   256*L = 512x
+    add  HL, BC         ; 1:11      611 *      +1 = 3x 
+    add  HL, HL         ; 1:11      611 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      611 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      611 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      611 *   1  *2 = 48x
+    add  HL, BC         ; 1:11      611 *      +1 = 49x 
+    add  HL, HL         ; 1:11      611 *   1  *2 = 98x
+    add  HL, BC         ; 1:11      611 *      +1 = 99x 
+    add   A, H          ; 1:4       611 *
+    ld    H, A          ; 1:4       611 *     [611x] = 99x + 512x  
+                        ;[14:119]   613 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_0101)
     ld    B, H          ; 1:4       613 *
     ld    C, L          ; 1:4       613 *   1       1x = base 
-    add  HL, HL         ; 1:11      613 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      613 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      613 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      613 *      +1 = 9x 
-    add  HL, HL         ; 1:11      613 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      613 *      +1 = 19x 
-    add  HL, HL         ; 1:11      613 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      613 *   0  *2 = 76x 
-    add  HL, HL         ; 1:11      613 *   1  *2 = 152x
-    add  HL, BC         ; 1:11      613 *      +1 = 153x 
-    add  HL, HL         ; 1:11      613 *   0  *2 = 306x 
-    add  HL, HL         ; 1:11      613 *   1  *2 = 612x
-    add  HL, BC         ; 1:11      613 *      +1 = 613x   
-                        ;[16:162]   615 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_0111)
+    add  HL, HL         ; 1:11      613 *   1  *2 = 2x
+    ld    A, L          ; 1:4       613 *   256*L = 512x
+    add  HL, BC         ; 1:11      613 *      +1 = 3x 
+    add  HL, HL         ; 1:11      613 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      613 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      613 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      613 *      +1 = 25x 
+    add  HL, HL         ; 1:11      613 *   0  *2 = 50x 
+    add  HL, HL         ; 1:11      613 *   1  *2 = 100x
+    add  HL, BC         ; 1:11      613 *      +1 = 101x 
+    add   A, H          ; 1:4       613 *
+    ld    H, A          ; 1:4       613 *     [613x] = 101x + 512x  
+                        ;[15:130]   615 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_0111)
     ld    B, H          ; 1:4       615 *
     ld    C, L          ; 1:4       615 *   1       1x = base 
-    add  HL, HL         ; 1:11      615 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      615 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      615 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      615 *      +1 = 9x 
-    add  HL, HL         ; 1:11      615 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      615 *      +1 = 19x 
-    add  HL, HL         ; 1:11      615 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      615 *   0  *2 = 76x 
-    add  HL, HL         ; 1:11      615 *   1  *2 = 152x
-    add  HL, BC         ; 1:11      615 *      +1 = 153x 
-    add  HL, HL         ; 1:11      615 *   1  *2 = 306x
-    add  HL, BC         ; 1:11      615 *      +1 = 307x 
-    add  HL, HL         ; 1:11      615 *   1  *2 = 614x
-    add  HL, BC         ; 1:11      615 *      +1 = 615x   
-                        ;[15:151]   617 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_1001)
+    add  HL, HL         ; 1:11      615 *   1  *2 = 2x
+    ld    A, L          ; 1:4       615 *   256*L = 512x
+    add  HL, BC         ; 1:11      615 *      +1 = 3x 
+    add  HL, HL         ; 1:11      615 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      615 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      615 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      615 *      +1 = 25x 
+    add  HL, HL         ; 1:11      615 *   1  *2 = 50x
+    add  HL, BC         ; 1:11      615 *      +1 = 51x 
+    add  HL, HL         ; 1:11      615 *   1  *2 = 102x
+    add  HL, BC         ; 1:11      615 *      +1 = 103x 
+    add   A, H          ; 1:4       615 *
+    ld    H, A          ; 1:4       615 *     [615x] = 103x + 512x  
+                        ;[14:119]   617 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_1001)
     ld    B, H          ; 1:4       617 *
     ld    C, L          ; 1:4       617 *   1       1x = base 
-    add  HL, HL         ; 1:11      617 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      617 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      617 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      617 *      +1 = 9x 
-    add  HL, HL         ; 1:11      617 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      617 *      +1 = 19x 
-    add  HL, HL         ; 1:11      617 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      617 *   1  *2 = 76x
-    add  HL, BC         ; 1:11      617 *      +1 = 77x 
-    add  HL, HL         ; 1:11      617 *   0  *2 = 154x 
-    add  HL, HL         ; 1:11      617 *   0  *2 = 308x 
-    add  HL, HL         ; 1:11      617 *   1  *2 = 616x
-    add  HL, BC         ; 1:11      617 *      +1 = 617x   
-                        ;[16:162]   619 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_1011)
+    add  HL, HL         ; 1:11      617 *   1  *2 = 2x
+    ld    A, L          ; 1:4       617 *   256*L = 512x
+    add  HL, BC         ; 1:11      617 *      +1 = 3x 
+    add  HL, HL         ; 1:11      617 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      617 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      617 *      +1 = 13x 
+    add  HL, HL         ; 1:11      617 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      617 *   0  *2 = 52x 
+    add  HL, HL         ; 1:11      617 *   1  *2 = 104x
+    add  HL, BC         ; 1:11      617 *      +1 = 105x 
+    add   A, H          ; 1:4       617 *
+    ld    H, A          ; 1:4       617 *     [617x] = 105x + 512x  
+                        ;[15:130]   619 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_1011)
     ld    B, H          ; 1:4       619 *
     ld    C, L          ; 1:4       619 *   1       1x = base 
-    add  HL, HL         ; 1:11      619 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      619 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      619 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      619 *      +1 = 9x 
-    add  HL, HL         ; 1:11      619 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      619 *      +1 = 19x 
-    add  HL, HL         ; 1:11      619 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      619 *   1  *2 = 76x
-    add  HL, BC         ; 1:11      619 *      +1 = 77x 
-    add  HL, HL         ; 1:11      619 *   0  *2 = 154x 
-    add  HL, HL         ; 1:11      619 *   1  *2 = 308x
-    add  HL, BC         ; 1:11      619 *      +1 = 309x 
-    add  HL, HL         ; 1:11      619 *   1  *2 = 618x
-    add  HL, BC         ; 1:11      619 *      +1 = 619x   
-                        ;[16:162]   621 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_1101)
+    add  HL, HL         ; 1:11      619 *   1  *2 = 2x
+    ld    A, L          ; 1:4       619 *   256*L = 512x
+    add  HL, BC         ; 1:11      619 *      +1 = 3x 
+    add  HL, HL         ; 1:11      619 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      619 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      619 *      +1 = 13x 
+    add  HL, HL         ; 1:11      619 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      619 *   1  *2 = 52x
+    add  HL, BC         ; 1:11      619 *      +1 = 53x 
+    add  HL, HL         ; 1:11      619 *   1  *2 = 106x
+    add  HL, BC         ; 1:11      619 *      +1 = 107x 
+    add   A, H          ; 1:4       619 *
+    ld    H, A          ; 1:4       619 *     [619x] = 107x + 512x  
+                        ;[15:130]   621 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_1101)
     ld    B, H          ; 1:4       621 *
     ld    C, L          ; 1:4       621 *   1       1x = base 
-    add  HL, HL         ; 1:11      621 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      621 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      621 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      621 *      +1 = 9x 
-    add  HL, HL         ; 1:11      621 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      621 *      +1 = 19x 
-    add  HL, HL         ; 1:11      621 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      621 *   1  *2 = 76x
-    add  HL, BC         ; 1:11      621 *      +1 = 77x 
-    add  HL, HL         ; 1:11      621 *   1  *2 = 154x
-    add  HL, BC         ; 1:11      621 *      +1 = 155x 
-    add  HL, HL         ; 1:11      621 *   0  *2 = 310x 
-    add  HL, HL         ; 1:11      621 *   1  *2 = 620x
-    add  HL, BC         ; 1:11      621 *      +1 = 621x   
-                        ;[17:173]   623 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0110_1111)
+    add  HL, HL         ; 1:11      621 *   1  *2 = 2x
+    ld    A, L          ; 1:4       621 *   256*L = 512x
+    add  HL, BC         ; 1:11      621 *      +1 = 3x 
+    add  HL, HL         ; 1:11      621 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      621 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      621 *      +1 = 13x 
+    add  HL, HL         ; 1:11      621 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      621 *      +1 = 27x 
+    add  HL, HL         ; 1:11      621 *   0  *2 = 54x 
+    add  HL, HL         ; 1:11      621 *   1  *2 = 108x
+    add  HL, BC         ; 1:11      621 *      +1 = 109x 
+    add   A, H          ; 1:4       621 *
+    ld    H, A          ; 1:4       621 *     [621x] = 109x + 512x  
+                        ;[16:141]   623 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0110_1111)
     ld    B, H          ; 1:4       623 *
     ld    C, L          ; 1:4       623 *   1       1x = base 
-    add  HL, HL         ; 1:11      623 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      623 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      623 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      623 *      +1 = 9x 
-    add  HL, HL         ; 1:11      623 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      623 *      +1 = 19x 
-    add  HL, HL         ; 1:11      623 *   0  *2 = 38x 
-    add  HL, HL         ; 1:11      623 *   1  *2 = 76x
-    add  HL, BC         ; 1:11      623 *      +1 = 77x 
-    add  HL, HL         ; 1:11      623 *   1  *2 = 154x
-    add  HL, BC         ; 1:11      623 *      +1 = 155x 
-    add  HL, HL         ; 1:11      623 *   1  *2 = 310x
-    add  HL, BC         ; 1:11      623 *      +1 = 311x 
-    add  HL, HL         ; 1:11      623 *   1  *2 = 622x
-    add  HL, BC         ; 1:11      623 *      +1 = 623x   
-                        ;[15:151]   625 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_0001)
+    add  HL, HL         ; 1:11      623 *   1  *2 = 2x
+    ld    A, L          ; 1:4       623 *   256*L = 512x
+    add  HL, BC         ; 1:11      623 *      +1 = 3x 
+    add  HL, HL         ; 1:11      623 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      623 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      623 *      +1 = 13x 
+    add  HL, HL         ; 1:11      623 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      623 *      +1 = 27x 
+    add  HL, HL         ; 1:11      623 *   1  *2 = 54x
+    add  HL, BC         ; 1:11      623 *      +1 = 55x 
+    add  HL, HL         ; 1:11      623 *   1  *2 = 110x
+    add  HL, BC         ; 1:11      623 *      +1 = 111x 
+    add   A, H          ; 1:4       623 *
+    ld    H, A          ; 1:4       623 *     [623x] = 111x + 512x  
+                        ;[14:119]   625 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_0001)
     ld    B, H          ; 1:4       625 *
     ld    C, L          ; 1:4       625 *   1       1x = base 
-    add  HL, HL         ; 1:11      625 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      625 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      625 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      625 *      +1 = 9x 
-    add  HL, HL         ; 1:11      625 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      625 *      +1 = 19x 
-    add  HL, HL         ; 1:11      625 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      625 *      +1 = 39x 
-    add  HL, HL         ; 1:11      625 *   0  *2 = 78x 
-    add  HL, HL         ; 1:11      625 *   0  *2 = 156x 
-    add  HL, HL         ; 1:11      625 *   0  *2 = 312x 
-    add  HL, HL         ; 1:11      625 *   1  *2 = 624x
-    add  HL, BC         ; 1:11      625 *      +1 = 625x   
-                        ;[16:162]   627 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_0011)
+    add  HL, HL         ; 1:11      625 *   1  *2 = 2x
+    ld    A, L          ; 1:4       625 *   256*L = 512x
+    add  HL, BC         ; 1:11      625 *      +1 = 3x 
+    add  HL, HL         ; 1:11      625 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      625 *      +1 = 7x 
+    add  HL, HL         ; 1:11      625 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      625 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      625 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      625 *   1  *2 = 112x
+    add  HL, BC         ; 1:11      625 *      +1 = 113x 
+    add   A, H          ; 1:4       625 *
+    ld    H, A          ; 1:4       625 *     [625x] = 113x + 512x  
+                        ;[15:130]   627 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_0011)
     ld    B, H          ; 1:4       627 *
     ld    C, L          ; 1:4       627 *   1       1x = base 
-    add  HL, HL         ; 1:11      627 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      627 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      627 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      627 *      +1 = 9x 
-    add  HL, HL         ; 1:11      627 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      627 *      +1 = 19x 
-    add  HL, HL         ; 1:11      627 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      627 *      +1 = 39x 
-    add  HL, HL         ; 1:11      627 *   0  *2 = 78x 
-    add  HL, HL         ; 1:11      627 *   0  *2 = 156x 
-    add  HL, HL         ; 1:11      627 *   1  *2 = 312x
-    add  HL, BC         ; 1:11      627 *      +1 = 313x 
-    add  HL, HL         ; 1:11      627 *   1  *2 = 626x
-    add  HL, BC         ; 1:11      627 *      +1 = 627x  
+    add  HL, HL         ; 1:11      627 *   1  *2 = 2x
+    ld    A, L          ; 1:4       627 *   256*L = 512x
+    add  HL, BC         ; 1:11      627 *      +1 = 3x 
+    add  HL, HL         ; 1:11      627 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      627 *      +1 = 7x 
+    add  HL, HL         ; 1:11      627 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      627 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      627 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      627 *      +1 = 57x 
+    add  HL, HL         ; 1:11      627 *   1  *2 = 114x
+    add  HL, BC         ; 1:11      627 *      +1 = 115x 
+    add   A, H          ; 1:4       627 *
+    ld    H, A          ; 1:4       627 *     [627x] = 115x + 512x 
 
-                        ;[16:162]   629 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_0101)
+                        ;[15:130]   629 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_0101)
     ld    B, H          ; 1:4       629 *
     ld    C, L          ; 1:4       629 *   1       1x = base 
-    add  HL, HL         ; 1:11      629 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      629 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      629 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      629 *      +1 = 9x 
-    add  HL, HL         ; 1:11      629 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      629 *      +1 = 19x 
-    add  HL, HL         ; 1:11      629 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      629 *      +1 = 39x 
-    add  HL, HL         ; 1:11      629 *   0  *2 = 78x 
-    add  HL, HL         ; 1:11      629 *   1  *2 = 156x
-    add  HL, BC         ; 1:11      629 *      +1 = 157x 
-    add  HL, HL         ; 1:11      629 *   0  *2 = 314x 
-    add  HL, HL         ; 1:11      629 *   1  *2 = 628x
-    add  HL, BC         ; 1:11      629 *      +1 = 629x   
-                        ;[17:173]   631 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_0111)
+    add  HL, HL         ; 1:11      629 *   1  *2 = 2x
+    ld    A, L          ; 1:4       629 *   256*L = 512x
+    add  HL, BC         ; 1:11      629 *      +1 = 3x 
+    add  HL, HL         ; 1:11      629 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      629 *      +1 = 7x 
+    add  HL, HL         ; 1:11      629 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      629 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      629 *      +1 = 29x 
+    add  HL, HL         ; 1:11      629 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      629 *   1  *2 = 116x
+    add  HL, BC         ; 1:11      629 *      +1 = 117x 
+    add   A, H          ; 1:4       629 *
+    ld    H, A          ; 1:4       629 *     [629x] = 117x + 512x  
+                        ;[16:141]   631 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_0111)
     ld    B, H          ; 1:4       631 *
     ld    C, L          ; 1:4       631 *   1       1x = base 
-    add  HL, HL         ; 1:11      631 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      631 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      631 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      631 *      +1 = 9x 
-    add  HL, HL         ; 1:11      631 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      631 *      +1 = 19x 
-    add  HL, HL         ; 1:11      631 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      631 *      +1 = 39x 
-    add  HL, HL         ; 1:11      631 *   0  *2 = 78x 
-    add  HL, HL         ; 1:11      631 *   1  *2 = 156x
-    add  HL, BC         ; 1:11      631 *      +1 = 157x 
-    add  HL, HL         ; 1:11      631 *   1  *2 = 314x
-    add  HL, BC         ; 1:11      631 *      +1 = 315x 
-    add  HL, HL         ; 1:11      631 *   1  *2 = 630x
-    add  HL, BC         ; 1:11      631 *      +1 = 631x   
-                        ;[16:162]   633 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_1001)
+    add  HL, HL         ; 1:11      631 *   1  *2 = 2x
+    ld    A, L          ; 1:4       631 *   256*L = 512x
+    add  HL, BC         ; 1:11      631 *      +1 = 3x 
+    add  HL, HL         ; 1:11      631 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      631 *      +1 = 7x 
+    add  HL, HL         ; 1:11      631 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      631 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      631 *      +1 = 29x 
+    add  HL, HL         ; 1:11      631 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      631 *      +1 = 59x 
+    add  HL, HL         ; 1:11      631 *   1  *2 = 118x
+    add  HL, BC         ; 1:11      631 *      +1 = 119x 
+    add   A, H          ; 1:4       631 *
+    ld    H, A          ; 1:4       631 *     [631x] = 119x + 512x  
+                        ;[15:130]   633 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_1001)
     ld    B, H          ; 1:4       633 *
     ld    C, L          ; 1:4       633 *   1       1x = base 
-    add  HL, HL         ; 1:11      633 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      633 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      633 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      633 *      +1 = 9x 
-    add  HL, HL         ; 1:11      633 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      633 *      +1 = 19x 
-    add  HL, HL         ; 1:11      633 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      633 *      +1 = 39x 
-    add  HL, HL         ; 1:11      633 *   1  *2 = 78x
-    add  HL, BC         ; 1:11      633 *      +1 = 79x 
-    add  HL, HL         ; 1:11      633 *   0  *2 = 158x 
-    add  HL, HL         ; 1:11      633 *   0  *2 = 316x 
-    add  HL, HL         ; 1:11      633 *   1  *2 = 632x
-    add  HL, BC         ; 1:11      633 *      +1 = 633x   
-                        ;[17:173]   635 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_1011)
+    add  HL, HL         ; 1:11      633 *   1  *2 = 2x
+    ld    A, L          ; 1:4       633 *   256*L = 512x
+    add  HL, BC         ; 1:11      633 *      +1 = 3x 
+    add  HL, HL         ; 1:11      633 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      633 *      +1 = 7x 
+    add  HL, HL         ; 1:11      633 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      633 *      +1 = 15x 
+    add  HL, HL         ; 1:11      633 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      633 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      633 *   1  *2 = 120x
+    add  HL, BC         ; 1:11      633 *      +1 = 121x 
+    add   A, H          ; 1:4       633 *
+    ld    H, A          ; 1:4       633 *     [633x] = 121x + 512x  
+                        ;[16:141]   635 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_1011)
     ld    B, H          ; 1:4       635 *
     ld    C, L          ; 1:4       635 *   1       1x = base 
-    add  HL, HL         ; 1:11      635 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      635 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      635 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      635 *      +1 = 9x 
-    add  HL, HL         ; 1:11      635 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      635 *      +1 = 19x 
-    add  HL, HL         ; 1:11      635 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      635 *      +1 = 39x 
-    add  HL, HL         ; 1:11      635 *   1  *2 = 78x
-    add  HL, BC         ; 1:11      635 *      +1 = 79x 
-    add  HL, HL         ; 1:11      635 *   0  *2 = 158x 
-    add  HL, HL         ; 1:11      635 *   1  *2 = 316x
-    add  HL, BC         ; 1:11      635 *      +1 = 317x 
-    add  HL, HL         ; 1:11      635 *   1  *2 = 634x
-    add  HL, BC         ; 1:11      635 *      +1 = 635x   
-                        ;[17:173]   637 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_1101)
+    add  HL, HL         ; 1:11      635 *   1  *2 = 2x
+    ld    A, L          ; 1:4       635 *   256*L = 512x
+    add  HL, BC         ; 1:11      635 *      +1 = 3x 
+    add  HL, HL         ; 1:11      635 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      635 *      +1 = 7x 
+    add  HL, HL         ; 1:11      635 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      635 *      +1 = 15x 
+    add  HL, HL         ; 1:11      635 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      635 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      635 *      +1 = 61x 
+    add  HL, HL         ; 1:11      635 *   1  *2 = 122x
+    add  HL, BC         ; 1:11      635 *      +1 = 123x 
+    add   A, H          ; 1:4       635 *
+    ld    H, A          ; 1:4       635 *     [635x] = 123x + 512x  
+                        ;[16:141]   637 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_1101)
     ld    B, H          ; 1:4       637 *
     ld    C, L          ; 1:4       637 *   1       1x = base 
-    add  HL, HL         ; 1:11      637 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      637 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      637 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      637 *      +1 = 9x 
-    add  HL, HL         ; 1:11      637 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      637 *      +1 = 19x 
-    add  HL, HL         ; 1:11      637 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      637 *      +1 = 39x 
-    add  HL, HL         ; 1:11      637 *   1  *2 = 78x
-    add  HL, BC         ; 1:11      637 *      +1 = 79x 
-    add  HL, HL         ; 1:11      637 *   1  *2 = 158x
-    add  HL, BC         ; 1:11      637 *      +1 = 159x 
-    add  HL, HL         ; 1:11      637 *   0  *2 = 318x 
-    add  HL, HL         ; 1:11      637 *   1  *2 = 636x
-    add  HL, BC         ; 1:11      637 *      +1 = 637x   
-                        ;[18:184]   639 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_0111_1111)
+    add  HL, HL         ; 1:11      637 *   1  *2 = 2x
+    ld    A, L          ; 1:4       637 *   256*L = 512x
+    add  HL, BC         ; 1:11      637 *      +1 = 3x 
+    add  HL, HL         ; 1:11      637 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      637 *      +1 = 7x 
+    add  HL, HL         ; 1:11      637 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      637 *      +1 = 15x 
+    add  HL, HL         ; 1:11      637 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      637 *      +1 = 31x 
+    add  HL, HL         ; 1:11      637 *   0  *2 = 62x 
+    add  HL, HL         ; 1:11      637 *   1  *2 = 124x
+    add  HL, BC         ; 1:11      637 *      +1 = 125x 
+    add   A, H          ; 1:4       637 *
+    ld    H, A          ; 1:4       637 *     [637x] = 125x + 512x  
+                        ;[17:152]   639 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_0111_1111)
     ld    B, H          ; 1:4       639 *
     ld    C, L          ; 1:4       639 *   1       1x = base 
-    add  HL, HL         ; 1:11      639 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      639 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      639 *      +1 = 9x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 18x
-    add  HL, BC         ; 1:11      639 *      +1 = 19x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 38x
-    add  HL, BC         ; 1:11      639 *      +1 = 39x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 78x
-    add  HL, BC         ; 1:11      639 *      +1 = 79x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 158x
-    add  HL, BC         ; 1:11      639 *      +1 = 159x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 318x
-    add  HL, BC         ; 1:11      639 *      +1 = 319x 
-    add  HL, HL         ; 1:11      639 *   1  *2 = 638x
-    add  HL, BC         ; 1:11      639 *      +1 = 639x   
+    add  HL, HL         ; 1:11      639 *   1  *2 = 2x
+    ld    A, L          ; 1:4       639 *   256*L = 512x
+    add  HL, BC         ; 1:11      639 *      +1 = 3x 
+    add  HL, HL         ; 1:11      639 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      639 *      +1 = 7x 
+    add  HL, HL         ; 1:11      639 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      639 *      +1 = 15x 
+    add  HL, HL         ; 1:11      639 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      639 *      +1 = 31x 
+    add  HL, HL         ; 1:11      639 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      639 *      +1 = 63x 
+    add  HL, HL         ; 1:11      639 *   1  *2 = 126x
+    add  HL, BC         ; 1:11      639 *      +1 = 127x 
+    add   A, H          ; 1:4       639 *
+    ld    H, A          ; 1:4       639 *     [639x] = 127x + 512x  
                         ;[13:108]   641 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0010_1000_0001)  
     ld    B, H          ; 1:4       641 *
     ld    C, L          ; 1:4       641 *   [1x] 
@@ -4993,401 +4936,401 @@ ORG 0x6000
     add  HL, BC         ; 1:11      703 *      +1 = 191x 
     add   A, H          ; 1:4       703 *
     ld    H, A          ; 1:4       703 *     [703x] = 191x + 512x  
-                        ;[14:140]   705 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_0001)
+                        ;[14:119]   705 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_0001)
     ld    B, H          ; 1:4       705 *
     ld    C, L          ; 1:4       705 *   1       1x = base 
-    add  HL, HL         ; 1:11      705 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      705 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      705 *      +1 = 5x 
-    add  HL, HL         ; 1:11      705 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      705 *      +1 = 11x 
-    add  HL, HL         ; 1:11      705 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      705 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      705 *   0  *2 = 88x 
-    add  HL, HL         ; 1:11      705 *   0  *2 = 176x 
-    add  HL, HL         ; 1:11      705 *   0  *2 = 352x 
-    add  HL, HL         ; 1:11      705 *   1  *2 = 704x
-    add  HL, BC         ; 1:11      705 *      +1 = 705x   
-                        ;[15:151]   707 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_0011)
+    add  HL, HL         ; 1:11      705 *   1  *2 = 2x
+    ld    A, L          ; 1:4       705 *   256*L = 512x
+    add  HL, BC         ; 1:11      705 *      +1 = 3x 
+    add  HL, HL         ; 1:11      705 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      705 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      705 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      705 *   0  *2 = 48x 
+    add  HL, HL         ; 1:11      705 *   0  *2 = 96x 
+    add  HL, HL         ; 1:11      705 *   1  *2 = 192x
+    add  HL, BC         ; 1:11      705 *      +1 = 193x 
+    add   A, H          ; 1:4       705 *
+    ld    H, A          ; 1:4       705 *     [705x] = 193x + 512x  
+                        ;[15:130]   707 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_0011)
     ld    B, H          ; 1:4       707 *
     ld    C, L          ; 1:4       707 *   1       1x = base 
-    add  HL, HL         ; 1:11      707 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      707 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      707 *      +1 = 5x 
-    add  HL, HL         ; 1:11      707 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      707 *      +1 = 11x 
-    add  HL, HL         ; 1:11      707 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      707 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      707 *   0  *2 = 88x 
-    add  HL, HL         ; 1:11      707 *   0  *2 = 176x 
-    add  HL, HL         ; 1:11      707 *   1  *2 = 352x
-    add  HL, BC         ; 1:11      707 *      +1 = 353x 
-    add  HL, HL         ; 1:11      707 *   1  *2 = 706x
-    add  HL, BC         ; 1:11      707 *      +1 = 707x   
-                        ;[15:151]   709 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_0101)
+    add  HL, HL         ; 1:11      707 *   1  *2 = 2x
+    ld    A, L          ; 1:4       707 *   256*L = 512x
+    add  HL, BC         ; 1:11      707 *      +1 = 3x 
+    add  HL, HL         ; 1:11      707 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      707 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      707 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      707 *   0  *2 = 48x 
+    add  HL, HL         ; 1:11      707 *   1  *2 = 96x
+    add  HL, BC         ; 1:11      707 *      +1 = 97x 
+    add  HL, HL         ; 1:11      707 *   1  *2 = 194x
+    add  HL, BC         ; 1:11      707 *      +1 = 195x 
+    add   A, H          ; 1:4       707 *
+    ld    H, A          ; 1:4       707 *     [707x] = 195x + 512x  
+                        ;[15:130]   709 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_0101)
     ld    B, H          ; 1:4       709 *
     ld    C, L          ; 1:4       709 *   1       1x = base 
-    add  HL, HL         ; 1:11      709 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      709 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      709 *      +1 = 5x 
-    add  HL, HL         ; 1:11      709 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      709 *      +1 = 11x 
-    add  HL, HL         ; 1:11      709 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      709 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      709 *   0  *2 = 88x 
-    add  HL, HL         ; 1:11      709 *   1  *2 = 176x
-    add  HL, BC         ; 1:11      709 *      +1 = 177x 
-    add  HL, HL         ; 1:11      709 *   0  *2 = 354x 
-    add  HL, HL         ; 1:11      709 *   1  *2 = 708x
-    add  HL, BC         ; 1:11      709 *      +1 = 709x   
-                        ;[16:162]   711 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_0111)
+    add  HL, HL         ; 1:11      709 *   1  *2 = 2x
+    ld    A, L          ; 1:4       709 *   256*L = 512x
+    add  HL, BC         ; 1:11      709 *      +1 = 3x 
+    add  HL, HL         ; 1:11      709 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      709 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      709 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      709 *   1  *2 = 48x
+    add  HL, BC         ; 1:11      709 *      +1 = 49x 
+    add  HL, HL         ; 1:11      709 *   0  *2 = 98x 
+    add  HL, HL         ; 1:11      709 *   1  *2 = 196x
+    add  HL, BC         ; 1:11      709 *      +1 = 197x 
+    add   A, H          ; 1:4       709 *
+    ld    H, A          ; 1:4       709 *     [709x] = 197x + 512x  
+                        ;[16:141]   711 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_0111)
     ld    B, H          ; 1:4       711 *
     ld    C, L          ; 1:4       711 *   1       1x = base 
-    add  HL, HL         ; 1:11      711 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      711 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      711 *      +1 = 5x 
-    add  HL, HL         ; 1:11      711 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      711 *      +1 = 11x 
-    add  HL, HL         ; 1:11      711 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      711 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      711 *   0  *2 = 88x 
-    add  HL, HL         ; 1:11      711 *   1  *2 = 176x
-    add  HL, BC         ; 1:11      711 *      +1 = 177x 
-    add  HL, HL         ; 1:11      711 *   1  *2 = 354x
-    add  HL, BC         ; 1:11      711 *      +1 = 355x 
-    add  HL, HL         ; 1:11      711 *   1  *2 = 710x
-    add  HL, BC         ; 1:11      711 *      +1 = 711x   
-                        ;[15:151]   713 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_1001)
+    add  HL, HL         ; 1:11      711 *   1  *2 = 2x
+    ld    A, L          ; 1:4       711 *   256*L = 512x
+    add  HL, BC         ; 1:11      711 *      +1 = 3x 
+    add  HL, HL         ; 1:11      711 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      711 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      711 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      711 *   1  *2 = 48x
+    add  HL, BC         ; 1:11      711 *      +1 = 49x 
+    add  HL, HL         ; 1:11      711 *   1  *2 = 98x
+    add  HL, BC         ; 1:11      711 *      +1 = 99x 
+    add  HL, HL         ; 1:11      711 *   1  *2 = 198x
+    add  HL, BC         ; 1:11      711 *      +1 = 199x 
+    add   A, H          ; 1:4       711 *
+    ld    H, A          ; 1:4       711 *     [711x] = 199x + 512x  
+                        ;[15:130]   713 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_1001)
     ld    B, H          ; 1:4       713 *
     ld    C, L          ; 1:4       713 *   1       1x = base 
-    add  HL, HL         ; 1:11      713 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      713 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      713 *      +1 = 5x 
-    add  HL, HL         ; 1:11      713 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      713 *      +1 = 11x 
-    add  HL, HL         ; 1:11      713 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      713 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      713 *   1  *2 = 88x
-    add  HL, BC         ; 1:11      713 *      +1 = 89x 
-    add  HL, HL         ; 1:11      713 *   0  *2 = 178x 
-    add  HL, HL         ; 1:11      713 *   0  *2 = 356x 
-    add  HL, HL         ; 1:11      713 *   1  *2 = 712x
-    add  HL, BC         ; 1:11      713 *      +1 = 713x   
-                        ;[16:162]   715 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_1011)
+    add  HL, HL         ; 1:11      713 *   1  *2 = 2x
+    ld    A, L          ; 1:4       713 *   256*L = 512x
+    add  HL, BC         ; 1:11      713 *      +1 = 3x 
+    add  HL, HL         ; 1:11      713 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      713 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      713 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      713 *      +1 = 25x 
+    add  HL, HL         ; 1:11      713 *   0  *2 = 50x 
+    add  HL, HL         ; 1:11      713 *   0  *2 = 100x 
+    add  HL, HL         ; 1:11      713 *   1  *2 = 200x
+    add  HL, BC         ; 1:11      713 *      +1 = 201x 
+    add   A, H          ; 1:4       713 *
+    ld    H, A          ; 1:4       713 *     [713x] = 201x + 512x  
+                        ;[16:141]   715 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_1011)
     ld    B, H          ; 1:4       715 *
     ld    C, L          ; 1:4       715 *   1       1x = base 
-    add  HL, HL         ; 1:11      715 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      715 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      715 *      +1 = 5x 
-    add  HL, HL         ; 1:11      715 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      715 *      +1 = 11x 
-    add  HL, HL         ; 1:11      715 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      715 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      715 *   1  *2 = 88x
-    add  HL, BC         ; 1:11      715 *      +1 = 89x 
-    add  HL, HL         ; 1:11      715 *   0  *2 = 178x 
-    add  HL, HL         ; 1:11      715 *   1  *2 = 356x
-    add  HL, BC         ; 1:11      715 *      +1 = 357x 
-    add  HL, HL         ; 1:11      715 *   1  *2 = 714x
-    add  HL, BC         ; 1:11      715 *      +1 = 715x  
+    add  HL, HL         ; 1:11      715 *   1  *2 = 2x
+    ld    A, L          ; 1:4       715 *   256*L = 512x
+    add  HL, BC         ; 1:11      715 *      +1 = 3x 
+    add  HL, HL         ; 1:11      715 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      715 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      715 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      715 *      +1 = 25x 
+    add  HL, HL         ; 1:11      715 *   0  *2 = 50x 
+    add  HL, HL         ; 1:11      715 *   1  *2 = 100x
+    add  HL, BC         ; 1:11      715 *      +1 = 101x 
+    add  HL, HL         ; 1:11      715 *   1  *2 = 202x
+    add  HL, BC         ; 1:11      715 *      +1 = 203x 
+    add   A, H          ; 1:4       715 *
+    ld    H, A          ; 1:4       715 *     [715x] = 203x + 512x 
 
-                        ;[16:162]   717 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_1101)
+                        ;[16:141]   717 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_1101)
     ld    B, H          ; 1:4       717 *
     ld    C, L          ; 1:4       717 *   1       1x = base 
-    add  HL, HL         ; 1:11      717 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      717 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      717 *      +1 = 5x 
-    add  HL, HL         ; 1:11      717 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      717 *      +1 = 11x 
-    add  HL, HL         ; 1:11      717 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      717 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      717 *   1  *2 = 88x
-    add  HL, BC         ; 1:11      717 *      +1 = 89x 
-    add  HL, HL         ; 1:11      717 *   1  *2 = 178x
-    add  HL, BC         ; 1:11      717 *      +1 = 179x 
-    add  HL, HL         ; 1:11      717 *   0  *2 = 358x 
-    add  HL, HL         ; 1:11      717 *   1  *2 = 716x
-    add  HL, BC         ; 1:11      717 *      +1 = 717x   
-                        ;[17:173]   719 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1100_1111)
+    add  HL, HL         ; 1:11      717 *   1  *2 = 2x
+    ld    A, L          ; 1:4       717 *   256*L = 512x
+    add  HL, BC         ; 1:11      717 *      +1 = 3x 
+    add  HL, HL         ; 1:11      717 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      717 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      717 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      717 *      +1 = 25x 
+    add  HL, HL         ; 1:11      717 *   1  *2 = 50x
+    add  HL, BC         ; 1:11      717 *      +1 = 51x 
+    add  HL, HL         ; 1:11      717 *   0  *2 = 102x 
+    add  HL, HL         ; 1:11      717 *   1  *2 = 204x
+    add  HL, BC         ; 1:11      717 *      +1 = 205x 
+    add   A, H          ; 1:4       717 *
+    ld    H, A          ; 1:4       717 *     [717x] = 205x + 512x  
+                        ;[17:152]   719 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1100_1111)
     ld    B, H          ; 1:4       719 *
     ld    C, L          ; 1:4       719 *   1       1x = base 
-    add  HL, HL         ; 1:11      719 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      719 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      719 *      +1 = 5x 
-    add  HL, HL         ; 1:11      719 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      719 *      +1 = 11x 
-    add  HL, HL         ; 1:11      719 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      719 *   0  *2 = 44x 
-    add  HL, HL         ; 1:11      719 *   1  *2 = 88x
-    add  HL, BC         ; 1:11      719 *      +1 = 89x 
-    add  HL, HL         ; 1:11      719 *   1  *2 = 178x
-    add  HL, BC         ; 1:11      719 *      +1 = 179x 
-    add  HL, HL         ; 1:11      719 *   1  *2 = 358x
-    add  HL, BC         ; 1:11      719 *      +1 = 359x 
-    add  HL, HL         ; 1:11      719 *   1  *2 = 718x
-    add  HL, BC         ; 1:11      719 *      +1 = 719x   
-                        ;[15:151]   721 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_0001)
+    add  HL, HL         ; 1:11      719 *   1  *2 = 2x
+    ld    A, L          ; 1:4       719 *   256*L = 512x
+    add  HL, BC         ; 1:11      719 *      +1 = 3x 
+    add  HL, HL         ; 1:11      719 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      719 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      719 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      719 *      +1 = 25x 
+    add  HL, HL         ; 1:11      719 *   1  *2 = 50x
+    add  HL, BC         ; 1:11      719 *      +1 = 51x 
+    add  HL, HL         ; 1:11      719 *   1  *2 = 102x
+    add  HL, BC         ; 1:11      719 *      +1 = 103x 
+    add  HL, HL         ; 1:11      719 *   1  *2 = 206x
+    add  HL, BC         ; 1:11      719 *      +1 = 207x 
+    add   A, H          ; 1:4       719 *
+    ld    H, A          ; 1:4       719 *     [719x] = 207x + 512x  
+                        ;[15:130]   721 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_0001)
     ld    B, H          ; 1:4       721 *
     ld    C, L          ; 1:4       721 *   1       1x = base 
-    add  HL, HL         ; 1:11      721 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      721 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      721 *      +1 = 5x 
-    add  HL, HL         ; 1:11      721 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      721 *      +1 = 11x 
-    add  HL, HL         ; 1:11      721 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      721 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      721 *      +1 = 45x 
-    add  HL, HL         ; 1:11      721 *   0  *2 = 90x 
-    add  HL, HL         ; 1:11      721 *   0  *2 = 180x 
-    add  HL, HL         ; 1:11      721 *   0  *2 = 360x 
-    add  HL, HL         ; 1:11      721 *   1  *2 = 720x
-    add  HL, BC         ; 1:11      721 *      +1 = 721x   
-                        ;[16:162]   723 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_0011)
+    add  HL, HL         ; 1:11      721 *   1  *2 = 2x
+    ld    A, L          ; 1:4       721 *   256*L = 512x
+    add  HL, BC         ; 1:11      721 *      +1 = 3x 
+    add  HL, HL         ; 1:11      721 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      721 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      721 *      +1 = 13x 
+    add  HL, HL         ; 1:11      721 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      721 *   0  *2 = 52x 
+    add  HL, HL         ; 1:11      721 *   0  *2 = 104x 
+    add  HL, HL         ; 1:11      721 *   1  *2 = 208x
+    add  HL, BC         ; 1:11      721 *      +1 = 209x 
+    add   A, H          ; 1:4       721 *
+    ld    H, A          ; 1:4       721 *     [721x] = 209x + 512x  
+                        ;[16:141]   723 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_0011)
     ld    B, H          ; 1:4       723 *
     ld    C, L          ; 1:4       723 *   1       1x = base 
-    add  HL, HL         ; 1:11      723 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      723 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      723 *      +1 = 5x 
-    add  HL, HL         ; 1:11      723 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      723 *      +1 = 11x 
-    add  HL, HL         ; 1:11      723 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      723 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      723 *      +1 = 45x 
-    add  HL, HL         ; 1:11      723 *   0  *2 = 90x 
-    add  HL, HL         ; 1:11      723 *   0  *2 = 180x 
-    add  HL, HL         ; 1:11      723 *   1  *2 = 360x
-    add  HL, BC         ; 1:11      723 *      +1 = 361x 
-    add  HL, HL         ; 1:11      723 *   1  *2 = 722x
-    add  HL, BC         ; 1:11      723 *      +1 = 723x   
-                        ;[16:162]   725 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_0101)
+    add  HL, HL         ; 1:11      723 *   1  *2 = 2x
+    ld    A, L          ; 1:4       723 *   256*L = 512x
+    add  HL, BC         ; 1:11      723 *      +1 = 3x 
+    add  HL, HL         ; 1:11      723 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      723 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      723 *      +1 = 13x 
+    add  HL, HL         ; 1:11      723 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      723 *   0  *2 = 52x 
+    add  HL, HL         ; 1:11      723 *   1  *2 = 104x
+    add  HL, BC         ; 1:11      723 *      +1 = 105x 
+    add  HL, HL         ; 1:11      723 *   1  *2 = 210x
+    add  HL, BC         ; 1:11      723 *      +1 = 211x 
+    add   A, H          ; 1:4       723 *
+    ld    H, A          ; 1:4       723 *     [723x] = 211x + 512x  
+                        ;[16:141]   725 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_0101)
     ld    B, H          ; 1:4       725 *
     ld    C, L          ; 1:4       725 *   1       1x = base 
-    add  HL, HL         ; 1:11      725 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      725 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      725 *      +1 = 5x 
-    add  HL, HL         ; 1:11      725 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      725 *      +1 = 11x 
-    add  HL, HL         ; 1:11      725 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      725 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      725 *      +1 = 45x 
-    add  HL, HL         ; 1:11      725 *   0  *2 = 90x 
-    add  HL, HL         ; 1:11      725 *   1  *2 = 180x
-    add  HL, BC         ; 1:11      725 *      +1 = 181x 
-    add  HL, HL         ; 1:11      725 *   0  *2 = 362x 
-    add  HL, HL         ; 1:11      725 *   1  *2 = 724x
-    add  HL, BC         ; 1:11      725 *      +1 = 725x   
-                        ;[17:173]   727 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_0111)
+    add  HL, HL         ; 1:11      725 *   1  *2 = 2x
+    ld    A, L          ; 1:4       725 *   256*L = 512x
+    add  HL, BC         ; 1:11      725 *      +1 = 3x 
+    add  HL, HL         ; 1:11      725 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      725 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      725 *      +1 = 13x 
+    add  HL, HL         ; 1:11      725 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      725 *   1  *2 = 52x
+    add  HL, BC         ; 1:11      725 *      +1 = 53x 
+    add  HL, HL         ; 1:11      725 *   0  *2 = 106x 
+    add  HL, HL         ; 1:11      725 *   1  *2 = 212x
+    add  HL, BC         ; 1:11      725 *      +1 = 213x 
+    add   A, H          ; 1:4       725 *
+    ld    H, A          ; 1:4       725 *     [725x] = 213x + 512x  
+                        ;[17:152]   727 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_0111)
     ld    B, H          ; 1:4       727 *
     ld    C, L          ; 1:4       727 *   1       1x = base 
-    add  HL, HL         ; 1:11      727 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      727 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      727 *      +1 = 5x 
-    add  HL, HL         ; 1:11      727 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      727 *      +1 = 11x 
-    add  HL, HL         ; 1:11      727 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      727 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      727 *      +1 = 45x 
-    add  HL, HL         ; 1:11      727 *   0  *2 = 90x 
-    add  HL, HL         ; 1:11      727 *   1  *2 = 180x
-    add  HL, BC         ; 1:11      727 *      +1 = 181x 
-    add  HL, HL         ; 1:11      727 *   1  *2 = 362x
-    add  HL, BC         ; 1:11      727 *      +1 = 363x 
-    add  HL, HL         ; 1:11      727 *   1  *2 = 726x
-    add  HL, BC         ; 1:11      727 *      +1 = 727x   
-                        ;[16:162]   729 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_1001)
+    add  HL, HL         ; 1:11      727 *   1  *2 = 2x
+    ld    A, L          ; 1:4       727 *   256*L = 512x
+    add  HL, BC         ; 1:11      727 *      +1 = 3x 
+    add  HL, HL         ; 1:11      727 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      727 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      727 *      +1 = 13x 
+    add  HL, HL         ; 1:11      727 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      727 *   1  *2 = 52x
+    add  HL, BC         ; 1:11      727 *      +1 = 53x 
+    add  HL, HL         ; 1:11      727 *   1  *2 = 106x
+    add  HL, BC         ; 1:11      727 *      +1 = 107x 
+    add  HL, HL         ; 1:11      727 *   1  *2 = 214x
+    add  HL, BC         ; 1:11      727 *      +1 = 215x 
+    add   A, H          ; 1:4       727 *
+    ld    H, A          ; 1:4       727 *     [727x] = 215x + 512x  
+                        ;[16:141]   729 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_1001)
     ld    B, H          ; 1:4       729 *
     ld    C, L          ; 1:4       729 *   1       1x = base 
-    add  HL, HL         ; 1:11      729 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      729 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      729 *      +1 = 5x 
-    add  HL, HL         ; 1:11      729 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      729 *      +1 = 11x 
-    add  HL, HL         ; 1:11      729 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      729 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      729 *      +1 = 45x 
-    add  HL, HL         ; 1:11      729 *   1  *2 = 90x
-    add  HL, BC         ; 1:11      729 *      +1 = 91x 
-    add  HL, HL         ; 1:11      729 *   0  *2 = 182x 
-    add  HL, HL         ; 1:11      729 *   0  *2 = 364x 
-    add  HL, HL         ; 1:11      729 *   1  *2 = 728x
-    add  HL, BC         ; 1:11      729 *      +1 = 729x   
-                        ;[17:173]   731 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_1011)
+    add  HL, HL         ; 1:11      729 *   1  *2 = 2x
+    ld    A, L          ; 1:4       729 *   256*L = 512x
+    add  HL, BC         ; 1:11      729 *      +1 = 3x 
+    add  HL, HL         ; 1:11      729 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      729 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      729 *      +1 = 13x 
+    add  HL, HL         ; 1:11      729 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      729 *      +1 = 27x 
+    add  HL, HL         ; 1:11      729 *   0  *2 = 54x 
+    add  HL, HL         ; 1:11      729 *   0  *2 = 108x 
+    add  HL, HL         ; 1:11      729 *   1  *2 = 216x
+    add  HL, BC         ; 1:11      729 *      +1 = 217x 
+    add   A, H          ; 1:4       729 *
+    ld    H, A          ; 1:4       729 *     [729x] = 217x + 512x  
+                        ;[17:152]   731 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_1011)
     ld    B, H          ; 1:4       731 *
     ld    C, L          ; 1:4       731 *   1       1x = base 
-    add  HL, HL         ; 1:11      731 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      731 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      731 *      +1 = 5x 
-    add  HL, HL         ; 1:11      731 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      731 *      +1 = 11x 
-    add  HL, HL         ; 1:11      731 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      731 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      731 *      +1 = 45x 
-    add  HL, HL         ; 1:11      731 *   1  *2 = 90x
-    add  HL, BC         ; 1:11      731 *      +1 = 91x 
-    add  HL, HL         ; 1:11      731 *   0  *2 = 182x 
-    add  HL, HL         ; 1:11      731 *   1  *2 = 364x
-    add  HL, BC         ; 1:11      731 *      +1 = 365x 
-    add  HL, HL         ; 1:11      731 *   1  *2 = 730x
-    add  HL, BC         ; 1:11      731 *      +1 = 731x   
-                        ;[17:173]   733 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_1101)
+    add  HL, HL         ; 1:11      731 *   1  *2 = 2x
+    ld    A, L          ; 1:4       731 *   256*L = 512x
+    add  HL, BC         ; 1:11      731 *      +1 = 3x 
+    add  HL, HL         ; 1:11      731 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      731 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      731 *      +1 = 13x 
+    add  HL, HL         ; 1:11      731 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      731 *      +1 = 27x 
+    add  HL, HL         ; 1:11      731 *   0  *2 = 54x 
+    add  HL, HL         ; 1:11      731 *   1  *2 = 108x
+    add  HL, BC         ; 1:11      731 *      +1 = 109x 
+    add  HL, HL         ; 1:11      731 *   1  *2 = 218x
+    add  HL, BC         ; 1:11      731 *      +1 = 219x 
+    add   A, H          ; 1:4       731 *
+    ld    H, A          ; 1:4       731 *     [731x] = 219x + 512x  
+                        ;[17:152]   733 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_1101)
     ld    B, H          ; 1:4       733 *
     ld    C, L          ; 1:4       733 *   1       1x = base 
-    add  HL, HL         ; 1:11      733 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      733 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      733 *      +1 = 5x 
-    add  HL, HL         ; 1:11      733 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      733 *      +1 = 11x 
-    add  HL, HL         ; 1:11      733 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      733 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      733 *      +1 = 45x 
-    add  HL, HL         ; 1:11      733 *   1  *2 = 90x
-    add  HL, BC         ; 1:11      733 *      +1 = 91x 
-    add  HL, HL         ; 1:11      733 *   1  *2 = 182x
-    add  HL, BC         ; 1:11      733 *      +1 = 183x 
-    add  HL, HL         ; 1:11      733 *   0  *2 = 366x 
-    add  HL, HL         ; 1:11      733 *   1  *2 = 732x
-    add  HL, BC         ; 1:11      733 *      +1 = 733x   
-                        ;[18:184]   735 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1101_1111)
+    add  HL, HL         ; 1:11      733 *   1  *2 = 2x
+    ld    A, L          ; 1:4       733 *   256*L = 512x
+    add  HL, BC         ; 1:11      733 *      +1 = 3x 
+    add  HL, HL         ; 1:11      733 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      733 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      733 *      +1 = 13x 
+    add  HL, HL         ; 1:11      733 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      733 *      +1 = 27x 
+    add  HL, HL         ; 1:11      733 *   1  *2 = 54x
+    add  HL, BC         ; 1:11      733 *      +1 = 55x 
+    add  HL, HL         ; 1:11      733 *   0  *2 = 110x 
+    add  HL, HL         ; 1:11      733 *   1  *2 = 220x
+    add  HL, BC         ; 1:11      733 *      +1 = 221x 
+    add   A, H          ; 1:4       733 *
+    ld    H, A          ; 1:4       733 *     [733x] = 221x + 512x  
+                        ;[18:163]   735 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1101_1111)
     ld    B, H          ; 1:4       735 *
     ld    C, L          ; 1:4       735 *   1       1x = base 
-    add  HL, HL         ; 1:11      735 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      735 *      +1 = 5x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      735 *      +1 = 11x 
-    add  HL, HL         ; 1:11      735 *   0  *2 = 22x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 44x
-    add  HL, BC         ; 1:11      735 *      +1 = 45x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 90x
-    add  HL, BC         ; 1:11      735 *      +1 = 91x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 182x
-    add  HL, BC         ; 1:11      735 *      +1 = 183x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 366x
-    add  HL, BC         ; 1:11      735 *      +1 = 367x 
-    add  HL, HL         ; 1:11      735 *   1  *2 = 734x
-    add  HL, BC         ; 1:11      735 *      +1 = 735x   
-                        ;[15:151]   737 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_0001)
+    add  HL, HL         ; 1:11      735 *   1  *2 = 2x
+    ld    A, L          ; 1:4       735 *   256*L = 512x
+    add  HL, BC         ; 1:11      735 *      +1 = 3x 
+    add  HL, HL         ; 1:11      735 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      735 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      735 *      +1 = 13x 
+    add  HL, HL         ; 1:11      735 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      735 *      +1 = 27x 
+    add  HL, HL         ; 1:11      735 *   1  *2 = 54x
+    add  HL, BC         ; 1:11      735 *      +1 = 55x 
+    add  HL, HL         ; 1:11      735 *   1  *2 = 110x
+    add  HL, BC         ; 1:11      735 *      +1 = 111x 
+    add  HL, HL         ; 1:11      735 *   1  *2 = 222x
+    add  HL, BC         ; 1:11      735 *      +1 = 223x 
+    add   A, H          ; 1:4       735 *
+    ld    H, A          ; 1:4       735 *     [735x] = 223x + 512x  
+                        ;[15:130]   737 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_0001)
     ld    B, H          ; 1:4       737 *
     ld    C, L          ; 1:4       737 *   1       1x = base 
-    add  HL, HL         ; 1:11      737 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      737 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      737 *      +1 = 5x 
-    add  HL, HL         ; 1:11      737 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      737 *      +1 = 11x 
-    add  HL, HL         ; 1:11      737 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      737 *      +1 = 23x 
-    add  HL, HL         ; 1:11      737 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      737 *   0  *2 = 92x 
-    add  HL, HL         ; 1:11      737 *   0  *2 = 184x 
-    add  HL, HL         ; 1:11      737 *   0  *2 = 368x 
-    add  HL, HL         ; 1:11      737 *   1  *2 = 736x
-    add  HL, BC         ; 1:11      737 *      +1 = 737x  
+    add  HL, HL         ; 1:11      737 *   1  *2 = 2x
+    ld    A, L          ; 1:4       737 *   256*L = 512x
+    add  HL, BC         ; 1:11      737 *      +1 = 3x 
+    add  HL, HL         ; 1:11      737 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      737 *      +1 = 7x 
+    add  HL, HL         ; 1:11      737 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      737 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      737 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      737 *   0  *2 = 112x 
+    add  HL, HL         ; 1:11      737 *   1  *2 = 224x
+    add  HL, BC         ; 1:11      737 *      +1 = 225x 
+    add   A, H          ; 1:4       737 *
+    ld    H, A          ; 1:4       737 *     [737x] = 225x + 512x 
 
-                        ;[16:162]   739 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_0011)
+                        ;[16:141]   739 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_0011)
     ld    B, H          ; 1:4       739 *
     ld    C, L          ; 1:4       739 *   1       1x = base 
-    add  HL, HL         ; 1:11      739 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      739 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      739 *      +1 = 5x 
-    add  HL, HL         ; 1:11      739 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      739 *      +1 = 11x 
-    add  HL, HL         ; 1:11      739 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      739 *      +1 = 23x 
-    add  HL, HL         ; 1:11      739 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      739 *   0  *2 = 92x 
-    add  HL, HL         ; 1:11      739 *   0  *2 = 184x 
-    add  HL, HL         ; 1:11      739 *   1  *2 = 368x
-    add  HL, BC         ; 1:11      739 *      +1 = 369x 
-    add  HL, HL         ; 1:11      739 *   1  *2 = 738x
-    add  HL, BC         ; 1:11      739 *      +1 = 739x   
-                        ;[16:162]   741 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_0101)
+    add  HL, HL         ; 1:11      739 *   1  *2 = 2x
+    ld    A, L          ; 1:4       739 *   256*L = 512x
+    add  HL, BC         ; 1:11      739 *      +1 = 3x 
+    add  HL, HL         ; 1:11      739 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      739 *      +1 = 7x 
+    add  HL, HL         ; 1:11      739 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      739 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      739 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      739 *   1  *2 = 112x
+    add  HL, BC         ; 1:11      739 *      +1 = 113x 
+    add  HL, HL         ; 1:11      739 *   1  *2 = 226x
+    add  HL, BC         ; 1:11      739 *      +1 = 227x 
+    add   A, H          ; 1:4       739 *
+    ld    H, A          ; 1:4       739 *     [739x] = 227x + 512x  
+                        ;[16:141]   741 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_0101)
     ld    B, H          ; 1:4       741 *
     ld    C, L          ; 1:4       741 *   1       1x = base 
-    add  HL, HL         ; 1:11      741 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      741 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      741 *      +1 = 5x 
-    add  HL, HL         ; 1:11      741 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      741 *      +1 = 11x 
-    add  HL, HL         ; 1:11      741 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      741 *      +1 = 23x 
-    add  HL, HL         ; 1:11      741 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      741 *   0  *2 = 92x 
-    add  HL, HL         ; 1:11      741 *   1  *2 = 184x
-    add  HL, BC         ; 1:11      741 *      +1 = 185x 
-    add  HL, HL         ; 1:11      741 *   0  *2 = 370x 
-    add  HL, HL         ; 1:11      741 *   1  *2 = 740x
-    add  HL, BC         ; 1:11      741 *      +1 = 741x   
-                        ;[17:173]   743 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_0111)
+    add  HL, HL         ; 1:11      741 *   1  *2 = 2x
+    ld    A, L          ; 1:4       741 *   256*L = 512x
+    add  HL, BC         ; 1:11      741 *      +1 = 3x 
+    add  HL, HL         ; 1:11      741 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      741 *      +1 = 7x 
+    add  HL, HL         ; 1:11      741 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      741 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      741 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      741 *      +1 = 57x 
+    add  HL, HL         ; 1:11      741 *   0  *2 = 114x 
+    add  HL, HL         ; 1:11      741 *   1  *2 = 228x
+    add  HL, BC         ; 1:11      741 *      +1 = 229x 
+    add   A, H          ; 1:4       741 *
+    ld    H, A          ; 1:4       741 *     [741x] = 229x + 512x  
+                        ;[17:152]   743 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_0111)
     ld    B, H          ; 1:4       743 *
     ld    C, L          ; 1:4       743 *   1       1x = base 
-    add  HL, HL         ; 1:11      743 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      743 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      743 *      +1 = 5x 
-    add  HL, HL         ; 1:11      743 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      743 *      +1 = 11x 
-    add  HL, HL         ; 1:11      743 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      743 *      +1 = 23x 
-    add  HL, HL         ; 1:11      743 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      743 *   0  *2 = 92x 
-    add  HL, HL         ; 1:11      743 *   1  *2 = 184x
-    add  HL, BC         ; 1:11      743 *      +1 = 185x 
-    add  HL, HL         ; 1:11      743 *   1  *2 = 370x
-    add  HL, BC         ; 1:11      743 *      +1 = 371x 
-    add  HL, HL         ; 1:11      743 *   1  *2 = 742x
-    add  HL, BC         ; 1:11      743 *      +1 = 743x   
-                        ;[16:162]   745 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_1001)
+    add  HL, HL         ; 1:11      743 *   1  *2 = 2x
+    ld    A, L          ; 1:4       743 *   256*L = 512x
+    add  HL, BC         ; 1:11      743 *      +1 = 3x 
+    add  HL, HL         ; 1:11      743 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      743 *      +1 = 7x 
+    add  HL, HL         ; 1:11      743 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      743 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      743 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      743 *      +1 = 57x 
+    add  HL, HL         ; 1:11      743 *   1  *2 = 114x
+    add  HL, BC         ; 1:11      743 *      +1 = 115x 
+    add  HL, HL         ; 1:11      743 *   1  *2 = 230x
+    add  HL, BC         ; 1:11      743 *      +1 = 231x 
+    add   A, H          ; 1:4       743 *
+    ld    H, A          ; 1:4       743 *     [743x] = 231x + 512x  
+                        ;[16:141]   745 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_1001)
     ld    B, H          ; 1:4       745 *
     ld    C, L          ; 1:4       745 *   1       1x = base 
-    add  HL, HL         ; 1:11      745 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      745 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      745 *      +1 = 5x 
-    add  HL, HL         ; 1:11      745 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      745 *      +1 = 11x 
-    add  HL, HL         ; 1:11      745 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      745 *      +1 = 23x 
-    add  HL, HL         ; 1:11      745 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      745 *   1  *2 = 92x
-    add  HL, BC         ; 1:11      745 *      +1 = 93x 
-    add  HL, HL         ; 1:11      745 *   0  *2 = 186x 
-    add  HL, HL         ; 1:11      745 *   0  *2 = 372x 
-    add  HL, HL         ; 1:11      745 *   1  *2 = 744x
-    add  HL, BC         ; 1:11      745 *      +1 = 745x   
-                        ;[17:173]   747 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_1011)
+    add  HL, HL         ; 1:11      745 *   1  *2 = 2x
+    ld    A, L          ; 1:4       745 *   256*L = 512x
+    add  HL, BC         ; 1:11      745 *      +1 = 3x 
+    add  HL, HL         ; 1:11      745 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      745 *      +1 = 7x 
+    add  HL, HL         ; 1:11      745 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      745 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      745 *      +1 = 29x 
+    add  HL, HL         ; 1:11      745 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      745 *   0  *2 = 116x 
+    add  HL, HL         ; 1:11      745 *   1  *2 = 232x
+    add  HL, BC         ; 1:11      745 *      +1 = 233x 
+    add   A, H          ; 1:4       745 *
+    ld    H, A          ; 1:4       745 *     [745x] = 233x + 512x  
+                        ;[17:152]   747 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_1011)
     ld    B, H          ; 1:4       747 *
     ld    C, L          ; 1:4       747 *   1       1x = base 
-    add  HL, HL         ; 1:11      747 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      747 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      747 *      +1 = 5x 
-    add  HL, HL         ; 1:11      747 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      747 *      +1 = 11x 
-    add  HL, HL         ; 1:11      747 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      747 *      +1 = 23x 
-    add  HL, HL         ; 1:11      747 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      747 *   1  *2 = 92x
-    add  HL, BC         ; 1:11      747 *      +1 = 93x 
-    add  HL, HL         ; 1:11      747 *   0  *2 = 186x 
-    add  HL, HL         ; 1:11      747 *   1  *2 = 372x
-    add  HL, BC         ; 1:11      747 *      +1 = 373x 
-    add  HL, HL         ; 1:11      747 *   1  *2 = 746x
-    add  HL, BC         ; 1:11      747 *      +1 = 747x   
-                        ;[17:173]   749 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1110_1101)
+    add  HL, HL         ; 1:11      747 *   1  *2 = 2x
+    ld    A, L          ; 1:4       747 *   256*L = 512x
+    add  HL, BC         ; 1:11      747 *      +1 = 3x 
+    add  HL, HL         ; 1:11      747 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      747 *      +1 = 7x 
+    add  HL, HL         ; 1:11      747 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      747 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      747 *      +1 = 29x 
+    add  HL, HL         ; 1:11      747 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      747 *   1  *2 = 116x
+    add  HL, BC         ; 1:11      747 *      +1 = 117x 
+    add  HL, HL         ; 1:11      747 *   1  *2 = 234x
+    add  HL, BC         ; 1:11      747 *      +1 = 235x 
+    add   A, H          ; 1:4       747 *
+    ld    H, A          ; 1:4       747 *     [747x] = 235x + 512x  
+                        ;[17:152]   749 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1110_1101)
     ld    B, H          ; 1:4       749 *
     ld    C, L          ; 1:4       749 *   1       1x = base 
-    add  HL, HL         ; 1:11      749 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      749 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      749 *      +1 = 5x 
-    add  HL, HL         ; 1:11      749 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      749 *      +1 = 11x 
-    add  HL, HL         ; 1:11      749 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      749 *      +1 = 23x 
-    add  HL, HL         ; 1:11      749 *   0  *2 = 46x 
-    add  HL, HL         ; 1:11      749 *   1  *2 = 92x
-    add  HL, BC         ; 1:11      749 *      +1 = 93x 
-    add  HL, HL         ; 1:11      749 *   1  *2 = 186x
-    add  HL, BC         ; 1:11      749 *      +1 = 187x 
-    add  HL, HL         ; 1:11      749 *   0  *2 = 374x 
-    add  HL, HL         ; 1:11      749 *   1  *2 = 748x
-    add  HL, BC         ; 1:11      749 *      +1 = 749x   
+    add  HL, HL         ; 1:11      749 *   1  *2 = 2x
+    ld    A, L          ; 1:4       749 *   256*L = 512x
+    add  HL, BC         ; 1:11      749 *      +1 = 3x 
+    add  HL, HL         ; 1:11      749 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      749 *      +1 = 7x 
+    add  HL, HL         ; 1:11      749 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      749 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      749 *      +1 = 29x 
+    add  HL, HL         ; 1:11      749 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      749 *      +1 = 59x 
+    add  HL, HL         ; 1:11      749 *   0  *2 = 118x 
+    add  HL, HL         ; 1:11      749 *   1  *2 = 236x
+    add  HL, BC         ; 1:11      749 *      +1 = 237x 
+    add   A, H          ; 1:4       749 *
+    ld    H, A          ; 1:4       749 *     [749x] = 237x + 512x  
                         ;[18:107]   751 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0001_0001)  
     ld    A, L          ; 1:4       751 *   256x 
     ld    B, H          ; 1:4       751 *
@@ -5407,59 +5350,59 @@ ORG 0x6000
     ld    A, B          ; 1:4       751 *
     sbc   A, H          ; 1:4       751 *
     ld    H, A          ; 1:4       751 *   [751x] = 1024x - 1024x    
-                        ;[16:162]   753 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1111_0001)
+                        ;[16:141]   753 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1111_0001)
     ld    B, H          ; 1:4       753 *
     ld    C, L          ; 1:4       753 *   1       1x = base 
-    add  HL, HL         ; 1:11      753 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      753 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      753 *      +1 = 5x 
-    add  HL, HL         ; 1:11      753 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      753 *      +1 = 11x 
-    add  HL, HL         ; 1:11      753 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      753 *      +1 = 23x 
-    add  HL, HL         ; 1:11      753 *   1  *2 = 46x
-    add  HL, BC         ; 1:11      753 *      +1 = 47x 
-    add  HL, HL         ; 1:11      753 *   0  *2 = 94x 
-    add  HL, HL         ; 1:11      753 *   0  *2 = 188x 
-    add  HL, HL         ; 1:11      753 *   0  *2 = 376x 
-    add  HL, HL         ; 1:11      753 *   1  *2 = 752x
-    add  HL, BC         ; 1:11      753 *      +1 = 753x   
-                        ;[17:173]   755 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1111_0011)
+    add  HL, HL         ; 1:11      753 *   1  *2 = 2x
+    ld    A, L          ; 1:4       753 *   256*L = 512x
+    add  HL, BC         ; 1:11      753 *      +1 = 3x 
+    add  HL, HL         ; 1:11      753 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      753 *      +1 = 7x 
+    add  HL, HL         ; 1:11      753 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      753 *      +1 = 15x 
+    add  HL, HL         ; 1:11      753 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      753 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      753 *   0  *2 = 120x 
+    add  HL, HL         ; 1:11      753 *   1  *2 = 240x
+    add  HL, BC         ; 1:11      753 *      +1 = 241x 
+    add   A, H          ; 1:4       753 *
+    ld    H, A          ; 1:4       753 *     [753x] = 241x + 512x  
+                        ;[17:152]   755 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1111_0011)
     ld    B, H          ; 1:4       755 *
     ld    C, L          ; 1:4       755 *   1       1x = base 
-    add  HL, HL         ; 1:11      755 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      755 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      755 *      +1 = 5x 
-    add  HL, HL         ; 1:11      755 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      755 *      +1 = 11x 
-    add  HL, HL         ; 1:11      755 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      755 *      +1 = 23x 
-    add  HL, HL         ; 1:11      755 *   1  *2 = 46x
-    add  HL, BC         ; 1:11      755 *      +1 = 47x 
-    add  HL, HL         ; 1:11      755 *   0  *2 = 94x 
-    add  HL, HL         ; 1:11      755 *   0  *2 = 188x 
-    add  HL, HL         ; 1:11      755 *   1  *2 = 376x
-    add  HL, BC         ; 1:11      755 *      +1 = 377x 
-    add  HL, HL         ; 1:11      755 *   1  *2 = 754x
-    add  HL, BC         ; 1:11      755 *      +1 = 755x   
-                        ;[17:173]   757 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1111_0101)
+    add  HL, HL         ; 1:11      755 *   1  *2 = 2x
+    ld    A, L          ; 1:4       755 *   256*L = 512x
+    add  HL, BC         ; 1:11      755 *      +1 = 3x 
+    add  HL, HL         ; 1:11      755 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      755 *      +1 = 7x 
+    add  HL, HL         ; 1:11      755 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      755 *      +1 = 15x 
+    add  HL, HL         ; 1:11      755 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      755 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      755 *   1  *2 = 120x
+    add  HL, BC         ; 1:11      755 *      +1 = 121x 
+    add  HL, HL         ; 1:11      755 *   1  *2 = 242x
+    add  HL, BC         ; 1:11      755 *      +1 = 243x 
+    add   A, H          ; 1:4       755 *
+    ld    H, A          ; 1:4       755 *     [755x] = 243x + 512x  
+                        ;[17:152]   757 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1111_0101)
     ld    B, H          ; 1:4       757 *
     ld    C, L          ; 1:4       757 *   1       1x = base 
-    add  HL, HL         ; 1:11      757 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      757 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      757 *      +1 = 5x 
-    add  HL, HL         ; 1:11      757 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      757 *      +1 = 11x 
-    add  HL, HL         ; 1:11      757 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      757 *      +1 = 23x 
-    add  HL, HL         ; 1:11      757 *   1  *2 = 46x
-    add  HL, BC         ; 1:11      757 *      +1 = 47x 
-    add  HL, HL         ; 1:11      757 *   0  *2 = 94x 
-    add  HL, HL         ; 1:11      757 *   1  *2 = 188x
-    add  HL, BC         ; 1:11      757 *      +1 = 189x 
-    add  HL, HL         ; 1:11      757 *   0  *2 = 378x 
-    add  HL, HL         ; 1:11      757 *   1  *2 = 756x
-    add  HL, BC         ; 1:11      757 *      +1 = 757x   
+    add  HL, HL         ; 1:11      757 *   1  *2 = 2x
+    ld    A, L          ; 1:4       757 *   256*L = 512x
+    add  HL, BC         ; 1:11      757 *      +1 = 3x 
+    add  HL, HL         ; 1:11      757 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      757 *      +1 = 7x 
+    add  HL, HL         ; 1:11      757 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      757 *      +1 = 15x 
+    add  HL, HL         ; 1:11      757 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      757 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      757 *      +1 = 61x 
+    add  HL, HL         ; 1:11      757 *   0  *2 = 122x 
+    add  HL, HL         ; 1:11      757 *   1  *2 = 244x
+    add  HL, BC         ; 1:11      757 *      +1 = 245x 
+    add   A, H          ; 1:4       757 *
+    ld    H, A          ; 1:4       757 *     [757x] = 245x + 512x  
                         ;[17:96]    759 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0000_1001)  
     ld    A, L          ; 1:4       759 *   256x 
     ld    B, H          ; 1:4       759 *
@@ -5479,24 +5422,24 @@ ORG 0x6000
     sbc   A, H          ; 1:4       759 *
     ld    H, A          ; 1:4       759 *   [759x] = 1024x - 1024x   
 
-                        ;[17:173]   761 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1111_1001)
+                        ;[17:152]   761 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1111_1001)
     ld    B, H          ; 1:4       761 *
     ld    C, L          ; 1:4       761 *   1       1x = base 
-    add  HL, HL         ; 1:11      761 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      761 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      761 *      +1 = 5x 
-    add  HL, HL         ; 1:11      761 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      761 *      +1 = 11x 
-    add  HL, HL         ; 1:11      761 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      761 *      +1 = 23x 
-    add  HL, HL         ; 1:11      761 *   1  *2 = 46x
-    add  HL, BC         ; 1:11      761 *      +1 = 47x 
-    add  HL, HL         ; 1:11      761 *   1  *2 = 94x
-    add  HL, BC         ; 1:11      761 *      +1 = 95x 
-    add  HL, HL         ; 1:11      761 *   0  *2 = 190x 
-    add  HL, HL         ; 1:11      761 *   0  *2 = 380x 
-    add  HL, HL         ; 1:11      761 *   1  *2 = 760x
-    add  HL, BC         ; 1:11      761 *      +1 = 761x   
+    add  HL, HL         ; 1:11      761 *   1  *2 = 2x
+    ld    A, L          ; 1:4       761 *   256*L = 512x
+    add  HL, BC         ; 1:11      761 *      +1 = 3x 
+    add  HL, HL         ; 1:11      761 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      761 *      +1 = 7x 
+    add  HL, HL         ; 1:11      761 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      761 *      +1 = 15x 
+    add  HL, HL         ; 1:11      761 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      761 *      +1 = 31x 
+    add  HL, HL         ; 1:11      761 *   0  *2 = 62x 
+    add  HL, HL         ; 1:11      761 *   0  *2 = 124x 
+    add  HL, HL         ; 1:11      761 *   1  *2 = 248x
+    add  HL, BC         ; 1:11      761 *      +1 = 249x 
+    add   A, H          ; 1:4       761 *
+    ld    H, A          ; 1:4       761 *     [761x] = 249x + 512x  
                         ;[14:79]    763 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0000_0101)  
     ld    A, L          ; 1:4       763 *   256x 
     ld    B, H          ; 1:4       763 *
@@ -5512,25 +5455,25 @@ ORG 0x6000
     cpl                 ; 1:4       763 *
     ld    L, A          ; 1:4       763 *
     inc  HL             ; 1:6       763 *   [763x] = 0-763x    
-                        ;[18:184]   765 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0010_1111_1101)
+                        ;[18:163]   765 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0010_1111_1101)
     ld    B, H          ; 1:4       765 *
     ld    C, L          ; 1:4       765 *   1       1x = base 
-    add  HL, HL         ; 1:11      765 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      765 *      +1 = 5x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 10x
-    add  HL, BC         ; 1:11      765 *      +1 = 11x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 22x
-    add  HL, BC         ; 1:11      765 *      +1 = 23x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 46x
-    add  HL, BC         ; 1:11      765 *      +1 = 47x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 94x
-    add  HL, BC         ; 1:11      765 *      +1 = 95x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 190x
-    add  HL, BC         ; 1:11      765 *      +1 = 191x 
-    add  HL, HL         ; 1:11      765 *   0  *2 = 382x 
-    add  HL, HL         ; 1:11      765 *   1  *2 = 764x
-    add  HL, BC         ; 1:11      765 *      +1 = 765x   
+    add  HL, HL         ; 1:11      765 *   1  *2 = 2x
+    ld    A, L          ; 1:4       765 *   256*L = 512x
+    add  HL, BC         ; 1:11      765 *      +1 = 3x 
+    add  HL, HL         ; 1:11      765 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      765 *      +1 = 7x 
+    add  HL, HL         ; 1:11      765 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      765 *      +1 = 15x 
+    add  HL, HL         ; 1:11      765 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      765 *      +1 = 31x 
+    add  HL, HL         ; 1:11      765 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      765 *      +1 = 63x 
+    add  HL, HL         ; 1:11      765 *   0  *2 = 126x 
+    add  HL, HL         ; 1:11      765 *   1  *2 = 252x
+    add  HL, BC         ; 1:11      765 *      +1 = 253x 
+    add   A, H          ; 1:4       765 *
+    ld    H, A          ; 1:4       765 *     [765x] = 253x + 512x  
                         ;[13:72]    767 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_0100_0000_0000 - b_0001_0000_0001)  
     ld    A, L          ; 1:4       767 *   256x 
     ld    B, H          ; 1:4       767 *
@@ -7617,22 +7560,17 @@ ORG 0x6000
     add   A, B          ; 1:4       1033 *
     ld    B, A          ; 1:4       1033 *   [1025x] 
     add  HL, BC         ; 1:11      1033 *   [1033x] = 8x + 1025x   
-                        ;[15:88]    1035 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0100_0000_1011)  
+                        ;[10:75]    1035 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0000_1011)
     ld    B, H          ; 1:4       1035 *
-    ld    C, L          ; 1:4       1035 *   [1x] 
-    add  HL, HL         ; 1:11      1035 *   2x 
-    ld    A, C          ; 1:4       1035 *
-    add   A, L          ; 1:4       1035 *
-    ld    C, A          ; 1:4       1035 *
-    ld    A, B          ; 1:4       1035 *
-    adc   A, H          ; 1:4       1035 *
-    ld    B, A          ; 1:4       1035 *   [3x] 
-    add  HL, HL         ; 1:11      1035 *   4x 
-    ld    A, L          ; 1:4       1035 *   1024x 
-    add  HL, HL         ; 1:11      1035 *   8x 
-    add   A, B          ; 1:4       1035 *
-    ld    B, A          ; 1:4       1035 *   [1027x] 
-    add  HL, BC         ; 1:11      1035 *   [1035x] = 8x + 1027x   
+    ld    C, L          ; 1:4       1035 *   1       1x = base 
+    add  HL, HL         ; 1:11      1035 *   0  *2 = 2x 
+    add  HL, HL         ; 1:11      1035 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1035 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1035 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1035 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1035 *      +1 = 11x 
+    add   A, H          ; 1:4       1035 *
+    ld    H, A          ; 1:4       1035 *     [1035x] = 11x + 1024x  
                         ;[11:79]    1037 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0000_1101)
     ld    B, H          ; 1:4       1037 *
     ld    C, L          ; 1:4       1037 *   1       1x = base 
@@ -7682,39 +7620,31 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1043 *      +1 = 19x 
     add   A, H          ; 1:4       1043 *
     ld    H, A          ; 1:4       1043 *     [1043x] = 19x + 1024x  
-                        ;[15:151]   1045 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0001_0101)
+                        ;[11:86]    1045 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0001_0101)
     ld    B, H          ; 1:4       1045 *
     ld    C, L          ; 1:4       1045 *   1       1x = base 
     add  HL, HL         ; 1:11      1045 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1045 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1045 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1045 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      1045 *   0  *2 = 32x 
-    add  HL, HL         ; 1:11      1045 *   1  *2 = 64x
-    add  HL, BC         ; 1:11      1045 *      +1 = 65x 
-    add  HL, HL         ; 1:11      1045 *   0  *2 = 130x 
-    add  HL, HL         ; 1:11      1045 *   1  *2 = 260x
-    add  HL, BC         ; 1:11      1045 *      +1 = 261x 
-    add  HL, HL         ; 1:11      1045 *   0  *2 = 522x 
-    add  HL, HL         ; 1:11      1045 *   1  *2 = 1044x
-    add  HL, BC         ; 1:11      1045 *      +1 = 1045x   
-                        ;[16:162]   1047 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0001_0111)
+    add  HL, HL         ; 1:11      1045 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1045 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1045 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1045 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1045 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1045 *      +1 = 21x 
+    add   A, H          ; 1:4       1045 *
+    ld    H, A          ; 1:4       1045 *     [1045x] = 21x + 1024x  
+                        ;[12:97]    1047 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0001_0111)
     ld    B, H          ; 1:4       1047 *
     ld    C, L          ; 1:4       1047 *   1       1x = base 
     add  HL, HL         ; 1:11      1047 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1047 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1047 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1047 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      1047 *   0  *2 = 32x 
-    add  HL, HL         ; 1:11      1047 *   1  *2 = 64x
-    add  HL, BC         ; 1:11      1047 *      +1 = 65x 
-    add  HL, HL         ; 1:11      1047 *   0  *2 = 130x 
-    add  HL, HL         ; 1:11      1047 *   1  *2 = 260x
-    add  HL, BC         ; 1:11      1047 *      +1 = 261x 
-    add  HL, HL         ; 1:11      1047 *   1  *2 = 522x
-    add  HL, BC         ; 1:11      1047 *      +1 = 523x 
-    add  HL, HL         ; 1:11      1047 *   1  *2 = 1046x
-    add  HL, BC         ; 1:11      1047 *      +1 = 1047x   
+    add  HL, HL         ; 1:11      1047 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1047 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1047 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1047 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1047 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1047 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1047 *      +1 = 23x 
+    add   A, H          ; 1:4       1047 *
+    ld    H, A          ; 1:4       1047 *     [1047x] = 23x + 1024x  
                         ;[12:90]    1049 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0001_1001)
     ld    B, H          ; 1:4       1049 *
     ld    C, L          ; 1:4       1049 *   1       1x = base 
@@ -7824,74 +7754,62 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1063 *      +1 = 39x 
     add   A, H          ; 1:4       1063 *
     ld    H, A          ; 1:4       1063 *     [1063x] = 39x + 1024x  
-                        ;[15:151]   1065 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0010_1001)
+                        ;[12:97]    1065 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0010_1001)
     ld    B, H          ; 1:4       1065 *
     ld    C, L          ; 1:4       1065 *   1       1x = base 
     add  HL, HL         ; 1:11      1065 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1065 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1065 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1065 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      1065 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      1065 *      +1 = 33x 
-    add  HL, HL         ; 1:11      1065 *   0  *2 = 66x 
-    add  HL, HL         ; 1:11      1065 *   1  *2 = 132x
-    add  HL, BC         ; 1:11      1065 *      +1 = 133x 
-    add  HL, HL         ; 1:11      1065 *   0  *2 = 266x 
-    add  HL, HL         ; 1:11      1065 *   0  *2 = 532x 
-    add  HL, HL         ; 1:11      1065 *   1  *2 = 1064x
-    add  HL, BC         ; 1:11      1065 *      +1 = 1065x   
-                        ;[16:162]   1067 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0010_1011)
+    add  HL, HL         ; 1:11      1065 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1065 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1065 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1065 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1065 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1065 *   1  *2 = 40x
+    add  HL, BC         ; 1:11      1065 *      +1 = 41x 
+    add   A, H          ; 1:4       1065 *
+    ld    H, A          ; 1:4       1065 *     [1065x] = 41x + 1024x  
+                        ;[13:108]   1067 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0010_1011)
     ld    B, H          ; 1:4       1067 *
     ld    C, L          ; 1:4       1067 *   1       1x = base 
     add  HL, HL         ; 1:11      1067 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1067 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1067 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1067 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      1067 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      1067 *      +1 = 33x 
-    add  HL, HL         ; 1:11      1067 *   0  *2 = 66x 
-    add  HL, HL         ; 1:11      1067 *   1  *2 = 132x
-    add  HL, BC         ; 1:11      1067 *      +1 = 133x 
-    add  HL, HL         ; 1:11      1067 *   0  *2 = 266x 
-    add  HL, HL         ; 1:11      1067 *   1  *2 = 532x
-    add  HL, BC         ; 1:11      1067 *      +1 = 533x 
-    add  HL, HL         ; 1:11      1067 *   1  *2 = 1066x
-    add  HL, BC         ; 1:11      1067 *      +1 = 1067x   
-                        ;[16:162]   1069 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0010_1101)
+    add  HL, HL         ; 1:11      1067 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1067 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1067 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1067 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1067 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1067 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1067 *   1  *2 = 42x
+    add  HL, BC         ; 1:11      1067 *      +1 = 43x 
+    add   A, H          ; 1:4       1067 *
+    ld    H, A          ; 1:4       1067 *     [1067x] = 43x + 1024x  
+                        ;[13:108]   1069 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0010_1101)
     ld    B, H          ; 1:4       1069 *
     ld    C, L          ; 1:4       1069 *   1       1x = base 
     add  HL, HL         ; 1:11      1069 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1069 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1069 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1069 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      1069 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      1069 *      +1 = 33x 
-    add  HL, HL         ; 1:11      1069 *   0  *2 = 66x 
-    add  HL, HL         ; 1:11      1069 *   1  *2 = 132x
-    add  HL, BC         ; 1:11      1069 *      +1 = 133x 
-    add  HL, HL         ; 1:11      1069 *   1  *2 = 266x
-    add  HL, BC         ; 1:11      1069 *      +1 = 267x 
-    add  HL, HL         ; 1:11      1069 *   0  *2 = 534x 
-    add  HL, HL         ; 1:11      1069 *   1  *2 = 1068x
-    add  HL, BC         ; 1:11      1069 *      +1 = 1069x   
-                        ;[17:173]   1071 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0010_1111)
+    add  HL, HL         ; 1:11      1069 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1069 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1069 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1069 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1069 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1069 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1069 *   1  *2 = 44x
+    add  HL, BC         ; 1:11      1069 *      +1 = 45x 
+    add   A, H          ; 1:4       1069 *
+    ld    H, A          ; 1:4       1069 *     [1069x] = 45x + 1024x  
+                        ;[14:119]   1071 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0010_1111)
     ld    B, H          ; 1:4       1071 *
     ld    C, L          ; 1:4       1071 *   1       1x = base 
     add  HL, HL         ; 1:11      1071 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1071 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1071 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1071 *   0  *2 = 16x 
-    add  HL, HL         ; 1:11      1071 *   1  *2 = 32x
-    add  HL, BC         ; 1:11      1071 *      +1 = 33x 
-    add  HL, HL         ; 1:11      1071 *   0  *2 = 66x 
-    add  HL, HL         ; 1:11      1071 *   1  *2 = 132x
-    add  HL, BC         ; 1:11      1071 *      +1 = 133x 
-    add  HL, HL         ; 1:11      1071 *   1  *2 = 266x
-    add  HL, BC         ; 1:11      1071 *      +1 = 267x 
-    add  HL, HL         ; 1:11      1071 *   1  *2 = 534x
-    add  HL, BC         ; 1:11      1071 *      +1 = 535x 
-    add  HL, HL         ; 1:11      1071 *   1  *2 = 1070x
-    add  HL, BC         ; 1:11      1071 *      +1 = 1071x   
+    add  HL, HL         ; 1:11      1071 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1071 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1071 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1071 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1071 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1071 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1071 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1071 *   1  *2 = 46x
+    add  HL, BC         ; 1:11      1071 *      +1 = 47x 
+    add   A, H          ; 1:4       1071 *
+    ld    H, A          ; 1:4       1071 *     [1071x] = 47x + 1024x  
                         ;[13:101]   1073 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0011_0001)
     ld    B, H          ; 1:4       1073 *
     ld    C, L          ; 1:4       1073 *   1       1x = base 
@@ -8134,147 +8052,131 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1103 *      +1 = 79x 
     add   A, H          ; 1:4       1103 *
     ld    H, A          ; 1:4       1103 *     [1103x] = 79x + 1024x  
-                        ;[15:151]   1105 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_0001)
+                        ;[13:108]   1105 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_0001)
     ld    B, H          ; 1:4       1105 *
     ld    C, L          ; 1:4       1105 *   1       1x = base 
     add  HL, HL         ; 1:11      1105 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1105 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1105 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1105 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1105 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1105 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1105 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1105 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1105 *   0  *2 = 138x 
-    add  HL, HL         ; 1:11      1105 *   0  *2 = 276x 
-    add  HL, HL         ; 1:11      1105 *   0  *2 = 552x 
-    add  HL, HL         ; 1:11      1105 *   1  *2 = 1104x
-    add  HL, BC         ; 1:11      1105 *      +1 = 1105x   
-                        ;[16:162]   1107 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_0011)
+    add  HL, HL         ; 1:11      1105 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1105 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1105 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1105 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1105 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1105 *   0  *2 = 40x 
+    add  HL, HL         ; 1:11      1105 *   1  *2 = 80x
+    add  HL, BC         ; 1:11      1105 *      +1 = 81x 
+    add   A, H          ; 1:4       1105 *
+    ld    H, A          ; 1:4       1105 *     [1105x] = 81x + 1024x  
+                        ;[14:119]   1107 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_0011)
     ld    B, H          ; 1:4       1107 *
     ld    C, L          ; 1:4       1107 *   1       1x = base 
     add  HL, HL         ; 1:11      1107 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1107 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1107 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1107 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1107 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1107 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1107 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1107 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1107 *   0  *2 = 138x 
-    add  HL, HL         ; 1:11      1107 *   0  *2 = 276x 
-    add  HL, HL         ; 1:11      1107 *   1  *2 = 552x
-    add  HL, BC         ; 1:11      1107 *      +1 = 553x 
-    add  HL, HL         ; 1:11      1107 *   1  *2 = 1106x
-    add  HL, BC         ; 1:11      1107 *      +1 = 1107x   
-                        ;[16:162]   1109 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_0101)
+    add  HL, HL         ; 1:11      1107 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1107 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1107 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1107 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1107 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1107 *   1  *2 = 40x
+    add  HL, BC         ; 1:11      1107 *      +1 = 41x 
+    add  HL, HL         ; 1:11      1107 *   1  *2 = 82x
+    add  HL, BC         ; 1:11      1107 *      +1 = 83x 
+    add   A, H          ; 1:4       1107 *
+    ld    H, A          ; 1:4       1107 *     [1107x] = 83x + 1024x  
+                        ;[14:119]   1109 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_0101)
     ld    B, H          ; 1:4       1109 *
     ld    C, L          ; 1:4       1109 *   1       1x = base 
     add  HL, HL         ; 1:11      1109 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1109 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1109 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1109 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1109 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1109 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1109 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1109 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1109 *   0  *2 = 138x 
-    add  HL, HL         ; 1:11      1109 *   1  *2 = 276x
-    add  HL, BC         ; 1:11      1109 *      +1 = 277x 
-    add  HL, HL         ; 1:11      1109 *   0  *2 = 554x 
-    add  HL, HL         ; 1:11      1109 *   1  *2 = 1108x
-    add  HL, BC         ; 1:11      1109 *      +1 = 1109x  
+    add  HL, HL         ; 1:11      1109 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1109 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1109 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1109 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1109 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1109 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1109 *   0  *2 = 42x 
+    add  HL, HL         ; 1:11      1109 *   1  *2 = 84x
+    add  HL, BC         ; 1:11      1109 *      +1 = 85x 
+    add   A, H          ; 1:4       1109 *
+    ld    H, A          ; 1:4       1109 *     [1109x] = 85x + 1024x 
 
-                        ;[17:173]   1111 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_0111)
+                        ;[15:130]   1111 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_0111)
     ld    B, H          ; 1:4       1111 *
     ld    C, L          ; 1:4       1111 *   1       1x = base 
     add  HL, HL         ; 1:11      1111 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1111 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1111 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1111 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1111 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1111 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1111 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1111 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1111 *   0  *2 = 138x 
-    add  HL, HL         ; 1:11      1111 *   1  *2 = 276x
-    add  HL, BC         ; 1:11      1111 *      +1 = 277x 
-    add  HL, HL         ; 1:11      1111 *   1  *2 = 554x
-    add  HL, BC         ; 1:11      1111 *      +1 = 555x 
-    add  HL, HL         ; 1:11      1111 *   1  *2 = 1110x
-    add  HL, BC         ; 1:11      1111 *      +1 = 1111x   
-                        ;[16:162]   1113 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_1001)
+    add  HL, HL         ; 1:11      1111 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1111 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1111 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1111 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1111 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1111 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1111 *   1  *2 = 42x
+    add  HL, BC         ; 1:11      1111 *      +1 = 43x 
+    add  HL, HL         ; 1:11      1111 *   1  *2 = 86x
+    add  HL, BC         ; 1:11      1111 *      +1 = 87x 
+    add   A, H          ; 1:4       1111 *
+    ld    H, A          ; 1:4       1111 *     [1111x] = 87x + 1024x  
+                        ;[14:119]   1113 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_1001)
     ld    B, H          ; 1:4       1113 *
     ld    C, L          ; 1:4       1113 *   1       1x = base 
     add  HL, HL         ; 1:11      1113 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1113 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1113 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1113 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1113 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1113 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1113 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1113 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1113 *   1  *2 = 138x
-    add  HL, BC         ; 1:11      1113 *      +1 = 139x 
-    add  HL, HL         ; 1:11      1113 *   0  *2 = 278x 
-    add  HL, HL         ; 1:11      1113 *   0  *2 = 556x 
-    add  HL, HL         ; 1:11      1113 *   1  *2 = 1112x
-    add  HL, BC         ; 1:11      1113 *      +1 = 1113x   
-                        ;[17:173]   1115 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_1011)
+    add  HL, HL         ; 1:11      1113 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1113 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1113 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1113 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1113 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1113 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1113 *   0  *2 = 44x 
+    add  HL, HL         ; 1:11      1113 *   1  *2 = 88x
+    add  HL, BC         ; 1:11      1113 *      +1 = 89x 
+    add   A, H          ; 1:4       1113 *
+    ld    H, A          ; 1:4       1113 *     [1113x] = 89x + 1024x  
+                        ;[15:130]   1115 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_1011)
     ld    B, H          ; 1:4       1115 *
     ld    C, L          ; 1:4       1115 *   1       1x = base 
     add  HL, HL         ; 1:11      1115 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1115 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1115 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1115 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1115 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1115 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1115 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1115 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1115 *   1  *2 = 138x
-    add  HL, BC         ; 1:11      1115 *      +1 = 139x 
-    add  HL, HL         ; 1:11      1115 *   0  *2 = 278x 
-    add  HL, HL         ; 1:11      1115 *   1  *2 = 556x
-    add  HL, BC         ; 1:11      1115 *      +1 = 557x 
-    add  HL, HL         ; 1:11      1115 *   1  *2 = 1114x
-    add  HL, BC         ; 1:11      1115 *      +1 = 1115x   
-                        ;[17:173]   1117 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_1101)
+    add  HL, HL         ; 1:11      1115 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1115 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1115 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1115 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1115 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1115 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1115 *   1  *2 = 44x
+    add  HL, BC         ; 1:11      1115 *      +1 = 45x 
+    add  HL, HL         ; 1:11      1115 *   1  *2 = 90x
+    add  HL, BC         ; 1:11      1115 *      +1 = 91x 
+    add   A, H          ; 1:4       1115 *
+    ld    H, A          ; 1:4       1115 *     [1115x] = 91x + 1024x  
+                        ;[15:130]   1117 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_1101)
     ld    B, H          ; 1:4       1117 *
     ld    C, L          ; 1:4       1117 *   1       1x = base 
     add  HL, HL         ; 1:11      1117 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1117 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1117 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1117 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1117 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1117 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1117 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1117 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1117 *   1  *2 = 138x
-    add  HL, BC         ; 1:11      1117 *      +1 = 139x 
-    add  HL, HL         ; 1:11      1117 *   1  *2 = 278x
-    add  HL, BC         ; 1:11      1117 *      +1 = 279x 
-    add  HL, HL         ; 1:11      1117 *   0  *2 = 558x 
-    add  HL, HL         ; 1:11      1117 *   1  *2 = 1116x
-    add  HL, BC         ; 1:11      1117 *      +1 = 1117x   
-                        ;[18:184]   1119 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_0101_1111)
+    add  HL, HL         ; 1:11      1117 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1117 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1117 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1117 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1117 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1117 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1117 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1117 *   0  *2 = 46x 
+    add  HL, HL         ; 1:11      1117 *   1  *2 = 92x
+    add  HL, BC         ; 1:11      1117 *      +1 = 93x 
+    add   A, H          ; 1:4       1117 *
+    ld    H, A          ; 1:4       1117 *     [1117x] = 93x + 1024x  
+                        ;[16:141]   1119 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0101_1111)
     ld    B, H          ; 1:4       1119 *
     ld    C, L          ; 1:4       1119 *   1       1x = base 
     add  HL, HL         ; 1:11      1119 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1119 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1119 *   0  *2 = 8x 
-    add  HL, HL         ; 1:11      1119 *   1  *2 = 16x
-    add  HL, BC         ; 1:11      1119 *      +1 = 17x 
-    add  HL, HL         ; 1:11      1119 *   0  *2 = 34x 
-    add  HL, HL         ; 1:11      1119 *   1  *2 = 68x
-    add  HL, BC         ; 1:11      1119 *      +1 = 69x 
-    add  HL, HL         ; 1:11      1119 *   1  *2 = 138x
-    add  HL, BC         ; 1:11      1119 *      +1 = 139x 
-    add  HL, HL         ; 1:11      1119 *   1  *2 = 278x
-    add  HL, BC         ; 1:11      1119 *      +1 = 279x 
-    add  HL, HL         ; 1:11      1119 *   1  *2 = 558x
-    add  HL, BC         ; 1:11      1119 *      +1 = 559x 
-    add  HL, HL         ; 1:11      1119 *   1  *2 = 1118x
-    add  HL, BC         ; 1:11      1119 *      +1 = 1119x   
+    add  HL, HL         ; 1:11      1119 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1119 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1119 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1119 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1119 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1119 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1119 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1119 *   1  *2 = 46x
+    add  HL, BC         ; 1:11      1119 *      +1 = 47x 
+    add  HL, HL         ; 1:11      1119 *   1  *2 = 94x
+    add  HL, BC         ; 1:11      1119 *      +1 = 95x 
+    add   A, H          ; 1:4       1119 *
+    ld    H, A          ; 1:4       1119 *     [1119x] = 95x + 1024x  
                         ;[14:112]   1121 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_0110_0001)
     ld    B, H          ; 1:4       1121 *
     ld    C, L          ; 1:4       1121 *   1       1x = base 
@@ -8807,295 +8709,279 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1183 *      +1 = 159x 
     add   A, H          ; 1:4       1183 *
     ld    H, A          ; 1:4       1183 *     [1183x] = 159x + 1024x  
-                        ;[15:151]   1185 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_0001)
+                        ;[14:119]   1185 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_0001)
     ld    B, H          ; 1:4       1185 *
     ld    C, L          ; 1:4       1185 *   1       1x = base 
     add  HL, HL         ; 1:11      1185 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1185 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1185 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1185 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1185 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1185 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1185 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1185 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1185 *   0  *2 = 148x 
-    add  HL, HL         ; 1:11      1185 *   0  *2 = 296x 
-    add  HL, HL         ; 1:11      1185 *   0  *2 = 592x 
-    add  HL, HL         ; 1:11      1185 *   1  *2 = 1184x
-    add  HL, BC         ; 1:11      1185 *      +1 = 1185x   
-                        ;[16:162]   1187 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_0011)
+    add  HL, HL         ; 1:11      1185 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1185 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1185 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1185 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1185 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1185 *   0  *2 = 40x 
+    add  HL, HL         ; 1:11      1185 *   0  *2 = 80x 
+    add  HL, HL         ; 1:11      1185 *   1  *2 = 160x
+    add  HL, BC         ; 1:11      1185 *      +1 = 161x 
+    add   A, H          ; 1:4       1185 *
+    ld    H, A          ; 1:4       1185 *     [1185x] = 161x + 1024x  
+                        ;[15:130]   1187 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_0011)
     ld    B, H          ; 1:4       1187 *
     ld    C, L          ; 1:4       1187 *   1       1x = base 
     add  HL, HL         ; 1:11      1187 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1187 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1187 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1187 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1187 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1187 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1187 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1187 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1187 *   0  *2 = 148x 
-    add  HL, HL         ; 1:11      1187 *   0  *2 = 296x 
-    add  HL, HL         ; 1:11      1187 *   1  *2 = 592x
-    add  HL, BC         ; 1:11      1187 *      +1 = 593x 
-    add  HL, HL         ; 1:11      1187 *   1  *2 = 1186x
-    add  HL, BC         ; 1:11      1187 *      +1 = 1187x   
-                        ;[16:162]   1189 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_0101)
+    add  HL, HL         ; 1:11      1187 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1187 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1187 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1187 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1187 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1187 *   0  *2 = 40x 
+    add  HL, HL         ; 1:11      1187 *   1  *2 = 80x
+    add  HL, BC         ; 1:11      1187 *      +1 = 81x 
+    add  HL, HL         ; 1:11      1187 *   1  *2 = 162x
+    add  HL, BC         ; 1:11      1187 *      +1 = 163x 
+    add   A, H          ; 1:4       1187 *
+    ld    H, A          ; 1:4       1187 *     [1187x] = 163x + 1024x  
+                        ;[15:130]   1189 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_0101)
     ld    B, H          ; 1:4       1189 *
     ld    C, L          ; 1:4       1189 *   1       1x = base 
     add  HL, HL         ; 1:11      1189 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1189 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1189 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1189 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1189 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1189 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1189 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1189 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1189 *   0  *2 = 148x 
-    add  HL, HL         ; 1:11      1189 *   1  *2 = 296x
-    add  HL, BC         ; 1:11      1189 *      +1 = 297x 
-    add  HL, HL         ; 1:11      1189 *   0  *2 = 594x 
-    add  HL, HL         ; 1:11      1189 *   1  *2 = 1188x
-    add  HL, BC         ; 1:11      1189 *      +1 = 1189x   
-                        ;[17:173]   1191 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_0111)
+    add  HL, HL         ; 1:11      1189 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1189 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1189 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1189 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1189 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1189 *   1  *2 = 40x
+    add  HL, BC         ; 1:11      1189 *      +1 = 41x 
+    add  HL, HL         ; 1:11      1189 *   0  *2 = 82x 
+    add  HL, HL         ; 1:11      1189 *   1  *2 = 164x
+    add  HL, BC         ; 1:11      1189 *      +1 = 165x 
+    add   A, H          ; 1:4       1189 *
+    ld    H, A          ; 1:4       1189 *     [1189x] = 165x + 1024x  
+                        ;[16:141]   1191 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_0111)
     ld    B, H          ; 1:4       1191 *
     ld    C, L          ; 1:4       1191 *   1       1x = base 
     add  HL, HL         ; 1:11      1191 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1191 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1191 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1191 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1191 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1191 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1191 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1191 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1191 *   0  *2 = 148x 
-    add  HL, HL         ; 1:11      1191 *   1  *2 = 296x
-    add  HL, BC         ; 1:11      1191 *      +1 = 297x 
-    add  HL, HL         ; 1:11      1191 *   1  *2 = 594x
-    add  HL, BC         ; 1:11      1191 *      +1 = 595x 
-    add  HL, HL         ; 1:11      1191 *   1  *2 = 1190x
-    add  HL, BC         ; 1:11      1191 *      +1 = 1191x   
-                        ;[16:162]   1193 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_1001)
+    add  HL, HL         ; 1:11      1191 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1191 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1191 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1191 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1191 *   0  *2 = 20x 
+    add  HL, HL         ; 1:11      1191 *   1  *2 = 40x
+    add  HL, BC         ; 1:11      1191 *      +1 = 41x 
+    add  HL, HL         ; 1:11      1191 *   1  *2 = 82x
+    add  HL, BC         ; 1:11      1191 *      +1 = 83x 
+    add  HL, HL         ; 1:11      1191 *   1  *2 = 166x
+    add  HL, BC         ; 1:11      1191 *      +1 = 167x 
+    add   A, H          ; 1:4       1191 *
+    ld    H, A          ; 1:4       1191 *     [1191x] = 167x + 1024x  
+                        ;[15:130]   1193 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_1001)
     ld    B, H          ; 1:4       1193 *
     ld    C, L          ; 1:4       1193 *   1       1x = base 
     add  HL, HL         ; 1:11      1193 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1193 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1193 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1193 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1193 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1193 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1193 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1193 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1193 *   1  *2 = 148x
-    add  HL, BC         ; 1:11      1193 *      +1 = 149x 
-    add  HL, HL         ; 1:11      1193 *   0  *2 = 298x 
-    add  HL, HL         ; 1:11      1193 *   0  *2 = 596x 
-    add  HL, HL         ; 1:11      1193 *   1  *2 = 1192x
-    add  HL, BC         ; 1:11      1193 *      +1 = 1193x   
-                        ;[17:173]   1195 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_1011)
+    add  HL, HL         ; 1:11      1193 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1193 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1193 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1193 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1193 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1193 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1193 *   0  *2 = 42x 
+    add  HL, HL         ; 1:11      1193 *   0  *2 = 84x 
+    add  HL, HL         ; 1:11      1193 *   1  *2 = 168x
+    add  HL, BC         ; 1:11      1193 *      +1 = 169x 
+    add   A, H          ; 1:4       1193 *
+    ld    H, A          ; 1:4       1193 *     [1193x] = 169x + 1024x  
+                        ;[16:141]   1195 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_1011)
     ld    B, H          ; 1:4       1195 *
     ld    C, L          ; 1:4       1195 *   1       1x = base 
     add  HL, HL         ; 1:11      1195 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1195 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1195 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1195 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1195 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1195 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1195 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1195 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1195 *   1  *2 = 148x
-    add  HL, BC         ; 1:11      1195 *      +1 = 149x 
-    add  HL, HL         ; 1:11      1195 *   0  *2 = 298x 
-    add  HL, HL         ; 1:11      1195 *   1  *2 = 596x
-    add  HL, BC         ; 1:11      1195 *      +1 = 597x 
-    add  HL, HL         ; 1:11      1195 *   1  *2 = 1194x
-    add  HL, BC         ; 1:11      1195 *      +1 = 1195x   
-                        ;[17:173]   1197 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_1101)
+    add  HL, HL         ; 1:11      1195 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1195 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1195 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1195 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1195 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1195 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1195 *   0  *2 = 42x 
+    add  HL, HL         ; 1:11      1195 *   1  *2 = 84x
+    add  HL, BC         ; 1:11      1195 *      +1 = 85x 
+    add  HL, HL         ; 1:11      1195 *   1  *2 = 170x
+    add  HL, BC         ; 1:11      1195 *      +1 = 171x 
+    add   A, H          ; 1:4       1195 *
+    ld    H, A          ; 1:4       1195 *     [1195x] = 171x + 1024x  
+                        ;[16:141]   1197 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_1101)
     ld    B, H          ; 1:4       1197 *
     ld    C, L          ; 1:4       1197 *   1       1x = base 
     add  HL, HL         ; 1:11      1197 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1197 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1197 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1197 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1197 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1197 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1197 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1197 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1197 *   1  *2 = 148x
-    add  HL, BC         ; 1:11      1197 *      +1 = 149x 
-    add  HL, HL         ; 1:11      1197 *   1  *2 = 298x
-    add  HL, BC         ; 1:11      1197 *      +1 = 299x 
-    add  HL, HL         ; 1:11      1197 *   0  *2 = 598x 
-    add  HL, HL         ; 1:11      1197 *   1  *2 = 1196x
-    add  HL, BC         ; 1:11      1197 *      +1 = 1197x   
-                        ;[18:184]   1199 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1010_1111)
+    add  HL, HL         ; 1:11      1197 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1197 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1197 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1197 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1197 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1197 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1197 *   1  *2 = 42x
+    add  HL, BC         ; 1:11      1197 *      +1 = 43x 
+    add  HL, HL         ; 1:11      1197 *   0  *2 = 86x 
+    add  HL, HL         ; 1:11      1197 *   1  *2 = 172x
+    add  HL, BC         ; 1:11      1197 *      +1 = 173x 
+    add   A, H          ; 1:4       1197 *
+    ld    H, A          ; 1:4       1197 *     [1197x] = 173x + 1024x  
+                        ;[17:152]   1199 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1010_1111)
     ld    B, H          ; 1:4       1199 *
     ld    C, L          ; 1:4       1199 *   1       1x = base 
     add  HL, HL         ; 1:11      1199 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1199 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1199 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1199 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1199 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1199 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1199 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1199 *   0  *2 = 74x 
-    add  HL, HL         ; 1:11      1199 *   1  *2 = 148x
-    add  HL, BC         ; 1:11      1199 *      +1 = 149x 
-    add  HL, HL         ; 1:11      1199 *   1  *2 = 298x
-    add  HL, BC         ; 1:11      1199 *      +1 = 299x 
-    add  HL, HL         ; 1:11      1199 *   1  *2 = 598x
-    add  HL, BC         ; 1:11      1199 *      +1 = 599x 
-    add  HL, HL         ; 1:11      1199 *   1  *2 = 1198x
-    add  HL, BC         ; 1:11      1199 *      +1 = 1199x  
+    add  HL, HL         ; 1:11      1199 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1199 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1199 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1199 *   0  *2 = 10x 
+    add  HL, HL         ; 1:11      1199 *   1  *2 = 20x
+    add  HL, BC         ; 1:11      1199 *      +1 = 21x 
+    add  HL, HL         ; 1:11      1199 *   1  *2 = 42x
+    add  HL, BC         ; 1:11      1199 *      +1 = 43x 
+    add  HL, HL         ; 1:11      1199 *   1  *2 = 86x
+    add  HL, BC         ; 1:11      1199 *      +1 = 87x 
+    add  HL, HL         ; 1:11      1199 *   1  *2 = 174x
+    add  HL, BC         ; 1:11      1199 *      +1 = 175x 
+    add   A, H          ; 1:4       1199 *
+    ld    H, A          ; 1:4       1199 *     [1199x] = 175x + 1024x 
 
-                        ;[16:162]   1201 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_0001)
+                        ;[15:130]   1201 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_0001)
     ld    B, H          ; 1:4       1201 *
     ld    C, L          ; 1:4       1201 *   1       1x = base 
     add  HL, HL         ; 1:11      1201 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1201 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1201 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1201 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1201 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1201 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1201 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1201 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1201 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1201 *   0  *2 = 150x 
-    add  HL, HL         ; 1:11      1201 *   0  *2 = 300x 
-    add  HL, HL         ; 1:11      1201 *   0  *2 = 600x 
-    add  HL, HL         ; 1:11      1201 *   1  *2 = 1200x
-    add  HL, BC         ; 1:11      1201 *      +1 = 1201x   
-                        ;[17:173]   1203 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_0011)
+    add  HL, HL         ; 1:11      1201 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1201 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1201 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1201 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1201 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1201 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1201 *   0  *2 = 44x 
+    add  HL, HL         ; 1:11      1201 *   0  *2 = 88x 
+    add  HL, HL         ; 1:11      1201 *   1  *2 = 176x
+    add  HL, BC         ; 1:11      1201 *      +1 = 177x 
+    add   A, H          ; 1:4       1201 *
+    ld    H, A          ; 1:4       1201 *     [1201x] = 177x + 1024x  
+                        ;[16:141]   1203 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_0011)
     ld    B, H          ; 1:4       1203 *
     ld    C, L          ; 1:4       1203 *   1       1x = base 
     add  HL, HL         ; 1:11      1203 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1203 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1203 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1203 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1203 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1203 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1203 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1203 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1203 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1203 *   0  *2 = 150x 
-    add  HL, HL         ; 1:11      1203 *   0  *2 = 300x 
-    add  HL, HL         ; 1:11      1203 *   1  *2 = 600x
-    add  HL, BC         ; 1:11      1203 *      +1 = 601x 
-    add  HL, HL         ; 1:11      1203 *   1  *2 = 1202x
-    add  HL, BC         ; 1:11      1203 *      +1 = 1203x   
-                        ;[17:173]   1205 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_0101)
+    add  HL, HL         ; 1:11      1203 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1203 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1203 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1203 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1203 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1203 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1203 *   0  *2 = 44x 
+    add  HL, HL         ; 1:11      1203 *   1  *2 = 88x
+    add  HL, BC         ; 1:11      1203 *      +1 = 89x 
+    add  HL, HL         ; 1:11      1203 *   1  *2 = 178x
+    add  HL, BC         ; 1:11      1203 *      +1 = 179x 
+    add   A, H          ; 1:4       1203 *
+    ld    H, A          ; 1:4       1203 *     [1203x] = 179x + 1024x  
+                        ;[16:141]   1205 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_0101)
     ld    B, H          ; 1:4       1205 *
     ld    C, L          ; 1:4       1205 *   1       1x = base 
     add  HL, HL         ; 1:11      1205 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1205 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1205 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1205 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1205 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1205 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1205 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1205 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1205 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1205 *   0  *2 = 150x 
-    add  HL, HL         ; 1:11      1205 *   1  *2 = 300x
-    add  HL, BC         ; 1:11      1205 *      +1 = 301x 
-    add  HL, HL         ; 1:11      1205 *   0  *2 = 602x 
-    add  HL, HL         ; 1:11      1205 *   1  *2 = 1204x
-    add  HL, BC         ; 1:11      1205 *      +1 = 1205x   
-                        ;[18:184]   1207 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_0111)
+    add  HL, HL         ; 1:11      1205 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1205 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1205 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1205 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1205 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1205 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1205 *   1  *2 = 44x
+    add  HL, BC         ; 1:11      1205 *      +1 = 45x 
+    add  HL, HL         ; 1:11      1205 *   0  *2 = 90x 
+    add  HL, HL         ; 1:11      1205 *   1  *2 = 180x
+    add  HL, BC         ; 1:11      1205 *      +1 = 181x 
+    add   A, H          ; 1:4       1205 *
+    ld    H, A          ; 1:4       1205 *     [1205x] = 181x + 1024x  
+                        ;[17:152]   1207 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_0111)
     ld    B, H          ; 1:4       1207 *
     ld    C, L          ; 1:4       1207 *   1       1x = base 
     add  HL, HL         ; 1:11      1207 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1207 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1207 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1207 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1207 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1207 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1207 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1207 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1207 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1207 *   0  *2 = 150x 
-    add  HL, HL         ; 1:11      1207 *   1  *2 = 300x
-    add  HL, BC         ; 1:11      1207 *      +1 = 301x 
-    add  HL, HL         ; 1:11      1207 *   1  *2 = 602x
-    add  HL, BC         ; 1:11      1207 *      +1 = 603x 
-    add  HL, HL         ; 1:11      1207 *   1  *2 = 1206x
-    add  HL, BC         ; 1:11      1207 *      +1 = 1207x   
-                        ;[17:173]   1209 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_1001)
+    add  HL, HL         ; 1:11      1207 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1207 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1207 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1207 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1207 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1207 *   0  *2 = 22x 
+    add  HL, HL         ; 1:11      1207 *   1  *2 = 44x
+    add  HL, BC         ; 1:11      1207 *      +1 = 45x 
+    add  HL, HL         ; 1:11      1207 *   1  *2 = 90x
+    add  HL, BC         ; 1:11      1207 *      +1 = 91x 
+    add  HL, HL         ; 1:11      1207 *   1  *2 = 182x
+    add  HL, BC         ; 1:11      1207 *      +1 = 183x 
+    add   A, H          ; 1:4       1207 *
+    ld    H, A          ; 1:4       1207 *     [1207x] = 183x + 1024x  
+                        ;[16:141]   1209 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_1001)
     ld    B, H          ; 1:4       1209 *
     ld    C, L          ; 1:4       1209 *   1       1x = base 
     add  HL, HL         ; 1:11      1209 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1209 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1209 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1209 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1209 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1209 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1209 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1209 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1209 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1209 *   1  *2 = 150x
-    add  HL, BC         ; 1:11      1209 *      +1 = 151x 
-    add  HL, HL         ; 1:11      1209 *   0  *2 = 302x 
-    add  HL, HL         ; 1:11      1209 *   0  *2 = 604x 
-    add  HL, HL         ; 1:11      1209 *   1  *2 = 1208x
-    add  HL, BC         ; 1:11      1209 *      +1 = 1209x   
-                        ;[18:184]   1211 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_1011)
+    add  HL, HL         ; 1:11      1209 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1209 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1209 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1209 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1209 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1209 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1209 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1209 *   0  *2 = 46x 
+    add  HL, HL         ; 1:11      1209 *   0  *2 = 92x 
+    add  HL, HL         ; 1:11      1209 *   1  *2 = 184x
+    add  HL, BC         ; 1:11      1209 *      +1 = 185x 
+    add   A, H          ; 1:4       1209 *
+    ld    H, A          ; 1:4       1209 *     [1209x] = 185x + 1024x  
+                        ;[17:152]   1211 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_1011)
     ld    B, H          ; 1:4       1211 *
     ld    C, L          ; 1:4       1211 *   1       1x = base 
     add  HL, HL         ; 1:11      1211 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1211 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1211 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1211 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1211 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1211 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1211 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1211 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1211 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1211 *   1  *2 = 150x
-    add  HL, BC         ; 1:11      1211 *      +1 = 151x 
-    add  HL, HL         ; 1:11      1211 *   0  *2 = 302x 
-    add  HL, HL         ; 1:11      1211 *   1  *2 = 604x
-    add  HL, BC         ; 1:11      1211 *      +1 = 605x 
-    add  HL, HL         ; 1:11      1211 *   1  *2 = 1210x
-    add  HL, BC         ; 1:11      1211 *      +1 = 1211x   
-                        ;[18:184]   1213 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_1101)
+    add  HL, HL         ; 1:11      1211 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1211 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1211 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1211 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1211 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1211 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1211 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1211 *   0  *2 = 46x 
+    add  HL, HL         ; 1:11      1211 *   1  *2 = 92x
+    add  HL, BC         ; 1:11      1211 *      +1 = 93x 
+    add  HL, HL         ; 1:11      1211 *   1  *2 = 186x
+    add  HL, BC         ; 1:11      1211 *      +1 = 187x 
+    add   A, H          ; 1:4       1211 *
+    ld    H, A          ; 1:4       1211 *     [1211x] = 187x + 1024x  
+                        ;[17:152]   1213 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_1101)
     ld    B, H          ; 1:4       1213 *
     ld    C, L          ; 1:4       1213 *   1       1x = base 
     add  HL, HL         ; 1:11      1213 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1213 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1213 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1213 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1213 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1213 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1213 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1213 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1213 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1213 *   1  *2 = 150x
-    add  HL, BC         ; 1:11      1213 *      +1 = 151x 
-    add  HL, HL         ; 1:11      1213 *   1  *2 = 302x
-    add  HL, BC         ; 1:11      1213 *      +1 = 303x 
-    add  HL, HL         ; 1:11      1213 *   0  *2 = 606x 
-    add  HL, HL         ; 1:11      1213 *   1  *2 = 1212x
-    add  HL, BC         ; 1:11      1213 *      +1 = 1213x   
-                        ;[19:195]   1215 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0100_1011_1111)
+    add  HL, HL         ; 1:11      1213 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1213 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1213 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1213 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1213 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1213 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1213 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1213 *   1  *2 = 46x
+    add  HL, BC         ; 1:11      1213 *      +1 = 47x 
+    add  HL, HL         ; 1:11      1213 *   0  *2 = 94x 
+    add  HL, HL         ; 1:11      1213 *   1  *2 = 188x
+    add  HL, BC         ; 1:11      1213 *      +1 = 189x 
+    add   A, H          ; 1:4       1213 *
+    ld    H, A          ; 1:4       1213 *     [1213x] = 189x + 1024x  
+                        ;[18:163]   1215 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1011_1111)
     ld    B, H          ; 1:4       1215 *
     ld    C, L          ; 1:4       1215 *   1       1x = base 
     add  HL, HL         ; 1:11      1215 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1215 *   0  *2 = 4x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 8x
-    add  HL, BC         ; 1:11      1215 *      +1 = 9x 
-    add  HL, HL         ; 1:11      1215 *   0  *2 = 18x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 36x
-    add  HL, BC         ; 1:11      1215 *      +1 = 37x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 74x
-    add  HL, BC         ; 1:11      1215 *      +1 = 75x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 150x
-    add  HL, BC         ; 1:11      1215 *      +1 = 151x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 302x
-    add  HL, BC         ; 1:11      1215 *      +1 = 303x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 606x
-    add  HL, BC         ; 1:11      1215 *      +1 = 607x 
-    add  HL, HL         ; 1:11      1215 *   1  *2 = 1214x
-    add  HL, BC         ; 1:11      1215 *      +1 = 1215x   
+    add  HL, HL         ; 1:11      1215 *   1  *2 = 4x
+    ld    A, L          ; 1:4       1215 *   256*L = 1024x
+    add  HL, BC         ; 1:11      1215 *      +1 = 5x 
+    add  HL, HL         ; 1:11      1215 *   1  *2 = 10x
+    add  HL, BC         ; 1:11      1215 *      +1 = 11x 
+    add  HL, HL         ; 1:11      1215 *   1  *2 = 22x
+    add  HL, BC         ; 1:11      1215 *      +1 = 23x 
+    add  HL, HL         ; 1:11      1215 *   1  *2 = 46x
+    add  HL, BC         ; 1:11      1215 *      +1 = 47x 
+    add  HL, HL         ; 1:11      1215 *   1  *2 = 94x
+    add  HL, BC         ; 1:11      1215 *      +1 = 95x 
+    add  HL, HL         ; 1:11      1215 *   1  *2 = 190x
+    add  HL, BC         ; 1:11      1215 *      +1 = 191x 
+    add   A, H          ; 1:4       1215 *
+    ld    H, A          ; 1:4       1215 *     [1215x] = 191x + 1024x  
                         ;[15:123]   1217 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0100_1100_0001)
     ld    B, H          ; 1:4       1217 *
     ld    C, L          ; 1:4       1217 *   1       1x = base 
@@ -9689,22 +9575,17 @@ ORG 0x6000
     add   A, L          ; 1:4       1281 *      +1 = 5x 
     add   A, H          ; 1:4       1281 *
     ld    H, A          ; 1:4       1281 *     [1281x] = 256 * 5x + 1x  
-                        ;[15:151]   1283 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0000_0011)
+                        ;[10:54]    1283 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0000_0011)
     ld    B, H          ; 1:4       1283 *
-    ld    C, L          ; 1:4       1283 *   1       1x = base 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1283 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1283 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 80x 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 160x 
-    add  HL, HL         ; 1:11      1283 *   0  *2 = 320x 
-    add  HL, HL         ; 1:11      1283 *   1  *2 = 640x
-    add  HL, BC         ; 1:11      1283 *      +1 = 641x 
-    add  HL, HL         ; 1:11      1283 *   1  *2 = 1282x
-    add  HL, BC         ; 1:11      1283 *      +1 = 1283x   
+    ld    C, L          ; 1:4       1283 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1283 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1283 *      +1 = 3x  
+    ld    A, C          ; 1:4       1283 *   1       1x 
+    add   A, A          ; 1:4       1283 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1283 *   1  *2 = 4x
+    add   A, C          ; 1:4       1283 *      +1 = 5x 
+    add   A, H          ; 1:4       1283 *
+    ld    H, A          ; 1:4       1283 *     [1283x] = 256 * 5x + 3x  
                         ;[8:53]     1285 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0101_0000_0101)
     ld    B, H          ; 1:4       1285 *
     ld    C, L          ; 1:4       1285 *   1       1x = base 
@@ -9714,23 +9595,19 @@ ORG 0x6000
     ld    A, L          ; 1:4       1285 *   256*L = 1280x 
     add   A, H          ; 1:4       1285 *
     ld    H, A          ; 1:4       1285 *     [1285x] = 5x + 1280x  
-                        ;[16:92]    1287 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_0000_0111) 
-    ld    B, D          ; 1:4       1287 *
-    ld    C, E          ; 1:4       1287 * 
-    ld    A, L          ; 1:4       1287 *   256x 
-    ld    D, H          ; 1:4       1287 *
-    ld    E, L          ; 1:4       1287 *   [1x] 
-    add  HL, HL         ; 1:11      1287 *   2x 
-    ex   DE, HL         ; 1:4       1287 *
-    add  HL, DE         ; 1:11      1287 *   [3x]
-    ex   DE, HL         ; 1:4       1287 * 
-    add  HL, HL         ; 1:11      1287 *   4x 
-    add   A, L          ; 1:4       1287 *   1280x
-    add   A, D          ; 1:4       1287 *
-    ld    D, A          ; 1:4       1287 *   [1283x] 
-    add  HL, DE         ; 1:11      1287 *   [1287x] = 4x + 1283x  
-    ld    D, B          ; 1:4       1287 *
-    ld    E, C          ; 1:4       1287 * 
+                        ;[12:76]    1287 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0000_0111)
+    ld    B, H          ; 1:4       1287 *
+    ld    C, L          ; 1:4       1287 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1287 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1287 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1287 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1287 *      +1 = 7x  
+    ld    A, C          ; 1:4       1287 *   1       1x 
+    add   A, A          ; 1:4       1287 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1287 *   1  *2 = 4x
+    add   A, C          ; 1:4       1287 *      +1 = 5x 
+    add   A, H          ; 1:4       1287 *
+    ld    H, A          ; 1:4       1287 *     [1287x] = 256 * 5x + 7x  
                         ;[10:68]    1289 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_0000_1001)  
     ld    A, L          ; 1:4       1289 *   256x 
     ld    B, H          ; 1:4       1289 *
@@ -9754,41 +9631,35 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1291 *      +1 = 11x 
     add   A, H          ; 1:4       1291 *
     ld    H, A          ; 1:4       1291 *     [1291x] = 11x + 1280x  
-                        ;[16:162]   1293 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0000_1101)
+                        ;[13:87]    1293 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0000_1101)
     ld    B, H          ; 1:4       1293 *
-    ld    C, L          ; 1:4       1293 *   1       1x = base 
-    add  HL, HL         ; 1:11      1293 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1293 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1293 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1293 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1293 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1293 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1293 *   0  *2 = 80x 
-    add  HL, HL         ; 1:11      1293 *   1  *2 = 160x
-    add  HL, BC         ; 1:11      1293 *      +1 = 161x 
-    add  HL, HL         ; 1:11      1293 *   1  *2 = 322x
-    add  HL, BC         ; 1:11      1293 *      +1 = 323x 
-    add  HL, HL         ; 1:11      1293 *   0  *2 = 646x 
-    add  HL, HL         ; 1:11      1293 *   1  *2 = 1292x
-    add  HL, BC         ; 1:11      1293 *      +1 = 1293x   
-                        ;[17:173]   1295 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0000_1111)
+    ld    C, L          ; 1:4       1293 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1293 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1293 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1293 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1293 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1293 *      +1 = 13x  
+    ld    A, C          ; 1:4       1293 *   1       1x 
+    add   A, A          ; 1:4       1293 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1293 *   1  *2 = 4x
+    add   A, C          ; 1:4       1293 *      +1 = 5x 
+    add   A, H          ; 1:4       1293 *
+    ld    H, A          ; 1:4       1293 *     [1293x] = 256 * 5x + 13x  
+                        ;[14:98]    1295 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0000_1111)
     ld    B, H          ; 1:4       1295 *
-    ld    C, L          ; 1:4       1295 *   1       1x = base 
-    add  HL, HL         ; 1:11      1295 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1295 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1295 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1295 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1295 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1295 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1295 *   0  *2 = 80x 
-    add  HL, HL         ; 1:11      1295 *   1  *2 = 160x
-    add  HL, BC         ; 1:11      1295 *      +1 = 161x 
-    add  HL, HL         ; 1:11      1295 *   1  *2 = 322x
-    add  HL, BC         ; 1:11      1295 *      +1 = 323x 
-    add  HL, HL         ; 1:11      1295 *   1  *2 = 646x
-    add  HL, BC         ; 1:11      1295 *      +1 = 647x 
-    add  HL, HL         ; 1:11      1295 *   1  *2 = 1294x
-    add  HL, BC         ; 1:11      1295 *      +1 = 1295x   
+    ld    C, L          ; 1:4       1295 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1295 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1295 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1295 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1295 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1295 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1295 *      +1 = 15x  
+    ld    A, C          ; 1:4       1295 *   1       1x 
+    add   A, A          ; 1:4       1295 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1295 *   1  *2 = 4x
+    add   A, C          ; 1:4       1295 *      +1 = 5x 
+    add   A, H          ; 1:4       1295 *
+    ld    H, A          ; 1:4       1295 *     [1295x] = 256 * 5x + 15x  
                         ;[11:79]    1297 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_0001_0001)  
     ld    A, L          ; 1:4       1297 *   256x 
     ld    B, H          ; 1:4       1297 *
@@ -9839,79 +9710,71 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1303 *      +1 = 23x 
     add   A, H          ; 1:4       1303 *
     ld    H, A          ; 1:4       1303 *     [1303x] = 23x + 1280x  
-                        ;[16:162]   1305 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0001_1001)
+                        ;[14:98]    1305 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0001_1001)
     ld    B, H          ; 1:4       1305 *
-    ld    C, L          ; 1:4       1305 *   1       1x = base 
-    add  HL, HL         ; 1:11      1305 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1305 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1305 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1305 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1305 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1305 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1305 *   1  *2 = 80x
-    add  HL, BC         ; 1:11      1305 *      +1 = 81x 
-    add  HL, HL         ; 1:11      1305 *   1  *2 = 162x
-    add  HL, BC         ; 1:11      1305 *      +1 = 163x 
-    add  HL, HL         ; 1:11      1305 *   0  *2 = 326x 
-    add  HL, HL         ; 1:11      1305 *   0  *2 = 652x 
-    add  HL, HL         ; 1:11      1305 *   1  *2 = 1304x
-    add  HL, BC         ; 1:11      1305 *      +1 = 1305x   
-                        ;[17:173]   1307 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0001_1011)
+    ld    C, L          ; 1:4       1305 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1305 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1305 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1305 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1305 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1305 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      1305 *      +1 = 25x  
+    ld    A, C          ; 1:4       1305 *   1       1x 
+    add   A, A          ; 1:4       1305 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1305 *   1  *2 = 4x
+    add   A, C          ; 1:4       1305 *      +1 = 5x 
+    add   A, H          ; 1:4       1305 *
+    ld    H, A          ; 1:4       1305 *     [1305x] = 256 * 5x + 25x  
+                        ;[15:109]   1307 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0001_1011)
     ld    B, H          ; 1:4       1307 *
-    ld    C, L          ; 1:4       1307 *   1       1x = base 
-    add  HL, HL         ; 1:11      1307 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1307 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1307 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1307 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1307 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1307 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1307 *   1  *2 = 80x
-    add  HL, BC         ; 1:11      1307 *      +1 = 81x 
-    add  HL, HL         ; 1:11      1307 *   1  *2 = 162x
-    add  HL, BC         ; 1:11      1307 *      +1 = 163x 
-    add  HL, HL         ; 1:11      1307 *   0  *2 = 326x 
-    add  HL, HL         ; 1:11      1307 *   1  *2 = 652x
-    add  HL, BC         ; 1:11      1307 *      +1 = 653x 
-    add  HL, HL         ; 1:11      1307 *   1  *2 = 1306x
-    add  HL, BC         ; 1:11      1307 *      +1 = 1307x  
+    ld    C, L          ; 1:4       1307 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1307 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1307 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1307 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1307 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1307 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1307 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      1307 *      +1 = 27x  
+    ld    A, C          ; 1:4       1307 *   1       1x 
+    add   A, A          ; 1:4       1307 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1307 *   1  *2 = 4x
+    add   A, C          ; 1:4       1307 *      +1 = 5x 
+    add   A, H          ; 1:4       1307 *
+    ld    H, A          ; 1:4       1307 *     [1307x] = 256 * 5x + 27x 
 
-                        ;[17:173]   1309 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0001_1101)
+                        ;[15:109]   1309 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0001_1101)
     ld    B, H          ; 1:4       1309 *
-    ld    C, L          ; 1:4       1309 *   1       1x = base 
-    add  HL, HL         ; 1:11      1309 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1309 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1309 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1309 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1309 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1309 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1309 *   1  *2 = 80x
-    add  HL, BC         ; 1:11      1309 *      +1 = 81x 
-    add  HL, HL         ; 1:11      1309 *   1  *2 = 162x
-    add  HL, BC         ; 1:11      1309 *      +1 = 163x 
-    add  HL, HL         ; 1:11      1309 *   1  *2 = 326x
-    add  HL, BC         ; 1:11      1309 *      +1 = 327x 
-    add  HL, HL         ; 1:11      1309 *   0  *2 = 654x 
-    add  HL, HL         ; 1:11      1309 *   1  *2 = 1308x
-    add  HL, BC         ; 1:11      1309 *      +1 = 1309x   
-                        ;[18:184]   1311 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0001_1111)
+    ld    C, L          ; 1:4       1309 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1309 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1309 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1309 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1309 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1309 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1309 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1309 *      +1 = 29x  
+    ld    A, C          ; 1:4       1309 *   1       1x 
+    add   A, A          ; 1:4       1309 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1309 *   1  *2 = 4x
+    add   A, C          ; 1:4       1309 *      +1 = 5x 
+    add   A, H          ; 1:4       1309 *
+    ld    H, A          ; 1:4       1309 *     [1309x] = 256 * 5x + 29x  
+                        ;[16:120]   1311 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0001_1111)
     ld    B, H          ; 1:4       1311 *
-    ld    C, L          ; 1:4       1311 *   1       1x = base 
-    add  HL, HL         ; 1:11      1311 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1311 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1311 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1311 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1311 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1311 *   0  *2 = 40x 
-    add  HL, HL         ; 1:11      1311 *   1  *2 = 80x
-    add  HL, BC         ; 1:11      1311 *      +1 = 81x 
-    add  HL, HL         ; 1:11      1311 *   1  *2 = 162x
-    add  HL, BC         ; 1:11      1311 *      +1 = 163x 
-    add  HL, HL         ; 1:11      1311 *   1  *2 = 326x
-    add  HL, BC         ; 1:11      1311 *      +1 = 327x 
-    add  HL, HL         ; 1:11      1311 *   1  *2 = 654x
-    add  HL, BC         ; 1:11      1311 *      +1 = 655x 
-    add  HL, HL         ; 1:11      1311 *   1  *2 = 1310x
-    add  HL, BC         ; 1:11      1311 *      +1 = 1311x   
+    ld    C, L          ; 1:4       1311 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1311 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1311 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1311 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1311 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1311 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1311 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1311 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1311 *      +1 = 31x  
+    ld    A, C          ; 1:4       1311 *   1       1x 
+    add   A, A          ; 1:4       1311 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1311 *   1  *2 = 4x
+    add   A, C          ; 1:4       1311 *      +1 = 5x 
+    add   A, H          ; 1:4       1311 *
+    ld    H, A          ; 1:4       1311 *     [1311x] = 256 * 5x + 31x  
                         ;[12:90]    1313 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_0010_0001)  
     ld    A, L          ; 1:4       1313 *   256x 
     ld    B, H          ; 1:4       1313 *
@@ -10025,154 +9888,146 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1327 *      +1 = 47x 
     add   A, H          ; 1:4       1327 *
     ld    H, A          ; 1:4       1327 *     [1327x] = 47x + 1280x  
-                        ;[16:162]   1329 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_0001)
+                        ;[15:109]   1329 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_0001)
     ld    B, H          ; 1:4       1329 *
-    ld    C, L          ; 1:4       1329 *   1       1x = base 
-    add  HL, HL         ; 1:11      1329 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1329 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1329 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1329 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1329 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1329 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1329 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1329 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1329 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1329 *   0  *2 = 166x 
-    add  HL, HL         ; 1:11      1329 *   0  *2 = 332x 
-    add  HL, HL         ; 1:11      1329 *   0  *2 = 664x 
-    add  HL, HL         ; 1:11      1329 *   1  *2 = 1328x
-    add  HL, BC         ; 1:11      1329 *      +1 = 1329x   
-                        ;[17:173]   1331 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_0011)
+    ld    C, L          ; 1:4       1329 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1329 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1329 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1329 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1329 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1329 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      1329 *   1  *2 = 48x
+    add  HL, BC         ; 1:11      1329 *      +1 = 49x  
+    ld    A, C          ; 1:4       1329 *   1       1x 
+    add   A, A          ; 1:4       1329 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1329 *   1  *2 = 4x
+    add   A, C          ; 1:4       1329 *      +1 = 5x 
+    add   A, H          ; 1:4       1329 *
+    ld    H, A          ; 1:4       1329 *     [1329x] = 256 * 5x + 49x  
+                        ;[16:120]   1331 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_0011)
     ld    B, H          ; 1:4       1331 *
-    ld    C, L          ; 1:4       1331 *   1       1x = base 
-    add  HL, HL         ; 1:11      1331 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1331 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1331 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1331 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1331 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1331 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1331 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1331 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1331 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1331 *   0  *2 = 166x 
-    add  HL, HL         ; 1:11      1331 *   0  *2 = 332x 
-    add  HL, HL         ; 1:11      1331 *   1  *2 = 664x
-    add  HL, BC         ; 1:11      1331 *      +1 = 665x 
-    add  HL, HL         ; 1:11      1331 *   1  *2 = 1330x
-    add  HL, BC         ; 1:11      1331 *      +1 = 1331x   
-                        ;[17:173]   1333 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_0101)
+    ld    C, L          ; 1:4       1331 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1331 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1331 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1331 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1331 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1331 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      1331 *      +1 = 25x 
+    add  HL, HL         ; 1:11      1331 *   1  *2 = 50x
+    add  HL, BC         ; 1:11      1331 *      +1 = 51x  
+    ld    A, C          ; 1:4       1331 *   1       1x 
+    add   A, A          ; 1:4       1331 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1331 *   1  *2 = 4x
+    add   A, C          ; 1:4       1331 *      +1 = 5x 
+    add   A, H          ; 1:4       1331 *
+    ld    H, A          ; 1:4       1331 *     [1331x] = 256 * 5x + 51x  
+                        ;[16:120]   1333 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_0101)
     ld    B, H          ; 1:4       1333 *
-    ld    C, L          ; 1:4       1333 *   1       1x = base 
-    add  HL, HL         ; 1:11      1333 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1333 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1333 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1333 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1333 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1333 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1333 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1333 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1333 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1333 *   0  *2 = 166x 
-    add  HL, HL         ; 1:11      1333 *   1  *2 = 332x
-    add  HL, BC         ; 1:11      1333 *      +1 = 333x 
-    add  HL, HL         ; 1:11      1333 *   0  *2 = 666x 
-    add  HL, HL         ; 1:11      1333 *   1  *2 = 1332x
-    add  HL, BC         ; 1:11      1333 *      +1 = 1333x   
-                        ;[18:184]   1335 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_0111)
+    ld    C, L          ; 1:4       1333 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1333 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1333 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1333 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1333 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1333 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1333 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      1333 *   1  *2 = 52x
+    add  HL, BC         ; 1:11      1333 *      +1 = 53x  
+    ld    A, C          ; 1:4       1333 *   1       1x 
+    add   A, A          ; 1:4       1333 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1333 *   1  *2 = 4x
+    add   A, C          ; 1:4       1333 *      +1 = 5x 
+    add   A, H          ; 1:4       1333 *
+    ld    H, A          ; 1:4       1333 *     [1333x] = 256 * 5x + 53x  
+                        ;[17:131]   1335 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_0111)
     ld    B, H          ; 1:4       1335 *
-    ld    C, L          ; 1:4       1335 *   1       1x = base 
-    add  HL, HL         ; 1:11      1335 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1335 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1335 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1335 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1335 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1335 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1335 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1335 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1335 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1335 *   0  *2 = 166x 
-    add  HL, HL         ; 1:11      1335 *   1  *2 = 332x
-    add  HL, BC         ; 1:11      1335 *      +1 = 333x 
-    add  HL, HL         ; 1:11      1335 *   1  *2 = 666x
-    add  HL, BC         ; 1:11      1335 *      +1 = 667x 
-    add  HL, HL         ; 1:11      1335 *   1  *2 = 1334x
-    add  HL, BC         ; 1:11      1335 *      +1 = 1335x   
-                        ;[17:173]   1337 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_1001)
+    ld    C, L          ; 1:4       1335 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1335 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1335 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1335 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1335 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1335 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1335 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      1335 *      +1 = 27x 
+    add  HL, HL         ; 1:11      1335 *   1  *2 = 54x
+    add  HL, BC         ; 1:11      1335 *      +1 = 55x  
+    ld    A, C          ; 1:4       1335 *   1       1x 
+    add   A, A          ; 1:4       1335 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1335 *   1  *2 = 4x
+    add   A, C          ; 1:4       1335 *      +1 = 5x 
+    add   A, H          ; 1:4       1335 *
+    ld    H, A          ; 1:4       1335 *     [1335x] = 256 * 5x + 55x  
+                        ;[16:120]   1337 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_1001)
     ld    B, H          ; 1:4       1337 *
-    ld    C, L          ; 1:4       1337 *   1       1x = base 
-    add  HL, HL         ; 1:11      1337 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1337 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1337 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1337 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1337 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1337 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1337 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1337 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1337 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1337 *   1  *2 = 166x
-    add  HL, BC         ; 1:11      1337 *      +1 = 167x 
-    add  HL, HL         ; 1:11      1337 *   0  *2 = 334x 
-    add  HL, HL         ; 1:11      1337 *   0  *2 = 668x 
-    add  HL, HL         ; 1:11      1337 *   1  *2 = 1336x
-    add  HL, BC         ; 1:11      1337 *      +1 = 1337x   
-                        ;[18:184]   1339 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_1011)
+    ld    C, L          ; 1:4       1337 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1337 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1337 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1337 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1337 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1337 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1337 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1337 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      1337 *      +1 = 57x  
+    ld    A, C          ; 1:4       1337 *   1       1x 
+    add   A, A          ; 1:4       1337 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1337 *   1  *2 = 4x
+    add   A, C          ; 1:4       1337 *      +1 = 5x 
+    add   A, H          ; 1:4       1337 *
+    ld    H, A          ; 1:4       1337 *     [1337x] = 256 * 5x + 57x  
+                        ;[17:131]   1339 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_1011)
     ld    B, H          ; 1:4       1339 *
-    ld    C, L          ; 1:4       1339 *   1       1x = base 
-    add  HL, HL         ; 1:11      1339 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1339 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1339 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1339 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1339 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1339 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1339 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1339 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1339 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1339 *   1  *2 = 166x
-    add  HL, BC         ; 1:11      1339 *      +1 = 167x 
-    add  HL, HL         ; 1:11      1339 *   0  *2 = 334x 
-    add  HL, HL         ; 1:11      1339 *   1  *2 = 668x
-    add  HL, BC         ; 1:11      1339 *      +1 = 669x 
-    add  HL, HL         ; 1:11      1339 *   1  *2 = 1338x
-    add  HL, BC         ; 1:11      1339 *      +1 = 1339x   
-                        ;[18:184]   1341 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_1101)
+    ld    C, L          ; 1:4       1339 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1339 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1339 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1339 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1339 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1339 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1339 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1339 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1339 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      1339 *      +1 = 59x  
+    ld    A, C          ; 1:4       1339 *   1       1x 
+    add   A, A          ; 1:4       1339 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1339 *   1  *2 = 4x
+    add   A, C          ; 1:4       1339 *      +1 = 5x 
+    add   A, H          ; 1:4       1339 *
+    ld    H, A          ; 1:4       1339 *     [1339x] = 256 * 5x + 59x  
+                        ;[17:131]   1341 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_1101)
     ld    B, H          ; 1:4       1341 *
-    ld    C, L          ; 1:4       1341 *   1       1x = base 
-    add  HL, HL         ; 1:11      1341 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1341 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1341 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1341 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1341 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1341 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1341 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1341 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1341 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1341 *   1  *2 = 166x
-    add  HL, BC         ; 1:11      1341 *      +1 = 167x 
-    add  HL, HL         ; 1:11      1341 *   1  *2 = 334x
-    add  HL, BC         ; 1:11      1341 *      +1 = 335x 
-    add  HL, HL         ; 1:11      1341 *   0  *2 = 670x 
-    add  HL, HL         ; 1:11      1341 *   1  *2 = 1340x
-    add  HL, BC         ; 1:11      1341 *      +1 = 1341x   
-                        ;[19:195]   1343 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0011_1111)
+    ld    C, L          ; 1:4       1341 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1341 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1341 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1341 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1341 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1341 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1341 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1341 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1341 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      1341 *      +1 = 61x  
+    ld    A, C          ; 1:4       1341 *   1       1x 
+    add   A, A          ; 1:4       1341 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1341 *   1  *2 = 4x
+    add   A, C          ; 1:4       1341 *      +1 = 5x 
+    add   A, H          ; 1:4       1341 *
+    ld    H, A          ; 1:4       1341 *     [1341x] = 256 * 5x + 61x  
+                        ;[18:142]   1343 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0011_1111)
     ld    B, H          ; 1:4       1343 *
-    ld    C, L          ; 1:4       1343 *   1       1x = base 
-    add  HL, HL         ; 1:11      1343 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1343 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1343 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1343 *   0  *2 = 20x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 40x
-    add  HL, BC         ; 1:11      1343 *      +1 = 41x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 82x
-    add  HL, BC         ; 1:11      1343 *      +1 = 83x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 166x
-    add  HL, BC         ; 1:11      1343 *      +1 = 167x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 334x
-    add  HL, BC         ; 1:11      1343 *      +1 = 335x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 670x
-    add  HL, BC         ; 1:11      1343 *      +1 = 671x 
-    add  HL, HL         ; 1:11      1343 *   1  *2 = 1342x
-    add  HL, BC         ; 1:11      1343 *      +1 = 1343x  
+    ld    C, L          ; 1:4       1343 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1343 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1343 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1343 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1343 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1343 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1343 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1343 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1343 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1343 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      1343 *      +1 = 63x  
+    ld    A, C          ; 1:4       1343 *   1       1x 
+    add   A, A          ; 1:4       1343 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1343 *   1  *2 = 4x
+    add   A, C          ; 1:4       1343 *      +1 = 5x 
+    add   A, H          ; 1:4       1343 *
+    ld    H, A          ; 1:4       1343 *     [1343x] = 256 * 5x + 63x 
 
                         ;[13:101]   1345 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_0100_0001)  
     ld    A, L          ; 1:4       1345 *   256x 
@@ -10423,312 +10278,312 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1375 *      +1 = 95x 
     add   A, H          ; 1:4       1375 *
     ld    H, A          ; 1:4       1375 *     [1375x] = 95x + 1280x  
-                        ;[16:162]   1377 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_0001)
+                        ;[16:120]   1377 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_0001)
     ld    B, H          ; 1:4       1377 *
-    ld    C, L          ; 1:4       1377 *   1       1x = base 
-    add  HL, HL         ; 1:11      1377 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1377 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1377 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1377 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1377 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1377 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1377 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1377 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1377 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1377 *   0  *2 = 172x 
-    add  HL, HL         ; 1:11      1377 *   0  *2 = 344x 
-    add  HL, HL         ; 1:11      1377 *   0  *2 = 688x 
-    add  HL, HL         ; 1:11      1377 *   1  *2 = 1376x
-    add  HL, BC         ; 1:11      1377 *      +1 = 1377x   
-                        ;[17:173]   1379 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_0011)
+    ld    C, L          ; 1:4       1377 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1377 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1377 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1377 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1377 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1377 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      1377 *   0  *2 = 48x 
+    add  HL, HL         ; 1:11      1377 *   1  *2 = 96x
+    add  HL, BC         ; 1:11      1377 *      +1 = 97x  
+    ld    A, C          ; 1:4       1377 *   1       1x 
+    add   A, A          ; 1:4       1377 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1377 *   1  *2 = 4x
+    add   A, C          ; 1:4       1377 *      +1 = 5x 
+    add   A, H          ; 1:4       1377 *
+    ld    H, A          ; 1:4       1377 *     [1377x] = 256 * 5x + 97x  
+                        ;[17:131]   1379 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_0011)
     ld    B, H          ; 1:4       1379 *
-    ld    C, L          ; 1:4       1379 *   1       1x = base 
-    add  HL, HL         ; 1:11      1379 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1379 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1379 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1379 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1379 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1379 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1379 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1379 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1379 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1379 *   0  *2 = 172x 
-    add  HL, HL         ; 1:11      1379 *   0  *2 = 344x 
-    add  HL, HL         ; 1:11      1379 *   1  *2 = 688x
-    add  HL, BC         ; 1:11      1379 *      +1 = 689x 
-    add  HL, HL         ; 1:11      1379 *   1  *2 = 1378x
-    add  HL, BC         ; 1:11      1379 *      +1 = 1379x  
+    ld    C, L          ; 1:4       1379 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1379 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1379 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1379 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1379 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1379 *   0  *2 = 24x 
+    add  HL, HL         ; 1:11      1379 *   1  *2 = 48x
+    add  HL, BC         ; 1:11      1379 *      +1 = 49x 
+    add  HL, HL         ; 1:11      1379 *   1  *2 = 98x
+    add  HL, BC         ; 1:11      1379 *      +1 = 99x  
+    ld    A, C          ; 1:4       1379 *   1       1x 
+    add   A, A          ; 1:4       1379 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1379 *   1  *2 = 4x
+    add   A, C          ; 1:4       1379 *      +1 = 5x 
+    add   A, H          ; 1:4       1379 *
+    ld    H, A          ; 1:4       1379 *     [1379x] = 256 * 5x + 99x 
 
-                        ;[17:173]   1381 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_0101)
+                        ;[17:131]   1381 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_0101)
     ld    B, H          ; 1:4       1381 *
-    ld    C, L          ; 1:4       1381 *   1       1x = base 
-    add  HL, HL         ; 1:11      1381 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1381 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1381 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1381 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1381 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1381 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1381 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1381 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1381 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1381 *   0  *2 = 172x 
-    add  HL, HL         ; 1:11      1381 *   1  *2 = 344x
-    add  HL, BC         ; 1:11      1381 *      +1 = 345x 
-    add  HL, HL         ; 1:11      1381 *   0  *2 = 690x 
-    add  HL, HL         ; 1:11      1381 *   1  *2 = 1380x
-    add  HL, BC         ; 1:11      1381 *      +1 = 1381x   
-                        ;[18:184]   1383 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_0111)
+    ld    C, L          ; 1:4       1381 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1381 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1381 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1381 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1381 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1381 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      1381 *      +1 = 25x 
+    add  HL, HL         ; 1:11      1381 *   0  *2 = 50x 
+    add  HL, HL         ; 1:11      1381 *   1  *2 = 100x
+    add  HL, BC         ; 1:11      1381 *      +1 = 101x  
+    ld    A, C          ; 1:4       1381 *   1       1x 
+    add   A, A          ; 1:4       1381 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1381 *   1  *2 = 4x
+    add   A, C          ; 1:4       1381 *      +1 = 5x 
+    add   A, H          ; 1:4       1381 *
+    ld    H, A          ; 1:4       1381 *     [1381x] = 256 * 5x + 101x  
+                        ;[18:142]   1383 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_0111)
     ld    B, H          ; 1:4       1383 *
-    ld    C, L          ; 1:4       1383 *   1       1x = base 
-    add  HL, HL         ; 1:11      1383 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1383 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1383 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1383 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1383 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1383 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1383 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1383 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1383 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1383 *   0  *2 = 172x 
-    add  HL, HL         ; 1:11      1383 *   1  *2 = 344x
-    add  HL, BC         ; 1:11      1383 *      +1 = 345x 
-    add  HL, HL         ; 1:11      1383 *   1  *2 = 690x
-    add  HL, BC         ; 1:11      1383 *      +1 = 691x 
-    add  HL, HL         ; 1:11      1383 *   1  *2 = 1382x
-    add  HL, BC         ; 1:11      1383 *      +1 = 1383x   
-                        ;[17:173]   1385 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_1001)
+    ld    C, L          ; 1:4       1383 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1383 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1383 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1383 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1383 *   0  *2 = 12x 
+    add  HL, HL         ; 1:11      1383 *   1  *2 = 24x
+    add  HL, BC         ; 1:11      1383 *      +1 = 25x 
+    add  HL, HL         ; 1:11      1383 *   1  *2 = 50x
+    add  HL, BC         ; 1:11      1383 *      +1 = 51x 
+    add  HL, HL         ; 1:11      1383 *   1  *2 = 102x
+    add  HL, BC         ; 1:11      1383 *      +1 = 103x  
+    ld    A, C          ; 1:4       1383 *   1       1x 
+    add   A, A          ; 1:4       1383 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1383 *   1  *2 = 4x
+    add   A, C          ; 1:4       1383 *      +1 = 5x 
+    add   A, H          ; 1:4       1383 *
+    ld    H, A          ; 1:4       1383 *     [1383x] = 256 * 5x + 103x  
+                        ;[17:131]   1385 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_1001)
     ld    B, H          ; 1:4       1385 *
-    ld    C, L          ; 1:4       1385 *   1       1x = base 
-    add  HL, HL         ; 1:11      1385 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1385 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1385 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1385 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1385 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1385 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1385 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1385 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1385 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1385 *   1  *2 = 172x
-    add  HL, BC         ; 1:11      1385 *      +1 = 173x 
-    add  HL, HL         ; 1:11      1385 *   0  *2 = 346x 
-    add  HL, HL         ; 1:11      1385 *   0  *2 = 692x 
-    add  HL, HL         ; 1:11      1385 *   1  *2 = 1384x
-    add  HL, BC         ; 1:11      1385 *      +1 = 1385x   
-                        ;[18:184]   1387 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_1011)
+    ld    C, L          ; 1:4       1385 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1385 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1385 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1385 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1385 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1385 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1385 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      1385 *   0  *2 = 52x 
+    add  HL, HL         ; 1:11      1385 *   1  *2 = 104x
+    add  HL, BC         ; 1:11      1385 *      +1 = 105x  
+    ld    A, C          ; 1:4       1385 *   1       1x 
+    add   A, A          ; 1:4       1385 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1385 *   1  *2 = 4x
+    add   A, C          ; 1:4       1385 *      +1 = 5x 
+    add   A, H          ; 1:4       1385 *
+    ld    H, A          ; 1:4       1385 *     [1385x] = 256 * 5x + 105x  
+                        ;[18:142]   1387 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_1011)
     ld    B, H          ; 1:4       1387 *
-    ld    C, L          ; 1:4       1387 *   1       1x = base 
-    add  HL, HL         ; 1:11      1387 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1387 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1387 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1387 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1387 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1387 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1387 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1387 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1387 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1387 *   1  *2 = 172x
-    add  HL, BC         ; 1:11      1387 *      +1 = 173x 
-    add  HL, HL         ; 1:11      1387 *   0  *2 = 346x 
-    add  HL, HL         ; 1:11      1387 *   1  *2 = 692x
-    add  HL, BC         ; 1:11      1387 *      +1 = 693x 
-    add  HL, HL         ; 1:11      1387 *   1  *2 = 1386x
-    add  HL, BC         ; 1:11      1387 *      +1 = 1387x   
-                        ;[18:184]   1389 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_1101)
+    ld    C, L          ; 1:4       1387 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1387 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1387 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1387 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1387 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1387 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1387 *   0  *2 = 26x 
+    add  HL, HL         ; 1:11      1387 *   1  *2 = 52x
+    add  HL, BC         ; 1:11      1387 *      +1 = 53x 
+    add  HL, HL         ; 1:11      1387 *   1  *2 = 106x
+    add  HL, BC         ; 1:11      1387 *      +1 = 107x  
+    ld    A, C          ; 1:4       1387 *   1       1x 
+    add   A, A          ; 1:4       1387 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1387 *   1  *2 = 4x
+    add   A, C          ; 1:4       1387 *      +1 = 5x 
+    add   A, H          ; 1:4       1387 *
+    ld    H, A          ; 1:4       1387 *     [1387x] = 256 * 5x + 107x  
+                        ;[18:142]   1389 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_1101)
     ld    B, H          ; 1:4       1389 *
-    ld    C, L          ; 1:4       1389 *   1       1x = base 
-    add  HL, HL         ; 1:11      1389 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1389 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1389 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1389 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1389 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1389 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1389 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1389 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1389 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1389 *   1  *2 = 172x
-    add  HL, BC         ; 1:11      1389 *      +1 = 173x 
-    add  HL, HL         ; 1:11      1389 *   1  *2 = 346x
-    add  HL, BC         ; 1:11      1389 *      +1 = 347x 
-    add  HL, HL         ; 1:11      1389 *   0  *2 = 694x 
-    add  HL, HL         ; 1:11      1389 *   1  *2 = 1388x
-    add  HL, BC         ; 1:11      1389 *      +1 = 1389x   
-                        ;[19:195]   1391 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0110_1111)
+    ld    C, L          ; 1:4       1389 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1389 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1389 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1389 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1389 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1389 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1389 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      1389 *      +1 = 27x 
+    add  HL, HL         ; 1:11      1389 *   0  *2 = 54x 
+    add  HL, HL         ; 1:11      1389 *   1  *2 = 108x
+    add  HL, BC         ; 1:11      1389 *      +1 = 109x  
+    ld    A, C          ; 1:4       1389 *   1       1x 
+    add   A, A          ; 1:4       1389 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1389 *   1  *2 = 4x
+    add   A, C          ; 1:4       1389 *      +1 = 5x 
+    add   A, H          ; 1:4       1389 *
+    ld    H, A          ; 1:4       1389 *     [1389x] = 256 * 5x + 109x  
+                        ;[19:153]   1391 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0110_1111)
     ld    B, H          ; 1:4       1391 *
-    ld    C, L          ; 1:4       1391 *   1       1x = base 
-    add  HL, HL         ; 1:11      1391 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1391 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1391 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1391 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1391 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1391 *   0  *2 = 86x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 172x
-    add  HL, BC         ; 1:11      1391 *      +1 = 173x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 346x
-    add  HL, BC         ; 1:11      1391 *      +1 = 347x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 694x
-    add  HL, BC         ; 1:11      1391 *      +1 = 695x 
-    add  HL, HL         ; 1:11      1391 *   1  *2 = 1390x
-    add  HL, BC         ; 1:11      1391 *      +1 = 1391x   
-                        ;[17:173]   1393 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_0001)
+    ld    C, L          ; 1:4       1391 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1391 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1391 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1391 *   0  *2 = 6x 
+    add  HL, HL         ; 1:11      1391 *   1  *2 = 12x
+    add  HL, BC         ; 1:11      1391 *      +1 = 13x 
+    add  HL, HL         ; 1:11      1391 *   1  *2 = 26x
+    add  HL, BC         ; 1:11      1391 *      +1 = 27x 
+    add  HL, HL         ; 1:11      1391 *   1  *2 = 54x
+    add  HL, BC         ; 1:11      1391 *      +1 = 55x 
+    add  HL, HL         ; 1:11      1391 *   1  *2 = 110x
+    add  HL, BC         ; 1:11      1391 *      +1 = 111x  
+    ld    A, C          ; 1:4       1391 *   1       1x 
+    add   A, A          ; 1:4       1391 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1391 *   1  *2 = 4x
+    add   A, C          ; 1:4       1391 *      +1 = 5x 
+    add   A, H          ; 1:4       1391 *
+    ld    H, A          ; 1:4       1391 *     [1391x] = 256 * 5x + 111x  
+                        ;[17:131]   1393 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_0001)
     ld    B, H          ; 1:4       1393 *
-    ld    C, L          ; 1:4       1393 *   1       1x = base 
-    add  HL, HL         ; 1:11      1393 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1393 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1393 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1393 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1393 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1393 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1393 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1393 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1393 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1393 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1393 *   0  *2 = 174x 
-    add  HL, HL         ; 1:11      1393 *   0  *2 = 348x 
-    add  HL, HL         ; 1:11      1393 *   0  *2 = 696x 
-    add  HL, HL         ; 1:11      1393 *   1  *2 = 1392x
-    add  HL, BC         ; 1:11      1393 *      +1 = 1393x   
-                        ;[18:184]   1395 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_0011)
+    ld    C, L          ; 1:4       1393 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1393 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1393 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1393 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1393 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1393 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1393 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1393 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      1393 *   1  *2 = 112x
+    add  HL, BC         ; 1:11      1393 *      +1 = 113x  
+    ld    A, C          ; 1:4       1393 *   1       1x 
+    add   A, A          ; 1:4       1393 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1393 *   1  *2 = 4x
+    add   A, C          ; 1:4       1393 *      +1 = 5x 
+    add   A, H          ; 1:4       1393 *
+    ld    H, A          ; 1:4       1393 *     [1393x] = 256 * 5x + 113x  
+                        ;[18:142]   1395 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_0011)
     ld    B, H          ; 1:4       1395 *
-    ld    C, L          ; 1:4       1395 *   1       1x = base 
-    add  HL, HL         ; 1:11      1395 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1395 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1395 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1395 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1395 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1395 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1395 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1395 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1395 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1395 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1395 *   0  *2 = 174x 
-    add  HL, HL         ; 1:11      1395 *   0  *2 = 348x 
-    add  HL, HL         ; 1:11      1395 *   1  *2 = 696x
-    add  HL, BC         ; 1:11      1395 *      +1 = 697x 
-    add  HL, HL         ; 1:11      1395 *   1  *2 = 1394x
-    add  HL, BC         ; 1:11      1395 *      +1 = 1395x   
-                        ;[18:184]   1397 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_0101)
+    ld    C, L          ; 1:4       1395 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1395 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1395 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1395 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1395 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1395 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1395 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1395 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      1395 *      +1 = 57x 
+    add  HL, HL         ; 1:11      1395 *   1  *2 = 114x
+    add  HL, BC         ; 1:11      1395 *      +1 = 115x  
+    ld    A, C          ; 1:4       1395 *   1       1x 
+    add   A, A          ; 1:4       1395 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1395 *   1  *2 = 4x
+    add   A, C          ; 1:4       1395 *      +1 = 5x 
+    add   A, H          ; 1:4       1395 *
+    ld    H, A          ; 1:4       1395 *     [1395x] = 256 * 5x + 115x  
+                        ;[18:142]   1397 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_0101)
     ld    B, H          ; 1:4       1397 *
-    ld    C, L          ; 1:4       1397 *   1       1x = base 
-    add  HL, HL         ; 1:11      1397 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1397 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1397 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1397 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1397 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1397 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1397 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1397 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1397 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1397 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1397 *   0  *2 = 174x 
-    add  HL, HL         ; 1:11      1397 *   1  *2 = 348x
-    add  HL, BC         ; 1:11      1397 *      +1 = 349x 
-    add  HL, HL         ; 1:11      1397 *   0  *2 = 698x 
-    add  HL, HL         ; 1:11      1397 *   1  *2 = 1396x
-    add  HL, BC         ; 1:11      1397 *      +1 = 1397x  
+    ld    C, L          ; 1:4       1397 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1397 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1397 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1397 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1397 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1397 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1397 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1397 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1397 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      1397 *   1  *2 = 116x
+    add  HL, BC         ; 1:11      1397 *      +1 = 117x  
+    ld    A, C          ; 1:4       1397 *   1       1x 
+    add   A, A          ; 1:4       1397 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1397 *   1  *2 = 4x
+    add   A, C          ; 1:4       1397 *      +1 = 5x 
+    add   A, H          ; 1:4       1397 *
+    ld    H, A          ; 1:4       1397 *     [1397x] = 256 * 5x + 117x 
 
-                        ;[19:195]   1399 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_0111)
+                        ;[19:153]   1399 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_0111)
     ld    B, H          ; 1:4       1399 *
-    ld    C, L          ; 1:4       1399 *   1       1x = base 
-    add  HL, HL         ; 1:11      1399 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1399 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1399 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1399 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1399 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1399 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1399 *   0  *2 = 174x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 348x
-    add  HL, BC         ; 1:11      1399 *      +1 = 349x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 698x
-    add  HL, BC         ; 1:11      1399 *      +1 = 699x 
-    add  HL, HL         ; 1:11      1399 *   1  *2 = 1398x
-    add  HL, BC         ; 1:11      1399 *      +1 = 1399x   
-                        ;[18:184]   1401 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_1001)
+    ld    C, L          ; 1:4       1399 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1399 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1399 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1399 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1399 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1399 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1399 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1399 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1399 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      1399 *      +1 = 59x 
+    add  HL, HL         ; 1:11      1399 *   1  *2 = 118x
+    add  HL, BC         ; 1:11      1399 *      +1 = 119x  
+    ld    A, C          ; 1:4       1399 *   1       1x 
+    add   A, A          ; 1:4       1399 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1399 *   1  *2 = 4x
+    add   A, C          ; 1:4       1399 *      +1 = 5x 
+    add   A, H          ; 1:4       1399 *
+    ld    H, A          ; 1:4       1399 *     [1399x] = 256 * 5x + 119x  
+                        ;[18:142]   1401 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_1001)
     ld    B, H          ; 1:4       1401 *
-    ld    C, L          ; 1:4       1401 *   1       1x = base 
-    add  HL, HL         ; 1:11      1401 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1401 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1401 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1401 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1401 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1401 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1401 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1401 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1401 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1401 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1401 *   1  *2 = 174x
-    add  HL, BC         ; 1:11      1401 *      +1 = 175x 
-    add  HL, HL         ; 1:11      1401 *   0  *2 = 350x 
-    add  HL, HL         ; 1:11      1401 *   0  *2 = 700x 
-    add  HL, HL         ; 1:11      1401 *   1  *2 = 1400x
-    add  HL, BC         ; 1:11      1401 *      +1 = 1401x   
-                        ;[19:195]   1403 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_1011)
+    ld    C, L          ; 1:4       1401 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1401 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1401 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1401 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1401 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1401 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1401 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1401 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1401 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      1401 *   1  *2 = 120x
+    add  HL, BC         ; 1:11      1401 *      +1 = 121x  
+    ld    A, C          ; 1:4       1401 *   1       1x 
+    add   A, A          ; 1:4       1401 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1401 *   1  *2 = 4x
+    add   A, C          ; 1:4       1401 *      +1 = 5x 
+    add   A, H          ; 1:4       1401 *
+    ld    H, A          ; 1:4       1401 *     [1401x] = 256 * 5x + 121x  
+                        ;[19:153]   1403 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_1011)
     ld    B, H          ; 1:4       1403 *
-    ld    C, L          ; 1:4       1403 *   1       1x = base 
-    add  HL, HL         ; 1:11      1403 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1403 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1403 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1403 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1403 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1403 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 174x
-    add  HL, BC         ; 1:11      1403 *      +1 = 175x 
-    add  HL, HL         ; 1:11      1403 *   0  *2 = 350x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 700x
-    add  HL, BC         ; 1:11      1403 *      +1 = 701x 
-    add  HL, HL         ; 1:11      1403 *   1  *2 = 1402x
-    add  HL, BC         ; 1:11      1403 *      +1 = 1403x   
-                        ;[19:195]   1405 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_1101)
+    ld    C, L          ; 1:4       1403 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1403 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1403 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1403 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1403 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1403 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1403 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1403 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1403 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      1403 *      +1 = 61x 
+    add  HL, HL         ; 1:11      1403 *   1  *2 = 122x
+    add  HL, BC         ; 1:11      1403 *      +1 = 123x  
+    ld    A, C          ; 1:4       1403 *   1       1x 
+    add   A, A          ; 1:4       1403 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1403 *   1  *2 = 4x
+    add   A, C          ; 1:4       1403 *      +1 = 5x 
+    add   A, H          ; 1:4       1403 *
+    ld    H, A          ; 1:4       1403 *     [1403x] = 256 * 5x + 123x  
+                        ;[19:153]   1405 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_1101)
     ld    B, H          ; 1:4       1405 *
-    ld    C, L          ; 1:4       1405 *   1       1x = base 
-    add  HL, HL         ; 1:11      1405 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1405 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1405 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1405 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1405 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1405 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 174x
-    add  HL, BC         ; 1:11      1405 *      +1 = 175x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 350x
-    add  HL, BC         ; 1:11      1405 *      +1 = 351x 
-    add  HL, HL         ; 1:11      1405 *   0  *2 = 702x 
-    add  HL, HL         ; 1:11      1405 *   1  *2 = 1404x
-    add  HL, BC         ; 1:11      1405 *      +1 = 1405x   
-                        ;[20:206]   1407 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0101_0111_1111)
+    ld    C, L          ; 1:4       1405 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1405 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1405 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1405 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1405 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1405 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1405 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1405 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1405 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1405 *   0  *2 = 62x 
+    add  HL, HL         ; 1:11      1405 *   1  *2 = 124x
+    add  HL, BC         ; 1:11      1405 *      +1 = 125x  
+    ld    A, C          ; 1:4       1405 *   1       1x 
+    add   A, A          ; 1:4       1405 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1405 *   1  *2 = 4x
+    add   A, C          ; 1:4       1405 *      +1 = 5x 
+    add   A, H          ; 1:4       1405 *
+    ld    H, A          ; 1:4       1405 *     [1405x] = 256 * 5x + 125x  
+                        ;[20:164]   1407 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0101_0111_1111)
     ld    B, H          ; 1:4       1407 *
-    ld    C, L          ; 1:4       1407 *   1       1x = base 
-    add  HL, HL         ; 1:11      1407 *   0  *2 = 2x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 4x
-    add  HL, BC         ; 1:11      1407 *      +1 = 5x 
-    add  HL, HL         ; 1:11      1407 *   0  *2 = 10x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 20x
-    add  HL, BC         ; 1:11      1407 *      +1 = 21x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 42x
-    add  HL, BC         ; 1:11      1407 *      +1 = 43x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 86x
-    add  HL, BC         ; 1:11      1407 *      +1 = 87x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 174x
-    add  HL, BC         ; 1:11      1407 *      +1 = 175x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 350x
-    add  HL, BC         ; 1:11      1407 *      +1 = 351x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 702x
-    add  HL, BC         ; 1:11      1407 *      +1 = 703x 
-    add  HL, HL         ; 1:11      1407 *   1  *2 = 1406x
-    add  HL, BC         ; 1:11      1407 *      +1 = 1407x   
+    ld    C, L          ; 1:4       1407 *   1       1x & 256x = base 
+    add  HL, HL         ; 1:11      1407 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1407 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1407 *   1  *2 = 6x
+    add  HL, BC         ; 1:11      1407 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1407 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1407 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1407 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1407 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1407 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      1407 *      +1 = 63x 
+    add  HL, HL         ; 1:11      1407 *   1  *2 = 126x
+    add  HL, BC         ; 1:11      1407 *      +1 = 127x  
+    ld    A, C          ; 1:4       1407 *   1       1x 
+    add   A, A          ; 1:4       1407 *   0  *2 = 2x 
+    add   A, A          ; 1:4       1407 *   1  *2 = 4x
+    add   A, C          ; 1:4       1407 *      +1 = 5x 
+    add   A, H          ; 1:4       1407 *
+    ld    H, A          ; 1:4       1407 *     [1407x] = 256 * 5x + 127x  
                         ;[14:112]   1409 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0101_1000_0001)  
     ld    A, L          ; 1:4       1409 *   256x 
     ld    B, H          ; 1:4       1409 *
@@ -11894,22 +11749,17 @@ ORG 0x6000
     add   A, A          ; 1:4       1537 *   0  *2 = 6x 
     add   A, H          ; 1:4       1537 *
     ld    H, A          ; 1:4       1537 *     [1537x] = 256 * 6x + 1x  
-                        ;[15:151]   1539 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0000_0011)
+                        ;[10:54]    1539 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0110_0000_0011)
     ld    B, H          ; 1:4       1539 *
-    ld    C, L          ; 1:4       1539 *   1       1x = base 
+    ld    C, L          ; 1:4       1539 *   1       1x & 256x = base 
     add  HL, HL         ; 1:11      1539 *   1  *2 = 2x
-    add  HL, BC         ; 1:11      1539 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 48x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 96x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 192x 
-    add  HL, HL         ; 1:11      1539 *   0  *2 = 384x 
-    add  HL, HL         ; 1:11      1539 *   1  *2 = 768x
-    add  HL, BC         ; 1:11      1539 *      +1 = 769x 
-    add  HL, HL         ; 1:11      1539 *   1  *2 = 1538x
-    add  HL, BC         ; 1:11      1539 *      +1 = 1539x   
+    add  HL, BC         ; 1:11      1539 *      +1 = 3x  
+    ld    A, C          ; 1:4       1539 *   1       1x 
+    add   A, A          ; 1:4       1539 *   1  *2 = 2x
+    add   A, C          ; 1:4       1539 *      +1 = 3x 
+    add   A, A          ; 1:4       1539 *   0  *2 = 6x 
+    add   A, H          ; 1:4       1539 *
+    ld    H, A          ; 1:4       1539 *     [1539x] = 256 * 6x + 3x  
                         ;[9:57]     1541 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_0000_0101)  
     ld    B, H          ; 1:4       1541 *
     ld    C, L          ; 1:4       1541 *   [1x] 
@@ -11921,23 +11771,16 @@ ORG 0x6000
     ld    B, A          ; 1:4       1541 *   [1537x] 
     add  HL, BC         ; 1:11      1541 *   [1541x] = 4x + 1537x  
 
-                        ;[16:92]    1543 *   Variant mk2: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_0000_0111) 
-    ld    B, D          ; 1:4       1543 *
-    ld    C, E          ; 1:4       1543 * 
-    ld    D, H          ; 1:4       1543 *
-    ld    E, L          ; 1:4       1543 *   [1x] 
-    add  HL, HL         ; 1:11      1543 *   2x 
-    ld    A, L          ; 1:4       1543 *   512x 
-    ex   DE, HL         ; 1:4       1543 *
-    add  HL, DE         ; 1:11      1543 *   [3x]
-    ex   DE, HL         ; 1:4       1543 * 
-    add  HL, HL         ; 1:11      1543 *   4x 
-    add   A, L          ; 1:4       1543 *   1536x
-    add   A, D          ; 1:4       1543 *
-    ld    D, A          ; 1:4       1543 *   [1539x] 
-    add  HL, DE         ; 1:11      1543 *   [1543x] = 4x + 1539x  
-    ld    D, B          ; 1:4       1543 *
-    ld    E, C          ; 1:4       1543 * 
+                        ;[9:64]     1543 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0000_0111)
+    ld    B, H          ; 1:4       1543 *
+    ld    C, L          ; 1:4       1543 *   1       1x = base 
+    add  HL, HL         ; 1:11      1543 *   1  *2 = 2x
+    add  HL, BC         ; 1:11      1543 *      +1 = 3x 
+    add  HL, HL         ; 1:11      1543 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1543 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1543 *      +1 = 7x 
+    add   A, H          ; 1:4       1543 *
+    ld    H, A          ; 1:4       1543 *     [1543x] = 7x + 1536x  
                         ;[10:68]    1545 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_0000_1001)  
     ld    B, H          ; 1:4       1545 *
     ld    C, L          ; 1:4       1545 *   [1x] 
@@ -11972,24 +11815,18 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1549 *      +1 = 13x 
     add   A, H          ; 1:4       1549 *
     ld    H, A          ; 1:4       1549 *     [1549x] = 13x + 1536x  
-                        ;[17:173]   1551 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0000_1111)
+                        ;[11:86]    1551 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0000_1111)
     ld    B, H          ; 1:4       1551 *
     ld    C, L          ; 1:4       1551 *   1       1x = base 
     add  HL, HL         ; 1:11      1551 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1551 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1551 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1551 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1551 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1551 *   0  *2 = 48x 
-    add  HL, HL         ; 1:11      1551 *   0  *2 = 96x 
-    add  HL, HL         ; 1:11      1551 *   1  *2 = 192x
-    add  HL, BC         ; 1:11      1551 *      +1 = 193x 
-    add  HL, HL         ; 1:11      1551 *   1  *2 = 386x
-    add  HL, BC         ; 1:11      1551 *      +1 = 387x 
-    add  HL, HL         ; 1:11      1551 *   1  *2 = 774x
-    add  HL, BC         ; 1:11      1551 *      +1 = 775x 
-    add  HL, HL         ; 1:11      1551 *   1  *2 = 1550x
-    add  HL, BC         ; 1:11      1551 *      +1 = 1551x   
+    add  HL, HL         ; 1:11      1551 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1551 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1551 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1551 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1551 *      +1 = 15x 
+    add   A, H          ; 1:4       1551 *
+    ld    H, A          ; 1:4       1551 *     [1551x] = 15x + 1536x  
                         ;[11:79]    1553 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_0001_0001)  
     ld    B, H          ; 1:4       1553 *
     ld    C, L          ; 1:4       1553 *   [1x] 
@@ -12068,43 +11905,33 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1563 *      +1 = 27x 
     add   A, H          ; 1:4       1563 *
     ld    H, A          ; 1:4       1563 *     [1563x] = 27x + 1536x  
-                        ;[17:173]   1565 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0001_1101)
+                        ;[12:97]    1565 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0001_1101)
     ld    B, H          ; 1:4       1565 *
     ld    C, L          ; 1:4       1565 *   1       1x = base 
     add  HL, HL         ; 1:11      1565 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1565 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1565 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1565 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1565 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1565 *   0  *2 = 48x 
-    add  HL, HL         ; 1:11      1565 *   1  *2 = 96x
-    add  HL, BC         ; 1:11      1565 *      +1 = 97x 
-    add  HL, HL         ; 1:11      1565 *   1  *2 = 194x
-    add  HL, BC         ; 1:11      1565 *      +1 = 195x 
-    add  HL, HL         ; 1:11      1565 *   1  *2 = 390x
-    add  HL, BC         ; 1:11      1565 *      +1 = 391x 
-    add  HL, HL         ; 1:11      1565 *   0  *2 = 782x 
-    add  HL, HL         ; 1:11      1565 *   1  *2 = 1564x
-    add  HL, BC         ; 1:11      1565 *      +1 = 1565x   
-                        ;[18:184]   1567 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0001_1111)
+    add  HL, HL         ; 1:11      1565 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1565 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1565 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1565 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1565 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1565 *      +1 = 29x 
+    add   A, H          ; 1:4       1565 *
+    ld    H, A          ; 1:4       1565 *     [1565x] = 29x + 1536x  
+                        ;[13:108]   1567 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0001_1111)
     ld    B, H          ; 1:4       1567 *
     ld    C, L          ; 1:4       1567 *   1       1x = base 
     add  HL, HL         ; 1:11      1567 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1567 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1567 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1567 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1567 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1567 *   0  *2 = 48x 
-    add  HL, HL         ; 1:11      1567 *   1  *2 = 96x
-    add  HL, BC         ; 1:11      1567 *      +1 = 97x 
-    add  HL, HL         ; 1:11      1567 *   1  *2 = 194x
-    add  HL, BC         ; 1:11      1567 *      +1 = 195x 
-    add  HL, HL         ; 1:11      1567 *   1  *2 = 390x
-    add  HL, BC         ; 1:11      1567 *      +1 = 391x 
-    add  HL, HL         ; 1:11      1567 *   1  *2 = 782x
-    add  HL, BC         ; 1:11      1567 *      +1 = 783x 
-    add  HL, HL         ; 1:11      1567 *   1  *2 = 1566x
-    add  HL, BC         ; 1:11      1567 *      +1 = 1567x   
+    add  HL, HL         ; 1:11      1567 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1567 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1567 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1567 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1567 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1567 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1567 *      +1 = 31x 
+    add   A, H          ; 1:4       1567 *
+    ld    H, A          ; 1:4       1567 *     [1567x] = 31x + 1536x  
                         ;[12:90]    1569 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_0010_0001)  
     ld    B, H          ; 1:4       1569 *
     ld    C, L          ; 1:4       1569 *   [1x] 
@@ -12278,83 +12105,67 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1591 *      +1 = 55x 
     add   A, H          ; 1:4       1591 *
     ld    H, A          ; 1:4       1591 *     [1591x] = 55x + 1536x  
-                        ;[17:173]   1593 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0011_1001)
+                        ;[13:108]   1593 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0011_1001)
     ld    B, H          ; 1:4       1593 *
     ld    C, L          ; 1:4       1593 *   1       1x = base 
     add  HL, HL         ; 1:11      1593 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1593 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1593 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1593 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1593 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1593 *   1  *2 = 48x
-    add  HL, BC         ; 1:11      1593 *      +1 = 49x 
-    add  HL, HL         ; 1:11      1593 *   1  *2 = 98x
-    add  HL, BC         ; 1:11      1593 *      +1 = 99x 
-    add  HL, HL         ; 1:11      1593 *   1  *2 = 198x
-    add  HL, BC         ; 1:11      1593 *      +1 = 199x 
-    add  HL, HL         ; 1:11      1593 *   0  *2 = 398x 
-    add  HL, HL         ; 1:11      1593 *   0  *2 = 796x 
-    add  HL, HL         ; 1:11      1593 *   1  *2 = 1592x
-    add  HL, BC         ; 1:11      1593 *      +1 = 1593x   
-                        ;[18:184]   1595 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0011_1011)
+    add  HL, HL         ; 1:11      1593 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1593 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1593 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1593 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1593 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1593 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      1593 *      +1 = 57x 
+    add   A, H          ; 1:4       1593 *
+    ld    H, A          ; 1:4       1593 *     [1593x] = 57x + 1536x  
+                        ;[14:119]   1595 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0011_1011)
     ld    B, H          ; 1:4       1595 *
     ld    C, L          ; 1:4       1595 *   1       1x = base 
     add  HL, HL         ; 1:11      1595 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1595 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1595 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1595 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1595 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1595 *   1  *2 = 48x
-    add  HL, BC         ; 1:11      1595 *      +1 = 49x 
-    add  HL, HL         ; 1:11      1595 *   1  *2 = 98x
-    add  HL, BC         ; 1:11      1595 *      +1 = 99x 
-    add  HL, HL         ; 1:11      1595 *   1  *2 = 198x
-    add  HL, BC         ; 1:11      1595 *      +1 = 199x 
-    add  HL, HL         ; 1:11      1595 *   0  *2 = 398x 
-    add  HL, HL         ; 1:11      1595 *   1  *2 = 796x
-    add  HL, BC         ; 1:11      1595 *      +1 = 797x 
-    add  HL, HL         ; 1:11      1595 *   1  *2 = 1594x
-    add  HL, BC         ; 1:11      1595 *      +1 = 1595x  
+    add  HL, HL         ; 1:11      1595 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1595 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1595 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1595 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1595 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1595 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1595 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      1595 *      +1 = 59x 
+    add   A, H          ; 1:4       1595 *
+    ld    H, A          ; 1:4       1595 *     [1595x] = 59x + 1536x 
 
-                        ;[18:184]   1597 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0011_1101)
+                        ;[14:119]   1597 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0011_1101)
     ld    B, H          ; 1:4       1597 *
     ld    C, L          ; 1:4       1597 *   1       1x = base 
     add  HL, HL         ; 1:11      1597 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1597 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1597 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1597 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1597 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1597 *   1  *2 = 48x
-    add  HL, BC         ; 1:11      1597 *      +1 = 49x 
-    add  HL, HL         ; 1:11      1597 *   1  *2 = 98x
-    add  HL, BC         ; 1:11      1597 *      +1 = 99x 
-    add  HL, HL         ; 1:11      1597 *   1  *2 = 198x
-    add  HL, BC         ; 1:11      1597 *      +1 = 199x 
-    add  HL, HL         ; 1:11      1597 *   1  *2 = 398x
-    add  HL, BC         ; 1:11      1597 *      +1 = 399x 
-    add  HL, HL         ; 1:11      1597 *   0  *2 = 798x 
-    add  HL, HL         ; 1:11      1597 *   1  *2 = 1596x
-    add  HL, BC         ; 1:11      1597 *      +1 = 1597x   
-                        ;[19:195]   1599 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0011_1111)
+    add  HL, HL         ; 1:11      1597 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1597 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1597 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1597 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1597 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1597 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1597 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      1597 *      +1 = 61x 
+    add   A, H          ; 1:4       1597 *
+    ld    H, A          ; 1:4       1597 *     [1597x] = 61x + 1536x  
+                        ;[15:130]   1599 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0011_1111)
     ld    B, H          ; 1:4       1599 *
     ld    C, L          ; 1:4       1599 *   1       1x = base 
     add  HL, HL         ; 1:11      1599 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1599 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1599 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1599 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1599 *   0  *2 = 24x 
-    add  HL, HL         ; 1:11      1599 *   1  *2 = 48x
-    add  HL, BC         ; 1:11      1599 *      +1 = 49x 
-    add  HL, HL         ; 1:11      1599 *   1  *2 = 98x
-    add  HL, BC         ; 1:11      1599 *      +1 = 99x 
-    add  HL, HL         ; 1:11      1599 *   1  *2 = 198x
-    add  HL, BC         ; 1:11      1599 *      +1 = 199x 
-    add  HL, HL         ; 1:11      1599 *   1  *2 = 398x
-    add  HL, BC         ; 1:11      1599 *      +1 = 399x 
-    add  HL, HL         ; 1:11      1599 *   1  *2 = 798x
-    add  HL, BC         ; 1:11      1599 *      +1 = 799x 
-    add  HL, HL         ; 1:11      1599 *   1  *2 = 1598x
-    add  HL, BC         ; 1:11      1599 *      +1 = 1599x   
+    add  HL, HL         ; 1:11      1599 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1599 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1599 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1599 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1599 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1599 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1599 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1599 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      1599 *      +1 = 63x 
+    add   A, H          ; 1:4       1599 *
+    ld    H, A          ; 1:4       1599 *     [1599x] = 63x + 1536x  
                         ;[13:101]   1601 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_0100_0001)  
     ld    B, H          ; 1:4       1601 *
     ld    C, L          ; 1:4       1601 *   [1x] 
@@ -12737,163 +12548,139 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1647 *      +1 = 111x 
     add   A, H          ; 1:4       1647 *
     ld    H, A          ; 1:4       1647 *     [1647x] = 111x + 1536x  
-                        ;[17:173]   1649 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_0001)
+                        ;[14:119]   1649 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_0001)
     ld    B, H          ; 1:4       1649 *
     ld    C, L          ; 1:4       1649 *   1       1x = base 
     add  HL, HL         ; 1:11      1649 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1649 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1649 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1649 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1649 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1649 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1649 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1649 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1649 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1649 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1649 *   0  *2 = 206x 
-    add  HL, HL         ; 1:11      1649 *   0  *2 = 412x 
-    add  HL, HL         ; 1:11      1649 *   0  *2 = 824x 
-    add  HL, HL         ; 1:11      1649 *   1  *2 = 1648x
-    add  HL, BC         ; 1:11      1649 *      +1 = 1649x  
+    add  HL, HL         ; 1:11      1649 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1649 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1649 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1649 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1649 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1649 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      1649 *   1  *2 = 112x
+    add  HL, BC         ; 1:11      1649 *      +1 = 113x 
+    add   A, H          ; 1:4       1649 *
+    ld    H, A          ; 1:4       1649 *     [1649x] = 113x + 1536x 
 
-                        ;[18:184]   1651 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_0011)
+                        ;[15:130]   1651 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_0011)
     ld    B, H          ; 1:4       1651 *
     ld    C, L          ; 1:4       1651 *   1       1x = base 
     add  HL, HL         ; 1:11      1651 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1651 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1651 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1651 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1651 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1651 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1651 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1651 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1651 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1651 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1651 *   0  *2 = 206x 
-    add  HL, HL         ; 1:11      1651 *   0  *2 = 412x 
-    add  HL, HL         ; 1:11      1651 *   1  *2 = 824x
-    add  HL, BC         ; 1:11      1651 *      +1 = 825x 
-    add  HL, HL         ; 1:11      1651 *   1  *2 = 1650x
-    add  HL, BC         ; 1:11      1651 *      +1 = 1651x   
-                        ;[18:184]   1653 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_0101)
+    add  HL, HL         ; 1:11      1651 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1651 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1651 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1651 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1651 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1651 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      1651 *      +1 = 57x 
+    add  HL, HL         ; 1:11      1651 *   1  *2 = 114x
+    add  HL, BC         ; 1:11      1651 *      +1 = 115x 
+    add   A, H          ; 1:4       1651 *
+    ld    H, A          ; 1:4       1651 *     [1651x] = 115x + 1536x  
+                        ;[15:130]   1653 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_0101)
     ld    B, H          ; 1:4       1653 *
     ld    C, L          ; 1:4       1653 *   1       1x = base 
     add  HL, HL         ; 1:11      1653 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1653 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1653 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1653 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1653 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1653 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1653 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1653 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1653 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1653 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1653 *   0  *2 = 206x 
-    add  HL, HL         ; 1:11      1653 *   1  *2 = 412x
-    add  HL, BC         ; 1:11      1653 *      +1 = 413x 
-    add  HL, HL         ; 1:11      1653 *   0  *2 = 826x 
-    add  HL, HL         ; 1:11      1653 *   1  *2 = 1652x
-    add  HL, BC         ; 1:11      1653 *      +1 = 1653x   
-                        ;[19:195]   1655 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_0111)
+    add  HL, HL         ; 1:11      1653 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1653 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1653 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1653 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1653 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1653 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1653 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      1653 *   1  *2 = 116x
+    add  HL, BC         ; 1:11      1653 *      +1 = 117x 
+    add   A, H          ; 1:4       1653 *
+    ld    H, A          ; 1:4       1653 *     [1653x] = 117x + 1536x  
+                        ;[16:141]   1655 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_0111)
     ld    B, H          ; 1:4       1655 *
     ld    C, L          ; 1:4       1655 *   1       1x = base 
     add  HL, HL         ; 1:11      1655 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1655 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1655 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1655 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1655 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1655 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1655 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1655 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1655 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1655 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1655 *   0  *2 = 206x 
-    add  HL, HL         ; 1:11      1655 *   1  *2 = 412x
-    add  HL, BC         ; 1:11      1655 *      +1 = 413x 
-    add  HL, HL         ; 1:11      1655 *   1  *2 = 826x
-    add  HL, BC         ; 1:11      1655 *      +1 = 827x 
-    add  HL, HL         ; 1:11      1655 *   1  *2 = 1654x
-    add  HL, BC         ; 1:11      1655 *      +1 = 1655x   
-                        ;[18:184]   1657 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_1001)
+    add  HL, HL         ; 1:11      1655 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1655 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1655 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1655 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1655 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1655 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1655 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      1655 *      +1 = 59x 
+    add  HL, HL         ; 1:11      1655 *   1  *2 = 118x
+    add  HL, BC         ; 1:11      1655 *      +1 = 119x 
+    add   A, H          ; 1:4       1655 *
+    ld    H, A          ; 1:4       1655 *     [1655x] = 119x + 1536x  
+                        ;[15:130]   1657 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_1001)
     ld    B, H          ; 1:4       1657 *
     ld    C, L          ; 1:4       1657 *   1       1x = base 
     add  HL, HL         ; 1:11      1657 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1657 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1657 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1657 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1657 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1657 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1657 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1657 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1657 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1657 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1657 *   1  *2 = 206x
-    add  HL, BC         ; 1:11      1657 *      +1 = 207x 
-    add  HL, HL         ; 1:11      1657 *   0  *2 = 414x 
-    add  HL, HL         ; 1:11      1657 *   0  *2 = 828x 
-    add  HL, HL         ; 1:11      1657 *   1  *2 = 1656x
-    add  HL, BC         ; 1:11      1657 *      +1 = 1657x   
-                        ;[19:195]   1659 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_1011)
+    add  HL, HL         ; 1:11      1657 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1657 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1657 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1657 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1657 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1657 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1657 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      1657 *   1  *2 = 120x
+    add  HL, BC         ; 1:11      1657 *      +1 = 121x 
+    add   A, H          ; 1:4       1657 *
+    ld    H, A          ; 1:4       1657 *     [1657x] = 121x + 1536x  
+                        ;[16:141]   1659 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_1011)
     ld    B, H          ; 1:4       1659 *
     ld    C, L          ; 1:4       1659 *   1       1x = base 
     add  HL, HL         ; 1:11      1659 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1659 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1659 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1659 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1659 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1659 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1659 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1659 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1659 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1659 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1659 *   1  *2 = 206x
-    add  HL, BC         ; 1:11      1659 *      +1 = 207x 
-    add  HL, HL         ; 1:11      1659 *   0  *2 = 414x 
-    add  HL, HL         ; 1:11      1659 *   1  *2 = 828x
-    add  HL, BC         ; 1:11      1659 *      +1 = 829x 
-    add  HL, HL         ; 1:11      1659 *   1  *2 = 1658x
-    add  HL, BC         ; 1:11      1659 *      +1 = 1659x   
-                        ;[19:195]   1661 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_1101)
+    add  HL, HL         ; 1:11      1659 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1659 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1659 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1659 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1659 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1659 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1659 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      1659 *      +1 = 61x 
+    add  HL, HL         ; 1:11      1659 *   1  *2 = 122x
+    add  HL, BC         ; 1:11      1659 *      +1 = 123x 
+    add   A, H          ; 1:4       1659 *
+    ld    H, A          ; 1:4       1659 *     [1659x] = 123x + 1536x  
+                        ;[16:141]   1661 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_1101)
     ld    B, H          ; 1:4       1661 *
     ld    C, L          ; 1:4       1661 *   1       1x = base 
     add  HL, HL         ; 1:11      1661 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1661 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1661 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1661 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1661 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1661 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1661 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1661 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1661 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1661 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1661 *   1  *2 = 206x
-    add  HL, BC         ; 1:11      1661 *      +1 = 207x 
-    add  HL, HL         ; 1:11      1661 *   1  *2 = 414x
-    add  HL, BC         ; 1:11      1661 *      +1 = 415x 
-    add  HL, HL         ; 1:11      1661 *   0  *2 = 830x 
-    add  HL, HL         ; 1:11      1661 *   1  *2 = 1660x
-    add  HL, BC         ; 1:11      1661 *      +1 = 1661x   
-                        ;[20:206]   1663 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_0111_1111)
+    add  HL, HL         ; 1:11      1661 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1661 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1661 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1661 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1661 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1661 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1661 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1661 *   0  *2 = 62x 
+    add  HL, HL         ; 1:11      1661 *   1  *2 = 124x
+    add  HL, BC         ; 1:11      1661 *      +1 = 125x 
+    add   A, H          ; 1:4       1661 *
+    ld    H, A          ; 1:4       1661 *     [1661x] = 125x + 1536x  
+                        ;[17:152]   1663 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_0111_1111)
     ld    B, H          ; 1:4       1663 *
     ld    C, L          ; 1:4       1663 *   1       1x = base 
     add  HL, HL         ; 1:11      1663 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1663 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1663 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1663 *   0  *2 = 12x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 24x
-    add  HL, BC         ; 1:11      1663 *      +1 = 25x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 50x
-    add  HL, BC         ; 1:11      1663 *      +1 = 51x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 102x
-    add  HL, BC         ; 1:11      1663 *      +1 = 103x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 206x
-    add  HL, BC         ; 1:11      1663 *      +1 = 207x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 414x
-    add  HL, BC         ; 1:11      1663 *      +1 = 415x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 830x
-    add  HL, BC         ; 1:11      1663 *      +1 = 831x 
-    add  HL, HL         ; 1:11      1663 *   1  *2 = 1662x
-    add  HL, BC         ; 1:11      1663 *      +1 = 1663x   
+    add  HL, HL         ; 1:11      1663 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1663 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1663 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1663 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1663 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1663 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1663 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1663 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      1663 *      +1 = 63x 
+    add  HL, HL         ; 1:11      1663 *   1  *2 = 126x
+    add  HL, BC         ; 1:11      1663 *      +1 = 127x 
+    add   A, H          ; 1:4       1663 *
+    ld    H, A          ; 1:4       1663 *     [1663x] = 127x + 1536x  
                         ;[14:112]   1665 *   Variant mk3: HL * (256*a^2 + b^2 + ...) = HL * (b_0110_1000_0001)  
     ld    B, H          ; 1:4       1665 *
     ld    C, L          ; 1:4       1665 *   [1x] 
@@ -13732,141 +13519,127 @@ ORG 0x6000
     add  HL, BC         ; 1:11      1759 *      +1 = 223x 
     add   A, H          ; 1:4       1759 *
     ld    H, A          ; 1:4       1759 *     [1759x] = 223x + 1536x  
-                        ;[17:173]   1761 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_0001)
+                        ;[15:130]   1761 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_0001)
     ld    B, H          ; 1:4       1761 *
     ld    C, L          ; 1:4       1761 *   1       1x = base 
     add  HL, HL         ; 1:11      1761 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1761 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1761 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1761 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1761 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1761 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1761 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1761 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1761 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1761 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1761 *   0  *2 = 220x 
-    add  HL, HL         ; 1:11      1761 *   0  *2 = 440x 
-    add  HL, HL         ; 1:11      1761 *   0  *2 = 880x 
-    add  HL, HL         ; 1:11      1761 *   1  *2 = 1760x
-    add  HL, BC         ; 1:11      1761 *      +1 = 1761x   
-                        ;[18:184]   1763 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_0011)
+    add  HL, HL         ; 1:11      1761 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1761 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1761 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1761 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1761 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1761 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      1761 *   0  *2 = 112x 
+    add  HL, HL         ; 1:11      1761 *   1  *2 = 224x
+    add  HL, BC         ; 1:11      1761 *      +1 = 225x 
+    add   A, H          ; 1:4       1761 *
+    ld    H, A          ; 1:4       1761 *     [1761x] = 225x + 1536x  
+                        ;[16:141]   1763 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_0011)
     ld    B, H          ; 1:4       1763 *
     ld    C, L          ; 1:4       1763 *   1       1x = base 
     add  HL, HL         ; 1:11      1763 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1763 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1763 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1763 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1763 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1763 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1763 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1763 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1763 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1763 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1763 *   0  *2 = 220x 
-    add  HL, HL         ; 1:11      1763 *   0  *2 = 440x 
-    add  HL, HL         ; 1:11      1763 *   1  *2 = 880x
-    add  HL, BC         ; 1:11      1763 *      +1 = 881x 
-    add  HL, HL         ; 1:11      1763 *   1  *2 = 1762x
-    add  HL, BC         ; 1:11      1763 *      +1 = 1763x   
-                        ;[18:184]   1765 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_0101)
+    add  HL, HL         ; 1:11      1763 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1763 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1763 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1763 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1763 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1763 *   0  *2 = 56x 
+    add  HL, HL         ; 1:11      1763 *   1  *2 = 112x
+    add  HL, BC         ; 1:11      1763 *      +1 = 113x 
+    add  HL, HL         ; 1:11      1763 *   1  *2 = 226x
+    add  HL, BC         ; 1:11      1763 *      +1 = 227x 
+    add   A, H          ; 1:4       1763 *
+    ld    H, A          ; 1:4       1763 *     [1763x] = 227x + 1536x  
+                        ;[16:141]   1765 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_0101)
     ld    B, H          ; 1:4       1765 *
     ld    C, L          ; 1:4       1765 *   1       1x = base 
     add  HL, HL         ; 1:11      1765 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1765 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1765 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1765 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1765 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1765 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1765 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1765 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1765 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1765 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1765 *   0  *2 = 220x 
-    add  HL, HL         ; 1:11      1765 *   1  *2 = 440x
-    add  HL, BC         ; 1:11      1765 *      +1 = 441x 
-    add  HL, HL         ; 1:11      1765 *   0  *2 = 882x 
-    add  HL, HL         ; 1:11      1765 *   1  *2 = 1764x
-    add  HL, BC         ; 1:11      1765 *      +1 = 1765x   
-                        ;[19:195]   1767 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_0111)
+    add  HL, HL         ; 1:11      1765 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1765 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1765 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1765 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1765 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1765 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      1765 *      +1 = 57x 
+    add  HL, HL         ; 1:11      1765 *   0  *2 = 114x 
+    add  HL, HL         ; 1:11      1765 *   1  *2 = 228x
+    add  HL, BC         ; 1:11      1765 *      +1 = 229x 
+    add   A, H          ; 1:4       1765 *
+    ld    H, A          ; 1:4       1765 *     [1765x] = 229x + 1536x  
+                        ;[17:152]   1767 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_0111)
     ld    B, H          ; 1:4       1767 *
     ld    C, L          ; 1:4       1767 *   1       1x = base 
     add  HL, HL         ; 1:11      1767 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1767 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1767 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1767 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1767 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1767 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1767 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1767 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1767 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1767 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1767 *   0  *2 = 220x 
-    add  HL, HL         ; 1:11      1767 *   1  *2 = 440x
-    add  HL, BC         ; 1:11      1767 *      +1 = 441x 
-    add  HL, HL         ; 1:11      1767 *   1  *2 = 882x
-    add  HL, BC         ; 1:11      1767 *      +1 = 883x 
-    add  HL, HL         ; 1:11      1767 *   1  *2 = 1766x
-    add  HL, BC         ; 1:11      1767 *      +1 = 1767x   
-                        ;[18:184]   1769 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_1001)
+    add  HL, HL         ; 1:11      1767 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1767 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1767 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1767 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1767 *   0  *2 = 28x 
+    add  HL, HL         ; 1:11      1767 *   1  *2 = 56x
+    add  HL, BC         ; 1:11      1767 *      +1 = 57x 
+    add  HL, HL         ; 1:11      1767 *   1  *2 = 114x
+    add  HL, BC         ; 1:11      1767 *      +1 = 115x 
+    add  HL, HL         ; 1:11      1767 *   1  *2 = 230x
+    add  HL, BC         ; 1:11      1767 *      +1 = 231x 
+    add   A, H          ; 1:4       1767 *
+    ld    H, A          ; 1:4       1767 *     [1767x] = 231x + 1536x  
+                        ;[16:141]   1769 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_1001)
     ld    B, H          ; 1:4       1769 *
     ld    C, L          ; 1:4       1769 *   1       1x = base 
     add  HL, HL         ; 1:11      1769 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1769 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1769 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1769 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1769 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1769 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1769 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1769 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1769 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1769 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1769 *   1  *2 = 220x
-    add  HL, BC         ; 1:11      1769 *      +1 = 221x 
-    add  HL, HL         ; 1:11      1769 *   0  *2 = 442x 
-    add  HL, HL         ; 1:11      1769 *   0  *2 = 884x 
-    add  HL, HL         ; 1:11      1769 *   1  *2 = 1768x
-    add  HL, BC         ; 1:11      1769 *      +1 = 1769x   
-                        ;[19:195]   1771 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_1011)
+    add  HL, HL         ; 1:11      1769 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1769 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1769 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1769 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1769 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1769 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1769 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      1769 *   0  *2 = 116x 
+    add  HL, HL         ; 1:11      1769 *   1  *2 = 232x
+    add  HL, BC         ; 1:11      1769 *      +1 = 233x 
+    add   A, H          ; 1:4       1769 *
+    ld    H, A          ; 1:4       1769 *     [1769x] = 233x + 1536x  
+                        ;[17:152]   1771 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_1011)
     ld    B, H          ; 1:4       1771 *
     ld    C, L          ; 1:4       1771 *   1       1x = base 
     add  HL, HL         ; 1:11      1771 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1771 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1771 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1771 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1771 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1771 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1771 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1771 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1771 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1771 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1771 *   1  *2 = 220x
-    add  HL, BC         ; 1:11      1771 *      +1 = 221x 
-    add  HL, HL         ; 1:11      1771 *   0  *2 = 442x 
-    add  HL, HL         ; 1:11      1771 *   1  *2 = 884x
-    add  HL, BC         ; 1:11      1771 *      +1 = 885x 
-    add  HL, HL         ; 1:11      1771 *   1  *2 = 1770x
-    add  HL, BC         ; 1:11      1771 *      +1 = 1771x   
-                        ;[19:195]   1773 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1110_1101)
+    add  HL, HL         ; 1:11      1771 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1771 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1771 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1771 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1771 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1771 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1771 *   0  *2 = 58x 
+    add  HL, HL         ; 1:11      1771 *   1  *2 = 116x
+    add  HL, BC         ; 1:11      1771 *      +1 = 117x 
+    add  HL, HL         ; 1:11      1771 *   1  *2 = 234x
+    add  HL, BC         ; 1:11      1771 *      +1 = 235x 
+    add   A, H          ; 1:4       1771 *
+    ld    H, A          ; 1:4       1771 *     [1771x] = 235x + 1536x  
+                        ;[17:152]   1773 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1110_1101)
     ld    B, H          ; 1:4       1773 *
     ld    C, L          ; 1:4       1773 *   1       1x = base 
     add  HL, HL         ; 1:11      1773 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1773 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1773 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1773 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1773 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1773 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1773 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1773 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1773 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1773 *   0  *2 = 110x 
-    add  HL, HL         ; 1:11      1773 *   1  *2 = 220x
-    add  HL, BC         ; 1:11      1773 *      +1 = 221x 
-    add  HL, HL         ; 1:11      1773 *   1  *2 = 442x
-    add  HL, BC         ; 1:11      1773 *      +1 = 443x 
-    add  HL, HL         ; 1:11      1773 *   0  *2 = 886x 
-    add  HL, HL         ; 1:11      1773 *   1  *2 = 1772x
-    add  HL, BC         ; 1:11      1773 *      +1 = 1773x   
+    add  HL, HL         ; 1:11      1773 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1773 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1773 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1773 *   0  *2 = 14x 
+    add  HL, HL         ; 1:11      1773 *   1  *2 = 28x
+    add  HL, BC         ; 1:11      1773 *      +1 = 29x 
+    add  HL, HL         ; 1:11      1773 *   1  *2 = 58x
+    add  HL, BC         ; 1:11      1773 *      +1 = 59x 
+    add  HL, HL         ; 1:11      1773 *   0  *2 = 118x 
+    add  HL, HL         ; 1:11      1773 *   1  *2 = 236x
+    add  HL, BC         ; 1:11      1773 *      +1 = 237x 
+    add   A, H          ; 1:4       1773 *
+    ld    H, A          ; 1:4       1773 *     [1773x] = 237x + 1536x  
                         ;[18:107]   1775 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0001_0001)  
     ld    A, L          ; 1:4       1775 *   256x 
     ld    B, H          ; 1:4       1775 *
@@ -13887,65 +13660,59 @@ ORG 0x6000
     sbc   A, H          ; 1:4       1775 *
     ld    H, A          ; 1:4       1775 *   [1775x] = 2048x - 2048x   
 
-                        ;[18:184]   1777 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1111_0001)
+                        ;[16:141]   1777 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1111_0001)
     ld    B, H          ; 1:4       1777 *
     ld    C, L          ; 1:4       1777 *   1       1x = base 
     add  HL, HL         ; 1:11      1777 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1777 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1777 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1777 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1777 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1777 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1777 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1777 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1777 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1777 *   1  *2 = 110x
-    add  HL, BC         ; 1:11      1777 *      +1 = 111x 
-    add  HL, HL         ; 1:11      1777 *   0  *2 = 222x 
-    add  HL, HL         ; 1:11      1777 *   0  *2 = 444x 
-    add  HL, HL         ; 1:11      1777 *   0  *2 = 888x 
-    add  HL, HL         ; 1:11      1777 *   1  *2 = 1776x
-    add  HL, BC         ; 1:11      1777 *      +1 = 1777x   
-                        ;[19:195]   1779 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1111_0011)
+    add  HL, HL         ; 1:11      1777 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1777 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1777 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1777 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1777 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1777 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1777 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      1777 *   0  *2 = 120x 
+    add  HL, HL         ; 1:11      1777 *   1  *2 = 240x
+    add  HL, BC         ; 1:11      1777 *      +1 = 241x 
+    add   A, H          ; 1:4       1777 *
+    ld    H, A          ; 1:4       1777 *     [1777x] = 241x + 1536x  
+                        ;[17:152]   1779 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1111_0011)
     ld    B, H          ; 1:4       1779 *
     ld    C, L          ; 1:4       1779 *   1       1x = base 
     add  HL, HL         ; 1:11      1779 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1779 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1779 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1779 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1779 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1779 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1779 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1779 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1779 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1779 *   1  *2 = 110x
-    add  HL, BC         ; 1:11      1779 *      +1 = 111x 
-    add  HL, HL         ; 1:11      1779 *   0  *2 = 222x 
-    add  HL, HL         ; 1:11      1779 *   0  *2 = 444x 
-    add  HL, HL         ; 1:11      1779 *   1  *2 = 888x
-    add  HL, BC         ; 1:11      1779 *      +1 = 889x 
-    add  HL, HL         ; 1:11      1779 *   1  *2 = 1778x
-    add  HL, BC         ; 1:11      1779 *      +1 = 1779x   
-                        ;[19:195]   1781 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1111_0101)
+    add  HL, HL         ; 1:11      1779 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1779 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1779 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1779 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1779 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1779 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1779 *   0  *2 = 60x 
+    add  HL, HL         ; 1:11      1779 *   1  *2 = 120x
+    add  HL, BC         ; 1:11      1779 *      +1 = 121x 
+    add  HL, HL         ; 1:11      1779 *   1  *2 = 242x
+    add  HL, BC         ; 1:11      1779 *      +1 = 243x 
+    add   A, H          ; 1:4       1779 *
+    ld    H, A          ; 1:4       1779 *     [1779x] = 243x + 1536x  
+                        ;[17:152]   1781 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1111_0101)
     ld    B, H          ; 1:4       1781 *
     ld    C, L          ; 1:4       1781 *   1       1x = base 
     add  HL, HL         ; 1:11      1781 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1781 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1781 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1781 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1781 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1781 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1781 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1781 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1781 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1781 *   1  *2 = 110x
-    add  HL, BC         ; 1:11      1781 *      +1 = 111x 
-    add  HL, HL         ; 1:11      1781 *   0  *2 = 222x 
-    add  HL, HL         ; 1:11      1781 *   1  *2 = 444x
-    add  HL, BC         ; 1:11      1781 *      +1 = 445x 
-    add  HL, HL         ; 1:11      1781 *   0  *2 = 890x 
-    add  HL, HL         ; 1:11      1781 *   1  *2 = 1780x
-    add  HL, BC         ; 1:11      1781 *      +1 = 1781x   
+    add  HL, HL         ; 1:11      1781 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1781 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1781 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1781 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1781 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1781 *   0  *2 = 30x 
+    add  HL, HL         ; 1:11      1781 *   1  *2 = 60x
+    add  HL, BC         ; 1:11      1781 *      +1 = 61x 
+    add  HL, HL         ; 1:11      1781 *   0  *2 = 122x 
+    add  HL, HL         ; 1:11      1781 *   1  *2 = 244x
+    add  HL, BC         ; 1:11      1781 *      +1 = 245x 
+    add   A, H          ; 1:4       1781 *
+    ld    H, A          ; 1:4       1781 *     [1781x] = 245x + 1536x  
                         ;[15:90]    1783 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0000_1001)  
     ld    A, L          ; 1:4       1783 *   256x 
     ld    B, H          ; 1:4       1783 *
@@ -13962,68 +13729,62 @@ ORG 0x6000
     cpl                 ; 1:4       1783 *
     ld    L, A          ; 1:4       1783 *
     inc  HL             ; 1:6       1783 *   [1783x] = 0-1783x    
-                        ;[19:195]   1785 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1111_1001)
+                        ;[17:152]   1785 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1111_1001)
     ld    B, H          ; 1:4       1785 *
     ld    C, L          ; 1:4       1785 *   1       1x = base 
     add  HL, HL         ; 1:11      1785 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1785 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1785 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1785 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1785 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1785 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1785 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1785 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1785 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1785 *   1  *2 = 110x
-    add  HL, BC         ; 1:11      1785 *      +1 = 111x 
-    add  HL, HL         ; 1:11      1785 *   1  *2 = 222x
-    add  HL, BC         ; 1:11      1785 *      +1 = 223x 
-    add  HL, HL         ; 1:11      1785 *   0  *2 = 446x 
-    add  HL, HL         ; 1:11      1785 *   0  *2 = 892x 
-    add  HL, HL         ; 1:11      1785 *   1  *2 = 1784x
-    add  HL, BC         ; 1:11      1785 *      +1 = 1785x   
-                        ;[20:206]   1787 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1111_1011)
+    add  HL, HL         ; 1:11      1785 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1785 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1785 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1785 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1785 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1785 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1785 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1785 *   0  *2 = 62x 
+    add  HL, HL         ; 1:11      1785 *   0  *2 = 124x 
+    add  HL, HL         ; 1:11      1785 *   1  *2 = 248x
+    add  HL, BC         ; 1:11      1785 *      +1 = 249x 
+    add   A, H          ; 1:4       1785 *
+    ld    H, A          ; 1:4       1785 *     [1785x] = 249x + 1536x  
+                        ;[18:163]   1787 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1111_1011)
     ld    B, H          ; 1:4       1787 *
     ld    C, L          ; 1:4       1787 *   1       1x = base 
     add  HL, HL         ; 1:11      1787 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1787 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1787 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1787 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1787 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1787 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 110x
-    add  HL, BC         ; 1:11      1787 *      +1 = 111x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 222x
-    add  HL, BC         ; 1:11      1787 *      +1 = 223x 
-    add  HL, HL         ; 1:11      1787 *   0  *2 = 446x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 892x
-    add  HL, BC         ; 1:11      1787 *      +1 = 893x 
-    add  HL, HL         ; 1:11      1787 *   1  *2 = 1786x
-    add  HL, BC         ; 1:11      1787 *      +1 = 1787x   
-                        ;[20:206]   1789 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0110_1111_1101)
+    add  HL, HL         ; 1:11      1787 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1787 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1787 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1787 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1787 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1787 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1787 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1787 *   0  *2 = 62x 
+    add  HL, HL         ; 1:11      1787 *   1  *2 = 124x
+    add  HL, BC         ; 1:11      1787 *      +1 = 125x 
+    add  HL, HL         ; 1:11      1787 *   1  *2 = 250x
+    add  HL, BC         ; 1:11      1787 *      +1 = 251x 
+    add   A, H          ; 1:4       1787 *
+    ld    H, A          ; 1:4       1787 *     [1787x] = 251x + 1536x  
+                        ;[18:163]   1789 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0110_1111_1101)
     ld    B, H          ; 1:4       1789 *
     ld    C, L          ; 1:4       1789 *   1       1x = base 
     add  HL, HL         ; 1:11      1789 *   1  *2 = 2x
     add  HL, BC         ; 1:11      1789 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1789 *   0  *2 = 6x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 12x
-    add  HL, BC         ; 1:11      1789 *      +1 = 13x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 26x
-    add  HL, BC         ; 1:11      1789 *      +1 = 27x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 54x
-    add  HL, BC         ; 1:11      1789 *      +1 = 55x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 110x
-    add  HL, BC         ; 1:11      1789 *      +1 = 111x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 222x
-    add  HL, BC         ; 1:11      1789 *      +1 = 223x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 446x
-    add  HL, BC         ; 1:11      1789 *      +1 = 447x 
-    add  HL, HL         ; 1:11      1789 *   0  *2 = 894x 
-    add  HL, HL         ; 1:11      1789 *   1  *2 = 1788x
-    add  HL, BC         ; 1:11      1789 *      +1 = 1789x   
+    add  HL, HL         ; 1:11      1789 *   1  *2 = 6x
+    ld    A, L          ; 1:4       1789 *   256*L = 1536x
+    add  HL, BC         ; 1:11      1789 *      +1 = 7x 
+    add  HL, HL         ; 1:11      1789 *   1  *2 = 14x
+    add  HL, BC         ; 1:11      1789 *      +1 = 15x 
+    add  HL, HL         ; 1:11      1789 *   1  *2 = 30x
+    add  HL, BC         ; 1:11      1789 *      +1 = 31x 
+    add  HL, HL         ; 1:11      1789 *   1  *2 = 62x
+    add  HL, BC         ; 1:11      1789 *      +1 = 63x 
+    add  HL, HL         ; 1:11      1789 *   0  *2 = 126x 
+    add  HL, HL         ; 1:11      1789 *   1  *2 = 252x
+    add  HL, BC         ; 1:11      1789 *      +1 = 253x 
+    add   A, H          ; 1:4       1789 *
+    ld    H, A          ; 1:4       1789 *     [1789x] = 253x + 1536x  
                         ;[14:83]    1791 *   Variant mk3: HL * (256*a^2 - b^2 - ...) = HL * (b_1000_0000_0000 - b_0001_0000_0001)  
     ld    A, L          ; 1:4       1791 *   256x 
     ld    B, H          ; 1:4       1791 *
@@ -14046,23 +13807,18 @@ ORG 0x6000
     add   A, H          ; 1:4       1793 *
     ld    H, A          ; 1:4       1793 *     [1793x] = 256 * 7x + 1x 
 
-                        ;[16:162]   1795 *   Variant mk4: ...(((HL*2^a)+HL)*2^b)+... = HL * (b_0111_0000_0011)
+                        ;[11:58]    1795 *   Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+... = HL * (b_0111_0000_0011)
     ld    B, H          ; 1:4       1795 *
-    ld    C, L          ; 1:4       1795 *   1       1x = base 
+    ld    C, L          ; 1:4       1795 *   1       1x & 256x = base 
     add  HL, HL         ; 1:11      1795 *   1  *2 = 2x
-    add  HL, BC         ; 1:11      1795 *      +1 = 3x 
-    add  HL, HL         ; 1:11      1795 *   1  *2 = 6x
-    add  HL, BC         ; 1:11      1795 *      +1 = 7x 
-    add  HL, HL         ; 1:11      1795 *   0  *2 = 14x 
-    add  HL, HL         ; 1:11      1795 *   0  *2 = 28x 
-    add  HL, HL         ; 1:11      1795 *   0  *2 = 56x 
-    add  HL, HL         ; 1:11      1795 *   0  *2 = 112x 
-    add  HL, HL         ; 1:11      1795 *   0  *2 = 224x 
-    add  HL, HL         ; 1:11      1795 *   0  *2 = 448x 
-    add  HL, HL         ; 1:11      1795 *   1  *2 = 896x
-    add  HL, BC         ; 1:11      1795 *      +1 = 897x 
-    add  HL, HL         ; 1:11      1795 *   1  *2 = 1794x
-    add  HL, BC         ; 1:11      1795 *      +1 = 1795x   
+    add  HL, BC         ; 1:11      1795 *      +1 = 3x  
+    ld    A, C          ; 1:4       1795 *   1       1x 
+    add   A, A          ; 1:4       1795 *   1  *2 = 2x
+    add   A, C          ; 1:4       1795 *      +1 = 3x 
+    add   A, A          ; 1:4       1795 *   1  *2 = 6x
+    add   A, C          ; 1:4       1795 *      +1 = 7x 
+    add   A, H          ; 1:4       1795 *
+    ld    H, A          ; 1:4       1795 *     [1795x] = 256 * 7x + 3x  
                         ;[9:57]     1797 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0111_0000_0101)
     ld    B, H          ; 1:4       1797 *
     ld    C, L          ; 1:4       1797 *   1       1x = base 
