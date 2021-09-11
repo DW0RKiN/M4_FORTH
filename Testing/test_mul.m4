@@ -1,6 +1,6 @@
 include(`../M4/FIRST.M4')dnl
 
-define({TYPMUL},{test5})
+define({TYPMUL},{})
 
 ORG 0x8000
 INIT(60000)

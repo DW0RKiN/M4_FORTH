@@ -80,7 +80,7 @@ endif101:
                         ;[12:97]    293 *   Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+... = HL * (b_0001_0010_0101)
     ld    B, H          ; 1:4       293 *
     ld    C, L          ; 1:4       293 *   1       1x = base 
-    ld    A, L          ; 1:4       293 *   256*L = 256x 
+    ld    A, L          ; 1:4       293 *       L = 1x 
     add  HL, HL         ; 1:11      293 *   0  *2 = 2x 
     add  HL, HL         ; 1:11      293 *   0  *2 = 4x 
     add  HL, HL         ; 1:11      293 *   1  *2 = 8x
@@ -89,7 +89,7 @@ endif101:
     add  HL, HL         ; 1:11      293 *   1  *2 = 36x
     add  HL, BC         ; 1:11      293 *      +1 = 37x 
     add   A, H          ; 1:4       293 *
-    ld    H, A          ; 1:4       293 *     [293x] = 37x + 256x 
+    ld    H, A          ; 1:4       293 *     [293x] = 37x + 256*1x 
 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b )
@@ -140,7 +140,7 @@ endif102:
     ld    C, L          ; 1:4       1069 *   1       1x = base 
     add  HL, HL         ; 1:11      1069 *   0  *2 = 2x 
     add  HL, HL         ; 1:11      1069 *   1  *2 = 4x
-    ld    A, L          ; 1:4       1069 *   256*L = 1024x
+    ld    A, L          ; 1:4       1069 *      +L = 4x
     add  HL, BC         ; 1:11      1069 *      +1 = 5x 
     add  HL, HL         ; 1:11      1069 *   1  *2 = 10x
     add  HL, BC         ; 1:11      1069 *      +1 = 11x 
@@ -148,7 +148,7 @@ endif102:
     add  HL, HL         ; 1:11      1069 *   1  *2 = 44x
     add  HL, BC         ; 1:11      1069 *      +1 = 45x 
     add   A, H          ; 1:4       1069 *
-    ld    H, A          ; 1:4       1069 *     [1069x] = 45x + 1024x 
+    ld    H, A          ; 1:4       1069 *     [1069x] = 45x + 256*4x 
 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b )
@@ -198,17 +198,17 @@ endif103:
     ld    B, H          ; 1:4       3877 *
     ld    C, L          ; 1:4       3877 *   1       1x = base 
     add  HL, HL         ; 1:11      3877 *   0  *2 = 2x 
-    ld    A, L          ; 1:4       3877 *   256*L = 512x 
+    ld    A, L          ; 1:4       3877 *       L = 2x 
     add  HL, HL         ; 1:11      3877 *   0  *2 = 4x 
-    add   A, L          ; 1:4       3877 *  +256*L = 1536x 
+    add   A, L          ; 1:4       3877 *      +L = 6x 
     add  HL, HL         ; 1:11      3877 *   1  *2 = 8x
     add  HL, BC         ; 1:11      3877 *      +1 = 9x 
-    add   A, L          ; 1:4       3877 *  +256*L = 3840x 
+    add   A, L          ; 1:4       3877 *      +L = 15x 
     add  HL, HL         ; 1:11      3877 *   0  *2 = 18x 
     add  HL, HL         ; 1:11      3877 *   1  *2 = 36x
     add  HL, BC         ; 1:11      3877 *      +1 = 37x 
     add   A, H          ; 1:4       3877 *
-    ld    H, A          ; 1:4       3877 *     [3877x] = 37x + 3840x 
+    ld    H, A          ; 1:4       3877 *     [3877x] = 37x + 256*15x 
 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b )
@@ -265,11 +265,11 @@ endif104:
     add  HL, HL         ; 1:11      13933 *   1  *2 = 26x
     add  HL, BC         ; 1:11      13933 *      +1 = 27x 
     add  HL, HL         ; 1:11      13933 *   0  *2 = 54x 
-    ld    A, L          ; 1:4       13933 *   256*L = 13824x 
+    ld    A, L          ; 1:4       13933 *       L = 54x 
     add  HL, HL         ; 1:11      13933 *   1  *2 = 108x
     add  HL, BC         ; 1:11      13933 *      +1 = 109x 
     add   A, H          ; 1:4       13933 *
-    ld    H, A          ; 1:4       13933 *     [13933x] = 109x + 13824x 
+    ld    H, A          ; 1:4       13933 *     [13933x] = 109x + 256*54x 
 
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b )
@@ -472,62 +472,35 @@ BIN2DEC_CHAR:
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, BC, DE
 MULTIPLY:
-                        ;[62:cca 501-593] test5 version
-    xor   A             ; 1:4       A = 0 = 256sum
-    ld    B, H          ; 1:4
+                        ;[36:???-627] test8 version   
+    xor   A             ; 1:4
+    ld    C, E          ; 1:4
+
+    srl   H             ; 2:8       divide H by 2
+    jr   nc, $+3        ; 2:7/12        
+MULTIPLY1:
+    add   A, C          ; 1:4       A += C(originalE)
+
+    sla   C             ; 2:8       C(originalE) *= 2
+    srl   H             ; 2:8       H /= 2
+    jr    c, MULTIPLY1  ; 2:7/12
+    jp   nz, MULTIPLY1+1; 3:10      H = ?
+
     ld    C, L          ; 1:4
-    ld    H, A          ; 1:4
-    ld    L, A          ; 1:4       HL = 0 = result BC*DE
+    ld    L, H          ; 1:4       L = 0
+    ld    H, A          ; 1:4       HL *= E
 
-    srl   B             ; 2:8       check 8. bit
-    jp   nc, $+4        ; 3:10
-    add   A, E          ; 1:4       + 256x
-
-    jr    z, CDE_begin  ; 2:7/12    B == 0 or E == 0
+    srl   C             ; 2:8       divide C(originalL) by 2
+    jr   nc, $+3        ; 2:7/12    
+MULTIPLY2:
+    add  HL, DE         ; 1:11
     
-    srl   C             ; 2:8       check 0. bit
-    jp   nc, BCDE_turn  ; 3:10
-
-BCDE_sum:
-    add  HL, DE         ; 1:11      HL += DE
-BCDE_turn:
     sla   E             ; 2:8
-    rl    D             ; 2:8       next turn --> 2xDE
-    
-    srl   B             ; 2:8       check 8. bit
-    jp   nc, $+4        ; 3:10
-    add   A, E          ; 1:4       + 256x
-    
-    srl   C             ; 2:8       check 0. bit
-    jr    c, BCDE_sum   ; 2:7/12
-    jp   nz, BCDE_turn  ; 3:10
+    rl    D             ; 2:8       multiply DE by 2    
 
-; fall into B0DE
-
-DB 0x0E                 ; 2:7       ld C, 0x85
-B0DE_256x:
-    add   A, E          ; 1:4       + 256x
-
-B0DE_turn:
-    sla   E             ; 2:8       next turn --> 2xE
-
-    srl   B             ; 2:8       check 8. bit
-    jr    c, B0DE_256x  ; 2:7/12
-    jr   nz, B0DE_turn  ; 2:7/12
-
-    add   A, H          ; 1:4
-    ld    H, A          ; 1:4
-    ret                 ; 1:10
-    
-CDE_sum:                ;           B == 0 or E == 0
-    add  HL, DE         ; 1:11      HL += DE
-CDE_turn:
-    sla   E             ; 2:8
-    rl    D             ; 2:8       next turn --> 2xDE
-CDE_begin:
-    srl   C             ; 2:8       check 0. bit
-    jr    c, CDE_sum    ; 2:7/12
-    jp   nz, CDE_turn   ; 3:10
+    srl   C             ; 2:8       divide C(originalL) by 2
+    jr    c, MULTIPLY2  ; 2:7/12
+    jp   nz, MULTIPLY2+1; 3:10      C = ?
 
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
