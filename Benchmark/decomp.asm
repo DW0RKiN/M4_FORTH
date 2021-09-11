@@ -111,39 +111,41 @@ _bench_end:
 ; Input: HL,DE
 ; Output: HL=HL*DE ((un)signed)
 ; It does not matter whether it is signed or unsigned multiplication.
-; Pollutes: AF, B, DE
+; HL = HL*DE = H0*E + L*DE
+; Pollutes: AF, C, DE
 MULTIPLY:
-    ld    A, H          ; 1:4       default version
-    sub   D             ; 1:4
-    jr    c, $+3        ; 2:7/12
-    ex   DE, HL         ; 1:4       H=>D faster 7+4<12
+                        ;[36:471-627] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...   
+    xor   A             ; 1:4
+    ld    C, E          ; 1:4
 
-    ld    B, H          ; 1:4       
-    ld    A, L          ; 1:4
-    ld   HL, 0x0000     ; 3:10 
+    srl   H             ; 2:8       divide H by 2
+    jr   nc, $+3        ; 2:7/12        
+MULTIPLY1:
+    add   A, C          ; 1:4       A += C(original E)
 
-    srl   B             ; 2:8
-    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
-    jr   nc, $+3        ; 2:7/12
-MUL_LOOP:
+    sla   C             ; 2:8       C(original E) *= 2
+    srl   H             ; 2:8       H /= 2
+    jr    c, MULTIPLY1  ; 2:7/12
+    jp   nz, MULTIPLY1+1; 3:10      H = ?
+
+    ld    C, L          ; 1:4
+    ld    L, H          ; 1:4       L = 0
+    ld    H, A          ; 1:4       HL *= E
+
+    srl   C             ; 2:8       divide C(original L) by 2
+    jr   nc, $+3        ; 2:7/12    
+MULTIPLY2:
     add  HL, DE         ; 1:11
+    
     sla   E             ; 2:8
     rl    D             ; 2:8       multiply DE by 2    
-    srl   B             ; 2:8
-    rra                 ; 1:4       divide old HL by 2, zero flag unaffected
-    jr    c, MUL_LOOP   ; 2:7/12
-    jp   nz, MUL_LOOP+1 ; 3:10      B = ?
 
-    db   0x06           ; 2:7
-MUL_LOOP2:
-    add  HL, DE         ; 1:11
-    sla   E             ; 2:8
-    rl    D             ; 2:8       multiply DE by 2
-    srl   A             ; 2:8       divide old HL by 2, zero flag unaffected
-    jr    c, MUL_LOOP2  ; 2:7/12
-    jp   nz, MUL_LOOP2+1; 3:10      A = ?
+    srl   C             ; 2:8       divide C(original L) by 2
+    jr    c, MULTIPLY2  ; 2:7/12
+    jp   nz, MULTIPLY2+1; 3:10      C(original L) = ?
 
     ret                 ; 1:10
+MULTIPLY_SIZE EQU  $-MULTIPLY
 
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
