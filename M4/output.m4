@@ -196,21 +196,21 @@ MULTIPLY:
     ld    A, E          ; 1:4       DE check bits
     add   A, A          ; 1:4
     jr    c, MULTIPLY_E7; 2:7/12
-    jr    z, MULTIPLY_D ; 2:7/12
+    jr    z, MULTIPLY_D ; 2:7/12    <-------------+
+    add   A, A          ; 1:4                     |
+    jr    c, MULTIPLY_E6; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E6; 2:7/12
+    jr    c, MULTIPLY_E5; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E5; 2:7/12
+    jr    c, MULTIPLY_E4; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E4; 2:7/12
+    jr    c, MULTIPLY_E3; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E3; 2:7/12
+    jr    c, MULTIPLY_E2; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E2; 2:7/12
-    add   A, A          ; 1:4
-    jr    c, MULTIPLY_E1; 2:7/12    
-    add   A, A          ; 1:4
-    jr    c, MULTIPLY_E0; 2:7/12    
+    jr    c, MULTIPLY_E1; 2:7/12                  |
+    add   A, A          ; 1:4                     |
+    jr    c, MULTIPLY_E0; 2:7/12    always carry -+
                         ;           
 MULTIPLY_D:             ;           A == E == 0 
     ld    H, A          ; 1:4
@@ -247,7 +247,6 @@ MULTIPLY_E6:            ;           HL 1x --> 64x
     add   A, A          ; 1:4       check E 0010_0000 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
-
 MULTIPLY_E5:            ;           HL 1x --> 32x
     add  HL, HL         ; 1:11
     
@@ -882,10 +881,10 @@ MULTIPLY_HI:
     ld    H, A          ; 1:4
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY},
-{
+TYPMUL,{old_default},{
 ; Pollutes: AF, B, DE
 MULTIPLY:
-                        ;[42:cca 593-757] # default version can be changed with "define({name})", name=fast,small,test,test2,...
+                        ;[42:cca 593-757] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
     ld    A, H          ; 1:4
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
@@ -915,6 +914,42 @@ MUL_LOOP2:
     srl   A             ; 2:8       divide old HL by 2, zero flag unaffected
     jr    c, MUL_LOOP2  ; 2:7/12
     jp   nz, MUL_LOOP2+1; 3:10      A = ?
+
+    ret                 ; 1:10
+MULTIPLY_SIZE EQU  $-MULTIPLY},
+{
+; HL = HL*DE = H0*E + L*DE
+; Pollutes: AF, C, DE
+MULTIPLY:
+                        ;[36:471-627] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...   
+    xor   A             ; 1:4
+    ld    C, E          ; 1:4
+
+    srl   H             ; 2:8       divide H by 2
+    jr   nc, $+3        ; 2:7/12        
+MULTIPLY1:
+    add   A, C          ; 1:4       A += C(original E)
+
+    sla   C             ; 2:8       C(original E) *= 2
+    srl   H             ; 2:8       H /= 2
+    jr    c, MULTIPLY1  ; 2:7/12
+    jp   nz, MULTIPLY1+1; 3:10      H = ?
+
+    ld    C, L          ; 1:4
+    ld    L, H          ; 1:4       L = 0
+    ld    H, A          ; 1:4       HL *= E
+
+    srl   C             ; 2:8       divide C(original L) by 2
+    jr   nc, $+3        ; 2:7/12    
+MULTIPLY2:
+    add  HL, DE         ; 1:11
+    
+    sla   E             ; 2:8
+    rl    D             ; 2:8       multiply DE by 2    
+
+    srl   C             ; 2:8       divide C(original L) by 2
+    jr    c, MULTIPLY2  ; 2:7/12
+    jp   nz, MULTIPLY2+1; 3:10      C(original L) = ?
 
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY})}){}dnl

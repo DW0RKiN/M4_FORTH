@@ -8,7 +8,7 @@ dnl
 ___{}define({_TOKEN_PUSH},{dnl
 ___{}___{}define({_COST},{0})dnl
 ___{}___{}define({XMUL_SUM},{1})dnl
-___{}___{}define({XMUL_256X_SUM},{0})dnl
+___{}___{}define({XMUL_A_SUM},{0})dnl
 ___{}___{}define({XMUL_RESULT},{0})dnl
 ___{}___{}ifelse(eval(HI_BIT($1)<($1)),{1},{dnl
 ___{}___{}_ADD_COST(2+256*8)
@@ -20,15 +20,15 @@ ___{}___{}ifelse(eval(XMUL_RESULT!=$1),{1},{
 ___{}___{}___{}.error Error in mk4 constant multiplication function. The generated code does not have the correct result. XMUL_RESULT <> $1
 ___{}___{}})})dnl
 dnl
-___{}define({_TOKEN_256X_SAVE},{dnl
-___{}___{}ifelse(eval(XMUL_256X_SUM==0),{1},{dnl
-___{}___{}___{}define({XMUL_256X_SUM},eval(256*XMUL_SUM))dnl
+___{}define({_TOKEN_ASAVE},{dnl
+___{}___{}ifelse(eval(XMUL_A_SUM==0),{1},{dnl
+___{}___{}___{}define({XMUL_A_SUM},XMUL_SUM)dnl
 ___{}___{}___{}_ADD_COST(1+256*4)
-___{}___{}___{}    ld    A{,} L          ; 1:4       $1 *   256*L = XMUL_256X_SUM{}x{}dnl
-___{}___{}},eval(XMUL_256X_SUM>0),{1},{dnl
-___{}___{}___{}define({XMUL_256X_SUM},eval(XMUL_256X_SUM+256*XMUL_SUM))dnl
+___{}___{}___{}    ld    A{,} L          ; 1:4       $1 *       L = XMUL_A_SUM{}x{}dnl
+___{}___{}},eval(XMUL_A_SUM>0),{1},{dnl
+___{}___{}___{}define({XMUL_A_SUM},eval(XMUL_A_SUM+XMUL_SUM))dnl
 ___{}___{}___{}_ADD_COST(1+256*4)
-___{}___{}___{}    add   A{,} L          ; 1:4       $1 *  +256*L = XMUL_256X_SUM{}x})}){}dnl
+___{}___{}___{}    add   A{,} L          ; 1:4       $1 *      +L = XMUL_A_SUM{}x})}){}dnl
 dnl
 ___{}define({_TOKEN_2X},{dnl
 ___{}___{}define({XMUL_SUM},eval(2*XMUL_SUM))dnl
@@ -42,28 +42,28 @@ ___{}___{}    add  HL{,} HL         ; 1:11      $1 *   1  *2 = XMUL_SUM{}x
 ___{}___{}define({XMUL_SUM},eval(1+XMUL_SUM))dnl
 ___{}___{}    add  HL{,} BC         ; 1:11      $1 *      +1 = XMUL_SUM{}x}){}dnl
 dnl
-___{}define({_TOKEN_2X_256X_SAVE},{dnl
+___{}define({_TOKEN_2X_ASAVE_SAVE},{dnl
 ___{}___{}_ADD_COST(1+256*11)
 ___{}___{}define({XMUL_SUM},eval(2*XMUL_SUM))dnl
 ___{}___{}    add  HL{,} HL         ; 1:11      $1 *   1  *2 = XMUL_SUM{}x{}dnl
-___{}___{}ifelse(eval(XMUL_256X_SUM==0),{1},{dnl
-___{}___{}___{}define({XMUL_256X_SUM},eval(256*XMUL_SUM))dnl
+___{}___{}ifelse(eval(XMUL_A_SUM==0),{1},{dnl
+___{}___{}___{}define({XMUL_A_SUM},eval(XMUL_SUM))dnl
 ___{}___{}___{}_ADD_COST(1+256*4)
-___{}___{}___{}    ld    A{,} L          ; 1:4       $1 *   256*L = XMUL_256X_SUM{}x{}dnl
-___{}___{}},eval(XMUL_256X_SUM>0),{1},{dnl
-___{}___{}___{}define({XMUL_256X_SUM},eval(XMUL_256X_SUM+256*XMUL_SUM))dnl
+___{}___{}___{}    ld    A{,} L          ; 1:4       $1 *      +L = XMUL_A_SUM{}x{}dnl
+___{}___{}},eval(XMUL_A_SUM>0),{1},{dnl
+___{}___{}___{}define({XMUL_A_SUM},eval(XMUL_A_SUM+XMUL_SUM))dnl
 ___{}___{}___{}_ADD_COST(1+256*4)
-___{}___{}___{}    add   A{,} L          ; 1:4       $1 *  +256*L = XMUL_256X_SUM{}x}){}dnl
+___{}___{}___{}    add   A{,} L          ; 1:4       $1 *      +L = XMUL_A_SUM{}x}){}dnl
 ___{}___{}define({XMUL_SUM},eval(1+XMUL_SUM))dnl
 ___{}___{}_ADD_COST(1+256*11)
 ___{}___{}    add  HL{,} BC         ; 1:11      $1 *      +1 = XMUL_SUM{}x}){}dnl
 dnl
 ___{}define({_TOKEN_END},{dnl
-___{}___{}define({XMUL_RESULT},eval(XMUL_SUM+XMUL_256X_SUM)){}dnl
-___{}___{}ifelse(eval(XMUL_256X_SUM>0),{1},{dnl
+___{}___{}define({XMUL_RESULT},eval(XMUL_SUM+256*XMUL_A_SUM)){}dnl
+___{}___{}ifelse(eval(XMUL_A_SUM>0),{1},{dnl
 ___{}___{}_ADD_COST(2+256*8)
 ___{}___{}    add   A{,} H          ; 1:4       $1 *
-___{}___{}    ld    H{,} A          ; 1:4       $1 *     [XMUL_RESULT{}x] = XMUL_SUM{}x + XMUL_256X_SUM{}x})})dnl
+___{}___{}    ld    H{,} A          ; 1:4       $1 *     [XMUL_RESULT{}x] = XMUL_SUM{}x + 256*XMUL_A_SUM{}x})})dnl
 })dnl
 dnl
 dnl
@@ -142,11 +142,15 @@ define({PUSH_MUL_MK4_LOOP},{dnl
 ___{}ifelse(eval(($1)>1),{1},{dnl
 ___{}___{}ifelse(eval(XMUL_HI>=($1)),{1},{dnl
 ___{}___{}___{}define({XMUL_HI},eval(XMUL_HI-($1))){}dnl
-___{}___{}___{}_PUSH_OUTPUT({_TOKEN_256X_SAVE() })dnl
+___{}___{}___{}_PUSH_OUTPUT({_TOKEN_ASAVE() })dnl
+___{}___{}___{}ifelse(eval(XMUL_HI>=($1)),{1},{dnl
+___{}___{}___{}___{}define({XMUL_HI},eval(XMUL_HI-($1))){}dnl
+___{}___{}___{}___{}_PUSH_OUTPUT({_TOKEN_ASAVE() })dnl
+___{}___{}___{}})dnl
 ___{}___{}})dnl
 ___{}___{}ifelse(eval((XMUL_HI > 0) && (($1 & 1) == 1) && (XMUL_HI>=($1 - 1))),{1},{dnl
 ___{}___{}___{}define({XMUL_HI},eval(XMUL_HI-($1-1))){}dnl
-___{}___{}___{}_PUSH_OUTPUT({_TOKEN_2X_256X_SAVE() }){}dnl
+___{}___{}___{}_PUSH_OUTPUT({_TOKEN_2X_ASAVE_SAVE() }){}dnl
 ___{}___{}},eval($1 & 1),{1},{dnl
 ___{}___{}___{}_PUSH_OUTPUT({_TOKEN_2X_SAVE() }){}dnl
 ___{}___{}},{dnl
@@ -156,7 +160,7 @@ ___{}___{}PUSH_MUL_MK4_LOOP(eval(($1)/2))dnl
 ___{}},eval(($1)>0),{1},{dnl
 ___{}___{}ifelse(eval(XMUL_HI>=($1)),{1},{dnl
 ___{}___{}___{}define({XMUL_HI},eval(XMUL_HI-($1))){}dnl
-___{}___{}___{}_PUSH_OUTPUT({_TOKEN_256X_SAVE() })}){}dnl
+___{}___{}___{}_PUSH_OUTPUT({_TOKEN_ASAVE() })}){}dnl
 ___{}})dnl
 })dnl
 dnl
@@ -164,9 +168,9 @@ dnl
 dnl
 define({PUSH_MUL_MK4_CREATE_TOKENS},{dnl
 ___{}undefine({_TOKEN_2X})dnl
-___{}undefine({_TOKEN_2X_256X_SAVE})dnl
-___{}undefine({_TOKEN_256X_SAVE})dnl
 ___{}undefine({_TOKEN_2X_SAVE})dnl
+___{}undefine({_TOKEN_2X_ASAVE_SAVE})dnl
+___{}undefine({_TOKEN_ASAVE})dnl
 ___{}undefine({_TOKEN_PUSH})dnl
 ___{}undefine({_TOKEN_END})dnl
 ___{}undefine({_TOKEN_CHECK})dnl
@@ -219,7 +223,7 @@ ___{}___{}___{}define({PUSH_MUL_MK4_TEMP},_OUTPUT)dnl
 ___{}___{}___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(_COST,PUSH_MUL_MK4_COST),{1},{dnl
 ___{}___{}___{}___{}define({PUSH_MUL_MK4_OUT},{PUSH_MUL_MK4_TEMP})dnl
 ___{}___{}___{}___{}define({PUSH_MUL_MK4_COST},_COST)dnl
-___{}___{}___{}___{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: 256*...(((L*2^a)+L)*2^b)+...}))dnl
+___{}___{}___{}___{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: 256*...(((L*2^a)+L)*2^b)+...+HL}))dnl
 ___{}___{}___{}})dnl
 ___{}___{}},{dnl
 ___{}___{}___{}PUSH_MUL_MK4_CREATE_TOKENS(XMUL_LO)dnl
@@ -243,7 +247,7 @@ ___{}___{}___{}___{}___{}})})dnl
 ___{}___{}___{}___{}define({_TOKEN_PUSH},{dnl
 ___{}___{}___{}___{}___{}define({_COST},{0})dnl
 ___{}___{}___{}___{}___{}define({XMUL_SUM},{1})dnl
-___{}___{}___{}___{}___{}define({XMUL_256X_SUM},{0})dnl
+___{}___{}___{}___{}___{}define({XMUL_A_SUM},{0})dnl
 ___{}___{}___{}___{}___{}define({XMUL_RESULT},{0})dnl
 ___{}___{}___{}___{}___{}ifelse(eval(HI_BIT(XMUL_LO)<(XMUL_LO)),{1},{dnl
 ___{}___{}___{}___{}___{}___{}_ADD_COST(1+256*4)
