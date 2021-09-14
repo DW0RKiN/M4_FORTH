@@ -935,10 +935,11 @@ MULTIPLY_B:
     djnz MULTIPLY_B     ; 2:8/13 
         
     ret                 ; 1:10
-MULTIPLY_SIZE EQU  $-MULTIPLY},TYPMUL,{old_default},{
+MULTIPLY_SIZE EQU  $-MULTIPLY},
+TYPMUL,{old_default},{
 ; Pollutes: AF, B, DE
 MULTIPLY:
-                        ;[42:cca 593-757] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+                        ;[42:cca 593-757] # old_default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
     ld    A, H          ; 1:4
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
