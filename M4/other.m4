@@ -7,7 +7,9 @@ define(INIT,{
     ld    L, 0x1A       ; 2:7       Upper screen
     call 0x1605         ; 3:17      Open channel
     ld   HL, ifelse($1,{},{60000
-    .warning "Missing value for return address stack. The init() macro has no parameter!"},{format({%-11s},$1); 3:10      Init Return address stack})
+    .warning "Missing value for return address stack. The init() macro has no parameter!"},{format({%-11s},$1); 3:10      Init Return address stack}){}dnl
+__{}ifelse(eval(($1+0) & 1),{1},{
+    .error "Return address stack must be at an odd address!"})
     exx                 ; 1:4})dnl
 dnl
 dnl ( -- )
