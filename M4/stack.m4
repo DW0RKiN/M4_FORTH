@@ -6,6 +6,22 @@ dnl prohodi vrchol zasobniku s druhou polozkou
 define({SWAP},{
     ex   DE, HL         ; 1:4       swap ( b a -- a b )})dnl
 dnl
+dnl
+dnl 3 swap
+dnl ( a -- 3 a )
+define({PUSH_SWAP},{
+    push DE             ; 1:11      $1 swap
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
+dnl
+dnl
+dnl dup 3 swap
+dnl ( a -- a 3 a )
+define({DUP_PUSH_SWAP},{
+    push DE             ; 1:11      dup $1 swap
+    push HL             ; 1:11      dup $1 swap
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
+dnl
+dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{

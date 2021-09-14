@@ -837,51 +837,105 @@ MULTIPLY_SIZE EQU  $-MULTIPLY},
 TYPMUL,{test7},{
 ; Pollutes: AF, BC, DE
 MULTIPLY:
-                        ;[42:632-???] test7 version
-   
-    ld    C, D          ; 1:4       HL = HL*DE --> HL*CA = HL*A + 256*C*L
-    ld    A, E          ; 1:4       DE --> CA check bits
-    ld    D, H          ; 1:4
-    ld    E, L          ; 1:4       DE = base 1x
+                        ;[35:577-623] # test7 version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...   
+    ld    B, H          ; 1:4
+    ld    C, L          ; 1:4       BC = HL
 
-    ld    B, 0x08       ; 2:7       HL=HL*A
-MULTIPLY_A:
-    add   A, A          ; 1:4       check E bits
-    jr    c, MULTIPLY_DE; 2:7/12
-    djnz MULTIPLY_A     ; 2:8/13
+    xor   A             ; 1:4
+    srl   L             ; 2:8       L /= 2 --> check carry
+    jr   nc, MULTIPLY2  ; 2:7/12
+MULTIPLY1:              ;           L*D loop
+    add   A, D          ; 1:4       A += D*2^x
+MULTIPLY2:
+    sla   D             ; 2:8       D *= 2 
+    srl   L             ; 2:8       L /= 2 --> check carry
+    jr    c, MULTIPLY1  ; 2:7/12
+    jp   nz, MULTIPLY2  ; 3:10      (L > 0)?
     
-    ld    H, A          ; 1:4
-    ld    L, A          ; 1:4       HL = 0
-    jp   MULTIPLY_E0    ; 3:10
+    ld    H, A          ; 1:4       HL = L*D, L = 0
+
+    srl   E             ; 2:8       E /= 2 --> check carry
+    jr   nc, MULTIPLY4  ; 2:7/12
+MULTIPLY3:              ;           HL*E loop
+    add  HL, BC         ; 1:11
+MULTIPLY4:
+    sla   C             ; 2:8
+    rl    B             ; 2:8       BC *= 2
+
+    srl   E             ; 2:8       E /= 2 --> check carry
+    jr    c, MULTIPLY3  ; 2:7/12
+    jp   nz, MULTIPLY4  ; 3:10      (E > 0)?
     
-MULTIPLY_LO:
-    add  HL, HL         ; 1:11
-    add   A, A          ; 1:4       check E bits
-    jr   nc, $+3        ; 2:7/12
-    add  HL, DE         ; 1:11
-MULTIPLY_DE:
-    djnz MULTIPLY_LO    ; 2:8/13
-
-MULTIPLY_E0:            ;           A = 0
-
-    sla   C             ; 2:8       check original D 7 bit
-    jr   nc, $+3        ; 2:7/12
-    add   A, E          ; 1:4       add original L
-    ret   z             ; 1:5/11    (D == 0 || C == 0) --> zero flag --> HL = HL*E
-    
-    ld    B, 0x07       ; 2:7
-MULTIPLY_HI:
-    add   A, A          ; 1:4
-    sla   C             ; 2:8       check original D 6-->0 bit
-    jr   nc, $+3        ; 2:7/12
-    add   A, E          ; 1:4       add original L
-    djnz MULTIPLY_HI    ; 2:8/13
-
-    add   A, H          ; 1:4    
-    ld    H, A          ; 1:4
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY},
-TYPMUL,{old_default},{
+TYPMUL,{test8},{
+; HL*DE = (H0+L)*(D0+E)= H0*D0 + H0*E + D0*L + L*E = 0 + H0*E + D0*L + L*E
+; Pollutes: AF, C, DE
+MULTIPLY:
+                        ;[35:570-623] # test8 version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...   
+
+    ld    C, L          ; 1:4
+    ld    L, E          ; 1:4
+    
+    xor   A             ; 1:4
+    srl   L             ; 2:8       E /= 2
+    jr   nc, MULTIPLY2  ; 2:7/12        
+MULTIPLY1:              ;           H*E loop
+    add   A, H          ; 1:4       A += H*2^x
+MULTIPLY2:
+    sla   H             ; 2:8       H *= 2
+    srl   L             ; 2:8       E /= 2
+    jr    c, MULTIPLY1  ; 2:7/12
+    jp   nz, MULTIPLY2  ; 3:10      (E > 0)?
+
+    ld    H, A          ; 1:4       HL = D*L, L = 0
+
+    srl   C             ; 2:8       E /= 2
+    jr   nc, MULTIPLY4  ; 2:7/12
+MULTIPLY3:              ;           L*DE
+    add  HL, DE         ; 1:11
+MULTIPLY4:
+    sla   E             ; 2:8
+    rl    D             ; 2:8       DE *= 2    
+
+    srl   C             ; 2:8       L /= 2
+    jr    c, MULTIPLY3  ; 2:7/12
+    jp   nz, MULTIPLY4  ; 3:10      (L > 0)?
+        
+    ret                 ; 1:10
+MULTIPLY_SIZE EQU  $-MULTIPLY},
+TYPMUL,{z88dk},{
+; Pollutes: AF, C, DE
+MULTIPLY:
+                        ;[31:807-886] # z88dk version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...   
+
+    inc   H             ; 1:4
+    dec   H             ; 1:4
+    jr    z, MULTIPLY_H0; 2:7/12        
+    inc   D             ; 1:4
+    dec   D             ; 1:4
+    jr    z, MULTIPLY_D0; 2:7/12        
+    ld    C, L          ; 1:4
+    ld    A, H          ; 1:4
+    ld    B, 0x10       ; 1:4       HL = HL * DE --> CA * DE
+    jr    MULTIPLY2     ; 2:12        
+MULTIPLY_D0:
+    ex   DE, HL         ; 1:4
+MULTIPLY_H0:
+    ld    A, L          ; 1:4       HL = 0L * DE --> A * DE
+    ld    B, 0x08       ; 1:4
+MULTIPLY2:
+    ld   HL, 0x0000     ; 3:10
+MULTIPLY_B:
+    add  HL, HL         ; 1:11
+    sla   C             ; 2:8
+    rla                 ; 1:4       AC *= 2
+    jr   nc, $+3        ; 2:7/12        
+    add  HL, DE         ; 1:11
+    djnz MULTIPLY_B     ; 2:8/13 
+        
+    ret                 ; 1:10
+MULTIPLY_SIZE EQU  $-MULTIPLY},TYPMUL,{old_default},{
 ; Pollutes: AF, B, DE
 MULTIPLY:
                         ;[42:cca 593-757] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
@@ -925,9 +979,9 @@ MULTIPLY:
     xor   A             ; 1:4
     ld    C, E          ; 1:4
 
-    srl   H             ; 2:8       divide H by 2
+    srl   H             ; 2:8       H /= 2
     jr   nc, $+3        ; 2:7/12        
-MULTIPLY1:
+MULTIPLY1:              ;           H0*0E
     add   A, C          ; 1:4       A += C(original E)
 
     sla   C             ; 2:8       C(original E) *= 2
@@ -939,15 +993,15 @@ MULTIPLY1:
     ld    L, H          ; 1:4       L = 0
     ld    H, A          ; 1:4       HL *= E
 
-    srl   C             ; 2:8       divide C(original L) by 2
+    srl   C             ; 2:8       C(original L) /= 2
     jr   nc, $+3        ; 2:7/12    
-MULTIPLY2:
+MULTIPLY2:              ;           0L*DE
     add  HL, DE         ; 1:11
     
     sla   E             ; 2:8
-    rl    D             ; 2:8       multiply DE by 2    
+    rl    D             ; 2:8       DE *= 2    
 
-    srl   C             ; 2:8       divide C(original L) by 2
+    srl   C             ; 2:8       C(original L) /= 2
     jr    c, MULTIPLY2  ; 2:7/12
     jp   nz, MULTIPLY2+1; 3:10      C(original L) = ?
 
