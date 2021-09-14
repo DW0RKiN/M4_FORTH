@@ -355,7 +355,7 @@ dnl odstrani vrchol zasobniku navratovych adres
 define({RDROP},{
     exx                 ; 1:4       rdrop
     inc   L             ; 1:4       rdrop
-    inc   H             ; 1:6       rdrop
+    inc   HL            ; 1:6       rdrop
     exx                 ; 1:4       rdrop r:( a -- )})dnl
 dnl
 dnl
