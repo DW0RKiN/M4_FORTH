@@ -155,11 +155,13 @@ do
     sed 's#^\([^;{]*\s\|^\)[Aa]ccept\(\s\|$\)#\1ACCEPT\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Ss]wap\(\s\|$\)#\1SWAP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1PUSH_SWAP(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Ss]wap\(\s\|$\)#\1_2SWAP\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)?[Dd]up\(\s\|$\)#\1QUESTIONDUP\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Dd]up\(\s\|$\)#\1DUP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)DUP\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1DUP_PUSH_SWAP(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Dd]up\(\s\|$\)#\1_2DUP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)over\s\+over\(\s\|$\)#\1_2DUP\2#gi' |
 
