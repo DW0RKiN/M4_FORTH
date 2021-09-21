@@ -269,7 +269,7 @@ define({_3_UDIV},{
     ld   BC, 0x0055     ; 3:10      3 /         rounding down constant
     adc   A, B          ; 1:4       3 /      +1 AHL = 85x     
     add  HL, BC         ; 1:11      3 / 
-    adc   A, B          ; 1:4       3 /      +1 AHL = 85x with rounding down constant     
+    adc   A, B          ; 1:4       3 /      +0 AHL = 85x with rounding down constant     
     ld    C, A          ; 1:4       3 /         BC = "0A"
     ld    A, L          ; 1:4       3 /         (AHL * 257) >> 16 = (0AHL + AHL0) >> 16 --> 0A.HL + AH.L0
     add   A, H          ; 1:4       3 /         00.H + 00.L --> carry? 
@@ -304,13 +304,71 @@ define({_5_UDIV},{
     ld   BC, 0x0033     ; 3:10      5 /         rounding down constant
     adc   A, B          ; 1:4       5 /      +1 AHL = 51x     
     add  HL, BC         ; 1:11      5 / 
-    adc   A, B          ; 1:4       5 /      +1 AHL = 51x with rounding down constant     
+    adc   A, B          ; 1:4       5 /      +0 AHL = 51x with rounding down constant     
     ld    C, A          ; 1:4       5 /         BC = "0A"
     ld    A, L          ; 1:4       5 /         (AHL * 257) >> 16 = (0AHL + AHL0) >> 16 --> 0A.HL + AH.L0
     add   A, H          ; 1:4       5 /         00.H + 00.L --> carry? 
     ld    L, H          ; 1:4       5 /
     ld    H, C          ; 1:4       5 /         HL = "AH"
     adc  HL, BC         ; 2:15      5 /         HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16{}dnl
+})dnl
+dnl 
+dnl
+dnl ( x1 -- x)
+dnl x = x1 u/ 15
+define({_15_UDIV},{
+                        ;[25:147]   15 /   Variant HL/15 = (HL*257*17) >> 16 = (HL*257*b_0001_0001) >> 16
+    ld    B, H          ; 1:4       15 /
+    ld    C, L          ; 1:4       15 /   1     1x = base 
+    xor   A             ; 1:4       15 /
+    add  HL, HL         ; 1:11      15 /   0
+    adc   A, A          ; 1:4       15 /      *2 AHL = 2x
+    add  HL, HL         ; 1:11      15 /   0
+    adc   A, A          ; 1:4       15 /      *2 AHL = 4x
+    add  HL, HL         ; 1:11      15 /   0
+    adc   A, A          ; 1:4       15 /      *2 AHL = 8x 
+    add  HL, HL         ; 1:11      15 /   1
+    adc   A, A          ; 1:4       15 /      *2 AHL = 16x 
+    add  HL, BC         ; 1:11      15 / 
+    ld   BC, 0x0011     ; 3:10      15 /         rounding down constant
+    adc   A, B          ; 1:4       15 /      +1 AHL = 17x     
+    add  HL, BC         ; 1:11      15 / 
+    adc   A, B          ; 1:4       15 /      +0 AHL = 17x with rounding down constant     
+    ld    C, A          ; 1:4       15 /         BC = "0A"
+    ld    A, L          ; 1:4       15 /         (AHL * 257) >> 16 = (0AHL + AHL0) >> 16 --> 0A.HL + AH.L0
+    add   A, H          ; 1:4       15 /         00.H + 00.L --> carry? 
+    ld    L, H          ; 1:4       15 /
+    ld    H, C          ; 1:4       15 /         HL = "AH"
+    adc  HL, BC         ; 2:15      15 /         HL = HL/15 = HL*(65536/65536)/15 = HL*4369/65536 = (HL*(1+256)*17) >> 16{}dnl
+})dnl
+dnl 
+dnl 
+dnl ( x1 -- x)
+dnl x = x1 u/ 17
+define({_17_UDIV},{
+                        ;[26:151]   17 /   Variant HL/17 = (HL*257*15) >> 16 = (HL*257*b_0000_1111) >> 16
+    ld    B, H          ; 1:4       17 /
+    ld    C, L          ; 1:4       17 /   1     1x = base 
+    xor   A             ; 1:4       17 /
+    add  HL, HL         ; 1:11      17 /   0
+    adc   A, A          ; 1:4       17 /      *2 AHL = 2x
+    add  HL, HL         ; 1:11      17 /   0
+    adc   A, A          ; 1:4       17 /      *2 AHL = 4x
+    add  HL, HL         ; 1:11      17 /   0
+    adc   A, A          ; 1:4       17 /      *2 AHL = 8x
+    add  HL, HL         ; 1:11      17 /  -1
+    adc   A, A          ; 1:4       17 /      *2 AHL = 16x
+    sbc  HL, BC         ; 2:15      17 /
+    ld   BC, 0x000f     ; 3:10      17 /         rounding down constant
+    sbc   A, B          ; 1:4       17 /      -1 AHL = 15x      
+    add  HL, BC         ; 1:11      17 / 
+    adc   A, B          ; 1:4       17 /      +0 AHL = 15x with rounding down constant     
+    ld    C, A          ; 1:4       17 /         BC = "0A"
+    ld    A, L          ; 1:4       17 /         (AHL * 257) >> 16 = (0AHL + AHL0) >> 16 --> 0A.HL + AH.L0
+    add   A, H          ; 1:4       17 /         00.H + 00.L --> carry? 
+    ld    L, H          ; 1:4       17 /
+    ld    H, C          ; 1:4       17 /         HL = "AH"
+    adc  HL, BC         ; 2:15      17 /         HL = HL/17 = HL*(65536/65536)/17 = HL*3855/65536 = (HL*(1+256)*15) >> 16{}dnl
 })dnl
 dnl
 dnl
