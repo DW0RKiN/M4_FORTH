@@ -1634,7 +1634,8 @@ UDIVIDE_Z:
     ld    L, H          ; 1:4
     ret                 ; 1:10},
 {
-    ld    A, H          ; 1:4       default version
+                        ;[37:cca 1500] # default version can be changed with "define({TYPDIV},{name})", name=old_fast,old,fast,small,synthesis
+    ld    A, H          ; 1:4
     or    L             ; 1:4       HL = DE / HL
     ret   z             ; 1:5/11    HL = DE / 0?
     

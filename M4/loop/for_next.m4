@@ -29,7 +29,7 @@ __{}pushdef({LEAVE_STACK},{
 __{}    jp   next{}LOOP_STACK       ;           for leave LOOP_STACK})dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}                        ;           for unloop LOOP_STACK})
-    ld   BC, format({%-11s},$2); 3:10      $1 for LOOP_STACK
+    ld   BC, format({%-11s},$1); 3:10      $1 for LOOP_STACK
 for{}LOOP_STACK:                 ;           $1 for LOOP_STACK
     ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 for LOOP_STACK save index})dnl
 dnl

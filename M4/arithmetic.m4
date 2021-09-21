@@ -240,6 +240,78 @@ define({UDIV},{
 ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     call UDIVIDE        ; 3:17      u/
     pop  DE             ; 1:10      u/})dnl
+dnl 
+dnl
+dnl ( x1 -- x)
+dnl x = x1 u/ 3
+define({_3_UDIV},{
+                        ;[35:213]   3 /   Variant HL/3 = (HL*257*85) >> 16 = (HL*257*b_0101_0101) >> 16
+    ld    B, H          ; 1:4       3 /
+    ld    C, L          ; 1:4       3 /   1     1x = base 
+    xor   A             ; 1:4       3 /
+    add  HL, HL         ; 1:11      3 /   0
+    adc   A, A          ; 1:4       3 /      *2 AHL = 2x 
+    add  HL, HL         ; 1:11      3 /   1
+    adc   A, A          ; 1:4       3 /      *2 AHL = 4x 
+    add  HL, BC         ; 1:11      3 / 
+    adc   A, 0x00       ; 2:7       3 /      +1 AHL = 5x     
+    add  HL, HL         ; 1:11      3 /   0
+    adc   A, A          ; 1:4       3 /      *2 AHL = 10x 
+    add  HL, HL         ; 1:11      3 /   1
+    adc   A, A          ; 1:4       3 /      *2 AHL = 20x 
+    add  HL, BC         ; 1:11      3 / 
+    adc   A, 0x00       ; 2:7       3 /      +1 AHL = 21x
+    add  HL, HL         ; 1:11      3 /   0
+    adc   A, A          ; 1:4       3 /      *2 AHL = 42x 
+    add  HL, HL         ; 1:11      3 /   1
+    adc   A, A          ; 1:4       3 /      *2 AHL = 84x  
+    add  HL, BC         ; 1:11      3 / 
+    ld   BC, 0x0055     ; 3:10      3 /         rounding down constant
+    adc   A, B          ; 1:4       3 /      +1 AHL = 85x     
+    add  HL, BC         ; 1:11      3 / 
+    adc   A, B          ; 1:4       3 /      +1 AHL = 85x with rounding down constant     
+    ld    C, A          ; 1:4       3 /         BC = "0A"
+    ld    A, L          ; 1:4       3 /         (AHL * 257) >> 16 = (0AHL + AHL0) >> 16 --> 0A.HL + AH.L0
+    add   A, H          ; 1:4       3 /         00.H + 00.L --> carry? 
+    ld    L, H          ; 1:4       3 /
+    ld    H, C          ; 1:4       3 /         HL = "AH"
+    adc  HL, BC         ; 2:15      3 /         HL = HL/3 = HL*(65536/65536)/3 = HL*21845/65536 = (HL*(1+256)*85) >> 16{}dnl
+})dnl
+dnl 
+dnl
+dnl ( x1 -- x)
+dnl x = x1 u/ 5
+define({_5_UDIV},{
+                        ;[33:198]   5 /   Variant HL/5 = (HL*257*51) >> 16 = (HL*257*b_0011_0011) >> 16
+    ld    B, H          ; 1:4       5 /
+    ld    C, L          ; 1:4       5 /   1     1x = base 
+    xor   A             ; 1:4       5 /
+    add  HL, HL         ; 1:11      5 /   1
+    adc   A, A          ; 1:4       5 /      *2 AHL = 2x 
+    add  HL, BC         ; 1:11      5 / 
+    adc   A, 0x00       ; 2:7       5 /      +1 AHL = 3x     
+    add  HL, HL         ; 1:11      5 /   0
+    adc   A, A          ; 1:4       5 /      *2 AHL = 6x 
+    add  HL, HL         ; 1:11      5 /   0
+    adc   A, A          ; 1:4       5 /      *2 AHL = 12x 
+    add  HL, HL         ; 1:11      5 /   1
+    adc   A, A          ; 1:4       5 /      *2 AHL = 24x 
+    add  HL, BC         ; 1:11      5 / 
+    adc   A, 0x00       ; 2:7       5 /      +1 AHL = 25x     
+    add  HL, HL         ; 1:11      5 /   1
+    adc   A, A          ; 1:4       5 /      *2 AHL = 50x 
+    add  HL, BC         ; 1:11      5 / 
+    ld   BC, 0x0033     ; 3:10      5 /         rounding down constant
+    adc   A, B          ; 1:4       5 /      +1 AHL = 51x     
+    add  HL, BC         ; 1:11      5 / 
+    adc   A, B          ; 1:4       5 /      +1 AHL = 51x with rounding down constant     
+    ld    C, A          ; 1:4       5 /         BC = "0A"
+    ld    A, L          ; 1:4       5 /         (AHL * 257) >> 16 = (0AHL + AHL0) >> 16 --> 0A.HL + AH.L0
+    add   A, H          ; 1:4       5 /         00.H + 00.L --> carry? 
+    ld    L, H          ; 1:4       5 /
+    ld    H, C          ; 1:4       5 /         HL = "AH"
+    adc  HL, BC         ; 2:15      5 /         HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16{}dnl
+})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
