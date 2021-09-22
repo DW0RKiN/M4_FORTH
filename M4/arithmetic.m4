@@ -378,6 +378,51 @@ dnl
 dnl
 dnl
 dnl ( x1 -- x)
+dnl x = x1 u/ 255
+define({_31_DIV},{
+                        ;[46:245.5] 31 /   Variant HL/31 = (33*HL*(4+1/256)) >> (8+4)
+    ld    B, H          ; 1:4       31 /
+    ld    C, L          ; 1:4       31 /         BC = 1x
+    xor   A             ; 1:4       31 /
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 2x
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 4x
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 8x
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 16x
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 32x
+    add  HL, BC         ; 1:11      31 /
+    adc   A, 0x00       ; 2:7       31 /    +1  AHL = 33x
+    ld    B, A          ; 1:4       31 /
+    ld    C, H          ; 1:4       31 /    /256 BC = 33x/256 = 0.1289x
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 66x
+    add  HL, HL         ; 1:11      31 /   
+    adc   A, A          ; 1:4       31 /    *2  AHL = 132x
+    add  HL, BC         ; 1:11      31 /
+    adc   A, 0x00       ; 2:7       31 /    +BC AHL = 132.1289x
+    rl    L             ; 2:8       31 /        carry for rounding    
+    ld    L, H          ; 1:4       31 /
+    ld    H, A          ; 1:4       31 /         HL = 132.1289x/256 = 0.51613x
+    jr   nc, $+3        ; 2:7/12    31 /
+    inc  HL             ; 1:6       31 /        rounding
+    ld    A, L          ; 1:4       31 /
+    srl   H             ; 2:8       31 /
+    rra                 ; 1:4       31 /        0.25806x
+    srl   H             ; 2:8       31 /
+    rra                 ; 1:4       31 /        0.12903x
+    srl   H             ; 2:8       31 /
+    rra                 ; 1:4       31 /        0.06452x
+    srl   H             ; 2:8       31 /
+    rra                 ; 1:4       31 /        0.03226x = 1 / 31
+    ld    L, A          ; 1:4       31 /})dnl
+dnl
+dnl
+dnl
+dnl ( x1 -- x)
 dnl x = x1 u/ 51
 define({_51_UDIV},{
                         ;[21:116]   51 /   Variant HL/51 = (HL*257*5) >> 16 = (HL*257*b_0000_0101) >> 16
