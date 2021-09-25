@@ -1635,7 +1635,7 @@ UDIVIDE_Z:
     ret                 ; 1:10},
 {
                         ;[37:cca 900] # default version can be changed with "define({TYPDIV},{name})", name=old_fast,old,fast,small,synthesis
-                        ; /3 --> cca 1551, /5 --> cca 1466, /15 --> cca 1290, /17 --> cca 1262, /31 --> cca 1172,/51 --> cca 1098, /85 --> cca 1014, /255 --> cca 834
+                        ; /3 --> cca 1551, /5 --> cca 1466, 7/ --> cca 1414, /15 --> cca 1290, /17 --> cca 1262, /31 --> cca 1172, /51 --> cca 1098, /63 --> cca 1058, /85 --> cca 1014, /255 --> cca 834
     ld    A, H          ; 1:4
     or    L             ; 1:4       HL = DE / HL
     ret   z             ; 1:5/11    HL = DE / 0?
