@@ -42,29 +42,6 @@ dnl
 dnl
 dnl
 dnl ( x1 -- x)
-dnl x = x1 u/ 7
-define({_7_UDIV},{
-                        ;[23:471]   7 /   Variant HL/7 = (((HL+constant)>>2) + (HL<<1) + (HL<<4) + (HL<<7) + (HL<<10) + (HL<<13)) >> 16
-                        ;           7 /   = (((((((( (HL+constant)>>3) + HL)>>3 + HL)>>3 + HL)>>3 + HL)>>3) + HL)>>3 + HL)>>3
-    ld    B, H          ; 1:4       7 /
-    ld    C, L          ; 1:4       7 /         BC = 1x
-    ld   HL, 0x4606     ; 3:10      7 /
-    xor   A             ; 1:4       7 /
-    ld    A, L          ; 1:4       7 /         
-    add  HL, BC         ; 1:11      7 /
-    rr    H             ; 2:8       7 /
-    rr    L             ; 2:8       7 /         HL >>= 1
-    srl   H             ; 2:8       7 /
-    rr    L             ; 2:8       7 /         HL >>= 1
-    srl   H             ; 2:8       7 /
-    rr    L             ; 2:8       7 /         HL >>= 1
-    dec   A             ; 1:4       7 /
-    jr   nz, $-14       ; 2:7/12    7 /
-})dnl
-dnl
-dnl
-dnl
-dnl ( x1 -- x)
 dnl x = x1 u/ 5
 define({_5_UDIV},{
                         ;[33:197]   5 /   Variant HL/5 = (HL*257*51) >> 16 = (HL*257*b_0011_0011) >> 16
@@ -96,6 +73,29 @@ define({_5_UDIV},{
     ld    L, H          ; 1:4       5 /
     adc   A, 0x00       ; 2:7       5 /         + carry 
     ld    H, A          ; 1:4       5 /         HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16{}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl ( x1 -- x)
+dnl x = x1 u/ 7
+define({_7_UDIV},{
+                        ;[22:467]   7 /   Variant HL/7 = HL/8 + HL/(7*8) = HL/8 + HL/64 + HL/(7*8*8) = HL/8 + HL/64 + HL/512 + HL/4096 + HL/32768 + HL/262144 + ... 
+                        ;           7 /   = (((HL+constant)>>2) + (HL<<1) + (HL<<4) + (HL<<7) + (HL<<10) + (HL<<13)) >> 16
+                        ;           7 /   = (((((((( (HL+constant)>>3) + HL)>>3 + HL)>>3 + HL)>>3 + HL)>>3) + HL)>>3 + HL)>>3
+    ld    B, H          ; 1:4       7 /
+    ld    C, L          ; 1:4       7 /         BC = 1x
+    ld   HL, 0x4606     ; 3:10      7 /
+    ld    A, L          ; 1:4       7 /         
+    add  HL, BC         ; 1:11      7 /
+    rr    H             ; 2:8       7 /
+    rr    L             ; 2:8       7 /         HL >>= 1
+    srl   H             ; 2:8       7 /
+    rr    L             ; 2:8       7 /         HL >>= 1
+    srl   H             ; 2:8       7 /
+    rr    L             ; 2:8       7 /         HL >>= 1
+    dec   A             ; 1:4       7 /
+    jr   nz, $-14       ; 2:7/12    7 /{}dnl
 })dnl
 dnl
 dnl
