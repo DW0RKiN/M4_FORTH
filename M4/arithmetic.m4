@@ -242,7 +242,7 @@ ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
     pop  DE             ; 1:10      u/})dnl
 dnl
 dnl
-include(M4PATH{}const_divmul/pdiv_mk1.m4){}dnl
+include(M4PATH{}divmul/pdiv_mk1.m4){}dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl x = x2 u% x1
@@ -416,10 +416,10 @@ ___{}})dnl
 dnl
 dnl
 dnl
-include(M4PATH{}const_divmul/pmul_mk1.m4){}dnl
-include(M4PATH{}const_divmul/pmul_mk2.m4){}dnl
-include(M4PATH{}const_divmul/pmul_mk3.m4){}dnl
-include(M4PATH{}const_divmul/pmul_mk4.m4){}dnl
+include(M4PATH{}divmul/pmul_mk1.m4){}dnl
+include(M4PATH{}divmul/pmul_mk2.m4){}dnl
+include(M4PATH{}divmul/pmul_mk3.m4){}dnl
+include(M4PATH{}divmul/pmul_mk4.m4){}dnl
 dnl
 dnl
 dnl
