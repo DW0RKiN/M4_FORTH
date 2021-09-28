@@ -6,7 +6,7 @@ dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 3
 define({_3_UDIV},{ifelse(TYPDIV,{small},{
-                        ;[26:248]   3 /   Variant HL/3 = (HL*257*85) >> 16 = (HL*257*b_0101_0101) >> 16
+                        ;[26:248]   3 /   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
     ld    B, H          ; 1:4       3 /
     ld    C, L          ; 1:4       3 /   1     1x = base
     ld    A, 0xf8       ; 2:7       3 /         b_1111_1000
@@ -27,7 +27,7 @@ define({_3_UDIV},{ifelse(TYPDIV,{small},{
     adc   A, 0x00       ; 2:7       3 /         + carry
     ld    H, A          ; 1:4       3 /         HL = HL/3 = HL*(65536/65536)/3 = HL*21845/65536 = (HL*(1+256)*85) >> 16{}dnl
 },{
-                        ;[35:212]   3 /   Variant HL/3 = (HL*257*85) >> 16 = (HL*257*b_0101_0101) >> 16
+                        ;[35:212]   3 /   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
     ld    B, H          ; 1:4       3 /
     ld    C, L          ; 1:4       3 /   1     1x = base
     xor   A             ; 1:4       3 /
@@ -113,7 +113,7 @@ dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 6
 define({_6_UDIV},{ifelse(TYPDIV,{small},{
-                        ;[29:260]   6 /   Variant HL/6 = (HL*257*85) >> 17 = (HL*257*b_0101_0101) >> (1+16)
+                        ;[29:260]   6 /   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
     ld    B, H          ; 1:4       6 /
     ld    C, L          ; 1:4       6 /   1     1x = base
     ld    A, 0xf8       ; 2:7       6 /         b_1111_1000
@@ -136,7 +136,7 @@ define({_6_UDIV},{ifelse(TYPDIV,{small},{
     ld    L, H          ; 1:4       6 /
     ld    H, A          ; 1:4       6 /         HL = HL/6 = HL*(2*65536/2*65536)/6 = HL*21845/(2*65536) = (HL*(1+256)*85) >> (1+16){}dnl
 },{
-                        ;[38:224]   6 /   Variant HL/6 = (HL*257*85) >> 17 = (HL*257*b_0101_0101) >> (1+16)
+                        ;[38:224]   6 /   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
     ld    B, H          ; 1:4       6 /
     ld    C, L          ; 1:4       6 /   1     1x = base
     xor   A             ; 1:4       6 /
@@ -216,7 +216,7 @@ dnl ( x1 -- x)
 dnl x = x1 u/ 10
 define({_10_UDIV},{
                         ;[36:209]   10 /   Variant HL/10 = HL*(2*65536/2*65536)/10 = HL*(2*65536/10)/(2*65536) = HL*13107/(2*65536) = HL*51*257/(2*65536)
-                        ;           10 /   = HL*b_0011_0011*(256+1) >> (1+16)
+                        ;           10 /   = HL*b_0011_0011*(1+1/256) >> (1+8)
     ld    B, H          ; 1:4       10 /
     ld    C, L          ; 1:4       10 /   1     1x = base
     xor   A             ; 1:4       10 /
@@ -247,6 +247,67 @@ define({_10_UDIV},{
     rr    H             ; 2:8       10 /
     ld    L, H          ; 1:4       10 /
     ld    H, A          ; 1:4       10 /         HL = HL/10 = (HL*51*257)>>17 = (HL*51.19921875)>>8 = HL*0.099998474{}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl ( x1 -- x)
+dnl x1 = 0..2559
+dnl x = x1 u/ 10
+define({MAX2559_10_UDIV},{
+                        ;[21:134]   10 /   Variant HL/10 = 0..2559*25.5*257/655360 = (HL*25.5*(1+1/256)) >> 8, HL < 2560
+    ld    B, H          ; 1:4       10 /
+    ld    C, L          ; 1:4       10 /         BC = 1x
+    srl   H             ; 2:8       10 /
+    rr    L             ; 2:8       10 /         HL >>= 1
+    inc  HL             ; 1:6       10 /         rounding down
+    add  HL, BC         ; 1:11      10 /         HL = 1.5x
+    ld    B, H          ; 1:4       10 /
+    ld    C, L          ; 1:4       10 /         BC = 1.5x
+    add  HL, HL         ; 1:11      10 /         HL = 3x
+    add  HL, HL         ; 1:11      10 /         HL = 6x
+    add  HL, HL         ; 1:11      10 /         HL = 12x
+    add  HL, HL         ; 1:11      10 /         HL = 24x
+    add  HL, BC         ; 1:11      10 /         HL = 25.5x
+    ld    B, 0x00       ; 2:7       10 /
+    ld    C, H          ; 1:4       10 /         BC = 25.5x/256 = 0.099609375x
+    add  HL, BC         ; 1:11      10 /         HL = 25.599609375x (2560 overflow here)
+    ld    L, H          ; 1:4       10 /
+    ld    H, B          ; 1:4       10 /         HL = 25.599609375x/256 = 0.099998474x{}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl ( x1 -- x)
+dnl x1 = 0..43689
+dnl x = x1 u/ 10
+define({MAX2559_10_UDIV},{
+                        ;[29:165]   10 /   Variant HL/10 = 0..43689*25.5*257/655360 = (HL*25.5*(1+1/256)) >> 8, HL < 43690 
+    ld    B, H          ; 1:4       10 /
+    ld    C, L          ; 1:4       10 /         BC = 1x
+    srl   H             ; 2:8       10 /
+    rr    L             ; 2:8       10 /         HL >>= 1
+    inc  HL             ; 1:6       10 /         rounding down
+    add  HL, BC         ; 1:11      10 /         HL = 1.5x
+    ld    B, H          ; 1:4       10 /
+    ld    C, L          ; 1:4       10 /         BC = 1.5x (43690 overflow here)
+    xor   A             ; 1:4       10 /
+    add  HL, HL         ; 1:11      10 /         _HL = 3x
+    adc   A, A          ; 1:4       10 /         AHL = 3x
+    add  HL, HL         ; 1:11      10 /         _HL = 6x
+    adc   A, A          ; 1:4       10 /         AHL = 6x
+    add  HL, HL         ; 1:11      10 /         _HL = 12x
+    adc   A, A          ; 1:4       10 /         AHL = 12x
+    add  HL, HL         ; 1:11      10 /         _HL = 24x
+    adc   A, A          ; 1:4       10 /         AHL = 24x
+    add  HL, BC         ; 1:11      10 /         _HL = 25.5x
+    adc   A, 0x00       ; 2:7       10 /         AHL = 25.5x
+    ld    B, A          ; 1:4       10 /
+    ld    C, H          ; 1:4       10 /         BC = 25.5x/256 = 0.099609375x
+    add  HL, BC         ; 1:11      10 /         HL = 25.599609375x
+    adc   A, 0x00       ; 2:7       10 /
+    ld    L, H          ; 1:4       10 /
+    ld    H, A          ; 1:4       10 /         HL = 25.599609375x >> 8 = 0.099998474x{}dnl
 })dnl
 dnl
 dnl
