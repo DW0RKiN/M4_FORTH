@@ -134,7 +134,7 @@ This is a compiler from Forth to M4 FORTH written in bash. Manual adjustments ar
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 
-|<sub>       original         |<sub>    M4 FORTH         |<sub> optimization     |<sub>  data stack                  |<sub>  r. a. stack |
+|<sub>       Original         |<sub>    M4 FORTH         |<sub> Optimization     |<sub>  Data stack                  |<sub>  R. a. stack |
 | :-------------------------: | :----------------------: | :-------------------: | :-------------------------------- | :---------------- |
 |<sub>          swap          |<sub>         SWAP        |<sub>                  |<sub>      ( x2 x1 -- x1 x2 )      |<sub>              |
 |<sub>        swap over       |<sub>       SWAP OVER     |<sub>     SWAP_OVER    |<sub>      ( x2 x1 -- x1 x2 x1 )   |<sub>              |
@@ -180,7 +180,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 
-|<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack                 |<sub>  r. a. stack |
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization  |<sub>  Data stack                 |<sub>  R. a. stack |
 | :-------------: | :---------------: | :-----------------: | :------------------------------- | :---------------- |
 |<sub>     +      |<sub>      ADD     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
 |<sub>   `3` +    |<sub>              |<sub>  PUSH_ADD(`3`) |<sub>        ( x -- x+`3` )       |<sub>              |
@@ -223,7 +223,7 @@ https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 
 For a logical comparison of two numbers as f1> f2, exactly the same result applies as for a comparison of two integer numbers with a sign.
 
-|<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack          |<sub>  comment                   |
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization  |<sub>  Data stack          |<sub>  Comment                   |
 | :-------------: | :---------------: | :-----------------: | :------------------------ | :------------------------------ |
 |<sub>    s>f     |<sub>      S2F     |<sub>                |<sub>       ( s1 -- f1 )   |<sub>                            |
 |<sub>    u>f     |<sub>      U2F     |<sub>                |<sub>       ( u1 -- f1 )   |<sub>                            |
@@ -250,7 +250,7 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
-|<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack            |<sub>  r.a.s. |<sub> comment      |
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization  |<sub>  Data stack            |<sub>  R.a.s. |<sub> Comment      |
 | :-------------: | :---------------: | :-----------------: | :-------------------------- | :----------- | :---------------- |
 |<sub>    and     |<sub>     AND      |<sub>                |<sub>    ( x2 x1 -- x )      |<sub>         |<sub>              |
 |<sub>   `3` and  |<sub>              |<sub>  PUSH_AND(`3`) |<sub>        ( x -- x & `3`) |<sub>         |<sub>              |
@@ -289,7 +289,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
-|<sub> original   |<sub>   M4 FORTH    |<sub>  optimization  |<sub>  data stack              |<sub>  r. a. stack |
+|<sub> Original   |<sub>   M4 FORTH    |<sub>  Optimization  |<sub>  Data stack              |<sub>  R. a. stack |
 | :-------------: | :----------------: | :-----------------: | :---------------------------- | :---------------- |
 |<sub>     .      |<sub>      DOT      |<sub>   UDOT if > 0  |<sub>       ( x1 -- )          |<sub>              |
 |<sub>     u.     |<sub>     UDOT      |<sub>                |<sub>       ( x1 -- )          |<sub>              |
@@ -331,7 +331,7 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 
-|<sub>   original   |<sub>   M4 FORTH   |<sub>    optimization    |<sub>   data stack        |<sub>  r.a.s. |<sub> comment     |
+|<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub>  R.a.s. |<sub> Comment     |
 | :---------------: | :---------------: | :---------------------: | :----------------------- | :----------- | :--------------- |
 |<sub>      if      |<sub>      IF      |<sub>                    |<sub>    ( flag -- )      |<sub>         |                  |
 |<sub>    dup if    |<sub>              |<sub>      DUP_IF        |<sub>    ( flag -- flag ) |<sub>         |                  |
@@ -392,7 +392,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
-|<sub> original   |<sub>     M4 FORTH      |<sub>    optimization   |<sub>   data stack               |<sub>  return address stack |
+|<sub> Original   |<sub>     M4 FORTH      |<sub>    Optimization   |<sub>   Data stack               |<sub>  Return address stack |
 | :-------------: | :--------------------: | :--------------------: | :------------------------------ | :------------------------- |
 |<sub>    name    |<sub>    RCALL(name)    |<sub>                   |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
 |<sub>    name    |<sub>                   |<sub>    SCALL(name)    |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
@@ -431,7 +431,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop/
 #### Non-recursive
 The variables are stored in the function memory.
 
-|<sub>     original    |<sub>   M4 FORTH   |<sub>     optimization      |<sub>  data stack                |<sub>  return address stack |
+|<sub>     Original    |<sub>   M4 FORTH   |<sub>     Optimization      |<sub>  Data stack                |<sub>  Return address stack |
 | :------------------: | :---------------: | :------------------------: | :------------------------------ | :------------------------- |
 |<sub>     unloop      |<sub>    UNLOOP    |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )              |
 |<sub>     leave       |<sub>    LEAVE     |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )              |
@@ -454,7 +454,7 @@ The variables are stored in the function memory.
 #### Recursive
 The variables are stored in the return address stack.
 
-|<sub>     original    |<sub>   M4 FORTH   |<sub>     optimization      |<sub>  data stack                |<sub>  return address stack |
+|<sub>     Original    |<sub>   M4 FORTH   |<sub>     Optimization      |<sub>  Data stack                |<sub>  Return address stack |
 | :------------------: | :---------------: | :------------------------: | :------------------------------ | :------------------------- |
 |<sub>     unloop      |<sub>    UNLOOP    |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )              |
 |<sub>      leave      |<sub>    LEAVE     |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )              |
@@ -475,7 +475,7 @@ The variables are stored in the return address stack.
 
 The variables are stored in the data stack.
 
-|<sub>     original    |<sub>   M4 FORTH   |<sub>     optimization      |<sub>  data stack                |<sub>  r. a. stack |
+|<sub>     Original    |<sub>   M4 FORTH   |<sub>     Optimization      |<sub>  Data stack                |<sub>  R. a. stack |
 | :------------------: | :---------------: | :------------------------: | :------------------------------ | :---------------- |
 |<sub>      unloop     |<sub>    UNLOOP    |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )     |
 |<sub>      leave      |<sub>    LEAVE     |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )     |
@@ -535,7 +535,7 @@ The variables are stored in the data stack.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 
-|<sub>    original    |<sub>      M4 FORTH     |<sub>    optimization    |<sub>   data stack          |<sub> comment          |
+|<sub>    Original    |<sub>      M4 FORTH     |<sub>    Optimization    |<sub>   Data stack          |<sub> Comment          |
 | :-----------------: | :--------------------: | :---------------------: | :------------------------- | :-------------------- |
 |<sub>                |<sub>   INIT(RAS_addr)  |<sub>                    |<sub>                       |<sub> save SP, set RAS |
 |<sub>      bye       |<sub>        BYE        |<sub>                    |<sub>          ( -- )       |<sub> goto STOP        |
