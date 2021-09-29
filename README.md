@@ -136,7 +136,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 <sub>
 |       original         |       M4 FORTH      |   optimization   |  data stack                  |  r. a. stack |
 |  :------------------:  | :-----------------: | :--------------: | :--------------------------- | :----------- |
-|          swap          |         SWAP        |                  |      ( x2 x1 -- x1 x2 )      |              |
+|          swap          |     <sub>    SWAP</sub>        |                  |      ( x2 x1 -- x1 x2 )      |              |
 |        swap over       |       SWAP OVER     |     SWAP_OVER    |      ( x2 x1 -- x1 x2 x1 )   |              |
 |        swap `7`        |    SWAP PUSH(`7`)   |  SWAP_PUSH(`7`)  |      ( x2 x1 -- x1 x2 `7` )  |              |
 |        `6` swap        |    PUSH(`6`) SWAP   |  PUSH_SWAP(`6`)  |         ( x1 -- `6` x1 )     |              |
