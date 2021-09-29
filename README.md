@@ -181,7 +181,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 
 |<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack                 |<sub>  r. a. stack |
-|<sub> :--------: |<sub> :----------: |<sub> :------------: |<sub> :-------------------------- |<sub> :----------- |
+| :-------------: | :---------------: | :-----------------: | :------------------------------- | :---------------- |
 |<sub>     +      |<sub>      ADD     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
 |<sub>   `3` +    |<sub>              |<sub>  PUSH_ADD(`3`) |<sub>        ( x -- x+`3` )       |<sub>              |
 |<sub>   dup +    |<sub>              |<sub>     DUP_ADD    |<sub>        ( x -- x+x )         |<sub>              |
@@ -224,7 +224,7 @@ https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 For a logical comparison of two numbers as f1> f2, exactly the same result applies as for a comparison of two integer numbers with a sign.
 
 |<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack          |<sub>  comment                   |
-|<sub> :--------: |<sub> :----------: |<sub> :------------: |<sub> :------------------- |<sub> :------------------------- |
+| :-------------: | :---------------: | :-----------------: | :------------------------ | :------------------------------ |
 |<sub>    s>f     |<sub>      S2F     |<sub>                |<sub>       ( s1 -- f1 )   |<sub>                            |
 |<sub>    u>f     |<sub>      U2F     |<sub>                |<sub>       ( u1 -- f1 )   |<sub>                            |
 |<sub>    f>s     |<sub>      F2S     |<sub>                |<sub>       ( f1 -- s1 )   |<sub>                            |
@@ -251,7 +251,7 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 |<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack            |<sub>  r.a.s. |<sub> comment      |
-|<sub> :--------: |<sub> :----------: |<sub> :------------: |<sub> :--------------------- |<sub> :------ |<sub> :----------- |
+| :-------------: | :---------------: | :-----------------: | :-------------------------- | :----------- | :---------------- |
 |<sub>    and     |<sub>     AND      |<sub>                |<sub>    ( x2 x1 -- x )      |<sub>         |<sub>              |
 |<sub>   `3` and  |<sub>              |<sub>  PUSH_AND(`3`) |<sub>        ( x -- x & `3`) |<sub>         |<sub>              |
 |<sub>     or     |<sub>      OR      |<sub>                |<sub>    ( x2 x1 -- x )      |<sub>         |<sub>              |
