@@ -7,6 +7,18 @@ define({SWAP},{
     ex   DE, HL         ; 1:4       swap ( b a -- a b )})dnl
 dnl
 dnl
+dnl ( b a -- a b a )
+define({SWAP_OVER},{
+    push HL             ; 1:11      swap_over ( b a -- a b a )})dnl
+dnl
+dnl
+dnl swap 3
+dnl ( b a -- a b 3 )
+define({SWAP_PUSH},{
+    push HL             ; 1:11      swap $1
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      swap $1 ( b a -- a b $1 )})dnl
+dnl
+dnl
 dnl 3 swap
 dnl ( a -- 3 a )
 define({PUSH_SWAP},{
@@ -116,6 +128,11 @@ define({OVER},{
     ex   DE, HL         ; 1:4       over ( b a -- b a b )})dnl
 dnl
 dnl
+dnl ( b a -- b b a )
+define({OVER_SWAP},{
+    push DE             ; 1:11      over_swap ( b a -- b b a )})dnl
+dnl
+dnl
 dnl 3 over
 dnl ( a -- a 3 a )
 define({PUSH_OVER},{
@@ -140,7 +157,7 @@ define({_2OVER},{
 dnl
 dnl
 dnl ( c b a -- b a c )
-dnl vyjme treti polozku a ulozi ji na vrchol
+dnl vyjme treti polozku a ulozi ji na vrchol, rotace doleva
 define({ROT},{
     ex   DE, HL         ; 1:4       rot
     ex  (SP),HL         ; 1:19      rot ( c b a -- b a c )})dnl
@@ -168,10 +185,49 @@ dnl                      15:127
 dnl
 dnl -rot
 dnl ( c b a -- a c b )
-dnl vyjme vrchol zasobniku a ulozi ho jako treti polozku
+dnl vyjme vrchol zasobniku a ulozi ho jako treti polozku, rotace doprava
 define({NROT},{
     ex  (SP), HL        ; 1:19      nrot
     ex   DE, HL         ; 1:4       nrot ( c b a -- a c b )})dnl
+dnl
+dnl
+dnl -rot 2swap
+dnl ( d c b a -- c b d a )
+dnl 4th --> 2th
+define({NROT_2SWAP},{
+                        ;[6:50]     nrot_2swap ( d c b a -- c b d a )
+    pop  AF             ; 1:10      nrot_2swap AF = c
+    ld    B, D          ; 1:4       nrot_2swap
+    ld    C, E          ; 1:4       nrot_2swap BC = b
+    pop  DE             ; 1:10      nrot_2swap d b a -- d a
+    push AF             ; 1:11      nrot_2swap c d a 
+    push BC             ; 1:11      nrot_2swap c b d a})dnl
+dnl
+dnl
+dnl nrot swap 2swap swap
+dnl ( d c b a -- b c a d )
+define({STACK_BCAD},{
+                        ;[4:44]     stack_bcad ( d c b a -- b c a d )
+    ex   DE, HL         ; 1:4       stack_bcad d c a b
+    pop  AF             ; 1:10      stack_bcad AF = c
+    ex  (SP), HL        ; 1:19      stack_bcad b a d
+    push AF             ; 1:11      stack_bcad b c a d })dnl
+dnl
+dnl
+dnl 2 pick 2 pick swap
+dnl over 3 pick
+dnl 2over nip 2over nip swap
+dnl over 2over drop 
+dnl      ( c b a -- c b a b c )
+dnl -- c b a b c )
+define({STACK_CBABC},{
+                        ;[6:51]     stack_cbabc ( c b a -- c b a b c )
+    pop  BC             ; 1:10      stack_cbabc BC = c
+    push BC             ; 1:11      stack_cbabc 
+    push DE             ; 1:11      stack_cbabc c b b a
+    push HL             ; 1:11      stack_cbabc c b a b a
+    ld    H, B          ; 1:4       stack_cbabc 
+    ld    L, C          ; 1:4       stack_cbabc c b a b c})dnl
 dnl
 dnl
 dnl ( f e d c b a -- d c b a f e )
