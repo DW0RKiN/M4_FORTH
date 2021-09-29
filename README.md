@@ -362,16 +362,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |  `3` <> if   |              |    PUSH_NE_IF      |       (x1 -- )      |         |
 |dup `5`  =  if|              |DUP_PUSH_CEQ_IF(`5`)|         ( -- )      |         |unsigned char
 |dup `5`  <> if|              |DUP_PUSH_CNE_IF(`5`)|         ( -- )      |         |unsigned char
-|dup `5`  =  if|              |DUP_PUSH_EQ_IF(`5`) |         ( -- )      |         |`(addr)` not supported
-|dup `5`  <> if|              |DUP_PUSH_NE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
-|dup `5`  <  if|              |DUP_PUSH_LT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
-|dup `5`  <= if|              |DUP_PUSH_LE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
-|dup `5`  >  if|              |DUP_PUSH_GT_IF(`5`) |         ( -- )      |         |`(addr)` not supported
-|dup `5`  >= if|              |DUP_PUSH_GE_IF(`5`) |         ( -- )      |         |`(addr)` not supported
-|dup `5` u<  if|              |DUP_PUSH_ULT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|dup `5` u>  if|              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |`(addr)` not supported
-|dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|         ( -- )      |         |`(addr)` not supported
+|dup `5`  =  if|              |DUP_PUSH_EQ_IF(`5`) |         ( -- )      |         |
+|dup `5`  <> if|              |DUP_PUSH_NE_IF(`5`) |         ( -- )      |         |
+|dup `5`  <  if|              |DUP_PUSH_LT_IF(`5`) |         ( -- )      |         |
+|dup `5`  <= if|              |DUP_PUSH_LE_IF(`5`) |         ( -- )      |         |
+|dup `5`  >  if|              |DUP_PUSH_GT_IF(`5`) |         ( -- )      |         |
+|dup `5`  >= if|              |DUP_PUSH_GE_IF(`5`) |         ( -- )      |         |
+|dup `5` u=  if|              |DUP_PUSH_UEQ_IF(`5`)|         ( -- )      |         |
+|dup `5` u<> if|              |DUP_PUSH_UNE_IF(`5`)|         ( -- )      |         |
+|dup `5` u<  if|              |DUP_PUSH_ULT_IF(`5`)|         ( -- )      |         |
+|dup `5` u<= if|              |DUP_PUSH_ULE_IF(`5`)|         ( -- )      |         |
+|dup `5` u>  if|              |DUP_PUSH_UGT_IF(`5`)|         ( -- )      |         |
+|dup `5` u>= if|              |DUP_PUSH_UGE_IF(`5`)|         ( -- )      |         |
 |`3` over <> if|              | DUP_PUSH_NE_IF(`3`)|       (x1 -- )      |         |
 |     dtto     |              |        dtto        |                     |         |
 |  2dup  =  if |              |    _2DUP_EQ_IF     |         ( -- )      |         |
