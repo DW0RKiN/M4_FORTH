@@ -5,7 +5,7 @@ SCALL(_bench)
 STOP
 
 define({TYPMUL},{})
-define({TYPDIV},{old})
+define({TYPDIV},{})
 
 COLON(_decomp,( n -- ))
     PUSH(2)
@@ -16,7 +16,7 @@ COLON(_decomp,( n -- ))
         IF 
             DROP _1ADD PUSH_OR(1) ; next odd number
         ELSE 
-            NROT NIP
+            NROT_NIP
         THEN
     REPEAT
     _2DROP 

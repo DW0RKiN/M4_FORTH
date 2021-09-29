@@ -66,9 +66,8 @@ begin101:
     jp   endif101       ; 3:10      else
 else101: 
             
-    ex  (SP), HL        ; 1:19      nrot
-    ex   DE, HL         ; 1:4       nrot ( c b a -- a c b ) 
-    pop  DE             ; 1:10      nip ( b a -- a )
+    pop  AF             ; 1:10      nrot nip
+    ex   DE, HL         ; 1:4       nrot nip ( c b a -- a b )
         
 endif101:
     
@@ -114,7 +113,7 @@ _bench_end:
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, BC, DE
 MULTIPLY:
-                        ;[148:cca 431-428] fast version
+                        ;[148:cca 359-428] fast version
    
                         ;           HL = HL*DE = HL*E + 256*D*L
     ld    B, H          ; 1:4
@@ -123,21 +122,21 @@ MULTIPLY:
     ld    A, E          ; 1:4       DE check bits
     add   A, A          ; 1:4
     jr    c, MULTIPLY_E7; 2:7/12
-    jr    z, MULTIPLY_D ; 2:7/12
+    jr    z, MULTIPLY_D ; 2:7/12    <-------------+
+    add   A, A          ; 1:4                     |
+    jr    c, MULTIPLY_E6; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E6; 2:7/12
+    jr    c, MULTIPLY_E5; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E5; 2:7/12
+    jr    c, MULTIPLY_E4; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E4; 2:7/12
+    jr    c, MULTIPLY_E3; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E3; 2:7/12
+    jr    c, MULTIPLY_E2; 2:7/12                  |
     add   A, A          ; 1:4
-    jr    c, MULTIPLY_E2; 2:7/12
-    add   A, A          ; 1:4
-    jr    c, MULTIPLY_E1; 2:7/12    
-    add   A, A          ; 1:4
-    jr    c, MULTIPLY_E0; 2:7/12    
+    jr    c, MULTIPLY_E1; 2:7/12                  |
+    add   A, A          ; 1:4                     |
+    jr    c, MULTIPLY_E0; 2:7/12    always carry -+
                         ;           
 MULTIPLY_D:             ;           A == E == 0 
     ld    H, A          ; 1:4
@@ -174,7 +173,6 @@ MULTIPLY_E6:            ;           HL 1x --> 64x
     add   A, A          ; 1:4       check E 0010_0000 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
-
 MULTIPLY_E5:            ;           HL 1x --> 32x
     add  HL, HL         ; 1:11
     
@@ -259,7 +257,6 @@ MULTIPLY_D0:
     ld    H, A          ; 1:4
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
-
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL

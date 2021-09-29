@@ -14,12 +14,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp_fast.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.c
 
-|       Name        |                System                |        Forth / C        |  Benchmark   | Time (sec/round) | Scale |
-| :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Decompose    | 1m8.86s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH old div        | Decompose    | 1m0.1s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH fast mul & div | Decompose    | 43.55s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Decompose    | 1m40.47s
+|       Name        |                System                |        Forth / C               |  Benchmark   | Time (sec/round) |
+| :---------------: | :----------------------------------: | :----------------------------: | :----------: | :--------------- |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                       | Decompose    | 1m7.18s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH div:old               | Decompose    | 1m0.03s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH div:old_fast          | Decompose    | 47.54s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH div:fast              | Decompose    | 1m3.07s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:fast              | Decompose    | 1m3.07s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:old_fast          | Decompose    | 1m4.75s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:fast div:old_fast | Decompose    | 43.44s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209               | Decompose    | 1m40.47s
 
 ### Gcd 1
 

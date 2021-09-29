@@ -16,7 +16,7 @@ COLON(_decomp,( n -- ))
         IF 
             DROP _1ADD PUSH_OR(1) ; next odd number
         ELSE 
-            NROT NIP
+            NROT_NIP
         THEN
     REPEAT
     _2DROP 

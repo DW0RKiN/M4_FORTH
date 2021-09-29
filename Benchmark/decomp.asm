@@ -66,9 +66,8 @@ begin101:
     jp   endif101       ; 3:10      else
 else101: 
             
-    ex  (SP), HL        ; 1:19      nrot
-    ex   DE, HL         ; 1:4       nrot ( c b a -- a c b ) 
-    pop  DE             ; 1:10      nip ( b a -- a )
+    pop  AF             ; 1:10      nrot nip
+    ex   DE, HL         ; 1:4       nrot nip ( c b a -- a b )
         
 endif101:
     
@@ -118,9 +117,9 @@ MULTIPLY:
     xor   A             ; 1:4
     ld    C, E          ; 1:4
 
-    srl   H             ; 2:8       divide H by 2
+    srl   H             ; 2:8       H /= 2
     jr   nc, $+3        ; 2:7/12        
-MULTIPLY1:
+MULTIPLY1:              ;           H0*0E
     add   A, C          ; 1:4       A += C(original E)
 
     sla   C             ; 2:8       C(original E) *= 2
@@ -132,69 +131,70 @@ MULTIPLY1:
     ld    L, H          ; 1:4       L = 0
     ld    H, A          ; 1:4       HL *= E
 
-    srl   C             ; 2:8       divide C(original L) by 2
+    srl   C             ; 2:8       C(original L) /= 2
     jr   nc, $+3        ; 2:7/12    
-MULTIPLY2:
+MULTIPLY2:              ;           0L*DE
     add  HL, DE         ; 1:11
     
     sla   E             ; 2:8
-    rl    D             ; 2:8       multiply DE by 2    
+    rl    D             ; 2:8       DE *= 2    
 
-    srl   C             ; 2:8       divide C(original L) by 2
+    srl   C             ; 2:8       C(original L) /= 2
     jr    c, MULTIPLY2  ; 2:7/12
     jp   nz, MULTIPLY2+1; 3:10      C(original L) = ?
 
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
-
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
 UDIVIDE:
-                        ;           old version
-    ex   DE, HL         ; 1:4       HL = HL / DE
+                        ;[37:cca 900] # default version can be changed with "define({TYPDIV},{name})", name=old_fast,old,fast,small,synthesis
+                        ; /3 --> cca 1551, /5 --> cca 1466, 7/ --> cca 1414, /15 --> cca 1290, /17 --> cca 1262, /31 --> cca 1172, /51 --> cca 1098, /63 --> cca 1058, /85 --> cca 1014, /255 --> cca 834
+    ld    A, H          ; 1:4
+    or    L             ; 1:4       HL = DE / HL
+    ret   z             ; 1:5/11    HL = DE / 0?
+    
+    ld   BC, 0x0000     ; 3:10
+if 0
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    ld    A, H          ; 1:4       
+    sub   D             ; 1:4
+    jp    c, UDIVIDE_LE ; 3:10
+    jp   nz, UDIVIDE_GT ; 3:10
+    ld    A, E          ; 1:4
+    sub   L             ; 1:4
+else
     ld    A, D          ; 1:4
-    or    A             ; 1:4
-    jr   nz, UDIVIDE_16 ; 2:7/12
-        
-    ld    B, 16         ; 2:7     
-    add  HL, HL         ; 1:11      2*HL
-    jr    c, $+7        ; 2:7/12
-    djnz $-3            ; 2:13/8
+UDIVIDE_LE:    
+    inc   B             ; 1:4       B++
+    add  HL, HL         ; 1:11   
+    jr    c, UDIVIDE_GT ; 2:7/12
+    cp    H             ; 1:4
+endif
+    jp   nc, UDIVIDE_LE ; 3:10
+    or    A             ; 1:4       HL > DE
 
-    ld    E, A          ; 1:4       DE = 0 % 0E = 0
-    ret                 ; 1:10      HL = 0 / 0E = 0
-    
-    add  HL, HL         ; 1:11      2*HL
-    rla                 ; 1:4
-    jr    c, $+5        ; 2:7/12    fix 256 / 129..255
-    cp    E             ; 1:4
-    jr    c, $+4        ; 2:7/12
-    inc   L             ; 1:4
-    sub   E             ; 1:4
-    djnz $-9            ; 2:13/8
-
-    ld    E, A          ; 1:4       DE = DE % HL
-    ret                 ; 1:10      HL = DE / HL
-    
-UDIVIDE_16:             ;           HL/256+
-    ld    A, L          ; 1:4
-    ld    L, H          ; 1:4
-    ld    H, 0x00       ; 2:7       HLA = 0HL 
-    ld    B, 0x08       ; 2:7
-        
-    rla                 ; 1:4
-    adc  HL, HL         ; 2:15
-    sbc  HL, DE         ; 2:15      HL-DE
+UDIVIDE_GT:             ;
+    ex   DE, HL         ; 1:4       HL = HL / DE
+    ld    A, C          ; 1:4       CA = 0x0000 = result
+UDIVIDE_LOOP:
+    rr    D             ; 2:8
+    rr    E             ; 2:8       DE >> 1
+    sbc  HL, DE         ; 2:15
     jr   nc, $+3        ; 2:7/12
     add  HL, DE         ; 1:11      back
-    djnz $-8            ; 2:8/13
+    ccf                 ; 1:4       inverts carry flag
+    adc   A, A          ; 1:4
+    rl    C             ; 2:8
+    djnz UDIVIDE_LOOP   ; 2:8/13    B--
     
-    rla                 ; 1:4
-    cpl                 ; 1:4
-    ex   DE, HL         ; 1:4
-    ld    H, B          ; 1:4
+    ex   DE, HL         ; 1:4    
     ld    L, A          ; 1:4
+    ld    H, C          ; 1:4
     ret                 ; 1:10
 VARIABLE_SECTION:
 
