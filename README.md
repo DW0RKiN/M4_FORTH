@@ -133,7 +133,7 @@ This is a compiler from Forth to M4 FORTH written in bash. Manual adjustments ar
 ### Stack manipulation
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
-
+<sub>
 |       original         |       M4 FORTH      |   optimization   |  data stack                  |  return address stack |
 |  :------------------:  | :-----------------: | :--------------: | :--------------------------- | :-------------------- |
 |          swap          |         SWAP        |                  |      ( x2 x1 -- x1 x2 )      |                       |
@@ -175,6 +175,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |           r>           |        R_FROM       |                  |            ( -- x1 )         | ( x1 -- )             |
 |           r@           |        R_FETCH      |                  |            ( -- x1 )         |  (x1 -- x1 )          |
 |         rdrop          |         RDROP       |                  |            ( -- )            | ( x1 -- )             |
+</sub>
 
 ### Arithmetic
 
@@ -284,6 +285,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 | u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )   |         | unsigned
 | u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )   |         |
 </sub>
+
 ### Device
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
