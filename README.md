@@ -184,6 +184,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 
+Support for fast multiplication or division by a constant is here:
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
+
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization  |<sub>  Data stack                 |<sub>  R. a. stack |
 | :-------------: | :---------------: | :-----------------: | :------------------------------- | :---------------- |
 |<sub>     +      |<sub>      ADD     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
