@@ -134,84 +134,84 @@ This is a compiler from Forth to M4 FORTH written in bash. Manual adjustments ar
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 
-|       original         |         M4 FORTH         |      optimization     |  data stack                       |  r. a. stack      |
-|  :------------------:  | :----------------------: | :-------------------: | :-------------------------------- | :---------------- |
-|          swap          |<sub>         SWAP        |<sub>                  |<sub>      ( x2 x1 -- x1 x2 )      |<sub>              |
-|        swap over       |<sub>       SWAP OVER     |<sub>     SWAP_OVER    |<sub>      ( x2 x1 -- x1 x2 x1 )   |<sub>              |
-|        swap `7`        |<sub>    SWAP PUSH(`7`)   |<sub>  SWAP_PUSH(`7`)  |<sub>      ( x2 x1 -- x1 x2 `7` )  |<sub>              |
-|        `6` swap        |<sub>    PUSH(`6`) SWAP   |<sub>  PUSH_SWAP(`6`)  |<sub>         ( x1 -- `6` x1 )     |<sub>              |
-|      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |<sub>DUP_PUSH_SWAP(`5`)|<sub>         ( x1 -- x1 `5` x1 )  |<sub>              |
-|         2swap          |<sub>        _2SWAP       |<sub>                  |<sub> (x1 x2 x3 x4 -- x3 x4 x1 x2) |<sub>              |
-|           dup          |<sub>          DUP        |<sub>                  |<sub>         ( x1 -- x1 x1 )      |<sub>              |
-|          ?dup          |<sub>     QUESTIONDUP     |<sub>                  |<sub>         ( x1 -- 0 \| x1 x1 ) |<sub>              |
-|          2dup          |<sub>        _2DUP        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 x1 )|<sub>              |
-|          drop          |<sub>         DROP        |<sub>                  |<sub>         ( x1 -- )            |<sub>              |
-|         2drop          |<sub>        _2DROP       |<sub>                  |<sub>      ( x2 x1 -- )            |<sub>              |
-|          nip           |<sub>          NIP        |<sub>                  |<sub>      ( x2 x1 -- x1 )         |<sub>              |
-|          2nip          |<sub>         2NIP        |<sub>                  |<sub>    ( d c b a -- b a )        |<sub>              |
-|          tuck          |<sub>         TUCK        |<sub>                  |<sub>      ( x2 x1 -- x1 x2 x1 )   |<sub>              |
-|         2tuck          |<sub>       _2TUCK        |<sub>                  |<sub>    ( d c b a -- b a d c b a )|<sub>              |
-|          over          |<sub>         OVER        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 )   |<sub>              |
-|        over swap       |<sub>       OVER SWAP     |<sub>     OVER_SWAP    |<sub>      ( x2 x1 -- x2 x2 x1 )   |<sub>              |
-|         2over          |<sub>       _2OVER        |<sub>                  |<sub>    ( a b c d -- a b c d a b )|<sub>              |
-|          rot           |<sub>         ROT         |<sub>                  |<sub>   ( x3 x2 x1 -- x2 x1 x3 )   |<sub>              |
-|         2rot           |<sub>        _2ROT        |<sub>                  |<sub>( f e d c b a -- d c b a f e )|<sub>              |
-|         -rot           |<sub>         NROT        |<sub>                  |<sub>   ( x3 x2 x1 -- x1 x3 x2 )   |<sub>              |
-|       -rot 2swap       |<sub>     NROT _2SWAP     |<sub>    NROT_2SWAP    |<sub>( x4 x3 x2 x1 -- x3 x2 x4 x1 )|<sub>              |
-|  nrot swap 2swap swap  |<sub>NROT SWAP _2SWAP SWAP|<sub>    STACK_BCAD    |<sub>    ( d c b a -- b c a d )    |<sub>              |
-|     over 2over drop    |<sub>  OVER _2OVER DROP   |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
-|     over `3` pick      |<sub> OVER PUSH(`3`) PICK |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
-| `2` pick `2` pick swap |<sub>         ....        |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
-|2over nip 2over nip swap|<sub>         ....        |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
-|         `123`          |<sub>      PUSH(`123`)    |<sub>                  |<sub>            ( -- `123` )      |<sub>              |
-|         `2` `1`        |<sub> PUSH(`2`) PUSH(`1`) |<sub>  PUSH2(`2`,`1`)  |<sub>            ( -- `2` `1` )    |<sub>              |
-|       addr `7` @       |<sub>     PUSH((addr))    |<sub>                  |<sub>    *addr = 7 --> ( -- `7`)   |<sub>              |
-|                        |<sub>                     |<sub>  PUSH2((A),`2`)  |<sub>    *A = 4 --> ( -- `4` `2` ) |<sub>              |
-|       drop `5`         |<sub>                     |<sub>  DROP_PUSH(`5`)  |<sub>         ( x1 -- `5`)         |<sub>              |
-|        dup `4`         |<sub>                     |<sub>   DUP_PUSH(`4`)  |<sub>         ( x1 -- x1 x1 `4`)   |<sub>              |
-|          pick          |<sub>         PICK        |<sub>                  |<sub>          ( u -- xu )         |<sub>              |
-|        `2` pick        |<sub>                     |<sub>  PUSH_PICK(`2`)  |<sub>   ( x2 x1 x0 -- x2 x1 x0 x2 )|<sub>              |
-|           >r           |<sub>         TO_R        |<sub>                  |<sub>         ( x1 -- )            |<sub>    ( -- x1 ) |
-|           r>           |<sub>        R_FROM       |<sub>                  |<sub>            ( -- x1 )         |<sub> ( x1 -- )    |
-|           r@           |<sub>        R_FETCH      |<sub>                  |<sub>            ( -- x1 )         |<sub> ( x1 -- x1 ) |
-|         rdrop          |<sub>         RDROP       |<sub>                  |<sub>            ( -- )            |<sub> ( x1 -- )    |
+|<sub>       original         |<sub>    M4 FORTH         |<sub> optimization     |<sub>  data stack                  |<sub>  r. a. stack |
+| :-------------------------: | :----------------------: | :-------------------: | :-------------------------------- | :---------------- |
+|<sub>          swap          |<sub>         SWAP        |<sub>                  |<sub>      ( x2 x1 -- x1 x2 )      |<sub>              |
+|<sub>        swap over       |<sub>       SWAP OVER     |<sub>     SWAP_OVER    |<sub>      ( x2 x1 -- x1 x2 x1 )   |<sub>              |
+|<sub>        swap `7`        |<sub>    SWAP PUSH(`7`)   |<sub>  SWAP_PUSH(`7`)  |<sub>      ( x2 x1 -- x1 x2 `7` )  |<sub>              |
+|<sub>        `6` swap        |<sub>    PUSH(`6`) SWAP   |<sub>  PUSH_SWAP(`6`)  |<sub>         ( x1 -- `6` x1 )     |<sub>              |
+|<sub>      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |<sub>DUP_PUSH_SWAP(`5`)|<sub>         ( x1 -- x1 `5` x1 )  |<sub>              |
+|<sub>         2swap          |<sub>        _2SWAP       |<sub>                  |<sub> (x1 x2 x3 x4 -- x3 x4 x1 x2) |<sub>              |
+|<sub>           dup          |<sub>          DUP        |<sub>                  |<sub>         ( x1 -- x1 x1 )      |<sub>              |
+|<sub>          ?dup          |<sub>     QUESTIONDUP     |<sub>                  |<sub>         ( x1 -- 0 \| x1 x1 ) |<sub>              |
+|<sub>          2dup          |<sub>        _2DUP        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 x1 )|<sub>              |
+|<sub>          drop          |<sub>         DROP        |<sub>                  |<sub>         ( x1 -- )            |<sub>              |
+|<sub>         2drop          |<sub>        _2DROP       |<sub>                  |<sub>      ( x2 x1 -- )            |<sub>              |
+|<sub>          nip           |<sub>          NIP        |<sub>                  |<sub>      ( x2 x1 -- x1 )         |<sub>              |
+|<sub>          2nip          |<sub>         2NIP        |<sub>                  |<sub>    ( d c b a -- b a )        |<sub>              |
+|<sub>          tuck          |<sub>         TUCK        |<sub>                  |<sub>      ( x2 x1 -- x1 x2 x1 )   |<sub>              |
+|<sub>         2tuck          |<sub>       _2TUCK        |<sub>                  |<sub>    ( d c b a -- b a d c b a )|<sub>              |
+|<sub>          over          |<sub>         OVER        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 )   |<sub>              |
+|<sub>        over swap       |<sub>       OVER SWAP     |<sub>     OVER_SWAP    |<sub>      ( x2 x1 -- x2 x2 x1 )   |<sub>              |
+|<sub>         2over          |<sub>       _2OVER        |<sub>                  |<sub>    ( a b c d -- a b c d a b )|<sub>              |
+|<sub>          rot           |<sub>         ROT         |<sub>                  |<sub>   ( x3 x2 x1 -- x2 x1 x3 )   |<sub>              |
+|<sub>         2rot           |<sub>        _2ROT        |<sub>                  |<sub>( f e d c b a -- d c b a f e )|<sub>              |
+|<sub>         -rot           |<sub>         NROT        |<sub>                  |<sub>   ( x3 x2 x1 -- x1 x3 x2 )   |<sub>              |
+|<sub>       -rot 2swap       |<sub>     NROT _2SWAP     |<sub>    NROT_2SWAP    |<sub>( x4 x3 x2 x1 -- x3 x2 x4 x1 )|<sub>              |
+|<sub>  nrot swap 2swap swap  |<sub>NROT SWAP _2SWAP SWAP|<sub>    STACK_BCAD    |<sub>    ( d c b a -- b c a d )    |<sub>              |
+|<sub>     over 2over drop    |<sub>  OVER _2OVER DROP   |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
+|<sub>     over `3` pick      |<sub> OVER PUSH(`3`) PICK |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
+|<sub> `2` pick `2` pick swap |<sub>         ....        |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
+|<sub>2over nip 2over nip swap|<sub>         ....        |<sub>    STACK_CBABC   |<sub>      ( c b a -- c b a b c )  |<sub>              |
+|<sub>         `123`          |<sub>      PUSH(`123`)    |<sub>                  |<sub>            ( -- `123` )      |<sub>              |
+|<sub>         `2` `1`        |<sub> PUSH(`2`) PUSH(`1`) |<sub>  PUSH2(`2`,`1`)  |<sub>            ( -- `2` `1` )    |<sub>              |
+|<sub>       addr `7` @       |<sub>     PUSH((addr))    |<sub>                  |<sub>    *addr = 7 --> ( -- `7`)   |<sub>              |
+|<sub>                        |<sub>                     |<sub>  PUSH2((A),`2`)  |<sub>    *A = 4 --> ( -- `4` `2` ) |<sub>              |
+|<sub>       drop `5`         |<sub>                     |<sub>  DROP_PUSH(`5`)  |<sub>         ( x1 -- `5`)         |<sub>              |
+|<sub>        dup `4`         |<sub>                     |<sub>   DUP_PUSH(`4`)  |<sub>         ( x1 -- x1 x1 `4`)   |<sub>              |
+|<sub>          pick          |<sub>         PICK        |<sub>                  |<sub>          ( u -- xu )         |<sub>              |
+|<sub>        `2` pick        |<sub>                     |<sub>  PUSH_PICK(`2`)  |<sub>   ( x2 x1 x0 -- x2 x1 x0 x2 )|<sub>              |
+|<sub>           >r           |<sub>         TO_R        |<sub>                  |<sub>         ( x1 -- )            |<sub>    ( -- x1 ) |
+|<sub>           r>           |<sub>        R_FROM       |<sub>                  |<sub>            ( -- x1 )         |<sub> ( x1 -- )    |
+|<sub>           r@           |<sub>        R_FETCH      |<sub>                  |<sub>            ( -- x1 )         |<sub> ( x1 -- x1 ) |
+|<sub>         rdrop          |<sub>         RDROP       |<sub>                  |<sub>            ( -- )            |<sub> ( x1 -- )    |
 
 ### Arithmetic
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 
-| original   |   M4 FORTH   |  optimization  |  data stack                 |  r. a. stack |
-| :--------: | :----------: | :------------: | :-------------------------- | :----------- |
-|     +      |      ADD     |                |    ( x2 x1 -- x )           |              |
-|   `3` +    |              |  PUSH_ADD(`3`) |        ( x -- x+`3` )       |              |
-|   dup +    |              |     DUP_ADD    |        ( x -- x+x )         |              |
-|   over +   |              |    OVER_ADD    |    ( x2 x1 -- x2 x1+x2  )   |              |
-|     -      |      SUB     |                |    ( x2 x1 -- x )           |              |
-|   `3` -    |              |  PUSH_SUB(`3`) |        ( x -- x-`3` )       |              |
-|   over -   |              |    OVER_SUB    |    ( x2 x1 -- x2 x1-x2  )   |              |
-|    max     |      MAX     |                |    ( x2 x1 -- max )         |              |
-|  `3` max   | PUSH_MAX(`3`)|                |       ( x1 -- max )         |              |
-|    min     |      MIN     |                |    ( x2 x1 -- min )         |              |
-|  `3` min   | PUSH_MIN(`3`)|                |       ( x1 -- min )         |              |
-|   negate   |     NEGATE   |                |       ( x1 -- -x1 )         |              |
-|    abs     |      ABS     |                |        ( n -- u )           |              |
-|     *      |      MUL     |                |    ( x2 x1 -- x )           |              |
-|     /      |      DIV     |                |    ( x2 x1 -- x )           |              |
-|    mod     |      MOD     |                |    ( x2 x1 -- x )           |              |
-|    /mod    |    DIVMOD    |                |    ( x2 x1 -- x )           |              |
-|     u*     |      MUL     |                |    ( x2 x1 -- x )           |              |
-|  `+12` *   |              | PUSH_MUL(`12`) |    ( x2 x1 -- x )           |              |
-|     u/     |     UDIV     |                |    ( x2 x1 -- x )           |              |
-|    umod    |     UMOD     |                |    ( x2 x1 -- x )           |              |
-|    u/mod   |    UDIVMOD   |                |    ( x2 x1 -- rem quot )    |              |
-|     1+     |    _1ADD     |                |       ( x1 -- x1++ )        |              |
-|     1-     |    _1SUB     |                |       ( x1 -- x1-- )        |              |
-|     2+     |    _2ADD     |                |       ( x1 -- x1+2 )        |              |
-|     2-     |    _2SUB     |                |       ( x1 -- x1-2 )        |              |
-|     2*     |    _2MUL     |                |       ( x1 -- x1*2 )        |              |
-|     2/     |    _2DIV     |                |       ( x1 -- x1/2 )        |              |
-|    256*    |   _256MUL    |                |       ( x1 -- x1*256 )      |              |
-|    256/    |   _256DIV    |                |       ( x1 -- x1/256 )      |              |
+|<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack                 |<sub>  r. a. stack |
+|<sub> :--------: |<sub> :----------: |<sub> :------------: |<sub> :-------------------------- |<sub> :----------- |
+|<sub>     +      |<sub>      ADD     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>   `3` +    |<sub>              |<sub>  PUSH_ADD(`3`) |<sub>        ( x -- x+`3` )       |<sub>              |
+|<sub>   dup +    |<sub>              |<sub>     DUP_ADD    |<sub>        ( x -- x+x )         |<sub>              |
+|<sub>   over +   |<sub>              |<sub>    OVER_ADD    |<sub>    ( x2 x1 -- x2 x1+x2  )   |<sub>              |
+|<sub>     -      |<sub>      SUB     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>   `3` -    |<sub>              |<sub>  PUSH_SUB(`3`) |<sub>        ( x -- x-`3` )       |<sub>              |
+|<sub>   over -   |<sub>              |<sub>    OVER_SUB    |<sub>    ( x2 x1 -- x2 x1-x2  )   |<sub>              |
+|<sub>    max     |<sub>      MAX     |<sub>                |<sub>    ( x2 x1 -- max )         |<sub>              |
+|<sub>  `3` max   |<sub> PUSH_MAX(`3`)|<sub>                |<sub>       ( x1 -- max )         |<sub>              |
+|<sub>    min     |<sub>      MIN     |<sub>                |<sub>    ( x2 x1 -- min )         |<sub>              |
+|<sub>  `3` min   |<sub> PUSH_MIN(`3`)|<sub>                |<sub>       ( x1 -- min )         |<sub>              |
+|<sub>   negate   |<sub>     NEGATE   |<sub>                |<sub>       ( x1 -- -x1 )         |<sub>              |
+|<sub>    abs     |<sub>      ABS     |<sub>                |<sub>        ( n -- u )           |<sub>              |
+|<sub>     *      |<sub>      MUL     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>     /      |<sub>      DIV     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>    mod     |<sub>      MOD     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>    /mod    |<sub>    DIVMOD    |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>     u*     |<sub>      MUL     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>  `+12` *   |<sub>              |<sub> PUSH_MUL(`12`) |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>     u/     |<sub>     UDIV     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>    umod    |<sub>     UMOD     |<sub>                |<sub>    ( x2 x1 -- x )           |<sub>              |
+|<sub>    u/mod   |<sub>    UDIVMOD   |<sub>                |<sub>    ( x2 x1 -- rem quot )    |<sub>              |
+|<sub>     1+     |<sub>    _1ADD     |<sub>                |<sub>       ( x1 -- x1++ )        |<sub>              |
+|<sub>     1-     |<sub>    _1SUB     |<sub>                |<sub>       ( x1 -- x1-- )        |<sub>              |
+|<sub>     2+     |<sub>    _2ADD     |<sub>                |<sub>       ( x1 -- x1+2 )        |<sub>              |
+|<sub>     2-     |<sub>    _2SUB     |<sub>                |<sub>       ( x1 -- x1-2 )        |<sub>              |
+|<sub>     2*     |<sub>    _2MUL     |<sub>                |<sub>       ( x1 -- x1*2 )        |<sub>              |
+|<sub>     2/     |<sub>    _2DIV     |<sub>                |<sub>       ( x1 -- x1/2 )        |<sub>              |
+|<sub>    256*    |<sub>   _256MUL    |<sub>                |<sub>       ( x1 -- x1*256 )      |<sub>              |
+|<sub>    256/    |<sub>   _256DIV    |<sub>                |<sub>       ( x1 -- x1/256 )      |<sub>              |
 
 ### Floating-point
 
@@ -223,67 +223,67 @@ https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 
 For a logical comparison of two numbers as f1> f2, exactly the same result applies as for a comparison of two integer numbers with a sign.
 
-| original   |   M4 FORTH   |  optimization  |  data stack          |  comment                   |
-| :--------: | :----------: | :------------: | :------------------- | :------------------------- |
-|    s>f     |      S2F     |                |       ( s1 -- f1 )   |                            |
-|    u>f     |      U2F     |                |       ( u1 -- f1 )   |                            |
-|    f>s     |      F2S     |                |       ( f1 -- s1 )   |                            |
-|    f>u     |      F2U     |                |       ( f1 -- u1 )   |                            |
-|     f+     |     FADD     |                |    ( f2 f1 -- f3 )   | f3 = f2 + f1               |
-|     f-     |     FSUB     |                |    ( f2 f1 -- f3 )   | f3 = f2 - f1               |
-|  fnegate   |    FNEGATE   |                |       ( f1 -- f2 )   | f2 = -f1                   |
-|    fabs    |     FABS     |                |       ( f1 -- f2 )   | f2 = abs(f1)               |
-|     f.     |     FDOT     |                |       ( f1 -- )      |                            |
-|     f*     |     FMUL     |                |    ( f2 f1 -- f3 )   | f3 = f2 * f1               |
-|     f/     |     FDIV     |                |    ( f2 f1 -- f3 )   | f3 = f2 / f1               |
-|   fsqrt    |    FSQRT     |                |       ( f1 -- f2 )   |                            |
-|   ftrunc   |    FTRUNC    |                |       ( f1 -- f2 )   | f2 = int(f1), round to zero|
-|            |    FFRAC     |                |       ( f1 -- f2 )   | f2 = f1 % 1.0              |
-|    fexp    |     FEXP     |                |       ( f1 -- f2 )   | f2 = e^(f1)                |
-|     fln    |      FLN     |                |       ( f1 -- f2 )   | f2 = ln(f1)                |
-|    fmod    |     FMOD     |                |    ( f2 f1 -- f3 )   | f3 = f2 % f1               |
-|     f2*    |     F2MUL    |                |       ( f1 -- f2 )   | f2 = f1 * 2.0              |
-|     f2/    |     F2DIV    |                |       ( f1 -- f2 )   | f2 = f1 / 2.0              |
-|    fsin    |     FSIN     |                |       ( f1 -- f2 )   | f2 = sin(f1), f1 <= ±π/2   |
+|<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack          |<sub>  comment                   |
+|<sub> :--------: |<sub> :----------: |<sub> :------------: |<sub> :------------------- |<sub> :------------------------- |
+|<sub>    s>f     |<sub>      S2F     |<sub>                |<sub>       ( s1 -- f1 )   |<sub>                            |
+|<sub>    u>f     |<sub>      U2F     |<sub>                |<sub>       ( u1 -- f1 )   |<sub>                            |
+|<sub>    f>s     |<sub>      F2S     |<sub>                |<sub>       ( f1 -- s1 )   |<sub>                            |
+|<sub>    f>u     |<sub>      F2U     |<sub>                |<sub>       ( f1 -- u1 )   |<sub>                            |
+|<sub>     f+     |<sub>     FADD     |<sub>                |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 + f1               |
+|<sub>     f-     |<sub>     FSUB     |<sub>                |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 - f1               |
+|<sub>  fnegate   |<sub>    FNEGATE   |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = -f1                   |
+|<sub>    fabs    |<sub>     FABS     |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = abs(f1)               |
+|<sub>     f.     |<sub>     FDOT     |<sub>                |<sub>       ( f1 -- )      |<sub>                            |
+|<sub>     f*     |<sub>     FMUL     |<sub>                |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 * f1               |
+|<sub>     f/     |<sub>     FDIV     |<sub>                |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 / f1               |
+|<sub>   fsqrt    |<sub>    FSQRT     |<sub>                |<sub>       ( f1 -- f2 )   |<sub>                            |
+|<sub>   ftrunc   |<sub>    FTRUNC    |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = int(f1), round to zero|
+|<sub>            |<sub>    FFRAC     |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 % 1.0              |
+|<sub>    fexp    |<sub>     FEXP     |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = e^(f1)                |
+|<sub>     fln    |<sub>      FLN     |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = ln(f1)                |
+|<sub>    fmod    |<sub>     FMOD     |<sub>                |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 % f1               |
+|<sub>     f2*    |<sub>     F2MUL    |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 * 2.0              |
+|<sub>     f2/    |<sub>     F2DIV    |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 / 2.0              |
+|<sub>    fsin    |<sub>     FSIN     |<sub>                |<sub>       ( f1 -- f2 )   |<sub> f2 = sin(f1), f1 <= ±π/2   |
 
 ### Logic
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
-<sub>
-| original   |   M4 FORTH   |  optimization  |  data stack            |  r.a.s. | comment      |
-| :--------: | :----------: | :------------: | :--------------------- | :------ | :----------- |
-|    and     |     AND      |                |    ( x2 x1 -- x )      |         |              |
-|   `3` and  |              |  PUSH_AND(`3`) |        ( x -- x & `3`) |         |              |
-|     or     |      OR      |                |    ( x2 x1 -- x )      |         |              |
-|   `3` or   |              |  PUSH_OR(`3`)  |        ( x -- x \| `3`)|         |              |
-|    xor     |     XOR      |                |       ( x1 -- -x1 )    |         |              |
-|   `3` xor  |              |  PUSH_XOR(`3`) |        ( x -- x ^ `3`) |         |              |
-|    abs     |     ABS      |                |        ( n -- u )      |         |
-|   invert   |    INVERT    |                |       ( x1 -- ~x1 )    |         |
-|   within   |    WITHIN    |                |    ( c b a -- flag )   |         |(a-b) (c-b) U<
-|    true    |     TRUE     |                |          ( -- -1 )     |         |
-|   false    |    FALSE     |                |          ( -- 0 )      |         |
-|      =     |      EQ      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|     0=     |     _0EQ     |                |       ( x1 -- f )      |         | f=(x1 == 0)
-|    D0=     |     D0EQ     |                |    ( x1 x2 -- f )      |         | f=((x1|x2) == 0)
-|     <>     |      NE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|      <     |      LT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|     0<     |     _0LT     |                |       ( x1 -- f )      |         | f=(x1 < 0)
-|     <=     |      LE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|      >     |      GT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|     >=     |      GE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|     0>=    |     _0GE     |                |       ( x1 -- f )      |         | f=(x1 >= 0)
-|     u<     |     ULT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|    u<=     |     ULE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|     u>     |     UGT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-|    u>=     |     UGE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
-| x1 u >> x  |    RSHIFT    |                |    ( x1 u -- x1>>u )   |         |
-| x1 u << x  |    LSHIFT    |                |    ( x1 u -- x1<<u )   |         |
-| x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )   |         | signed
-| x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )   |         |
-| u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )   |         | unsigned
-| u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )   |         |
-</sub>
+
+|<sub> original   |<sub>   M4 FORTH   |<sub>  optimization  |<sub>  data stack            |<sub>  r.a.s. |<sub> comment      |
+|<sub> :--------: |<sub> :----------: |<sub> :------------: |<sub> :--------------------- |<sub> :------ |<sub> :----------- |
+|<sub>    and     |<sub>     AND      |<sub>                |<sub>    ( x2 x1 -- x )      |<sub>         |<sub>              |
+|<sub>   `3` and  |<sub>              |<sub>  PUSH_AND(`3`) |<sub>        ( x -- x & `3`) |<sub>         |<sub>              |
+|<sub>     or     |<sub>      OR      |<sub>                |<sub>    ( x2 x1 -- x )      |<sub>         |<sub>              |
+|<sub>   `3` or   |<sub>              |<sub>  PUSH_OR(`3`)  |<sub>        ( x -- x \| `3`)|<sub>         |<sub>              |
+|<sub>    xor     |<sub>     XOR      |<sub>                |<sub>       ( x1 -- -x1 )    |<sub>         |<sub>              |
+|<sub>   `3` xor  |<sub>              |<sub>  PUSH_XOR(`3`) |<sub>        ( x -- x ^ `3`) |<sub>         |<sub>              |
+|<sub>    abs     |<sub>     ABS      |<sub>                |<sub>        ( n -- u )      |<sub>         |<sub>
+|<sub>   invert   |<sub>    INVERT    |<sub>                |<sub>       ( x1 -- ~x1 )    |<sub>         |<sub>
+|<sub>   within   |<sub>    WITHIN    |<sub>                |<sub>    ( c b a -- flag )   |<sub>         |<sub>(a-b) (c-b) U<
+|<sub>    true    |<sub>     TRUE     |<sub>                |<sub>          ( -- -1 )     |<sub>         |<sub>
+|<sub>   false    |<sub>    FALSE     |<sub>                |<sub>          ( -- 0 )      |<sub>         |<sub>
+|<sub>      =     |<sub>      EQ      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>     0=     |<sub>     _0EQ     |<sub>                |<sub>       ( x1 -- f )      |<sub>         |<sub> f=(x1 == 0)
+|<sub>    D0=     |<sub>     D0EQ     |<sub>                |<sub>    ( x1 x2 -- f )      |<sub>         |<sub> f=((x1|x2) == 0)
+|<sub>     <>     |<sub>      NE      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>      <     |<sub>      LT      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>     0<     |<sub>     _0LT     |<sub>                |<sub>       ( x1 -- f )      |<sub>         |<sub> f=(x1 < 0)
+|<sub>     <=     |<sub>      LE      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>      >     |<sub>      GT      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>     >=     |<sub>      GE      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>     0>=    |<sub>     _0GE     |<sub>                |<sub>       ( x1 -- f )      |<sub>         |<sub> f=(x1 >= 0)
+|<sub>     u<     |<sub>     ULT      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>    u<=     |<sub>     ULE      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>     u>     |<sub>     UGT      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub>    u>=     |<sub>     UGE      |<sub>                |<sub>    ( x2 x1 -- flag )   |<sub>         |<sub> TRUE=-1 FALSE=0
+|<sub> x1 u >> x  |<sub>    RSHIFT    |<sub>                |<sub>    ( x1 u -- x1>>u )   |<sub>         |<sub>
+|<sub> x1 u << x  |<sub>    LSHIFT    |<sub>                |<sub>    ( x1 u -- x1<<u )   |<sub>         |<sub>
+|<sub> x1 1 >> x  |<sub>              |<sub>    XRSHIFT1    |<sub>      ( x1 -- x1>>1 )   |<sub>         |<sub> signed
+|<sub> x1 1 << x  |<sub>              |<sub>    XLSHIFT1    |<sub>      ( x1 -- x1<<1 )   |<sub>         |<sub>
+|<sub> u1 1 >> u  |<sub>              |<sub>   XURSHIFT1    |<sub>      ( u1 -- u1>>1 )   |<sub>         |<sub> unsigned
+|<sub> u1 1 << u  |<sub>              |<sub>   XULSHIFT1    |<sub>      ( u1 -- u1<<1 )   |<sub>         |<sub>
+
 
 ### Device
 
