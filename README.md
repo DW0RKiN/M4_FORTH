@@ -143,7 +143,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |      dup `5` swap      |  DUP PUSH(`5`) SWAP |DUP_PUSH_SWAP(`5`)|         ( x1 -- x1 `5` x1 )  |                       |
 |         2swap          |        _2SWAP       |                  | (x1 x2 x3 x4 -- x3 x4 x1 x2) |                       |
 |           dup          |          DUP        |                  |         ( x1 -- x1 x1 )      |                       |
-|          ?dup          |     QUESTIONDUP     |                  |         ( x1 -- 0 | x1 x1 )  |                       |
+|          ?dup          |     QUESTIONDUP     |                  |         ( x1 -- 0 \| x1 x1 ) |                       |
 |          2dup          |        _2DUP        |                  |      ( x2 x1 -- x2 x1 x2 x1 )|                       |
 |          drop          |         DROP        |                  |         ( x1 -- )            |                       |
 |         2drop          |        _2DROP       |                  |      ( x2 x1 -- )            |                       |
