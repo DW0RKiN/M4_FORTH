@@ -332,7 +332,7 @@ And every `{` in the string must have a matching `}`. Otherwise, the macro will 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 
 |<sub>   original   |<sub>   M4 FORTH   |<sub>    optimization    |<sub>   data stack        |<sub>  r.a.s. |<sub> comment     |
-| :---------------: | :---------------: |<sub>  :---------------: | :----------------------- | :----------- | :--------------- |
+| :---------------: | :---------------: | :---------------------: | :----------------------- | :----------- | :--------------- |
 |<sub>      if      |<sub>      IF      |<sub>                    |<sub>    ( flag -- )      |<sub>         |                  |
 |<sub>    dup if    |<sub>              |<sub>      DUP_IF        |<sub>    ( flag -- flag ) |<sub>         |                  |
 |<sub>     else     |<sub>     ELSE     |<sub>                    |<sub>         ( -- )      |<sub>         |                  |
