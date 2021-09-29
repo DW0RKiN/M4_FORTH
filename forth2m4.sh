@@ -155,15 +155,15 @@ do
     sed 's#^\([^;{]*\s\|^\)[Aa]ccept\(\s\|$\)#\1ACCEPT\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Ss]wap\(\s\|$\)#\1SWAP\2#g' |
-    sed 's#^\([^;{]*\s\|^\)SWAP\sOVER\(\s\|$\)#\1SWAP_OVER\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)SWAP\s\([+-]*[0-9]\+\)(\s\|$\)#\1SWAP_PUSH(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)SWAP\s\+OVER\(\s\|$\)#\1SWAP_OVER\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)SWAP\s\+\([+-]*[0-9]\+\)\(\s\|$\)#\1SWAP_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1PUSH_SWAP(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Ss]wap\(\s\|$\)#\1_2SWAP\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)?[Dd]up\(\s\|$\)#\1QUESTIONDUP\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Dd]up\(\s\|$\)#\1DUP\2#g' |
-    sed 's#^\([^;{]*\s\|^\)DUP\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1DUP_PUSH_SWAP(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1DUP_PUSH_SWAP(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Dd]up\(\s\|$\)#\1_2DUP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)over\s\+over\(\s\|$\)#\1_2DUP\2#gi' |
 
@@ -184,18 +184,18 @@ do
     sed 's#^\([^;{]*\s\|^\)2swap\s\+2over\(\s\|$\)#\1_2TUCK\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Oo]ver\(\s\|$\)#\1OVER\2#g' |
-    sed 's#^\([^;{]*\s\|^\)OVER\sSWAP\(\s\|$\)#\1OVER_SWAP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)OVER\s\+SWAP\(\s\|$\)#\1OVER_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Oo]ver\(\s\|$\)#\1_2OVER\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
-    sed 's#^\([^;{]*\s\|^\)ROT\sDROP\sSWAP\(\s\|$\)#\1NROT_NIP\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)ROT\sDROP\(\s\|$\)#\1ROT_DROP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\s\+SWAP\(\s\|$\)#\1NROT_NIP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\(\s\|$\)#\1ROT_DROP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Rr]ot\(\s\|$\)#\1_2ROT\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)-[Rr]ot\(\s\|$\)#\1NROT\2#g' |
-    sed 's#^\([^;{]*\s\|^\)NROT\sNIP\(\s\|$\)#\1NROT_NIP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)NROT\s\+NIP\(\s\|$\)#\1NROT_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)rot\s\+rot\(\s\|$\)#\1NROT\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)NROT\s_2SWAP\(\s\|$\)#\1NROT_2SWAP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)NROT\s\+_2SWAP\(\s\|$\)#\1NROT_2SWAP\2#gi' |
     
     sed 's#^\([^;{]*\s\|^\)0\+\s\+[c]*move[>]*\(\s\|$\)#\2#gi' |
 
