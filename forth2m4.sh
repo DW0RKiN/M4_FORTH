@@ -188,9 +188,12 @@ do
     sed 's#^\([^;{]*\s\|^\)2[Oo]ver\(\s\|$\)#\1_2OVER\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)ROT\sDROP\sSWAP\(\s\|$\)#\1NROT_NIP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)ROT\sDROP\(\s\|$\)#\1ROT_DROP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Rr]ot\(\s\|$\)#\1_2ROT\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)-[Rr]ot\(\s\|$\)#\1NROT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)NROT\sNIP\(\s\|$\)#\1NROT_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)rot\s\+rot\(\s\|$\)#\1NROT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)NROT\s_2SWAP\(\s\|$\)#\1NROT_2SWAP\2#gi' |
     
