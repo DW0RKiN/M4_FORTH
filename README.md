@@ -164,7 +164,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 | `2` pick `2` pick swap |         ....        |    STACK_CBABC   |      ( c b a -- c b a b c )  |              |
 |2over nip 2over nip swap|         ....        |    STACK_CBABC   |      ( c b a -- c b a b c )  |              |
 |         `123`          |      PUSH(`123`)    |                  |            ( -- `123` )      |              |
-|         `2` `1`        |                     |  PUSH2(`2`,`1`)  |            ( -- `2` `1` )    |              |
+|         `2` `1`        | PUSH(`2`) PUSH(`1`) |  PUSH2(`2`,`1`)  |            ( -- `2` `1` )    |              |
 |       addr `7` @       |     PUSH((addr))    |                  |    *addr = 7 --> ( -- `7`)   |              |
 |                        |                     |  PUSH2((A),`2`)  |    *A = 4 --> ( -- `4` `2` ) |              |
 |       drop `5`         |                     |  DROP_PUSH(`5`)  |         ( x1 -- `5`)         |              |
@@ -173,7 +173,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |        `2` pick        |                     |  PUSH_PICK(`2`)  |   ( x2 x1 x0 -- x2 x1 x0 x2 )|              |
 |           >r           |         TO_R        |                  |         ( x1 -- )            |    ( -- x1 ) |
 |           r>           |        R_FROM       |                  |            ( -- x1 )         | ( x1 -- )    |
-|           r@           |        R_FETCH      |                  |            ( -- x1 )         |  (x1 -- x1 ) |
+|           r@           |        R_FETCH      |                  |            ( -- x1 )         | ( x1 -- x1 ) |
 |         rdrop          |         RDROP       |                  |            ( -- )            | ( x1 -- )    |
 </sub>
 
