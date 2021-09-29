@@ -53,7 +53,11 @@ It is converted to the creation of new functions. The return value of the functi
 
     m4 my_program_name.m4 > my_program_name.asm
     pasmo -d my_program_name.asm my_program_name.bin > test.asm
+    
+Or use a bash script:
 
+    ./compile.sh my_program_name
+    
 ## Hello World!
 
 For clarity, macros are divided into several files and stored in the M4 directory.
