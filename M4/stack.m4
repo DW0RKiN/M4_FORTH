@@ -163,6 +163,13 @@ define({ROT},{
     ex  (SP),HL         ; 1:19      rot ( c b a -- b a c )})dnl
 dnl
 dnl
+dnl rot drop
+dnl ( c b a -- b a )
+dnl Remove third item from stack
+define({ROT_DROP},{
+    pop  AF             ; 1:10      rot drop ( c b a -- b a )})dnl
+dnl
+dnl
 dnl ( f e d c b a -- d c b a f e )
 dnl vyjme treti 32-bit polozku a ulozi ji na vrchol
 define({_2ROT},{
@@ -189,6 +196,14 @@ dnl vyjme vrchol zasobniku a ulozi ho jako treti polozku, rotace doprava
 define({NROT},{
     ex  (SP), HL        ; 1:19      nrot
     ex   DE, HL         ; 1:4       nrot ( c b a -- a c b )})dnl
+dnl                      15:127
+dnl
+dnl -rot nip
+dnl ( c b a -- a b )
+dnl Remove third item from stack and swap
+define({NROT_NIP},{
+    pop  AF             ; 1:10      nrot nip
+    ex   DE, HL         ; 1:4       nrot nip ( c b a -- a b )})dnl
 dnl
 dnl
 dnl -rot 2swap

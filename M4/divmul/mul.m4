@@ -848,7 +848,6 @@ MULTIPLY2:              ;           0L*DE
 
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY}){}dnl
-}){}dnl
 dnl
 dnl
 dnl
