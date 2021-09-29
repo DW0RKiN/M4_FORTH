@@ -133,49 +133,48 @@ This is a compiler from Forth to M4 FORTH written in bash. Manual adjustments ar
 ### Stack manipulation
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
-<sub>
+
 |       original         |       M4 FORTH      |   optimization   |  data stack                  |  r. a. stack |
 |  :------------------:  | :-----------------: | :--------------: | :--------------------------- | :----------- |
-|          swap          |     <sub>    SWAP</sub>        |                  |      ( x2 x1 -- x1 x2 )      |              |
-|        swap over       |       SWAP OVER     |     SWAP_OVER    |      ( x2 x1 -- x1 x2 x1 )   |              |
-|        swap `7`        |    SWAP PUSH(`7`)   |  SWAP_PUSH(`7`)  |      ( x2 x1 -- x1 x2 `7` )  |              |
-|        `6` swap        |    PUSH(`6`) SWAP   |  PUSH_SWAP(`6`)  |         ( x1 -- `6` x1 )     |              |
-|      dup `5` swap      |  DUP PUSH(`5`) SWAP |DUP_PUSH_SWAP(`5`)|         ( x1 -- x1 `5` x1 )  |              |
-|         2swap          |        _2SWAP       |                  | (x1 x2 x3 x4 -- x3 x4 x1 x2) |              |
-|           dup          |          DUP        |                  |         ( x1 -- x1 x1 )      |              |
-|          ?dup          |     QUESTIONDUP     |                  |         ( x1 -- 0 \| x1 x1 ) |              |
-|          2dup          |        _2DUP        |                  |      ( x2 x1 -- x2 x1 x2 x1 )|              |
-|          drop          |         DROP        |                  |         ( x1 -- )            |              |
-|         2drop          |        _2DROP       |                  |      ( x2 x1 -- )            |              |
-|          nip           |          NIP        |                  |      ( x2 x1 -- x1 )         |              |
-|          2nip          |         2NIP        |                  |    ( d c b a -- b a )        |              |
-|          tuck          |         TUCK        |                  |      ( x2 x1 -- x1 x2 x1 )   |              |
-|         2tuck          |       _2TUCK        |                  |    ( d c b a -- b a d c b a )|              |
-|          over          |         OVER        |                  |      ( x2 x1 -- x2 x1 x2 )   |              |
-|        over swap       |       OVER SWAP     |     OVER_SWAP    |      ( x2 x1 -- x2 x2 x1 )   |              |
-|         2over          |       _2OVER        |                  |    ( a b c d -- a b c d a b )|              |
-|          rot           |         ROT         |                  |   ( x3 x2 x1 -- x2 x1 x3 )   |              |
-|         2rot           |        _2ROT        |                  |( f e d c b a -- d c b a f e )|              |
-|         -rot           |         NROT        |                  |   ( x3 x2 x1 -- x1 x3 x2 )   |              |
-|       -rot 2swap       |     NROT _2SWAP     |    NROT_2SWAP    |( x4 x3 x2 x1 -- x3 x2 x4 x1 )|              |
-|  nrot swap 2swap swap  |NROT SWAP _2SWAP SWAP|    STACK_BCAD    |    ( d c b a -- b c a d )    |              |
-|     over 2over drop    |  OVER _2OVER DROP   |    STACK_CBABC   |      ( c b a -- c b a b c )  |              |
-|     over `3` pick      | OVER PUSH(`3`) PICK |    STACK_CBABC   |      ( c b a -- c b a b c )  |              |
-| `2` pick `2` pick swap |         ....        |    STACK_CBABC   |      ( c b a -- c b a b c )  |              |
-|2over nip 2over nip swap|         ....        |    STACK_CBABC   |      ( c b a -- c b a b c )  |              |
-|         `123`          |      PUSH(`123`)    |                  |            ( -- `123` )      |              |
-|         `2` `1`        | PUSH(`2`) PUSH(`1`) |  PUSH2(`2`,`1`)  |            ( -- `2` `1` )    |              |
-|       addr `7` @       |     PUSH((addr))    |                  |    *addr = 7 --> ( -- `7`)   |              |
-|                        |                     |  PUSH2((A),`2`)  |    *A = 4 --> ( -- `4` `2` ) |              |
-|       drop `5`         |                     |  DROP_PUSH(`5`)  |         ( x1 -- `5`)         |              |
-|        dup `4`         |                     |   DUP_PUSH(`4`)  |         ( x1 -- x1 x1 `4`)   |              |
-|          pick          |         PICK        |                  |          ( u -- xu )         |              |
-|        `2` pick        |                     |  PUSH_PICK(`2`)  |   ( x2 x1 x0 -- x2 x1 x0 x2 )|              |
-|           >r           |         TO_R        |                  |         ( x1 -- )            |    ( -- x1 ) |
-|           r>           |        R_FROM       |                  |            ( -- x1 )         | ( x1 -- )    |
-|           r@           |        R_FETCH      |                  |            ( -- x1 )         | ( x1 -- x1 ) |
-|         rdrop          |         RDROP       |                  |            ( -- )            | ( x1 -- )    |
-</sub>
+|          swap          |<sub>         SWAP        |                  </sub>|      ( x2 x1 -- x1 x2 )      |              |
+|        swap over       |<sub>       SWAP OVER     |     SWAP_OVER    </sub>|      ( x2 x1 -- x1 x2 x1 )   |              |
+|        swap `7`        |<sub>    SWAP PUSH(`7`)   |  SWAP_PUSH(`7`)  </sub>|      ( x2 x1 -- x1 x2 `7` )  |              |
+|        `6` swap        |<sub>    PUSH(`6`) SWAP   |  PUSH_SWAP(`6`)  </sub>|         ( x1 -- `6` x1 )     |              |
+|      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |DUP_PUSH_SWAP(`5`)</sub>|         ( x1 -- x1 `5` x1 )  |              |
+|         2swap          |<sub>        _2SWAP       |                  </sub>| (x1 x2 x3 x4 -- x3 x4 x1 x2) |              |
+|           dup          |<sub>          DUP        |                  </sub>|         ( x1 -- x1 x1 )      |              |
+|          ?dup          |<sub>     QUESTIONDUP     |                  </sub>|         ( x1 -- 0 \| x1 x1 ) |              |
+|          2dup          |<sub>        _2DUP        |                  </sub>|      ( x2 x1 -- x2 x1 x2 x1 )|              |
+|          drop          |<sub>         DROP        |                  </sub>|         ( x1 -- )            |              |
+|         2drop          |<sub>        _2DROP       |                  </sub>|      ( x2 x1 -- )            |              |
+|          nip           |<sub>          NIP        |                  </sub>|      ( x2 x1 -- x1 )         |              |
+|          2nip          |<sub>         2NIP        |                  </sub>|    ( d c b a -- b a )        |              |
+|          tuck          |<sub>         TUCK        |                  </sub>|      ( x2 x1 -- x1 x2 x1 )   |              |
+|         2tuck          |<sub>       _2TUCK        |                  </sub>|    ( d c b a -- b a d c b a )|              |
+|          over          |<sub>         OVER        |                  </sub>|      ( x2 x1 -- x2 x1 x2 )   |              |
+|        over swap       |<sub>       OVER SWAP     |     OVER_SWAP    </sub>|      ( x2 x1 -- x2 x2 x1 )   |              |
+|         2over          |<sub>       _2OVER        |                  </sub>|    ( a b c d -- a b c d a b )|              |
+|          rot           |<sub>         ROT         |                  </sub>|   ( x3 x2 x1 -- x2 x1 x3 )   |              |
+|         2rot           |<sub>        _2ROT        |                  </sub>|( f e d c b a -- d c b a f e )|              |
+|         -rot           |<sub>         NROT        |                  </sub>|   ( x3 x2 x1 -- x1 x3 x2 )   |              |
+|       -rot 2swap       |<sub>     NROT _2SWAP     |    NROT_2SWAP    </sub>|( x4 x3 x2 x1 -- x3 x2 x4 x1 )|              |
+|  nrot swap 2swap swap  |<sub>NROT SWAP _2SWAP SWAP|    STACK_BCAD    </sub>|    ( d c b a -- b c a d )    |              |
+|     over 2over drop    |<sub>  OVER _2OVER DROP   |    STACK_CBABC   </sub>|      ( c b a -- c b a b c )  |              |
+|     over `3` pick      |<sub> OVER PUSH(`3`) PICK |    STACK_CBABC   </sub>|      ( c b a -- c b a b c )  |              |
+| `2` pick `2` pick swap |<sub>         ....        |    STACK_CBABC   </sub>|      ( c b a -- c b a b c )  |              |
+|2over nip 2over nip swap|<sub>         ....        |    STACK_CBABC   </sub>|      ( c b a -- c b a b c )  |              |
+|         `123`          |<sub>      PUSH(`123`)    |                  </sub>|            ( -- `123` )      |              |
+|         `2` `1`        |<sub> PUSH(`2`) PUSH(`1`) |  PUSH2(`2`,`1`)  </sub>|            ( -- `2` `1` )    |              |
+|       addr `7` @       |<sub>     PUSH((addr))    |                  </sub>|    *addr = 7 --> ( -- `7`)   |              |
+|                        |<sub>                     |  PUSH2((A),`2`)  </sub>|    *A = 4 --> ( -- `4` `2` ) |              |
+|       drop `5`         |<sub>                     |  DROP_PUSH(`5`)  </sub>|         ( x1 -- `5`)         |              |
+|        dup `4`         |<sub>                     |   DUP_PUSH(`4`)  </sub>|         ( x1 -- x1 x1 `4`)   |              |
+|          pick          |<sub>         PICK        |                  </sub>|          ( u -- xu )         |              |
+|        `2` pick        |<sub>                     |  PUSH_PICK(`2`)  </sub>|   ( x2 x1 x0 -- x2 x1 x0 x2 )|              |
+|           >r           |<sub>         TO_R        |                  </sub>|         ( x1 -- )            |    ( -- x1 ) |
+|           r>           |<sub>        R_FROM       |                  </sub>|            ( -- x1 )         | ( x1 -- )    |
+|           r@           |<sub>        R_FETCH      |                  </sub>|            ( -- x1 )         | ( x1 -- x1 ) |
+|         rdrop          |<sub>         RDROP       |                  </sub>|            ( -- )            | ( x1 -- )    |
 
 ### Arithmetic
 
