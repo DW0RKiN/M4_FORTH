@@ -250,39 +250,39 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
-| original   |   M4 FORTH   |  optimization  |  data stack           |  r.a.s. | comment      |
-| :--------: | :----------: | :------------: | :-------------------- | :------ | :----------- |
-|    and     |     AND      |                |    ( x2 x1 -- x )     |         |              |
-|   `3` and  |              |  PUSH_AND(`3`) |        ( x -- x & `3`)|         |              |
-|     or     |      OR      |                |    ( x2 x1 -- x )     |         |              |
-|   `3` or   |              |  PUSH_OR(`3`)  |        ( x -- x | `3`)|         |              |
-|    xor     |     XOR      |                |       ( x1 -- -x1 )   |         |              |
-|   `3` xor  |              |  PUSH_XOR(`3`) |        ( x -- x ^ `3`)|         |              |
-|    abs     |     ABS      |                |        ( n -- u )     |         |
-|   invert   |    INVERT    |                |       ( x1 -- ~x1 )   |         |
-|   within   |    WITHIN    |                |    ( c b a -- flag )  |         |(a-b) (c-b) U<
-|    true    |     TRUE     |                |          ( -- -1 )    |         |
-|   false    |    FALSE     |                |          ( -- 0 )     |         |
-|      =     |      EQ      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     0=     |     _0EQ     |                |       ( x1 -- f )     |         | f=(x1 == 0)
-|    D0=     |     D0EQ     |                |    ( x1 x2 -- f )     |         | f=((x1|x2) == 0)
-|     <>     |      NE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|      <     |      LT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     0<     |     _0LT     |                |       ( x1 -- f )     |         | f=(x1 < 0)
-|     <=     |      LE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|      >     |      GT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     >=     |      GE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     0>=    |     _0GE     |                |       ( x1 -- f )     |         | f=(x1 >= 0)
-|     u<     |     ULT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|    u<=     |     ULE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|     u>     |     UGT      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-|    u>=     |     UGE      |                |    ( x2 x1 -- flag )  |         | TRUE=-1 FALSE=0
-| x1 u >> x  |    RSHIFT    |                |    ( x1 u -- x1>>u )  |         |
-| x1 u << x  |    LSHIFT    |                |    ( x1 u -- x1<<u )  |         |
-| x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )  |         | signed
-| x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )  |         |
-| u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )  |         | unsigned
-| u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )  |         |
+| original   |   M4 FORTH   |  optimization  |  data stack            |  r.a.s. | comment      |
+| :--------: | :----------: | :------------: | :--------------------- | :------ | :----------- |
+|    and     |     AND      |                |    ( x2 x1 -- x )      |         |              |
+|   `3` and  |              |  PUSH_AND(`3`) |        ( x -- x & `3`) |         |              |
+|     or     |      OR      |                |    ( x2 x1 -- x )      |         |              |
+|   `3` or   |              |  PUSH_OR(`3`)  |        ( x -- x \| `3`)|         |              |
+|    xor     |     XOR      |                |       ( x1 -- -x1 )    |         |              |
+|   `3` xor  |              |  PUSH_XOR(`3`) |        ( x -- x ^ `3`) |         |              |
+|    abs     |     ABS      |                |        ( n -- u )      |         |
+|   invert   |    INVERT    |                |       ( x1 -- ~x1 )    |         |
+|   within   |    WITHIN    |                |    ( c b a -- flag )   |         |(a-b) (c-b) U<
+|    true    |     TRUE     |                |          ( -- -1 )     |         |
+|   false    |    FALSE     |                |          ( -- 0 )      |         |
+|      =     |      EQ      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|     0=     |     _0EQ     |                |       ( x1 -- f )      |         | f=(x1 == 0)
+|    D0=     |     D0EQ     |                |    ( x1 x2 -- f )      |         | f=((x1|x2) == 0)
+|     <>     |      NE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|      <     |      LT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|     0<     |     _0LT     |                |       ( x1 -- f )      |         | f=(x1 < 0)
+|     <=     |      LE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|      >     |      GT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|     >=     |      GE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|     0>=    |     _0GE     |                |       ( x1 -- f )      |         | f=(x1 >= 0)
+|     u<     |     ULT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|    u<=     |     ULE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|     u>     |     UGT      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+|    u>=     |     UGE      |                |    ( x2 x1 -- flag )   |         | TRUE=-1 FALSE=0
+| x1 u >> x  |    RSHIFT    |                |    ( x1 u -- x1>>u )   |         |
+| x1 u << x  |    LSHIFT    |                |    ( x1 u -- x1<<u )   |         |
+| x1 1 >> x  |              |    XRSHIFT1    |      ( x1 -- x1>>1 )   |         | signed
+| x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )   |         |
+| u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )   |         | unsigned
+| u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )   |         |
 
 ### Device
 
