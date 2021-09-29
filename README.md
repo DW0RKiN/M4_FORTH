@@ -249,7 +249,7 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 ### Logic
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
-
+<sub>
 | original   |   M4 FORTH   |  optimization  |  data stack            |  r.a.s. | comment      |
 | :--------: | :----------: | :------------: | :--------------------- | :------ | :----------- |
 |    and     |     AND      |                |    ( x2 x1 -- x )      |         |              |
@@ -283,7 +283,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 | x1 1 << x  |              |    XLSHIFT1    |      ( x1 -- x1<<1 )   |         |
 | u1 1 >> u  |              |   XURSHIFT1    |      ( u1 -- u1>>1 )   |         | unsigned
 | u1 1 << u  |              |   XULSHIFT1    |      ( u1 -- u1<<1 )   |         |
-
+</sub>
 ### Device
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
