@@ -37,10 +37,11 @@ dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{
+                        ;[7:69]     2swap
     ex  (SP),HL         ; 1:19      2swap d a b c
-    pop  AF             ; 1:10      2swap d b c
-    pop  BC             ; 1:10      2swap b c
-    push DE             ; 1:11      2swap b b c 
+    pop  AF             ; 1:10      2swap d b c         AF = a
+    pop  BC             ; 1:10      2swap b c           BC = d
+    push DE             ; 1:11      2swap b b c
     push AF             ; 1:11      2swap b a b c
     ld    D, B          ; 1:4       2swap
     ld    E, C          ; 1:4       2swap ( d c b a -- b a d c )})dnl
@@ -144,14 +145,14 @@ dnl
 dnl ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
 dnl Copy cell pair a1 a2 to the top of the stack.
 define({_2OVER},{
+                        ;[9:91]     2over
     pop  AF             ; 1:10      2over AF = a2
-    pop  BC             ; 1:10      2over BC = a1      
+    pop  BC             ; 1:10      2over BC = a1
     push BC             ; 1:11      2over
     push AF             ; 1:11      2over a1 a2 b1 b2
     push DE             ; 1:11      2over a1 a2 b1 b1 b2
-    push AF             ; 1:11      2over a1 a2 b1 a2 b1 b2      
+    push AF             ; 1:11      2over a1 a2 b1 a2 b1 b2
     ex  (SP),HL         ; 1:19      2over a1 a2 b1 b2 b1 a2
-    pop  HL             ; 1:10      2over       
     ld    D, B          ; 1:4       2over
     ld    E, C          ; 1:4       2over ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )})dnl
 dnl
@@ -173,22 +174,23 @@ dnl
 dnl ( f e d c b a -- d c b a f e )
 dnl vyjme treti 32-bit polozku a ulozi ji na vrchol
 define({_2ROT},{
+                        ;[15:127]   2rot
     exx                 ; 1:4       2rot f e d c b a
-    pop  DE             ; 1:10      2rot f e d   b a
-    pop  BC             ; 1:10      2rot f e     b a    
-    exx                 ; 1:4       2rot 
+    pop  DE             ; 1:10      2rot f e d   b a    DE' = c
+    pop  BC             ; 1:10      2rot f e     b a    BC' = d
+    exx                 ; 1:4       2rot
     ex  (SP),HL         ; 1:19      2rot f a     b e
     pop  AF             ; 1:10      2rot f       b e
-    pop  BC             ; 1:10      2rot         b e    
-    exx                 ; 1:4       2rot 
-    push BC             ; 1:11      2rot d       b e    
+    pop  BC             ; 1:10      2rot         b e
+    exx                 ; 1:4       2rot
+    push BC             ; 1:11      2rot d       b e
     push DE             ; 1:11      2rot d c     b e
-    exx                 ; 1:4       2rot 
-    push DE             ; 1:11      2rot d c b   b e    
+    exx                 ; 1:4       2rot
+    push DE             ; 1:11      2rot d c b   b e
     ld    D, B          ; 1:4       2rot
     ld    E, C          ; 1:4       2rot d c b   f e
     push AF             ; 1:11      2rot d c b a b e})dnl
-dnl                      15:127
+dnl
 dnl
 dnl -rot
 dnl ( c b a -- a c b )
@@ -215,7 +217,7 @@ define({NROT_2SWAP},{
     ld    B, D          ; 1:4       nrot_2swap
     ld    C, E          ; 1:4       nrot_2swap BC = b
     pop  DE             ; 1:10      nrot_2swap d b a -- d a
-    push AF             ; 1:11      nrot_2swap c d a 
+    push AF             ; 1:11      nrot_2swap c d a
     push BC             ; 1:11      nrot_2swap c b d a})dnl
 dnl
 dnl
@@ -232,40 +234,40 @@ dnl
 dnl 2 pick 2 pick swap
 dnl over 3 pick
 dnl 2over nip 2over nip swap
-dnl over 2over drop 
+dnl over 2over drop
 dnl      ( c b a -- c b a b c )
 dnl -- c b a b c )
 define({STACK_CBABC},{
                         ;[6:51]     stack_cbabc ( c b a -- c b a b c )
     pop  BC             ; 1:10      stack_cbabc BC = c
-    push BC             ; 1:11      stack_cbabc 
+    push BC             ; 1:11      stack_cbabc
     push DE             ; 1:11      stack_cbabc c b b a
     push HL             ; 1:11      stack_cbabc c b a b a
-    ld    H, B          ; 1:4       stack_cbabc 
+    ld    H, B          ; 1:4       stack_cbabc
     ld    L, C          ; 1:4       stack_cbabc c b a b c})dnl
 dnl
 dnl
-dnl ( f e d c b a -- d c b a f e )
-dnl vyjme treti 32-bit polozku a ulozi ji na vrchol
-define({_2ROT},{
-    exx                 ; 1:4       2rot f e d c b a
-    pop  DE             ; 1:10      2rot f e d   b a
-    pop  BC             ; 1:10      2rot f e     b a    
-    exx                 ; 1:4       2rot 
-    ex  (SP),HL         ; 1:19      2rot f a     b e
-    pop  AF             ; 1:10      2rot f       b e
-    pop  BC             ; 1:10      2rot         b e    
-    exx                 ; 1:4       2rot 
-    push BC             ; 1:11      2rot d       b e    
-    push DE             ; 1:11      2rot d c     b e
-    exx                 ; 1:4       2rot 
-    push DE             ; 1:11      2rot d c b   b e    
-    ld    D, B          ; 1:4       2rot
-    ld    E, C          ; 1:4       2rot d c b   f e
-    push AF             ; 1:11      2rot d c b a b e})dnl
+dnl ( f e d c b a -- b a f e d c )
+define({N2ROT},{
+                        ;[15:140]   n2rot ( f e d c b a -- b a f e d c )
+    ex  (SP),HL         ; 1:19      n2rot f e d a . b c
+    push DE             ; 1:11      n2rot f e d a b . b c
+    exx                 ; 1:4       n2rot f e d a b .
+    pop  DE             ; 1:10      n2rot f e d a .     DE' = b
+    pop  BC             ; 1:10      n2rot f e d .       BC' = a
+    exx                 ; 1:4       n2rot f e d . b c
+    pop  DE             ; 1:10      n2rot f e . d c
+    pop  AF             ; 1:10      n2rot f . d c       AF = e
+    pop  BC             ; 1:10      n2rot . d c         BC = f
+    exx                 ; 1:4       n2rot
+    push DE             ; 1:11      n2rot b .
+    push BC             ; 1:11      n2rot b a .
+    exx                 ; 1:4       n2rot b a . d c
+    push BC             ; 1:11      n2rot b a f . d c
+    push AF             ; 1:11      n2rot b a f e . d c})dnl
 dnl
 dnl
-dnl ( -- a ) 
+dnl ( -- a )
 dnl push(a) ulozi na zasobnik nasledujici polozku
 define({PUSH},{ifelse($#,{1},,{
 .error More parameters found in macro! push($@) --> push2($@) ?})
@@ -274,7 +276,7 @@ define({PUSH},{ifelse($#,{1},,{
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push($1)})dnl
 dnl
 dnl
-dnl ( -- b a) 
+dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse($#,{2},,{
 .error The wrong number of parameters in the push2 macro! push2($@)})
@@ -285,14 +287,14 @@ define({PUSH2},{ifelse($#,{2},,{
 dnl
 dnl
 dnl drop 50
-dnl ( a -- 50 ) 
+dnl ( a -- 50 )
 dnl zmeni hodnotu top
 define({DROP_PUSH},{
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      drop $1})dnl
 dnl
 dnl
 dnl 2drop 50
-dnl ( a -- 50 ) 
+dnl ( a -- 50 )
 dnl zmeni hodnotu top
 define({_2DROP_PUSH},{
     pop  DE             ; 1:10      2drop $1
@@ -300,7 +302,7 @@ define({_2DROP_PUSH},{
 dnl
 dnl
 dnl dup 50
-dnl ( a -- a a 50 ) 
+dnl ( a -- a a 50 )
 dnl zmeni hodnotu top
 define({DUP_PUSH},{
     push DE             ; 1:11      dup $1
@@ -310,7 +312,7 @@ define({DUP_PUSH},{
 dnl
 dnl
 dnl
-dnl ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx ) 
+dnl ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
 dnl Remove x. Copy the nx to the top of the stack.
 define({PICK},{ifelse($#,{0},,{
 .error pick: Unexpected parameter $@, pick uses a parameter from the stack!})
@@ -329,7 +331,7 @@ dnl 1 pick ( b a 1 -- b a b )
 dnl 2 pick ( c b a 2 -- c b a c )
 dnl 3 pick ( d c b a 3 -- d c b a d )
 dnl 4 pick ( e d c b a 4 -- e d c b a e )
-dnl u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu ) 
+dnl u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu )
 dnl Remove u. Copy the xu to the top of the stack.
 define({PUSH_PICK},{ifelse($#,{0},{.error _push_pick(): Parameter is missing!},
 __{}eval($1),{},{
@@ -346,14 +348,14 @@ __{}eval($1),{},{
     pop  DE             ; 1:10      $1 pick},
 __{}{ifelse(eval($1),{0},{DUP},
 __{}__{}eval($1),{1},{OVER},
-__{}__{}eval($1),{2},{ 
+__{}__{}eval($1),{2},{
 __{}    pop  BC             ; 1:10      2 pick
 __{}    push BC             ; 1:11      2 pick
 __{}    push DE             ; 1:11      2 pick
 __{}    ex   DE, HL         ; 1:4       2 pick
 __{}    ld    H, B          ; 1:4       2 pick
 __{}    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c )},
-__{}__{}eval($1),{3},{ 
+__{}__{}eval($1),{3},{
 __{}    pop  AF             ; 1:10      3 pick
 __{}    pop  BC             ; 1:10      3 pick
 __{}    push BC             ; 1:11      3 pick
@@ -379,6 +381,7 @@ dnl >r
 dnl ( x -- ) ( R: -- x )
 dnl Move x to the return stack.
 define({TO_R},{
+                        ;[9:72]     to_r
     ex  (SP), HL        ; 1:19      to_r
     ex   DE, HL         ; 1:4       to_r
     exx                 ; 1:4       to_r
@@ -393,7 +396,8 @@ dnl
 dnl r>
 dnl ( -- x ) ( R: x -- )
 dnl Move x from the return stack to the data stack.
-define(R_FROM,{    
+define(R_FROM,{
+                        ;[9:66]     r_from
     exx                 ; 1:4       r_from
     ld    E,(HL)        ; 1:7       r_from
     inc   L             ; 1:4       r_from
@@ -408,12 +412,13 @@ dnl
 dnl r@
 dnl ( -- x ) ( R: x -- x )
 dnl Copy x from the return stack to the data stack.
-define(R_FETCH,{    
+define(R_FETCH,{
+                        ;[9:64]     r_fetch
     exx                 ; 1:4       r_fetch
     ld    E,(HL)        ; 1:7       r_fetch
     inc   L             ; 1:4       r_fetch
     ld    D,(HL)        ; 1:7       r_fetch
-    dec   L             ; 1:6       r_fetch
+    dec   L             ; 1:4       r_fetch
     push DE             ; 1:11      r_fetch
     exx                 ; 1:4       r_fetch
     ex   DE, HL         ; 1:4       r_fetch
@@ -424,6 +429,7 @@ dnl rdrop
 dnl r:( a -- )
 dnl odstrani vrchol zasobniku navratovych adres
 define({RDROP},{
+                        ;[4:18]     rdrop
     exx                 ; 1:4       rdrop
     inc   L             ; 1:4       rdrop
     inc   HL            ; 1:6       rdrop

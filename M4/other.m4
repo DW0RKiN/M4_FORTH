@@ -66,24 +66,27 @@ dnl C@
 dnl ( addr -- char )
 dnl fetch 8-bit char from addr
 define({CFETCH},{
-    ld    L, (HL)       ; 1:7       C@ cfetch 
+    ld    L, (HL)       ; 1:7       C@ cfetch
     ld    H, 0x00       ; 2:7       C@ cfetch})dnl
+dnl
+dnl
 dnl @
 dnl ( addr -- x )
 dnl fetch 16-bit number from addr
 define({FETCH},{
-    ld    A, (HL)       ; 1:7       @ fetch 
+    ld    A, (HL)       ; 1:7       @ fetch
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch})dnl
 dnl
-dnl    
+dnl
 dnl 2@
 dnl ( addr -- hi lo )
 dnl fetch 32-bit number from addr
 define({_2FETCH},{
+                        ;[10:65]    2@ _2fetch
     push DE             ; 1:11      2@ _2fetch
-    ld    E, (HL)       ; 1:7       2@ _2fetch 
+    ld    E, (HL)       ; 1:7       2@ _2fetch
     inc  HL             ; 1:6       2@ _2fetch
     ld    D, (HL)       ; 1:7       2@ _2fetch
     inc  HL             ; 1:6       2@ _2fetch
@@ -91,14 +94,14 @@ define({_2FETCH},{
     inc  HL             ; 1:6       2@ _2fetch
     ld    H, (HL)       ; 1:7       2@ _2fetch
     ld    L, A          ; 1:4       2@ _2fetch
-    ex   DE, HL         ; 1:4       2@ _2fetch ( adr -- lo hi )})dnl     
+    ex   DE, HL         ; 1:4       2@ _2fetch ( adr -- lo hi )})dnl
 dnl
 dnl
 dnl addr C@
 dnl ( -- x )
 dnl push_cfetch(addr), load 8-bit char from addr
 define({PUSH_CFETCH},{
-    push DE             ; 1:11      $1 @ push($1) cfetch 
+    push DE             ; 1:11      $1 @ push($1) cfetch
     ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
     ld    H, 0x00       ; 2:7       $1 @ push($1) cfetch})dnl
@@ -108,7 +111,7 @@ dnl addr @
 dnl ( -- x )
 dnl push_fetch(addr), load 16-bit number from addr
 define({PUSH_FETCH},{
-    push DE             ; 1:11      $1 @ push($1) fetch 
+    push DE             ; 1:11      $1 @ push($1) fetch
     ex   DE, HL         ; 1:4       $1 @ push($1) fetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
 dnl
@@ -117,7 +120,7 @@ dnl addr 2@
 dnl ( -- hi lo )
 dnl push_2fetch(addr), load 32-bit number from addr
 define({PUSH_2FETCH},{
-    push DE             ; 1:11      $1 2@ push_2fetch($1) 
+    push DE             ; 1:11      $1 2@ push_2fetch($1)
     push HL             ; 1:11      $1 2@ push_2fetch($1){}ifelse(eval(($1)),{},{
     ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2! push_2fetch($1) hi},{
     ld   DE,format({%-12s},(eval($1+2))); 4:20      $1 2@ push_2fetch($1) hi})
@@ -137,6 +140,7 @@ dnl !
 dnl ( x addr -- )
 dnl store 16-bit number at addr
 define({STORE},{
+                        ;[5:40]     ! store
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -151,8 +155,8 @@ define({_2STORE},{
     ld  (HL),E          ; 1:7       2! _2store
     inc  HL             ; 1:6       2! _2store
     ld  (HL),D          ; 1:7       2! _2store
-    inc  HL             ; 1:6       2! _2store 
-    pop  DE             ; 1:10      2! _2store 
+    inc  HL             ; 1:6       2! _2store
+    pop  DE             ; 1:10      2! _2store
     ld  (HL),E          ; 1:7       2! _2store
     inc  HL             ; 1:6       2! _2store
     ld  (HL),D          ; 1:7       2! _2store
@@ -350,7 +354,7 @@ __{}    ld  (HL),A          ; 1:7       fill
 __{}    inc  HL             ; 1:6       fill
 __{}    djnz $-2            ; 2:13/8    fill
 __{}    dec   D             ; 1:4       fill
-__{}    jr   nz, $-5        ; 2:7/12    fill 
+__{}    jr   nz, $-5        ; 2:7/12    fill
 __{}    pop  HL             ; 1:10      fill
 __{}    pop  DE             ; 1:10      fill})})dnl
 dnl
@@ -387,7 +391,7 @@ __{}    ld  (DE),A          ; 1:7       $1 fill
 __{}    inc  DE             ; 1:6       $1 fill
 __{}    djnz $-2            ; 2:13/8    $1 fill
 __{}    dec   H             ; 1:4       $1 fill
-__{}    jr   nz, $-5        ; 2:7/12    $1 fill 
+__{}    jr   nz, $-5        ; 2:7/12    $1 fill
 __{}    pop  HL             ; 1:10      $1 fill
 __{}    pop  DE             ; 1:10      $1 fill})})dnl
 dnl
