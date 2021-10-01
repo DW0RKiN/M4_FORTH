@@ -191,6 +191,7 @@ do
     sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\s\+SWAP\(\s\|$\)#\1NROT_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\(\s\|$\)#\1ROT_DROP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Rr]ot\(\s\|$\)#\1_2ROT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)-_2ROT\(\s\|$\)#\1N2ROT\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)-[Rr]ot\(\s\|$\)#\1NROT\2#g' |
     sed 's#^\([^;{]*\s\|^\)NROT\s\+NIP\(\s\|$\)#\1NROT_NIP\2#gi' |
