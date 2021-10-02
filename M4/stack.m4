@@ -37,14 +37,14 @@ dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{
-                        ;[7:56]     2swap ( d c b a -- b a d c )
-    ex   DE, HL         ; 1:4       2swap d c . a b
-    pop  BC             ; 1:10      2swap d   . a b     BC = c
-    ex  (SP),HL         ; 1:19      2swap b   . a d
-    push DE             ; 1:11      2swap b a . a d
-    ld    D, B          ; 1:4       2swap
-    ld    E, C          ; 1:4       2swap b a . c d
-    ex   DE, HL         ; 1:4       2swap b a . d c})dnl
+                        ;[6:67]     2swap ( d c b a -- b a d c )
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c
+})dnl
 dnl
 dnl
 dnl ( a -- a a )
