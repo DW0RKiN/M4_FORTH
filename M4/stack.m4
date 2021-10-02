@@ -143,19 +143,19 @@ define({PUSH_OVER},{
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
 dnl
 dnl
-dnl ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
-dnl Copy cell pair a1 a2 to the top of the stack.
+dnl ( d c b a -- d c b a d c )
+dnl Copy cell pair "d c" to the top of the stack.
 define({_2OVER},{
-                        ;[9:91]     2over ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
-    pop  AF             ; 1:10      2over AF = a2
-    pop  BC             ; 1:10      2over BC = a1
-    push BC             ; 1:11      2over
-    push AF             ; 1:11      2over a1 a2       . b1 b2
-    push DE             ; 1:11      2over a1 a2 b1    . b1 b2
-    push AF             ; 1:11      2over a1 a2 b1 a2 . b1 b2
-    ex  (SP),HL         ; 1:19      2over a1 a2 b1 b2 . b1 a2
+                        ;[9:91]     2over ( d c b a -- d c b a d c )
+    pop  AF             ; 1:10      2over d       . b a     AF = c
+    pop  BC             ; 1:10      2over         . b a     BC = d
+    push BC             ; 1:11      2over d       . b a
+    push AF             ; 1:11      2over d c     . b a
+    push DE             ; 1:11      2over d c b   . b a
+    push AF             ; 1:11      2over d c b c . b a
+    ex  (SP),HL         ; 1:19      2over d c b a . b c
     ld    D, B          ; 1:4       2over
-    ld    E, C          ; 1:4       2over a1 a2 b1 b2 . a1 a2})dnl
+    ld    E, C          ; 1:4       2over d c b a . d c})dnl
 dnl
 dnl
 dnl ( c b a -- b a c )
