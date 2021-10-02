@@ -37,14 +37,14 @@ dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{
-                        ;[7:69]     2swap
-    ex  (SP),HL         ; 1:19      2swap d a b c
-    pop  AF             ; 1:10      2swap d b c         AF = a
-    pop  BC             ; 1:10      2swap b c           BC = d
-    push DE             ; 1:11      2swap b b c
-    push AF             ; 1:11      2swap b a b c
+                        ;[7:56]     2swap ( d c b a -- b a d c )
+    ex   DE, HL         ; 1:4       2swap d c . a b
+    pop  BC             ; 1:10      2swap d   . a b     BC = c
+    ex  (SP),HL         ; 1:19      2swap b   . a d
+    push DE             ; 1:11      2swap b a . a d
     ld    D, B          ; 1:4       2swap
-    ld    E, C          ; 1:4       2swap ( d c b a -- b a d c )})dnl
+    ld    E, C          ; 1:4       2swap b a . c d
+    ex   DE, HL         ; 1:4       2swap b a . d c})dnl
 dnl
 dnl
 dnl ( a -- a a )
@@ -114,12 +114,13 @@ dnl
 dnl ( d c b a -- b a d c b a )
 dnl : 2tuck 2swap 2over ;
 define({_2TUCK},{
-    pop  AF             ; 1:10      2tuck c
-    pop  BC             ; 1:10      2tuck d
-    push DE             ; 1:11      2tuck b
-    push HL             ; 1:11      2tuck a
-    push BC             ; 1:11      2tuck d
-    push AF             ; 1:11      2tuck c ( d c b a -- b a d c b a )})dnl
+                        ;[6:64]     2tuck ( d c b a -- b a d c b a )
+    pop  AF             ; 1:10      2tuck     d   . b a     AF = c
+    pop  BC             ; 1:10      2tuck         . b a     BC = d
+    push DE             ; 1:11      2tuck b       . b a
+    push HL             ; 1:11      2tuck b a     . b a
+    push BC             ; 1:11      2tuck b a d   . b a
+    push AF             ; 1:11      2tuck b a d c . b a})dnl
 dnl
 dnl
 dnl ( b a -- b a b )
@@ -145,16 +146,16 @@ dnl
 dnl ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
 dnl Copy cell pair a1 a2 to the top of the stack.
 define({_2OVER},{
-                        ;[9:91]     2over
+                        ;[9:91]     2over ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )
     pop  AF             ; 1:10      2over AF = a2
     pop  BC             ; 1:10      2over BC = a1
     push BC             ; 1:11      2over
-    push AF             ; 1:11      2over a1 a2 b1 b2
-    push DE             ; 1:11      2over a1 a2 b1 b1 b2
-    push AF             ; 1:11      2over a1 a2 b1 a2 b1 b2
-    ex  (SP),HL         ; 1:19      2over a1 a2 b1 b2 b1 a2
+    push AF             ; 1:11      2over a1 a2       . b1 b2
+    push DE             ; 1:11      2over a1 a2 b1    . b1 b2
+    push AF             ; 1:11      2over a1 a2 b1 a2 . b1 b2
+    ex  (SP),HL         ; 1:19      2over a1 a2 b1 b2 . b1 a2
     ld    D, B          ; 1:4       2over
-    ld    E, C          ; 1:4       2over ( a1 a2 b1 b2 -- a1 a2 b1 b2 a1 a2 )})dnl
+    ld    E, C          ; 1:4       2over a1 a2 b1 b2 . a1 a2})dnl
 dnl
 dnl
 dnl ( c b a -- b a c )
@@ -174,31 +175,32 @@ dnl
 dnl ( f e d c b a -- d c b a f e )
 dnl vyjme treti 32-bit polozku a ulozi ji na vrchol
 define({_2ROT},{
-                        ;[15:127]   2rot
-    exx                 ; 1:4       2rot f e d c b a
-    pop  DE             ; 1:10      2rot f e d   b a    DE' = c
-    pop  BC             ; 1:10      2rot f e     b a    BC' = d
+                        ;[15:127]   2rot ( f e d c b a -- d c b a f e )
+    exx                 ; 1:4       2rot f e d c .
+    pop  DE             ; 1:10      2rot f e d   .      DE' = c
+    pop  BC             ; 1:10      2rot f e     .      BC' = d
+    exx                 ; 1:4       2rot f e     . b a
+    ex  (SP),HL         ; 1:19      2rot f a     . b e
+    pop  AF             ; 1:10      2rot f       . b e  AF = a
+    pop  BC             ; 1:10      2rot         . b e  BC = f
     exx                 ; 1:4       2rot
-    ex  (SP),HL         ; 1:19      2rot f a     b e
-    pop  AF             ; 1:10      2rot f       b e
-    pop  BC             ; 1:10      2rot         b e
-    exx                 ; 1:4       2rot
-    push BC             ; 1:11      2rot d       b e
-    push DE             ; 1:11      2rot d c     b e
-    exx                 ; 1:4       2rot
-    push DE             ; 1:11      2rot d c b   b e
+    push BC             ; 1:11      2rot d       .
+    push DE             ; 1:11      2rot d c     .
+    exx                 ; 1:4       2rot d c     . b e
+    push DE             ; 1:11      2rot d c b   . b e
     ld    D, B          ; 1:4       2rot
-    ld    E, C          ; 1:4       2rot d c b   f e
-    push AF             ; 1:11      2rot d c b a b e})dnl
+    ld    E, C          ; 1:4       2rot d c b   . f e
+    push AF             ; 1:11      2rot d c b a . f e})dnl
 dnl
 dnl
 dnl -rot
 dnl ( c b a -- a c b )
 dnl vyjme vrchol zasobniku a ulozi ho jako treti polozku, rotace doprava
 define({NROT},{
-    ex  (SP), HL        ; 1:19      nrot
-    ex   DE, HL         ; 1:4       nrot ( c b a -- a c b )})dnl
-dnl                      15:127
+                        ;[2:23]     nrot ( c b a -- a c b )
+    ex  (SP),HL         ; 1:19      nrot a . b c
+    ex   DE, HL         ; 1:4       nrot a . c b})dnl
+dnl
 dnl
 dnl -rot nip
 dnl ( c b a -- a b )
@@ -213,12 +215,12 @@ dnl ( d c b a -- c b d a )
 dnl 4th --> 2th
 define({NROT_2SWAP},{
                         ;[6:50]     nrot_2swap ( d c b a -- c b d a )
-    pop  AF             ; 1:10      nrot_2swap AF = c
+    pop  AF             ; 1:10      nrot_2swap d   . b a    AF = c
     ld    B, D          ; 1:4       nrot_2swap
-    ld    C, E          ; 1:4       nrot_2swap BC = b
-    pop  DE             ; 1:10      nrot_2swap d b a -- d a
-    push AF             ; 1:11      nrot_2swap c d a
-    push BC             ; 1:11      nrot_2swap c b d a})dnl
+    ld    C, E          ; 1:4       nrot_2swap              BC = b
+    pop  DE             ; 1:10      nrot_2swap     . d a
+    push AF             ; 1:11      nrot_2swap c   . d a
+    push BC             ; 1:11      nrot_2swap c b . d a})dnl
 dnl
 dnl
 dnl nrot swap 2swap swap
@@ -250,21 +252,21 @@ dnl
 dnl ( f e d c b a -- b a f e d c )
 define({N2ROT},{
                         ;[15:140]   n2rot ( f e d c b a -- b a f e d c )
-    ex  (SP),HL         ; 1:19      n2rot f e d a . b c
+    ex  (SP),HL         ; 1:19      n2rot f e d a   . b c
     push DE             ; 1:11      n2rot f e d a b . b c
     exx                 ; 1:4       n2rot f e d a b .
-    pop  DE             ; 1:10      n2rot f e d a .     DE' = b
-    pop  BC             ; 1:10      n2rot f e d .       BC' = a
-    exx                 ; 1:4       n2rot f e d . b c
-    pop  DE             ; 1:10      n2rot f e . d c
-    pop  AF             ; 1:10      n2rot f . d c       AF = e
-    pop  BC             ; 1:10      n2rot . d c         BC = f
+    pop  DE             ; 1:10      n2rot f e d a   .       DE'= b
+    pop  BC             ; 1:10      n2rot f e d     .       BC'= a
+    exx                 ; 1:4       n2rot f e d     . b c
+    pop  DE             ; 1:10      n2rot f e       . d c
+    pop  AF             ; 1:10      n2rot f         . d c   AF = e
+    pop  BC             ; 1:10      n2rot           . d c   BC = f
     exx                 ; 1:4       n2rot
-    push DE             ; 1:11      n2rot b .
-    push BC             ; 1:11      n2rot b a .
-    exx                 ; 1:4       n2rot b a . d c
-    push BC             ; 1:11      n2rot b a f . d c
-    push AF             ; 1:11      n2rot b a f e . d c})dnl
+    push DE             ; 1:11      n2rot b         .
+    push BC             ; 1:11      n2rot b a       .
+    exx                 ; 1:4       n2rot b a       . d c
+    push BC             ; 1:11      n2rot b a f     . d c
+    push AF             ; 1:11      n2rot b a f e   . d c})dnl
 dnl
 dnl
 dnl ( -- a )
