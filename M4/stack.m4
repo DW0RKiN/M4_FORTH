@@ -36,14 +36,23 @@ dnl
 dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
-define({_2SWAP},{
+define({_2SWAP},{ifelse(TYP_2SWAP,{fast},{
+                        ;[7:56]     2swap ( d c b a -- b a d c )
+    ex   DE, HL         ; 1:4       2swap d c . a b
+    pop  BC             ; 1:10      2swap d   . a b     BC = c
+    ex  (SP), HL        ; 1:19      2swap b   . a d
+    ex   DE, HL         ; 1:4       2swap b   . d a
+    push HL             ; 1:11      2swap b a . d a
+    ld    L, C          ; 1:4       2swap
+    ld    H, B          ; 1:4       2swap b a . d c},
+{
                         ;[6:67]     2swap ( d c b a -- b a d c )
     ex  (SP),HL         ; 1:19      2swap d a . b c
     ex   DE, HL         ; 1:4       2swap d a . c b
     pop  AF             ; 1:10      2swap d   . c b     AF = a
     ex  (SP),HL         ; 1:19      2swap b   . c d
     ex   DE, HL         ; 1:4       2swap b   . d c
-    push AF             ; 1:11      2swap b a . d c
+    push AF             ; 1:11      2swap b a . d c})dnl
 })dnl
 dnl
 dnl
@@ -383,9 +392,9 @@ dnl >r
 dnl ( x -- ) ( R: -- x )
 dnl Move x to the return stack.
 define({TO_R},{
-                        ;[9:72]     to_r
-    ex  (SP), HL        ; 1:19      to_r
-    ex   DE, HL         ; 1:4       to_r
+                        ;[9:65]     to_r ( c b a -- c b ) ( R: -- a )
+    ex  (SP), HL        ; 1:19      to_r a . b c
+    ex   DE, HL         ; 1:4       to_r a . c b
     exx                 ; 1:4       to_r
     pop  DE             ; 1:10      to_r
     dec  HL             ; 1:6       to_r
@@ -399,23 +408,33 @@ dnl r>
 dnl ( -- x ) ( R: x -- )
 dnl Move x from the return stack to the data stack.
 define(R_FROM,{
-                        ;[9:66]     r_from
+                        ;[9:66]     r_from ( b a -- b a i ) ( R: i -- )
     exx                 ; 1:4       r_from
     ld    E,(HL)        ; 1:7       r_from
     inc   L             ; 1:4       r_from
     ld    D,(HL)        ; 1:7       r_from
     inc  HL             ; 1:6       r_from
     push DE             ; 1:11      r_from
-    exx                 ; 1:4       r_from
-    ex   DE, HL         ; 1:4       r_from
-    ex  (SP), HL        ; 1:19      r_from})dnl
+    exx                 ; 1:4       r_from i . b a
+    ex   DE, HL         ; 1:4       r_from i . a b
+    ex  (SP), HL        ; 1:19      r_from b . a i})dnl
 dnl
 dnl
 dnl r@
 dnl ( -- x ) ( R: x -- x )
 dnl Copy x from the return stack to the data stack.
 define(R_FETCH,{
-                        ;[9:64]     r_fetch
+dnl                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
+dnl    exx                 ; 1:4       r_fetch   .
+dnl    push HL             ; 1:11      r_fetch r .
+dnl    exx                 ; 1:4       r_fetch r . b a
+dnl    ex   DE, HL         ; 1:4       r_fetch r . a b
+dnl    ex  (SP), HL        ; 1:19      r_fetch b . a r     HL = r.a.s.
+dnl    ld    A,(HL)        ; 1:7       r_fetch
+dnl    inc   L             ; 1:4       r_fetch
+dnl    ld    H,(HL)        ; 1:7       r_fetch
+dnl    ld    L, A          ; 1:4       r_fetch b . a i
+                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
     exx                 ; 1:4       r_fetch
     ld    E,(HL)        ; 1:7       r_fetch
     inc   L             ; 1:4       r_fetch
@@ -437,5 +456,88 @@ define({RDROP},{
     inc   HL            ; 1:6       rdrop
     exx                 ; 1:4       rdrop r:( a -- )})dnl
 dnl
+dnl
+dnl ------------------- 32 bits ---------------------
+dnl
+dnl
+dnl 2>r
+dnl swap >r >r
+dnl ( x1 x2 -- ) ( R: -- x1 x2 )
+dnl Transfer cell pair x1 x2 to the return stack.
+define({_2TO_R},{
+                        ;[15:116]   _2to_r ( d c b a -- d c ) ( R: -- b a )
+    ex  (SP), HL        ; 1:19      _2to_r d a   . b c
+    push DE             ; 1:11      _2to_r d a b . b c
+    exx                 ; 1:4       _2to_r d a b .
+    pop  DE             ; 1:10      _2to_r d a   . b
+    dec  HL             ; 1:6       _2to_r
+    ld  (HL),D          ; 1:7       _2to_r
+    dec   L             ; 1:4       _2to_r
+    ld  (HL),E          ; 1:7       _2to_r              ( R: b )
+    pop  DE             ; 1:10      _2to_r d     . a
+    dec  HL             ; 1:6       _2to_r
+    ld  (HL),D          ; 1:7       _2to_r
+    dec   L             ; 1:4       _2to_r
+    ld  (HL),E          ; 1:7       _2to_r              ( R: b a )
+    exx                 ; 1:4       _2to_r d     . b c
+    pop  DE             ; 1:10      _2to_r       . d c})dnl
+dnl
+dnl
+dnl 2r>
+dnl r> r> swap
+dnl ( -- x1 x2 ) ( R: x1 x2 -- )
+dnl Transfer cell pair x1 x2 from the return stack.
+define(_2R_FROM,{
+                        ;[15:118]   _2r_from ( b a -- b a j i ) ( R: j i -- )
+    push DE             ; 1:11      _2r_from b     . b a
+    exx                 ; 1:4       _2r_from b     .
+    ld    E,(HL)        ; 1:7       _2r_from
+    inc   L             ; 1:4       _2r_from
+    ld    D,(HL)        ; 1:7       _2r_from
+    inc  HL             ; 1:6       _2r_from            ( R: j )
+    push DE             ; 1:11      _2r_from b i   .
+    ld    E,(HL)        ; 1:7       _2r_from
+    inc   L             ; 1:4       _2r_from
+    ld    D,(HL)        ; 1:7       _2r_from
+    inc  HL             ; 1:6       _2r_from            ( R : )
+    push DE             ; 1:11      _2r_from b i j .
+    exx                 ; 1:4       _2r_from b i j . b a
+    pop  DE             ; 1:10      _2r_from b i   . j a
+    ex  (SP), HL        ; 1:19      _2r_from b a   . j i})dnl
+dnl
+dnl
+dnl 2r@
+dnl r> r> 2dup >r >r swap
+dnl ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 )
+dnl Copy cell pair x1 x2 from the return stack.
+define(_2R_FETCH,{
+                        ;[14:99]    _2r_fetch ( b a -- b a j i ) ( R: j i -- j i )
+    push DE             ; 1:11      _2r_fetch b   . b a
+    exx                 ; 1:4       _2r_fetch b   .
+    push HL             ; 1:11      _2r_fetch b r .
+    exx                 ; 1:4       _2r_fetch b r . b a
+    ex  (SP), HL        ; 1:19      _2r_fetch b a . b r     HL = r.a.s.
+    ld    E,(HL)        ; 1:7       _2r_fetch
+    inc   L             ; 1:4       _2r_fetch
+    ld    D,(HL)        ; 1:7       _2r_fetch
+    inc  HL             ; 1:6       _2r_fetch b a . i r
+    ld    A,(HL)        ; 1:7       _2r_fetch
+    inc   L             ; 1:4       _2r_fetch
+    ld    H,(HL)        ; 1:7       _2r_fetch
+    ld    L, A          ; 1:4       _2r_fetch b a . i j
+    ex   DE, HL         ; 1:4       _2r_fetch b a . j i})dnl
+dnl
+dnl
+dnl 2rdrop
+dnl r:( j i -- )
+dnl odstrani dve polozky ze zasobniku navratovych adres
+define({_2RDROP},{
+                        ;[6:28]     _2rdrop
+    exx                 ; 1:4       _2rdrop
+    inc   L             ; 1:4       _2rdrop
+    inc   HL            ; 1:6       _2rdrop
+    inc   L             ; 1:4       _2rdrop
+    inc   HL            ; 1:6       _2rdrop
+    exx                 ; 1:4       _2rdrop r:( x1 x2 -- )})dnl
 dnl
 dnl
