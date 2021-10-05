@@ -2,8 +2,8 @@
 
 # Protection against:    sed 's#^\([^;{]*\s\|^\)COLON(\([^_a-zA-Z[.ch.][.CH.]]\)#\1COLON(xxx_\2#gi'
 # and then error messages for non-Czech settings
-export LC_ALL=en_US.UTF-8 
-export LANG=en_US.UTF-8 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 TMPFILE=$(mktemp)
@@ -15,7 +15,7 @@ cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#gi'| sed 's#\(\s\|^\)\\\(\s\|
 # ( comment) ... ( comment) ...
 while :
 do
-    cat $TMPFILE | 
+    cat $TMPFILE |
     sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*\))\(\s\+\|$\)$#\1;(\2)#' |
     sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1;(\2)#' |
     sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*\))\s\+\([^ 	].*\)$#\1;(\2)\n\3#' |
@@ -43,7 +43,7 @@ do
     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\(\s\+\|$\)$#\1PRINT({"\2"})#' |
     # .( Hel(lo) Word) whitespace EOL
     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1PRINT({"\2"})#' |
-    # .( Hello Word) whitespace Other Words    
+    # .( Hello Word) whitespace Other Words
     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\s\+\([^ 	].*\)$#\1PRINT({"\2"})\n\3#' |
     # .( Hel(lo) Word) whitespace Other Words
     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\s\(\s*[^ 	].*\)$#\1PRINT({"\2"}) \3#' > $TMPFILE2
@@ -111,9 +111,15 @@ do
     sed 's#^\([^;{]*\s\|^\)2!\(\s\|$\)#\1_2STORE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2@\(\s\|$\)#\1_2FETCH\2#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)2>r\(\s\|$\)#\1_2TO_R\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2r>\(\s\|$\)#\1_2R_FROM\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2r@\(\s\|$\)#\1_2R_FETCH\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2[Rr][Dd]rop\(\s\|$\)#\1_2RDROP\2#g' |
+
     sed 's#^\([^;{]*\s\|^\)>r\(\s\|$\)#\1TO_R\2#gi' |
     sed 's#^\([^;{]*\s\|^\)r>\(\s\|$\)#\1R_FROM\2#gi' |
     sed 's#^\([^;{]*\s\|^\)r@\(\s\|$\)#\1R_FETCH\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)[Rr][Dd]rop\(\s\|$\)#\1RDROP\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)\*\(\s\|$\)#\1\MUL\2#gi' |
     sed 's#^\([^;{]*\s\|^\)[Mm]od\(\s\|$\)#\1MOD\2#g' |
@@ -171,8 +177,6 @@ do
     sed 's#^\([^;{]*\s\|^\)2[Dd]rop\(\s\|$\)#\1_2DROP\2#g' |
     sed 's#^\([^;{]*\s\|^\)drop\s\+drop\(\s\|$\)#\1_2DROP\2#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)[Rr][Dd]rop\(\s\|$\)#\1RDROP\2#g' |
-
     sed 's#^\([^;{]*\s\|^\)[Nn]ip\(\s\|$\)#\1NIP\2#g' |
     sed 's#^\([^;{]*\s\|^\)swap\s\+drop\(\s\|$\)#\1NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Nn]ip\(\s\|$\)#\1_2NIP\2#g' |
@@ -197,7 +201,7 @@ do
     sed 's#^\([^;{]*\s\|^\)NROT\s\+NIP\(\s\|$\)#\1NROT_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)rot\s\+rot\(\s\|$\)#\1NROT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)NROT\s\+_2SWAP\(\s\|$\)#\1NROT_2SWAP\2#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)0\+\s\+[c]*move[>]*\(\s\|$\)#\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Mm]ove\(\s\|$\)#\1MOVE\2#g' |
@@ -247,7 +251,7 @@ do
     sed 's#^\([^;{]*\s\|^\)[Mm]in\(\s\|$\)#\1MIN\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Nn]egate\(\s\|$\)#\1NEGATE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ll]eave\(\s\|$\)#\1LEAVE\2#g' |
-    
+
     sed 's#^\([^;{]*\s\|^\)s>f\(\s\|$\)#\1S2F\2#gi' |
     sed 's#^\([^;{]*\s\|^\)u>f\(\s\|$\)#\1U2F\2#gi' |
     sed 's#^\([^;{]*\s\|^\)f>s\(\s\|$\)#\1F2S\2#gi' |
@@ -271,7 +275,7 @@ do
 
     sed 's#^\([^;{]*\s\|^\)[Bb]ye\(\s\|$\)#\1BYE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ff]ill\(\s\|$\)#\1FILL\2#g' |
-    
+
     sed 's#^\([^;{]*\s\|^\)NROT\sSWAP\s_2SWAP\sSWAP\(\s\|$\)#\1STACK_BCAD\2#gi' |
     sed 's#^\([^;{]*\s\|^\)OVER\s_2OVER\sDROP\(\s\|$\)#\1STACK_CBABC\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2OVER\sNIP\s_2OVER\sNIP\sSWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
@@ -319,7 +323,7 @@ for x in $VAR
 do
     NUM="$(($NUM+1))"
     name="0000000000$NUM"
-    
+
     cat $TMPFILE | sed "s${oddelovac}^\([^;{]*\)(${x}\([,)]\)${oddelovac}\1(${name}\2${oddelovac}g" > $TMPFILE2
     cat $TMPFILE2 > $TMPFILE
 
@@ -338,7 +342,7 @@ done
 while :
 do
     cat $TMPFILE |
-    
+
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+FILL\(\s\|$\)#\1PUSH_FILL(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+FILL\(\s\|$\)#\1PUSH_FILL(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+PUSH_FILL(\([^)]*\))\(\s\|$\)#\1PUSH2_FILL(\2,\3)\4#gi' |
@@ -355,7 +359,7 @@ do
     sed 's#^\([^;{]*\s\|^\)1\s\+SUB\(\s\|$\)#\1_1SUB\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2\s\+ADD\(\s\|$\)#\1_2ADD\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2\s\+SUB\(\s\|$\)#\1_2SUB\2#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+ADD\(\s\|$\)#\1PUSH_ADD(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+SUB\(\s\|$\)#\1PUSH_SUB(\2)\3#g' |
 
@@ -369,10 +373,10 @@ do
 
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+MAX\(\s\|$\)#\1PUSH_MAX(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+MAX\(\s\|$\)#\1PUSH_MAX(\2)\3#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+MIN\(\s\|$\)#\1PUSH_MIN(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+MIN\(\s\|$\)#\1PUSH_MIN(\2)\3#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+ADDLOOP\(\s\|$\)#\1PUSH_ADDLOOP(\2)\3#g' |
 
     sed 's#^\([^;{]*\s\|^\)\([0-9]\+\)\(\s\+\)MOVE\(\s\|$\)#\1PUSH(2*(\2))\3CMOVE\4#g' |
@@ -404,7 +408,7 @@ do
     sed 's#^\([^;{]*\s\|^\)DUP\s\+_0LT_IF\(\s\|$\)#\1DUP_0LT_IF\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+_0GE_IF\(\s\|$\)#\1DUP_0GE_IF\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+D0EQ_IF\(\s\|$\)#\1_2DUP_D0EQ_IF\2#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)DUP\sWHILE\(\s\|$\)#\1DUP_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\sUDOT\(\s\|$\)#\1DUP_UDOT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\sDOT\(\s\|$\)#\1DUP_DOT\2#gi' |
@@ -423,7 +427,7 @@ do
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+ULE_IF\(\s\|$\)#\1_2DUP_ULE_IF\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGT_IF\(\s\|$\)#\1_2DUP_UGT_IF\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+UGE_IF\(\s\|$\)#\1_2DUP_UGE_IF\2#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)EQ\s\+WHILE\(\s\|$\)#\1EQ_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)NE\s\+WHILE\(\s\|$\)#\1NE_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)LT\s\+WHILE\(\s\|$\)#\1LT_WHILE\2#gi' |
@@ -451,7 +455,7 @@ do
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULE_WHILE\(\s\|$\)#\1DUP_PUSH_ULE_WHILE(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGT_WHILE\(\s\|$\)#\1DUP_PUSH_UGT_WHILE(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGE_WHILE\(\s\|$\)#\1DUP_PUSH_UGE_WHILE(\2)\3#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ_WHILE\(\s\|$\)#\1_2DUP_EQ_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+NE_WHILE\(\s\|$\)#\1_2DUP_NE_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+SUB\s\+WHILE\(\s\|$\)#\1_2DUP_NE_WHILE\2#gi' |
@@ -478,12 +482,12 @@ do
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+PUSH_2STORE(\([^)]*\))\(\s\|$\)#\1PUSH2_2STORE(\2,\3)\4#gi' |
 
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+\([+]*[0-9]\+\)\s\+ADDSTORE\(\s\|$\)#\1PUSH2_ADDSTORE(\2,\3)\4#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+EMIT\(\s\|$\)#\1PUTCHAR(\2)\3#gi' |
 
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+EQ_IF\(\s\|$\)#\1PUSH_EQ_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+NE_IF\(\s\|$\)#\1PUSH_NE_IF(\2)\3#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)DUP\s\+PUSH_EQ_IF(#\1DUP_PUSH_EQ_IF(#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+PUSH_NE_IF(#\1DUP_PUSH_NE_IF(#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+LT_IF\(\s\|$\)#\1DUP_PUSH_LT_IF(\2)\3#gi' |
@@ -497,7 +501,7 @@ do
     sed 's#^\([^;{]*\s\|^\)PUSH_OVER(\([^)]*\))\s\+LE_IF\(\s\|$\)#\1DUP_PUSH_LE_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)PUSH_OVER(\([^)]*\))\s\+GT_IF\(\s\|$\)#\1DUP_PUSH_GT_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)PUSH_OVER(\([^)]*\))\s\+GE_IF\(\s\|$\)#\1DUP_PUSH_GE_IF(\2)\3#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULT_IF\(\s\|$\)#\1DUP_PUSH_ULT_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+ULE_IF\(\s\|$\)#\1DUP_PUSH_ULE_IF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+UGT_IF\(\s\|$\)#\1DUP_PUSH_UGT_IF(\2)\3#gi' |
@@ -534,7 +538,7 @@ do
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\(\s\|$\)#\1PUSH_OVER(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)SWAP\s\+DROP\(\s\|$\)#\1NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+FOR\(\s\|$\)#\1PUSH_FOR(\2)\3#gi' |
-    
+
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+MUL\(\s\|$\)#\1PUSH_MUL(\2)\3#gi' > $TMPFILE2
 
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
@@ -572,7 +576,7 @@ do
     # xloop
     while :
     do
-        cat $TMPFILE | 
+        cat $TMPFILE |
         sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)LOOP\(\s\|$\)#\1XD_____00_____(\2,\3)\4XL_____00__________00_____P\5#g' |
         sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)PUSH_ADDLOOP(#\1XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(#g' > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
@@ -584,7 +588,7 @@ do
 
     cat $TMPFILE | sed 's#^\([^;{]*\s\|^\)DO\(\s\+[^oO]*\s\++*[Lo]\)OO\([Pp]\s\|$\)#\1D_____00_____\2_____00__________00_____\3#' > $TMPFILE2
     cat $TMPFILE2 > $TMPFILE
-    
+
     diff $TMPFILE $TMPFILE3 > /dev/null 2>&1
     error=$?
     cat $TMPFILE > $TMPFILE3
@@ -619,7 +623,7 @@ done
 # numbers
 while :
 do
-    cat $TMPFILE | 
+    cat $TMPFILE |
     sed 's#\(\s\+\)EQU\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1___EQU___\2___\3#g' |
     sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#gi' |
     sed 's#\(\s\+\)___EQU___\([-+]*[0-9]\+\)___\(\s\|$\)#\1EQU\ \2\3#g' > $TMPFILE2
@@ -637,7 +641,7 @@ for x in $CHAR
 do
     name="${x}"
     NUM="$(($NUM+1))"
-    
+
     while :
     do
         cat $TMPFILE | sed "s${oddelovac}^\([^;{]*[(,]\)0000000000${NUM}\([,)]\)${oddelovac}\1${name}\2${oddelovac}g" > $TMPFILE2
@@ -655,7 +659,7 @@ for x in $VAR
 do
     name=`printf "${x}" | sed 's#@#_load#g' | sed 's#!#_save#g' | sed 's#+#_p_#g' | sed 's#-#_m_#g' | sed 's#[^_a-zA-Z0-9]#_#g' | sed 's#^#_#g'`
     NUM="$(($NUM+1))"
-    
+
     while :
     do
         cat $TMPFILE | sed "s${oddelovac}^\([^;{]*[(,]\)0000000000${NUM}\([,)]\)${oddelovac}\1${name}\2${oddelovac}g" > $TMPFILE2
@@ -667,7 +671,7 @@ do
     done
 done
 
-    
+
 # word/function
 FCE=""
 FCE="$FCE `cat $TMPFILE | grep '^\([^;{]*\s\|^\)COLON(\([^)]\+\)).*' | sed 's#^\([^;{]*\s\|^\)COLON(\([^)]\+\)).*#\2#g'`"
@@ -717,7 +721,7 @@ then
 else
     DIR=" adds_the_path_to_the_file "
 fi
-    
+
 printf "include(\`${DIR}FIRST.M4')dnl \nORG 0x8000\nINIT(60000)\n...\nSTOP\n"
 cat $TMPFILE
 printf "\ninclude({${DIR}LAST.M4})dnl\n"
