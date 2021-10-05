@@ -37,16 +37,16 @@ dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{ifelse(TYP_2SWAP,{fast},{
-                        ;[7:56]     2swap ( d c b a -- b a d c )
+                        ;[7:56]     2swap ( d c b a -- b a d c ) # fast version can be changed with "define({TYP_2SWAP},{name})", name=default
     ex   DE, HL         ; 1:4       2swap d c . a b
     pop  BC             ; 1:10      2swap d   . a b     BC = c
     ex  (SP), HL        ; 1:19      2swap b   . a d
     ex   DE, HL         ; 1:4       2swap b   . d a
     push HL             ; 1:11      2swap b a . d a
     ld    L, C          ; 1:4       2swap
-    ld    H, B          ; 1:4       2swap b a . d c},
-{
-                        ;[6:67]     2swap ( d c b a -- b a d c )
+    ld    H, B          ; 1:4       2swap b a . d c{}dnl
+},{
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
     ex  (SP),HL         ; 1:19      2swap d a . b c
     ex   DE, HL         ; 1:4       2swap d a . c b
     pop  AF             ; 1:10      2swap d   . c b     AF = a
