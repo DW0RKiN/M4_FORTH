@@ -179,16 +179,19 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>          pick          |<sub>         PICK        |<sub>                  |<sub>          ( u -- xu )         |
 |<sub>        `2` pick        |<sub>                     |<sub>  PUSH_PICK(`2`)  |<sub>   ( x2 x1 x0 -- x2 x1 x0 x2 )|
 
-|<sub>       Original         |<sub>    M4 FORTH         |<sub>  Data stack                  |<sub>Return address stack|
-| :-------------------------: | :----------------------: | :-------------------------------- | :---------------------- |
-|<sub>           >r           |<sub>         TO_R        |<sub>         ( x1 -- )            |<sub>       ( -- x1 )    |
-|<sub>           r>           |<sub>        R_FROM       |<sub>            ( -- x1 )         |<sub>    ( x1 -- )       |
-|<sub>           r@           |<sub>        R_FETCH      |<sub>            ( -- x1 )         |<sub>    ( x1 -- x1 )    |
-|<sub>         rdrop          |<sub>         RDROP       |<sub>            ( -- )            |<sub>    ( x1 -- )       |
-|<sub>          2>r           |<sub>       _2TO_R        |<sub>        ( b a -- )            |<sub>       ( -- b a )   |
-|<sub>          2r>           |<sub>      _2R_FROM       |<sub>            ( -- b a )        |<sub>   ( b a -- )       |
-|<sub>          2r@           |<sub>      _2R_FETCH      |<sub>            ( -- b a )        |<sub>   ( b a -- b a )   |
-|<sub>        2rdrop          |<sub>       _2RDROP       |<sub>            ( -- )            |<sub>   ( b a -- )       |
+|<sub>       Original         |<sub>    M4 FORTH         |<sub>  Data stack                  |<sub> Return address stack |
+| :-------------------------: | :----------------------: | :-------------------------------- | :------------------------ |
+|<sub>           >r           |<sub>         TO_R        |<sub>         ( x1 -- )            |<sub>        ( -- x1 )     |
+|<sub>           r>           |<sub>        R_FROM       |<sub>            ( -- x1 )         |<sub>     ( x1 -- )        |
+|<sub>           r@           |<sub>        R_FETCH      |<sub>            ( -- x1 )         |<sub>     ( x1 -- x1 )     |
+|<sub>         rdrop          |<sub>         RDROP       |<sub>            ( -- )            |<sub>     ( x1 -- )        |
+|<sub>    r> r> swap >r >r    |<sub>         RSWAP       |<sub>            ( -- )            |<sub>    ( b a -- a b)     |
+|<sub>          2>r           |<sub>       _2TO_R        |<sub>        ( b a -- )            |<sub>        ( -- b a )    |
+|<sub>          2r>           |<sub>      _2R_FROM       |<sub>            ( -- b a )        |<sub>    ( b a -- )        |
+|<sub>          2r@           |<sub>      _2R_FETCH      |<sub>            ( -- b a )        |<sub>    ( b a -- b a )    |
+|<sub>        2rdrop          |<sub>       _2RDROP       |<sub>            ( -- )            |<sub>    ( b a -- )        |
+|<sub> 2r> 2r> 2swap 2>r 2>r  |<sub>       _2RSWAP       |<sub>            ( -- )            |<sub>( d c b a -- b a d c )|
+
 ### Arithmetic
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
