@@ -407,7 +407,7 @@ dnl
 dnl r>
 dnl ( -- x ) ( R: x -- )
 dnl Move x from the return stack to the data stack.
-define(R_FROM,{
+define({R_FROM},{
                         ;[9:66]     r_from ( b a -- b a i ) ( R: i -- )
     exx                 ; 1:4       r_from
     ld    E,(HL)        ; 1:7       r_from
@@ -423,7 +423,7 @@ dnl
 dnl r@
 dnl ( -- x ) ( R: x -- x )
 dnl Copy x from the return stack to the data stack.
-define(R_FETCH,{
+define({R_FETCH},{
 dnl                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
 dnl    exx                 ; 1:4       r_fetch   .
 dnl    push HL             ; 1:11      r_fetch r .
@@ -457,6 +457,23 @@ define({RDROP},{
     exx                 ; 1:4       rdrop r:( a -- )})dnl
 dnl
 dnl
+dnl r> r> swap >r >r
+dnl 2r> swap 2r>
+dnl ( R: x1 x2 -- x2 x1 )
+dnl Swap cell x1 x2 in the return stack.
+define(RSWAP,{
+                        ;[14:86]    rswap ( R: j i -- i j )
+    exx                 ; 1:4       rswap
+    ld  ($+10), SP      ; 4:20      rswap         
+    ld   SP, HL         ; 1:6       rswap
+    pop  DE             ; 1:10      rswap 
+    pop  AF             ; 1:10      rswap
+    push DE             ; 1:11      rswap
+    push AF             ; 1:11      rswap
+    ld   SP, 0x0000     ; 3:10      rswap
+    exx                 ; 1:4       rswap})dnl
+dnl
+dnl
 dnl ------------------- 32 bits ---------------------
 dnl
 dnl
@@ -487,7 +504,7 @@ dnl 2r>
 dnl r> r> swap
 dnl ( -- x1 x2 ) ( R: x1 x2 -- )
 dnl Transfer cell pair x1 x2 from the return stack.
-define(_2R_FROM,{
+define({_2R_FROM},{
                         ;[15:118]   _2r_from ( b a -- b a j i ) ( R: j i -- )
     push DE             ; 1:11      _2r_from b     . b a
     exx                 ; 1:4       _2r_from b     .
@@ -510,7 +527,7 @@ dnl 2r@
 dnl r> r> 2dup >r >r swap
 dnl ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 )
 dnl Copy cell pair x1 x2 from the return stack.
-define(_2R_FETCH,{
+define({_2R_FETCH},{
                         ;[14:99]    _2r_fetch ( b a -- b a j i ) ( R: j i -- j i )
     push DE             ; 1:11      _2r_fetch b   . b a
     exx                 ; 1:4       _2r_fetch b   .
@@ -541,3 +558,26 @@ define({_2RDROP},{
     exx                 ; 1:4       _2rdrop r:( x1 x2 -- )})dnl
 dnl
 dnl
+dnl r> r> r> r> _2swap >r >r >r >r
+dnl 2r> 2r> _2swap 2r> 2r>
+dnl ( R: x4 x3 x2 x1 -- x2 x1 )
+dnl Swap cell pair x4 x3 and x2 x1 in the return stack.
+define(_2RSWAP,{
+                        ;[19:134]   rswap ( R: l k j i -- j i l k )
+    exx                 ; 1:4       rswap
+    ld  ($+14), SP      ; 4:20      rswap         
+    ld   SP, HL         ; 1:6       rswap
+    ex   DE, HL         ; 1:4       rswap l  k  j  i
+    pop  BC             ; 1:10      rswap l  k  j  BC 
+    pop  HL             ; 1:10      rswap l  k  HL 
+    pop  AF             ; 1:10      rswap l  AF  
+    ex  (SP),HL         ; 1:19      rswap j     HL=l  
+    push BC             ; 1:11      rswap j  i   
+    push HL             ; 1:11      rswap j  i  l
+    push AF             ; 1:11      rswap j  i  l  k
+    ld   SP, 0x0000     ; 3:10      rswap
+    ex   DE, HL         ; 1:4       rswap
+    exx                 ; 1:4       rswap})dnl
+dnl
+dnl
+
