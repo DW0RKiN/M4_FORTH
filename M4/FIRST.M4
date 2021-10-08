@@ -8,6 +8,7 @@ ifelse(M4PATH,{},{
 dnl
 include(M4PATH{}float.m4)dnl
 include(M4PATH{}if.m4)dnl
+include(M4PATH{}case.m4)dnl
 include(M4PATH{}logic.m4)dnl
 include(M4PATH{}function.m4)dnl
 include(M4PATH{}loop.m4)dnl
