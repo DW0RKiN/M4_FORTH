@@ -472,36 +472,148 @@ BIN2DEC_CHAR:
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, BC, DE
 MULTIPLY:
-                        ;[36:???-627] test8 version   
-    xor   A             ; 1:4
-    ld    C, E          ; 1:4
-
-    srl   H             ; 2:8       divide H by 2
-    jr   nc, $+3        ; 2:7/12        
-MULTIPLY1:
-    add   A, C          ; 1:4       A += C(originalE)
-
-    sla   C             ; 2:8       C(originalE) *= 2
-    srl   H             ; 2:8       H /= 2
-    jr    c, MULTIPLY1  ; 2:7/12
-    jp   nz, MULTIPLY1+1; 3:10      H = ?
-
-    ld    C, L          ; 1:4
-    ld    L, H          ; 1:4       L = 0
-    ld    H, A          ; 1:4       HL *= E
-
-    srl   C             ; 2:8       divide C(originalL) by 2
-    jr   nc, $+3        ; 2:7/12    
-MULTIPLY2:
-    add  HL, DE         ; 1:11
+                        ;[148:cca 359-428] fast version
+   
+                        ;           HL = HL*DE = HL*E + 256*D*L
+    ld    B, H          ; 1:4
+    ld    C, L          ; 1:4       HL = BC = base 1x
     
-    sla   E             ; 2:8
-    rl    D             ; 2:8       multiply DE by 2    
+    ld    A, E          ; 1:4       DE check bits
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY_E7; 2:7/12
+    jr    z, MULTIPLY_D ; 2:7/12    <-------------+
+    add   A, A          ; 1:4                     |
+    jr    c, MULTIPLY_E6; 2:7/12                  |
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY_E5; 2:7/12                  |
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY_E4; 2:7/12                  |
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY_E3; 2:7/12                  |
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY_E2; 2:7/12                  |
+    add   A, A          ; 1:4
+    jr    c, MULTIPLY_E1; 2:7/12                  |
+    add   A, A          ; 1:4                     |
+    jr    c, MULTIPLY_E0; 2:7/12    always carry -+
+                        ;           
+MULTIPLY_D:             ;           A == E == 0 
+    ld    H, A          ; 1:4
+    ld    L, A          ; 1:4       HL = 0
 
-    srl   C             ; 2:8       divide C(originalL) by 2
-    jr    c, MULTIPLY2  ; 2:7/12
-    jp   nz, MULTIPLY2+1; 3:10      C = ?
+    sla   D             ; 2:8       check D 1000_0000 bit
+    jr    c, MULTIPLY_D7; 2:7/12
+    ret   z             ; 1:5/11
+    sla   D             ; 2:8       check D 0100_0000 bit
+    jr    c, MULTIPLY_D6; 2:7/12
+    sla   D             ; 2:8       check D 0010_0000 bit
+    jr    c, MULTIPLY_D5; 2:7/12
+    sla   D             ; 2:8       check D 0001_0000 bit
+    jr    c, MULTIPLY_D4; 2:7/12
+    sla   D             ; 2:8       check D 0000_1000 bit
+    jr    c, MULTIPLY_D3; 2:7/12
+    sla   D             ; 2:8       check D 0000_0100 bit
+    jr    c, MULTIPLY_D2; 2:7/12
+    sla   D             ; 2:8       check D 0000_0010 bit
+    jr    c, MULTIPLY_D1; 2:7/12    
+                        ;           D == 1
+    ld    H, C          ; 1:4       HL = 256*HL
+    ret                 ; 1:10
 
+MULTIPLY_E7:            ;           HL 1x --> 128x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0100_0000 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E6:            ;           HL 1x --> 64x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0010_0000 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E5:            ;           HL 1x --> 32x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0001_0000 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E4:            ;           HL 1x --> 16x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0000_1000 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E3:            ;           HL 1x --> 8x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0000_0100 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E2:            ;           HL 1x --> 4x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0000_0010 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E1:            ;           HL 1x --> 2x
+    add  HL, HL         ; 1:11
+    
+    add   A, A          ; 1:4       check E 0000_0001 bit
+    jr   nc, $+3        ; 2:7/12
+    add  HL, BC         ; 1:11
+MULTIPLY_E0:            ;           A = 0
+    
+    sla   D             ; 2:8       check D 1000_0000 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D7:
+    add   A, C          ; 1:4
+    ret   z             ; 1:5/11    (D == 0 || C == 0) --> zero flag --> HL = HL*E
+    
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0100_0000 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D6:
+    add   A, C          ; 1:4
+    
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0010_0000 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D5:
+    add   A, C          ; 1:4
+
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0001_0000 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D4:
+    add   A, C          ; 1:4
+
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0000_1000 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D3:
+    add   A, C          ; 1:4
+
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0000_0100 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D2:
+    add   A, C          ; 1:4
+    
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0000_0010 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D1:
+    add   A, C          ; 1:4
+
+    add   A, A          ; 1:4
+    sla   D             ; 2:8       check D 0000_0001 bit
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY_D0:
+    add   A, C          ; 1:4
+
+    add   A, H          ; 1:4    
+    ld    H, A          ; 1:4
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
 VARIABLE_SECTION:
