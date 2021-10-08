@@ -440,8 +440,8 @@ In order to write directly in FORTH another way CASE I created the word ZERO_OF.
      ENDCASE
      DROP
 
-Because 16-bit CASE is very inefficient on the Z80 I also added 8-bit CASE. For both the lower apartment and the higher. Both options ignore the second byte.
-The CASE reads the test value into the A battery at the beginning and uses the "cp number" instruction to perform the OF part.
+Because 16-bit CASE is very inefficient on the Z80 I also added 8-bit CASE. For both the lower apartment and the higher. Both options ignore the second TOS byte.
+The CASE reads the test value into the accumulator A at the beginning and uses the "cp number" instruction to perform the OF part.
 
 Non standard 8-bit CASE ( n -- n ) ignores hi byte:
 
