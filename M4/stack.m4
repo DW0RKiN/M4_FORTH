@@ -458,7 +458,9 @@ define({RDROP},{
 dnl
 dnl
 dnl r> r> swap >r >r
-dnl 2r> swap 2r>
+dnl 2r> >r >r
+dnl r> r> 2>r
+dnl 2r> swap 2>r
 dnl ( R: x1 x2 -- x2 x1 )
 dnl Swap cell x1 x2 in the return stack.
 define(RSWAP,{
@@ -559,7 +561,7 @@ define({_2RDROP},{
 dnl
 dnl
 dnl r> r> r> r> _2swap >r >r >r >r
-dnl 2r> 2r> _2swap 2r> 2r>
+dnl 2r> 2r> _2swap 2>r 2>r
 dnl ( R: x4 x3 x2 x1 -- x2 x1 )
 dnl Swap cell pair x4 x3 and x2 x1 in the return stack.
 define(_2RSWAP,{
