@@ -185,7 +185,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>           r>           |<sub>        R_FROM       |<sub>            ( -- x1 )         |<sub>     ( x1 -- )        |
 |<sub>           r@           |<sub>        R_FETCH      |<sub>            ( -- x1 )         |<sub>     ( x1 -- x1 )     |
 |<sub>         rdrop          |<sub>         RDROP       |<sub>            ( -- )            |<sub>     ( x1 -- )        |
-|<sub>    r> r> swap >r >r    |<sub>         RSWAP       |<sub>            ( -- )            |<sub>    ( b a -- a b)     |
+|<sub>    r> r> swap >r >r    |<sub>         RSWAP       |<sub>            ( -- )            |<sub>    ( b a -- a b )    |
 |<sub>          2>r           |<sub>       _2TO_R        |<sub>        ( b a -- )            |<sub>        ( -- b a )    |
 |<sub>          2r>           |<sub>      _2R_FROM       |<sub>            ( -- b a )        |<sub>    ( b a -- )        |
 |<sub>          2r@           |<sub>      _2R_FETCH      |<sub>            ( -- b a )        |<sub>    ( b a -- b a )    |
