@@ -117,6 +117,33 @@ define({PUSH_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, 
 })dnl
 dnl
 dnl
+dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl $1 <= a < $2
+define({WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse(index({$1},{(}),{0},{
+    .error "within_of($1,$2): within_of does not support variable parameters stored in memory."}
+,index({$2},{(}),{0},{
+    .error "within_of($1,$2): within_of does not support variable parameters stored in memory."}
+,{
+                        ;[17:62]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
+    ld    A, L          ; 1:4       _OF_INFO(within_of($1),within_)
+    sub   low format({%-10s},$1); 2:7       _OF_INFO(within_of($1),within_)
+    ld    C, A          ; 1:4       _OF_INFO(within_of($1),within_)
+    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
+    sbc   A, high format({%-6s},$1); 2:7       _OF_INFO(within_of($1),within_)
+    ld    B, A          ; 1:4       _OF_INFO(within_of($1),within_)   BC = a-($1)
+    ld    A, C          ; 1:4       _OF_INFO(within_of($1),within_){}dnl
+__{}ifelse(eval((($2)-($1)) & 0xff),{},{
+__{}    sub  low format({%-11s},($2)-($1)); 2:7       _OF_INFO(within_of($1),within_)
+__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}    sbc   A, high format({%-6s},($2)-($1)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a-($1))-(($2)-($1)){}dnl
+__{}},{
+__{}    sub  format({%-15s},eval((($2)-($1)) & 0xff)); 2:7       _OF_INFO(within_of($1),within_)
+__{}    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}    sbc   A, format({%-11s},eval((($2)-($1))/256)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a-($1))-(($2)-($1))})
+    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)})
+})dnl
+dnl
+dnl
 define({ENDOF},{
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(endof)
 endof{}OF_STACK:            ;           _OF_INFO(endof){}popdef({OF_STACK})})dnl
@@ -158,6 +185,40 @@ define({LO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LA
     cp   low format({%-11s},$1); 2:7       _OF_INFO(lo_of($1),lo_)
     jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)})
 })dnl
+dnl
+dnl
+dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl $1 <= a < $2
+define({LO_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse(index({$1},{(}),{0},{
+                        ;[ifelse(index({$2},{(}),{0},{15:69},{14:63})]    _OF_INFO(lo_within_of($1),lo_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
+    ld    A, format({%-11s},$1); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
+    ld    C, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   C = $1
+    ld    A, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:13},{2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
+    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = ($2)-[$1]
+    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a -($1)
+    sub   B             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = (a -($1)) - ([$2]-($1))
+    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)}dnl
+,index({$2},{(}),{0},{
+                        ;[13:59]    _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
+    ld    C, format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
+    ld    A, format({%-11s},$2); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
+    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = [$2]-($1)
+    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a -($1)
+    sub   B             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = (a -($1)) - ([$2]-($1))
+    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)}dnl
+,{
+                        ;[8:37]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
+    ld    C, format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
+    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a-($1)
+    sub  low format({%-11s},($2)-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
+    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
+    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)})})dnl
 dnl
 dnl
 define({LO_ENDOF},{
