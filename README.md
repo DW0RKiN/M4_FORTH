@@ -270,39 +270,40 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
-|<sub> Original   |<sub>  M4 FORTH  |<sub> Optimization  |<sub>  Data stack           |<sub> Comment      |
-| :-------------: | :-------------: | :----------------: | :------------------------- | :---------------- |
-|<sub>    and     |<sub>    AND     |<sub>               |<sub>   ( x2 x1 -- x )      |<sub>              |
-|<sub>   `3` and  |<sub>            |<sub> PUSH_AND(`3`) |<sub>       ( x -- x & `3`) |<sub>              |
-|<sub>     or     |<sub>     OR     |<sub>               |<sub>   ( x2 x1 -- x )      |<sub>              |
-|<sub>   `3` or   |<sub>            |<sub> PUSH_OR(`3`)  |<sub>       ( x -- x \| `3`)|<sub>              |
-|<sub>    xor     |<sub>    XOR     |<sub>               |<sub>      ( x1 -- -x1 )    |<sub>              |
-|<sub>   `3` xor  |<sub>            |<sub> PUSH_XOR(`3`) |<sub>       ( x -- x ^ `3`) |<sub>              |
-|<sub>    abs     |<sub>    ABS     |<sub>               |<sub>       ( n -- u )      |<sub>
-|<sub>   invert   |<sub>   INVERT   |<sub>               |<sub>      ( x1 -- ~x1 )    |<sub>
-|<sub>   within   |<sub>   WITHIN   |<sub>               |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
-|<sub>    true    |<sub>    TRUE    |<sub>               |<sub>         ( -- -1 )     |<sub>
-|<sub>   false    |<sub>   FALSE    |<sub>               |<sub>         ( -- 0 )      |<sub>
-|<sub>      =     |<sub>     EQ     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     0=     |<sub>    _0EQ    |<sub>               |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
-|<sub>    D0=     |<sub>    D0EQ    |<sub>               |<sub>   ( x1 x2 -- f )      |<sub> f=((x1|x2) == 0)
-|<sub>     <>     |<sub>     NE     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      <     |<sub>     LT     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     0<     |<sub>    _0LT    |<sub>               |<sub>      ( x1 -- f )      |<sub> f=(x1 < 0)
-|<sub>     <=     |<sub>     LE     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      >     |<sub>     GT     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     >=     |<sub>     GE     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     0>=    |<sub>    _0GE    |<sub>               |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
-|<sub>     u<     |<sub>    ULT     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>    u<=     |<sub>    ULE     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     u>     |<sub>    UGT     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>    u>=     |<sub>    UGE     |<sub>               |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub> x1 u >> x  |<sub>   RSHIFT   |<sub>               |<sub>   ( x1 u -- x1>>u )   |<sub>
-|<sub> x1 u << x  |<sub>   LSHIFT   |<sub>               |<sub>   ( x1 u -- x1<<u )   |<sub>
-|<sub> x1 1 >> x  |<sub>            |<sub>   XRSHIFT1    |<sub>     ( x1 -- x1>>1 )   |<sub> signed
-|<sub> x1 1 << x  |<sub>            |<sub>   XLSHIFT1    |<sub>     ( x1 -- x1<<1 )   |<sub>
-|<sub> u1 1 >> u  |<sub>            |<sub>  XURSHIFT1    |<sub>     ( u1 -- u1>>1 )   |<sub> unsigned
-|<sub> u1 1 << u  |<sub>            |<sub>  XULSHIFT1    |<sub>     ( u1 -- u1<<1 )   |<sub>
+|<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
+| :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
+|<sub>     and      |<sub>         AND         |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
+|<sub>    `3` and   |<sub>                     |<sub>    PUSH_AND(`3`)    |<sub>       ( x -- x & `3`) |<sub>                     |
+|<sub>      or      |<sub>          OR         |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
+|<sub>    `3` or    |<sub>                     |<sub>    PUSH_OR(`3`)     |<sub>       ( x -- x \| `3`)|<sub>                     |
+|<sub>     xor      |<sub>         XOR         |<sub>                     |<sub>      ( x1 -- -x1 )    |<sub>                     |
+|<sub>    `3` xor   |<sub>                     |<sub>    PUSH_XOR(`3`)    |<sub>       ( x -- x ^ `3`) |<sub>                     |
+|<sub>     abs      |<sub>         ABS         |<sub>                     |<sub>       ( n -- u )      |<sub>
+|<sub>    invert    |<sub>        INVERT       |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
+|<sub>    within    |<sub>        WITHIN       |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
+|<sub>`4` `7` within|<sub>PUSH2(`4`,`7`) WITHIN|<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>(`7`-`4`) (a-`4`) U<
+|<sub>     true     |<sub>         TRUE        |<sub>                     |<sub>         ( -- -1 )     |<sub>
+|<sub>    false     |<sub>        FALSE        |<sub>                     |<sub>         ( -- 0 )      |<sub>
+|<sub>       =      |<sub>          EQ         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      0=      |<sub>         _0EQ        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
+|<sub>     D0=      |<sub>         D0EQ        |<sub>                     |<sub>   ( x1 x2 -- f )      |<sub> f=((x1|x2) == 0)
+|<sub>      <>      |<sub>          NE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>       <      |<sub>          LT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      0<      |<sub>         _0LT        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 < 0)
+|<sub>      <=      |<sub>          LE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>       >      |<sub>          GT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      >=      |<sub>          GE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      0>=     |<sub>         _0GE        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
+|<sub>      u<      |<sub>         ULT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>     u<=      |<sub>         ULE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      u>      |<sub>         UGT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>     u>=      |<sub>         UGE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>  x1 u >> x   |<sub>        RSHIFT       |<sub>                     |<sub>   ( x1 u -- x1>>u )   |<sub>
+|<sub>  x1 u << x   |<sub>        LSHIFT       |<sub>                     |<sub>   ( x1 u -- x1<<u )   |<sub>
+|<sub>  x1 1 >> x   |<sub>                     |<sub>       XRSHIFT1      |<sub>     ( x1 -- x1>>1 )   |<sub> signed
+|<sub>  x1 1 << x   |<sub>                     |<sub>       XLSHIFT1      |<sub>     ( x1 -- x1<<1 )   |<sub>
+|<sub>  u1 1 >> u   |<sub>                     |<sub>      XURSHIFT1      |<sub>     ( u1 -- u1>>1 )   |<sub> unsigned
+|<sub>  u1 1 << u   |<sub>                     |<sub>      XULSHIFT1      |<sub>     ( u1 -- u1<<1 )   |<sub>
 
 
 ### Device
@@ -318,6 +319,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>     .s     |<sub>     DOTS      |<sub>                |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
 |<sub>     cr     |<sub>      CR       |<sub>                |<sub>          ( -- )          |<sub>              |
 |<sub>    emit    |<sub>     EMIT      |<sub>                |<sub>      ( 'a' -- )          |<sub>              |
+|<sub>  dup emit  |<sub>   DUP  EMIT   |<sub>   DUP_EMIT     |<sub>      ( 'a' -- 'a' )      |<sub>              |
+|<sub>   space    |<sub>     SPACE     |<sub>                |<sub>          ( -- )          |<sub>              |
 |<sub>  'a' emit  |<sub>               |<sub>  PUTCHAR('a')  |<sub>          ( -- )          |<sub>              |
 |<sub>    type    |<sub>     TYPE      |<sub>                |<sub>   ( addr n -- )          |<sub>              |
 |<sub> 2dup type  |<sub>               |<sub>   _2DUP_TYPE   |<sub>   ( addr n -- addr n )   |<sub>              |
@@ -515,19 +518,22 @@ Or define a new words:
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/case.m4
 
-|<sub>   Original   |<sub>      M4 FORTH      |<sub> Optimization |<sub> Data stack |<sub> Comment       |
-| :---------------: | :---------------------: | :---------------: | :-------------- | :----------------- |
-|<sub>     case     |<sub>        CASE        |<sub>              |<sub> ( n -- n ) |                    |
-|<sub>      of      |<sub>                    |<sub>              |<sub> ( n -- n ) |                    |
-|<sub>    `0` of    |<sub>    PUSH(`0`) OF    |<sub>   ZERO_OF    |<sub> ( n -- n ) |                    |
-|<sub>    `3` of    |<sub>    PUSH(`3`) OF    |<sub>  PUSH_OF(`3`)|<sub> ( n -- n ) |                    |
-|<sub>     endof    |<sub>        ENDOF       |<sub>              |<sub> ( n -- n ) |                    |
-|<sub>`255` and case|<sub>PUSH(`255`) AND CASE|<sub>   LO_CASE    |<sub> ( n -- n ) |                    |
-|<sub>   `3` of     |<sub>    PUSH(`3`) OF    |<sub>   LO_OF(`3`) |<sub> ( n -- n ) |<sub>ignores hi byte|
-|<sub>     endof    |<sub>        ENDOF       |<sub>   LO_ENDOF   |<sub> ( n -- n ) |                    |
-|<sub>`256` u/ case |<sub>   _256UDIV CASE    |<sub>   HI_CASE    |<sub> ( n -- n ) |                    |
-|<sub>   `3` of     |<sub>    PUSH(`3`) OF    |<sub>   HI_OF(`3`) |<sub> ( n -- n ) |<sub>ignores lo byte|
-|<sub>     endof    |<sub>        ENDOF       |<sub>   HI_ENDOF   |<sub> ( n -- n ) |                    |
+|<sub>   Original   |<sub>      M4 FORTH       |<sub> Optimization |<sub> Data stack |<sub> Comment       |
+| :---------------: | :----------------------: | :---------------: | :-------------- | :----------------- |
+|<sub>     case     |<sub>         CASE        |<sub>              |<sub> ( n -- n ) |                    |
+|<sub>      of      |<sub>                     |<sub>              |<sub> ( n -- n ) |                    |
+|<sub>    `0` of    |<sub>     PUSH(`0`) OF    |<sub>   ZERO_OF    |<sub> ( n -- n ) |                    |
+|<sub>    `3` of    |<sub>     PUSH(`3`) OF    |<sub>  PUSH_OF(`3`)|<sub> ( n -- n ) |                    |
+|<sub>              |<sub>  WITHIN_OF(`4`,`7`) |<sub>              |<sub> ( n -- n ) |                    |
+|<sub>     endof    |<sub>         ENDOF       |<sub>              |<sub> ( n -- n ) |                    |
+|<sub>`255` and case|<sub> PUSH(`255`) AND CASE|<sub>   LO_CASE    |<sub> ( n -- n ) |                    |
+|<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   LO_OF(`3`) |<sub> ( n -- n ) |<sub>ignores hi byte|
+|<sub>              |<sub>WITHIN_LO_OF(`4`,`7`)|<sub>              |<sub> ( n -- n ) |<sub>ignores lo byte|
+|<sub>     endof    |<sub>         ENDOF       |<sub>   LO_ENDOF   |<sub> ( n -- n ) |                    |
+|<sub>`256` u/ case |<sub>    _256UDIV CASE    |<sub>   HI_CASE    |<sub> ( n -- n ) |                    |
+|<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   HI_OF(`3`) |<sub> ( n -- n ) |<sub>ignores lo byte|
+|<sub>              |<sub>WITHIN_HI_OF(`4`,`7`)|<sub>              |<sub> ( n -- n ) |<sub>ignores lo byte|
+|<sub>     endof    |<sub>         ENDOF       |<sub>   HI_ENDOF   |<sub> ( n -- n ) |                    |
 
 ### Function
 
