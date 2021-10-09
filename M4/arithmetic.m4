@@ -155,6 +155,7 @@ dnl
 dnl ( 5 3 -- 3 )
 dnl ( -5 -3 -- -5 )
 define({PUSH_MIN},{ifelse(index({$1},{(}),{0},{
+                        ;[16:~62]   $1 min
     ld   BC, format({%-11s},$1); 4:20      $1 min
     ld    A, C          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
     sub   L             ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
@@ -165,21 +166,27 @@ define({PUSH_MIN},{ifelse(index({$1},{(}),{0},{
     xor   B             ; 1:4       $1 min
     jp    p, $+5        ; 3:10      $1 min
     ld    H, B          ; 1:4       $1 min
-    ld    L, C          ; 1:4       $1 min    16:62 (58+66)/2},{
-    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
+    ld    L, C          ; 1:4       $1 min}
+,{
+                        ;[14:~45]   $1 min
+    ld    A, low format({%-7s},$1); 2:7       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
     sub   L             ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
+    ld    A, high format({%-6s},$1); 2:7       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
     sbc   A, H          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
     rra                 ; 1:4       $1 min
-    xor   H             ; 1:4       $1 min{}{}ifelse(eval($1),{},{
-__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1
-__{}  else
-__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1
-__{}  endif},{ifelse(eval(($1)<0),0,{
-    jp    p, $+6        ; 3:10      $1 min    positive constant $1},{
-    jp    m, $+6        ; 3:10      $1 min    negative constant $1})})
-    ld   HL, format({%-11s},$1); 3:10      $1 min    14:45 (40+50)/2})})dnl
+    xor   H             ; 1:4       $1 min{}dnl
+__{}ifelse(eval($1),{},{
+__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1
+__{}__{}  else
+__{}__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1
+__{}__{}  endif}
+__{},eval(($1)<0),0,{
+__{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1}dnl
+__{},{
+__{}__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1})
+    ld   HL, format({%-11s},$1); 3:10      $1 min}){}dnl
+})dnl
 dnl
 dnl
 dnl ( x -- -x )

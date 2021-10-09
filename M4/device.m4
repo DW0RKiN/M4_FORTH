@@ -1,4 +1,5 @@
 dnl ## Device
+define({__{}},{})dnl
 dnl
 dnl .
 dnl ( x -- )
@@ -33,11 +34,11 @@ dnl
 dnl
 dnl .S
 dnl ( x3 x2 x1 -- x3 x2 x1 )
-dnl print 3 stack number 
+dnl print 3 stack number
 define({DOTS},{
     ex  (SP), HL        ; 1:19      .S  ( x1 x2 x3 )
-    push HL             ; 1:11      .S  ( x1 x3 x2 x3 ){}DOT                 
-    push HL             ; 1:11      .S  ( x1 x2 x3 x2 ){}DOT                    
+    push HL             ; 1:11      .S  ( x1 x3 x2 x3 ){}DOT
+    push HL             ; 1:11      .S  ( x1 x2 x3 x2 ){}DOT
     ex  (SP), HL        ; 1:19      .S  ( x3 x2 x1 ){}DUP_DOT})dnl
 dnl
 dnl
@@ -49,10 +50,25 @@ define({CR},{
 dnl
 dnl
 dnl ( 'a' -- )
-dnl new line
+dnl print char 'a'
 define({EMIT},{
     ld    A, L          ; 1:4       emit    Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      emit    with {48K ROM} in, this will print char in A{}DROP})dnl
+    rst   0x10          ; 1:11      emit    with {48K ROM} in, this will print char in A{}dnl
+__{}DROP})dnl
+dnl
+dnl
+dnl ( 'a' -- 'a' )
+dnl print char 'a'
+define({DUP_EMIT},{
+    ld    A, L          ; 1:4       dup emit    Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      dup emit    with {48K ROM} in, this will print char in A})dnl
+dnl
+dnl
+dnl ( -- )
+dnl print space
+define({SPACE},{
+    ld    A, 0x20       ; 2:7       space   Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      space   with {48K ROM} in, this will print space})dnl
 dnl
 dnl
 dnl ( -- )
@@ -64,7 +80,7 @@ define({PUTCHAR},{ifelse($2,{},,{
 dnl
 dnl
 dnl ( addr n -- )
-dnl print n chars from addr 
+dnl print n chars from addr
 define({TYPE},{
 ifdef({USE_TYPE},,define({USE_TYPE},{}))dnl
     call PRINT_STRING   ; 3:17      type
@@ -73,7 +89,7 @@ ifdef({USE_TYPE},,define({USE_TYPE},{}))dnl
 dnl
 dnl
 dnl ( addr n -- addr n )
-dnl non-destructively print string 
+dnl non-destructively print string
 define({_2DUP_TYPE},{
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup{}TYPE
@@ -99,7 +115,7 @@ db STRING_POP
 size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
 ALL_STRING_STACK)})dnl
 dnl
-dnl 
+dnl
 dnl s" string"
 dnl ( -- addr n )
 dnl addr = address string, n = lenght(string)
@@ -113,14 +129,14 @@ db STRING_POP
 size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
 ALL_STRING_STACK)})dnl
 dnl
-dnl 
+dnl
 dnl ( -- key )
 dnl readchar
 define({KEY},{ifdef({USE_KEY},,define({USE_KEY},{}))
     call READKEY        ; 3:17      key})dnl
 dnl
 dnl
-dnl 
+dnl
 dnl ( addr umax -- uloaded )
 dnl readstring
 define({ACCEPT},{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{}))

@@ -10,7 +10,7 @@ define(AND,{
     ld    A, D          ; 1:4       and
     and   H             ; 1:4       and
     ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and})dnl    
+    pop  DE             ; 1:10      and})dnl
 dnl
 dnl
 dnl ( x -- x&n )
@@ -29,7 +29,7 @@ __{}    ld    L, 0x00       ; 2:7       $1 and},
 __{}eval(0xFF-(($1) & 0xFF)),{0},,{
 __{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      $1 and
 __{}    and   L             ; 1:4       $1 and
-__{}    ld    L, A          ; 1:4       $1 and})})dnl    
+__{}    ld    L, A          ; 1:4       $1 and})})dnl
 dnl
 dnl
 dnl ( x1 x2 -- x )
@@ -128,20 +128,143 @@ define(INVERT,{
 dnl
 dnl
 dnl ( a b c -- ((a-b) (c-b) U<) )
-define(WITHIN,{
+dnl b <= a < c
+define({WITHIN},{ifelse(TYP_WITHIN,{fast},{
+                        ;[18:91]    within ( a b c -- flag=(b<=a<c) )   # fast version can be changed with "define({TYP_WITHIN},{name})", name=fast
     ld    A, L          ; 1:4       within
     sub   E             ; 1:4       within
     ld    C, A          ; 1:4       within
     ld    A, H          ; 1:4       within
     sbc   A, D          ; 1:4       within
-    ld    B, A          ; 1:4       within c-b
+    ld    B, A          ; 1:4       within BC = c-b
     pop  HL             ; 1:10      within
     or    A             ; 1:4       within
-    sbc  HL, DE         ; 2:15      within a-b
+    sbc  HL, DE         ; 2:15      within HL = a-b
+    ld    A, L          ; 1:4       within
+    sub   C             ; 1:4       within
+    ld    A, H          ; 1:4       within
+    sbc   A, B          ; 1:4       within (a-b) - (c-b) < 0
+    sbc   A, A          ; 1:4       within
+    ld    L, A          ; 1:4       within
+    ld    H, A          ; 1:4       within
+    pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )}dnl
+,{
+                        ;[16:97]    within ( a b c -- flag=(b<=a<c) )   # default version can be changed with "define({TYP_WITHIN},{name})", name=fast
+    ld    A, L          ; 1:4       within
+    sub   E             ; 1:4       within
+    ld    C, A          ; 1:4       within
+    ld    A, H          ; 1:4       within
+    sbc   A, D          ; 1:4       within
+    ld    B, A          ; 1:4       within BC = c-b
+    pop  HL             ; 1:10      within
     or    A             ; 1:4       within
-    sbc  HL, BC         ; 2:15      within (a-b) - (c-B) < 0
+    sbc  HL, DE         ; 2:15      within HL = a-b
+    or    A             ; 1:4       within
+    sbc  HL, BC         ; 2:15      within (a-b) - (c-b) < 0
     sbc  HL, HL         ; 2:15      within
-    pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )})dnl
+    pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )})})dnl
+dnl
+dnl
+dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl $1 <= a < $2
+define({PUSH2_WITHIN},{ifelse(index({$1},{(}),{0},{
+                        ;[22:ifelse(index({$2},{(}),{0},{137},{131})]   push2_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
+    ld   BC, format({%-11s},$1); 4:20      push2_within($1,$2)   BC = $1
+    or    A             ; 1:4       push2_within($1,$2)
+    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = a-($1)
+    push HL             ; 1:11      push2_within($1,$2)
+    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2_within($1,$2)
+    or    A             ; 1:4       push2_within($1,$2)
+    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = ($2)-($1)
+    ld    C, L          ; 1:4       push2_within($1,$2)
+    ld    B, H          ; 1:4       push2_within($1,$2)   BC = ($2)-($1)
+    pop  HL             ; 1:10      push2_within($1,$2)
+    or    A             ; 1:4       push2_within($1,$2)
+    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = (a-($1))-(($2)-($1))
+    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff}
+,index({$2},{(}),{0},{
+                        ;[17:111]   push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
+__{}ifelse(eval(-($1)),{},{dnl
+__{}    ld   BC, format({%-11s},-($1)); 3:10      push2_within($1,$2){}dnl
+__{}},{dnl
+__{}    ld   BC, format({%-11s},eval(-($1))); 3:10      push2_within($1,$2)})
+    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = a-($1)
+    push HL             ; 1:11      push2_within($1,$2)
+    ld   HL, format({%-11s},$2); 3:16      push2_within($1,$2)
+    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = ($2)-($1)
+    ld    C, L          ; 1:4       push2_within($1,$2)
+    ld    B, H          ; 1:4       push2_within($1,$2)   BC = ($2)-($1)
+    pop  HL             ; 1:10      push2_within($1,$2)
+    or    A             ; 1:4       push2_within($1,$2)
+    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = (a-($1))-(($2)-($1))
+    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff}
+,{
+                        ;[12:58]    push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
+__{}ifelse(eval(-($1)),{},{dnl
+__{}    ld   BC, format({%-11s},-($1)); 3:10      push2_within($1,$2){}dnl
+__{}},{dnl
+__{}    ld   BC, format({%-11s},eval(-($1))); 3:10      push2_within($1,$2)})
+    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = a-($1)
+    ld    A, L          ; 1:4       push2_within($1,$2){}dnl
+__{}ifelse(eval((($2)-($1)) & 0xff),{},{
+__{}    sub  low format({%-11s},($2)-($1)); 2:7       push2_within($1,$2)
+__{}    ld    A, H          ; 1:4       push2_within($1,$2)
+__{}    sbc   A, high format({%-6s},($2)-($1)); 2:7       push2_within($1,$2)   carry:(a-($1))-(($2)-($1)){}dnl
+__{}},{
+__{}    sub  format({%-15s},eval((($2)-($1)) & 0xff)); 2:7       push2_within($1,$2)
+__{}    ld    A, H          ; 1:4       push2_within($1,$2)
+__{}    sbc   A, format({%-11s},eval((($2)-($1))/256)); 2:7       push2_within($1,$2)   carry:(a-($1))-(($2)-($1))})
+    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff})
+})dnl
+dnl
+dnl
+dnl ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) )
+dnl c2 <= c3 < c1
+define({LO_WITHIN},{
+                        ;[10:59]    lo_within   ( c3 c2 c1 -- flag=(c2<=c3<c1) )
+    ld    A, L          ; 1:4       lo_within
+    sub   E             ; 1:4       lo_within
+    ld    C, A          ; 1:4       lo_within   C = c1-c2
+    pop  HL             ; 1:10      lo_within   L = c3
+    ld    A, L          ; 1:4       lo_within
+    sub   E             ; 1:4       lo_within   c3-c2
+    sub   C             ; 1:4       lo_within   (c3-c2)-(c1-c2)
+    sbc  HL, HL         ; 2:15      lo_within   HL = 0x0000 or 0xffff
+    pop  DE             ; 1:10      lo_within   ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) ){}dnl
+})dnl
+dnl
+dnl
+dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl $1 <= a < $2
+define({PUSH2_LO_WITHIN},{ifelse(index({$1},{(}),{0},{
+                        ;[ifelse(index({$2},{(}),{0},{14:65},{13:59})]    push2_lo_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
+    ld    A, format({%-11s},$1); 3:13      push2_lo_within($1,$2)
+    ld    C, A          ; 1:4       push2_lo_within($1,$2)   C = $1
+    ld    A, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:13},{2:7 })      push2_lo_within($1,$2)
+    sub   C             ; 1:4       push2_lo_within($1,$2)
+    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = ($2)-[$1]
+    ld    A, L          ; 1:4       push2_lo_within($1,$2)
+    sub   C             ; 1:4       push2_lo_within($1,$2)   A = a -($1)
+    sub   B             ; 1:4       push2_lo_within($1,$2)   A = (a -($1)) - ([$2]-($1))
+    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff}dnl
+,index({$2},{(}),{0},{
+                        ;[12:55]    push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
+    ld    C, format({%-11s},$1); 2:7       push2_lo_within($1,$2)
+    ld    A, format({%-11s},$2); 3:13      push2_lo_within($1,$2)
+    sub   C             ; 1:4       push2_lo_within($1,$2)
+    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = [$2]-($1)
+    ld    A, L          ; 1:4       push2_lo_within($1,$2)
+    sub   C             ; 1:4       push2_lo_within($1,$2)   A = a -($1)
+    sub   B             ; 1:4       push2_lo_within($1,$2)   A = (a -($1)) - ([$2]-($1))
+    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff}dnl
+,{
+                        ;[8:37]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
+    ld    C, format({%-11s},$1); 2:7       push2_lo_within($1,$2)
+    ld    A, L          ; 1:4       push2_lo_within($1,$2)
+    sub   C             ; 1:4       push2_lo_within($1,$2)   A = a-($1)
+    sub  low format({%-11s},($2)-($1)); 2:7       push2_lo_within($1,$2)
+    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff})})dnl
+dnl
 dnl
 dnl -------------------------------------
 dnl
