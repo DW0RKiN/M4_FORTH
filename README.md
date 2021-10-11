@@ -281,7 +281,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>     abs      |<sub>         ABS         |<sub>                     |<sub>       ( n -- u )      |<sub>
 |<sub>    invert    |<sub>        INVERT       |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
 |<sub>    within    |<sub>        WITHIN       |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
-|<sub>`4` `7` within|<sub>PUSH2(`4`,`7`) WITHIN|<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>(`7`-`4`) (a-`4`) U<
+|<sub>`4` `7` within|<sub>PUSH2(`4`,`7`) WITHIN|<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
 |<sub>     true     |<sub>         TRUE        |<sub>                     |<sub>         ( -- -1 )     |<sub>
 |<sub>    false     |<sub>        FALSE        |<sub>                     |<sub>         ( -- 0 )      |<sub>
 |<sub>       =      |<sub>          EQ         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
@@ -524,7 +524,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/case.m4
 |<sub>      of      |<sub>                     |<sub>              |<sub> ( n -- n ) |                    |
 |<sub>    `0` of    |<sub>     PUSH(`0`) OF    |<sub>   ZERO_OF    |<sub> ( n -- n ) |                    |
 |<sub>    `3` of    |<sub>     PUSH(`3`) OF    |<sub>  PUSH_OF(`3`)|<sub> ( n -- n ) |                    |
-|<sub>              |<sub>  WITHIN_OF(`4`,`7`) |<sub>              |<sub> ( n -- n ) |                    |
+|<sub>              |<sub>  WITHIN_OF(`4`,`7`) |<sub>              |<sub> ( n -- n ) |<sub>4..6           |
 |<sub>     endof    |<sub>         ENDOF       |<sub>              |<sub> ( n -- n ) |                    |
 |<sub>`255` and case|<sub> PUSH(`255`) AND CASE|<sub>   LO_CASE    |<sub> ( n -- n ) |                    |
 |<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   LO_OF(`3`) |<sub> ( n -- n ) |<sub>ignores hi byte|
