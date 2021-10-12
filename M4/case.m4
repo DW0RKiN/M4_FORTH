@@ -213,9 +213,8 @@ define({LO_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STA
     ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
     jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)}dnl
 ,{
-                        ;[8:37]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-    ld    C, format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
-    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a-($1)
+                        ;[8:28]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
+    sub  low format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a-($1)
     sub  low format({%-11s},($2)-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
     ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
     jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)})})dnl
@@ -291,9 +290,8 @@ define({HI_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STA
     ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
     jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)}dnl
 ,{
-                        ;[8:37]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-    ld    C, format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
-    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
+                        ;[8:28]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
+    sub  low format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
     sub  low format({%-11s},($2)-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
     ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
     jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)})})dnl
