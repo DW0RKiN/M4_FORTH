@@ -60,7 +60,7 @@ __{}    sub  low format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK index - 
 __{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;13:48/48/48},
 __{}eval((((STOP_STACK) && 0xFF) == 0) && (((INDEX_STACK)^(STOP_STACK))&0xFF00)),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK lo stop == 0  && hi index != hi stop
+__{}idx{}LOOP_STACK EQU $+1          ;[14:57]    xloop LOOP_STACK lo stop == 0  && hi index != hi stop
 __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
 __{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
@@ -69,7 +69,7 @@ __{}    sub  high format({%-10s},STOP_STACK); 2:7       xloop LOOP_STACK index -
 __{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;14:57/57/57},
 __{}eval((((INDEX_STACK)^(STOP_STACK))&0x8000)==0 && ((INDEX_STACK)<(STOP_STACK))),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK index < stop && same sign
+__{}idx{}LOOP_STACK EQU $+1          ;[17:68]    xloop LOOP_STACK index < stop && same sign
 __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
 __{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
@@ -80,7 +80,7 @@ __{}    sbc   A, high format({%-6s},STOP_STACK); 2:7       xloop LOOP_STACK inde
 __{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;17:68/68/68},
 __{}{
-__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;[20:~71]   xloop LOOP_STACK INDEX_STACK..STOP_STACK
 __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK idx always points to a 16-bit index
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK index++
 __{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      xloop LOOP_STACK save index
