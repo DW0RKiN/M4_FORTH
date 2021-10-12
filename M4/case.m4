@@ -138,7 +138,7 @@ __{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
 __{}    sbc   A, high format({%-6s},($2)-($1)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a-($1))-(($2)-($1)){}dnl
 __{}},{
 __{}    sub  format({%-15s},eval((($2)-($1)) & 0xff)); 2:7       _OF_INFO(within_of($1),within_)
-__{}    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
 __{}    sbc   A, format({%-11s},eval((($2)-($1))/256)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a-($1))-(($2)-($1))})
     jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)})
 })dnl
