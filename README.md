@@ -310,7 +310,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
-|<sub> Original   |<sub>   M4 FORTH    |<sub>  Optimization  |<sub>  Data stack              |<sub>  R. a. stack |
+|<sub> Original   |<sub>   M4 FORTH    |<sub>  Optimization  |<sub>  Data stack              |<sub>   Comment    |
 | :-------------: | :----------------: | :-----------------: | :---------------------------- | :---------------- |
 |<sub>     .      |<sub>      DOT      |<sub>   UDOT if > 0  |<sub>       ( x1 -- )          |<sub>              |
 |<sub>     u.     |<sub>     UDOT      |<sub>                |<sub>       ( x1 -- )          |<sub>              |
@@ -326,9 +326,61 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub> 2dup type  |<sub>               |<sub>   _2DUP_TYPE   |<sub>   ( addr n -- addr n )   |<sub>              |
 |<sub> .( Hello)  |<sub> PRINT("Hello")|<sub>                |<sub>          ( -- )          |<sub>              |
 |<sub> ." Hello"  |<sub> PRINT("Hello")|<sub>                |<sub>          ( -- )          |<sub>              |
+|<sub> .( Hello)  |<sub>               |<sub>PRINT_Z("Hello")|<sub>          ( -- )          |<sub>C-style string|
+|<sub> ." Hello"  |<sub>               |<sub>PRINT_Z("Hello")|<sub>          ( -- )          |<sub>C-style string|
 |<sub> s" Hello"  |<sub>STRING("Hello")|<sub>                |<sub>          ( -- addr n )   |<sub>              |
 |<sub>     key    |<sub>      KEY      |<sub>                |<sub>          ( -- key )      |<sub>              |
 |<sub>   accept   |<sub>     ACCEPT    |<sub>                |<sub> ( addr max -- loaded )   |<sub>              |
+
+The non-standard PRINT_Z extends each text string by zero bytes, but in return it cuts each string print by 5 bytes. An eight-byte routine to print zero-terminated strings must be added to the code, making it more convenient from printing 2 strings.
+
+PRINT_Z("Hello")
+
+    ld   BC, string101  ; 3:10      print_z Address of string_z
+    call PRINT_STRING_Z ; 3:17      print_z
+
+    ...
+
+    ; Print C-style stringZ
+    ; In: BC = addr
+    ; Out: BC = addr zero
+        rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+        inc  BC             ; 1:6       print_string_z
+    PRINT_STRING_Z:         ;           print_string_z
+        ld    A,(BC)        ; 1:7       print_string_z
+        or    A             ; 1:4       print_string_z
+        jp   nz, $-4        ; 3:10      print_string_z
+        ret                 ; 1:10      print_string_z
+
+    STRING_SECTION:
+    string101:
+    db "Hello",0
+    size101 EQU $ - string101
+
+PRINT("Hello")
+
+        push DE             ; 1:11      print
+        ld   BC, size101    ; 3:10      print Length of string to print
+        ld   DE, string101  ; 3:10      print Address of string
+        call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+        pop  DE             ; 1:10      print
+
+    ...
+
+    STRING_SECTION:
+    string101:
+    db "Hello"
+    size101 EQU $ - string101
+
+    0x203C:
+        ld    A, B          ; 1:4
+        or    C             ; 1:4
+        dec  BC             ; 1:6
+        ret  z              ; 1:5/11
+        ld    A,(DE)        ; 1:7
+        inc  DE             ; 1:6
+        rst   0x10          ; 1:11
+        jr  0x203C          ; 2:12
 
 The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
@@ -526,14 +578,17 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/case.m4
 |<sub>    `3` of    |<sub>     PUSH(`3`) OF    |<sub>  PUSH_OF(`3`)|<sub> ( n -- n ) |                    |
 |<sub>              |<sub>  WITHIN_OF(`4`,`7`) |<sub>              |<sub> ( n -- n ) |<sub>4..6           |
 |<sub>     endof    |<sub>         ENDOF       |<sub>              |<sub> ( n -- n ) |                    |
+|<sub>              |<sub>   DECLINING_ENDOF   |<sub>              |<sub> ( n -- n ) | C-style switch     |
 |<sub>`255` and case|<sub> PUSH(`255`) AND CASE|<sub>   LO_CASE    |<sub> ( n -- n ) |                    |
 |<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   LO_OF(`3`) |<sub> ( n -- n ) |<sub>ignores hi byte|
 |<sub>              |<sub>WITHIN_LO_OF(`4`,`7`)|<sub>              |<sub> ( n -- n ) |<sub>ignores hi byte|
 |<sub>     endof    |<sub>         ENDOF       |<sub>   LO_ENDOF   |<sub> ( n -- n ) |                    |
+|<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) | C-style switch     |
 |<sub>`256` u/ case |<sub>    _256UDIV CASE    |<sub>   HI_CASE    |<sub> ( n -- n ) |                    |
 |<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   HI_OF(`3`) |<sub> ( n -- n ) |<sub>ignores lo byte|
 |<sub>              |<sub>WITHIN_HI_OF(`4`,`7`)|<sub>              |<sub> ( n -- n ) |<sub>ignores lo byte|
 |<sub>     endof    |<sub>         ENDOF       |<sub>   HI_ENDOF   |<sub> ( n -- n ) |                    |
+|<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) | C-style switch     |
 
 ### Function
 
