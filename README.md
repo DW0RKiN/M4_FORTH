@@ -112,7 +112,6 @@ m4 Hello.m4
         ret                 ; 1:10
     ;   =====  e n d  =====
 
-    VARIABLE_SECTION:
 
     STRING_SECTION:
     string101:
