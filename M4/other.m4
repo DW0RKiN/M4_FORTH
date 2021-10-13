@@ -36,28 +36,32 @@ define({$1},{$2})},{
 .error constant: No parameter or redundant parameter!})})dnl
 dnl
 dnl
-define({ALL_VARIABLE},{
-VARIABLE_SECTION:
-})dnl
-dnl
-define({CVARIABLE},{define({ALL_VARIABLE},{
-}ALL_VARIABLE{
-$1: db ifelse($#,{0},{
-.error variable without parameter!},$#,{1},{0x00},{$2})})})dnl
+define({ALL_VARIABLE},{})dnl
 dnl
 dnl
-define({DVARIABLE},{define({ALL_VARIABLE},{
-}ALL_VARIABLE{
-$1: dw ifelse($#,{0},{
-.error variable without parameter!},$#,{1},{0x0000
-dw 0x0000},{$2
-dw 0x0000})})})dnl
+define({CVARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}ifelse($1,{},{.error cvariable without name!}dnl
+__{},$#,{1},{$1: db 0x00{}}dnl
+__{},{$1: db $2{}})dnl
+})})dnl
 dnl
 dnl
-define({VARIABLE},{define({ALL_VARIABLE},{
-}ALL_VARIABLE{
-$1: dw ifelse($#,{0},{
-.error variable without parameter!},$#,{1},{0x0000},$2)})})dnl
+define({DVARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}ifelse($1,{},{.error cvariable without name!}dnl
+__{},$#,{1},{$1:
+__{}  dw 0x0000
+__{}  dw 0x0000{}}dnl
+__{},{$1: 
+__{}  dw $2
+__{}  dw ($2)/0x10000{}})dnl
+})})dnl
+dnl
+dnl
+define({VARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}ifelse($1,{},{.error variable without name!}dnl
+__{},$#,{1},{$1: dw 0x0000{}}dnl
+__{},{$1: dw $2{}})dnl
+})})dnl
 dnl
 dnl
 dnl ## Memory access

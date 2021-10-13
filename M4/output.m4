@@ -342,8 +342,14 @@ PRINT_STRING_Z:         ;           print_string_z
     ret                 ; 1:10      print_string_z}){}dnl
 dnl
 dnl
-ALL_VARIABLE
+ifelse(ALL_VARIABLE,{},,{
+VARIABLE_SECTION:
+}ALL_VARIABLE
+){}dnl
+dnl
+dnl
+ifelse(ALL_STRING_STACK,{},,{
 STRING_SECTION:
-define({STRING_POP},{STRING_STACK{}popdef({STRING_STACK})})ALL_STRING_STACK
+define({STRING_POP},{STRING_STACK{}popdef({STRING_STACK})})ALL_STRING_STACK}){}dnl
 dnl
 dnl
