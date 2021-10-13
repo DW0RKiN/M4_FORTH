@@ -9,7 +9,7 @@ PRINT_S16:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
     jr   nc, PRINT_U16  ; 2:7/12
-    
+
     xor   A             ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    L, A          ; 1:4       neg
@@ -18,8 +18,8 @@ PRINT_S16:
     ld    H, A          ; 1:4       neg
     PUTCHAR(' ')
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, ** 
-    
+    db 0x01             ; 3:10      ld   BC, **
+
     ; fall to print_u16}){}dnl
 dnl
 dnl
@@ -48,7 +48,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -59,17 +59,17 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
     ret                 ; 1:10}){}dnl
@@ -84,7 +84,7 @@ ifdef({USE_TYPE},{
 ; Output: Print decimal number in HL
 ; Pollutes: AF, AF', BC, DE, HL
 PRINT_STRING:
-    ld    B, H          ; 1:4       Length of string to print    
+    ld    B, H          ; 1:4       Length of string to print
     ld    C, L          ; 1:4       Length of string to print
     call 0x203C         ; 3:17      Print our string
     ret                 ; 1:10}){}dnl
@@ -99,17 +99,17 @@ ifdef({USE_LSHIFT},{
 ; Output: HL = DE << HL
 ; Pollutes: AF, BC, DE, HL
 DE_LSHIFT:
-    ld    A, L          ; 1:4    
+    ld    A, L          ; 1:4
     ld   BC, 0x0010     ; 3:10
     sbc  HL, BC         ; 2:15
     jr   nc, DE_LSHIFTZ ; 2:7/12
-    
+
     cp    0x08          ; 2:7
     jr    c, $+7        ; 2:7/12
     sub   0x08          ; 2:7
     ld    D, E          ; 1:4
     ld    E, 0x00       ; 2:7
-    
+
     ld    H, D          ; 1:4
     ld    L, E          ; 1:4
     or    A             ; 1:4
@@ -133,17 +133,17 @@ ifdef({USE_RSHIFT},{
 ; Output: HL = DE >> HL
 ; Pollutes: AF, BC, DE, HL
 DE_RSHIFT:
-    ld    A, L          ; 1:4    
+    ld    A, L          ; 1:4
     ld   BC, 0x0010     ; 3:10
     sbc  HL, BC         ; 2:15
     jr   nc, ifdef({USE_LSHIFT},{DE_LSHIFTZ},{DE_RSHIFTZ}) ; 2:7/12
-    
+
     cp    0x08          ; 2:7
     jr    c, $+7        ; 2:7/12
     sub   0x08          ; 2:7
     ld    E, D          ; 1:4
     ld    D, 0x00       ; 2:7       unsigned
-    
+
     ld    H, D          ; 1:4
     ld    L, E          ; 1:4
     or    A             ; 1:4
@@ -189,7 +189,7 @@ Random:
     ld    A, H          ; 1:4
     or    A             ; 1:4
     jr    z, Random_H0  ; 2:7/11
-    
+
     ld    C, 0xFF       ; 2:7
     xor   A             ; 1:4
     adc   A, A          ; 1:4
@@ -197,7 +197,7 @@ Random:
     jr    c, $-2        ; 2:7/11
     ld    B, A          ; 1:4       BC = mask = 0x??FF
     jr   Random_Begin   ; 2:12
-    
+
 Random_H0:
     ld    B, A          ; 1:4
     or    L             ; 1:4
@@ -208,23 +208,23 @@ Random_H0:
     cp    L             ; 1:4
     jr    c, $-2        ; 2:7/11
     ld    C, A          ; 1:4       BC = mask = 0x00??
-    
+
 Random_Begin:
     push  DE            ; 1:11
     ex    DE, HL        ; 1:4
 Random_new:
     call Rnd            ; 3:17
-    
+
     ld    A, C          ; 1:4
     and   L             ; 1:4
     ld    L, A          ; 1:4
     ld    A, B          ; 1:4
     and   H             ; 1:4
     ld    H, A          ; 1:4
-    
+
     sbc  HL, DE         ; 2:15
     jr   nc, Random_new ; 2:7/11
-    
+
 Rnd_Exit:
     add  HL, DE         ; 1:11
     pop  DE             ; 1:10
@@ -263,7 +263,7 @@ Rnd_8b EQU $+1
     sbc   A, 0xFF       ; 1:4       carry
     ld  (Rnd_8a), A     ; 3:13
     ld  (Rnd_8b), A     ; 3:13
-    
+
     xor   H             ; 1:4
     ld    H, A          ; 1:4
     ld    A, R          ; 2:9
@@ -276,7 +276,7 @@ dnl
 dnl
 ifdef({USE_KEY},{
 ; Read key from keyboard
-; In: 
+; In:
 ; Out: push stack, TOP = HL = key
 READKEY:
     ex   DE, HL         ; 1:4       readkey
@@ -296,16 +296,16 @@ dnl
 dnl
 ifdef({USE_ACCEPT},{
 ; Read string from keyboard
-; In: DE = addr, HL = length 
+; In: DE = addr, HL = length
 ; Out: 2x pop stack, TOP = HL = loaded
 READSTRING:
     ld    B, D          ; 1:4       readstring
     ld    C, E          ; 1:4       readstring BC = addr
-    ex   DE, HL         ; 1:4       readstring 
+    ex   DE, HL         ; 1:4       readstring
 READSTRING2:
     xor   A             ; 1:4       readstring
     ld    (0x5C08),A    ; 3:13      readstring {ZX Spectrum LAST K} system variable
-    
+
     ld    A,(0x5C08)    ; 3:13      readstring read new value of {LAST K}
     or    A             ; 1:4       readstring is it still zero?
     jr    z, $-4        ; 2:7/12    readstring
@@ -315,18 +315,31 @@ READSTRING2:
     ld  (HL),A          ; 1:7       readstring
     inc  HL             ; 1:6       readstring
     dec  DE             ; 1:6       readstring
-    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A    
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
     ld    A, D          ; 1:4       readstring
     or    E             ; 1:4       readstring
     jr   nz, READSTRING2; 2:7/12    readstring
 READSTRING3:
     or    A             ; 1:4       readstring
     sbc  HL, BC         ; 2:15      readstring
-    
+
     pop  BC             ; 1:10      readstring ret
     pop  DE             ; 1:10      readstring
     push BC             ; 1:11      readstring ret
     ret                 ; 1:10      readstring}){}dnl
+dnl
+dnl
+ifdef({USE_STRING_Z},{
+; Print C-style stringZ
+; In: BC = addr
+; Out: BC = addr zero
+    rst   0x10          ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
+    inc  BC             ; 1:6       print_string_z
+PRINT_STRING_Z:         ;           print_string_z
+    ld    A,(BC)        ; 1:7       print_string_z
+    or    A             ; 1:4       print_string_z
+    jp   nz, $-4        ; 3:10      print_string_z
+    ret                 ; 1:10      print_string_z}){}dnl
 dnl
 dnl
 ALL_VARIABLE

@@ -149,6 +149,11 @@ define({ENDOF},{
 endof{}OF_STACK:            ;           _OF_INFO(endof){}popdef({OF_STACK})})dnl
 dnl
 dnl
+define({DECLINING_ENDOF},{
+;   --vvv-- falling down --vvv--    _OF_INFO(declining_endof)
+endof{}OF_STACK:            ;           _OF_INFO(declining_endof){}popdef({OF_STACK})})dnl
+dnl
+dnl
 define({ENDCASE},{popdef({LASTOF_STACK})define({OF_COUNT}, LASTOF_STACK)
 endcase{}CASE_STACK:             ;           endcase CASE_STACK
 ;   ^---^---^ endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
@@ -223,6 +228,11 @@ dnl
 define({LO_ENDOF},{
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(lo_endof,lo_)
 endof{}OF_STACK:            ;           _OF_INFO(lo_endof,lo_){}popdef({OF_STACK})})dnl
+dnl
+dnl
+define({LO_DECLINING_ENDOF},{
+;   --vvv-- falling down --vvv--    _OF_INFO(lo_declining_endof,lo_)
+endof{}OF_STACK:            ;           _OF_INFO(lo_declining_endof,lo_){}popdef({OF_STACK})})dnl
 dnl
 dnl
 define({LO_ENDCASE},{popdef({LASTOF_STACK})
@@ -300,6 +310,11 @@ dnl
 define({HI_ENDOF},{
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(hi_endof,hi_)
 endof{}OF_STACK:            ;           _OF_INFO(hi_endof,hi_){}popdef({OF_STACK})})dnl
+dnl
+dnl
+define({HI_DECLINING_ENDOF},{
+;   --vvv-- falling down --vvv--    _OF_INFO(hi_declining_endof,hi_)
+endof{}OF_STACK:            ;           _OF_INFO(hi_declining_endof,hi_){}popdef({OF_STACK})})dnl
 dnl
 dnl
 define({HI_ENDCASE},{popdef({LASTOF_STACK})

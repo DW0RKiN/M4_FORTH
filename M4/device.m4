@@ -116,6 +116,19 @@ size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
 ALL_STRING_STACK)})dnl
 dnl
 dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl print string
+define({PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT))
+    ld   BC, string{}PRINT_COUNT  ; 3:10      print_z Address of string_z
+    call PRINT_STRING_Z ; 3:17      print_z{}dnl
+pushdef({STRING_STACK},{$@{,0}})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
+db STRING_POP
+size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
+ALL_STRING_STACK)})dnl
+dnl
+dnl
 dnl s" string"
 dnl ( -- addr n )
 dnl addr = address string, n = lenght(string)
