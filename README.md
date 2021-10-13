@@ -336,8 +336,8 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
 
 PRINT_Z("Hello")
 
-    ld   BC, string101  ; 3:10      print_z Address of string_z
-    call PRINT_STRING_Z ; 3:17      print_z
+        ld   BC, string101  ; 3:10      print_z Address of string_z
+        call PRINT_STRING_Z ; 3:17      print_z
 
     ...
 
