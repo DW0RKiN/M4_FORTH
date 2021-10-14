@@ -193,11 +193,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -212,11 +209,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string102
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -231,11 +225,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size103    ; 3:10      print Length of string to print
-    ld   DE, string103  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string103
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -250,11 +241,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size104    ; 3:10      print Length of string to print
-    ld   DE, string104  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string104
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -269,11 +257,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size105    ; 3:10      print Length of string to print
-    ld   DE, string105  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string105
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -288,11 +273,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size106    ; 3:10      print Length of string to print
-    ld   DE, string106  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string106
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -307,11 +289,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size107    ; 3:10      print Length of string to print
-    ld   DE, string107  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string107
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -326,11 +305,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size108    ; 3:10      print Length of string to print
-    ld   DE, string108  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string108
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -345,11 +321,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size109    ; 3:10      print Length of string to print
-    ld   DE, string109  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string109
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -364,11 +337,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size110    ; 3:10      print Length of string to print
-    ld   DE, string110  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string110
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -383,11 +353,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size111    ; 3:10      print Length of string to print
-    ld   DE, string111  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string111
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
@@ -406,11 +373,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size112    ; 3:10      print Length of string to print
-    ld   DE, string112  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fexp
     call fExp           ; 3:17      fexp HL = e^HL
     pop  DE             ; 1:10      fexp 
@@ -427,11 +391,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size113    ; 3:10      print Length of string to print
-    ld   DE, string113  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fln
     call fLn            ; 3:17      fln HL = ln(HL)
     pop  DE             ; 1:10      fln  
@@ -448,11 +409,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size114    ; 3:10      print Length of string to print
-    ld   DE, string114  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114
+    call PRINT_STRING_Z ; 3:17      print_z 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     call fIld           ; 3:17      s>f 
     call fSqrt          ; 3:17      fsqrt 
@@ -460,11 +418,8 @@ snext102:               ;           snext 102
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      print
-    ld   BC, size115    ; 3:10      print Length of string to print
-    ld   DE, string115  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld    B, D          ; 1:4       fmod
     ld    C, E          ; 1:4       fmod
     call fMod           ; 3:17      fmod HL = BC % HL
@@ -770,11 +725,8 @@ xexit103:               ;           777 +xloop 103
 
     
     
-    push DE             ; 1:11      print
-    ld   BC, size116    ; 3:10      print Length of string to print
-    ld   DE, string116  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116
+    call PRINT_STRING_Z ; 3:17      print_z
     exx
     push HL
     exx
@@ -819,11 +771,8 @@ test_end:
 ;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
-    push DE             ; 1:11      print
-    ld   BC, size117    ; 3:10      print Length of string to print
-    ld   DE, string117  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117
+    call PRINT_STRING_Z ; 3:17      print_z
     
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
@@ -2315,7 +2264,7 @@ PRINT_S16:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
     jr   nc, PRINT_U16  ; 2:7/12
-    
+
     xor   A             ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    L, A          ; 1:4       neg
@@ -2326,8 +2275,8 @@ PRINT_S16:
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, ** 
-    
+    db 0x01             ; 3:10      ld   BC, **
+
     ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
@@ -2353,7 +2302,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -2364,72 +2313,49 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-VARIABLE_SECTION:
-
+; Print C-style stringZ
+; In: BC = addr
+; Out: BC = addr zero
+    rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    inc  BC             ; 1:6       print_string_z
+PRINT_STRING_Z:         ;           print_string_z
+    ld    A,(BC)        ; 1:7       print_string_z
+    or    A             ; 1:4       print_string_z
+    jp   nz, $-4        ; 3:10      print_string_z
+    ret                 ; 1:10      print_string_z
 STRING_SECTION:
 string117:
-db 0xD, "Data stack OK!", 0xD
+db 0xD, "Data stack OK!", 0xD, 0x00
 size117 EQU $ - string117
 string116:
-db "RAS:"
+db "RAS:", 0x00
 size116 EQU $ - string116
 string115:
-db ":  a%b -> "
+db ":  a%b -> ", 0x00
 size115 EQU $ - string115
 string114:
-db " % "
+db " % ", 0x00
 size114 EQU $ - string114
 string113:
-db ":  ln -> "
+db ":  ln -> ", 0x00
 size113 EQU $ - string113
 string112:
-db ": exp -> "
+db ": exp -> ", 0x00
 size112 EQU $ - string112
-string111:
-db ": sin -> "
-size111 EQU $ - string111
-string110:
-db ": sin -> "
-size110 EQU $ - string110
-string109:
-db ": sin -> "
-size109 EQU $ - string109
-string108:
-db ": sin -> "
-size108 EQU $ - string108
-string107:
-db ": sin -> "
-size107 EQU $ - string107
-string106:
-db ": sin -> "
-size106 EQU $ - string106
-string105:
-db ": sin -> "
-size105 EQU $ - string105
-string104:
-db ": sin -> "
-size104 EQU $ - string104
-string103:
-db ": sin -> "
-size103 EQU $ - string103
-string102:
-db ": sin -> "
-size102 EQU $ - string102
 string101:
-db ": sin -> "
+db ": sin -> ", 0x00
 size101 EQU $ - string101
-

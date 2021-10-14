@@ -33,22 +33,22 @@ ORG 0x8000
     PUSH( 0x7FFF ) SFOR DUP S2F PUSH(20224) NE IF DUP UDOT LEAVE THEN SNEXT
     CR
 
-    PUSH(FP0) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FP0_1) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FP0_5) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FP0_8) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FP1) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FP1_5) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FM0_1) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FM0_5) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FM0_8) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FM1) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
-    PUSH(FM1_5) DUP FDOT PRINT({": sin -> "}) FSIN FDOT CR
+    PUSH(FP0) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FP0_1) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FP0_5) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FP0_8) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FP1) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FP1_5) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FM0_1) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FM0_5) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FM0_8) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FM1) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
+    PUSH(FM1_5) DUP FDOT PRINT_Z({": sin -> "}) FSIN FDOT CR
 
     
-    PUSH(5)   S2F FSQRT DUP FDOT PRINT({": exp -> "}) FEXP FDOT CR
-    PUSH(5)   S2F FSQRT DUP FDOT PRINT({":  ln -> "}) FLN  FDOT CR
-    PUSH2(5,3) S2F DUP FDOT PRINT({" % "}) SWAP S2F FSQRT DUP FDOT PRINT({":  a%b -> "}) FMOD  FDOT CR
+    PUSH(5)   S2F FSQRT DUP FDOT PRINT_Z({": exp -> "}) FEXP FDOT CR
+    PUSH(5)   S2F FSQRT DUP FDOT PRINT_Z({":  ln -> "}) FLN  FDOT CR
+    PUSH2(5,3) S2F DUP FDOT PRINT_Z({" % "}) SWAP S2F FSQRT DUP FDOT PRINT_Z({":  a%b -> "}) FMOD  FDOT CR
     
     PUSH(3) SCALL(test) DROP
     PUSH(5) SCALL(test) DROP
@@ -72,7 +72,7 @@ ORG 0x8000
     
 
     
-    PRINT({"RAS:"})
+    PRINT_Z({"RAS:"})
     exx
     push HL
     exx
@@ -86,6 +86,6 @@ SSEMICOLON
 
     
 SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})
+    PRINT_Z({0xD, "Data stack OK!", 0xD})
     STOP
 SSEMICOLON

@@ -440,11 +440,8 @@ ORG 0x8000
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, 1          ; 3:10      xdo(-1,1) 101
     ld  (idx101),BC     ; 4:20      xdo(-1,1) 101
@@ -469,11 +466,8 @@ xexit101:               ;           xloop 101
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string102
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       -1 1 rxdo 102
     dec  HL             ; 1:6       -1 1 rxdo 102
@@ -516,11 +510,8 @@ exit102:                ;           -1 +rxloop 102
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size103    ; 3:10      print Length of string to print
-    ld   DE, string103  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string103  ; 3:10      print_z   Address of null-terminated string103
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, 1          ; 3:10      xdo(-1,1) 103
     ld  (idx103),BC     ; 4:20      xdo(-1,1) 103
@@ -549,11 +540,8 @@ xexit103:               ;           -2 +xloop 103
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size104    ; 3:10      print Length of string to print
-    ld   DE, string104  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string103  ; 3:10      print_z   Address of null-terminated string103 == string104
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       -1 1 rxdo 104
     dec  HL             ; 1:6       -1 1 rxdo 104
@@ -599,11 +587,8 @@ exit104:                ;           -2 +rxloop 104
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size105    ; 3:10      print Length of string to print
-    ld   DE, string105  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, 1          ; 3:10      xdo(-1,1) 105
     ld  (idx105),BC     ; 4:20      xdo(-1,1) 105
@@ -632,11 +617,8 @@ xexit105:               ;           -4 +xloop 105
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size106    ; 3:10      print Length of string to print
-    ld   DE, string106  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string106
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       -1 1 rxdo 106
     dec  HL             ; 1:6       -1 1 rxdo 106
@@ -685,11 +667,8 @@ exit106:                ;           -4 +rxloop 106
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size107    ; 3:10      print Length of string to print
-    ld   DE, string107  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, 0          ; 3:10      xdo(0,0) 107
     ld  (idx107),BC     ; 4:20      xdo(0,0) 107
@@ -714,11 +693,8 @@ xexit107:               ;           xloop 107
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size108    ; 3:10      print Length of string to print
-    ld   DE, string108  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string108
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       0 0 rxdo 108
     dec  HL             ; 1:6       0 0 rxdo 108
@@ -761,11 +737,8 @@ exit108:                ;           -1 +rxloop 108
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size109    ; 3:10      print Length of string to print
-    ld   DE, string109  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, 0          ; 3:10      xdo(0,0) 109
     ld  (idx109),BC     ; 4:20      xdo(0,0) 109
@@ -794,11 +767,8 @@ xexit109:               ;           -2 +xloop 109
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size110    ; 3:10      print Length of string to print
-    ld   DE, string110  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string110
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       0 0 rxdo 110
     dec  HL             ; 1:6       0 0 rxdo 110
@@ -844,11 +814,8 @@ exit110:                ;           -2 +rxloop 110
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size111    ; 3:10      print Length of string to print
-    ld   DE, string111  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, 0          ; 3:10      xdo(0,0) 111
     ld  (idx111),BC     ; 4:20      xdo(0,0) 111
@@ -877,11 +844,8 @@ xexit111:               ;           -4 +xloop 111
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size112    ; 3:10      print Length of string to print
-    ld   DE, string112  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string112
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       0 0 rxdo 112
     dec  HL             ; 1:6       0 0 rxdo 112
@@ -930,11 +894,8 @@ exit112:                ;           -4 +rxloop 112
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size113    ; 3:10      print Length of string to print
-    ld   DE, string113  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 113
     ld  (idx113),BC     ; 4:20      xdo(2,-1) 113
@@ -944,7 +905,7 @@ xdo113:                 ;           xdo(2,-1) 113
     ld   HL, (idx113)   ; 3:16      index i 113 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .  
                         ;           push_addxloop(1) 113
-idx113 EQU $+1          ;           xloop 113
+idx113 EQU $+1          ;[20:~71]   xloop 113 -1..2
     ld   BC, 0x0000     ; 3:10      xloop 113 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 113 index++
     ld  (idx113),BC     ; 4:20      xloop 113 save index
@@ -959,11 +920,8 @@ xexit113:               ;           xloop 113
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size114    ; 3:10      print Length of string to print
-    ld   DE, string114  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string114
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       2 -1 rxdo 114
     dec  HL             ; 1:6       2 -1 rxdo 114
@@ -1006,11 +964,8 @@ exit114:                ; 1:4       rxloop 114
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size115    ; 3:10      print Length of string to print
-    ld   DE, string115  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 115
     ld  (idx115),BC     ; 4:20      xdo(2,-1) 115
@@ -1038,11 +993,8 @@ xexit115:               ;           2 +xloop 115
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size116    ; 3:10      print Length of string to print
-    ld   DE, string116  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string116
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       2 -1 rxdo 116
     dec  HL             ; 1:6       2 -1 rxdo 116
@@ -1088,11 +1040,8 @@ exit116:                ;           2 +rxloop 116
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size117    ; 3:10      print Length of string to print
-    ld   DE, string117  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 117
     ld  (idx117),BC     ; 4:20      xdo(2,-1) 117
@@ -1121,11 +1070,8 @@ xexit117:               ;           4 +xloop 117
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size118    ; 3:10      print Length of string to print
-    ld   DE, string118  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string118
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       2 -1 rxdo 118
     dec  HL             ; 1:6       2 -1 rxdo 118
@@ -1174,18 +1120,15 @@ exit118:                ;           4 +rxloop 118
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size119    ; 3:10      print Length of string to print
-    ld   DE, string119  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, 1          ; 3:10      xdo(-1,1) 119
     ld  (idx119),BC     ; 4:20      xdo(-1,1) 119
 xdo119:                 ;           xdo(-1,1) 119 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1200,11 +1143,8 @@ xdo119:                 ;           xdo(-1,1) 119
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else101    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size120    ; 3:10      print Length of string to print
-    ld   DE, string120  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave119      ;           xleave 119 
 else101  EQU $          ;           = endif
 endif101:  
@@ -1213,7 +1153,7 @@ endif101:
     ld   HL, (idx119)   ; 3:16      index i 119 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .  
                         ;           push_addxloop(1) 119
-idx119 EQU $+1          ;           xloop 119
+idx119 EQU $+1          ;[20:~71]   xloop 119 1..-1
     ld   BC, 0x0000     ; 3:10      xloop 119 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 119 index++
     ld  (idx119),BC     ; 4:20      xloop 119 save index
@@ -1228,11 +1168,8 @@ xexit119:               ;           xloop 119
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size121    ; 3:10      print Length of string to print
-    ld   DE, string121  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string121
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -1243,7 +1180,7 @@ xexit119:               ;           xloop 119
     ld  (HL),low 1      ; 2:10      -1 1 rxdo 120
     exx                 ; 1:4       -1 1 rxdo 120 R:( -- 1 )
 do120:                  ;           -1 1 rxdo 120 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1258,11 +1195,8 @@ do120:                  ;           -1 1 rxdo 120
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else102    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size122    ; 3:10      print Length of string to print
-    ld   DE, string122  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string122
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 120
     inc  L              ; 1:4       rxleave 120
     jp  leave120        ;           rxleave 120 
@@ -1302,18 +1236,15 @@ exit120:                ; 1:4       rxloop 120
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size123    ; 3:10      print Length of string to print
-    ld   DE, string123  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string123  ; 3:10      print_z   Address of null-terminated string123
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, 1          ; 3:10      xdo(-1,1) 121
     ld  (idx121),BC     ; 4:20      xdo(-1,1) 121
 xdo121:                 ;           xdo(-1,1) 121 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1328,11 +1259,8 @@ xdo121:                 ;           xdo(-1,1) 121
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else103    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size124    ; 3:10      print Length of string to print
-    ld   DE, string124  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string124
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave121      ;           xleave 121 
 else103  EQU $          ;           = endif
 endif103:  
@@ -1359,11 +1287,8 @@ xexit121:               ;           2 +xloop 121
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size125    ; 3:10      print Length of string to print
-    ld   DE, string125  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string123  ; 3:10      print_z   Address of null-terminated string123 == string125
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -1374,7 +1299,7 @@ xexit121:               ;           2 +xloop 121
     ld  (HL),low 1      ; 2:10      -1 1 rxdo 122
     exx                 ; 1:4       -1 1 rxdo 122 R:( -- 1 )
 do122:                  ;           -1 1 rxdo 122 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1389,11 +1314,8 @@ do122:                  ;           -1 1 rxdo 122
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else104    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size126    ; 3:10      print Length of string to print
-    ld   DE, string126  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string126
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 122
     inc  L              ; 1:4       rxleave 122
     jp  leave122        ;           rxleave 122 
@@ -1436,18 +1358,15 @@ exit122:                ;           2 +rxloop 122
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size127    ; 3:10      print Length of string to print
-    ld   DE, string127  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string127  ; 3:10      print_z   Address of null-terminated string127
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, 1          ; 3:10      xdo(-1,1) 123
     ld  (idx123),BC     ; 4:20      xdo(-1,1) 123
 xdo123:                 ;           xdo(-1,1) 123 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1462,11 +1381,8 @@ xdo123:                 ;           xdo(-1,1) 123
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else105    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size128    ; 3:10      print Length of string to print
-    ld   DE, string128  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string128
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave123      ;           xleave 123 
 else105  EQU $          ;           = endif
 endif105:  
@@ -1494,11 +1410,8 @@ xexit123:               ;           4 +xloop 123
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size129    ; 3:10      print Length of string to print
-    ld   DE, string129  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string127  ; 3:10      print_z   Address of null-terminated string127 == string129
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -1509,7 +1422,7 @@ xexit123:               ;           4 +xloop 123
     ld  (HL),low 1      ; 2:10      -1 1 rxdo 124
     exx                 ; 1:4       -1 1 rxdo 124 R:( -- 1 )
 do124:                  ;           -1 1 rxdo 124 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1524,11 +1437,8 @@ do124:                  ;           -1 1 rxdo 124
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else106    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size130    ; 3:10      print Length of string to print
-    ld   DE, string130  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string130
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 124
     inc  L              ; 1:4       rxleave 124
     jp  leave124        ;           rxleave 124 
@@ -1574,18 +1484,15 @@ exit124:                ;           4 +rxloop 124
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size131    ; 3:10      print Length of string to print
-    ld   DE, string131  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string131  ; 3:10      print_z   Address of null-terminated string131
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, 0          ; 3:10      xdo(0,0) 125
     ld  (idx125),BC     ; 4:20      xdo(0,0) 125
 xdo125:                 ;           xdo(0,0) 125 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1600,11 +1507,8 @@ xdo125:                 ;           xdo(0,0) 125
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else107    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size132    ; 3:10      print Length of string to print
-    ld   DE, string132  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string132
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave125      ;           xleave 125 
 else107  EQU $          ;           = endif
 endif107:  
@@ -1613,7 +1517,7 @@ endif107:
     ld   HL, (idx125)   ; 3:16      index i 125 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .  
                         ;           push_addxloop(1) 125
-idx125 EQU $+1          ;           xloop 125
+idx125 EQU $+1          ;[20:~71]   xloop 125 0..0
     ld   BC, 0x0000     ; 3:10      xloop 125 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 125 index++
     ld  (idx125),BC     ; 4:20      xloop 125 save index
@@ -1628,11 +1532,8 @@ xexit125:               ;           xloop 125
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size133    ; 3:10      print Length of string to print
-    ld   DE, string133  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string131  ; 3:10      print_z   Address of null-terminated string131 == string133
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -1643,7 +1544,7 @@ xexit125:               ;           xloop 125
     ld  (HL),low 0      ; 2:10      0 0 rxdo 126
     exx                 ; 1:4       0 0 rxdo 126 R:( -- 0 )
 do126:                  ;           0 0 rxdo 126 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1658,11 +1559,8 @@ do126:                  ;           0 0 rxdo 126
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else108    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size134    ; 3:10      print Length of string to print
-    ld   DE, string134  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string134
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 126
     inc  L              ; 1:4       rxleave 126
     jp  leave126        ;           rxleave 126 
@@ -1702,18 +1600,15 @@ exit126:                ; 1:4       rxloop 126
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size135    ; 3:10      print Length of string to print
-    ld   DE, string135  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string135  ; 3:10      print_z   Address of null-terminated string135
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, 0          ; 3:10      xdo(0,0) 127
     ld  (idx127),BC     ; 4:20      xdo(0,0) 127
 xdo127:                 ;           xdo(0,0) 127 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1728,11 +1623,8 @@ xdo127:                 ;           xdo(0,0) 127
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else109    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size136    ; 3:10      print Length of string to print
-    ld   DE, string136  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string136
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave127      ;           xleave 127 
 else109  EQU $          ;           = endif
 endif109:  
@@ -1759,11 +1651,8 @@ xexit127:               ;           2 +xloop 127
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size137    ; 3:10      print Length of string to print
-    ld   DE, string137  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string135  ; 3:10      print_z   Address of null-terminated string135 == string137
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -1774,7 +1663,7 @@ xexit127:               ;           2 +xloop 127
     ld  (HL),low 0      ; 2:10      0 0 rxdo 128
     exx                 ; 1:4       0 0 rxdo 128 R:( -- 0 )
 do128:                  ;           0 0 rxdo 128 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1789,11 +1678,8 @@ do128:                  ;           0 0 rxdo 128
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else110    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size138    ; 3:10      print Length of string to print
-    ld   DE, string138  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string138
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 128
     inc  L              ; 1:4       rxleave 128
     jp  leave128        ;           rxleave 128 
@@ -1836,18 +1722,15 @@ exit128:                ;           2 +rxloop 128
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size139    ; 3:10      print Length of string to print
-    ld   DE, string139  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string139  ; 3:10      print_z   Address of null-terminated string139
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, 0          ; 3:10      xdo(0,0) 129
     ld  (idx129),BC     ; 4:20      xdo(0,0) 129
 xdo129:                 ;           xdo(0,0) 129 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1862,11 +1745,8 @@ xdo129:                 ;           xdo(0,0) 129
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else111    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size140    ; 3:10      print Length of string to print
-    ld   DE, string140  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string140
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave129      ;           xleave 129 
 else111  EQU $          ;           = endif
 endif111:  
@@ -1894,11 +1774,8 @@ xexit129:               ;           4 +xloop 129
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size141    ; 3:10      print Length of string to print
-    ld   DE, string141  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string139  ; 3:10      print_z   Address of null-terminated string139 == string141
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -1909,7 +1786,7 @@ xexit129:               ;           4 +xloop 129
     ld  (HL),low 0      ; 2:10      0 0 rxdo 130
     exx                 ; 1:4       0 0 rxdo 130 R:( -- 0 )
 do130:                  ;           0 0 rxdo 130 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -1924,11 +1801,8 @@ do130:                  ;           0 0 rxdo 130
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else112    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size142    ; 3:10      print Length of string to print
-    ld   DE, string142  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string142
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 130
     inc  L              ; 1:4       rxleave 130
     jp  leave130        ;           rxleave 130 
@@ -1974,18 +1848,15 @@ exit130:                ;           4 +rxloop 130
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size143    ; 3:10      print Length of string to print
-    ld   DE, string143  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string143  ; 3:10      print_z   Address of null-terminated string143
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 131
     ld  (idx131),BC     ; 4:20      xdo(2,-1) 131
 xdo131:                 ;           xdo(2,-1) 131 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2000,11 +1871,8 @@ xdo131:                 ;           xdo(2,-1) 131
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else113    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size144    ; 3:10      print Length of string to print
-    ld   DE, string144  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string144
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave131      ;           xleave 131 
 else113  EQU $          ;           = endif
 endif113:  
@@ -2028,11 +1896,8 @@ xexit131:               ;           xloop 131
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size145    ; 3:10      print Length of string to print
-    ld   DE, string145  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string143  ; 3:10      print_z   Address of null-terminated string143 == string145
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -2043,7 +1908,7 @@ xexit131:               ;           xloop 131
     ld  (HL),low -1     ; 2:10      2 -1 rxdo 132
     exx                 ; 1:4       2 -1 rxdo 132 R:( -- -1 )
 do132:                  ;           2 -1 rxdo 132 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2058,11 +1923,8 @@ do132:                  ;           2 -1 rxdo 132
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else114    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size146    ; 3:10      print Length of string to print
-    ld   DE, string146  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string146
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 132
     inc  L              ; 1:4       rxleave 132
     jp  leave132        ;           rxleave 132 
@@ -2102,18 +1964,15 @@ exit132:                ;           -1 +rxloop 132
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size147    ; 3:10      print Length of string to print
-    ld   DE, string147  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string147  ; 3:10      print_z   Address of null-terminated string147
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 133
     ld  (idx133),BC     ; 4:20      xdo(2,-1) 133
 xdo133:                 ;           xdo(2,-1) 133 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2128,11 +1987,8 @@ xdo133:                 ;           xdo(2,-1) 133
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else115    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size148    ; 3:10      print Length of string to print
-    ld   DE, string148  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string148
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave133      ;           xleave 133 
 else115  EQU $          ;           = endif
 endif115:  
@@ -2160,11 +2016,8 @@ xexit133:               ;           -2 +xloop 133
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size149    ; 3:10      print Length of string to print
-    ld   DE, string149  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string147  ; 3:10      print_z   Address of null-terminated string147 == string149
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -2175,7 +2028,7 @@ xexit133:               ;           -2 +xloop 133
     ld  (HL),low -1     ; 2:10      2 -1 rxdo 134
     exx                 ; 1:4       2 -1 rxdo 134 R:( -- -1 )
 do134:                  ;           2 -1 rxdo 134 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2190,11 +2043,8 @@ do134:                  ;           2 -1 rxdo 134
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else116    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size150    ; 3:10      print Length of string to print
-    ld   DE, string150  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string150
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 134
     inc  L              ; 1:4       rxleave 134
     jp  leave134        ;           rxleave 134 
@@ -2237,18 +2087,15 @@ exit134:                ;           -2 +rxloop 134
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size151    ; 3:10      print Length of string to print
-    ld   DE, string151  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string151  ; 3:10      print_z   Address of null-terminated string151
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop)  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 135
     ld  (idx135),BC     ; 4:20      xdo(2,-1) 135
 xdo135:                 ;           xdo(2,-1) 135 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2263,11 +2110,8 @@ xdo135:                 ;           xdo(2,-1) 135
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else117    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size152    ; 3:10      print Length of string to print
-    ld   DE, string152  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string152
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave135      ;           xleave 135 
 else117  EQU $          ;           = endif
 endif117:  
@@ -2295,11 +2139,8 @@ xexit135:               ;           -4 +xloop 135
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size153    ; 3:10      print Length of string to print
-    ld   DE, string153  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string151  ; 3:10      print_z   Address of null-terminated string151 == string153
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 6          ; 3:10      push2_store(6,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(6,_stop) 
 
@@ -2310,7 +2151,7 @@ xexit135:               ;           -4 +xloop 135
     ld  (HL),low -1     ; 2:10      2 -1 rxdo 136
     exx                 ; 1:4       2 -1 rxdo 136 R:( -- -1 )
 do136:                  ;           2 -1 rxdo 136 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2325,11 +2166,8 @@ do136:                  ;           2 -1 rxdo 136
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else118    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size154    ; 3:10      print Length of string to print
-    ld   DE, string154  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string154
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 136
     inc  L              ; 1:4       rxleave 136
     jp  leave136        ;           rxleave 136 
@@ -2375,11 +2213,8 @@ exit136:                ;           -4 +rxloop 136
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size155    ; 3:10      print Length of string to print
-    ld   DE, string155  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string155  ; 3:10      print_z   Address of null-terminated string155
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     jp   xexit137       ; 3:10      ?xdo(-1,-1) 137
 xdo137:                 ;           ?xdo(-1,-1) 137  
@@ -2387,7 +2222,7 @@ xdo137:                 ;           ?xdo(-1,-1) 137
     ex   DE, HL         ; 1:4       index i 137
     ld   HL, (idx137)   ; 3:16      index i 137 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .  
-idx137 EQU $+1          ;           xloop 137
+idx137 EQU $+1          ;[20:~71]   xloop 137 -1..-1
     ld   BC, 0x0000     ; 3:10      xloop 137 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 137 index++
     ld  (idx137),BC     ; 4:20      xloop 137 save index
@@ -2402,11 +2237,8 @@ xexit137:               ;           xloop 137
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size156    ; 3:10      print Length of string to print
-    ld   DE, string156  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string155  ; 3:10      print_z   Address of null-terminated string155 == string156
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     jp   exit138       ; 3:10      -1 -1 ?rxdo 138
 do138:                  ;           -1 -1 ?rxdo 138 
@@ -2443,11 +2275,8 @@ exit138:                ; 1:4       rxloop 138
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size157    ; 3:10      print Length of string to print
-    ld   DE, string157  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string157  ; 3:10      print_z   Address of null-terminated string157
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     jp   xexit139       ; 3:10      ?xdo(1,1) 139
 xdo139:                 ;           ?xdo(1,1) 139  
@@ -2455,7 +2284,7 @@ xdo139:                 ;           ?xdo(1,1) 139
     ex   DE, HL         ; 1:4       index i 139
     ld   HL, (idx139)   ; 3:16      index i 139 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .  
-idx139 EQU $+1          ;           xloop 139
+idx139 EQU $+1          ;[20:~71]   xloop 139 1..1
     ld   BC, 0x0000     ; 3:10      xloop 139 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 139 index++
     ld  (idx139),BC     ; 4:20      xloop 139 save index
@@ -2470,11 +2299,8 @@ xexit139:               ;           xloop 139
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size158    ; 3:10      print Length of string to print
-    ld   DE, string158  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string157  ; 3:10      print_z   Address of null-terminated string157 == string158
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     jp   exit140       ; 3:10      1 1 ?rxdo 140
 do140:                  ;           1 1 ?rxdo 140 
@@ -2514,11 +2340,8 @@ exit140:                ; 1:4       rxloop 140
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size159    ; 3:10      print Length of string to print
-    ld   DE, string159  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string159  ; 3:10      print_z   Address of null-terminated string159
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, -1         ; 3:10      xdo(2,-1) 141
     ld  (idx141),BC     ; 4:20      xdo(2,-1) 141
@@ -2527,7 +2350,7 @@ xdo141:                 ;           xdo(2,-1) 141
     ex   DE, HL         ; 1:4       index i 141
     ld   HL, (idx141)   ; 3:16      index i 141 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .  
-idx141 EQU $+1          ;           xloop 141
+idx141 EQU $+1          ;[20:~71]   xloop 141 -1..2
     ld   BC, 0x0000     ; 3:10      xloop 141 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 141 index++
     ld  (idx141),BC     ; 4:20      xloop 141 save index
@@ -2542,11 +2365,8 @@ xexit141:               ;           xloop 141
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size160    ; 3:10      print Length of string to print
-    ld   DE, string160  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string159  ; 3:10      print_z   Address of null-terminated string159 == string160
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       2 -1 rxdo 142
     dec  HL             ; 1:6       2 -1 rxdo 142
@@ -2588,11 +2408,8 @@ exit142:                ; 1:4       rxloop 142
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size161    ; 3:10      print Length of string to print
-    ld   DE, string161  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
+    ld   BC, string161  ; 3:10      print_z   Address of null-terminated string161
+    call PRINT_STRING_Z ; 3:17      print_z  
 
     ld   BC, -5         ; 3:10      xdo(-1,-5) 143
     ld  (idx143),BC     ; 4:20      xdo(-1,-5) 143
@@ -2613,11 +2430,8 @@ xexit143:               ;           xloop 143
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size162    ; 3:10      print Length of string to print
-    ld   DE, string162  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string161  ; 3:10      print_z   Address of null-terminated string161 == string162
+    call PRINT_STRING_Z ; 3:17      print_z 
 
     exx                 ; 1:4       -1 -5 rxdo 144
     dec  HL             ; 1:6       -1 -5 rxdo 144
@@ -2662,11 +2476,8 @@ exit144:                ; 1:4       rxloop 144
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size163    ; 3:10      print Length of string to print
-    ld   DE, string163  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string163  ; 3:10      print_z   Address of null-terminated string163
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop)  
 
@@ -2677,7 +2488,7 @@ xdo145:                 ;           xdo(-1,1) 145
     ex   DE, HL         ; 1:4       index i 145
     ld   HL, (idx145)   ; 3:16      index i 145 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2692,15 +2503,12 @@ xdo145:                 ;           xdo(-1,1) 145
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else119    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size164    ; 3:10      print Length of string to print
-    ld   DE, string164  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string164
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave145      ;           xleave 145 
 else119  EQU $          ;           = endif
 endif119:  
-idx145 EQU $+1          ;           xloop 145
+idx145 EQU $+1          ;[20:~71]   xloop 145 1..-1
     ld   BC, 0x0000     ; 3:10      xloop 145 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 145 index++
     ld  (idx145),BC     ; 4:20      xloop 145 save index
@@ -2715,11 +2523,8 @@ xexit145:               ;           xloop 145
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size165    ; 3:10      print Length of string to print
-    ld   DE, string165  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string163  ; 3:10      print_z   Address of null-terminated string163 == string165
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
@@ -2740,7 +2545,7 @@ do146:                  ;           -1 1 rxdo 146
     ex   DE, HL         ; 1:4       index ri 146
     ex  (SP),HL         ; 1:19      index ri 146 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2755,11 +2560,8 @@ do146:                  ;           -1 1 rxdo 146
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else120    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size166    ; 3:10      print Length of string to print
-    ld   DE, string166  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string166
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 146
     inc  L              ; 1:4       rxleave 146
     jp  leave146        ;           rxleave 146 
@@ -2788,11 +2590,8 @@ exit146:                ; 1:4       rxloop 146
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size167    ; 3:10      print Length of string to print
-    ld   DE, string167  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string167  ; 3:10      print_z   Address of null-terminated string167
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop)  
 
@@ -2803,7 +2602,7 @@ xdo147:                 ;           xdo(0,0) 147
     ex   DE, HL         ; 1:4       index i 147
     ld   HL, (idx147)   ; 3:16      index i 147 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2818,15 +2617,12 @@ xdo147:                 ;           xdo(0,0) 147
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else121    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size168    ; 3:10      print Length of string to print
-    ld   DE, string168  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string168
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   xleave147      ;           xleave 147 
 else121  EQU $          ;           = endif
 endif121:  
-idx147 EQU $+1          ;           xloop 147
+idx147 EQU $+1          ;[20:~71]   xloop 147 0..0
     ld   BC, 0x0000     ; 3:10      xloop 147 idx always points to a 16-bit index
     inc  BC             ; 1:6       xloop 147 index++
     ld  (idx147),BC     ; 4:20      xloop 147 save index
@@ -2841,11 +2637,8 @@ xexit147:               ;           xloop 147
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
-    push DE             ; 1:11      print
-    ld   BC, size169    ; 3:10      print Length of string to print
-    ld   DE, string169  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
+    ld   BC, string167  ; 3:10      print_z   Address of null-terminated string167 == string169
+    call PRINT_STRING_Z ; 3:17      print_z 
     ld   BC, 5          ; 3:10      push2_store(5,_stop)
     ld   (_stop), BC    ; 4:20      push2_store(5,_stop) 
 
@@ -2866,7 +2659,7 @@ do148:                  ;           0 0 rxdo 148
     ex   DE, HL         ; 1:4       index ri 148
     ex  (SP),HL         ; 1:19      index ri 148 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2881,11 +2674,8 @@ do148:                  ;           0 0 rxdo 148
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else122    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size170    ; 3:10      print Length of string to print
-    ld   DE, string170  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string170
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rxleave 148
     inc  L              ; 1:4       rxleave 148
     jp  leave148        ;           rxleave 148 
@@ -2948,11 +2738,8 @@ _down1:                 ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size171    ; 3:10      print Length of string to print
-    ld   DE, string171  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string171  ; 3:10      print_z   Address of null-terminated string171
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 149 index
     push DE             ; 1:11      rdo 149 stop
@@ -2972,7 +2759,7 @@ _down1:                 ;
     pop  DE             ; 1:10      rdo 149 ( stop index -- ) R: ( -- stop index )
 do149:                  ;           rdo 149 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -2988,11 +2775,8 @@ do149:                  ;           rdo 149
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else123    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size172    ; 3:10      print Length of string to print
-    ld   DE, string172  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string172
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 149
     inc  L              ; 1:4       rleave 149
     inc  HL             ; 1:6       rleave 149
@@ -3061,11 +2845,8 @@ exit149:                ;           +rloop 149
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size173    ; 3:10      print Length of string to print
-    ld   DE, string173  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string173  ; 3:10      print_z   Address of null-terminated string173
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 150 index
     push DE             ; 1:11      rdo 150 stop
@@ -3085,7 +2866,7 @@ exit149:                ;           +rloop 149
     pop  DE             ; 1:10      rdo 150 ( stop index -- ) R: ( -- stop index )
 do150:                  ;           rdo 150 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3101,11 +2882,8 @@ do150:                  ;           rdo 150
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else124    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size174    ; 3:10      print Length of string to print
-    ld   DE, string174  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string174
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 150
     inc  L              ; 1:4       rleave 150
     inc  HL             ; 1:6       rleave 150
@@ -3163,11 +2941,8 @@ exit150 EQU $
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size175    ; 3:10      print Length of string to print
-    ld   DE, string175  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string175  ; 3:10      print_z   Address of null-terminated string175
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx151), HL    ; 3:16      do 151 save index
     dec  DE             ; 1:6       do 151 stop-1
@@ -3179,7 +2954,7 @@ exit150 EQU $
     pop  DE             ; 1:10      do 151 ( -- ) R: ( -- )
 do151:                  ;           do 151
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3195,11 +2970,8 @@ do151:                  ;           do 151
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else125    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size176    ; 3:10      print Length of string to print
-    ld   DE, string176  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string176
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave151       ;           leave 151 
 else125  EQU $          ;           = endif
 endif125: 
@@ -3246,11 +3018,8 @@ exit151:                ;           +loop 151
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size177    ; 3:10      print Length of string to print
-    ld   DE, string177  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string177  ; 3:10      print_z   Address of null-terminated string177
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx152), HL    ; 3:16      do 152 save index
     dec  DE             ; 1:6       do 152 stop-1
@@ -3262,7 +3031,7 @@ exit151:                ;           +loop 151
     pop  DE             ; 1:10      do 152 ( -- ) R: ( -- )
 do152:                  ;           do 152 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3278,11 +3047,8 @@ do152:                  ;           do 152
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else126    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size178    ; 3:10      print Length of string to print
-    ld   DE, string178  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string178
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave152       ;           leave 152 
 else126  EQU $          ;           = endif
 endif126: 
@@ -3320,16 +3086,13 @@ exit152:                ;           -1 +loop 152
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size179    ; 3:10      print Length of string to print
-    ld   DE, string179  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string179  ; 3:10      print_z   Address of null-terminated string179
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo153:                 ;           sdo 153 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3345,11 +3108,8 @@ sdo153:                 ;           sdo 153 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else127    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size180    ; 3:10      print Length of string to print
-    ld   DE, string180  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string180
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave153      ; 3:10      sleave 153 
 else127  EQU $          ;           = endif
 endif127: 
@@ -3391,16 +3151,13 @@ sleave153:              ;           +sloop 153
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size181    ; 3:10      print Length of string to print
-    ld   DE, string181  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string181  ; 3:10      print_z   Address of null-terminated string181
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo154:                 ;           sdo 154 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3416,11 +3173,8 @@ sdo154:                 ;           sdo 154 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else128    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size182    ; 3:10      print Length of string to print
-    ld   DE, string182  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string182
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave154      ; 3:10      sleave 154 
 else128  EQU $          ;           = endif
 endif128: 
@@ -3477,11 +3231,8 @@ _up1:                   ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size183    ; 3:10      print Length of string to print
-    ld   DE, string183  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string183  ; 3:10      print_z   Address of null-terminated string183
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 155 index
     push DE             ; 1:11      rdo 155 stop
@@ -3501,7 +3252,7 @@ _up1:                   ;
     pop  DE             ; 1:10      rdo 155 ( stop index -- ) R: ( -- stop index )
 do155:                  ;           rdo 155 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3517,11 +3268,8 @@ do155:                  ;           rdo 155
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else129    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size184    ; 3:10      print Length of string to print
-    ld   DE, string184  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string184
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 155
     inc  L              ; 1:4       rleave 155
     inc  HL             ; 1:6       rleave 155
@@ -3590,11 +3338,8 @@ exit155:                ;           +rloop 155
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size185    ; 3:10      print Length of string to print
-    ld   DE, string185  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string185  ; 3:10      print_z   Address of null-terminated string185
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 156 index
     push DE             ; 1:11      rdo 156 stop
@@ -3614,7 +3359,7 @@ exit155:                ;           +rloop 155
     pop  DE             ; 1:10      rdo 156 ( stop index -- ) R: ( -- stop index )
 do156:                  ;           rdo 156  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3630,11 +3375,8 @@ do156:                  ;           rdo 156
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else130    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size186    ; 3:10      print Length of string to print
-    ld   DE, string186  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string186
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 156
     inc  L              ; 1:4       rleave 156
     inc  HL             ; 1:6       rleave 156
@@ -3692,11 +3434,8 @@ exit156:                ;           rloop 156
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size187    ; 3:10      print Length of string to print
-    ld   DE, string187  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string183  ; 3:10      print_z   Address of null-terminated string183 == string187
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx157), HL    ; 3:16      do 157 save index
     dec  DE             ; 1:6       do 157 stop-1
@@ -3708,7 +3447,7 @@ exit156:                ;           rloop 156
     pop  DE             ; 1:10      do 157 ( -- ) R: ( -- )
 do157:                  ;           do 157 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3724,11 +3463,8 @@ do157:                  ;           do 157
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else131    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size188    ; 3:10      print Length of string to print
-    ld   DE, string188  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string188
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave157       ;           leave 157 
 else131  EQU $          ;           = endif
 endif131: 
@@ -3775,11 +3511,8 @@ exit157:                ;           +loop 157
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size189    ; 3:10      print Length of string to print
-    ld   DE, string189  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string185  ; 3:10      print_z   Address of null-terminated string185 == string189
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx158), HL    ; 3:16      do 158 save index
     dec  DE             ; 1:6       do 158 stop-1
@@ -3791,7 +3524,7 @@ exit157:                ;           +loop 157
     pop  DE             ; 1:10      do 158 ( -- ) R: ( -- )
 do158:                  ;           do 158 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3807,11 +3540,8 @@ do158:                  ;           do 158
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else132    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size190    ; 3:10      print Length of string to print
-    ld   DE, string190  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string190
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave158       ;           leave 158 
 else132  EQU $          ;           = endif
 endif132: 
@@ -3849,16 +3579,13 @@ exit158:                ;           loop 158
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size191    ; 3:10      print Length of string to print
-    ld   DE, string191  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string191  ; 3:10      print_z   Address of null-terminated string191
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo159:                 ;           sdo 159 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3874,11 +3601,8 @@ sdo159:                 ;           sdo 159 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else133    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size192    ; 3:10      print Length of string to print
-    ld   DE, string192  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string192
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave159      ; 3:10      sleave 159 
 else133  EQU $          ;           = endif
 endif133: 
@@ -3920,16 +3644,13 @@ sleave159:              ;           +sloop 159
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size193    ; 3:10      print Length of string to print
-    ld   DE, string193  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string193  ; 3:10      print_z   Address of null-terminated string193
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo160:                 ;           sdo 160 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -3945,11 +3666,8 @@ sdo160:                 ;           sdo 160 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else134    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size194    ; 3:10      print Length of string to print
-    ld   DE, string194  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string194
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave160      ; 3:10      sleave 160 
 else134  EQU $          ;           = endif
 endif134: 
@@ -4006,11 +3724,8 @@ _down2:                 ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size195    ; 3:10      print Length of string to print
-    ld   DE, string195  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string195  ; 3:10      print_z   Address of null-terminated string195
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 161 index
     push DE             ; 1:11      rdo 161 stop
@@ -4030,7 +3745,7 @@ _down2:                 ;
     pop  DE             ; 1:10      rdo 161 ( stop index -- ) R: ( -- stop index )
 do161:                  ;           rdo 161  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4046,11 +3761,8 @@ do161:                  ;           rdo 161
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else135    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size196    ; 3:10      print Length of string to print
-    ld   DE, string196  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string196
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 161
     inc  L              ; 1:4       rleave 161
     inc  HL             ; 1:6       rleave 161
@@ -4119,11 +3831,8 @@ exit161:                ;           +rloop 161
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size197    ; 3:10      print Length of string to print
-    ld   DE, string197  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string197  ; 3:10      print_z   Address of null-terminated string197
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 162 index
     push DE             ; 1:11      rdo 162 stop
@@ -4143,7 +3852,7 @@ exit161:                ;           +rloop 161
     pop  DE             ; 1:10      rdo 162 ( stop index -- ) R: ( -- stop index )
 do162:                  ;           rdo 162  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4159,11 +3868,8 @@ do162:                  ;           rdo 162
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else136    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size198    ; 3:10      print Length of string to print
-    ld   DE, string198  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string198
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 162
     inc  L              ; 1:4       rleave 162
     inc  HL             ; 1:6       rleave 162
@@ -4230,11 +3936,8 @@ exit162:                ;           -2 +rloop 162
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size199    ; 3:10      print Length of string to print
-    ld   DE, string199  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string195  ; 3:10      print_z   Address of null-terminated string195 == string199
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx163), HL    ; 3:16      do 163 save index
     dec  DE             ; 1:6       do 163 stop-1
@@ -4246,7 +3949,7 @@ exit162:                ;           -2 +rloop 162
     pop  DE             ; 1:10      do 163 ( -- ) R: ( -- )
 do163:                  ;           do 163 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4262,11 +3965,8 @@ do163:                  ;           do 163
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else137    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size200    ; 3:10      print Length of string to print
-    ld   DE, string200  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string200
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave163       ;           leave 163 
 else137  EQU $          ;           = endif
 endif137: 
@@ -4313,11 +4013,8 @@ exit163:                ;           +loop 163
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size201    ; 3:10      print Length of string to print
-    ld   DE, string201  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string197  ; 3:10      print_z   Address of null-terminated string197 == string201
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx164), HL    ; 3:16      do 164 save index
     dec  DE             ; 1:6       do 164 stop-1
@@ -4329,7 +4026,7 @@ exit163:                ;           +loop 163
     pop  DE             ; 1:10      do 164 ( -- ) R: ( -- )
 do164:                  ;           do 164 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4345,11 +4042,8 @@ do164:                  ;           do 164
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else138    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size202    ; 3:10      print Length of string to print
-    ld   DE, string202  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string202
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave164       ;           leave 164 
 else138  EQU $          ;           = endif
 endif138: 
@@ -4392,16 +4086,13 @@ exit164:                ;           -2 +loop 164
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size203    ; 3:10      print Length of string to print
-    ld   DE, string203  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string203  ; 3:10      print_z   Address of null-terminated string203
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo165:                 ;           sdo 165 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4417,11 +4108,8 @@ sdo165:                 ;           sdo 165 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else139    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size204    ; 3:10      print Length of string to print
-    ld   DE, string204  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string204
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave165      ; 3:10      sleave 165 
 else139  EQU $          ;           = endif
 endif139: 
@@ -4463,16 +4151,13 @@ sleave165:              ;           +sloop 165
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size205    ; 3:10      print Length of string to print
-    ld   DE, string205  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string205  ; 3:10      print_z   Address of null-terminated string205
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo166:                 ;           sdo 166 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4488,11 +4173,8 @@ sdo166:                 ;           sdo 166 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else140    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size206    ; 3:10      print Length of string to print
-    ld   DE, string206  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string206
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave166      ; 3:10      sleave 166 
 else140  EQU $          ;           = endif
 endif140: 
@@ -4549,11 +4231,8 @@ _up2:                   ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size207    ; 3:10      print Length of string to print
-    ld   DE, string207  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string207  ; 3:10      print_z   Address of null-terminated string207
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 167 index
     push DE             ; 1:11      rdo 167 stop
@@ -4573,7 +4252,7 @@ _up2:                   ;
     pop  DE             ; 1:10      rdo 167 ( stop index -- ) R: ( -- stop index )
 do167:                  ;           rdo 167  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4589,11 +4268,8 @@ do167:                  ;           rdo 167
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else141    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size208    ; 3:10      print Length of string to print
-    ld   DE, string208  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string208
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 167
     inc  L              ; 1:4       rleave 167
     inc  HL             ; 1:6       rleave 167
@@ -4662,11 +4338,8 @@ exit167:                ;           +rloop 167
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size209    ; 3:10      print Length of string to print
-    ld   DE, string209  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string209  ; 3:10      print_z   Address of null-terminated string209
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 168 index
     push DE             ; 1:11      rdo 168 stop
@@ -4686,7 +4359,7 @@ exit167:                ;           +rloop 167
     pop  DE             ; 1:10      rdo 168 ( stop index -- ) R: ( -- stop index )
 do168:                  ;           rdo 168  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4702,11 +4375,8 @@ do168:                  ;           rdo 168
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else142    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size210    ; 3:10      print Length of string to print
-    ld   DE, string210  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string210
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 168
     inc  L              ; 1:4       rleave 168
     inc  HL             ; 1:6       rleave 168
@@ -4767,11 +4437,8 @@ exit168:                ;           2 +rloop 168
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size211    ; 3:10      print Length of string to print
-    ld   DE, string211  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string207  ; 3:10      print_z   Address of null-terminated string207 == string211
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx169), HL    ; 3:16      do 169 save index
     dec  DE             ; 1:6       do 169 stop-1
@@ -4783,7 +4450,7 @@ exit168:                ;           2 +rloop 168
     pop  DE             ; 1:10      do 169 ( -- ) R: ( -- )
 do169:                  ;           do 169 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4799,11 +4466,8 @@ do169:                  ;           do 169
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else143    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size212    ; 3:10      print Length of string to print
-    ld   DE, string212  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string212
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave169       ;           leave 169 
 else143  EQU $          ;           = endif
 endif143: 
@@ -4850,11 +4514,8 @@ exit169:                ;           +loop 169
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size213    ; 3:10      print Length of string to print
-    ld   DE, string213  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string209  ; 3:10      print_z   Address of null-terminated string209 == string213
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx170), HL    ; 3:16      do 170 save index
     dec  DE             ; 1:6       do 170 stop-1
@@ -4866,7 +4527,7 @@ exit169:                ;           +loop 169
     pop  DE             ; 1:10      do 170 ( -- ) R: ( -- )
 do170:                  ;           do 170 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4882,11 +4543,8 @@ do170:                  ;           do 170
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else144    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size214    ; 3:10      print Length of string to print
-    ld   DE, string214  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string214
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave170       ;           leave 170 
 else144  EQU $          ;           = endif
 endif144: 
@@ -4927,16 +4585,13 @@ exit170:                ;           2 +loop 170
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size215    ; 3:10      print Length of string to print
-    ld   DE, string215  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string215  ; 3:10      print_z   Address of null-terminated string215
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo171:                 ;           sdo 171 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -4952,11 +4607,8 @@ sdo171:                 ;           sdo 171 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else145    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size216    ; 3:10      print Length of string to print
-    ld   DE, string216  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string216
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave171      ; 3:10      sleave 171 
 else145  EQU $          ;           = endif
 endif145: 
@@ -4998,16 +4650,13 @@ sleave171:              ;           +sloop 171
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size217    ; 3:10      print Length of string to print
-    ld   DE, string217  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string217  ; 3:10      print_z   Address of null-terminated string217
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo172:                 ;           sdo 172 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5023,11 +4672,8 @@ sdo172:                 ;           sdo 172 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else146    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size218    ; 3:10      print Length of string to print
-    ld   DE, string218  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string218
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave172      ; 3:10      sleave 172 
 else146  EQU $          ;           = endif
 endif146: 
@@ -5088,11 +4734,8 @@ _down3:                 ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size219    ; 3:10      print Length of string to print
-    ld   DE, string219  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string219  ; 3:10      print_z   Address of null-terminated string219
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 173 index
     push DE             ; 1:11      rdo 173 stop
@@ -5112,7 +4755,7 @@ _down3:                 ;
     pop  DE             ; 1:10      rdo 173 ( stop index -- ) R: ( -- stop index )
 do173:                  ;           rdo 173  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5128,11 +4771,8 @@ do173:                  ;           rdo 173
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else147    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size220    ; 3:10      print Length of string to print
-    ld   DE, string220  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string220
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 173
     inc  L              ; 1:4       rleave 173
     inc  HL             ; 1:6       rleave 173
@@ -5201,11 +4841,8 @@ exit173:                ;           +rloop 173
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size221    ; 3:10      print Length of string to print
-    ld   DE, string221  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string221  ; 3:10      print_z   Address of null-terminated string221
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 174 index
     push DE             ; 1:11      rdo 174 stop
@@ -5225,7 +4862,7 @@ exit173:                ;           +rloop 173
     pop  DE             ; 1:10      rdo 174 ( stop index -- ) R: ( -- stop index )
 do174:                  ;           rdo 174  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5241,11 +4878,8 @@ do174:                  ;           rdo 174
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else148    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size222    ; 3:10      print Length of string to print
-    ld   DE, string222  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string222
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 174
     inc  L              ; 1:4       rleave 174
     inc  HL             ; 1:6       rleave 174
@@ -5312,11 +4946,8 @@ exit174:                ;           -3 +rloop 174
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size223    ; 3:10      print Length of string to print
-    ld   DE, string223  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string219  ; 3:10      print_z   Address of null-terminated string219 == string223
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx175), HL    ; 3:16      do 175 save index
     dec  DE             ; 1:6       do 175 stop-1
@@ -5328,7 +4959,7 @@ exit174:                ;           -3 +rloop 174
     pop  DE             ; 1:10      do 175 ( -- ) R: ( -- )
 do175:                  ;           do 175 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5344,11 +4975,8 @@ do175:                  ;           do 175
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else149    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size224    ; 3:10      print Length of string to print
-    ld   DE, string224  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string224
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave175       ;           leave 175 
 else149  EQU $          ;           = endif
 endif149: 
@@ -5395,11 +5023,8 @@ exit175:                ;           +loop 175
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size225    ; 3:10      print Length of string to print
-    ld   DE, string225  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string221  ; 3:10      print_z   Address of null-terminated string221 == string225
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx176), HL    ; 3:16      do 176 save index
     dec  DE             ; 1:6       do 176 stop-1
@@ -5411,7 +5036,7 @@ exit175:                ;           +loop 175
     pop  DE             ; 1:10      do 176 ( -- ) R: ( -- )
 do176:                  ;           do 176 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5427,11 +5052,8 @@ do176:                  ;           do 176
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else150    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size226    ; 3:10      print Length of string to print
-    ld   DE, string226  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string226
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave176       ;           leave 176 
 else150  EQU $          ;           = endif
 endif150: 
@@ -5474,16 +5096,13 @@ exit176:                ;           -3 +loop 176
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size227    ; 3:10      print Length of string to print
-    ld   DE, string227  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string227  ; 3:10      print_z   Address of null-terminated string227
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo177:                 ;           sdo 177 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5499,11 +5118,8 @@ sdo177:                 ;           sdo 177 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else151    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size228    ; 3:10      print Length of string to print
-    ld   DE, string228  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string228
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave177      ; 3:10      sleave 177 
 else151  EQU $          ;           = endif
 endif151: 
@@ -5545,16 +5161,13 @@ sleave177:              ;           +sloop 177
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size229    ; 3:10      print Length of string to print
-    ld   DE, string229  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string229  ; 3:10      print_z   Address of null-terminated string229
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo178:                 ;           sdo 178 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5570,11 +5183,8 @@ sdo178:                 ;           sdo 178 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else152    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size230    ; 3:10      print Length of string to print
-    ld   DE, string230  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string230
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave178      ; 3:10      sleave 178 
 else152  EQU $          ;           = endif
 endif152: 
@@ -5631,11 +5241,8 @@ _up3:                   ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size231    ; 3:10      print Length of string to print
-    ld   DE, string231  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string231  ; 3:10      print_z   Address of null-terminated string231
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 179 index
     push DE             ; 1:11      rdo 179 stop
@@ -5655,7 +5262,7 @@ _up3:                   ;
     pop  DE             ; 1:10      rdo 179 ( stop index -- ) R: ( -- stop index )
 do179:                  ;           rdo 179  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5671,11 +5278,8 @@ do179:                  ;           rdo 179
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else153    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size232    ; 3:10      print Length of string to print
-    ld   DE, string232  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string232
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 179
     inc  L              ; 1:4       rleave 179
     inc  HL             ; 1:6       rleave 179
@@ -5744,11 +5348,8 @@ exit179:                ;           +rloop 179
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size233    ; 3:10      print Length of string to print
-    ld   DE, string233  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string233  ; 3:10      print_z   Address of null-terminated string233
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 180 index
     push DE             ; 1:11      rdo 180 stop
@@ -5768,7 +5369,7 @@ exit179:                ;           +rloop 179
     pop  DE             ; 1:10      rdo 180 ( stop index -- ) R: ( -- stop index )
 do180:                  ;           rdo 180  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5784,11 +5385,8 @@ do180:                  ;           rdo 180
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else154    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size234    ; 3:10      print Length of string to print
-    ld   DE, string234  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string234
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 180
     inc  L              ; 1:4       rleave 180
     inc  HL             ; 1:6       rleave 180
@@ -5855,11 +5453,8 @@ exit180:                ;           3 +rloop 180
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size235    ; 3:10      print Length of string to print
-    ld   DE, string235  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string231  ; 3:10      print_z   Address of null-terminated string231 == string235
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx181), HL    ; 3:16      do 181 save index
     dec  DE             ; 1:6       do 181 stop-1
@@ -5871,7 +5466,7 @@ exit180:                ;           3 +rloop 180
     pop  DE             ; 1:10      do 181 ( -- ) R: ( -- )
 do181:                  ;           do 181 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5887,11 +5482,8 @@ do181:                  ;           do 181
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else155    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size236    ; 3:10      print Length of string to print
-    ld   DE, string236  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string236
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave181       ;           leave 181 
 else155  EQU $          ;           = endif
 endif155: 
@@ -5938,11 +5530,8 @@ exit181:                ;           +loop 181
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size237    ; 3:10      print Length of string to print
-    ld   DE, string237  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string233  ; 3:10      print_z   Address of null-terminated string233 == string237
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx182), HL    ; 3:16      do 182 save index
     dec  DE             ; 1:6       do 182 stop-1
@@ -5954,7 +5543,7 @@ exit181:                ;           +loop 181
     pop  DE             ; 1:10      do 182 ( -- ) R: ( -- )
 do182:                  ;           do 182 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -5970,11 +5559,8 @@ do182:                  ;           do 182
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else156    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size238    ; 3:10      print Length of string to print
-    ld   DE, string238  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string238
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave182       ;           leave 182 
 else156  EQU $          ;           = endif
 endif156: 
@@ -6017,16 +5603,13 @@ exit182:                ;           3 +loop 182
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size239    ; 3:10      print Length of string to print
-    ld   DE, string239  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string239  ; 3:10      print_z   Address of null-terminated string239
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo183:                 ;           sdo 183 ( stop index -- stop index ) 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6042,11 +5625,8 @@ sdo183:                 ;           sdo 183 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else157    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size240    ; 3:10      print Length of string to print
-    ld   DE, string240  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string240
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave183      ; 3:10      sleave 183 
 else157  EQU $          ;           = endif
 endif157: 
@@ -6088,16 +5668,13 @@ sleave183:              ;           +sloop 183
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size241    ; 3:10      print Length of string to print
-    ld   DE, string241  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string241  ; 3:10      print_z   Address of null-terminated string241
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo184:                 ;           sdo 184 ( stop index -- stop index )  
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6113,11 +5690,8 @@ sdo184:                 ;           sdo 184 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else158    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size242    ; 3:10      print Length of string to print
-    ld   DE, string242  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string242
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave184      ; 3:10      sleave 184 
 else158  EQU $          ;           = endif
 endif158: 
@@ -6169,11 +5743,8 @@ _smycka:                ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size243    ; 3:10      print Length of string to print
-    ld   DE, string243  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string243  ; 3:10      print_z   Address of null-terminated string243
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      rdo 185 index
     push DE             ; 1:11      rdo 185 stop
@@ -6203,7 +5774,7 @@ do185:                  ;           rdo 185
     ex  (SP),HL         ; 1:19      index ri 185 
     call PRINT_S16      ; 3:17      . 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6219,11 +5790,8 @@ do185:                  ;           rdo 185
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else159    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size244    ; 3:10      print Length of string to print
-    ld   DE, string244  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string244
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 185
     inc  L              ; 1:4       rleave 185
     inc  HL             ; 1:6       rleave 185
@@ -6269,11 +5837,8 @@ exit185:                ;           rloop 185
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size245    ; 3:10      print Length of string to print
-    ld   DE, string245  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string245  ; 3:10      print_z   Address of null-terminated string245
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx186), HL    ; 3:16      do 186 save index
     dec  DE             ; 1:6       do 186 stop-1
@@ -6289,7 +5854,7 @@ do186:                  ;           do 186
     ld   HL, (idx186)   ; 3:16      index i 186 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6305,11 +5870,8 @@ do186:                  ;           do 186
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else160    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size246    ; 3:10      print Length of string to print
-    ld   DE, string246  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string246
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave186       ;           leave 186 
 else160  EQU $          ;           = endif
 endif160: 
@@ -6341,11 +5903,8 @@ exit186:                ;           loop 186
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size247    ; 3:10      print Length of string to print
-    ld   DE, string247  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string247  ; 3:10      print_z   Address of null-terminated string247
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo187:                 ;           sdo 187 ( stop index -- stop index ) 
@@ -6355,7 +5914,7 @@ sdo187:                 ;           sdo 187 ( stop index -- stop index )
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      . 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6371,11 +5930,8 @@ sdo187:                 ;           sdo 187 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else161    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size248    ; 3:10      print Length of string to print
-    ld   DE, string248  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string248
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave187      ; 3:10      sleave 187 
 else161  EQU $          ;           = endif
 endif161: 
@@ -6419,11 +5975,8 @@ _otaznik:               ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size249    ; 3:10      print Length of string to print
-    ld   DE, string249  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string249  ; 3:10      print_z   Address of null-terminated string249
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      ?rdo 188 index
     or    A             ; 1:4       ?rdo 188
@@ -6460,7 +6013,7 @@ do188:                  ;           ?rdo 188
     ex  (SP),HL         ; 1:19      index ri 188 
     call PRINT_S16      ; 3:17      . 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6476,11 +6029,8 @@ do188:                  ;           ?rdo 188
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else162    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size250    ; 3:10      print Length of string to print
-    ld   DE, string250  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string250
+    call PRINT_STRING_Z ; 3:17      print_z
     exx                 ; 1:4       rleave 188
     inc  L              ; 1:4       rleave 188
     inc  HL             ; 1:6       rleave 188
@@ -6526,11 +6076,8 @@ exit188:                ;           rloop 188
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size251    ; 3:10      print Length of string to print
-    ld   DE, string251  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string251  ; 3:10      print_z   Address of null-terminated string251
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx189), HL    ; 3:16      ?do 189 save index
     or    A             ; 1:4       ?do 189
@@ -6549,7 +6096,7 @@ do189:                  ;           ?do 189
     ld   HL, (idx189)   ; 3:16      index i 189 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      . 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6565,11 +6112,8 @@ do189:                  ;           ?do 189
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else163    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size252    ; 3:10      print Length of string to print
-    ld   DE, string252  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string252
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave189       ;           leave 189 
 else163  EQU $          ;           = endif
 endif163: 
@@ -6601,11 +6145,8 @@ exit189:                ;           loop 189
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      print
-    ld   BC, size253    ; 3:10      print Length of string to print
-    ld   DE, string253  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string253  ; 3:10      print_z   Address of null-terminated string253
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
     push HL             ; 1:10      ?sdo 190
@@ -6620,7 +6161,7 @@ sdo190:                 ;           ?sdo 190 ( stop index -- stop index )
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      . 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6636,11 +6177,8 @@ sdo190:                 ;           ?sdo 190 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else164    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size254    ; 3:10      print Length of string to print
-    ld   DE, string254  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string254
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave190      ; 3:10      sleave 190 
 else164  EQU $          ;           = endif
 endif164: 
@@ -6685,15 +6223,12 @@ _3loop:                 ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      _krok @ push(_krok) fetch 
+    push DE             ; 1:11      _krok @ push(_krok) fetch
     ex   DE, HL         ; 1:4       _krok @ push(_krok) fetch
     ld   HL,(_krok)     ; 3:16      _krok @ push(_krok) fetch 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      print
-    ld   BC, size255    ; 3:10      print Length of string to print
-    ld   DE, string255  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string255  ; 3:10      print_z   Address of null-terminated string255
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld  (idx191), HL    ; 3:16      do 191 save index
     dec  DE             ; 1:6       do 191 stop-1
@@ -6705,7 +6240,7 @@ _3loop:                 ;
     pop  DE             ; 1:10      do 191 ( -- ) R: ( -- )
 do191:                  ;           do 191 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6721,11 +6256,8 @@ do191:                  ;           do 191
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else165    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size256    ; 3:10      print Length of string to print
-    ld   DE, string256  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string256
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   leave191       ;           leave 191 
 else165  EQU $          ;           = endif
 endif165: 
@@ -6735,7 +6267,7 @@ endif165:
     ld   HL, (idx191)   ; 3:16      index i 191 idx always points to a 16-bit index 
     call PRINT_S16      ; 3:17      .
         
-    push DE             ; 1:11      _krok @ push(_krok) fetch 
+    push DE             ; 1:11      _krok @ push(_krok) fetch
     ex   DE, HL         ; 1:4       _krok @ push(_krok) fetch
     ld   HL,(_krok)     ; 3:16      _krok @ push(_krok) fetch
     
@@ -6788,20 +6320,17 @@ _3sloop:                ;
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    push DE             ; 1:11      _krok @ push(_krok) fetch 
+    push DE             ; 1:11      _krok @ push(_krok) fetch
     ex   DE, HL         ; 1:4       _krok @ push(_krok) fetch
     ld   HL,(_krok)     ; 3:16      _krok @ push(_krok) fetch 
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      print
-    ld   BC, size257    ; 3:10      print Length of string to print
-    ld   DE, string257  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string257  ; 3:10      print_z   Address of null-terminated string257
+    call PRINT_STRING_Z ; 3:17      print_z
     
 
 sdo192:                 ;           sdo 192 ( stop index -- stop index ) 
         
-    push DE             ; 1:11      _stop @ push(_stop) fetch 
+    push DE             ; 1:11      _stop @ push(_stop) fetch
     ex   DE, HL         ; 1:4       _stop @ push(_stop) fetch
     ld   HL,(_stop)     ; 3:16      _stop @ push(_stop) fetch 
     dec  HL             ; 1:6       1- 
@@ -6817,11 +6346,8 @@ sdo192:                 ;           sdo 192 ( stop index -- stop index )
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
     jp   nz, else166    ; 3:10      0= if 
-    push DE             ; 1:11      print
-    ld   BC, size258    ; 3:10      print Length of string to print
-    ld   DE, string258  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string258
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   sleave192      ; 3:10      sleave 192 
 else166  EQU $          ;           = endif
 endif166: 
@@ -6832,7 +6358,7 @@ endif166:
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call PRINT_S16      ; 3:17      .
         
-    push DE             ; 1:11      _krok @ push(_krok) fetch 
+    push DE             ; 1:11      _krok @ push(_krok) fetch
     ex   DE, HL         ; 1:4       _krok @ push(_krok) fetch
     ld   HL,(_krok)     ; 3:16      _krok @ push(_krok) fetch
     
@@ -6867,7 +6393,7 @@ PRINT_S16:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
     jr   nc, PRINT_U16  ; 2:7/12
-    
+
     xor   A             ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    L, A          ; 1:4       neg
@@ -6878,8 +6404,8 @@ PRINT_S16:
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, ** 
-    
+    db 0x01             ; 3:10      ld   BC, **
+
     ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
@@ -6905,7 +6431,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -6916,499 +6442,210 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-
-
+; Print C-style stringZ
+; In: BC = addr
+; Out: BC = addr zero
+    rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    inc  BC             ; 1:6       print_string_z
+PRINT_STRING_Z:         ;           print_string_z
+    ld    A,(BC)        ; 1:7       print_string_z
+    or    A             ; 1:4       print_string_z
+    jp   nz, $-4        ; 3:10      print_string_z
+    ret                 ; 1:10      print_string_z
 VARIABLE_SECTION:
 
 _stop: dw 0x0000
 _krok: dw 0x0000
+
 STRING_SECTION:
-string258:
-db ".."
-size258 EQU $ - string258
 string257:
-db "s:"
+db "s:", 0x00
 size257 EQU $ - string257
-string256:
-db ".."
-size256 EQU $ - string256
 string255:
-db "d:"
+db "d:", 0x00
 size255 EQU $ - string255
-string254:
-db ".."
-size254 EQU $ - string254
 string253:
-db "?s    l:"
+db "?s    l:", 0x00
 size253 EQU $ - string253
-string252:
-db ".."
-size252 EQU $ - string252
 string251:
-db "?d    l:"
+db "?d    l:", 0x00
 size251 EQU $ - string251
-string250:
-db ".."
-size250 EQU $ - string250
 string249:
-db "?r    l:"
+db "?r    l:", 0x00
 size249 EQU $ - string249
-string248:
-db ".."
-size248 EQU $ - string248
 string247:
-db " s    l:"
+db " s    l:", 0x00
 size247 EQU $ - string247
-string246:
-db ".."
-size246 EQU $ - string246
 string245:
-db " d    l:"
+db " d    l:", 0x00
 size245 EQU $ - string245
-string244:
-db ".."
-size244 EQU $ - string244
 string243:
-db " r    l:"
+db " r    l:", 0x00
 size243 EQU $ - string243
-string242:
-db ".."
-size242 EQU $ - string242
 string241:
-db " s 3_+l:"
+db " s 3_+l:", 0x00
 size241 EQU $ - string241
-string240:
-db ".."
-size240 EQU $ - string240
 string239:
-db " s 3 +l:"
+db " s 3 +l:", 0x00
 size239 EQU $ - string239
-string238:
-db ".."
-size238 EQU $ - string238
-string237:
-db " d 3_+l:"
-size237 EQU $ - string237
-string236:
-db ".."
-size236 EQU $ - string236
-string235:
-db " d 3 +l:"
-size235 EQU $ - string235
-string234:
-db ".."
-size234 EQU $ - string234
 string233:
-db " d 3_+l:"
+db " d 3_+l:", 0x00
 size233 EQU $ - string233
-string232:
-db ".."
-size232 EQU $ - string232
 string231:
-db " d 3 +l:"
+db " d 3 +l:", 0x00
 size231 EQU $ - string231
-string230:
-db ".."
-size230 EQU $ - string230
 string229:
-db " s-3_+l:"
+db " s-3_+l:", 0x00
 size229 EQU $ - string229
-string228:
-db ".."
-size228 EQU $ - string228
 string227:
-db " s-3 +l:"
+db " s-3 +l:", 0x00
 size227 EQU $ - string227
-string226:
-db ".."
-size226 EQU $ - string226
-string225:
-db " d-3_+l:"
-size225 EQU $ - string225
-string224:
-db ".."
-size224 EQU $ - string224
-string223:
-db " d-3 +l:"
-size223 EQU $ - string223
-string222:
-db ".."
-size222 EQU $ - string222
 string221:
-db " d-3_+l:"
+db " d-3_+l:", 0x00
 size221 EQU $ - string221
-string220:
-db ".."
-size220 EQU $ - string220
 string219:
-db " d-3 +l:"
+db " d-3 +l:", 0x00
 size219 EQU $ - string219
-string218:
-db ".."
-size218 EQU $ - string218
 string217:
-db " s 2_+l:"
+db " s 2_+l:", 0x00
 size217 EQU $ - string217
-string216:
-db ".."
-size216 EQU $ - string216
 string215:
-db " s 2 +l:"
+db " s 2 +l:", 0x00
 size215 EQU $ - string215
-string214:
-db ".."
-size214 EQU $ - string214
-string213:
-db " d 2_+l:"
-size213 EQU $ - string213
-string212:
-db ".."
-size212 EQU $ - string212
-string211:
-db " d 2 +l:"
-size211 EQU $ - string211
-string210:
-db ".."
-size210 EQU $ - string210
 string209:
-db " d 2_+l:"
+db " d 2_+l:", 0x00
 size209 EQU $ - string209
-string208:
-db ".."
-size208 EQU $ - string208
 string207:
-db " d 2 +l:"
+db " d 2 +l:", 0x00
 size207 EQU $ - string207
-string206:
-db ".."
-size206 EQU $ - string206
 string205:
-db " s-2_+l:"
+db " s-2_+l:", 0x00
 size205 EQU $ - string205
-string204:
-db ".."
-size204 EQU $ - string204
 string203:
-db " s-2 +l:"
+db " s-2 +l:", 0x00
 size203 EQU $ - string203
-string202:
-db ".."
-size202 EQU $ - string202
-string201:
-db " d-2_+l:"
-size201 EQU $ - string201
-string200:
-db ".."
-size200 EQU $ - string200
-string199:
-db " d-2 +l:"
-size199 EQU $ - string199
-string198:
-db ".."
-size198 EQU $ - string198
 string197:
-db " d-2_+l:"
+db " d-2_+l:", 0x00
 size197 EQU $ - string197
-string196:
-db ".."
-size196 EQU $ - string196
 string195:
-db " d-2 +l:"
+db " d-2 +l:", 0x00
 size195 EQU $ - string195
-string194:
-db ".."
-size194 EQU $ - string194
 string193:
-db " s 1_+l:"
+db " s 1_+l:", 0x00
 size193 EQU $ - string193
-string192:
-db ".."
-size192 EQU $ - string192
 string191:
-db " s 1 +l:"
+db " s 1 +l:", 0x00
 size191 EQU $ - string191
-string190:
-db ".."
-size190 EQU $ - string190
-string189:
-db " d 1_+l:"
-size189 EQU $ - string189
-string188:
-db ".."
-size188 EQU $ - string188
-string187:
-db " d 1 +l:"
-size187 EQU $ - string187
-string186:
-db ".."
-size186 EQU $ - string186
 string185:
-db " d 1_+l:"
+db " d 1_+l:", 0x00
 size185 EQU $ - string185
-string184:
-db ".."
-size184 EQU $ - string184
 string183:
-db " d 1 +l:"
+db " d 1 +l:", 0x00
 size183 EQU $ - string183
-string182:
-db ".."
-size182 EQU $ - string182
 string181:
-db " s-1_+l:"
+db " s-1_+l:", 0x00
 size181 EQU $ - string181
-string180:
-db ".."
-size180 EQU $ - string180
 string179:
-db " s-1 +l:"
+db " s-1 +l:", 0x00
 size179 EQU $ - string179
-string178:
-db ".."
-size178 EQU $ - string178
 string177:
-db " d-1_+l:"
+db " d-1_+l:", 0x00
 size177 EQU $ - string177
-string176:
-db ".."
-size176 EQU $ - string176
 string175:
-db " d-1 +l:"
+db " d-1 +l:", 0x00
 size175 EQU $ - string175
-string174:
-db ".."
-size174 EQU $ - string174
 string173:
-db " r-1_+l:"
+db " r-1_+l:", 0x00
 size173 EQU $ - string173
-string172:
-db ".."
-size172 EQU $ - string172
 string171:
-db " r-1 +l:"
+db " r-1 +l:", 0x00
 size171 EQU $ - string171
-string170:
-db ".."
-size170 EQU $ - string170
-string169:
-db " 0  0 x:"
-size169 EQU $ - string169
-string168:
-db ".."
-size168 EQU $ - string168
 string167:
-db " 0  0 x:"
+db " 0  0 x:", 0x00
 size167 EQU $ - string167
-string166:
-db ".."
-size166 EQU $ - string166
-string165:
-db "-1  1 x:"
-size165 EQU $ - string165
-string164:
-db ".."
-size164 EQU $ - string164
 string163:
-db "-1  1 x:"
+db "-1  1 x:", 0x00
 size163 EQU $ - string163
-string162:
-db "-1 -5 x:"
-size162 EQU $ - string162
 string161:
-db "-1 -5 x:"
+db "-1 -5 x:", 0x00
 size161 EQU $ - string161
-string160:
-db " 2 -1 x:"
-size160 EQU $ - string160
 string159:
-db " 2 -1 x:"
+db " 2 -1 x:", 0x00
 size159 EQU $ - string159
-string158:
-db " 1  1 ?x:"
-size158 EQU $ - string158
 string157:
-db " 1  1 ?x:"
+db " 1  1 ?x:", 0x00
 size157 EQU $ - string157
-string156:
-db "-1 -1 ?x:"
-size156 EQU $ - string156
 string155:
-db "-1 -1 ?x:"
+db "-1 -1 ?x:", 0x00
 size155 EQU $ - string155
-string154:
-db ".."
-size154 EQU $ - string154
-string153:
-db " 2 -2 -4 x:"
-size153 EQU $ - string153
-string152:
-db ".."
-size152 EQU $ - string152
 string151:
-db " 2 -2 -4 x:"
+db " 2 -2 -4 x:", 0x00
 size151 EQU $ - string151
-string150:
-db ".."
-size150 EQU $ - string150
-string149:
-db " 2 -2 -2 x:"
-size149 EQU $ - string149
-string148:
-db ".."
-size148 EQU $ - string148
 string147:
-db " 2 -2 -2 x:"
+db " 2 -2 -2 x:", 0x00
 size147 EQU $ - string147
-string146:
-db ".."
-size146 EQU $ - string146
-string145:
-db " 2 -2 -1 x:"
-size145 EQU $ - string145
-string144:
-db ".."
-size144 EQU $ - string144
 string143:
-db " 2 -2 -1 x:"
+db " 2 -2 -1 x:", 0x00
 size143 EQU $ - string143
-string142:
-db ".."
-size142 EQU $ - string142
-string141:
-db " 0  0  4 x:"
-size141 EQU $ - string141
-string140:
-db ".."
-size140 EQU $ - string140
 string139:
-db " 0  0  4 x:"
+db " 0  0  4 x:", 0x00
 size139 EQU $ - string139
-string138:
-db ".."
-size138 EQU $ - string138
-string137:
-db " 0  0  2 x:"
-size137 EQU $ - string137
-string136:
-db ".."
-size136 EQU $ - string136
 string135:
-db " 0  0  2 x:"
+db " 0  0  2 x:", 0x00
 size135 EQU $ - string135
-string134:
-db ".."
-size134 EQU $ - string134
-string133:
-db " 0  0  1 x:"
-size133 EQU $ - string133
-string132:
-db ".."
-size132 EQU $ - string132
 string131:
-db " 0  0  1 x:"
+db " 0  0  1 x:", 0x00
 size131 EQU $ - string131
-string130:
-db ".."
-size130 EQU $ - string130
-string129:
-db "-2  2  4 x:"
-size129 EQU $ - string129
-string128:
-db ".."
-size128 EQU $ - string128
 string127:
-db "-2  2  4 x:"
+db "-2  2  4 x:", 0x00
 size127 EQU $ - string127
-string126:
-db ".."
-size126 EQU $ - string126
-string125:
-db "-2  2  2 x:"
-size125 EQU $ - string125
-string124:
-db ".."
-size124 EQU $ - string124
 string123:
-db "-2  2  2 x:"
+db "-2  2  2 x:", 0x00
 size123 EQU $ - string123
-string122:
-db ".."
-size122 EQU $ - string122
-string121:
-db "-2  2  1 x:"
-size121 EQU $ - string121
 string120:
-db ".."
+db "..", 0x00
 size120 EQU $ - string120
 string119:
-db "-2  2  1 x:"
+db "-2  2  1 x:", 0x00
 size119 EQU $ - string119
-string118:
-db " 2 -2  4 x:"
-size118 EQU $ - string118
 string117:
-db " 2 -2  4 x:"
+db " 2 -2  4 x:", 0x00
 size117 EQU $ - string117
-string116:
-db " 2 -2  2 x:"
-size116 EQU $ - string116
 string115:
-db " 2 -2  2 x:"
+db " 2 -2  2 x:", 0x00
 size115 EQU $ - string115
-string114:
-db " 2 -2  1 x:"
-size114 EQU $ - string114
 string113:
-db " 2 -2  1 x:"
+db " 2 -2  1 x:", 0x00
 size113 EQU $ - string113
-string112:
-db " 0  0 -4 x:"
-size112 EQU $ - string112
 string111:
-db " 0  0 -4 x:"
+db " 0  0 -4 x:", 0x00
 size111 EQU $ - string111
-string110:
-db " 0  0 -2 x:"
-size110 EQU $ - string110
 string109:
-db " 0  0 -2 x:"
+db " 0  0 -2 x:", 0x00
 size109 EQU $ - string109
-string108:
-db " 0  0 -1 x:"
-size108 EQU $ - string108
 string107:
-db " 0  0 -1 x:"
+db " 0  0 -1 x:", 0x00
 size107 EQU $ - string107
-string106:
-db "-2  2 -4 x:"
-size106 EQU $ - string106
 string105:
-db "-2  2 -4 x:"
+db "-2  2 -4 x:", 0x00
 size105 EQU $ - string105
-string104:
-db "-2  2 -2 x:"
-size104 EQU $ - string104
 string103:
-db "-2  2 -2 x:"
+db "-2  2 -2 x:", 0x00
 size103 EQU $ - string103
-string102:
-db "-2  2 -1 x:"
-size102 EQU $ - string102
 string101:
-db "-2  2 -1 x:"
+db "-2  2 -1 x:", 0x00
 size101 EQU $ - string101
-

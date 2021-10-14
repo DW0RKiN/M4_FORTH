@@ -10,6 +10,76 @@ ORG 0x8000
     exx                 ; 1:4
 
 
+    ld   BC, 7          ; 3:10      7 for 101
+for101:                 ;           7 for 101
+    ld  (idx101),BC     ; 4:20      7 for 101 save index
+
+    push DE             ; 1:11      index i 101
+    ex   DE, HL         ; 1:4       index i 101
+    ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index
+
+;   v---v---v lo_case 101 v---v---v
+    ld    A, L          ; 1:4       lo_case 101
+    
+                        ;[5:17]     lo_of(1) 1 from lo_case 101
+    cp   low 1          ; 2:7       lo_of(1) 1 from lo_case 101
+    jp   nz, endof101001; 3:10      lo_of(1) 1 from lo_case 101
+ 
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endcase101     ; 3:10      lo_endof 1 from lo_case 101
+endof101001:            ;           lo_endof 1 from lo_case 101
+    
+                        ;[5:17]     lo_of(2) 2 from lo_case 101
+    cp   low 2          ; 2:7       lo_of(2) 2 from lo_case 101
+    jp   nz, endof101002; 3:10      lo_of(2) 2 from lo_case 101
+ 
+    ld   BC, string102  ; 3:10      print_z   Address of null-terminated string102
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endcase101     ; 3:10      lo_endof 2 from lo_case 101
+endof101002:            ;           lo_endof 2 from lo_case 101
+    
+                        ;[8:28]     lo_within_of(3) 3 from lo_within_case 101   ( a -- flag=(3<=a<6) )
+    sub  low 3          ; 2:7       lo_within_of(3) 3 from lo_within_case 101   A = a-(3)
+    sub  low (6)-(3)    ; 2:7       lo_within_of(3) 3 from lo_within_case 101
+    ld    A, L          ; 1:4       lo_within_of(3) 3 from lo_within_case 101
+    jp   nc, endof101003; 3:10      lo_within_of(3) 3 from lo_within_case 101 
+    ld   BC, string103  ; 3:10      print_z   Address of null-terminated string103
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endcase101     ; 3:10      lo_endof 3 from lo_case 101
+endof101003:            ;           lo_endof 3 from lo_case 101
+    
+                        ;[5:17]     lo_of(2) 4 from lo_case 101
+    cp   low 2          ; 2:7       lo_of(2) 4 from lo_case 101
+    jp   nz, endof101004; 3:10      lo_of(2) 4 from lo_case 101
+ 
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endcase101     ; 3:10      lo_endof 4 from lo_case 101
+endof101004:            ;           lo_endof 4 from lo_case 101
+    
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRINT_S16      ; 3:17      .
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1
+
+endcase101:             ;           lo_endcase 101
+;   ^---^---^ lo_endcase 101 ^---^---^
+
+    ex   DE, HL         ; 1:4       drop
+    pop  DE             ; 1:10      drop ( a -- )
+
+idx101 EQU $+1          ;           next 101
+    ld   BC, 0x0000     ; 3:10      next 101 idx always points to a 16-bit index
+    ld    A, B          ; 1:4       next 101
+    or    C             ; 1:4       next 101
+    dec  BC             ; 1:6       next 101 index--, zero flag unaffected
+    jp   nz, for101     ; 3:10      next 101
+next101:                ;           next 101
+
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+
+
     push DE             ; 1:11      push2(0,1)
     ld   DE, 0          ; 3:10      push2(0,1)
     push HL             ; 1:11      push2(0,1)
@@ -45,11 +115,6 @@ ORG 0x8000
     push HL             ; 1:11      push2(8,9)
     ld   HL, 9          ; 3:10      push2(8,9)
 
-    push DE             ; 1:11      push2(10,11)
-    ld   DE, 10         ; 3:10      push2(10,11)
-    push HL             ; 1:11      push2(10,11)
-    ld   HL, 11         ; 3:10      push2(10,11)
-
 
 begin101:
     
@@ -65,7 +130,6 @@ begin101:
 break101:               ;           repeat 101
 
 
-
 Stop:
     ld   SP, 0x0000     ; 3:10      not need
     ld   HL, 0x2758     ; 3:10
@@ -78,238 +142,124 @@ Stop:
 ;   ---  the beginning of a data stack function  ---
 check_prime:            ;           
     
-    push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105
+    call PRINT_STRING_Z ; 3:17      print_z
     
-;   v---v---v case 101 v---v---v
-                        ;           case 101
+;   v---v---v case 102 v---v---v
+                        ;           case 102
         
-                        ;[5:18]     push_of(0) 1 from case 101   version: 0 = 0
-    ld    A, H          ; 1:4       push_of(0) 1 from case 101
-    or    L             ; 1:4       push_of(0) 1 from case 101
-    jp   nz, endof101001; 3:10      push_of(0) 1 from case 101
+                        ;[5:18]     push_of(0) 1 from case 102   version: 0 = 0
+    ld    A, H          ; 1:4       push_of(0) 1 from case 102
+    or    L             ; 1:4       push_of(0) 1 from case 102
+    jp   nz, endof102001; 3:10      push_of(0) 1 from case 102
 
-  
-    push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase101     ; 3:10      endof 1 from case 101
-endof101001:            ;           endof 1 from case 101
+       
+    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase102     ; 3:10      endof 1 from case 102
+endof102001:            ;           endof 1 from case 102
         
-                        ;[7:25]     push_of(1) 2 from case 101   version: hi(1) = 0
-    ld    A, low 1      ; 2:7       push_of(1) 2 from case 101
-    xor   L             ; 1:4       push_of(1) 2 from case 101
-    or    H             ; 1:4       push_of(1) 2 from case 101
-    jp   nz, endof101002; 3:10      push_of(1) 2 from case 101
+                        ;[7:25]     push_of(1) 2 from case 102   version: hi(1) = 0
+    ld    A, low 1      ; 2:7       push_of(1) 2 from case 102
+    xor   L             ; 1:4       push_of(1) 2 from case 102
+    or    H             ; 1:4       push_of(1) 2 from case 102
+    jp   nz, endof102002; 3:10      push_of(1) 2 from case 102
 
-  
-    push DE             ; 1:11      print
-    ld   BC, size103    ; 3:10      print Length of string to print
-    ld   DE, string103  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase101     ; 3:10      endof 2 from case 101
-endof101002:            ;           endof 2 from case 101
+       
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107
+    call PRINT_STRING_Z ; 3:17      print_z    
+    jp   endcase102     ; 3:10      endof 2 from case 102
+endof102002:            ;           endof 2 from case 102
         
-                        ;[7:25]     push_of(2) 3 from case 101   version: hi(2) = 0
-    ld    A, low 2      ; 2:7       push_of(2) 3 from case 101
-    xor   L             ; 1:4       push_of(2) 3 from case 101
-    or    H             ; 1:4       push_of(2) 3 from case 101
-    jp   nz, endof101003; 3:10      push_of(2) 3 from case 101
+                        ;[7:25]     push_of(2) 3 from case 102   version: hi(2) = 0
+    ld    A, low 2      ; 2:7       push_of(2) 3 from case 102
+    xor   L             ; 1:4       push_of(2) 3 from case 102
+    or    H             ; 1:4       push_of(2) 3 from case 102
+    jp   nz, endof102003; 3:10      push_of(2) 3 from case 102
 
-  
-    push DE             ; 1:11      print
-    ld   BC, size104    ; 3:10      print Length of string to print
-    ld   DE, string104  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase101     ; 3:10      endof 3 from case 101
-endof101003:            ;           endof 3 from case 101
+       
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108
+    call PRINT_STRING_Z ; 3:17      print_z    
+    jp   endcase102     ; 3:10      endof 3 from case 102
+endof102003:            ;           endof 3 from case 102
         
-                        ;[7:25]     push_of(3) 4 from case 101   version: hi(3) = 0
-    ld    A, low 3      ; 2:7       push_of(3) 4 from case 101
-    xor   L             ; 1:4       push_of(3) 4 from case 101
-    or    H             ; 1:4       push_of(3) 4 from case 101
-    jp   nz, endof101004; 3:10      push_of(3) 4 from case 101
+                        ;[17:62]    within_of(3) 4 from within_case 102   ( a -- flag=(3<=a<7) )
+    ld    A, L          ; 1:4       within_of(3) 4 from within_case 102
+    sub   low 3         ; 2:7       within_of(3) 4 from within_case 102
+    ld    C, A          ; 1:4       within_of(3) 4 from within_case 102
+    ld    A, H          ; 1:4       within_of(3) 4 from within_case 102
+    sbc   A, high 3     ; 2:7       within_of(3) 4 from within_case 102
+    ld    B, A          ; 1:4       within_of(3) 4 from within_case 102   BC = a-(3)
+    ld    A, C          ; 1:4       within_of(3) 4 from within_case 102
+    sub  4              ; 2:7       within_of(3) 4 from within_case 102
+    ld    A, B          ; 1:4       within_of(3) 4 from within_case 102
+    sbc   A, 0          ; 2:7       within_of(3) 4 from within_case 102   carry:(a-(3))-((7)-(3))
+    jp   nc, endof102004; 3:10      within_of(3) 4 from within_case 102
+   
+    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase102     ; 3:10      endof 4 from case 102
+endof102004:            ;           endof 4 from case 102
+        
+                        ;[7:25]     push_of(7) 5 from case 102   version: hi(7) = 0
+    ld    A, low 7      ; 2:7       push_of(7) 5 from case 102
+    xor   L             ; 1:4       push_of(7) 5 from case 102
+    or    H             ; 1:4       push_of(7) 5 from case 102
+    jp   nz, endof102005; 3:10      push_of(7) 5 from case 102
 
-  
-    push DE             ; 1:11      print
-    ld   BC, size105    ; 3:10      print Length of string to print
-    ld   DE, string105  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
-    jp   endcase101     ; 3:10      endof 4 from case 101
-endof101004:            ;           endof 4 from case 101
+       
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110
+    call PRINT_STRING_Z ; 3:17      print_z  
+    jp   endcase102     ; 3:10      endof 5 from case 102
+endof102005:            ;           endof 5 from case 102
         
-                        ;[7:25]     push_of(4) 5 from case 101   version: hi(4) = 0
-    ld    A, low 4      ; 2:7       push_of(4) 5 from case 101
-    xor   L             ; 1:4       push_of(4) 5 from case 101
-    or    H             ; 1:4       push_of(4) 5 from case 101
-    jp   nz, endof101005; 3:10      push_of(4) 5 from case 101
+                        ;[7:25]     push_of(8) 6 from case 102   version: hi(8) = 0
+    ld    A, low 8      ; 2:7       push_of(8) 6 from case 102
+    xor   L             ; 1:4       push_of(8) 6 from case 102
+    or    H             ; 1:4       push_of(8) 6 from case 102
+    jp   nz, endof102006; 3:10      push_of(8) 6 from case 102
 
-  
-    push DE             ; 1:11      print
-    ld   BC, size106    ; 3:10      print Length of string to print
-    ld   DE, string106  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase101     ; 3:10      endof 5 from case 101
-endof101005:            ;           endof 5 from case 101
+       
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111
+    call PRINT_STRING_Z ; 3:17      print_z  
+    jp   endcase102     ; 3:10      endof 6 from case 102
+endof102006:            ;           endof 6 from case 102
         
-                        ;[7:25]     push_of(5) 6 from case 101   version: hi(5) = 0
-    ld    A, low 5      ; 2:7       push_of(5) 6 from case 101
-    xor   L             ; 1:4       push_of(5) 6 from case 101
-    or    H             ; 1:4       push_of(5) 6 from case 101
-    jp   nz, endof101006; 3:10      push_of(5) 6 from case 101
+                        ;[7:25]     push_of(9) 7 from case 102   version: hi(9) = 0
+    ld    A, low 9      ; 2:7       push_of(9) 7 from case 102
+    xor   L             ; 1:4       push_of(9) 7 from case 102
+    or    H             ; 1:4       push_of(9) 7 from case 102
+    jp   nz, endof102007; 3:10      push_of(9) 7 from case 102
 
-  
-    push DE             ; 1:11      print
-    ld   BC, size107    ; 3:10      print Length of string to print
-    ld   DE, string107  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase101     ; 3:10      endof 6 from case 101
-endof101006:            ;           endof 6 from case 101
+       
+    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase102     ; 3:10      endof 7 from case 102
+endof102007:            ;           endof 7 from case 102
         
-                        ;[7:25]     push_of(6) 7 from case 101   version: hi(6) = 0
-    ld    A, low 6      ; 2:7       push_of(6) 7 from case 101
-    xor   L             ; 1:4       push_of(6) 7 from case 101
-    or    H             ; 1:4       push_of(6) 7 from case 101
-    jp   nz, endof101007; 3:10      push_of(6) 7 from case 101
-
-  
-    push DE             ; 1:11      print
-    ld   BC, size108    ; 3:10      print Length of string to print
-    ld   DE, string108  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase101     ; 3:10      endof 7 from case 101
-endof101007:            ;           endof 7 from case 101
-        
-                        ;[7:25]     push_of(7) 8 from case 101   version: hi(7) = 0
-    ld    A, low 7      ; 2:7       push_of(7) 8 from case 101
-    xor   L             ; 1:4       push_of(7) 8 from case 101
-    or    H             ; 1:4       push_of(7) 8 from case 101
-    jp   nz, endof101008; 3:10      push_of(7) 8 from case 101
-
-  
-    push DE             ; 1:11      print
-    ld   BC, size109    ; 3:10      print Length of string to print
-    ld   DE, string109  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
-    jp   endcase101     ; 3:10      endof 8 from case 101
-endof101008:            ;           endof 8 from case 101
-        
-                        ;[7:25]     push_of(8) 9 from case 101   version: hi(8) = 0
-    ld    A, low 8      ; 2:7       push_of(8) 9 from case 101
-    xor   L             ; 1:4       push_of(8) 9 from case 101
-    or    H             ; 1:4       push_of(8) 9 from case 101
-    jp   nz, endof101009; 3:10      push_of(8) 9 from case 101
-
-  
-    push DE             ; 1:11      print
-    ld   BC, size110    ; 3:10      print Length of string to print
-    ld   DE, string110  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
-    jp   endcase101     ; 3:10      endof 9 from case 101
-endof101009:            ;           endof 9 from case 101
-        
-                        ;[7:25]     push_of(9) 10 from case 101   version: hi(9) = 0
-    ld    A, low 9      ; 2:7       push_of(9) 10 from case 101
-    xor   L             ; 1:4       push_of(9) 10 from case 101
-    or    H             ; 1:4       push_of(9) 10 from case 101
-    jp   nz, endof101010; 3:10      push_of(9) 10 from case 101
-
-  
-    push DE             ; 1:11      print
-    ld   BC, size111    ; 3:10      print Length of string to print
-    ld   DE, string111  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase101     ; 3:10      endof 10 from case 101
-endof101010:            ;           endof 10 from case 101
-        
-                        ;[7:25]     push_of(10) 11 from case 101   version: hi(10) = 0
-    ld    A, low 10     ; 2:7       push_of(10) 11 from case 101
-    xor   L             ; 1:4       push_of(10) 11 from case 101
-    or    H             ; 1:4       push_of(10) 11 from case 101
-    jp   nz, endof101011; 3:10      push_of(10) 11 from case 101
+                        ;[10:37]    push_of(5+5*256) 8 from case 102   version: hi(5+5*256) = lo(5+5*256) = 5
+    ld    A, low 5+5*256; 2:7       push_of(5+5*256) 8 from case 102
+    xor   H             ; 1:4       push_of(5+5*256) 8 from case 102
+    ld    B, A          ; 1:4       push_of(5+5*256) 8 from case 102
+    xor   H             ; 1:4       push_of(5+5*256) 8 from case 102
+    xor   L             ; 1:4       push_of(5+5*256) 8 from case 102
+    or    B             ; 1:4       push_of(5+5*256) 8 from case 102
+    jp   nz, endof102008; 3:10      push_of(5+5*256) 8 from case 102
 
  
-    push DE             ; 1:11      print
-    ld   BC, size112    ; 3:10      print Length of string to print
-    ld   DE, string112  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase101     ; 3:10      endof 11 from case 101
-endof101011:            ;           endof 11 from case 101
-        
-                        ;[7:25]     push_of(11) 12 from case 101   version: hi(11) = 0
-    ld    A, low 11     ; 2:7       push_of(11) 12 from case 101
-    xor   L             ; 1:4       push_of(11) 12 from case 101
-    or    H             ; 1:4       push_of(11) 12 from case 101
-    jp   nz, endof101012; 3:10      push_of(11) 12 from case 101
-
- 
-    push DE             ; 1:11      print
-    ld   BC, size113    ; 3:10      print Length of string to print
-    ld   DE, string113  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
-    jp   endcase101     ; 3:10      endof 12 from case 101
-endof101012:            ;           endof 12 from case 101
-        
-                        ;[7:25]     push_of(12) 13 from case 101   version: hi(12) = 0
-    ld    A, low 12     ; 2:7       push_of(12) 13 from case 101
-    xor   L             ; 1:4       push_of(12) 13 from case 101
-    or    H             ; 1:4       push_of(12) 13 from case 101
-    jp   nz, endof101013; 3:10      push_of(12) 13 from case 101
-
- 
-    push DE             ; 1:11      print
-    ld   BC, size114    ; 3:10      print Length of string to print
-    ld   DE, string114  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
-    jp   endcase101     ; 3:10      endof 13 from case 101
-endof101013:            ;           endof 13 from case 101
-        
-                        ;[10:37]    push_of(5+5*256) 14 from case 101   version: hi(5+5*256) = lo(5+5*256) = 5
-    ld    A, low 5+5*256; 2:7       push_of(5+5*256) 14 from case 101
-    xor   H             ; 1:4       push_of(5+5*256) 14 from case 101
-    ld    B, A          ; 1:4       push_of(5+5*256) 14 from case 101
-    xor   H             ; 1:4       push_of(5+5*256) 14 from case 101
-    xor   L             ; 1:4       push_of(5+5*256) 14 from case 101
-    or    B             ; 1:4       push_of(5+5*256) 14 from case 101
-    jp   nz, endof101014; 3:10      push_of(5+5*256) 14 from case 101
-
- 
-    push DE             ; 1:11      print
-    ld   BC, size115    ; 3:10      print Length of string to print
-    ld   DE, string115  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
-    jp   endcase101     ; 3:10      endof 14 from case 101
-endof101014:            ;           endof 14 from case 101
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endcase102     ; 3:10      endof 8 from case 102
+endof102008:            ;           endof 8 from case 102
         
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1
     
-endcase101:             ;           endcase 101
-;   ^---^---^ endcase 101 ^---^---^    
-    push DE             ; 1:11      print
-    ld   BC, size116    ; 3:10      print Length of string to print
-    ld   DE, string116  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+endcase102:             ;           endcase 102
+;   ^---^---^ endcase 102 ^---^---^    
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114
+    call PRINT_STRING_Z ; 3:17      print_z
     
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -317,233 +267,155 @@ endcase101:             ;           endcase 101
     ld    H, 0x00       ; 2:7       255 and 
     call PRINT_S16      ; 3:17      .
     
-    push DE             ; 1:11      print
-    ld   BC, size117    ; 3:10      print Length of string to print
-    ld   DE, string117  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115
+    call PRINT_STRING_Z ; 3:17      print_z
     
-;   v---v---v lo_case 102 v---v---v
-    ld    A, L          ; 1:4       lo_case 102
+;   v---v---v lo_case 103 v---v---v
+    ld    A, L          ; 1:4       lo_case 103
         
-                        ;[5:17]     lo_of(2) 1 from lo_case 102
-    cp   low 2          ; 2:7       lo_of(2) 1 from lo_case 102
-    jp   nz, endof102001; 3:10      lo_of(2) 1 from lo_case 102
+                        ;[5:17]     lo_of(2) 1 from lo_case 103
+    cp   low 2          ; 2:7       lo_of(2) 1 from lo_case 103
+    jp   nz, endof103001; 3:10      lo_of(2) 1 from lo_case 103
   
-    jp   endcase102     ; 3:10      lo_endof 1 from lo_case 102
-endof102001:            ;           lo_endof 1 from lo_case 102
+    jp   endcase103     ; 3:10      lo_endof 1 from lo_case 103
+endof103001:            ;           lo_endof 1 from lo_case 103
         
-                        ;[5:17]     lo_of(3) 2 from lo_case 102
-    cp   low 3          ; 2:7       lo_of(3) 2 from lo_case 102
-    jp   nz, endof102002; 3:10      lo_of(3) 2 from lo_case 102
+                        ;[5:17]     lo_of(3) 2 from lo_case 103
+    cp   low 3          ; 2:7       lo_of(3) 2 from lo_case 103
+    jp   nz, endof103002; 3:10      lo_of(3) 2 from lo_case 103
   
-    jp   endcase102     ; 3:10      lo_endof 2 from lo_case 102
-endof102002:            ;           lo_endof 2 from lo_case 102
+    jp   endcase103     ; 3:10      lo_endof 2 from lo_case 103
+endof103002:            ;           lo_endof 2 from lo_case 103
         
-                        ;[5:17]     lo_of(5) 3 from lo_case 102
-    cp   low 5          ; 2:7       lo_of(5) 3 from lo_case 102
-    jp   nz, endof102003; 3:10      lo_of(5) 3 from lo_case 102
+                        ;[5:17]     lo_of(5) 3 from lo_case 103
+    cp   low 5          ; 2:7       lo_of(5) 3 from lo_case 103
+    jp   nz, endof103003; 3:10      lo_of(5) 3 from lo_case 103
 
             
-    push DE             ; 1:11      print
-    ld   BC, size118    ; 3:10      print Length of string to print
-    ld   DE, string118  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116
+    call PRINT_STRING_Z ; 3:17      print_z
             
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a )
             
-;   v---v---v case 103 v---v---v
-                        ;           case 103
+;   v---v---v case 104 v---v---v
+                        ;           case 104
                       
-                        ;[5:18]     zero_of 1 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 1 from case 103
-    or    L             ; 1:4       zero_of 1 from case 103
-    jp   nz, endof103001; 3:10      zero_of 1 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size119    ; 3:10      print Length of string to print
-    ld   DE, string119  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase103     ; 3:10      endof 1 from case 103
-endof103001:            ;           endof 1 from case 103
+                        ;[5:18]     zero_of 1 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 1 from case 104
+    or    L             ; 1:4       zero_of 1 from case 104
+    jp   nz, endof104001; 3:10      zero_of 1 from case 104 
+    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string117
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase104     ; 3:10      endof 1 from case 104
+endof104001:            ;           endof 1 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 2 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 2 from case 103
-    or    L             ; 1:4       zero_of 2 from case 103
-    jp   nz, endof103002; 3:10      zero_of 2 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size120    ; 3:10      print Length of string to print
-    ld   DE, string120  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase103     ; 3:10      endof 2 from case 103
-endof103002:            ;           endof 2 from case 103
+                        ;[5:18]     zero_of 2 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 2 from case 104
+    or    L             ; 1:4       zero_of 2 from case 104
+    jp   nz, endof104002; 3:10      zero_of 2 from case 104 
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string118
+    call PRINT_STRING_Z ; 3:17      print_z    
+    jp   endcase104     ; 3:10      endof 2 from case 104
+endof104002:            ;           endof 2 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 3 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 3 from case 103
-    or    L             ; 1:4       zero_of 3 from case 103
-    jp   nz, endof103003; 3:10      zero_of 3 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size121    ; 3:10      print Length of string to print
-    ld   DE, string121  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase103     ; 3:10      endof 3 from case 103
-endof103003:            ;           endof 3 from case 103
+                        ;[5:18]     zero_of 3 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 3 from case 104
+    or    L             ; 1:4       zero_of 3 from case 104
+    jp   nz, endof104003; 3:10      zero_of 3 from case 104 
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string119
+    call PRINT_STRING_Z ; 3:17      print_z    
+    jp   endcase104     ; 3:10      endof 3 from case 104
+endof104003:            ;           endof 3 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 4 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 4 from case 103
-    or    L             ; 1:4       zero_of 4 from case 103
-    jp   nz, endof103004; 3:10      zero_of 4 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size122    ; 3:10      print Length of string to print
-    ld   DE, string122  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
-    jp   endcase103     ; 3:10      endof 4 from case 103
-endof103004:            ;           endof 4 from case 103
+                        ;[5:18]     zero_of 4 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 4 from case 104
+    or    L             ; 1:4       zero_of 4 from case 104
+    jp   nz, endof104004; 3:10      zero_of 4 from case 104 
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120
+    call PRINT_STRING_Z ; 3:17      print_z  
+    jp   endcase104     ; 3:10      endof 4 from case 104
+endof104004:            ;           endof 4 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 5 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 5 from case 103
-    or    L             ; 1:4       zero_of 5 from case 103
-    jp   nz, endof103005; 3:10      zero_of 5 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size123    ; 3:10      print Length of string to print
-    ld   DE, string123  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase103     ; 3:10      endof 5 from case 103
-endof103005:            ;           endof 5 from case 103
+                        ;[5:18]     zero_of 5 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 5 from case 104
+    or    L             ; 1:4       zero_of 5 from case 104
+    jp   nz, endof104005; 3:10      zero_of 5 from case 104 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase104     ; 3:10      endof 5 from case 104
+endof104005:            ;           endof 5 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 6 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 6 from case 103
-    or    L             ; 1:4       zero_of 6 from case 103
-    jp   nz, endof103006; 3:10      zero_of 6 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size124    ; 3:10      print Length of string to print
-    ld   DE, string124  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase103     ; 3:10      endof 6 from case 103
-endof103006:            ;           endof 6 from case 103
+                        ;[5:18]     zero_of 6 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 6 from case 104
+    or    L             ; 1:4       zero_of 6 from case 104
+    jp   nz, endof104006; 3:10      zero_of 6 from case 104 
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase104     ; 3:10      endof 6 from case 104
+endof104006:            ;           endof 6 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 7 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 7 from case 103
-    or    L             ; 1:4       zero_of 7 from case 103
-    jp   nz, endof103007; 3:10      zero_of 7 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size125    ; 3:10      print Length of string to print
-    ld   DE, string125  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase103     ; 3:10      endof 7 from case 103
-endof103007:            ;           endof 7 from case 103
+                        ;[5:18]     zero_of 7 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 7 from case 104
+    or    L             ; 1:4       zero_of 7 from case 104
+    jp   nz, endof104007; 3:10      zero_of 7 from case 104 
+    ld   BC, string123  ; 3:10      print_z   Address of null-terminated string123
+    call PRINT_STRING_Z ; 3:17      print_z    
+    jp   endcase104     ; 3:10      endof 7 from case 104
+endof104007:            ;           endof 7 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 8 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 8 from case 103
-    or    L             ; 1:4       zero_of 8 from case 103
-    jp   nz, endof103008; 3:10      zero_of 8 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size126    ; 3:10      print Length of string to print
-    ld   DE, string126  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
-    jp   endcase103     ; 3:10      endof 8 from case 103
-endof103008:            ;           endof 8 from case 103
+                        ;[5:18]     zero_of 8 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 8 from case 104
+    or    L             ; 1:4       zero_of 8 from case 104
+    jp   nz, endof104008; 3:10      zero_of 8 from case 104 
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string124
+    call PRINT_STRING_Z ; 3:17      print_z  
+    jp   endcase104     ; 3:10      endof 8 from case 104
+endof104008:            ;           endof 8 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 9 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 9 from case 103
-    or    L             ; 1:4       zero_of 9 from case 103
-    jp   nz, endof103009; 3:10      zero_of 9 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size127    ; 3:10      print Length of string to print
-    ld   DE, string127  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print  
-    jp   endcase103     ; 3:10      endof 9 from case 103
-endof103009:            ;           endof 9 from case 103
+                        ;[5:18]     zero_of 9 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 9 from case 104
+    or    L             ; 1:4       zero_of 9 from case 104
+    jp   nz, endof104009; 3:10      zero_of 9 from case 104 
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string125
+    call PRINT_STRING_Z ; 3:17      print_z  
+    jp   endcase104     ; 3:10      endof 9 from case 104
+endof104009:            ;           endof 9 from case 104
                 
     dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 10 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 10 from case 103
-    or    L             ; 1:4       zero_of 10 from case 103
-    jp   nz, endof103010; 3:10      zero_of 10 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size128    ; 3:10      print Length of string to print
-    ld   DE, string128  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print   
-    jp   endcase103     ; 3:10      endof 10 from case 103
-endof103010:            ;           endof 10 from case 103
+                        ;[5:18]     zero_of 10 from case 104   version: zero check
+    ld    A, H          ; 1:4       zero_of 10 from case 104
+    or    L             ; 1:4       zero_of 10 from case 104
+    jp   nz, endof104010; 3:10      zero_of 10 from case 104 
+    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string126
+    call PRINT_STRING_Z ; 3:17      print_z   
+    jp   endcase104     ; 3:10      endof 10 from case 104
+endof104010:            ;           endof 10 from case 104
                 
-    dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 11 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 11 from case 103
-    or    L             ; 1:4       zero_of 11 from case 103
-    jp   nz, endof103011; 3:10      zero_of 11 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size129    ; 3:10      print Length of string to print
-    ld   DE, string129  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
-    jp   endcase103     ; 3:10      endof 11 from case 103
-endof103011:            ;           endof 11 from case 103
-                
-    dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 12 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 12 from case 103
-    or    L             ; 1:4       zero_of 12 from case 103
-    jp   nz, endof103012; 3:10      zero_of 12 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size130    ; 3:10      print Length of string to print
-    ld   DE, string130  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
-    jp   endcase103     ; 3:10      endof 12 from case 103
-endof103012:            ;           endof 12 from case 103
-                
-    dec  HL             ; 1:6       1- 
-                        ;[5:18]     zero_of 13 from case 103   version: zero check
-    ld    A, H          ; 1:4       zero_of 13 from case 103
-    or    L             ; 1:4       zero_of 13 from case 103
-    jp   nz, endof103013; 3:10      zero_of 13 from case 103 
-    push DE             ; 1:11      print
-    ld   BC, size131    ; 3:10      print Length of string to print
-    ld   DE, string131  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print 
-    jp   endcase103     ; 3:10      endof 13 from case 103
-endof103013:            ;           endof 13 from case 103
-                
-    ld   BC, 12         ; 3:10      12 +
-    add  HL, BC         ; 1:11      12 + 
+    ld   BC, 9          ; 3:10      9 +
+    add  HL, BC         ; 1:11      9 + 
     call PRINT_S16      ; 3:17      . 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a )
             
-endcase103:             ;           endcase 103
-;   ^---^---^ endcase 103 ^---^---^
+endcase104:             ;           endcase 104
+;   ^---^---^ endcase 104 ^---^---^
             
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
             
-    push DE             ; 1:11      print
-    ld   BC, size132    ; 3:10      print Length of string to print
-    ld   DE, string132  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print            
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string127
+    call PRINT_STRING_Z ; 3:17      print_z            
             
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -553,104 +425,92 @@ endcase103:             ;           endcase 103
     ld    H, 0x00       ; 2:7       256/ 
     call PRINT_S16      ; 3:17      .
             
-    push DE             ; 1:11      print
-    ld   BC, size133    ; 3:10      print Length of string to print
-    ld   DE, string133  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string128
+    call PRINT_STRING_Z ; 3:17      print_z
             
-;   v---v---v hi_case 104 v---v---v
-    ld    A, H          ; 1:4       hi_case 104
+;   v---v---v hi_case 105 v---v---v
+    ld    A, H          ; 1:4       hi_case 105
                 
-                        ;[5:17]     hi_of(2) 1 from hi_case 104
-    cp   low 2          ; 2:7       hi_of(2) 1 from hi_case 104
-    jp   nz, endof104001; 3:10      hi_of(2) 1 from hi_case 104
+                        ;[5:17]     hi_of(2) 1 from hi_case 105
+    cp   low 2          ; 2:7       hi_of(2) 1 from hi_case 105
+    jp   nz, endof105001; 3:10      hi_of(2) 1 from hi_case 105
   
-    jp   endcase104     ; 3:10      hi_endof 1 from hi_case 104
-endof104001:            ;           hi_endof 1 from hi_case 104
+    jp   endcase105     ; 3:10      hi_endof 1 from hi_case 105
+endof105001:            ;           hi_endof 1 from hi_case 105
                 
-                        ;[5:17]     hi_of(3) 2 from hi_case 104
-    cp   low 3          ; 2:7       hi_of(3) 2 from hi_case 104
-    jp   nz, endof104002; 3:10      hi_of(3) 2 from hi_case 104
+                        ;[5:17]     hi_of(3) 2 from hi_case 105
+    cp   low 3          ; 2:7       hi_of(3) 2 from hi_case 105
+    jp   nz, endof105002; 3:10      hi_of(3) 2 from hi_case 105
   
-    jp   endcase104     ; 3:10      hi_endof 2 from hi_case 104
-endof104002:            ;           hi_endof 2 from hi_case 104
+    jp   endcase105     ; 3:10      hi_endof 2 from hi_case 105
+endof105002:            ;           hi_endof 2 from hi_case 105
                 
-                        ;[5:17]     hi_of(5) 3 from hi_case 104
-    cp   low 5          ; 2:7       hi_of(5) 3 from hi_case 104
-    jp   nz, endof104003; 3:10      hi_of(5) 3 from hi_case 104
+                        ;[5:17]     hi_of(5) 3 from hi_case 105
+    cp   low 5          ; 2:7       hi_of(5) 3 from hi_case 105
+    jp   nz, endof105003; 3:10      hi_of(5) 3 from hi_case 105
   
-    jp   endcase104     ; 3:10      hi_endof 3 from hi_case 104
-endof104003:            ;           hi_endof 3 from hi_case 104
+    jp   endcase105     ; 3:10      hi_endof 3 from hi_case 105
+endof105003:            ;           hi_endof 3 from hi_case 105
                 
-                        ;[5:17]     hi_of(7) 4 from hi_case 104
-    cp   low 7          ; 2:7       hi_of(7) 4 from hi_case 104
-    jp   nz, endof104004; 3:10      hi_of(7) 4 from hi_case 104
+                        ;[5:17]     hi_of(7) 4 from hi_case 105
+    cp   low 7          ; 2:7       hi_of(7) 4 from hi_case 105
+    jp   nz, endof105004; 3:10      hi_of(7) 4 from hi_case 105
   
-    jp   endcase104     ; 3:10      hi_endof 4 from hi_case 104
-endof104004:            ;           hi_endof 4 from hi_case 104
+    jp   endcase105     ; 3:10      hi_endof 4 from hi_case 105
+endof105004:            ;           hi_endof 4 from hi_case 105
                 
-                        ;[5:17]     hi_of(11) 5 from hi_case 104
-    cp   low 11         ; 2:7       hi_of(11) 5 from hi_case 104
-    jp   nz, endof104005; 3:10      hi_of(11) 5 from hi_case 104
+                        ;[5:17]     hi_of(11) 5 from hi_case 105
+    cp   low 11         ; 2:7       hi_of(11) 5 from hi_case 105
+    jp   nz, endof105005; 3:10      hi_of(11) 5 from hi_case 105
  
-    jp   endcase104     ; 3:10      hi_endof 5 from hi_case 104
-endof104005:            ;           hi_endof 5 from hi_case 104
+    jp   endcase105     ; 3:10      hi_endof 5 from hi_case 105
+endof105005:            ;           hi_endof 5 from hi_case 105
                 
-                        ;[5:17]     hi_of(13) 6 from hi_case 104
-    cp   low 13         ; 2:7       hi_of(13) 6 from hi_case 104
-    jp   nz, endof104006; 3:10      hi_of(13) 6 from hi_case 104
+                        ;[5:17]     hi_of(13) 6 from hi_case 105
+    cp   low 13         ; 2:7       hi_of(13) 6 from hi_case 105
+    jp   nz, endof105006; 3:10      hi_of(13) 6 from hi_case 105
  
-    jp   endcase104     ; 3:10      hi_endof 6 from hi_case 104
-endof104006:            ;           hi_endof 6 from hi_case 104
+    jp   endcase105     ; 3:10      hi_endof 6 from hi_case 105
+endof105006:            ;           hi_endof 6 from hi_case 105
                     
-    push DE             ; 1:11      print
-    ld   BC, size134    ; 3:10      print Length of string to print
-    ld   DE, string134  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129
+    call PRINT_STRING_Z ; 3:17      print_z
             
-endcase104:             ;           hi_endcase 104
-;   ^---^---^ hi_endcase 104 ^---^---^
+endcase105:             ;           hi_endcase 105
+;   ^---^---^ hi_endcase 105 ^---^---^
         
-    jp   endcase102     ; 3:10      lo_endof 3 from lo_case 102
-endof102003:            ;           lo_endof 3 from lo_case 102
+    jp   endcase103     ; 3:10      lo_endof 3 from lo_case 103
+endof103003:            ;           lo_endof 3 from lo_case 103
         
-                        ;[5:17]     lo_of(7) 4 from lo_case 102
-    cp   low 7          ; 2:7       lo_of(7) 4 from lo_case 102
-    jp   nz, endof102004; 3:10      lo_of(7) 4 from lo_case 102
+                        ;[5:17]     lo_of(7) 4 from lo_case 103
+    cp   low 7          ; 2:7       lo_of(7) 4 from lo_case 103
+    jp   nz, endof103004; 3:10      lo_of(7) 4 from lo_case 103
   
-    jp   endcase102     ; 3:10      lo_endof 4 from lo_case 102
-endof102004:            ;           lo_endof 4 from lo_case 102
+    jp   endcase103     ; 3:10      lo_endof 4 from lo_case 103
+endof103004:            ;           lo_endof 4 from lo_case 103
         
-                        ;[5:17]     lo_of(11) 5 from lo_case 102
-    cp   low 11         ; 2:7       lo_of(11) 5 from lo_case 102
-    jp   nz, endof102005; 3:10      lo_of(11) 5 from lo_case 102
+                        ;[5:17]     lo_of(11) 5 from lo_case 103
+    cp   low 11         ; 2:7       lo_of(11) 5 from lo_case 103
+    jp   nz, endof103005; 3:10      lo_of(11) 5 from lo_case 103
  
-    jp   endcase102     ; 3:10      lo_endof 5 from lo_case 102
-endof102005:            ;           lo_endof 5 from lo_case 102
+    jp   endcase103     ; 3:10      lo_endof 5 from lo_case 103
+endof103005:            ;           lo_endof 5 from lo_case 103
         
-                        ;[5:17]     lo_of(13) 6 from lo_case 102
-    cp   low 13         ; 2:7       lo_of(13) 6 from lo_case 102
-    jp   nz, endof102006; 3:10      lo_of(13) 6 from lo_case 102
+                        ;[5:17]     lo_of(13) 6 from lo_case 103
+    cp   low 13         ; 2:7       lo_of(13) 6 from lo_case 103
+    jp   nz, endof103006; 3:10      lo_of(13) 6 from lo_case 103
  
-    jp   endcase102     ; 3:10      lo_endof 6 from lo_case 102
-endof102006:            ;           lo_endof 6 from lo_case 102
+    jp   endcase103     ; 3:10      lo_endof 6 from lo_case 103
+endof103006:            ;           lo_endof 6 from lo_case 103
             
-    push DE             ; 1:11      print
-    ld   BC, size135    ; 3:10      print Length of string to print
-    ld   DE, string135  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string130
+    call PRINT_STRING_Z ; 3:17      print_z
     
-endcase102:             ;           lo_endcase 102
-;   ^---^---^ lo_endcase 102 ^---^---^
+endcase103:             ;           lo_endcase 103
+;   ^---^---^ lo_endcase 103 ^---^---^
     
-    push DE             ; 1:11      print
-    ld   BC, size136    ; 3:10      print Length of string to print
-    ld   DE, string136  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print
+    ld   BC, string131  ; 3:10      print_z   Address of null-terminated string131
+    call PRINT_STRING_Z ; 3:17      print_z
     
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -667,7 +527,7 @@ PRINT_S16:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
     jr   nc, PRINT_U16  ; 2:7/12
-    
+
     xor   A             ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    L, A          ; 1:4       neg
@@ -678,8 +538,8 @@ PRINT_S16:
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, ** 
-    
+    db 0x01             ; 3:10      ld   BC, **
+
     ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
@@ -705,7 +565,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -716,129 +576,94 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-VARIABLE_SECTION:
-
+; Print C-style stringZ
+; In: BC = addr
+; Out: BC = addr zero
+    rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    inc  BC             ; 1:6       print_string_z
+PRINT_STRING_Z:         ;           print_string_z
+    ld    A,(BC)        ; 1:7       print_string_z
+    or    A             ; 1:4       print_string_z
+    jp   nz, $-4        ; 3:10      print_string_z
+    ret                 ; 1:10      print_string_z
 STRING_SECTION:
-string136:
-db " a prime."
-size136 EQU $ - string136
-string135:
-db " not"
-size135 EQU $ - string135
-string134:
-db " not"
-size134 EQU $ - string134
-string133:
-db " is"
-size133 EQU $ - string133
-string132:
-db ")="
-size132 EQU $ - string132
 string131:
-db "twelve"
+db " a prime.", 0x00
 size131 EQU $ - string131
-string130:
-db "eleven"
-size130 EQU $ - string130
 string129:
-db "ten"
+db " not", 0x00
 size129 EQU $ - string129
-string128:
-db "nine"
-size128 EQU $ - string128
-string127:
-db "eight"
-size127 EQU $ - string127
-string126:
-db "seven"
-size126 EQU $ - string126
-string125:
-db "six"
-size125 EQU $ - string125
-string124:
-db "five"
-size124 EQU $ - string124
 string123:
-db "four"
+db "six", 0x00
 size123 EQU $ - string123
 string122:
-db "three"
+db "five", 0x00
 size122 EQU $ - string122
 string121:
-db "two"
+db "four", 0x00
 size121 EQU $ - string121
 string120:
-db "one"
+db "three", 0x00
 size120 EQU $ - string120
-string119:
-db "zero"
-size119 EQU $ - string119
-string118:
-db " a prime and high("
-size118 EQU $ - string118
-string117:
-db " is"
-size117 EQU $ - string117
 string116:
-db ")="
+db " a prime and high(", 0x00
 size116 EQU $ - string116
 string115:
-db "five+five*256"
+db " is", 0x00
 size115 EQU $ - string115
 string114:
-db "twelve"
+db ")=", 0x00
 size114 EQU $ - string114
 string113:
-db "eleven"
+db "five+five*256", 0x00
 size113 EQU $ - string113
 string112:
-db "ten"
+db "nine", 0x00
 size112 EQU $ - string112
 string111:
-db "nine"
+db "eight", 0x00
 size111 EQU $ - string111
 string110:
-db "eight"
+db "seven", 0x00
 size110 EQU $ - string110
 string109:
-db "seven"
+db "3..6", 0x00
 size109 EQU $ - string109
 string108:
-db "six"
+db "two", 0x00
 size108 EQU $ - string108
 string107:
-db "five"
+db "one", 0x00
 size107 EQU $ - string107
 string106:
-db "four"
+db "zero", 0x00
 size106 EQU $ - string106
 string105:
-db "three"
+db "lo(", 0x00
 size105 EQU $ - string105
 string104:
-db "two"
+db " six", 0x00
 size104 EQU $ - string104
 string103:
-db "one"
+db " 3..5", 0x00
 size103 EQU $ - string103
 string102:
-db "zero"
+db " two", 0x00
 size102 EQU $ - string102
 string101:
-db "lo("
+db " one", 0x00
 size101 EQU $ - string101
-
