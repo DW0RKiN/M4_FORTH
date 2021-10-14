@@ -98,12 +98,11 @@ m4 Hello.m4
         ld   HL, 60000      ; 3:10      Init Return address stack
         exx                 ; 1:4
 
-        push DE             ; 1:11      print
-        ld   BC, size101    ; 3:10      print Length of string to print
-        ld   DE, string101  ; 3:10      print Address of string
-        call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+        push DE             ; 1:11      print     "Hello World!"
+        ld   BC, size101    ; 3:10      print     Length of string101
+        ld   DE, string101  ; 3:10      print     Address of string101
+        call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
         pop  DE             ; 1:10      print
-
 
     Stop:
         ld   SP, 0x0000     ; 3:10      not need
@@ -114,10 +113,10 @@ m4 Hello.m4
 
 
     STRING_SECTION:
+
     string101:
     db "Hello World!"
     size101 EQU $ - string101
-
 
 
 ## Limitations of the M4 markup language
@@ -335,8 +334,10 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
 
 ./check_word.sh 'PRINT_Z("Hello!")'
 
-        ld   BC, string101  ; 3:10      print_z Address of string_z
+
+        ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
         call PRINT_STRING_Z ; 3:17      print_z
+
 
     ; Print C-style stringZ
     ; In: BC = addr
@@ -348,21 +349,23 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
         or    A             ; 1:4       print_string_z
         jp   nz, $-4        ; 3:10      print_string_z
         ret                 ; 1:10      print_string_z
-
     STRING_SECTION:
+
     string101:
-    db "Hello!",0
+    db "Hello!", 0x00
     size101 EQU $ - string101
 
 ./check_word 'PRINT("Hello!")'
 
-        push DE             ; 1:11      print
-        ld   BC, size101    ; 3:10      print Length of string to print
-        ld   DE, string101  ; 3:10      print Address of string
-        call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+        push DE             ; 1:11      print     "Hello!"
+        ld   BC, size101    ; 3:10      print     Length of string101
+        ld   DE, string101  ; 3:10      print     Address of string101
+        call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
         pop  DE             ; 1:10      print
 
+
     STRING_SECTION:
+
     string101:
     db "Hello!"
     size101 EQU $ - string101
