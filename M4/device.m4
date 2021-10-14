@@ -172,7 +172,7 @@ dnl .( string)
 dnl ( -- )
 dnl print null-terminated string
 define({_PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
-    ld   BC, string{}PRINT_COUNT  ; 3:10      print_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+    ld   BC, string{}TEMP_FOUND  ; 3:10      print_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call PRINT_STRING_Z ; 3:17      print_z{}dnl
 ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
