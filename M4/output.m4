@@ -348,8 +348,10 @@ VARIABLE_SECTION:
 ){}dnl
 dnl
 dnl
-ifelse(ALL_STRING_STACK,{},,{
+ifdef({STRING_NUM_STACK},{
 STRING_SECTION:
-define({STRING_POP},{STRING_STACK{}popdef({STRING_STACK})})ALL_STRING_STACK}){}dnl
+PRINT_STRING_STACK
+})dnl
+dnl
 dnl
 dnl

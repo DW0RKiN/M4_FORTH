@@ -97,50 +97,106 @@ define({_2DUP_TYPE},{
     pop  DE             ; 1:10      2dup})dnl
 dnl
 dnl
+define({RECURSIVE_REVERSE_STACK},{ifdef({STRING_NUM_STACK},{dnl
+pushdef({REVERSE_NUM_STACK},⸨STRING_NUM_STACK⸩)dnl
+pushdef({REVERSE_STACK},⸨STRING_STACK⸩)dnl
+popdef({STRING_NUM_STACK})dnl
+popdef({STRING_STACK})dnl
+RECURSIVE_REVERSE_STACK})})dnl
+dnl
+dnl
+dnl
+define({RECURSIVE_COPY_STACK},{ifdef({REVERSE_NUM_STACK},{dnl
+changequote({⸨}, {⸩})dnl
+pushdef(⸨STRING_NUM_STACK⸩,{REVERSE_NUM_STACK})dnl
+pushdef(⸨TEMP_NUM_STACK⸩,{{REVERSE_NUM_STACK}})dnl
+pushdef(⸨STRING_STACK⸩,{REVERSE_STACK})dnl
+pushdef(⸨TEMP_STACK⸩,{{REVERSE_STACK}})dnl
+popdef(⸨REVERSE_NUM_STACK⸩)dnl
+popdef(⸨REVERSE_STACK⸩)dnl
+changequote(⸨{⸩, ⸨}⸩)dnl
+RECURSIVE_COPY_STACK})})dnl
+dnl
+dnl
+dnl
+define({RECURSIVE_CHECK_STACK},{dnl
+ifdef({TEMP_NUM_STACK},{dnl
+ifelse(TEMP_STACK,{$1},{dnl
+define({TEMP_FOUND},TEMP_NUM_STACK)},{dnl
+popdef({TEMP_NUM_STACK}){}popdef({TEMP_STACK}){}RECURSIVE_CHECK_STACK({$1})})dnl
+})dnl
+})dnl
+dnl
+dnl
+dnl
+define({PRINT_STRING_STACK},{ifdef({STRING_NUM_STACK},{
+string{}STRING_NUM_STACK:
+db STRING_STACK
+size{}STRING_NUM_STACK EQU $ - string{}STRING_NUM_STACK{}dnl
+popdef({STRING_NUM_STACK}){}popdef({STRING_STACK}){}PRINT_STRING_STACK})})dnl
+dnl
+dnl
+dnl
+define({SEARCH_FOR_MATCHING_STRING},{dnl
+undefine({REVERSE_STACK})dnl
+undefine({REVERSE_NUM_STACK})dnl
+define({TEMP_FOUND},PRINT_COUNT)dnl
+RECURSIVE_REVERSE_STACK{}dnl
+RECURSIVE_COPY_STACK{}dnl
+RECURSIVE_CHECK_STACK({$1}){}dnl
+})dnl
+dnl
+dnl
+dnl
 define(PRINT_COUNT,100)dnl
 pushdef({ALL_STRING_STACK},{})dnl
 dnl
+dnl
 dnl ." string"
 dnl .( string)
 dnl ( -- )
 dnl print string
-define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT))
-    push DE             ; 1:11      print
-    ld   BC, size{}PRINT_COUNT    ; 3:10      print Length of string to print
-    ld   DE, string{}PRINT_COUNT  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with {ZX 48K ROM}
+define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+    push DE             ; 1:11      print     $1
+    ld   BC, size{}TEMP_FOUND    ; 3:10      print     Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+    ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
     pop  DE             ; 1:10      print{}dnl
-pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
-db STRING_POP
-size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
-ALL_STRING_STACK)})dnl
+ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+})dnl
 dnl
 dnl
 dnl ." string"
 dnl .( string)
 dnl ( -- )
-dnl print string
-define({PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT))
-    ld   BC, string{}PRINT_COUNT  ; 3:10      print_z Address of string_z
+dnl print null-terminated string
+define({_PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+    ld   BC, string{}PRINT_COUNT  ; 3:10      print_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call PRINT_STRING_Z ; 3:17      print_z{}dnl
-pushdef({STRING_STACK},{$@{,0}})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
-db STRING_POP
-size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
-ALL_STRING_STACK)})dnl
+ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+})dnl
+dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl print null-terminated string
+define({PRINT_Z},{_PRINT_Z({$1, 0x00})})dnl
+dnl
 dnl
 dnl
 dnl s" string"
 dnl ( -- addr n )
 dnl addr = address string, n = lenght(string)
-define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT))
-    push DE             ; 1:11      string
-    push HL             ; 1:11      string
-    ld   HL, size{}PRINT_COUNT    ; 3:10      string Length of string
-    ld   DE, string{}PRINT_COUNT  ; 3:10      string Address of string{}dnl
-pushdef({STRING_STACK},{$@})define({ALL_STRING_STACK},{string}PRINT_COUNT{:
-db STRING_POP
-size}PRINT_COUNT{ EQU $ - string}PRINT_COUNT
-ALL_STRING_STACK)})dnl
+define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+    push DE             ; 1:11      string    ( -- addr size )
+    push HL             ; 1:11      string    $1
+    ld   DE, string{}TEMP_FOUND  ; 3:10      string    Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+    ld   HL, size{}TEMP_FOUND    ; 3:10      string    Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+})dnl
 dnl
 dnl
 dnl ( -- key )
