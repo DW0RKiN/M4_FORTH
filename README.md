@@ -400,8 +400,11 @@ Therefore, if there is a comma in the string, the inside must be wrapped in `{` 
     db "1. Hello, World! Use , {1,2,3} {4}"
     size101 EQU $ - string101
 
-And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error.
+And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error. This can only be solved by redefining {} for other characters always before calling PRINT and returning to the original values afterwards. 
+Next, by rewriting the entire chain library section. Replacing {} everywhere would not have to be redefined, but would leave a problem of how to write special characters easily - for example, PRINT(⸨"Text, } next text"⸩). 
+And I would be stopped by a text editor from showing the closing/opening partner of a brace. Fortunately, the odd number of braces can be solved by writing { as 0x7b and } as 0x7D. PRINT({"Text, ",0x7d," next text"})
 
+If you're trying to insert duplicate text, the translator recognizes it and doesn't create a copy, but a link to the first use. And that includes the word STRING, so watch out if you edit a chain like that. Same sentences where one is terminated by a zero character and the other has no terminating zero character are understood as different strings.
 ### IF
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
