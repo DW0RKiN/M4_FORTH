@@ -113,7 +113,6 @@ m4 Hello.m4
 
 
     STRING_SECTION:
-
     string101:
     db "Hello World!"
     size101 EQU $ - string101
@@ -350,7 +349,6 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
         jp   nz, $-4        ; 3:10      print_string_z
         ret                 ; 1:10      print_string_z
     STRING_SECTION:
-
     string101:
     db "Hello!", 0x00
     size101 EQU $ - string101
@@ -365,7 +363,6 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
 
 
     STRING_SECTION:
-
     string101:
     db "Hello!"
     size101 EQU $ - string101
