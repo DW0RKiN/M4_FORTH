@@ -40,25 +40,25 @@ define({ALL_VARIABLE},{})dnl
 dnl
 dnl
 define({CVARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($1,{},{.error cvariable without name!}dnl
+__{}ifelse($1,{},{.error cvariable: Missing parameter with variable name!}dnl
 __{},$#,{1},{$1: db 0x00{}}dnl
 __{},{$1: db $2{}})dnl
 })})dnl
 dnl
 dnl
 define({DVARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($1,{},{.error cvariable without name!}dnl
+__{}ifelse($1,{},{.error dvariable: Missing parameter with variable name!}dnl
 __{},$#,{1},{$1:
 __{}  dw 0x0000
 __{}  dw 0x0000{}}dnl
 __{},{$1: 
-__{}  dw $2
-__{}  dw ($2)/0x10000{}})dnl
+__{}  dw eval(($2) & 0x0ffff)
+__{}  dw eval(($2) / 0x10000)})dnl
 })})dnl
 dnl
 dnl
 define({VARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($1,{},{.error variable without name!}dnl
+__{}ifelse($1,{},{.error variable: Missing parameter with variable name!}dnl
 __{},$#,{1},{$1: dw 0x0000{}}dnl
 __{},{$1: dw $2{}})dnl
 })})dnl
