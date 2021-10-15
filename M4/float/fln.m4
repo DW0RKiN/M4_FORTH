@@ -45,7 +45,7 @@ fLn_FIX:
 
 fLn_NO_Add:
     ex   DE, HL         ; 1:4 
-    ret                 ; 1:10})
+    ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl

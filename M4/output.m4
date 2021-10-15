@@ -328,7 +328,7 @@ READSTRING3:
 dnl
 dnl
 dnl
-ifdef({USE_STRING_Z},{
+ifdef({USE_STRING_Z},{dnl
 ; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero
@@ -338,7 +338,8 @@ PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
     or    A             ; 1:4       print_string_z
     jp   nz, $-4        ; 3:10      print_string_z
-    ret                 ; 1:10      print_string_z}){}dnl
+    ret                 ; 1:10      print_string_z
+}){}dnl
 dnl
 dnl
 dnl
