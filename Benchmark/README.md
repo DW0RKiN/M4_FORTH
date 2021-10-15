@@ -1,4 +1,4 @@
-# M4 FORTH (ZX Spectrum, Z80)
+# M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
 ## Testing
 
