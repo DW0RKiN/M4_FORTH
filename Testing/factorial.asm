@@ -1,11 +1,11 @@
 ORG 0x6000
 
 ;   ===  b e g i n  ===
-    ld  (Stop+1), SP    ; 4:20      not need
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000      ; 3:10      Init Return address stack
-    exx                 ; 1:4
+    ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
+    ld    L, 0x1A       ; 2:7       init   Upper screen
+    call 0x1605         ; 3:17      init   Open channel
+    ld   HL, 60000      ; 3:10      init   Init Return address stack
+    exx                 ; 1:4       init
 
 
 
@@ -15805,20 +15805,19 @@ ORG 0x6000
     or    A             ; 1:4       2047 *
     sbc  HL, BC         ; 2:15      2047 *   [2047x] = 2048x - 1x   
     call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     " = -14335", 0xD
+    ld   BC, size101    ; 3:10      print     Length of string101
+    ld   DE, string101  ; 3:10      print     Address of string101
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
 
 
-Stop:
-    ld   SP, 0x0000     ; 3:10      not need
-    ld   HL, 0x2758     ; 3:10
-    exx                 ; 1:4
-    ret                 ; 1:10
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
 ;   =====  e n d  ===== 
-
 
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
@@ -15827,7 +15826,7 @@ PRINT_S16:
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
     jr   nc, PRINT_U16  ; 2:7/12
-    
+
     xor   A             ; 1:4       neg
     sub   L             ; 1:4       neg
     ld    L, A          ; 1:4       neg
@@ -15838,8 +15837,8 @@ PRINT_S16:
     ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, ** 
-    
+    db 0x01             ; 3:10      ld   BC, **
+
     ; fall to print_u16
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
@@ -15865,7 +15864,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -15876,24 +15875,21 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-VARIABLE_SECTION:
-
 STRING_SECTION:
 string101:
 db " = -14335", 0xD
 size101 EQU $ - string101
-

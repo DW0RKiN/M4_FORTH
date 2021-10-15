@@ -1,20 +1,20 @@
     ORG 0x8000
     
 ;   ===  b e g i n  ===
-    ld  (Stop+1), SP    ; 4:20      not need
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000      ; 3:10      Init Return address stack
-    exx                 ; 1:4
+    ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
+    ld    L, 0x1A       ; 2:7       init   Upper screen
+    call 0x1605         ; 3:17      init   Open channel
+    ld   HL, 60000      ; 3:10      init   Init Return address stack
+    exx                 ; 1:4       init
     ld  hl, stack_test
     push hl
 
     
 begin101: 
-    push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     "Press any key: "
+    ld   BC, size101    ; 3:10      print     Length of string101
+    ld   DE, string101  ; 3:10      print     Address of string101
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print 
     call READKEY        ; 3:17      key 
     push DE             ; 1:11      dup
@@ -52,10 +52,10 @@ break101:               ;           repeat 101
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
-    push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     0xD,"10 char string: "
+    ld   BC, size102    ; 3:10      print     Length of string102
+    ld   DE, string102  ; 3:10      print     Address of string102
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
     push DE             ; 1:11      push2(BUFFER,10)
@@ -86,7 +86,7 @@ do101:                  ;           do 101
     push DE             ; 1:11      index i 101
     ex   DE, HL         ; 1:4       index i 101
     ld   HL, (idx101)   ; 3:16      index i 101 idx always points to a 16-bit index 
-    ld    A, (HL)       ; 1:7       @ fetch 
+    ld    A, (HL)       ; 1:7       @ fetch
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
@@ -122,10 +122,10 @@ exit101:                ;           loop 101
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     
-    push DE             ; 1:11      print
-    ld   BC, size103    ; 3:10      print Length of string to print
-    ld   DE, string103  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     "RAS:"
+    ld   BC, size103    ; 3:10      print     Length of string103
+    ld   DE, string103  ; 3:10      print     Address of string103
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     exx
     push HL
@@ -141,17 +141,17 @@ exit101:                ;           loop 101
 ;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
-    push DE             ; 1:11      print
-    ld   BC, size104    ; 3:10      print Length of string to print
-    ld   DE, string104  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     0xD, "Data stack OK!", 0xD
+    ld   BC, size104    ; 3:10      print     Length of string104
+    ld   DE, string104  ; 3:10      print     Address of string104
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print    
     
-Stop:
-    ld   SP, 0x0000     ; 3:10      not need
-    ld   HL, 0x2758     ; 3:10
-    exx                 ; 1:4
-    ret                 ; 1:10
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
 ;   =====  e n d  =====
 
 stack_test_end:
@@ -159,7 +159,6 @@ stack_test_end:
 ;   ---------  end of data stack function  ---------
 
 ;# I need to have label buffer at the end.
-
 
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
@@ -185,7 +184,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -196,22 +195,22 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
 ; Read key from keyboard
-; In: 
+; In:
 ; Out: push stack, TOP = HL = key
 READKEY:
     ex   DE, HL         ; 1:4       readkey
@@ -227,16 +226,16 @@ READKEY:
     ld    L, A          ; 1:4       readkey
     ret                 ; 1:10      readkey
 ; Read string from keyboard
-; In: DE = addr, HL = length 
+; In: DE = addr, HL = length
 ; Out: 2x pop stack, TOP = HL = loaded
 READSTRING:
     ld    B, D          ; 1:4       readstring
     ld    C, E          ; 1:4       readstring BC = addr
-    ex   DE, HL         ; 1:4       readstring 
+    ex   DE, HL         ; 1:4       readstring
 READSTRING2:
     xor   A             ; 1:4       readstring
     ld    (0x5C08),A    ; 3:13      readstring ZX Spectrum LAST K system variable
-    
+
     ld    A,(0x5C08)    ; 3:13      readstring read new value of LAST K
     or    A             ; 1:4       readstring is it still zero?
     jr    z, $-4        ; 2:7/12    readstring
@@ -246,20 +245,18 @@ READSTRING2:
     ld  (HL),A          ; 1:7       readstring
     inc  HL             ; 1:6       readstring
     dec  DE             ; 1:6       readstring
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A    
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ld    A, D          ; 1:4       readstring
     or    E             ; 1:4       readstring
     jr   nz, READSTRING2; 2:7/12    readstring
 READSTRING3:
     or    A             ; 1:4       readstring
     sbc  HL, BC         ; 2:15      readstring
-    
+
     pop  BC             ; 1:10      readstring ret
     pop  DE             ; 1:10      readstring
     push BC             ; 1:11      readstring ret
     ret                 ; 1:10      readstring
-VARIABLE_SECTION:
-
 STRING_SECTION:
 string104:
 db 0xD, "Data stack OK!", 0xD
@@ -273,7 +270,6 @@ size102 EQU $ - string102
 string101:
 db "Press any key: "
 size101 EQU $ - string101
-
 
 BUFFER:
 DS 10

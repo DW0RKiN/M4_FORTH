@@ -2,11 +2,11 @@
     ORG 0x8000
     
 ;   ===  b e g i n  ===
-    ld  (Stop+1), SP    ; 4:20      not need
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000      ; 3:10      Init Return address stack
-    exx                 ; 1:4
+    ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
+    ld    L, 0x1A       ; 2:7       init   Upper screen
+    call 0x1605         ; 3:17      init   Open channel
+    ld   HL, 60000      ; 3:10      init   Init Return address stack
+    exx                 ; 1:4       init
     ld  hl, stack_test
     push hl
 
@@ -49,10 +49,10 @@
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      print
-    ld   BC, size101    ; 3:10      print Length of string to print
-    ld   DE, string101  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     "RAS:"
+    ld   BC, size101    ; 3:10      print     Length of string101
+    ld   DE, string101  ; 3:10      print     Address of string101
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     exx
     push HL
@@ -93,7 +93,7 @@ do101:                  ;           do 101
     add  HL, HL         ; 1:11      2* 
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      + 
-    ld    A, (HL)       ; 1:7       @ fetch 
+    ld    A, (HL)       ; 1:7       @ fetch
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
@@ -132,12 +132,13 @@ insert:                 ;           ( start end -- start )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld    A, (HL)       ; 1:7       @ fetch 
+    ld    A, (HL)       ; 1:7       @ fetch
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
-    ex  (SP), HL        ; 1:19      to_r
-    ex   DE, HL         ; 1:4       to_r
+                        ;[9:65]     to_r ( c b a -- c b ) ( R: -- a )
+    ex  (SP), HL        ; 1:19      to_r a . b c
+    ex   DE, HL         ; 1:4       to_r a . c b
     exx                 ; 1:4       to_r
     pop  DE             ; 1:10      to_r
     dec  HL             ; 1:6       to_r
@@ -165,12 +166,13 @@ begin101:
     ex   DE, HL         ; 1:4       while 101
     pop  DE             ; 1:10      while 101
     jp    z, break101   ; 3:10      while 101
-            
+        
+                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
     exx                 ; 1:4       r_fetch
     ld    E,(HL)        ; 1:7       r_fetch
     inc   L             ; 1:4       r_fetch
     ld    D,(HL)        ; 1:7       r_fetch
-    dec   L             ; 1:6       r_fetch
+    dec   L             ; 1:4       r_fetch
     push DE             ; 1:11      r_fetch
     exx                 ; 1:4       r_fetch
     ex   DE, HL         ; 1:4       r_fetch
@@ -179,7 +181,7 @@ begin101:
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     dec  HL             ; 1:6       2-
     dec  HL             ; 1:6       2- 
-    ld    A, (HL)       ; 1:7       @ fetch 
+    ld    A, (HL)       ; 1:7       @ fetch
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
@@ -205,7 +207,7 @@ begin101:
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld    A, (HL)       ; 1:7       @ fetch 
+    ld    A, (HL)       ; 1:7       @ fetch
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch 
@@ -213,6 +215,7 @@ begin101:
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
     inc  HL             ; 1:6       2+
     inc  HL             ; 1:6       2+ 
+                        ;[5:40]     ! store
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -223,17 +226,19 @@ begin101:
 break101:               ;           repeat 101 
     ;
 endifTHEN_STACK:
-        
+    
+                        ;[9:66]     r_from ( b a -- b a i ) ( R: i -- )
     exx                 ; 1:4       r_from
     ld    E,(HL)        ; 1:7       r_from
     inc   L             ; 1:4       r_from
     ld    D,(HL)        ; 1:7       r_from
     inc  HL             ; 1:6       r_from
     push DE             ; 1:11      r_from
-    exx                 ; 1:4       r_from
-    ex   DE, HL         ; 1:4       r_from
-    ex  (SP), HL        ; 1:19      r_from 
+    exx                 ; 1:4       r_from i . b a
+    ex   DE, HL         ; 1:4       r_from i . a b
+    ex  (SP), HL        ; 1:19      r_from b . a i 
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
+                        ;[5:40]     ! store
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
@@ -300,17 +305,17 @@ sort_end:
 ;   ---  the beginning of a data stack function  ---
 stack_test:             ;           
     
-    push DE             ; 1:11      print
-    ld   BC, size102    ; 3:10      print Length of string to print
-    ld   DE, string102  ; 3:10      print Address of string
-    call 0x203C         ; 3:17      print Print our string with ZX 48K ROM
+    push DE             ; 1:11      print     0xD, "Data stack OK!", 0xD
+    ld   BC, size102    ; 3:10      print     Length of string102
+    ld   DE, string102  ; 3:10      print     Address of string102
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-Stop:
-    ld   SP, 0x0000     ; 3:10      not need
-    ld   HL, 0x2758     ; 3:10
-    exx                 ; 1:4
-    ret                 ; 1:10
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
 ;   =====  e n d  =====
 
 stack_test_end:
@@ -318,7 +323,6 @@ stack_test_end:
 ;   ---------  end of data stack function  ---------
 
 ;# I need to have label test and orig at the end.
-
 
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
@@ -344,7 +348,7 @@ PRINT_U16_ONLY:
 BIN2DEC:
     xor   A             ; 1:4       A=0 => 103, A='0' => 00103
     ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17    
+    call BIN2DEC_CHAR+2 ; 3:17
     ld   BC, -1000      ; 3:10
     call BIN2DEC_CHAR   ; 3:17
     ld   BC, -100       ; 3:10
@@ -355,22 +359,20 @@ BIN2DEC:
     add   A,'0'         ; 2:7
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-    
+
 BIN2DEC_CHAR:
     and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-    
+
     add  HL, BC         ; 1:11
     inc   A             ; 1:4
     jr    c, $-2        ; 2:7/12
     sbc  HL, BC         ; 2:15
     dec   A             ; 1:4
     ret   z             ; 1:5/11
-    
+
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
     ret                 ; 1:10
-VARIABLE_SECTION:
-
 STRING_SECTION:
 string102:
 db 0xD, "Data stack OK!", 0xD
@@ -378,7 +380,6 @@ size102 EQU $ - string102
 string101:
 db "RAS:"
 size101 EQU $ - string101
-
 
 test:
 dw 7 , 3 , 0 , 2 , 9 , 1 , 6 , 8 , 4 , 5

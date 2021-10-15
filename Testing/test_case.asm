@@ -3,11 +3,11 @@
 ORG 0x8000
 
 ;   ===  b e g i n  ===
-    ld  (Stop+1), SP    ; 4:20      not need
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    ld   HL, 0xF500     ; 3:10      Init Return address stack
-    exx                 ; 1:4
+    ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
+    ld    L, 0x1A       ; 2:7       init   Upper screen
+    call 0x1605         ; 3:17      init   Open channel
+    ld   HL, 0xF500     ; 3:10      init   Init Return address stack
+    exx                 ; 1:4       init
 
 
     ld   BC, 7          ; 3:10      7 for 101
@@ -130,11 +130,11 @@ begin101:
 break101:               ;           repeat 101
 
 
-Stop:
-    ld   SP, 0x0000     ; 3:10      not need
-    ld   HL, 0x2758     ; 3:10
-    exx                 ; 1:4
-    ret                 ; 1:10
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
 ;   =====  e n d  =====
 
 
@@ -519,7 +519,6 @@ check_prime_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
 
-
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
@@ -589,8 +588,7 @@ BIN2DEC_CHAR:
 
     or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
-; Print C-style stringZ
+    ret                 ; 1:10; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero
     rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
@@ -600,6 +598,7 @@ PRINT_STRING_Z:         ;           print_string_z
     or    A             ; 1:4       print_string_z
     jp   nz, $-4        ; 3:10      print_string_z
     ret                 ; 1:10      print_string_z
+
 STRING_SECTION:
 string131:
 db " a prime.", 0x00
