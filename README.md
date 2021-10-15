@@ -306,31 +306,31 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
-|<sub> Original   |<sub>   M4 FORTH    |<sub>  Optimization  |<sub>  Data stack              |<sub>   Comment    |
-| :-------------: | :----------------: | :-----------------: | :---------------------------- | :---------------- |
-|<sub>     .      |<sub>      DOT      |<sub>   UDOT if > 0  |<sub>       ( x1 -- )          |<sub>              |
-|<sub>     u.     |<sub>     UDOT      |<sub>                |<sub>       ( x1 -- )          |<sub>              |
-|<sub>   dup .    |<sub>               |<sub>    DUP_DOT     |<sub>       ( x1 -- x1 )       |<sub>              |
-|<sub>   dup u.   |<sub>               |<sub>    DUP_UDOT    |<sub>       ( x1 -- x1 )       |<sub>              |
-|<sub>     .s     |<sub>     DOTS      |<sub>                |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
-|<sub>     cr     |<sub>      CR       |<sub>                |<sub>          ( -- )          |<sub>              |
-|<sub>    emit    |<sub>     EMIT      |<sub>                |<sub>      ( 'a' -- )          |<sub>              |
-|<sub>  dup emit  |<sub>   DUP  EMIT   |<sub>   DUP_EMIT     |<sub>      ( 'a' -- 'a' )      |<sub>              |
-|<sub>   space    |<sub>     SPACE     |<sub>                |<sub>          ( -- )          |<sub>              |
-|<sub>  'a' emit  |<sub>               |<sub>  PUTCHAR('a')  |<sub>          ( -- )          |<sub>              |
-|<sub>    type    |<sub>     TYPE      |<sub>                |<sub>   ( addr n -- )          |<sub>              |
-|<sub> 2dup type  |<sub>               |<sub>   _2DUP_TYPE   |<sub>   ( addr n -- addr n )   |<sub>              |
-|<sub> .( Hello)  |<sub> PRINT("Hello")|<sub>                |<sub>          ( -- )          |<sub>              |
-|<sub> ." Hello"  |<sub> PRINT("Hello")|<sub>                |<sub>          ( -- )          |<sub>              |
-|<sub> .( Hello)  |<sub>               |<sub>PRINT_Z("Hello")|<sub>          ( -- )          |<sub>C-style string|
-|<sub> ." Hello"  |<sub>               |<sub>PRINT_Z("Hello")|<sub>          ( -- )          |<sub>C-style string|
-|<sub> s" Hello"  |<sub>STRING("Hello")|<sub>                |<sub>          ( -- addr n )   |<sub>              |
-|<sub>     key    |<sub>      KEY      |<sub>                |<sub>          ( -- key )      |<sub>              |
-|<sub>   accept   |<sub>     ACCEPT    |<sub>                |<sub> ( addr max -- loaded )   |<sub>              |
+|<sub> Original   |<sub>    M4 FORTH     |<sub>   Optimization   |<sub>  Data stack              |<sub>   Comment    |
+| :-------------: | :------------------: | :-------------------: | :---------------------------- | :---------------- |
+|<sub>     .      |<sub>       DOT       |<sub>    UDOT if > 0   |<sub>       ( x1 -- )          |<sub>              |
+|<sub>     u.     |<sub>      UDOT       |<sub>                  |<sub>       ( x1 -- )          |<sub>              |
+|<sub>   dup .    |<sub>                 |<sub>     DUP_DOT      |<sub>       ( x1 -- x1 )       |<sub>              |
+|<sub>   dup u.   |<sub>                 |<sub>     DUP_UDOT     |<sub>       ( x1 -- x1 )       |<sub>              |
+|<sub>     .s     |<sub>      DOTS       |<sub>                  |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
+|<sub>     cr     |<sub>       CR        |<sub>                  |<sub>          ( -- )          |<sub>              |
+|<sub>    emit    |<sub>      EMIT       |<sub>                  |<sub>      ( 'a' -- )          |<sub>              |
+|<sub>  dup emit  |<sub>    DUP  EMIT    |<sub>    DUP_EMIT      |<sub>      ( 'a' -- 'a' )      |<sub>              |
+|<sub>   space    |<sub>      SPACE      |<sub>                  |<sub>          ( -- )          |<sub>              |
+|<sub>  'a' emit  |<sub>                 |<sub>   PUTCHAR('a')   |<sub>          ( -- )          |<sub>              |
+|<sub>    type    |<sub>      TYPE       |<sub>                  |<sub>   ( addr n -- )          |<sub>              |
+|<sub> 2dup type  |<sub>                 |<sub>    _2DUP_TYPE    |<sub>   ( addr n -- addr n )   |<sub>              |
+|<sub> .( Hello)  |<sub> PRINT({"Hello"})|<sub>                  |<sub>          ( -- )          |<sub>              |
+|<sub> ." Hello"  |<sub> PRINT({"Hello"})|<sub>                  |<sub>          ( -- )          |<sub>              |
+|<sub> .( Hello)  |<sub>                 |<sub>PRINT_Z({"Hello"})|<sub>          ( -- )          |<sub>C-style string|
+|<sub> ." Hello"  |<sub>                 |<sub>PRINT_Z({"Hello"})|<sub>          ( -- )          |<sub>C-style string|
+|<sub> s" Hello"  |<sub>STRING({"Hello"})|<sub>                  |<sub>          ( -- addr n )   |<sub>              |
+|<sub>     key    |<sub>       KEY       |<sub>                  |<sub>          ( -- key )      |<sub>              |
+|<sub>   accept   |<sub>     ACCEPT      |<sub>                  |<sub> ( addr max -- loaded )   |<sub>              |
 
 The non-standard PRINT_Z extends each text string by zero bytes, but in return it cuts each string print by 5 bytes. An eight-byte routine to print zero-terminated strings must be added to the code, making it more convenient from printing 2 strings.
 
-./check_word.sh 'PRINT_Z("Hello!")'
+./check_word.sh 'PRINT_Z({"Hello!"})'
 
         ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
         call PRINT_STRING_Z ; 3:17      print_z
@@ -350,7 +350,7 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
     db "Hello!", 0x00
     size101 EQU $ - string101
 
-./check_word 'PRINT("Hello!")'
+./check_word 'PRINT({"Hello!"})'
 
         push DE             ; 1:11      print     "Hello!"
         ld   BC, size101    ; 3:10      print     Length of string101
@@ -375,29 +375,46 @@ ZX ROM
         rst   0x10          ; 1:11
         jr  0x203C          ; 2:12
 
-The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
+The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. The M4 is set as an opening character "{," and as an ending character "}."
+
+So everything will only work if:
+
+- The string contains no comma. Because a comma completely breaks the definition of a macro, and then on the output you read something like:
+
+m4:stdin:1: ERROR: end of file in string
+
+- The text contains no reserved Forth word such as `SWAP`. Because it would change the word to instruction `ex DE,HL`
+
+- The text has no more closing braces than opening braces in any section. Such as `} {`. And there's not a single closing brace missing at the end. `{ }} `. Because it would break the definition of a macro again.
+
+- The same goes for brackets: `())`.
+
+So if there is a comma in the string, it would save only the part before the comma, because a comma separates another parameter.
 Therefore, if there is a comma in the string, the inside must be wrapped in `{` `}`.
 
-    PRINT(  "1. Hello{,} World! Use {,} {{1,2,3}} {{4}}")
-    PRINT(  "2. Hello{, World! Use , {1,2,3} {4}}")
-    PRINT( {"3. Hello, World! Use , {1,2,3} {4}"})
+    PRINT(  "1. Hello{,} World! {SWAP} {,} {{1,2,3}} {{4}}")
+    PRINT(  "2. Hello{, World! {SWAP} , {1,2,3} {4}}")
+
+And the easiest method is:
+
+    PRINT( {"3. Hello, World! SWAP , {1,2,3} {4}"})
 
     STRING_SECTION:
     string103:
-    db "3. Hello, World! Use , {1,2,3} {4}"
+    db "3. Hello, World! SWAP , {1,2,3} {4}"
     size103 EQU $ - string103
     string102:
-    db "2. Hello, World! Use , {1,2,3} {4}"
+    db "2. Hello, World! SWAP , {1,2,3} {4}"
     size102 EQU $ - string102
     string101:
-    db "1. Hello, World! Use , {1,2,3} {4}"
+    db "1. Hello, World! SWAP , {1,2,3} {4}"
     size101 EQU $ - string101
 
-And every `{` in the string must have a matching `}`. Otherwise, the macro will end in error. This can only be solved by redefining {} for other characters always before calling PRINT and returning to the original values afterwards. 
-Next, by rewriting the entire chain library section. Replacing {} everywhere would not have to be redefined, but would leave a problem of how to write special characters easily - for example, PRINT(⸨"Text, } next text"⸩). 
-And I would be stopped by a text editor from showing the closing/opening partner of a brace. Fortunately, the odd number of braces can be solved by writing { as 0x7b and } as 0x7D. PRINT({"Text, ",0x7d," next text"})
+This is going to solve all the problems except one problem. An odd number of braces, or more opening braces at any given moment.
+Fortunately, the odd number of braces can be solved by writing `{` as `0x7b` and `}` as `0x7D`. PRINT({"Text, ",0x7d," next text"})
 
 If you're trying to insert duplicate text, the translator recognizes it and doesn't create a copy, but a link to the first use. And that includes the word STRING, so watch out if you edit a chain like that. Same sentences where one is terminated by a zero character and the other has no terminating zero character are understood as different strings.
+
 ### IF
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
