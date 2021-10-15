@@ -90,28 +90,27 @@ File Hello.m4
 m4 Hello.m4
 
     ORG 0x8000
-
+    
     ;   ===  b e g i n  ===
-        ld  (Stop+1), SP    ; 4:20      not need
-        ld    L, 0x1A       ; 2:7       Upper screen
-        call 0x1605         ; 3:17      Open channel
-        ld   HL, 60000      ; 3:10      Init Return address stack
-        exx                 ; 1:4
-
+        ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
+        ld    L, 0x1A       ; 2:7       init   Upper screen
+        call 0x1605         ; 3:17      init   Open channel
+        ld   HL, 60000      ; 3:10      init   Init Return address stack
+        exx                 ; 1:4       init
+    
         push DE             ; 1:11      print     "Hello World!"
         ld   BC, size101    ; 3:10      print     Length of string101
         ld   DE, string101  ; 3:10      print     Address of string101
         call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
         pop  DE             ; 1:10      print
-
-    Stop:
-        ld   SP, 0x0000     ; 3:10      not need
-        ld   HL, 0x2758     ; 3:10
-        exx                 ; 1:4
-        ret                 ; 1:10
+    
+    Stop:                   ;           stop
+        ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+        ld   HL, 0x2758     ; 3:10      stop
+        exx                 ; 1:4       stop
+        ret                 ; 1:10      stop
     ;   =====  e n d  =====
-
-
+    
     STRING_SECTION:
     string101:
     db "Hello World!"
@@ -333,11 +332,8 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
 
 ./check_word.sh 'PRINT_Z("Hello!")'
 
-
         ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
         call PRINT_STRING_Z ; 3:17      print_z
-
-
     ; Print C-style stringZ
     ; In: BC = addr
     ; Out: BC = addr zero
@@ -348,6 +344,7 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
         or    A             ; 1:4       print_string_z
         jp   nz, $-4        ; 3:10      print_string_z
         ret                 ; 1:10      print_string_z
+
     STRING_SECTION:
     string101:
     db "Hello!", 0x00
@@ -360,7 +357,6 @@ The non-standard PRINT_Z extends each text string by zero bytes, but in return i
         ld   DE, string101  ; 3:10      print     Address of string101
         call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
         pop  DE             ; 1:10      print
-
 
     STRING_SECTION:
     string101:
