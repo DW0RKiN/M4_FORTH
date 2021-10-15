@@ -180,7 +180,6 @@ include(M4PATH{}divmul/udiv.m4){}dnl
 dnl
 dnl
 dnl
-dnl
 ifdef({USE_Random},{ifdef({USE_Rnd},,define({USE_Rnd},{}))
 ; ( max -- rand )
 ; 16-bit pseudorandom generator
@@ -273,7 +272,6 @@ Rnd_8b EQU $+1
 dnl
 dnl
 dnl
-dnl
 ifdef({USE_KEY},{
 ; Read key from keyboard
 ; In:
@@ -329,6 +327,7 @@ READSTRING3:
     ret                 ; 1:10      readstring}){}dnl
 dnl
 dnl
+dnl
 ifdef({USE_STRING_Z},{
 ; Print C-style stringZ
 ; In: BC = addr
@@ -342,10 +341,12 @@ PRINT_STRING_Z:         ;           print_string_z
     ret                 ; 1:10      print_string_z}){}dnl
 dnl
 dnl
+dnl
 ifelse(ALL_VARIABLE,{},,{
 VARIABLE_SECTION:
 }ALL_VARIABLE
 ){}dnl
+dnl
 dnl
 dnl
 ifdef({STRING_NUM_STACK},{
