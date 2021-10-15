@@ -375,13 +375,13 @@ ZX ROM
         rst   0x10          ; 1:11
         jr  0x203C          ; 2:12
 
-The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. The M4 is set as an opening character "{," and as an ending character "}."
+The problem with PRINT is that M4 ignores the `"`. M4 does not understand that `"` it introduces a string. The M4 is set as an opening character `{` and as an ending character `}`.
 
 So everything will only work if:
 
 - The string contains no comma. Because a comma completely breaks the definition of a macro, and then on the output you read something like:
 
-m4:stdin:1: ERROR: end of file in string
+      m4:stdin:1: ERROR: end of file in string
 
 - The text contains no reserved Forth word such as `SWAP`. Because it would change the word to instruction `ex DE,HL`
 
