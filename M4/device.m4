@@ -157,7 +157,7 @@ dnl .( string)
 dnl ( -- )
 dnl print string
 define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
-    push DE             ; 1:11      print     $1
+    push DE             ; 1:11      print     {$1}
     ld   BC, size{}TEMP_FOUND    ; 3:10      print     Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
@@ -191,7 +191,7 @@ dnl ( -- addr n )
 dnl addr = address string, n = lenght(string)
 define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
     push DE             ; 1:11      string    ( -- addr size )
-    push HL             ; 1:11      string    $1
+    push HL             ; 1:11      string    {$1}
     ld   DE, string{}TEMP_FOUND  ; 3:10      string    Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     ld   HL, size{}TEMP_FOUND    ; 3:10      string    Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
