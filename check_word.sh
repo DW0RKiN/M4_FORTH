@@ -5,4 +5,4 @@ if test "$file" = "" ; then
     printf "$0 error: FIRST.M4 not found!\\n"
     exit 1
 fi
-printf "include(\`$file')dnl\n$1\n" | m4
+echo "include(\`$file')dnl\n${@}" | m4
