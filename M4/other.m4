@@ -51,7 +51,7 @@ __{}ifelse($1,{},{.error dvariable: Missing parameter with variable name!}dnl
 __{},$#,{1},{$1:
 __{}  dw 0x0000
 __{}  dw 0x0000{}}dnl
-__{},{$1: 
+__{},{$1:
 __{}  dw eval(($2) & 0x0ffff)
 __{}  dw eval(($2) / 0x10000)})dnl
 })})dnl
@@ -74,6 +74,27 @@ define({CFETCH},{
     ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl
 dnl
+dnl dup C@
+dnl ( addr -- addr char )
+dnl save addr and fetch 8-bit number from addr
+define({DUP_CFETCH},{
+                        ;[5:29]     dup C@ dup_cfetch ( addr -- addr char )
+    push DE             ; 1:11      dup C@ dup_cfetch
+    ld    E, (HL)       ; 1:7       dup C@ dup_cfetch
+    ld    D, 0x00       ; 2:7       dup C@ dup_cfetch
+    ex   DE, HL         ; 1:4       dup C@ dup_cfetch})dnl
+dnl
+dnl
+dnl dup C@ swap
+dnl ( addr -- char addr )
+dnl save addr and fetch 8-bit number from addr and swap
+define({DUP_CFETCH_SWAP},{
+                        ;[4:25]     dup C@ swap dup_cfetch_swap ( addr -- char addr )
+    push DE             ; 1:11      dup C@ swap dup_cfetch_swap
+    ld    E, (HL)       ; 1:7       dup C@ swap dup_cfetch_swap
+    ld    D, 0x00       ; 2:7       dup C@ swap dup_cfetch_swap})dnl
+dnl
+dnl
 dnl @
 dnl ( addr -- x )
 dnl fetch 16-bit number from addr
@@ -82,6 +103,31 @@ define({FETCH},{
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch})dnl
+dnl
+dnl
+dnl dup @
+dnl ( addr -- addr x )
+dnl save addr and fetch 16-bit number from addr
+define({DUP_FETCH},{
+                        ;[6:41]     dup @ dup_fetch ( addr -- addr x )
+    push DE             ; 1:11      dup @ dup_fetch
+    ld    E, (HL)       ; 1:7       dup @ dup_fetch
+    inc  HL             ; 1:6       dup @ dup_fetch
+    ld    D, (HL)       ; 1:7       dup @ dup_fetch
+    dec  HL             ; 1:6       dup @ dup_fetch
+    ex   DE, HL         ; 1:4       dup @ dup_fetch})dnl
+dnl
+dnl
+dnl dup @ swap
+dnl ( addr -- x addr )
+dnl save addr and fetch 16-bit number from addr and swap
+define({DUP_FETCH_SWAP},{
+                        ;[5:37]     dup @ swap dup_fetch_swap ( addr -- x addr )
+    push DE             ; 1:11      dup @ swap dup_fetch_swap
+    ld    E, (HL)       ; 1:7       dup @ swap dup_fetch_swap
+    inc  HL             ; 1:6       dup @ swap dup_fetch_swap
+    ld    D, (HL)       ; 1:7       dup @ swap dup_fetch_swap
+    dec  HL             ; 1:6       dup @ swap dup_fetch_swap})dnl
 dnl
 dnl
 dnl 2@
@@ -104,7 +150,7 @@ dnl
 dnl addr C@
 dnl ( -- x )
 dnl push_cfetch(addr), load 8-bit char from addr
-define({PUSH_CFETCH},{
+define({PUSH_CFETCH},{ifelse($1,{},{.error push_cfetch(): Missing parameter with address!})
     push DE             ; 1:11      $1 @ push($1) cfetch
     ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
@@ -114,7 +160,7 @@ dnl
 dnl addr @
 dnl ( -- x )
 dnl push_fetch(addr), load 16-bit number from addr
-define({PUSH_FETCH},{
+define({PUSH_FETCH},{ifelse($1,{},{.error push_fetch(): Missing parameter with address!})
     push DE             ; 1:11      $1 @ push($1) fetch
     ex   DE, HL         ; 1:4       $1 @ push($1) fetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
@@ -123,11 +169,13 @@ dnl
 dnl addr 2@
 dnl ( -- hi lo )
 dnl push_2fetch(addr), load 32-bit number from addr
-define({PUSH_2FETCH},{
+define({PUSH_2FETCH},{ifelse($1,{},{.error push_2fetch(): Missing parameter with address!})
     push DE             ; 1:11      $1 2@ push_2fetch($1)
-    push HL             ; 1:11      $1 2@ push_2fetch($1){}ifelse(eval(($1)),{},{
-    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2! push_2fetch($1) hi},{
-    ld   DE,format({%-12s},(eval($1+2))); 4:20      $1 2@ push_2fetch($1) hi})
+    push HL             ; 1:11      $1 2@ push_2fetch($1)
+__{}ifelse(eval(($1)),{},{dnl
+__{}    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2@ push_2fetch($1) hi}dnl
+__{},{dnl
+__{}    ld   DE,format({%-12s},(eval($1+2))); 4:20      $1 2@ push_2fetch($1) hi})
     ld   HL,format({%-12s},($1)); 3:16      $1 2@ push_2fetch($1) lo})dnl
 dnl
 dnl
