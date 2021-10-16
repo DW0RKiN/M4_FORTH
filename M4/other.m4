@@ -70,7 +70,7 @@ dnl C@
 dnl ( addr -- char )
 dnl fetch 8-bit char from addr
 define({CFETCH},{
-    ld    L, (HL)       ; 1:7       C@ cfetch
+    ld    L, (HL)       ; 1:7       C@ cfetch   ( addr -- char )
     ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl
 dnl
@@ -99,7 +99,7 @@ dnl @
 dnl ( addr -- x )
 dnl fetch 16-bit number from addr
 define({FETCH},{
-    ld    A, (HL)       ; 1:7       @ fetch
+    ld    A, (HL)       ; 1:7       @ fetch   ( addr -- x )
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
     ld    L, A          ; 1:4       @ fetch})dnl
@@ -183,7 +183,7 @@ dnl C!
 dnl ( char addr -- )
 dnl store 8-bit char at addr
 define({CSTORE},{
-    ld  (HL),E          ; 1:7       C! cstore
+    ld  (HL),E          ; 1:7       C! cstore   ( char addr -- )
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore})dnl
 dnl
@@ -192,28 +192,12 @@ dnl !
 dnl ( x addr -- )
 dnl store 16-bit number at addr
 define({STORE},{
-                        ;[5:40]     ! store
+                        ;[5:40]     ! store   ( x addr -- )
     ld  (HL),E          ; 1:7       ! store
     inc  HL             ; 1:6       ! store
     ld  (HL),D          ; 1:7       ! store
     pop  HL             ; 1:10      ! store
     pop  DE             ; 1:10      ! store})dnl
-dnl
-dnl
-dnl 2!
-dnl ( hi lo addr -- )
-dnl store 32-bit number at addr
-define({_2STORE},{
-    ld  (HL),E          ; 1:7       2! _2store
-    inc  HL             ; 1:6       2! _2store
-    ld  (HL),D          ; 1:7       2! _2store
-    inc  HL             ; 1:6       2! _2store
-    pop  DE             ; 1:10      2! _2store
-    ld  (HL),E          ; 1:7       2! _2store
-    inc  HL             ; 1:6       2! _2store
-    ld  (HL),D          ; 1:7       2! _2store
-    pop  HL             ; 1:10      2! _2store
-    pop  DE             ; 1:10      2! _2store})dnl
 dnl
 dnl
 dnl addr C!
@@ -224,6 +208,22 @@ define({PUSH_CSTORE},{ifelse($1,{},{.error push_cstore(): Missing parameter with
     ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
     ex   DE, HL         ; 1:4       $1 C! push($1) cstore
     pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
+dnl
+dnl
+dnl 2!
+dnl ( hi lo addr -- )
+dnl store 32-bit number at addr
+define({_2STORE},{
+    ld  (HL),E          ; 1:7       2! _2store   ( hi lo addr -- )
+    inc  HL             ; 1:6       2! _2store
+    ld  (HL),D          ; 1:7       2! _2store
+    inc  HL             ; 1:6       2! _2store
+    pop  DE             ; 1:10      2! _2store
+    ld  (HL),E          ; 1:7       2! _2store
+    inc  HL             ; 1:6       2! _2store
+    ld  (HL),D          ; 1:7       2! _2store
+    pop  HL             ; 1:10      2! _2store
+    pop  DE             ; 1:10      2! _2store})dnl
 dnl
 dnl
 dnl addr !
