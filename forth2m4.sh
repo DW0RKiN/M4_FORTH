@@ -106,8 +106,13 @@ do
 
     sed 's#^\([^;{]*\s\|^\)!\(\s\|$\)#\1STORE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)@\(\s\|$\)#\1FETCH\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+FETCH\(\s\|$\)#\1DUP_FETCH\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP_FETCH\s\+SWAP\(\s\|$\)#\1DUP_FETCH_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)c!\(\s\|$\)#\1CSTORE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)c@\(\s\|$\)#\1CFETCH\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+CFETCH\(\s\|$\)#\1DUP_CFETCH\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP_CFETCH\s\+SWAP\(\s\|$\)#\1DUP_CFETCH_SWAP\2#gi' |
+
     sed 's#^\([^;{]*\s\|^\)2!\(\s\|$\)#\1_2STORE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2@\(\s\|$\)#\1_2FETCH\2#gi' |
 
