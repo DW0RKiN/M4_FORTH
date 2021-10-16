@@ -171,7 +171,7 @@ dnl
 dnl addr C!
 dnl ( char -- )
 dnl store(addr) store 8-bit char at addr
-define({PUSH_CSTORE},{
+define({PUSH_CSTORE},{ifelse($1,{},{.error push_cstore(): Missing parameter with address!})
     ld    A, L          ; 1:4       $1 C! push($1) cstore
     ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
     ex   DE, HL         ; 1:4       $1 C! push($1) cstore
@@ -181,7 +181,7 @@ dnl
 dnl addr !
 dnl ( x -- )
 dnl store(addr) store 16-bit number at addr
-define({PUSH_STORE},{
+define({PUSH_STORE},{ifelse($1,{},{.error push_store(): Missing parameter with address!})
     ld   format({%-15s},($1){,} HL); 3:16      $1 ! push($1) store
     ex   DE, HL         ; 1:4       $1 ! push($1) store
     pop  DE             ; 1:10      $1 ! push($1) store})dnl
@@ -190,9 +190,10 @@ dnl
 dnl addr 2!
 dnl ( hi lo -- )
 dnl store(addr) store 32-bit number at addr
-define({PUSH_2STORE},{
-    ld   format({%-15s},($1){,} HL); 3:16      $1 2! push_2store($1) lo{}ifelse(eval(($1)),{},{
-    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2! push_2store($1) hi},{
+define({PUSH_2STORE},{ifelse($1,{},{.error push_2store(): Missing parameter with address!})
+    ld   format({%-15s},($1){,} HL); 3:16      $1 2! push_2store($1) lo
+__{}ifelse(eval(($1)),{},{dnl
+    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2! push_2store($1) hi},{dnl
     ld   (format({%-14s},eval(($1)+2){),} DE); 4:20      $1 2! push_2store($1) hi})
     pop  HL             ; 1:10      $1 2! push_2store($1)
     pop  DE             ; 1:10      $1 2! push_2store($1)})dnl

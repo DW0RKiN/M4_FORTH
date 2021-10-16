@@ -1,5 +1,5 @@
 dnl ## Device
-define({__{}},{})dnl
+define({__},{})dnl
 dnl
 dnl .
 dnl ( x -- )
@@ -98,52 +98,54 @@ define({_2DUP_TYPE},{
 dnl
 dnl
 define({RECURSIVE_REVERSE_STACK},{ifdef({STRING_NUM_STACK},{dnl
-pushdef({REVERSE_NUM_STACK},⸨STRING_NUM_STACK⸩)dnl
-pushdef({REVERSE_STACK},⸨STRING_STACK⸩)dnl
-popdef({STRING_NUM_STACK})dnl
-popdef({STRING_STACK})dnl
-RECURSIVE_REVERSE_STACK})})dnl
+__{}pushdef({REVERSE_NUM_STACK},⸨STRING_NUM_STACK⸩)dnl
+__{}pushdef({REVERSE_STACK},⸨STRING_STACK⸩)dnl
+__{}popdef({STRING_NUM_STACK})dnl
+__{}popdef({STRING_STACK})dnl
+__{}RECURSIVE_REVERSE_STACK})})dnl
 dnl
 dnl
 dnl
 define({RECURSIVE_COPY_STACK},{ifdef({REVERSE_NUM_STACK},{dnl
-changequote({⸨}, {⸩})dnl
-pushdef(⸨STRING_NUM_STACK⸩,{REVERSE_NUM_STACK})dnl
-pushdef(⸨TEMP_NUM_STACK⸩,{{REVERSE_NUM_STACK}})dnl
-pushdef(⸨STRING_STACK⸩,{REVERSE_STACK})dnl
-pushdef(⸨TEMP_STACK⸩,{{REVERSE_STACK}})dnl
-popdef(⸨REVERSE_NUM_STACK⸩)dnl
-popdef(⸨REVERSE_STACK⸩)dnl
-changequote(⸨{⸩, ⸨}⸩)dnl
-RECURSIVE_COPY_STACK})})dnl
+__{}changequote({⸨}, {⸩})dnl
+__⸨⸩pushdef(⸨STRING_NUM_STACK⸩,{REVERSE_NUM_STACK})dnl
+__⸨⸩pushdef(⸨TEMP_NUM_STACK⸩,{{REVERSE_NUM_STACK}})dnl
+__⸨⸩pushdef(⸨STRING_STACK⸩,{REVERSE_STACK})dnl
+__⸨⸩pushdef(⸨TEMP_STACK⸩,{{REVERSE_STACK}})dnl
+__⸨⸩popdef(⸨REVERSE_NUM_STACK⸩)dnl
+__⸨⸩popdef(⸨REVERSE_STACK⸩)dnl
+__⸨⸩changequote(⸨{⸩, ⸨}⸩)dnl
+__{}RECURSIVE_COPY_STACK})})dnl
 dnl
 dnl
 dnl
 define({RECURSIVE_CHECK_STACK},{dnl
-ifdef({TEMP_NUM_STACK},{dnl
-ifelse(TEMP_STACK,{$1},{dnl
-define({TEMP_FOUND},TEMP_NUM_STACK)},{dnl
-popdef({TEMP_NUM_STACK}){}popdef({TEMP_STACK}){}RECURSIVE_CHECK_STACK({$1})})dnl
-})dnl
+__{}ifdef({TEMP_NUM_STACK},{dnl
+__{}__{}ifelse(TEMP_STACK,{$1},{dnl
+__{}__{}__{}define({TEMP_FOUND},TEMP_NUM_STACK)}dnl
+__{}__{},{dnl
+__{}__{}__{}popdef({TEMP_NUM_STACK}){}popdef({TEMP_STACK}){}RECURSIVE_CHECK_STACK({$1})dnl
+__{}__{}})dnl
+__{}})dnl
 })dnl
 dnl
 dnl
 dnl
 define({PRINT_STRING_STACK},{ifdef({STRING_NUM_STACK},{
-string{}STRING_NUM_STACK:
-db STRING_STACK
-size{}STRING_NUM_STACK EQU $ - string{}STRING_NUM_STACK{}dnl
-popdef({STRING_NUM_STACK}){}popdef({STRING_STACK}){}PRINT_STRING_STACK})})dnl
+__{}string{}STRING_NUM_STACK:
+__{}db STRING_STACK
+__{}size{}STRING_NUM_STACK EQU $ - string{}STRING_NUM_STACK{}dnl
+__{}popdef({STRING_NUM_STACK}){}popdef({STRING_STACK}){}PRINT_STRING_STACK})})dnl
 dnl
 dnl
 dnl
 define({SEARCH_FOR_MATCHING_STRING},{dnl
-undefine({REVERSE_STACK})dnl
-undefine({REVERSE_NUM_STACK})dnl
-define({TEMP_FOUND},PRINT_COUNT)dnl
-RECURSIVE_REVERSE_STACK{}dnl
-RECURSIVE_COPY_STACK{}dnl
-RECURSIVE_CHECK_STACK({$1}){}dnl
+__{}undefine({REVERSE_STACK})dnl
+__{}undefine({REVERSE_NUM_STACK})dnl
+__{}define({TEMP_FOUND},PRINT_COUNT)dnl
+__{}RECURSIVE_REVERSE_STACK{}dnl
+__{}RECURSIVE_COPY_STACK{}dnl
+__{}RECURSIVE_CHECK_STACK({$1}){}dnl
 })dnl
 dnl
 dnl
@@ -162,8 +164,8 @@ define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_ST
     ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
     pop  DE             ; 1:10      print{}dnl
-ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl
@@ -174,8 +176,8 @@ dnl print null-terminated string
 define({_PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
     ld   BC, string{}TEMP_FOUND  ; 3:10      print_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call PRINT_STRING_Z ; 3:17      print_z{}dnl
-ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl ." string"
@@ -194,8 +196,8 @@ define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_S
     push HL             ; 1:11      string    {$1}
     ld   DE, string{}TEMP_FOUND  ; 3:10      string    Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     ld   HL, size{}TEMP_FOUND    ; 3:10      string    Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
-ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl
