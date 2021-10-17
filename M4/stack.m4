@@ -14,21 +14,30 @@ dnl
 dnl
 dnl swap 3
 dnl ( b a -- a b 3 )
-define({SWAP_PUSH},{
+define({SWAP_PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push HL             ; 1:11      swap $1
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      swap $1 ( b a -- a b $1 )})dnl
 dnl
 dnl
 dnl 3 swap
 dnl ( a -- 3 a )
-define({PUSH_SWAP},{
+define({PUSH_SWAP},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 swap
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
 dnl
 dnl
 dnl dup 3 swap
 dnl ( a -- a 3 a )
-define({DUP_PUSH_SWAP},{
+define({DUP_PUSH_SWAP},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      dup $1 swap
     push HL             ; 1:11      dup $1 swap
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
@@ -146,7 +155,10 @@ dnl
 dnl
 dnl 3 over
 dnl ( a -- a 3 a )
-define({PUSH_OVER},{
+define({PUSH_OVER},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 over
     push HL             ; 1:11      $1 over
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
@@ -280,8 +292,10 @@ dnl
 dnl
 dnl ( -- a )
 dnl push(a) ulozi na zasobnik nasledujici polozku
-define({PUSH},{ifelse($#,{1},,{
-.error More parameters found in macro! push($@) --> push2($@) ?})
+define({PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
     push DE             ; 1:11      push($1)
     ex   DE, HL         ; 1:4       push($1)
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push($1)})dnl
@@ -290,7 +304,7 @@ dnl
 dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse($#,{2},,{
-.error The wrong number of parameters in the push2 macro! push2($@)})
+__{}.error {$0}($@): The wrong number of parameters in macro!})   
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
@@ -300,14 +314,20 @@ dnl
 dnl drop 50
 dnl ( a -- 50 )
 dnl zmeni hodnotu top
-define({DROP_PUSH},{
+define({DROP_PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      drop $1})dnl
 dnl
 dnl
 dnl 2drop 50
 dnl ( a -- 50 )
 dnl zmeni hodnotu top
-define({_2DROP_PUSH},{
+define({_2DROP_PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     pop  DE             ; 1:10      2drop $1
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      2drop $1})dnl
 dnl
@@ -315,7 +335,10 @@ dnl
 dnl dup 50
 dnl ( a -- a a 50 )
 dnl zmeni hodnotu top
-define({DUP_PUSH},{
+define({DUP_PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      dup $1
     push HL             ; 1:11      dup $1
     ex   DE, HL         ; 1:4       dup $1

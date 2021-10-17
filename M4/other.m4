@@ -30,10 +30,14 @@ define({BYE},{
     jp   Stop           ; 3:10      bye})dnl
 dnl
 dnl
-define({CONSTANT},{ifelse($#,{2},{
-format({%-20s},$1) EQU $2
-define({$1},{$2})},{
-.error constant: No parameter or redundant parameter!})})dnl
+define({CONSTANT},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}$#,{2},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}format({%-20s},$1) EQU $2
+__{}define({$1},{$2})})dnl
 dnl
 dnl
 define({ALL_VARIABLE},{})dnl
@@ -150,7 +154,10 @@ dnl
 dnl addr C@
 dnl ( -- x )
 dnl push_cfetch(addr), load 8-bit char from addr
-define({PUSH_CFETCH},{ifelse($1,{},{.error push_cfetch(): Missing parameter with address!})
+define({PUSH_CFETCH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 @ push($1) cfetch
     ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
@@ -160,7 +167,10 @@ dnl
 dnl addr @
 dnl ( -- x )
 dnl push_fetch(addr), load 16-bit number from addr
-define({PUSH_FETCH},{ifelse($1,{},{.error push_fetch(): Missing parameter with address!})
+define({PUSH_FETCH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 @ push($1) fetch
     ex   DE, HL         ; 1:4       $1 @ push($1) fetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
@@ -169,13 +179,16 @@ dnl
 dnl addr 2@
 dnl ( -- hi lo )
 dnl push_2fetch(addr), load 32-bit number from addr
-define({PUSH_2FETCH},{ifelse($1,{},{.error push_2fetch(): Missing parameter with address!})
+define({PUSH_2FETCH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 2@ push_2fetch($1)
     push HL             ; 1:11      $1 2@ push_2fetch($1)
-__{}ifelse(eval(($1)),{},{dnl
+__{}ifelse(eval(2+$1),{},{dnl
 __{}    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2@ push_2fetch($1) hi}dnl
 __{},{dnl
-__{}    ld   DE,format({%-12s},(eval($1+2))); 4:20      $1 2@ push_2fetch($1) hi})
+__{}    ld   DE,format({%-12s},(eval(2+$1))); 4:20      $1 2@ push_2fetch($1) hi})
     ld   HL,format({%-12s},($1)); 3:16      $1 2@ push_2fetch($1) lo})dnl
 dnl
 dnl
@@ -203,7 +216,10 @@ dnl
 dnl addr C!
 dnl ( char -- )
 dnl store(addr) store 8-bit char at addr
-define({PUSH_CSTORE},{ifelse($1,{},{.error push_cstore(): Missing parameter with address!})
+define({PUSH_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld    A, L          ; 1:4       $1 C! push($1) cstore
     ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
     ex   DE, HL         ; 1:4       $1 C! push($1) cstore
@@ -229,7 +245,10 @@ dnl
 dnl addr !
 dnl ( x -- )
 dnl store(addr) store 16-bit number at addr
-define({PUSH_STORE},{ifelse($1,{},{.error push_store(): Missing parameter with address!})
+define({PUSH_STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   format({%-15s},($1){,} HL); 3:16      $1 ! push($1) store
     ex   DE, HL         ; 1:4       $1 ! push($1) store
     pop  DE             ; 1:10      $1 ! push($1) store})dnl
@@ -238,7 +257,10 @@ dnl
 dnl addr 2!
 dnl ( hi lo -- )
 dnl store(addr) store 32-bit number at addr
-define({PUSH_2STORE},{ifelse($1,{},{.error push_2store(): Missing parameter with address!})
+define({PUSH_2STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   format({%-15s},($1){,} HL); 3:16      $1 2! push_2store($1) lo
 __{}ifelse(eval(($1)),{},{dnl
     ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2! push_2store($1) hi},{dnl
@@ -250,7 +272,12 @@ dnl
 dnl char addr C!
 dnl ( -- )
 dnl store(addr) store 8-bit number at addr
-define({PUSH2_CSTORE},{
+define({PUSH2_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}$#,{2},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      push2_cstore($1,$2)
     ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)})dnl
 dnl
@@ -258,7 +285,12 @@ dnl
 dnl x addr !
 dnl ( -- )
 dnl store(addr) store 16-bit number at addr
-define({PUSH2_STORE},{
+define({PUSH2_STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}$#,{2},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_store($1,$2)
     ld   format({%-15s},($2){,} BC); 4:20      push2_store($1,$2)})dnl
 dnl
@@ -266,9 +298,16 @@ dnl
 dnl lo addr 2!
 dnl ( hi -- )
 dnl store(addr) store 32-bit number at addr
-define({PUSH2_2STORE},{{}ifelse(eval(($1)),{},{
-    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi},{
-    ld   (format({%-14s},eval(($2)+2){),} HL); 3:16      $1 $2 2! push2_2store($1,$2) hi})
+define({PUSH2_2STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}$#,{2},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval(2+$2),{},{dnl
+__{}    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi}dnl
+__{},{dnl
+__{}    ld   (format({%-14s},eval(($2)+2){),} HL); 3:16      $1 $2 2! push2_2store($1,$2) hi})
     ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      $1 $2 2! push2_2store($1,$2)
     ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) lo
     pop  HL             ; 1:10      $1 $2 2! push2_2store($1,$2)})dnl
@@ -292,7 +331,10 @@ dnl
 dnl num addr +!
 dnl ( -- )
 dnl Adds num to the 16-bit number stored at addr.
-define({PUSH2_ADDSTORE},{
+define({PUSH2_ADDSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{2},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     push HL             ; 1:11      push2_addstore($1,$2)
     ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_addstore($1,$2)
     ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
@@ -319,12 +361,15 @@ dnl
 dnl u cmove
 dnl ( from to -- )
 dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
-define({PUSH_CMOVE},{ifelse(eval($1),{0},{},{
+define({PUSH_CMOVE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   BC, format({%-11s},$1); 3:10      $1 cmove BC = u
     ex   DE, HL         ; 1:4       $1 cmove HL = from = addr1, DE = to
     ldir                ; 2:u*21/16 $1 cmove
     pop  HL             ; 1:10      $1 cmove
-    pop  DE             ; 1:10      $1 cmove})})dnl
+    pop  DE             ; 1:10      $1 cmove})dnl
 dnl
 dnl
 dnl cmove>
@@ -416,7 +461,10 @@ dnl
 dnl addr u char fill
 dnl ( addr u -- )
 dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({PUSH_FILL},{ifelse({fast},{fast},{
+define({PUSH_FILL},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})ifelse({fast},{fast},{
 __{}    ld    A, H          ; 1:4       $1 fill
 __{}    or    L             ; 1:4       $1 fill
 __{}    jr    z, $+16       ; 2:7/12    $1 fill
@@ -453,14 +501,98 @@ dnl
 dnl addr u char fill
 dnl ( addr -- )
 dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({PUSH2_FILL},{ifelse(eval($1),{0},{
+define({PUSH2_FILL},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}$#,{2},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval($1),{0},{dnl
 __{}    ex   DE, HL         ; 1:4       $1 $2 fill
 __{}    pop  DE             ; 1:10      $1 $2 fill},
-__{}eval($1),{1},{
-__{}    ld  (HL),format({%-11s},$2); 2:10      $1 $2 fill
+__{}eval($1),{1},{dnl
+__{}                        ;[4:24]     1 $2 fill
+__{}    ld  (HL),format({%-11s},$2); 2:10      1 $2 fill
+__{}    ex   DE, HL         ; 1:4       1 $2 fill
+__{}    pop  DE             ; 1:10      1 $2 fill},
+__{}eval($1),{2},{dnl
+__{}                        ;[7:40]     2 $2 fill
+__{}    ld  (HL),format({%-11s},$2); 2:10      2 $2 fill
+__{}    inc  HL             ; 1:6       2 $2 fill
+__{}    ld  (HL),format({%-11s},$2); 2:10      2 $2 fill
+__{}    ex   DE, HL         ; 1:4       2 $2 fill
+__{}    pop  DE             ; 1:10      2 $2 fill},
+__{}eval($1),{3},{dnl
+__{}                        ;[9:54]     3 $2 fill
+__{}    ld    A, format({%-11s},$2); 2:7       3 $2 fill
+__{}    ld  (HL),A          ; 1:7       3 $2 fill
+__{}    inc  HL             ; 1:6       3 $2 fill
+__{}    ld  (HL),A          ; 1:7       3 $2 fill
+__{}    inc  HL             ; 1:6       3 $2 fill
+__{}    ld  (HL),A          ; 1:7       3 $2 fill
+__{}    ex   DE, HL         ; 1:4       3 $2 fill
+__{}    pop  DE             ; 1:10      3 $2 fill},
+__{}eval($1),{4},{dnl
+__{}                        ;[11:67]    4 $2 fill
+__{}    ld    A, format({%-11s},$2); 2:7       4 $2 fill
+__{}    ld  (HL),A          ; 1:7       4 $2 fill
+__{}    inc  HL             ; 1:6       4 $2 fill
+__{}    ld  (HL),A          ; 1:7       4 $2 fill
+__{}    inc  HL             ; 1:6       4 $2 fill
+__{}    ld  (HL),A          ; 1:7       4 $2 fill
+__{}    inc  HL             ; 1:6       4 $2 fill
+__{}    ld  (HL),A          ; 1:7       4 $2 fill
+__{}    ex   DE, HL         ; 1:4       4 $2 fill
+__{}    pop  DE             ; 1:10      4 $2 fill},
+__{}eval($1),{5},{dnl
+__{}                        ;[13:80]    5 $2 fill
+__{}    ld    A, format({%-11s},$2); 2:7       5 $2 fill
+__{}    ld  (HL),A          ; 1:7       5 $2 fill
+__{}    inc  HL             ; 1:6       5 $2 fill
+__{}    ld  (HL),A          ; 1:7       5 $2 fill
+__{}    inc  HL             ; 1:6       5 $2 fill
+__{}    ld  (HL),A          ; 1:7       5 $2 fill
+__{}    inc  HL             ; 1:6       5 $2 fill
+__{}    ld  (HL),A          ; 1:7       5 $2 fill
+__{}    inc  HL             ; 1:6       5 $2 fill
+__{}    ld  (HL),A          ; 1:7       5 $2 fill
+__{}    ex   DE, HL         ; 1:4       5 $2 fill
+__{}    pop  DE             ; 1:10      5 $2 fill},
+__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{dnl
+__{}                        ;[13:eval(19+(52*$1)/3)]   $1 $2 fill
+__{}    ld   BC, format({%-11s},eval(($1)/3){*256+$2}); 3:10      $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    djnz $-4            ; 2:13/8    $1 $2 fill
 __{}    ex   DE, HL         ; 1:4       $1 $2 fill
 __{}    pop  DE             ; 1:10      $1 $2 fill},
-__{}{
+__{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{dnl
+__{}                        ;[11:eval(19+39*(($1)/2))]   $1 $2 fill
+__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    djnz $-4            ; 2:13/8    $1 $2 fill
+__{}    ex   DE, HL         ; 1:4       $1 $2 fill
+__{}    pop  DE             ; 1:10      $1 $2 fill},
+__{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{dnl
+__{}                        ;[12:eval(26+39*(($1)/2))]   $1 $2 fill
+__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    inc  HL             ; 1:6       $1 $2 fill
+__{}    djnz $-4            ; 2:13/8    $1 $2 fill
+__{}    ld  (HL),C          ; 1:7       $1 $2 fill
+__{}    ex   DE, HL         ; 1:4       $1 $2 fill
+__{}    pop  DE             ; 1:10      $1 $2 fill},
+__{}{dnl
+__{}                        ;[13:eval(39+($1)*21)]   $1 $2 fill
 __{}    ld  (HL),format({%-11s},$2); 2:10      $1 $2 fill
 __{}    ld   BC, format({%-11s},eval($1)-1); 3:10      $1 $2 fill
 __{}    push DE             ; 1:11      $1 $2 fill
@@ -476,12 +608,52 @@ dnl
 dnl addr u char fill
 dnl ( -- )
 dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({PUSH3_FILL},{ifelse(eval($2),{0},{
+define({PUSH3_FILL},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}$#,{2},{
+__{}__{}.error {$0}($@): The third parameter is missing!},
+__{}$#,{3},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval($2),{0},{dnl
 __{}                                  ;           $1 $2 $3 fill},
-__{}eval($2),{1},{
-__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill
-__{}    ld   format({%-15s},($2){,} A); 3:13      $1 $2 $3 fill},
-__{}{
+__{}eval($2),{1},{dnl
+__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill
+__{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill},
+__{}eval($2),{2},{dnl
+__{}__{}ifelse(index({$3},{(}),{0},{dnl
+__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
+__{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
+__{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill},
+__{}__{}{dnl
+__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill
+__{}__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill})},
+__{}eval($2),{3},{dnl
+__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill
+__{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
+__{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill
+__{}    ld   format({%-15s},(2+$1){,} A); 3:13      $1 $2 $3 fill},
+__{}eval($2),{4},{dnl
+__{}__{}ifelse(index({$3},{(}),{0},{dnl
+__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
+__{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
+__{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
+__{}__{}{dnl
+__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill})
+__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
+__{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill},
+__{}eval($2),{6},{dnl
+__{}__{}ifelse(index({$3},{(}),{0},{dnl
+__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
+__{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
+__{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
+__{}__{}{dnl
+__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill})
+__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
+__{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
+__{}    ld   format({%-15s},(4+$1){,} BC); 4:20      $1 $2 $3 fill},
+__{}{dnl
 __{}    push DE             ; 1:11      $1 $2 $3 fill
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill HL = from
