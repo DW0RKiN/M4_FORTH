@@ -1,0 +1,29 @@
+changequote(`{', `}')dnl
+dnl
+sinclude(./path0.m4)dnl
+sinclude(./M4/path1.m4)dnl
+sinclude(../M4/path2.m4)dnl
+ifelse(M4PATH,{},{
+.error M4 did not find a relative path from the source file to the M4 libraries.})dnl
+dnl
+include(M4PATH{}float.m4)dnl
+include(M4PATH{}if.m4)dnl
+include(M4PATH{}case.m4)dnl
+include(M4PATH{}logic.m4)dnl
+include(M4PATH{}function.m4)dnl
+include(M4PATH{}loop.m4)dnl
+include(M4PATH{}device.m4)dnl
+include(M4PATH{}arithmetic.m4)dnl
+include(M4PATH{}other.m4)dnl
+include(M4PATH{}stack.m4)dnl
+dnl
+define({___},{})dnl
+dnl
+define({last_action},{dnl
+___{}include(M4PATH{}float_last.m4)dnl
+___{}include(M4PATH{}graphic.m4)dnl
+___{}include(M4PATH{}output.m4)dnl
+})dnl
+m4wrap({last_action})dnl
+dnl
+dnl
