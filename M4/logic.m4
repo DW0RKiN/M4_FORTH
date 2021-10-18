@@ -289,14 +289,14 @@ dnl ( x2 x1 -- flag )
 dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
 dnl 0 if 32-bit number not equal to zero, -1 if equal
 define(D0EQ,{
+                        ;[9:48]     D0=
     ld    A, D          ; 1:4       D0=
     or    E             ; 1:4       D0=
-    pop   DE            ; 1:10      D0=
     or    H             ; 1:4       D0=
     or    L             ; 1:4       D0=
-    ld   HL, 0x0000     ; 3:10      D0=
-    jr   nz, $+3        ; 2:7/12    D0=
-    dec  HL             ; 1:6       D0=})dnl
+    sub   0x01          ; 2:7       D0=
+    sbc  HL, HL         ; 2:15      D0=
+    pop   DE            ; 1:10      D0=})dnl
 dnl
 dnl
 dnl 0=
@@ -304,11 +304,11 @@ dnl ( x1 -- flag )
 dnl if ( x1 ) flag = 0; else flag = 0xFFFF;
 dnl 0 if 16-bit number not equal to zero, -1 if equal
 define(_0EQ,{
+                        ;[5:29]     0=
     ld    A, H          ; 1:4       0=
-    or    L             ; 1:4       0=
-    ld   HL, 0x0000     ; 3:10      0=
-    jr   nz, $+3        ; 2:7/12    0=
-    dec  HL             ; 1:6       0=})dnl
+    dec  HL             ; 1:6       0=
+    sub   H             ; 1:4       0=
+    sbc  HL, HL         ; 2:15      0=})dnl
 dnl
 dnl
 dnl
