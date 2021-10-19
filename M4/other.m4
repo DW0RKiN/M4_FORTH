@@ -464,7 +464,8 @@ dnl If u is greater than zero, fill the contents of u consecutive characters at 
 define({PUSH_FILL},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})ifelse({fast},{fast},{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse({fast},{fast},{dnl
 __{}    ld    A, H          ; 1:4       $1 fill
 __{}    or    L             ; 1:4       $1 fill
 __{}    jr    z, $+16       ; 2:7/12    $1 fill
@@ -481,7 +482,7 @@ __{}    inc  DE             ; 1:6       $1 fill DE = to
 __{}    ldir                ; 2:u*21/16 $1 fill
 __{}    pop  HL             ; 1:10      $1 fill
 __{}    pop  DE             ; 1:10      $1 fill},
-__{}{
+__{}{dnl
 __{}    ld    A, format({%-11s},$1); 2:7       $1 fill
 __{}    ld    B, L          ; 1:4       $1 fill
 __{}    inc   H             ; 1:4       $1 fill
