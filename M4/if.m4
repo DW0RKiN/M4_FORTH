@@ -112,168 +112,204 @@ dnl -------- signed ---------
 dnl
 dnl
 dnl dup char = if
-define({DUP_PUSH_CEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 = if
-    xor   L             ; 1:4       dup $1 = if
-    or    H             ; 1:4       dup $1 = if
-    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
+define({DUP_PUSH_CEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 = if
+__{}    xor   L             ; 1:4       dup $1 = if
+__{}    or    H             ; 1:4       dup $1 = if
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
 dnl
 dnl
 dnl
 dnl dup char <> if
-define({DUP_PUSH_CNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 <> if
-    xor   L             ; 1:4       dup $1 <> if
-    or    H             ; 1:4       dup $1 <> if
-    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
+define({DUP_PUSH_CNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 <> if
+__{}    xor   L             ; 1:4       dup $1 <> if
+__{}    or    H             ; 1:4       dup $1 <> if
+__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
 dnl
 dnl
 dnl
 dnl
 dnl dup num = if
-define({DUP_PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 = if
-    xor   H             ; 1:4       dup $1 = if
-    ld    B, A          ; 1:4       dup $1 = if
-    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 = if
-    xor   L             ; 1:4       dup $1 = if
-    or    B             ; 1:4       dup $1 = if
-    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
+define({DUP_PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 = if
+__{}    xor   H             ; 1:4       dup $1 = if
+__{}    ld    B, A          ; 1:4       dup $1 = if
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 = if
+__{}    xor   L             ; 1:4       dup $1 = if
+__{}    or    B             ; 1:4       dup $1 = if
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
 dnl
 dnl
 dnl
 dnl dup num <> if
-define({DUP_PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <> if
-    xor   L             ; 1:4       dup $1 <> if
-    jr   nz, $+ifelse(index({$1},{(}),{0},{9},{8})        ; 2:7/12    dup $1 <> if
-    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <> if
-    xor   H             ; 1:4       dup $1 <> if
-    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
+define({DUP_PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <> if
+__{}    xor   L             ; 1:4       dup $1 <> if
+__{}    jr   nz, $+ifelse(index({$1},{(}),{0},{9},{8})        ; 2:7/12    dup $1 <> if
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <> if
+__{}    xor   H             ; 1:4       dup $1 <> if
+__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
 dnl
 dnl
 dnl dup num < if
-define({DUP_PUSH_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(index({$1},{(}),{0},{
-    ld   BC, format({%-11s},$1); 4:20      dup $1 < if
-    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    sub   C             ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    sbc   A, B          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    rra                 ; 1:4       dup $1 < if
-    xor   H             ; 1:4       dup $1 < if
-    xor   B             ; 1:4       dup $1 < if
-    jp    p, else{}IF_COUNT    ; 3:10      dup $1 < if{}dnl},{
-    ld    A, H          ; 1:4       dup $1 < if
-    add   A, A          ; 1:4       dup $1 < if{}dnl
-__{}ifelse(eval($1),{},{
-__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jr c, $+11
-__{}  else
-__{}    jp   nc, else{}IF_COUNT
-__{}  endif
-__{}  .warning The condition >>>$1<<< cannot be evaluated},
-__{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    negative HL < positive constant ---> true{}dnl
-__{}},{
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if    positive HL < negative constant ---> false})
-    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    sub   low format({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    sbc   A, high format({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})})dnl
+define({DUP_PUSH_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[14:58]    dup $1 < if
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 < if
+__{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sub   C             ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sbc   A, B          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    rra                 ; 1:4       dup $1 < if
+__{}__{}    xor   H             ; 1:4       dup $1 < if
+__{}__{}    xor   B             ; 1:4       dup $1 < if
+__{}__{}    jp    p, else{}IF_COUNT    ; 3:10      dup $1 < if},
+__{}{dnl
+__{}__{}    ld    A, H          ; 1:4       dup $1 < if
+__{}__{}    add   A, A          ; 1:4       dup $1 < if
+__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
+__{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}__{}    jr c, $+11
+__{}__{}__{}  else
+__{}__{}__{}    jp   nc, else{}IF_COUNT
+__{}__{}__{}  endif},
+__{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
+__{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    negative HL < positive constant ---> true},
+__{}__{}__{}{dnl
+__{}__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if    positive HL < negative constant ---> false})
+__{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sub   low format({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})})dnl
 dnl
 dnl
 dnl dup num >= if
-define({DUP_PUSH_GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(index({$1},{(}),{0},{
-    ld   BC, format({%-11s},$1); 4:20      dup $1 >= if
-    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    sub   C             ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    sbc   A, B          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    rra                 ; 1:4       dup $1 >= if
-    xor   H             ; 1:4       dup $1 >= if
-    xor   B             ; 1:4       dup $1 >= if
-    jp    m, else{}IF_COUNT    ; 3:10      dup $1 >= if{}dnl},{
-    ld    A, H          ; 1:4       dup $1 >= if
-    add   A, A          ; 1:4       dup $1 >= if{}dnl
-__{}ifelse(eval($1),{},{
-__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jp c, else{}IF_COUNT
-__{}  else
-__{}    jr   nc, $+11
-__{}  endif
-__{}  .warning The condition >>>$1<<< cannot be evaluated},
-__{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if    negative HL >= positive constant ---> false{}dnl
-__{}},{
-__{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    positive HL >= negative constant ---> true})
-    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    sub   low format({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})})dnl
+define({DUP_PUSH_GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[14:58]    dup $1 >= if
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 >= if
+__{}__{}    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    sub   C             ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    sbc   A, B          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    rra                 ; 1:4       dup $1 >= if
+__{}__{}    xor   H             ; 1:4       dup $1 >= if
+__{}__{}    xor   B             ; 1:4       dup $1 >= if
+__{}__{}    jp    m, else{}IF_COUNT    ; 3:10      dup $1 >= if},
+__{}{dnl
+__{}__{}    ld    A, H          ; 1:4       dup $1 >= if
+__{}__{}    add   A, A          ; 1:4       dup $1 >= if
+__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
+__{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}__{}    jp c, else{}IF_COUNT
+__{}__{}__{}  else
+__{}__{}__{}    jr   nc, $+11
+__{}__{}__{}  endif},
+__{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
+__{}__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if    negative HL >= positive constant ---> false},
+__{}__{}__{}{dnl
+__{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    positive HL >= negative constant ---> true})
+__{}__{}    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})})dnl
 dnl
 dnl
 dnl dup num <= if
-define({DUP_PUSH_LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(index({$1},{(}),{0},{
-    ld   BC, format({%-11s},$1); 4:20      dup $1 <= if
-    ld    A, C          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    ld    A, B          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    rra                 ; 1:4       dup $1 <= if
-    xor   H             ; 1:4       dup $1 <= if
-    xor   B             ; 1:4       dup $1 <= if
-    jp    m, else{}IF_COUNT    ; 3:10      dup $1 <= if{}dnl},{
-    ld    A, H          ; 1:4       dup $1 <= if
-    add   A, A          ; 1:4       dup $1 <= if{}dnl
-__{}ifelse(eval($1),{},{
-__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jr c, $+11
-__{}  else
-__{}    jp   nc, else{}IF_COUNT
-__{}  endif
-__{}  .warning The condition >>>$1<<< cannot be evaluated},
-__{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    negative HL <= positive constant ---> true{}dnl
-__{}},{
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
-    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})})dnl
+define({DUP_PUSH_LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[14:58]    dup $1 <= if
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 <= if
+__{}__{}    ld    A, C          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    ld    A, B          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    rra                 ; 1:4       dup $1 <= if
+__{}__{}    xor   H             ; 1:4       dup $1 <= if
+__{}__{}    xor   B             ; 1:4       dup $1 <= if
+__{}__{}    jp    m, else{}IF_COUNT    ; 3:10      dup $1 <= if},
+__{}{dnl
+__{}__{}    ld    A, H          ; 1:4       dup $1 <= if
+__{}__{}    add   A, A          ; 1:4       dup $1 <= if
+__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
+__{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}__{}    jr c, $+11
+__{}__{}__{}  else
+__{}__{}__{}    jp   nc, else{}IF_COUNT
+__{}__{}__{}  endif},
+__{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
+__{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    negative HL <= positive constant ---> true},
+__{}__{}__{}{dnl
+__{}__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
+__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})})dnl
 dnl
 dnl
 dnl dup num > if
-define({DUP_PUSH_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(index({$1},{(}),{0},{
-    ld   BC, format({%-11s},$1); 4:20      dup $1 > if
-    ld    A, C          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    ld    A, B          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    rra                 ; 1:4       dup $1 > if
-    xor   H             ; 1:4       dup $1 > if
-    xor   B             ; 1:4       dup $1 > if
-    jp    p, else{}IF_COUNT    ; 3:10      dup $1 > if{}dnl},{
-    ld    A, H          ; 1:4       dup $1 > if
-    add   A, A          ; 1:4       dup $1 > if{}dnl
-__{}ifelse(eval($1),{},{
-__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jp c, else{}IF_COUNT
-__{}  else
-__{}    jr   nc, $+11
-__{}  endif
-__{}  .warning The condition >>>$1<<< cannot be evaluated},
-__{}eval(($1)>=0x8000 || ($1)<0),{0},{
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    negative HL > positive constant ---> false{}dnl
-__{}},{
-__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    positive HL > negative constant ---> true})
-    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})})dnl
+define({DUP_PUSH_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[14:58]    dup $1 > if
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 > if
+__{}__{}    ld    A, C          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    ld    A, B          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    rra                 ; 1:4       dup $1 > if
+__{}__{}    xor   H             ; 1:4       dup $1 > if
+__{}__{}    xor   B             ; 1:4       dup $1 > if
+__{}__{}    jp    p, else{}IF_COUNT    ; 3:10      dup $1 > if},
+__{}{dnl
+__{}__{}    ld    A, H          ; 1:4       dup $1 > if
+__{}__{}    add   A, A          ; 1:4       dup $1 > if
+__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
+__{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}__{}    jp c, else{}IF_COUNT
+__{}__{}__{}  else
+__{}__{}__{}    jr   nc, $+11
+__{}__{}__{}  endif},
+__{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
+__{}__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    negative HL > positive constant ---> false},
+__{}__{}__{}{dnl
+__{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    positive HL > negative constant ---> true})
+__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})})dnl
 dnl
 dnl -------- unsigned ---------
 dnl
