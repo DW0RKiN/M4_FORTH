@@ -446,62 +446,68 @@ __{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if})})dnl
 dnl
 dnl
+dnl dup 123 u< if
 define({DUP_PUSH_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, L          ; 1:4       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   C             ; 1:4       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, H          ; 1:4       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, B          ; 1:4       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 (u)< if{}dnl},{
-__{}    ld    A, L          ; 1:4       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, H          ; 1:4       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 (u)< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 (u)< if})})dnl
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sub   C             ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sbc   A, B          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if},
+__{}{dnl
+__{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sub   low format({%-10s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if})})dnl
 dnl
 dnl
+dnl dup 123 u>= if
 define({DUP_PUSH_UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    ld    A, L          ; 1:4       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sub   C             ; 1:4       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    ld    A, H          ; 1:4       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sbc   A, B          ; 1:4       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 (u)>= if{}dnl},{
-__{}    ld    A, L          ; 1:4       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    ld    A, H          ; 1:4       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 (u)>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 (u)>= if})})dnl
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    sub   C             ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    ld    A, H          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    sbc   A, B          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if},
+__{}{dnl
+__{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    sub   low format({%-10s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    ld    A, H          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if})})dnl
 dnl
 dnl
+dnl dup 123 u<= if
 define({DUP_PUSH_ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 (u)<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    sub   L             ; 1:4       dup $1 (u)<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 (u)<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    sbc   A, H          ; 1:4       dup $1 (u)<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 (u)<= if})dnl
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    sub   L             ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    sbc   A, H          ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u<= if})dnl
 dnl
 dnl
+dnl dup 123 u> if
 define({DUP_PUSH_UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 (u)> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    sub   L             ; 1:4       dup $1 (u)> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 (u)> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    sbc   A, H          ; 1:4       dup $1 (u)> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 (u)> if})dnl
+__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    sub   L             ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    sbc   A, H          ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u> if})dnl
 dnl
 dnl
 dnl
@@ -768,12 +774,54 @@ define({PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 = if
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[12:63]    $1 = if
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 = if
 __{}    or    A             ; 1:4       $1 = if
 __{}    sbc  HL, BC         ; 2:15      $1 = if
 __{}    ex   DE, HL         ; 1:4       $1 = if
 __{}    pop  DE             ; 1:10      $1 = if
-__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if})dnl
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
+__{}eval($1),{0},{dnl
+__{}__{}                        ;[7:32]     $1 = if
+__{}__{}    ld    A, L          ; 1:4       $1 = if
+__{}__{}    or    H             ; 1:4       $1 = if
+__{}__{}    ex   DE, HL         ; 1:4       $1 = if
+__{}__{}    pop  DE             ; 1:10      $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
+__{}eval(($1) & 0xFF),{0},{dnl
+__{}__{}                        ;[9:39]     $1 = if
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 = if
+__{}__{}    xor   H             ; 1:4       $1 = if
+__{}__{}    or    L             ; 1:4       $1 = if
+__{}__{}    ex   DE, HL         ; 1:4       $1 = if
+__{}__{}    pop  DE             ; 1:10      $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
+__{}eval(($1)/256),{0},{dnl
+__{}__{}                        ;[9:39]     $1 = if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 = if
+__{}__{}    xor   L             ; 1:4       $1 = if
+__{}__{}    or    H             ; 1:4       $1 = if
+__{}__{}    ex   DE, HL         ; 1:4       $1 = if
+__{}__{}    pop  DE             ; 1:10      $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
+__{}{dnl
+dnl{}__{}__{}                        ;[14:39/56] $1 = if
+dnl{}__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 = if
+dnl{}__{}__{}    xor   L             ; 1:4       $1 = if
+dnl{}__{}__{}    ld    A, H          ; 1:4       $1 = if
+dnl{}__{}__{}    ex   DE, HL         ; 1:4       $1 = if
+dnl{}__{}__{}    pop  DE             ; 1:10      $1 = if
+dnl{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if
+dnl{}__{}__{}    xor   high format({%-9s},$1); 2:7       $1 = if
+dnl{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if
+__{}__{}                        ;[11:53]    $1 = if
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 = if
+__{}__{}    or    A             ; 1:4       $1 = if
+__{}__{}    sbc  HL, BC         ; 2:15      $1 = if
+__{}__{}    ex   DE, HL         ; 1:4       $1 = if
+__{}__{}    pop  DE             ; 1:10      $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if})})dnl
 dnl
 dnl
 dnl num <> if
@@ -781,12 +829,47 @@ define({PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 <> if
-__{}    or    A             ; 1:4       $1 <> if
-__{}    sbc  HL, DE         ; 2:15      $1 <> if
-__{}    ex   DE, HL         ; 1:4       $1 <> if
-__{}    pop  DE             ; 1:10      $1 <> if
-__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})dnl
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[12:63] $1 <> if
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 <> if
+__{}__{}    or    A             ; 1:4       $1 <> if
+__{}__{}    sbc  HL, DE         ; 2:15      $1 <> if
+__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
+__{}__{}    pop  DE             ; 1:10      $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
+__{}eval($1),{0},{dnl
+__{}__{}                        ;[7:32]     $1 <> if
+__{}__{}    ld    A, L          ; 1:4       $1 <> if
+__{}__{}    or    H             ; 1:4       $1 <> if
+__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
+__{}__{}    pop  DE             ; 1:10      $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
+__{}eval(($1) & 0xFF),{0},{dnl
+__{}__{}                        ;[9:39]     $1 <> if
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 <> if
+__{}__{}    xor   H             ; 1:4       $1 <> if
+__{}__{}    or    L             ; 1:4       $1 <> if
+__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
+__{}__{}    pop  DE             ; 1:10      $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
+__{}eval(($1)/256),{0},{dnl
+__{}__{}                        ;[9:39]     $1 <> if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 <> if
+__{}__{}    xor   L             ; 1:4       $1 <> if
+__{}__{}    or    H             ; 1:4       $1 <> if
+__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
+__{}__{}    pop  DE             ; 1:10      $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
+__{}{dnl
+__{}__{}                        ;[13:41/53] $1 <> if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 <> if
+__{}__{}    xor   L             ; 1:4       $1 <> if
+__{}__{}    ld    A, H          ; 1:4       $1 <> if
+__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
+__{}__{}    pop  DE             ; 1:10      $1 <> if
+__{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
+__{}__{}    xor   high format({%-9s},$1); 2:7       $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})})dnl
 dnl
 dnl
 dnl
