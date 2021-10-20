@@ -170,8 +170,28 @@ dnl
 dnl
 dnl 2 +loop
 dnl ( -- )
-define(_ADD2_ADDXLOOP,{
-idx{}LOOP_STACK EQU $+1          ;[23:92]    2 +xloop LOOP_STACK
+define(_ADD2_ADDXLOOP,{ifelse(eval(STOP_STACK),{0},{
+idx{}LOOP_STACK EQU $+1          ;[16:67]    2 +xloop LOOP_STACK   variant: step 2 and stop 0, INDEX_STACK..STOP_STACK
+    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      2 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
+    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+    and  0xFE           ; 2:7       2 +xloop LOOP_STACK   0 or 1 -> 0
+    or    B             ; 1:4       2 +xloop LOOP_STACK
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop LOOP_STACK},
+eval(STOP_STACK),{1},{
+idx{}LOOP_STACK EQU $+1          ;[16:67]    2 +xloop LOOP_STACK   variant: step 2 and stop 1, INDEX_STACK..STOP_STACK
+    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
+    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+    and  0xFE           ; 2:7       2 +xloop LOOP_STACK   0 or 1 -> 0
+    or    B             ; 1:4       2 +xloop LOOP_STACK
+    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      2 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
+    jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop LOOP_STACK},
+{
+idx{}LOOP_STACK EQU $+1          ;[23:92]    2 +xloop LOOP_STACK   variant: step 2, INDEX_STACK..STOP_STACK
     ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
     inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
@@ -184,7 +204,7 @@ idx{}LOOP_STACK EQU $+1          ;[23:92]    2 +xloop LOOP_STACK
     ld    A, B          ; 1:4       2 +xloop LOOP_STACK
     sbc   A, high format({%-6s},STOP_STACK); 2:7       2 +xloop LOOP_STACK
     jp   nz, xdo{}LOOP_STACK     ; 3:10      2 +xloop LOOP_STACK
-dnl                         ;23:71/92/92
+dnl                         ;23:71/92/92})
 xleave{}LOOP_STACK:              ;           2 +xloop LOOP_STACK
 xexit{}LOOP_STACK:               ;           2 +xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -198,8 +218,27 @@ dnl
 dnl stop index do ... step +loop
 dnl ( -- )
 dnl xdo(stop,index) ... push_addxloop(step)
-define({X_ADDXLOOP},{ifelse(eval(($1<0) && (STOP_STACK==0)),{1},{
-__{}__{}dnl{}                        ;[17:86]    $1 +xloop LOOP_STACK   variant: INDEX_STACK.. negative step $1 ..0 = 0
+define({X_ADDXLOOP},{ifelse(eval(($1==-2) && (STOP_STACK==0)),{1},{
+__{}__{}idx{}LOOP_STACK EQU $+1          ;[14:60]    $1 +xloop LOOP_STACK   variant: step -2 and stop 0, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK   hi old index
+__{}__{}    dec  BC             ; 1:6       $1 +xloop LOOP_STACK   index--
+__{}__{}    dec  BC             ; 1:6       $1 +xloop LOOP_STACK   index--
+__{}__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
+__{}__{}    sub   B             ; 1:4       $1 +xloop LOOP_STACK   old-new = carry if index: positive -> negative
+__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   carry if postivie index -> negative index},
+__{}eval(($1==-3) && (STOP_STACK==0)),{1},{
+__{}__{}idx{}LOOP_STACK EQU $+1          ;[15:66]    $1 +xloop LOOP_STACK   variant: step -3 and stop 0, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK   hi old index
+__{}__{}    dec  BC             ; 1:6       $1 +xloop LOOP_STACK   index--
+__{}__{}    dec  BC             ; 1:6       $1 +xloop LOOP_STACK   index--
+__{}__{}    dec  BC             ; 1:6       $1 +xloop LOOP_STACK   index--
+__{}__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
+__{}__{}    sub   B             ; 1:4       $1 +xloop LOOP_STACK   old-new = carry if index: positive -> negative
+__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   carry if postivie index -> negative index},
+__{}eval(($1<0) && (STOP_STACK==0)),{1},{
+__{}__{}dnl{}                        ;[17:86]    $1 +xloop LOOP_STACK   variant: negative step and stop 0, INDEX_STACK.. $1 ..0
 __{}__{}dnl{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
 __{}__{}dnl{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
 __{}__{}dnl{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
@@ -210,7 +249,7 @@ __{}__{}dnl{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK  
 __{}__{}dnl{}    sub   H             ; 1:4       $1 +xloop LOOP_STACK   old-new = carry if index: positive -> negative
 __{}__{}dnl{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
 __{}__{}dnl{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   negative step
-__{}__{}                        ;[18:70]    $1 +xloop LOOP_STACK   variant: INDEX_STACK.. negative step $1 ..0 = 0
+__{}__{}                        ;[18:70]    $1 +xloop LOOP_STACK   variant: negative step and stop 0, INDEX_STACK.. $1 ..0
 __{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
@@ -222,18 +261,17 @@ __{}__{}    ld    B, A          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    ld  (idx{}LOOP_STACK), BC    ; 4:20      $1 +xloop LOOP_STACK   save new index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
 __{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   carry if postivie index -> negative index},
 __{}eval(($1>0) && (STOP_STACK==0)),{1},{
-__{}__{}                        ;[18:92]    $1 +xloop LOOP_STACK   variant: INDEX_STACK.. positive step $1 ..0 = 0
+__{}__{}                        ;[17:90]    $1 +xloop LOOP_STACK   variant: positive step and stop 0, INDEX_STACK.. $1 ..0
 __{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
 __{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
 __{}__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
-__{}__{}    ld    A, H          ; 1:4       $1 +xloop LOOP_STACK   hi old index
 __{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
-__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
-__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
 __{}__{}    dec  HL             ; 1:6       $1 +xloop LOOP_STACK
-__{}__{}    sub   H             ; 1:4       $1 +xloop LOOP_STACK   old-new = not carry if index: negative -> positive
+__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step-1
+__{}__{}    inc  HL             ; 1:6       $1 +xloop LOOP_STACK
+__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
 __{}__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
-__{}__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step},
+__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step},
 __{}{
 __{}__{}                        ;[24:119]   $1 +xloop LOOP_STACK   variant: INDEX_STACK.. $1 ..STOP_STACK
 __{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
