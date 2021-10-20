@@ -160,11 +160,19 @@ __{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 = if
 __{}__{}    xor   H             ; 1:4       dup $1 = if
 __{}__{}    or    L             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 = if
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 = if
 __{}__{}    xor   L             ; 1:4       dup $1 = if
 __{}__{}    or    H             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
+__{}eval(($1)>>8),{-1},{dnl
+__{}__{}                        ;[11:21/39  dup $1 = if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 = if
+__{}__{}    xor   L             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if
+__{}__{}    dec   A             ; 1:4       dup $1 = if   A = 0xFF
+__{}__{}    xor   H             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
 __{}{dnl
 __{}__{}                        ;[12:21/42] dup $1 = if
@@ -201,11 +209,19 @@ __{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <> if
 __{}__{}    xor   H             ; 1:4       dup $1 <> if
 __{}__{}    or    L             ; 1:4       dup $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 <> if
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <> if
 __{}__{}    xor   L             ; 1:4       dup $1 <> if
 __{}__{}    or    H             ; 1:4       dup $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if},
+__{}eval(($1)>>8),{-1},{dnl
+__{}__{}                        ;[10:23/36] dup $1 <> if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <> if
+__{}__{}    xor   L             ; 1:4       dup $1 <> if
+__{}__{}    jr   nz, $+7        ; 2:7/12    dup $1 <> if
+__{}__{}    dec   A             ; 1:4       dup $1 <> if   A = 0xFF
+__{}__{}    xor   H             ; 1:4       dup $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if},
 __{}{dnl
 __{}__{}                        ;[11:23/39] dup $1 <> if
@@ -390,11 +406,19 @@ __{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
 __{}__{}    or    L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u= if
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
 __{}__{}    or    H             ; 1:4       dup $1 u= if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
+__{}eval(($1)>>8),{-1},{dnl
+__{}__{}                        ;[11:21/39  dup $1 u= if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u= if
+__{}__{}    xor   L             ; 1:4       dup $1 u= if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
+__{}__{}    dec   A             ; 1:4       dup $1 u= if   A = 0xFF
+__{}__{}    xor   H             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}{dnl
 __{}__{}                        ;[12:21/42] dup $1 u= if
@@ -430,11 +454,19 @@ __{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    or    L             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u<> if
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    or    H             ; 1:4       dup $1 u<> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
+__{}eval(($1)>>8),{-1},{dnl
+__{}__{}                        ;[10:23/36] dup $1 u<> if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> if
+__{}__{}    xor   L             ; 1:4       dup $1 u<> if
+__{}__{}    jr   nz, $+7        ; 2:7/12    dup $1 u<> if
+__{}__{}    dec   A             ; 1:4       dup $1 u<> if   A = 0xFF
+__{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}{dnl
 __{}__{}                        ;[11:23/39] dup $1 u<> if
@@ -797,7 +829,7 @@ __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}__{}                        ;[9:39]     $1 = if
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 = if
 __{}__{}    xor   L             ; 1:4       $1 = if
@@ -805,16 +837,16 @@ __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
+__{}eval(($1)>>8),{-1},{dnl
+__{}__{}                        ;[10:43]    $1 = if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 = if
+__{}__{}    xor   L             ; 1:4       $1 = if
+__{}__{}    inc   H             ; 1:4       $1 = if
+__{}__{}    or    H             ; 1:4       $1 = if
+__{}__{}    ex   DE, HL         ; 1:4       $1 = if
+__{}__{}    pop  DE             ; 1:10      $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}{dnl
-dnl{}__{}__{}                        ;[14:39/56] $1 = if
-dnl{}__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 = if
-dnl{}__{}__{}    xor   L             ; 1:4       $1 = if
-dnl{}__{}__{}    ld    A, H          ; 1:4       $1 = if
-dnl{}__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-dnl{}__{}__{}    pop  DE             ; 1:10      $1 = if
-dnl{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if
-dnl{}__{}__{}    xor   high format({%-9s},$1); 2:7       $1 = if
-dnl{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if
 __{}__{}                        ;[11:53]    $1 = if
 __{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 = if
 __{}__{}    or    A             ; 1:4       $1 = if
@@ -852,10 +884,19 @@ __{}__{}    or    L             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}__{}                        ;[9:39]     $1 <> if
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 <> if
 __{}__{}    xor   L             ; 1:4       $1 <> if
+__{}__{}    or    H             ; 1:4       $1 <> if
+__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
+__{}__{}    pop  DE             ; 1:10      $1 <> if
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
+__{}eval(($1)>>8),{-1},{dnl
+__{}__{}                        ;[10:43]    $1 <> if
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 <> if
+__{}__{}    xor   L             ; 1:4       $1 <> if
+__{}__{}    inc   H             ; 1:4       $1 <> if
 __{}__{}    or    H             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if

@@ -88,8 +88,8 @@ __{}                        ;[5:18]     _OF_INFO(push_of($1))   version: $1 = 0
 __{}    ld    A, H          ; 1:4       _OF_INFO(push_of($1))
 __{}    or    L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
-__{}eval((($1) & 255)^(($1)/256)),{0},{dnl
-__{}                        ;[10:37]    _OF_INFO(push_of($1))   version: hi($1) = lo($1) = eval(($1)/256)
+__{}eval(((256*($1))^($1)) & 0xFF00),{0},{dnl
+__{}                        ;[10:37]    _OF_INFO(push_of($1))   version: hi($1) = lo($1) = eval(($1) & 0xFF)
 __{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    ld    B, A          ; 1:4       _OF_INFO(push_of($1))
@@ -97,7 +97,7 @@ __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
 __{}    or    B             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
-__{}eval(($1)/256),{0},{dnl
+__{}eval(($1)>>8),{0},{dnl
 __{}                        ;[7:25]     _OF_INFO(push_of($1))   version: hi($1) = 0
 __{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
@@ -206,7 +206,7 @@ __{}__{}    sbc   A, high format({%-6s},($2)-($1)); 2:7       _OF_INFO(within_of
 __{}__{}{
 __{}__{}    sub  format({%-15s},eval((($2)-($1)) & 0xff)); 2:7       _OF_INFO(within_of($1),within_)
 __{}__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    sbc   A, format({%-11s},eval((($2)-($1))/256)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - {{$1}}) - ($2 - {{$1}})})
+__{}__{}    sbc   A, format({%-11s},eval((($2)-($1))>>8)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - {{$1}}) - ($2 - {{$1}})})
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)}){}dnl
 })dnl
 dnl
@@ -263,7 +263,7 @@ __{}__{}__{}                        ;[4:14]     _OF_INFO(lo_of($1),lo_)
 __{}__{}__{}    or   A              ; 1:4       _OF_INFO(lo_of($1),lo_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)},
 __{}__{}{dnl
-__{}__{}__{}                        ;[5:17]     _OF_INFO(lo_of($1),lo_){}ifelse(eval(($1)/256 == 0),{0},{
+__{}__{}__{}                        ;[5:17]     _OF_INFO(lo_of($1),lo_){}ifelse(eval((($1)>>8) == 0),{0},{
 __{}__{}__{}    .warning {$0}($@): Value $1 is greater than 255.})
 __{}__{}__{}    cp   low format({%-11s},$1); 2:7       _OF_INFO(lo_of($1),lo_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)})}){}dnl
@@ -378,7 +378,7 @@ __{}__{}__{}                        ;[4:14]     _OF_INFO(hi_of($1),hi_)
 __{}__{}__{}    or   A              ; 1:4       _OF_INFO(hi_of($1),hi_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(hi_of($1),hi_)},
 __{}__{}{dnl
-__{}__{}__{}                        ;[5:17]     _OF_INFO(hi_of($1),hi_){}ifelse(eval(($1)/256 == 0),{0},{
+__{}__{}__{}                        ;[5:17]     _OF_INFO(hi_of($1),hi_){}ifelse(eval((($1)>>8) == 0),{0},{
 __{}__{}__{}    .warning {$0}($@): Value $1 is greater than 255.})
 __{}__{}__{}    cp   low format({%-11s},$1); 2:7       _OF_INFO(hi_of($1),hi_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(hi_of($1),hi_)})}){}dnl
