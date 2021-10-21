@@ -215,10 +215,88 @@ __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
 dnl
-dnl stop index do ... step +loop
+define({_TEMP_FIND_REAL_STOP},{dnl
+__{}ifelse(eval($1<0),{1},{dnl
+__{}__{}define({_TEMP_START},eval(((INDEX_STACK)-(STOP_STACK)) & 0xffff)){}dnl
+__{}__{}define({_TEMP_X},eval(1+_TEMP_START/(-($1)))){}dnl
+__{}__{}define({_TEMP_LAST_INDEX},{eval((INDEX_STACK+$1*_TEMP_X) & 0xffff)})},
+__{}{dnl
+__{}__{}define({_TEMP_START},eval(((STOP_STACK)-(INDEX_STACK+1)) & 0xffff)){}dnl
+__{}__{}define({_TEMP_X},eval(1+_TEMP_START/($1))){}dnl
+__{}__{}define({_TEMP_LAST_INDEX},{eval((INDEX_STACK+$1*_TEMP_X) & 0xffff)})}){}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl stop index do ... +step +loop
 dnl ( -- )
-dnl xdo(stop,index) ... push_addxloop(step)
-define({X_ADDXLOOP},{ifelse(eval(($1==-2) && (STOP_STACK==0)),{1},{
+dnl xdo(stop,index) ... push_addxloop(+step)
+define({POSITIVE_ADDXLOOP},{_TEMP_FIND_REAL_STOP($1){}ifelse(eval(_TEMP_LAST_INDEX & 0xFF00),{0},{
+__{}__{}                        ;[19:93]    $1 +xloop LOOP_STACK   variant: positive step and real stop 0 <= _TEMP_LAST_INDEX < 256, run _TEMP_X{}x, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
+__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
+__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
+__{}__{}    ld    A, format({%-11s},low _TEMP_LAST_INDEX); 2:7       $1 +xloop LOOP_STACK   A = last_index
+__{}__{}    xor   L             ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    or    H             ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
+__{}__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
+__{}eval(STOP_STACK==0),{1},{
+__{}__{}                        ;[17:90]    $1 +xloop LOOP_STACK   variant: positive step and stop 0, INDEX_STACK.. $1 ..0
+__{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
+__{}__{}    dec  HL             ; 1:6       $1 +xloop LOOP_STACK
+__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step-1
+__{}__{}    inc  HL             ; 1:6       $1 +xloop LOOP_STACK
+__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
+__{}__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
+__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step},
+__{}{dnl
+__{}__{}ifelse(eval($1 & 0xFF00),{0},{
+__{}__{}__{}                        ;[26:78/99] $1 +xloop LOOP_STACK   variant: positive step and real stop _TEMP_LAST_INDEX, run _TEMP_X{}x, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
+__{}__{}__{}    ld    C, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    adc   A, B          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    sub   C             ; 1:4       $1 +xloop LOOP_STACK},
+__{}__{}{dnl
+__{}__{}__{}                        ;[27:81/102]$1 +xloop LOOP_STACK   variant: positive step and real stop _TEMP_LAST_INDEX, run _TEMP_X{}x, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
+__{}__{}__{}    ld    C, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    adc   A, high format({%-6s},$1); 2:7       $1 +xloop LOOP_STACK})
+__{}__{}    ld    B, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
+__{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    xor  low format({%-11s},_TEMP_LAST_INDEX); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    xor  high format({%-10s},_TEMP_LAST_INDEX); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK})
+__{}xleave{}LOOP_STACK:              ;           $1 +xloop LOOP_STACK
+__{}xexit{}LOOP_STACK:               ;           $1 +xloop LOOP_STACK{}dnl
+__{}popdef({LEAVE_STACK}){}dnl
+__{}popdef({UNLOOP_STACK}){}dnl
+__{}popdef({LOOP_STACK}){}dnl
+__{}popdef({STOP_STACK}){}dnl
+__{}popdef({INDEX_STACK})})dnl
+dnl
+dnl
+dnl
+dnl stop index do ... -step +loop
+dnl ( -- )
+dnl xdo(stop,index) ... push_addxloop(-step)
+define({NEGATIVE_ADDXLOOP},{ifelse(eval(($1==-2) && (STOP_STACK==0)),{1},{
 __{}__{}idx{}LOOP_STACK EQU $+1          ;[14:60]    $1 +xloop LOOP_STACK   variant: step -2 and stop 0, INDEX_STACK.. $1 ..STOP_STACK
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK   hi old index
@@ -237,7 +315,7 @@ __{}__{}    dec  BC             ; 1:6       $1 +xloop LOOP_STACK   index--
 __{}__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
 __{}__{}    sub   B             ; 1:4       $1 +xloop LOOP_STACK   old-new = carry if index: positive -> negative
 __{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   carry if postivie index -> negative index},
-__{}eval(($1<0) && (STOP_STACK==0)),{1},{
+__{}eval(STOP_STACK==0),{1},{
 __{}__{}dnl{}                        ;[17:86]    $1 +xloop LOOP_STACK   variant: negative step and stop 0, INDEX_STACK.. $1 ..0
 __{}__{}dnl{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
 __{}__{}dnl{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
@@ -260,52 +338,48 @@ __{}__{}    sbc   A, high format({%-6s},eval(-($1))); 2:7       $1 +xloop LOOP_S
 __{}__{}    ld    B, A          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    ld  (idx{}LOOP_STACK), BC    ; 4:20      $1 +xloop LOOP_STACK   save new index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
 __{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   carry if postivie index -> negative index},
-__{}eval(($1>0) && (STOP_STACK==0)),{1},{
-__{}__{}                        ;[17:90]    $1 +xloop LOOP_STACK   variant: positive step and stop 0, INDEX_STACK.. $1 ..0
-__{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
-__{}__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
-__{}__{}    dec  HL             ; 1:6       $1 +xloop LOOP_STACK
-__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step-1
-__{}__{}    inc  HL             ; 1:6       $1 +xloop LOOP_STACK
-__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
-__{}__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
-__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step},
-__{}{
-__{}__{}                        ;[24:119]   $1 +xloop LOOP_STACK   variant: INDEX_STACK.. $1 ..STOP_STACK
-__{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
-__{}__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
-__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
-__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
-__{}__{}ifelse(eval(STOP_STACK),{},{dnl
-__{}__{}__{}    ld    A, low format({%-7s},STOP_STACK-1); 2:7       $1 +xloop LOOP_STACK
-__{}__{}__{}    sub   L             ; 1:4       $1 +xloop LOOP_STACK
-__{}__{}__{}    ld    L, A          ; 1:4       $1 +xloop LOOP_STACK
-__{}__{}__{}    ld    A, high format({%-6s},(STOP_STACK-1)); 2:7       $1 +xloop LOOP_STACK},
-__{}__{}{dnl
-__{}__{}__{}    ld    A, low format({%-7s},eval(STOP_STACK-1)); 2:7       $1 +xloop LOOP_STACK
-__{}__{}__{}    sub   L             ; 1:4       $1 +xloop LOOP_STACK
-__{}__{}__{}    ld    L, A          ; 1:4       $1 +xloop LOOP_STACK
-__{}__{}__{}    ld    A, high format({%-6s},eval(STOP_STACK-1)); 2:7       $1 +xloop LOOP_STACK})
-__{}__{}__{}    sbc   A, H          ; 1:4       $1 +xloop LOOP_STACK
-__{}__{}__{}    ld    H, A          ; 1:4       $1 +xloop LOOP_STACK   HL = stop-(index+step)-1
-__{}__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = stop-index-1
+__{}{_TEMP_FIND_REAL_STOP($1){}ifelse(eval(_TEMP_LAST_INDEX & 0xFF00),{0},{
+__{}__{}__{}                        ;[19:93]    $1 +xloop LOOP_STACK   variant: negative step and real stop 0 <= _TEMP_LAST_INDEX < 256, run _TEMP_X{}x, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
+__{}__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
+__{}__{}__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
+__{}__{}__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
+__{}__{}__{}    ld    A, format({%-11s},low _TEMP_LAST_INDEX); 2:7       $1 +xloop LOOP_STACK   A = last_index
+__{}__{}__{}    xor   L             ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}__{}    or    H             ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
-__{}__{}ifelse(eval($1),{},{dnl
-__{}__{}__{}  .warning {PUSH_ADDXLOOP}($@): The condition "$1" cannot be evaluated
-__{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step
-__{}__{}__{}  else
-__{}__{}__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   negative step
-__{}__{}__{}  endif},
-__{}__{}{ifelse(eval(($1)>=0x8000 || ($1)<0),{1},{dnl
-__{}__{}__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   negative step},
-__{}__{}{dnl
-__{}__{}__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step})})
-__{}dnl                     ;24:119})
+__{}__{}__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
+__{}__{}{
+__{}__{}dnl{}                        ;[21:107]   $1 +xloop LOOP_STACK   variant: negative step and real stop _TEMP_LAST_INDEX, run _TEMP_X{}x, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}dnl{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
+__{}__{}dnl{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}dnl{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}dnl{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
+__{}__{}dnl{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
+__{}__{}dnl{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
+__{}__{}dnl{}    ld   BC, format({%-11s},_TEMP_LAST_INDEX); 3:10      $1 +xloop LOOP_STACK   BC = last_index
+__{}__{}dnl{}    or    A             ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}dnl{}    sbc  HL, BC         ; 2:15      $1 +xloop LOOP_STACK   HL = index-last_index
+__{}__{}dnl{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
+__{}__{}dnl{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}                        ;[27:81/102]$1 +xloop LOOP_STACK   variant: negative step and real stop _TEMP_LAST_INDEX, run _TEMP_X{}x, INDEX_STACK.. $1 ..STOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    sub  low format({%-11s},eval(-($1))); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    ld    C, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    sbc   A, high format({%-6s},eval(-($1))); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    ld    B, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld  (idx{}LOOP_STACK),BC     ; 4:20      $1 +xloop LOOP_STACK   save index   Can be improved by moving this instruction under label xdo{}LOOP_STACK
+__{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    xor  low format({%-11s},_TEMP_LAST_INDEX); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK
+__{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    xor  high format({%-10s},_TEMP_LAST_INDEX); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK})})
 __{}xleave{}LOOP_STACK:              ;           $1 +xloop LOOP_STACK
 __{}xexit{}LOOP_STACK:               ;           $1 +xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -316,16 +390,68 @@ __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
 dnl
+dnl stop index do ... step +loop
+dnl ( -- )
+dnl xdo(stop,index) ... push_addxloop(step)
+define({X_ADDXLOOP},{
+__{}                        ;[24:119]   $1 +xloop LOOP_STACK   variant: INDEX_STACK.. $1 ..STOP_STACK
+__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
+__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
+__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
+__{}ifelse(eval(STOP_STACK),{},{dnl
+__{}__{}    ld    A, low format({%-7s},STOP_STACK-1); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    sub   L             ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld    L, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld    A, high format({%-6s},(STOP_STACK-1)); 2:7       $1 +xloop LOOP_STACK},
+__{}{dnl
+__{}__{}    ld    A, low format({%-7s},eval(STOP_STACK-1)); 2:7       $1 +xloop LOOP_STACK
+__{}__{}    sub   L             ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld    L, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}__{}    ld    A, high format({%-6s},eval(STOP_STACK-1)); 2:7       $1 +xloop LOOP_STACK})
+__{}    sbc   A, H          ; 1:4       $1 +xloop LOOP_STACK
+__{}    ld    H, A          ; 1:4       $1 +xloop LOOP_STACK   HL = (stop-1)-(index+step)
+__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = (stop-1)-index
+__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
+__{}  .warning {PUSH_ADDXLOOP}($@): The condition "$1" cannot be evaluated
+__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step
+__{}  else
+__{}    jp    c, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   negative step
+__{}  endif
+__{}xleave{}LOOP_STACK:              ;           $1 +xloop LOOP_STACK
+__{}xexit{}LOOP_STACK:               ;           $1 +xloop LOOP_STACK{}dnl
+__{}popdef({LEAVE_STACK}){}dnl
+__{}popdef({UNLOOP_STACK}){}dnl
+__{}popdef({LOOP_STACK}){}dnl
+__{}popdef({STOP_STACK}){}dnl
+__{}popdef({INDEX_STACK}){}dnl
+})dnl
+dnl
+dnl
+dnl
 dnl step +loop
 dnl ( -- )
-define({PUSH_ADDXLOOP},{ifelse(eval($1),{1},{
-                        ;           push_addxloop($1) --> xloop LOOP_STACK{}XLOOP},
-eval($1),{-1},{
-                        ;           push_addxloop($1) LOOP_STACK{}SUB1_ADDXLOOP},
-eval($1),{2},{
-                        ;           push_addxloop($1) LOOP_STACK{}_ADD2_ADDXLOOP},
-{$#},{1},{X_ADDXLOOP($1)},{
-.error push_addxloop without parameter!})})dnl
+define({PUSH_ADDXLOOP},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval($1),{},{X_ADDXLOOP($1)},{dnl
+__{}__{}ifelse(eval($1),{1},{dnl
+__{}__{}__{}                        ;           push_addxloop($1) --> xloop LOOP_STACK{}XLOOP},
+__{}__{}eval($1),{-1},{dnl
+__{}__{}__{}                        ;           push_addxloop($1) LOOP_STACK{}SUB1_ADDXLOOP},
+__{}__{}eval($1),{2},{dnl
+__{}__{}__{}                        ;           push_addxloop($1) LOOP_STACK{}_ADD2_ADDXLOOP},
+__{}__{}eval($1>0),{1},{dnl
+__{}__{}__{}POSITIVE_ADDXLOOP($1)},
+__{}__{}{dnl
+__{}__{}__{}NEGATIVE_ADDXLOOP($1)})dnl
+__{}}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 define({ADDXLOOP},{ifelse({fast},{slow},{
