@@ -7,37 +7,38 @@ dnl ( -- )
 dnl xdo(stop,index) ... xloop
 dnl xdo(stop,index) ... addxloop(step)
 define({XDO},{
-dnl
+__{}pushdef({STOP_STACK}, $1){}dnl
+__{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
-__{}    jp   xleave{}LOOP_STACK      ;           xleave LOOP_STACK}){}dnl
+__{}__{}    jp   xleave{}LOOP_STACK      ;           xleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
-__{}                                 ;           xunloop LOOP_STACK}){}dnl
-__{}pushdef({STOP_STACK}, $1)pushdef({INDEX_STACK}, $2)
-    ld   BC, format({%-11s},$2); 3:10      xdo($1,$2) LOOP_STACK
-xdo{}LOOP_STACK{}save:             ;           xdo($1,$2) LOOP_STACK
-    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      xdo($1,$2) LOOP_STACK
-xdo{}LOOP_STACK:                 ;           xdo($1,$2) LOOP_STACK})dnl
+__{}__{}                                 ;           xunloop LOOP_STACK}){}dnl
+__{}    ld   BC, format({%-11s},$2); 3:10      xdo($1,$2) LOOP_STACK
+__{}xdo{}LOOP_STACK{}save:             ;           xdo($1,$2) LOOP_STACK
+__{}    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      xdo($1,$2) LOOP_STACK
+__{}xdo{}LOOP_STACK:                 ;           xdo($1,$2) LOOP_STACK})dnl
 dnl
 dnl
 dnl ( -- )
 dnl xdo(stop,index) ... xloop
 dnl xdo(stop,index) ... addxloop(step)
 define({QUESTIONXDO},{
-dnl
+__{}pushdef({STOP_STACK}, $1){}dnl
+__{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
-__{}    jp   xleave{}LOOP_STACK      ;           xleave LOOP_STACK}){}dnl
+__{}__{}    jp   xleave{}LOOP_STACK      ;           xleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
-__{}                                 ;           xunloop LOOP_STACK}){}dnl
-__{}pushdef({STOP_STACK}, $1)pushdef({INDEX_STACK}, $2)ifelse({$1},{$2},{
-    jp   xexit{}LOOP_STACK       ; 3:10      ?xdo($1,$2) LOOP_STACK{}dnl
-},{
-    ld   BC, format({%-11s},$2); 3:10      ?xdo($1,$2) LOOP_STACK
-    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      ?xdo($1,$2) LOOP_STACK})
-xdo{}LOOP_STACK:                 ;           ?xdo($1,$2) LOOP_STACK})dnl
+__{}__{}                                 ;           xunloop LOOP_STACK}){}dnl
+__{}ifelse({$1},{$2},{
+__{}__{}    jp   xexit{}LOOP_STACK       ; 3:10      ?xdo($1,$2) LOOP_STACK{}dnl
+__{}},{
+__{}__{}    ld   BC, format({%-11s},$2); 3:10      ?xdo($1,$2) LOOP_STACK
+__{}__{}    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      ?xdo($1,$2) LOOP_STACK})
+__{}xdo{}LOOP_STACK:                 ;           ?xdo($1,$2) LOOP_STACK})dnl
 dnl
 dnl
 dnl
@@ -68,8 +69,16 @@ __{}    ld  (idx{}LOOP_STACK),A      ; 3:13      xloop LOOP_STACK   save index
 __{}    sub  low format({%-11s},STOP_STACK); 2:7       xloop LOOP_STACK   index - stop
 __{}    jp    c, xdo{}LOOP_STACK     ; 3:10      xloop LOOP_STACK
 dnl                         ;13:48/48/48},
+__{}eval(STOP_STACK),{0},{
+__{}idx{}LOOP_STACK EQU $+1          ;[9:54/34]  xloop LOOP_STACK   variant: stop == 0
+__{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    inc  BC             ; 1:6       xloop LOOP_STACK   index++
+__{}    ld    A, B          ; 1:4       xloop LOOP_STACK
+__{}    or    C             ; 1:4       xloop LOOP_STACK   index - stop
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      xloop LOOP_STACK
+dnl                         ;14:57/57/57},
 __{}eval((((STOP_STACK) & 0xFF) == 0) && (((INDEX_STACK)^(STOP_STACK)) & 0xFF00)),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;[10:37/57] xloop LOOP_STACK   variant: lo stop == 0  && hi index != hi stop
+__{}idx{}LOOP_STACK EQU $+1          ;[10:57/37] xloop LOOP_STACK   variant: lo stop == 0  && hi index != hi stop
 __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK   idx always points to a 16-bit index
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK   index++
 __{}    ld    A, B          ; 1:4       xloop LOOP_STACK
