@@ -11,25 +11,25 @@ ORG 0x8000
     ld  hl, stack_test
     push hl
 
-    
+       
     push DE             ; 1:11      push2(5,-5)
     ld   DE, 5          ; 3:10      push2(5,-5)
     push HL             ; 1:11      push2(5,-5)
     ld   HL, -5         ; 3:10      push2(5,-5) 
     call dtest          ; 3:17      call ( -- ret ) R:( -- )
-    
+       
     push DE             ; 1:11      push2(5,5)
     ld   DE, 5          ; 3:10      push2(5,5)
     push HL             ; 1:11      push2(5,5)
     ld   HL, 5          ; 3:10      push2(5,5) 
     call dtest          ; 3:17      call ( -- ret ) R:( -- )
-    
+       
     push DE             ; 1:11      push2(-5,-5)
     ld   DE, -5         ; 3:10      push2(-5,-5)
     push HL             ; 1:11      push2(-5,-5)
     ld   HL, -5         ; 3:10      push2(-5,-5) 
     call dtest          ; 3:17      call ( -- ret ) R:( -- )
-    
+       
     push DE             ; 1:11      push2(-5,5)
     ld   DE, -5         ; 3:10      push2(-5,5)
     push HL             ; 1:11      push2(-5,5)
@@ -630,23 +630,20 @@ ptestp3:                ;
     pop  BC             ; 1:10      : ret
     ld  (ptestp3_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
-    ld    A, high 3     ; 2:7       dup 3 = if
-    xor   H             ; 1:4       dup 3 = if
-    ld    B, A          ; 1:4       dup 3 = if
+                        ;[7:25]     dup 3 = if
     ld    A, low 3      ; 2:7       dup 3 = if
     xor   L             ; 1:4       dup 3 = if
-    or    B             ; 1:4       dup 3 = if
+    or    H             ; 1:4       dup 3 = if
     jp   nz, else137    ; 3:10      dup 3 = if 
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string138
     call PRINT_STRING_Z ; 3:17      print_z 
 else137  EQU $          ;           = endif
 endif137:
     
+                        ;[7:25]     dup 3 <> if
     ld    A, low 3      ; 2:7       dup 3 <> if
     xor   L             ; 1:4       dup 3 <> if
-    jr   nz, $+8        ; 2:7/12    dup 3 <> if
-    ld    A, high 3     ; 2:7       dup 3 <> if
-    xor   H             ; 1:4       dup 3 <> if
+    or    H             ; 1:4       dup 3 <> if
     jp    z, else138    ; 3:10      dup 3 <> if 
     ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string139
     call PRINT_STRING_Z ; 3:17      print_z 
@@ -716,63 +713,61 @@ endif142:
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
+                        ;[7:25]     dup 3 u= if
     ld    A, low 3      ; 2:7       dup 3 u= if
     xor   L             ; 1:4       dup 3 u= if
-    jp   nz, else143    ; 3:10      dup 3 u= if
-    ld    A, high 3     ; 2:7       dup 3 u= if
-    xor   H             ; 1:4       dup 3 u= if
+    or    H             ; 1:4       dup 3 u= if
     jp   nz, else143    ; 3:10      dup 3 u= if 
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string144
     call PRINT_STRING_Z ; 3:17      print_z 
 else143  EQU $          ;           = endif
 endif143:
     
+                        ;[7:25]     dup 3 u<> if
     ld    A, low 3      ; 2:7       dup 3 u<> if
     xor   L             ; 1:4       dup 3 u<> if
-    jr   nz, $+8        ; 2:7/12    dup 3 u<> if
-    ld    A, high 3     ; 2:7       dup 3 u<> if
-    xor   H             ; 1:4       dup 3 u<> if
+    or    H             ; 1:4       dup 3 u<> if
     jp    z, else144    ; 3:10      dup 3 u<> if 
     ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string145
     call PRINT_STRING_Z ; 3:17      print_z 
 else144  EQU $          ;           = endif
 endif144:
     
-    ld    A, L          ; 1:4       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
-    sub   low 3         ; 2:7       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
-    ld    A, H          ; 1:4       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 (u)< if    HL<3 --> HL-3<0 --> carry if true
-    jp   nc, else145    ; 3:10      dup 3 (u)< if 
+    ld    A, L          ; 1:4       dup 3 u< if    HL<3 --> HL-3<0 --> carry if true
+    sub   low 3         ; 2:7       dup 3 u< if    HL<3 --> HL-3<0 --> carry if true
+    ld    A, H          ; 1:4       dup 3 u< if    HL<3 --> HL-3<0 --> carry if true
+    sbc   A, high 3     ; 2:7       dup 3 u< if    HL<3 --> HL-3<0 --> carry if true
+    jp   nc, else145    ; 3:10      dup 3 u< if 
     ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string146
     call PRINT_STRING_Z ; 3:17      print_z 
 else145  EQU $          ;           = endif
 endif145:
     
-    ld    A, low 3      ; 2:7       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
-    sub   L             ; 1:4       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 (u)<= if    HL<=3 --> 0<=3-HL --> not carry if true
-    jp    c, else146    ; 3:10      dup 3 (u)<= if 
+    ld    A, low 3      ; 2:7       dup 3 u<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    sub   L             ; 1:4       dup 3 u<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    ld    A, high 3     ; 2:7       dup 3 u<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup 3 u<= if    HL<=3 --> 0<=3-HL --> not carry if true
+    jp    c, else146    ; 3:10      dup 3 u<= if 
     ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string147
     call PRINT_STRING_Z ; 3:17      print_z 
 else146  EQU $          ;           = endif
 endif146:
     
-    ld    A, low 3      ; 2:7       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
-    sub   L             ; 1:4       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
-    sbc   A, H          ; 1:4       dup 3 (u)> if    HL>3 --> 0>3-HL --> carry if true
-    jp   nc, else147    ; 3:10      dup 3 (u)> if 
+    ld    A, low 3      ; 2:7       dup 3 u> if    HL>3 --> 0>3-HL --> carry if true
+    sub   L             ; 1:4       dup 3 u> if    HL>3 --> 0>3-HL --> carry if true
+    ld    A, high 3     ; 2:7       dup 3 u> if    HL>3 --> 0>3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup 3 u> if    HL>3 --> 0>3-HL --> carry if true
+    jp   nc, else147    ; 3:10      dup 3 u> if 
     ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string148
     call PRINT_STRING_Z ; 3:17      print_z 
 else147  EQU $          ;           = endif
 endif147:
     
-    ld    A, L          ; 1:4       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
-    sub   low 3         ; 2:7       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 (u)>= if    HL>=3 --> HL-3>=0 --> not carry if true
-    jp    c, else148    ; 3:10      dup 3 (u)>= if 
+    ld    A, L          ; 1:4       dup 3 u>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    sub   low 3         ; 2:7       dup 3 u>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup 3 u>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    sbc   A, high 3     ; 2:7       dup 3 u>= if    HL>=3 --> HL-3>=0 --> not carry if true
+    jp    c, else148    ; 3:10      dup 3 u>= if 
     ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string149
     call PRINT_STRING_Z ; 3:17      print_z 
 else148  EQU $          ;           = endif
@@ -797,22 +792,23 @@ ptestm3:                ;
     pop  BC             ; 1:10      : ret
     ld  (ptestm3_end+1),BC; 4:20      : ( ret -- ) R:( -- )
     
-    ld    A, high -3    ; 2:7       dup -3 = if
-    xor   H             ; 1:4       dup -3 = if
-    ld    B, A          ; 1:4       dup -3 = if
+                        ;[11:21/39  dup -3 = if
     ld    A, low -3     ; 2:7       dup -3 = if
     xor   L             ; 1:4       dup -3 = if
-    or    B             ; 1:4       dup -3 = if
+    jp   nz, else149    ; 3:10      dup -3 = if
+    dec   A             ; 1:4       dup -3 = if   A = 0xFF
+    xor   H             ; 1:4       dup -3 = if
     jp   nz, else149    ; 3:10      dup -3 = if 
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string150
     call PRINT_STRING_Z ; 3:17      print_z 
 else149  EQU $          ;           = endif
 endif149:
     
+                        ;[10:23/36] dup -3 <> if
     ld    A, low -3     ; 2:7       dup -3 <> if
     xor   L             ; 1:4       dup -3 <> if
-    jr   nz, $+8        ; 2:7/12    dup -3 <> if
-    ld    A, high -3    ; 2:7       dup -3 <> if
+    jr   nz, $+7        ; 2:7/12    dup -3 <> if
+    dec   A             ; 1:4       dup -3 <> if   A = 0xFF
     xor   H             ; 1:4       dup -3 <> if
     jp    z, else150    ; 3:10      dup -3 <> if 
     ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string151
@@ -883,10 +879,11 @@ endif154:
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
+                        ;[11:21/39  dup -3 u= if
     ld    A, low -3     ; 2:7       dup -3 u= if
     xor   L             ; 1:4       dup -3 u= if
     jp   nz, else155    ; 3:10      dup -3 u= if
-    ld    A, high -3    ; 2:7       dup -3 u= if
+    dec   A             ; 1:4       dup -3 u= if   A = 0xFF
     xor   H             ; 1:4       dup -3 u= if
     jp   nz, else155    ; 3:10      dup -3 u= if 
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string156
@@ -894,10 +891,11 @@ endif154:
 else155  EQU $          ;           = endif
 endif155:
     
+                        ;[10:23/36] dup -3 u<> if
     ld    A, low -3     ; 2:7       dup -3 u<> if
     xor   L             ; 1:4       dup -3 u<> if
-    jr   nz, $+8        ; 2:7/12    dup -3 u<> if
-    ld    A, high -3    ; 2:7       dup -3 u<> if
+    jr   nz, $+7        ; 2:7/12    dup -3 u<> if
+    dec   A             ; 1:4       dup -3 u<> if   A = 0xFF
     xor   H             ; 1:4       dup -3 u<> if
     jp    z, else156    ; 3:10      dup -3 u<> if 
     ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string157
@@ -905,41 +903,41 @@ endif155:
 else156  EQU $          ;           = endif
 endif156:
     
-    ld    A, L          ; 1:4       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
-    sub   low -3        ; 2:7       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
-    ld    A, H          ; 1:4       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 (u)< if    HL<-3 --> HL--3<0 --> carry if true
-    jp   nc, else157    ; 3:10      dup -3 (u)< if 
+    ld    A, L          ; 1:4       dup -3 u< if    HL<-3 --> HL--3<0 --> carry if true
+    sub   low -3        ; 2:7       dup -3 u< if    HL<-3 --> HL--3<0 --> carry if true
+    ld    A, H          ; 1:4       dup -3 u< if    HL<-3 --> HL--3<0 --> carry if true
+    sbc   A, high -3    ; 2:7       dup -3 u< if    HL<-3 --> HL--3<0 --> carry if true
+    jp   nc, else157    ; 3:10      dup -3 u< if 
     ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string158
     call PRINT_STRING_Z ; 3:17      print_z 
 else157  EQU $          ;           = endif
 endif157:
     
-    ld    A, low -3     ; 2:7       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
-    sub   L             ; 1:4       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 (u)<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
-    jp    c, else158    ; 3:10      dup -3 (u)<= if 
+    ld    A, low -3     ; 2:7       dup -3 u<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sub   L             ; 1:4       dup -3 u<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    ld    A, high -3    ; 2:7       dup -3 u<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    sbc   A, H          ; 1:4       dup -3 u<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
+    jp    c, else158    ; 3:10      dup -3 u<= if 
     ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string159
     call PRINT_STRING_Z ; 3:17      print_z 
 else158  EQU $          ;           = endif
 endif158:
     
-    ld    A, low -3     ; 2:7       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
-    sub   L             ; 1:4       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
-    sbc   A, H          ; 1:4       dup -3 (u)> if    HL>-3 --> 0>-3-HL --> carry if true
-    jp   nc, else159    ; 3:10      dup -3 (u)> if 
+    ld    A, low -3     ; 2:7       dup -3 u> if    HL>-3 --> 0>-3-HL --> carry if true
+    sub   L             ; 1:4       dup -3 u> if    HL>-3 --> 0>-3-HL --> carry if true
+    ld    A, high -3    ; 2:7       dup -3 u> if    HL>-3 --> 0>-3-HL --> carry if true
+    sbc   A, H          ; 1:4       dup -3 u> if    HL>-3 --> 0>-3-HL --> carry if true
+    jp   nc, else159    ; 3:10      dup -3 u> if 
     ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string160
     call PRINT_STRING_Z ; 3:17      print_z 
 else159  EQU $          ;           = endif
 endif159:
     
-    ld    A, L          ; 1:4       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
-    sub   low -3        ; 2:7       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 (u)>= if    HL>=-3 --> HL--3>=0 --> not carry if true
-    jp    c, else160    ; 3:10      dup -3 (u)>= if 
+    ld    A, L          ; 1:4       dup -3 u>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    sub   low -3        ; 2:7       dup -3 u>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    ld    A, H          ; 1:4       dup -3 u>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    sbc   A, high -3    ; 2:7       dup -3 u>= if    HL>=-3 --> HL--3>=0 --> not carry if true
+    jp    c, else160    ; 3:10      dup -3 u>= if 
     ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string161
     call PRINT_STRING_Z ; 3:17      print_z 
 else160  EQU $          ;           = endif
