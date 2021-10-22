@@ -245,14 +245,14 @@ __{}    ld  (idx{}LOOP_STACK), A     ; 3:13      $1 +xloop LOOP_STACK   save new
 __{}    xor  low format({%-11s},_TEMP_REAL_STOP); 2:7       $1 +xloop LOOP_STACK   Contains the values of eval((INDEX_STACK+$1) & 0xFF)..eval(_TEMP_REAL_STOP & 0xFF)
 __{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
 eval($1 & 0xFF),{0},{
-__{}                        ;[12:62/42] $1 +xloop LOOP_STACK   variant: positive lo step 0 and real stop _TEMP_REAL_STOP, run _TEMP_X{}x, INDEX_STACK.. +$1 ..(STOP_STACK)
+__{}                        ;[14:51]    $1 +xloop LOOP_STACK   variant: positive step = n*256 and real stop _TEMP_REAL_STOP, run _TEMP_X{}x, INDEX_STACK.. +$1 ..(STOP_STACK)
 __{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
 __{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
 __{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK
 __{}    add   A, high format({%-6s},$1); 2:7       $1 +xloop LOOP_STACK
-__{}    ld    B, A          ; 1:4       $1 +xloop LOOP_STACK
+__{}    ld  (idx{}LOOP_STACK+1),A    ; 3:13      xloop LOOP_STACK   save index
 __{}    xor  high format({%-10s},_TEMP_REAL_STOP); 2:7       $1 +xloop LOOP_STACK
-__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      $1 +xloop LOOP_STACK},
+__{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
 eval(STOP_STACK==0),{1},{
 __{}                        ;[17:90]    $1 +xloop LOOP_STACK   variant: positive step and stop 0, INDEX_STACK.. +$1 ..0
 __{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
