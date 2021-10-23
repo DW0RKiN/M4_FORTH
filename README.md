@@ -744,9 +744,11 @@ The variables are stored in the data stack.
 |<sub> 2dup u<= while  |<sub>              |<sub>   _2DUP_ULE_WHILE     |<sub>           ( -- )           |<sub>              |
 |<sub> 2dup u>  while  |<sub>              |<sub>   _2DUP_UGT_WHILE     |<sub>           ( -- )           |<sub>              |
 |<sub> 2dup u>= while  |<sub>              |<sub>   _2DUP_UGE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub>     repeat      |<sub>    REPEAT    |<sub>                       |<sub>           ( -- )           |<sub>              |
-|<sub>     again       |<sub>    AGAIN     |<sub>                       |<sub>           ( -- )           |<sub>              |
-|<sub>     until       |<sub>    UNTIL     |<sub>                       |<sub>      ( flag -- )           |<sub>              |
+|<sub>      repeat     |<sub>    REPEAT    |<sub>                       |<sub>           ( -- )           |<sub>              |
+|<sub>      again      |<sub>    AGAIN     |<sub>                       |<sub>           ( -- )           |<sub>              |
+|<sub>      until      |<sub>    UNTIL     |<sub>                       |<sub>      ( flag -- )           |<sub>              |
+|<sub>    dup until    |<sub>  DUP UNTIL   |<sub>       DUP_UNTIL       |<sub>      ( flag -- flag )      |<sub>              |
+|<sub>dup `2` eq until |<sub>     ...      |<sub> DUP_PUSH_EQ_UNTIL(`2`)|<sub>         ( n -- n )         |<sub>              |
 
 ### Other
 
@@ -767,6 +769,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |<sub>   dup @ swap   |<sub>   DUP FETCH SWAP  |<sub>    DUP_FETCH_SWAP  |<sub>     ( addr -- x addr )   |<sub> NOS = (addr)     |
 |<sub>     addr @     |<sub>                   |<sub>  PUSH_FETCH(addr)  |<sub>          ( -- x )        |<sub> TOP = (addr)     |
 |<sub>        !       |<sub>       STORE       |<sub>                    |<sub>   ( x addr -- )          |<sub> (addr) = x       |
+|<sub>     tuck !     |<sub>    TUCK STORE     |<sub>     TUCK_STORE     |<sub>   ( x addr -- addr )     |<sub> (addr) = x       |
+|<sub>    tuck ! 2+   |<sub>  TUCK STORE _2ADD |<sub>   TUCK_STORE_2ADD  |<sub>   ( x addr -- addr+2 )   |<sub> (addr) = x       |
+|<sub>   over swap !  |<sub>  OVER SWAP STORE  |<sub>   OVER_SWAP_STORE  |<sub>   ( x addr -- x )        |<sub> (addr) = x       |
+|<sub>     2dup !     |<sub>    _2DUP STORE    |<sub>     _2DUP_STORE    |<sub>   ( x addr -- x addr )   |<sub> (addr) = x       |
+|<sub>    2dup ! 2+   |<sub> _2DUP STORE _2ADD |<sub>  _2DUP_STORE_2ADD  |<sub>   ( x addr -- x addr+2 ) |<sub> (addr) = x       |
 |<sub>     addr !     |<sub>                   |<sub>  PUSH_STORE(addr)  |<sub>        ( x -- )          |<sub> (addr) = x       |
 |<sub>    x addr !    |<sub>                   |<sub>PUSH2_STORE(x,addr) |<sub>          ( -- )          |<sub> (addr) = x       |
 |<sub>       C@       |<sub>       CFETCH      |<sub>                    |<sub>     ( addr -- char )     |<sub> TOP = (addr)     |
