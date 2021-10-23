@@ -213,6 +213,41 @@ define({STORE},{
     pop  DE             ; 1:10      ! store})dnl
 dnl
 dnl
+dnl tuck !
+dnl ( x addr -- addr )
+dnl store 16-bit number at addr
+define({TUCK_STORE},{
+                        ;[5:36]     tuck ! tuck_store   ( x addr -- addr )
+    ld  (HL),E          ; 1:7       tuck ! tuck_store
+    inc  HL             ; 1:6       tuck ! tuck_store
+    ld  (HL),D          ; 1:7       tuck ! tuck_store
+    dec  HL             ; 1:6       tuck ! tuck_store
+    pop  DE             ; 1:10      tuck ! tuck_store})dnl
+dnl
+dnl
+dnl over swap !
+dnl ( x addr -- x )
+dnl store 16-bit number at addr
+define({OVER_SWAP_STORE},{
+                        ;[5:34]     over swap ! over_swap_store   ( x addr -- x )
+    ld  (HL),E          ; 1:7       over swap ! over_swap_store
+    inc  HL             ; 1:6       over swap ! over_swap_store
+    ld  (HL),D          ; 1:7       over swap ! over_swap_store
+    ex   DE, HL         ; 1:4       over swap ! over_swap_store
+    pop  DE             ; 1:10      over swap ! over_swap_store})dnl
+dnl
+dnl
+dnl 2dup !
+dnl ( x addr -- x addr )
+dnl store 16-bit number at addr
+define({_2DUP_STORE},{
+                        ;[4:26]     2dup ! _2dup_store   ( x addr -- x addr )
+    ld  (HL),E          ; 1:7       2dup ! _2dup_store
+    inc  HL             ; 1:6       2dup ! _2dup_store
+    ld  (HL),D          ; 1:7       2dup ! _2dup_store
+    dec  HL             ; 1:6       2dup ! _2dup_store})dnl
+dnl
+dnl
 dnl addr C!
 dnl ( char -- )
 dnl store(addr) store 8-bit char at addr
