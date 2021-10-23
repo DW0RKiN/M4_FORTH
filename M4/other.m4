@@ -264,11 +264,11 @@ dnl 2dup ! 2+
 dnl ( x addr -- x addr+2 )
 dnl store 16-bit number at addr
 define({_2DUP_STORE_2ADD},{
-                        ;[4:26]     2dup ! 2+ _2dup_store_add   ( x addr -- x addr+2 )
-    ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_add
-    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_add
-    ld  (HL),D          ; 1:7       2dup ! 2+ _2dup_store_add
-    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_add})dnl
+                        ;[4:26]     2dup ! 2+ _2dup_store_2add   ( x addr -- x addr+2 )
+    ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_2add
+    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add
+    ld  (HL),D          ; 1:7       2dup ! 2+ _2dup_store_2add
+    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add})dnl
 dnl
 dnl
 dnl addr C!
