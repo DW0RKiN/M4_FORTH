@@ -69,6 +69,36 @@ define({DUP_UNTIL},{
 break{}BEGIN_STACK:               ;           dup until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
 dnl
 dnl
+dnl ( n -- n )
+define({DUP_PUSH_EQ_UNTIL},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!
+__{}},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!
+__{}}){}dnl
+__{}ifelse(eval($1),{},{
+__{}__{}    ld    A, L          ; 1:4       dup $1 eq until BEGIN_STACK
+__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK
+__{}__{}    ld    A, H          ; 1:4       dup $1 eq until BEGIN_STACK
+__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK},
+__{}{dnl
+__{}__{}ifelse(eval($1),{0},{
+__{}__{}__{}    ld    A, L          ; 1:4       dup $1 eq until BEGIN_STACK
+__{}__{}__{}    or    H             ; 1:4       dup $1 eq until BEGIN_STACK   TOS ^ stop
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK},
+__{}__{}{
+__{}__{}__{}    ld    A, L          ; 1:4       dup $1 eq until BEGIN_STACK
+__{}__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK
+__{}__{}__{}    ld    A, H          ; 1:4       dup $1 eq until BEGIN_STACK
+__{}__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK}){}dnl
+__{}})
+__{}break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl

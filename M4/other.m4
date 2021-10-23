@@ -225,6 +225,18 @@ define({TUCK_STORE},{
     pop  DE             ; 1:10      tuck ! tuck_store})dnl
 dnl
 dnl
+dnl tuck ! 2+
+dnl ( x addr -- addr+2 )
+dnl store 16-bit number at addr
+define({TUCK_STORE_2ADD},{
+                        ;[5:36]     tuck ! +2 tuck_store_2add   ( x addr -- addr+2 )
+    ld  (HL),E          ; 1:7       tuck ! +2 tuck_store_2add
+    inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
+    ld  (HL),D          ; 1:7       tuck ! +2 tuck_store_2add
+    inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
+    pop  DE             ; 1:10      tuck ! +2 tuck_store_2add})dnl
+dnl
+dnl
 dnl over swap !
 dnl ( x addr -- x )
 dnl store 16-bit number at addr
@@ -246,6 +258,17 @@ define({_2DUP_STORE},{
     inc  HL             ; 1:6       2dup ! _2dup_store
     ld  (HL),D          ; 1:7       2dup ! _2dup_store
     dec  HL             ; 1:6       2dup ! _2dup_store})dnl
+dnl
+dnl
+dnl 2dup ! 2+
+dnl ( x addr -- x addr+2 )
+dnl store 16-bit number at addr
+define({_2DUP_STORE_2ADD},{
+                        ;[4:26]     2dup ! 2+ _2dup_store_add   ( x addr -- x addr+2 )
+    ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_add
+    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_add
+    ld  (HL),D          ; 1:7       2dup ! 2+ _2dup_store_add
+    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_add})dnl
 dnl
 dnl
 dnl addr C!
