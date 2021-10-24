@@ -110,7 +110,11 @@ do
     sed 's#^\([^;{]*\s\|^\)OVER_SWAP\s\+STORE\(\s\|$\)#\1OVER_SWAP_STORE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+STORE\(\s\|$\)#\1_2DUP_STORE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2DUP_STORE\s\+2+\(\s\|$\)#\1_2DUP_STORE_2ADD\2#gi' |
-    
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+SWAP\s\+STORE\s\+2+\(\s\|$\)#\1DUP_PUSH_SWAP_STORE_2ADD(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\(0x[0-9A-F]\+\)\s\+SWAP\s\+STORE\s\+2+\(\s\|$\)#\1DUP_PUSH_SWAP_STORE_2ADD(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+SWAP\s\+STORE\(\s\|$\)#\1DUP_PUSH_SWAP_STORE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\(0x[0-9A-F]\+\)\s\+SWAP\s\+STORE\(\s\|$\)#\1DUP_PUSH_SWAP_STORE(\2)\3#gi' |
+
     sed 's#^\([^;{]*\s\|^\)@\(\s\|$\)#\1FETCH\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+FETCH\(\s\|$\)#\1DUP_FETCH\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP_FETCH\s\+SWAP\(\s\|$\)#\1DUP_FETCH_SWAP\2#gi' |
@@ -405,6 +409,7 @@ do
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9][0-9]*\)\s\+PICK\(\s\|$\)#\1PUSH_PICK(\2)\3#gi' |
 
     sed 's#^\([^;{]*\s\|^\)DUP\s\+UNTIL\(\s\|$\)#\1DUP_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+UNTIL\(\s\|$\)#\1_2DUP_EQ_UNTIL\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+EQ\s\+UNTIL\(\s\|$\)#\1DUP_PUSH_EQ_UNTIL(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\(0x[0-9A-F]\+\)\s\+EQ\s\+UNTIL\(\s\|$\)#\1DUP_PUSH_EQ_UNTIL(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+IF\(\s\|$\)#\1DUP_IF\2#gi' |
