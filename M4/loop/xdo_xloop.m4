@@ -75,7 +75,7 @@ __{}    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      xdo_push_xi($1,$2,
 __{}xdo{}LOOP_STACK:                 ;           xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push DE             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push HL             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
-__{}    ld   DE, format({%-11s},$3); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK    
+__{}    ld   DE, format({%-11s},$3); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK   
 __{}    ld    H, B          ; 1:4       xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_push_xi($1,$2,$3) LOOP_STACK})dnl
 dnl
@@ -589,35 +589,85 @@ dnl
 dnl ( -- i )
 dnl hodnota indexu vnitrni smycky
 define({XI},{
-    push DE             ; 1:11      index xi LOOP_STACK
-    ex   DE, HL         ; 1:4       index xi LOOP_STACK
-    ld   HL, (idx{}LOOP_STACK)   ; 3:16      index xi LOOP_STACK   idx always points to a 16-bit index}){}dnl
+    push DE             ; 1:11      {index}(LOOP_STACK) xi
+    ex   DE, HL         ; 1:4       {index}(LOOP_STACK) xi
+    ld   HL, (idx{}LOOP_STACK)   ; 3:16      {index}(LOOP_STACK) xi   idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl ( -- n i )
+dnl vlozeni hodnoty a indexu vnitrni smycky
+define({PUSH_XI},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    push DE             ; 1:11      $1 {index}(LOOP_STACK) push_xi($1)
+    push HL             ; 1:11      $1 {index}(LOOP_STACK) push_xi($1)
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 {index}(LOOP_STACK) push_xi($1)
+    ld   HL, (idx{}LOOP_STACK)   ; 3:16      $1 {index}(LOOP_STACK) push_xi($1)   idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl n i !
+dnl ( -- )
+dnl vlozeni hodnoty a indexu vnitrni smycky a zavolani store
+define({PUSH_XI_STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[13:66]    $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    ld   BC, (idx{}LOOP_STACK)   ; 4:20      $1 {index}(LOOP_STACK) ! push_xi_store($1)   idx always points to a 16-bit index
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    ld  (BC),A          ; 1:7       $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    inc  BC             ; 1:6       $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    ld    A, format({%-11s},($1+1)); 3:13      $1 {index}(LOOP_STACK) ! push_xi_store($1)},
+__{}__{dnl
+__{}__{}                        ;[11:54]    $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    ld   BC, (idx{}LOOP_STACK)   ; 4:20      $1 {index}(LOOP_STACK) ! push_xi_store($1)   idx always points to a 16-bit index
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    ld  (BC),A          ; 1:7       $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    inc  BC             ; 1:6       $1 {index}(LOOP_STACK) ! push_xi_store($1)
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 {index}(LOOP_STACK) ! push_xi_store($1)})
+__{}    ld  (BC),A          ; 1:7       $1 {index}(LOOP_STACK) ! push_xi_store($1){}dnl
+}){}dnl
+dnl
+dnl
+dnl char i !
+dnl ( -- )
+dnl store 8-bit char at addr i
+define({PUSH_XI_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}                        ;[8:40]     $1 {index}(LOOP_STACK) C! push_xi_cstore($1)
+__{}__{}    ld   BC, (idx{}LOOP_STACK)   ; 4:20      $1 {index}(LOOP_STACK) C! push_xi_cstore($1)   idx always points to a 16-bit index
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 {index}(LOOP_STACK) C! push_xi_cstore($1)},
+__{}__{dnl
+__{}__{}                        ;[7:34]     $1 {index}(LOOP_STACK) C! push_xi_cstore($1)
+__{}__{}    ld   BC, (idx{}LOOP_STACK)   ; 4:20      $1 {index}(LOOP_STACK) C! push_xi_cstore($1)   idx always points to a 16-bit index
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 {index}(LOOP_STACK) C! push_xi_cstore($1)})
+__{}    ld  (BC),A          ; 1:7       $1 {index}(LOOP_STACK) C! push_xi_cstore($1){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 dnl ( -- j )
 dnl hodnota indexu druhe vnitrni smycky
-define({XJ},{
-    push DE             ; 1:11      index xj LOOP_STACK
-    ex   DE, HL         ; 1:4       index xj LOOP_STACK
-__{}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}dnl
-    ld   HL, (idx{}LOOP_STACK)   ;{}dnl
-__{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK}){}dnl
-__{} 3:16      index xj LOOP_STACK   idx always points to a 16-bit index}){}dnl
+define({XJ},{pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
+    push DE             ; 1:11      {index}(LOOP_STACK) xj
+    ex   DE, HL         ; 1:4       {index}(LOOP_STACK) xj
+    ld   HL, (idx{}LOOP_STACK)   ; 3:16      {index}(LOOP_STACK) xj   idx always points to a 16-bit index{}dnl
+__{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl ( -- k )
 dnl hodnota indexu treti vnitrni smycky
-define({XK},{
-    push DE             ; 1:11      index xk LOOP_STACK
-    ex   DE, HL         ; 1:4       index xk LOOP_STACK
-__{}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}dnl
-__{}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}dnl
-    ld   HL, (idx{}LOOP_STACK)   ;{}dnl
-__{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK}){}dnl
-__{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK}){}dnl
-__{} 3:16      index xk LOOP_STACK   idx always points to a 16-bit index}){}dnl
+define({XK},{pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
+    push DE             ; 1:11      {index}(LOOP_STACK) xk
+    ex   DE, HL         ; 1:4       {index}(LOOP_STACK) xk
+    ld   HL, (idx{}LOOP_STACK)   ; 3:16      {index}(LOOP_STACK) xk   idx always points to a 16-bit index{}dnl
+__{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK}){}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK})}){}dnl
 dnl
 dnl
 dnl

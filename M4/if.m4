@@ -149,30 +149,56 @@ __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      dup $1 = if
 __{}__{}    xor   H             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
-__{}eval($1),{0},{dnl
-__{}__{}                        ;[5:18]     dup $1 = if
+__{}eval(($1) & 0xFFFF),{0},{dnl
+__{}__{}                        ;[5:18]     dup $1 = if   variant: zero
 __{}__{}    ld    A, L          ; 1:4       dup $1 = if
 __{}__{}    or    H             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
-__{}eval(($1) & 0xFF),{0},{dnl
-__{}__{}                        ;[7:25]     dup $1 = if
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 = if
-__{}__{}    xor   H             ; 1:4       dup $1 = if
-__{}__{}    or    L             ; 1:4       dup $1 = if
-__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
-__{}eval(($1)>>8),{0},{dnl
-__{}__{}                        ;[7:25]     dup $1 = if
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 = if
-__{}__{}    xor   L             ; 1:4       dup $1 = if
+__{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
+__{}__{}                        ;[6:22]     dup $1 = if   variant: 0x00FF
+__{}__{}    ld    A, L          ; 1:4       dup $1 = if
+__{}__{}    inc   A             ; 1:4       dup $1 = if
 __{}__{}    or    H             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
-__{}eval(($1)>>8),{-1},{dnl
-__{}__{}                        ;[11:21/39  dup $1 = if
+__{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
+__{}__{}                        ;[6:22]     dup $1 = if   variant: 0xFF00
+__{}__{}    ld    A, H          ; 1:4       dup $1 = if
+__{}__{}    inc   A             ; 1:4       dup $1 = if
+__{}__{}    or    L             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
+__{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
+__{}__{}                        ;[6:22]     dup $1 = if   variant: -1
+__{}__{}    ld    A, H          ; 1:4       dup $1 = if
+__{}__{}    and   L             ; 1:4       dup $1 = if
+__{}__{}    inc   A             ; 1:4       dup $1 = if   A = 0xFF --> 0x00 ?
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
+__{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
+__{}__{}                        ;[11:18/39] dup $1 = if   variant: lo($1) = 255
+__{}__{}    ld    A, L          ; 1:4       dup $1 = if
+__{}__{}    inc   A             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 = if
+__{}__{}    xor   H             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
+__{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
+__{}__{}                        ;[11:21/39] dup $1 = if   variant: hi($1) = 255
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 = if
 __{}__{}    xor   L             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if
 __{}__{}    dec   A             ; 1:4       dup $1 = if   A = 0xFF
 __{}__{}    xor   H             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
+__{}eval(($1) & 0xFF),{0},{dnl
+__{}__{}                        ;[7:25]     dup $1 = if   variant: lo($1) = zero
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 = if
+__{}__{}    xor   H             ; 1:4       dup $1 = if
+__{}__{}    or    L             ; 1:4       dup $1 = if
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
+__{}eval(($1) & 0xFF00),{0},{dnl
+__{}__{}                        ;[7:25]     dup $1 = if   variant: hi($1) = zero
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 = if
+__{}__{}    xor   L             ; 1:4       dup $1 = if
+__{}__{}    or    H             ; 1:4       dup $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if},
 __{}{dnl
 __{}__{}                        ;[12:21/42] dup $1 = if

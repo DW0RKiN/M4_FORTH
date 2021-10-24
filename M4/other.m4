@@ -271,6 +271,34 @@ define({_2DUP_STORE_2ADD},{
     inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add})dnl
 dnl
 dnl
+dnl dup number swap !
+dnl ( addr -- addr )
+dnl store 16-bit number at addr
+define({DUP_PUSH_SWAP_STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+                        ;[6:32]     dup $1 swap ! dup_push_swap_store($1)   ( addr -- addr )
+    ld  (HL),low format({%-7s},$1); 2:10      dup $1 swap ! dup_push_swap_store($1)
+    inc  HL             ; 1:6       dup $1 swap ! dup_push_swap_store($1)
+    ld  (HL),high format({%-6s},$1); 2:10      dup $1 swap ! dup_push_swap_store($1)
+    dec  HL             ; 1:6       dup $1 swap ! dup_push_swap_store($1)})dnl
+dnl
+dnl
+dnl dup number swap ! 2+
+dnl ( addr -- addr+2 )
+dnl store 16-bit number at addr
+define({DUP_PUSH_SWAP_STORE_2ADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+                        ;[6:32]     dup $1 swap ! 2+ dup_push_swap_store_2add($1)   ( addr -- addr+2 )
+    ld  (HL),low format({%-7s},$1); 2:10      dup $1 swap ! 2+ dup_push_swap_store_2add($1)
+    inc  HL             ; 1:6       dup $1 swap ! 2+ dup_push_swap_store_2add($1)
+    ld  (HL),high format({%-6s},$1); 2:10      dup $1 swap ! 2+ dup_push_swap_store_2add($1)
+    inc  HL             ; 1:6       dup $1 swap ! 2+ dup_push_swap_store_2add($1)})dnl
+dnl
+dnl
 dnl addr C!
 dnl ( char -- )
 dnl store(addr) store 8-bit char at addr
