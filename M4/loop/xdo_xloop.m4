@@ -107,7 +107,7 @@ __{}    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      xdo_push_xi($1,$2,
 __{}xdo{}LOOP_STACK:                 ;           xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push DE             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push HL             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
-__{}    ld   DE, format({%-11s},$3); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK   
+__{}    ld   DE, format({%-11s},$3); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    ld    H, B          ; 1:4       xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_push_xi($1,$2,$3) LOOP_STACK})dnl
 dnl
@@ -208,10 +208,10 @@ __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK   INDEX_STACK.. +1 ..(S
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK   index++
 __{}    ld    A, B          ; 1:4       xloop LOOP_STACK
 __{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       xloop LOOP_STACK
-__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      xloop LOOP_STACK},    
-__{}{
-                        ;[16:57/58] xloop LOOP_STACK   variant: step one, real_stop:_HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      xloop LOOP_STACK},
+{
+__{}                        ;[16:57/58] xloop LOOP_STACK   variant: step one, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           xloop LOOP_STACK   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      xloop LOOP_STACK   INDEX_STACK.. +1 ..(STOP_STACK), run _TEMP_X{}x
 __{}    inc  BC             ; 1:6       xloop LOOP_STACK   index++
 __{}ifelse(eval(_TEMP_HI_FALSE_POSITIVE<=_TEMP_LO_FALSE_POSITIVE),{1},{dnl
@@ -238,50 +238,79 @@ __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
 dnl ( -- )
-define({SUB1_ADDXLOOP},{ifelse(eval(STOP_STACK),{-1},{
-__{}idx{}LOOP_STACK EQU $+1          ;[10:58/38] -1 +xloop LOOP_STACK   variant: INDEX_STACK.. -1 ..STOP_STACK = -1
-__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   idx always points to a 16-bit index
-__{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
-__{}    and   B             ; 1:4       -1 +xloop LOOP_STACK   0xff & 0xff = 0xff
-__{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
-__{}    inc   A             ; 1:4       -1 +xloop LOOP_STACK   0xff -> 0},
-__{}eval(STOP_STACK),{0},{
-__{}idx{}LOOP_STACK EQU $+1          ;[9:54/34]  -1 +xloop LOOP_STACK   variant: INDEX_STACK.. -1 ..STOP_STACK = 0
-__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+define({SUB1_ADDXLOOP},{_LOOP_ANALYSIS(-1){}ifelse(_TEMP_X,{1},{
+__{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           -1 +xloop LOOP_STACK   variant: positive step and no repeat},
+eval(STOP_STACK),{0},{
+__{}                        ;[9:54/34]  -1 +xloop LOOP_STACK   variant: step -1 and stop 0, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
 __{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
 __{}    or    B             ; 1:4       -1 +xloop LOOP_STACK
-__{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--},
-__{}eval(STOP_STACK),{1},{
-__{}idx{}LOOP_STACK EQU $+1          ;[9:54/34]  -1 +xloop LOOP_STACK   variant: INDEX_STACK.. -1 ..STOP_STACK = 1
-__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
+eval(STOP_STACK),{1},{
+__{}                        ;[9:54/34]  -1 +xloop LOOP_STACK   variant: step -1 and stop 1, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
 __{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
 __{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
-__{}    or    B             ; 1:4       -1 +xloop LOOP_STACK},
-__{}eval(STOP_STACK),{2},{
-__{}idx{}LOOP_STACK EQU $+1          ;[10:58/38] -1 +xloop LOOP_STACK   variant: INDEX_STACK.. -1 ..STOP_STACK = 2
-__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    or    B             ; 1:4       -1 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
+_TEMP_LO_FALSE_POSITIVE,{0},{
+__{}                        ;[10:57/37] -1 +xloop LOOP_STACK   variant: step -1 with lo(real_stop) exclusivity, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
+__{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
+__{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
+__{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       -1 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
+_TEMP_HI_FALSE_POSITIVE,{0},{
+__{}                        ;[10:57/37] -1 +xloop LOOP_STACK   variant: step -1 with hi(real_stop) exclusivity, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
+__{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
+__{}    ld    A, B          ; 1:4       -1 +xloop LOOP_STACK
+__{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       -1 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
+eval((STOP_STACK+1) & 0xFFFF),{0},{
+__{}                       ;[10:58/38]  -1 +xloop LOOP_STACK   variant: step -1 and stop -1, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
+__{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
+__{}    and   B             ; 1:4       -1 +xloop LOOP_STACK   0xFF & 0xFF = 0xFF
+__{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
+__{}    inc   A             ; 1:4       -1 +xloop LOOP_STACK   0xFF + 1 = zero
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
+eval(STOP_STACK),{2},{
+__{}                        ;[10:58/38] -1 +xloop LOOP_STACK   variant: step -1 and stop 2, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
 __{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
 __{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
 __{}    dec   A             ; 1:4       -1 +xloop LOOP_STACK
-__{}    or    B             ; 1:4       -1 +xloop LOOP_STACK},
-__{}eval((STOP_STACK) & 0xFF00),{0},{
-__{}idx{}LOOP_STACK EQU $+1          ;[11:61/41] -1 +xloop LOOP_STACK   variant: INDEX_STACK.. -1 ..STOP_STACK -> hi stop = 0
-__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    or    B             ; 1:4       -1 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
+eval((STOP_STACK) & 0xFF00),{0},{
+__{}                        ;[11:61/41] -1 +xloop LOOP_STACK   variant: step -1 and hi(stop) = 0, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
 __{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
 __{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
 __{}    sub   low format({%-10s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
-__{}    or    B             ; 1:4       -1 +xloop LOOP_STACK},
+__{}    or    B             ; 1:4       -1 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK},
 __{}{
 __{}dnl                                16:61/78/58
-__{}idx{}LOOP_STACK EQU $+1          ;[20:~eval(61-3/((0x10000+(INDEX_STACK)-(STOP_STACK)) & 0xffff))]   -1 +xloop LOOP_STACK   variant: INDEX_STACK.. -1 ..STOP_STACK
-__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}                        ;[20:~eval(61-3/((0x10000+(INDEX_STACK)-(STOP_STACK)) & 0xffff))]   -1 +xloop LOOP_STACK   variant: step -1, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           -1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      -1 +xloop LOOP_STACK   INDEX_STACK.. -1 ..STOP_STACK, run _TEMP_X{}x
 __{}    ld    A, C          ; 1:4       -1 +xloop LOOP_STACK
 __{}    xor  low format({%-11s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
 __{}    ld    A, B          ; 1:4       -1 +xloop LOOP_STACK
 __{}    dec  BC             ; 1:6       -1 +xloop LOOP_STACK   index--
 __{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK
-__{}    xor  high format({%-10s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK})
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK
+__{}    xor  high format({%-10s},STOP_STACK); 2:7       -1 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      -1 +xloop LOOP_STACK})
 xleave{}LOOP_STACK:              ;           -1 +xloop LOOP_STACK
 xexit{}LOOP_STACK:               ;           xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -296,81 +325,81 @@ dnl ( -- )
 define(_ADD2_ADDXLOOP,{_LOOP_ANALYSIS(2){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           2 +xloop LOOP_STACK   variant: positive step and no repeat},
 _TEMP_LO_FALSE_POSITIVE,{0},{
-                        ;[11:61/41] 2 +xloop LOOP_STACK   variant: step 2 with lo(real_stop) exclusivity, real_stop:_HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
-    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
-__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
-__{}{dnl
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
-    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
-    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
+__{}                        ;[11:61/41] 2 +xloop LOOP_STACK   variant: step 2 with lo(real_stop) exclusivity, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
+__{}__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
+__{}__{}{dnl
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
+__{}    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+__{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
 _TEMP_HI_FALSE_POSITIVE,{0},{
-                        ;[11:61/41] 2 +xloop LOOP_STACK   variant: step 2 with hi(real_stop) exclusivity, real_stop:_HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
-    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
-__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
-__{}{dnl
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
-    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
-    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
+__{}                        ;[11:61/41] 2 +xloop LOOP_STACK   variant: step 2 with hi(real_stop) exclusivity, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
+__{}__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
+__{}__{}{dnl
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
+__{}    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
+__{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
 eval(_TEMP_REAL_STOP),{0},{
-                        ;[10:58/38] 2 +xloop LOOP_STACK   variant: step 2 and real_stop is zero, real_stop:_HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
-    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
-    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
-    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
-    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
-    or    B             ; 1:4       2 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
+__{}                        ;[10:58/38] 2 +xloop LOOP_STACK   variant: step 2 and real_stop is zero, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
+__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
+__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+__{}    or    B             ; 1:4       2 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
 eval(_TEMP_REAL_STOP),{1},{
-                        ;[10:58/38] 2 +xloop LOOP_STACK   variant: step 2 and real_stop is one, real_stop:_HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
-    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   idx always points to a 16-bit index
-    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
-    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
-    inc   C             ; 1:6       2 +xloop LOOP_STACK   index++
-    or    B             ; 1:4       2 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
+__{}                        ;[10:58/38] 2 +xloop LOOP_STACK   variant: step 2 and real_stop is one, real_stop:_HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
+__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+__{}    inc   C             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}    or    B             ; 1:4       2 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK},
 eval(_TEMP_HI_FALSE_POSITIVE<=_TEMP_LO_FALSE_POSITIVE),{1},{
-                        ;[17:61/62] 2 +xloop LOOP_STACK   variant: positive step 2 and real_stop _HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK
-    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
-__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
-__{}{dnl
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
-    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
-    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK   HI first (_TEMP_HI_FALSE_POSITIVE<=_TEMP_LO_FALSE_POSITIVE)
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_HI_FALSE_POSITIVE{}x false positive
-    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
-    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_LO_FALSE_POSITIVE{}x false positive if he was first},
+__{}                        ;[17:61/62] 2 +xloop LOOP_STACK   variant: positive step 2 and real_stop _HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
+__{}__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
+__{}__{}{dnl
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
+__{}    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
+__{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK   HI first (_TEMP_HI_FALSE_POSITIVE<=_TEMP_LO_FALSE_POSITIVE)
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_HI_FALSE_POSITIVE{}x false positive
+__{}    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+__{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_LO_FALSE_POSITIVE{}x false positive if he was first},
 {
-                        ;[17:61/62] 2 +xloop LOOP_STACK   variant: positive step 2 and real_stop _HEX16(_TEMP_REAL_STOP)
-idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK
-    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
-__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
-__{}{dnl
-__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
-__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
-    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
-    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK   LO first (_TEMP_HI_FALSE_POSITIVE>_TEMP_LO_FALSE_POSITIVE)
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_LO_FALSE_POSITIVE{}x false positive
-    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
-    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
-    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first})
+__{}                        ;[17:61/62] 2 +xloop LOOP_STACK   variant: positive step 2 and real_stop _HEX16(_TEMP_REAL_STOP)
+__{}idx{}LOOP_STACK EQU $+1          ;           2 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      2 +xloop LOOP_STACK   INDEX_STACK.. +2 ..(STOP_STACK), run _TEMP_X{}x
+__{}__{}ifelse(eval(INDEX_STACK & 1),{0},{dnl
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++},
+__{}__{}{dnl
+__{}__{}    inc  BC             ; 1:6       2 +xloop LOOP_STACK   index++
+__{}__{}    inc   C             ; 1:4       2 +xloop LOOP_STACK   index++})
+__{}    ld    A, C          ; 1:4       2 +xloop LOOP_STACK
+__{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK   LO first (_TEMP_HI_FALSE_POSITIVE>_TEMP_LO_FALSE_POSITIVE)
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_LO_FALSE_POSITIVE{}x false positive
+__{}    ld    A, B          ; 1:4       2 +xloop LOOP_STACK
+__{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       2 +xloop LOOP_STACK
+__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      2 +xloop LOOP_STACK   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first})
 xleave{}LOOP_STACK:              ;           2 +xloop LOOP_STACK
 xexit{}LOOP_STACK:               ;           2 +xloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -388,8 +417,8 @@ define({POSITIVE_ADDXLOOP},{_LOOP_ANALYSIS($1){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           $1 +xloop LOOP_STACK   variant: positive step and no repeat},
 eval((0 <= INDEX_STACK) && (INDEX_STACK < STOP_STACK) && (STOP_STACK < 256)),{1},{
 __{}                        ;[13:48]    $1 +xloop LOOP_STACK   variant: positive step and 0 <= index:INDEX_STACK < stop:STOP_STACK < 256, real_stop:_HEX16(_TEMP_REAL_STOP)
-__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
-__{}    ld    A, 0x00       ; 2:7       $1 +xloop LOOP_STACK   A = index
+__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld    A, 0x00       ; 2:7       $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}    nop                 ; 1:4       $1 +xloop LOOP_STACK   Contains a zero value because idx always points to a 16-bit index.
 __{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK   A = index+step
 __{}    ld  (idx{}LOOP_STACK), A     ; 3:13      $1 +xloop LOOP_STACK   save new index
@@ -397,26 +426,26 @@ __{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       $1 +xloop LOOP_STACK
 __{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
 eval((0xC600 <= (INDEX_STACK & 0xFFFF)) && ((INDEX_STACK & 0xFFFF) < (STOP_STACK & 0xFFFF)) && ((STOP_STACK & 0xFFFF) < 0xC700)),{1},{
 __{}                        ;[12:44]    $1 +xloop LOOP_STACK   variant: positive step and 0xC600 <= index:INDEX_STACK < stop:STOP_STACK < 0xC700, real_stop:_HEX16(_TEMP_REAL_STOP)
-__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
-__{}    ld    A, 0x00       ; 2:7       $1 +xloop LOOP_STACK   A = index
+__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld    A, 0x00       ; 2:7       $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK   First byte contains a 0xC6 value because idx always points to a 16-bit index.
 __{}    ld  (idx{}LOOP_STACK), A     ; 3:13      $1 +xloop LOOP_STACK   save new index
 __{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       $1 +xloop LOOP_STACK   Contains the values of eval((INDEX_STACK+$1) & 0xFF)..eval(_TEMP_REAL_STOP & 0xFF)
 __{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
 eval($1 & 0xFF),{0},{
 __{}                        ;[14:51]    $1 +xloop LOOP_STACK   variant: positive step = n*256 and real_stop _HEX16(_TEMP_REAL_STOP)
-__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK
-__{}    add   A, high format({%-6s},$1); 2:7       $1 +xloop LOOP_STACK
-__{}    ld  (idx{}LOOP_STACK+1),A    ; 3:13      xloop LOOP_STACK   save index
+__{}    add   A, _HEX_HI($1)       ; 2:7       $1 +xloop LOOP_STACK   hi(step)
+__{}    ld  (idx{}LOOP_STACK+1),A    ; 3:13      $1 +xloop LOOP_STACK   save index
 __{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       $1 +xloop LOOP_STACK
 __{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
 eval(STOP_STACK==0),{1},{
 __{}                        ;[17:90]    $1 +xloop LOOP_STACK   variant: positive step and stop 0, INDEX_STACK.. +$1 ..0
 __{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
-__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
-__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
 __{}    dec  HL             ; 1:6       $1 +xloop LOOP_STACK
 __{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step-1
@@ -427,7 +456,7 @@ __{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive
 eval(_TEMP_REAL_STOP & 0xFF00),{0},{
 __{}ifelse(eval($1 & 0xFF00),{0},{
 __{}__{}                        ;[19:67/68] $1 +xloop LOOP_STACK   variant: positive step 3..255 and real_stop _HEX16(_TEMP_REAL_STOP) = 0..255
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -436,7 +465,7 @@ __{}__{}    adc   A, B          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    sub   C             ; 1:4       $1 +xloop LOOP_STACK},
 __{}{
 __{}__{}                        ;[20:70/71] $1 +xloop LOOP_STACK   variant: positive step 256+ and real_stop _HEX16(_TEMP_REAL_STOP) = 0..255
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -451,7 +480,7 @@ __{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      $1 +xloop LOOP_STACK},
 _TEMP_HI_FALSE_POSITIVE,{0},{
 __{}ifelse(eval($1 & 0xFF00),{0},{
 __{}__{}                        ;[17:55/60] $1 +xloop LOOP_STACK   variant: positive step 3..255 and real_stop _HEX16(_TEMP_REAL_STOP) with hi byte exclusivity
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -461,7 +490,7 @@ __{}__{}    inc   B             ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    ld    A, B          ; 1:4       $1 +xloop LOOP_STACK},
 __{}{
 __{}__{}                        ;[16:77/57] $1 +xloop LOOP_STACK   variant: positive step 256+ and real_stop _HEX16(_TEMP_REAL_STOP) with hi byte exclusivity
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -474,7 +503,7 @@ __{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      $1 +xloop LOOP_STACK},
 eval($1 & 0xFF00),{0},{
 __{}ifelse(eval(21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE),{1},{
 __{}__{}                        ;[21:74/75] $1 +xloop LOOP_STACK   variant: positive step 3..255 and real_stop _HEX16(_TEMP_REAL_STOP)
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -489,7 +518,7 @@ __{}__{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       $1 +xloop LOOP_S
 __{}__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      $1 +xloop LOOP_STACK   _TEMP_LO_FALSE_POSITIVE{}x false positive},
 __{}{
 __{}__{}                        ;[22:78/79] $1 +xloop LOOP_STACK   variant: positive step 3..255 and real_stop _HEX16(_TEMP_REAL_STOP)
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -507,7 +536,7 @@ __{}},
 {
 __{}ifelse(eval(21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE),{1},{
 __{}__{}                        ;[22:77/78] $1 +xloop LOOP_STACK   variant: positive step 256+ and real_stop _HEX16(_TEMP_REAL_STOP)
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
@@ -522,7 +551,7 @@ __{}__{}    xor  _HEX_LO(_TEMP_REAL_STOP)           ; 2:7       $1 +xloop LOOP_S
 __{}__{}    jp   nz, xdo{}LOOP_STACK{}save ; 3:10      $1 +xloop LOOP_STACK      _TEMP_LO_FALSE_POSITIVE{}x false positive},
 __{}{
 __{}__{}                        ;[23:81/82] $1 +xloop LOOP_STACK   variant: positive step 256+ and real_stop _HEX16(_TEMP_REAL_STOP)
-__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
+__{}__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}__{}    ld    A, C          ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    add   A, low format({%-7s},$1); 2:7       $1 +xloop LOOP_STACK
