@@ -87,7 +87,7 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(eval($1),{},{dnl
-__{}__{}                        ;[11:21/42] dup $1 eq until BEGIN_STACK
+__{}__{}                        ;[12:21/42] dup $1 eq until BEGIN_STACK
 __{}__{}    ld    A, L          ; 1:4       dup $1 eq until BEGIN_STACK
 __{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
 __{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK
@@ -148,6 +148,36 @@ __{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_
 __{}})
 __{}break{}BEGIN_STACK:               ;           dup $1 eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
 dnl
+dnl
+dnl
+dnl ( n -- n )
+define({DUP_PUSH_HI_EQ_UNTIL},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval($1),{},{dnl
+__{}__{}                        ;[6:21]     dup $1 hi_eq until BEGIN_STACK
+__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
+__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK},
+__{}{dnl
+__{}__{}ifelse(eval(($1) & 0xFF00),{0},{dnl
+__{}__{}__{}                        ;[5:18]     dup $1 hi_eq until BEGIN_STACK   variant: zero
+__{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
+__{}__{}__{}    or    A             ; 1:4       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK},
+__{}__{}eval(0xFF00 - (($1) & 0xFF00)),{0},{dnl
+__{}__{}__{}                        ;[5:18]     dup $1 hi_eq until BEGIN_STACK   variant: hi(stop) == 255
+__{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
+__{}__{}__{}    inc   A             ; 1:4       dup $1 hi_eq until BEGIN_STACK   A = 0xFF --> 0x00 ?
+__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 hi_eq until BEGIN_STACK},
+__{}__{}{dnl
+__{}__{}__{}                        ;[6:21]     dup $1 hi_eq until BEGIN_STACK
+__{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
+__{}__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK}){}dnl
+__{}})
+__{}break{}BEGIN_STACK:               ;           dup $1 hi_eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
