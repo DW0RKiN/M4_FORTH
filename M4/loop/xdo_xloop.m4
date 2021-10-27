@@ -441,13 +441,22 @@ __{}    add   A, _HEX_HI($1)       ; 2:7       $1 +xloop LOOP_STACK   hi(step)
 __{}    ld  (idx{}LOOP_STACK+1),A    ; 3:13      $1 +xloop LOOP_STACK   save index
 __{}    xor  _HEX_HI(_TEMP_REAL_STOP)           ; 2:7       $1 +xloop LOOP_STACK
 __{}    jp   nz, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK},
-eval(STOP_STACK==0),{1},{
-__{}                        ;[17:90]    $1 +xloop LOOP_STACK   variant: positive step and stop 0, INDEX_STACK.. +$1 ..0
+eval(STOP_STACK),{0},{
+__{}                        ;[15:78]    $1 +xloop LOOP_STACK   variant: positive step and stop 0
 __{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
 __{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
+__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
-__{}    dec  HL             ; 1:6       $1 +xloop LOOP_STACK
+__{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
+__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
+__{}    pop  HL             ; 1:10      $1 +xloop LOOP_STACK
+__{}    jp   nc, xdo{}LOOP_STACK     ; 3:10      $1 +xloop LOOP_STACK   positive step},
+eval(STOP_STACK),{1},{
+__{}                        ;[16:84]    $1 +xloop LOOP_STACK   variant: positive step and stop 1
+__{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
+__{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK   idx always points to a 16-bit index
+__{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK   INDEX_STACK.. +$1 ..(STOP_STACK), run _TEMP_X{}x
+__{}    ld   BC, format({%-11s},$1-1); 3:10      $1 +xloop LOOP_STACK   BC = step-1
 __{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step-1
 __{}    inc  HL             ; 1:6       $1 +xloop LOOP_STACK
 __{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
