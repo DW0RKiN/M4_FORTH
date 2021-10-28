@@ -49,7 +49,7 @@ idx102 EQU $+1          ;           xloop 102   idx always points to a 16-bit in
     nop                 ; 1:4       xloop 102   hi(index) = 0 = nop -> idx always points to a 16-bit index.
     inc   A             ; 1:4       xloop 102   index++
     ld  (idx102),A      ; 3:13      xloop 102
-    xor  0xF6           ; 2:7       xloop 102
+    xor  0xF6           ; 2:7       xloop 102   lo(real_stop)
     jp   nz, xdo102     ; 3:10      xloop 102   index-stop
 xleave102:              ;           xloop 102
 xexit102:               ;           xloop 102 
@@ -94,7 +94,7 @@ idx104 EQU $+1          ;           xloop 104   idx always points to a 16-bit in
     ld    A, 0          ; 2:7       xloop 104   0x3C05.. +1 ..(0x3C0A), real_stop:0x3C0A
     inc   A             ; 1:4       xloop 104   = hi(index) = 0x3c = inc A -> idx always points to a 16-bit index
     ld  (idx104),A      ; 3:13      xloop 104   save index
-    xor  0x0A           ; 2:7       xloop 104
+    xor  0x0A           ; 2:7       xloop 104   lo(real_stop)
     jp   nz, xdo104     ; 3:10      xloop 104
 xleave104:              ;           xloop 104
 xexit104:               ;           xloop 104 
@@ -141,7 +141,7 @@ idx106 EQU $+1          ;           xloop 106   idx always points to a 16-bit in
     ld    A, C          ; 1:4       xloop 106
     inc   A             ; 1:4       xloop 106   index++
     ld  (idx106),A      ; 3:13      xloop 106   save index
-    xor  0x55           ; 2:7       xloop 106
+    xor  0x55           ; 2:7       xloop 106   lo(real_stop)
     jp   nz, xdo106     ; 3:10      xloop 106
 xleave106:              ;           xloop 106
 xexit106:               ;           xloop 106 
@@ -187,7 +187,7 @@ idx108 EQU $+1          ;           xloop 108   idx always points to a 16-bit in
     ld   BC, 0x0000     ; 3:10      xloop 108   -3.. +1 ..(2), real_stop:0x0002
     inc  BC             ; 1:6       xloop 108   index++
     ld    A, C          ; 1:4       xloop 108
-    xor  0x02           ; 2:7       xloop 108
+    xor  0x02           ; 2:7       xloop 108   lo(real_stop)
     jp   nz, xdo108save ; 3:10      xloop 108
 xleave108:              ;           xloop 108
 xexit108:               ;           xloop 108 
@@ -218,7 +218,7 @@ idx109 EQU $+1          ;           xloop 109   idx always points to a 16-bit in
     ld   BC, 0x0000     ; 3:10      xloop 109   0x6318.. +1 ..(0x6700), real_stop:0x6700
     inc  BC             ; 1:6       xloop 109   index++
     ld    A, B          ; 1:4       xloop 109
-    xor  0x67           ; 2:7       xloop 109
+    xor  0x67           ; 2:7       xloop 109   hi(real_stop)
     jp   nz, xdo109save ; 3:10      xloop 109
 xleave109:              ;           xloop 109
 xexit109:               ;           xloop 109 
@@ -251,10 +251,10 @@ idx110 EQU $+1          ;           xloop 110   idx always points to a 16-bit in
     ld   BC, 0x0000     ; 3:10      xloop 110   -700.. +1 ..(300), real_stop:0x012C
     inc  BC             ; 1:6       xloop 110   index++
     ld    A, C          ; 1:4       xloop 110
-    xor  0x2C           ; 2:7       xloop 110   LO first (44>3)
+    xor  0x2C           ; 2:7       xloop 110   lo(real_stop) first (44>3)
     jp   nz, xdo110save ; 3:10      xloop 110   3x false positive
     ld    A, B          ; 1:4       xloop 110
-    xor  0x01           ; 2:7       xloop 110
+    xor  0x01           ; 2:7       xloop 110   hi(real_stop)
     jp   nz, xdo110save ; 3:10      xloop 110   44x false positive if he was first
 xleave110:              ;           xloop 110
 xexit110:               ;           xloop 110 
@@ -326,7 +326,7 @@ idx113 EQU $+1          ;           -1 +xloop 113   idx always points to a 16-bi
     ld   BC, 0x0000     ; 3:10      -1 +xloop 113   258.. -1 ..254, real_stop:0x00FD
     dec  BC             ; 1:6       -1 +xloop 113   index--
     ld    A, C          ; 1:4       -1 +xloop 113
-    xor  0xFD           ; 2:7       -1 +xloop 113
+    xor  0xFD           ; 2:7       -1 +xloop 113   lo(real_stop)
     jp   nz, xdo113save ; 3:10      -1 +xloop 113
 xleave113:              ;           -1 +xloop 113
 xexit113:               ;           xloop 113 
@@ -357,7 +357,7 @@ idx114 EQU $+1          ;           -1 +xloop 114   idx always points to a 16-bi
     ld   BC, 0x0000     ; 3:10      -1 +xloop 114   1255.. -1 ..256, real_stop:0x00FF
     dec  BC             ; 1:6       -1 +xloop 114   index--
     ld    A, B          ; 1:4       -1 +xloop 114
-    xor  0x00           ; 2:7       -1 +xloop 114
+    xor  0x00           ; 2:7       -1 +xloop 114   hi(real_stop)
     jp   nz, xdo114save ; 3:10      -1 +xloop 114
 xleave114:              ;           -1 +xloop 114
 xexit114:               ;           xloop 114 
@@ -606,7 +606,7 @@ idx122 EQU $+1          ;           2 +xloop 122   idx always points to a 16-bit
     inc  BC             ; 1:6       2 +xloop 122   index++
     inc   C             ; 1:4       2 +xloop 122   index++
     ld    A, C          ; 1:4       2 +xloop 122
-    xor  0x05           ; 2:7       2 +xloop 122
+    xor  0x05           ; 2:7       2 +xloop 122   lo(real_stop)
     jp   nz, xdo122save ; 3:10      2 +xloop 122
 xleave122:              ;           2 +xloop 122
 xexit122:               ;           2 +xloop 122 
@@ -638,7 +638,7 @@ idx123 EQU $+1          ;           2 +xloop 123   idx always points to a 16-bit
     inc   C             ; 1:4       2 +xloop 123   index++
     inc  BC             ; 1:6       2 +xloop 123   index++
     ld    A, B          ; 1:4       2 +xloop 123
-    xor  0x09           ; 2:7       2 +xloop 123
+    xor  0x09           ; 2:7       2 +xloop 123   hi(real_stop)
     jp   nz, xdo123save ; 3:10      2 +xloop 123
 xleave123:              ;           2 +xloop 123
 xexit123:               ;           2 +xloop 123 
@@ -672,10 +672,10 @@ idx124 EQU $+1          ;           2 +xloop 124   idx always points to a 16-bit
     inc   C             ; 1:4       2 +xloop 124   index++
     inc  BC             ; 1:6       2 +xloop 124   index++
     ld    A, B          ; 1:4       2 +xloop 124
-    xor  0x08           ; 2:7       2 +xloop 124   HI first (1<=7)
+    xor  0x08           ; 2:7       2 +xloop 124   hi(real_stop) first (1<=7)
     jp   nz, xdo124save ; 3:10      2 +xloop 124   1x false positive
     ld    A, C          ; 1:4       2 +xloop 124
-    xor  0x02           ; 2:7       2 +xloop 124
+    xor  0x02           ; 2:7       2 +xloop 124   lo(real_stop)
     jp   nz, xdo124save ; 3:10      2 +xloop 124   7x false positive if he was first
 xleave124:              ;           2 +xloop 124
 xexit124:               ;           2 +xloop 124 
@@ -709,10 +709,10 @@ idx125 EQU $+1          ;           2 +xloop 125   idx always points to a 16-bit
     inc   C             ; 1:4       2 +xloop 125   index++
     inc  BC             ; 1:6       2 +xloop 125   index++
     ld    A, C          ; 1:4       2 +xloop 125
-    xor  0xC6           ; 2:7       2 +xloop 125   LO first (99>7)
+    xor  0xC6           ; 2:7       2 +xloop 125   lo(real_stop) first (99>7)
     jp   nz, xdo125save ; 3:10      2 +xloop 125   7x false positive
     ld    A, B          ; 1:4       2 +xloop 125
-    xor  0x07           ; 2:7       2 +xloop 125
+    xor  0x07           ; 2:7       2 +xloop 125   hi(real_stop)
     jp   nz, xdo125save ; 3:10      2 +xloop 125   99x false positive if he was first
 xleave125:              ;           2 +xloop 125
 xexit125:               ;           2 +xloop 125 
@@ -937,10 +937,10 @@ idx133 EQU $+1          ;           -2 +xloop 133   idx always points to a 16-bi
     dec  BC             ; 1:6       -2 +xloop 133   index--
     dec   C             ; 1:4       -2 +xloop 133   index--
     ld    A, B          ; 1:4       -2 +xloop 133
-    xor  0xF8           ; 2:7       -2 +xloop 133   HI first (5<=7)
+    xor  0xF8           ; 2:7       -2 +xloop 133   hi(real_stop) first (5<=7)
     jp   nz, xdo133save ; 3:10      -2 +xloop 133   5x false positive
     ld    A, C          ; 1:4       -2 +xloop 133
-    xor  0xF4           ; 2:7       -2 +xloop 133
+    xor  0xF4           ; 2:7       -2 +xloop 133   lo(real_stop)
     jp   nz, xdo133save ; 3:10      -2 +xloop 133   7x false positive if he was first
 xleave133:              ;           -2 +xloop 133
 xexit133:               ;           -2 +xloop 133 
@@ -974,10 +974,10 @@ idx134 EQU $+1          ;           -2 +xloop 134   idx always points to a 16-bi
     dec  BC             ; 1:6       -2 +xloop 134   index--
     dec   C             ; 1:4       -2 +xloop 134   index--
     ld    A, C          ; 1:4       -2 +xloop 134
-    xor  0x2A           ; 2:7       -2 +xloop 134   LO first (106>7)
+    xor  0x2A           ; 2:7       -2 +xloop 134   lo(real_stop) first (106>7)
     jp   nz, xdo134save ; 3:10      -2 +xloop 134   7x false positive
     ld    A, B          ; 1:4       -2 +xloop 134
-    xor  0xF9           ; 2:7       -2 +xloop 134
+    xor  0xF9           ; 2:7       -2 +xloop 134   hi(real_stop)
     jp   nz, xdo134save ; 3:10      -2 +xloop 134   106x false positive if he was first
 xleave134:              ;           -2 +xloop 134
 xexit134:               ;           -2 +xloop 134 
@@ -1059,7 +1059,7 @@ idx137 EQU $+1          ;           -33 +xloop 137   idx always points to a 16-b
     jp   nc, xdo137save ; 3:10      -33 +xloop 137
     dec   B             ; 1:4       -33 +xloop 137
     ld    A, B          ; 1:4       -33 +xloop 137
-    xor  0x01           ; 2:7       -33 +xloop 137
+    xor  0x01           ; 2:7       -33 +xloop 137   hi(real_stop)
     jp   nz, xdo137save ; 3:10      -33 +xloop 137
 xleave137:              ;           -33 +xloop 137
 xexit137:               ;           -33 +xloop 137 
@@ -1087,7 +1087,7 @@ idx138 EQU $+1          ;           -300 +xloop 138   idx always points to a 16-
     ld    A, B          ; 1:4       -300 +xloop 138
     sbc   A, high 300   ; 2:7       -300 +xloop 138
     ld    B, A          ; 1:4       -300 +xloop 138
-    xor  0xFA           ; 2:7       -300 +xloop 138
+    xor  0xFA           ; 2:7       -300 +xloop 138   hi(real_stop)
     jp   nz, xdo138save ; 3:10      -300 +xloop 138
 xleave138:              ;           -300 +xloop 138
 xexit138:               ;           -300 +xloop 138 
@@ -1192,7 +1192,7 @@ idx141 EQU $+1          ;           3 +xloop 141   idx always points to a 16-bit
     nop                 ; 1:4       3 +xloop 141   Contains a zero value because idx always points to a 16-bit index.
     add   A, low 3      ; 2:7       3 +xloop 141   A = index+step
     ld  (idx141), A     ; 3:13      3 +xloop 141   save new index
-    xor  0x19           ; 2:7       3 +xloop 141   Contains the values of 13..25
+    xor  0x19           ; 2:7       3 +xloop 141   lo(real_stop)
     jp   nz, xdo141     ; 3:10      3 +xloop 141
 xleave141:              ;           3 +xloop 141
 xexit141:               ;           3 +xloop 141 
@@ -1215,7 +1215,7 @@ idx142 EQU $+1          ;           3 +xloop 142   idx always points to a 16-bit
     ld    A, 0x00       ; 2:7       3 +xloop 142   0xC601.. +3 ..(0xC610), real_stop:0xC610
     add   A, low 3      ; 2:7       3 +xloop 142   First byte contains a 0xC6 value because idx always points to a 16-bit index.
     ld  (idx142), A     ; 3:13      3 +xloop 142   save new index
-    xor  0x10           ; 2:7       3 +xloop 142   Contains the values of 4..16
+    xor  0x10           ; 2:7       3 +xloop 142   lo(real_stop)
     jp   nz, xdo142     ; 3:10      3 +xloop 142
 xleave142:              ;           3 +xloop 142
 xexit142:               ;           3 +xloop 142 
@@ -1239,7 +1239,7 @@ idx143 EQU $+1          ;           512 +xloop 143   idx always points to a 16-b
     ld    A, B          ; 1:4       512 +xloop 143
     add   A, 0x02       ; 2:7       512 +xloop 143   hi(step)
     ld  (idx143+1),A    ; 3:13      512 +xloop 143   save index
-    xor  0x0A           ; 2:7       512 +xloop 143
+    xor  0x0A           ; 2:7       512 +xloop 143   hi(real_stop)
     jp   nz, xdo143     ; 3:10      512 +xloop 143
 xleave143:              ;           512 +xloop 143
 xexit143:               ;           512 +xloop 143 
@@ -1316,7 +1316,7 @@ idx146 EQU $+1          ;           7 +xloop 146   idx always points to a 16-bit
     jp   nc, xdo146save ; 3:10      7 +xloop 146
     inc   B             ; 1:4       7 +xloop 146
     ld    A, B          ; 1:4       7 +xloop 146
-    xor  0x01           ; 2:7       7 +xloop 146
+    xor  0x01           ; 2:7       7 +xloop 146   hi(real_stop)
     jp   nz, xdo146save ; 3:10      7 +xloop 146
 xleave146:              ;           7 +xloop 146
 xexit146:               ;           7 +xloop 146 
@@ -1345,7 +1345,7 @@ idx147 EQU $+1          ;           7 +xloop 147   idx always points to a 16-bit
     ld    B, A          ; 1:4       7 +xloop 147
     jp   nz, xdo147save ; 3:10      7 +xloop 147
     ld    A, C          ; 1:4       7 +xloop 147
-    xor  0x0C           ; 2:7       7 +xloop 147
+    xor  0x0C           ; 2:7       7 +xloop 147   lo(real_stop)
     jp   nz, xdo147save ; 3:10      7 +xloop 147
 xleave147:              ;           7 +xloop 147
 xexit147:               ;           7 +xloop 147 
@@ -1406,10 +1406,10 @@ idx149 EQU $+1          ;           4 +xloop 149   idx always points to a 16-bit
     adc   A, B          ; 1:4       4 +xloop 149
     sub   C             ; 1:4       4 +xloop 149
     ld    B, A          ; 1:4       4 +xloop 149
-    xor  0x11           ; 2:7       4 +xloop 149   HI first (21*41<=4*1000+21*15)
+    xor  0x11           ; 2:7       4 +xloop 149   hi(real_stop) first (21*41<=4*1000+21*15)
     jp   nz, xdo149save ; 3:10      4 +xloop 149   41x false positive
     ld    A, C          ; 1:4       4 +xloop 149
-    xor  0xA4           ; 2:7       4 +xloop 149
+    xor  0xA4           ; 2:7       4 +xloop 149   lo(real_stop)
     jp   nz, xdo149save ; 3:10      4 +xloop 149   15x false positive if he was first
 xleave149:              ;           4 +xloop 149
 xexit149:               ;           4 +xloop 149 
@@ -1438,7 +1438,7 @@ idx150 EQU $+1          ;           300 +xloop 150   idx always points to a 16-b
     ld    A, B          ; 1:4       300 +xloop 150
     adc   A, high 300   ; 2:7       300 +xloop 150
     ld    B, A          ; 1:4       300 +xloop 150
-    xor  0x05           ; 2:7       300 +xloop 150
+    xor  0x05           ; 2:7       300 +xloop 150   hi(real_stop)
     jp   nz, xdo150save ; 3:10      300 +xloop 150
 xleave150:              ;           300 +xloop 150
 xexit150:               ;           300 +xloop 150 
@@ -1502,7 +1502,7 @@ idx152 EQU $+1          ;           4 +xloop 152   idx always points to a 16-bit
     sub   C             ; 1:4       4 +xloop 152
     ld    B, A          ; 1:4       4 +xloop 152
     ld    A, C          ; 1:4       4 +xloop 152
-    xor  0xF4           ; 2:7       4 +xloop 152   LO first (21*61>4*100+21*1)
+    xor  0xF4           ; 2:7       4 +xloop 152   lo(real_stop) first (21*61>4*100+21*1)
     jp   nz, xdo152save ; 3:10      4 +xloop 152   1x false positive
     ld    A, B          ; 1:4       4 +xloop 152
     xor  0x01           ; 2:7       4 +xloop 152   hi(real_stop)
