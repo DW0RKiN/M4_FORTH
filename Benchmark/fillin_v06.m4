@@ -1,0 +1,8 @@
+include(`../M4/FIRST.M4')dnl
+    ORG 32768
+    INIT(60000)
+    SCALL(Fillin)
+    STOP   
+    SCOLON(Fillin,( -- ))
+        PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_CSTORE(255) XLOOP DROP
+    SSEMICOLON

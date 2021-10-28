@@ -1,0 +1,8 @@
+include(`../M4/FIRST.M4')dnl
+    ORG 32768
+    INIT(60000)
+    SCALL(Fillin)
+    STOP   
+    SCOLON(Fillin,( -- ))
+        PUSH2(65535,0x4000) BEGIN _2DUP STORE _2ADD DUP PUSH(0x5B00) EQ UNTIL _2DROP
+    SSEMICOLON
