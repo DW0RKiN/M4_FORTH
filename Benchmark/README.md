@@ -264,3 +264,34 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.c
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Sieve        | 22s              | 
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Sieve        | 15s              | 
 
+### FILLIN 
+
+https://spectrumcomputing.co.uk/forums/viewtopic.php?f=6&t=3487
+
+Results (Time taken):
+basic : 72.50secs
+Abersoft forth : 1.50secs
+assembly: 0.04secs
+
+| M4 Forth                                                                                                         |  Z80 Assembler                                                            |  Time    |
+| :--------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :------: |
+|<sub>PUSH2(23296,16384) DO PUSH(255) I STORE LOOP                                                                 |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v00.asm  | 0.36s
+|<sub>PUSH2(23296,16384) DO PUSH(255) I CSTORE LOOP                                                                |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v01.asm  | 0.31s
+|<sub>PUSH2(23296,16384) DO PUSH(65535) I STORE PUSH_ADDLOOP(2)                                                    |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v02.asm  | 0.19s
+|<sub>XDO(23296,16384) PUSH(65535) XI STORE PUSH_ADDXLOOP(2)                                                       |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v03.asm  | 0.19s
+|<sub>PUSH2(65535,0) XDO(23296,16384) DROP XI _2DUP STORE XLOOP DROP                                               |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v04.asm  | 0.36s
+|<sub>PUSH2(65535,0) XDO(23296,16384) DROP_XI _2DUP_STORE XLOOP _2DROP                                             |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v05.asm  | 0.24s
+|<sub>PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_CSTORE(255) XLOOP DROP                                        |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v06.asm  | 0.19s
+|<sub>PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_STORE(65535) PUSH_ADDXLOOP(2) DROP                            |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v07.asm  | 0.14s
+|<sub>PUSH2(65535,0) XDO(23296,16384) DROP_XI _2DUP_STORE PUSH_ADDXLOOP(2) _2DROP                                  |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v08.asm  | 0.14s
+|<sub>PUSH(0x4000) BEGIN DUP PUSH(255) SWAP CSTORE _1ADD DUP PUSH(0x5B00) EQ UNTIL DROP                            |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v09.asm  | 0.46s
+|<sub>PUSH(0x4000) BEGIN DUP_PUSH_SWAP_CSTORE_1ADD(255) DUP_PUSH_EQ_UNTIL(0x5B00) DROP                             |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v10.asm  | 0.09s
+|<sub>PUSH(0x4000) BEGIN DUP_PUSH_SWAP_STORE_2ADD(65535) DUP_PUSH_EQ_UNTIL(0x5B00) DROP                            |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v11.asm  | 0.07s
+|<sub>PUSH2(65535,0x4000) BEGIN _2DUP STORE _2ADD DUP PUSH(0x5B00) EQ UNTIL _2DROP _2DROP                          |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v12.asm  | 0.24s
+|<sub>PUSH2(65535,0x4000) BEGIN _2DUP_STORE_2ADD DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP                                  |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v13.asm  | 0.07s
+|<sub>PUSH2(65535,0x4000) BEGIN _2DUP_STORE_2ADD _2DUP_STORE_2ADD _2DUP_STORE_2ADD DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP|<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v14.asm  | 0.06s
+|<sub>PUSH3_FILL(0x4000,6912,255)                                                                                  |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v15.asm  | 0.07s
+
+
+
+
