@@ -86,7 +86,7 @@ ___{}___{}___{}define({XMUL_BIT},eval(256*XMUL_BIT+XMUL_SUM))dnl
 ___{}___{}___{}_ADD_COST(4+256*16)
 ___{}___{}___{}    ld    A{,} B          ; 1:4       $1 *
 ___{}___{}___{}    add   A{,} L          ; 1:4       $1 *
-___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *   
+___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *
 ___{}___{}___{}    ld    L{,} C          ; 1:4       $1 *   [XMUL_BIT{}x] = XMUL_256X_SUM{}x + XMUL_SUM{}x{}dnl
 ___{}___{}___{}define({XMUL_SUM},{0})dnl
 ___{}___{}},eval(XMUL_SUM>0),{1},{dnl
@@ -96,7 +96,7 @@ ___{}___{}___{}define({XMUL_BIT},eval(XMUL_256X_SUM+XMUL_SUM))dnl
 ___{}___{}___{}_ADD_COST(4+256*16)
 ___{}___{}___{}    add   A{,} B          ; 1:4       $1 *   [XMUL_256X_SUM{}x]
 ___{}___{}___{}    add   A{,} L          ; 1:4       $1 *
-___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *   
+___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *
 ___{}___{}___{}    ld    L{,} C          ; 1:4       $1 *   [XMUL_BIT{}x] = XMUL_SUM{}x + XMUL_256X_SUM{}x{}dnl
 ___{}___{}___{}define({XMUL_SUM},{0})dnl
 ___{}___{}},{dnl
@@ -225,7 +225,7 @@ ___{}___{}___{}___{}    ld    A{,} B          ; 1:4       $1 *
 ___{}___{}___{}___{}    sbc   A{,} H          ; 1:4       $1 *
 ___{}___{}___{}___{}    ld    H{,} A          ; 1:4       $1 *   [XMUL_RESULT{}x] = XMUL_256X_SUM{}x - XMUL_BIT{}x{}dnl
 ___{}___{}___{}___{}define({XMUL_BIT},XMUL_RESULT)dnl
-___{}___{}___{}},{dnl 
+___{}___{}___{}},{dnl
 ___{}___{}___{}___{}define({XMUL_SUM},eval(XMUL_SUM+XMUL_BIT))dnl
 ___{}___{}___{}___{}define({XMUL_BIT},XMUL_256X_SUM)dnl
 ___{}___{}___{}___{}define({XMUL_RESULT},eval(XMUL_BIT-XMUL_SUM))dnl

@@ -71,7 +71,7 @@ define({RNEXT},{
     exx                 ; 1:4       rnext LOOP_STACK
     ld    E,(HL)        ; 1:7       rnext LOOP_STACK
     inc   L             ; 1:4       rnext LOOP_STACK
-    ld    D,(HL)        ; 1:7       rnext LOOP_STACK DE = index   
+    ld    D,(HL)        ; 1:7       rnext LOOP_STACK DE = index
     ld    A, E          ; 1:4       rnext LOOP_STACK
     or    D             ; 1:4       rnext LOOP_STACK
     jr    z, next{}LOOP_STACK    ; 2:7/12    rnext LOOP_STACK exit

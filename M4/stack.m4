@@ -304,7 +304,7 @@ dnl
 dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse($#,{2},,{
-__{}.error {$0}($@): The wrong number of parameters in macro!})   
+__{}.error {$0}($@): The wrong number of parameters in macro!})
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
@@ -489,9 +489,9 @@ dnl Swap cell x1 x2 in the return stack.
 define(RSWAP,{
                         ;[14:86]    rswap ( R: j i -- i j )
     exx                 ; 1:4       rswap
-    ld  ($+10), SP      ; 4:20      rswap         
+    ld  ($+10), SP      ; 4:20      rswap
     ld   SP, HL         ; 1:6       rswap
-    pop  DE             ; 1:10      rswap 
+    pop  DE             ; 1:10      rswap
     pop  AF             ; 1:10      rswap
     push DE             ; 1:11      rswap
     push AF             ; 1:11      rswap
@@ -590,14 +590,14 @@ dnl Swap cell pair x4 x3 and x2 x1 in the return stack.
 define(_2RSWAP,{
                         ;[19:134]   rswap ( R: l k j i -- j i l k )
     exx                 ; 1:4       rswap
-    ld  ($+14), SP      ; 4:20      rswap         
+    ld  ($+14), SP      ; 4:20      rswap
     ld   SP, HL         ; 1:6       rswap
     ex   DE, HL         ; 1:4       rswap l  k  j  i
-    pop  BC             ; 1:10      rswap l  k  j  BC 
-    pop  HL             ; 1:10      rswap l  k  HL 
-    pop  AF             ; 1:10      rswap l  AF  
-    ex  (SP),HL         ; 1:19      rswap j     HL=l  
-    push BC             ; 1:11      rswap j  i   
+    pop  BC             ; 1:10      rswap l  k  j  BC
+    pop  HL             ; 1:10      rswap l  k  HL
+    pop  AF             ; 1:10      rswap l  AF
+    ex  (SP),HL         ; 1:19      rswap j     HL=l
+    push BC             ; 1:11      rswap j  i
     push HL             ; 1:11      rswap j  i  l
     push AF             ; 1:11      rswap j  i  l  k
     ld   SP, 0x0000     ; 3:10      rswap

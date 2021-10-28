@@ -87,7 +87,7 @@ ifdef({USE_fSqrt},,define({USE_fSqrt},{}))dnl
 dnl
 dnl
 dnl ( f1 -- f2 )
-dnl "round towards zero" 
+dnl "round towards zero"
 define({FTRUNC},{
 ifdef({USE_fTrunc},,define({USE_fTrunc},{}))dnl
     call fTrunc         ; 3:17      ftrunc})dnl
@@ -690,8 +690,8 @@ dnl
 define({ROOT2F},0x406a)dnl  ; 1.414062e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(106=0x6A) Square root of 2 (1.41421356)
 define({FPMIN},0x0000)dnl   ; 5.421011e-20 sign(0=0x0000) exp(-64=0x0000) mantisa(  0=0x00)
 define({FMMIN},0x8000)dnl   ;-5.421011e-20 sign(1=0x8000) exp(-64=0x0000) mantisa(  0=0x00)
-define({FM0},FPMIN )dnl 
-define({FP0},FPMIN )dnl 
+define({FM0},FPMIN )dnl
+define({FP0},FPMIN )dnl
 define({FMMAX},0xffff)dnl      ;-1.841072e+19 sign(1=0x8000) exp( 63=0x7F00) mantisa(255=0xFF)
 define({FPMAX},0x7fff)dnl      ; 1.841072e+19 sign(0=0x0000) exp( 63=0x7F00) mantisa(255=0xFF)
 define({FM0_01875},0xba33)dnl  ;-1.873779e-02 sign(1=0x8000) exp( -6=0x3A00) mantisa( 51=0x33)

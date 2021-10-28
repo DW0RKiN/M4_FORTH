@@ -4,7 +4,7 @@ dnl ( -- )
 dnl recursion call function
 define(RCALL,{
     call format({%-15s},$1); 3:17      rcall
-    ex   DE, HL         ; 1:4       rcall    
+    ex   DE, HL         ; 1:4       rcall
     exx                 ; 1:4       rcall R:( ret -- )}){}dnl
 dnl
 dnl

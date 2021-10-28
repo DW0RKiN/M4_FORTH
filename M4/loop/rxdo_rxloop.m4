@@ -4,7 +4,7 @@ dnl
 dnl
 dnl ---------- rxdo(stop,index) ... rxloop ------------
 dnl Napevno zadavana optimalizovana konstantni smycka, jejiz rozsah je znam uz v dobe kompilace a kterou nelze programove menit
-dnl ( -- ) 
+dnl ( -- )
 dnl rxdo(stop,index) ... rxloop
 dnl rxdo(stop,index) ... addrxloop(step)
 define({RXDO},{ifelse({$#},{2},,{
@@ -32,7 +32,7 @@ do{}LOOP_STACK:                  ;           $1 $2 rxdo LOOP_STACK})dnl
 dnl
 dnl
 dnl
-dnl ( -- ) 
+dnl ( -- )
 dnl rxdo(stop,index) ... rxloop
 dnl rxdo(stop,index) ... addrxloop(step)
 define({QUESTIONRXDO},{
@@ -128,7 +128,7 @@ define(_2_ADDRXLOOP,{
     ld    D,(HL)        ; 1:7       2 +rxloop LOOP_STACK DE = index
     inc  DE             ; 1:6       2 +rxloop LOOP_STACK
     inc  DE             ; 1:6       2 +rxloop LOOP_STACK DE = index+2
-    ld    A, E          ; 1:4       2 +rxloop LOOP_STACK    
+    ld    A, E          ; 1:4       2 +rxloop LOOP_STACK
     sub  low format({%-11s},eval(STOP_STACK)); 2:7       2 +rxloop LOOP_STACK lo index+2-stop
     rra                 ; 1:4       2 +rxloop LOOP_STACK
     add   A, A          ; 1:4       2 +rxloop LOOP_STACK and 0xFE with save carry
@@ -171,17 +171,17 @@ __{}    jr   nc, leave{}LOOP_STACK-1 ; 2:7/12    $1 +rxloop LOOP_STACK -step},{
 __{}    jr    c, leave{}LOOP_STACK-1 ; 2:7/12    $1 +rxloop LOOP_STACK +step})
     ex   DE, HL         ; 1:4       $1 +rxloop LOOP_STACK
     add  HL, BC         ; 1:11      $1 +rxloop LOOP_STACK index+step
-    ex   DE, HL         ; 1:4       $1 +rxloop LOOP_STACK    
+    ex   DE, HL         ; 1:4       $1 +rxloop LOOP_STACK
     pop  HL             ; 1:10      $1 +rxloop LOOP_STACK
     ld  (HL),D          ; 1:7       $1 +rxloop LOOP_STACK
     dec   L             ; 1:4       $1 +rxloop LOOP_STACK
     ld  (HL),E          ; 1:7       $1 +rxloop LOOP_STACK
-    exx                 ; 1:4       $1 +rxloop LOOP_STACK    
+    exx                 ; 1:4       $1 +rxloop LOOP_STACK
     jp   do{}LOOP_STACK          ; 3:10      $1 +rxloop LOOP_STACK ( -- ) R:( index -- index+$1 )
     pop  HL             ; 1:10      $1 +rxloop LOOP_STACK
 dnl                        :154
-leave{}LOOP_STACK:               ;           $1 +rxloop LOOP_STACK    
-    inc  HL             ; 1:6       $1 +rxloop LOOP_STACK    
+leave{}LOOP_STACK:               ;           $1 +rxloop LOOP_STACK
+    inc  HL             ; 1:6       $1 +rxloop LOOP_STACK
     exx                 ; 1:4       $1 +rxloop LOOP_STACK ( -- ) R:( index -- )
 exit{}LOOP_STACK:                ;           $1 +rxloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
@@ -207,7 +207,7 @@ dnl
 dnl ( -- i )
 dnl hodnota indexu vnitrni smycky
 define({RXI},{ifelse({slow},{fast},{
-    exx                 ; 1:4       index rxi LOOP_STACK    
+    exx                 ; 1:4       index rxi LOOP_STACK
     ld    A,(HL)        ; 1:7       index rxi LOOP_STACK lo
     inc   L             ; 1:4       index rxi LOOP_STACK
     ex   AF, AF'        ; 1:4       index rxi LOOP_STACK
@@ -235,12 +235,12 @@ dnl
 dnl ( -- j )
 dnl hodnota indexu druhe vnitrni smycky
 define({RXJ},{
-    exx                 ; 1:4       index rxj LOOP_STACK    
+    exx                 ; 1:4       index rxj LOOP_STACK
     ld    E, L          ; 1:4       index rxj LOOP_STACK
     ld    D, H          ; 1:4       index rxj LOOP_STACK
     inc   L             ; 1:4       index rxj LOOP_STACK
     inc  HL             ; 1:6       index rxj LOOP_STACK
-    ld    C,(HL)        ; 1:7       index rxj LOOP_STACK lo    
+    ld    C,(HL)        ; 1:7       index rxj LOOP_STACK lo
     inc   L             ; 1:4       index rxj LOOP_STACK
     ld    B,(HL)        ; 1:7       index rxj LOOP_STACK hi
     push BC             ; 1:11      index rxj LOOP_STACK
@@ -254,11 +254,11 @@ dnl
 dnl ( -- k )
 dnl hodnota indexu treti vnitrni smycky
 define({RXK},{
-    exx                 ; 1:4       index rxk LOOP_STACK    
+    exx                 ; 1:4       index rxk LOOP_STACK
     ld   DE, 0x0004     ; 3:10      index rxk LOOP_STACK
     ex   DE, HL         ; 1:4       index rxk LOOP_STACK
     add  HL, DE         ; 1:11      index rxk LOOP_STACK
-    ld    C,(HL)        ; 1:7       index rxk LOOP_STACK lo    
+    ld    C,(HL)        ; 1:7       index rxk LOOP_STACK lo
     inc   L             ; 1:4       index rxk LOOP_STACK
     ld    B,(HL)        ; 1:7       index rxk LOOP_STACK hi
     ex   DE, HL         ; 1:4       index rxk LOOP_STACK
@@ -266,22 +266,22 @@ define({RXK},{
     exx                 ; 1:4       index rxk LOOP_STACK
     ex   DE, HL         ; 1:4       index rxk LOOP_STACK ( k x2 x1 -- k  x1 x2 )
     ex  (SP),HL         ; 1:19      index rxk LOOP_STACK ( k x1 x2 -- x2 x1 k )
-dnl;   exx                 ; 1:4    
+dnl;   exx                 ; 1:4
 dnl;   ld    A, 0x04       ; 2:7
 dnl;   add   A, L          ; 1:4
 dnl;   ld    E, A          ; 1:4
 dnl;   adc   A, H          ; 1:4
 dnl;   sub   E             ; 1:4
 dnl;   ld    D, A          ; 1:4
-dnl;   ld    A,(DE)        ; 1:7       lo    
+dnl;   ld    A,(DE)        ; 1:7       lo
 dnl;   inc   E             ; 1:4
 dnl;   ex   AF, AF'        ; 1:4
 dnl;   ld    A,(DE)        ; 1:7       hi
-dnl;   exx                 ; 1:4    
+dnl;   exx                 ; 1:4
 dnl;   push DE             ; 1:11
-dnl;   ex   DE, HL         ; 1:4    
+dnl;   ex   DE, HL         ; 1:4
 dnl;   ld    H, A          ; 1:4
-dnl;   ex   AF, AF'        ; 1:4    
+dnl;   ex   AF, AF'        ; 1:4
 dnl;   ld    L, A          ; 1:4})dnl
 dnl
 dnl

@@ -31,37 +31,37 @@ ifdef({USE_fWld}, {
 ; *****************************************
                     fWld                ; *
 ; *****************************************
-    ld    A, H          ; 1:4       HL = xxxx xxxx xxxx xxxx 
-    or    A             ; 1:4 
-    jr    z, fWld_B     ; 2:12/7 
+    ld    A, H          ; 1:4       HL = xxxx xxxx xxxx xxxx
+    or    A             ; 1:4
+    jr    z, fWld_B     ; 2:12/7
     ld    A, 0x50       ; 2:7       bias+16
 fWld_NORM:
-    add  HL, HL         ; 1:11 
-    dec   A             ; 1:4 
-    jp   nc, fWld_NORM  ; 3:10        
-        
+    add  HL, HL         ; 1:11
+    dec   A             ; 1:4
+    jp   nc, fWld_NORM  ; 3:10
+
     sla   L             ; 2:8       rounding
-    ld    L, H          ; 1:4 
-    ld    H, A          ; 1:4 
-    ret   nc            ; 1:11/5 
-    ccf                 ; 1:4 
-    ret   z             ; 1:11/5 
+    ld    L, H          ; 1:4
+    ld    H, A          ; 1:4
+    ret   nc            ; 1:11/5
+    ccf                 ; 1:4
+    ret   z             ; 1:11/5
     inc   L             ; 1:4       rounding up
-    ret   nz            ; 1:11/5 
+    ret   nz            ; 1:11/5
     inc   H             ; 1:4       exp++
-    ret                 ; 1:10 
-        
+    ret                 ; 1:10
+
 fWld_B:                 ;           HL = 0000 0000 xxxx xxxx
-    or    L             ; 1:4 
-    ret   z             ; 1:5/11 
-                
+    or    L             ; 1:4
+    ret   z             ; 1:5/11
+
     ld    H, 0x48       ; 2:7       bias+8
 fWld_B_NORM:
-    dec   H             ; 1:4 
-    add   A, A          ; 1:4 
-    jr   nc, fWld_B_NORM; 2:12/7 
+    dec   H             ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, fWld_B_NORM; 2:12/7
 
-    ld    L, A          ; 1:4 
+    ld    L, A          ; 1:4
     ret                 ; 1:10}){}dnl
 dnl
 dnl

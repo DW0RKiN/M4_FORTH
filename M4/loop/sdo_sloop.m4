@@ -3,7 +3,7 @@ define({__},{})dnl
 dnl
 dnl
 dnl ---------  sdo ... sloop  -----------
-dnl 5 0 sdo . sloop --> 0 1 2 3 4 
+dnl 5 0 sdo . sloop --> 0 1 2 3 4
 dnl ( stop index -- stop index )
 define({SDO}, {ifelse($#,{0},,{
 .error Unexpected parameter: sdo($@) --> push($@) sdo ?})
@@ -19,7 +19,7 @@ sdo{}LOOP_STACK:                 ;           sdo LOOP_STACK ( stop index -- stop
 dnl
 dnl
 dnl ---------  ?sdo ... sloop  -----------
-dnl 5 0 sdo . sloop --> 0 1 2 3 4 
+dnl 5 0 sdo . sloop --> 0 1 2 3 4
 dnl ( stop index -- stop index )
 define({QUESTIONSDO}, {ifelse($#,{0},,{
 .error Unexpected parameter: sdo($@) --> push($@) sdo ?})
@@ -35,7 +35,7 @@ __{}    pop  DE             ; 1:10      unsloop LOOP_STACK stop  out})
     or    A             ; 1:4       ?sdo LOOP_STACK
     sbc  HL, DE         ; 2:15      ?sdo LOOP_STACK
     pop  HL             ; 1:10      ?sdo LOOP_STACK
-    jp    z, sleave{}LOOP_STACK  ; 3:10      ?sdo LOOP_STACK   
+    jp    z, sleave{}LOOP_STACK  ; 3:10      ?sdo LOOP_STACK
 sdo{}LOOP_STACK:                 ;           ?sdo LOOP_STACK ( stop index -- stop index )})dnl
 dnl
 dnl
@@ -47,7 +47,7 @@ define({SI}, {
 dnl
 dnl
 dnl ( j s i -- j s i j )
-dnl 2 pick 
+dnl 2 pick
 dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
 define({SJ}, {
     PUSH_PICK(2)})dnl
