@@ -593,17 +593,17 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/case.m4
 |<sub>    `3` of    |<sub>     PUSH(`3`) OF    |<sub>  PUSH_OF(`3`)|<sub> ( n -- n ) |                    |
 |<sub>              |<sub>  WITHIN_OF(`4`,`7`) |<sub>              |<sub> ( n -- n ) |<sub>4..6           |
 |<sub>     endof    |<sub>         ENDOF       |<sub>              |<sub> ( n -- n ) |                    |
-|<sub>              |<sub>   DECLINING_ENDOF   |<sub>              |<sub> ( n -- n ) | C-style switch     |
+|<sub>              |<sub>   DECLINING_ENDOF   |<sub>              |<sub> ( n -- n ) |<sub>C-style switch |
 |<sub>`255` and case|<sub> PUSH(`255`) AND CASE|<sub>   LO_CASE    |<sub> ( n -- n ) |                    |
 |<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   LO_OF(`3`) |<sub> ( n -- n ) |<sub>ignores hi byte|
 |<sub>              |<sub>WITHIN_LO_OF(`4`,`7`)|<sub>              |<sub> ( n -- n ) |<sub>ignores hi byte|
 |<sub>     endof    |<sub>         ENDOF       |<sub>   LO_ENDOF   |<sub> ( n -- n ) |                    |
-|<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) | C-style switch     |
+|<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) |<sub>C-style switch |
 |<sub>`256` u/ case |<sub>    _256UDIV CASE    |<sub>   HI_CASE    |<sub> ( n -- n ) |                    |
 |<sub>   `3` of     |<sub>     PUSH(`3`) OF    |<sub>   HI_OF(`3`) |<sub> ( n -- n ) |<sub>ignores lo byte|
 |<sub>              |<sub>WITHIN_HI_OF(`4`,`7`)|<sub>              |<sub> ( n -- n ) |<sub>ignores lo byte|
 |<sub>     endof    |<sub>         ENDOF       |<sub>   HI_ENDOF   |<sub> ( n -- n ) |                    |
-|<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) | C-style switch     |
+|<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) |<sub>C-style switch |
 
 ### Function
 
@@ -751,6 +751,79 @@ The variables are stored in the data stack.
 |<sub>  2dup eq until  |<sub>_2DUP EQ UNTIL|<sub>    _2DUP_EQ_UNTIL     |<sub>       ( b a -- b a )       |<sub>              |
 |<sub>dup `2` eq until |<sub>     ...      |<sub> DUP_PUSH_EQ_UNTIL(`2`)|<sub>         ( n -- n )         |<sub>              |
 
+### Memory
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
+
+|<sub>    Original     |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment          |
+| :------------------: | :-------------------------: | :------------------------------: | :---------------------------- | :-------------------- |
+|<sub>`1` constant ONE |<sub>   CONSTANT(ONE,`1`)    |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`      |
+|<sub>    `3` var X    |<sub>    VARIABLE(X,`3`)     |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`        |
+|<sub>   variable X    |<sub>      VARIABLE(X)       |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000     |
+|<sub>   'a' cvar X    |<sub>    CVARIABLE(X,'a')    |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'        |
+|<sub>   `4` dvar X    |<sub>    DVARIABLE(X,`4`)    |<sub>                             |<sub>          ( -- )          |<sub> X: dw `4`, 0x0000|
+
+#### 8bit
+
+|<sub>     Original     |<sub>        M4 FORTH         |<sub>        Optimization          |<sub>   Data stack               |<sub> Comment           |
+| :-------------------: | :--------------------------: | :-------------------------------: | :------------------------------ | :--------------------- |
+|<sub>        C@        |<sub>          CFETCH         |<sub>                              |<sub>     ( addr -- char )       |<sub> TOP = (addr)      |
+|<sub>      dup C@      |<sub>        DUP CFETCH       |<sub>          DUP_CFETCH          |<sub>     ( addr -- addr char )  |<sub> TOP = (addr)      |
+|<sub>    dup C@ swap   |<sub>     DUP CFETCH SWAP     |<sub>        DUP_CFETCH_SWAP       |<sub>     ( addr -- char addr )  |<sub> NOS = (addr)      |
+|<sub>      addr C@     |<sub>                         |<sub>      PUSH_CFETCH(addr)       |<sub>          ( -- char )       |<sub> TOP = (addr)      |
+|<sub>        C!        |<sub>          CSTORE         |<sub>                              |<sub>( char addr -- )            |<sub> (addr) = char     |
+|<sub>   `0x4000` C!    |<sub> PUSH(`0x4000`) CSTORE   |<sub>    PUSH_CSTORE(`0x4000`)     |<sub>    ( char  -- )            |<sub>(`0x4000`) = char  |
+|<sub>`1234` `0x8000` C!|<sub>          ...            |<sub>PUSH2_CSTORE(`1234`,`0x8000`) |<sub>          ( -- )            |<sub>(`0x8000`) = `0x34`|
+|<sub>     tuck C!      |<sub>      TUCK CSTORE        |<sub>         TUCK_CSTORE          |<sub>( char addr -- addr )       |<sub>(addr) = char      |
+|<sub>    tuck C! 1+    |<sub>    TUCK CSTORE _1ADD    |<sub>       TUCK_CSTORE_1ADD       |<sub>( char addr -- addr+1 )     |<sub>(addr) = char      |
+|<sub>   over swap C!   |<sub>    OVER SWAP CSTORE     |<sub>       OVER_SWAP_CSTORE       |<sub>( char addr -- char )       |<sub>(addr) = char      |
+|<sub>     2dup C!      |<sub>      _2DUP CSTORE       |<sub>         _2DUP_CSTORE         |<sub>( char addr -- char addr )  |<sub>(addr) = char      |
+|<sub>    2dup C! 1+    |<sub>   _2DUP CSTORE _1ADD    |<sub>      _2DUP_CSTORE_1ADD       |<sub>( char addr -- char addr+1 )|<sub>(addr) = char      |
+|<sub>  dup `6` swap C! |<sub>DUP PUSH(`6`) SWAP CSTORE|<sub>   DUP_PUSH_SWAP_CSTORE(`6`)  |<sub>( char addr -- addr )       |<sub>(addr) = `6`       |
+|<sub>dup `7` swap C! 1+|<sub>          ...            |<sub>DUP_PUSH_SWAP_CSTORE_1ADD(`7`)|<sub>( char addr -- char addr+1 )|<sub>(addr) = `7`       |
+|<sub>      cmove       |<sub>          CMOVE          |<sub>                              |<sub>( from to u -- )            |<sub>8bit, addr++       |
+|<sub>    `3` cmove     |<sub>                         |<sub>        PUSH_CMOVE(`3`)       |<sub>  ( from to -- )            |<sub>8bit, addr++       |
+|<sub>      cmove>      |<sub>         CMOVEGT         |<sub>                              |<sub>( from to u -- )            |<sub>8bit, addr--       |
+|<sub>       fill       |<sub>           FILL          |<sub>                              |<sub> ( addr u c -- )            |<sub>8bit, addr++       |
+|<sub>      c fill      |<sub>     PUSH_FILL(u,c)      |<sub>                              |<sub>   ( addr u -- )            |<sub>8bit, addr++       |
+|<sub>     u c fill     |<sub>     PUSH2_FILL(u,c)     |<sub>                              |<sub>     ( addr -- )            |<sub>8bit, addr++       |
+|<sub>    a u c fill    |<sub>    PUSH3_FILL(a,u,c)    |<sub>                              |<sub>          ( -- )            |<sub>8bit, addr++       |
+
+
+#### 16bit
+
+|<sub>    Original     |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment             |
+| :------------------: | :-------------------------: | :------------------------------: | :---------------------------- | :----------------------- |
+|<sub>        @        |<sub>         FETCH          |<sub>                             |<sub>     ( addr -- x )        |<sub>TOP = (addr)         |
+|<sub>      dup @      |<sub>       DUP FETCH        |<sub>          DUP_FETCH          |<sub>     ( addr -- addr x )   |<sub>TOP = (addr)         |
+|<sub>   dup @ swap    |<sub>     DUP FETCH SWAP     |<sub>        DUP_FETCH_SWAP       |<sub>     ( addr -- x addr )   |<sub>NOS = (addr)         |
+|<sub>     addr @      |<sub>                        |<sub>      PUSH_FETCH(addr)       |<sub>          ( -- x )        |<sub>TOP = (addr)         |
+|<sub>        !        |<sub>         STORE          |<sub>                             |<sub>   ( x addr -- )          |<sub>(addr) = x           |
+|<sub>  `0x4000` !     |<sub>  PUSH(`0x4000`) STORE  |<sub>     PUSH_STORE(`0x4000`)    |<sub>       ( x  -- )          |<sub>(`0x4000`) = x       |
+|<sub> `7` `0x8000` !  |<sub>          ...           |<sub>  PUSH2_STORE(`7`,`0x8000`)  |<sub>          ( -- )          |<sub>(`0x8000`) = `0x0700`|
+|<sub>     tuck !      |<sub>      TUCK STORE        |<sub>         TUCK_STORE          |<sub>   ( x addr -- addr )     |<sub>(addr) = x           |
+|<sub>    tuck ! 2+    |<sub>    TUCK STORE _2ADD    |<sub>       TUCK_STORE_2ADD       |<sub>   ( x addr -- addr+2 )   |<sub>(addr) = x           |
+|<sub>   over swap !   |<sub>    OVER SWAP STORE     |<sub>       OVER_SWAP_STORE       |<sub>   ( x addr -- x )        |<sub>(addr) = x           |
+|<sub>     2dup !      |<sub>      _2DUP STORE       |<sub>         _2DUP_STORE         |<sub>   ( x addr -- x addr )   |<sub>(addr) = x           |
+|<sub>    2dup ! 2+    |<sub>   _2DUP STORE _2ADD    |<sub>      _2DUP_STORE_2ADD       |<sub>   ( x addr -- x addr+2 ) |<sub>(addr) = x           |
+|<sub>  dup `6` swap ! |<sub>DUP PUSH(`6`) SWAP STORE|<sub>   DUP_PUSH_SWAP_STORE(`6`)  |<sub>   ( x addr -- addr )     |<sub>(addr) = `6`         |
+|<sub>dup `7` swap ! 2+|<sub>          ...           |<sub>DUP_PUSH_SWAP_STORE_2ADD(`7`)|<sub>   ( x addr -- x addr+2 ) |<sub>(addr) = `7`         |
+|<sub>      move       |<sub>           MOVE         |<sub>                             |<sub>( from to u -- )          |<sub>copy 2*u bytes, adr++|
+|<sub>   `512`  move   |<sub>    PUSH(`512`) MOVE    |<sub>        PUSH_MOVE(`512`)     |<sub>  ( from to -- )          |<sub>copy 1kb             |
+|<sub>     move>       |<sub>          MOVEGT        |<sub>                             |<sub>( from to u -- )          |<sub>copy 2*u bytes, adr--|
+|<sub>       +!        |<sub>         ADDSTORE       |<sub>                             |<sub>   ( x addr -- )          |<sub>(addr) += 16bit x    |
+|<sub> `7` `0x8000` +! |<sub>          ...           |<sub> PUSH2_ADDSTORE(`7` `0x8000`)|<sub>          ( -- )          |<sub>(`0x8000`)+= `0x0007`|
+
+#### 32bit
+
+|<sub>    Original     |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment          |
+| :------------------: | :-------------------------: | :------------------------------: | :---------------------------- | :-------------------- |
+|<sub>       2@        |<sub>         _2FETCH        |<sub>                             |<sub>     ( addr -- hi lo )    |<sub>                  |
+|<sub>     addr 2@     |<sub>                        |<sub>      PUSH_2FETCH(addr)      |<sub>          ( -- hi lo )    |<sub>                  |
+|<sub>       2!        |<sub>         _2STORE        |<sub>                             |<sub>( hi lo adr -- )          |<sub> (addr) = 32 bit  |
+|<sub>     addr 2!     |<sub>                        |<sub>      PUSH_2STORE(addr)      |<sub>    ( hi lo -- )          |<sub> (addr) = 32 bit  |
+|<sub>    x addr 2!    |<sub>                        |<sub>     PUSH2_2STORE(x,addr)    |<sub>       ( hi -- )          |<sub> (addr) = 32 bit  |
+
 ### Other
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
@@ -760,52 +833,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |<sub>                 |<sub>     INIT(RAS_addr)     |<sub>                             |<sub>                          |<sub> save SP, set RAS |
 |<sub>      bye        |<sub>          BYE           |<sub>                             |<sub>          ( -- )          |<sub> goto STOP        |
 |<sub>                 |<sub>         STOP           |<sub>                             |<sub>          ( -- )          |<sub> load SP & HL'    |
-|<sub>`1` constant ONE |<sub>   CONSTANT(ONE,`1`)    |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`      |
-|<sub>    `3` var X    |<sub>    VARIABLE(X,`3`)     |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`        |
-|<sub>   variable X    |<sub>      VARIABLE(X)       |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000     |
-|<sub>   'a' cvar X    |<sub>    CVARIABLE(X,'a')    |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'        |
-|<sub>   `4` dvar X    |<sub>    DVARIABLE(X,`4`)    |<sub>                             |<sub>          ( -- )          |<sub> X: dw `4`, 0x0000|
-|<sub>        @        |<sub>         FETCH          |<sub>                             |<sub>     ( addr -- x )        |<sub> TOP = (addr)     |
-|<sub>      dup @      |<sub>       DUP FETCH        |<sub>          DUP_FETCH          |<sub>     ( addr -- addr x )   |<sub> TOP = (addr)     |
-|<sub>   dup @ swap    |<sub>     DUP FETCH SWAP     |<sub>        DUP_FETCH_SWAP       |<sub>     ( addr -- x addr )   |<sub> NOS = (addr)     |
-|<sub>     addr @      |<sub>                        |<sub>      PUSH_FETCH(addr)       |<sub>          ( -- x )        |<sub> TOP = (addr)     |
-|<sub>        !        |<sub>         STORE          |<sub>                             |<sub>   ( x addr -- )          |<sub> (addr) = x       |
-|<sub>     tuck !      |<sub>      TUCK STORE        |<sub>         TUCK_STORE          |<sub>   ( x addr -- addr )     |<sub> (addr) = x       |
-|<sub>    tuck ! 2+    |<sub>    TUCK STORE _2ADD    |<sub>       TUCK_STORE_2ADD       |<sub>   ( x addr -- addr+2 )   |<sub> (addr) = x       |
-|<sub>   over swap !   |<sub>    OVER SWAP STORE     |<sub>       OVER_SWAP_STORE       |<sub>   ( x addr -- x )        |<sub> (addr) = x       |
-|<sub>     2dup !      |<sub>      _2DUP STORE       |<sub>         _2DUP_STORE         |<sub>   ( x addr -- x addr )   |<sub> (addr) = x       |
-|<sub>    2dup ! 2+    |<sub>   _2DUP STORE _2ADD    |<sub>      _2DUP_STORE_2ADD       |<sub>   ( x addr -- x addr+2 ) |<sub> (addr) = x       |
-|<sub>  dup `6` swap ! |<sub>DUP PUSH(`6`) SWAP STORE|<sub>   DUP_PUSH_SWAP_STORE(`6`)  |<sub>   ( x addr -- addr )     |<sub> (addr) = `6`     |
-|<sub>dup `7` swap ! 2+|<sub>          ...           |<sub>DUP_PUSH_SWAP_STORE_2ADD(`7`)|<sub>   ( x addr -- x addr+2 ) |<sub> (addr) = `7`       |
-|<sub>     addr !      |<sub>                        |<sub>       PUSH_STORE(addr)      |<sub>        ( x -- )          |<sub> (addr) = x       |
-|<sub>    x addr !     |<sub>                        |<sub>     PUSH2_STORE(x,addr)     |<sub>          ( -- )          |<sub> (addr) = x       |
-|<sub>       C@        |<sub>          CFETCH        |<sub>                             |<sub>     ( addr -- char )     |<sub> TOP = (addr)     |
-|<sub>     dup C@      |<sub>        DUP CFETCH      |<sub>          DUP_CFETCH         |<sub>     ( addr -- addr char )|<sub> TOP = (addr)     |
-|<sub>   dup C@ swap   |<sub>     DUP CFETCH SWAP    |<sub>        DUP_CFETCH_SWAP      |<sub>     ( addr -- char addr )|<sub> NOS = (addr)     |
-|<sub>     addr C@     |<sub>                        |<sub>      PUSH_CFETCH(addr)      |<sub>          ( -- char )     |<sub> TOP = (addr)     |
-|<sub>       C!        |<sub>          CSTORE        |<sub>                             |<sub>( char addr -- )          |<sub> (addr) = char    |
-|<sub>     addr C!     |<sub>                        |<sub>      PUSH_CSTORE(addr)      |<sub>     ( char -- )          |<sub> (addr) = char    |
-|<sub>    x addr C!    |<sub>                        |<sub>     PUSH2_CSTORE(x,addr)    |<sub>          ( -- )          |<sub> (addr) = char    |
-|<sub>       2@        |<sub>         _2FETCH        |<sub>                             |<sub>     ( addr -- hi lo )    |<sub>                  |
-|<sub>     addr 2@     |<sub>                        |<sub>      PUSH_2FETCH(addr)      |<sub>          ( -- hi lo )    |<sub>                  |
-|<sub>       2!        |<sub>         _2STORE        |<sub>                             |<sub>( hi lo adr -- )          |<sub> (addr) = 32 bit  |
-|<sub>     addr 2!     |<sub>                        |<sub>      PUSH_2STORE(addr)      |<sub>    ( hi lo -- )          |<sub> (addr) = 32 bit  |
-|<sub>    x addr 2!    |<sub>                        |<sub>     PUSH2_2STORE(x,addr)    |<sub>       ( hi -- )          |<sub> (addr) = 32 bit  |
-|<sub>       +!        |<sub>         ADDSTORE       |<sub>                             |<sub>   ( x addr -- )          |<sub> (addr) += x      |
-|<sub>   x addr +!     |<sub>   PUSH2_ADDSTORE(x,a)  |<sub>                             |<sub>          ( -- )          |<sub> (a) += x         |
-|<sub>     cmove       |<sub>          CMOVE         |<sub>                             |<sub>( from to u -- )          |<sub> 8bit, addr++     |
-|<sub>    `3` cmove    |<sub>                        |<sub>       PUSH_CMOVE(`3`)       |<sub>  ( from to -- )          |<sub> 8bit, addr++     |
-|<sub>     cmove>      |<sub>         CMOVEGT        |<sub>                             |<sub>( from to u -- )          |<sub> 8bit, addr--     |
-|<sub>      move       |<sub>           MOVE         |<sub>                             |<sub>( from to u -- )          |<sub> 16bit, addr++    |
-|<sub>      move>      |<sub>          MOVEGT        |<sub>                             |<sub>( from to u -- )          |<sub> 16bit, addr--    |
-|<sub>      fill       |<sub>           FILL         |<sub>                             |<sub> ( addr u c -- )          |<sub> 8bit, addr++     |
-|<sub>     c fill      |<sub>     PUSH_FILL(u,c)     |<sub>                             |<sub>   ( addr u -- )          |<sub> 8bit, addr++     |
-|<sub>    u c fill     |<sub>     PUSH2_FILL(u,c)    |<sub>                             |<sub>     ( addr -- )          |<sub> 8bit, addr++     |
-|<sub>   a u c fill    |<sub>    PUSH3_FILL(a,u,c)   |<sub>                             |<sub>          ( -- )          |<sub> 8bit, addr++     |
 |<sub> `seed` seed !   |<sub>                        |<sub>       PUSH_STORE(SEED)      |<sub>     ( seed -- )          |<sub>                  |
 |<sub>       rnd       |<sub>           RND          |<sub>                             |<sub>          ( -- random )   |<sub>                  |
 |<sub>     random      |<sub>          RANDOM        |<sub>                             |<sub>      ( max -- random )   |<sub> random < max     |
 |<sub>                 |<sub>         PUTPIXEL       |<sub>                             |<sub>       ( yx -- HL )       |<sub>                  |
+
 ### Output
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4
