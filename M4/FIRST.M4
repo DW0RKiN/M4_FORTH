@@ -14,6 +14,7 @@ include(M4PATH{}function.m4)dnl
 include(M4PATH{}loop.m4)dnl
 include(M4PATH{}device.m4)dnl
 include(M4PATH{}arithmetic.m4)dnl
+include(M4PATH{}memory.m4)dnl
 include(M4PATH{}other.m4)dnl
 include(M4PATH{}stack.m4)dnl
 dnl
