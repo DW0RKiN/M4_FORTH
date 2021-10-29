@@ -5,6 +5,8 @@ define({ALL_VARIABLE},{})dnl
 dnl
 dnl
 dnl <a name="constant"></a>
+dnl ##constant
+dnl ## constant
 define({CONSTANT},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
