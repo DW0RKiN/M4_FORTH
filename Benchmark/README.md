@@ -281,8 +281,8 @@ We say to make a new variable on the side, and then we copy that into the TOS. S
 | M4 Forth                                                                                                                          | Bytes |  Time  |
 | :-------------------------------------------------------------------------------------------------------------------------------- | :---: |:-----: |
 |[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; STORE <br />LOOP                                                                 ](./fillin_v00.asm)  |   82  | 0.36s  |
-|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(255) I<br />&nbsp; &nbsp; CSTORE <br />LOOP                                                                ](./fillin_v01.asm)  |   80  | 0.31s  |
-|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(65535) I<br />&nbsp; &nbsp; STORE <br />PUSH_ADDLOOP(2)                                                    ](./fillin_v02.asm)  |   85  | 0.19s  |
+|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; CSTORE <br />LOOP                                                                ](./fillin_v01.asm)  |   80  | 0.31s  |
+|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(65535)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; STORE <br />PUSH_ADDLOOP(2)                                                    ](./fillin_v02.asm)  |   85  | 0.19s  |
 |[XDO(23296,16384)<br />&nbsp; &nbsp; PUSH(65535) XI STORE <br />PUSH_ADDXLOOP(2)                                                       ](./fillin_v03.asm)  |   58  | 0.19s  |
 |[PUSH2(65535,0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP<br />&nbsp; &nbsp; XI<br />&nbsp; &nbsp; _2DUP<br />&nbsp; &nbsp; STORE <br />XLOOP DROP                                               ](./fillin_v04.asm)  |   66  | 0.36s  |
 |[PUSH2(65535,0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />XLOOP _2DROP                                             ](./fillin_v05.asm)  |   59  | 0.24s  |
