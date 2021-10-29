@@ -279,7 +279,7 @@ We say to make a new variable on the side, and then we copy that into the TOS. S
     assembly: 0.04secs
 
 | M4 Forth                                                                                                                          | Bytes |  Time  |
-| :-------------------------------------------------------------------------------------------------------------------------------: | :---: |:-----: |
+| :-------------------------------------------------------------------------------------------------------------------------------- | :---: |:-----: |
 |[PUSH2(23296,16384) DO<br />PUSH(255) I STORE <br />LOOP                                                                 ](./fillin_v00.asm)  |   82  | 0.36s  |
 |[PUSH2(23296,16384) DO<br /> PUSH(255) I CSTORE <br />LOOP                                                                ](./fillin_v01.asm)  |   80  | 0.31s  |
 |[PUSH2(23296,16384) DO<br /> PUSH(65535) I STORE <br />PUSH_ADDLOOP(2)                                                    ](./fillin_v02.asm)  |   85  | 0.19s  |
