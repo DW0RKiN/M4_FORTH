@@ -40,7 +40,7 @@ __{},{$1: dw $2{}})dnl
 dnl
 dnl
 dnl -------------------------------------------------------------------------------------
-dnl ## Memory access 8bit 
+dnl ## Memory access 8bit
 dnl -------------------------------------------------------------------------------------
 dnl
 dnl C@
@@ -460,44 +460,78 @@ __{}$#,{2},{
 __{}__{}.error {$0}($@): The third parameter is missing!},
 __{}$#,{3},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval($2),{0},{dnl
+ifelse(eval($2),{0},{dnl
 __{}                                  ;           $1 $2 $3 fill},
-__{}eval($2),{1},{dnl
-__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill
+eval($2),{1},{dnl
+__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill   = addr u char fill
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill},
-__{}eval($2),{2},{dnl
+eval($2),{2},{dnl
 __{}__{}ifelse(index({$3},{(}),{0},{dnl
-__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
+__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill   = addr u char fill
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill},
 __{}__{}{dnl
 __{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill})},
-__{}eval($2),{3},{dnl
-__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill
+eval($2),{3},{dnl
+__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill   = addr u char fill
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} A); 3:13      $1 $2 $3 fill},
-__{}eval($2),{4},{dnl
+eval($2),{4},{dnl
 __{}__{}ifelse(index({$3},{(}),{0},{dnl
-__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
+__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill   = addr u char fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
 __{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill})
+__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill   = addr u char fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill},
-__{}eval($2),{6},{dnl
+eval($2),{6},{dnl
 __{}__{}ifelse(index({$3},{(}),{0},{dnl
-__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
+__{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill   = addr u char fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
 __{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill})
+__{}__{}    ld   BC, format({%-11s},256*$3+$3); 3:10      $1 $2 $3 fill   = addr u char fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      $1 $2 $3 fill},
+eval((($2) % 4) == 0),{1},{dnl
+__{}define({_TEMP_B},eval((($2)/4) & 0xFF))dnl
+__{}define({_TEMP_C},eval(((($2)/4) & 0xFF00)/256))dnl
+__{}ifelse(eval(_TEMP_B>0),{1},{define({_TEMP_C},eval(_TEMP_C+1))})dnl
+__{}                       ;[24:format({%-8s},eval(48+46*($2)/4+13*(_TEMP_B+(_TEMP_C-1)*256)+9*_TEMP_C)])$1 $2 $3 fill   = addr u char fill
+__{}    push HL             ; 1:11      $1 $2 $3 fill
+__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = to
+__{}    ld   BC, format({%-11s},256*_TEMP_B+_TEMP_C); 3:10      $1 $2 $3 fill   $2{}x = (C-1)*4*256 + 4*B
+__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill   = addr u char fill
+__{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
+__{}ifelse(eval(($1+1) & 0x03),{0},{dnl
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
+__{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
+__{}ifelse(eval(($1+2) & 0x03),{0},{dnl
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
+__{}{dnl
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
+__{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
+__{}ifelse(eval(($1+3) & 0x03),{0},{dnl
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
+__{}{dnl
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
+__{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
+__{}ifelse(eval(($1+0) & 0x03),{0},{dnl
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
+__{}{dnl
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
+__{}    djnz $-8            ; 2:13/8    $1 $2 $3 fill
+__{}    dec  C              ; 1:4       $1 $2 $3 fill
+__{}    jp   nz, $-11       ; 3:10      $1 $2 $3 fill
+__{}    pop  HL             ; 1:10      $1 $2 $3 fill},
+__{}{dnl
+__{}                       ;[17:77+u*21]$1 $2 $3 fill   = addr u char fill
 __{}    push DE             ; 1:11      $1 $2 $3 fill
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill HL = from
@@ -510,7 +544,7 @@ __{}    pop  DE             ; 1:10      $1 $2 $3 fill})})dnl
 dnl
 dnl
 dnl -------------------------------------------------------------------------------------
-dnl ## Memory access 16bit 
+dnl ## Memory access 16bit
 dnl -------------------------------------------------------------------------------------
 dnl
 dnl
@@ -790,7 +824,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl -------------------------------------------------------------------------------------
-dnl ## Memory access 32bit 
+dnl ## Memory access 32bit
 dnl -------------------------------------------------------------------------------------
 dnl
 dnl
