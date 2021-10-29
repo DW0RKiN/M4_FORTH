@@ -280,20 +280,20 @@ We say to make a new variable on the side, and then we copy that into the TOS. S
 
 | M4 Forth                                                                                                                          | Bytes |  Time  |
 | :-------------------------------------------------------------------------------------------------------------------------------- | :---: |:-----: |
-|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; STORE <br />LOOP                                                                 ](./fillin_v00.asm)  |   82  | 0.36s  |
-|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; CSTORE <br />LOOP                                                                ](./fillin_v01.asm)  |   80  | 0.31s  |
-|[PUSH2(23296,16384) DO<br />&nbsp; &nbsp; PUSH(65535)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; STORE <br />PUSH_ADDLOOP(2)                                                    ](./fillin_v02.asm)  |   85  | 0.19s  |
+|[PUSH2(23296,16384)<br /> DO<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; STORE <br />LOOP                                                                 ](./fillin_v00.asm)  |   82  | 0.36s  |
+|[PUSH2(23296,16384)<br /> DO<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; CSTORE <br />LOOP                                                                ](./fillin_v01.asm)  |   80  | 0.31s  |
+|[PUSH2(23296,16384)<br /> DO<br />&nbsp; &nbsp; PUSH(65535)<br />&nbsp; &nbsp; I<br />&nbsp; &nbsp; STORE <br />PUSH_ADDLOOP(2)                                                    ](./fillin_v02.asm)  |   85  | 0.19s  |
 |[XDO(23296,16384)<br />&nbsp; &nbsp; PUSH(65535) XI STORE <br />PUSH_ADDXLOOP(2)                                                       ](./fillin_v03.asm)  |   58  | 0.19s  |
-|[PUSH2(65535,0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP<br />&nbsp; &nbsp; XI<br />&nbsp; &nbsp; _2DUP<br />&nbsp; &nbsp; STORE <br />XLOOP DROP                                               ](./fillin_v04.asm)  |   66  | 0.36s  |
-|[PUSH2(65535,0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />XLOOP _2DROP                                             ](./fillin_v05.asm)  |   59  | 0.24s  |
-|[PUSH(0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; DUP_PUSH_SWAP_CSTORE(255) <br />XLOOP DROP                                        ](./fillin_v06.asm)  |   54  | 0.19s  |
-|[PUSH(0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; DUP_PUSH_SWAP_STORE(65535) <br />PUSH_ADDXLOOP(2) DROP                            ](./fillin_v07.asm)  |   59  | 0.14s  |
-|[PUSH2(65535,0) XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />PUSH_ADDXLOOP(2) _2DROP                                  ](./fillin_v08.asm)  |   60  | 0.14s  |
-|[PUSH(0x4000) BEGIN<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; SWAP<br />&nbsp; &nbsp; CSTORE<br />&nbsp; &nbsp; _1ADD<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(0x5B00)<br />&nbsp; &nbsp; EQ <br />UNTIL DROP                            ](./fillin_v09.asm)  |   71  | 0.46s  |
-|[PUSH(0x4000) BEGIN<br />&nbsp; &nbsp; DUP_PUSH_SWAP_CSTORE_1ADD(255) <br />DUP_PUSH_EQ_UNTIL(0x5B00) DROP                             ](./fillin_v10.asm)  |   46  | 0.09s  |
-|[PUSH(0x4000) BEGIN<br />&nbsp; &nbsp; DUP_PUSH_SWAP_STORE_2ADD(65535) <br />DUP_PUSH_EQ_UNTIL(0x5B00) DROP                            ](./fillin_v11.asm)  |   49  | 0.07s  |
-|[PUSH2(65535,0x4000) BEGIN<br />&nbsp; &nbsp; _2DUP STORE _2ADD DUP PUSH(0x5B00) EQ <br />UNTIL _2DROP _2DROP                          ](./fillin_v12.asm)  |   69  | 0.24s  |
-|[PUSH2(65535,0x4000) BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD <br />DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP                                  ](./fillin_v13.asm)  |   50  | 0.07s  |
-|[PUSH2(65535,0x4000) BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br /> DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP](./fillin_v14.asm)  |   58  | 0.06s  |
+|[PUSH2(65535,0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP<br />&nbsp; &nbsp; XI<br />&nbsp; &nbsp; _2DUP<br />&nbsp; &nbsp; STORE <br />XLOOP <br />DROP                                               ](./fillin_v04.asm)  |   66  | 0.36s  |
+|[PUSH2(65535,0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />XLOOP <br />_2DROP                                             ](./fillin_v05.asm)  |   59  | 0.24s  |
+|[PUSH(0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; DUP_PUSH_SWAP_CSTORE(255) <br />XLOOP <br />DROP                                        ](./fillin_v06.asm)  |   54  | 0.19s  |
+|[PUSH(0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; DUP_PUSH_SWAP_STORE(65535) <br />PUSH_ADDXLOOP(2) <br />DROP                            ](./fillin_v07.asm)  |   59  | 0.14s  |
+|[PUSH2(65535,0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />PUSH_ADDXLOOP(2) <br />_2DROP                                  ](./fillin_v08.asm)  |   60  | 0.14s  |
+|[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; SWAP<br />&nbsp; &nbsp; CSTORE<br />&nbsp; &nbsp; _1ADD<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(0x5B00)<br />&nbsp; &nbsp; EQ <br />UNTIL <br />DROP                            ](./fillin_v09.asm)  |   71  | 0.46s  |
+|[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; DUP_PUSH_SWAP_CSTORE_1ADD(255) <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />DROP                             ](./fillin_v10.asm)  |   46  | 0.09s  |
+|[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; DUP_PUSH_SWAP_STORE_2ADD(65535) <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />DROP                            ](./fillin_v11.asm)  |   49  | 0.07s  |
+|[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP<br />&nbsp; &nbsp; STORE<br />&nbsp; &nbsp; _2ADD<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(0x5B00)<br />&nbsp; &nbsp; EQ <br />UNTIL <br />_2DROP                          ](./fillin_v12.asm)  |   69  | 0.24s  |
+|[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />_2DROP                                  ](./fillin_v13.asm)  |   50  | 0.07s  |
+|[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br /> DUP_PUSH_EQ_UNTIL(0x5B00) <br />_2DROP](./fillin_v14.asm)  |   58  | 0.06s  |
 |[PUSH3_FILL(0x4000,6912,255)                                                                                  ](./fillin_v15.asm)  |   42  | 0.07s  |
 
