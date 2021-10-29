@@ -76,18 +76,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD2   | 4.53s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD2   | 35.31s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD2   | 42s              | 10x
-| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD2   | 0,65s            | 
-| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac   | OpenBoot 3.25           |    GCD2   | 0,11s            | 
-| Stefan Niestegge  | Atari Falcon 68060               | f68kans                 |    GCD2   | 0,067s           | 
-| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz) | FreeBSD 9 FICL Bootloader | GCD2 | 0.57s            | 
+| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD2   | 0,65s            |
+| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac   | OpenBoot 3.25           |    GCD2   | 0,11s            |
+| Stefan Niestegge  | Atari Falcon 68060               | f68kans                 |    GCD2   | 0,067s           |
+| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz) | FreeBSD 9 FICL Bootloader | GCD2 | 0.57s            |
 | Johan Kotlinski   | C64                              | DurexForth 1.6.1 (STC)  |    GCD 2  | 70s              | 1x
 | Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02  | TaliForth 2 (STC)       |    GCD 2  | 1m25s            | 1x
 | Thomas Woinke     | Steckschwein 8MHz 65c02          | TaliForth 2 (STC)       |    GCD 2  | 11.75s           | 1x
-| Enrico/Dirk       | Robotron A 7150 i8086/8087 Multibus ~5Mhz | VolksForth MS-DOS (ITC) | GCD 2 | 30          | 
-| Andreas Boehm     | Commodore C64 6510               | Audiogenic Forth-64     |    GCD 2  | 84.84            | 
-| Matthias Trute    | Atmega16 8MHz                    | amForth 4.4             |    GCD 2  | 10.5             | 
-| Norbert Kehrer    | Mupid II (BTX Decoder)           | FIG-Forth 1.1           |    GCD 2  | 188s             | 
-| Norbert Kehrer    | Mupid II (BTX Decoder)           | Camel Forth 1.01        |    GCD 2  | 135s             | 
+| Enrico/Dirk       | Robotron A 7150 i8086/8087 Multibus ~5Mhz | VolksForth MS-DOS (ITC) | GCD 2 | 30          |
+| Andreas Boehm     | Commodore C64 6510               | Audiogenic Forth-64     |    GCD 2  | 84.84            |
+| Matthias Trute    | Atmega16 8MHz                    | amForth 4.4             |    GCD 2  | 10.5             |
+| Norbert Kehrer    | Mupid II (BTX Decoder)           | FIG-Forth 1.1           |    GCD 2  | 188s             |
+| Norbert Kehrer    | Mupid II (BTX Decoder)           | Camel Forth 1.01        |    GCD 2  | 135s             |
 
 
 ### Fib 1
@@ -128,8 +128,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 Wariant with `?do`. Because the variant with `do` starts `0 0 do` and executes 65536!
 
     : fib2 ( n1 -- n2 )
-        0 1 ROT 0 ?DO 
-            OVER_ADD SWAP LOOP 
+        0 1 ROT 0 ?DO
+            OVER_ADD SWAP LOOP
         DROP
     ;
 
@@ -161,13 +161,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 | Carsten Fulde     | Enterprise 128                       | IS-Forth von B. Tanner  | Fibonacci 2 | 118.4s  | 1x
 | Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02      | TaliForth 2 (STC)       | Fibonacci 2 | 1m50s   | 1x
 | Thomas Woinke     | Steckschwein 8MHz 65c02              | TaliForth 2 (STC)       | Fibonacci 2 | 15.23s  | 1x
-| Carsten Fulde     | Sinclair QL M68008 7,5 Mhz           | Forth79 (G.W.Jackson)   | Fibonacci 2 | 35      | 
-| Enrico/Dirk       |Robotron A 7150 i8086/8087 Multibus ~5Mhz|VolksForth MS-DOS (ITC)| Fibonacci 2| 46      | 
-| J. Kunz           | DEC 3000-600 Alpha 21064 175Mhz      | pForth                  | Fibonacci 2 | 0.00001425 | 
-| Stefan Herold     | Amstrad 6128+ Z80A 4Mhz              | Uniforth                | Fibonacci 2 | 0.23    | 
-| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Fibonacci 2 | 0.0027  | 
-| Michael Kalus     | Rockwell R1200-14, 2Mhz 65F12        | RSC-Forth               | Fibonacci 2 | 0.05    | 
-| Matthias Trute    | Atmega16 8MHz                        | amForth 4.4             | Fibonacci 2 | 0.0047  | 
+| Carsten Fulde     | Sinclair QL M68008 7,5 Mhz           | Forth79 (G.W.Jackson)   | Fibonacci 2 | 35      |
+| Enrico/Dirk       |Robotron A 7150 i8086/8087 Multibus ~5Mhz|VolksForth MS-DOS (ITC)| Fibonacci 2| 46      |
+| J. Kunz           | DEC 3000-600 Alpha 21064 175Mhz      | pForth                  | Fibonacci 2 | 0.00001425 |
+| Stefan Herold     | Amstrad 6128+ Z80A 4Mhz              | Uniforth                | Fibonacci 2 | 0.23    |
+| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Fibonacci 2 | 0.0027  |
+| Michael Kalus     | Rockwell R1200-14, 2Mhz 65F12        | RSC-Forth               | Fibonacci 2 | 0.05    |
+| Matthias Trute    | Atmega16 8MHz                        | amForth 4.4             | Fibonacci 2 | 0.0047  |
 | Carsten Strotmann | Nixdorf 8810 M15 (8Mhz i286)         | L.O.V.E. Forth          | Fibonicci 2 | 8
 | Ben               | IBM PS/2 L40SX                       | DX-Forth                | Fib2        | 1m03s   | 10x
 | Thunder.Bird      | Amstrad PPC 512                      | DX-Forth                | Fib2        | 1m45s   | 5x
@@ -176,16 +176,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 | Michael Mengel    | Apple II UltraWarp 13Mhz             | Apple GraForth          | Fib2        | 0m11s   | 1x
 | Michael Mengel    | Apple II 1Mhz                        | Apple II v. 3.2         | Fib2        | 3m56s   | 1x
 | Michael Mengel    | Apple II 1Mhz                        | Apple GraForth          | Fib2        | 2m19s   | 1x
-| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255     | OpenFirmware            | Fib2        | 0,2s    | 
-| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac       | OpenBoot 3.25           | Fib2        | 0,06s   | 
-| Stefan Niestegge  | Atari Falcon 68060 100mhz            | f68kans                 | Fib2        | 0,0012s | 
-| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz)  | FreeBSD 9 FICL Bootloader | Fib2      | 66s     | 
-| Sabine "Atari Frosch" Engelhardt | Atari Portfolio       | VolksForth 3.81         | Fib2        | 35s     | 
-| Herbert Lange     | Compaq Deskpro P166                  | pForth V27              | Fib2        | 0,001s  | 
-| Herbert Lange     | Apple iMac G3 400Mhz                 | pForth V27              | Fib2        | 0,001s  | 
-| Herbert Lange     | SUN Ultra 1 Creator 3D               | pForth V27              | Fib2        | 0,001s  | 
-| Ralf Neumann      | mc-CP/M Z80 4Mhz                     | FIG-Forth 1.1           | Fib2        | 1m19s   | 
-| Ralf Neumann      | Prof80 CP/M Z80 6Mhz                 | FIG-Forth 1.1           | Fib2        | 53s     | 
+| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255     | OpenFirmware            | Fib2        | 0,2s    |
+| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac       | OpenBoot 3.25           | Fib2        | 0,06s   |
+| Stefan Niestegge  | Atari Falcon 68060 100mhz            | f68kans                 | Fib2        | 0,0012s |
+| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz)  | FreeBSD 9 FICL Bootloader | Fib2      | 66s     |
+| Sabine "Atari Frosch" Engelhardt | Atari Portfolio       | VolksForth 3.81         | Fib2        | 35s     |
+| Herbert Lange     | Compaq Deskpro P166                  | pForth V27              | Fib2        | 0,001s  |
+| Herbert Lange     | Apple iMac G3 400Mhz                 | pForth V27              | Fib2        | 0,001s  |
+| Herbert Lange     | SUN Ultra 1 Creator 3D               | pForth V27              | Fib2        | 0,001s  |
+| Ralf Neumann      | mc-CP/M Z80 4Mhz                     | FIG-Forth 1.1           | Fib2        | 1m19s   |
+| Ralf Neumann      | Prof80 CP/M Z80 6Mhz                 | FIG-Forth 1.1           | Fib2        | 53s     |
 | Carsten Strotmann | IBM L40S (386SX)                     | mina (Fig-Forth)        | Fib2 (1000) | 8s
 | Carsten Strotmann | IBM L40X (386SX)                     | F83 (Laxen & Perry)     | Fib2 (1000) | 8s
 | Carsten Strotmann | IBM L40X (386SX)                     | GNU Forth 0.5.0 ec8086  | Fib2 (1000) | 24s
@@ -254,17 +254,17 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.c
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Sieve Bench  | 5.94s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Sieve/Prime  | 10s              | 1x
 | Alexander Muller  | Raspberry Pi ARM 700Mhz              | Gforth 0.7.0            | Sieve        | 0m08s            | 100x
-| Andreas Boehm     | Commodore C64 6510                   | Audiogenic Forth-64     | Sieve Bench  | 18.1             | 
-| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-fast, Linux      | Sieve Bench  | 0.015            | 
-| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-dtc, Linux       | Sieve Bench  | 0.025            | 
-| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-itc, Linux       | Sieve Bench  | 0.028            | 
-| Thorsten Kuphaldt | Amiga 3000 68030 25Mhz               | jforth                  | Sieve Bench  | 0.148            | 
-| Stefan Herold     | Amstrad 6128+ Z80A 4Mhz              | Uniforth                | Sieve Bench  | 12               | 
-| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Sieve Bench  | 0.031            | 
-| Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Sieve        | 22s              | 
-| Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Sieve        | 15s              | 
+| Andreas Boehm     | Commodore C64 6510                   | Audiogenic Forth-64     | Sieve Bench  | 18.1             |
+| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-fast, Linux      | Sieve Bench  | 0.015            |
+| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-dtc, Linux       | Sieve Bench  | 0.025            |
+| Venty             | Nokia N900 ARM A8 600Mhz             | gforth-itc, Linux       | Sieve Bench  | 0.028            |
+| Thorsten Kuphaldt | Amiga 3000 68030 25Mhz               | jforth                  | Sieve Bench  | 0.148            |
+| Stefan Herold     | Amstrad 6128+ Z80A 4Mhz              | Uniforth                | Sieve Bench  | 12               |
+| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz          | OpenFirmware            | Sieve Bench  | 0.031            |
+| Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Sieve        | 22s              |
+| Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Sieve        | 15s              |
 
-### FILLIN 
+### FILLIN
 
 https://spectrumcomputing.co.uk/forums/viewtopic.php?f=6&t=3487
 
@@ -273,25 +273,22 @@ basic : 72.50secs
 Abersoft forth : 1.50secs
 assembly: 0.04secs
 
-| M4 Forth                                                                                                         |  Z80 Assembler                                                            |  Time    |
-| :--------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :------: |
-|<sub>PUSH2(23296,16384) DO PUSH(255) I STORE LOOP                                                                 |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v00.asm  | 0.36s
-|<sub>PUSH2(23296,16384) DO PUSH(255) I CSTORE LOOP                                                                |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v01.asm  | 0.31s
-|<sub>PUSH2(23296,16384) DO PUSH(65535) I STORE PUSH_ADDLOOP(2)                                                    |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v02.asm  | 0.19s
-|<sub>XDO(23296,16384) PUSH(65535) XI STORE PUSH_ADDXLOOP(2)                                                       |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v03.asm  | 0.19s
-|<sub>PUSH2(65535,0) XDO(23296,16384) DROP XI _2DUP STORE XLOOP DROP                                               |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v04.asm  | 0.36s
-|<sub>PUSH2(65535,0) XDO(23296,16384) DROP_XI _2DUP_STORE XLOOP _2DROP                                             |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v05.asm  | 0.24s
-|<sub>PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_CSTORE(255) XLOOP DROP                                        |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v06.asm  | 0.19s
-|<sub>PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_STORE(65535) PUSH_ADDXLOOP(2) DROP                            |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v07.asm  | 0.14s
-|<sub>PUSH2(65535,0) XDO(23296,16384) DROP_XI _2DUP_STORE PUSH_ADDXLOOP(2) _2DROP                                  |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v08.asm  | 0.14s
-|<sub>PUSH(0x4000) BEGIN DUP PUSH(255) SWAP CSTORE _1ADD DUP PUSH(0x5B00) EQ UNTIL DROP                            |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v09.asm  | 0.46s
-|<sub>PUSH(0x4000) BEGIN DUP_PUSH_SWAP_CSTORE_1ADD(255) DUP_PUSH_EQ_UNTIL(0x5B00) DROP                             |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v10.asm  | 0.09s
-|<sub>PUSH(0x4000) BEGIN DUP_PUSH_SWAP_STORE_2ADD(65535) DUP_PUSH_EQ_UNTIL(0x5B00) DROP                            |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v11.asm  | 0.07s
-|<sub>PUSH2(65535,0x4000) BEGIN _2DUP STORE _2ADD DUP PUSH(0x5B00) EQ UNTIL _2DROP _2DROP                          |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v12.asm  | 0.24s
-|<sub>PUSH2(65535,0x4000) BEGIN _2DUP_STORE_2ADD DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP                                  |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v13.asm  | 0.07s
-|<sub>PUSH2(65535,0x4000) BEGIN _2DUP_STORE_2ADD _2DUP_STORE_2ADD _2DUP_STORE_2ADD DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP|<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v14.asm  | 0.06s
-|<sub>PUSH3_FILL(0x4000,6912,255)                                                                                  |<sub>https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fillin_v15.asm  | 0.07s
-
-
-
+| M4 Forth                                                                                                                          | Bytes |  Time  |
+| :-------------------------------------------------------------------------------------------------------------------------------: | :---: |:-----: |
+|[PUSH2(23296,16384) DO PUSH(255) I STORE LOOP                                                                 ](./fillin_v00.asm)  |   82  | 0.36s  |
+|[PUSH2(23296,16384) DO PUSH(255) I CSTORE LOOP                                                                ](./fillin_v01.asm)  |   80  | 0.31s  |
+|[PUSH2(23296,16384) DO PUSH(65535) I STORE PUSH_ADDLOOP(2)                                                    ](./fillin_v02.asm)  |   85  | 0.19s  |
+|[XDO(23296,16384) PUSH(65535) XI STORE PUSH_ADDXLOOP(2)                                                       ](./fillin_v03.asm)  |   58  | 0.19s  |
+|[PUSH2(65535,0) XDO(23296,16384) DROP XI _2DUP STORE XLOOP DROP                                               ](./fillin_v04.asm)  |   66  | 0.36s  |
+|[PUSH2(65535,0) XDO(23296,16384) DROP_XI _2DUP_STORE XLOOP _2DROP                                             ](./fillin_v05.asm)  |   59  | 0.24s  |
+|[PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_CSTORE(255) XLOOP DROP                                        ](./fillin_v06.asm)  |   54  | 0.19s  |
+|[PUSH(0) XDO(23296,16384) DROP_XI DUP_PUSH_SWAP_STORE(65535) PUSH_ADDXLOOP(2) DROP                            ](./fillin_v07.asm)  |   59  | 0.14s  |
+|[PUSH2(65535,0) XDO(23296,16384) DROP_XI _2DUP_STORE PUSH_ADDXLOOP(2) _2DROP                                  ](./fillin_v08.asm)  |   60  | 0.14s  |
+|[PUSH(0x4000) BEGIN DUP PUSH(255) SWAP CSTORE _1ADD DUP PUSH(0x5B00) EQ UNTIL DROP                            ](./fillin_v09.asm)  |   71  | 0.46s  |
+|[PUSH(0x4000) BEGIN DUP_PUSH_SWAP_CSTORE_1ADD(255) DUP_PUSH_EQ_UNTIL(0x5B00) DROP                             ](./fillin_v10.asm)  |   46  | 0.09s  |
+|[PUSH(0x4000) BEGIN DUP_PUSH_SWAP_STORE_2ADD(65535) DUP_PUSH_EQ_UNTIL(0x5B00) DROP                            ](./fillin_v11.asm)  |   49  | 0.07s  |
+|[PUSH2(65535,0x4000) BEGIN _2DUP STORE _2ADD DUP PUSH(0x5B00) EQ UNTIL _2DROP _2DROP                          ](./fillin_v12.asm)  |   69  | 0.24s  |
+|[PUSH2(65535,0x4000) BEGIN _2DUP_STORE_2ADD DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP                                  ](./fillin_v13.asm)  |   50  | 0.07s  |
+|[PUSH2(65535,0x4000) BEGIN _2DUP_STORE_2ADD _2DUP_STORE_2ADD _2DUP_STORE_2ADD DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP](./fillin_v14.asm)  |   58  | 0.06s  |
+|[PUSH3_FILL(0x4000,6912,255)                                                                                  ](./fillin_v15.asm)  |   42  | 0.07s  |
 

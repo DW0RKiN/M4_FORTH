@@ -32,8 +32,9 @@ begin101:               ;           begin 101
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
     ld  (HL),E          ; 1:7       C! cstore   ( char addr -- )
     pop  HL             ; 1:10      C! cstore
-    pop  DE             ; 1:10      C! cstore 
-    inc  HL             ; 1:6       1+ 
+    pop  DE             ; 1:10      C! cstore 1
+    add  HL, DE         ; 1:11      +
+    pop  DE             ; 1:10      + 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
