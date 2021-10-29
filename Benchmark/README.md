@@ -294,6 +294,6 @@ We say to make a new variable on the side, and then we copy that into the TOS. S
 |[PUSH(0x4000) BEGIN<br /> DUP_PUSH_SWAP_STORE_2ADD(65535) <br />DUP_PUSH_EQ_UNTIL(0x5B00) DROP                            ](./fillin_v11.asm)  |   49  | 0.07s  |
 |[PUSH2(65535,0x4000) BEGIN<br /> _2DUP STORE _2ADD DUP PUSH(0x5B00) EQ <br />UNTIL _2DROP _2DROP                          ](./fillin_v12.asm)  |   69  | 0.24s  |
 |[PUSH2(65535,0x4000) BEGIN<br /> _2DUP_STORE_2ADD <br />DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP                                  ](./fillin_v13.asm)  |   50  | 0.07s  |
-|[PUSH2(65535,0x4000) BEGIN<br /> _2DUP_STORE_2ADD<br /> _2DUP_STORE_2ADD<br /> _2DUP_STORE_2ADD<br /> DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP](./fillin_v14.asm)  |   58  | 0.06s  |
+|[PUSH2(65535,0x4000) BEGIN<br />    _2DUP_STORE_2ADD<br />    _2DUP_STORE_2ADD<br />    _2DUP_STORE_2ADD<br /> DUP_PUSH_EQ_UNTIL(0x5B00) _2DROP](./fillin_v14.asm)  |   58  | 0.06s  |
 |[PUSH3_FILL(0x4000,6912,255)                                                                                  ](./fillin_v15.asm)  |   42  | 0.07s  |
 
