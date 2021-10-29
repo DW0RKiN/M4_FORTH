@@ -275,10 +275,11 @@ We say to make a new variable on the side, and then we copy that into the TOS. S
 
 For best results, I try to limit movement on the stack, such as inserting or removing values. 
 That is, words that change the total number of values on the stack. 
-That's why I use words like `DROP_I`, which overrides TOS, but I also show the worst `DROP I` variant, which moves the stack twice.
+That's why I use words or word combination like `DROP_I`, which overrides TOS, but I also show the worst `DROP I` variant, which moves the stack twice.
 
 Here I copy the results listed in the forum, with an assembler with essentially the same code as my measurement instead of the 0.04 seconds measured by 0.07 seconds. 
-Plus or minus 0.01 makes an interruption that I don't turn off and the rest of it... I don't know.
+Plus or minus 0.01 makes an interruption. What causes the rest of the difference I have no idea. 
+Maybe I'm doing the measurements through POKE in BASIC and that has some small constant overhead.
 
     Results (Time taken):
     basic : 72.50secs
