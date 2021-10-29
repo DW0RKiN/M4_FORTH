@@ -266,12 +266,17 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.c
 
 ### FILLIN
 
-https://spectrumcomputing.co.uk/forums/viewtopic.php?f=6&t=3487
+Fill the screen with pixels, and set all attributes to 255.
 
-Results (Time taken):
-basic : 72.50secs
-Abersoft forth : 1.50secs
-assembly: 0.04secs
+[Performance of Forth](spectrumcomputing.co.uk/forums/viewtopic.php?f=6&t=3487 "Spectrum Computing Forums")
+
+In my opinion, using a loop is not the best way to write the solution, because the loop has its own overhead. 
+We say to make a new variable on the side, and then we copy that into the TOS. So using BEGIN ... flag UNTIL I see as exactly what we want.
+
+    Results (Time taken):
+    basic : 72.50secs
+    Abersoft forth : 1.50secs
+    assembly: 0.04secs
 
 | M4 Forth                                                                                                                          | Bytes |  Time  |
 | :-------------------------------------------------------------------------------------------------------------------------------: | :---: |:-----: |
