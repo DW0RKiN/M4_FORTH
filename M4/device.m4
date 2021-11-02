@@ -76,7 +76,7 @@ dnl .( char )
 define({PUTCHAR},{ifelse($2,{},,{
 .error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
     ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48{K} ROM in, this will print char in A})dnl
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A})dnl
 dnl
 dnl
 dnl ( addr n -- )
@@ -92,7 +92,7 @@ define({_2DUP_TYPE},{
     push DE             ; 1:11      2dup type   ( addr n -- addr n )
     ld    B, H          ; 1:4       2dup type
     ld    C, L          ; 1:4       2dup type   BC = length of string to print
-    call 0x203C         ; 3:17      2dup type   Use ZX 48{K} ROM for print string
+    call 0x203C         ; 3:17      2dup type   Use {ZX 48K ROM} for print string
     pop  DE             ; 1:10      2dup type})dnl
 dnl
 dnl
