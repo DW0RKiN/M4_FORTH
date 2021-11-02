@@ -76,25 +76,40 @@ dnl .( char )
 define({PUTCHAR},{ifelse($2,{},,{
 .error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
     ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A})dnl
+    rst   0x10          ; 1:11      putchar with ZX 48{K} ROM in, this will print char in A})dnl
 dnl
 dnl
 dnl ( addr n -- )
 dnl print n chars from addr
 define({TYPE},{
-ifdef({USE_TYPE},,define({USE_TYPE},{}))dnl
-    call PRINT_STRING   ; 3:17      type
-    pop  HL             ; 1:10      type
-    pop  DE             ; 1:10      type})dnl
+__{}define({USE_TYPE},{})dnl
+    call PRINT_TYPE     ; 3:17      type   ( addr n -- )})dnl
 dnl
 dnl
 dnl ( addr n -- addr n )
 dnl non-destructively print string
 define({_2DUP_TYPE},{
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup{}TYPE
-    pop  HL             ; 1:10      2dup
-    pop  DE             ; 1:10      2dup})dnl
+    push DE             ; 1:11      2dup type   ( addr n -- addr n )
+    ld    B, H          ; 1:4       2dup type
+    ld    C, L          ; 1:4       2dup type   BC = length of string to print
+    call 0x203C         ; 3:17      2dup type   Use ZX 48{K} ROM for print string
+    pop  DE             ; 1:10      2dup type})dnl
+dnl
+dnl
+dnl ( addr -- )
+dnl print stringZ
+define({TYPE_Z},{
+__{}define({USE_TYPE_Z},{})dnl
+    call PRINT_TYPE_Z   ; 3:17      type_z   ( addr -- )
+    ex   DE, HL         ; 1:4       type_z
+    pop  DE             ; 1:10      type_z})dnl
+dnl
+dnl
+dnl ( addr n -- addr n )
+dnl non-destructively print stringZ
+define({DUP_TYPE_Z},{
+__{}define({USE_TYPE_Z},{})dnl
+    call PRINT_TYPE_Z   ; 3:17      dup type_z   ( addr -- addr )})dnl
 dnl
 dnl
 define({RECURSIVE_REVERSE_STACK},{ifdef({STRING_NUM_STACK},{dnl
