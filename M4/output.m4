@@ -248,11 +248,11 @@ SEED EQU $+1
     ld    H, A          ; 1:4       rnd   xs ^= xs << 8;
     ld  (SEED), HL      ; 3:16      rnd   save new 16bit number
     ex   AF, AF'        ; 1:4       rnd
-    xor   H             ; 1:4       rnd
-    ld    H, A          ; 1:4       rnd
-    ld    A, R          ; 2:9       rnd
     xor   L             ; 1:4       rnd
     ld    L, A          ; 1:4       rnd
+    ld    A, R          ; 2:9       rnd
+    xor   H             ; 1:4       rnd
+    ld    H, A          ; 1:4       rnd
     ret                 ; 1:10      rnd}){}dnl
 dnl
 dnl
