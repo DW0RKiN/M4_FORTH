@@ -459,3 +459,194 @@ ___{}_BEST_OUT{}dnl
 dnl
 dnl
 dnl
+dnl ---------------------------------------------------------------------------
+dnl ## 32bit Arithmetic
+dnl ---------------------------------------------------------------------------
+dnl
+dnl
+dnl ( hi2 lo2 hi1 lo1 -- d2+d1 )
+dnl d = d2 + d1
+define({DADD},{
+    pop  BC             ; 1:10      D+   ( hi2 lo2 hi1 lo1 -- d2+d1 )
+    add  HL, BC         ; 1:11      D+   lo1+lo2
+    ex   DE, HL         ; 1:4       D+
+    pop  BC             ; 1:10      D+
+    adc  HL, BC         ; 2:15      D+   hi1+hi2
+    ex   DE, HL         ; 1:4       D+})dnl
+dnl
+dnl
+dnl ( d -- d+n )
+dnl d = d + n
+define({PUSH_DADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{dnl
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 D+
+__{}    add  HL, BC         ; 1:11      $1 D+
+__{}    ex   DE, HL         ; 1:4       $1 D+
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      $1 D+
+__{}    adc  HL, BC         ; 2:15      $1 D+
+__{}    ex   DE, HL         ; 1:4       $1 D+},
+eval($1),{},{dnl
+__{}    .error {$0}($@): The condition $1 cannot be evaluated},
+{dnl
+__{}ifelse(eval(($1)+2),{0},{dnl
+__{}__{}    ld    A, H          ; 1:4       $1 D+   ( d -- d-2 )
+__{}__{}    dec  HL             ; 1:6       $1 D+   lo--
+__{}__{}    dec  HL             ; 1:6       $1 D+   lo--
+__{}__{}    sub   H             ; 1:4       $1 D+   lo(d)-lo(d-2)
+__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
+__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}eval(($1)+1),{0},{dnl
+__{}__{}    ld    A, L          ; 1:4       $1 D+   ( d -- d-1 )
+__{}__{}    or    H             ; 1:4       $1 D+
+__{}__{}    dec  HL             ; 1:6       $1 D+   lo--
+__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D+
+__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}eval($1),{0},{snl
+__{}__{}                        ;           $1 D+   ( d -- d+0 )},
+__{}__{}eval(($1)-1),{0},{dnl
+__{}__{}    inc  HL             ; 1:6       $1 D+   lo++
+__{}__{}    ld    A, L          ; 1:4       $1 D+
+__{}__{}    or    H             ; 1:4       $1 D+
+__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D+
+__{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
+__{}__{}eval(($1) & 0xFFFF0000),{0},{dnl
+__{}__{}    ld   BC, format({%-11s},eval(($1) & 0xFFFF)); 3:10      $1 D+   ( d -- d+$1 )
+__{}__{}    add  HL, BC         ; 1:11      $1 D+
+__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
+__{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
+__{}__{}eval((($1) & 0xFFFF0000) - 0xFFFF0000),{0},{dnl
+__{}__{}    ld   BC, format({%-11s},eval(($1) & 0xFFFF)); 3:10      $1 D+   ( d -- d{}$1 )
+__{}__{}    add  HL, BC         ; 1:11      $1 D+
+__{}__{}    jr    c, $+3        ; 2:7/12    $1 D+
+__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}{dnl
+__{}__{}    ld   BC, format({%-11s},eval(($1) & 0xFFFF)); 3:10      $1 D+
+__{}__{}    add  HL, BC         ; 1:11      $1 D+
+__{}__{}    ex   DE, HL         ; 1:4       $1 D+
+__{}__{}    ld   BC, format({%-11s},eval((($1) & 0xFFFF0000)/65536)); 3:10      $1 D+
+__{}__{}    adc  HL, BC         ; 2:15      $1 D+
+__{}__{}    ex   DE, HL         ; 1:4       $1 D+}){}dnl
+})})dnl
+dnl
+dnl
+dnl "2dup D+"
+dnl ( hi1 lo1 -- d1 d1+d1 )
+dnl d0 = d1 + d1
+define({_2DUP_DADD},{
+    push  DE            ; 1:11      2dup D+   ( hi1 lo1 -- hi1 lo1 hi1+hi1+carry lo1+lo1 )
+    push  HL            ; 1:11      2dup D+
+    add  HL, HL         ; 1:11      2dup D+
+    ex   DE, HL         ; 1:4       2dup D+
+    adc  HL, HL         ; 2:15      2dup D+
+    ex   DE, HL         ; 1:4       2dup D+})dnl
+dnl
+dnl
+dnl 2over D+
+dnl ( d2 d1 -- d2 d1+d2 )
+dnl ( hi2 lo2 hi1 lo1 -- hi2 lo2 hi1+hi2+carry lo1+lo2 )
+define({_2OVER_DADD},{
+                        ;[9:93]     2over D+   ( hi2 lo2 hi1 lo1 -- hi1+hi2+carry lo1+lo2 )
+    pop  BC             ; 1:10      2over D+   lo2
+    add  HL, BC         ; 1:11      2over D+
+    ex  (SP),HL         ; 1:19      2over D+   hi2
+    ex   DE, HL         ; 1:4       2over D+
+    adc  HL, DE         ; 2:15      2over D+
+    ex   DE, HL         ; 1:4       2over D+
+    ex  (SP),HL         ; 1:19      2over D+
+    push BC             ; 1:11      2over D+})dnl
+dnl
+dnl
+dnl ( d2 d1 -- d )
+dnl d = d2 - d1
+define({DSUB},{
+    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    ld    C, E          ; 1:4       D-
+    ex   DE, HL         ; 1:4       D-   DE = lo1
+    pop  HL             ; 1:10      D-   HL = lo2
+    or    A             ; 1:4       D-
+    sbc  HL, DE         ; 2:15      D-   lo2-lo1
+    ex   DE, HL         ; 1:4       D-
+    pop  HL             ; 1:10      D-   HL=hi2
+    sbc  HL, BC         ; 1:11      D-   hi2-hi1
+    ex   DE, HL         ; 1:4       D-})dnl
+dnl
+dnl
+dnl 2over D-
+dnl ( d2 d1 -- d2 d1-d2 )
+define({_2OVER_DSUB},{
+                        ;[11:101]   2over D-   ( hi2 lo2 hi1 lo1 -- hi1-hi2-carry lo2-lo1 )
+    pop  BC             ; 1:10      2over D-   lo2
+    or    A             ; 1:4       2over D-
+    sbc  HL, BC         ; 2:15      2over D-
+    ex  (SP),HL         ; 1:19      2over D-   hi2
+    ex   DE, HL         ; 1:4       2over D-
+    sbc  HL, DE         ; 2:15      2over D-
+    ex   DE, HL         ; 1:4       2over D-
+    ex  (SP),HL         ; 1:19      2over D-
+    push BC             ; 1:11      2over D-})dnl
+dnl
+dnl
+dnl ( d -- d-n )
+dnl d = d - n
+define({PUSH_DSUB},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{dnl
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 D-
+__{}    or    A, A          ; 1:4       $1 D-
+__{}    sbc  HL, BC         ; 2:15      $1 D-
+__{}    ex   DE, HL         ; 1:4       $1 D-
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      $1 D-
+__{}    sbc  HL, BC         ; 2:15      $1 D-
+__{}    ex   DE, HL         ; 1:4       $1 D-},
+eval($1),{},{dnl
+__{}    .error {$0}($@): The condition $1 cannot be evaluated},
+{dnl
+__{}ifelse(eval(($1)-2),{0},{dnl
+__{}__{}    ld    A, H          ; 1:4       $1 D-   ( d -- d-2 )
+__{}__{}    dec  HL             ; 1:6       $1 D-   lo--
+__{}__{}    dec  HL             ; 1:6       $1 D-   lo--
+__{}__{}    sub   H             ; 1:4       $1 D-   lo(d)-lo(d-2)
+__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D-
+__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}eval(($1)-1),{0},{dnl
+__{}__{}    ld    A, L          ; 1:4       $1 D-   ( d -- d-1 )
+__{}__{}    or    H             ; 1:4       $1 D-
+__{}__{}    dec  HL             ; 1:6       $1 D-   lo--
+__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D-
+__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}eval($1),{0},{snl
+__{}__{}                        ;           $1 D-   ( d -- d+0 )},
+__{}__{}eval(($1)+1),{0},{dnl
+__{}__{}    inc  HL             ; 1:6       $1 D-   lo++
+__{}__{}    ld    A, L          ; 1:4       $1 D-
+__{}__{}    or    H             ; 1:4       $1 D-
+__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D-
+__{}__{}    inc  DE             ; 1:6       $1 D-   hi++},
+__{}__{}eval(-($1) & 0xFFFF0000),{0},{dnl
+__{}__{}    ld   BC, format({%-11s},eval(-($1) & 0xFFFF)); 3:10      $1 D-   ( d -- d-($1) )
+__{}__{}    add  HL, BC         ; 1:11      $1 D-
+__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D-
+__{}__{}    inc  DE             ; 1:6       $1 D-   hi++},
+__{}__{}eval((-($1) & 0xFFFF0000) - 0xFFFF0000),{0},{dnl
+__{}__{}    ld   BC, format({%-11s},eval(-($1) & 0xFFFF)); 3:10      $1 D-   ( d -- d-($1) )
+__{}__{}    add  HL, BC         ; 1:11      $1 D-
+__{}__{}    jr    c, $+3        ; 2:7/12    $1 D-
+__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}{dnl
+__{}__{}    ld   BC, format({%-11s},eval(-($1) & 0xFFFF)); 3:10      $1 D-
+__{}__{}    add  HL, BC         ; 1:11      $1 D-
+__{}__{}    ex   DE, HL         ; 1:4       $1 D-
+__{}__{}    ld   BC, format({%-11s},eval(((-($1) & 0xFFFF0000)/65536) & 0xFFFF)); 3:10      $1 D-
+__{}__{}    adc  HL, BC         ; 2:15      $1 D-
+__{}__{}    ex   DE, HL         ; 1:4       $1 D-}){}dnl
+})})dnl
+dnl
+dnl
+dnl
