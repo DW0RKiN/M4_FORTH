@@ -92,6 +92,15 @@ __{}    ld   BC, format({%-11s},eval(-($1))); 3:10      $1 -
 __{}    add  HL, BC         ; 1:11      $1 -})})})dnl
 dnl
 dnl
+dnl ( x -- u )
+dnl absolute value of x
+define({ABS},{
+    ld    A, H          ; 1:4       abs
+    add   A, A          ; 1:4       abs
+    jr   nc, $+8        ; 2:7/12    abs
+    NEGATE})dnl
+dnl
+dnl
 dnl ( 5 3 -- 5 )
 dnl ( -5 -3 -- -3 )
 define({MAX},{
@@ -198,15 +207,6 @@ define({NEGATE},{
     sbc   A, H          ; 1:4       negate
     sub   L             ; 1:4       negate
     ld    H, A          ; 1:4       negate})dnl
-dnl
-dnl
-dnl ( x -- u )
-dnl absolute value of x
-define({ABS},{
-    ld    A, H          ; 1:4       abs
-    add   A, A          ; 1:4       abs
-    jr   nc, $+8        ; 2:7/12    abs
-    NEGATE})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
@@ -647,6 +647,183 @@ __{}__{}    ld   BC, format({%-11s},eval(((-($1) & 0xFFFF0000)/65536) & 0xFFFF))
 __{}__{}    adc  HL, BC         ; 2:15      $1 D-
 __{}__{}    ex   DE, HL         ; 1:4       $1 D-}){}dnl
 })})dnl
+dnl
+dnl
+dnl
+dnl ( d -- ud )
+dnl ( hi lo -- uhi ulo )
+dnl ud is absolute value of d
+define({DABS},{
+    ld    A, D          ; 1:4       dabs
+    add   A, A          ; 1:4       dabs
+    jr   nc, $+8        ; 2:7/12    dabs
+    DNEGATE})dnl
+dnl
+dnl
+dnl ( 5 3 -- 5 )
+dnl ( -5 -3 -- -3 )
+dnl ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
+define({DMAX},{
+                        ;[20:93/118]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
+    pop  BC             ; 1:10      dmax   BC = lo_2
+    ld    A, L          ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
+    sub   C             ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
+    ld    A, H          ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
+    sbc   A, B          ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
+    ex  (SP),HL         ; 1:19      dmax   HL = hi_2
+    ld    A, E          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
+    sbc   A, L          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
+    ld    A, D          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
+    sbc   A, H          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
+    rra                 ; 1:4       dmax   carry --> sign
+    xor   H             ; 1:4       dmax
+    xor   D             ; 1:4       dmax
+    jp    p, $+6        ; 3:10      dmax
+    ex   DE, HL         ; 1:4       dmax   DE = hi_2
+    pop  HL             ; 1:10      dmax   removing lo_1 from the stack
+    push BC             ; 1:11      dmax
+    pop  HL             ; 1:10      dmax})dnl
+dnl
+dnl
+dnl
+dnl ( 5 3 -- 5 )
+dnl ( -5 -3 -- -3 )
+define({PUSH_DMAX},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{dnl
+__{}                        ;[27:94/118]$1 dmax
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 dmax
+__{}    ld    A, L          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sub   C             ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    ld    A, H          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, B          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    ld   BC, format({%-11s},($1+2)); 4:20      $1 dmax
+__{}    ld    A, E          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, C          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    ld    A, D          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, B          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    rra                 ; 1:4       $1 dmax   carry --> sign
+__{}    xor   D             ; 1:4       $1 dmax
+__{}    xor   B             ; 1:4       $1 dmax
+__{}    jp    p, $+8        ; 3:10      $1 dmax
+__{}    ld    D, B          ; 1:4       $1 dmax
+__{}    ld    E, C          ; 1:4       $1 dmax
+__{}    ld   HL, format({%-11s},$1); 3:16      $1 dmax},
+eval($1),{},{dnl
+    .error {$0}($@): M4 does not know $1 parameter value!},
+{
+__{}                        ;[23:62/82] $1 dmax
+__{}    ld    A, L          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sub   format({0x%02X},eval(($1) & 0xFF))          ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    ld    A, H          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    ld    A, E          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    ld    A, D          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    rra                 ; 1:4       $1 dmax   carry --> sign
+__{}    xor   D             ; 1:4       $1 dmax
+__{}ifelse(eval(($1)<0),{1},{dnl
+__{}__{}    jp    m, $+9        ; 3:10      $1 dmax   negative constant format({0x%08X},eval($1))},
+__{}{dnl
+__{}__{}    jp    p, $+9        ; 3:10      $1 dmax   positive constant format({0x%08X},eval($1))})
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 dmax
+__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 dmax}){}dnl
+})dnl
+dnl
+dnl
+dnl ( 5 3 -- 3 )
+dnl ( -5 -3 -- -5 )
+dnl ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
+define({DMIN},{
+                        ;[20:93/118]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
+    pop  BC             ; 1:10      dmin   BC = lo_2
+    ld    A, L          ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
+    sub   C             ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
+    ld    A, H          ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
+    sbc   A, B          ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
+    ex  (SP),HL         ; 1:19      dmin   HL = hi_2
+    ld    A, L          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
+    sbc   A, E          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
+    ld    A, H          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
+    sbc   A, D          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
+    rra                 ; 1:4       dmin   carry --> sign
+    xor   H             ; 1:4       dmin
+    xor   D             ; 1:4       dmin
+    jp    p, $+6        ; 3:10      dmin
+    ex   DE, HL         ; 1:4       dmin   DE = hi_2
+    pop  HL             ; 1:10      dmin   removing lo_1 from the stack
+    push BC             ; 1:11      dmin
+    pop  HL             ; 1:10      dmin})dnl
+dnl
+dnl
+dnl ( 5 3 -- 3 )
+dnl ( -5 -3 -- -5 )
+define({PUSH_DMIN},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{dnl
+__{}                        ;[27:94/118]$1 dmin
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 dmin
+__{}    ld    A, C          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sub   L             ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, B          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sbc   A, H          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld   BC, format({%-11s},($1+2)); 4:20      $1 dmin
+__{}    ld    A, C          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sbc   A, E          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, B          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sbc   A, D          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    rra                 ; 1:4       $1 dmin
+__{}    xor   D             ; 1:4       $1 dmin
+__{}    xor   B             ; 1:4       $1 dmin
+__{}    jp    p, $+8        ; 3:10      $1 dmin
+__{}    ld    D, B          ; 1:4       $1 dmin
+__{}    ld    E, C          ; 1:4       $1 dmin
+__{}    ld   HL, format({%-11s},$1); 3:16      $1 dmin},
+eval($1),{},{dnl
+    .error {$0}($@): M4 does not know $1 parameter value!},
+{dnl
+__{}                        ;[23:62/82] $1 dmin
+__{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sub   L             ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sbc   A, H          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sbc   A, E          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    sbc   A, D          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    rra                 ; 1:4       $1 dmin
+__{}    xor   D             ; 1:4       $1 dmin
+__{}ifelse(eval(($1)<0),{1},{dnl
+__{}__{}    jp    m, $+9        ; 3:10      $1 dmin   negative constant format({0x%08X},eval($1))},
+__{}{dnl
+__{}__{}    jp    p, $+9        ; 3:10      $1 dmin   positive constant format({0x%08X},eval($1))})
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 dmin
+__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 dmin}){}dnl
+})dnl
+dnl
+dnl
+dnl ( d -- -d )
+dnl d = -d
+define({DNEGATE},{
+                        ;[13:52]    dnegate
+    xor   A             ; 1:4       dnegate
+    ld    C, A          ; 1:4       dnegate
+    sub   L             ; 1:4       dnegate
+    ld    L, A          ; 1:4       dnegate
+    ld    A, C          ; 1:4       dnegate
+    sbc   A, H          ; 1:4       dnegate
+    ld    H, A          ; 1:4       dnegate
+    ld    A, C          ; 1:4       dnegate
+    sbc   A, E          ; 1:4       dnegate
+    ld    E, A          ; 1:4       dnegate
+    ld    A, C          ; 1:4       dnegate
+    sbc   A, D          ; 1:4       dnegate
+    ld    D, A          ; 1:4       dnegate})dnl
 dnl
 dnl
 dnl
