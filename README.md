@@ -245,10 +245,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>  2over D-  |<sub>              |<sub>  _2OVER_DSUB   |<sub>   ( d2 d1 -- d2 d1-d2  )  |
 |<sub>    Dabs    |<sub>     DABS     |<sub>                |<sub>       ( d -- ud )         |
 |<sub>    Dmax    |<sub>     DMAX     |<sub>                |<sub>   ( d2 d1 -- dmax )       |
-|<sub> `3.` Dmax  |<sub>PUSH_DMAX(`3`)|<sub>                |<sub>      ( d1 -- dmax )       |
+|<sub> `3.` Dmax  |<sub>PUSH_DMAX(`3`)|<sub>                |<sub>       ( d -- dmax )       |
 |<sub>    Dmin    |<sub>     DMIN     |<sub>                |<sub>   ( d2 d1 -- dmin )       |
-|<sub> `3.` Dmin  |<sub>PUSH_DMIN(`3`)|<sub>                |<sub>      ( d1 -- dmin )       |
-|<sub>   Dnegate  |<sub>    DNEGATE   |<sub>                |<sub>      ( d1 -- -d1 )        |
+|<sub> `3.` Dmin  |<sub>PUSH_DMIN(`3`)|<sub>                |<sub>       ( d -- dmin )       |
+|<sub>   Dnegate  |<sub>    DNEGATE   |<sub>                |<sub>       ( d -- -d1 )        |
+|<sub>    D1+     |<sub>    D1ADD     |<sub>                |<sub>       ( d -- d++ )        |
+|<sub>    D1-     |<sub>    D1SUB     |<sub>                |<sub>       ( d -- d-- )        |
+|<sub>    D2+     |<sub>    D2ADD     |<sub>                |<sub>       ( d -- d+2 )        |
+|<sub>    D2-     |<sub>    D2SUB     |<sub>                |<sub>       ( d -- d-2 )        |
+|<sub>    D2*     |<sub>    D2MUL     |<sub>                |<sub>       ( d -- d*2 )        |
+|<sub>    D2/     |<sub>    D2DIV     |<sub>                |<sub>       ( d -- d/2 )        |
+|<sub>   D256*    |<sub>   D256MUL    |<sub>                |<sub>       ( d -- d*256 )      |
+|<sub>   D256/    |<sub>   D256DIV    |<sub>                |<sub>       ( d -- d/256 )      |
 
 ### Floating-point
 
@@ -323,7 +331,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 #### 32bit
 
-( d32 -- hi16 lo16)
+( d_32 -- hi_16 lo_16 )
 
 |<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
 | :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
