@@ -723,11 +723,29 @@ dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define(ULT,{
-    or    A             ; 1:4       (u) <
-    ex   DE, HL         ; 1:4       (u) <
-    sbc  HL, DE         ; 2:15      (u) <
-    sbc  HL, HL         ; 2:15      (u) <
-    pop  DE             ; 1:10      (u) <})dnl
+                        ;[7:41]     {U<}
+    ld    A, E          ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
+    sbc  HL, HL         ; 2:15      {U<}
+    pop  DE             ; 1:10      {U<}})dnl
+dnl
+dnl
+dnl DU<
+dnl ( d2 d1 -- flag )
+dnl unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
+define(DULT,{
+                        ;[11:76]    {DU<}   ( d2 d1 -- flag )
+    pop  BC             ; 1:10      {DU<}   lo_2 word
+    ld    A, C          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
+    pop  HL             ; 1:10      {DU<}   hi_2 word
+    sbc  HL, DE         ; 2:15      {DU<}   HL<DE --> HL-DE<0 --> carry if true
+    sbc  HL, HL         ; 2:15      {DU<}   set flag
+    pop  DE             ; 1:10      {DU<}})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
