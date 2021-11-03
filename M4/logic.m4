@@ -571,7 +571,7 @@ dnl ------------ signed -----------------
 dnl
 dnl
 dnl =
-dnl ( x1 x2 -- x )
+dnl ( x1 x2 -- flag )
 dnl equal ( x1 == x2 )
 define({EQ},{
     or    A             ; 1:4       =
@@ -582,8 +582,27 @@ define({EQ},{
     pop  DE             ; 1:10      =})dnl
 dnl
 dnl
+dnl D=
+dnl ( d1 d2 -- flag )
+dnl equal ( d1 == d2 )
+define({DEQ},{
+                       ;[17:83/97/98]D=
+    pop  BC             ; 1:10      D=   lo word2
+    or    A             ; 1:4       D=
+    sbc  HL, BC         ; 2:15      D=   lo_1 - lo_2
+    pop  BC             ; 1:10      D=   hi word2
+    jr   nz, $+5        ; 2:7/12    D=
+    ex   DE, HL         ; 1:4       D=
+    sbc  HL, BC         ; 2:15      D=
+    pop  DE             ; 1:10      D=
+    ld   HL, 0x0000     ; 3:10      D=
+    jr   nz, $+3        ; 2:7/12    D=
+    dec  HL             ; 1:6       D=
+})dnl
+dnl
+dnl
 dnl <>
-dnl ( x1 x2 -- x )
+dnl ( x1 x2 -- flag )
 dnl not equal ( x1 <> x2 )
 define({NE},{
     or    A             ; 1:4       <>
@@ -594,18 +613,31 @@ define({NE},{
 dnl
 dnl
 dnl <
-dnl ( x2 x1 -- x )
+dnl ( x2 x1 -- flag )
 dnl signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define(LT,{
-    ld    A, H          ; 1:4       <
+                        ;[12:54]    <
+    ld    A, E          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
+    rra                 ; 1:4       <   carry --> sign
+    xor   H             ; 1:4       <
     xor   D             ; 1:4       <
-    jp    p, $+7        ; 3:10      <
-    rl    D             ; 2:8       < sign x2
-    jr   $+5            ; 2:12      <
-    ex   DE, HL         ; 1:4       <
-    sbc  HL, DE         ; 2:15      <
-    sbc  HL, HL         ; 2:15      <
+    add   A, A          ; 1:4       <   sign --> carry
+    sbc   A, A          ; 1:4       <   0x00 or 0xff
+    ld    H, A          ; 1:4       <
+    ld    L, A          ; 1:4       <
     pop  DE             ; 1:10      <})dnl
+dnl
+dnl
+dnl D<
+dnl ( d2 d1 -- flag )
+dnl signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
+define(DLT,{define({USE_DLT},{})
+                        ;[4:137]    D<   ( hi_2 lo_2 hi_1 lo_1 -- flag )
+    pop  BC             ; 1:10      D<   BC = lo_2
+    call LT_32          ; 3:17      D<})dnl
 dnl
 dnl
 dnl 0<
@@ -615,8 +647,17 @@ define(_0LT,{
     sbc  HL, HL         ; 2:15      0<})dnl
 dnl
 dnl
+dnl
+dnl D0<
+dnl ( d -- flag )
+define(D0LT,{
+    rl    D             ; 2:8       D0<
+    pop  DE             ; 1:11      D0<
+    sbc  HL, HL         ; 2:15      D0<})dnl
+dnl
+dnl
 dnl <=
-dnl ( x2 x1 -- x )
+dnl ( x2 x1 -- flag )
 dnl signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
 define(LE,{
     ld    A, H          ; 1:4       <=
@@ -632,7 +673,7 @@ define(LE,{
 dnl
 dnl
 dnl >
-dnl ( x2 x1 -- x )
+dnl ( x2 x1 -- flag )
 dnl signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define(GT,{
     ld    A, H          ; 1:4       >
@@ -646,7 +687,7 @@ define(GT,{
 dnl
 dnl
 dnl >=
-dnl ( x2 x1 -- x )
+dnl ( x2 x1 -- flag )
 dnl signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 define({GE},{
     ld    A, H          ; 1:4       >=

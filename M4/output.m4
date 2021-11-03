@@ -40,7 +40,7 @@ PRINT_U32_ONLY:         ;           print_u32_only
     ex   DE, HL         ; 1:4       print_u32_only   HL = hi word
     ld  IXl, E          ; 2:8       print_u32_only
     ld  IXh, D          ; 2:8       print_u32_only   IX = lo word
-    ld   DE, 0x3600     ; 3:10      print_u32_only   C4 65 36 00 = -1000000000 
+    ld   DE, 0x3600     ; 3:10      print_u32_only   C4 65 36 00 = -1000000000
     ld   BC, 0xC465     ; 3:10      print_u32_only
     call BIN32_DEC+2    ; 3:17      print_u32_only
     ld    D, 0x1F       ; 2:7       print_u32_only   FA 0A 1F 00 = -100000000
@@ -55,10 +55,10 @@ PRINT_U32_ONLY:         ;           print_u32_only
     ld   DE, 0x7960     ; 3:10      print_u32_only   FF FE 79 60 = -100000
     ld    C, 0xFE       ; 2:7       print_u32_only
     call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xD8F0     ; 3:10      print_u32_only   FF FF D8 F0 = -10000    
+    ld   DE, 0xD8F0     ; 3:10      print_u32_only   FF FF D8 F0 = -10000
     ld    C, B          ; 1:4       print_u32_only
     call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFC18     ; 3:10      print_u32_only   FF FF FC 18 = -1000    
+    ld   DE, 0xFC18     ; 3:10      print_u32_only   FF FF FC 18 = -1000
     call BIN32_DEC      ; 3:17      print_u32_only
     ld   DE, 0xFF9C     ; 3:10      print_u32_only   FF FF FF 9C = -100
     call BIN32_DEC      ; 3:17      print_u32_only
@@ -66,13 +66,11 @@ PRINT_U32_ONLY:         ;           print_u32_only
     call BIN32_DEC      ; 3:17      print_u32_only
     ld    A, IXl        ; 2:8       print_u32_only
     pop  IX             ; 2:14      print_u32_only
-    add   A,'0'         ; 2:7       print_u32_only
-    rst  0x10           ; 1:11      print_u32_only   putchar with {ZX 48K ROM} in, this will print char in A
-    pop  AF             ; 1:10      print_u32_only   load ret
+    pop  BC             ; 1:10      print_u32_only   load ret
     pop  HL             ; 1:10      print_u32_only
     pop  DE             ; 1:10      print_u32_only
-    push AF             ; 1:10      print_u32_only   save ret
-    ret                 ; 1:10      print_u32_only
+    push BC             ; 1:10      print_u32_only   save ret
+    jr   BIN32_DEC_CHAR ; 2:12      print_u32_only
 ;------------------------------------------------------------------------------
 ; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
 ; Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
@@ -94,6 +92,7 @@ BIN32_DEC:              ;           bin32_dec
     ex   AF, AF'        ; 1:4       bin32_dec
     dec   A             ; 1:4       bin32_dec
     ret   z             ; 1:5/11    bin32_dec   does not print leading zeros
+BIN32_DEC_CHAR:         ;           bin32_dec
     or   '0'            ; 2:7       bin32_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst  0x10           ; 1:11      bin32_dec   putchar with {ZX 48K ROM} in, this will print char in A
     ret                 ; 1:10      bin32_dec}){}dnl
@@ -146,13 +145,11 @@ PRINT_U16_ONLY:         ;           print_u16_only
     ld    C, -10        ; 2:7       print_u16_only
     call BIN16_DEC      ; 3:17      print_u16_only
     ld    A, L          ; 1:4       print_u16_only
-    add   A,'0'         ; 2:7       print_u16_only
-    rst   0x10          ; 1:11      print_u16_only   putchar with {ZX 48K ROM} in, this will print char in A
-    pop  AF             ; 1:10      print_u16_only   load ret
+    pop  BC             ; 1:10      print_u16_only   load ret
     ex   DE, HL         ; 1:4       print_u16_only
     pop  DE             ; 1:10      print_u16_only
-    push AF             ; 1:10      print_u16_only   save ret
-    ret                 ; 1:10      print_u16_only
+    push BC             ; 1:10      print_u16_only   save ret
+    jr   BIN16_DEC_CHAR ; 2:12      print_u16_only
 ;------------------------------------------------------------------------------
 ; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
 ; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
@@ -165,6 +162,7 @@ BIN16_DEC:              ;           bin16_dec
     sbc  HL, BC         ; 2:15      bin16_dec
     dec   A             ; 1:4       bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
+BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst   0x10          ; 1:11      bin16_dec   putchar with {ZX 48K ROM} in, this will print char in A
     ret                 ; 1:10      bin16_dec}){}dnl
@@ -284,10 +282,10 @@ dnl
 dnl
 ifdef({USE_DMIN},{
 ;==============================================================================
-dnl ( 5 3 -- 3 )
-dnl ( -5 -3 -- -5 )
-dnl ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
-MIN_32                 ;[21:104/129]min_32   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
+; ( 5 3 -- 3 )
+; ( -5 -3 -- -5 )
+; ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_min HL:lo_min )
+MIN_32:                ;[21:104/129]min_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_min HL:lo_min )
     push AF             ; 1:11      min_32   BC = lo_2
     ld    A, C          ; 1:4       min_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     sub   L             ; 1:4       min_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
@@ -307,6 +305,33 @@ MIN_32                 ;[21:104/129]min_32   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_
     push BC             ; 1:11      min_32
     pop  HL             ; 1:10      min_32
     ret                 ; 1:10      min_32})dnl
+dnl
+dnl
+dnl
+ifdef({USE_DLT},{
+;==============================================================================
+; D<
+; ( d2 d1 -- flag ) --> BC:lo_2 ( hi_2 ret DE:hi_1 HL:lo_1 -- flag )
+; In: (SP+2) = hi_2, (SP) = ret, BC = lo_2, DE = hi_1, HL = lo_1
+; Out: DE = (SP+4), HL = flag (d2 < d1)
+LT_32:                  ;[18:110]   lt_32   ( hi_2 ret BC:lo_2 DE:hi_1 HL:lo_1 -- flag )
+    ld    A, C          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    sub   L             ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    ld    A, B          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    sbc   A, H          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    pop  BC             ; 1:10      lt_32   load ret
+    pop  HL             ; 1:10      lt_32   HL = hi_2
+    sbc  HL, DE         ; 2:15      lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    rra                 ; 1:4       lt_32   carry --> sign
+    xor   H             ; 1:4       lt_32
+    xor   D             ; 1:4       lt_32
+    add   A, A          ; 1:4       lt_32   sign --> carry
+    sbc   A, A          ; 1:4       lt_32   0x00 or 0xff
+    ld    H, A          ; 1:4       lt_32
+    ld    L, A          ; 1:4       lt_32
+    pop  DE             ; 1:10      lt_32
+    push BC             ; 1:11      lt_32   save ret
+    ret                 ; 1:10      lt_32})dnl
 dnl
 dnl
 dnl
