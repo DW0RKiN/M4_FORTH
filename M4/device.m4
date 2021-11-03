@@ -3,13 +3,13 @@ define({__},{})dnl
 dnl
 dnl .
 dnl ( x -- )
-dnl print number
+dnl print 16 bit number
 define({DOT},{ifdef({USE_S16},,define({USE_S16},{}))
     call PRINT_S16      ; 3:17      .})dnl
 dnl
 dnl u.
 dnl ( x -- )
-dnl print number
+dnl print 16 bit unsign number
 define({UDOT},{ifdef({USE_U16},,define({USE_U16},{}))
     call PRINT_U16      ; 3:17      .})dnl
 dnl
@@ -30,6 +30,23 @@ define({DUP_UDOT},{
     push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
 {}{}UDOT
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
+dnl
+dnl
+dnl
+dnl d.
+dnl ( d -- )
+dnl print 32 bit number
+define({DDOT},{define({USE_S32},{})
+    call PRINT_S32      ; 3:17      d.})dnl
+dnl
+dnl
+dnl
+dnl ud.
+dnl ( ud -- )
+dnl print 32 bit unsign number
+define({UDDOT},{define({USE_U32},{})
+    call PRINT_U32      ; 3:17      ud.})dnl
+dnl
 dnl
 dnl
 dnl .S

@@ -653,36 +653,20 @@ dnl
 dnl ( d -- ud )
 dnl ( hi lo -- uhi ulo )
 dnl ud is absolute value of d
-define({DABS},{
+define({DABS},{define({USE_DNEGATE},{})
     ld    A, D          ; 1:4       dabs
     add   A, A          ; 1:4       dabs
-    jr   nc, $+8        ; 2:7/12    dabs
-    DNEGATE})dnl
+    call  c, NEGATE_32  ; 3:17      dabs})dnl
 dnl
 dnl
 dnl ( 5 3 -- 5 )
 dnl ( -5 -3 -- -3 )
 dnl ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
-define({DMAX},{
-                        ;[20:93/118]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
+define({DMAX},{define({USE_DMAX},{})
+                        ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
-    ld    A, L          ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
-    sub   C             ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
-    ld    A, H          ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
-    sbc   A, B          ; 1:4       dmax   BC>HL --> 0>HL-BC --> carry if lo_2 is max
-    ex  (SP),HL         ; 1:19      dmax   HL = hi_2
-    ld    A, E          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
-    sbc   A, L          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
-    ld    A, D          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
-    sbc   A, H          ; 1:4       dmax   HL>DE --> 0>DE-HL --> carry if hi_2 is max
-    rra                 ; 1:4       dmax   carry --> sign
-    xor   H             ; 1:4       dmax
-    xor   D             ; 1:4       dmax
-    jp    p, $+6        ; 3:10      dmax
-    ex   DE, HL         ; 1:4       dmax   DE = hi_2
-    pop  HL             ; 1:10      dmax   removing lo_1 from the stack
-    push BC             ; 1:11      dmax
-    pop  HL             ; 1:10      dmax})dnl
+    pop  AF             ; 1:10      dmax   AF = hi_2
+    call MAX_32         ; 3:17      dmax})dnl
 dnl
 dnl
 dnl
@@ -737,26 +721,12 @@ dnl
 dnl ( 5 3 -- 3 )
 dnl ( -5 -3 -- -5 )
 dnl ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
-define({DMIN},{
-                        ;[20:93/118]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
+define({DMIN},{define({USE_DMIN},{})
+                        ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
-    ld    A, L          ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
-    sub   C             ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
-    ld    A, H          ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
-    sbc   A, B          ; 1:4       dmin   BC>HL --> 0>HL-BC --> carry if lo_1 is min
-    ex  (SP),HL         ; 1:19      dmin   HL = hi_2
-    ld    A, L          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
-    sbc   A, E          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
-    ld    A, H          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
-    sbc   A, D          ; 1:4       dmin   HL>DE --> 0>DE-HL --> carry if hi_1 is min
-    rra                 ; 1:4       dmin   carry --> sign
-    xor   H             ; 1:4       dmin
-    xor   D             ; 1:4       dmin
-    jp    p, $+6        ; 3:10      dmin
-    ex   DE, HL         ; 1:4       dmin   DE = hi_2
-    pop  HL             ; 1:10      dmin   removing lo_1 from the stack
-    push BC             ; 1:11      dmin
-    pop  HL             ; 1:10      dmin})dnl
+    pop  AF             ; 1:10      dmin   AF = hi_2
+    call MIN_32         ; 3:17      dmin})dnl
+
 dnl
 dnl
 dnl ( 5 3 -- 3 )
@@ -808,22 +778,9 @@ __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 d
 dnl
 dnl
 dnl ( d -- -d )
-dnl d = -d
-define({DNEGATE},{
-                        ;[13:52]    dnegate
-    xor   A             ; 1:4       dnegate
-    ld    C, A          ; 1:4       dnegate
-    sub   L             ; 1:4       dnegate
-    ld    L, A          ; 1:4       dnegate
-    ld    A, C          ; 1:4       dnegate
-    sbc   A, H          ; 1:4       dnegate
-    ld    H, A          ; 1:4       dnegate
-    ld    A, C          ; 1:4       dnegate
-    sbc   A, E          ; 1:4       dnegate
-    ld    E, A          ; 1:4       dnegate
-    ld    A, C          ; 1:4       dnegate
-    sbc   A, D          ; 1:4       dnegate
-    ld    D, A          ; 1:4       dnegate})dnl
+define({DNEGATE},{define({USE_DNEGATE},{})
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate})dnl
 dnl
 dnl
 dnl

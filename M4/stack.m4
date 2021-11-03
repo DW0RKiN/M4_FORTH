@@ -346,6 +346,27 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
+dnl 255.
+dnl ( -- 0x0000 0x00FF )
+dnl ( -- d )
+dnl push(number32bit) ulozi na zasobnik 32 bitove cislo
+define({PUSHDOT},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
+    push HL             ; 1:11      pushdot($1)
+ifelse(index({$1},{(}),{0},{dnl
+    ld   DE,format({%-12s},($1+2)); 4:16      pushdot($1)   hi word
+    ld   HL, format({%-11s},$1); 3:16      pushdot($1)   lo word},
+eval($1),{},{dnl
+    .error {$0}($@): M4 does not know $1 parameter value!},
+{dnl
+    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)
+    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)})})dnl
+dnl
+dnl
+dnl
 dnl ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
 dnl Remove x. Copy the nx to the top of the stack.
 define({PICK},{ifelse($#,{0},,{
