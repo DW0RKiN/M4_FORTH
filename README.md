@@ -336,10 +336,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
 | :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
 |<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     D0=      |<sub>         D0EQ        |<sub>                     |<sub>   ( x1 x2 -- f )      |<sub> f=((x1\|x2) == 0)
+|<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>   ( x1 x2 -- flag )   |<sub> f=((x1\|x2) == 0)
 |<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- f )      |<sub> f=(d1 < 0)
-
+|<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
+|<sub>      DU<     |<sub>         DULT        |<sub>                     |<sub> ( du1 du2 -- flag )   |<sub> f=(du1 < du2)
 ### Device
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
