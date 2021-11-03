@@ -198,7 +198,7 @@ xexit108:               ;           xloop 108
     ld   BC, size109    ; 3:10      print     Length of string109
     ld   DE, string109  ; 3:10      print     Address of string109
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -231,7 +231,7 @@ xexit109:               ;           xloop 109
     ld   BC, size110    ; 3:10      print     Length of string110
     ld   DE, string110  ; 3:10      print     Address of string110
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -337,7 +337,7 @@ xexit113:               ;           xloop 113
     ld   BC, size114    ; 3:10      print     Length of string114
     ld   DE, string114  ; 3:10      print     Address of string114
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print      
+    pop  DE             ; 1:10      print   
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -370,7 +370,7 @@ xexit114:               ;           xloop 114
     ld   BC, size115    ; 3:10      print     Length of string115
     ld   DE, string115  ; 3:10      print     Address of string115
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print     
+    pop  DE             ; 1:10      print  
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -404,7 +404,7 @@ xexit115:               ;           xloop 115
     ld   BC, size116    ; 3:10      print     Length of string116
     ld   DE, string116  ; 3:10      print     Address of string116
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -438,7 +438,7 @@ xexit116:               ;           xloop 116
     ld   BC, size117    ; 3:10      print     Length of string117
     ld   DE, string117  ; 3:10      print     Address of string117
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print      
+    pop  DE             ; 1:10      print   
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -472,7 +472,7 @@ xexit117:               ;           xloop 117
     ld   BC, size118    ; 3:10      print     Length of string118
     ld   DE, string118  ; 3:10      print     Address of string118
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print       
+    pop  DE             ; 1:10      print    
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -508,7 +508,7 @@ xexit118:               ;           xloop 118
     ld   BC, size119    ; 3:10      print     Length of string119
     ld   DE, string119  ; 3:10      print     Address of string119
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print       
+    pop  DE             ; 1:10      print    
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -617,7 +617,7 @@ xexit122:               ;           2 +xloop 122
     ld   BC, size123    ; 3:10      print     Length of string123
     ld   DE, string123  ; 3:10      print     Address of string123
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print       
+    pop  DE             ; 1:10      print    
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -651,7 +651,7 @@ xexit123:               ;           2 +xloop 123
     ld   BC, size124    ; 3:10      print     Length of string124
     ld   DE, string124  ; 3:10      print     Address of string124
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print       
+    pop  DE             ; 1:10      print    
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -688,7 +688,7 @@ xexit124:               ;           2 +xloop 124
     ld   BC, size125    ; 3:10      print     Length of string125
     ld   DE, string125  ; 3:10      print     Address of string125
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print       
+    pop  DE             ; 1:10      print    
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -846,7 +846,7 @@ xexit130:               ;           -2 +xloop 130
     ld   BC, size131    ; 3:10      print     Length of string131
     ld   DE, string131  ; 3:10      print     Address of string131
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print    
+    pop  DE             ; 1:10      print 
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -881,7 +881,7 @@ xexit131:               ;           -2 +xloop 131
     ld   BC, size132    ; 3:10      print     Length of string132
     ld   DE, string132  ; 3:10      print     Address of string132
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print      
+    pop  DE             ; 1:10      print   
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -916,7 +916,7 @@ xexit132:               ;           -2 +xloop 132
     ld   BC, size133    ; 3:10      print     Length of string133
     ld   DE, string133  ; 3:10      print     Address of string133
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print        
+    pop  DE             ; 1:10      print     
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -953,7 +953,7 @@ xexit133:               ;           -2 +xloop 133
     ld   BC, size134    ; 3:10      print     Length of string134
     ld   DE, string134  ; 3:10      print     Address of string134
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print        
+    pop  DE             ; 1:10      print     
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -1098,7 +1098,7 @@ xexit138:               ;           -300 +xloop 138
     ld   BC, size139    ; 3:10      print     Length of string139
     ld   DE, string139  ; 3:10      print     Address of string139
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print     
+    pop  DE             ; 1:10      print  
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -1137,7 +1137,7 @@ xexit139:               ;           -7 +xloop 139
     ld   BC, size140    ; 3:10      print     Length of string140
     ld   DE, string140  ; 3:10      print     Address of string140
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print      
+    pop  DE             ; 1:10      print   
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -1382,7 +1382,7 @@ xexit148:               ;           345 +xloop 148
     ld   BC, size149    ; 3:10      print     Length of string149
     ld   DE, string149  ; 3:10      print     Address of string149
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print       
+    pop  DE             ; 1:10      print    
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -1477,7 +1477,7 @@ xexit151:               ;           3 +xloop 151
     ld   BC, size152    ; 3:10      print     Length of string152
     ld   DE, string152  ; 3:10      print     Address of string152
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
-    pop  DE             ; 1:10      print      
+    pop  DE             ; 1:10      print   
     push DE             ; 1:11      push2(0,0)
     ld   DE, 0          ; 3:10      push2(0,0)
     push HL             ; 1:11      push2(0,0)
@@ -1522,76 +1522,77 @@ Stop:                   ;           stop
     ret                 ; 1:10      stop
 ;   =====  e n d  =====
 
+;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
-; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
-PRINT_S16:
-    ld    A, H          ; 1:4
-    add   A, A          ; 1:4
-    jr   nc, PRINT_U16  ; 2:7/12
-
-    xor   A             ; 1:4       neg
-    sub   L             ; 1:4       neg
-    ld    L, A          ; 1:4       neg
-    sbc   A, H          ; 1:4       neg
-    sub   L             ; 1:4       neg
-    ld    H, A          ; 1:4       neg
-    
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, **
-
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_S16:              ;           print_s16
+    ld    A, H          ; 1:4       print_s16
+    add   A, A          ; 1:4       print_s16
+    jr   nc, PRINT_U16  ; 2:7/12    print_s16
+    xor   A             ; 1:4       print_s16   neg
+    sub   L             ; 1:4       print_s16   neg
+    ld    L, A          ; 1:4       print_s16   neg
+    sbc   A, H          ; 1:4       print_s16   neg
+    sub   L             ; 1:4       print_s16   neg
+    ld    H, A          ; 1:4       print_s16   neg
+    ld    A, ' '        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      print_s16   putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '-'        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
+    db 0x01             ; 3:10      print_s16   ld   BC, **
     ; fall to print_u16
+;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
-PRINT_U16:
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_U16:              ;           print_u16
+    ld    A, ' '        ; 2:7       print_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      print_u16   putchar with ZX 48K ROM in, this will print char in A
+    ; fall to print_u16_only
+;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
-PRINT_U16_ONLY:
-    call BIN2DEC        ; 3:17
-    pop  BC             ; 1:10      ret
-    ex   DE, HL         ; 1:4
-    pop  DE             ; 1:10
-    push BC             ; 1:10      ret
-    ret                 ; 1:10
-
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_U16_ONLY:         ;           print_u16_only
+    call BIN2DEC        ; 3:17      print_u16_only
+    pop  AF             ; 1:10      print_u16_only   load ret
+    ex   DE, HL         ; 1:4       print_u16_only
+    pop  DE             ; 1:10      print_u16_only
+    push AF             ; 1:10      print_u16_only   save ret
+    ret                 ; 1:10      print_u16_only
+;------------------------------------------------------------------------------
 ; Input: HL = number
 ; Output: print number
 ; Pollutes: AF, HL, BC
-BIN2DEC:
-    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17
-    ld   BC, -1000      ; 3:10
-    call BIN2DEC_CHAR   ; 3:17
-    ld   BC, -100       ; 3:10
-    call BIN2DEC_CHAR   ; 3:17
-    ld    C, -10        ; 2:7
-    call BIN2DEC_CHAR   ; 3:17
-    ld    A, L          ; 1:4
-    add   A,'0'         ; 2:7
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
-
-BIN2DEC_CHAR:
-    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-
-    add  HL, BC         ; 1:11
-    inc   A             ; 1:4
-    jr    c, $-2        ; 2:7/12
-    sbc  HL, BC         ; 2:15
-    dec   A             ; 1:4
-    ret   z             ; 1:5/11
-
-    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
+BIN2DEC:                ;           bin2dec
+    xor   A             ; 1:4       bin2dec   A=0 => 103, A='0' => 00103
+    ld   BC, -10000     ; 3:10      bin2dec
+    call BIN2DEC_CHAR+2 ; 3:17      bin2dec
+    ld   BC, -1000      ; 3:10      bin2dec
+    call BIN2DEC_CHAR   ; 3:17      bin2dec
+    ld   BC, -100       ; 3:10      bin2dec
+    call BIN2DEC_CHAR   ; 3:17      bin2dec
+    ld    C, -10        ; 2:7       bin2dec
+    call BIN2DEC_CHAR   ; 3:17      bin2dec
+    ld    A, L          ; 1:4       bin2dec
+    add   A,'0'         ; 2:7       bin2dec
+    rst   0x10          ; 1:11      bin2dec   putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10      bin2dec
+;------------------------------------------------------------------------------
+; Input: A = '0'..'9' or 0..9, HL, BC
+; Output: if ((HL/BC > 0) || (A >= '0')) print number HL/BC
+; Pollutes: AF, HL
+BIN2DEC_CHAR:           ;           bin2dec_char
+    and  0xF0           ; 2:7       bin2dec_char   '0'..'9' => '0', unchanged 0
+    add  HL, BC         ; 1:11      bin2dec_char
+    inc   A             ; 1:4       bin2dec_char
+    jr    c, $-2        ; 2:7/12    bin2dec_char
+    sbc  HL, BC         ; 2:15      bin2dec_char
+    dec   A             ; 1:4       bin2dec_char
+    ret   z             ; 1:5/11    bin2dec_char
+    or   '0'            ; 2:7       bin2dec_char   0 => '0', unchanged '0'..'9'
+    rst   0x10          ; 1:11      bin2dec_char   putchar with ZX 48K ROM in, this will print char in A
+    ret                 ; 1:10      bin2dec_char
 STRING_SECTION:
 string152:
 db "+X.L 4  100..(500)   "
