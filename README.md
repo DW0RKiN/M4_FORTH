@@ -248,7 +248,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub> `3.` Dmax  |<sub>PUSH_DMAX(`3`)|<sub>                |<sub>       ( d -- dmax )       |
 |<sub>    Dmin    |<sub>     DMIN     |<sub>                |<sub>   ( d2 d1 -- dmin )       |
 |<sub> `3.` Dmin  |<sub>PUSH_DMIN(`3`)|<sub>                |<sub>       ( d -- dmin )       |
-|<sub>   Dnegate  |<sub>    DNEGATE   |<sub>                |<sub>       ( d -- -d1 )        |
+|<sub>   Dnegate  |<sub>    DNEGATE   |<sub>                |<sub>       ( d -- -d )         |
 |<sub>    D1+     |<sub>    D1ADD     |<sub>                |<sub>       ( d -- d++ )        |
 |<sub>    D1-     |<sub>    D1SUB     |<sub>                |<sub>       ( d -- d-- )        |
 |<sub>    D2+     |<sub>    D2ADD     |<sub>                |<sub>       ( d -- d+2 )        |
