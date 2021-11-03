@@ -783,4 +783,81 @@ define({DNEGATE},{define({USE_DNEGATE},{})
     call NEGATE_32      ; 3:17      dnegate})dnl
 dnl
 dnl
+dnl "D1+"
+dnl ( d -- d+1 )
+define({D1ADD},{
+    inc  HL             ; 1:6       D1+   lo word
+    ld    A, L          ; 1:4       D1+
+    or    H             ; 1:4       D1+
+    jr   nz, $+3        ; 2:7/12    D1+
+    inc  DE             ; 1:6       D1+   hi word})dnl
+dnl
+dnl
+dnl "D1-"
+dnl ( d -- d-1 )
+define({D1SUB},{
+    ld    A, L          ; 1:4       D1-   ( d -- d-1 )
+    or    H             ; 1:4       D1-
+    dec  HL             ; 1:6       D1-   lo word
+    jr   nz, $+3        ; 2:7/12    D1-
+    dec  DE             ; 1:6       D1-   hi word})dnl
+dnl
+dnl
+dnl "D2+"
+dnl ( d -- d+2 )
+define({D2ADD},{
+    ld   BC, 0x0002     ; 3:10      D2+   ( d -- d+2 )
+    add  HL, BC         ; 1:11      D2+   lo word
+    jr   nc, $+3        ; 2:7/12    D2+
+    inc  DE             ; 1:6       D2+   hi word})dnl
+dnl
+dnl
+dnl "D2-"
+dnl ( d -- d-2 )
+define({D2SUB},{
+    ld    A, H          ; 1:4       D2-   ( d -- d-2 )
+    dec  HL             ; 1:6       D2-   lo word
+    dec  HL             ; 1:6       D2-   lo word
+    sub   H             ; 1:4       D2-
+    jr   nc, $+3        ; 2:7/12    D2-
+    dec  DE             ; 1:6       D2-   hi word})dnl
+dnl
+dnl
+dnl "D2*"
+dnl ( d -- d*2 )
+define({D2MUL},{
+    add  HL, HL         ; 1:11      D2*   lo word
+    rl    E             ; 2:8       D2*
+    rl    D             ; 2:8       D2*   hi word})dnl
+dnl
+dnl
+dnl "D2/"
+dnl ( d -- d/2 )
+define({D2DIV},{
+    sra   D             ; 2:8       D2/   with sign
+    rr    E             ; 2:8       D2/
+    rr    H             ; 2:8       D2/
+    rr    L             ; 2:8       D2/})dnl
+dnl
+dnl
+dnl "D256*"
+dnl ( d -- d*256 )
+define({D256MUL},{
+    ld    D, E          ; 1:4       D256*
+    ld    E, H          ; 1:4       D256*
+    ld    H, L          ; 1:4       D256*
+    ld    L, 0x00       ; 2:7       D256*})dnl
+dnl
+dnl
+dnl "D256/"
+dnl ( d -- d/256 )
+define({D256DIV},{
+    ld    L, H          ; 1:4       D256/
+    ld    H, E          ; 1:4       D256/
+    ld    E, D          ; 1:4       D256/
+    rl    D             ; 2:8       D256/   with sign
+    sbc   A, A          ; 1:4       D256/
+    ld    D, A          ; 1:4       D256/})dnl
+dnl
+dnl
 dnl
