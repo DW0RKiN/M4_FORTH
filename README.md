@@ -303,7 +303,6 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>    false     |<sub>        FALSE        |<sub>                     |<sub>         ( -- 0 )      |<sub>
 |<sub>       =      |<sub>          EQ         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      0=      |<sub>         _0EQ        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
-|<sub>     D0=      |<sub>         D0EQ        |<sub>                     |<sub>   ( x1 x2 -- f )      |<sub> f=((x1\|x2) == 0)
 |<sub>      <>      |<sub>          NE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>       <      |<sub>          LT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      0<      |<sub>         _0LT        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 < 0)
@@ -322,6 +321,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>  u1 1 >> u   |<sub>                     |<sub>      XURSHIFT1      |<sub>     ( u1 -- u1>>1 )   |<sub> unsigned
 |<sub>  u1 1 << u   |<sub>                     |<sub>      XULSHIFT1      |<sub>     ( u1 -- u1<<1 )   |<sub>
 
+#### 32bit
+
+( d32 -- hi16 lo16)
+
+|<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
+| :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
+|<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>     D0=      |<sub>         D0EQ        |<sub>                     |<sub>   ( x1 x2 -- f )      |<sub> f=((x1\|x2) == 0)
+|<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- f )      |<sub> f=(d1 < 0)
 
 ### Device
 
