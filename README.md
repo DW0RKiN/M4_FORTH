@@ -145,7 +145,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>           dup          |<sub>          DUP        |<sub>                  |<sub>         ( x1 -- x1 x1 )          |
 |<sub>          ?dup          |<sub>     QUESTIONDUP     |<sub>                  |<sub>         ( x1 -- 0 \| x1 x1 )     |
 |<sub>          2dup          |<sub>        _2DUP        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 x1 )    |
-|<sub>      _2over _2over     |<sub>        _4DUP        |<sub>                  |<sub>      ( d2 d1 -- d2 d1 d2 d1 )    |
+|<sub>       2over 2over      |<sub>        _4DUP        |<sub>                  |<sub>      ( d2 d1 -- d2 d1 d2 d1 )    |
 |<sub>          drop          |<sub>         DROP        |<sub>                  |<sub>         ( x1 -- )                |
 |<sub>         2drop          |<sub>        _2DROP       |<sub>                  |<sub>      ( x2 x1 -- )                |
 |<sub>          nip           |<sub>          NIP        |<sub>                  |<sub>      ( x2 x1 -- x1 )             |
