@@ -825,147 +825,358 @@ ORG 0x8000
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    
     call Check_stack    ; 3:17      scall
     
-    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120
-    call PRINT_STRING_Z ; 3:17      print_z 
     
-    push DE             ; 1:11      pushdot(123456789)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456789)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456789)
-    ld   HL, 0xCD15     ; 3:10      pushdot(123456789) 
-      
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-      
-    push DE             ; 1:11      pushdot(123456788)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456788)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456788)
-    ld   HL, 0xCD14     ; 3:10      pushdot(123456788) 
-        
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push DE             ; 1:11      print     "test dmin, dmax, dnegate", 0x0D
+    ld   BC, size120    ; 3:10      print     Length of string120
+    ld   DE, string120  ; 3:10      print     Address of string120
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
+    
+    push DE             ; 1:11      pushdot(0x00010002)   ( -- hi lo )
+    push HL             ; 1:11      pushdot(0x00010002)
+    ld   DE, 0x0001     ; 3:10      pushdot(0x00010002)
+    ld   HL, 0x0002     ; 3:10      pushdot(0x00010002)
+    
+    push DE             ; 1:11      pushdot(0x00010001)   ( -- hi lo )
+    push HL             ; 1:11      pushdot(0x00010001)
+    ld   DE, 0x0001     ; 3:10      pushdot(0x00010001)
+    ld   HL, 0x0001     ; 3:10      pushdot(0x00010001)
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+     
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
+                        ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
+    pop  BC             ; 1:10      dmin   BC = lo_2
+    pop  AF             ; 1:10      dmin   AF = hi_2
+    call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121
     call PRINT_STRING_Z ; 3:17      print_z 
-      
+    call PRINT_S32      ; 3:17      d. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
-    
-    call PRINT_U32      ; 3:17      ud. 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string122
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string122
-    call PRINT_STRING_Z ; 3:17      print_z 
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c
     
-    push DE             ; 1:11      pushdot(123456788)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456788)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456788)
-    ld   HL, 0xCD14     ; 3:10      pushdot(123456788) 
-      
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-      
-    push DE             ; 1:11      pushdot(123456789)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456789)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456789)
-    ld   HL, 0xCD15     ; 3:10      pushdot(123456789) 
-        
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
+                        ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
+    pop  BC             ; 1:10      dmin   BC = lo_2
+    pop  AF             ; 1:10      dmin   AF = hi_2
+    call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string123
     call PRINT_STRING_Z ; 3:17      print_z 
-      
+    call PRINT_S32      ; 3:17      d. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
-    
-    call PRINT_U32      ; 3:17      ud. 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string124
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    ld   BC, string124  ; 3:10      print_z   Address of null-terminated string124
-    call PRINT_STRING_Z ; 3:17      print_z 
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
     
-    push DE             ; 1:11      pushdot(123456789)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456789)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456789)
-    ld   HL, 0xCD15     ; 3:10      pushdot(123456789) 
-      
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-      
-    push DE             ; 1:11      pushdot(123456788)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456788)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456788)
-    ld   HL, 0xCD14     ; 3:10      pushdot(123456788) 
-        
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string125
-    call PRINT_STRING_Z ; 3:17      print_z 
-      
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
-    
-    call PRINT_U32      ; 3:17      ud. 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    ld   BC, string124  ; 3:10      print_z   Address of null-terminated string124 == string126
-    call PRINT_STRING_Z ; 3:17      print_z 
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate
     
-    push DE             ; 1:11      pushdot(123456788)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456788)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456788)
-    ld   HL, 0xCD14     ; 3:10      pushdot(123456788) 
-      
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-      
-    push DE             ; 1:11      pushdot(123456789)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(123456789)
-    ld   DE, 0x075B     ; 3:10      pushdot(123456789)
-    ld   HL, 0xCD15     ; 3:10      pushdot(123456789) 
-        
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string127
-    call PRINT_STRING_Z ; 3:17      print_z 
-      
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
-    
-    call PRINT_U32      ; 3:17      ud. 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string126
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
+                        ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
+    pop  BC             ; 1:10      dmax   BC = lo_2
+    pop  AF             ; 1:10      dmax   AF = hi_2
+    call MAX_32         ; 3:17      dmax 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string127
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_S32      ; 3:17      d. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate 
+                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      2swap d a . b c
+    ex   DE, HL         ; 1:4       2swap d a . c b
+    pop  AF             ; 1:10      2swap d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      2swap b   . c d
+    ex   DE, HL         ; 1:4       2swap b   . d c
+    push AF             ; 1:11      2swap b a . d c 
+                        ;[3:79]     dnegate   ( hi lo -- -hi -lo )
+    call NEGATE_32      ; 3:17      dnegate
+    
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup 
+    call PRINT_S32      ; 3:17      d. 
+    call PRINT_S32      ; 3:17      d. 
+                        ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
+    pop  BC             ; 1:10      dmax   BC = lo_2
+    pop  AF             ; 1:10      dmax   AF = hi_2
+    call MAX_32         ; 3:17      dmax 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string128
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_S32      ; 3:17      d. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    pop  HL             ; 1:10      2drop
+    pop  DE             ; 1:10      2drop ( b a -- ) 
+    pop  HL             ; 1:10      2drop
+    pop  DE             ; 1:10      2drop ( b a -- )
     
     call Check_stack    ; 3:17      scall
+
+    
+    push DE             ; 1:11      print     "test dmin, dmax, dnegate", 0x0D
+    ld   BC, size120    ; 3:10      print     Length of string120 == string129
+    ld   DE, string120  ; 3:10      print     Address of string120 == string129
+    call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
+    pop  DE             ; 1:10      print
     
     push DE             ; 1:11      pushdot(500000)   ( -- hi lo )
     push HL             ; 1:11      pushdot(500000)
@@ -986,9 +1197,7 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup
-    
-    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string128
-    call PRINT_STRING_Z ; 3:17      print_z 
+     
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -999,15 +1208,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string130
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1024,8 +1231,6 @@ ORG 0x8000
                         ;[3:79]     dnegate   ( hi lo -- -hi -lo )
     call NEGATE_32      ; 3:17      dnegate
     
-    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string130
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1036,15 +1241,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string131
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string131
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1075,8 +1278,6 @@ ORG 0x8000
     ex   DE, HL         ; 1:4       2swap b   . d c
     push AF             ; 1:11      2swap b a . d c
     
-    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string132
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1087,15 +1288,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string133
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string132
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1128,8 +1327,6 @@ ORG 0x8000
                         ;[3:79]     dnegate   ( hi lo -- -hi -lo )
     call NEGATE_32      ; 3:17      dnegate
     
-    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string134
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1140,15 +1337,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string135
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
+    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string133
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1163,8 +1358,6 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup
     
-    ld   BC, string124  ; 3:10      print_z   Address of null-terminated string124 == string136
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1175,15 +1368,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string137
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string134
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1200,8 +1391,6 @@ ORG 0x8000
                         ;[3:79]     dnegate   ( hi lo -- -hi -lo )
     call NEGATE_32      ; 3:17      dnegate
     
-    ld   BC, string124  ; 3:10      print_z   Address of null-terminated string124 == string138
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1212,15 +1401,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string139
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string135
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1251,8 +1438,6 @@ ORG 0x8000
     ex   DE, HL         ; 1:4       2swap b   . d c
     push AF             ; 1:11      2swap b a . d c
     
-    ld   BC, string124  ; 3:10      print_z   Address of null-terminated string124 == string140
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1263,15 +1448,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string141
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string136
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1304,8 +1487,6 @@ ORG 0x8000
                         ;[3:79]     dnegate   ( hi lo -- -hi -lo )
     call NEGATE_32      ; 3:17      dnegate
     
-    ld   BC, string124  ; 3:10      print_z   Address of null-terminated string124 == string142
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
     pop  AF             ; 1:10      4dup
@@ -1316,15 +1497,13 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRINT_S32      ; 3:17      d. 
-    ld    A, ','        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
     call PRINT_S32      ; 3:17      d. 
-    ld   BC, string129  ; 3:10      print_z   Address of null-terminated string129 == string143
-    call PRINT_STRING_Z ; 3:17      print_z 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
+    ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string137
+    call PRINT_STRING_Z ; 3:17      print_z 
     call PRINT_S32      ; 3:17      d. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -1341,7 +1520,7 @@ ORG 0x8000
     exx
     pop HL
     
-    ld   BC, string144  ; 3:10      print_z   Address of null-terminated string144
+    ld   BC, string138  ; 3:10      print_z   Address of null-terminated string138
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_U16      ; 3:17      .
@@ -1385,14 +1564,14 @@ Check_stack_data EQU $+1
     or    A
     sbc  HL, BC             ; Ma byt, minus jest, nemohu se splest!
     
-    ld   BC, string145  ; 3:10      print_z   Address of null-terminated string145
+    ld   BC, string139  ; 3:10      print_z   Address of null-terminated string139
     call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRINT_S16      ; 3:17      .
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     
-    ld   BC, string146  ; 3:10      print_z   Address of null-terminated string146
+    ld   BC, string140  ; 3:10      print_z   Address of null-terminated string140
     call PRINT_STRING_Z ; 3:17      print_z
     pop  HL
 
@@ -1640,26 +1819,23 @@ A_32:
   dw -30908
 
 STRING_SECTION:
-string146:
+string140:
 db " bytes", 0x0D, 0x00
-size146 EQU $ - string146
-string145:
+size140 EQU $ - string140
+string139:
 db "Stack contains", 0x00
-size145 EQU $ - string145
-string144:
+size139 EQU $ - string139
+string138:
 db "RAS:", 0x00
-size144 EQU $ - string144
-string129:
-db ")=", 0x00
-size129 EQU $ - string129
-string124:
-db "max(", 0x00
-size124 EQU $ - string124
+size138 EQU $ - string138
+string125:
+db " max", 0x00
+size125 EQU $ - string125
 string121:
-db ")= ",0x0D, 0x00
+db " min", 0x00
 size121 EQU $ - string121
 string120:
-db "min(", 0x00
+db "test dmin, dmax, dnegate", 0x0D
 size120 EQU $ - string120
 string119:
 db "test D-:"
