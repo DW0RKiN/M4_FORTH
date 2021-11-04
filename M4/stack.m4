@@ -53,16 +53,15 @@ define({_2SWAP},{ifelse(TYP_2SWAP,{fast},{
     ex   DE, HL         ; 1:4       2swap b   . d a
     push HL             ; 1:11      2swap b a . d a
     ld    L, C          ; 1:4       2swap
-    ld    H, B          ; 1:4       2swap b a . d c{}dnl
-},{
+    ld    H, B          ; 1:4       2swap b a . d c},
+{
                         ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
     ex  (SP),HL         ; 1:19      2swap d a . b c
     ex   DE, HL         ; 1:4       2swap d a . c b
     pop  AF             ; 1:10      2swap d   . c b     AF = a
     ex  (SP),HL         ; 1:19      2swap b   . c d
     ex   DE, HL         ; 1:4       2swap b   . d c
-    push AF             ; 1:11      2swap b a . d c})dnl
-})dnl
+    push AF             ; 1:11      2swap b a . d c})}){}dnl
 dnl
 dnl
 dnl ( a -- a a )
@@ -91,6 +90,23 @@ dnl over over
 define({_2DUP},{
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup ( a b -- a b a b )})dnl
+dnl
+dnl
+dnl 4dup
+dnl 4 pick 4 pick 4 pick 4 pick
+dnl ( d c b a  --  d c b a d c b a )
+dnl ( d2 d1 -- d2 d1 d2 d1 )
+dnl over over
+define({_4DUP},{
+                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      4dup
+    pop  AF             ; 1:10      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup
+    push DE             ; 1:11      4dup
+    push HL             ; 1:11      4dup
+    push AF             ; 1:11      4dup
+    push BC             ; 1:11      4dup})dnl
 dnl
 dnl
 dnl ( a -- )
