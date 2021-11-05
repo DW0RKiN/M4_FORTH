@@ -474,8 +474,6 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>  dup 0< if   |<sub>              |<sub>     DUP_0LT_IF     |<sub>      ( x1 -- x1 )   |                  |
 |<sub>     0>= if   |<sub>              |<sub>      _0GE_IF       |<sub>      ( x1 -- )      |                  |
 |<sub>  dup 0>= if  |<sub>              |<sub>     DUP_0GE_IF     |<sub>      ( x1 -- x1 )   |                  |
-|<sub>    D0= if    |<sub>              |<sub>      D0EQ_IF       |<sub>    (x1 x2 -- )      |                  |
-|<sub> 2dup D0= if  |<sub>              |<sub>   _2DUP_D0EQ_IF    |<sub>    (x1 x2 -- x1 x2) |                  |
 |<sub>     =  if    |<sub>              |<sub>       EQ_IF        |<sub>    (x1 x2 -- )      |                  |
 |<sub>     <> if    |<sub>              |<sub>       NE_IF        |<sub>    (x1 x2 -- )      |                  |
 |<sub>     <  if    |<sub>              |<sub>       LT_IF        |<sub>    (x1 x2 -- )      |                  |
@@ -490,8 +488,6 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>    u>= if    |<sub>              |<sub>       UGE_IF       |<sub>    (x1 x2 -- )      |                  |
 |<sub>  `3` =  if   |<sub>              |<sub>    PUSH_EQ_IF      |<sub>       (x1 -- )      |                  |
 |<sub>  `3` <> if   |<sub>              |<sub>    PUSH_NE_IF      |<sub>       (x1 -- )      |                  |
-|<sub>dup `5`  =  if|<sub>              |<sub>DUP_PUSH_CEQ_IF(`5`)|<sub>         ( -- )      |<sub>unsigned char|
-|<sub>dup `5`  <> if|<sub>              |<sub>DUP_PUSH_CNE_IF(`5`)|<sub>         ( -- )      |<sub>unsigned char|
 |<sub>dup `5`  =  if|<sub>              |<sub>DUP_PUSH_EQ_IF(`5`) |<sub>         ( -- )      |                  |
 |<sub>dup `5`  <> if|<sub>              |<sub>DUP_PUSH_NE_IF(`5`) |<sub>         ( -- )      |                  |
 |<sub>dup `5`  <  if|<sub>              |<sub>DUP_PUSH_LT_IF(`5`) |<sub>         ( -- )      |                  |
@@ -518,6 +514,32 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>  2dup u<= if |<sub>              |<sub>    _2DUP_ULE_IF    |<sub>         ( -- )      |                  |
 |<sub>  2dup u>  if |<sub>              |<sub>    _2DUP_UGT_IF    |<sub>         ( -- )      |                  |
 |<sub>  2dup u>= if |<sub>              |<sub>    _2DUP_UGE_IF    |<sub>         ( -- )      |                  |
+
+#### 8bit
+
+|<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment     |
+| :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------- |
+|<sub>dup `5`  =  if|<sub>              |<sub>DUP_PUSH_CEQ_IF(`5`)|<sub>       (x1 -- x1)    |<sub>unsigned char|
+|<sub>dup `5`  <> if|<sub>              |<sub>DUP_PUSH_CNE_IF(`5`)|<sub>       (x1 -- x1)    |<sub>unsigned char|
+
+#### 32bit
+
+|<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment     |
+| :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------- |
+|<sub>    D0= if    |<sub>              |<sub>      D0EQ_IF       |<sub>    (x1 x2 -- )      |                  |
+|<sub> 2dup D0= if  |<sub>              |<sub>   _2DUP_D0EQ_IF    |<sub>    (x1 x2 -- x1 x2) |                  |
+|<sub>    D0< if    |<sub>              |<sub>      D0LT_IF       |<sub>    (x1 x2 -- )      |                  |
+|<sub> 2dup D0< if  |<sub>              |<sub>   _2DUP_D0LT_IF    |<sub>    (x1 x2 -- x1 x2) |                  |
+|<sub>    D=  if    |<sub>              |<sub>       DEQ_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>    D<> if    |<sub>              |<sub>       DNE_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>    D<  if    |<sub>              |<sub>       DLT_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>    D<= if    |<sub>              |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>    D>  if    |<sub>              |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>    D>= if    |<sub>              |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>   UD<  if    |<sub>              |<sub>      UDLT_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>   UD<= if    |<sub>              |<sub>      UDLE_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>   UD>  if    |<sub>              |<sub>      UDGT_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>   UD>= if    |<sub>              |<sub>      UDGE_IF       |<sub>    (d1 d2 -- )      |                  |
 
 ### CASE OF ENDOF ENDCASE
 
