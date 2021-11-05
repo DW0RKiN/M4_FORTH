@@ -72,18 +72,6 @@ define(DUP_0GE_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_CO
     jp   nz, else{}IF_COUNT}    ; 3:10      dup 0>= if)dnl
 dnl
 dnl
-dnl D0= if
-dnl ( x1 x2 -- )
-define(D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       D0= if
-    or    L             ; 1:4       D0= if
-    pop  HL             ; 1:10      D0= if
-    or    D             ; 1:4       D0= if
-    or    E             ; 1:4       D0= if
-    pop  DE             ; 1:10      D0= if
-    jp   nz, else{}IF_COUNT}    ; 3:10      D0= if)dnl
-dnl
-dnl
 dnl ( x1 x2 -- x1 x2 )
 dnl 2dup D0= if
 define(_2DUP_D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
@@ -109,31 +97,6 @@ define(OVER_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
     jp    z, else{}IF_COUNT}    ; 3:10      over if)dnl
 dnl
 dnl -------- signed ---------
-dnl
-dnl
-dnl dup char = if
-define({DUP_PUSH_CEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 = if
-__{}    xor   L             ; 1:4       dup $1 = if
-__{}    or    H             ; 1:4       dup $1 = if
-__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
-dnl
-dnl
-dnl
-dnl dup char <> if
-define({DUP_PUSH_CNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 <> if
-__{}    xor   L             ; 1:4       dup $1 <> if
-__{}    or    H             ; 1:4       dup $1 <> if
-__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
-dnl
-dnl
 dnl
 dnl
 dnl dup num = if
@@ -938,5 +901,226 @@ __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}    xor   high format({%-9s},$1); 2:7       $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})})dnl
 dnl
+dnl
+dnl
+dnl ---------------------------------------------------------------------------
+dnl ## 8bit
+dnl ---------------------------------------------------------------------------
+dnl
+dnl
+dnl dup char = if
+define({DUP_PUSH_CEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 = if
+__{}    xor   L             ; 1:4       dup $1 = if
+__{}    or    H             ; 1:4       dup $1 = if
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
+dnl
+dnl
+dnl
+dnl dup char <> if
+define({DUP_PUSH_CNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 <> if
+__{}    xor   L             ; 1:4       dup $1 <> if
+__{}    or    H             ; 1:4       dup $1 <> if
+__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
+dnl
+dnl
+dnl ---------------------------------------------------------------------------
+dnl ## 32bit
+dnl ---------------------------------------------------------------------------
+dnl
+dnl
+dnl 0. D= if
+dnl D0= if
+dnl ( x1 x2 -- )
+define(D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       D0= if
+    or    L             ; 1:4       D0= if
+    or    D             ; 1:4       D0= if
+    or    E             ; 1:4       D0= if
+    pop  HL             ; 1:10      D0= if
+    pop  DE             ; 1:10      D0= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      D0= if)dnl
+dnl
+dnl
+dnl
+dnl 2dup 0. D= if
+dnl 2dup D0= if
+dnl ( x1 x2 -- )
+define(_2DUP_D0EQ_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       2dup D0= if
+    or    L             ; 1:4       2dup D0= if
+    or    D             ; 1:4       2dup D0= if
+    or    E             ; 1:4       2dup D0= if
+    jp   nz, else{}IF_COUNT}    ; 3:10      2dup D0= if)dnl
+dnl
+dnl
+dnl
+dnl
+dnl 0. D<  if
+dnl D0< if
+dnl ( x1 -- )
+define(D0LT_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    bit   7, D          ; 2:8       D0< if
+    pop  HL             ; 1:10      D0< if
+    pop  DE             ; 1:10      D0< if
+    jp    z, else{}IF_COUNT}    ; 3:10      D0< if)dnl
+dnl
+dnl
+dnl
+dnl
+dnl 2dup 0. D<  if
+dnl 2dup D0< if
+dnl ( x1 -- )
+define(_2DUP_D0LT_IF,{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    bit   7, D          ; 2:8       2dup D0< if
+    jp    z, else{}IF_COUNT}    ; 3:10      2dup D0< if)dnl
+dnl
+dnl
+dnl
+dnl
+dnl D= if
+define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    or    A             ; 1:4       = if
+    sbc  HL, DE         ; 2:15      = if
+    pop  HL             ; 1:10      = if
+    pop  DE             ; 1:10      = if
+    jp   nz, else{}IF_COUNT    ; 3:10      = if})dnl
+dnl
+dnl
+dnl D<> if
+define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    or    A             ; 1:4       <> if
+    sbc  HL, DE         ; 2:15      <> if
+    pop  HL             ; 1:10      <> if
+    pop  DE             ; 1:10      <> if
+    jp    z, else{}IF_COUNT    ; 3:10      <> if})dnl
+dnl
+dnl
+dnl D< if
+define({DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      D< if   lo_2
+    ld    A, C          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    sub   L             ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    ld    A, B          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    sbc   A, H          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    pop  HL             ; 1:10      D< if   hi_2
+    sbc  HL, DE         ; 2:15      D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    rra                 ; 1:4       D< if   carry --> sign
+    xor   H             ; 1:4       D< if
+    xor   D             ; 1:4       D< if
+    pop  HL             ; 1:10      D< if
+    pop  DE             ; 1:10      D< if
+    jp    p, else{}IF_COUNT    ; 3:10      D< if})dnl
+dnl
+dnl
+dnl UD< if
+define({UDLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+
+    pop  BC             ; 1:10      UD< if   lo_2
+    ld    A, C          ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    sub   L             ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    ld    A, B          ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    sbc   A, H          ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    pop  HL             ; 1:10      UD< if   hi_2
+    sbc  HL, DE         ; 2:15      UD< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    pop  HL             ; 1:10      UD< if
+    pop  DE             ; 1:10      UD< if
+    jp   nc, else{}IF_COUNT    ; 3:10      UD< if})dnl
+dnl
+dnl
+dnl D>= if
+define({DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      D>= if   lo_2
+    ld    A, C          ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    sub   L             ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    ld    A, B          ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    sbc   A, H          ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    pop  HL             ; 1:10      D>= if   hi_2
+    sbc  HL, DE         ; 2:15      D>= if   HL>=DE --> HL-DE>=0 --> no carry if hi_2 is great or equal
+    rra                 ; 1:4       D>= if   carry --> sign
+    xor   H             ; 1:4       D>= if
+    xor   D             ; 1:4       D>= if
+    pop  HL             ; 1:10      D>= if
+    pop  DE             ; 1:10      D>= if
+    jp    m, else{}IF_COUNT    ; 3:10      D>= if})dnl
+dnl
+dnl
+dnl UD>= if
+define({UDGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      UD>= if   lo_2
+    ld    A, C          ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    sub   L             ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    ld    A, B          ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    sbc   A, H          ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    pop  HL             ; 1:10      UD>= if   hi_2
+    sbc  HL, DE         ; 2:15      UD>= if   HL>=DE --> HL-DE>=0 --> no carry if hi_2 is great or equal
+    pop  HL             ; 1:10      UD>= if
+    pop  DE             ; 1:10      UD>= if
+    jp    c, else{}IF_COUNT    ; 3:10      UD>= if})dnl
+dnl
+dnl
+dnl D<= if
+define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      D<= if   lo_2
+    or    A             ; 1:4       D<= if
+    sbc  HL, BC         ; 2:15      D<= if   BC<=HL --> 0<=HL-BC --> no carry if lo_1 is great or equal
+    ex   DE, HL         ; 1:4       D<= if
+    pop  BC             ; 1:10      D<= if   hi_2
+    sbc  HL, DE         ; 2:15      D<= if   BC<=HL --> 0<=HL-BC --> no carry if hi_1 is great or equal
+    rra                 ; 1:4       D<= if   carry --> sign
+    xor   H             ; 1:4       D<= if
+    xor   D             ; 1:4       D<= if
+    pop  HL             ; 1:10      D<= if
+    pop  DE             ; 1:10      D<= if
+    jp    m, else{}IF_COUNT    ; 3:10      D<= if})dnl
+dnl
+dnl
+dnl UD<= if
+define({UDLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      UD<= if   lo_2
+    or    A             ; 1:4       UD<= if
+    sbc  HL, BC         ; 2:15      UD<= if   BC<=HL --> 0<=HL-BC --> no carry if lo_1 is great or equal
+    ex   DE, HL         ; 1:4       UD<= if
+    pop  BC             ; 1:10      UD<= if   hi_2
+    sbc  HL, DE         ; 2:15      UD<= if   BC<=HL --> 0<=HL-BC --> no carry if hi_1 is great or equal
+    pop  HL             ; 1:10      UD<= if
+    pop  DE             ; 1:10      UD<= if
+    jp    m, else{}IF_COUNT    ; 3:10      UD<= if})dnl
+dnl
+dnl
+dnl D> if
+define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      D> if   lo_2
+    or    A             ; 1:4       D> if
+    sbc  HL, BC         ; 2:15      D> if   BC>HL --> 0>HL-BC --> carry if lo_1 is min
+    ex   DE, HL         ; 1:4       D> if
+    pop  BC             ; 1:10      D> if   hi_2
+    sbc  HL, DE         ; 2:15      D> if   BC>HL --> 0>HL-BC --> carry if hi_1 is min
+    rra                 ; 1:4       D> if   carry --> sign
+    xor   H             ; 1:4       D> if
+    xor   D             ; 1:4       D> if
+    pop  HL             ; 1:10      D> if
+    pop  DE             ; 1:10      D> if
+    jp    p, else{}IF_COUNT    ; 3:10      D> if})dnl
+dnl
+dnl
+dnl UD> if
+define({UDGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    pop  BC             ; 1:10      UD> if   lo_2
+    or    A             ; 1:4       UD> if
+    sbc  HL, BC         ; 2:15      UD> if   BC>HL --> 0>HL-BC --> carry if lo_1 is min
+    ex   DE, HL         ; 1:4       UD> if
+    pop  BC             ; 1:10      UD> if   hi_2
+    sbc  HL, DE         ; 2:15      UD> if   BC>HL --> 0>HL-BC --> carry if hi_1 is min
+    pop  HL             ; 1:10      UD> if
+    pop  DE             ; 1:10      UD> if
+    jp   nc, else{}IF_COUNT    ; 3:10      UD> if})dnl
 dnl
 dnl
