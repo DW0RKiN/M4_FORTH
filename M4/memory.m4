@@ -947,12 +947,62 @@ define({PUSH2_ADDSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(eval($1),{},{dnl
     push HL             ; 1:11      push2_addstore($1,$2)
+    .warning {$0}($1): M4 does not know $1 parameter value!
     ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_addstore($1,$2)
     ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
     add  HL, BC         ; 1:11      push2_addstore($1,$2)
     ld   format({%-15s},($2){,} HL); 3:16      push2_addstore($1,$2)
-    pop  HL             ; 1:10      push2_addstore($1,$2)})dnl
+    pop  HL             ; 1:10      push2_addstore($1,$2)},
+index({$1},{(}),{0},{dnl
+    push HL             ; 1:11      push2_addstore($1,$2)
+    ld   BC, format({%-11s},$1); 4:20      push2_addstore($1,$2)
+    ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
+    add  HL, BC         ; 1:11      push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} HL); 3:16      push2_addstore($1,$2)
+    pop  HL             ; 1:10      push2_addstore($1,$2)},
+eval($1),0,{dnl
+                        ;           push2_addstore($1,$2)},
+eval($1),1,{dnl
+    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
+eval($1),2,{dnl
+    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
+eval($1),3,{dnl
+    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
+eval((($1) & 0xffff) == 0xffff),1,{dnl
+    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
+    dec  BC             ; 1:6       push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
+eval((($1) & 0xffff) == 0xfffe),1,{dnl
+    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
+    dec  BC             ; 1:6       push2_addstore($1,$2)
+    dec  BC             ; 1:6       push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
+eval((($1) & 0xffff) == 0xfffd),1,{dnl
+    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
+    dec  BC             ; 1:6       push2_addstore($1,$2)
+    dec  BC             ; 1:6       push2_addstore($1,$2)
+    dec  BC             ; 1:6       push2_addstore($1,$2)
+    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
+{dnl
+    ld   BC, format({%-11s},$2); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_addstore($1,$2)
+    ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
+    add   A, format({0x%02X},eval(($1) & 0xff))       ; 2:7       push2_addstore($1,$2)   lo($1)
+    ld  (BC),A          ; 1:7       push2_addstore($1,$2)
+    inc  BC             ; 1:6       push2_addstore($1,$2)
+    ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
+    adc   A, format({0x%02X},eval((($1)>>8) & 0xff))       ; 2:7       push2_addstore($1,$2)   hi($1)
+    ld  (BC),A          ; 1:7       push2_addstore($1,$2)})})dnl
 dnl
 dnl
 dnl -------------------------------------------------------------------------------------

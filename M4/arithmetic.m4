@@ -726,7 +726,6 @@ define({DMIN},{define({USE_DMIN},{})
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin})dnl
-
 dnl
 dnl
 dnl ( 5 3 -- 3 )
