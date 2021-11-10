@@ -40,6 +40,48 @@ __{}    ld   BC, format({%-11s},$1); 3:10      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +})})})dnl
 dnl
 dnl
+dnl
+dnl dup 5 +
+dnl ( x -- x x+n )
+define({DUP_PUSH_ADD},{ifelse(eval($1),{},{
+__{}    ; warning The condition >>>$1<<< cannot be evaluated
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
+__{}    ex   DE, HL         ; 1:4       dup $1 +
+__{}    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1 +
+__{}    add  HL, DE         ; 1:11      dup $1 +},{ifelse(
+__{}eval(($1)+2),{0},{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}$1 )
+__{}    ld    D, H          ; 1:4       dup $1 +
+__{}    ld    E, L          ; 1:4       dup $1 +
+__{}    dec  HL             ; 1:6       dup $1 +
+__{}    dec  HL             ; 1:6       dup $1 +},
+__{}eval(($1)+1),{0},{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}$1 )
+__{}    ld    D, H          ; 1:4       dup $1 +
+__{}    ld    E, L          ; 1:4       dup $1 +
+__{}    dec  HL             ; 1:6       dup $1 +},
+__{}eval($1),{0},{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
+__{}    ld    D, H          ; 1:4       dup $1 +
+__{}    ld    E, L          ; 1:4       dup $1 +},
+__{}eval(($1)-1),{0},{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
+__{}    ld    D, H          ; 1:4       dup $1 +
+__{}    ld    E, L          ; 1:4       dup $1 +
+__{}    inc  HL             ; 1:6       dup $1 +},
+__{}eval(($1)-2),{0},{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
+__{}    ld    D, H          ; 1:4       dup $1 +
+__{}    ld    E, L          ; 1:4       dup $1 +
+__{}    inc  HL             ; 1:6       dup $1 +
+__{}    inc  HL             ; 1:6       dup $1 +},
+__{}{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
+__{}    ex   DE, HL         ; 1:4       dup $1 +
+__{}    ld   HL, format({%-11s},$1); 3:10      dup $1 +
+__{}    add  HL, DE         ; 1:11      dup $1 +})})})dnl
+dnl
+dnl
 dnl "dup +"
 dnl ( x1 -- x2 )
 dnl x2 = x1 + x1
@@ -60,6 +102,15 @@ define({SUB},{
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -})dnl
+dnl
+dnl
+dnl swap -
+dnl ( x2 x1 -- x )
+dnl x = x1 - x2
+define({SWAP_SUB},{
+    or    A             ; 1:4       swap -
+    sbc  HL, DE         ; 2:15      swap -
+    pop  DE             ; 1:10      swap -})dnl
 dnl
 dnl
 dnl over -
@@ -297,6 +348,32 @@ define({_2SUB},{
     dec  HL             ; 1:6       2-})dnl
 dnl
 dnl
+dnl "swap 1+ swap"
+dnl ( x2 x1 -- x2+1 x1 )
+define({SWAP_1ADD_SWAP},{
+    inc  DE             ; 1:6       swap 1+ swap})dnl
+dnl
+dnl
+dnl "swap 1- swap"
+dnl ( x2 x1 -- x2-1 x1 )
+define({SWAP_1SUB_SWAP},{
+    dec  DE             ; 1:6       swap 1- swap})dnl
+dnl
+dnl
+dnl "swap 2+ swap"
+dnl ( x2 x1 -- x2+2 x1 )
+define({SWAP_2ADD_SWAP},{
+    inc  DE             ; 1:6       swap 2+ swap
+    inc  DE             ; 1:6       swap 2+ swap})dnl
+dnl
+dnl
+dnl "swap 2- swap"
+dnl ( x2 x1 -- x2-2 x1 )
+define({SWAP_2SUB_SWAP},{
+    dec  DE             ; 1:6       swap 2- swap
+    dec  DE             ; 1:6       swap 2- swap})dnl
+dnl
+dnl
 dnl "2*"
 dnl ( x1 -- x )
 dnl x = x1 * 2
@@ -456,6 +533,132 @@ ___{}})dnl
 ___{}_BEST_INFO{}dnl
 ___{}_BEST_OUT{}dnl
 })dnl
+dnl
+dnl
+dnl
+dnl ---------------------------------------------------------------------------
+dnl ## 8bit Arithmetic
+dnl ---------------------------------------------------------------------------
+dnl
+dnl
+dnl ( c2 c1 -- c2+c1 )
+dnl c = c2 + c1
+define({CADD},{
+    ld    A, E          ; 1:4       C+   ( c2 c1 -- c2+c1 )
+    add   A, L          ; 1:4       C+   ( c2 c1 -- c2+c1 )
+    ld    L, A          ; 1:4       C+   ( c2 c1 -- c2+c1 )
+    pop  DE             ; 1:10      C+})dnl
+dnl
+dnl
+dnl
+dnl 0x8000 C@ C+
+dnl ( c1 -- c1+(adr) )
+dnl c = c2 + c1
+define({PUSH_CFETCH_CADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},{
+    ld    A, format({%-11s},{($1)}); 3:13      $1 C@ C+   ( c -- c+($1) )
+    add   A, L          ; 1:4       $1 C@ C+
+    ld    L, A          ; 1:4       $1 C@ C+},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
+dnl
+dnl C@ 0x8000 C@ C+
+dnl ( c -- (c)+(adr) )
+dnl c = c2 + c1
+define({CFETCH_PUSH_CFETCH_CADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},{
+    ld    A,format({%-12s},{($1)}); 3:13      C@ $1 C@ C+   ( c -- (c)+($1) )
+    add   A,(HL)        ; 1:7       C@ $1 C@ C+
+    ld    L, A          ; 1:4       C@ $1 C@ C+},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
+dnl
+dnl 0x8000 C@ C+ 0x4000 C!
+dnl ( c -- )
+define({PUSH_CFETCH_CADD_PUSH_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing two address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+__{}$#,{2},{
+                        ;[9:47]     $1 C@ C+ $2 C!   ( c --  )
+    ld    A,format({%-12s},{($1)}); 3:13      $1 C@ C+ $2 C!
+    add   A, L          ; 1:4       $1 C@ C+ $2 C!
+    ld  format({%-16s},{($2), A}); 3:13      $1 C@ C+ $2 C!   [$2] = [$1] + low TOS
+    ex   DE, HL         ; 1:4       $1 C@ C+ $2 C!
+    pop  DE             ; 1:10      $1 C@ C+ $2 C!},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
+dnl
+dnl C@ 0x8000 C@ C+ 0x4000 C!
+dnl ( c -- )
+define({CFETCH_PUSH_CFETCH_CADD_PUSH_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing two address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+__{}$#,{2},{
+                        ;[9:47]     C@ $1 C@ C+ $2 C!   ( c --  )
+    ld    A,format({%-12s},{($1)}); 3:13      C@ $1 C@ C+ $2 C!
+    add   A,(HL)        ; 1:7       C@ $1 C@ C+ $2 C!
+    ld  format({%-16s},{($2), A}); 3:13      C@ $1 C@ C+ $2 C!   [$2] = [$1] + [TOS]
+    ex   DE, HL         ; 1:4       C@ $1 C@ C+ $2 C!
+    pop  DE             ; 1:10      C@ $1 C@ C+ $2 C!},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
+dnl ( c -- c+n )
+dnl c = c + n
+define({PUSH_CADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{dnl
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld    A, format({%-11s},$1); 3:13     $1 C+
+__{}    add   A, L          ; 1:4      $1 C+
+__{}    ld    L, A          ; 1:4      $1 C+},
+eval($1),{},{dnl
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld    A, format({%-11s},$1); 2:7      $1 C+
+__{}    add   A, L          ; 1:4      $1 C+
+__{}    ld    L, A          ; 1:4      $1 C+},
+{dnl
+__{}ifelse(eval(($1)+3),{0},{dnl
+__{}__{}    dec   L             ; 1:4       $1 C+   ( c -- c-2 )
+__{}__{}    dec   L             ; 1:4       $1 C+
+__{}__{}    dec   L             ; 1:4       $1 C+},
+__{}eval(($1)+2),{0},{dnl
+__{}__{}    dec   L             ; 1:4       $1 C+   ( c -- c-2 )
+__{}__{}    dec   L             ; 1:4       $1 C+},
+__{}__{}eval(($1)+1),{0},{dnl
+__{}__{}    dec   L             ; 1:4       $1 C+   ( c -- c-1 )},
+__{}__{}eval($1),{0},{snl
+__{}__{}                        ;           $1 C+   ( c -- c+0 )},
+__{}__{}eval(($1)-1),{0},{dnl
+__{}__{}    inc   L             ; 1:4       $1 C+   ( c -- c+1 )},
+__{}__{}eval(($1)-2),{0},{dnl
+__{}__{}    inc   L             ; 1:4       $1 C+   ( c -- c+1 )
+__{}__{}    inc   L             ; 1:4       $1 C+},
+__{}__{}eval(($1)-3),{0},{dnl
+__{}__{}    inc   L             ; 1:4       $1 C+   ( c -- c+1 )
+__{}__{}    inc   L             ; 1:4       $1 C+
+__{}__{}    inc   L             ; 1:4       $1 C+},
+__{}__{}{ifelse(eval((((($1) | 255) + 1) > 256) || (($1 + 256) < 128)),{1},{dnl
+__{}__{}__{}    ; warning {$0}($@): Parameter $1 exceeds one byte limit!
+__{}__{}__{}})dnl
+__{}__{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       $1 C+   ( d -- d+$1 )
+__{}__{}    add   A, L          ; 1:4       $1 C+
+__{}__{}    ld    L, A          ; 1:4       $1 C+}){}dnl
+})})dnl
+dnl
 dnl
 dnl
 dnl

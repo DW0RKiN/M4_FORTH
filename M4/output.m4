@@ -534,7 +534,7 @@ PRINT_TYPE_Z:           ;           print_type_z
     ld    B, H          ; 1:4       print_type_z
     ld    C, L          ; 1:4       print_type_z   BC = addr stringZ
 __{}define({USE_STRING_Z},{})dnl
-    ; fall to print_string_z
+    jr    PRINT_STRING_Z; 2:12      print_type_z
 }){}dnl
 dnl
 dnl

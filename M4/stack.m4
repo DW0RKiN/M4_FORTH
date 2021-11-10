@@ -43,6 +43,24 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
 dnl
 dnl
+dnl swap drop 3 swap
+dnl ( b a -- 3 a )
+define({SWAP_DROP_PUSH_SWAP},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      swap drop $1 swap ( b a -- $1 a )})dnl
+dnl
+dnl
+dnl nip 3 swap
+dnl ( b a -- 3 a )
+define({NIP_PUSH_SWAP},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      nip $1 swap ( b a -- $1 a )})dnl
+dnl
+dnl
 dnl ( d c b a -- b a d c )
 dnl Exchange the top two cell pairs.
 define({_2SWAP},{ifelse(TYP_2SWAP,{fast},{

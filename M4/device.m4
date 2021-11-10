@@ -122,7 +122,15 @@ __{}define({USE_TYPE_Z},{})dnl
     pop  DE             ; 1:10      type_z})dnl
 dnl
 dnl
-dnl ( addr n -- addr n )
+dnl ( addr -- )
+dnl print stringZ
+define({PUSH_TYPE_Z},{
+__{}define({USE_STRING_Z},{})dnl
+    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 type_z   ( -- )
+    call PRINT_STRING_Z ; 3:17      $1 type_z})dnl
+dnl
+dnl
+dnl ( addr -- addr )
 dnl non-destructively print stringZ
 define({DUP_TYPE_Z},{
 __{}define({USE_TYPE_Z},{})dnl

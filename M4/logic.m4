@@ -715,6 +715,20 @@ __{}}){}dnl
 })dnl
 dnl
 dnl
+dnl
+dnl C=
+dnl ( c1 c2 -- flag )
+dnl equal ( lo c1 == lo c2 )
+define({CEQ},{
+                        ;[7:40]     C=   ( c1 c2 -- flag )
+    ld    A, L          ; 1:4       C=
+    xor   E             ; 1:4       C=   ignores higher bytes
+    sub  0x01           ; 2:7       C=
+    sbc  HL, HL         ; 2:15      C=
+    pop  DE             ; 1:10      C=})dnl
+dnl
+dnl
+dnl
 dnl D=
 dnl ( d1 d2 -- flag )
 dnl equal ( d1 == d2 )
@@ -730,8 +744,7 @@ define({DEQ},{
     pop  DE             ; 1:10      D=
     ld   HL, 0x0000     ; 3:10      D=
     jr   nz, $+3        ; 2:7/12    D=
-    dec  HL             ; 1:6       D=
-})dnl
+    dec  HL             ; 1:6       D=})dnl
 dnl
 dnl
 dnl <>

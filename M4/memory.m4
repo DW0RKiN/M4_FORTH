@@ -47,7 +47,7 @@ dnl C@
 dnl ( addr -- char )
 dnl fetch 8-bit char from addr
 define({CFETCH},{
-    ld    L, (HL)       ; 1:7       C@ cfetch   ( addr -- char )
+    ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
     ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl
 dnl
@@ -57,7 +57,7 @@ dnl save addr and fetch 8-bit number from addr
 define({DUP_CFETCH},{
                         ;[5:29]     dup C@ dup_cfetch ( addr -- addr char )
     push DE             ; 1:11      dup C@ dup_cfetch
-    ld    E, (HL)       ; 1:7       dup C@ dup_cfetch
+    ld    E,(HL)        ; 1:7       dup C@ dup_cfetch
     ld    D, 0x00       ; 2:7       dup C@ dup_cfetch
     ex   DE, HL         ; 1:4       dup C@ dup_cfetch})dnl
 dnl
@@ -68,8 +68,46 @@ dnl save addr and fetch 8-bit number from addr and swap
 define({DUP_CFETCH_SWAP},{
                         ;[4:25]     dup C@ swap dup_cfetch_swap ( addr -- char addr )
     push DE             ; 1:11      dup C@ swap dup_cfetch_swap
-    ld    E, (HL)       ; 1:7       dup C@ swap dup_cfetch_swap
+    ld    E,(HL)        ; 1:7       dup C@ swap dup_cfetch_swap
     ld    D, 0x00       ; 2:7       dup C@ swap dup_cfetch_swap})dnl
+dnl
+dnl
+dnl C@ swap C@
+dnl ( addr2 addr1 -- char1 char2 )
+dnl double fetch 8-bit number and swap
+define({CFETCH_SWAP_CFETCH},{
+                        ;[6:29]     @C swap @C cfetch_swap_cfetch ( addr2 addr1 -- char1 char2 )
+    ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
+    ld    H, 0x00       ; 2:7       @C swap @C cfetch_swap_cfetch
+    ex   DE, HL         ; 1:4       @C swap @C cfetch_swap_cfetch
+    ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
+    ld    H, D          ; 1:4       @C swap @C cfetch_swap_cfetch})dnl
+dnl
+dnl
+dnl C@ swap C@ swap
+dnl ( addr2 addr1 -- char1 char2 )
+dnl double fetch 8-bit number
+define({CFETCH_SWAP_CFETCH_SWAP},{
+                        ;[6:29]     @C swap @C swap cfetch_swap_cfetch_swap ( addr2 addr1 -- char2 char1 )
+    ld    L, (HL)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
+    ld    H, 0x00       ; 2:7       @C swap @C swap cfetch_swap_cfetch_swap
+    ld    A, (DE)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
+    ld    E, A          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap
+    ld    D, H          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap})dnl
+dnl
+dnl
+dnl over C@ over C@
+dnl ( addr2 addr1 -- addr2 addr1 char2 char1 )
+dnl double fetch 8-bit number with save address
+define({OVER_CFETCH_OVER_CFETCH},{
+                        ;[8:51]     over @C over @C over_cfetch_over_cfetch ( addr2 addr1 -- addr2 addr1 char2 char1 )
+    push DE             ; 1:11      over @C over @C over_cfetch_over_cfetch
+    push HL             ; 1:11      over @C over @C over_cfetch_over_cfetch
+    ld    L, (HL)       ; 1:7       over @C over @C over_cfetch_over_cfetch
+    ld    H, 0x00       ; 2:7       over @C over @C over_cfetch_over_cfetch
+    ld    A, (DE)       ; 1:7       over @C over @C over_cfetch_over_cfetch
+    ld    E, A          ; 1:4       over @C over @C over_cfetch_over_cfetch
+    ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch})dnl
 dnl
 dnl
 dnl addr C@
@@ -725,7 +763,6 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 @ push($1) fetch
     ex   DE, HL         ; 1:4       $1 @ push($1) fetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
-dnl
 dnl
 dnl
 dnl
