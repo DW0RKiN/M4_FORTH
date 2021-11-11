@@ -70,66 +70,72 @@ __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
 __{}    ex   DE, HL         ; 1:4       dup $1 +
 __{}    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1 +
-__{}    add  HL, DE         ; 1:11      dup $1 +},{ifelse(
+__{}    add  HL, DE         ; 1:11      dup $1 +},
+{
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}format({0x%04X},eval(($1) & 0xFFFF)) ){}ifelse(dnl
+__{}eval(($1)+3*256),{0},{
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    dec   H             ; 1:4       dup $1 +
+__{}__{}    dec   H             ; 1:4       dup $1 +
+__{}__{}    dec   H             ; 1:4       dup $1 +},
 __{}eval(($1)+2*256),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    dec   H             ; 1:6       dup $1 +
-__{}    dec   H             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    dec   H             ; 1:4       dup $1 +
+__{}__{}    dec   H             ; 1:4       dup $1 +},
 __{}eval(($1)+1*256),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    dec   H             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    dec   H             ; 1:4       dup $1 +},
 __{}eval(($1)+2),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    dec  HL             ; 1:6       dup $1 +
-__{}    dec  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    dec  HL             ; 1:6       dup $1 +
+__{}__{}    dec  HL             ; 1:6       dup $1 +},
 __{}eval(($1)+1),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    dec  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    dec  HL             ; 1:6       dup $1 +},
 __{}eval(($1) & 0xFFFF),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +},
 __{}eval(($1)-1),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    inc  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    inc  HL             ; 1:6       dup $1 +},
 __{}eval(($1)-2),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    inc  HL             ; 1:6       dup $1 +
-__{}    inc  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    inc  HL             ; 1:6       dup $1 +
+__{}__{}    inc  HL             ; 1:6       dup $1 +},
 __{}eval(($1)-1*256),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    inc   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    inc   H             ; 1:4       dup $1 +},
 __{}eval(($1)-2*256),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ld    D, H          ; 1:4       dup $1 +
-__{}    ld    E, L          ; 1:4       dup $1 +
-__{}    inc   H             ; 1:4       dup $1 +
-__{}    inc   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    inc   H             ; 1:4       dup $1 +
+__{}__{}    inc   H             ; 1:4       dup $1 +},
+__{}eval(($1)-3*256),{0},{
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    inc   H             ; 1:4       dup $1 +
+__{}__{}    inc   H             ; 1:4       dup $1 +
+__{}__{}    inc   H             ; 1:4       dup $1 +},
 __{}eval((($1)) & 0xFF),{0},{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ex   DE, HL         ; 1:4       dup $1 +
-__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       dup $1 +
-__{}    add   A, H          ; 1:4       dup $1 +
-__{}    ld    H, A          ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       dup $1 +
+__{}__{}    ld    E, L          ; 1:4       dup $1 +
+__{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       dup $1 +
+__{}__{}    add   A, H          ; 1:4       dup $1 +
+__{}__{}    ld    H, A          ; 1:4       dup $1 +},
 __{}{
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+format({0x%04X},eval(($1) & 0xFFFF)) )
-__{}    ex   DE, HL         ; 1:4       dup $1 +
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      dup $1 +
-__{}    add  HL, DE         ; 1:11      dup $1 +})})})dnl
+__{}__{}    ex   DE, HL         ; 1:4       dup $1 +
+__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      dup $1 +
+__{}__{}    add  HL, DE         ; 1:11      dup $1 +}){}dnl
+__{}}){}dnl
+})dnl
 dnl
 dnl
 dnl "dup +"
