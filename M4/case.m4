@@ -75,13 +75,12 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(index({$1},{(}),{0},{dnl
-__{}                        ;[13:52]    _OF_INFO(push_of($1))   version: variable in memory
-__{}    ld    A, (format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13      _OF_INFO(push_of($1))
-__{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
-__{}    ld    B, A          ; 1:4       _OF_INFO(push_of($1))
+__{}                        ;[13:51/39] _OF_INFO(push_of($1))   version: variable in memory
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
-__{}    or    B             ; 1:4       _OF_INFO(push_of($1))
+__{}    jr   nz, $+6        ; 2:7/12    _OF_INFO(push_of($1))
+__{}    ld    A,format({%-12s},($1+1)); 3:13      _OF_INFO(push_of($1))
+__{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:18]     _OF_INFO(push_of($1))   version: $1 = 0
@@ -89,13 +88,12 @@ __{}    ld    A, H          ; 1:4       _OF_INFO(push_of($1))
 __{}    or    L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval(((256*($1))^($1)) & 0xFF00),{0},{dnl
-__{}                        ;[10:37]    _OF_INFO(push_of($1))   version: hi($1) = lo($1) = eval(($1) & 0xFF)
+__{}                        ;[10:36/30] _OF_INFO(push_of($1))   version: hi($1) = lo($1) = eval(($1) & 0xFF)
+__{}    ld    A, L          ; 1:4       _OF_INFO(push_of($1))
+__{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
+__{}    jr   nz, $+5        ; 2:7/12    _OF_INFO(push_of($1))
 __{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
-__{}    ld    B, A          ; 1:4       _OF_INFO(push_of($1))
-__{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
-__{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
-__{}    or    B             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval(($1)>>8),{0},{dnl
 __{}                        ;[7:25]     _OF_INFO(push_of($1))   version: hi($1) = 0
@@ -105,18 +103,17 @@ __{}    or    H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval(($1) & 255),{0},{dnl
 __{}                        ;[7:25]     _OF_INFO(push_of($1))   version: lo($1) = 0
-__{}    ld    A, high format({%-6s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xff))       ; 2:7       _OF_INFO(push_of($1))   hi($1)
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    or    L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}{dnl
-__{}                        ;[11:40]    _OF_INFO(push_of($1))   version: default
-__{}    ld    A, high format({%-6s},$1); 2:7       _OF_INFO(push_of($1))
-__{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
-__{}    ld    B, A          ; 1:4       _OF_INFO(push_of($1))
+__{}                        ;[11:39/33] _OF_INFO(push_of($1))   version: default
 __{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
-__{}    or    B             ; 1:4       _OF_INFO(push_of($1))
+__{}    jr   nz, $+5        ; 2:7/12    _OF_INFO(push_of($1))
+__{}    ld    A, high format({%-6s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))}){}dnl
 })dnl
 dnl
