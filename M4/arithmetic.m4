@@ -15,11 +15,6 @@ define({PUSH_ADD},{ifelse(eval($1),{},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
-__{}eval(($1)+4*256),{0},{
-__{}    dec  H              ; 1:4       $1 +
-__{}    dec  H              ; 1:4       $1 +
-__{}    dec  H              ; 1:4       $1 +
-__{}    dec  H              ; 1:4       $1 +},
 __{}eval(($1)+3*256),{0},{
 __{}    dec  H              ; 1:4       $1 +
 __{}    dec  H              ; 1:4       $1 +
@@ -58,14 +53,17 @@ __{}eval(($1)-3*256),{0},{
 __{}    inc  H              ; 1:4       $1 +
 __{}    inc  H              ; 1:4       $1 +
 __{}    inc  H              ; 1:4       $1 +},
-__{}eval(($1)-4*256),{0},{
-__{}    inc  H              ; 1:4       $1 +
-__{}    inc  H              ; 1:4       $1 +
-__{}    inc  H              ; 1:4       $1 +
-__{}    inc  H              ; 1:4       $1 +},
+__{}eval((($1)) & 0xFF),{0},{
+__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 +   ( x -- x+format({0x%04X},(($1) & 0xFFFF)) )
+__{}    add   A, H          ; 1:4       $1 +
+__{}    ld    H, A          ; 1:4       $1 +},
 __{}{
-__{}    ld   BC, format({%-11s},$1); 3:10      $1 +
+__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 +   ( x -- x+format({0x%04X},(($1) & 0xFFFF)) )
 __{}    add  HL, BC         ; 1:11      $1 +})})})dnl
+
+
+
+
 dnl
 dnl
 dnl
@@ -155,56 +153,50 @@ __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 -
 __{}    or    A             ; 1:4       $1 -
 __{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
-__{}eval(($1)+4*256),{0},{
-__{}    inc  H              ; 1:4       $1 -
-__{}    inc  H              ; 1:4       $1 -
-__{}    inc  H              ; 1:4       $1 -
-__{}    inc  H              ; 1:4       $1 -},
 __{}eval(($1)+3*256),{0},{
-__{}    inc  H              ; 1:4       $1 -
+__{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    inc  H              ; 1:4       $1 -
 __{}    inc  H              ; 1:4       $1 -},
 __{}eval(($1)+2*256),{0},{
-__{}    inc  H              ; 1:4       $1 -
+__{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    inc  H              ; 1:4       $1 -},
 __{}eval(($1)+1*256),{0},{
-__{}    inc  H              ; 1:4       $1 -},
+__{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )},
 __{}eval(($1)+3),{0},{
-__{}    inc  HL             ; 1:6       $1 -
+__{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    inc  HL             ; 1:6       $1 -
 __{}    inc  HL             ; 1:6       $1 -},
 __{}eval(($1)+2),{0},{
-__{}    inc  HL             ; 1:6       $1 -
+__{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    inc  HL             ; 1:6       $1 -},
 __{}eval(($1)+1),{0},{
-__{}    inc  HL             ; 1:6       $1 -},
-__{}eval($1),{0},{
-__{}                        ;           $1 -},
+__{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )},
+__{}eval((-($1)) & 0xFFFF),{0},{
+__{}                        ;           $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )},
 __{}eval(($1)-1),{0},{
-__{}    dec  HL             ; 1:6       $1 -},
+__{}    dec  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )},
 __{}eval(($1)-2),{0},{
-__{}    dec  HL             ; 1:6       $1 -
+__{}    dec  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    dec  HL             ; 1:6       $1 -},
 __{}eval(($1)-3),{0},{
-__{}    dec  HL             ; 1:6       $1 -
+__{}    dec  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    dec  HL             ; 1:6       $1 -
 __{}    dec  HL             ; 1:6       $1 -},
 __{}eval(($1)-1*256),{0},{
-__{}    dec  H              ; 1:4       $1 -},
+__{}    dec  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )},
 __{}eval(($1)-2*256),{0},{
-__{}    dec  H              ; 1:4       $1 -
+__{}    dec  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    dec  H              ; 1:4       $1 -},
 __{}eval(($1)-3*256),{0},{
-__{}    dec  H              ; 1:4       $1 -
-__{}    dec  H              ; 1:4       $1 -
-__{}    dec  H              ; 1:4       $1 -},
-__{}eval(($1)-4*256),{0},{
-__{}    dec  H              ; 1:4       $1 -
-__{}    dec  H              ; 1:4       $1 -
+__{}    dec  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    dec  H              ; 1:4       $1 -
 __{}    dec  H              ; 1:4       $1 -},
+__{}eval((-($1)) & 0xFF),{0},{
+__{}    ld    A, format({0x%02X},eval(((-($1))>>8) & 0xFF))       ; 2:7       $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
+__{}    add   A, H          ; 1:4       $1 -
+__{}    ld    H, A          ; 1:4       $1 -},
 __{}{
-__{}    ld   BC, format({%-11s},eval(-($1))); 3:10      $1 -
+__{}    ld   BC, format({0x%04X},eval(-($1) & 0xFFFF))     ; 3:10      $1 -   ( x -- x-format({0x%04X},(($1) & 0xFFFF)) )
 __{}    add  HL, BC         ; 1:11      $1 -})})})dnl
 dnl
 dnl
