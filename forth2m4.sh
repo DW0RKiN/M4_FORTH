@@ -183,9 +183,9 @@ do
     sed 's#^\([^;{]*\s\|^\)SWAP\s\+OVER\(\s\|$\)#\1SWAP_OVER\2#gi' |
     sed 's#^\([^;{]*\s\|^\)SWAP\s\+\([+-]*[0-9]\+\)\(\s\|$\)#\1SWAP_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1PUSH_SWAP(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)2[Ss]wap\(\s\|$\)#\1_2SWAP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)2SWAP\(\s\|$\)#\1_2SWAP\2#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)?[Dd]up\(\s\|$\)#\1QUESTIONDUP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)?DUP\(\s\|$\)#\1QUESTIONDUP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Dd]up\(\s\|$\)#\1DUP\2#g' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1DUP_PUSH_SWAP(\2)\3#gi' |
@@ -193,22 +193,22 @@ do
     sed 's#^\([^;{]*\s\|^\)over\s\+over\(\s\|$\)#\1_2DUP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Dd]rop\(\s\|$\)#\1DROP\2#g' |
-    sed 's#^\([^;{]*\s\|^\)2[Dd]rop\(\s\|$\)#\1_2DROP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)2DROP\(\s\|$\)#\1_2DROP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)drop\s\+drop\(\s\|$\)#\1_2DROP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Nn]ip\(\s\|$\)#\1NIP\2#g' |
     sed 's#^\([^;{]*\s\|^\)swap\s\+drop\(\s\|$\)#\1NIP\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2[Nn]ip\(\s\|$\)#\1_2NIP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)2NIP\(\s\|$\)#\1_2NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2SWAP\s\+_2DROP\(\s\|$\)#\1_2NIP\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)[Tt]uck\(\s\|$\)#\1TUCK\2#g' |
     sed 's#^\([^;{]*\s\|^\)swap\s\+over\(\s\|$\)#\1TUCK\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2[Tt]uck\(\s\|$\)#\1_2TUCK\2#g' |
+    sed 's#^\([^;{]*\s\|^\)2TUCK\(\s\|$\)#\1_2TUCK\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2swap\s\+2over\(\s\|$\)#\1_2TUCK\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Oo]ver\(\s\|$\)#\1OVER\2#g' |
     sed 's#^\([^;{]*\s\|^\)OVER\s\+SWAP\(\s\|$\)#\1OVER_SWAP\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2[Oo]ver\(\s\|$\)#\1_2OVER\2#g' |
+    sed 's#^\([^;{]*\s\|^\)2OVER\(\s\|$\)#\1_2OVER\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
     sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\s\+SWAP\(\s\|$\)#\1NROT_NIP\2#gi' |

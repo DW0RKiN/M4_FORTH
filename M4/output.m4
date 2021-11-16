@@ -203,7 +203,7 @@ dnl
 dnl
 ifdef({USE_RSHIFT},{
 ;==============================================================================
-; ( x u -- x)
+; ( x u -- ? x>>u )
 ; shifts x right u places
 ;  Input: HL, DE
 ; Output: HL = DE >> HL

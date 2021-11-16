@@ -476,6 +476,25 @@ __{}    ld    H,(HL)        ; 1:7       $1 pick
 __{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})})dnl
 dnl
 dnl
+dnl depth
+dnl ( -- 0 )
+dnl ( x -- x 1 )
+dnl ( x x -- x x 2 )
+dnl ( -- +n )
+dnl +n is the number of single-cell values contained in the data stack before +n was placed on the stack
+define({DEPTH},{
+                        ;[13:72]    depth   ( -- +n )
+    push DE             ; 1:11      depth
+    ex   DE, HL         ; 1:4       depth
+    ld   HL,(Stop+1)    ; 3:16      depth
+    or    A             ; 1:4       depth
+    sbc  HL, SP         ; 2:15      depth
+    srl   H             ; 2:8       depth
+    rr    L             ; 2:8       depth
+    dec  HL             ; 1:6       depth})dnl
+dnl
+dnl
+dnl
 dnl ------------- return address stack ------------------
 dnl
 dnl >r
