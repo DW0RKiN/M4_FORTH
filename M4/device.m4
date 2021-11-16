@@ -241,6 +241,25 @@ __{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){
 })dnl
 dnl
 dnl
+dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl print null-terminated string
+define({_STRING_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+    ld   BC, string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+__{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+})dnl
+dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl print null-terminated string
+define({STRING_Z},{_STRING_Z({$1, 0x00})})dnl
+dnl
+dnl
+dnl
 dnl ( -- key )
 dnl readchar
 define({KEY},{ifdef({USE_KEY},,define({USE_KEY},{}))

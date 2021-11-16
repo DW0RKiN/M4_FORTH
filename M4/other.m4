@@ -60,3 +60,74 @@ define({LINE},{ifdef({USE_LINE},,define({USE_LINE},{}))
 dnl
 dnl
 dnl
+define({TEST_LAST},1000){}dnl
+dnl
+dnl
+dnl test_start 1 2 3 swap test_eq 1 3 2 test_end
+dnl test_start max_255word test_eq max_255word test_end
+dnl ( -- )
+define({TEST_START},{pushdef({TEST_NUM},TEST_LAST){}define({TEST_LAST},eval(TEST_LAST+1))
+    push DE             ; 1:11      test_start
+    push HL             ; 1:11      test_start
+    ld   (test{}TEST_NUM{}A),SP ; 4:20      test_start
+    ld   (test{}TEST_NUM{}Z),SP ; 4:20      test_start
+    pop  HL             ; 1:10      test_start
+    pop  DE             ; 1:10      test_start}){}dnl
+dnl
+dnl
+dnl test_start 1 2 3 swap test_eq 1 3 2 test_end
+dnl ( -- )
+define({TEST_EQ},{
+    push DE             ; 1:11      test_eq
+    push HL             ; 1:11      test_eq
+    ld   (test{}TEST_NUM{}B),SP ; 4:20      test_eq
+    ld   (test{}TEST_NUM{}C),SP ; 4:20      test_eq
+test{}TEST_NUM{}A EQU $+1
+    ld   HL, 0x0000     ; 3:10      test_eq
+    or    A             ; 1:4       test_eq
+    sbc  HL, SP         ; 2:15      test_eq
+    ld   (test{}TEST_NUM{}D),HL ; 3:16      test_eq
+    pop  HL             ; 1:10      test_eq
+    pop  DE             ; 1:10      test_eq}){}dnl
+dnl
+dnl
+dnl test_start 1 2 3 swap test_eq 1 3 2 test_end
+dnl ( -- )
+define({TEST_END},{
+    push DE             ; 1:11      test_end
+    push HL             ; 1:11      test_end
+test{}TEST_NUM{}B EQU $+1
+    ld   HL, 0x0000     ; 3:10      test_end
+test{}TEST_NUM{}D EQU $+1
+    ld   DE, 0x0000     ; 3:10      test_end
+    or    A             ; 1:4       test_end
+    sbc  HL, SP         ; 2:15      test_end
+    or    A             ; 1:4       test_end
+    sbc  HL, DE         ; 2:15      test_end{}STRING_Z({"WRONG NUMBER OF RESULTS", 0x0D})
+    call nz, PRINT_STRING_Z; 3:10/17 test_end
+    rr    D             ; 2:8       test_end
+    rr    E             ; 2:8       test_end
+    ld    B, E          ; 1:4       test_end
+    ld    C, 0x00       ; 2:7       test_end
+test{}TEST_NUM{}C EQU $+1
+    ld   HL, 0x0000     ; 3:10      test_end
+    pop  DE             ; 1:10      test_end
+    ld    A,(HL)        ; 1:7       test_end
+    xor   E             ; 1:4       test_end
+    or    C             ; 1:4       test_end
+    ld    C, A          ; 1:4       test_end
+    inc  HL             ; 1:6       test_end
+    ld    A,(HL)        ; 1:7       test_end
+    xor   D             ; 1:4       test_end
+    or    C             ; 1:4       test_end
+    ld    C, A          ; 1:4       test_end
+    inc  HL             ; 1:6       test_end
+    djnz $-11           ; 2:8/13    test_end{}STRING_Z({"INCORRECT RESULT", 0x0D})
+    call nz, PRINT_STRING_Z; 3:10/17 test_end
+test{}TEST_NUM{}Z EQU $+1
+    ld   SP, 0x0000     ; 3:10      test_end
+    pop  HL             ; 1:10      test_end
+    pop  DE             ; 1:10      test_end{}popdef({TEST_NUM})}){}dnl
+dnl
+dnl
+dnl

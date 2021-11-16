@@ -937,35 +937,19 @@ define(RSHIFT,{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
     pop   DE            ; 1:10      >>})dnl
 dnl
 dnl
-dnl <<
+dnl 1 <<
 dnl ( x u -- x)
 dnl shifts x left u places
-define(XLSHIFT1,{
-    add  HL, HL         ; 1:11      xlshift1})dnl
+define({_1LSHIFT},{
+    add  HL, HL         ; 1:11      1 lshift})dnl
 dnl
 dnl
-dnl >>
+dnl 1 >>
 dnl ( x u -- x)
 dnl shifts x right u places
-define(XRSHIFT1,{
-    sra   H             ; 2:8       xrshift1 signed
-    rr    L             ; 2:8       xrshift1})dnl
-dnl
-dnl
-dnl
-dnl u<<
-dnl ( x u -- x)
-dnl shifts x left u places
-define(XULSHIFT1,{
-    add  HL, HL         ; 1:11      xulshift1})dnl
-dnl
-dnl
-dnl u>>
-dnl ( x u -- x)
-dnl shifts x right u places
-define(XURSHIFT1,{
-    srl   H             ; 2:8       xurshift1 unsigned
-    rr    L             ; 2:8       xurshift1})dnl
+define({_1RSHIFT},{
+    srl   H             ; 2:8       1 rshift   unsigned
+    rr    L             ; 2:8       1 rshift})dnl
 dnl
 dnl
 dnl
