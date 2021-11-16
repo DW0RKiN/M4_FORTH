@@ -273,14 +273,18 @@ define({PUSH_MAX},{ifelse(index({$1},{(}),{0},{
     ld    A, high format({%-6s},$1); 2:7       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
     sbc   A, H          ; 1:4       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
     rra                 ; 1:4       $1 max
-    xor   H             ; 1:4       $1 max{}ifelse(eval($1),{},{
+    xor   H             ; 1:4       $1 max
+ifelse(eval($1),{},{dnl
 __{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}    jp    m, $+6        ; 3:10      $1 max    positive constant $1
 __{}  else
 __{}    jp    p, $+6        ; 3:10      $1 max    negative constant $1
-__{}  endif},{ifelse(eval(($1)<0),0,{
-    jp    m, $+6        ; 3:10      $1 max    positive constant $1},{
-    jp    p, $+6        ; 3:10      $1 max    negative constant $1})})
+__{}  endif},
+{dnl
+__{}ifelse(eval(($1) & 0x8000),0,{dnl
+__{}    jp    m, $+6        ; 3:10      $1 max    positive constant $1},
+__{}{dnl
+__{}    jp    p, $+6        ; 3:10      $1 max    negative constant $1})})
     ld   HL, format({%-11s},$1); 3:10      $1 max    14:45 (40+50)/2})})dnl
 dnl
 dnl
@@ -328,7 +332,7 @@ __{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1
 __{}__{}  else
 __{}__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1
 __{}__{}  endif}
-__{},eval(($1)<0),0,{
+__{},eval(($1) & 0x8000),0,{
 __{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1}dnl
 __{},{
 __{}__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1})
