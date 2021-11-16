@@ -323,12 +323,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>     u<=      |<sub>         ULE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      u>      |<sub>         UGT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>     u>=      |<sub>         UGE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>  x1 u >> x   |<sub>        RSHIFT       |<sub>                     |<sub>   ( x1 u -- x1>>u )   |<sub>
-|<sub>  x1 u << x   |<sub>        LSHIFT       |<sub>                     |<sub>   ( x1 u -- x1<<u )   |<sub>
-|<sub>  x1 1 >> x   |<sub>                     |<sub>       XRSHIFT1      |<sub>     ( x1 -- x1>>1 )   |<sub> signed
-|<sub>  x1 1 << x   |<sub>                     |<sub>       XLSHIFT1      |<sub>     ( x1 -- x1<<1 )   |<sub>
-|<sub>  u1 1 >> u   |<sub>                     |<sub>      XURSHIFT1      |<sub>     ( u1 -- u1>>1 )   |<sub> unsigned
-|<sub>  u1 1 << u   |<sub>                     |<sub>      XULSHIFT1      |<sub>     ( u1 -- u1<<1 )   |<sub>
+|<sub>  x1 u >> x   |<sub>        RSHIFT       |<sub>                     |<sub>   ( x1 u -- x1>>u )   |<sub>unsigned
+|<sub>  x1 u << x   |<sub>        LSHIFT       |<sub>                     |<sub>   ( x1 u -- x1<<u )   |<sub>unsigned
+|<sub>  x1 1 >> x   |<sub>                     |<sub>      _1RSHIFT       |<sub>     ( x1 -- x1>>1 )   |<sub>unsigned
+|<sub>  x1 1 << x   |<sub>                     |<sub>      _1LSHIFT       |<sub>     ( x1 -- x1<<1 )   |<sub>unsigned
 
 #### 32bit
 

@@ -10,13 +10,13 @@ TMPFILE=$(mktemp)
 TMPFILE2=$(mktemp)
 TMPFILE3=$(mktemp)
 
-cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#gi'| sed 's#\(\s\|^\)\\\(\s\|$\)#\1;\2#gi' > $TMPFILE
+cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#gi'| sed 's#\(\s\|^\)\\\(\s\|$\)#\1;\#\2#gi' > $TMPFILE
 
 # ( comment) ... ( comment) ...
 while :
 do
     cat $TMPFILE |
-    sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*\))\(\s\+\|$\)$#\1;(\2)#' |
+    sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*\))\(\s\+\|$\)$#\1;\#(\2)#' |
     sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1;(\2)#' |
     sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*\))\s\+\([^ 	].*\)$#\1;(\2)\n\3#' |
     sed -e 's#^\([^;{]*\s\|^\)(\(\s\+[^()]*([^()]*)[^()]*\))\s\+\([^ 	].*\)$#\1;(\2)\n\3#' > $TMPFILE2
@@ -36,17 +36,17 @@ do
     # s" Hello Word" whitespace Other Words
     sed -e 's#^\([^;{]*\s\|^\)[Ss]"\s\([^"]*\)"\s\+\([^ 	].*\)$#\1STRING({"\2"})\n\3#' |
     # ." Hello Word" whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\(\s\+\|$\)$#\1PRINT({"\2"})#' |
+    sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
     # ." Hello Word" whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\s\+\([^ 	].*\)$#\1PRINT({"\2"})\n\3#' |
+    sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\s\+\([^ 	].*\)$#\1PRINT_Z({"\2"})\n\3#' |
     # .( Hello Word) whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\(\s\+\|$\)$#\1PRINT({"\2"})#' |
+    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
     # .( Hel(lo) Word) whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1PRINT({"\2"})#' |
+    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
     # .( Hello Word) whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\s\+\([^ 	].*\)$#\1PRINT({"\2"})\n\3#' |
+    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\s\+\([^ 	].*\)$#\1PRINT_Z({"\2"})\n\3#' |
     # .( Hel(lo) Word) whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\s\(\s*[^ 	].*\)$#\1PRINT({"\2"}) \3#' > $TMPFILE2
+    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\s\(\s*[^ 	].*\)$#\1PRINT_Z({"\2"}) \3#' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
     error=$?
     cat $TMPFILE2 > $TMPFILE
@@ -163,6 +163,8 @@ do
     sed 's#^\([^;{]*\s\|^\)[Ll][Ss]hift\(\s\|$\)#\1LSHIFT\2#g' |
     sed 's#^\([^;{]*\s\|^\)>>\(\s\|$\)#\1RSHIFT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)<<\(\s\|$\)#\1LSHIFT\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)1\s\+RSHIFT\(\s\|$\)#\1_1RSHIFT\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)1\s\+LSHIFT\(\s\|$\)#\1_1LSHIFT\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)\.\(\s\|$\)#\1DOT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)u\.\(\s\|$\)#\1UDOT\2#gi' |
@@ -304,6 +306,10 @@ do
     sed 's#^\([^;{]*\s\|^\)OVER\s3\sPICK\(\s\|$\)#\1STACK_CBABC\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2\sPICK\s2\sPICK\sSWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)T{\(\s\|$\)#\1TEST_START\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)->\(\s\|$\)#\1TEST_EQ\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)\}T\(\s\|$\)#\1TEST_END\2#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)[Rr]andom\(\s\|$\)#\1RANDOM\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Rr]nd\(\s\|$\)#\1RND\2#g' > $TMPFILE2
 

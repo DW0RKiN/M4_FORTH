@@ -16,5 +16,5 @@ BEGIN {
     print $0
 } 
 END {
-    printf "                        [%2i:%i]\n",sum_bytes,sum_clock
+    printf "                       ;[%2i:%i]\n",sum_bytes,sum_clock
 }'
