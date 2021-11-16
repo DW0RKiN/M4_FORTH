@@ -171,30 +171,32 @@ dnl
 dnl
 ifdef({USE_LSHIFT},{
 ;==============================================================================
-; ( x u -- x)
+; ( x u -- ? x<<u )
 ; shifts x left u places
 ;  Input: HL, DE
 ; Output: HL = DE << HL
-; Pollutes: AF, BC, DE, HL
-DE_LSHIFT:              ;[26:]      de_lshift
-    ld    A, L          ; 1:4       de_lshift
-    ld   BC, 0x0010     ; 3:10      de_lshift
-    sbc  HL, BC         ; 2:15      de_lshift
-    jr   nc, DE_LSHIFTZ ; 2:7/12    de_lshift
+; Pollutes: AF, B, DE, HL
+DE_LSHIFT:              ;[28:]      de_lshift
+    ld    A, 15         ; 2:7       de_lshift
+    sub   L             ; 1:4       de_lshift
+    sbc   A, A          ; 1:4       de_lshift
+    or    H             ; 1:4       de_lshift
+    jr   nz, DE_LSHIFTZ ; 2:7/12    de_lshift
+    or    L             ; 1:4       de_lshift
     ex   DE, HL         ; 1:4       de_lshift   HL = x
-    cp    0x08          ; 2:7       de_lshift
-    jr    c, $+6        ; 2:7/12    de_lshift
+    ret   z             ; 1:5/11    de_lshift    A = u
+    ld    B, A          ; 1:4       de_lshift
     sub   0x08          ; 2:7       de_lshift
+    jr    c, $+7        ; 2:7/12    de_lshift
     ld    H, L          ; 1:4       de_lshift
-    ld    L, B          ; 1:4       de_lshift   HL = HL << 8
+    ld    L, 0x00       ; 2:7       de_lshift   HL = HL << 8
     ret   z             ; 1:5/11    de_lshift
     ld    B, A          ; 1:4       de_lshift
     add  HL, HL         ; 1:11      de_lshift   HL = HL << 1
     djnz $-1            ; 2:8/13    de_lshift
     ret                 ; 1:10      de_lshift
 DE_LSHIFTZ:             ;           de_lshift
-    ld    H, B          ; 1:4       de_lshift
-    ld    L, B          ; 1:4       de_lshift   HL = 0
+    ld   HL, 0x0000     ; 3:10      de_lshift   HL = 0
     ret                 ; 1:10      de_lshift}){}dnl
 dnl
 dnl
@@ -206,17 +208,20 @@ ifdef({USE_RSHIFT},{
 ;  Input: HL, DE
 ; Output: HL = DE >> HL
 ; Pollutes: AF, BC, DE, HL
-DE_RSHIFT:              ;[ifdef({USE_LSHIFT},{27},{30}):]      de_rshift
-    ld    A, L          ; 1:4       de_rshift
-    ld   BC, 0x0010     ; 3:10      de_rshift
-    sbc  HL, BC         ; 2:15      de_rshift
-    jr   nc, ifdef({USE_LSHIFT},{DE_LSHIFTZ},{DE_RSHIFTZ}) ; 2:7/12    de_rshift
-    ex   DE, HL         ; 1:4       de_lshift   HL = x
-    cp    0x08          ; 2:7       de_rshift
-    jr    c, $+6        ; 2:7/12    de_rshift
+DE_RSHIFT:              ;[ifdef({USE_LSHIFT},{28},{32}):]      de_rshift
+    ld    A, 15         ; 2:7       de_rshift
+    sub   L             ; 1:4       de_rshift
+    sbc   A, A          ; 1:4       de_rshift
+    or    H             ; 1:4       de_rshift
+    jr   nz, ifdef({USE_LSHIFT},{DE_LSHIFTZ},{DE_RSHIFTZ}) ; 2:7/12    de_rshift
+    or    L             ; 1:4       de_rshift
+    ex   DE, HL         ; 1:4       de_rshift   HL = x
+    ret   z             ; 1:5/11    de_rshift    A = u
+    ld    B, A          ; 1:4       de_rshift
     sub   0x08          ; 2:7       de_rshift
+    jr    c, $+7        ; 2:7/12    de_rshift
     ld    L, H          ; 1:4       de_rshift
-    ld    H, B          ; 1:4       de_rshift   HL = HL >> 8
+    ld    H, 0x00       ; 2:7       de_rshift   HL = HL >> 8
     ret   z             ; 1:5/11    de_rshift
     ld    B, A          ; 1:4       de_rshift
     ld    A, L          ; 1:4       de_rshift
@@ -224,10 +229,9 @@ DE_RSHIFT:              ;[ifdef({USE_LSHIFT},{27},{30}):]      de_rshift
     rra                 ; 1:4       de_rshift   HA = HA >> 1
     djnz $-3            ; 2:8/13    de_rshift
     ld    L, A          ; 1:4       de_rshift
-    ret                 ; 1:10      de_rshift{}ifdef({USE_LSHIFT},,{
+    ret                 ; 1:10      de_rshift{}ifdef({USE_LSHIFT},{},{
 DE_RSHIFTZ:             ;           de_rshift
-    ld    H, B          ; 1:4       de_rshift
-    ld    L, B          ; 1:4       de_rshift   HL = 0
+    ld   HL, 0x0000     ; 3:10      de_rshift   HL = 0
     ret                 ; 1:10      de_rshift})}){}dnl
 dnl
 dnl

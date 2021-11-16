@@ -338,11 +338,23 @@ dnl
 dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse($#,{2},,{
-__{}.error {$0}($@): The wrong number of parameters in macro!})
+__{}.error {$0}($@): The wrong number of parameters in macro!}){}ifelse(eval($1==$2),{1},{
+    push DE             ; 1:11      push2($1,$2)
+    push HL             ; 1:11      push2($1,$2)
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push2($1,$2)
+    ld    D, H          ; 1:4       push2($1,$2)
+    ld    E, L          ; 1:4       push2($1,$2)},
+eval((((($1)>>8) & 0xff) == (($2) & 0xff)) && ((($1) & 0xff) == ((($2)>>8) & 0xff))),{1},{
+    push DE             ; 1:11      push2($1,$2)
+    push HL             ; 1:11      push2($1,$2)
+    ld   HL, format({%-11s},$2); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push2($1,$2)
+    ld    D, L          ; 1:4       push2($1,$2)
+    ld    E, H          ; 1:4       push2($1,$2)},
+{
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)})dnl
+    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)})})dnl
 dnl
 dnl
 dnl drop 50
