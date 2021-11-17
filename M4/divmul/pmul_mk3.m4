@@ -357,7 +357,13 @@ ___{}_ADD_OUTPUT({ _TOKEN_END() _TOKEN_CHECK() _TOKEN_POP()}){}dnl
 dnl
 dnl
 dnl
-define({PUSH_MUL_MK3},{dnl
+define({PUSH_MUL_MK3},{ifelse(eval($1==0),{1},{
+___{}define({PUSH_MUL_MK3_OUT},{
+    ld   HL{,} 0x0000     ; 3:10      $1 *})dnl
+___{}define({PUSH_MUL_MK3_COST},2563)dnl
+___{}define({PUSH_MUL_MK3_INFO},PUSH_MUL_INFO_PLUS(2563,$1,{Variant mk3: HL * zero}))dnl
+},
+{
 ___{}PUSH_MUL_MK3_CREATE_TOKENS($1)dnl
 ___{}TOKENS_HL_ADD_BC_MUL($1){}dnl
 ___{}define({PUSH_MUL_MK3_OUT},_OUTPUT)dnl
@@ -373,7 +379,7 @@ ___{}___{}define({PUSH_MUL_MK3_OUT},{PUSH_MUL_MK3_TEMP})dnl
 ___{}___{}define({PUSH_MUL_MK3_COST},_COST)dnl
 ___{}___{}define({PUSH_MUL_MK3_INFO},PUSH_MUL_INFO_MINUS(_COST,$1,{Variant mk3: HL * (256*a^2 - b^2 - ...)},eval(2*HI_BIT($1)),eval(2*HI_BIT($1)-$1)))dnl
 ___{}})dnl
-})dnl
+})})dnl
 dnl
 dnl
 dnl

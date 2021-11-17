@@ -230,9 +230,9 @@ ifelse(eval($1==0),{1},{
 dnl n = 0
 dnl
 ___{}define({PUSH_MUL_MK1_OUT},{
-    ld   HL, 0x0000     ; 3:10      0*})dnl
+    ld   HL, 0x0000     ; 3:10      0 *})dnl
 ___{}define({PUSH_MUL_MK1_COST},eval(3+256*10)){}dnl
-___{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(3+256*10,$1,{Variant mk1: HL * 0}))dnl
+___{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(2563,$1,{Variant mk1: HL * 0}))dnl
 },PUSH_MUL_MK1_1BITS,{1},{
 dnl n = 2^a
 dnl 1,2,4,8,16,32,...

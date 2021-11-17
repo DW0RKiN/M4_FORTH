@@ -499,7 +499,7 @@ define({_256DIV},{
 dnl
 dnl
 dnl
-define({PRINT_NIBBLE},{ifelse(eval(TEMP_BIN),{0},,{dnl
+define({PRINT_NIBBLE},{ifelse(eval(TEMP_BIN),{0},{define({TEMP_BIN_OUT},{_0000}TEMP_BIN_OUT)},{dnl
 ___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
 ___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
 ___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
