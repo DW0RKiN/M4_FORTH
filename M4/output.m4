@@ -484,6 +484,32 @@ U16MUL:
 dnl
 dnl
 dnl
+ifdef({zzzUSE_U16MUL},{
+;==============================================================================
+_U16MUL:
+; ( u1 u2 -- ud )
+;   DEHL = DE * HL
+; Out: A = 0, BC = HL, DEHL = DE * HL
+    ld    C, H          ; 1:4       u16mul
+    ld    A, L          ; 1:4       u16mul
+    ld   HL, 0x0000     ; 3:10      u16mul
+    ld    B, 0x10       ; 2:7       u16mul
+U16MUL_L:               ;           u16mul
+    add  HL, HL         ; 1:11      u16mul
+    adc   A, A          ; 1:4       u16mul
+    rl    C             ; 2:8       u16mul   CAHL << 1
+    jr   nc, $+8        ; 2:7/12    u16mul
+    add  HL, DE         ; 1:11      u16mul
+    adc   A, 0x00       ; 2:7       u16mul
+    jr   nc, $+3        ; 2:7/12    u16mul
+    inc   C             ; 1:4       u16mul
+    djnz U16MUL_L       ; 3:10      u16mul
+    ld    D, C          ; 1:4       u16mul
+    ld    E, A          ; 1:4       u16mul
+    ret                 ; 1:10      u16mul}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_F32DIV16},{define({USE_S32DIV16},{})
 ;==============================================================================
 F32DIV16:
@@ -507,7 +533,7 @@ F32DIV16:
 dnl
 dnl
 dnl
-ifdef({USE_S32DIV16},{define({USE_U32DIV16},{})
+ifdef({USE_S32DIV16},{define({USE_U31DIV15},{})
 ;==============================================================================
 S32DIV16:
 ; ( lo n -- symmetric_remainder symmetric_quotient ), BC = hi
@@ -541,7 +567,7 @@ S32DIV16:
     sbc   A, H          ; 1:4       s32div16   negate
     sub   L             ; 1:4       s32div16   negate
     ld    H, A          ; 1:4       s32div16   negate
-    call  U32DIV16      ; 3:17      s32div16
+    call  U31DIV15      ; 3:17      s32div16
     pop   AF            ; 1:10      s32div16   load sign remainder
     jp    p, $+9        ; 3:10      s32div16
     xor   A             ; 1:4       s32div16   negate
@@ -562,37 +588,37 @@ S32DIV16:
 dnl
 dnl
 dnl
-ifdef({USE_U32DIV16},{
+ifdef({USE_U31DIV15},{
 ;==============================================================================
-U32DIV16:
+U31DIV15:
 ; ( lo u -- remainder quotient ), BC = hi
 ; um/mod ( ud u -- rem quot )
 ; ( ud u -- ud%u ud/u )
 ; HL = BCDE / HL, DE = BCDE % HL, "u" < 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
 ; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ; HL = HLIX / BC, DE = HLIX % BC
-    ld  IXl, E          ; 2:8       u32div16
-    ld  IXh, D          ; 2:8       u32div16   lo("ud")
-    ld    D, B          ; 1:4       u32div16
-    ld    E, C          ; 1:4       u32div16
-    ld    B, H          ; 1:4       u32div16
-    ld    C, L          ; 1:4       u32div16   BC = "u"
-    ex   DE, HL         ; 1:4       u32div16   HL = hi("ud")
-    ld    A, 0x10       ; 2:7       u32div16
-U32DIV16_L              ;           u32div16
-    sla   E             ; 2:8       u32div16
-    rl    D             ; 2:8       u32div16    DE << 1
-    add  IX, IX         ; 2:15      u32div16   HLIX << 1
-    adc  HL, HL         ; 2:15      u32div16   HLIX << 1
-    sbc  HL, BC         ; 2:15      u32div16   HL/BC
-    inc   E             ; 1:4       u32div16
-    jr   nc, $+4        ; 2:7/12    u32div16
-    add  HL, BC         ; 1:11      u32div16
-    dec   E             ; 1:4       u32div16
-    dec   A             ; 1:4       u32div16
-    jr   nz, U32DIV16_L ; 12/7      u32div16
-    ex   DE, HL         ; 1:4       u32div16
-    ret                 ; 1:10      u32div16}){}dnl
+    ld  IXl, E          ; 2:8       u31div15
+    ld  IXh, D          ; 2:8       u31div15   lo("ud")
+    ld    D, B          ; 1:4       u31div15
+    ld    E, C          ; 1:4       u31div15
+    ld    B, H          ; 1:4       u31div15
+    ld    C, L          ; 1:4       u31div15   BC = "u"
+    ex   DE, HL         ; 1:4       u31div15   HL = hi("ud")
+    ld    A, 0x10       ; 2:7       u31div15
+U31DIV15_L              ;           u31div15
+    sla   E             ; 2:8       u31div15
+    rl    D             ; 2:8       u31div15    DE << 1
+    add  IX, IX         ; 2:15      u31div15   HLIX << 1
+    adc  HL, HL         ; 2:15      u31div15   HLIX << 1
+    sbc  HL, BC         ; 2:15      u31div15   HL/BC
+    inc   E             ; 1:4       u31div15
+    jr   nc, $+4        ; 2:7/12    u31div15
+    add  HL, BC         ; 1:11      u31div15
+    dec   E             ; 1:4       u31div15
+    dec   A             ; 1:4       u31div15
+    jr   nz, U31DIV15_L ; 12/7      u31div15
+    ex   DE, HL         ; 1:4       u31div15
+    ret                 ; 1:10      u31div15}){}dnl
 dnl
 dnl
 dnl

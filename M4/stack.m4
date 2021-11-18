@@ -103,11 +103,21 @@ define({QUESTIONDUP},{
 dnl
 dnl
 dnl 2dup
-dnl ( a b -- a b a b )
+dnl ( b a -- b a b a )
 dnl over over
 define({_2DUP},{
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b )})dnl
+    push HL             ; 1:11      2dup  ( b a -- b a b a )})dnl
+dnl
+dnl
+dnl 3dup
+dnl ( c b a -- c b a c b a )
+dnl 2 pick 2 pick 2 pick
+define({_3DUP},{
+    pop  AF             ; 1:10      3dup
+    push AF             ; 1:11      3dup
+    push DE             ; 1:11      3dup
+    push HL             ; 1:11      3dup   ( c b a -- c b a c b a )})dnl
 dnl
 dnl
 dnl 4dup

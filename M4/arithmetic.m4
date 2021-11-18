@@ -654,9 +654,9 @@ dnl
 dnl
 dnl
 dnl ( ud u -- remainder quotient )
-define({UMDIVMOD},{define({USE_U32DIV16},{})
+define({UMDIVMOD},{define({USE_U31DIV15},{})
     pop  BC             ; 1:10      {UM/MOD}   ( ud u -- remainder quotient )
-    call U32DIV16       ; 3:17      {UM/MOD}}){}dnl
+    call U31DIV15       ; 3:17      {UM/MOD}}){}dnl
 dnl
 dnl
 dnl
