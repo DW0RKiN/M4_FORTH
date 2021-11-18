@@ -508,9 +508,9 @@ dnl >r
 dnl ( x -- ) ( R: -- x )
 dnl Move x to the return stack.
 define({TO_R},{
-                        ;[9:65]     to_r ( c b a -- c b ) ( R: -- a )
-    ex  (SP), HL        ; 1:19      to_r a . b c
-    ex   DE, HL         ; 1:4       to_r a . c b
+                        ;[9:65]     to_r   ( c b a -- c b ) ( R: -- a )
+    ex  (SP), HL        ; 1:19      to_r   a . b c
+    ex   DE, HL         ; 1:4       to_r   a . c b
     exx                 ; 1:4       to_r
     pop  DE             ; 1:10      to_r
     dec  HL             ; 1:6       to_r
@@ -518,6 +518,21 @@ define({TO_R},{
     dec   L             ; 1:4       to_r
     ld  (HL),E          ; 1:7       to_r
     exx                 ; 1:4       to_r})dnl
+dnl
+dnl
+dnl dup >r
+dnl ( x -- x ) ( R: -- x )
+dnl Copy x to the return stack.
+define({DUP_TO_R},{
+                        ;[8:53]     dup_to_r   ( a -- a ) ( R: -- a )
+    push HL             ; 1:11      dup_to_r
+    exx                 ; 1:4       dup_to_r
+    pop  DE             ; 1:10      dup_to_r
+    dec  HL             ; 1:6       dup_to_r
+    ld  (HL),D          ; 1:7       dup_to_r
+    dec   L             ; 1:4       dup_to_r
+    ld  (HL),E          ; 1:7       dup_to_r
+    exx                 ; 1:4       dup_to_r})dnl
 dnl
 dnl
 dnl r>

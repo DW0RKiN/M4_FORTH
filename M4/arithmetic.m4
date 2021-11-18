@@ -499,6 +499,18 @@ define({_256DIV},{
 dnl
 dnl
 dnl
+dnl S>D
+dnl ( x1 -- sign(x1) x1 )
+define({S_TO_D},{
+    push DE             ; 1:11      S>D   ( x -- d ) == ( x -- sign(x) x )
+    ld    A, H          ; 1:4       S>D
+    add   A, A          ; 1:4       S>D
+    sbc   A, A          ; 1:4       S>D
+    ld    D, A          ; 1:4       S>D
+    ld    E, A          ; 1:4       S>D}){}dnl
+dnl
+dnl
+dnl
 define({PRINT_NIBBLE},{ifelse(eval(TEMP_BIN),{0},{define({TEMP_BIN_OUT},{_0000}TEMP_BIN_OUT)},{dnl
 ___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
 ___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
@@ -624,6 +636,39 @@ ___{}})dnl
 ___{}_BEST_INFO{}dnl
 ___{}_BEST_OUT{}dnl
 })dnl
+dnl
+dnl
+dnl
+dnl ( d n -- floored_remainder floored_quotient )
+define({FMDIVMOD},{define({USE_F32DIV16},{})
+    pop  BC             ; 1:10      {FM/MOD}   ( d n -- floored_remainder floored_quotient )
+    call F32DIV16       ; 3:17      {FM/MOD}}){}dnl
+dnl
+dnl
+dnl
+dnl ( d n -- symmetric_remander symmetric_quotient )
+define({SMDIVREM},{define({USE_S32DIV16},{})
+    pop  BC             ; 1:10      {SM/REM}   ( d n -- symmetric_remander symmetric_quotient )
+    call S32DIV16       ; 3:17      {SM/REM}}){}dnl
+dnl
+dnl
+dnl
+dnl ( ud u -- remainder quotient )
+define({UMDIVMOD},{define({USE_U32DIV16},{})
+    pop  BC             ; 1:10      {UM/MOD}   ( ud u -- remainder quotient )
+    call U32DIV16       ; 3:17      {UM/MOD}}){}dnl
+dnl
+dnl
+dnl
+dnl ( x1 x2 -- d )
+define({MMUL},{define({USE_S16MUL},{})
+    call S16MUL         ; 3:17      M*   ( x1 x2 -- d )}){}dnl
+dnl
+dnl
+dnl
+dnl ( u1 u2 -- ud )
+define({UMMUL},{define({USE_U16MUL},{})
+    call U16MUL         ; 3:17      UM*   ( u1 u2 -- ud )}){}dnl
 dnl
 dnl
 dnl
@@ -1330,6 +1375,13 @@ define({D256DIV},{
     rl    D             ; 2:8       D256/   with sign
     sbc   A, A          ; 1:4       D256/
     ld    D, A          ; 1:4       D256/})dnl
+dnl
+dnl
+dnl
+dnl D>S
+dnl ( 0 x1 -- x1 )
+define({D_TO_S},{
+    pop  DE             ; 1:10      D>S   ( d -- x ) == ( 0 lo -- lo )}){}dnl
 dnl
 dnl
 dnl

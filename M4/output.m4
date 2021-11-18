@@ -3,6 +3,75 @@ define({__},{})dnl
 dnl
 dnl
 dnl
+ifdef({USE_TESTING},{
+;==============================================================================
+; T{ ...max255... -> ...max255... }T
+; ( -- )
+T_OPEN:                 ;           t_open
+    push HL             ; 1:11      t_open
+    ld   (T_EQ_SP), SP  ; 4:20      t_open
+    pop  HL             ; 1:10      t_open
+    ret                 ; 1:10      t_open
+
+; T{ ...max255... -> ...max255... }T
+; ->
+; ( -- )
+T_EQ:                   ;           t_eq
+    push HL             ; 1:11      t_eq
+    ld   (T_CLOSE_B),SP ; 4:20      t_eq
+    ld   (T_CLOSE_C),SP ; 4:20      t_eq
+T_EQ_SP EQU $+1         ;           t_eq
+    ld   HL, 0x0000     ; 3:10      t_eq
+    or    A             ; 1:4       t_eq
+    sbc  HL, SP         ; 2:15      t_eq
+    ld   (T_CLOSE_D),HL ; 3:16      t_eq
+    pop  HL             ; 1:10      t_eq
+    ret                 ; 1:10      t_eq
+
+; T{ ...max255... -> ...max255... }T
+; ( max255 -- )
+T_CLOSE:                ;           t_close
+    ex   DE, HL         ; 1:4       t_close
+    ex  (SP),HL         ; 1:19      t_close   push de
+    ld (T_CLOSE_E), HL  ; 3:16      t_close   save ret
+    push DE             ; 1:11      t_close   push hl
+T_CLOSE_B EQU $+1       ;           t_close
+    ld   HL, 0x0000     ; 3:10      t_close
+T_CLOSE_D EQU $+1       ;           t_close
+    ld   DE, 0x0000     ; 3:10      t_close
+    or    A             ; 1:4       t_close
+    sbc  HL, SP         ; 2:15      t_close
+    or    A             ; 1:4       t_close
+    sbc  HL, DE         ; 2:15      t_close{}STRING_Z({"WRONG NUMBER OF RESULTS", 0x0D})
+    call nz, PRINT_STRING_Z; 3:10/17 t_close
+    rr    D             ; 2:8       t_close
+    rr    E             ; 2:8       t_close
+    ld    B, E          ; 1:4       t_close
+    ld    C, 0x00       ; 2:7       t_close
+T_CLOSE_C EQU $+1       ;           t_close
+    ld   HL, 0x0000     ; 3:10      t_close
+    pop  DE             ; 1:10      t_close
+    ld    A,(HL)        ; 1:7       t_close
+    xor   E             ; 1:4       t_close
+    or    C             ; 1:4       t_close
+    ld    C, A          ; 1:4       t_close
+    inc  HL             ; 1:6       t_close
+    ld    A,(HL)        ; 1:7       t_close
+    xor   D             ; 1:4       t_close
+    or    C             ; 1:4       t_close
+    ld    C, A          ; 1:4       t_close
+    inc  HL             ; 1:6       t_close
+    djnz $-11           ; 2:8/13    t_close{}STRING_Z({"INCORRECT RESULT", 0x0D})
+    call nz, PRINT_STRING_Z; 3:10/17 t_close
+    ld   HL, (T_EQ_SP)  ; 3:16      t_close
+    ld   SP, HL         ; 1:6       t_close
+    pop  HL             ; 1:10      t_close
+    pop  DE             ; 1:10      t_close
+T_CLOSE_E EQU $+1       ;           t_close
+    jp  0x0000          ; 3:10      t_close}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_S32},{define({USE_DNEGATE},{}){}define({USE_U32},{})
 ;==============================================================================
 ; ( hi lo -- )
@@ -357,6 +426,173 @@ ifdef({USE_UDIV},{
 ;==============================================================================
 include(M4PATH{}divmul/udiv.m4){}dnl
 })dnl
+dnl
+dnl
+dnl
+ifdef({USE_S16MUL},{define({USE_U16MUL},{})
+;==============================================================================
+S16MUL:
+; ( x1 x2 -- d )
+; DE       * HL        = DE * HL
+; DE       *(HL-65536) = DE * HL - DE<<16
+;(DE-65536)* HL        = DE * HL          - HL<<16
+;(DE-65536)*(HL-65536) = DE * HL - DE<<16 - HL<<16 + 0
+;   DEHL = DE * HL
+; Out: A = 0, BC = HL, DEHL = DE * HL
+    push DE             ; 1:11      s16mul
+    push HL             ; 1:11      s16mul
+    call U16MUL         ; 3:17      s16mul
+    pop  AF             ; 1:10      s16mul   HL original
+    pop  BC             ; 1:10      s16mul   DE original
+    push HL             ; 1:11      s16mul   save LO
+    ex   DE, HL         ; 1:4       s16mul
+    push AF             ; 1:11      s16mul   HL
+    or    A             ; 1:4       s16mul   sign HL original
+    jp    p, $+5        ; 3:10      s16mul
+    sbc  HL, BC         ; 2:15      s16mul   hi(result) - DE original
+    ld    A, B          ; 1:4       s16mul
+    or    A             ; 1:4       s16mul   sign DE original
+    pop  BC             ; 1:4       s16mul
+    jp    p, $+5        ; 3:10      s16mul
+    sbc  HL, BC         ; 2:15      s16mul   hi(result) - HL original
+    ex   DE, HL         ; 1:4       s16mul
+    pop  HL             ; 1:10      s16mul   load LO
+    ret                 ; 1:10      s16mul}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_U16MUL},{
+;==============================================================================
+U16MUL:
+; ( u1 u2 -- ud )
+;   DEHL = DE * HL
+; Out: A = 0, BC = HL, DEHL = DE * HL
+    ld    B, H          ; 1:4       u16mul
+    ld    C, L          ; 1:4       u16mul
+    ld   HL, 0x0000     ; 3:10      u16mul
+    ld    A, 0x10       ; 2:7       u16mul
+    add  HL, HL         ; 1:11      u16mul
+    rl    E             ; 2:8       u16mul
+    rl    D             ; 2:8       u16mul
+    jr   nc, $+6        ; 2:7/12    u16mul
+    add  HL, BC         ; 1:11      u16mul
+    jr   nc, $+3        ; 2:7/12    u16mul
+    inc  DE             ; 1:6       u16mul
+    dec   A             ; 1:4       u16mul
+    jp   nz, $-12       ; 3:10      u16mul
+    ret                 ; 1:10      u16mul}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_F32DIV16},{define({USE_S32DIV16},{})
+;==============================================================================
+F32DIV16:
+; ( lo n -- floored_remainder floored_quotient ), BC = hi
+; fm/mod ( d n -- rem quot )
+; ( d x -- d%x d/x )
+    push HL             ; 1:11      f32div16    ret n DE=lo HL=n, BC = hi
+    call  S32DIV16      ; 3:17      f32div16
+    pop  BC             ; 1:10      f32div16    n
+    ld    A, D          ; 1:4       f32div16
+    or    E             ; 1:4       f32div16
+    ret   z             ; 1:5/11    f32div16    remainder is 0
+    ld    A, D          ; 1:4       f32div16
+    xor   B             ; 1:4       f32div16
+    ret   p             ; 1:5/11    f32div16    remainder has a same sign than the divisor
+    ex   DE, HL         ; 1:4       f32div16
+    add  HL, BC         ; 1:11      f32div16
+    ex   DE, HL         ; 1:4       f32div16
+    dec  HL             ; 1:6       f32div16
+    ret                 ; 1:10      f32div16}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_S32DIV16},{define({USE_U32DIV16},{})
+;==============================================================================
+S32DIV16:
+; ( lo n -- symmetric_remainder symmetric_quotient ), BC = hi
+; sm/rem ( d n -- rem quot )
+; ( d x -- d%x d/x )
+
+    ld    A, B          ; 1:4       s32div16
+    xor   H             ; 1:4       s32div16
+    push AF             ; 1:11      s32div16   save sign product
+    xor   H             ; 1:4       s32div16
+    push AF             ; 1:11      s32div16   save sign "d" = sign remainder
+    jp    p, $+17       ; 3:10      s32div16
+    xor   A             ; 1:4       s32div16   negate_32
+    sub   E             ; 1:4       s32div16   negate_32
+    ld    E, A          ; 1:4       s32div16   negate_32
+    ld    A, 0x00       ; 2:7       s32div16   negate_32
+    sbc   A, D          ; 1:4       s32div16   negate_32
+    ld    D, A          ; 1:4       s32div16   negate_32
+    ld    A, 0x00       ; 2:7       s32div16   negate_32
+    sbc   A, C          ; 1:4       s32div16   negate_32
+    ld    C, A          ; 1:4       s32div16   negate_32
+    sbc   A, B          ; 1:4       s32div16   negate_32
+    sub   C             ; 1:4       s32div16   negate_32
+    ld    B, A          ; 1:4       s32div16   negate_32
+    xor   A             ; 1:4       s32div16
+    or    H             ; 1:4       s32div16   sign "n"
+    jp    p, $+9        ; 3:10      s32div16
+    xor   A             ; 1:4       s32div16   negate
+    sub   L             ; 1:4       s32div16   negate
+    ld    L, A          ; 1:4       s32div16   negate
+    sbc   A, H          ; 1:4       s32div16   negate
+    sub   L             ; 1:4       s32div16   negate
+    ld    H, A          ; 1:4       s32div16   negate
+    call  U32DIV16      ; 3:17      s32div16
+    pop   AF            ; 1:10      s32div16   load sign remainder
+    jp    p, $+9        ; 3:10      s32div16
+    xor   A             ; 1:4       s32div16   negate
+    sub   E             ; 1:4       s32div16   negate
+    ld    E, A          ; 1:4       s32div16   negate
+    sbc   A, D          ; 1:4       s32div16   negate
+    sub   E             ; 1:4       s32div16   negate
+    ld    D, A          ; 1:4       s32div16   negate
+    pop   AF            ; 1:10      s32div16   load sign product
+    ret   p             ; 1:5/11    s32div16
+    xor   A             ; 1:4       s32div16   negate
+    sub   L             ; 1:4       s32div16   negate
+    ld    L, A          ; 1:4       s32div16   negate
+    sbc   A, H          ; 1:4       s32div16   negate
+    sub   L             ; 1:4       s32div16   negate
+    ld    H, A          ; 1:4       s32div16   negate
+    ret                 ; 1:10      s32div16}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_U32DIV16},{
+;==============================================================================
+U32DIV16:
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" < 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLIX / BC, DE = HLIX % BC
+    ld  IXl, E          ; 2:8       u32div16
+    ld  IXh, D          ; 2:8       u32div16   lo("ud")
+    ld    D, B          ; 1:4       u32div16
+    ld    E, C          ; 1:4       u32div16
+    ld    B, H          ; 1:4       u32div16
+    ld    C, L          ; 1:4       u32div16   BC = "u"
+    ex   DE, HL         ; 1:4       u32div16   HL = hi("ud")
+    ld    A, 0x10       ; 2:7       u32div16
+U32DIV16_L              ;           u32div16
+    sla   E             ; 2:8       u32div16
+    rl    D             ; 2:8       u32div16    DE << 1
+    add  IX, IX         ; 2:15      u32div16   HLIX << 1
+    adc  HL, HL         ; 2:15      u32div16   HLIX << 1
+    sbc  HL, BC         ; 2:15      u32div16   HL/BC
+    inc   E             ; 1:4       u32div16
+    jr   nc, $+4        ; 2:7/12    u32div16
+    add  HL, BC         ; 1:11      u32div16
+    dec   E             ; 1:4       u32div16
+    dec   A             ; 1:4       u32div16
+    jr   nz, U32DIV16_L ; 12/7      u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16}){}dnl
 dnl
 dnl
 dnl

@@ -361,8 +361,7 @@ define({PUSH_MUL_MK3},{ifelse(eval($1==0),{1},{
 ___{}define({PUSH_MUL_MK3_OUT},{
     ld   HL{,} 0x0000     ; 3:10      $1 *})dnl
 ___{}define({PUSH_MUL_MK3_COST},2563)dnl
-___{}define({PUSH_MUL_MK3_INFO},PUSH_MUL_INFO_PLUS(2563,$1,{Variant mk3: HL * zero}))dnl
-},
+___{}define({PUSH_MUL_MK3_INFO},PUSH_MUL_INFO_PLUS(2563,$1,{Variant mk3: HL * zero}))},
 {
 ___{}PUSH_MUL_MK3_CREATE_TOKENS($1)dnl
 ___{}TOKENS_HL_ADD_BC_MUL($1){}dnl
