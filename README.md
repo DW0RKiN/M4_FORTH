@@ -181,6 +181,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>       Original         |<sub>    M4 FORTH         |<sub>  Data stack                  |<sub> Return address stack |
 | :-------------------------: | :----------------------: | :-------------------------------- | :------------------------ |
 |<sub>           >r           |<sub>         TO_R        |<sub>         ( x1 -- )            |<sub>        ( -- x1 )     |
+|<sub>         dup >r         |<sub>       DUP_TO_R      |<sub>         ( x1 -- x1 )         |<sub>        ( -- x1 )     |
 |<sub>           r>           |<sub>        R_FROM       |<sub>            ( -- x1 )         |<sub>     ( x1 -- )        |
 |<sub>           r@           |<sub>        R_FETCH      |<sub>            ( -- x1 )         |<sub>     ( x1 -- x1 )     |
 |<sub>         rdrop          |<sub>         RDROP       |<sub>            ( -- )            |<sub>     ( x1 -- )        |
@@ -231,6 +232,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>     2/     |<sub>    _2DIV     |<sub>                |<sub>      ( x1 -- x1/2 )       |
 |<sub>    256*    |<sub>   _256MUL    |<sub>                |<sub>      ( x1 -- x1*256 )     |
 |<sub>    256/    |<sub>   _256DIV    |<sub>                |<sub>      ( x1 -- x1/256 )     |
+|<sub>    s>d     |<sub>    S_TO_D    |<sub>                |<sub>      ( x1 -- 0 x1 )       |
 
 #### 32bit
 
@@ -259,6 +261,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>    D2/     |<sub>    D2DIV     |<sub>                |<sub>       ( d -- d/2 )        |
 |<sub>   D256*    |<sub>   D256MUL    |<sub>                |<sub>       ( d -- d*256 )      |
 |<sub>   D256/    |<sub>   D256DIV    |<sub>                |<sub>       ( d -- d/256 )      |
+|<sub>    d>s     |<sub>    D_TO_S    |<sub>                |<sub>    ( 0 x1 -- x1 )         |
 
 ### Floating-point
 
