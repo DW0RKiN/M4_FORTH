@@ -603,7 +603,7 @@ U31DIV15:               ;[26:48+16*(quot bit 0:1=81:71)]
     ld    L, C          ; 1:4       u31div15
     ld    C, A          ; 1:4       u31div15
     ld    A, H          ; 1:4       u31div15
-    ld    H, B          ; 1:4       u31div15   HLAC = "ud"   
+    ld    H, B          ; 1:4       u31div15   HLAC = "ud"
     ld    B, 0x10       ; 2:7       u31div15
 U31DIV15_L              ;           u31div15
     sla   C             ; 2:8       u31div15
@@ -637,10 +637,10 @@ U32DIV16:               ;[36:60+16*(quot bit 0:1=88:69/78)]
     ld    L, C          ; 1:4       u32div16
     ld    C, A          ; 1:4       u32div16
     ld    A, H          ; 1:4       u32div16
-    ld    H, B          ; 1:4       u32div16   HLAC = "ud"   
+    ld    H, B          ; 1:4       u32div16   HLAC = "ud"
     ld    B, 0x10       ; 2:7       u32div16
     jr   U32DIV16_L     ; 2:12      u32div16
-U32DIV16_C              ;           u32div16   
+U32DIV16_C              ;           u32div16
     sbc  HL, DE         ; 2:15      u32div16   1HL/DE
     inc   C             ; 1:4       u32div16
     dec   B             ; 1:4       u32div16
