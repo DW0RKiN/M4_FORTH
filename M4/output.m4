@@ -588,14 +588,95 @@ S32DIV16:
 dnl
 dnl
 dnl
-ifdef({USE_U31DIV15},{
+ifdef({USE_U31DIV15},{ifelse(TYP_U31DIV15,{fast},{
 ;==============================================================================
-U31DIV15:               ;[26:48+16*(quot bit 0:1=81:71)]
-; 1184..1344 tclock
+U31DIV15:               ;[86:604+16*(quot bit 0:1=22:12)]
+; 796..956 tclock
+; # fast version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
 ; ( lo u -- remainder quotient ), BC = hi
 ; um/mod ( ud u -- rem quot )
 ; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" < 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
+; HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLDE / BC, DE = HLDE % BC
+    xor   A             ; 1:4       u31div15
+    sub   L             ; 1:4       u31div15
+    ld    L, C          ; 1:4       u31div15
+    ld    C, A          ; 1:4       u31div15
+    sbc   A, A          ; 1:4       u31div15
+    sub   H             ; 1:4       u31div15
+    ld    H, B          ; 1:4       u31div15
+    ld    B, A          ; 1:4       u31div15   BC = -"u"
+U31DIV15_L              ;           u31div15
+    ld    A, D          ; 1:4       u31div15
+    call U31DIV15_BYTE  ; 3:17      u31div15
+    ld    D, A          ; 1:4       u31div15
+    ld    A, E          ; 1:4       u31div15
+    call U31DIV15_BYTE  ; 3:17      u31div15
+    ld    E, A          ; 1:4       u31div15
+    ex   DE, HL         ; 1:4       u31div15
+    ret                 ; 1:10      u31div15
+
+U31DIV15_BYTE:          ;[66:254+8*(quot bit 0:1=22:12)]
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    ret                 ; 1:10      u31div15},
+TYP_U31DIV15,{small},{
+;==============================================================================
+U31DIV15:               ;[26:48+16*(quot bit 0:1=81:71)]
+; 1184..1344 tclock
+; # small version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
 ; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ; HL = HLBC / DE, DE = HLBC % DE
     ex   DE, HL         ; 1:4       u31div15
@@ -618,20 +699,70 @@ U31DIV15_L              ;           u31div15
     ld    E, C          ; 1:4       u31div15
     ld    D, A          ; 1:4       u31div15
     ex   DE, HL         ; 1:4       u31div15
-    ret                 ; 1:10      u31div15}){}dnl
-dnl
-dnl
-dnl
-ifdef({USE_U32DIV16},{
+    ret                 ; 1:10      u31div15},
+{
 ;==============================================================================
-U32DIV16:               ;[36:60+16*(quot bit 0:1=88:69/78)]
-; 1308..1468 tclock
+U31DIV15:               ;[44:206+8*(quot bit 00,01,10,11:112,93,102,83)]
+; 870..950..1022..1102 tclock
+; # default version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
 ; ( lo u -- remainder quotient ), BC = hi
 ; um/mod ( ud u -- rem quot )
 ; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL
+; HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
 ; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLBC / DE, DE = HLBC % DE
+; HL = HLDE / BC, DE = HLDE % BC
+    xor   A             ; 1:4       u31div15
+    sub   L             ; 1:4       u31div15
+    ld    L, C          ; 1:4       u31div15
+    ld    C, A          ; 1:4       u31div15
+    sbc   A, A          ; 1:4       u31div15
+    sub   H             ; 1:4       u31div15
+    ld    H, B          ; 1:4       u31div15
+    ld    B, A          ; 1:4       u31div15   BC = -"u"
+U31DIV15_L              ;           u31div15
+    ld    A, D          ; 1:4       u31div15
+    call U31DIV15_BYTE  ; 3:17      u31div15
+    adc   A, A          ; 1:4       u31div15
+    ld    D, A          ; 1:4       u31div15
+    ld    A, E          ; 1:4       u31div15
+    call U31DIV15_BYTE  ; 3:17      u31div15
+    adc   A, A          ; 1:4       u31div15
+    ld    E, A          ; 1:4       u31div15
+    ex   DE, HL         ; 1:4       u31div15
+    ret                 ; 1:10      u31div15
+
+U31DIV15_BYTE:          ;[22:51+4*(quot bit 00,01,10,11:112,93,102,83)]
+    call  $+3           ; 3:17      u31div15   4x
+    call  $+3           ; 3:17      u31div15   2x
+
+U31DIV15_2BIT:          ;[16:quot bit 00,01,10,11:112,93,102,83]
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    jr    c, $+4        ; 2:7/12    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+
+    adc   A, A          ; 1:4       u31div15     A << 1
+    adc  HL, HL         ; 2:15      u31div15   HLA << 1
+    add  HL, BC         ; 1:11      u31div15   HL/BC
+    ret   c             ; 1:5/11    u31div15
+    sbc  HL, BC         ; 2:15      u31div15
+    ret                 ; 1:10      u31div15}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_U32DIV16},{ifelse(TYP_U32DIV16,{small},{
+;==============================================================================
+U32DIV16:               ;[37:60+16*(quot bit 0:1/carry=88:78/73)]
+; 1308..1468 tclock, average 1388 tclock
+; # small version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLAC / DE, DE = HLAC % DE
     ex   DE, HL         ; 1:4       u32div16
     ld    A, L          ; 1:4       u32div16
     ld    L, C          ; 1:4       u32div16
@@ -641,10 +772,11 @@ U32DIV16:               ;[36:60+16*(quot bit 0:1=88:69/78)]
     ld    B, 0x10       ; 2:7       u32div16
     jr   U32DIV16_L     ; 2:12      u32div16
 U32DIV16_C              ;           u32div16
+    or    A             ; 1:4       u32div16
     sbc  HL, DE         ; 2:15      u32div16   1HL/DE
     inc   C             ; 1:4       u32div16
     dec   B             ; 1:4       u32div16
-    jr   nz, U32DIV16_E ; 2:7/12    u32div16
+    jr    z, U32DIV16_E ; 2:7/12    u32div16
 U32DIV16_L              ;           u32div16
     sla   C             ; 2:8       u32div16
     rla                 ; 1:4       u32div16     AC << 1
@@ -660,7 +792,197 @@ U32DIV16_E:             ;           u32div16
     ld    E, C          ; 1:4       u32div16
     ld    D, A          ; 1:4       u32div16
     ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16},
+TYP_U32DIV16,{test},{
+;==============================================================================
+U32DIV16:               ;[42:60+16*(quot bit 0:1/carry=83:73/75)]
+; 1228..1388 tclock, average 1308 tclock
+; # test version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLAC / DE, DE = HLAC % DE
+    ex   DE, HL         ; 1:4       u32div16
+    ld    A, L          ; 1:4       u32div16
+    ld    L, C          ; 1:4       u32div16
+    ld    C, A          ; 1:4       u32div16
+    ld    A, H          ; 1:4       u32div16
+    ld    H, B          ; 1:4       u32div16   HLAC = "ud"
+    ld    B, 0x10       ; 2:7       u32div16
+    jr   U32DIV16_L     ; 2:12      u32div16
+U32DIV16_0              ;           u32div16
+    add  HL, DE         ; 1:11      u32div16
+    dec   B             ; 1:4       u32div16
+    jr    z, U32DIV16_E ; 2:7/12    u32div16
+U32DIV16_L              ;           u32div16
+    sla   C             ; 2:8       u32div16
+    rla                 ; 1:4       u32div16     AC << 1
+    adc  HL, HL         ; 2:15      u32div16   HLAC << 1
+    jr    c, U32DIV16_C ; 2:7/12    u32div16
+    sbc  HL, DE         ; 2:15      u32div16   0HL/DE
+    jr    c, U32DIV16_0 ; 2:7/12    u32div16
+    inc   C             ; 1:4       u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+U32DIV16_E:             ;           u32div16
+    ld    E, C          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16
+U32DIV16_C              ;           u32div16
+    or    A             ; 1:4       u32div16
+    sbc  HL, DE         ; 2:15      u32div16   1HL/DE
+    inc   C             ; 1:4       u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+    ld    E, C          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16},
+TYP_U32DIV16,{test2},{
+;==============================================================================
+U32DIV16:               ;[45:80+16*(quot bit 0:1/carry=83:69/67)]
+; 1184..1408 tclock, average 1296 tclock
+; # test2 version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLAC / DE, DE = HLAC % DE
+    xor   A             ; 1:4       u32div16
+    sub   L             ; 1:4       u32div16
+    ld    L, C          ; 1:4       u32div16
+    ld    C, E          ; 1:4       u32div16
+    ld    E, A          ; 1:4       u32div16
+    sbc   A, A          ; 1:4       u32div16
+    sub   H             ; 1:4       u32div16
+    ld    H, B          ; 1:4       u32div16
+    ld    B, D          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16   DE = -"u"
+    ld    A, B          ; 1:4       u32div16
+    ld    B, 0x10       ; 2:7       u32div16
+    jr   U32DIV16_L     ; 2:12      u32div16
+U32DIV16_0              ;           u32div16
+    sbc  HL, DE         ; 2:15      u32div16
+    dec   B             ; 1:4       u32div16
+    jr    z, U32DIV16_E ; 2:7/12    u32div16
+U32DIV16_L              ;           u32div16
+    sla   C             ; 2:8       u32div16
+    rla                 ; 1:4       u32div16     AC << 1
+    adc  HL, HL         ; 2:15      u32div16   HLAC << 1
+    jr    c, U32DIV16_C ; 2:7/12    u32div16
+    add  HL, DE         ; 1:11      u32div16   0HL/DE
+    jr   nc, U32DIV16_0 ; 2:7/12    u32div16
+    inc   C             ; 1:4       u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+U32DIV16_E:             ;           u32div16
+    ld    E, C          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16
+U32DIV16_C              ;           u32div16
+    add  HL, DE         ; 1:11      u32div16   1HL/DE
+    inc   C             ; 1:4       u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+    ld    E, C          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16},
+TYP_U32DIV16,{test3},{
+;==============================================================================
+U32DIV16:               ;[39:83+16*(quot bit 0:1/carry=80:70/67)]
+; 1203..1363 tclock, average 1283 tclock
+; # test3 version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLAC / DE, DE = HLAC % DE
+    xor   A             ; 1:4       u32div16
+    sub   L             ; 1:4       u32div16
+    ld    L, C          ; 1:4       u32div16
+    ld    C, E          ; 1:4       u32div16
+    ld    E, A          ; 1:4       u32div16
+    sbc   A, A          ; 1:4       u32div16
+    sub   H             ; 1:4       u32div16
+    ld    H, B          ; 1:4       u32div16
+    ld    B, D          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16   DE = -"u"
+    ld    A, B          ; 1:4       u32div16
+    ld    B, 0x10       ; 2:7       u32div16
+U32DIV16_L              ;           u32div16
+    rl    C             ; 2:8       u32div16
+    rla                 ; 1:4       u32div16     AC << 1
+    adc  HL, HL         ; 2:15      u32div16   HLAC << 1
+    jr    c, U32DIV16_C ; 2:7/12    u32div16
+    add  HL, DE         ; 1:11      u32div16   0HL/DE
+    jr    c, $+4        ; 2:7/12    u32div16
+    sbc  HL, DE         ; 2:15      u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+U32DIV16_E:             ;           u32div16
+    ld    E, C          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    adc  HL, HL         ; 2:15      u32div16
+    ret                 ; 1:10      u32div16
+U32DIV16_C              ;           u32div16
+    add  HL, DE         ; 1:11      u32div16   1HL/DE
+    scf                 ; 1:4       u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+    jr   U32DIV16_E     ; 2:12      u32div16},
+{
+;==============================================================================
+U32DIV16:               ;[46:144+16*(quot bit 0:1/carry=72:62/59)]
+; 1136..1296 tclock, average 1216 tclock
+; # default version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+; ( lo u -- remainder quotient ), BC = hi
+; um/mod ( ud u -- rem quot )
+; ( ud u -- ud%u ud/u )
+; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+; HL = HLAC / DE, DE = HLAC % DE
+    xor   A             ; 1:4       u32div16
+    sub   L             ; 1:4       u32div16
+    ld    L, C          ; 1:4       u32div16
+    ld    C, E          ; 1:4       u32div16
+    ld    E, A          ; 1:4       u32div16
+    sbc   A, A          ; 1:4       u32div16
+    sub   H             ; 1:4       u32div16
+    ld    H, B          ; 1:4       u32div16
+    ld    B, D          ; 1:4       u32div16
+    ld    D, A          ; 1:4       u32div16   DE = -"u"
+    ld    A, B          ; 1:4       u32div16
+    call U32DIV16_BYTE  ; 3:17      u32div16
+    adc   A, A          ; 1:4       u32div16
+    ld    B, A          ; 1:4       u32div16
+    ld    A, C          ; 1:4       u32div16
+    ld    C, B          ; 1:4       u32div16
+    call U32DIV16_BYTE  ; 3:17      u32div16
+    adc   A, A          ; 1:4       u32div16
+    ld    E, A          ; 1:4       u32div16
+    ld    D, C          ; 1:4       u32div16
+    ex   DE, HL         ; 1:4       u32div16
+    ret                 ; 1:10      u32div16
+
+U32DIV16_BYTE:          ;[20:12+8*(quot bit 0:1/carry=72:62/59)]
+    ld    B, 0x08       ; 2:7       u32div16
+U32DIV16_L              ;           u32div16
+    rla                 ; 1:4       u32div16     AC << 1
+    adc  HL, HL         ; 2:15      u32div16   HLAC << 1
+    jr    c, U32DIV16_C ; 2:7/12    u32div16
+    add  HL, DE         ; 1:11      u32div16   0HL/DE
+    jr    c, $+4        ; 2:7/12    u32div16
+    sbc  HL, DE         ; 2:15      u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
+    ret                 ; 1:10      u32div16
+U32DIV16_C              ;           u32div16
+    add  HL, DE         ; 1:11      u32div16   1HL/DE
+    scf                 ; 1:4       u32div16
+    djnz U32DIV16_L     ; 2:13/8    u32div16
     ret                 ; 1:10      u32div16}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
