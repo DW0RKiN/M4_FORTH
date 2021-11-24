@@ -194,6 +194,15 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 
 ### Arithmetic
 
+Look out! A symmetric variant is implemented for the division and remainder functions after division. So the resulting value is rounded up to zero. But FORTH uses floored divisions, which it always rounds down. For negative numbers, then:
+
+    FORTH-83 standard
+    7 -3 /mod --> -2 -3
+    -7 3 /mod -->  2 -3
+    M4 FORTH
+    7 -3 /mod -->  1 -2
+    -7 3 /mod --> -1 -2
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/arithmetic.m4
 
 Support for fast multiplication or division by a constant is here:
