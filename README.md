@@ -709,6 +709,57 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/loop/
 
+In the test, I came across a link between the word WHILE and IF. This is the construction
+
+    ( 1 --  1 345 )
+    ( 2 -- 2 345 )
+    ( 3 -- 3 4 5 123 )
+    ( 4 -- 4 5 123 )
+    ( 5 -- 5 123 )
+    
+    : xxx
+    BEGIN 
+        DUP 2 >
+    WHILE 
+        DUP 5 < 
+        WHILE 
+            DUP 1+ 
+        REPEAT 
+        123 
+    ELSE 
+        345 
+    THEN ;
+which is equivalent to M4 FORTH and FORTH standard
+
+    : xxxx
+        DUP 2 >
+        IF 
+            BEGIN 
+                DUP 5 < 
+            WHILE 
+                DUP 1+ 
+            REPEAT 
+            123 
+        ELSE 
+            345 
+        THEN ;
+And the last variant is only valid for M4 FORTH
+    
+    : xxx
+    BEGIN 
+        DUP 2 >
+    IF 
+        DUP 5 < 
+        WHILE 
+            DUP 1+ 
+        REPEAT 
+        123 
+    ELSE 
+        345 
+    THEN ;
+
+Multiple WHILE is possible in M4 FORTH because they are independent of each other and apply to the last current BEGIN .. UNTIL/REPEAT/AGAIN loop.
+
     PUSH2(5,0)  DO        I DOT PUTCHAR({','})          LOOP       --> " 0, 1, 2, 3, 4,"
                 XDO(5,0)  I DOT PUTCHAR({','})         XLOOP       --> " 0, 1, 2, 3, 4,"
                 XDO(5,0)  I DOT PUTCHAR({','}) PUSH_ADDXLOOP(2)    --> " 0, 2, 4,"
