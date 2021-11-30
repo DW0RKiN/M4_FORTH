@@ -11,9 +11,12 @@ define({IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pu
 dnl
 dnl
 dnl
-define({ELSE},{
+define({ELSE},{ifelse(ELSE_STACK,{ELSE_STACK},{
+    .error {ELSE without IF!
+    M4 FORTH does not support the BEGIN WHILE WHILE UNTIL ELSE THEN construction. But it supports the identical design BEGIN IF WHILE UNTIL ELSE THEN.}})
     jp   endif{}THEN_STACK       ; 3:10      else
-else{}ELSE_STACK:popdef({ELSE_STACK})})dnl
+else{}ELSE_STACK:popdef({ELSE_STACK}){}dnl
+})dnl
 dnl
 dnl
 define(THEN,{
