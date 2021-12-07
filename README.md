@@ -359,6 +359,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>      DU<     |<sub>         DULT        |<sub>                     |<sub> ( du1 du2 -- flag )   |<sub> f=(du1 < du2)
 ### Device
 
+I added two non-standard extensions for the chains. One for strings that end with a null character and the other for strings that end with an inverse MSB, as ZX ROM can do.
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
 |<sub> Original   |<sub>    M4 FORTH     |<sub>   Optimization   |<sub>  Data stack              |<sub>   Comment    |
@@ -381,6 +383,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub> ." Hello"  |<sub> PRINT({"Hello"})|<sub>                  |<sub>          ( -- )          |<sub>              |
 |<sub> .( Hello)  |<sub>                 |<sub>PRINT_Z({"Hello"})|<sub>          ( -- )          |<sub>C-style string|
 |<sub> ." Hello"  |<sub>                 |<sub>PRINT_Z({"Hello"})|<sub>          ( -- )          |<sub>C-style string|
+|<sub> .( Hello)  |<sub>                 |<sub>PRINT_I({"Hello"})|<sub>          ( -- )          |<sub>msb string end|
+|<sub> ." Hello"  |<sub>                 |<sub>PRINT_I({"Hello"})|<sub>          ( -- )          |<sub>msb string end|
 |<sub> s" Hello"  |<sub>STRING({"Hello"})|<sub>                  |<sub>          ( -- addr n )   |<sub>              |
 |<sub>     key    |<sub>       KEY       |<sub>                  |<sub>          ( -- key )      |<sub>              |
 |<sub>   accept   |<sub>     ACCEPT      |<sub>                  |<sub> ( addr max -- loaded )   |<sub>              |
