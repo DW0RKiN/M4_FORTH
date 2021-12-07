@@ -247,8 +247,8 @@ dnl ( -- )
 dnl print string ending with inverted most significant bit
 define({PRINT_I},{dnl
 __{}ifelse(dnl
-__{}regexp({$*},{^\(.+\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
-__{}__{}{_PRINT_I(regexp({$*},{^\(.+\)"\s*,\s*\("[^"]"\)\s*$},{{\1",\2 + 0x80}}))},
+__{}regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
+__{}__{}{_PRINT_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{\1\2 + 0x80}}))},
 __{}regexp({$*},{"\s*$},{"text"}),{"text"},
 __{}__{}{_PRINT_I(regexp({$*},{^\(.+\)\(.\)"\s*$},{{\1","\2"+0x80}}))},
 __{}{dnl
@@ -308,8 +308,8 @@ dnl ( -- )
 dnl store inverted_msb-terminated string
 define({STRING_I},{dnl
 __{}ifelse(dnl
-__{}regexp({$*},{^\(.+\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
-__{}__{}{_STRING_I(regexp({$*},{^\(.+\)"\s*,\s*\("[^"]"\)\s*$},{{\1",\2 + 0x80}}))},
+__{}regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
+__{}__{}{_STRING_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{\1",\2 + 0x80}}))},
 __{}regexp({$*},{"\s*$},{"text"}),{"text"},
 __{}__{}{_STRING_I(regexp({$*},{^\(.+\)\(.\)"\s*$},{{\1","\2"+0x80}}))},
 __{}{dnl

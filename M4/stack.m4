@@ -367,7 +367,7 @@ __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   HL, format({%-11s},$2); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push2($1,$2)
 __{}    ld    D, L          ; 1:4       push2($1,$2)
 __{}    ld    E, H          ; 1:4       push2($1,$2)},
-__{}{$#
+__{}{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
