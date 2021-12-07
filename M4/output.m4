@@ -72,6 +72,85 @@ T_CLOSE_E EQU $+1       ;           t_close
 dnl
 dnl
 dnl
+ifdef({USE_U32BCD},{
+BIN32BCD:               ;[122:]     bin32bcd
+    push HL             ; 1:11      bin32bcd
+    push DE             ; 1:11      bin32bcd
+    push DE             ; 1:11      bin32bcd
+    ld    B, H          ; 1:4       bin32bcd
+    ld    C, L          ; 1:4       bin32bcd
+    ld   HL, BIN32BCD_D ; 3:10      bin32bcd
+    ld    A, C          ; 1:4       bin32bcd
+    call BIN32BCD_LO    ; 3:17      bin32bcd
+    ld    A, C          ; 1:4       bin32bcd
+    call BIN32BCD_HI    ; 3:17      bin32bcd
+    ld    A, B          ; 1:4       bin32bcd
+    call BIN32BCD_LO    ; 3:17      bin32bcd
+    ld    A, B          ; 1:4       bin32bcd
+    call BIN32BCD_HI    ; 3:17      bin32bcd
+    pop  BC             ; 1:10      bin32bcd
+    ld    A, C          ; 1:4       bin32bcd
+    call BIN32BCD_LO    ; 3:17      bin32bcd
+    ld    A, C          ; 1:4       bin32bcd
+    call BIN32BCD_HI    ; 3:17      bin32bcd
+    ld    A, B          ; 1:4       bin32bcd
+    call BIN32BCD_LO    ; 3:17      bin32bcd
+    ld    A, B          ; 1:4       bin32bcd
+    call BIN32BCD_HI    ; 3:17      bin32bcd
+    pop  DE             ; 1:10      bin32bcd
+    pop  HL             ; 1:10      bin32bcd
+    ret                 ; 1:10      bin32bcd
+
+BIN32BCD_HI:            ;           bin32bcd
+    rra                 ; 1:4       bin32bcd
+    rra                 ; 1:4       bin32bcd
+    rra                 ; 1:4       bin32bcd
+    rra                 ; 1:4       bin32bcd
+BIN32BCD_LO:            ;           bin32bcd
+    push BC             ; 1:11      bin32bcd
+    and  0x0f           ; 2:7       bin32bcd
+    ld    C, A          ; 1:4       bin32bcd
+    jr   $+7            ; 2:12      bin32bcd
+BIN32BCD1:              ;           bin32bcd
+    inc  HL             ; 1:6       bin32bcd
+    inc  HL             ; 1:6       bin32bcd
+    inc  HL             ; 1:6       bin32bcd
+    inc  HL             ; 1:6       bin32bcd
+    inc  HL             ; 1:6       bin32bcd
+    ld   DE, BIN32BCDRES; 3:10      bin32bcd
+    ld    B, 0x05       ; 2:7       bin32bcd
+BIN32BCD2:              ;           bin32bcd
+    ld    A,(DE)        ; 1:7       bin32bcd
+    adc   A,(HL)        ; 1:7       bin32bcd
+    daa                 ; 1:4       bin32bcd
+    ld  (DE),A          ; 1:7       bin32bcd
+    dec  HL             ; 1:6       bin32bcd
+    dec  DE             ; 1:6       bin32bcd
+    djnz BIN32BCD2      ; 2:8/13    bin32bcd
+    dec   C             ; 1:4       bin32bcd
+    jp   nz, BIN32BCD1  ; 2:7/12    bin32bcd
+    pop  BC             ; 1:10      bin32bcd
+    ret                 ; 1:10      bin32bcd
+
+                        ; 5:0
+    DB 0x00, 0x00, 0x00, 0x00
+BIN32BCDRES:    
+    DB 0x00
+                        ;40:0
+    DB 02, 68, 43, 54, 56   ; {BCD constant for 2^28 = 02 68 43 54 56}
+    DB 00, 16, 77, 72, 16   ; {BCD constant for 2^24 = 00 16 77 72 16}
+    DB 00, 01, 04, 85, 76   ; {BCD constant for 2^20 = 00 01 04 85 76}
+    DB 00, 00, 06, 55, 36   ; {BCD constant for 2^16 = 00 00 06 55 36}
+    DB 00, 00, 00, 40, 96   ; {BCD constant for 2^12 = 00 00 00 40 96}
+    DB 00, 00, 00, 02, 56   ; {BCD constant for 2^08 = 00 00 00 02 56}
+    DB 00, 00, 00, 00, 16   ; {BCD constant for 2^04 = 00 00 00 00 16}
+    DB 00, 00, 00, 00       ; {BCD constant for 2^00 = 00 00 00 00 01}
+BIN32BCD_D:
+    DB 01   
+}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_S32},{define({USE_DNEGATE},{}){}define({USE_U32},{})
 ;==============================================================================
 ; ( hi lo -- )
@@ -1174,13 +1253,44 @@ ifdef({USE_STRING_Z},{
 ; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero
-    rst   0x10          ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
+    rst  0x10           ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
     inc  BC             ; 1:6       print_string_z
 PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
     or    A             ; 1:4       print_string_z
     jp   nz, $-4        ; 3:10      print_string_z
     ret                 ; 1:10      print_string_z
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_TYPE_I},{
+;==============================================================================
+; Print string ending with inverted most significant bit
+; In: HL = addr string_imsb
+; Out: BC = addr last_char + 1
+PRINT_TYPE_I:           ;           print_type_i
+    ld    B, H          ; 1:4       print_type_i
+    ld    C, L          ; 1:4       print_type_i   BC = addr string_imsb
+__{}define({USE_STRING_I},{})dnl
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_STRING_I},{
+;==============================================================================
+; Print string ending with inverted most significant bit
+; In: BC = addr string_imsb
+; Out: BC = addr last_char + 1
+PRINT_STRING_I:         ;           print_string_i
+    ld    A,(BC)        ; 1:7       print_string_i
+    and  0x7f           ; 2:7       print_string_i
+    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
+    ld    A,(BC)        ; 1:7       print_string_i
+    add   A, A          ; 1:4       print_string_i
+    inc  BC             ; 1:6       print_string_i
+    jp   nc, $-10       ; 3:10      print_string_i
+    ret                 ; 1:10      print_string_i
 }){}dnl
 dnl
 dnl

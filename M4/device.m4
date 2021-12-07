@@ -198,14 +198,15 @@ dnl ." string"
 dnl .( string)
 dnl ( -- )
 dnl print string
-define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
-    push DE             ; 1:11      print     {$1}
+define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}}){}ifelse({$#},1,,{
+    .error {$0}({$@}): Text containing a comma and not closed in {{}}. {$0}($*) --> {$0}({{$*}})})
+    push DE             ; 1:11      print     {$*}
     ld   BC, size{}TEMP_FOUND    ; 3:10      print     Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
     pop  DE             ; 1:10      print{}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl
@@ -213,11 +214,11 @@ dnl ." string"
 dnl .( string)
 dnl ( -- )
 dnl print null-terminated string
-define({_PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+define({_PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
     ld   BC, string{}TEMP_FOUND  ; 3:10      print_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call PRINT_STRING_Z ; 3:17      print_z{}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl ." string"
@@ -228,16 +229,46 @@ define({PRINT_Z},{_PRINT_Z({$1, 0x00})})dnl
 dnl
 dnl
 dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl print string ending with inverted most significant bit
+define({_PRINT_I},{define({USE_STRING_I},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
+    ld   BC, string{}TEMP_FOUND  ; 3:10      print_i   Address of string{}TEMP_FOUND ending with inverted most significant bit{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+    call PRINT_STRING_I ; 3:17      print_i{}dnl
+__{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+})dnl
+dnl
+dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl print string ending with inverted most significant bit
+define({PRINT_I},{dnl
+__{}ifelse(dnl
+__{}regexp({$*},{^\(.+\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
+__{}__{}{_PRINT_I(regexp({$*},{^\(.+\)"\s*,\s*\("[^"]"\)\s*$},{{\1",\2 + 0x80}}))},
+__{}regexp({$*},{"\s*$},{"text"}),{"text"},
+__{}__{}{_PRINT_I(regexp({$*},{^\(.+\)\(.\)"\s*$},{{\1","\2"+0x80}}))},
+__{}{dnl
+__{}__{}_PRINT_I(regexp({$*},{^\(.+\)"\([^"]+[^" ]\)\s*$},{{\1"\2 + 0x80}})){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
+dnl
 dnl s" string"
 dnl ( -- addr n )
 dnl addr = address string, n = lenght(string)
-define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}}){}ifelse({$#},1,,{
+    .error {$0}({$@}): Text containing a comma and not closed in {{}}. {$0}($*) --> {$0}({{$*}})})
     push DE             ; 1:11      string    ( -- addr size )
-    push HL             ; 1:11      string    {$1}
+    push HL             ; 1:11      string    {$*}
     ld   DE, string{}TEMP_FOUND  ; 3:10      string    Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     ld   HL, size{}TEMP_FOUND    ; 3:10      string    Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl
@@ -245,18 +276,46 @@ dnl
 dnl ." string"
 dnl .( string)
 dnl ( -- )
-dnl print null-terminated string
-define({_STRING_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$1}})
+dnl store null-terminated string
+define({_STRING_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
     ld   BC, string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-__{}__{}pushdef({STRING_STACK},{$@}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl ." string"
 dnl .( string)
 dnl ( -- )
-dnl print null-terminated string
-define({STRING_Z},{_STRING_Z({$1, 0x00})})dnl
+dnl store null-terminated string
+define({STRING_Z},{_STRING_Z({$*, 0x00})})dnl
+dnl
+dnl
+dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl store inverted_msb-terminated string
+define({_STRING_I},{define({USE_STRING_I},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
+    ld   BC, string{}TEMP_FOUND  ; 3:10      string_i   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+__{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
+__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+})dnl
+dnl
+dnl
+dnl ." string"
+dnl .( string)
+dnl ( -- )
+dnl store inverted_msb-terminated string
+define({STRING_I},{dnl
+__{}ifelse(dnl
+__{}regexp({$*},{^\(.+\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
+__{}__{}{_STRING_I(regexp({$*},{^\(.+\)"\s*,\s*\("[^"]"\)\s*$},{{\1",\2 + 0x80}}))},
+__{}regexp({$*},{"\s*$},{"text"}),{"text"},
+__{}__{}{_STRING_I(regexp({$*},{^\(.+\)\(.\)"\s*$},{{\1","\2"+0x80}}))},
+__{}{dnl
+__{}__{}_STRING_I(regexp({$*},{^\(.+\)"\([^"]+[^" ]\)\s*$},{{\1"\2 + 0x80}})){}dnl
+__{}}){}dnl
+})dnl
 dnl
 dnl
 dnl
