@@ -1,5 +1,7 @@
 dnl ## Stack manipulation
 define({--},{})dnl
+define({_HEX_HI},{format({0x%02X},eval((($1)>>8) & 0xFF))}){}dnl
+define({_HEX_LO},{format({0x%02X},eval((($1)>>0) & 0xFF))}){}dnl
 dnl
 dnl ( b a -- a b )
 dnl prohodi vrchol zasobniku s druhou polozkou
@@ -349,6 +351,16 @@ dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse($#,{2},,{
 __{}.error {$0}($@): The wrong number of parameters in macro!}){}ifelse(dnl
+index({$1},{(}),{0},{
+    push DE             ; 1:11      push2($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
+    push HL             ; 1:11      push2($1,$2)
+    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)},
+index({$2},{(}),{0},{
+    push DE             ; 1:11      push2($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
+    push HL             ; 1:11      push2($1,$2)
+    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)},
 eval($1==$2),{},{
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
@@ -358,20 +370,44 @@ eval($1==$2),{},{
 __{}eval($1==$2),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push2($1,$2)
+__{}    ld   HL, format({%-11s},$1); 3:10      push2($1,$2)
 __{}    ld    D, H          ; 1:4       push2($1,$2)
 __{}    ld    E, L          ; 1:4       push2($1,$2)},
-__{}eval((((($1)>>8) & 0xff) == (($2) & 0xff)) && ((($1) & 0xff) == ((($2)>>8) & 0xff))),{1},{
+__{}eval((_HEX_HI($1) == _HEX_LO($2)) && (_HEX_LO($1) == _HEX_HI($2))),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push2($1,$2)
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
 __{}    ld    D, L          ; 1:4       push2($1,$2)
 __{}    ld    E, H          ; 1:4       push2($1,$2)},
+__{}eval((_HEX_HI($1) == _HEX_HI($2)) && (_HEX_HI($1) == _HEX_LO($2))),{1},{
+__{}    push DE             ; 1:11      push2($1,$2)
+__{}    push HL             ; 1:11      push2($1,$2)
+__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
+__{}    ld    H, D          ; 1:4       push2($1,$2)
+__{}    ld    L, D          ; 1:4       push2($1,$2)},
+__{}eval((_HEX_LO($1) == _HEX_HI($2)) && (_HEX_LO($1) == _HEX_LO($2))),{1},{
+__{}    push DE             ; 1:11      push2($1,$2)
+__{}    push HL             ; 1:11      push2($1,$2)
+__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
+__{}    ld    H, E          ; 1:4       push2($1,$2)
+__{}    ld    L, E          ; 1:4       push2($1,$2)},
+__{}eval((_HEX_HI($2) == _HEX_HI($1)) && (_HEX_HI($2) == _HEX_LO($1))),{1},{
+__{}    push DE             ; 1:11      push2($1,$2)
+__{}    push HL             ; 1:11      push2($1,$2)
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
+__{}    ld    D, H          ; 1:4       push2($1,$2)
+__{}    ld    E, H          ; 1:4       push2($1,$2)},
+__{}eval((_HEX_LO($2) == _HEX_HI($1)) && (_HEX_LO($2) == _HEX_LO($1))),{1},{
+__{}    push DE             ; 1:11      push2($1,$2)
+__{}    push HL             ; 1:11      push2($1,$2)
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
+__{}    ld    D, L          ; 1:4       push2($1,$2)
+__{}    ld    E, L          ; 1:4       push2($1,$2)},
 __{}{
 __{}    push DE             ; 1:11      push2($1,$2)
-__{}    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
+__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)})})})dnl
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)})})})dnl
 dnl
 dnl
 dnl drop 50
