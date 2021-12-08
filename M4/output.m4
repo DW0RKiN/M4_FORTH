@@ -134,7 +134,7 @@ BIN32BCD2:              ;           bin32bcd
 
                         ; 5:0
     DB 0x00, 0x00, 0x00, 0x00
-BIN32BCDRES:    
+BIN32BCDRES:
     DB 0x00
                         ;40:0
     DB 02, 68, 43, 54, 56   ; {BCD constant for 2^28 = 02 68 43 54 56}
@@ -146,7 +146,7 @@ BIN32BCDRES:
     DB 00, 00, 00, 00, 16   ; {BCD constant for 2^04 = 00 00 00 00 16}
     DB 00, 00, 00, 00       ; {BCD constant for 2^00 = 00 00 00 00 01}
 BIN32BCD_D:
-    DB 01   
+    DB 01
 }){}dnl
 dnl
 dnl
@@ -1289,7 +1289,7 @@ PRINT_STRING_I:         ;           print_string_i
     ld    A,(BC)        ; 1:7       print_string_i
     add   A, A          ; 1:4       print_string_i
     inc  BC             ; 1:6       print_string_i
-    jp   nc, $-10       ; 3:10      print_string_i
+    jp   nc, $-7        ; 3:10      print_string_i
     ret                 ; 1:10      print_string_i
 }){}dnl
 dnl
