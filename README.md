@@ -242,6 +242,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>    256*    |<sub>   _256MUL    |<sub>                |<sub>      ( x1 -- x1*256 )     |
 |<sub>    256/    |<sub>   _256DIV    |<sub>                |<sub>      ( x1 -- x1/256 )     |
 |<sub>    s>d     |<sub>    S_TO_D    |<sub>                |<sub>      ( x1 -- 0 x1 )       |
+|<sub>     m+     |<sub>     MADD     |<sub>                |<sub>   ( d2 x1 -- d2+x1 )      |
 |<sub>     m*     |<sub>     MMUL     |<sub>                |<sub>   ( x2 x1 -- d32 )        |
 |<sub>     um*    |<sub>     UMMUL    |<sub>                |<sub>   ( u2 u1 -- ud )         |
 |<sub>   fm/mod   |<sub>   FMDIVMOD   |<sub>                |<sub> ( hi lo u -- rem quot )   |
