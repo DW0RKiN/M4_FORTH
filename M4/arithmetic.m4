@@ -833,7 +833,7 @@ dnl
 dnl
 dnl
 dnl ---------------------------------------------------------------------------
-dnl ## 32bit Arithmetic
+dnl ## 32bit Arithmetic ( DE = hi, HL = lo )
 dnl ---------------------------------------------------------------------------
 dnl
 dnl
@@ -1032,17 +1032,34 @@ dnl
 dnl
 dnl ( d2 d1 -- d )
 dnl d = d2 - d1
-define({DSUB},{
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+define({DSUB},{ifelse(TYP_DSUB,{small},{
+                       ;[12:74]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    ld    B, D          ; 1:4       D-
     ld    C, E          ; 1:4       D-
     ex   DE, HL         ; 1:4       D-   DE = lo1
     pop  HL             ; 1:10      D-   HL = lo2
     or    A             ; 1:4       D-
     sbc  HL, DE         ; 2:15      D-   lo2-lo1
     ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D-})dnl
+    pop  HL             ; 1:10      D-   HL = hi2
+    sbc  HL, BC         ; 2:15      D-   hi2-hi1
+    ex   DE, HL         ; 1:4       D-}
+,{
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D-})})dnl
 dnl
 dnl
 dnl 2over D-

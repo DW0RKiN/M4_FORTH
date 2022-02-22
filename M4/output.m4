@@ -387,7 +387,7 @@ dnl
 ifdef({USE_DNEGATE},{
 ;==============================================================================
 ; ( d -- -d )
-NEGATE_32:              ;[14:62]    negate_32
+NEGATE_32:              ;[14:62]    negate_32   ( hi lo -- 0-hi-carry 0-lo )
     xor   A             ; 1:4       negate_32
     ld    C, A          ; 1:4       negate_32
     sub   L             ; 1:4       negate_32

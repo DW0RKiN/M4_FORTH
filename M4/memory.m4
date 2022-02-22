@@ -10,7 +10,7 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}format({%-20s},$1) EQU $2
+__{}format({%-20s},$1) EQU $2{}dnl
 __{}define({$1},{$2})})dnl
 dnl
 dnl

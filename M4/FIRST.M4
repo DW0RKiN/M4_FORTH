@@ -17,6 +17,7 @@ include(M4PATH{}arithmetic.m4)dnl
 include(M4PATH{}memory.m4)dnl
 include(M4PATH{}other.m4)dnl
 include(M4PATH{}stack.m4)dnl
+include(M4PATH{}array.m4)dnl
 dnl
 define({___},{})dnl
 dnl
