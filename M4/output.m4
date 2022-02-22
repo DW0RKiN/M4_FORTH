@@ -456,7 +456,7 @@ MIN_32:                ;[21:104/129]min_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -
     pop  HL             ; 1:10      min_32   removing lo_1 from the stack
     push BC             ; 1:11      min_32
     pop  HL             ; 1:10      min_32
-    ret                 ; 1:10      min_32})dnl
+    ret                 ; 1:10      min_32}){}dnl
 dnl
 dnl
 dnl
@@ -466,14 +466,17 @@ ifdef({USE_DLT},{
 ; ( d2 d1 -- flag ) --> BC:lo_2 ( hi_2 ret DE:hi_1 HL:lo_1 -- flag )
 ; In: (SP+2) = hi_2, (SP) = ret, BC = lo_2, DE = hi_1, HL = lo_1
 ; Out: DE = (SP+4), HL = flag (d2 < d1)
-LT_32:                  ;[18:110]   lt_32   ( hi_2 ret BC:lo_2 DE:hi_1 HL:lo_1 -- flag )
+LT_32:                  ;[20:111]   lt_32   ( hi_2 ret BC:lo_2 DE:hi_1 HL:lo_1 -- flag )
     ld    A, C          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     sub   L             ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     ld    A, B          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     sbc   A, H          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     pop  BC             ; 1:10      lt_32   load ret
     pop  HL             ; 1:10      lt_32   HL = hi_2
-    sbc  HL, DE         ; 2:15      lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    ld    A, L          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    sbc   A, E          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    ld    A, H          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    sbc   A, D          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
     rra                 ; 1:4       lt_32   carry --> sign
     xor   H             ; 1:4       lt_32
     xor   D             ; 1:4       lt_32
@@ -483,7 +486,7 @@ LT_32:                  ;[18:110]   lt_32   ( hi_2 ret BC:lo_2 DE:hi_1 HL:lo_1 -
     ld    L, A          ; 1:4       lt_32
     pop  DE             ; 1:10      lt_32
     push BC             ; 1:11      lt_32   save ret
-    ret                 ; 1:10      lt_32})dnl
+    ret                 ; 1:10      lt_32}){}dnl
 dnl
 dnl
 dnl
