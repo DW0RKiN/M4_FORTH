@@ -913,10 +913,10 @@ define(ULT,{
 dnl
 dnl
 dnl DU<
-dnl ( d2 d1 -- flag )
+dnl ( d2 d1 -- flag d2<d1 )
 dnl unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
 define(DULT,{
-                        ;[11:76]    {DU<}   ( d2 d1 -- flag )
+                        ;[11:76]    {DU<}   ( d2 d1 -- flag d2<d1 )
     pop  BC             ; 1:10      {DU<}   lo_2 word
     ld    A, C          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
@@ -926,6 +926,25 @@ define(DULT,{
     sbc  HL, DE         ; 2:15      {DU<}   HL<DE --> HL-DE<0 --> carry if true
     sbc  HL, HL         ; 2:15      {DU<}   set flag
     pop  DE             ; 1:10      {DU<}})dnl
+dnl
+dnl
+dnl 2SWAP DU<
+dnl ( d2 d1 -- flag d2>d1 )
+dnl unsigned ( d2 > d1 ) --> ( 0 > d1 - d2 ) --> carry is true
+define(_2SWAP_DULT,{
+                        ;[13:77]    {_2SWAP_DU<}   ( d2 d1 -- flag d2>d1 )
+    pop  BC             ; 1:10      {_2SWAP_DU<}   lo_2 word
+    ld    A, L          ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
+    pop  BC             ; 1:10      {_2SWAP_DU<}   hi_2 word
+    ld    A, E          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, C          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
+    ld    A, D          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, B          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
+    sbc  HL, HL         ; 2:15      {_2SWAP_DU<}   set flag
+    pop  DE             ; 1:10      {_2SWAP_DU<}})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )

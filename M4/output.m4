@@ -401,7 +401,7 @@ NEGATE_32:              ;[14:62]    negate_32   ( hi lo -- 0-hi-carry 0-lo )
     ld    A, C          ; 1:4       negate_32
     sbc   A, D          ; 1:4       negate_32
     ld    D, A          ; 1:4       negate_32
-    ret                 ; 1:10      negate_32})dnl
+    ret                 ; 1:10      negate_32}){}dnl
 dnl
 dnl
 ifdef({USE_DMAX},{
@@ -428,7 +428,7 @@ MAX_32:                ;[21:104/129]max_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -
     pop  HL             ; 1:10      max_32   removing lo_1 from the stack
     push BC             ; 1:11      max_32
     pop  HL             ; 1:10      max_32
-    ret                 ; 1:10      max_32})dnl
+    ret                 ; 1:10      max_32}){}dnl
 dnl
 dnl
 dnl

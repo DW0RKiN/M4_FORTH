@@ -1014,7 +1014,10 @@ define({DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     ld    A, B          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     sbc   A, H          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     pop  HL             ; 1:10      D< if   hi_2
-    sbc  HL, DE         ; 2:15      D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    ld    A, L          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    sbc   A, E          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    ld    A, H          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    sbc   A, D          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
     rra                 ; 1:4       D< if   carry --> sign
     xor   H             ; 1:4       D< if
     xor   D             ; 1:4       D< if
