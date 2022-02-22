@@ -583,9 +583,11 @@ dnl =
 dnl ( x1 x2 -- flag )
 dnl equal ( x1 == x2 )
 define({EQ},{
-    or    A             ; 1:4       =
+                        ;[9:50/49]  =
+    xor   A             ; 1:4       =
     sbc  HL, DE         ; 2:15      =
-    ld   HL, 0x0000     ; 3:10      =
+    ld    L, A          ; 1:4       =
+    ld    H, A          ; 1:4       =   HL = 0x0000
     jr   nz, $+3        ; 2:7/12    =
     dec  HL             ; 1:6       =
     pop  DE             ; 1:10      =})dnl
@@ -598,20 +600,22 @@ __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(index({$1},{(}),{0},{dnl
-__{}__{}                        ;[13:62/61] $1 =
+__{}__{}                        ;[12:60/59] $1 =
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 =
-__{}__{}    or    A             ; 1:4       $1 =
+__{}__{}    xor   A             ; 1:4       $1 =
 __{}__{}    sbc  HL, BC         ; 2:15      $1 =
-__{}__{}    ld   HL, 0x0000     ; 3:10      $1 =
+__{}__{}    ld    L, A          ; 1:4       $1 =
+__{}__{}    ld    H, A          ; 1:4       $1 =   HL = 0x0000
 __{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
 __{}__{}    dec  HL             ; 1:6       $1 =},
 __{}eval($1),{},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}__{}                        ;[12:52/51] $1 =
-__{}__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 =
-__{}__{}    or    A             ; 1:4       $1 =
+__{}__{}                        ;[11:50/49] $1 =
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 =
+__{}__{}    xor   A             ; 1:4       $1 =
 __{}__{}    sbc  HL, BC         ; 2:15      $1 =
-__{}__{}    ld   HL, 0x0000     ; 3:10      $1 =
+__{}__{}    ld    L, A          ; 1:4       $1 =
+__{}__{}    ld    H, A          ; 1:4       $1 =   HL = 0x0000
 __{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
 __{}__{}    dec  HL             ; 1:6       $1 =},
 __{}{dnl
@@ -742,16 +746,17 @@ dnl D=
 dnl ( d1 d2 -- flag )
 dnl equal ( d1 == d2 )
 define({DEQ},{
-                       ;[17:83/97/98]D=
+                       ;[16:81/95/96]D=
     pop  BC             ; 1:10      D=   lo word2
-    or    A             ; 1:4       D=
+    xor   A             ; 1:4       D=
     sbc  HL, BC         ; 2:15      D=   lo_1 - lo_2
     pop  BC             ; 1:10      D=   hi word2
     jr   nz, $+5        ; 2:7/12    D=
     ex   DE, HL         ; 1:4       D=
     sbc  HL, BC         ; 2:15      D=
     pop  DE             ; 1:10      D=
-    ld   HL, 0x0000     ; 3:10      D=
+    ld    L, A          ; 1:4       D=
+    ld    H, A          ; 1:4       D=   HL = 0x0000
     jr   nz, $+3        ; 2:7/12    D=
     dec  HL             ; 1:6       D=})dnl
 dnl
