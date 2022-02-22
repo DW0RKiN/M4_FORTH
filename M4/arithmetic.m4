@@ -1015,11 +1015,24 @@ define({_2DUP_DADD},{
     ex   DE, HL         ; 1:4       2dup D+})dnl
 dnl
 dnl
+dnl 2swap D+
+dnl ( d2 d1 -- d1+d2 )
+dnl ( hi2 lo2 hi1 lo1 -- hi1+hi2+carry lo1+lo2 )
+define({_2SWAP_DADD},{
+                        ;[7:54]     2swap D+   ( hi2 lo2 hi1 lo1 -- hi1+hi2+carry lo1+lo2 )
+    pop  BC             ; 1:10      2swap D+   lo2
+    add  HL, BC         ; 1:11      2swap D+
+    ex   DE, HL         ; 1:4       2swap D+
+    pop  BC             ; 1:10      2swap D+   hi2
+    adc  HL, BC         ; 2:15      2swap D+
+    ex   DE, HL         ; 1:4       2swap D+})dnl
+dnl
+dnl
 dnl 2over D+
 dnl ( d2 d1 -- d2 d1+d2 )
 dnl ( hi2 lo2 hi1 lo1 -- hi2 lo2 hi1+hi2+carry lo1+lo2 )
 define({_2OVER_DADD},{
-                        ;[9:93]     2over D+   ( hi2 lo2 hi1 lo1 -- hi1+hi2+carry lo1+lo2 )
+                        ;[9:93]     2over D+   ( hi2 lo2 hi1 lo1 -- hi2 lo2 hi1+hi2+carry lo1+lo2 )
     pop  BC             ; 1:10      2over D+   lo2
     add  HL, BC         ; 1:11      2over D+
     ex  (SP),HL         ; 1:19      2over D+   hi2
@@ -1062,10 +1075,23 @@ define({DSUB},{ifelse(TYP_DSUB,{small},{
     ld    D, A          ; 1:4       D-})})dnl
 dnl
 dnl
+dnl 2swap D-
+dnl ( d2 d1 -- d1-d2 )
+define({_2SWAP_DSUB},{
+                        ;[9:62]     2swap D-   ( hi2 lo2 hi1 lo1 -- hi1-hi2-carry lo1-lo2 )
+    or    A             ; 1:4       2swap D-
+    pop  BC             ; 1:10      2swap D-   lo2
+    sbc  HL, BC         ; 2:15      2swap D-
+    ex   DE, HL         ; 1:4       2swap D-
+    pop  BC             ; 1:10      2swap D-   hi2
+    sbc  HL, BC         ; 2:15      2swap D-
+    ex   DE, HL         ; 1:4       2swap D-})dnl
+dnl
+dnl
 dnl 2over D-
 dnl ( d2 d1 -- d2 d1-d2 )
 define({_2OVER_DSUB},{
-                        ;[11:101]   2over D-   ( hi2 lo2 hi1 lo1 -- hi1-hi2-carry lo2-lo1 )
+                        ;[11:101]   2over D-   ( hi2 lo2 hi1 lo1 -- hi2 lo2 hi1-hi2-carry lo2-lo1 )
     pop  BC             ; 1:10      2over D-   lo2
     or    A             ; 1:4       2over D-
     sbc  HL, BC         ; 2:15      2over D-
