@@ -778,6 +778,23 @@ define({D_TO_S},{
 dnl
 dnl
 dnl
+dnl ( hi2 lo2 n1 -- d2+n1 )
+define({MADD},{
+                        ;[11:57]    M+   ( hi2 lo2 n1 -- d2+n1 )
+    ld    A, H          ; 1:4       M+
+    add   A, A          ; 1:4       M+
+    sbc   A, A          ; 1:4       M+
+    add  HL, DE         ; 1:11      M+   lo2+n1
+    pop  DE             ; 1:10      M+
+    ld    B, A          ; 1:4       M+
+    adc   A, E          ; 1:4       M+
+    ld    E, A          ; 1:4       M+
+    ld    A, B          ; 1:4       M+
+    adc   A, D          ; 1:4       M+
+    ld    D, A          ; 1:4       M+   h2+n1})dnl
+dnl
+dnl
+dnl
 dnl ( d n -- floored_remainder floored_quotient )
 define({FMDIVMOD},{define({USE_F32DIV16},{})
     pop  BC             ; 1:10      {FM/MOD}   ( d n -- floored_remainder floored_quotient )
