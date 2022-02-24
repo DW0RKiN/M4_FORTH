@@ -92,6 +92,15 @@ define({DUP},{
     ld    E, L          ; 1:4       dup ( a -- a a )})dnl
 dnl
 dnl
+dnl ( a -- a a a )
+dnl vytvori 2x kopii vrcholu zasobniku
+define({DUP_DUP},{
+    push DE             ; 1:11      dup dup ( a -- a a a )
+    push HL             ; 1:11      dup dup
+    ld    D, H          ; 1:4       dup dup
+    ld    E, L          ; 1:4       dup dup})dnl
+dnl
+dnl
 dnl ?dup
 dnl ( a -- a a ) or ( 0 -- 0 )
 dnl vytvori kopii vrcholu zasobniku pokud je nenulovy
@@ -152,6 +161,15 @@ dnl odstrani 2x vrchol zasobniku
 define({_2DROP},{
     pop  HL             ; 1:10      2drop
     pop  DE             ; 1:10      2drop ( b a -- )})dnl
+dnl
+dnl
+dnl drop 2drop
+dnl ( c b a -- )
+dnl odstrani 3x vrchol zasobniku
+define({DROP_2DROP},{
+    pop  HL             ; 1:10      drop 2drop ( c b a -- )
+    pop  HL             ; 1:10      drop 2drop
+    pop  DE             ; 1:10      drop 2drop})dnl
 dnl
 dnl
 dnl ( b a -- a )
@@ -267,6 +285,13 @@ define({NROT},{
                         ;[2:23]     nrot ( c b a -- a c b )
     ex  (SP),HL         ; 1:19      nrot a . b c
     ex   DE, HL         ; 1:4       nrot a . c b})dnl
+dnl
+dnl
+dnl -rot swap
+dnl ( c b a -- a b c )
+dnl prohodi hodnotu na vrcholu zasobniku s treti polozkou
+define({NROT_SWAP},{
+    ex  (SP),HL         ; 1:19      nrot_swap ( c b a -- a b c )})dnl
 dnl
 dnl
 dnl -rot nip

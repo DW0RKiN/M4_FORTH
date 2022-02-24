@@ -146,6 +146,95 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
 dnl
 dnl
+dnl addr swap n C!
+dnl ( addr -- )
+dnl store(addr) store 8-bit char at addr
+define({PUSH_SWAP_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 swap C! push_swap_cstore($1)   ( addr -- )
+    ld  (HL),A          ; 1:7       $1 swap C! push_swap_cstore($1)
+    ex   DE, HL         ; 1:4       $1 swap C! push_swap_cstore($1)
+    pop  DE             ; 1:10      $1 swap C! push_swap_cstore($1)})dnl
+dnl
+dnl
+dnl n --> n char addr+n -- n )
+dnl ( n -- )
+dnl store(addr) store 8-bit char at addr
+define({PUSH_OVER_PUSH_ADD_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing two address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+__{}$#,{2},{ifelse(index({$2},{(}),{0},{
+    ld    A, format({%-11s},$2); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    A, format({%-11s},$2); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,eval($2),0,{
+    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,eval($2),1,{
+    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    inc  BC             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,eval($2),-1,{
+    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    dec  BC             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,eval(($2) & 0xFF00),0,{
+    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    sub   C             ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,eval(($2) & 0xFF),0,{
+    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    add   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,{
+    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)})
+    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
+dnl addr C!
+dnl ( char -- char )
+dnl store(addr) store 8-bit char at addr
+define({DUP_PUSH_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    ld    A, L          ; 1:4       dup $1 C! dup push($1) cstore
+    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup push($1) cstore})dnl
+dnl
+dnl
+dnl addr C!
+dnl ( char -- char )
+dnl store(addr) store 8-bit char at addr
+define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing two address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+__{}$#,{2},{
+    ld    A, L          ; 1:4       dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore
+    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore
+    ld   format({%-15s},($2){,} A); 3:13      dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
 dnl
 dnl char addr C!
 dnl ( -- )

@@ -72,7 +72,7 @@ __{}    ex   DE, HL         ; 1:4       dup $1 +
 __{}    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1 +
 __{}    add  HL, DE         ; 1:11      dup $1 +},
 {
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x{}format({0x%04X},eval(($1) & 0xFFFF)) ){}ifelse(dnl
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+{}format({0x%04X},eval(($1) & 0xFFFF)) ){}ifelse(dnl
 __{}eval(($1)+3*256),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +

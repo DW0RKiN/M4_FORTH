@@ -70,10 +70,25 @@ dnl ---------------------------------------------------------------------------
 dnl ## 8bit Arithmetic
 dnl ---------------------------------------------------------------------------
 dnl
+dnl   The Z80 only supports a constant index for reading from the array:
+dnl
+dnl      ld A,(IX+constant)
+dnl
+dnl   It goes to load the value lying for example on the next row, because the size of the table is constant at the time of compilation.
+dnl   But if the size of the table depends on the input, then we need:
+dnl
+dnl      ld A,(IX+variable)
+dnl
+dnl   Where variable is a constant after getting the size of the table from the input.
+dnl   That's why I added another optional parameter for the word to enter the address name where variable is stored.
+dnl   So it goes to refer to it and change its value at runtime.
+dnl
 dnl
 define({ARRAY_CFETCH},{
     push DE             ; 1:11      array_cfetch    ( -- char_array[$1] )
     ld    D, 0x00       ; 2:7       array_cfetch
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    E,format({%-12s},(IX+($1))); 3:19      array_cfetch
     ex   DE, HL         ; 1:4       array_cfetch}){}dnl
 dnl
@@ -87,12 +102,16 @@ dnl
 dnl
 define({ARRAY_LO_FETCH},{
     push DE             ; 1:11      array_lo_fetch    ( -- char_array[$1] )
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    E,format({%-12s},(IX+($1))); 3:19      array_lo_fetch
     ex   DE, HL         ; 1:4       array_lo_fetch}){}dnl
 dnl
 dnl
 define({ARRAY_HI_FETCH},{
     push DE             ; 1:11      array_hi_fetch    ( -- char_array[$1] )
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    D,format({%-12s},(IX+($1))); 3:19      array_hi_fetch
     ex   DE, HL         ; 1:4       array_hi_fetch}){}dnl
 dnl
@@ -101,6 +120,8 @@ define({DUP_ARRAY_CFETCH},{
     push DE             ; 1:11      dup_array_cfetch    ( a -- a char_array[$1] )
     push HL             ; 1:11      dup_array_cfetch
     ld    D, 0x00       ; 2:7       dup_array_cfetch
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    E,format({%-12s},(IX+($1))); 3:19      dup_array_cfetch
     ex   DE, HL         ; 1:4       dup_array_cfetch}){}dnl
 dnl
@@ -108,6 +129,8 @@ dnl
 define({DUP_ARRAY_LO_FETCH},{
     push DE             ; 1:11      dup_array_lo_fetch    ( a -- a char_array[$1] )
     push HL             ; 1:11      dup_array_lo_fetch
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    E,format({%-12s},(IX+($1))); 3:19      dup_array_lo_fetch
     ex   DE, HL         ; 1:4       dup_array_lo_fetch}){}dnl
 dnl
@@ -115,23 +138,31 @@ dnl
 define({DUP_ARRAY_HI_FETCH},{
     push DE             ; 1:11      dup_array_hi_fetch    ( a -- a char_array[$1] )
     push HL             ; 1:11      dup_array_hi_fetch
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    D,format({%-12s},(IX+($1))); 3:19      dup_array_hi_fetch
     ex   DE, HL         ; 1:4       dup_array_hi_fetch}){}dnl
 dnl
 dnl
 define({ARRAY_CFETCH_ADD},{
     ld    B, 0x00       ; 2:7       array_cfetch_add
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    C,format({%-12s},(IX+($1))); 3:19      array_cfetch_add
     add  HL, BC         ; 1:11      array_cfetch_add    {TOS} += char_array[eval($1)]}){}dnl
 dnl
 dnl
 define({ARRAY_LO_FETCH_ADD},{
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    A,format({%-12s},(IX+($1))); 3:19      array_lo_fetch_add
     add   A, L          ; 1:4       array_lo_fetch_add
     ld    L, A          ; 1:4       array_lo_fetch_add    {lo(TOS)} += char_array[eval($1)]}){}dnl
 dnl
 dnl
 define({ARRAY_HI_FETCH_ADD},{
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld    A,format({%-12s},(IX+($1))); 3:19      array_hi_fetch_add
     add   A, H          ; 1:4       array_hi_fetch_add
     ld    H, A          ; 1:4       array_hi_fetch_add    {hi(TOS)} += char_array[eval($1)]}){}dnl
@@ -139,18 +170,24 @@ dnl
 dnl
 define({ARRAY_CSTORE},{
     ex   DE, HL         ; 1:4       array_cstore($1)   ( char -- )
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld  format({%-16s},(IX+($1)){,} E); 3:19      array_cstore($1)   char_array[eval($1)] = char
     pop  DE             ; 1:10      array_cstore($1)}){}dnl
 dnl
 dnl
 define({ARRAY_LO_STORE},{
     ex   DE, HL         ; 1:4       array_lo_store($1)   ( char -- )
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld  format({%-16s},(IX+($1)){,} E); 3:19      array_lo_store($1)   char_array[eval($1)] = lo({TOS})
     pop  DE             ; 1:10      array_lo_store($1)}){}dnl
 dnl
 dnl
 define({ARRAY_HI_STORE},{
     ex   DE, HL         ; 1:4       array_hi_store($1)   ( char -- )
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
     ld  format({%-16s},(IX+($1)){,} E); 3:19      array_hi_store($1)   char_array[eval($1)] = hi({TOS})
     pop  DE             ; 1:10      array_hi_store($1)}){}dnl
 dnl
