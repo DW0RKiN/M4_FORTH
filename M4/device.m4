@@ -332,4 +332,10 @@ define({ACCEPT},{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{}))
     call READSTRING     ; 3:17      accept})dnl
 dnl
 dnl
+dnl ( addr umax -- uloaded )
+dnl readstring
+define({ACCEPT_Z},{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{})){}ifdef({USE_ACCEPT_Z},,define({USE_ACCEPT_Z},{}))
+    call READSTRING     ; 3:17      accept_z})dnl
+dnl
+dnl
 dnl

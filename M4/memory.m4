@@ -167,44 +167,75 @@ __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
 __{}$#,{2},{ifelse(index({$2},{(}),{0},{
-    ld    A, format({%-11s},$2); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
-    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    A, format({%-11s},$2); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
-,eval($2),0,{
-    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
-,eval($2),1,{
-    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
     ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    inc  BC             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
-,eval($2),-1,{
-    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    dec  BC             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
-,eval(($2) & 0xFF00),0,{
-    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
-    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    sub   C             ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
-,eval(($2) & 0xFF),0,{
-    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
-    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    add   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
-,{
+    ld   HL, format({%-11s},$2); 3:16      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    add  HL, BC         ; 1:11      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}ifelse(index({$1},{(}),{0},{dnl
+__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
+__{},{dnl
+__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})
+    ld    H, B          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ld    L, C          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,eval($2),,{
+    .warning {$0}($1,$2): M4 does not know $2 parameter value!
     ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
     add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)})
+    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
+    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
+,{dnl
+__{}ifelse(eval($2),0,{
+__{}__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
+__{}__{},{dnl
+__{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})},
+__{}eval($2),1,{
+__{}    inc  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
+__{}__{},{dnl
+__{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})
+__{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
+__{}eval($2),-1,{
+__{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
+__{}__{},{dnl
+__{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})
+__{}    inc  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
+__{}eval(($2) & 0xFF00),0,{
+__{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+__{}    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    sub   C             ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
+__{}eval(($2) & 0xFF),0,{
+__{}    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+__{}    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    add   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
+__{}{
+__{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+__{}    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)})})},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
 dnl

@@ -1208,6 +1208,8 @@ READSTRING2:
     or    E             ; 1:4       readstring
     jr   nz, READSTRING2; 2:7/12    readstring
 READSTRING3:
+ifdef({USE_ACCEPT_Z},{dnl
+    ld  (HL),0x00       ; 2:10      readstring_z})
     or    A             ; 1:4       readstring
     sbc  HL, BC         ; 2:15      readstring
 
