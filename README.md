@@ -143,6 +143,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |<sub>DUP_PUSH_SWAP(`5`)|<sub>         ( x1 -- x1 `5` x1 )      |
 |<sub>         2swap          |<sub>        _2SWAP       |<sub>                  |<sub> (x1 x2 x3 x4 -- x3 x4 x1 x2)     |
 |<sub>           dup          |<sub>          DUP        |<sub>                  |<sub>         ( x1 -- x1 x1 )          |
+|<sub>         dup dup        |<sub>        DUP DUP      |<sub>     DUP_DUP      |<sub>         ( x1 -- x1 x1 x1 )       |
 |<sub>          ?dup          |<sub>     QUESTIONDUP     |<sub>                  |<sub>         ( x1 -- 0 \| x1 x1 )     |
 |<sub>          2dup          |<sub>        _2DUP        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 x1 )    |
 |<sub>       2over 2over      |<sub>        _4DUP        |<sub>                  |<sub>      ( d2 d1 -- d2 d1 d2 d1 )    |
@@ -160,6 +161,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>         2rot           |<sub>        _2ROT        |<sub>                  |<sub>( f e d c b a -- d c b a f e )    |
 |<sub>         -rot           |<sub>         NROT        |<sub>                  |<sub>   ( x3 x2 x1 -- x1 x3 x2 )       |
 |<sub>        -2rot           |<sub>        N2ROT        |<sub>                  |<sub>( f e d c b a -- b a f e d c )    |
+|<sub>       -rot swap        |<sub>       NROT SWAP     |<sub>     NROT_SWAP    |<sub>   ( x3 x2 x1 -- x1 x2 x3 )       |
 |<sub>       -rot nip         |<sub>       NROT NIP      |<sub>     NROT_NIP     |<sub>   ( x3 x2 x1 -- x1 x2 )          |
 |<sub>       -rot 2swap       |<sub>     NROT _2SWAP     |<sub>    NROT_2SWAP    |<sub>( x4 x3 x2 x1 -- x3 x2 x4 x1 )    |
 |<sub>  -rot swap 2swap swap  |<sub>NROT SWAP _2SWAP SWAP|<sub>    STACK_BCAD    |<sub>    ( d c b a -- b c a d )        |
@@ -827,64 +829,67 @@ The variables are stored in the return address stack.
 
 The variables are stored in the data stack.
 
-|<sub>     Original    |<sub>   M4 FORTH   |<sub>     Optimization      |<sub>  Data stack                |<sub>  R. a. stack |
-| :------------------: | :---------------: | :------------------------: | :------------------------------ | :---------------- |
-|<sub>      unloop     |<sub>    UNLOOP    |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )     |
-|<sub>      leave      |<sub>    LEAVE     |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )     |
-|<sub>        i        |<sub>              |<sub>           SI          |<sub>         ( i -- i i )       |<sub> ( -- )       |
-|<sub>       do        |<sub>              |<sub>          SDO          |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
-|<sub>       ?do       |<sub>              |<sub>      QUESTIONSDO      |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
-|<sub>      loop       |<sub>              |<sub>         SLOOP         |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
-|<sub>      +loop      |<sub>              |<sub>        ADDSLOOP       |<sub>( end i step -- end i+step )|<sub> ( -- )       |
-|<sub>    `4` +loop    |<sub>              |<sub>   PUSH_ADDSLOOP(`4`)  |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
-|<sub>       for       |<sub>              |<sub>          SFOR         |<sub>     ( index -- index )     |<sub> ( -- )       |
-|<sub>      next       |<sub>              |<sub>         SNEXT         |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
-|<sub>      begin      |<sub>    BEGIN     |<sub>                       |<sub>           ( -- )           |<sub>              |
-|<sub>                 |<sub>    BREAK     |<sub>                       |<sub>           ( -- )           |<sub>              |
-|<sub>     while       |<sub>    WHILE     |<sub>                       |<sub>      ( flag -- )           |<sub>              |
-|<sub>   dup while     |<sub>              |<sub>       DUP_WHILE       |<sub>      ( flag -- flag )      |<sub>              |
-|<sub>     =  while    |<sub>              |<sub>       EQ_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>     <> while    |<sub>              |<sub>       NE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>     <  while    |<sub>              |<sub>       LT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>     <= while    |<sub>              |<sub>       LE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>     >  while    |<sub>              |<sub>       GT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>     >= while    |<sub>              |<sub>       GE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>    u=  while    |<sub>              |<sub>      UEQ_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>    u<> while    |<sub>              |<sub>      UNE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>    u<  while    |<sub>              |<sub>      ULT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>    u<= while    |<sub>              |<sub>      ULE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>    u>  while    |<sub>              |<sub>      UGT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>    u>= while    |<sub>              |<sub>      UGE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>dup `2`  =  while|<sub>              |<sub> DUP_PUSH_EQ_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2`  <> while|<sub>              |<sub> DUP_PUSH_NE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2`  <  while|<sub>              |<sub> DUP_PUSH_LT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2`  <= while|<sub>              |<sub> DUP_PUSH_LE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2`  >  while|<sub>              |<sub> DUP_PUSH_GT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2`  >= while|<sub>              |<sub> DUP_PUSH_GE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2` u=  while|<sub>              |<sub>DUP_PUSH_UEQ_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2` u<> while|<sub>              |<sub>DUP_PUSH_UNE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2` u<  while|<sub>              |<sub>DUP_PUSH_ULT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2` u<= while|<sub>              |<sub>DUP_PUSH_ULE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2` u>  while|<sub>              |<sub>DUP_PUSH_UGT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub>dup `2` u>= while|<sub>              |<sub>DUP_PUSH_UGE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
-|<sub> 2dup  =  while  |<sub>              |<sub>    _2DUP_EQ_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup  <> while  |<sub>              |<sub>    _2DUP_NE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup  <  while  |<sub>              |<sub>    _2DUP_LT_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup  <= while  |<sub>              |<sub>    _2DUP_LE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup  >  while  |<sub>              |<sub>    _2DUP_GT_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup  >= while  |<sub>              |<sub>    _2DUP_GE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup u=  while  |<sub>              |<sub>   _2DUP_UEQ_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup u<> while  |<sub>              |<sub>   _2DUP_UNE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup u<  while  |<sub>              |<sub>   _2DUP_ULT_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup u<= while  |<sub>              |<sub>   _2DUP_ULE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup u>  while  |<sub>              |<sub>   _2DUP_UGT_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub> 2dup u>= while  |<sub>              |<sub>   _2DUP_UGE_WHILE     |<sub>           ( -- )           |<sub>              |
-|<sub>      repeat     |<sub>    REPEAT    |<sub>                       |<sub>           ( -- )           |<sub>              |
-|<sub>      again      |<sub>    AGAIN     |<sub>                       |<sub>           ( -- )           |<sub>              |
-|<sub>      until      |<sub>    UNTIL     |<sub>                       |<sub>      ( flag -- )           |<sub>              |
-|<sub>    dup until    |<sub>  DUP UNTIL   |<sub>       DUP_UNTIL       |<sub>      ( flag -- flag )      |<sub>              |
-|<sub>  2dup eq until  |<sub>_2DUP EQ UNTIL|<sub>    _2DUP_EQ_UNTIL     |<sub>       ( b a -- b a )       |<sub>              |
-|<sub>dup `2` eq until |<sub>     ...      |<sub> DUP_PUSH_EQ_UNTIL(`2`)|<sub>         ( n -- n )         |<sub>              |
+|<sub>      Original     |<sub>        M4 FORTH       |<sub>     Optimization      |<sub>  Data stack                |<sub>  R. a. stack |
+| :--------------------: | :------------------------: | :------------------------: | :------------------------------ | :---------------- |
+|<sub>       unloop      |<sub>         UNLOOP        |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )     |
+|<sub>       leave       |<sub>         LEAVE         |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )     |
+|<sub>         i         |<sub>                       |<sub>           SI          |<sub>         ( i -- i i )       |<sub> ( -- )       |
+|<sub>        do         |<sub>                       |<sub>          SDO          |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
+|<sub>        ?do        |<sub>                       |<sub>      QUESTIONSDO      |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
+|<sub>       loop        |<sub>                       |<sub>         SLOOP         |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
+|<sub>       +loop       |<sub>                       |<sub>        ADDSLOOP       |<sub>( end i step -- end i+step )|<sub> ( -- )       |
+|<sub>     `4` +loop     |<sub>                       |<sub>   PUSH_ADDSLOOP(`4`)  |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
+|<sub>        for        |<sub>                       |<sub>          SFOR         |<sub>     ( index -- index )     |<sub> ( -- )       |
+|<sub>       next        |<sub>                       |<sub>         SNEXT         |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
+|<sub>       begin       |<sub>         BEGIN         |<sub>                       |<sub>           ( -- )           |<sub>              |
+|<sub>                   |<sub>         BREAK         |<sub>                       |<sub>           ( -- )           |<sub>              |
+|<sub>      while        |<sub>         WHILE         |<sub>                       |<sub>      ( flag -- )           |<sub>              |
+|<sub>    dup while      |<sub>                       |<sub>       DUP_WHILE       |<sub>      ( flag -- flag )      |<sub>              |
+|<sub>      =  while     |<sub>                       |<sub>       EQ_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>      <> while     |<sub>                       |<sub>       NE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>      <  while     |<sub>                       |<sub>       LT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>      <= while     |<sub>                       |<sub>       LE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>      >  while     |<sub>                       |<sub>       GT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>      >= while     |<sub>                       |<sub>       GE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>     u=  while     |<sub>                       |<sub>      UEQ_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>     u<> while     |<sub>                       |<sub>      UNE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>     u<  while     |<sub>                       |<sub>      ULT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>     u<= while     |<sub>                       |<sub>      ULE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>     u>  while     |<sub>                       |<sub>      UGT_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>     u>= while     |<sub>                       |<sub>      UGE_WHILE        |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub> dup `2`  =  while |<sub>                       |<sub> DUP_PUSH_EQ_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2`  <> while |<sub>                       |<sub> DUP_PUSH_NE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2`  <  while |<sub>                       |<sub> DUP_PUSH_LT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2`  <= while |<sub>                       |<sub> DUP_PUSH_LE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2`  >  while |<sub>                       |<sub> DUP_PUSH_GT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2`  >= while |<sub>                       |<sub> DUP_PUSH_GE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2` u=  while |<sub>                       |<sub>DUP_PUSH_UEQ_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2` u<> while |<sub>                       |<sub>DUP_PUSH_UNE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2` u<  while |<sub>                       |<sub>DUP_PUSH_ULT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2` u<= while |<sub>                       |<sub>DUP_PUSH_ULE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2` u>  while |<sub>                       |<sub>DUP_PUSH_UGT_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub> dup `2` u>= while |<sub>                       |<sub>DUP_PUSH_UGE_WHILE(`2`)|<sub>           ( -- )           |<sub>              |
+|<sub>  2dup  =  while   |<sub>                       |<sub>    _2DUP_EQ_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup  <> while   |<sub>                       |<sub>    _2DUP_NE_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup  <  while   |<sub>                       |<sub>    _2DUP_LT_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup  <= while   |<sub>                       |<sub>    _2DUP_LE_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup  >  while   |<sub>                       |<sub>    _2DUP_GT_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup  >= while   |<sub>                       |<sub>    _2DUP_GE_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup u=  while   |<sub>                       |<sub>   _2DUP_UEQ_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup u<> while   |<sub>                       |<sub>   _2DUP_UNE_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup u<  while   |<sub>                       |<sub>   _2DUP_ULT_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup u<= while   |<sub>                       |<sub>   _2DUP_ULE_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup u>  while   |<sub>                       |<sub>   _2DUP_UGT_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>  2dup u>= while   |<sub>                       |<sub>   _2DUP_UGE_WHILE     |<sub>           ( -- )           |<sub>              |
+|<sub>       repeat      |<sub>         REPEAT        |<sub>                       |<sub>           ( -- )           |<sub>              |
+|<sub>       again       |<sub>         AGAIN         |<sub>                       |<sub>           ( -- )           |<sub>              |
+|<sub>       until       |<sub>         UNTIL         |<sub>                       |<sub>      ( flag -- )           |<sub>              |
+|<sub>     dup until     |<sub>       DUP UNTIL       |<sub>       DUP_UNTIL       |<sub>      ( flag -- flag )      |<sub>              |
+|<sub>   invert until    |<sub>     INVERT UNTIL      |<sub>     INVERT_UNTIL      |<sub>      ( flag -- )           |<sub>              |
+|<sub> dup invert until  |<sub>   DUP INVERT UNTIL    |<sub>    DUP_INVERT_UNTIL   |<sub>      ( flag -- flag )      |<sub>              |
+|<sub>dup c@ invert until|<sub>DUP CFETCH INVERT UNTIL|<sub>DUP_CFETCH_INVERT_UNTIL|<sub>      ( addr -- addr )      |<sub>              |
+|<sub>   2dup eq until   |<sub>     _2DUP EQ UNTIL    |<sub>    _2DUP_EQ_UNTIL     |<sub>       ( b a -- b a )       |<sub>              |
+|<sub> dup `2` eq until  |<sub> DUP PUSH(`2`) EQ UNTIL|<sub> DUP_PUSH_EQ_UNTIL(`2`)|<sub>         ( n -- n )         |<sub>              |
 
 ### Memory
 
@@ -908,6 +913,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>      addr C@     |<sub>                         |<sub>      PUSH_CFETCH(addr)       |<sub>          ( -- char )       |<sub> TOP = (addr)      |
 |<sub>        C!        |<sub>          CSTORE         |<sub>                              |<sub>( char addr -- )            |<sub> (addr) = char     |
 |<sub>   `0x4000` C!    |<sub>  PUSH(`0x4000`) CSTORE  |<sub>    PUSH_CSTORE(`0x4000`)     |<sub>    ( char  -- )            |<sub>(`0x4000`) = char  |
+|<sub>   `69` swap C!   |<sub> PUSH(`69`) SWAP CSTORE  |<sub>    PUSH_SWAP_CSTORE(`69`)    |<sub>    ( addr  -- )            |<sub>(addr) = `69`      |
 |<sub>`1234` `0x8000` C!|<sub>           ...           |<sub>PUSH2_CSTORE(`1234`,`0x8000`) |<sub>          ( -- )            |<sub>(`0x8000`) = `0x34`|
 |<sub>     tuck C!      |<sub>       TUCK CSTORE       |<sub>         TUCK_CSTORE          |<sub>( char addr -- addr )       |<sub>(addr) = char      |
 |<sub>    tuck C! 1+    |<sub>    TUCK CSTORE _1ADD    |<sub>       TUCK_CSTORE_1ADD       |<sub>( char addr -- addr+1 )     |<sub>(addr) = char      |

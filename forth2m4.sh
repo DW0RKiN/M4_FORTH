@@ -192,6 +192,7 @@ do
     sed 's#^\([^;{]*\s\|^\)?DUP\(\s\|$\)#\1QUESTIONDUP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Dd]up\(\s\|$\)#\1DUP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+DUP\(\s\|$\)#\1DUP_DUP\2#g' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+SWAP\(\s\|$\)#\1DUP_PUSH_SWAP(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Dd]up\(\s\|$\)#\1_2DUP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)over\s\+over\(\s\|$\)#\1_2DUP\2#gi' |
@@ -215,6 +216,7 @@ do
     sed 's#^\([^;{]*\s\|^\)2OVER\(\s\|$\)#\1_2OVER\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\(\s\|$\)#\1NROT_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\s\+SWAP\(\s\|$\)#\1NROT_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\(\s\|$\)#\1ROT_DROP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2[Rr]ot\(\s\|$\)#\1_2ROT\2#g' |
@@ -422,6 +424,10 @@ do
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9][0-9]*\)\s\+PICK\(\s\|$\)#\1PUSH_PICK(\2)\3#gi' |
 
     sed 's#^\([^;{]*\s\|^\)DUP\s\+UNTIL\(\s\|$\)#\1DUP_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)INVERT\s\+UNTIL\(\s\|$\)#\1INVERT_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+INVERT_UNTIL\(\s\|$\)#\1DUP_INVERT_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+CFETCH\s\+INVERT_UNTIL\(\s\|$\)#\1DUP_CFETCH_INVERT_UNTIL\2#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+UNTIL\(\s\|$\)#\1_2DUP_EQ_UNTIL\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+EQ\s\+UNTIL\(\s\|$\)#\1DUP_PUSH_EQ_UNTIL(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\(0x[0-9A-F]\+\)\s\+EQ\s\+UNTIL\(\s\|$\)#\1DUP_PUSH_EQ_UNTIL(\2)\3#gi' |
@@ -523,6 +529,7 @@ do
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+PUSH_STORE(\([^)]*\))\(\s\|$\)#\1PUSH2_STORE(\2,\3)\4#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+CFETCH\(\s\|$\)#\1PUSH_CFETCH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+CSTORE\(\s\|$\)#\1PUSH_CSTORE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)PUSH_SWAP(\([+]*[0-9]\+\))\s\+CSTORE\(\s\|$\)#\1PUSH_SWAP_CSTORE(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+PUSH_CSTORE(\([^)]*\))\(\s\|$\)#\1PUSH2_CSTORE(\2,\3)\4#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+_2FETCH\(\s\|$\)#\1PUSH_2FETCH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+_2STORE\(\s\|$\)#\1PUSH_2STORE(\2)\3#gi' |
