@@ -5,24 +5,21 @@ ORG 0x8000
 
     INIT(60000)
     PRINT({"The Levenshtein distance between ", 0x22})
-    PUSH2(first_word, first_word_len-1)
-    ACCEPT
-    CVARIABLE(f_len)
+    PUSH2(word_1, word_1_len)
+    ACCEPT_Z
+    CVARIABLE(len_1)
     
-    PUSH_OVER_PUSH_ADD_CSTORE(0,first_word)
-
     ;# self-modifying code
     DUP_PUSH_CSTORE(label_03)
     _1ADD
-    DUP_PUSH_CSTORE_DUP_PUSH_CSTORE(label_01,label_02)    
-    DUP_PUSH_CSTORE(f_len)
-    ;# ( first_word_len )
+    DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE(label_01,label_02,len_1)    
+    ;# ( word_1_len )
     
     ;# 0 1 2 3 4 5 ... set first row
     DUP
     PUSH_ADD(table)
     SWAP_1ADD_SWAP
-    ;#PUSH2(max_first_word_len+1,table+max_first_word_len+1)
+    ;#PUSH2(max_word_1_len+1,table+max_word_1_len+1)
     BEGIN
         _2DUP_CSTORE
         _1SUB 
@@ -34,18 +31,16 @@ ORG 0x8000
     _1ADD
     
     PRINT({0x22, " and ", 0x22})
-    PUSH2(second_word, second_word_len-1)
-    ACCEPT
-    
-    PUSH_OVER_PUSH_ADD_CSTORE(0,second_word)
+    PUSH2(word_2, word_2_len)
+    ACCEPT_Z
     
     _1ADD
-    CVARIABLE(s_len)
-    DUP_PUSH_CSTORE(s_len)
+    CVARIABLE(len_2)
+    DUP_PUSH_CSTORE(len_2)
     
     PRINT({0x22, " is"})
         
-    ;# ( table 1 second_word_len )
+    ;# ( table 1 word_2_len )
     
     ;# 0 set first column
     ;# 1
@@ -54,7 +49,7 @@ ORG 0x8000
     BEGIN
         NROT_SWAP
         _2DUP_CSTORE
-        PUSH_CFETCH(f_len)
+        PUSH_CFETCH(len_1)
         ADD
         SWAP_1ADD_SWAP
         NROT_SWAP
@@ -67,52 +62,52 @@ ORG 0x8000
     
     ;# 0x8061 breakpoint
     ARRAY_SET(table)
-    PUSH(second_word)    
-;# ( P_second_word )
+    PUSH(word_2)    
+;# ( P_word_2 )
     BEGIN
 ;#        SCALL(view_table)
-        PUSH(first_word)
-;# ( P_second_word P_first_word )
+        PUSH(word_1)
+;# ( P_word_2 P_word_1 )
         BEGIN
 ;# 0x8091
     ;# substitution 
         ;# LET r=d(j,i)-(n$(j)=m$(i)):REM substitution
             OVER_CFETCH_OVER_CFETCH
-            ;# ( P_second_word  P_first_word first_char second_char )
+            ;# ( P_word_2  P_word_1 char_1 char_2 )
             CEQ
-            ;# ( P_second_word  P_first_word flag)
+            ;# ( P_word_2  P_word_1 flag)
             ARRAY_CFETCH_ADD(0)
-            ;# ( P_second_word  P_first_word R=[index+0]+flag )
+            ;# ( P_word_2  P_word_1 R=[index+0]+flag )
             
     ;# insertion 
         ;# IF r>d(j+1,i) THEN LET r=r-1:REM insertion
             DUP_ARRAY_CFETCH(0, label_01)
-            ;# ( P_second_word  P_first_word R R [index+max_first_word_len] )
+            ;# ( P_word_2  P_word_1 R R [index+max_word_1_len] )
             UGT ADD
-            ;# ( P_second_word  P_first_word R+flag )
+            ;# ( P_word_2  P_word_1 R+flag )
             ARRAY_INC
             ;# index++
             
     ;# deletion 
         ;# LET d(j+1,i+1)=r+(r<=d(j,i+1)):REM deletion
             DUP_ARRAY_CFETCH(0) 
-            ;# ( P_second_word  P_first_word R R [index] )
+            ;# ( P_word_2  P_word_1 R R [index] )
             ULE 
-            ;# ( P_second_word  P_first_word R flag )
+            ;# ( P_word_2  P_word_1 R flag )
             SUB
-            ;# ( P_second_word  P_first_word R-flag )
+            ;# ( P_word_2  P_word_1 R-flag )
             ARRAY_CSTORE(0, label_02)
-            ;# [index+max_first_word_len] = R
+            ;# [index+max_word_1_len] = R
             
             _1ADD
-            ;# ( P_first_word  P_second_word++ )
+            ;# ( P_word_1  P_word_2++ )
         DUP_CFETCH_INVERT_UNTIL
         
         ARRAY_INC
 
         DROP
         _1ADD
-        ;# ( P_first_word++ )        
+        ;# ( P_word_1++ )        
     DUP_CFETCH_INVERT_UNTIL
     
     DROP
@@ -128,11 +123,11 @@ ORG 0x8000
     STOP
     
 SCOLON(view_table)
-    PUSH_CFETCH(s_len)
+    PUSH_CFETCH(len_2)
     PUSH(table)
     BEGIN
         CR
-        PUSH_CFETCH(f_len)
+        PUSH_CFETCH(len_1)
         BEGIN
             OVER CFETCH
             DOT
@@ -147,10 +142,10 @@ SSEMICOLON
     
     
 SCOLON(clear_table)
-    PUSH_CFETCH(s_len)
+    PUSH_CFETCH(len_2)
     PUSH(table)
     BEGIN
-        PUSH_CFETCH(f_len)
+        PUSH_CFETCH(len_1)
         BEGIN
             SWAP
             DUP_PUSH_SWAP_CSTORE(0)
@@ -168,11 +163,11 @@ SSEMICOLON
     
 include({../M4/LAST.M4})dnl
 
-first_word:
+word_1:
 db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-first_word_len EQU $-first_word
-row_size EQU $-first_word
-second_word:
+word_1_len EQU $-word_1
+row_size EQU $-word_1
+word_2:
 db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-second_word_len EQU $-second_word
+word_2_len EQU $-word_2
 table:

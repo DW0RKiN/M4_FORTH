@@ -16,24 +16,14 @@ ORG 0x8000
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push DE             ; 1:11      push2(first_word,first_word_len-1)
-    ld   DE, first_word ; 3:10      push2(first_word,first_word_len-1)
-    push HL             ; 1:11      push2(first_word,first_word_len-1)
-    ld   HL, first_word_len-1; 3:10      push2(first_word,first_word_len-1)
+    push DE             ; 1:11      push2(word_1,word_1_len)
+    ld   DE, word_1     ; 3:10      push2(word_1,word_1_len)
+    push HL             ; 1:11      push2(word_1,word_1_len)
+    ld   HL, word_1_len ; 3:10      push2(word_1,word_1_len)
     
-    call READSTRING     ; 3:17      accept
+    call READSTRING     ; 3:17      accept_z
     
     
-    
-    ld    A, low first_word; 2:7       0 over first_word add C! push_over_push_add_cstore(0,first_word)   ( addr -- )
-    add   A, L          ; 1:4       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-    ld    C, A          ; 1:4       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-    ld    A, high first_word; 2:7       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-    adc   A, H          ; 1:4       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-    ld    B, A          ; 1:4       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-    xor   A             ; 1:4       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-    ld  (BC),A          ; 1:7       0 over first_word add C! push_over_push_add_cstore(0,first_word)
-
     ;# self-modifying code
     
     ld    A, L          ; 1:4       dup label_03 C! dup push(label_03) cstore
@@ -41,13 +31,11 @@ ORG 0x8000
     
     inc  HL             ; 1:6       1+
     
-    ld    A, L          ; 1:4       dup label_01 C! dup label_02 C! dup push(label_01) cstore dup push(label_02) cstore
-    ld   (label_01), A  ; 3:13      dup label_01 C! dup label_02 C! dup push(label_01) cstore dup push(label_02) cstore
-    ld   (label_02), A  ; 3:13      dup label_01 C! dup label_02 C! dup push(label_01) cstore dup push(label_02) cstore    
-    
-    ld    A, L          ; 1:4       dup f_len C! dup push(f_len) cstore
-    ld   (f_len), A     ; 3:13      dup f_len C! dup push(f_len) cstore
-    ;# ( first_word_len )
+    ld    A, L          ; 1:4       dup label_01 C! dup label_02 C! dup len_1 C!   dup push(label_01) cstore dup push(label_02) cstore dup push(len_1) cstore
+    ld   (label_01), A  ; 3:13      dup label_01 C! dup label_02 C! dup len_1 C!   dup push(label_01) cstore dup push(label_02) cstore dup push(len_1) cstore
+    ld   (label_02), A  ; 3:13      dup label_01 C! dup label_02 C! dup len_1 C!   dup push(label_01) cstore dup push(label_02) cstore dup push(len_1) cstore
+    ld   (len_1), A     ; 3:13      dup label_01 C! dup label_02 C! dup len_1 C!   dup push(label_01) cstore dup push(label_02) cstore dup push(len_1) cstore    
+    ;# ( word_1_len )
     
     ;# 0 1 2 3 4 5 ... set first row
     
@@ -60,7 +48,7 @@ ORG 0x8000
     add  HL, BC         ; 1:11      table +
     
     inc  DE             ; 1:6       swap 1+ swap
-    ;#PUSH2(max_first_word_len+1,table+max_first_word_len+1)
+    ;#PUSH2(max_word_1_len+1,table+max_word_1_len+1)
     
 begin101:               ;           begin 101
         
@@ -90,29 +78,19 @@ break101:               ;           over invert until 101
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push DE             ; 1:11      push2(second_word,second_word_len-1)
-    ld   DE, second_word; 3:10      push2(second_word,second_word_len-1)
-    push HL             ; 1:11      push2(second_word,second_word_len-1)
-    ld   HL, second_word_len-1; 3:10      push2(second_word,second_word_len-1)
+    push DE             ; 1:11      push2(word_2,word_2_len)
+    ld   DE, word_2     ; 3:10      push2(word_2,word_2_len)
+    push HL             ; 1:11      push2(word_2,word_2_len)
+    ld   HL, word_2_len ; 3:10      push2(word_2,word_2_len)
     
-    call READSTRING     ; 3:17      accept
-    
-    
-    ld    A, low second_word; 2:7       0 over second_word add C! push_over_push_add_cstore(0,second_word)   ( addr -- )
-    add   A, L          ; 1:4       0 over second_word add C! push_over_push_add_cstore(0,second_word)
-    ld    C, A          ; 1:4       0 over second_word add C! push_over_push_add_cstore(0,second_word)
-    ld    A, high second_word; 2:7       0 over second_word add C! push_over_push_add_cstore(0,second_word)
-    adc   A, H          ; 1:4       0 over second_word add C! push_over_push_add_cstore(0,second_word)
-    ld    B, A          ; 1:4       0 over second_word add C! push_over_push_add_cstore(0,second_word)
-    xor   A             ; 1:4       0 over second_word add C! push_over_push_add_cstore(0,second_word)
-    ld  (BC),A          ; 1:7       0 over second_word add C! push_over_push_add_cstore(0,second_word)
+    call READSTRING     ; 3:17      accept_z
     
     
     inc  HL             ; 1:6       1+
     
     
-    ld    A, L          ; 1:4       dup s_len C! dup push(s_len) cstore
-    ld   (s_len), A     ; 3:13      dup s_len C! dup push(s_len) cstore
+    ld    A, L          ; 1:4       dup len_2 C! dup push(len_2) cstore
+    ld   (len_2), A     ; 3:13      dup len_2 C! dup push(len_2) cstore
     
     
     push DE             ; 1:11      print     0x22, " is"
@@ -121,7 +99,7 @@ break101:               ;           over invert until 101
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
         
-    ;# ( table 1 second_word_len )
+    ;# ( table 1 word_2_len )
     
     ;# 0 set first column
     ;# 1
@@ -135,10 +113,10 @@ begin102:               ;           begin 102
                         ;[1:7]      2dup c! _2dup_cstore   ( char addr -- char addr )
     ld  (HL),E          ; 1:7       2dup c! _2dup_cstore
         
-    push DE             ; 1:11      f_len @ push(f_len) cfetch
-    ex   DE, HL         ; 1:4       f_len @ push(f_len) cfetch
-    ld   HL,(f_len)     ; 3:16      f_len @ push(f_len) cfetch
-    ld    H, 0x00       ; 2:7       f_len @ push(f_len) cfetch
+    push DE             ; 1:11      len_1 @ push(len_1) cfetch
+    ex   DE, HL         ; 1:4       len_1 @ push(len_1) cfetch
+    ld   HL,(len_1)     ; 3:16      len_1 @ push(len_1) cfetch
+    ld    H, 0x00       ; 2:7       len_1 @ push(len_1) cfetch
         
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
@@ -165,18 +143,18 @@ break102:               ;           dup invert until 102
     
     ld   IX, table      ; 4:14      array_set   ( -- )
     
-    push DE             ; 1:11      push(second_word)
-    ex   DE, HL         ; 1:4       push(second_word)
-    ld   HL, second_word; 3:10      push(second_word)    
-;# ( P_second_word )
+    push DE             ; 1:11      push(word_2)
+    ex   DE, HL         ; 1:4       push(word_2)
+    ld   HL, word_2     ; 3:10      push(word_2)    
+;# ( P_word_2 )
     
 begin103:               ;           begin 103
 ;#        SCALL(view_table)
         
-    push DE             ; 1:11      push(first_word)
-    ex   DE, HL         ; 1:4       push(first_word)
-    ld   HL, first_word ; 3:10      push(first_word)
-;# ( P_second_word P_first_word )
+    push DE             ; 1:11      push(word_1)
+    ex   DE, HL         ; 1:4       push(word_1)
+    ld   HL, word_1     ; 3:10      push(word_1)
+;# ( P_word_2 P_word_1 )
         
 begin104:               ;           begin 104
 ;# 0x8091
@@ -191,7 +169,7 @@ begin104:               ;           begin 104
     ld    A, (DE)       ; 1:7       over @C over @C over_cfetch_over_cfetch
     ld    E, A          ; 1:4       over @C over @C over_cfetch_over_cfetch
     ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch
-            ;# ( P_second_word  P_first_word first_char second_char )
+            ;# ( P_word_2  P_word_1 char_1 char_2 )
             
                         ;[7:40]     C=   ( c1 c2 -- flag )
     ld    A, L          ; 1:4       C=
@@ -199,12 +177,12 @@ begin104:               ;           begin 104
     sub  0x01           ; 2:7       C=
     sbc  HL, HL         ; 2:15      C=
     pop  DE             ; 1:10      C=
-            ;# ( P_second_word  P_first_word flag)
+            ;# ( P_word_2  P_word_1 flag)
             
     ld    B, 0x00       ; 2:7       array_cfetch_add
     ld    C,(IX+(0))    ; 3:19      array_cfetch_add
     add  HL, BC         ; 1:11      array_cfetch_add    TOS += char_array[0]
-            ;# ( P_second_word  P_first_word R=[index+0]+flag )
+            ;# ( P_word_2  P_word_1 R=[index+0]+flag )
             
     ;# insertion 
         ;# IF r>d(j+1,i) THEN LET r=r-1:REM insertion
@@ -215,7 +193,7 @@ begin104:               ;           begin 104
 label_01  EQU $+2
     ld    E,(IX+(0))    ; 3:19      dup_array_cfetch
     ex   DE, HL         ; 1:4       dup_array_cfetch
-            ;# ( P_second_word  P_first_word R R [index+max_first_word_len] )
+            ;# ( P_word_2  P_word_1 R R [index+max_word_1_len] )
             
     or    A             ; 1:4       (u) >
     sbc  HL, DE         ; 2:15      (u) >
@@ -223,7 +201,7 @@ label_01  EQU $+2
     pop  DE             ; 1:10      (u) > 
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
-            ;# ( P_second_word  P_first_word R+flag )
+            ;# ( P_word_2  P_word_1 R+flag )
             
     inc  IX             ; 2:10      array_inc   ( -- )
             ;# index++
@@ -236,30 +214,30 @@ label_01  EQU $+2
     ld    D, 0x00       ; 2:7       dup_array_cfetch
     ld    E,(IX+(0))    ; 3:19      dup_array_cfetch
     ex   DE, HL         ; 1:4       dup_array_cfetch 
-            ;# ( P_second_word  P_first_word R R [index] )
+            ;# ( P_word_2  P_word_1 R R [index] )
             
     scf                 ; 1:4       (u) <=
     ex   DE, HL         ; 1:4       (u) <=
     sbc  HL, DE         ; 2:15      (u) <=
     sbc  HL, HL         ; 2:15      (u) <=
     pop  DE             ; 1:10      (u) <= 
-            ;# ( P_second_word  P_first_word R flag )
+            ;# ( P_word_2  P_word_1 R flag )
             
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
     pop  DE             ; 1:10      -
-            ;# ( P_second_word  P_first_word R-flag )
+            ;# ( P_word_2  P_word_1 R-flag )
             
     ex   DE, HL         ; 1:4       array_cstore(0)   ( char -- )
 label_02  EQU $+2
     ld  (IX+(0)), E     ; 3:19      array_cstore(0)   char_array[0] = char
     pop  DE             ; 1:10      array_cstore(0)
-            ;# [index+max_first_word_len] = R
+            ;# [index+max_word_1_len] = R
             
             
     inc  HL             ; 1:6       1+
-            ;# ( P_first_word  P_second_word++ )
+            ;# ( P_word_1  P_word_2++ )
         
     ld    A,(HL)        ; 1:7       dup C@ invert until 104   ( addr -- addr )
     or    A             ; 1:4       dup C@ invert until 104
@@ -274,7 +252,7 @@ break104:               ;           dup C@ invert until 104
     pop  DE             ; 1:10      drop ( a -- )
         
     inc  HL             ; 1:6       1+
-        ;# ( P_first_word++ )        
+        ;# ( P_word_1++ )        
     
     ld    A,(HL)        ; 1:7       dup C@ invert until 103   ( addr -- addr )
     or    A             ; 1:4       dup C@ invert until 103
@@ -317,10 +295,10 @@ Stop:                   ;           stop
 ;   ---  the beginning of a data stack function  ---
 view_table:             ;           
     
-    push DE             ; 1:11      s_len @ push(s_len) cfetch
-    ex   DE, HL         ; 1:4       s_len @ push(s_len) cfetch
-    ld   HL,(s_len)     ; 3:16      s_len @ push(s_len) cfetch
-    ld    H, 0x00       ; 2:7       s_len @ push(s_len) cfetch
+    push DE             ; 1:11      len_2 @ push(len_2) cfetch
+    ex   DE, HL         ; 1:4       len_2 @ push(len_2) cfetch
+    ld   HL,(len_2)     ; 3:16      len_2 @ push(len_2) cfetch
+    ld    H, 0x00       ; 2:7       len_2 @ push(len_2) cfetch
     
     push DE             ; 1:11      push(table)
     ex   DE, HL         ; 1:4       push(table)
@@ -331,10 +309,10 @@ begin105:               ;           begin 105
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
         
-    push DE             ; 1:11      f_len @ push(f_len) cfetch
-    ex   DE, HL         ; 1:4       f_len @ push(f_len) cfetch
-    ld   HL,(f_len)     ; 3:16      f_len @ push(f_len) cfetch
-    ld    H, 0x00       ; 2:7       f_len @ push(f_len) cfetch
+    push DE             ; 1:11      len_1 @ push(len_1) cfetch
+    ex   DE, HL         ; 1:4       len_1 @ push(len_1) cfetch
+    ld   HL,(len_1)     ; 3:16      len_1 @ push(len_1) cfetch
+    ld    H, 0x00       ; 2:7       len_1 @ push(len_1) cfetch
         
 begin106:               ;           begin 106
             
@@ -376,10 +354,10 @@ view_table_end:
 ;   ---  the beginning of a data stack function  ---
 clear_table:            ;           
     
-    push DE             ; 1:11      s_len @ push(s_len) cfetch
-    ex   DE, HL         ; 1:4       s_len @ push(s_len) cfetch
-    ld   HL,(s_len)     ; 3:16      s_len @ push(s_len) cfetch
-    ld    H, 0x00       ; 2:7       s_len @ push(s_len) cfetch
+    push DE             ; 1:11      len_2 @ push(len_2) cfetch
+    ex   DE, HL         ; 1:4       len_2 @ push(len_2) cfetch
+    ld   HL,(len_2)     ; 3:16      len_2 @ push(len_2) cfetch
+    ld    H, 0x00       ; 2:7       len_2 @ push(len_2) cfetch
     
     push DE             ; 1:11      push(table)
     ex   DE, HL         ; 1:4       push(table)
@@ -387,10 +365,10 @@ clear_table:            ;
     
 begin107:               ;           begin 107
         
-    push DE             ; 1:11      f_len @ push(f_len) cfetch
-    ex   DE, HL         ; 1:4       f_len @ push(f_len) cfetch
-    ld   HL,(f_len)     ; 3:16      f_len @ push(f_len) cfetch
-    ld    H, 0x00       ; 2:7       f_len @ push(f_len) cfetch
+    push DE             ; 1:11      len_1 @ push(len_1) cfetch
+    ex   DE, HL         ; 1:4       len_1 @ push(len_1) cfetch
+    ld   HL,(len_1)     ; 3:16      len_1 @ push(len_1) cfetch
+    ld    H, 0x00       ; 2:7       len_1 @ push(len_1) cfetch
         
 begin108:               ;           begin 108
             
@@ -498,6 +476,7 @@ BIN16_DEC_CHAR:         ;           bin16_dec
 ; In: DE = addr, HL = length
 ; Out: 2x pop stack, TOP = HL = loaded
 READSTRING:
+    dec  HL             ; 1:6       readstring_z
     ld    B, D          ; 1:4       readstring
     ld    C, E          ; 1:4       readstring BC = addr
     ex   DE, HL         ; 1:4       readstring
@@ -519,6 +498,7 @@ READSTRING2:
     or    E             ; 1:4       readstring
     jr   nz, READSTRING2; 2:7/12    readstring
 READSTRING3:
+    ld  (HL),0x00       ; 2:10      readstring_z
     or    A             ; 1:4       readstring
     sbc  HL, BC         ; 2:15      readstring
 
@@ -528,8 +508,8 @@ READSTRING3:
     ret                 ; 1:10      readstring
 VARIABLE_SECTION:
 
-f_len: db 0x00
-s_len: db 0x00
+len_1: db 0x00
+len_2: db 0x00
 
 STRING_SECTION:
 string104:
@@ -545,11 +525,11 @@ string101:
 db "The Levenshtein distance between ", 0x22
 size101 EQU $ - string101
 
-first_word:
+word_1:
 db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-first_word_len EQU $-first_word
-row_size EQU $-first_word
-second_word:
+word_1_len EQU $-word_1
+row_size EQU $-word_1
+word_2:
 db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-second_word_len EQU $-second_word
+word_2_len EQU $-word_2
 table:
