@@ -333,6 +333,17 @@ define({KEY},{ifdef({USE_KEY},,define({USE_KEY},{}))
 dnl
 dnl
 dnl
+dnl ( -- flag )
+dnl key?
+define({KEYQUESTION},{
+    ex   DE, HL         ; 1:4       key?
+    push HL             ; 1:11      key?
+    ld    A,(0x5C08)    ; 3:13      key?   read new value of {LAST K}
+    add   A, 0xFF       ; 2:7       key?   carry if non zero value
+    sbc  HL, HL         ; 2:15      key?})dnl
+dnl
+dnl
+dnl
 dnl ( addr umax -- uloaded )
 dnl readstring
 define({ACCEPT},{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{}))

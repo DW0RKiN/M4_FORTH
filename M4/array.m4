@@ -11,6 +11,22 @@ define({ARRAY_INC},{
     inc  IX             ; 2:10      array_inc   ( -- )}){}dnl
 dnl
 dnl
+define({ARRAY_DEC},{
+    dec  IX             ; 2:10      array_dec   ( -- )}){}dnl
+dnl
+dnl
+define({ARRAY_ADD},{
+    ex   DE, HL         ; 1:4       array_add($1)   ( x -- )
+    add  IX, DE         ; 2:15      array_add($1)
+    pop  DE             ; 1:11      array_add($1)}){}dnl
+dnl
+dnl
+define({PUSH_ARRAY_ADD},{
+    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push_array_add($1)   ( -- )
+    add  IX, BC         ; 2:15      push_array_add($1)}){}dnl
+dnl
+dnl
+dnl
 define({ARRAY_FETCH},{
                         ;[8:53]     array_fetch    ( -- (word) array[$1] )
     push DE             ; 1:11      array_fetch
@@ -20,7 +36,7 @@ define({ARRAY_FETCH},{
 dnl
 dnl
 define({DUP_ARRAY_FETCH},{
-                        ;[9:64]     dup_array_fetch    ( x -- x (word) array[$1] )
+                        ;[9:64]     dup_array_fetch    ( x1 -- x1 x1 (word) array[$1] )
     push DE             ; 1:11      dup_array_fetch
     push HL             ; 1:11      dup_array_fetch
     ld    D,format({%-12s},(IX+($1)+1)); 3:19      dup_array_fetch
@@ -56,6 +72,7 @@ dnl add  HL, BC         ; 1:11
 dnl
 dnl
 dnl
+dnl ( x -- )
 define({ARRAY_STORE},{
                         ;[8:52]     array_store($1)   ( x -- )
     ex   DE, HL         ; 1:4       array_store($1)
@@ -117,7 +134,7 @@ __{}ifelse($2,{},{},{$2  EQU $+2
 dnl
 dnl
 define({DUP_ARRAY_CFETCH},{
-    push DE             ; 1:11      dup_array_cfetch    ( a -- a char_array[$1] )
+    push DE             ; 1:11      dup_array_cfetch    ( a -- a a char_array[$1] )
     push HL             ; 1:11      dup_array_cfetch
     ld    D, 0x00       ; 2:7       dup_array_cfetch
 __{}ifelse($2,{},{},{$2  EQU $+2
