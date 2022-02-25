@@ -391,6 +391,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub> s" Hello"  |<sub>STRING({"Hello"})|<sub>                  |<sub>          ( -- addr n )   |<sub>              |
 |<sub>     key    |<sub>       KEY       |<sub>                  |<sub>          ( -- key )      |<sub>              |
 |<sub>   accept   |<sub>     ACCEPT      |<sub>                  |<sub> ( addr max -- loaded )   |<sub>              |
+|<sub>   accept   |<sub>    ACCEPT_Z     |<sub>                  |<sub> ( addr max -- loaded )   |<sub>string_z      |
 
 The non-standard PRINT_Z extends each text string by zero bytes, but in return it cuts each string print by 5 bytes. An eight-byte routine to print zero-terminated strings must be added to the code, making it more convenient from printing 2 strings.
 
