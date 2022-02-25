@@ -996,8 +996,8 @@ String section.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/array.m4
 
-Non-standard field support extensions The Z80 processor has only one stack, and another has to be emulated. There are several techniques to do this, but they are all slow. As a result, most of the more complex algorithms are desperately inefficient if we use emulated RAS. But without it, we get into trouble writing the algorithm, and the solutions are mostly also very inefficient and unreadable, such as using variables in memory.
-That's why I created this field library using IX registry. I'm not a fan of using IX registry, because you can always write a faster and shorter variant without using it. If, however, there is no free registry available, then it may still be a usable option.
+Non-standard array support extensions The Z80 processor has only one stack, and another has to be emulated. There are several techniques to do this, but they are all slow. As a result, most of the more complex algorithms are desperately inefficient if we use emulated RAS. But without it, we get into trouble writing the algorithm, and the solutions are mostly also very inefficient and unreadable, such as using variables in memory.
+That's why I created this array library using IX registry. I'm not a fan of using IX registry, because you can always write a faster and shorter variant without using it. If, however, there is no free registry available, then it may still be a usable option.
 
 |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment             |
 | :-------------------------: | :------------------------------: | :---------------------------- | :----------------------- |
