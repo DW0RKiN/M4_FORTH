@@ -389,9 +389,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub> .( Hello)  |<sub>                 |<sub>PRINT_I({"Hello"})|<sub>          ( -- )          |<sub>msb string end|
 |<sub> ." Hello"  |<sub>                 |<sub>PRINT_I({"Hello"})|<sub>          ( -- )          |<sub>msb string end|
 |<sub> s" Hello"  |<sub>STRING({"Hello"})|<sub>                  |<sub>          ( -- addr n )   |<sub>              |
+|<sub>            |<sub>    CLEARKEY     |<sub>                  |<sub>          ( -- )          |<sub>clear key buff|
 |<sub>     key    |<sub>       KEY       |<sub>                  |<sub>          ( -- key )      |<sub>              |
 |<sub>   accept   |<sub>     ACCEPT      |<sub>                  |<sub> ( addr max -- loaded )   |<sub>              |
 |<sub>   accept   |<sub>    ACCEPT_Z     |<sub>                  |<sub> ( addr max -- loaded )   |<sub>C-style string|
+
+KEY returns the first non-zero value read from the variable containing the last key pressed and then resets it. If you want to reset the variable before the first reading, use the word CLEARKEY.
 
 The non-standard PRINT_Z extends each text string by zero bytes, but in return it cuts each string print by 5 bytes. An eight-byte routine to print zero-terminated strings must be added to the code, making it more convenient from printing 2 strings.
 
