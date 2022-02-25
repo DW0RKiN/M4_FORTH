@@ -1187,6 +1187,8 @@ ifdef({USE_ACCEPT},{
 ; In: DE = addr, HL = length
 ; Out: 2x pop stack, TOP = HL = loaded
 READSTRING:
+ifdef({USE_ACCEPT_Z},{dnl
+    dec  HL             ; 1:6       readstring_z})
     ld    B, D          ; 1:4       readstring
     ld    C, E          ; 1:4       readstring BC = addr
     ex   DE, HL         ; 1:4       readstring

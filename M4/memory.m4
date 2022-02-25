@@ -266,6 +266,24 @@ __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
 dnl
 dnl
+dnl addr C!
+dnl ( char -- char )
+dnl store(addr) store 8-bit char at addr
+define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing two address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+$3,{},{
+__{}__{}.error {$0}(): Missing third address parameter!},
+__{}$#,{3},{
+    ld    A, L          ; 1:4       dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
+    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
+    ld   format({%-15s},($2){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
+    ld   format({%-15s},($3){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore},
+__{}{
+__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+dnl
+dnl
 dnl
 dnl char addr C!
 dnl ( -- )
