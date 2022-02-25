@@ -996,36 +996,40 @@ String section.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/array.m4
 
-A non-standard extension to support array handling. The Z80 processor has only one stack, and another has to be emulated. There are several techniques to do this, but they are all slow. As a result, most of the more complex algorithms are desperately inefficient if we use emulated RAS. But without it, we get into trouble writing the algorithm, and the solutions are mostly also very inefficient and unreadable, such as using variables in memory.
-That's why I created this array library using IX registry. I'm not a fan of using IX registry, because you can always write a faster and shorter variant without using it. If, however, there is no free registry available, then it may still be a usable option.
+A non-standard extension to support array handling. The Z80 processor has only one stack, and another has to be emulated.
+There are several techniques to do this, but they are all slow. As a result, most of the more complex algorithms are desperately inefficient if we use emulated RAS.
+But without it, we get into trouble writing the algorithm, and the solutions are mostly also very inefficient and unreadable, such as using variables in memory.
+That's why I created this array library using IX registry. I'm not a fan of using IX registry, because you can always write a faster and shorter variant without using it.
+If, however, there is no free registry available, then it may still be a usable option.
 
-|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment             |
-| :-------------------------: | :------------------------------: | :---------------------------- | :----------------------- |
-|<sub>    ARRAY_SET(addr)     |<sub>                             |<sub>                          |<sub> index IX = addr     |
-|<sub>       ARRAY_INC        |<sub>                             |<sub>          ( -- )          |<sub> index IX++          |
-|<sub>       ARRAY_DEC        |<sub>                             |<sub>          ( -- )          |<sub> index IX--          |
-|<sub>       ARRAY_ADD        |<sub>                             |<sub>        ( x -- )          |<sub> index IX + x        |
-|<sub>                        |<sub>   PUSH_ARRAY_ADD(`0x0100`)  |<sub>          ( -- )          |<sub> index IX + `0x0100` |
+|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment             |
+| :-------------------------: | :------------------------------: | :----------------------- | :----------------------- |
+|<sub>    ARRAY_SET(addr)     |<sub>                             |<sub>     ( -- )          |<sub> index IX = addr     |
+|<sub>       ARRAY_INC        |<sub>                             |<sub>     ( -- )          |<sub> index IX++          |
+|<sub>       ARRAY_DEC        |<sub>                             |<sub>     ( -- )          |<sub> index IX--          |
+|<sub>       ARRAY_ADD        |<sub>                             |<sub>   ( x -- )          |<sub> index IX + x        |
+|<sub>                        |<sub>   PUSH_ARRAY_ADD(`0x0100`)  |<sub>     ( -- )          |<sub> index IX + `0x0100` |
 
 #### 16bit
 
-|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment             |
-| :-------------------------: | :------------------------------: | :---------------------------- | :----------------------- |
-|<sub>   ARRAY_FETCH(`13`)    |<sub>                             |<sub>          ( -- x )        |<sub> x = (IX+`13`)       |
-|<sub>                        |<sub>    DUP_ARRAY_FETCH(`42`)    |<sub>        ( x1 -- x1 x1 x2 )|<sub> x2 = (IX+`42`)      |
-|<sub>                        |<sub>    ARRAY_FETCH_ADD(`33`)    |<sub>        ( x1 -- x2 )      |<sub> x2 = x1 + (IX+`33`) |
-|<sub>   ARRAY_STORE(`15`)    |<sub>                             |<sub>        ( x -- )          |<sub> (IX+`15`) = x       |
+|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment             |
+| :-------------------------: | :------------------------------: | :----------------------- | :----------------------- |
+|<sub>   ARRAY_FETCH(`13`)    |<sub>                             |<sub>     ( -- x )        |<sub> x = (IX+`13`)       |
+|<sub>                        |<sub>    DUP_ARRAY_FETCH(`42`)    |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = (IX+`42`)      |
+|<sub>                        |<sub>    ARRAY_FETCH_ADD(`33`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + (IX+`33`) |
+|<sub>   ARRAY_STORE(`15`)    |<sub>                             |<sub>   ( x -- )          |<sub> (IX+`15`) = x       |
 
 #### 8bit
 
-|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment             |
-| :-------------------------: | :------------------------------: | :---------------------------- | :----------------------- |
-|<sub>   ARRAY_CFETCH(`78`)   |<sub>                             |<sub>          ( -- x )        |<sub> x = uint8[`78`]     |
-|<sub>                        |<sub>    DUP_ARRAY_CFETCH(`22`)   |<sub>        ( x1 -- x1 x1 x2 )|<sub> x2 = uint8[`22`]    |
-|<sub>                        |<sub>    ARRAY_CFETCH_ADD(`8`)    |<sub>        ( x1 -- x2 )      |<sub> x2 = x1 + uint8[`8`]|
-|<sub>   ARRAY_CSTORE(`69`)   |<sub>                             |<sub>        ( x -- )          |<sub> uint8[`69`] = lo x  |
+|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment             |
+| :-------------------------: | :------------------------------: | :----------------------- | :----------------------- |
+|<sub>   ARRAY_CFETCH(`78`)   |<sub>                             |<sub>     ( -- x )        |<sub> x = uint8[`78`]     |
+|<sub>                        |<sub>    DUP_ARRAY_CFETCH(`22`)   |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = uint8[`22`]    |
+|<sub>                        |<sub>    ARRAY_CFETCH_ADD(`8`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + uint8[`8`]|
+|<sub>   ARRAY_CSTORE(`69`)   |<sub>                             |<sub>   ( x -- )          |<sub> uint8[`69`] = lo x  |
 
-For 8-bit variants, I added the option of naming the address of a relative constant offset. So it can be referenced and rewritten to another constant value. This can be used, for example, to set the dimension of an array before the processing itself, when the constant then points, for example, to the next row.
+For 8-bit variants, I added the option of naming the address of a relative constant offset. So it can be referenced and rewritten to another constant value. 
+This can be used, for example, to set the dimension of an array before the processing itself, when the constant then points, for example, to the next row.
 
     PUSH2_CSTORE(`16`,my_label_name_001)
     ...
