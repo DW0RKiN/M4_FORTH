@@ -1160,65 +1160,94 @@ SEED EQU $+1
 dnl
 dnl
 dnl
-ifdef({USE_KEY},{
+ifdef({USE_ACCEPT},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
+;==============================================================================
+; Read string from keyboard
+; In: DE = addr_string, HL = max_length
+; Out: pop stack, TOP = HL = loaded
+READSTRING:
+__{}ifdef({USE_ACCEPT_Z},{dnl
+__{}    dec  HL             ; 1:6       readstring_z
+__{}})dnl
+    ld   BC, 0x0000     ; 3:10      readstring   loaded
+    call CLEARBUFF      ; 3:17      readstring
+READSTRING2:
+    ld    A,(0x5C08)    ; 3:13      readstring   read new value of {LAST K}
+    or    A             ; 1:4       readstring   is it still zero?
+    jr    z, READSTRING2; 2:7/12    readstring
+
+    call CLEARBUFF      ; 3:17      readstring
+    ld  (DE),A          ; 1:7       readstring   save char
+
+    cp  0x0C            ; 2:7       readstring   delete?
+    jr   nz, READSTRING3; 2:7/12    readstring
+    ld    A, B          ; 1:4       readstring
+    or    C             ; 1:4       readstring
+    jr    z, READSTRING2; 2:7/12    readstring   empty string?
+    dec  DE             ; 1:6       readstring   addr--
+    dec  BC             ; 1:6       readstring   loaded--
+    inc  HL             ; 1:6       readstring   space++
+    ld    A, 0x08       ; 2:7       readstring
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
+    ld    A, 0x20       ; 2:7       readstring
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
+    ld    A, 0x08       ; 2:7       readstring
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
+    jr   READSTRING2    ; 2:12      readstring
+READSTRING3:
+
+    cp  0x0D            ; 2:7       readstring   enter?
+    jr    z, READSTRING4; 2:7/12    readstring
+
+    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
+    inc  DE             ; 1:6       readstring   addr++
+    inc  BC             ; 1:6       readstring   loaded++
+    dec  HL             ; 1:6       readstring   space--
+    ld    A, H          ; 1:4       readstring
+    or    L             ; 1:4       readstring
+    jr   nz, READSTRING2; 2:7/12    readstring
+
+READSTRING4:            ;           readstring   A = 0, flag: z, nc
+__{}ifdef({USE_ACCEPT_Z},{dnl
+__{}    xor   A             ; 1:7       readstring_z
+__{}    ld  (DE),A          ; 1:7       readstring_z  set zero char
+__{}})dnl
+    pop  HL             ; 1:10      readstring   ret
+    pop  DE             ; 1:10      readstring
+    push HL             ; 1:11      readstring   ret
+    ld    H, B          ; 1:4       readstring
+    ld    L, C          ; 1:4       readstring
+    ret                 ; 1:10      readstring}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_KEY},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
 ;==============================================================================
 ; Read key from keyboard
 ; In:
 ; Out: push stack, TOP = HL = key
 READKEY:
-    ex   DE, HL         ; 1:4       readkey
+    ex   DE, HL         ; 1:4       readkey   ( ret . old _DE old_HL -- old_DE ret . old_HL key )
     ex  (SP),HL         ; 1:19      readkey
     push HL             ; 1:11      readkey
-    ld   BC, 0x5C08     ; 3:10      readkey {ZX Spectrum LAST K} system variable
-    xor   A             ; 1:4       readkey
-    ld    H, A          ; 1:4       readkey
-    ld  (BC),A          ; 1:7       readkey
-    ld    A,(BC)        ; 1:7       readkey read new value of {LAST K}
-    cp    H             ; 1:4       readkey is it still zero?
-    jr    z, $-2        ; 2:7/12    readkey
+
+    ld    A,(0x5C08)    ; 3:13      readkey   read new value of {LAST K}
+    or    A             ; 1:4       readkey   is it still zero?
+    jr    z, $-4        ; 2:7/12    readkey
     ld    L, A          ; 1:4       readkey
-    ret                 ; 1:10      readkey}){}dnl
-dnl
-dnl
-dnl
-ifdef({USE_ACCEPT},{
+    ld    H, 0x00       ; 2:7       readkey
+;   ...fall down to clearbuff}){}dnl
+ifdef({USE_CLEARKEY},{
 ;==============================================================================
-; Read string from keyboard
-; In: DE = addr, HL = length
-; Out: 2x pop stack, TOP = HL = loaded
-READSTRING:
-ifdef({USE_ACCEPT_Z},{dnl
-    dec  HL             ; 1:6       readstring_z})
-    ld    B, D          ; 1:4       readstring
-    ld    C, E          ; 1:4       readstring BC = addr
-    ex   DE, HL         ; 1:4       readstring
-READSTRING2:
-    xor   A             ; 1:4       readstring
-    ld    (0x5C08),A    ; 3:13      readstring {ZX Spectrum LAST K} system variable
-
-    ld    A,(0x5C08)    ; 3:13      readstring read new value of {LAST K}
-    or    A             ; 1:4       readstring is it still zero?
-    jr    z, $-4        ; 2:7/12    readstring
-
-    cp  0x0D            ; 2:7       readstring enter?
-    jr    z, READSTRING3; 2:7/12    readstring
-    ld  (HL),A          ; 1:7       readstring
-    inc  HL             ; 1:6       readstring
-    dec  DE             ; 1:6       readstring
-    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A
-    ld    A, D          ; 1:4       readstring
-    or    E             ; 1:4       readstring
-    jr   nz, READSTRING2; 2:7/12    readstring
-READSTRING3:
-ifdef({USE_ACCEPT_Z},{dnl
-    ld  (HL),0x00       ; 2:10      readstring_z})
-    or    A             ; 1:4       readstring
-    sbc  HL, BC         ; 2:15      readstring
-
-    pop  BC             ; 1:10      readstring ret
-    pop  DE             ; 1:10      readstring
-    push BC             ; 1:11      readstring ret
-    ret                 ; 1:10      readstring}){}dnl
+; Clear key buffer
+; In:
+; Out: {(LAST_K)} = 0
+CLEARBUFF:
+    push HL             ; 1:11      clearbuff
+    ld   HL, 0x5C08     ; 3:10      clearbuff   {ZX Spectrum LAST K} system variable
+    ld  (HL),0x00       ; 2:10      clearbuff
+    pop  HL             ; 1:10      clearbuff
+    ret                 ; 1:10      clearbuff}){}dnl
 dnl
 dnl
 dnl

@@ -319,6 +319,13 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl ( -- )
+dnl Clear key buff
+define({CLEARKEY},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
+    call CLEARBUFF      ; 3:17      clearkey})dnl
+dnl
+dnl
+dnl
 dnl ( -- key )
 dnl readchar
 define({KEY},{ifdef({USE_KEY},,define({USE_KEY},{}))
