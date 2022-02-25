@@ -404,9 +404,7 @@ break107:               ;           over invert until 107
 clear_table_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
-    
-    
-    
+
 
 ;==============================================================================
 ; Input: HL
@@ -473,39 +471,67 @@ BIN16_DEC_CHAR:         ;           bin16_dec
     ret                 ; 1:10      bin16_dec
 ;==============================================================================
 ; Read string from keyboard
-; In: DE = addr, HL = length
-; Out: 2x pop stack, TOP = HL = loaded
+; In: DE = addr_string, HL = max_length
+; Out: pop stack, TOP = HL = loaded
 READSTRING:
     dec  HL             ; 1:6       readstring_z
-    ld    B, D          ; 1:4       readstring
-    ld    C, E          ; 1:4       readstring BC = addr
-    ex   DE, HL         ; 1:4       readstring
+    ld   BC, 0x0000     ; 3:10      readstring   loaded
+    call CLEARBUFF      ; 3:17      readstring
 READSTRING2:
-    xor   A             ; 1:4       readstring
-    ld    (0x5C08),A    ; 3:13      readstring ZX Spectrum LAST K system variable
+    ld    A,(0x5C08)    ; 3:13      readstring   read new value of LAST K
+    or    A             ; 1:4       readstring   is it still zero?
+    jr    z, READSTRING2; 2:7/12    readstring
 
-    ld    A,(0x5C08)    ; 3:13      readstring read new value of LAST K
-    or    A             ; 1:4       readstring is it still zero?
-    jr    z, $-4        ; 2:7/12    readstring
+    call CLEARBUFF      ; 3:17      readstring
+    ld  (DE),A          ; 1:7       readstring   save char
 
-    cp  0x0D            ; 2:7       readstring enter?
-    jr    z, READSTRING3; 2:7/12    readstring
-    ld  (HL),A          ; 1:7       readstring
-    inc  HL             ; 1:6       readstring
-    dec  DE             ; 1:6       readstring
+    cp  0x0C            ; 2:7       readstring   delete?
+    jr   nz, READSTRING3; 2:7/12    readstring
+    ld    A, B          ; 1:4       readstring
+    or    C             ; 1:4       readstring
+    jr    z, READSTRING2; 2:7/12    readstring   empty string?
+    dec  DE             ; 1:6       readstring   addr--
+    dec  BC             ; 1:6       readstring   loaded--
+    inc  HL             ; 1:6       readstring   space++
+    ld    A, 0x08       ; 2:7       readstring
     rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ld    A, D          ; 1:4       readstring
-    or    E             ; 1:4       readstring
-    jr   nz, READSTRING2; 2:7/12    readstring
+    ld    A, 0x20       ; 2:7       readstring
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    ld    A, 0x08       ; 2:7       readstring
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    jr   READSTRING2    ; 2:12      readstring
 READSTRING3:
-    ld  (HL),0x00       ; 2:10      readstring_z
-    or    A             ; 1:4       readstring
-    sbc  HL, BC         ; 2:15      readstring
 
-    pop  BC             ; 1:10      readstring ret
+    cp  0x0D            ; 2:7       readstring   enter?
+    jr    z, READSTRING4; 2:7/12    readstring
+
+    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    inc  DE             ; 1:6       readstring   addr++
+    inc  BC             ; 1:6       readstring   loaded++
+    dec  HL             ; 1:6       readstring   space--
+    ld    A, H          ; 1:4       readstring
+    or    L             ; 1:4       readstring
+    jr   nz, READSTRING2; 2:7/12    readstring
+
+READSTRING4:            ;           readstring   A = 0, flag: z, nc
+    xor   A             ; 1:7       readstring_z
+    ld  (DE),A          ; 1:7       readstring_z  set zero char
+    pop  HL             ; 1:10      readstring   ret
     pop  DE             ; 1:10      readstring
-    push BC             ; 1:11      readstring ret
+    push HL             ; 1:11      readstring   ret
+    ld    H, B          ; 1:4       readstring
+    ld    L, C          ; 1:4       readstring
     ret                 ; 1:10      readstring
+;==============================================================================
+; Clear key buffer
+; In:
+; Out: (LAST_K) = 0
+CLEARBUFF:
+    push HL             ; 1:11      clearbuff
+    ld   HL, 0x5C08     ; 3:10      clearbuff   ZX Spectrum LAST K system variable
+    ld  (HL),0x00       ; 2:10      clearbuff
+    pop  HL             ; 1:10      clearbuff
+    ret                 ; 1:10      clearbuff
 VARIABLE_SECTION:
 
 len_1: db 0x00

@@ -158,9 +158,7 @@ SCOLON(clear_table)
     OVER_INVERT_UNTIL
     _2DROP
 SSEMICOLON
-    
-    
-    
+
 include({../M4/LAST.M4})dnl
 
 word_1:
