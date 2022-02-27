@@ -360,6 +360,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
 |<sub>      DU<     |<sub>         DULT        |<sub>                     |<sub> ( du1 du2 -- flag )   |<sub> f=(du1 < du2)
+
+#### 8bit
+
+|<sub>     Original       |<sub>         M4 FORTH          |<sub>    Optimization     |<sub>            Data stack              |<sub> Comment             |
+| :---------------------: | :----------------------------: | :----------------------: | :-------------------------------------- | :----------------------- |
+|<sub>         C=         |<sub>            CEQ            |<sub>                     |<sub> ( char2 char1 -- flag )            |<sub> TRUE=-1 FALSE=0
+|<sub> over C@ over @C C= |<sub>OVER_CFETCH_OVER_CFETCH_CEQ|<sub>                     |<sub> ( addr2 addr1 -- addr2 addr1 flag )|<sub> TRUE=-1 FALSE=0
+
 ### Device
 
 I added two non-standard extensions for the strings. One for strings that end with a null character and the other for strings that end with an inverse MSB, as ZX ROM can do.
@@ -910,30 +918,35 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 
 #### 8bit
 
-|<sub>     Original     |<sub>        M4 FORTH         |<sub>        Optimization          |<sub>   Data stack               |<sub> Comment           |
-| :-------------------: | :--------------------------: | :-------------------------------: | :------------------------------ | :--------------------- |
-|<sub>        C@        |<sub>          CFETCH         |<sub>                              |<sub>     ( addr -- char )       |<sub> TOP = (addr)      |
-|<sub>      dup C@      |<sub>        DUP CFETCH       |<sub>          DUP_CFETCH          |<sub>     ( addr -- addr char )  |<sub> TOP = (addr)      |
-|<sub>    dup C@ swap   |<sub>      DUP CFETCH SWAP    |<sub>        DUP_CFETCH_SWAP       |<sub>     ( addr -- char addr )  |<sub> NOS = (addr)      |
-|<sub>      addr C@     |<sub>                         |<sub>      PUSH_CFETCH(addr)       |<sub>          ( -- char )       |<sub> TOP = (addr)      |
-|<sub>        C!        |<sub>          CSTORE         |<sub>                              |<sub>( char addr -- )            |<sub> (addr) = char     |
-|<sub>   `0x4000` C!    |<sub>  PUSH(`0x4000`) CSTORE  |<sub>    PUSH_CSTORE(`0x4000`)     |<sub>    ( char  -- )            |<sub>(`0x4000`) = char  |
-|<sub>   `69` swap C!   |<sub> PUSH(`69`) SWAP CSTORE  |<sub>    PUSH_SWAP_CSTORE(`69`)    |<sub>    ( addr  -- )            |<sub>(addr) = `69`      |
-|<sub>`1234` `0x8000` C!|<sub>           ...           |<sub>PUSH2_CSTORE(`1234`,`0x8000`) |<sub>          ( -- )            |<sub>(`0x8000`) = `0x34`|
-|<sub>     tuck C!      |<sub>       TUCK CSTORE       |<sub>         TUCK_CSTORE          |<sub>( char addr -- addr )       |<sub>(addr) = char      |
-|<sub>    tuck C! 1+    |<sub>    TUCK CSTORE _1ADD    |<sub>       TUCK_CSTORE_1ADD       |<sub>( char addr -- addr+1 )     |<sub>(addr) = char      |
-|<sub>   over swap C!   |<sub>    OVER SWAP CSTORE     |<sub>       OVER_SWAP_CSTORE       |<sub>( char addr -- char )       |<sub>(addr) = char      |
-|<sub>     2dup C!      |<sub>      _2DUP CSTORE       |<sub>         _2DUP_CSTORE         |<sub>( char addr -- char addr )  |<sub>(addr) = char      |
-|<sub>    2dup C! 1+    |<sub>   _2DUP CSTORE _1ADD    |<sub>      _2DUP_CSTORE_1ADD       |<sub>( char addr -- char addr+1 )|<sub>(addr) = char      |
-|<sub>  dup `6` swap C! |<sub>DUP PUSH(`6`) SWAP CSTORE|<sub>   DUP_PUSH_SWAP_CSTORE(`6`)  |<sub>(      addr -- addr )       |<sub>(addr) = `6`       |
-|<sub>dup `7` swap C! 1+|<sub>           ...           |<sub>DUP_PUSH_SWAP_CSTORE_1ADD(`7`)|<sub>( char addr -- char addr+1 )|<sub>(addr) = `7`       |
-|<sub>      cmove       |<sub>          CMOVE          |<sub>                              |<sub>( from to u -- )            |<sub>8bit, addr++       |
-|<sub>    `3` cmove     |<sub>                         |<sub>        PUSH_CMOVE(`3`)       |<sub>  ( from to -- )            |<sub>8bit, addr++       |
-|<sub>      cmove>      |<sub>         CMOVEGT         |<sub>                              |<sub>( from to u -- )            |<sub>8bit, addr--       |
-|<sub>       fill       |<sub>          FILL           |<sub>                              |<sub> ( addr u c -- )            |<sub>8bit, addr++       |
-|<sub>      c fill      |<sub>      PUSH_FILL(u,c)     |<sub>                              |<sub>   ( addr u -- )            |<sub>8bit, addr++       |
-|<sub>     u c fill     |<sub>     PUSH2_FILL(u,c)     |<sub>                              |<sub>     ( addr -- )            |<sub>8bit, addr++       |
-|<sub>    a u c fill    |<sub>    PUSH3_FILL(a,u,c)    |<sub>                              |<sub>          ( -- )            |<sub>8bit, addr++       |
+|<sub>     Original     |<sub>        M4 FORTH          |<sub>        Optimization          |<sub>   Data stack                             |<sub> Comment           |
+| :-------------------: | :---------------------------: | :-------------------------------: | :-------------------------------------------- | :--------------------- |
+|<sub>        C@        |<sub>          CFETCH          |<sub>                              |<sub>       ( addr -- char )                   |<sub> TOP = (addr)      |
+|<sub>      dup C@      |<sub>        DUP CFETCH        |<sub>          DUP_CFETCH          |<sub>       ( addr -- addr char )              |<sub> TOP = (addr)      |
+|<sub>    dup C@ swap   |<sub>      DUP CFETCH SWAP     |<sub>        DUP_CFETCH_SWAP       |<sub>       ( addr -- char addr )              |<sub> NOS = (addr)      |
+|<sub>      addr C@     |<sub>    PUSH(addr) CFETCH     |<sub>      PUSH_CFETCH(addr)       |<sub>            ( -- char )                   |<sub> TOP = (addr)      |
+|<sub>     x addr C@    |<sub>PUSH(x) PUSH(addr) CFETCH |<sub>     PUSH2_CFETCH(x,addr)     |<sub>            ( -- x char )                 |<sub> TOP = (addr)      |
+|<sub>     addr C@ x    |<sub>PUSH(addr) CFETCH PUSH(x) |<sub>   PUSH_CFETCH_PUSH(addr,x)   |<sub>            ( -- char x )                 |<sub> NOS = (addr)      |
+|<sub>  over C@ over @C |<sub> OVER CFETCH OVER CFETCH  |<sub>   OVER_CFETCH_OVER_CFETCH    |<sub>( addr2 addr1 -- addr2 addr1 char2 char1 )|<sub> TRUE=-1 FALSE=0
+|<sub>        C!        |<sub>          CSTORE          |<sub>                              |<sub>  ( char addr -- )                        |<sub> (addr) = char     |
+|<sub>   `0x4000` C!    |<sub>   PUSH(`0x4000`) CSTORE  |<sub>    PUSH_CSTORE(`0x4000`)     |<sub>      ( char  -- )                        |<sub>(`0x4000`) = char  |
+|<sub>   `69` swap C!   |<sub>  PUSH(`69`) SWAP CSTORE  |<sub>    PUSH_SWAP_CSTORE(`69`)    |<sub>      ( addr  -- )                        |<sub>(addr) = `69`      |
+|<sub>`1234` `0x8000` C!|<sub>           ...            |<sub>PUSH2_CSTORE(`1234`,`0x8000`) |<sub>            ( -- )                        |<sub>(`0x8000`) = `0x34`|
+|<sub>     tuck C!      |<sub>        TUCK CSTORE       |<sub>         TUCK_CSTORE          |<sub>  ( char addr -- addr )                   |<sub>(addr) = char      |
+|<sub>    tuck C! 1+    |<sub>     TUCK CSTORE _1ADD    |<sub>       TUCK_CSTORE_1ADD       |<sub>  ( char addr -- addr+1 )                 |<sub>(addr) = char      |
+|<sub>   over swap C!   |<sub>     OVER SWAP CSTORE     |<sub>       OVER_SWAP_CSTORE       |<sub>  ( char addr -- char )                   |<sub>(addr) = char      |
+|<sub>     2dup C!      |<sub>       _2DUP CSTORE       |<sub>         _2DUP_CSTORE         |<sub>  ( char addr -- char addr )              |<sub>(addr) = char      |
+|<sub>    2dup C! 1+    |<sub>    _2DUP CSTORE _1ADD    |<sub>      _2DUP_CSTORE_1ADD       |<sub>  ( char addr -- char addr+1 )            |<sub>(addr) = char      |
+|<sub>  dup `6` swap C! |<sub>   PUSH(`6`) OVER CSTORE  |<sub>     PUSH_OVER_CSTORE(`6`)    |<sub>       ( addr -- addr )                   |<sub>(addr) = `6`       |
+|<sub>    `6` over C!   |<sub>   PUSH(`6`) OVER CSTORE  |<sub>     PUSH_OVER_CSTORE(`6`)    |<sub>       ( addr -- addr )                   |<sub>(addr) = `6`       |
+|<sub> over `4` swap C! |<sub>OVER PUSH(`4`) SWAP CSTORE|<sub>  OVER_PUSH_SWAP_CSTORE(`4`)  |<sub>     ( addr x -- addr x )                 |<sub>(addr) = `4`       |
+|<sub>dup `7` swap C! 1+|<sub>           ...            |<sub>DUP_PUSH_SWAP_CSTORE_1ADD(`7`)|<sub>  ( char addr -- char addr+1 )            |<sub>(addr) = `7`       |
+|<sub>      cmove       |<sub>          CMOVE           |<sub>                              |<sub>  ( from to u -- )                        |<sub>8bit, addr++       |
+|<sub>    `3` cmove     |<sub>                          |<sub>        PUSH_CMOVE(`3`)       |<sub>    ( from to -- )                        |<sub>8bit, addr++       |
+|<sub>      cmove>      |<sub>         CMOVEGT          |<sub>                              |<sub>  ( from to u -- )                        |<sub>8bit, addr--       |
+|<sub>       fill       |<sub>          FILL            |<sub>                              |<sub>   ( addr u c -- )                        |<sub>8bit, addr++       |
+|<sub>      c fill      |<sub>      PUSH_FILL(u,c)      |<sub>                              |<sub>     ( addr u -- )                        |<sub>8bit, addr++       |
+|<sub>     u c fill     |<sub>     PUSH2_FILL(u,c)      |<sub>                              |<sub>       ( addr -- )                        |<sub>8bit, addr++       |
+|<sub>    a u c fill    |<sub>    PUSH3_FILL(a,u,c)     |<sub>                              |<sub>            ( -- )                        |<sub>8bit, addr++       |
 
 
 #### 16bit
