@@ -1034,12 +1034,14 @@ If, however, there is no free registry available, then it may still be a usable 
 
 #### 8bit
 
-|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment             |
-| :-------------------------: | :------------------------------: | :----------------------- | :----------------------- |
-|<sub>   ARRAY_CFETCH(`78`)   |<sub>                             |<sub>     ( -- x )        |<sub> x = uint8[`78`]     |
-|<sub>                        |<sub>    DUP_ARRAY_CFETCH(`22`)   |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = uint8[`22`]    |
-|<sub>                        |<sub>    ARRAY_CFETCH_ADD(`8`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + uint8[`8`]|
-|<sub>   ARRAY_CSTORE(`69`)   |<sub>                             |<sub>   ( x -- )          |<sub> uint8[`69`] = lo x  |
+|<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment                       |
+| :-------------------------: | :------------------------------: | :----------------------- | :--------------------------------- |
+|<sub>   ARRAY_CFETCH(`78`)   |<sub>                             |<sub>     ( -- x )        |<sub> x = uint8[`78`]               |
+|<sub>                        |<sub>    DUP_ARRAY_CFETCH(`22`)   |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = uint8[`22`]              |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_UGT(`23`) |<sub>( char -- char flag )|<sub> flag = char (U)>  uint8[`23`] |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_ULE(`24`) |<sub>( char -- char flag )|<sub> flag = char (U)<= uint8[`24`] |
+|<sub>                        |<sub>    ARRAY_CFETCH_ADD(`8`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + uint8[`8`]          |
+|<sub>   ARRAY_CSTORE(`69`)   |<sub>                             |<sub>   ( x -- )          |<sub> uint8[`69`] = lo x            |
 
 For 8-bit variants, I added the option of naming the address of a relative constant offset. So it can be referenced and rewritten to another constant value. 
 This can be used, for example, to set the dimension of an array before the processing itself, when the constant then points, for example, to the next row.
