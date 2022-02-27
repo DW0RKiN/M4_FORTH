@@ -113,10 +113,10 @@ begin102:               ;           begin 102
                         ;[1:7]      2dup c! _2dup_cstore   ( char addr -- char addr )
     ld  (HL),E          ; 1:7       2dup c! _2dup_cstore
         
-    push DE             ; 1:11      len_1 @ push(len_1) cfetch
-    ex   DE, HL         ; 1:4       len_1 @ push(len_1) cfetch
-    ld   HL,(len_1)     ; 3:16      len_1 @ push(len_1) cfetch
-    ld    H, 0x00       ; 2:7       len_1 @ push(len_1) cfetch
+    push DE             ; 1:11      len_1 @  push_cfetch(len_1)
+    ex   DE, HL         ; 1:4       len_1 @  push_cfetch(len_1)
+    ld   HL,(len_1)     ; 3:16      len_1 @  push_cfetch(len_1)
+    ld    H, 0x00       ; 2:7       len_1 @  push_cfetch(len_1)
         
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
@@ -161,23 +161,14 @@ begin104:               ;           begin 104
     ;# substitution 
         ;# LET r=d(j,i)-(n$(j)=m$(i)):REM substitution
             
-                        ;[8:51]     over @C over @C over_cfetch_over_cfetch ( addr2 addr1 -- addr2 addr1 char2 char1 )
-    push DE             ; 1:11      over @C over @C over_cfetch_over_cfetch
-    push HL             ; 1:11      over @C over @C over_cfetch_over_cfetch
-    ld    L, (HL)       ; 1:7       over @C over @C over_cfetch_over_cfetch
-    ld    H, 0x00       ; 2:7       over @C over @C over_cfetch_over_cfetch
-    ld    A, (DE)       ; 1:7       over @C over @C over_cfetch_over_cfetch
-    ld    E, A          ; 1:4       over @C over @C over_cfetch_over_cfetch
-    ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch
-            ;# ( P_word_2  P_word_1 char_1 char_2 )
-            
-                        ;[7:40]     C=   ( c1 c2 -- flag )
-    ld    A, L          ; 1:4       C=
-    xor   E             ; 1:4       C=   ignores higher bytes
-    sub  0x01           ; 2:7       C=
-    sbc  HL, HL         ; 2:15      C=
-    pop  DE             ; 1:10      C=
-            ;# ( P_word_2  P_word_1 flag)
+                        ;[8:51]     over @C over @C C= over_cfetch_over_cfetch_ceq ( addr2 addr1 -- addr2 addr1 flag(char2==char1) )
+    push DE             ; 1:11      over @C over @C C= over_cfetch_over_cfetch_ceq
+    ex   DE, HL         ; 1:4       over @C over @C C= over_cfetch_over_cfetch_ceq
+    ld    A, (DE)       ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    xor (HL)            ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    sub  0x01           ; 2:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    sbc  HL, HL         ; 2:15      over @C over @C C= over_cfetch_over_cfetch_ceq
+            ;# ( P_word_2  P_word_1 flag(char_1==char_2) )
             
     ld    B, 0x00       ; 2:7       array_cfetch_add
     ld    C,(IX+(0))    ; 3:19      array_cfetch_add
@@ -187,18 +178,14 @@ begin104:               ;           begin 104
     ;# insertion 
         ;# IF r>d(j+1,i) THEN LET r=r-1:REM insertion
             
-    push DE             ; 1:11      dup_array_cfetch    ( a -- a char_array[0] )
-    push HL             ; 1:11      dup_array_cfetch
-    ld    D, 0x00       ; 2:7       dup_array_cfetch
+    push DE             ; 1:11      dup_array_cfetch_ugt    ( char1 -- char1 flag(char1 (U)> char_array[0]) )
+    ex   DE, HL         ; 1:4       dup_array_cfetch_ugt
 label_01  EQU $+2
-    ld    E,(IX+(0))    ; 3:19      dup_array_cfetch
-    ex   DE, HL         ; 1:4       dup_array_cfetch
-            ;# ( P_word_2  P_word_1 R R [index+max_word_1_len] )
+    ld    A,(IX+(0))    ; 3:19      dup_array_cfetch_ugt
+    sub   E             ; 1:4       dup_array_cfetch_ugt
+    sbc  HL, HL         ; 2:15      dup_array_cfetch_ugt
+            ;# ( P_word_2  P_word_1 R flag(R (U)> [index+max_word_1_len]) )
             
-    or    A             ; 1:4       (u) >
-    sbc  HL, DE         ; 2:15      (u) >
-    sbc  HL, HL         ; 2:15      (u) >
-    pop  DE             ; 1:10      (u) > 
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
             ;# ( P_word_2  P_word_1 R+flag )
@@ -209,19 +196,13 @@ label_01  EQU $+2
     ;# deletion 
         ;# LET d(j+1,i+1)=r+(r<=d(j,i+1)):REM deletion
             
-    push DE             ; 1:11      dup_array_cfetch    ( a -- a char_array[0] )
-    push HL             ; 1:11      dup_array_cfetch
-    ld    D, 0x00       ; 2:7       dup_array_cfetch
-    ld    E,(IX+(0))    ; 3:19      dup_array_cfetch
-    ex   DE, HL         ; 1:4       dup_array_cfetch 
-            ;# ( P_word_2  P_word_1 R R [index] )
-            
-    scf                 ; 1:4       (u) <=
-    ex   DE, HL         ; 1:4       (u) <=
-    sbc  HL, DE         ; 2:15      (u) <=
-    sbc  HL, HL         ; 2:15      (u) <=
-    pop  DE             ; 1:10      (u) <= 
-            ;# ( P_word_2  P_word_1 R flag )
+    push DE             ; 1:11      dup_array_cfetch_ule    ( char1 -- char1 flag(char1 (U)<= char_array[0]) )
+    ex   DE, HL         ; 1:4       dup_array_cfetch_ule
+    scf                 ; 1:4       dup_array_cfetch_ule
+    ld    A, E          ; 1:4       dup_array_cfetch_ule
+    sbc   A,(IX+(0))    ; 3:19      dup_array_cfetch_ule
+    sbc  HL, HL         ; 2:15      dup_array_cfetch_ule 
+            ;# ( P_word_2  P_word_1 R flag(R (U)<= [index]) )
             
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
@@ -295,24 +276,22 @@ Stop:                   ;           stop
 ;   ---  the beginning of a data stack function  ---
 view_table:             ;           
     
-    push DE             ; 1:11      len_2 @ push(len_2) cfetch
-    ex   DE, HL         ; 1:4       len_2 @ push(len_2) cfetch
-    ld   HL,(len_2)     ; 3:16      len_2 @ push(len_2) cfetch
-    ld    H, 0x00       ; 2:7       len_2 @ push(len_2) cfetch
-    
-    push DE             ; 1:11      push(table)
-    ex   DE, HL         ; 1:4       push(table)
-    ld   HL, table      ; 3:10      push(table)
+    push DE             ; 1:11      len_2 @ table  push_cfetch_push(len_2,table)
+    push HL             ; 1:11      len_2 @ table  push_cfetch_push(len_2,table)
+    ld    A,(len_2)     ; 3:13      len_2 @ table  push_cfetch_push(len_2,table)
+    ld    D, 0x00       ; 2:7       len_2 @ table  push_cfetch_push(len_2,table)
+    ld    E, A          ; 1:4       len_2 @ table  push_cfetch_push(len_2,table)
+    ld   HL, table      ; 3:10      len_2 @ table  push_cfetch_push(len_2,table)
     
 begin105:               ;           begin 105
         
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
         
-    push DE             ; 1:11      len_1 @ push(len_1) cfetch
-    ex   DE, HL         ; 1:4       len_1 @ push(len_1) cfetch
-    ld   HL,(len_1)     ; 3:16      len_1 @ push(len_1) cfetch
-    ld    H, 0x00       ; 2:7       len_1 @ push(len_1) cfetch
+    push DE             ; 1:11      len_1 @  push_cfetch(len_1)
+    ex   DE, HL         ; 1:4       len_1 @  push_cfetch(len_1)
+    ld   HL,(len_1)     ; 3:16      len_1 @  push_cfetch(len_1)
+    ld    H, 0x00       ; 2:7       len_1 @  push_cfetch(len_1)
         
 begin106:               ;           begin 106
             
@@ -354,32 +333,27 @@ view_table_end:
 ;   ---  the beginning of a data stack function  ---
 clear_table:            ;           
     
-    push DE             ; 1:11      len_2 @ push(len_2) cfetch
-    ex   DE, HL         ; 1:4       len_2 @ push(len_2) cfetch
-    ld   HL,(len_2)     ; 3:16      len_2 @ push(len_2) cfetch
-    ld    H, 0x00       ; 2:7       len_2 @ push(len_2) cfetch
-    
-    push DE             ; 1:11      push(table)
-    ex   DE, HL         ; 1:4       push(table)
-    ld   HL, table      ; 3:10      push(table)
+    push DE             ; 1:11      len_2 @ table  push_cfetch_push(len_2,table)
+    push HL             ; 1:11      len_2 @ table  push_cfetch_push(len_2,table)
+    ld    A,(len_2)     ; 3:13      len_2 @ table  push_cfetch_push(len_2,table)
+    ld    D, 0x00       ; 2:7       len_2 @ table  push_cfetch_push(len_2,table)
+    ld    E, A          ; 1:4       len_2 @ table  push_cfetch_push(len_2,table)
+    ld   HL, table      ; 3:10      len_2 @ table  push_cfetch_push(len_2,table)
     
 begin107:               ;           begin 107
         
-    push DE             ; 1:11      len_1 @ push(len_1) cfetch
-    ex   DE, HL         ; 1:4       len_1 @ push(len_1) cfetch
-    ld   HL,(len_1)     ; 3:16      len_1 @ push(len_1) cfetch
-    ld    H, 0x00       ; 2:7       len_1 @ push(len_1) cfetch
+    push DE             ; 1:11      len_1 @  push_cfetch(len_1)
+    ex   DE, HL         ; 1:4       len_1 @  push_cfetch(len_1)
+    ld   HL,(len_1)     ; 3:16      len_1 @  push_cfetch(len_1)
+    ld    H, 0x00       ; 2:7       len_1 @  push_cfetch(len_1)
         
 begin108:               ;           begin 108
             
-    ex   DE, HL         ; 1:4       swap ( b a -- a b )
+                        ;[2:11]     over 0 swap c! over_push_swap_cstore(0)   ( addr x -- addr x )
+    xor   A             ; 1:4       over 0 swap c! over_push_swap_cstore(0)
+    ld  (DE),A          ; 1:7       over 0 swap c! over_push_swap_cstore(0)
             
-                        ;[2:10]     dup 0 swap c! dup_push_swap_cstore(0)   ( addr -- addr )
-    ld  (HL),low 0      ; 2:10      dup 0 swap c! dup_push_swap_cstore(0)
-            
-    inc  HL             ; 1:6       1+
-            
-    ex   DE, HL         ; 1:4       swap ( b a -- a b )
+    inc  DE             ; 1:6       swap 1+ swap
             
     dec  HL             ; 1:6       1-
         

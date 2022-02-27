@@ -72,28 +72,24 @@ ORG 0x8000
 ;# 0x8091
     ;# substitution 
         ;# LET r=d(j,i)-(n$(j)=m$(i)):REM substitution
-            OVER_CFETCH_OVER_CFETCH
-            ;# ( P_word_2  P_word_1 char_1 char_2 )
-            CEQ
-            ;# ( P_word_2  P_word_1 flag)
+            OVER_CFETCH_OVER_CFETCH_CEQ
+            ;# ( P_word_2  P_word_1 flag(char_1==char_2) )
             ARRAY_CFETCH_ADD(0)
             ;# ( P_word_2  P_word_1 R=[index+0]+flag )
             
     ;# insertion 
         ;# IF r>d(j+1,i) THEN LET r=r-1:REM insertion
-            DUP_ARRAY_CFETCH(0, label_01)
-            ;# ( P_word_2  P_word_1 R R [index+max_word_1_len] )
-            UGT ADD
+            DUP_ARRAY_CFETCH_UGT(0, label_01)
+            ;# ( P_word_2  P_word_1 R flag(R (U)> [index+max_word_1_len]) )
+            ADD
             ;# ( P_word_2  P_word_1 R+flag )
             ARRAY_INC
             ;# index++
             
     ;# deletion 
         ;# LET d(j+1,i+1)=r+(r<=d(j,i+1)):REM deletion
-            DUP_ARRAY_CFETCH(0) 
-            ;# ( P_word_2  P_word_1 R R [index] )
-            ULE 
-            ;# ( P_word_2  P_word_1 R flag )
+            DUP_ARRAY_CFETCH_ULE(0) 
+            ;# ( P_word_2  P_word_1 R flag(R (U)<= [index]) )
             SUB
             ;# ( P_word_2  P_word_1 R-flag )
             ARRAY_CSTORE(0, label_02)
@@ -123,8 +119,7 @@ ORG 0x8000
     STOP
     
 SCOLON(view_table)
-    PUSH_CFETCH(len_2)
-    PUSH(table)
+    PUSH_CFETCH_PUSH(len_2,table)
     BEGIN
         CR
         PUSH_CFETCH(len_1)
@@ -142,15 +137,12 @@ SSEMICOLON
     
     
 SCOLON(clear_table)
-    PUSH_CFETCH(len_2)
-    PUSH(table)
+    PUSH_CFETCH_PUSH(len_2,table)
     BEGIN
         PUSH_CFETCH(len_1)
         BEGIN
-            SWAP
-            DUP_PUSH_SWAP_CSTORE(0)
-            _1ADD
-            SWAP
+            OVER_PUSH_SWAP_CSTORE(0)
+            SWAP_1ADD_SWAP
             _1SUB
         DUP_INVERT_UNTIL
         DROP
