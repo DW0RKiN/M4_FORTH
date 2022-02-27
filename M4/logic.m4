@@ -741,6 +741,20 @@ define({CEQ},{
     pop  DE             ; 1:10      C=})dnl
 dnl
 dnl
+dnl over C@ over C@ C=
+dnl ( addr2 addr1 -- addr2 addr1 flag )
+dnl flag = char2 == char1
+dnl 8-bit compares the contents of two addresses.
+define({OVER_CFETCH_OVER_CFETCH_CEQ},{
+                        ;[8:51]     over @C over @C C= over_cfetch_over_cfetch_ceq ( addr2 addr1 -- addr2 addr1 flag(char2==char1) )
+    push DE             ; 1:11      over @C over @C C= over_cfetch_over_cfetch_ceq
+    ex   DE, HL         ; 1:4       over @C over @C C= over_cfetch_over_cfetch_ceq
+    ld    A, (DE)       ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    xor (HL)            ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    sub  0x01           ; 2:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    sbc  HL, HL         ; 2:15      over @C over @C C= over_cfetch_over_cfetch_ceq})dnl
+dnl
+dnl
 dnl
 dnl D=
 dnl ( d1 d2 -- flag )

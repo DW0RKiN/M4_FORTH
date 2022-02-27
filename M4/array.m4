@@ -143,6 +143,27 @@ __{}ifelse($2,{},{},{$2  EQU $+2
     ex   DE, HL         ; 1:4       dup_array_cfetch}){}dnl
 dnl
 dnl
+define({DUP_ARRAY_CFETCH_UGT},{
+    push DE             ; 1:11      dup_array_cfetch_ugt    ( char1 -- char1 flag(char1 (U)> char_array[$1]) )
+    ex   DE, HL         ; 1:4       dup_array_cfetch_ugt
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
+    ld    A,format({%-12s},(IX+($1))); 3:19      dup_array_cfetch_ugt
+    sub   E             ; 1:4       dup_array_cfetch_ugt
+    sbc  HL, HL         ; 2:15      dup_array_cfetch_ugt}){}dnl
+dnl
+dnl
+define({DUP_ARRAY_CFETCH_ULE},{
+    push DE             ; 1:11      dup_array_cfetch_ule    ( char1 -- char1 flag(char1 (U)<= char_array[$1]) )
+    ex   DE, HL         ; 1:4       dup_array_cfetch_ule
+    scf                 ; 1:4       dup_array_cfetch_ule
+    ld    A, E          ; 1:4       dup_array_cfetch_ule
+__{}ifelse($2,{},{},{$2  EQU $+2
+})dnl
+    sbc   A,format({%-12s},(IX+($1))); 3:19      dup_array_cfetch_ule
+    sbc  HL, HL         ; 2:15      dup_array_cfetch_ule}){}dnl
+dnl
+dnl
 define({DUP_ARRAY_LO_FETCH},{
     push DE             ; 1:11      dup_array_lo_fetch    ( a -- a char_array[$1] )
     push HL             ; 1:11      dup_array_lo_fetch

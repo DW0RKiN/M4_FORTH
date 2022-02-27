@@ -110,6 +110,7 @@ define({OVER_CFETCH_OVER_CFETCH},{
     ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch})dnl
 dnl
 dnl
+dnl
 dnl addr C@
 dnl ( -- x )
 dnl push_cfetch(addr), load 8-bit char from addr
@@ -117,10 +118,45 @@ define({PUSH_CFETCH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 @ push($1) cfetch
-    ex   DE, HL         ; 1:4       $1 @ push($1) cfetch
-    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) cfetch
-    ld    H, 0x00       ; 2:7       $1 @ push($1) cfetch})dnl
+    push DE             ; 1:11      $1 @  push_cfetch($1)
+    ex   DE, HL         ; 1:4       $1 @  push_cfetch($1)
+    ld   HL,format({%-12s},($1)); 3:16      $1 @  push_cfetch($1)
+    ld    H, 0x00       ; 2:7       $1 @  push_cfetch($1)})dnl
+dnl
+dnl
+dnl
+dnl addr C@ x
+dnl ( -- (addr) x )
+dnl push_cfetch_push(addr,x), load 8-bit char from addr and push x 
+define({PUSH_CFETCH_PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address and second parameter!},
+__{}$#,{1},{
+__{}__{}.error {$0}():  The second parameter is missing!},
+__{}$#,{2},{
+    push DE             ; 1:11      $1 @ $2  push_cfetch_push($1,$2)
+    push HL             ; 1:11      $1 @ $2  push_cfetch_push($1,$2)
+    ld    A,format({%-12s},($1)); 3:13      $1 @ $2  push_cfetch_push($1,$2)
+    ld    D, 0x00       ; 2:7       $1 @ $2  push_cfetch_push($1,$2)
+    ld    E, A          ; 1:4       $1 @ $2  push_cfetch_push($1,$2)
+    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      $1 @ $2  push_cfetch_push($1,$2)},
+__{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
+dnl
+dnl
+dnl
+dnl addr C@ x
+dnl ( -- (addr) x )
+dnl push2_cfetch(x,addr), push x and load 8-bit char from addr 
+define({PUSH2_CFETCH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address and second parameter!},
+__{}$#,{1},{
+__{}__{}.error {$0}():  The second parameter is missing!},
+__{}$#,{2},{
+    push DE             ; 1:11      $1 $2 @  push2_cfetch($1,$2)
+    push HL             ; 1:11      $1 $2 @  push2_cfetch($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 $2 @  push2_cfetch($1,$2)
+    ld   HL,format({%-12s},($2)); 3:16      $1 $2 @  push2_cfetch($1,$2)
+    ld    H, 0x00       ; 2:7       $1 $2 @  push2_cfetch($1,$2)},
+__{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
 dnl
 dnl
 dnl
@@ -346,15 +382,31 @@ define({_2DUP_CSTORE_1ADD},{
     inc  HL             ; 1:6       2dup c! 1+ _2dup_cstore_1add})dnl
 dnl
 dnl
-dnl dup number swap c!
+dnl number over c!
 dnl ( addr -- addr )
 dnl store 8-bit number at addr with save addr
-define({DUP_PUSH_SWAP_CSTORE},{ifelse($1,{},{
+define({PUSH_OVER_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-                        ;[2:10]     dup $1 swap c! dup_push_swap_cstore($1)   ( addr -- addr )
-    ld  (HL),low format({%-7s},$1); 2:10      dup $1 swap c! dup_push_swap_cstore($1)})dnl
+                        ;[2:10]     $1 over c! push_over_cstore($1)   ( addr -- addr )
+    ld  (HL),low format({%-7s},$1); 2:10      $1 over c! push_over_cstore($1)})dnl
+dnl
+dnl
+dnl over number swap c!
+dnl ( addr x -- addr x )
+dnl store 8-bit number at addr with save addr
+define({OVER_PUSH_SWAP_CSTORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval($1),0,{dnl
+__{}                        ;[2:11]     over $1 swap c! over_push_swap_cstore($1)   ( addr x -- addr x )
+__{}    xor   A             ; 1:4       over $1 swap c! over_push_swap_cstore($1)},
+__{}{dnl
+__{}                        ;[3:14]     over $1 swap c! over_push_swap_cstore($1)   ( addr x -- addr x )
+__{}    ld    A,low format({%-8s},$1); 2:7       over $1 swap c! over_push_swap_cstore($1)})
+    ld  (DE),A          ; 1:7       over $1 swap c! over_push_swap_cstore($1)})dnl
 dnl
 dnl
 dnl dup number swap c! 1+
