@@ -1037,9 +1037,13 @@ If, however, there is no free registry available, then it may still be a usable 
 |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment                       |
 | :-------------------------: | :------------------------------: | :----------------------- | :--------------------------------- |
 |<sub>   ARRAY_CFETCH(`78`)   |<sub>                             |<sub>     ( -- x )        |<sub> x = uint8[`78`]               |
-|<sub>                        |<sub>    DUP_ARRAY_CFETCH(`22`)   |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = uint8[`22`]              |
-|<sub>                        |<sub>  DUP_ARRAY_CFETCH_UGT(`23`) |<sub>( char -- char flag )|<sub> flag = char (U)>  uint8[`23`] |
+|<sub>                        |<sub>    DUP_ARRAY_CFETCH(`12`)   |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = uint8[`12`]              |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_EQ(`15`)  |<sub>( char -- char flag )|<sub> flag = char == uint8[`15`]    |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_NE(`18`)  |<sub>( char -- char flag )|<sub> flag = char <> uint8[`18`]    |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_ULT(`21`) |<sub>( char -- char flag )|<sub> flag = char (U)<  uint8[`21`] |
 |<sub>                        |<sub>  DUP_ARRAY_CFETCH_ULE(`24`) |<sub>( char -- char flag )|<sub> flag = char (U)<= uint8[`24`] |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_UGT(`27`) |<sub>( char -- char flag )|<sub> flag = char (U)>  uint8[`27`] |
+|<sub>                        |<sub>  DUP_ARRAY_CFETCH_UGE(`30`) |<sub>( char -- char flag )|<sub> flag = char (U)>= uint8[`30`] |
 |<sub>                        |<sub>    ARRAY_CFETCH_ADD(`8`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + uint8[`8`]          |
 |<sub>   ARRAY_CSTORE(`69`)   |<sub>                             |<sub>   ( x -- )          |<sub> uint8[`69`] = lo x            |
 
