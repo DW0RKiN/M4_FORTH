@@ -7,11 +7,26 @@ dnl print 16 bit number
 define({DOT},{ifdef({USE_S16},,define({USE_S16},{}))
     call PRINT_S16      ; 3:17      .})dnl
 dnl
+dnl
 dnl u.
-dnl ( x -- )
+dnl ( u -- )
 dnl print 16 bit unsign number
 define({UDOT},{ifdef({USE_U16},,define({USE_U16},{}))
-    call PRINT_U16      ; 3:17      .})dnl
+    call PRINT_U16      ; 3:17      u.   ( u -- )})dnl
+dnl
+dnl
+dnl u.
+dnl ( u -- )
+dnl print 16 bit unsign number
+define({UDOTZXROM},{ifdef({USE_ZXROM_U16},,define({USE_ZXROM_U16},{}))
+    call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )})dnl
+dnl
+dnl
+dnl .
+dnl ( x -- )
+dnl print 16 bit number
+define({DOTZXROM},{ifdef({USE_ZXROM_S16},,define({USE_ZXROM_S16},{}))
+    call PRINT_ZXROM_S16; 3:17      .zxrom   ( x -- )})dnl
 dnl
 dnl
 dnl dup .

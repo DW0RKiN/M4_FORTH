@@ -151,6 +151,70 @@ BIN32BCD_D:
 dnl
 dnl
 dnl
+ifdef({USE_ZXROM_U16},{
+;==============================================================================
+; Input: HL
+; Output: Print space and unsigned decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_ZXROM_U16:        ;           print_zxrom_u16
+    ld    A, ' '        ; 2:7       print_zxrom_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      print_zxrom_u16   putchar with {ZX 48K ROM} in, this will print char in A
+    ; fall to print_zxrom_u16_only
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_ZXROM_U16_ONLY:   ;           print_zxrom_u16_only
+    push DE             ; 1:11      print_zxrom_u16_only   ( u -- )
+    ld    B, H          ; 1:4       print_zxrom_u16_only
+    ld    C, L          ; 1:4       print_zxrom_u16_only
+    call 0x2D2B         ; 3:17      print_zxrom_u16_only   {call ZX ROM stack BC routine}
+    call 0x2DE3         ; 3:17      print_zxrom_u16_only   {call ZX ROM print a floating-point number routine'}
+
+    pop  HL             ; 1:10      print_zxrom_u16_only
+    pop  BC             ; 1:10      print_zxrom_u16_only   load ret
+    pop  DE             ; 1:10      print_zxrom_u16_only
+    push BC             ; 1:11      print_zxrom_u16_only   save ret
+    ret                 ; 1:10      print_zxrom_u16_only}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_ZXROM_S16},{
+;==============================================================================
+; Input: HL
+; Output: Print space and unsigned decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_ZXROM_S16:        ;           print_zxrom_s16
+    ld    A, ' '        ; 2:7       print_zxrom_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      print_zxrom_s16   putchar with {ZX 48K ROM} in, this will print char in A
+    ; fall to print_zxrom_s16_only
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only
+    push DE             ; 1:11      print_zxrom_s16_only   ( u -- )
+    ld    A, H          ; 1:4       print_zxrom_s16_only
+    add   A, A          ; 1:4       print_zxrom_s16_only
+    sbc   A, A          ; 1:4       print_zxrom_s16_only   sign
+    ld    E, A          ; 1:4       print_zxrom_s16_only   2. byte sign
+    xor   A             ; 1:4       print_zxrom_s16_only   1. byte = 0
+    ld    D, L          ; 1:4       print_zxrom_s16_only   3. byte lo
+    ld    C, H          ; 1:4       print_zxrom_s16_only   4. byte hi
+    ld    B, A          ; 1:4       print_zxrom_s16_only   5. byte = 0
+    
+    ld   IY, 0x5C3A     ; 4:14      print_zxrom_s16_only   {Re-initialise IY to ERR-NR.}
+
+    call 0x2AB6         ; 3:17      print_zxrom_s16_only   {call ZX ROM STK store routine}
+    call 0x2DE3         ; 3:17      print_zxrom_s16_only   {call ZX ROM print a floating-point number routine'}
+    pop  HL             ; 1:10      print_zxrom_s16_only
+    pop  BC             ; 1:10      print_zxrom_s16_only   load ret
+    pop  DE             ; 1:10      print_zxrom_s16_only
+    push BC             ; 1:11      print_zxrom_s16_only   save ret
+    ret                 ; 1:10      print_zxrom_u16_only}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_S32},{define({USE_DNEGATE},{}){}define({USE_U32},{})
 ;==============================================================================
 ; ( hi lo -- )
