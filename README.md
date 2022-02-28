@@ -928,7 +928,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>      addr C@     |<sub>    PUSH(addr) CFETCH     |<sub>      PUSH_CFETCH(addr)       |<sub>            ( -- char )                   |<sub> TOP = (addr)      |
 |<sub>     x addr C@    |<sub>PUSH(x) PUSH(addr) CFETCH |<sub>     PUSH2_CFETCH(x,addr)     |<sub>            ( -- x char )                 |<sub> TOP = (addr)      |
 |<sub>     addr C@ x    |<sub>PUSH(addr) CFETCH PUSH(x) |<sub>   PUSH_CFETCH_PUSH(addr,x)   |<sub>            ( -- char x )                 |<sub> NOS = (addr)      |
-|<sub>  over C@ over @C |<sub> OVER CFETCH OVER CFETCH  |<sub>   OVER_CFETCH_OVER_CFETCH    |<sub>( addr2 addr1 -- addr2 addr1 char2 char1 )|<sub> TRUE=-1 FALSE=0
+|<sub>  over C@ over @C |<sub> OVER CFETCH OVER CFETCH  |<sub>   OVER_CFETCH_OVER_CFETCH    |<sub>( addr2 addr1 -- addr2 addr1 char2 char1 )|<sub> TRUE=-1 FALSE=0   |
+|<sub>     addr C@ +    |<sub>  PUSH(addr) CFETCH ADD   |<sub>    PUSH_CFETCH_ADD(addr)     |<sub>          ( x -- x+uchar )                |<sub> uchar = (addr)    |
+|<sub>     addr C@ -    |<sub>  PUSH(addr) CFETCH SUB   |<sub>    PUSH_CFETCH_SUB(addr)     |<sub>          ( x -- x+uchar )                |<sub> uchar = (addr)    |
 |<sub>        C!        |<sub>          CSTORE          |<sub>                              |<sub>  ( char addr -- )                        |<sub> (addr) = char     |
 |<sub>   `0x4000` C!    |<sub>   PUSH(`0x4000`) CSTORE  |<sub>    PUSH_CSTORE(`0x4000`)     |<sub>      ( char  -- )                        |<sub>(`0x4000`) = char  |
 |<sub>   `69` swap C!   |<sub>  PUSH(`69`) SWAP CSTORE  |<sub>    PUSH_SWAP_CSTORE(`69`)    |<sub>      ( addr  -- )                        |<sub>(addr) = `69`      |
