@@ -160,6 +160,40 @@ __{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
 dnl
 dnl
 dnl
+dnl addr C@ +
+dnl ( x -- x+(addr) )
+dnl push_cfetch(addr), add 8-bit char from addr
+define({PUSH_CFETCH_ADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    ld    A,format({%-12s},($1)); 3:13      $1 @ +  push_cfetch_add($1)   ( x -- x+($1) )
+    add   A, L          ; 1:4       $1 @ +  push_cfetch_add($1)
+    ld    L, A          ; 1:4       $1 @ +  push_cfetch_add($1)
+    adc   A, H          ; 1:4       $1 @ +  push_cfetch_add($1)
+    sub   L             ; 1:4       $1 @ +  push_cfetch_add($1)
+    ld    H, A          ; 1:4       $1 @ +  push_cfetch_add($1)})dnl
+dnl
+dnl
+dnl
+dnl addr C@ +
+dnl ( x -- x-(addr) )
+dnl push_cfetch(addr), sub 8-bit char from addr
+define({PUSH_CFETCH_SUB},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    ld    A,format({%-12s},($1)); 3:13      $1 @ -  push_cfetch_sub($1)   ( x -- x-($1) )
+    ld    B, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
+    ld    A, L          ; 1:4       $1 @ -  push_cfetch_sub($1)
+    sub   B             ; 1:4       $1 @ -  push_cfetch_sub($1)
+    ld    L, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
+    sbc   A, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
+    adc   A, H          ; 1:4       $1 @ -  push_cfetch_sub($1)
+    ld    H, A          ; 1:4       $1 @ -  push_cfetch_sub($1)})dnl
+dnl
+dnl
+dnl
 dnl C!
 dnl ( char addr -- )
 dnl store 8-bit char at addr
