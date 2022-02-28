@@ -374,34 +374,36 @@ I added two non-standard extensions for the strings. One for strings that end wi
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
-|<sub> Original   |<sub>    M4 FORTH     |<sub>   Optimization   |<sub>  Data stack              |<sub>   Comment    |
-| :-------------: | :------------------: | :-------------------: | :---------------------------- | :---------------- |
-|<sub>     .      |<sub>       DOT       |<sub>  use UDOT(+num)  |<sub>       ( x1 -- )          |<sub>              |
-|<sub>     u.     |<sub>      UDOT       |<sub>                  |<sub>       ( x1 -- )          |<sub>              |
-|<sub>   dup .    |<sub>                 |<sub>     DUP_DOT      |<sub>       ( x1 -- x1 )       |<sub>              |
-|<sub>   dup u.   |<sub>                 |<sub>     DUP_UDOT     |<sub>       ( x1 -- x1 )       |<sub>              |
-|<sub>     D.     |<sub>      DDOT       |<sub>  use UDDOT(+num) |<sub>        ( d -- )          |<sub>( d -- hi lo )|
-|<sub>     uD.    |<sub>      UDDOT      |<sub>                  |<sub>       ( ud -- )          |<sub>( d -- hi lo )|
-|<sub>     .s     |<sub>      DOTS       |<sub>                  |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
-|<sub>     cr     |<sub>       CR        |<sub>                  |<sub>          ( -- )          |<sub>              |
-|<sub>    emit    |<sub>      EMIT       |<sub>                  |<sub>      ( 'a' -- )          |<sub>              |
-|<sub>  dup emit  |<sub>    DUP  EMIT    |<sub>    DUP_EMIT      |<sub>      ( 'a' -- 'a' )      |<sub>              |
-|<sub>   space    |<sub>      SPACE      |<sub>                  |<sub>          ( -- )          |<sub>              |
-|<sub>  'a' emit  |<sub>                 |<sub>   PUTCHAR('a')   |<sub>          ( -- )          |<sub>              |
-|<sub>    type    |<sub>      TYPE       |<sub>                  |<sub>   ( addr n -- )          |<sub>              |
-|<sub> 2dup type  |<sub>                 |<sub>    _2DUP_TYPE    |<sub>   ( addr n -- addr n )   |<sub>              |
-|<sub> .( Hello)  |<sub> PRINT({"Hello"})|<sub>                  |<sub>          ( -- )          |<sub>              |
-|<sub> ." Hello"  |<sub> PRINT({"Hello"})|<sub>                  |<sub>          ( -- )          |<sub>              |
-|<sub> .( Hello)  |<sub>                 |<sub>PRINT_Z({"Hello"})|<sub>          ( -- )          |<sub>C-style string|
-|<sub> ." Hello"  |<sub>                 |<sub>PRINT_Z({"Hello"})|<sub>          ( -- )          |<sub>C-style string|
-|<sub> .( Hello)  |<sub>                 |<sub>PRINT_I({"Hello"})|<sub>          ( -- )          |<sub>msb string end|
-|<sub> ." Hello"  |<sub>                 |<sub>PRINT_I({"Hello"})|<sub>          ( -- )          |<sub>msb string end|
-|<sub> s" Hello"  |<sub>STRING({"Hello"})|<sub>                  |<sub>          ( -- addr n )   |<sub>              |
-|<sub>            |<sub>    CLEARKEY     |<sub>                  |<sub>          ( -- )          |<sub>clear key buff|
-|<sub>     key    |<sub>       KEY       |<sub>                  |<sub>          ( -- key )      |<sub>              |
-|<sub>    key?    |<sub>      KEY?       |<sub>                  |<sub>          ( -- flag )     |<sub>              |
-|<sub>   accept   |<sub>     ACCEPT      |<sub>                  |<sub> ( addr max -- loaded )   |<sub>              |
-|<sub>   accept   |<sub>    ACCEPT_Z     |<sub>                  |<sub> ( addr max -- loaded )   |<sub>C-style string|
+|<sub> Original   |<sub>    M4 FORTH     |<sub>     Optimization    |<sub>  Data stack              |<sub>   Comment    |
+| :-------------: | :------------------: | :----------------------: | :---------------------------- | :---------------- |
+|<sub>     .      |<sub>       DOT       |<sub>for 0..32767 use UDOT|<sub>       ( x1 -- )          |<sub> -32768..32767|
+|<sub>     u.     |<sub>      UDOT       |<sub>                     |<sub>       ( u1 -- )          |<sub> 0..65535     |
+|<sub>     .      |<sub>     DOTZXROM    |<sub>                     |<sub>       ( x1 -- )          |<sub>              |
+|<sub>     u.     |<sub>    UDOTZXROM    |<sub>                     |<sub>       ( u1 -- )          |<sub> use ZX ROM   |
+|<sub>   dup .    |<sub>                 |<sub>       DUP_DOT       |<sub>       ( x1 -- x1 )       |<sub> use ZX ROM   |
+|<sub>   dup u.   |<sub>                 |<sub>       DUP_UDOT      |<sub>       ( u1 -- u1 )       |<sub>              |
+|<sub>     D.     |<sub>      DDOT       |<sub>    use UDDOT(+num)  |<sub>        ( d -- )          |<sub>( d -- hi lo )|
+|<sub>     uD.    |<sub>      UDDOT      |<sub>                     |<sub>       ( ud -- )          |<sub>( d -- hi lo )|
+|<sub>     .s     |<sub>      DOTS       |<sub>                     |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
+|<sub>     cr     |<sub>       CR        |<sub>                     |<sub>          ( -- )          |<sub>              |
+|<sub>    emit    |<sub>      EMIT       |<sub>                     |<sub>      ( 'a' -- )          |<sub>              |
+|<sub>  dup emit  |<sub>    DUP  EMIT    |<sub>      DUP_EMIT       |<sub>      ( 'a' -- 'a' )      |<sub>              |
+|<sub>   space    |<sub>      SPACE      |<sub>                     |<sub>          ( -- )          |<sub>              |
+|<sub>  'a' emit  |<sub>                 |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>              |
+|<sub>    type    |<sub>      TYPE       |<sub>                     |<sub>   ( addr n -- )          |<sub>              |
+|<sub> 2dup type  |<sub>                 |<sub>      _2DUP_TYPE     |<sub>   ( addr n -- addr n )   |<sub>              |
+|<sub> .( Hello)  |<sub> PRINT({"Hello"})|<sub>                     |<sub>          ( -- )          |<sub>              |
+|<sub> ." Hello"  |<sub> PRINT({"Hello"})|<sub>                     |<sub>          ( -- )          |<sub>              |
+|<sub> .( Hello)  |<sub>                 |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub>C-style string|
+|<sub> ." Hello"  |<sub>                 |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub>C-style string|
+|<sub> .( Hello)  |<sub>                 |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub>msb string end|
+|<sub> ." Hello"  |<sub>                 |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub>msb string end|
+|<sub> s" Hello"  |<sub>STRING({"Hello"})|<sub>                     |<sub>          ( -- addr n )   |<sub>              |
+|<sub>            |<sub>    CLEARKEY     |<sub>                     |<sub>          ( -- )          |<sub>clear key buff|
+|<sub>     key    |<sub>       KEY       |<sub>                     |<sub>          ( -- key )      |<sub>              |
+|<sub>    key?    |<sub>      KEY?       |<sub>                     |<sub>          ( -- flag )     |<sub>              |
+|<sub>   accept   |<sub>     ACCEPT      |<sub>                     |<sub> ( addr max -- loaded )   |<sub>              |
+|<sub>   accept   |<sub>    ACCEPT_Z     |<sub>                     |<sub> ( addr max -- loaded )   |<sub>C-style string|
 
 KEY returns the first non-zero value read from the variable containing the last key pressed and then resets it. If you want to reset the variable before the first reading, use the word CLEARKEY.
 
