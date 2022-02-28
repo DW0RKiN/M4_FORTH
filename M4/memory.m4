@@ -176,7 +176,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl addr C@ +
+dnl addr C@ -
 dnl ( x -- x-(addr) )
 dnl push_cfetch(addr), sub 8-bit char from addr
 define({PUSH_CFETCH_SUB},{ifelse($1,{},{
