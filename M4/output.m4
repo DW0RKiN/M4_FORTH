@@ -182,7 +182,7 @@ dnl
 ifdef({USE_ZXROM_S16},{
 ;==============================================================================
 ; Input: HL
-; Output: Print space and unsigned decimal number in HL
+; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRINT_ZXROM_S16:        ;           print_zxrom_s16
     ld    A, ' '        ; 2:7       print_zxrom_s16   putchar Pollutes: AF, DE', BC'
@@ -190,7 +190,7 @@ PRINT_ZXROM_S16:        ;           print_zxrom_s16
     ; fall to print_zxrom_s16_only
 ;------------------------------------------------------------------------------
 ; Input: HL
-; Output: Print unsigned decimal number in HL
+; Output: Print signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only
     push DE             ; 1:11      print_zxrom_s16_only   ( u -- )
