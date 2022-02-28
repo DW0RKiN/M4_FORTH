@@ -113,13 +113,12 @@ begin102:               ;           begin 102
                         ;[1:7]      2dup c! _2dup_cstore   ( char addr -- char addr )
     ld  (HL),E          ; 1:7       2dup c! _2dup_cstore
         
-    push DE             ; 1:11      len_1 @  push_cfetch(len_1)
-    ex   DE, HL         ; 1:4       len_1 @  push_cfetch(len_1)
-    ld   HL,(len_1)     ; 3:16      len_1 @  push_cfetch(len_1)
-    ld    H, 0x00       ; 2:7       len_1 @  push_cfetch(len_1)
-        
-    add  HL, DE         ; 1:11      +
-    pop  DE             ; 1:10      +
+    ld    A,(len_1)     ; 3:13      len_1 @ +  push_cfetch_add(len_1)   ( x -- x+(len_1) )
+    add   A, L          ; 1:4       len_1 @ +  push_cfetch_add(len_1)
+    ld    L, A          ; 1:4       len_1 @ +  push_cfetch_add(len_1)
+    adc   A, H          ; 1:4       len_1 @ +  push_cfetch_add(len_1)
+    sub   L             ; 1:4       len_1 @ +  push_cfetch_add(len_1)
+    ld    H, A          ; 1:4       len_1 @ +  push_cfetch_add(len_1)
         
     inc  DE             ; 1:6       swap 1+ swap
         

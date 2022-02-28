@@ -49,8 +49,7 @@ ORG 0x8000
     BEGIN
         NROT_SWAP
         _2DUP_CSTORE
-        PUSH_CFETCH(len_1)
-        ADD
+        PUSH_CFETCH_ADD(len_1)
         SWAP_1ADD_SWAP
         NROT_SWAP
         _1SUB
