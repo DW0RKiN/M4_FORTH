@@ -901,9 +901,11 @@ The variables are stored in the data stack.
 |<sub>       until       |<sub>         UNTIL         |<sub>                       |<sub>      ( flag -- )           |<sub>              |
 |<sub>     dup until     |<sub>       DUP UNTIL       |<sub>       DUP_UNTIL       |<sub>      ( flag -- flag )      |<sub>              |
 |<sub>   invert until    |<sub>     INVERT UNTIL      |<sub>     INVERT_UNTIL      |<sub>      ( flag -- )           |<sub>              |
+|<sub>     0= until      |<sub>      _0EQ UNTIL       |<sub>      _0EQ_UNTIL       |<sub>      ( flag -- )           |<sub>              |
 |<sub> dup invert until  |<sub>   DUP INVERT UNTIL    |<sub>    DUP_INVERT_UNTIL   |<sub>      ( flag -- flag )      |<sub>              |
 |<sub>   dup 0= until    |<sub>    DUP _0EQ UNTIL     |<sub>     DUP_0EQ_UNTIL     |<sub>         ( x -- x )         |<sub>              |
 |<sub>dup c@ invert until|<sub>DUP CFETCH INVERT UNTIL|<sub>DUP_CFETCH_INVERT_UNTIL|<sub>      ( addr -- addr )      |<sub>              |
+|<sub>  dup c@ 0= until  |<sub> DUP CFETCH _0EQ UNTIL |<sub>  DUP_CFETCH_0EQ_UNTIL |<sub>      ( addr -- addr )      |<sub>              |
 |<sub>   2dup eq until   |<sub>     _2DUP EQ UNTIL    |<sub>    _2DUP_EQ_UNTIL     |<sub>       ( b a -- b a )       |<sub>              |
 |<sub> dup `2` eq until  |<sub> DUP PUSH(`2`) EQ UNTIL|<sub> DUP_PUSH_EQ_UNTIL(`2`)|<sub>         ( n -- n )         |<sub>              |
 
