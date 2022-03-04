@@ -24,7 +24,7 @@ ORG 0x8000
         _2DUP_CSTORE
         _1SUB 
         SWAP_1SUB_SWAP 
-    OVER_INVERT_UNTIL
+    OVER_0EQ_UNTIL
 
     _1ADD
     SWAP
@@ -53,7 +53,7 @@ ORG 0x8000
         SWAP_1ADD_SWAP
         NROT_SWAP
         _1SUB
-    DUP_INVERT_UNTIL
+    DUP_0EQ_UNTIL
     DROP_2DROP
     
     ;#SCALL(view_table)
@@ -96,14 +96,14 @@ ORG 0x8000
             
             _1ADD
             ;# ( P_word_1  P_word_2++ )
-        DUP_CFETCH_INVERT_UNTIL
+        DUP_CFETCH_0EQ_UNTIL
         
         ARRAY_INC
 
         DROP
         _1ADD
         ;# ( P_word_1++ )        
-    DUP_CFETCH_INVERT_UNTIL
+    DUP_CFETCH_0EQ_UNTIL
     
     DROP
     ARRAY_CFETCH(0, label_03)
@@ -112,7 +112,7 @@ ORG 0x8000
     ;#SCALL(view_table)
     ;#CR
 
-    DOT
+    UDOTZXROM
     PRINT({".", 0x0D})
     
     STOP
@@ -124,13 +124,13 @@ SCOLON(view_table)
         PUSH_CFETCH(len_1)
         BEGIN
             OVER CFETCH
-            DOT
+            UDOTZXROM
             SWAP_1ADD_SWAP 
             _1SUB
-        DUP_INVERT_UNTIL
+        DUP_0EQ_UNTIL
         DROP
         SWAP_1SUB_SWAP 
-    OVER_INVERT_UNTIL
+    OVER_0EQ_UNTIL
     _2DROP
 SSEMICOLON
     
@@ -143,10 +143,10 @@ SCOLON(clear_table)
             OVER_PUSH_SWAP_CSTORE(0)
             SWAP_1ADD_SWAP
             _1SUB
-        DUP_INVERT_UNTIL
+        DUP_0EQ_UNTIL
         DROP
         SWAP_1SUB_SWAP 
-    OVER_INVERT_UNTIL
+    OVER_0EQ_UNTIL
     _2DROP
 SSEMICOLON
 

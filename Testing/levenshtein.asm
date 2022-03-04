@@ -59,10 +59,10 @@ begin101:               ;           begin 101
         
     dec  DE             ; 1:6       swap 1- swap 
     
-    ld    A, D          ; 1:4       over invert until 101   ( flag x -- flag x )
-    or    E             ; 1:4       over invert until 101
-    jp   nz, begin101   ; 3:10      over invert until 101
-break101:               ;           over invert until 101
+    ld    A, D          ; 1:4       over 0= until 101   ( x1 x2 -- x1 x2 )
+    or    E             ; 1:4       over 0= until 101
+    jp   nz, begin101   ; 3:10      over 0= until 101
+break101:               ;           over 0= until 101
 
     
     inc  HL             ; 1:6       1+
@@ -126,10 +126,10 @@ begin102:               ;           begin 102
         
     dec  HL             ; 1:6       1-
     
-    ld    A, H          ; 1:4       dup invert until 102   ( flag -- flag )
-    or    L             ; 1:4       dup invert until 102
-    jp   nz, begin102   ; 3:10      dup invert until 102
-break102:               ;           dup invert until 102
+    ld    A, H          ; 1:4       dup 0= until 102   ( flag -- flag )
+    or    L             ; 1:4       dup 0= until 102
+    jp   nz, begin102   ; 3:10      dup 0= until 102
+break102:               ;           dup 0= until 102
     
     pop  HL             ; 1:10      drop 2drop ( c b a -- )
     pop  HL             ; 1:10      drop 2drop
@@ -219,10 +219,10 @@ label_02  EQU $+2
     inc  HL             ; 1:6       1+
             ;# ( P_word_1  P_word_2++ )
         
-    ld    A,(HL)        ; 1:7       dup C@ invert until 104   ( addr -- addr )
-    or    A             ; 1:4       dup C@ invert until 104
-    jp   nz, begin104   ; 3:10      dup C@ invert until 104
-break104:               ;           dup C@ invert until 104
+    ld    A,(HL)        ; 1:7       dup C@ 0= until 104   ( addr -- addr )
+    or    A             ; 1:4       dup C@ 0= until 104
+    jp   nz, begin104   ; 3:10      dup C@ 0= until 104
+break104:               ;           dup C@ 0= until 104
         
         
     inc  IX             ; 2:10      array_inc   ( -- )
@@ -234,10 +234,10 @@ break104:               ;           dup C@ invert until 104
     inc  HL             ; 1:6       1+
         ;# ( P_word_1++ )        
     
-    ld    A,(HL)        ; 1:7       dup C@ invert until 103   ( addr -- addr )
-    or    A             ; 1:4       dup C@ invert until 103
-    jp   nz, begin103   ; 3:10      dup C@ invert until 103
-break103:               ;           dup C@ invert until 103
+    ld    A,(HL)        ; 1:7       dup C@ 0= until 103   ( addr -- addr )
+    or    A             ; 1:4       dup C@ 0= until 103
+    jp   nz, begin103   ; 3:10      dup C@ 0= until 103
+break103:               ;           dup C@ 0= until 103
     
     
     ex   DE, HL         ; 1:4       drop
@@ -255,7 +255,7 @@ label_03  EQU $+2
     ;#CR
 
     
-    call PRINT_S16      ; 3:17      .
+    call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )
     
     push DE             ; 1:11      print     ".", 0x0D
     ld   BC, size104    ; 3:10      print     Length of string104
@@ -299,26 +299,26 @@ begin106:               ;           begin 106
     ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
     ld    H, 0x00       ; 2:7       C@ cfetch
             
-    call PRINT_S16      ; 3:17      .
+    call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )
             
     inc  DE             ; 1:6       swap 1+ swap 
             
     dec  HL             ; 1:6       1-
         
-    ld    A, H          ; 1:4       dup invert until 106   ( flag -- flag )
-    or    L             ; 1:4       dup invert until 106
-    jp   nz, begin106   ; 3:10      dup invert until 106
-break106:               ;           dup invert until 106
+    ld    A, H          ; 1:4       dup 0= until 106   ( flag -- flag )
+    or    L             ; 1:4       dup 0= until 106
+    jp   nz, begin106   ; 3:10      dup 0= until 106
+break106:               ;           dup 0= until 106
         
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
         
     dec  DE             ; 1:6       swap 1- swap 
     
-    ld    A, D          ; 1:4       over invert until 105   ( flag x -- flag x )
-    or    E             ; 1:4       over invert until 105
-    jp   nz, begin105   ; 3:10      over invert until 105
-break105:               ;           over invert until 105
+    ld    A, D          ; 1:4       over 0= until 105   ( x1 x2 -- x1 x2 )
+    or    E             ; 1:4       over 0= until 105
+    jp   nz, begin105   ; 3:10      over 0= until 105
+break105:               ;           over 0= until 105
     
     pop  HL             ; 1:10      2drop
     pop  DE             ; 1:10      2drop ( b a -- )
@@ -356,20 +356,20 @@ begin108:               ;           begin 108
             
     dec  HL             ; 1:6       1-
         
-    ld    A, H          ; 1:4       dup invert until 108   ( flag -- flag )
-    or    L             ; 1:4       dup invert until 108
-    jp   nz, begin108   ; 3:10      dup invert until 108
-break108:               ;           dup invert until 108
+    ld    A, H          ; 1:4       dup 0= until 108   ( flag -- flag )
+    or    L             ; 1:4       dup 0= until 108
+    jp   nz, begin108   ; 3:10      dup 0= until 108
+break108:               ;           dup 0= until 108
         
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
         
     dec  DE             ; 1:6       swap 1- swap 
     
-    ld    A, D          ; 1:4       over invert until 107   ( flag x -- flag x )
-    or    E             ; 1:4       over invert until 107
-    jp   nz, begin107   ; 3:10      over invert until 107
-break107:               ;           over invert until 107
+    ld    A, D          ; 1:4       over 0= until 107   ( x1 x2 -- x1 x2 )
+    or    E             ; 1:4       over 0= until 107
+    jp   nz, begin107   ; 3:10      over 0= until 107
+break107:               ;           over 0= until 107
     
     pop  HL             ; 1:10      2drop
     pop  DE             ; 1:10      2drop ( b a -- )
@@ -381,67 +381,28 @@ clear_table_end:
 
 ;==============================================================================
 ; Input: HL
-; Output: Print space and signed decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_S16:              ;           print_s16
-    ld    A, H          ; 1:4       print_s16
-    add   A, A          ; 1:4       print_s16
-    jr   nc, PRINT_U16  ; 2:7/12    print_s16
-    xor   A             ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    L, A          ; 1:4       print_s16   neg
-    sbc   A, H          ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    H, A          ; 1:4       print_s16   neg
-    ld    A, ' '        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s16   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s16   ld   BC, **
-    ; fall to print_u16
-;==============================================================================
-; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16:              ;           print_u16
-    ld    A, ' '        ; 2:7       print_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u16   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u16_only
+PRINT_ZXROM_U16:        ;           print_zxrom_u16
+    ld    A, ' '        ; 2:7       print_zxrom_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      print_zxrom_u16   putchar with ZX 48K ROM in, this will print char in A
+    ; fall to print_zxrom_u16_only
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16_ONLY:         ;           print_u16_only
-    xor   A             ; 1:4       print_u16_only   A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10      print_u16_only
-    call BIN16_DEC+2    ; 3:17      print_u16_only
-    ld   BC, -1000      ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld   BC, -100       ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    C, -10        ; 2:7       print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    A, L          ; 1:4       print_u16_only
-    pop  BC             ; 1:10      print_u16_only   load ret
-    ex   DE, HL         ; 1:4       print_u16_only
-    pop  DE             ; 1:10      print_u16_only
-    push BC             ; 1:10      print_u16_only   save ret
-    jr   BIN16_DEC_CHAR ; 2:12      print_u16_only
-;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
-; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
-; Pollutes: AF, HL
-BIN16_DEC:              ;           bin16_dec
-    and  0xF0           ; 2:7       bin16_dec   reset A to 0 or '0'
-    add  HL, BC         ; 1:11      bin16_dec
-    inc   A             ; 1:4       bin16_dec
-    jr    c, $-2        ; 2:7/12    bin16_dec
-    sbc  HL, BC         ; 2:15      bin16_dec
-    dec   A             ; 1:4       bin16_dec
-    ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
-BIN16_DEC_CHAR:         ;           bin16_dec
-    or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-    rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10      bin16_dec
+PRINT_ZXROM_U16_ONLY:   ;           print_zxrom_u16_only   ( u -- )
+    push DE             ; 1:11      print_zxrom_u16_only
+    ld    B, H          ; 1:4       print_zxrom_u16_only
+    ld    C, L          ; 1:4       print_zxrom_u16_only
+    call 0x2D2B         ; 3:17      print_zxrom_u16_only   call ZX ROM stack BC routine
+    call 0x2DE3         ; 3:17      print_zxrom_u16_only   call ZX ROM print a floating-point number routine
+
+    pop  HL             ; 1:10      print_zxrom_u16_only
+    pop  BC             ; 1:10      print_zxrom_u16_only   load ret
+    pop  DE             ; 1:10      print_zxrom_u16_only
+    push BC             ; 1:11      print_zxrom_u16_only   save ret
+    ret                 ; 1:10      print_zxrom_u16_only
 ;==============================================================================
 ; Read string from keyboard
 ; In: DE = addr_string, HL = max_length
