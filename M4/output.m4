@@ -164,12 +164,12 @@ PRINT_ZXROM_U16:        ;           print_zxrom_u16
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_U16_ONLY:   ;           print_zxrom_u16_only
-    push DE             ; 1:11      print_zxrom_u16_only   ( u -- )
+PRINT_ZXROM_U16_ONLY:   ;           print_zxrom_u16_only   ( u -- )
+    push DE             ; 1:11      print_zxrom_u16_only
     ld    B, H          ; 1:4       print_zxrom_u16_only
     ld    C, L          ; 1:4       print_zxrom_u16_only
     call 0x2D2B         ; 3:17      print_zxrom_u16_only   {call ZX ROM stack BC routine}
-    call 0x2DE3         ; 3:17      print_zxrom_u16_only   {call ZX ROM print a floating-point number routine'}
+    call 0x2DE3         ; 3:17      print_zxrom_u16_only   {call ZX ROM print a floating-point number routine}
 
     pop  HL             ; 1:10      print_zxrom_u16_only
     pop  BC             ; 1:10      print_zxrom_u16_only   load ret
@@ -192,8 +192,8 @@ PRINT_ZXROM_S16:        ;           print_zxrom_s16
 ; Input: HL
 ; Output: Print signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only
-    push DE             ; 1:11      print_zxrom_s16_only   ( u -- )
+PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only   ( x -- )
+    push DE             ; 1:11      print_zxrom_s16_only
     ld    A, H          ; 1:4       print_zxrom_s16_only
     add   A, A          ; 1:4       print_zxrom_s16_only
     sbc   A, A          ; 1:4       print_zxrom_s16_only   sign
@@ -206,7 +206,7 @@ PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only
     ld   IY, 0x5C3A     ; 4:14      print_zxrom_s16_only   {Re-initialise IY to ERR-NR.}
 
     call 0x2AB6         ; 3:17      print_zxrom_s16_only   {call ZX ROM STK store routine}
-    call 0x2DE3         ; 3:17      print_zxrom_s16_only   {call ZX ROM print a floating-point number routine'}
+    call 0x2DE3         ; 3:17      print_zxrom_s16_only   {call ZX ROM print a floating-point number routine}
     pop  HL             ; 1:10      print_zxrom_s16_only
     pop  BC             ; 1:10      print_zxrom_s16_only   load ret
     pop  DE             ; 1:10      print_zxrom_s16_only
