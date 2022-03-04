@@ -177,7 +177,10 @@ do
     sed 's#^\([^;{]*\s\|^\)\.s\(\s\|$\)#\1DOTS\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Tt]ype\(\s\|$\)#\1TYPE\2#g' |
-    sed 's#^\([^;{]*\s\|^\)[Ee]mit\(\s\|$\)#\1EMIT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Ee]mit\(\s\|$\)#\1EMIT\2#g' | 
+
+    sed "s#^\([^;{]*\s\|^\)PRINT_Z({\"\([a-zA-Z0-9]\)\"})\(\s\|$\)#\1PUSH_EMIT('\2')\3#g" |
+    
     sed 's#^\([^;{]*\s\|^\)[Dd]up\s\+EMIT\(\s\|$\)#\1DUP_EMIT\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ss]pace\(\s\|$\)#\1SPACE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Kk]ey\(\s\|$\)#\1KEY\2#g' |
