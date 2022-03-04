@@ -423,10 +423,16 @@ do
 
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9][0-9]*\)\s\+PICK\(\s\|$\)#\1PUSH_PICK(\2)\3#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)_0EQ\s\+UNTIL\(\s\|$\)#\1_0EQ_UNTIL\2#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)DUP\s\+UNTIL\(\s\|$\)#\1DUP_UNTIL\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)INVERT\s\+UNTIL\(\s\|$\)#\1INVERT_UNTIL\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+INVERT_UNTIL\(\s\|$\)#\1DUP_INVERT_UNTIL\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)DUP\s\+CFETCH\s\+INVERT_UNTIL\(\s\|$\)#\1DUP_CFETCH_INVERT_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+_0EQ_UNTIL\(\s\|$\)#\1DUP_0EQ_UNTIL\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)OVER\s\+UNTIL\(\s\|$\)#\1OVER_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)OVER\s\+_0EQ_UNTIL\(\s\|$\)#\1OVER_0EQ_UNTIL\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)DUP_CFETCH\s\+UNTIL\(\s\|$\)#\1DUP_CFETCH_UNTIL\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP_CFETCH\s\+_0EQ_UNTIL\(\s\|$\)#\1DUP_CFETCH_0EQ_UNTIL\2#gi' |
     
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+EQ\s\+UNTIL\(\s\|$\)#\1_2DUP_EQ_UNTIL\2#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+EQ\s\+UNTIL\(\s\|$\)#\1DUP_PUSH_EQ_UNTIL(\2)\3#gi' |
