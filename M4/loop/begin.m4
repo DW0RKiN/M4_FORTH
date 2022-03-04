@@ -62,16 +62,6 @@ break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_S
 dnl
 dnl
 dnl ( flag -- )
-define({INVERT_UNTIL},{
-    ld    A, H          ; 1:4       invert until BEGIN_STACK   ( flag -- )
-    or    L             ; 1:4       invert until BEGIN_STACK
-    ex   DE, HL         ; 1:4       invert until BEGIN_STACK
-    pop  DE             ; 1:10      invert until BEGIN_STACK
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      invert until BEGIN_STACK
-break{}BEGIN_STACK:               ;           invert until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
-dnl
-dnl
-dnl ( flag -- )
 define({_0EQ_UNTIL},{
     ld    A, H          ; 1:4       0= until BEGIN_STACK   ( flag -- )
     or    L             ; 1:4       0= until BEGIN_STACK
@@ -91,14 +81,6 @@ break{}BEGIN_STACK:               ;           dup until BEGIN_STACK{}popdef({BEG
 dnl
 dnl
 dnl ( flag -- flag )
-define({DUP_INVERT_UNTIL},{
-    ld    A, H          ; 1:4       dup invert until BEGIN_STACK   ( flag -- flag )
-    or    L             ; 1:4       dup invert until BEGIN_STACK
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup invert until BEGIN_STACK
-break{}BEGIN_STACK:               ;           dup invert until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
-dnl
-dnl
-dnl ( flag -- flag )
 define({DUP_0EQ_UNTIL},{
     ld    A, H          ; 1:4       dup 0= until BEGIN_STACK   ( flag -- flag )
     or    L             ; 1:4       dup 0= until BEGIN_STACK
@@ -107,11 +89,11 @@ break{}BEGIN_STACK:               ;           dup 0= until BEGIN_STACK{}popdef({
 dnl
 dnl
 dnl ( addr -- addr )
-define({DUP_CFETCH_INVERT_UNTIL},{
-    ld    A,(HL)        ; 1:7       dup C@ invert until BEGIN_STACK   ( addr -- addr )
-    or    A             ; 1:4       dup C@ invert until BEGIN_STACK
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup C@ invert until BEGIN_STACK
-break{}BEGIN_STACK:               ;           dup C@ invert until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+define({DUP_CFETCH_UNTIL},{
+    ld    A,(HL)        ; 1:7       dup C@ until BEGIN_STACK   ( addr -- addr )
+    or    A             ; 1:4       dup C@ until BEGIN_STACK
+    jp    z, begin{}BEGIN_STACK   ; 3:10      dup C@ until BEGIN_STACK
+break{}BEGIN_STACK:               ;           dup C@ until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( addr -- addr )
@@ -128,14 +110,6 @@ define({OVER_UNTIL},{
     or    E             ; 1:4       over until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      over until BEGIN_STACK
 break{}BEGIN_STACK:               ;           over until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
-dnl
-dnl
-dnl ( flag x -- flag x )
-define({OVER_INVERT_UNTIL},{
-    ld    A, D          ; 1:4       over invert until BEGIN_STACK   ( flag x -- flag x )
-    or    E             ; 1:4       over invert until BEGIN_STACK
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      over invert until BEGIN_STACK
-break{}BEGIN_STACK:               ;           over invert until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( x1 x2 -- x1 x2 )
