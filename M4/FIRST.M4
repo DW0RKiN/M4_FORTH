@@ -18,12 +18,14 @@ include(M4PATH{}memory.m4)dnl
 include(M4PATH{}other.m4)dnl
 include(M4PATH{}stack.m4)dnl
 include(M4PATH{}array.m4)dnl
+include(M4PATH{}zx48float.m4)dnl
 dnl
 define({___},{})dnl
 dnl
 define({last_action},{dnl
 ___{}include(M4PATH{}float_last.m4)dnl
 ___{}include(M4PATH{}graphic.m4)dnl
+___{}include(M4PATH{}zx48float_end.m4)dnl
 ___{}include(M4PATH{}output.m4)dnl
 })dnl
 m4wrap({last_action})dnl

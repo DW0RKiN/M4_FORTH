@@ -69,7 +69,6 @@ define({_0EQ_UNTIL},{
     pop  DE             ; 1:10      0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      0= until BEGIN_STACK
 break{}BEGIN_STACK:               ;           0= until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
-
 dnl
 dnl
 dnl ( flag -- flag )
