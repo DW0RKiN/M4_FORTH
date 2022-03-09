@@ -347,7 +347,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>     f-     |<sub>     ZX48FSUB     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2        |
 |<sub>   fswap    |<sub>    ZX48FSWAP     |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                  |
 |<sub>    ftan    |<sub>     ZX48FTAN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)        |
-|<sub>            |<sub>     ZX48UMUL     |<sub>  ( -- ) ( F: -- )         |<sub>                     |
+|<sub>            |<sub>     ZX48UMUL     |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a           |
 
 
 ### Logic
@@ -775,46 +775,46 @@ In the test, I came across a link between the word WHILE and IF. This is the con
     ( 3 -- 3 4 5 123 )
     ( 4 -- 4 5 123 )
     ( 5 -- 5 123 )
-    
+
     : xxx
-    BEGIN 
+    BEGIN
         DUP 2 >
-    WHILE 
-        DUP 5 < 
-        WHILE 
-            DUP 1+ 
-        REPEAT 
-        123 
-    ELSE 
-        345 
+    WHILE
+        DUP 5 <
+        WHILE
+            DUP 1+
+        REPEAT
+        123
+    ELSE
+        345
     THEN ;
 which is equivalent to M4 FORTH and FORTH standard
 
     : xxxx
         DUP 2 >
-        IF 
-            BEGIN 
-                DUP 5 < 
-            WHILE 
-                DUP 1+ 
-            REPEAT 
-            123 
-        ELSE 
-            345 
+        IF
+            BEGIN
+                DUP 5 <
+            WHILE
+                DUP 1+
+            REPEAT
+            123
+        ELSE
+            345
         THEN ;
 And the last variant is only valid for M4 FORTH
-    
+
     : xxx
-    BEGIN 
+    BEGIN
         DUP 2 >
-    IF 
-        DUP 5 < 
-        WHILE 
-            DUP 1+ 
-        REPEAT 
-        123 
-    ELSE 
-        345 
+    IF
+        DUP 5 <
+        WHILE
+            DUP 1+
+        REPEAT
+        123
+    ELSE
+        345
     THEN ;
 
 Multiple WHILE is possible in M4 FORTH because they are independent of each other and apply to the last current BEGIN .. UNTIL/REPEAT/AGAIN loop.
@@ -1091,7 +1091,7 @@ If, however, there is no free registry available, then it may still be a usable 
 |<sub>                        |<sub>    ARRAY_CFETCH_ADD(`8`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + uint8[`8`]          |
 |<sub>   ARRAY_CSTORE(`69`)   |<sub>                             |<sub>   ( x -- )          |<sub> uint8[`69`] = lo x            |
 
-For 8-bit variants, I added the option of naming the address of a relative constant offset. So it can be referenced and rewritten to another constant value. 
+For 8-bit variants, I added the option of naming the address of a relative constant offset. So it can be referenced and rewritten to another constant value.
 This can be used, for example, to set the dimension of an array before the processing itself, when the constant then points, for example, to the next row.
 
     PUSH2_CSTORE(`16`,my_label_name_001)
