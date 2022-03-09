@@ -36,28 +36,50 @@ _ZX48FSTORE:
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FPUSH},{
-_ZX48FPUSH:
-    push DE             ; 1:11      _zx48fpush   ( c ret . b a -- ret . c b )
-    ld    B, H          ; 1:4       _zx48fpush
-    ld    C, L          ; 1:4       _zx48fpush
-    call 0x2D2B         ; 3:17      _zx48fpush   {call ZX ROM stack BC routine}
-    pop  HL             ; 1:10      _zx48fpush
-    pop  BC             ; 1:10      _zx48fpush   ret
-    pop  DE             ; 1:10      _zx48fpush
-    push BC             ; 1:11      _zx48fpush   ret
-    ret                 ; 1:10      _zx48fpush
+ifdef({USE_ZX48F_TO_S},{
+_ZX48F_TO_S:
+    pop  BC             ; 1:10      _zx48f>s   ret
+    push DE             ; 1:11      _zx48f>s
+    push BC             ; 1:11      _zx48f>s   ret
+    push HL             ; 1:11      _zx48f>s
+    call 0x36AF         ; 3:17      _zx48f>s   {call ZX ROM int}
+    ld   HL,(0x5C65)    ; 3:16      _zx48f>s   {load STKEND}
+    dec  HL             ; 1:6       _zx48f>s
+    dec  HL             ; 1:6       _zx48f>s
+    ld    D,(HL)        ; 1:7       _zx48f>s
+    dec  HL             ; 1:6       _zx48f>s
+    ld    E,(HL)        ; 1:7       _zx48f>s
+    dec  HL             ; 1:6       _zx48f>s
+    dec  HL             ; 1:6       _zx48f>s
+    ld  (0x5C65),HL     ; 3:16      _zx48f>s   {save STKEND+5}
+    ex   DE, HL         ; 1:6       _zx48f>s
+    pop  DE             ; 1:10      _zx48f>s
+    ret                 ; 1:10      _zx48f>s
 }){}dnl
 dnl
 dnl
-ifdef({USE_BC_ZX48FPUSH},{
-_BC_ZX48FPUSH:
-    push DE             ; 1:11      _bc_zx48fpush
-    push HL             ; 1:11      _bc_zx48fpush
-    call 0x2D2B         ; 3:17      _bc_zx48fpush   {call ZX ROM stack BC routine}
-    pop  HL             ; 1:10      _bc_zx48fpush
-    pop  DE             ; 1:10      _bc_zx48fpush
-    ret                 ; 1:10      _bc_zx48fpush
+ifdef({USE_ZX48S_TO_F},{
+_ZX48S_TO_F:
+    push DE             ; 1:11      _zx48s>f   ( c ret . b a -- ret . c b )
+    ld    B, H          ; 1:4       _zx48s>f
+    ld    C, L          ; 1:4       _zx48s>f
+    call 0x2D2B         ; 3:17      _zx48s>f   {call ZX ROM stack BC routine}
+    pop  HL             ; 1:10      _zx48s>f
+    pop  BC             ; 1:10      _zx48s>f   ret
+    pop  DE             ; 1:10      _zx48s>f
+    push BC             ; 1:11      _zx48s>f   ret
+    ret                 ; 1:10      _zx48s>f
+}){}dnl
+dnl
+dnl
+ifdef({USE_ZX48BC_TO_F},{
+_ZX48BC_TO_F:
+    push DE             ; 1:11      _zx48bc_to_f
+    push HL             ; 1:11      _zx48bc_to_f
+    call 0x2D2B         ; 3:17      _zx48bc_to_f   {call ZX ROM stack BC routine}
+    pop  HL             ; 1:10      _zx48bc_to_f
+    pop  DE             ; 1:10      _zx48bc_to_f
+    ret                 ; 1:10      _zx48bc_to_f
 }){}dnl
 dnl
 dnl

@@ -66,28 +66,6 @@ __{}__{}.error {$0}($@): $# parameters found in macro!
     call _ZX48FSTORE    ; 3:17      zx48fstore   ( addr -- ) ( F: r -- )}){}dnl
 dnl
 dnl
-dnl
-define({ZX48FPUSH},{define({USE_ZX48FPUSH},{})
-    call _ZX48FPUSH     ; 3:17      zx48fpush   ( u -- ) ( F: -- r )}){}dnl
-dnl
-dnl
-dnl
-define({PUSH_ZX48FPUSH},{define({USE_BC_ZX48FPUSH},{}){}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
-    ld   BC, format({%-11s},$1); 4:20      push_zx48fpush($1)   ( F: -- $1 )
-    call _BC_ZX48FPUSH  ; 3:17      push_zx48fpush($1)},
-eval($1>=0),{1},{dnl
-    ld   BC, format({%-11s},$1); 3:10      push_zx48fpush($1)   ( F: -- $1 )
-    call _BC_ZX48FPUSH  ; 3:17      push_zx48fpush($1)},
-{define({USE_ZX48FNEGATE},{}){}dnl
-    ld   BC, format({%-11s},eval(-($1))); 3:10      push_zx48fpush($1)   ( F: -- $1 )
-    call _BC_ZX48FPUSH  ; 3:17      push_zx48fpush($1)
-    call _ZX48FNEGATE   ; 3:17      push_zx48fpush($1)})}){}dnl
-dnl
-dnl
 dnl FOVER
 define({ZX48FOVER},{define({USE_ZX48FOVER},{})
     call _ZX48FOVER     ; 3:17      fover zx48fover   ( F: r1 r2 -- r1 r2 r1 )}){}dnl
@@ -240,6 +218,32 @@ dnl F=
 define({ZX48FEQ},{define({USE_ZX48FCOMPARE},{})
     ld    B, 0x0E       ; 2:7       zx48f=   ( F: r1 r2 -- 1 or 0 )
     call _ZX48FCOMPARE  ; 3:17      zx48f=}){}dnl
+dnl
+dnl
+dnl S>F
+define({ZX48S_TO_F},{define({USE_ZX48S_TO_F},{})
+    call _ZX48S_TO_F    ; 3:17      zx48s>f   ( u -- ) ( F: -- r )}){}dnl
+dnl
+dnl
+dnl x S>F
+define({PUSH_ZX48S_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{dnl
+    ld   BC, format({%-11s},$1); 4:20      push_zx48s>f($1)   ( F: -- $1 )
+    call _ZX48BC_TO_F   ; 3:17      push_zx48s>f($1)},
+eval($1>=0),{1},{dnl
+    ld   BC, format({%-11s},$1); 3:10      push_zx48s>f($1)   ( F: -- $1 )
+    call _ZX48BC_TO_F   ; 3:17      push_zx48s>f($1)},
+{define({USE_ZX48FNEGATE},{}){}dnl
+    ld   BC, format({%-11s},eval(-($1))); 3:10      push_zx48s>f($1)   ( F: -- $1 )
+    call _ZX48BC_TO_F   ; 3:17      push_zx48s>f($1)
+    call _ZX48FNEGATE   ; 3:17      push_zx48s>f($1)})}){}dnl
+dnl
+dnl F>S
+define({ZX48F_TO_S},{define({USE_ZX48F_TO_S},{})
+    call _ZX48F_TO_S    ; 3:17      zx48f>s   ( -- x ) ( F: r1 -- )}){}dnl
 dnl
 dnl
 dnl
