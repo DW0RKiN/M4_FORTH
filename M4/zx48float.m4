@@ -9,11 +9,17 @@ ___{}define({ZXTEMP_STRING},substr(ZXTEMP_STRING,1)){}dnl
 })dnl
 dnl
 dnl
-define({ZX_READ_MANT},{ifelse(eval({0x0}ZXTEMP_CHAR>=0),{1},{dnl
-___{}define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{}ZXTEMP_CHAR){}dnl
-___{}ZX_READCHAR{}dnl
-___{}ifelse(ZXTEMP_CHAR,{p},,{ZX_READ_MANT}){}dnl
-})}){}dnl
+define({ZX_READ_MANT},{dnl
+___{}define({ZX_READ_TEMP},ZXTEMP_CHAR){}dnl
+___{}ifelse(ZX_READ_TEMP,{p},{define({ZX_READ_TEMP},{0})}){}dnl
+___{}ifelse(len(ZXTEMP_MANTISSA),{10},{define({ZX_READ_TEMP},{})}){}dnl
+___{}define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{}ZX_READ_TEMP){}dnl
+___{}ifelse(ZXTEMP_CHAR,{p},{dnl
+___{}___{}ifelse(eval(len(ZXTEMP_MANTISSA)<10),{1},{ZX_READ_MANT})},
+___{}{dnl
+___{}___{}ZX_READCHAR{}dnl
+___{}___{}ZX_READ_MANT}){}dnl
+}){}dnl
 dnl 
 dnl
 define({ZX48FLOAT2ARRAY},{dnl
@@ -35,14 +41,7 @@ ___{}ifelse(ZXTEMP_CHAR,{p},{dnl
 ___{}___{}ZX_READCHAR{}dnl
 ___{}___{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 ___{}})dnl
-___{}ifelse(substr(ZXTEMP_MANTISSA,2,1),{},define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{0})){}dnl
-___{}ifelse(substr(ZXTEMP_MANTISSA,3,1),{},define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{0})){}dnl
-___{}ifelse(substr(ZXTEMP_MANTISSA,4,1),{},define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{0})){}dnl
-___{}ifelse(substr(ZXTEMP_MANTISSA,5,1),{},define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{0})){}dnl
-___{}ifelse(substr(ZXTEMP_MANTISSA,6,1),{},define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{0})){}dnl
-___{}ifelse(substr(ZXTEMP_MANTISSA,7,1),{},define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{0})){}dnl
-___{}define({ZXTEMP_MANTISSA},substr(ZXTEMP_MANTISSA,0,10)){}dnl
-___{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
+___{}define({ZXTEMP_MANTISSA},format({0x%8x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
 ___{}define({ZXTEMP_EXP},format({0x%02x},eval(ZXTEMP_EXP+129))){}dnl
 DB ZXTEMP_EXP,format({0x%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F))),dnl
 format({0x%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF)),dnl
@@ -207,5 +206,9 @@ define({ZX48UMUL},{
     call 0x30a9         ; 3:17      zx48umul   {call ZX ROM HL=HL*DE routine}
     pop  DE             ; 1:10      zx48umul}){}dnl
 dnl
+dnl
+dnl F<
+define({ZX48FLT},{define({USE_ZX48FLT},{})
+    call _ZX48FLT      ; 3:17      zx48flt   ( F: r1 r2 -- r1<r2 )}){}dnl
 dnl
 dnl

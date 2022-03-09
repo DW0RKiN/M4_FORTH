@@ -187,6 +187,19 @@ _ZX48FMULMUL:
 }){}dnl
 dnl
 dnl
+ifdef({USE_ZX48FLT},{
+_ZX48FLT:
+    push DE             ; 1:11      _zx48flt
+    push HL             ; 1:11      _zx48flt
+    rst 0x28            ; 1:11      Use the calculator
+    db  0x0D            ; 1:        calc-less
+    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+    pop  HL             ; 1:10      _zx48flt
+    pop  DE             ; 1:10      _zx48flt
+    ret                 ; 1:10      _zx48flt
+}){}dnl
+dnl
+dnl
 ifdef({USE_ZX48FADD},{
 _ZX48FADD:
     push DE             ; 1:11      _zx48fadd
