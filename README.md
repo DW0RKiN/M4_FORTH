@@ -318,36 +318,46 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
-|<sub> Original   |<sub>    M4 FORTH     |<sub>  Data stack                |<sub>  Comment            |
-| :-------------: | :------------------: | :------------------------------ | :----------------------- |
-|<sub>    fabs    |<sub>     ZX48FABS     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)        |
-|<sub>   facos    |<sub>    ZX48FACOS     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)     |
-|<sub>     f+     |<sub>     ZX48FADD     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2        |
-|<sub>   fasin    |<sub>    ZX48FASIN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arcsin(r1)     |
-|<sub>   fatan    |<sub>    ZX48FATAN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arctan(r1)     |
-|<sub>    fcos    |<sub>     ZX48FCOS     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = cos(r1)        |
-|<sub>     f/     |<sub>     ZX48FDIV     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 / r2        |
-|<sub>     f.     |<sub>     ZX48FDOT     |<sub>  ( -- ) ( F: r -- )       |<sub> fprintf("%f", r);   |
-|<sub>   fdrop    |<sub>    ZX48FDROP     |<sub>  ( -- ) ( F: r -- )       |<sub>                     |
-|<sub>    fdup    |<sub>     ZX48FDUP     |<sub>  ( -- ) ( F: r -- r r )   |<sub>                     |
-|<sub>    fexp    |<sub>     ZX48FEXP     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = exp(r1)        |
-|<sub>     f@     |<sub>    ZX48FFETCH    |<sub>( a -- ) ( F: -- r )       |<sub>                     |
-|<sub>    fint    |<sub>     ZX48FINT     |<sub>  ( -- ) ( F: r -- i )     |<sub>                     |
-|<sub>    fln     |<sub>     ZX48FLN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = ln(r1)         |
-|<sub>            |<sub>ZX48FLOAT2ARRAY(r)|<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5   |
-|<sub>     f*     |<sub>     ZX48FMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2        |
-|<sub>    f**     |<sub>   ZX48FMULMUL    |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2          |
-|<sub>  fnegate   |<sub>   ZX48FNEGATE    |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1            |
-|<sub>   fover    |<sub>    ZX48FOVER     |<sub>  ( -- ) ( F: r1 r2 -- r1 r2 r1 )|<sub>               |
-|<sub>            |<sub>    ZX48FPUSH     |<sub>( x -- ) ( F: -- x )       |<sub>                     |
-|<sub>            |<sub> PUSH_ZX48FPUSH(x)|<sub>  ( -- ) ( F: -- x )       |<sub>                     |
-|<sub>    fsin    |<sub>    ZX48FSIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)        |
-|<sub>   fsqrt    |<sub>    ZX48FSQRT     |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5         |
-|<sub>     f!     |<sub>   ZX48FSTORE     |<sub>( a -- ) ( F: r -- )       |<sub>                     |
-|<sub>     f-     |<sub>     ZX48FSUB     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2        |
-|<sub>   fswap    |<sub>    ZX48FSWAP     |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                  |
-|<sub>    ftan    |<sub>     ZX48FTAN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)        |
-|<sub>            |<sub>     ZX48UMUL     |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a           |
+|<sub> Original   |<sub>      M4 FORTH      |<sub>  Data stack               |<sub>  Comment                    |
+| :-------------: | :---------------------: | :----------------------------- | :------------------------------- |
+|<sub>    s>f     |<sub>     ZX48S_TO_F     |<sub>( x -- ) ( F: -- x )       |<sub>                             |
+|<sub>  `4` s>f   |<sub>PUSH_ZX48S_TO_F(`4`)|<sub>  ( -- ) ( F: -- `4` )     |<sub>                             |
+|<sub>    f>s     |<sub>     ZX48F_TO_S     |<sub>  ( -- x ) ( F: x -- )     |<sub>                             |
+|<sub>    fabs    |<sub>      ZX48FABS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)                |
+|<sub>   facos    |<sub>     ZX48FACOS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)             |
+|<sub>     f+     |<sub>      ZX48FADD      |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2                |
+|<sub>   fasin    |<sub>     ZX48FASIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arcsin(r1)             |
+|<sub>   fatan    |<sub>     ZX48FATAN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arctan(r1)             |
+|<sub>    fcos    |<sub>      ZX48FCOS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = cos(r1)                |
+|<sub>     f/     |<sub>      ZX48FDIV      |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 / r2                |
+|<sub>     f.     |<sub>      ZX48FDOT      |<sub>  ( -- ) ( F: r -- )       |<sub> fprintf("%f", r);           |
+|<sub>   fdrop    |<sub>     ZX48FDROP      |<sub>  ( -- ) ( F: r -- )       |<sub>                             |
+|<sub>    fdup    |<sub>      ZX48FDUP      |<sub>  ( -- ) ( F: r -- r r )   |<sub>                             |
+|<sub>    fexp    |<sub>      ZX48FEXP      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = exp(r1)                |
+|<sub>     f@     |<sub>     ZX48FFETCH     |<sub>( a -- ) ( F: -- r )       |<sub>                             |
+|<sub>    fint    |<sub>      ZX48FINT      |<sub>  ( -- ) ( F: r -- i )     |<sub>                             |
+|<sub>    fln     |<sub>      ZX48FLN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = ln(r1)                 |
+|<sub>     f*     |<sub>      ZX48FMUL      |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2                |
+|<sub>    f**     |<sub>    ZX48FMULMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2                  |
+|<sub>  fnegate   |<sub>    ZX48FNEGATE     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1                    |
+|<sub>   fover    |<sub>     ZX48FOVER      |<sub>  ( -- ) ( F: r1 r2 -- r1 r2 r1 )|<sub>                       |
+|<sub>    fsin    |<sub>     ZX48FSIN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)                |
+|<sub>   fsqrt    |<sub>     ZX48FSQRT      |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5                 |
+|<sub>     f!     |<sub>    ZX48FSTORE      |<sub>( a -- ) ( F: r -- )       |<sub>                             |
+|<sub>     f-     |<sub>      ZX48FSUB      |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2                |
+|<sub>   fswap    |<sub>     ZX48FSWAP      |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                          |
+|<sub>    ftan    |<sub>      ZX48FTAN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)                |
+|<sub>    f<=     |<sub>      ZX48FLE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<=r2 then r3=1 else r3=0|
+|<sub>    f>=     |<sub>      ZX48FGE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1>=r2 then r3=1 else r3=0|
+|<sub>    f<>     |<sub>      ZX48FNE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<>r2 then r3=1 else r3=0|
+|<sub>    f>      |<sub>      ZX48FGT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1> r2 then r3=1 else r3=0|
+|<sub>    f<      |<sub>      ZX48FLT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1< r2 then r3=1 else r3=0|
+|<sub>    f=      |<sub>      ZX48FEQ       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1= r2 then r3=1 else r3=0|
+
+|<sub> Original   |<sub>      M4 FORTH      |<sub>  Data stack               |<sub>  Comment                    |
+| :-------------: | :---------------------: | :----------------------------- | :------------------------------- |
+|<sub>            |<sub>      ZX48UMUL      |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a                   |
+|<sub>            |<sub> ZX48FLOAT2ARRAY(r) |<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5           |
 
 
 ### Logic
