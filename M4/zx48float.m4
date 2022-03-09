@@ -2,7 +2,6 @@ dnl ## ZX Spectrum 48 ROM Floating point Arithmetic
 define({___},{})dnl
 dnl
 dnl
-dnl
 define({ZX_READCHAR},{dnl
 ___{}define({ZXTEMP_CHAR},substr(ZXTEMP_STRING,0,1)){}dnl
 ___{}define({ZXTEMP_STRING},substr(ZXTEMP_STRING,1)){}dnl
@@ -32,17 +31,16 @@ ___{}ifelse(ZXTEMP_CHAR,{+},{ZX_READCHAR}){}dnl
 ___{}ifelse(ZXTEMP_CHAR,{-},{ZX_READCHAR{}define({ZXTEMP_SIGN},0x80)}){}dnl
 ___{}ZX_READCHAR{}dnl                               x
 ___{}ZX_READCHAR{}dnl                               1
-___{}ZX_READCHAR{}dnl                               .
-___{}ifelse(ZXTEMP_CHAR,{.},{dnl
-___{}___{}ZX_READCHAR{}dnl
-___{}___{}ZX_READ_MANT{}dnl
-___{}})dnl
+___{}ifelse(ZXTEMP_CHAR,{1},{ZX_READCHAR}){}dnl     .
+___{}ifelse(ZXTEMP_CHAR,{.},{ZX_READCHAR}){}dnl     ?
+___{}ZX_READ_MANT{}dnl
 ___{}ifelse(ZXTEMP_CHAR,{p},{dnl
 ___{}___{}ZX_READCHAR{}dnl
 ___{}___{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 ___{}})dnl
-___{}define({ZXTEMP_MANTISSA},format({0x%8x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
+___{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
 ___{}define({ZXTEMP_EXP},format({0x%02x},eval(ZXTEMP_EXP+129))){}dnl
+___{}ifelse(eval($1),{0},{define({ZXTEMP_EXP},{0x00})}){}dnl
 DB ZXTEMP_EXP,format({0x%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F))),dnl
 format({0x%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF)),dnl
 format({0x%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF)),dnl
