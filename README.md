@@ -313,6 +313,43 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 |<sub>     f2/    |<sub>     F2DIV    |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 / 2.0              |
 |<sub>    fsin    |<sub>     FSIN     |<sub>       ( f1 -- f2 )   |<sub> f2 = sin(f1), f1 <= ±π/2   |
 
+#### ZX48 ROM Floating-point
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
+
+|<sub> Original   |<sub>    M4 FORTH     |<sub>  Data stack                |<sub>  Comment            |
+| :-------------: | :------------------: | :------------------------------ | :----------------------- |
+|<sub>    fabs    |<sub>     ZX48FABS     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)        |
+|<sub>   facos    |<sub>    ZX48FACOS     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)     |
+|<sub>     f+     |<sub>     ZX48FADD     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2        |
+|<sub>   fasin    |<sub>    ZX48FASIN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arcsin(r1)     |
+|<sub>   fatan    |<sub>    ZX48FATAN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arctan(r1)     |
+|<sub>    fcos    |<sub>     ZX48FCOS     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = cos(r1)        |
+|<sub>     f/     |<sub>     ZX48FDIV     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 / r2        |
+|<sub>     f.     |<sub>     ZX48FDOT     |<sub>  ( -- ) ( F: r -- )       |<sub> fprintf("%f", r);   |
+|<sub>   fdrop    |<sub>    ZX48FDROP     |<sub>  ( -- ) ( F: r -- )       |<sub>                     |
+|<sub>    fdup    |<sub>     ZX48FDUP     |<sub>  ( -- ) ( F: r -- r r )   |<sub>                     |
+|<sub>    fexp    |<sub>     ZX48FEXP     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = exp(r1)        |
+|<sub>     f@     |<sub>    ZX48FFETCH    |<sub>( a -- ) ( F: -- r )       |<sub>                     |
+|<sub>    fint    |<sub>     ZX48FINT     |<sub>  ( -- ) ( F: r -- i )     |<sub>                     |
+|<sub>    fln     |<sub>     ZX48FLN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = ln(r1)         |
+|<sub>            |<sub>ZX48FLOAT2ARRAY(r)|<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5   |
+|<sub>     f*     |<sub>     ZX48FMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2        |
+|<sub>    f**     |<sub>   ZX48FMULMUL    |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2          |
+|<sub>  fnegate   |<sub>   ZX48FNEGATE    |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1            |
+|<sub>   fover    |<sub>    ZX48FOVER     |<sub>  ( -- ) ( F: r1 r2 -- r1 r2 r1 )|<sub>               |
+|<sub>            |<sub>    ZX48FPUSH     |<sub>( x -- ) ( F: -- x )       |<sub>                     |
+|<sub>            |<sub> PUSH_ZX48FPUSH(x)|<sub>( x -- ) ( F: -- x )       |<sub>                     |
+|<sub>    fsin    |<sub>    ZX48FSIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)        |
+|<sub>   fsqrt    |<sub>    ZX48FSQRT     |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5         |
+|<sub>     f!     |<sub>   ZX48FSTORE     |<sub>( a -- ) ( F: r -- )       |<sub>                     |
+|<sub>     f-     |<sub>     ZX48FSUB     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2        |
+|<sub>   fswap    |<sub>    ZX48FSWAP     |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                  |
+|<sub>    ftan    |<sub>     ZX48FTAN     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)        |
+|<sub>            |<sub>     ZX48UMUL     |<sub>  ( -- ) ( F: -- )         |<sub>                     |
+
+
 ### Logic
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
@@ -663,15 +700,15 @@ For compatibility with standard CASE ( n -- ) must use DROP:
 
 Or define a new words:
 
-     define({ANSI_OF},{
+     |<sub>   | ANSI_OF},{
      OF
      DROP})dnl
 
-     define({ANSI_PUSH_OF},{
+     |<sub>   | ANSI_PUSH_OF},{
      PUSH_OF($1)
      DROP})dnl
 
-     define({ANSI_ENDCASE},{
+     |<sub>   | ANSI_ENDCASE},{
      DROP
      ENDCASE})dnl
 
