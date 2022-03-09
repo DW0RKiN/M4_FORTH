@@ -54,15 +54,13 @@ dnl
 dnl
 dnl F@
 define({ZX48FFETCH},{define({USE_ZX48FFETCH},{})ifelse($1,{},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!
-}){}dnl
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     call _ZX48FFETCH    ; 3:17      zx48ffetch   ( addr -- ) ( F: -- r )}){}dnl
 dnl
 dnl
 dnl F!
 define({ZX48FSTORE},{define({USE_ZX48FSTORE},{})ifelse($1,{},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!
-}){}dnl
+__{}__{}.error {$0}($@): $# parameters found in macro!})
     call _ZX48FSTORE    ; 3:17      zx48fstore   ( addr -- ) ( F: r -- )}){}dnl
 dnl
 dnl
