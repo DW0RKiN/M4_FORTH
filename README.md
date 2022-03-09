@@ -340,7 +340,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>  fnegate   |<sub>   ZX48FNEGATE    |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1            |
 |<sub>   fover    |<sub>    ZX48FOVER     |<sub>  ( -- ) ( F: r1 r2 -- r1 r2 r1 )|<sub>               |
 |<sub>            |<sub>    ZX48FPUSH     |<sub>( x -- ) ( F: -- x )       |<sub>                     |
-|<sub>            |<sub> PUSH_ZX48FPUSH(x)|<sub>( x -- ) ( F: -- x )       |<sub>                     |
+|<sub>            |<sub> PUSH_ZX48FPUSH(x)|<sub>  ( -- ) ( F: -- x )       |<sub>                     |
 |<sub>    fsin    |<sub>    ZX48FSIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)        |
 |<sub>   fsqrt    |<sub>    ZX48FSQRT     |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5         |
 |<sub>     f!     |<sub>   ZX48FSTORE     |<sub>( a -- ) ( F: r -- )       |<sub>                     |
