@@ -162,7 +162,7 @@ if 1
     rst 0x28            ; 1:11      Use the calculator
     db  0x05            ; 1:        calc-div
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
-else 
+else
     call 0x35bf         ; 3:17      _zx48fdiv   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
     ld (0x5C65),HL      ; 3:16      _zx48fdiv   {save STKEND}
     call 0x35c2         ; 3:17      _zx48fdiv   {call ZX ROM            DE= HL    , HL = HL-5}
@@ -187,16 +187,29 @@ _ZX48FMULMUL:
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FLT},{
-_ZX48FLT:
-    push DE             ; 1:11      _zx48flt
-    push HL             ; 1:11      _zx48flt
+ifdef({USE_ZX48FCOMPARE},{
+; Input: B
+; compare 0x09: <= (numbers)
+; compare 0x0A: >= (numbers)
+; compare 0x0B: <> (numbers)
+; compare 0x0C: > (numbers)
+; compare 0x0D: < (numbers)
+; compare 0x0E: = (numbers)
+; compare 0x11: <= (strings)
+; compare 0x12: >= (strings)
+; compare 0x13: <> (strings)
+; compare 0x14: > (strings)
+; compare 0x15: < (strings)
+; compare 0x16: = (strings)
+_ZX48FCOMPARE:
+    push DE             ; 1:11      _zx48fcompare
+    push HL             ; 1:11      _zx48fcompare
     rst 0x28            ; 1:11      Use the calculator
-    db  0x0D            ; 1:        calc-less
+    db  0x0D            ; 1:        calc-less   Important is what the register B contains
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48flt
-    pop  DE             ; 1:10      _zx48flt
-    ret                 ; 1:10      _zx48flt
+    pop  HL             ; 1:10      _zx48fcompare
+    pop  DE             ; 1:10      _zx48fcompare
+    ret                 ; 1:10      _zx48fcompare
 }){}dnl
 dnl
 dnl

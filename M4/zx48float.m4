@@ -20,7 +20,7 @@ ___{}{dnl
 ___{}___{}ZX_READCHAR{}dnl
 ___{}___{}ZX_READ_MANT}){}dnl
 }){}dnl
-dnl 
+dnl
 dnl
 define({ZX48FLOAT2ARRAY},{dnl
 ___{}define({ZXTEMP_STRING},format({%a},$1)){}dnl
@@ -207,8 +207,41 @@ define({ZX48UMUL},{
     pop  DE             ; 1:10      zx48umul}){}dnl
 dnl
 dnl
+dnl
+dnl F<=
+define({ZX48FLE},{define({USE_ZX48FCOMPARE},{})
+    ld    B, 0x09       ; 2:7       zx48f<=   ( F: r1 r2 -- 1 or 0 )
+    call _ZX48FCOMPARE  ; 3:17      zx48f<=}){}dnl
+dnl
+dnl
+dnl F>=
+define({ZX48FGE},{define({USE_ZX48FCOMPARE},{})
+    ld    B, 0x0A       ; 2:7       zx48f>=   ( F: r1 r2 -- 1 or 0 )
+    call _ZX48FCOMPARE  ; 3:17      zx48f>=}){}dnl
+dnl
+dnl
+dnl F<>
+define({ZX48FNE},{define({USE_ZX48FCOMPARE},{})
+    ld    B, 0x0B       ; 2:7       zx48f<>   ( F: r1 r2 -- 1 or 0 )
+    call _ZX48FCOMPARE  ; 3:17      zx48f<>}){}dnl
+dnl
+dnl
+dnl F>
+define({ZX48FGT},{define({USE_ZX48FCOMPARE},{})
+    ld    B, 0x0C       ; 2:7       zx48f>   ( F: r1 r2 -- 1 or 0 )
+    call _ZX48FCOMPARE  ; 3:17      zx48f>}){}dnl
+dnl
+dnl
 dnl F<
-define({ZX48FLT},{define({USE_ZX48FLT},{})
-    call _ZX48FLT      ; 3:17      zx48flt   ( F: r1 r2 -- r1<r2 )}){}dnl
+define({ZX48FLT},{define({USE_ZX48FCOMPARE},{})
+    ld    B, 0x0D       ; 2:7       zx48f<   ( F: r1 r2 -- 1 or 0 )
+    call _ZX48FCOMPARE  ; 3:17      zx48f<}){}dnl
+dnl
+dnl
+dnl F=
+define({ZX48FEQ},{define({USE_ZX48FCOMPARE},{})
+    ld    B, 0x0E       ; 2:7       zx48f=   ( F: r1 r2 -- 1 or 0 )
+    call _ZX48FCOMPARE  ; 3:17      zx48f=}){}dnl
+dnl
 dnl
 dnl
