@@ -40,7 +40,7 @@ ___{}___{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 ___{}})dnl
 ___{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
 ___{}define({ZXTEMP_EXP},format({0x%02x},eval(ZXTEMP_EXP+129))){}dnl
-___{}ifelse(eval($1),{0},{define({ZXTEMP_EXP},{0x00})}){}dnl
+___{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{0x00})}){}dnl
 DB ZXTEMP_EXP,format({0x%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F))),dnl
 format({0x%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF)),dnl
 format({0x%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF)),dnl
