@@ -232,7 +232,6 @@ if 1
     rst 0x28            ; 1:11      Use the calculator
     db  0x0D            ; 1:        calc-less   Important is what the register B contains
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-
 else
     rst 0x28            ; 1:11      Use the calculator
     db  0x3B            ; 1:        fp_calc_2: (perform the actual operation)

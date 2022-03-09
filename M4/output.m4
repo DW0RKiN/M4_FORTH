@@ -202,7 +202,7 @@ PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only   ( x -- )
     ld    D, L          ; 1:4       print_zxrom_s16_only   3. byte lo
     ld    C, H          ; 1:4       print_zxrom_s16_only   4. byte hi
     ld    B, A          ; 1:4       print_zxrom_s16_only   5. byte = 0
-    
+
     ld   IY, 0x5C3A     ; 4:14      print_zxrom_s16_only   {Re-initialise IY to ERR-NR.}
 
     call 0x2AB6         ; 3:17      print_zxrom_s16_only   {call ZX ROM STK store routine}

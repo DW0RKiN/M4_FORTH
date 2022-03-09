@@ -127,7 +127,7 @@ dnl
 dnl
 dnl addr C@ x
 dnl ( -- (addr) x )
-dnl push_cfetch_push(addr,x), load 8-bit char from addr and push x 
+dnl push_cfetch_push(addr,x), load 8-bit char from addr and push x
 define({PUSH_CFETCH_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address and second parameter!},
 __{}$#,{1},{
@@ -145,7 +145,7 @@ dnl
 dnl
 dnl addr C@ x
 dnl ( -- (addr) x )
-dnl push2_cfetch(x,addr), push x and load 8-bit char from addr 
+dnl push2_cfetch(x,addr), push x and load 8-bit char from addr
 define({PUSH2_CFETCH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address and second parameter!},
 __{}$#,{1},{
