@@ -245,3 +245,19 @@ define({ZX48F_TO_S},{define({USE_ZX48F_TO_S},{})
 dnl
 dnl
 dnl
+dnl FLOAT+
+define({ZX48FLOATADD},{
+    ld   BC, 0x0005     ; 3:10      zx48float+   ( a1 -- a2 ) ( F: -- )
+    add  HL, BC         ; 1:11      zx48float+}){}dnl}){}dnl
+dnl
+dnl
+dnl F0=
+define({ZX48F0EQ},{define({USE_ZX48F0EQ},{})
+    call _ZX48F0EQ      ; 3:17      zx48f0=   ( -- flag ) ( F: r -- )}){}dnl
+dnl
+dnl
+dnl F0<
+define({ZX48F0LT},{define({USE_ZX48F0LT},{})
+    call _ZX48F0LT      ; 3:17      zx48f0<   ( -- flag ) ( F: r -- )}){}dnl
+dnl
+dnl

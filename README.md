@@ -315,6 +315,9 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 
 #### ZX48 ROM Floating-point
 
+ZX Spectrum floating-point format `EEEE EEEE SMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM`
+ZX Spectrum integer format        `0000 0000 SSSS SSSS LLLL LLLL HHHH HHHH 0000 0000`
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
@@ -353,6 +356,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>    f>      |<sub>      ZX48FGT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1> r2 then r3=1 else r3=0|
 |<sub>    f<      |<sub>      ZX48FLT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1< r2 then r3=1 else r3=0|
 |<sub>    f=      |<sub>      ZX48FEQ       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1= r2 then r3=1 else r3=0|
+|<sub>   f0<      |<sub>     ZX48F0LT       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r < 0                |
+|<sub>   f0=      |<sub>     ZX48F0EQ       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r == 0               |
+|<sub>  float+    |<sub>   ZX48FLOATADD     |<sub>  ( a1 -- a2 ) ( F: -- )   |<sub> a2 = a1 + 5                 |
+
 
 |<sub> Original   |<sub>      M4 FORTH      |<sub>  Data stack               |<sub>  Comment                    |
 | :-------------: | :---------------------: | :----------------------------- | :------------------------------- |

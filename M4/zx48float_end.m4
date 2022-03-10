@@ -243,6 +243,41 @@ endif
 }){}dnl
 dnl
 dnl
+ifdef({USE_ZX48F0EQ},{
+_ZX48F0EQ:
+    ex   DE, HL         ; 1:4       _zx48f0=   ( ret . de hl -- de ret . hl flag )
+    ex  (SP),HL         ; 1:19      _zx48f0=
+    push HL             ; 1:11      _zx48f0=   ret
+    ld   HL,(0x5C65)    ; 3:16      _zx48f0=   {load STKEND}
+    ld    B, 0x05       ; 2:7       _zx48f0=
+    xor   A             ; 1:4       _zx48f0=
+    dec  HL             ; 1:6       _zx48f0=
+    or  (HL)            ; 1:7       _zx48f0=
+    djnz $-2            ; 2:8/13    _zx48f0=
+    ld  (0x5C65), HL    ; 3:16      _zx48f0=   {save STKEND-5}
+    sub  0x01           ; 2:7       _zx48f0=
+    sbc  HL, HL         ; 2:15      _zx48f0=
+    ret                 ; 1:10      _zx48f0=
+}){}dnl
+dnl
+dnl
+ifdef({USE_ZX48F0LT},{
+_ZX48F0LT:
+    ex   DE, HL         ; 1:4       _zx48f0<   ( ret . de hl -- de ret . hl flag )
+    ex  (SP),HL         ; 1:19      _zx48f0<
+    push HL             ; 1:11      _zx48f0<   ret
+    ld   HL,(0x5C65)    ; 3:16      _zx48f0<   {load STKEND}
+    ld    B, 0x05       ; 2:7       _zx48f0<
+    ld    A,(HL)        ; 1:7       _zx48f0<
+    dec  HL             ; 1:6       _zx48f0<
+    djnz $-2            ; 2:8/13    _zx48f0<
+    ld  (0x5C65), HL    ; 3:16      _zx48f0<   {save STKEND-5}
+    add   A, A          ; 2:7       _zx48f0<
+    sbc  HL, HL         ; 2:15      _zx48f0<
+    ret                 ; 1:10      _zx48f0<
+}){}dnl
+dnl
+dnl
 ifdef({USE_ZX48FADD},{
 _ZX48FADD:
     push DE             ; 1:11      _zx48fadd
