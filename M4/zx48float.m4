@@ -69,6 +69,11 @@ define({ZX48FOVER},{define({USE_ZX48FOVER},{})
     call _ZX48FOVER     ; 3:17      fover zx48fover   ( F: r1 r2 -- r1 r2 r1 )}){}dnl
 dnl
 dnl
+dnl FROT
+define({ZX48FROT},{define({USE_ZX48FROT},{})
+    call _ZX48FROT      ; 3:17      fover zx48frot   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
+dnl
+dnl
 dnl FDROP
 define({ZX48FDROP},{define({USE_ZX48FDROP},{})
     call _ZX48FDROP     ; 3:17      fdrop zx48fdrop   ( F: r -- )}){}dnl
@@ -228,7 +233,7 @@ define({ZX48U_TO_F},{define({USE_ZX48U_TO_F},{})
     call _ZX48U_TO_F    ; 3:17      zx48u>f   ( u -- ) ( F: -- r )}){}dnl
 dnl
 dnl
-dnl u S>F
+dnl u U>F
 define({PUSH_ZX48U_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{

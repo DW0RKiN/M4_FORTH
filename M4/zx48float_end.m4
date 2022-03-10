@@ -607,6 +607,25 @@ endif
 }){}dnl
 dnl
 dnl
+ifdef({USE_ZX48FROT},{
+_ZX48FROT:              ;           _zx48frot   ( F: r1 r2 r3 -- r2 r3 r1 )
+    push DE             ; 1:11      _zx48frot
+    push HL             ; 1:11      _zx48frot
+    ld   HL,(0x5C65)    ; 3:16      _zx48frot   {load STKEND}
+    ex   DE, HL         ; 1:4       _zx48frot   {DE = STKEND}
+    ld   HL,0xFFF1      ; 3:10      _zx48frot   -15
+    add  HL, DE         ; 1:11      _zx48frot   {HL = STKEND - 15}
+    push HL             ; 1:11      _zx48frot   {STKEND-15}
+    call 0x33C0         ; 3:17      _zx48frot   (DE++) = (HL++), BC = 0   ( F: r1 r2 r3    -- r1 r2 r3 r1 )
+    pop  DE             ; 1:10      _zx48frot   {DE = STKEND - 15}
+    ld   C,0x0F         ; 2:7       _zx48frot   {BC = 15}
+    ldir                ; 2:21/16   _zx48frot   (DE++) = (HL++)   ( F: r1 r2 r3 r1 -- r2 r3 r1 )
+    pop  HL             ; 1:10      _zx48frot
+    pop  DE             ; 1:10      _zx48frot
+    ret                 ; 1:10      _zx48frot
+}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl

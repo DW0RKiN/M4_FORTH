@@ -343,7 +343,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>     f*     |<sub>      ZX48FMUL      |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2                |
 |<sub>    f**     |<sub>    ZX48FMULMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2                  |
 |<sub>  fnegate   |<sub>    ZX48FNEGATE     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1                    |
-|<sub>   fover    |<sub>     ZX48FOVER      |<sub>  ( -- ) ( F: r1 r2 -- r1 r2 r1 )|<sub>                       |
+|<sub>   fover    |<sub>     ZX48FOVER      |<sub>  ( F: r1 r2 -- r1 r2 r1 ) |<sub>                             |
+|<sub>    frot    |<sub>     ZX48FROT       |<sub>( F: r1 r2 r3 -- r3 r1 r2 )|<sub>                             |
 |<sub>    fsin    |<sub>     ZX48FSIN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)                |
 |<sub>   fsqrt    |<sub>     ZX48FSQRT      |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5                 |
 |<sub>     f!     |<sub>    ZX48FSTORE      |<sub>( a -- ) ( F: r -- )       |<sub>                             |
