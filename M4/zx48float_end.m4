@@ -83,6 +83,65 @@ _ZX48BC_TO_F:
 }){}dnl
 dnl
 dnl
+ifdef({USE_ZX48BBC_TO_F},{define({USE_ZX48ABC_TO_F},{})
+_ZX48BBC_TO_F:          ;[3:12]     _zx48bbc_to_f
+    ld    A, B          ; 1:4       _zx48bbc_to_f
+    add   A, A          ; 1:4       _zx48bbc_to_f
+    sbc   A, A          ; 1:4       _zx48bbc_to_f
+    ; fall
+}){}dnl
+ifdef({USE_ZX48ABC_TO_F},{
+_ZX48ABC_TO_F:         ;[21:134]    _zx48abc_to_f
+    push HL             ; 1:11      _zx48abc_to_f
+    ld   HL,(0x5C65)    ; 3:16      _zx48abc_to_f   {load STKEND}
+    ld  (HL),0x00       ; 2:10      _zx48abc_to_f
+    inc  HL             ; 1:6       _zx48abc_to_f
+    ld  (HL), A         ; 1:7       _zx48abc_to_f
+    inc  HL             ; 1:6       _zx48abc_to_f
+    ld  (HL), C         ; 1:7       _zx48abc_to_f
+    inc  HL             ; 1:6       _zx48abc_to_f
+    ld  (HL), B         ; 1:7       _zx48abc_to_f
+    inc  HL             ; 1:6       _zx48abc_to_f
+    ld  (HL),0x00       ; 2:10      _zx48abc_to_f
+    inc  HL             ; 1:6       _zx48abc_to_f
+    ld  (0x5C65),HL     ; 3:16      _zx48abc_to_f   {save STKEND+5}
+    pop  HL             ; 1:10      _zx48abc_to_f
+    ret                 ; 1:10      _zx48abc_to_f
+}){}dnl
+dnl
+dnl
+ifdef({USE_ZX480DED0_TO_F},{define({USE_ZX480DED0_TO_F},{})
+_ZX480DED0_TO_F:        ;           _zx480ded0_to_f   ( ret . de hl -- ret . de hl )
+    ld    A, D          ; 1:4       _zx480ded0_to_f
+    add   A, A          ; 1:4       _zx480ded0_to_f   sign to carry
+    sbc   A, A          ; 1:4       _zx480ded0_to_f   0x00 or 0xff
+    ; fall
+}){}dnl
+ifdef({USE_ZX480AED0_TO_F},{define({USE_ZX48BAEDC_TO_F},{})
+_ZX480AED0_TO_F:        ;           _zx480aed0_to_f   ( ret . de hl -- ret . de hl )
+    ld   BC, 0x0000     ; 3:10      _zx480aed0_to_f
+    ; fall
+}){}dnl
+ifdef({USE_ZX48BAEDC_TO_F},{
+_ZX48BAEDC_TO_F:        ;           _zx48baedc_to_f   ( ret . de hl -- ret . de hl )
+    push HL             ; 1:11      _zx48baedc_to_f
+    ld   HL,(0x5C65)    ; 3:16      _zx48baedc_to_f   {load STKEND}
+    ld  (HL), B         ; 1:7       _zx48baedc_to_f
+    inc  HL             ; 1:6       _zx48baedc_to_f
+    ld  (HL), A         ; 1:7       _zx48baedc_to_f
+    inc  HL             ; 1:6       _zx48baedc_to_f
+    ld  (HL), E         ; 1:7       _zx48baedc_to_f
+    inc  HL             ; 1:6       _zx48baedc_to_f
+    ld  (HL), D         ; 1:7       _zx48baedc_to_f
+    inc  HL             ; 1:6       _zx48baedc_to_f
+    ld  (HL), C         ; 1:7       _zx48baedc_to_f
+    inc  HL             ; 1:6       _zx48baedc_to_f
+    ld  (0x5C65),HL     ; 3:16      _zx48baedc_to_f   {save STKEND+5}
+    pop  HL             ; 1:10      _zx48baedc_to_f
+    ret                 ; 1:10      _zx48baedc_to_f
+}){}dnl
+dnl
+dnl
 ifdef({USE_ZX48FDOT},{
 _ZX48FDOT:
     push DE             ; 1:11      _zx48fdot

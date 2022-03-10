@@ -229,7 +229,7 @@ define({ZX48S_TO_F},{define({USE_ZX48S_TO_F},{})
 dnl
 dnl
 dnl x S>F
-define({PUSH_ZX48S_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
+define({UNSIGNEDPUSH_ZX48S_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -243,6 +243,31 @@ eval($1>=0),{1},{dnl
     ld   BC, format({%-11s},eval(-($1))); 3:10      push_zx48s>f($1)   ( F: -- $1 )
     call _ZX48BC_TO_F   ; 3:17      push_zx48s>f($1)
     call _ZX48FNEGATE   ; 3:17      push_zx48s>f($1)})}){}dnl
+dnl
+dnl
+dnl x S>F
+define({PUSH_ZX48S_TO_F},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+ifelse(index({$1},{(}),{0},{define({USE_ZX48BBC_TO_F},{}){}dnl
+    ld   BC, format({%-11s},$1); 4:20      push_zx48s>f($1)   ( F: -- $1 )
+    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)},
+eval($1>=0),{1},{dnl
+    ld   BC, format({%-11s},$1); 3:10      push_zx48s>f($1)   ( F: -- $1 )
+__{}ifelse(eval(($1) & 0x8000),{0},{define({USE_ZX48BBC_TO_F},{}){}dnl
+__{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 0000 0??????? ????????},
+__{}{define({USE_ZX48ABC_TO_F},{}){}dnl
+__{}    xor   A             ; 1:4       push_zx48s>f($1)   $1 == 0000 1??????? ????????
+__{}    call _ZX48ABC_TO_F  ; 3:17      push_zx48s>f($1)})},
+{dnl
+    ld   BC, format({%-11s},$1); 3:10      push_zx48s>f($1)   ( F: -- $1 )
+__{}ifelse(eval(($1) & 0x8000),{0},{define({USE_ZX48ABC_TO_F},{}){}dnl
+__{}    ld    A, 0xFF       ; 2:7       push_zx48s>f($1)   $1 == 1111 0??????? ????????
+__{}    call _ZX48ABC_TO_F  ; 3:17      push_zx48s>f($1)},
+__{}{define({USE_ZX48BBC_TO_F},{}){}dnl
+__{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 1111 1??????? ????????})}){}dnl
+})dnl
 dnl
 dnl F>S
 define({ZX48F_TO_S},{define({USE_ZX48F_TO_S},{})
