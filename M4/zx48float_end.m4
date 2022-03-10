@@ -169,10 +169,10 @@ _ZX48FHEX_A:
     call _ZX48FHEX_LO   ; 3:17      _zx48fhexdot
     pop  AF             ; 1:10      _zx48fhexdot
     ; fall
-    
+
 ;  In: A = number
 ; Out: (A & $0F) => '0'..'9','A'..'F'
-_ZX48FHEX_LO: 
+_ZX48FHEX_LO:
     or   0xF0           ; 2:7       _zx48fhexdot   reset H flag
     daa                 ; 1:4       _zx48fhexdot   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
     add   A, 0xA0       ; 2:7       _zx48fhexdot   $F0..$F9, $100..$105
