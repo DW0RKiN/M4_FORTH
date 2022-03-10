@@ -223,13 +223,13 @@ define({ZX48FEQ},{define({USE_ZX48FCOMPARE},{})
     call _ZX48FCOMPARE  ; 3:17      zx48f=}){}dnl
 dnl
 dnl
-dnl S>F
-define({ZX48S_TO_F},{define({USE_ZX48S_TO_F},{})
-    call _ZX48S_TO_F    ; 3:17      zx48s>f   ( u -- ) ( F: -- r )}){}dnl
+dnl U>F
+define({ZX48U_TO_F},{define({USE_ZX48U_TO_F},{})
+    call _ZX48U_TO_F    ; 3:17      zx48u>f   ( u -- ) ( F: -- r )}){}dnl
 dnl
 dnl
-dnl x S>F
-define({UNSIGNEDPUSH_ZX48S_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
+dnl u S>F
+define({PUSH_ZX48U_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -243,6 +243,11 @@ eval($1>=0),{1},{dnl
     ld   BC, format({%-11s},eval(-($1))); 3:10      push_zx48s>f($1)   ( F: -- $1 )
     call _ZX48BC_TO_F   ; 3:17      push_zx48s>f($1)
     call _ZX48FNEGATE   ; 3:17      push_zx48s>f($1)})}){}dnl
+dnl
+dnl
+dnl S>F
+define({ZX48S_TO_F},{define({USE_ZX48S_TO_F},{})
+    call _ZX48S_TO_F    ; 3:17      zx48s>f   ( x -- ) ( F: -- r )}){}dnl
 dnl
 dnl
 dnl x S>F

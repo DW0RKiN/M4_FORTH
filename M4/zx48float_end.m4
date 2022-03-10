@@ -58,17 +58,17 @@ _ZX48F_TO_S:
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48S_TO_F},{
-_ZX48S_TO_F:
-    push DE             ; 1:11      _zx48s>f   ( c ret . b a -- ret . c b )
-    ld    B, H          ; 1:4       _zx48s>f
-    ld    C, L          ; 1:4       _zx48s>f
-    call 0x2D2B         ; 3:17      _zx48s>f   {call ZX ROM stack BC routine}
-    pop  HL             ; 1:10      _zx48s>f
-    pop  BC             ; 1:10      _zx48s>f   ret
-    pop  DE             ; 1:10      _zx48s>f
-    push BC             ; 1:11      _zx48s>f   ret
-    ret                 ; 1:10      _zx48s>f
+ifdef({USE_ZX48U_TO_F},{
+_ZX48U_TO_F:
+    push DE             ; 1:11      _zx48u>f   ( c ret . b a -- ret . c b )
+    ld    B, H          ; 1:4       _zx48u>f
+    ld    C, L          ; 1:4       _zx48u>f
+    call 0x2D2B         ; 3:17      _zx48u>f   {call ZX ROM stack BC routine}
+    pop  HL             ; 1:10      _zx48u>f
+    pop  BC             ; 1:10      _zx48u>f   ret
+    pop  DE             ; 1:10      _zx48u>f
+    push BC             ; 1:11      _zx48u>f   ret
+    ret                 ; 1:10      _zx48u>f
 }){}dnl
 dnl
 dnl
@@ -83,13 +83,24 @@ _ZX48BC_TO_F:
 }){}dnl
 dnl
 dnl
+ifdef({USE_ZX48S_TO_F},{define({USE_ZX48BBC_TO_F},{})
+_ZX48S_TO_F:            ;           _zx48s>f   ( num ret . de hl -- ret . num de )
+    ld    B, H          ; 1:4       _zx48s>f
+    ld    C, L          ; 1:4       _zx48s>f
+    pop  HL             ; 1:10      _zx48s>f   ( num . de ret )
+    ex  (SP),HL         ; 1:19      _zx48s>f   ( ret . de num )
+    ex   DE, HL         ; 1:4       _zx48s>f   ( ret . num de )
+    ; fall to _zx48bbc_to_f
+}){}dnl
+dnl
 ifdef({USE_ZX48BBC_TO_F},{define({USE_ZX48ABC_TO_F},{})
 _ZX48BBC_TO_F:          ;[3:12]     _zx48bbc_to_f
     ld    A, B          ; 1:4       _zx48bbc_to_f
     add   A, A          ; 1:4       _zx48bbc_to_f
     sbc   A, A          ; 1:4       _zx48bbc_to_f
-    ; fall
+    ; fall to _zx48abc_to_f
 }){}dnl
+dnl
 ifdef({USE_ZX48ABC_TO_F},{
 _ZX48ABC_TO_F:         ;[21:134]    _zx48abc_to_f
     push HL             ; 1:11      _zx48abc_to_f
@@ -115,12 +126,12 @@ _ZX480DED0_TO_F:        ;           _zx480ded0_to_f   ( ret . de hl -- ret . de 
     ld    A, D          ; 1:4       _zx480ded0_to_f
     add   A, A          ; 1:4       _zx480ded0_to_f   sign to carry
     sbc   A, A          ; 1:4       _zx480ded0_to_f   0x00 or 0xff
-    ; fall
+    ; fall to _zx480aed0_to_f
 }){}dnl
 ifdef({USE_ZX480AED0_TO_F},{define({USE_ZX48BAEDC_TO_F},{})
 _ZX480AED0_TO_F:        ;           _zx480aed0_to_f   ( ret . de hl -- ret . de hl )
     ld   BC, 0x0000     ; 3:10      _zx480aed0_to_f
-    ; fall
+    ; fall to _zx48baedc_to_f
 }){}dnl
 ifdef({USE_ZX48BAEDC_TO_F},{
 _ZX48BAEDC_TO_F:        ;           _zx48baedc_to_f   ( ret . de hl -- ret . de hl )
