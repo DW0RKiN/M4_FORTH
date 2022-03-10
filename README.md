@@ -365,6 +365,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 | :-------------: | :---------------------: | :----------------------------- | :------------------------------- |
 |<sub>            |<sub>      ZX48UMUL      |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a                   |
 |<sub>            |<sub> ZX48FLOAT2ARRAY(r) |<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5           |
+|<sub>            |<sub>    ZX48FHEXDOT     |<sub>  ( -- ) ( F: r -- r )     |<sub> ." 12,45,78,9A,CD "         |
 
 
 ### Logic

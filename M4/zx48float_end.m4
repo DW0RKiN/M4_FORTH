@@ -24,7 +24,7 @@ _ZX48FSTORE:
     push DE             ; 1:11      _zx48fstore   ( addr -- ) ( F: r -- )
     push HL             ; 1:11      _zx48fstore   addr
     call 0x35bf         ; 3:17      _zx48fstore   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld (0x5C65),HL      ; 3:16      _zx48fstore   {save STKEND}
+    ld  (0x5C65),HL     ; 3:16      _zx48fstore   {save STKEND}
     pop  DE             ; 1:10      _zx48fstore   addr
     ld   BC, 0x0005     ; 3:10      _zx48fstore
     ldir                ; 2:21/16   _zx48fstore
@@ -91,12 +91,53 @@ _ZX48FDOT:
     push HL             ; 1:11      _zx48fdot
     call 0x2de3         ; 3:17      _zx48fdot   {call ZX ROM print a floating-point number routine}
     pop  HL             ; 1:10      _zx48fdot
-    ld (0x5C65),HL      ; 3:16      _zx48fdot   {save STKEND}
+    ld  (0x5C65),HL     ; 3:16      _zx48fdot   {save STKEND}
     ld    A, ' '        ; 2:7       _zx48fdot   {putchar Pollutes: AF, DE', BC'}
-    rst   0x10          ; 1:11      _zx48fdot   {putchar with ZX 48K ROM in, this will print char in A}
+    rst  0x10           ; 1:11      _zx48fdot   {putchar with ZX 48K ROM in, this will print char in A}
     pop  HL             ; 1:10      _zx48fdot
     pop  DE             ; 1:10      _zx48fdot
     ret                 ; 1:10      _zx48fdot
+}){}dnl
+dnl
+dnl
+ifdef({USE_ZX48FHEXDOT},{
+_ZX48FHEX_A:
+    push AF             ; 1:11      _zx48fhexdot
+    rra                 ; 1:4       _zx48fhexdot
+    rra                 ; 1:4       _zx48fhexdot
+    rra                 ; 1:4       _zx48fhexdot
+    rra                 ; 1:4       _zx48fhexdot
+    call _ZX48FHEX_LO   ; 3:17      _zx48fhexdot
+    pop  AF             ; 1:10      _zx48fhexdot
+    ; fall
+    
+;  In: A = number
+; Out: (A & $0F) => '0'..'9','A'..'F'
+_ZX48FHEX_LO: 
+    or   0xF0           ; 2:7       _zx48fhexdot   reset H flag
+    daa                 ; 1:4       _zx48fhexdot   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
+    add   A, 0xA0       ; 2:7       _zx48fhexdot   $F0..$F9, $100..$105
+    adc   A, 0x40       ; 2:7       _zx48fhexdot   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
+    rst  0x10           ; 1:11      _zx48fhexdot   {putchar with ZX 48K ROM in, this will print char in A}
+    ret                 ; 1:10      _zx48fhexdot
+
+_ZX48FHEXDOT:
+    push HL             ; 1:11      _zx48fhexdot
+    ld   HL,(0x5C65)    ; 3:16      _zx48fhexdot   {HL= stkend}
+    ld   BC, 0xfffb     ; 3:10      _zx48fhexdot
+    add  HL, BC         ; 1:11      _zx48fhexdot
+    ld    B, 0x05       ; 2:7       _zx48fhexdot
+    jr   $+5            ; 2:12      _zx48fhexdot
+    ld    A, ','        ; 2:7       _zx48fhexdot
+    rst  0x10           ; 1:11      _zx48fhexdot   {putchar with ZX 48K ROM in, this will print char in A}
+    ld    A,(HL)        ; 1:7       _zx48fhexdot
+    inc  HL             ; 1:6       _zx48fhexdot
+    call _ZX48FHEX_A    ; 3:17      _zx48fhexdot
+    djnz $-8            ; 2:8/13    _zx48fhexdot
+    ld    A, ' '        ; 2:7       _zx48fhexdot
+    rst  0x10           ; 1:11      _zx48fhexdot   {putchar with ZX 48K ROM in, this will print char in A}
+    pop  HL             ; 1:10      _zx48fhexdot
+    ret                 ; 1:10      _zx48fhexdot
 }){}dnl
 dnl
 dnl
@@ -168,7 +209,7 @@ if 1
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
 else
     call 0x35bf         ; 3:17      _zx48fmul   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld (0x5C65),HL      ; 3:16      _zx48fmul   {save STKEND}
+    ld  (0x5C65),HL     ; 3:16      _zx48fmul   {save STKEND}
     call 0x35c2         ; 3:17      _zx48fmul   {call ZX ROM            DE= HL    , HL = HL-5}
     call 0x30ca         ; 3:17      _zx48fmul   {call ZX ROM fmul, adr_HL = adr_DE * adr_HL}
 endif
@@ -188,7 +229,7 @@ if 1
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
 else
     call 0x35bf         ; 3:17      _zx48fdiv   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld (0x5C65),HL      ; 3:16      _zx48fdiv   {save STKEND}
+    ld  (0x5C65),HL     ; 3:16      _zx48fdiv   {save STKEND}
     call 0x35c2         ; 3:17      _zx48fdiv   {call ZX ROM            DE= HL    , HL = HL-5}
     call 0x31af         ; 3:17      _zx48fdiv   {call ZX ROM fdiv}
 endif
@@ -449,10 +490,10 @@ ifdef({USE_ZX48FADDR},{
 _ZX48FADDR:
     push DE             ; 1:11      _zx48faddr
     ex   DE, HL         ; 1:4       _zx48faddr
-    ld   HL,(0x5C65)    ; 3:17      _zx48faddr   {HL= stkend}
+    ld   HL,(0x5C65)    ; 3:16      _zx48faddr   {HL= stkend}
     UDOTZXROM
     ld    A, 0x0D       ; 2:7       _zx48faddr-cr   {Pollutes: AF, DE', BC'}
-    rst   0x10          ; 1:11      _zx48faddr-cr   {with 48K ROM in, this will print char in A}
+    rst  0x10           ; 1:11      _zx48faddr-cr   {with 48K ROM in, this will print char in A}
     ret                 ; 1:10      _zx48faddr
 }){}dnl
 dnl

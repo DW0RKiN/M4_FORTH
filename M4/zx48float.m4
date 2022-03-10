@@ -149,6 +149,11 @@ define({ZX48FDOT},{define({USE_ZX48FDOT},{})
     call _ZX48FDOT      ; 3:17      zx48fdot   ( F: r -- )}){}dnl
 dnl
 dnl
+dnl ( F: r -- r )  "13,57,9A,CD,EF "
+define({ZX48FHEXDOT},{define({USE_ZX48FHEXDOT},{})
+    call _ZX48FHEXDOT   ; 3:17      zx48fhexdot   ( F: r -- r )}){}dnl
+dnl
+dnl
 dnl
 define({ZX48FINT},{define({USE_ZX48FINT},{})
     call _ZX48FINT      ; 3:17      zx48fint   ( F: r -- x )}){}dnl
