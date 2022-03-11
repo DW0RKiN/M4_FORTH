@@ -315,8 +315,13 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 
 #### ZX48 ROM Floating-point
 
-ZX Spectrum floating-point format `EEEE EEEE SMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM`
-ZX Spectrum integer format        `0000 0000 SSSS SSSS LLLL LLLL HHHH HHHH 0000 0000`
+    ZX Spectrum floating-point format:
+        EEEE EEEE SMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM
+             exp,  sign + m,        m,        m,        m
+
+    ZX Spectrum integer format:
+        0000 0000 SSSS SSSS LLLL LLLL HHHH HHHH 0000 0000
+                0, 8x dup S,       lo,       hi,        0
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
