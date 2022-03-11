@@ -58,6 +58,69 @@ _ZX48F_TO_S:
 }){}dnl
 dnl
 dnl
+ifdef({USE_ZX48F_TO_D},{define({USE_DNEGATE},{})
+_ZX48F_TO_D:
+    pop  BC             ; 1:10      _zx48f>d   ret
+    push DE             ; 1:11      _zx48f>d
+    push HL             ; 1:11      _zx48f>d
+    push BC             ; 1:11      _zx48f>d   ret
+    
+    ld   HL,(0x5C65)    ; 3:16      _zx48f>d   {load STKEND}
+    dec  HL             ; 1:6       _zx48f>d
+    ld    C,(HL)        ; 1:7       _zx48f>d
+    dec  HL             ; 1:6       _zx48f>d
+    ld    B,(HL)        ; 1:7       _zx48f>d
+    dec  HL             ; 1:6       _zx48f>d
+    ld    E,(HL)        ; 1:7       _zx48f>d
+    dec  HL             ; 1:6       _zx48f>d
+    ld    D,(HL)        ; 1:7       _zx48f>d
+    push DE             ; 1:11      _zx48f>d   sign
+    dec  HL             ; 1:6       _zx48f>d
+    ld    A, 0xA0       ; 2:7       _zx48f>d
+    sub (HL)            ; 1:7       _zx48f>d
+    ld  (0x5C65),HL     ; 3:16      _zx48f>d   {save STKEND+5}
+    
+    set   7, D          ; 2:8       _zx48f>d
+if 1
+    ld    L, C          ; 1:4       _zx48f>d
+    ld    H, B          ; 1:4       _zx48f>d
+
+    srl   D             ; 2:8       _zx48f>d
+    rr    E             ; 2:8       _zx48f>d
+    rr    H             ; 2:8       _zx48f>d
+    rr    L             ; 2:8       _zx48f>d
+    dec   A             ; 1:4       _zx48f>d
+    jr   nz, $-9        ; 2:7/12    _zx48f>d
+else
+    ld    H, C          ; 1:4       _zx48f>d
+    ld    C, B          ; 1:4       _zx48f>d
+    ld    B, E          ; 1:4       _zx48f>d
+    ld    E, D          ; 1:4       _zx48f>d
+    ld    D, 0x00       ; 2:7       _zx48f>d
+    sub  0x08           ; 2:7       _zx48f>d
+    jr   nc, $-8        ; 2:7/12    _zx48f>d
+
+    ld    L, C          ; 1:4       _zx48f>d
+    ld    C, A          ; 1:4       _zx48f>d
+    ld    A, H          ; 1:4       _zx48f>d
+    ld    H, B          ; 1:4       _zx48f>d
+    
+    add   A, A          ; 1:4       _zx48f>d
+    adc  HL, HL         ; 2:15      _zx48f>d
+    rl    E             ; 2:8       _zx48f>d
+    rl    D             ; 2:8       _zx48f>d
+    inc   C             ; 1:4       _zx48f>d
+    jr   nz, $-8        ; 2:7/12    _zx48f>d
+endif
+    pop  AF             ; 1:10      _zx48f>d   sign
+    add   A, A          ; 1:4       _zx48f>d
+    ret  nc             ; 1:5/11    _zx48f>d
+
+    jp   NEGATE_32      ; 3:10      _zx48f>d
+    
+}){}dnl
+dnl
+dnl
 ifdef({USE_ZX48U_TO_F},{
 _ZX48U_TO_F:
     push DE             ; 1:11      _zx48u>f   ( c ret . b a -- ret . c b )

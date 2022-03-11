@@ -35,7 +35,6 @@ ___{}ifelse(ZXTEMP_CHAR,{1},{ZX_READCHAR}){}dnl     .
 ___{}ifelse(ZXTEMP_CHAR,{.},{ZX_READCHAR}){}dnl     ?
 ___{}ZX_READ_MANT{}dnl
 ___{}ifelse(ZXTEMP_CHAR,{p},{dnl
-___{}___{}ZX_READCHAR{}dnl
 ___{}___{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 ___{}})dnl
 ___{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
@@ -288,7 +287,7 @@ __{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 1 1??????? ????
 dnl
 dnl
 define({PUSH_ZX48F},{ZX48FSTRING_TO_FHEX($1)
-                       ;[15:195]    push_zx48f($1)
+                       ;[15:195]    push_zx48f($1)   = format({%a},$1)
     push DE             ; 1:11      push_zx48f($1)
     push HL             ; 1:11      push_zx48f($1)
     ld    A, 0x{}ZXTEMP_EXP       ; 2:7       push_zx48f($1)
@@ -302,7 +301,17 @@ dnl
 dnl
 dnl F>S
 define({ZX48F_TO_S},{define({USE_ZX48F_TO_S},{})
-    call _ZX48F_TO_S    ; 3:17      zx48f>s   ( -- x ) ( F: r1 -- )}){}dnl
+    call _ZX48F_TO_S    ; 3:17      zx48f>s   ( -- x ) ( F: r -- )}){}dnl
+dnl
+dnl
+dnl D>F
+define({ZX48D_TO_F},{define({USE_ZX48D_TO_F},{})
+    call _ZX48D_TO_F    ; 3:17      zx48d>f   ( d -- ) ( F: -- r )}){}dnl
+dnl
+dnl
+dnl F>D
+define({ZX48F_TO_D},{define({USE_ZX48F_TO_D},{})
+    call _ZX48F_TO_D    ; 3:17      zx48f>d   ( -- d ) ( F: r -- )}){}dnl
 dnl
 dnl
 dnl
