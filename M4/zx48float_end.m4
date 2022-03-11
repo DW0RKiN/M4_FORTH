@@ -64,7 +64,7 @@ _ZX48F_TO_D:
     push DE             ; 1:11      _zx48f>d
     push HL             ; 1:11      _zx48f>d
     push BC             ; 1:11      _zx48f>d   ret
-    
+
     ld   HL,(0x5C65)    ; 3:16      _zx48f>d   {load STKEND}
     dec  HL             ; 1:6       _zx48f>d
     ld    C,(HL)        ; 1:7       _zx48f>d
@@ -79,7 +79,7 @@ _ZX48F_TO_D:
     ld    A, 0xA0       ; 2:7       _zx48f>d
     sub (HL)            ; 1:7       _zx48f>d
     ld  (0x5C65),HL     ; 3:16      _zx48f>d   {save STKEND+5}
-    
+
     set   7, D          ; 2:8       _zx48f>d
 if 1
     ld    L, C          ; 1:4       _zx48f>d
@@ -104,7 +104,7 @@ else
     ld    C, A          ; 1:4       _zx48f>d
     ld    A, H          ; 1:4       _zx48f>d
     ld    H, B          ; 1:4       _zx48f>d
-    
+
     add   A, A          ; 1:4       _zx48f>d
     adc  HL, HL         ; 2:15      _zx48f>d
     rl    E             ; 2:8       _zx48f>d
@@ -117,7 +117,7 @@ endif
     ret  nc             ; 1:5/11    _zx48f>d
 
     jp   NEGATE_32      ; 3:10      _zx48f>d
-    
+
 }){}dnl
 dnl
 dnl
@@ -195,6 +195,42 @@ _ZX48CFBC_TO_F:        ;[22:138]    _zx48cfbc_to_f
 endif
     pop  HL             ; 1:10      _zx48cfbc_to_f
     ret                 ; 1:10      _zx48cfbc_to_f
+}){}dnl
+dnl
+dnl
+ifdef({USE_ZX48D_TO_F},{define({USE_DNEGATE},{})
+_ZX48D_TO_F:            ;           _zx48d>f   ( num2 num1 ret . de hl -- ret . num2 num1 )
+    ld    A, D          ; 1:4       _zx48d>f
+    or    E             ; 1:4       _zx48d>f
+    or    H             ; 1:4       _zx48d>f
+    or    L             ; 1:4       _zx48d>f
+    jr    z, _ZX48Z_TO_F; 2:7/12    _zx48d>f   zero?
+    ld    A, 0x7F       ; 2:7       _zx48d>f
+    or    D             ; 1:4       _zx48d>f
+    push AF             ; 1:11      _zx48d>f   save sign 0x7f or 0xff
+    call  m, NEGATE_32  ; 3:17      _zx48d>f
+    ld    B, 0xA0       ; 2:7       _zx48d>f
+
+    dec   B             ; 1:4       _zx48d>f   exp--
+    add  HL, HL         ; 1:11      _zx48d>f
+    rl    E             ; 2:8       _zx48d>f
+    rl    D             ; 2:8       _zx48d>f
+    jp    p, $-6        ; 3:10      _zx48d>f   wait for sign
+
+    pop  AF             ; 1:11      _zx48d>f   load sign 0x7f or 0xff
+    and   D             ; 1:4       _zx48d>f
+    ld    D, E          ; 1:4       _zx48d>f
+    ld    E, A          ; 1:4       _zx48d>f   swap D and E
+    ld    A, B          ; 1:4       _zx48d>f   exp
+_ZX48Z_TO_F:            ;           _zx48d>f   zero entry
+    ld    B, L          ; 1:4       _zx48d>f
+    ld    C, H          ; 1:4       _zx48d>f
+    call 0x2ABB         ; 3:124     _zx48d>f   new float = a,e,d,c,b
+    pop  BC             ; 1:10      _zx48d>f   ret
+    pop  HL             ; 1:10      _zx48d>f
+    pop  DE             ; 1:10      _zx48d>f
+    push BC             ; 1:10      _zx48d>f   ret
+    ret                 ; 1:10      _zx48d>f
 }){}dnl
 dnl
 dnl
