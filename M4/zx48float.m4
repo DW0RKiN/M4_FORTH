@@ -21,7 +21,7 @@ ___{}___{}ZX_READ_MANT}){}dnl
 }){}dnl
 dnl
 dnl
-define({ZX48FLOAT2ARRAY},{dnl
+define({ZX48FSTRING_TO_FHEX},{dnl
 ___{}define({ZXTEMP_STRING},format({%a},$1)){}dnl
 ___{}ZX_READCHAR{}dnl                               0 or -+
 ___{}define({ZXTEMP_SIGN},0){}dnl
@@ -39,12 +39,19 @@ ___{}___{}ZX_READCHAR{}dnl
 ___{}___{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 ___{}})dnl
 ___{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
-___{}define({ZXTEMP_EXP},format({0x%02x},eval(ZXTEMP_EXP+129))){}dnl
-___{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{0x00})}){}dnl
-DB ZXTEMP_EXP,format({0x%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F))),dnl
-format({0x%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF)),dnl
-format({0x%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF)),dnl
-format({0x%02x},eval(ZXTEMP_MANTISSA & 0xFF)) ; = $1 = format({%a},$1)}){}dnl
+___{}define({ZXTEMP_EXP},format({%02x},eval(ZXTEMP_EXP+129))){}dnl
+___{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
+___{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
+___{}define({ZXTEMP_MANTISSA_2},format({%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF))){}dnl
+___{}define({ZXTEMP_MANTISSA_3},format({%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF))){}dnl
+___{}define({ZXTEMP_MANTISSA_4},format({%02x},eval(ZXTEMP_MANTISSA & 0xFF))){}dnl
+}){}dnl
+dnl
+dnl
+define({ZX48FLOAT2ARRAY},{dnl
+___{}ZX48FSTRING_TO_FHEX($1){}dnl
+___{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MANTISSA_3,0x{}ZXTEMP_MANTISSA_4 ; = $1 = format({%a},$1){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -278,6 +285,20 @@ __{}    call _ZX48CFBC_TO_F ; 3:17      push_zx48s>f($1)},
 __{}{define({USE_ZX48BBC_TO_F},{}){}dnl
 __{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 1 1??????? ????????})}){}dnl
 })dnl
+dnl
+dnl
+define({PUSH_ZX48F},{ZX48FSTRING_TO_FHEX($1)
+                       ;[15:195]    push_zx48f($1)
+    push DE             ; 1:11      push_zx48f($1)
+    push HL             ; 1:11      push_zx48f($1)
+    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       push_zx48f($1)
+    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      push_zx48f($1)
+    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      push_zx48f($1)
+    call 0x2ABB         ; 3:124     push_zx48f($1)   new float = a,e,d,c,b
+    pop  HL             ; 1:11      push_zx48f($1)
+    pop  DE             ; 1:11      push_zx48f($1)
+}){}dnl
+dnl
 dnl
 dnl F>S
 define({ZX48F_TO_S},{define({USE_ZX48F_TO_S},{})

@@ -364,6 +364,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
 |<sub> Original   |<sub>      M4 FORTH      |<sub>  Data stack               |<sub>  Comment                    |
 | :-------------: | :---------------------: | :----------------------------- | :------------------------------- |
+|<sub>  `1.23e7`  |<sub>PUSH_ZX48F(`1.23e7`)|<sub>  ( -- ) ( F: -- `1.23e7` )|<sub> inline 15 bytes             |
 |<sub>    u>f     |<sub>     ZX48U_TO_F     |<sub>  ( u -- ) ( F: -- u )     |<sub> u = 0..65535                |
 |<sub>            |<sub> PUSH_ZX48U_TO_F(i) |<sub>  ( -- ) ( F: -- i )       |<sub> i = -65535..65535           |
 |<sub>            |<sub>    ZX48BC_TO_F     |<sub>  ( -- ) ( F: -- u )       |<sub> reg BC = u = 0..65535       |
