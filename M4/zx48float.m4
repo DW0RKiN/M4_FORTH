@@ -322,3 +322,29 @@ define({ZX48F0LT},{define({USE_ZX48F0LT},{})
     call _ZX48F0LT      ; 3:17      zx48f0<   ( -- flag ) ( F: r -- )}){}dnl
 dnl
 dnl
+dnl
+define({ZX48FVARIABLE},{dnl
+__{}ifelse($1,{},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}    .error zx48fvariable($@): Missing parameter with variable name!})},
+__{}{dnl
+__{}__{}ifelse($#,{1},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1:
+__{}__{}  db 0x00
+__{}__{}  db 0x00
+__{}__{}  db 0x00
+__{}__{}  db 0x00
+__{}__{}  db 0x00})},
+__{}__{}$#,{2},{ZX48FSTRING_TO_FHEX($2)define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}format({%-24s},$1:); = $2 = format({%a},$2)
+__{}__{}  db 0x{}ZXTEMP_EXP
+__{}__{}  db 0x{}ZXTEMP_MANTISSA_1
+__{}__{}  db 0x{}ZXTEMP_MANTISSA_2
+__{}__{}  db 0x{}ZXTEMP_MANTISSA_3
+__{}__{}  db 0x{}ZXTEMP_MANTISSA_4})},
+__{}__{}{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}    .error zx48fvariable($@): To many parameters!})}){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
+dnl
