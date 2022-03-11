@@ -352,7 +352,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>    fswap     |<sub>      ZX48FSWAP      |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                          |
 |<sub>     ftan     |<sub>      ZX48FTAN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)                |
 |<sub>name fvariable|<sub>  ZX48FVARIABLE(name)|<sub>  ( -- ) ( F: -- )         |<sub> name: db 0,0,0,0,0          |
-|<sub               |<sub>ZX48FVARIABLE(name,r)|<sub>  ( -- ) ( F: -- )         |<sub> name: db exp,m1,m2,m3,m4 ;=r|
+|<sub>              |<sub>ZX48FVARIABLE(name,r)|<sub>  ( -- ) ( F: -- )         |<sub> name: db exp,m1,m2,m3,m4 ;=r|
 |<sub>     f<=      |<sub>       ZX48FLE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<=r2 then r3=1 else r3=0|
 |<sub>     f>=      |<sub>       ZX48FGE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1>=r2 then r3=1 else r3=0|
 |<sub>     f<>      |<sub>       ZX48FNE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<>r2 then r3=1 else r3=0|
