@@ -93,64 +93,47 @@ _ZX48S_TO_F:            ;           _zx48s>f   ( num ret . de hl -- ret . num de
     ; fall to _zx48bbc_to_f
 }){}dnl
 dnl
-ifdef({USE_ZX48BBC_TO_F},{define({USE_ZX48ABC_TO_F},{})
-_ZX48BBC_TO_F:          ;[3:12]     _zx48bbc_to_f
+ifdef({USE_ZX48BBC_TO_F},{define({USE_ZX48CFBC_TO_F},{})
+_ZX48BBC_TO_F:          ;[2:8]      _zx48bbc_to_f
     ld    A, B          ; 1:4       _zx48bbc_to_f
     add   A, A          ; 1:4       _zx48bbc_to_f
-    sbc   A, A          ; 1:4       _zx48bbc_to_f
-    ; fall to _zx48abc_to_f
+    ; fall to _zx48cfbc_to_f
 }){}dnl
 dnl
-ifdef({USE_ZX48ABC_TO_F},{
-_ZX48ABC_TO_F:         ;[21:134]    _zx48abc_to_f
-    push HL             ; 1:11      _zx48abc_to_f
-    ld   HL,(0x5C65)    ; 3:16      _zx48abc_to_f   {load STKEND}
-    ld  (HL),0x00       ; 2:10      _zx48abc_to_f
-    inc  HL             ; 1:6       _zx48abc_to_f
-    ld  (HL), A         ; 1:7       _zx48abc_to_f
-    inc  HL             ; 1:6       _zx48abc_to_f
-    ld  (HL), C         ; 1:7       _zx48abc_to_f
-    inc  HL             ; 1:6       _zx48abc_to_f
-    ld  (HL), B         ; 1:7       _zx48abc_to_f
-    inc  HL             ; 1:6       _zx48abc_to_f
-    ld  (HL),0x00       ; 2:10      _zx48abc_to_f
-    inc  HL             ; 1:6       _zx48abc_to_f
-    ld  (0x5C65),HL     ; 3:16      _zx48abc_to_f   {save STKEND+5}
-    pop  HL             ; 1:10      _zx48abc_to_f
-    ret                 ; 1:10      _zx48abc_to_f
+ifdef({USE_ZX48CFBC_TO_F},{
+if 1
+_ZX48CFBC_TO_F:        ;[14:200]    _zx48cfbc_to_f
+    sbc   A, A          ; 1:4       _zx48cfbc_to_f   0x00 or 0xff
+    push HL             ; 1:11      _zx48cfbc_to_f
+    push DE             ; 1:11      _zx48cfbc_to_f
+    ld    E, A          ; 1:4       _zx48cfbc_to_f
+    ld    D, C          ; 1:4       _zx48cfbc_to_f
+    ld    C, B          ; 1:4       _zx48cfbc_to_f
+    xor   A             ; 1:4       _zx48cfbc_to_f
+    ld    B, A          ; 1:4       _zx48cfbc_to_f
+    call 0x2ABB         ; 3:124     _zx48cfbc_to_f   new float = a,e,d,c,b = 0,0-sign,lo,hi,0
+    pop  DE             ; 1:10      _zx48cfbc_to_f
+else
+_ZX48CFBC_TO_F:        ;[22:138]    _zx48cfbc_to_f
+    sbc   A, A          ; 1:4       _zx48cfbc_to_f   0x00 or 0xff
+    push HL             ; 1:11      _zx48cfbc_to_f
+    ld   HL,(0x5C65)    ; 3:16      _zx48cfbc_to_f   {load STKEND}
+    ld  (HL),0x00       ; 2:10      _zx48cfbc_to_f
+    inc  HL             ; 1:6       _zx48cfbc_to_f
+    ld  (HL), A         ; 1:7       _zx48cfbc_to_f
+    inc  HL             ; 1:6       _zx48cfbc_to_f
+    ld  (HL), C         ; 1:7       _zx48cfbc_to_f
+    inc  HL             ; 1:6       _zx48cfbc_to_f
+    ld  (HL), B         ; 1:7       _zx48cfbc_to_f
+    inc  HL             ; 1:6       _zx48cfbc_to_f
+    ld  (HL),0x00       ; 2:10      _zx48cfbc_to_f
+    inc  HL             ; 1:6       _zx48cfbc_to_f
+    ld  (0x5C65),HL     ; 3:16      _zx48cfbc_to_f   {save STKEND+5}
+endif
+    pop  HL             ; 1:10      _zx48cfbc_to_f
+    ret                 ; 1:10      _zx48cfbc_to_f
 }){}dnl
 dnl
-dnl
-ifdef({USE_ZX480DED0_TO_F},{define({USE_ZX480DED0_TO_F},{})
-_ZX480DED0_TO_F:        ;           _zx480ded0_to_f   ( ret . de hl -- ret . de hl )
-    ld    A, D          ; 1:4       _zx480ded0_to_f
-    add   A, A          ; 1:4       _zx480ded0_to_f   sign to carry
-    sbc   A, A          ; 1:4       _zx480ded0_to_f   0x00 or 0xff
-    ; fall to _zx480aed0_to_f
-}){}dnl
-ifdef({USE_ZX480AED0_TO_F},{define({USE_ZX48BAEDC_TO_F},{})
-_ZX480AED0_TO_F:        ;           _zx480aed0_to_f   ( ret . de hl -- ret . de hl )
-    ld   BC, 0x0000     ; 3:10      _zx480aed0_to_f
-    ; fall to _zx48baedc_to_f
-}){}dnl
-ifdef({USE_ZX48BAEDC_TO_F},{
-_ZX48BAEDC_TO_F:        ;           _zx48baedc_to_f   ( ret . de hl -- ret . de hl )
-    push HL             ; 1:11      _zx48baedc_to_f
-    ld   HL,(0x5C65)    ; 3:16      _zx48baedc_to_f   {load STKEND}
-    ld  (HL), B         ; 1:7       _zx48baedc_to_f
-    inc  HL             ; 1:6       _zx48baedc_to_f
-    ld  (HL), A         ; 1:7       _zx48baedc_to_f
-    inc  HL             ; 1:6       _zx48baedc_to_f
-    ld  (HL), E         ; 1:7       _zx48baedc_to_f
-    inc  HL             ; 1:6       _zx48baedc_to_f
-    ld  (HL), D         ; 1:7       _zx48baedc_to_f
-    inc  HL             ; 1:6       _zx48baedc_to_f
-    ld  (HL), C         ; 1:7       _zx48baedc_to_f
-    inc  HL             ; 1:6       _zx48baedc_to_f
-    ld  (0x5C65),HL     ; 3:16      _zx48baedc_to_f   {save STKEND+5}
-    pop  HL             ; 1:10      _zx48baedc_to_f
-    ret                 ; 1:10      _zx48baedc_to_f
-}){}dnl
 dnl
 dnl
 ifdef({USE_ZX48FDOT},{

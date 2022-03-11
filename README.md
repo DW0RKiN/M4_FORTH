@@ -344,7 +344,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>    f**     |<sub>    ZX48FMULMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2                  |
 |<sub>  fnegate   |<sub>    ZX48FNEGATE     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1                    |
 |<sub>   fover    |<sub>     ZX48FOVER      |<sub>  ( F: r1 r2 -- r1 r2 r1 ) |<sub>                             |
-|<sub>    frot    |<sub>     ZX48FROT       |<sub>( F: r1 r2 r3 -- r3 r1 r2 )|<sub>                             |
+|<sub>    frot    |<sub>     ZX48FROT       |<sub>( F: r1 r2 r3 -- r2 r3 r1 )|<sub>                             |
 |<sub>    fsin    |<sub>     ZX48FSIN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)                |
 |<sub>   fsqrt    |<sub>     ZX48FSQRT      |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5                 |
 |<sub>     f!     |<sub>    ZX48FSTORE      |<sub>( a -- ) ( F: r -- )       |<sub>                             |
@@ -368,7 +368,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>            |<sub> PUSH_ZX48U_TO_F(i) |<sub>  ( -- ) ( F: -- i )       |<sub> i = -65535..65535           |
 |<sub>            |<sub>    ZX48BC_TO_F     |<sub>  ( -- ) ( F: -- u )       |<sub> reg BC = u = 0..65535       |
 |<sub>            |<sub>    ZX48BBC_TO_F    |<sub>  ( -- ) ( F: -- i )       |<sub> reg BC = i = -32768..32767  |
-|<sub>            |<sub>    ZX48ABC_TO_F    |<sub>  ( -- ) ( F: -- 17bit_i ) |<sub> reg ABC = i = -65535..65535 |
+|<sub>            |<sub>    ZX48CFBC_TO_F   |<sub>  ( -- ) ( F: -- 17bit_i ) |<sub> carry+BC = i = -65535..65535|
 |<sub>            |<sub>      ZX48UMUL      |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a                   |
 |<sub>            |<sub> ZX48FLOAT2ARRAY(r) |<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5           |
 |<sub>            |<sub>    ZX48FHEXDOT     |<sub>  ( -- ) ( F: r -- r )     |<sub> ." 12,45,78,9A,CD "         |

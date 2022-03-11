@@ -71,7 +71,7 @@ dnl
 dnl
 dnl FROT
 define({ZX48FROT},{define({USE_ZX48FROT},{})
-    call _ZX48FROT      ; 3:17      fover zx48frot   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
+    call _ZX48FROT      ; 3:17      frot zx48frot   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
 dnl
 dnl
 dnl FDROP
@@ -266,17 +266,17 @@ ifelse(index({$1},{(}),{0},{define({USE_ZX48BBC_TO_F},{}){}dnl
 eval($1>=0),{1},{dnl
     ld   BC, format({%-11s},$1); 3:10      push_zx48s>f($1)   ( F: -- $1 )
 __{}ifelse(eval(($1) & 0x8000),{0},{define({USE_ZX48BBC_TO_F},{}){}dnl
-__{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 0000 0??????? ????????},
-__{}{define({USE_ZX48ABC_TO_F},{}){}dnl
-__{}    xor   A             ; 1:4       push_zx48s>f($1)   $1 == 0000 1??????? ????????
-__{}    call _ZX48ABC_TO_F  ; 3:17      push_zx48s>f($1)})},
+__{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 0 0??????? ????????},
+__{}{define({USE_ZX48CFBC_TO_F},{}){}dnl
+__{}    xor   A             ; 1:4       push_zx48s>f($1)   $1 == 0 1??????? ????????
+__{}    call _ZX48CFBC_TO_F ; 3:17      push_zx48s>f($1)})},
 {dnl
     ld   BC, format({%-11s},$1); 3:10      push_zx48s>f($1)   ( F: -- $1 )
-__{}ifelse(eval(($1) & 0x8000),{0},{define({USE_ZX48ABC_TO_F},{}){}dnl
-__{}    ld    A, 0xFF       ; 2:7       push_zx48s>f($1)   $1 == 1111 0??????? ????????
-__{}    call _ZX48ABC_TO_F  ; 3:17      push_zx48s>f($1)},
+__{}ifelse(eval(($1) & 0x8000),{0},{define({USE_ZX48CFBC_TO_F},{}){}dnl
+__{}    scf                 ; 1:4       push_zx48s>f($1)   $1 == 1 0??????? ????????
+__{}    call _ZX48CFBC_TO_F ; 3:17      push_zx48s>f($1)},
 __{}{define({USE_ZX48BBC_TO_F},{}){}dnl
-__{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 1111 1??????? ????????})}){}dnl
+__{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 1 1??????? ????????})}){}dnl
 })dnl
 dnl
 dnl F>S
