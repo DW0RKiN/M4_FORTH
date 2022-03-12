@@ -328,9 +328,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
 |<sub>   Original   |<sub>      M4 FORTH       |<sub>  Data stack               |<sub>  Comment                    |
 | :---------------: | :----------------------: | :----------------------------- | :------------------------------- |
-|<sub>     s>f      |<sub>      ZX48S_TO_F     |<sub>( x -- ) ( F: -- x )       |<sub>                             |
+|<sub>     d>f      |<sub>      ZX48D_TO_F     |<sub>( d -- ) ( F: -- d )       |<sub> -2147483648..2147483647     |
+|<sub>     s>f      |<sub>      ZX48S_TO_F     |<sub>( x -- ) ( F: -- x )       |<sub> -32768..32767               |
 |<sub>   `4` s>f    |<sub> PUSH_ZX48S_TO_F(`4`)|<sub>  ( -- ) ( F: -- `4` )     |<sub> -65535..65535               |
-|<sub>     f>s      |<sub>      ZX48F_TO_S     |<sub>  ( -- x ) ( F: x -- )     |<sub>                             |
+|<sub>     f>d      |<sub>      ZX48F_TO_D     |<sub>  ( -- d ) ( F: r -- )     |<sub>                             |
+|<sub>     f>s      |<sub>      ZX48F_TO_S     |<sub>  ( -- x ) ( F: r -- )     |<sub>                             |
 |<sub>     fabs     |<sub>      ZX48FABS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)                |
 |<sub>    facos     |<sub>      ZX48FACOS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)             |
 |<sub>      f+      |<sub>      ZX48FADD       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2                |

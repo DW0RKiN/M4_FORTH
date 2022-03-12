@@ -84,6 +84,7 @@ _ZX48F_TO_D:
 if 1
     ld    L, C          ; 1:4       _zx48f>d
     ld    H, B          ; 1:4       _zx48f>d
+    jr    z, $+11       ; 2:7/12    _zx48f>d   -0x1p+31 == -0x80000000
 
     srl   D             ; 2:8       _zx48f>d
     rr    E             ; 2:8       _zx48f>d
@@ -210,7 +211,8 @@ _ZX48D_TO_F:            ;           _zx48d>f   ( num2 num1 ret . de hl -- ret . 
     push AF             ; 1:11      _zx48d>f   save sign 0x7f or 0xff
     call  m, NEGATE_32  ; 3:17      _zx48d>f
     ld    B, 0xA0       ; 2:7       _zx48d>f
-
+    jp    m, $+12       ; 3:10      _zx48d>f   0x80000000
+    
     dec   B             ; 1:4       _zx48d>f   exp--
     add  HL, HL         ; 1:11      _zx48d>f
     rl    E             ; 2:8       _zx48d>f
