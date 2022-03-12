@@ -212,7 +212,7 @@ _ZX48D_TO_F:            ;           _zx48d>f   ( num2 num1 ret . de hl -- ret . 
     call  m, NEGATE_32  ; 3:17      _zx48d>f
     ld    B, 0xA0       ; 2:7       _zx48d>f
     jp    m, $+12       ; 3:10      _zx48d>f   0x80000000
-    
+
     dec   B             ; 1:4       _zx48d>f   exp--
     add  HL, HL         ; 1:11      _zx48d>f
     rl    E             ; 2:8       _zx48d>f
