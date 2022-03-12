@@ -26,9 +26,9 @@ __{}ifelse($1,{},{.error dvariable: Missing parameter with variable name!}dnl
 __{},$#,{1},{$1:
 __{}  dw 0x0000
 __{}  dw 0x0000{}}dnl
-__{},{$1:
-__{}  dw eval(($2) & 0x0ffff)
-__{}  dw eval(($2) / 0x10000)})dnl
+__{},{format({%-24s},$1:); = $2 = 0x{}format({%08x},eval($2))
+__{}  dw 0x{}format({%04x},eval(($2) & 0xffff)) ; = eval(($2) & 0xffff)
+__{}  dw 0x{}format({%04x},eval((($2) >> 16) & 0xffff)) ; = eval((($2) >> 16) & 0xffff)})dnl
 })})dnl
 dnl
 dnl

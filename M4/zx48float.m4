@@ -343,13 +343,11 @@ __{}__{}  db 0x00
 __{}__{}  db 0x00
 __{}__{}  db 0x00
 __{}__{}  db 0x00})},
-__{}__{}$#,{2},{ZX48FSTRING_TO_FHEX($2)define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}format({%-24s},$1:); = $2 = format({%a},$2)
+__{}__{}$#,{2},{ZX48FSTRING_TO_FHEX($2)define({ALL_VARIABLE},ALL_VARIABLE
+__{}__{}format({%-24s},$1:); = $2 = format({%a},$2) = 0x{}ZXTEMP_EXP{}ZXTEMP_MANTISSA_1{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4
 __{}__{}  db 0x{}ZXTEMP_EXP
-__{}__{}  db 0x{}ZXTEMP_MANTISSA_1
-__{}__{}  db 0x{}ZXTEMP_MANTISSA_2
-__{}__{}  db 0x{}ZXTEMP_MANTISSA_3
-__{}__{}  db 0x{}ZXTEMP_MANTISSA_4})},
+__{}__{}  dw 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1
+__{}__{}  dw 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3)},
 __{}__{}{define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}    .error zx48fvariable($@): To many parameters!})}){}dnl
 __{}}){}dnl
