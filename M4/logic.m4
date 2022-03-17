@@ -1381,7 +1381,7 @@ define({_15RSHIFT},{
     xor   A             ; 1:4       15 rshift   ( u -- u>>15 )
     rl    H             ; 2:8       15 rshift
     ld    H, A          ; 1:4       15 rshift
-    rra                 ; 1:4       15 rshift
+    adc   A, A          ; 1:4       15 rshift
     ld    L, A          ; 1:4       15 rshift})dnl
 dnl
 dnl
