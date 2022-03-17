@@ -1005,18 +1005,392 @@ define(RSHIFT,{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
 dnl
 dnl
 dnl 1 <<
-dnl ( x u -- x)
-dnl shifts x left u places
+dnl x 1 lshift
+dnl ( x -- x)
+dnl shifts x left 1 place
 define({_1LSHIFT},{
-    add  HL, HL         ; 1:11      1 lshift})dnl
+    add  HL, HL         ; 1:11      1 lshift   ( u -- u<<1 )})dnl
+dnl
+dnl
+dnl 2 <<
+dnl x 2 lshift
+dnl ( x -- x)
+dnl shifts x left 2 places
+define({_2LSHIFT},{
+    add  HL, HL         ; 1:11      2 lshift   ( u -- u<<2 )
+    add  HL, HL         ; 1:11      2 lshift})dnl
+dnl
+dnl
+dnl 3 <<
+dnl x 3 lshift
+dnl ( x -- x)
+dnl shifts x left 3 places
+define({_3LSHIFT},{
+    add  HL, HL         ; 1:11      3 lshift   ( u -- u<<3 )
+    add  HL, HL         ; 1:11      3 lshift
+    add  HL, HL         ; 1:11      3 lshift})dnl
+dnl
+dnl
+dnl 4 <<
+dnl x 4 lshift
+dnl ( x -- x)
+dnl shifts x left 4 places
+define({_4LSHIFT},{
+    add  HL, HL         ; 1:11      4 lshift   ( u -- u<<4 )
+    add  HL, HL         ; 1:11      4 lshift
+    add  HL, HL         ; 1:11      4 lshift
+    add  HL, HL         ; 1:11      4 lshift})dnl
+dnl
+dnl
+dnl 5 <<
+dnl x 5 lshift
+dnl ( x -- x)
+dnl shifts x left 5 places
+define({_5LSHIFT},{
+    add  HL, HL         ; 1:11      5 lshift   ( u -- u<<5 )
+    add  HL, HL         ; 1:11      5 lshift
+    add  HL, HL         ; 1:11      5 lshift
+    add  HL, HL         ; 1:11      5 lshift
+    add  HL, HL         ; 1:11      5 lshift})dnl
+dnl
+dnl
+dnl 6 <<
+dnl x 6 lshift
+dnl ( x -- x)
+dnl shifts x left 6 places
+define({_6LSHIFT},{
+                       ;[12:47]     6 lshift   ( u -- u<<6 )
+    ld    A, H          ; 1:4       6 lshift
+    and   0x03          ; 2:7       6 lshift   .... ..98   7654 3210
+    rra                 ; 1:4       6 lshift   .... ...9 8 7654 3210
+    rr    L             ; 2:8       6 lshift   .... ...9   8765 4321 0
+    rra                 ; 1:4       6 lshift   0... .... 9 8765 4321
+    rr    L             ; 2:8       6 lshift   0... ....   9876 5432 1
+    rra                 ; 1:4       6 lshift   10.. .... . 9876 5432
+    ld    H, L          ; 1:4       6 lshift
+    ld    L, A          ; 1:4       6 lshift})dnl
+dnl
+dnl
+dnl 7 <<
+dnl x 7 lshift
+dnl ( x -- x)
+dnl shifts x left 7 places
+define({_7LSHIFT},{
+    xor   A             ; 1:4       7 lshift   ( u -- u<<7 )
+    srl   H             ; 2:8       7 lshift
+    rr    L             ; 2:8       7 lshift
+    ld    H, L          ; 1:4       7 lshift
+    rra                 ; 1:4       7 lshift
+    ld    L, A          ; 1:4       7 lshift})dnl
+dnl
+dnl
+dnl 8 <<
+dnl x 8 lshift
+dnl ( x -- x)
+dnl shifts x left 8 places
+define({_8LSHIFT},{
+    ld    H, L          ; 1:4       8 lshift   ( u -- u<<8 )
+    ld    L, 0x00       ; 2:7       8 lshift})dnl
+dnl
+dnl
+dnl 9 <<
+dnl x 9 lshift
+dnl ( x -- x)
+dnl shifts x left 9 places
+define({_9LSHIFT},{
+    sla   L             ; 2:8       9 lshift   ( u -- u<<9 )
+    ld    H, L          ; 1:4       9 lshift
+    ld    L, 0x00       ; 2:7       9 lshift})dnl
+dnl
+dnl
+dnl 10 <<
+dnl x 10 lshift
+dnl ( x -- x)
+dnl shifts x left 10 places
+define({_10LSHIFT},{
+    ld    A, L          ; 1:4       10 lshift   ( u -- u<<10 )
+    add   A, A          ; 1:4       10 lshift
+    add   A, A          ; 1:4       10 lshift
+    ld    H, A          ; 1:4       10 lshift
+    ld    L, 0x00       ; 2:7       10 lshift})dnl
+dnl
+dnl
+dnl 11 <<
+dnl x 11 lshift
+dnl ( x -- x)
+dnl shifts x left 11 places
+define({_11LSHIFT},{
+    ld    A, L          ; 1:4       11 lshift   ( u -- u<<11 )
+    add   A, A          ; 1:4       11 lshift
+    add   A, A          ; 1:4       11 lshift
+    add   A, A          ; 1:4       11 lshift
+    ld    H, A          ; 1:4       11 lshift
+    ld    L, 0x00       ; 2:7       11 lshift})dnl
+dnl
+dnl
+dnl 12 <<
+dnl x 12 lshift
+dnl ( x -- x)
+dnl shifts x left 12 places
+define({_12LSHIFT},{
+    ld    A, L          ; 1:4       12 lshift   ( u -- u<<12 )
+    add   A, A          ; 1:4       12 lshift
+    add   A, A          ; 1:4       12 lshift
+    add   A, A          ; 1:4       12 lshift
+    add   A, A          ; 1:4       12 lshift
+    ld    H, A          ; 1:4       12 lshift
+    ld    L, 0x00       ; 2:7       12 lshift})dnl
+dnl
+dnl
+dnl 13 <<
+dnl x 13 lshift
+dnl ( x -- x)
+dnl shifts x left 13 places
+define({_13LSHIFT},{
+    ld    A, L          ; 1:4       13 lshift   ( u -- u<<13 )
+    rrca                ; 1:4       13 lshift
+    rrca                ; 1:4       13 lshift
+    rrca                ; 1:4       13 lshift
+    and  0xE0           ; 2:7       13 lshift
+    ld    H, A          ; 1:4       13 lshift
+    ld    L, 0x00       ; 2:7       13 lshift})dnl
+dnl
+dnl
+dnl 14 <<
+dnl x 14 lshift
+dnl ( x -- x)
+dnl shifts x left 14 places
+define({_14LSHIFT},{
+    ld    A, L          ; 1:4       14 lshift   ( u -- u<<14 )
+    rrca                ; 1:4       14 lshift
+    rrca                ; 1:4       14 lshift
+    and  0xC0           ; 2:7       14 lshift
+    ld    H, A          ; 1:4       14 lshift
+    ld    L, 0x00       ; 2:7       14 lshift})dnl
+dnl
+dnl
+dnl 15 <<
+dnl x 15 lshift
+dnl ( x -- x)
+dnl shifts x left 15 places
+define({_15LSHIFT},{
+    xor   A             ; 1:4       15 lshift   ( u -- u<<15 )
+    rr    L             ; 2:8       15 lshift
+    ld    L, A          ; 1:4       15 lshift
+    rra                 ; 1:4       15 lshift
+    ld    H, A          ; 1:4       15 lshift})dnl
+dnl
+dnl
+dnl 16 <<
+dnl x 16 lshift
+dnl ( x -- x)
+dnl shifts x left 16 places
+define({_16LSHIFT},{
+    ld   HL, 0x0000     ; 3:10      16 lshift   ( u -- u<<16 )})dnl
+dnl
 dnl
 dnl
 dnl 1 >>
-dnl ( x u -- x)
-dnl shifts x right u places
+dnl x 1 rshift
+dnl ( u -- u )
+dnl shifts u right 1 place
 define({_1RSHIFT},{
-    srl   H             ; 2:8       1 rshift   unsigned
+    srl   H             ; 2:8       1 rshift   ( u -- u>>1 )
     rr    L             ; 2:8       1 rshift})dnl
+dnl
+dnl
+dnl 2 >>
+dnl x 2 rshift
+dnl ( u -- u )
+dnl shifts u right 2 places
+define({_2RSHIFT},{
+    srl   H             ; 2:8       2 rshift   ( u -- u>>2 )
+    rr    L             ; 2:8       2 rshift
+    srl   H             ; 2:8       2 rshift
+    rr    L             ; 2:8       2 rshift})dnl
+dnl
+dnl
+dnl 3 >>
+dnl x 3 rshift
+dnl ( u -- u )
+dnl shifts u right 3 places
+define({_3RSHIFT},{
+    ld    A, L          ; 1:4       3 rshift   ( u -- u>>3 )
+    srl   H             ; 2:8       3 rshift
+    rra                 ; 1:4       3 rshift
+    srl   H             ; 2:8       3 rshift
+    rra                 ; 1:4       3 rshift
+    srl   H             ; 2:8       3 rshift
+    rra                 ; 1:4       3 rshift
+    ld    L, A          ; 1:4       3 rshift})dnl
+dnl
+dnl
+dnl 4 >>
+dnl x 4 rshift
+dnl ( u -- u )
+dnl shifts u right 4 places
+define({_4RSHIFT},{
+    ld    A, L          ; 1:4       4 rshift   ( u -- u>>4 )
+    srl   H             ; 2:8       4 rshift
+    rra                 ; 1:4       4 rshift
+    srl   H             ; 2:8       4 rshift
+    rra                 ; 1:4       4 rshift
+    srl   H             ; 2:8       4 rshift
+    rra                 ; 1:4       4 rshift
+    srl   H             ; 2:8       4 rshift
+    rra                 ; 1:4       4 rshift
+    ld    L, A          ; 1:4       4 rshift})dnl
+dnl
+dnl
+dnl
+dnl 5 >>
+dnl u 5 rshift
+dnl ( u -- u )
+dnl shifts u right 5 places
+define({_5RSHIFT},{
+    xor   A             ; 1:4       5 rshift   ( u -- u>>5 )
+    add  HL, HL         ; 1:11      5 rshift
+    adc   A, A          ; 1:4       5 rshift
+    add  HL, HL         ; 1:11      5 rshift
+    adc   A, A          ; 1:4       5 rshift
+    add  HL, HL         ; 1:11      5 rshift
+    adc   A, A          ; 1:4       5 rshift
+    ld    L, H          ; 1:4       5 rshift
+    ld    H, A          ; 1:4       5 rshift})dnl
+dnl
+dnl
+dnl
+dnl 6 >>
+dnl u 6 rshift
+dnl ( u -- u )
+dnl shifts u right 6 places
+define({_6RSHIFT},{
+    xor   A             ; 1:4       6 rshift   ( u -- u>>6 )
+    add  HL, HL         ; 1:11      6 rshift
+    adc   A, A          ; 1:4       6 rshift
+    add  HL, HL         ; 1:11      6 rshift
+    adc   A, A          ; 1:4       6 rshift
+    ld    L, H          ; 1:4       6 rshift
+    ld    H, A          ; 1:4       6 rshift})dnl
+dnl
+dnl
+dnl
+dnl 7 >>
+dnl u 7 rshift
+dnl ( u -- u )
+dnl shifts u right 7 places
+define({_7RSHIFT},{
+    xor   A             ; 1:4       7 rshift   ( u -- u>>7 )
+    add  HL, HL         ; 1:11      7 rshift
+    adc   A, A          ; 1:4       7 rshift
+    ld    L, H          ; 1:4       7 rshift
+    ld    H, A          ; 1:4       7 rshift})dnl
+dnl
+dnl
+dnl 8 >>
+dnl u 8 rshift
+dnl ( u -- u )
+dnl shifts u right 8 places
+define({_8RSHIFT},{
+    ld    L, H          ; 1:4       8 rshift   ( u -- u>>8 )
+    ld    H, 0x00       ; 2:7       8 rshift})dnl
+dnl
+dnl
+dnl 9 >>
+dnl u 9 rshift
+dnl ( u -- u )
+dnl shifts u right 9 places
+define({_9RSHIFT},{
+    srl   H             ; 2:8       9 rshift   ( u -- u>>9 )
+    ld    L, H          ; 1:4       9 rshift
+    ld    H, 0x00       ; 2:7       9 rshift})dnl
+dnl
+dnl
+dnl 10 >>
+dnl u 10 rshift
+dnl ( u -- u )
+dnl shifts u right 10 places
+define({_10RSHIFT},{
+    srl   H             ; 2:8       10 rshift   ( u -- u>>10 )
+    srl   H             ; 2:8       10 rshift
+    ld    L, H          ; 1:4       10 rshift
+    ld    H, 0x00       ; 2:7       10 rshift})dnl
+dnl
+dnl
+dnl 11 >>
+dnl u 11 rshift
+dnl ( u -- u )
+dnl shifts u right 11 places
+define({_11RSHIFT},{
+    ld    A, H          ; 1:4       11 rshift   ( u -- u>>11 )
+    and  0xF8           ; 2:7       11 rshift
+    rrca                ; 1:4       11 rshift
+    rrca                ; 1:4       11 rshift
+    rrca                ; 1:4       11 rshift
+    ld    L, A          ; 1:4       11 rshift
+    ld    H, 0x00       ; 2:7       11 rshift})dnl
+dnl
+dnl
+dnl 12 >>
+dnl u 12 rshift
+dnl ( u -- u )
+dnl shifts u right 12 places
+define({_12RSHIFT},{
+    ld    A, H          ; 1:4       12 rshift   ( u -- u>>12 )
+    and  0xF0           ; 2:7       12 rshift
+    rrca                ; 1:4       12 rshift
+    rrca                ; 1:4       12 rshift
+    rrca                ; 1:4       12 rshift
+    rrca                ; 1:4       12 rshift
+    ld    L, A          ; 1:4       12 rshift
+    ld    H, 0x00       ; 2:7       12 rshift})dnl
+dnl
+dnl
+dnl 13 >>
+dnl u 13 rshift
+dnl ( u -- u )
+dnl shifts u right 13 places
+define({_13RSHIFT},{
+    ld    A, H          ; 1:4       13 rshift   ( u -- u>>13 )
+    and  0xE0           ; 2:7       13 rshift
+    rlca                ; 1:4       13 rshift
+    rlca                ; 1:4       13 rshift
+    rlca                ; 1:4       13 rshift
+    ld    L, A          ; 1:4       13 rshift
+    ld    H, 0x00       ; 2:7       13 rshift})dnl
+dnl
+dnl
+dnl 14 >>
+dnl u 14 rshift
+dnl ( u -- u )
+dnl shifts u right 14 places
+define({_14RSHIFT},{
+    ld    A, H          ; 1:4       14 rshift   ( u -- u>>14 )
+    and  0xC0           ; 2:7       14 rshift
+    rlca                ; 1:4       14 rshift
+    rlca                ; 1:4       14 rshift
+    ld    L, A          ; 1:4       14 rshift
+    ld    H, 0x00       ; 2:7       14 rshift})dnl
+dnl
+dnl
+dnl 15 >>
+dnl u 15 rshift
+dnl ( u -- u )
+dnl shifts u right 15 places
+define({_15RSHIFT},{
+    xor   A             ; 1:4       15 rshift   ( u -- u>>15 )
+    rl    H             ; 2:8       15 rshift
+    ld    H, A          ; 1:4       15 rshift
+    rra                 ; 1:4       15 rshift
+    ld    L, A          ; 1:4       15 rshift})dnl
+dnl
+dnl
+dnl 16 >>
+dnl u 16 rshift
+dnl ( u -- u )
+dnl shifts u right 16 places
+define({_16RSHIFT},{
+    ld   HL, 0x0000     ; 3:10      16 rshift   ( u -- u>>16 )})dnl
 dnl
 dnl
 dnl
