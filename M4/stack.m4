@@ -228,6 +228,17 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
 dnl
 dnl
+dnl over 3
+dnl ( b a -- b a b 3 )
+define({OVER_PUSH},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    push DE             ; 1:11      over $1
+    push HL             ; 1:11      over $1
+    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      over $1 ( b a -- b a b $1 )})dnl
+dnl
+dnl
 dnl ( d c b a -- d c b a d c )
 dnl Copy cell pair "d c" to the top of the stack.
 define({_2OVER},{

@@ -601,6 +601,7 @@ do
     sed 's#^\([^;{]*\s\|^\)OVER\s\+ADD\(\s\|$\)#\1OVER_ADD\2#gi' |
     sed 's#^\([^;{]*\s\|^\)OVER\s\+SUB\(\s\|$\)#\1OVER_SUB\2#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OVER\(\s\|$\)#\1PUSH_OVER(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)OVER\s\+\([+-]*[0-9]\+\)\(\s\|$\)#\1OVER_PUSH(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)SWAP\s\+DROP\(\s\|$\)#\1NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+FOR\(\s\|$\)#\1PUSH_FOR(\2)\3#gi' |
 

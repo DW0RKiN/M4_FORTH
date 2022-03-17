@@ -172,6 +172,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>         `123`          |<sub>      PUSH(`123`)    |<sub>                  |<sub>            ( -- `123` )          |
 |<sub>         `2` `1`        |<sub> PUSH(`2`) PUSH(`1`) |<sub>  PUSH2(`2`,`1`)  |<sub>            ( -- `2` `1` )        |
 |<sub>       addr `7` @       |<sub>     PUSH((addr))    |<sub>                  |<sub>    *addr = 7 --> ( -- `7`)       |
+|<sub>        `6` OVER        |<sub>    PUSH(`6`) OVER   |<sub>  PUSH_OVER(`6`)  |<sub>          ( a -- a `6` a )        |
+|<sub>        OVER `5`        |<sub>    OVER PUSH(`5`)   |<sub>  OVER_PUSH(`5`)  |<sub>        ( b a -- b a b `5` )      |
 |<sub>                        |<sub>                     |<sub>  PUSH2((A),`2`)  |<sub>    *A = 4 --> ( -- `4` `2` )     |
 |<sub>       drop `5`         |<sub>                     |<sub>  DROP_PUSH(`5`)  |<sub>         ( x1 -- `5`)             |
 |<sub>        dup `4`         |<sub>                     |<sub>   DUP_PUSH(`4`)  |<sub>         ( x1 -- x1 x1 `4`)       |
