@@ -1394,3 +1394,78 @@ define({_16RSHIFT},{
 dnl
 dnl
 dnl
+dnl ( u -- u )
+dnl shifs u right $1 places
+define(PUSH_RSHIFT,{ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing address parameter!},
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}    .error {$0}($@): Pointer as parameter is not supported!},
+__{}__{}eval($1),{},{
+__{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore cannot create the code!},
+__{}__{}{dnl
+__{}__{}__{}ifelse(eval($1),{0},{
+__{}__{}__{}                        ;           $1 rshift},
+__{}__{}__{}eval($1),{1},{_1RSHIFT},
+__{}__{}__{}eval($1),{2},{_2RSHIFT},
+__{}__{}__{}eval($1),{3},{_3RSHIFT},
+__{}__{}__{}eval($1),{4},{_4RSHIFT},
+__{}__{}__{}eval($1),{5},{_5RSHIFT},
+__{}__{}__{}eval($1),{6},{_6RSHIFT},
+__{}__{}__{}eval($1),{7},{_7RSHIFT},
+__{}__{}__{}eval($1),{8},{_8RSHIFT},
+__{}__{}__{}eval($1),{9},{_9RSHIFT},
+__{}__{}__{}eval($1),{10},{_10RSHIFT},
+__{}__{}__{}eval($1),{11},{_11RSHIFT},
+__{}__{}__{}eval($1),{12},{_12RSHIFT},
+__{}__{}__{}eval($1),{13},{_13RSHIFT},
+__{}__{}__{}eval($1),{14},{_14RSHIFT},
+__{}__{}__{}eval($1),{15},{_15RSHIFT},
+__{}__{}__{}eval($1),{16},{_16RSHIFT},
+__{}__{}__{}eval(($1)>15),{1},{
+__{}__{}__{}                        ;           $1 rshift --> 16 rshift{}_16RSHIFT},
+__{}__{}__{}{
+__{}__{}__{}    .error {$0}($@): negative parameters found in macro! Use {PUSH_LSHIFT}(eval(-($1))).})})},
+__{}__{}{
+__{}__{}    .error {$0}($@): $# parameters found in macro!}){}dnl
+}){}dnl
+dnl
+dnl
+dnl ( u -- u )
+dnl shifs u left $1 places
+define(PUSH_LSHIFT,{ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing address parameter!},
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}    .error {$0}($@): Pointer as parameter is not supported!},
+__{}__{}eval($1),{},{
+__{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore cannot create the code!},
+__{}__{}{dnl
+__{}__{}__{}ifelse(eval($1),{0},{
+__{}__{}__{}                        ;           $1 lshift},
+__{}__{}__{}eval($1),{1},{_1LSHIFT},
+__{}__{}__{}eval($1),{2},{_2LSHIFT},
+__{}__{}__{}eval($1),{3},{_3LSHIFT},
+__{}__{}__{}eval($1),{4},{_4LSHIFT},
+__{}__{}__{}eval($1),{5},{_5LSHIFT},
+__{}__{}__{}eval($1),{6},{_6LSHIFT},
+__{}__{}__{}eval($1),{7},{_7LSHIFT},
+__{}__{}__{}eval($1),{8},{_8LSHIFT},
+__{}__{}__{}eval($1),{9},{_9LSHIFT},
+__{}__{}__{}eval($1),{10},{_10LSHIFT},
+__{}__{}__{}eval($1),{11},{_11LSHIFT},
+__{}__{}__{}eval($1),{12},{_12LSHIFT},
+__{}__{}__{}eval($1),{13},{_13LSHIFT},
+__{}__{}__{}eval($1),{14},{_14LSHIFT},
+__{}__{}__{}eval($1),{15},{_15LSHIFT},
+__{}__{}__{}eval($1),{16},{_16LSHIFT},
+__{}__{}__{}eval(($1)>16),{1},{
+__{}__{}__{}                        ;           $1 lshift --> 16 lshift{}_16LSHIFT},
+__{}__{}__{}{
+__{}__{}__{}    .error {$0}($@): negative parameters found in macro! Use {PUSH_RSHIFT}(eval(-($1))).})})},
+__{}__{}{
+__{}__{}    .error {$0}($@): $# parameters found in macro!}){}dnl
+}){}dnl
+dnl
+dnl
+dnl

@@ -415,10 +415,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>     u<=      |<sub>         ULE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      u>      |<sub>         UGT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>     u>=      |<sub>         UGE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>  x1 u >> x   |<sub>        RSHIFT       |<sub>                     |<sub>   ( x1 u -- x1>>u )   |<sub>unsigned
-|<sub>  x1 u << x   |<sub>        LSHIFT       |<sub>                     |<sub>   ( x1 u -- x1<<u )   |<sub>unsigned
-|<sub>  x1 1 >> x   |<sub>                     |<sub>      _1RSHIFT       |<sub>     ( x1 -- x1>>1 )   |<sub>unsigned
-|<sub>  x1 1 << x   |<sub>                     |<sub>      _1LSHIFT       |<sub>     ( x1 -- x1<<1 )   |<sub>unsigned
+|<sub>    rshift    |<sub>       RSHIFT        |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 >> u
+|<sub>   u rshift   |<sub>   PUSH(u) RSHIFT    |<sub>   PUSH_RSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> u
+|<sub>   1 rshift   |<sub>                     |<sub>      _1RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 1
+|<sub>     ...      |<sub>                     |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
+|<sub>  16 rshift   |<sub>                     |<sub>     _16RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 16
+|<sub>    lshift    |<sub>       LSHIFT        |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 << u
+|<sub>   u lshift   |<sub>   PUSH(u) LSHIFT    |<sub>   PUSH_LSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << u
+|<sub>   1 lshift   |<sub>                     |<sub>      _1LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 1
+|<sub>     ...      |<sub>                     |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
+|<sub>  16 lshift   |<sub>                     |<sub>     _16LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 16
 
 #### 32bit
 
