@@ -666,18 +666,21 @@ _ZX48FDUP:
 dnl
 dnl
 ifdef({USE_ZX48FOVER},{
-_ZX48FOVER:
+if 1
+_ZX48FOVER:            ;[22:144]    _zx48fover
     push DE             ; 1:11      _zx48fover
     push HL             ; 1:11      _zx48fover
-if 1
     ld   HL,(0x5C65)    ; 3:16      _zx48fover   {load STKEND}
     ex   DE, HL         ; 1:4       _zx48fover
     ld   HL,0xFFF6      ; 3:10      _zx48fover   -10
     add  HL, DE         ; 1:11      _zx48fover
-    ld   BC,0x0005      ; 3:10      _zx48fover   5
+    ld   BC,0x0005      ; 3:10      _zx48fover   5 bytes
     ldir                ; 2:21/16   _zx48fover
     ld  (0x5C65),DE     ; 4:20      _zx48fover   {save STKEND+5}
 else
+_ZX48FOVER:            ;[20:130]    _zx48fover
+    push DE             ; 1:11      _zx48fover
+    push HL             ; 1:11      _zx48fover
     ld   HL,(0x5C65)    ; 3:16      _zx48fover   {load STKEND}
     ex   DE, HL         ; 1:4       _zx48fover
     ld   HL,0xFFF6      ; 3:10      _zx48fover   -10
@@ -688,6 +691,31 @@ endif
     pop  HL             ; 1:10      _zx48fover
     pop  DE             ; 1:10      _zx48fover
     ret                 ; 1:10      _zx48fover
+}){}dnl
+dnl
+dnl
+ifdef({USE_ZX48FPICK_C},{define({USE_ZX48FPICK_BC},{})
+; Input: C
+_ZX48FPICK_C:
+    ld    B, 0xFF       ; 2:7       _zx48fpick_c
+    ; fall to _zx48fpick_bc
+}){}dnl
+dnl
+ifdef({USE_ZX48FPICK_BC},{
+; Input: BC
+_ZX48FPICK_BC:         ;[20:152]    _zx48fpick_bc
+    push DE             ; 1:11      _zx48fpick_bc
+    push HL             ; 1:11      _zx48fpick_bc
+    ld   HL,(0x5C65)    ; 3:16      _zx48fpick_bc   {load STKEND}
+    ld    D, H          ; 1:11      _zx48fpick_bc
+    ld    E, L          ; 1:11      _zx48fpick_bc
+    add  HL, BC         ; 1:11      _zx48fpick_bc
+    ld   BC,0x0005      ; 3:10      _zx48fpick_bc   5 bytes
+    ldir                ; 2:21/16   _zx48fpick_bc
+    ld  (0x5C65),DE     ; 4:20      _zx48fpick_bc   {save STKEND+5}
+    pop  HL             ; 1:10      _zx48fpick_bc
+    pop  DE             ; 1:10      _zx48fpick_bc
+    ret                 ; 1:10      _zx48fpick_bc
 }){}dnl
 dnl
 dnl

@@ -75,6 +75,25 @@ define({ZX48FOVER},{define({USE_ZX48FOVER},{})
     call _ZX48FOVER     ; 3:17      fover zx48fover   ( F: r1 r2 -- r1 r2 r1 )}){}dnl
 dnl
 dnl
+define({PUSH_ZX48FPICK},{dnl
+__{}ifelse($1,{},{
+__{}    .error {$0}($@): Missing parameter!},
+__{}{dnl
+__{}__{}ifelse($#,{1},{dnl
+__{}__{}__{}ifelse(eval(($1)<1),{1},{
+__{}__{}__{}__{}    .error {$0}($@): Bad parameter!},
+__{}__{}__{}eval(($1)>51),{1},{define({USE_ZX48FPICK_BC},{})
+__{}__{}__{}__{}    ld   BC, 0x{}format({%04X},eval((-5*($1)) & 0xFFFF))     ; 3:10      $1 fpick  push_zx48fpick($1)   ( F: -- r )
+__{}__{}__{}__{}    call _ZX48FPICK_BC  ; 3:17      $1 fpick  push_zx48fpick($1)},
+__{}__{}__{}{define({USE_ZX48FPICK_C},{})
+__{}__{}__{}__{}    ld    C, 0x{}format({%02X},eval((-5*($1)) & 0xFF))       ; 2:7       $1 fpick  push_zx48fpick($1)   ( F: -- r )
+__{}__{}__{}__{}    call _ZX48FPICK_C   ; 3:17      $1 fpick  push_zx48fpick($1)})},
+__{}__{}{
+__{}__{}    .error zx48fvariable($@): To many parameters!}){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
 dnl FROT
 define({ZX48FROT},{define({USE_ZX48FROT},{})
     call _ZX48FROT      ; 3:17      frot zx48frot   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
