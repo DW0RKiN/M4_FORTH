@@ -386,8 +386,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>            |<sub>    ZX48FHEXDOT     |<sub>  ( -- ) ( F: r -- r )     |<sub> ." 12,45,78,9A,CD "         |
 |<sub> `3` fpick  |<sub> PUSH_ZX48FPICK(`3`)|<sub>  ( -- ) ( F: -- r )       |<sub> only fpick is not supported!|
 
-`1` fpick --> fdup
-`2` fpick --> fover
+    `1` fpick --> fdup
+    `2` fpick --> fover
 
 ### Logic
 
