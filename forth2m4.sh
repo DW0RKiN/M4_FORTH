@@ -77,6 +77,111 @@ do
     [ $error -eq 0 ] && break
 done
 
+if [ "$2" == "-ZXROM" ]
+then
+
+while :
+do
+# set -x
+    cat $TMPFILE |
+
+
+    sed 's#^\([^;{]*\s\|^\)d>f\(\s\|$\)#\1ZX48D_TO_F\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f>d\(\s\|$\)#\1ZX48F_TO_D\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)s>f\(\s\|$\)#\1ZX48S_TO_F\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f>s\(\s\|$\)#\1ZX48F_TO_S\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+ZX48S_TO_F\(\s\|$\)#\1PUSH_ZX48S_TO_F(\2)\3#gi' |
+
+
+    sed 's#^\([^;{]*\s\|^\)\([+]*[0-9]\+\)\s\+fpick\(\s\|$\)#\1PUSH_ZX48FPICK(\2)\3#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)fabs\(\s\|$\)#\1ZX48FABS\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f+\(\s\|$\)#\1ZX48FADD\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)facos\(\s\|$\)#\1ZX48FACOS\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)fasin\(\s\|$\)#\1ZX48FASIN\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)fatan\(\s\|$\)#\1ZX48FATAN\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)fcos\(\s\|$\)#\1ZX48FCOS\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)fsin\(\s\|$\)#\1ZX48FSIN\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)ftan\(\s\|$\)#\1ZX48FTAN\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)f/\(\s\|$\)#\1ZX48FDIV\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)f\.\(\s\|$\)#\1ZX48FDOT\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)fdrop\(\s\|$\)#\1ZX48FDROP\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)fdup\(\s\|$\)#\1ZX48FDUP\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)fexp\(\s\|$\)#\1ZX48FEXP\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)f\@\(\s\|$\)#\1ZX48FFETCH\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)fint\(\s\|$\)#\1ZX48FINT\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)fln\(\s\|$\)#\1ZX48FLN\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)f\*\(\s\|$\)#\1ZX48FMUL\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)f\*\*\(\s\|$\)#\1ZX48FMULMUL\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)fnegate\(\s\|$\)#\1ZX48FNEGATE\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)fover\(\s\|$\)#\1ZX48FOVER\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)frot\(\s\|$\)#\1ZX48FROT\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)fsqrt\(\s\|$\)#\1ZX48FSQRT\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)f!\(\s\|$\)#\1ZX48FSTORE\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)f-\(\s\|$\)#\1ZX48FSUB\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)fswap\(\s\|$\)#\1ZX48FSWAP\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)fvariable\s\+\([^ 	]\+\)\(\s\|$\)#\1FVARIABLE(\2)\3#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)f<=\(\s\|$\)#\1ZX48FGE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f>=\(\s\|$\)#\1ZX48FLE\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)f<>\(\s\|$\)#\1ZX48FNE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f=\(\s\|$\)#\1ZX48FEQ\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)f<\(\s\|$\)#\1ZX48FLT\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f>\(\s\|$\)#\1ZX48FGT\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)f0<\(\s\|$\)#\1ZX48F0LT\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)f0=\(\s\|$\)#\1ZX48F0EQ\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)float+\(\s\|$\)#\1ZX48FLOATADD\2#gi' |
+# +123.567e+45
+# -1.567E-5
+# 565e4
+# -.123e+560
+# \+ ...1 or more
+# \? ...0 or 1
+# *  ...0 or more
+    sed 's#^\([^;{]*\s\|^\)\([+-]\?[0-9]*\.\?[0-9]\+[Ee][+-]\?[0-9]\+\)\(\s\|$\)#\1PUSH_ZX48F(\2)\3#gi' |
+# +123.567e
+# -1.567E
+# 565e
+# -.123e        
+    sed 's#^\([^;{]*\s\|^\)\([+-]\?[0-9]*\.\?[0-9]\+[Ee]\)\(\s\|$\)#\1PUSH_ZX48F(\2+0)\3#gi' > $TMPFILE2
+# set +x
+    diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
+    error=$?
+    cat $TMPFILE2 > $TMPFILE
+    [ $error -gt 1 ] && exit
+    [ $error -eq 0 ] && break
+done
+
+
+fi
+
+
 
 while :
 do
