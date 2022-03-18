@@ -128,6 +128,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/forth2m4.sh
 
 This is a compiler from Forth to M4 FORTH written in bash. Manual adjustments are still needed. For example, move functions below STOP. Unknown words will try to be called as function names. It will try to find and combine optimized words, but only if they are on the same line and are separated only by white characters.
 
+Because the M4 Forth supports 2 number formats with a floating point, one for a size of 16 bits, where the numbers are stored on a data stack and the other way is a 5 byte number with a floating point, which lies on a separate stack and is used by the ZX Spectrum ROM, so I added an optional parameter -ZXROM to the script, which activates the conversion to the other way.
+
 ## Implemented words FORTH
 
 ### Stack manipulation
