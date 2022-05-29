@@ -117,6 +117,16 @@ m4 Hello.m4
     size101 EQU $ - string101
 
 
+[FIRST.M4](./M4/FIRST.M4) will try to find the path to its directory and attach other files. It can detect if it lies in the same directory as the source file. If it lies in the subdirectory ./M4, or if it lies in the neighboring directory ../M4.
+If you have the source file elsewhere it will help to define the path manually using the M4PATH macro.
+
+    define(M4PATH,`/home/dw0rkin/Programovani/Forth/M4/')dnl 
+    include(M4PATH`FIRST.M4')dnl
+    ORG 0x8000
+    INIT(60000)
+    PRINT("Hello World!")
+    STOP
+
 ## Limitations of the M4 markup language
 
 Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. `2dup` to `_2DUP`. `3` to `PUSH(3)`.
