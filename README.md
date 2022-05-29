@@ -462,9 +462,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 | :-------------: | :------------------: | :----------------------: | :---------------------------- | :---------------- |
 |<sub>     .      |<sub>       DOT       |<sub>for 0..32767 use UDOT|<sub>       ( x1 -- )          |<sub> -32768..32767|
 |<sub>     u.     |<sub>      UDOT       |<sub>                     |<sub>       ( u1 -- )          |<sub> 0..65535     |
-|<sub>     .      |<sub>     DOTZXROM    |<sub>                     |<sub>       ( x1 -- )          |<sub>              |
+|<sub>     .      |<sub>     DOTZXROM    |<sub>                     |<sub>       ( x1 -- )          |<sub> use ZX ROM   |
 |<sub>     u.     |<sub>    UDOTZXROM    |<sub>                     |<sub>       ( u1 -- )          |<sub> use ZX ROM   |
-|<sub>   dup .    |<sub>                 |<sub>       DUP_DOT       |<sub>       ( x1 -- x1 )       |<sub> use ZX ROM   |
+|<sub>   dup .    |<sub>                 |<sub>       DUP_DOT       |<sub>       ( x1 -- x1 )       |<sub>              |
 |<sub>   dup u.   |<sub>                 |<sub>       DUP_UDOT      |<sub>       ( u1 -- u1 )       |<sub>              |
 |<sub>     D.     |<sub>      DDOT       |<sub>    use UDDOT(+num)  |<sub>        ( d -- )          |<sub>( d -- hi lo )|
 |<sub>     uD.    |<sub>      UDDOT      |<sub>                     |<sub>       ( ud -- )          |<sub>( d -- hi lo )|
