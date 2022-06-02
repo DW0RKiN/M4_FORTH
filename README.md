@@ -413,7 +413,6 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>    `3` or    |<sub>                     |<sub>    PUSH_OR(`3`)     |<sub>       ( x -- x \| `3`)|<sub>                     |
 |<sub>     xor      |<sub>         XOR         |<sub>                     |<sub>      ( x1 -- -x1 )    |<sub>                     |
 |<sub>    `3` xor   |<sub>                     |<sub>    PUSH_XOR(`3`)    |<sub>       ( x -- x ^ `3`) |<sub>                     |
-|<sub>     abs      |<sub>         ABS         |<sub>                     |<sub>       ( n -- u )      |<sub>
 |<sub>    invert    |<sub>        INVERT       |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
 |<sub>    within    |<sub>        WITHIN       |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
 |<sub>`4` `7` within|<sub>PUSH2(`4`,`7`) WITHIN|<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
