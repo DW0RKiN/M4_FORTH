@@ -348,7 +348,7 @@ do
     sed 's#^\([^;{]*\s\|^\)[Dd]o\(\s\|$\)#\1DO\2#g' |
     sed 's#^\([^;{]*\s\|^\)?[Dd]o\(\s\|$\)#\1QUESTIONDO\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ll]oop\(\s\|$\)#\1LOOP\2#g' |
-    sed 's#^\([^;{]*\s\|^\)+[Ll]oop\(\s\|$\)#\1ADDLOOP\2#g' |
+    sed 's#^\([^;{]*\s\|^\)+loop\(\s\|$\)#\1ADDLOOP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Ee]nd[Cc]ase\(\s\|$\)#\1DROP ENDCASE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Cc]ase\(\s\|$\)#\1CASE\2#g' |
@@ -737,19 +737,29 @@ do
     [ $error -eq 0 ] && break
 done
 
+
+    cat $TMPFILE
+    
 # xloop
 while :
 do
     cat $TMPFILE > $TMPFILE3
 
 # opravit ?do!!! questiondo !!!
-
-    # xloop
+# nefunguje pokud lezi "do" a "loop" na jinych radcich, a nejde to snadno spravit pres tr '\n' '\f' protoze pak zase nefunguje ^ a to se mlati s komentari a retezci...
+    #           5  1 do ...         loop    -->      xdo(5,1) ...         xloop
+    # SWAP_PUSH(5) 1 do ...         loop    --> swap xdo(5,1) ...         xloop
+    #           5  1 do ... push_addloop(2) -->      xdo(5,1) ... push_addxloop(2)
+    # SWAP_PUSH(5) 1 do ... push_addloop(2) --> swap xdo(5,1) ... push_addxloop(2)
     while :
     do
         cat $TMPFILE |
-        sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)LOOP\(\s\|$\)#\1XD_____00_____(\2,\3)\4XL_____00__________00_____P\5#g' |
-        sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)PUSH_ADDLOOP(#\1XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(#g' > $TMPFILE2
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)LOOP\(\s\|$\)#\1XD_____00_____(\2,\3)\4XL_____00__________00_____P\5#g' |
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)SWAP_PUSH(\([-+]*[0-9]\+\))\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)LOOP\(\s\|$\)#\1SWAP XD_____00_____(\2,\3)\4XL_____00__________00_____P\5#g' |
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)PUSH_ADDLOOP(#\1XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(#g' |
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)SWAP_PUSH(\([-+]*[0-9]\+\))\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)PUSH_ADDLOOP(#\1SWAP XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(#g' |
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)\([-+]*[0-9]\+\)\s\+ADDLOOP\(\s\|\n\|$\)#\1XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(\5)\6#g' |
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)SWAP_PUSH(\([-+]*[0-9]\+\))\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\)\([-+]*[0-9]\+\)\s\+ADDLOOP\(\s\|\n\|$\)#\1XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(\5)\6#g' > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
         error=$?
         cat $TMPFILE2 > $TMPFILE
@@ -766,6 +776,10 @@ do
     [ $error -gt 1 ] && exit
     [ $error -eq 0 ] && break
 done
+
+
+cat $TMPFILE | tr '\b' '\n' > $TMPFILE3
+cat $TMPFILE3 > $TMPFILE
 
 
 # xloop
@@ -893,6 +907,31 @@ else
     DIR=" adds_the_path_to_the_file "
 fi
 
-printf "include(\`${DIR}FIRST.M4')dnl \nORG 0x8000\nINIT(60000)\n...\nSTOP\n"
+printf "include(\`${DIR}FIRST.M4')dnl \n"
+
+ORG=""
+ORG="$ORG`cat $TMPFILE | grep '^ORG.*' | sed 's#^ORG.*#Yes#g'`"
+
+if [ -z "${ORG}" ]
+then
+    printf "ORG 0x8000\n"
+fi
+
+INIT=""
+INIT="$INIT`cat $TMPFILE | grep '^INIT.*' | sed 's#^INIT.*#Yes#g'`"
+
+if [ -z "${INIT}" ]
+then
+    printf "INIT(60000)\n"
+fi
+
+STOP=""
+STOP="$STOP`cat $TMPFILE | grep '^STOP.*' | sed 's#^STOP.*#Yes#g'`"
+
+if [ -z "${STOP}" ]
+then
+    printf "...\nSTOP\n"
+fi
+
 cat $TMPFILE
 printf "\ninclude({${DIR}LAST.M4})dnl\n"
