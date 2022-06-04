@@ -10,6 +10,9 @@ TMPFILE=$(mktemp)
 TMPFILE2=$(mktemp)
 TMPFILE3=$(mktemp)
 
+# : new_word ... ;   -->   : new_word ... SEMICOLON
+# / line end comment -->   ;# line end comment
+
 cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#gi'| sed 's#\(\s\|^\)\\\(\s\|$\)#\1;\#\2#gi' > $TMPFILE
 
 # ( comment1) ... ( comment2)( comment3) ... -->
@@ -21,6 +24,9 @@ cat $1 |  sed 's#\(\s\|^\);\(\s\|$\)#\1SEMICOLON\2#gi'| sed 's#\(\s\|^\)\\\(\s\|
 
 while :
 do
+
+   # [^\s] not work! --> [^[:space:]] or [^ 	]
+
     cat $TMPFILE |
     sed -e 's#^\([^;{(]*\s\)(\(\s\+[^)]*\))[[:space:]]*\([^[:space:]]\+.*\)$#\1\n;\#(\2)\n\3#g' |
     sed -e 's#^\([^;{(]*\s\)(\(\s\+[^)]*\))[[:space:]]*$#\1\n;\#(\2)#g' |
@@ -45,22 +51,44 @@ done
 while :
 do
     cat $TMPFILE |
-    # s" Hello Word" whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)[Ss]"\s\([^"]*\)"\(\s\+\|$\)$#\1STRING({"\2"})#' |
-    # s" Hello Word" whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)[Ss]"\s\([^"]*\)"\s\+\([^ 	].*\)$#\1STRING({"\2"})\n\3#' |
-    # ." Hello Word" whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
-    # ." Hello Word" whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\s\+\([^ 	].*\)$#\1PRINT_Z({"\2"})\n\3#' |
-    # .( Hello Word) whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
-    # .( Hel(lo) Word) whitespace EOL
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
-    # .( Hello Word) whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\s\+\([^ 	].*\)$#\1PRINT_Z({"\2"})\n\3#' |
-    # .( Hel(lo) Word) whitespace Other Words
-    sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\s\(\s*[^ 	].*\)$#\1PRINT_Z({"\2"}) \3#' > $TMPFILE2
+    # "... .( Hello Word)..."
+    sed -e   's#^\([^;{(]*\s\)\.(\s\([^)]*\))[[:space:]]*\([^[:space:]]\+.*\)$#\1\nPRINT_Z({"\2"})\n\3#g' |
+    # "... .( Hello Word)   "
+    sed -e   's#^\([^;{(]*\s\)\.(\s\([^)]*\))[[:space:]]*$#\1\nPRINT_Z({"\2"})#g' |    
+    # ".( Hello Word)..."
+    sed -e                's#^\.(\s\([^)]*\))[[:space:]]*\([^[:space:]]\+.*\)$#PRINT_Z({"\1"})\n\2#g' |
+    # ".( Hello Word)   "
+    sed -e                's#^\.(\s\([^)]*\))[[:space:]]*$#PRINT_Z({"\1"})#g' |
+
+    sed -e   's#^\([^;{(]*\s\)\."\s\([^"]*\)"[[:space:]]*\([^[:space:]]\+.*\)$#\1\nPRINT_Z({"\2"})\n\3#g' |
+    sed -e   's#^\([^;{(]*\s\)\."\s\([^"]*\)"[[:space:]]*$#\1\nPRINT_Z({"\2"})#g' |    
+    sed -e                's#^\."\s\([^"]*\)"[[:space:]]*\([^[:space:]]\+.*\)$#PRINT_Z({"\1"})\n\2#g' |
+    sed -e                's#^\."\s\([^"]*\)"[[:space:]]*$#PRINT_Z({"\1"})#g' |
+
+    sed -e 's#^\([^;{(]*\s\)[Ss]"\s\([^"]*\)"[[:space:]]*\([^[:space:]]\+.*\)$#\1\nSTRING_Z({"\2"})\n\3#g' |
+    sed -e 's#^\([^;{(]*\s\)[Ss]"\s\([^"]*\)"[[:space:]]*$#\1\nSTRING_Z({"\2"})#g' |    
+    sed -e              's#^[Ss]"\s\([^"]*\)"[[:space:]]*\([^[:space:]]\+.*\)$#STRING_Z({"\1"})\n\2#g' |
+    sed -e              's#^[Ss]"\s\([^"]*\)"[[:space:]]*$#STRING_Z({"\1"})#g' > $TMPFILE2
+
+#     cat $TMPFILE |
+#     # s" Hello Word" whitespace EOL
+#     sed -e 's#^\([^;{]*\s\|^\)[Ss]"\s\([^"]*\)"\(\s\+\|$\)$#\1STRING({"\2"})#' |
+#     # s" Hello Word" whitespace Other Words
+#     sed -e 's#^\([^;{]*\s\|^\)[Ss]"\s\([^"]*\)"\s\+\([^ 	].*\)$#\1STRING({"\2"})\n\3#' |
+#     # ." Hello Word" whitespace EOL
+#     sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
+#     # ." Hello Word" whitespace Other Words
+#     sed -e 's#^\([^;{]*\s\|^\)\."\s\([^"]*\)"\s\+\([^ 	].*\)$#\1PRINT_Z({"\2"})\n\3#' |
+#     # .( Hello Word) whitespace EOL
+#     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
+#     # .( Hel(lo) Word) whitespace EOL
+#     # This is probably not legal, according to https://www.tutorialspoint.com/execute_forth_online.php
+#     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\(\s\+\|$\)$#\1PRINT_Z({"\2"})#' |
+#     # .( Hello Word) whitespace Other Words
+#     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*\))\s\+\([^ 	].*\)$#\1PRINT_Z({"\2"})\n\3#' |
+#     # .( Hel(lo) Word) whitespace Other Words
+#     # This is probably not legal, according to https://www.tutorialspoint.com/execute_forth_online.php
+#     sed -e 's#^\([^;{]*\s\|^\)\.(\s\([^()]*([^()]*)[^()]*\))\s\(\s*[^ 	].*\)$#\1PRINT_Z({"\2"}) \3#' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
     error=$?
     cat $TMPFILE2 > $TMPFILE
