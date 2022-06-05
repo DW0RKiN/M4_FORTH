@@ -120,7 +120,7 @@ m4 Hello.m4
 [FIRST.M4](./M4/FIRST.M4) will try to find the path to its directory and attach other files. It can detect if it lies in the same directory as the source file. If it lies in the subdirectory ./M4, or if it lies in the neighboring directory ../M4.
 If you have the source file elsewhere it will help to define the path manually using the M4PATH macro.
 
-    define(M4PATH,`/home/dw0rkin/Programovani/Forth/M4/')dnl 
+    define(M4PATH,`/home/dw0rkin/Programovani/Forth/M4/')dnl
     include(M4PATH`FIRST.M4')dnl
     ORG 0x8000
     INIT(60000)
@@ -618,8 +618,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>    u<= if    |<sub>              |<sub>       ULE_IF       |<sub>    (x1 x2 -- )      |                  |
 |<sub>    u>  if    |<sub>              |<sub>       UGT_IF       |<sub>    (x1 x2 -- )      |                  |
 |<sub>    u>= if    |<sub>              |<sub>       UGE_IF       |<sub>    (x1 x2 -- )      |                  |
-|<sub>  `3` =  if   |<sub>              |<sub>    PUSH_EQ_IF      |<sub>       (x1 -- )      |                  |
-|<sub>  `3` <> if   |<sub>              |<sub>    PUSH_NE_IF      |<sub>       (x1 -- )      |                  |
+|<sub>  `3` =  if   |<sub>              |<sub>  PUSH_EQ_IF(`3`)   |<sub>       (x1 -- )      |                  |
+|<sub>  `3` <> if   |<sub>              |<sub>  PUSH_NE_IF(`3`)   |<sub>       (x1 -- )      |                  |
 |<sub>dup `5`  =  if|<sub>              |<sub>DUP_PUSH_EQ_IF(`5`) |<sub>         ( -- )      |                  |
 |<sub>dup `5`  <> if|<sub>              |<sub>DUP_PUSH_NE_IF(`5`) |<sub>         ( -- )      |                  |
 |<sub>dup `5`  <  if|<sub>              |<sub>DUP_PUSH_LT_IF(`5`) |<sub>         ( -- )      |                  |
@@ -632,8 +632,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>dup `5` u<= if|<sub>              |<sub>DUP_PUSH_ULE_IF(`5`)|<sub>         ( -- )      |                  |
 |<sub>dup `5` u>  if|<sub>              |<sub>DUP_PUSH_UGT_IF(`5`)|<sub>         ( -- )      |                  |
 |<sub>dup `5` u>= if|<sub>              |<sub>DUP_PUSH_UGE_IF(`5`)|<sub>         ( -- )      |                  |
-|<sub>`3` over <> if|<sub>              |<sub> DUP_PUSH_NE_IF(`3`)|<sub>       (x1 -- )      |                  |
-|<sub>     dtto     |<sub>              |<sub>        dtto        |<sub>                     |                  |
+|<sub>`3` over = if |<sub>              |<sub> DUP_PUSH_EQ_IF(`3`)|<sub>         ( -- )      |                  |
+|<sub>`3` over <> if|<sub>              |<sub> DUP_PUSH_NE_IF(`3`)|<sub>         ( -- )      |                  |
+|<sub>     dtto     |<sub>              |<sub>        dtto        |<sub>         ( -- )      |                  |
 |<sub>  2dup  =  if |<sub>              |<sub>    _2DUP_EQ_IF     |<sub>         ( -- )      |                  |
 |<sub>  2dup  <> if |<sub>              |<sub>    _2DUP_NE_IF     |<sub>         ( -- )      |                  |
 |<sub>  2dup  <  if |<sub>              |<sub>    _2DUP_LT_IF     |<sub>         ( -- )      |                  |
