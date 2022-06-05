@@ -868,7 +868,7 @@ dnl
 dnl
 dnl ( d -- d+n )
 dnl d = d + n
-define({PUSH_DADD},{ifelse($1,{},{
+define({PUSHDOT_DADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1122,7 +1122,7 @@ dnl
 dnl
 dnl ( d -- d-n )
 dnl d = d - n
-define({PUSH_DSUB},{ifelse($1,{},{
+define({PUSHDOT_DSUB},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1285,7 +1285,7 @@ dnl
 dnl
 dnl ( 5 3 -- 5 )
 dnl ( -5 -3 -- -3 )
-define({PUSH_DMAX},{ifelse($1,{},{
+define({PUSHDOT_DMAX},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1343,7 +1343,7 @@ dnl
 dnl
 dnl ( 5 3 -- 3 )
 dnl ( -5 -3 -- -5 )
-define({PUSH_DMIN},{ifelse($1,{},{
+define({PUSHDOT_DMIN},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})

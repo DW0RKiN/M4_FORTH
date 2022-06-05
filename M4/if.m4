@@ -1438,20 +1438,30 @@ dnl
 dnl
 dnl D= if
 define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       = if
-    sbc  HL, DE         ; 2:15      = if
-    pop  HL             ; 1:10      = if
-    pop  DE             ; 1:10      = if
-    jp   nz, else{}IF_COUNT    ; 3:10      = if})dnl
+                       ;[14:91]     D= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+    pop  BC             ; 1:10      D= if   lo_2
+    or    A             ; 1:4       D= if
+    sbc  HL, BC         ; 2:15      D= if
+    pop  HL             ; 1:10      D= if   hi_2
+    jr   nz, $+4        ; 2:7/12    D= if
+    sbc  HL, DE         ; 2:15      D= if
+    pop  HL             ; 1:10      D= if
+    pop  DE             ; 1:10      D= if
+    jp   nz, else{}IF_COUNT    ; 3:10      D= if})dnl
 dnl
 dnl
 dnl D<> if
 define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       <> if
-    sbc  HL, DE         ; 2:15      <> if
-    pop  HL             ; 1:10      <> if
-    pop  DE             ; 1:10      <> if
-    jp    z, else{}IF_COUNT    ; 3:10      <> if})dnl
+                       ;[14:91]     D<> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+    pop  BC             ; 1:10      D<> if   lo_2
+    or    A             ; 1:4       D<> if
+    sbc  HL, BC         ; 2:15      D<> if
+    pop  HL             ; 1:10      D<> if   hi_2
+    jr   nz, $+4        ; 2:7/12    D<> if
+    sbc  HL, DE         ; 2:15      D<> if
+    pop  HL             ; 1:10      D<> if
+    pop  DE             ; 1:10      D<> if
+    jp    z, else{}IF_COUNT    ; 3:10      D<> if})dnl
 dnl
 dnl
 dnl D< if

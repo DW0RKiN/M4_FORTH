@@ -169,7 +169,7 @@ PRINT_DUP_ZXROM_U16_ONLY:;          print_dup_zxrom_u16_only   ( u -- )
     ld    C, L          ; 1:4       print_dup_zxrom_u16_only
     push DE             ; 1:11      print_dup_zxrom_u16_only
     push HL             ; 1:11      print_dup_zxrom_u16_only   save ret
-        
+
     call 0x2D2B         ; 3:17      print_dup_zxrom_u16_only   {call ZX ROM stack BC routine}
     call 0x2DE3         ; 3:17      print_dup_zxrom_u16_only   {call ZX ROM print a floating-point number routine}
 
