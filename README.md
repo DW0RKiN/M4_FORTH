@@ -270,30 +270,31 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 ( d32 -- hi16 lo16 )
 
-|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization  |<sub>  Data stack               |
-| :-------------: | :---------------: | :-----------------: | :----------------------------- |
-|<sub>     D+     |<sub>     DADD     |<sub>                |<sub>   ( d2 d1 -- d )          |
-|<sub>  `3.` D+   |<sub>              |<sub> PUSH_DADD(`3`) |<sub>       ( d -- d+`3` )      |
-|<sub>  2dup D+   |<sub>              |<sub>   _2DUP_DADD   |<sub>       ( d -- d+d )        |
-|<sub>  2over D+  |<sub>              |<sub>  _2OVER_DADD   |<sub>   ( d2 d1 -- d2 d1+d2  )  |
-|<sub>     D-     |<sub>     DSUB     |<sub>                |<sub>   ( d2 d1 -- d )          |
-|<sub>   `3.` D-  |<sub>              |<sub> PUSH_DSUB(`3`) |<sub>       ( d -- d-`3` )      |
-|<sub>  2over D-  |<sub>              |<sub>  _2OVER_DSUB   |<sub>   ( d2 d1 -- d2 d1-d2  )  |
-|<sub>    Dabs    |<sub>     DABS     |<sub>                |<sub>       ( d -- ud )         |
-|<sub>    Dmax    |<sub>     DMAX     |<sub>                |<sub>   ( d2 d1 -- dmax )       |
-|<sub> `3.` Dmax  |<sub>PUSH_DMAX(`3`)|<sub>                |<sub>       ( d -- dmax )       |
-|<sub>    Dmin    |<sub>     DMIN     |<sub>                |<sub>   ( d2 d1 -- dmin )       |
-|<sub> `3.` Dmin  |<sub>PUSH_DMIN(`3`)|<sub>                |<sub>       ( d -- dmin )       |
-|<sub>   Dnegate  |<sub>    DNEGATE   |<sub>                |<sub>       ( d -- -d )         |
-|<sub>    D1+     |<sub>    D1ADD     |<sub>                |<sub>       ( d -- d++ )        |
-|<sub>    D1-     |<sub>    D1SUB     |<sub>                |<sub>       ( d -- d-- )        |
-|<sub>    D2+     |<sub>    D2ADD     |<sub>                |<sub>       ( d -- d+2 )        |
-|<sub>    D2-     |<sub>    D2SUB     |<sub>                |<sub>       ( d -- d-2 )        |
-|<sub>    D2*     |<sub>    D2MUL     |<sub>                |<sub>       ( d -- d*2 )        |
-|<sub>    D2/     |<sub>    D2DIV     |<sub>                |<sub>       ( d -- d/2 )        |
-|<sub>   D256*    |<sub>   D256MUL    |<sub>                |<sub>       ( d -- d*256 )      |
-|<sub>   D256/    |<sub>   D256DIV    |<sub>                |<sub>       ( d -- d/256 )      |
-|<sub>    d>s     |<sub>    D_TO_S    |<sub>                |<sub>    ( 0 x1 -- x1 )         |
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
+| :-------------: | :---------------: | :------------------: | :----------------------------- |
+|<sub>     D+     |<sub>     DADD     |<sub>                 |<sub>   ( d2 d1 -- d )          |
+|<sub>  `3.` D+   |<sub>              |<sub>PUSHDOT_DADD(`3`)|<sub>       ( d -- d+`3` )      |
+|<sub>  2dup D+   |<sub>              |<sub>   _2DUP_DADD    |<sub>       ( d -- d+d )        |
+|<sub>  2over D+  |<sub>              |<sub>   _2OVER_DADD   |<sub>   ( d2 d1 -- d2 d1+d2  )  |
+|<sub>     D-     |<sub>     DSUB     |<sub>                 |<sub>   ( d2 d1 -- d )          |
+|<sub>   `3.` D-  |<sub>              |<sub>PUSHDOT_DSUB(`3`)|<sub>       ( d -- d-`3` )      |
+|<sub>  2swap D-  |<sub>              |<sub>   _2SWAP_DSUB   |<sub>       ( d -- d+d )        |
+|<sub>  2over D-  |<sub>              |<sub>   _2OVER_DSUB   |<sub>   ( d2 d1 -- d2 d1-d2  )  |
+|<sub>    Dabs    |<sub>     DABS     |<sub>                 |<sub>       ( d -- ud )         |
+|<sub>    Dmax    |<sub>     DMAX     |<sub>                 |<sub>   ( d2 d1 -- dmax )       |
+|<sub> `3.` Dmax  |<sub>              |<sub>PUSHDOT_DMAX(`3`)|<sub>       ( d -- dmax )       |
+|<sub>    Dmin    |<sub>     DMIN     |<sub>                 |<sub>   ( d2 d1 -- dmin )       |
+|<sub> `3.` Dmin  |<sub>              |<sub>PUSHDOT_DMIN(`3`)|<sub>       ( d -- dmin )       |
+|<sub>   Dnegate  |<sub>    DNEGATE   |<sub>                 |<sub>       ( d -- -d )         |
+|<sub>    D1+     |<sub>    D1ADD     |<sub>                 |<sub>       ( d -- d++ )        |
+|<sub>    D1-     |<sub>    D1SUB     |<sub>                 |<sub>       ( d -- d-- )        |
+|<sub>    D2+     |<sub>    D2ADD     |<sub>                 |<sub>       ( d -- d+2 )        |
+|<sub>    D2-     |<sub>    D2SUB     |<sub>                 |<sub>       ( d -- d-2 )        |
+|<sub>    D2*     |<sub>    D2MUL     |<sub>                 |<sub>       ( d -- d*2 )        |
+|<sub>    D2/     |<sub>    D2DIV     |<sub>                 |<sub>       ( d -- d/2 )        |
+|<sub>   D256*    |<sub>   D256MUL    |<sub>                 |<sub>       ( d -- d*256 )      |
+|<sub>   D256/    |<sub>   D256DIV    |<sub>                 |<sub>       ( d -- d/256 )      |
+|<sub>    d>s     |<sub>    D_TO_S    |<sub>                 |<sub>    ( 0 x1 -- x1 )         |
 
 ### Floating-point
 
