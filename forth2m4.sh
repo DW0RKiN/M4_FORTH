@@ -374,6 +374,7 @@ do
     sed 's#^\([^;{]*\s\|^\)-_2ROT\(\s\|$\)#\1N2ROT\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)-[Rr]ot\(\s\|$\)#\1NROT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)-2[Rr]ot\(\s\|$\)#\1N2ROT\2#g' |
     sed 's#^\([^;{]*\s\|^\)NROT\s\+NIP\(\s\|$\)#\1NROT_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)rot\s\+rot\(\s\|$\)#\1NROT\2#gi' |
     sed 's#^\([^;{]*\s\|^\)NROT\s\+_2SWAP\(\s\|$\)#\1NROT_2SWAP\2#gi' |
@@ -460,11 +461,11 @@ do
     sed 's#^\([^;{]*\s\|^\)[Bb]ye\(\s\|$\)#\1BYE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ff]ill\(\s\|$\)#\1FILL\2#g' |
 
-    sed 's#^\([^;{]*\s\|^\)NROT\sSWAP\s_2SWAP\sSWAP\(\s\|$\)#\1STACK_BCAD\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)OVER\s_2OVER\sDROP\(\s\|$\)#\1STACK_CBABC\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)_2OVER\sNIP\s_2OVER\sNIP\sSWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)OVER\s3\sPICK\(\s\|$\)#\1STACK_CBABC\2#gi' |
-    sed 's#^\([^;{]*\s\|^\)2\sPICK\s2\sPICK\sSWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\s\+_2SWAP\sSWAP\(\s\|$\)#\1STACK_BCAD\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)OVER\s\+_2OVER\s\+DROP\(\s\|$\)#\1STACK_CBABC\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2OVER\s\+NIP\s\+_2OVER\s\+NIP\s\+SWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)OVER\s\+3\s\+PICK\(\s\|$\)#\1STACK_CBABC\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2\s\+PICK\s\+2\s\+PICK\s\+SWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)T{\(\s\|$\)#\1TEST_START\2#gi' |
     sed 's#^\([^;{]*\s\|^\)->\(\s\|$\)#\1TEST_EQ\2#gi' |
@@ -530,6 +531,10 @@ done
 while :
 do
     cat $TMPFILE |
+    
+# stupidni co nikdo neudela    
+    sed 's#^\([^;{]*\s\|^\)_2OVER\s\+_2OVER\(\s\|$\)#\1_4DUP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)SWAP\s\+SWAP\(\s\|$\)#\1\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OF\(\s\|$\)#\1PUSH_OF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+OF\(\s\|$\)#\1PUSH_OF(\2)\3#gi' |
@@ -841,7 +846,7 @@ done
 # numbers
 while :
 do
-    cat $TMPFILE | sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH2(\2,\3)\4#gi' > $TMPFILE2
+    cat $TMPFILE | sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[^;{]*\s\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\(\s\|$\|\n\)#\1PUSH2(\2,\3)\4#g' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
     error=$?
     cat $TMPFILE2 > $TMPFILE
@@ -855,6 +860,7 @@ do
     cat $TMPFILE |
     sed 's#\(\s\+\)EQU\s\+\([-+]*[0-9]\+\)\(\s\|$\)#\1___EQU___\2___\3#g' |
     sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\(\s\|$\)#\1PUSH(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([-+]*[0-9]\+\)\.\(\s\|$\)#\1PUSHDOT(\2)\3#gi' |
     sed 's#\(\s\+\)___EQU___\([-+]*[0-9]\+\)___\(\s\|$\)#\1EQU\ \2\3#g' > $TMPFILE2
     diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
     error=$?

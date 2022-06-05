@@ -149,7 +149,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>        Original        |<sub>    M4 FORTH         |<sub> Optimization     |<sub>  Data stack                      |
 | :-------------------------: | :----------------------: | :-------------------: | :------------------------------------ |
 |<sub>          swap          |<sub>         SWAP        |<sub>                  |<sub>      ( x2 x1 -- x1 x2 )          |
-|<sub>        swap over       |<sub>       SWAP OVER     |<sub>     SWAP_OVER    |<sub>      ( x2 x1 -- x1 x2 x1 )       |
+|<sub>        swap over       |<sub>       SWAP OVER     |<sub>    SWAP_OVER     |<sub>      ( x2 x1 -- x1 x2 x1 )       |
+|<sub>        swap over       |<sub>       SWAP OVER     |<sub>      TUCK        |<sub>      ( x2 x1 -- x1 x2 x1 )       |
 |<sub>        swap `7`        |<sub>    SWAP PUSH(`7`)   |<sub>  SWAP_PUSH(`7`)  |<sub>      ( x2 x1 -- x1 x2 `7` )      |
 |<sub>        `6` swap        |<sub>    PUSH(`6`) SWAP   |<sub>  PUSH_SWAP(`6`)  |<sub>         ( x1 -- `6` x1 )         |
 |<sub>      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |<sub>DUP_PUSH_SWAP(`5`)|<sub>         ( x1 -- x1 `5` x1 )      |
@@ -808,9 +809,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 |<sub>    name    |<sub>    RCALL(name)    |<sub>                   |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
 |<sub>    name    |<sub>                   |<sub>    SCALL(name)    |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
 |<sub>    name    |<sub>                   |<sub>     CALL(name)    |<sub>           ( -- ret )       |<sub> ( -- ) non-recursive  |
-|<sub>     :      |<sub>RCOLON(name,coment)|<sub>                   |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- ret )            |
-|<sub>     :      |<sub>                   |<sub>SCOLON(name,coment)|<sub> ( ret x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
-|<sub>     :      |<sub>                   |<sub> COLON(name,coment)|<sub>       ( ret -- )           |<sub> ( -- ) non-recursive  |
+|<sub>   : name   |<sub>RCOLON(name,coment)|<sub>                   |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- ret )            |
+|<sub>   : name   |<sub>                   |<sub>SCOLON(name,coment)|<sub> ( ret x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
+|<sub>   : name   |<sub>                   |<sub> COLON(name,coment)|<sub>       ( ret -- )           |<sub> ( -- ) non-recursive  |
 |<sub>     ;      |<sub>     RSEMICOLON    |<sub>                   |<sub>           ( -- )           |<sub> ( ret -- )            |
 |<sub>     ;      |<sub>                   |<sub>     SSEMICOLON    |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- )                |
 |<sub>     ;      |<sub>                   |<sub>     SEMICOLON     |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
@@ -1071,7 +1072,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>   `512`  move   |<sub>    PUSH(`512`) MOVE    |<sub>        PUSH_MOVE(`512`)     |<sub>  ( from to -- )          |<sub>copy 1kb             |
 |<sub>     move>       |<sub>         MOVEGT         |<sub>                             |<sub>( from to u -- )          |<sub>copy 2*u bytes, adr--|
 |<sub>       +!        |<sub>        ADDSTORE        |<sub>                             |<sub>   ( x addr -- )          |<sub>(addr) += 16bit x    |
-|<sub> `7` `0x8000` +! |<sub>          ...           |<sub> PUSH2_ADDSTORE(`7` `0x8000`)|<sub>          ( -- )          |<sub>(`0x8000`)+= `0x0007`|
+|<sub> `7` `0x8000` +! |<sub>          ...           |<sub> PUSH2_ADDSTORE(`7`,`0x8000`)|<sub>          ( -- )          |<sub>(`0x8000`)+= `0x0007`|
 
 #### 32bit
 
