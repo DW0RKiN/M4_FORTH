@@ -151,6 +151,34 @@ BIN32BCD_D:
 dnl
 dnl
 dnl
+ifdef({USE_DUP_ZXROM_U16},{
+;==============================================================================
+; Input: HL
+; Output: Print space and unsigned decimal number in HL
+; Pollutes: AF, BC
+PRINT_DUP_ZXROM_U16:    ;           print_dup_zxrom_u16
+    ld    A, ' '        ; 2:7       print_dup_zxrom_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      print_dup_zxrom_u16   putchar with {ZX 48K ROM} in, this will print char in A
+    ; fall to print_dup_zxrom_u16_only
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print unsigned decimal number in HL
+; Pollutes: AF, BC
+PRINT_DUP_ZXROM_U16_ONLY:;          print_dup_zxrom_u16_only   ( u -- )
+    ld    B, H          ; 1:4       print_dup_zxrom_u16_only
+    ld    C, L          ; 1:4       print_dup_zxrom_u16_only
+    push DE             ; 1:11      print_dup_zxrom_u16_only
+    push HL             ; 1:11      print_dup_zxrom_u16_only   save ret
+        
+    call 0x2D2B         ; 3:17      print_dup_zxrom_u16_only   {call ZX ROM stack BC routine}
+    call 0x2DE3         ; 3:17      print_dup_zxrom_u16_only   {call ZX ROM print a floating-point number routine}
+
+    pop  HL             ; 1:10      print_dup_zxrom_u16_only
+    pop  DE             ; 1:10      print_dup_zxrom_u16_only
+    ret                 ; 1:10      print_dup_zxrom_u16_only}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_ZXROM_U16},{
 ;==============================================================================
 ; Input: HL

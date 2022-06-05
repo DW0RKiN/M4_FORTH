@@ -270,8 +270,27 @@ dnl
 dnl
 dnl ( f e d c b a -- d c b a f e )
 dnl vyjme treti 32-bit polozku a ulozi ji na vrchol
-define({_2ROT},{
-                        ;[15:127]   2rot ( f e d c b a -- d c b a f e )
+define({_2ROT},{ifelse(TYP_2ROT,{fast},{
+                       ;[17:120]    2rot ( f e d c b a -- d c b a f e ) # fast version can be changed with "define({TYP_2ROT},{default})"
+    pop  BC             ; 1:10      2rot f e d   . b a  BC = c
+    exx                 ; 1:4       2rot f e d   . - R
+    pop  BC             ; 1:10      2rot f e     . - R  BC'= d
+    ld    A, H          ; 1:4       2rot
+    ex   AF, AF'        ; 1:4       2rot
+    ld    A, L          ; 1:4       2rot
+    pop  HL             ; 1:10      2rot f       . - e
+    pop  DE             ; 1:10      2rot         . f e
+    push BC             ; 1:11      2rot d       . f e
+    exx                 ; 1:4       2rot d       . b a
+    push BC             ; 1:11      2rot d c     . b a
+    push DE             ; 1:11      2rot d c b   . b a
+    push HL             ; 1:11      2rot d c b a . b a
+    ld    L, A          ; 1:4       2rot
+    ex   AF, AF'        ; 1:4       2rot
+    ld    H, A          ; 1:4       2rot d c b a . b R
+    exx                 ; 1:4       2rot d c b a . f e},
+{
+                       ;[15:127]    2rot ( f e d c b a -- d c b a f e ) # default version can be changed with "define({TYP_2ROT},{fast})"
     exx                 ; 1:4       2rot f e d c .
     pop  DE             ; 1:10      2rot f e d   .      DE' = c
     pop  BC             ; 1:10      2rot f e     .      BC' = d
@@ -286,7 +305,7 @@ define({_2ROT},{
     push DE             ; 1:11      2rot d c b   . b e
     ld    D, B          ; 1:4       2rot
     ld    E, C          ; 1:4       2rot d c b   . f e
-    push AF             ; 1:11      2rot d c b a . f e})dnl
+    push AF             ; 1:11      2rot d c b a . f e})}){}dnl
 dnl
 dnl
 dnl -rot
@@ -354,22 +373,21 @@ dnl
 dnl
 dnl ( f e d c b a -- b a f e d c )
 define({N2ROT},{
-                        ;[15:140]   n2rot ( f e d c b a -- b a f e d c )
-    ex  (SP),HL         ; 1:19      n2rot f e d a   . b c
-    push DE             ; 1:11      n2rot f e d a b . b c
-    exx                 ; 1:4       n2rot f e d a b .
-    pop  DE             ; 1:10      n2rot f e d a   .       DE'= b
-    pop  BC             ; 1:10      n2rot f e d     .       BC'= a
-    exx                 ; 1:4       n2rot f e d     . b c
-    pop  DE             ; 1:10      n2rot f e       . d c
-    pop  AF             ; 1:10      n2rot f         . d c   AF = e
-    pop  BC             ; 1:10      n2rot           . d c   BC = f
-    exx                 ; 1:4       n2rot
-    push DE             ; 1:11      n2rot b         .
-    push BC             ; 1:11      n2rot b a       .
-    exx                 ; 1:4       n2rot b a       . d c
-    push BC             ; 1:11      n2rot b a f     . d c
-    push AF             ; 1:11      n2rot b a f e   . d c})dnl
+                        ;[14:123]   n2rot ( f e d c b a -- b a f e d c )
+    pop  BC             ; 1:10      n2rot f e d     . b a   BC = c
+    pop  AF             ; 1:10      n2rot f e       . b a   AF = d
+    ex   AF, AF'        ; 1:4       n2rot f e       . b a
+    pop  AF             ; 1:10      n2rot f         . b a   AF'= e
+    ex   DE, HL         ; 1:4       n2rot f         . a b
+    ex  (SP),HL         ; 1:19      n2rot b         . a f
+    push DE             ; 1:11      n2rot b a       . a f
+    push HL             ; 1:11      n2rot b a f     . a f
+    push AF             ; 1:11      n2rot b a f e   . a f
+    ex   AF, AF'        ; 1:4       n2rot b a f e   . a f
+    push AF             ; 1:11      n2rot b a f e d . a f
+    pop  DE             ; 1:10      n2rot b a f e   . d f
+    ld    H, B          ; 1:4       n2rot b a f e   . d -
+    ld    L, C          ; 1:4       n2rot b a f e   . d c})dnl
 dnl
 dnl
 dnl ( -- a )

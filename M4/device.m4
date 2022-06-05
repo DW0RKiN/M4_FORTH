@@ -22,6 +22,13 @@ define({UDOTZXROM},{ifdef({USE_ZXROM_U16},,define({USE_ZXROM_U16},{}))
     call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )})dnl
 dnl
 dnl
+dnl dup u.
+dnl ( u -- u )
+dnl dup and print 16 bit unsign number
+define({DUP_UDOTZXROM},{ifdef({USE_DUP_ZXROM_U16},,define({USE_DUP_ZXROM_U16},{}))
+    call PRINT_DUP_ZXROM_U16; 3:17      dup u.zxrom   ( u -- u )})dnl
+dnl
+dnl
 dnl .
 dnl ( x -- )
 dnl print 16 bit number
