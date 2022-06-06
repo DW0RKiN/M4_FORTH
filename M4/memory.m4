@@ -376,46 +376,46 @@ dnl tuck C!
 dnl ( char addr -- addr )
 dnl store 8-bit number at addr with save addr
 define({TUCK_CSTORE},{
-                        ;[2:17]     tuck c! tuck_cstore   ( char addr -- addr )
-    ld  (HL),E          ; 1:7       tuck c! tuck_cstore
-    pop  DE             ; 1:10      tuck c! tuck_cstore})dnl
+                        ;[2:17]     tuck c!  tuck_cstore   ( char addr -- addr )
+    ld  (HL),E          ; 1:7       tuck c!  tuck_cstore
+    pop  DE             ; 1:10      tuck c!  tuck_cstore})dnl
 dnl
 dnl
 dnl tuck c! 1+
 dnl ( char addr -- addr+1 )
 dnl store 8-bit number at addr and increment
 define({TUCK_CSTORE_1ADD},{
-                        ;[3:23]     tuck c! +1 tuck_cstore_1add   ( x addr -- addr+2 )
-    ld  (HL),E          ; 1:7       tuck c! +1 tuck_cstore_1add
-    inc  HL             ; 1:6       tuck c! +1 tuck_cstore_1add
-    pop  DE             ; 1:10      tuck c! +1 tuck_cstore_1add})dnl
+                        ;[3:23]     tuck c! +1  tuck_cstore_1add   ( x addr -- addr+2 )
+    ld  (HL),E          ; 1:7       tuck c! +1  tuck_cstore_1add
+    inc  HL             ; 1:6       tuck c! +1  tuck_cstore_1add
+    pop  DE             ; 1:10      tuck c! +1  tuck_cstore_1add})dnl
 dnl
 dnl
 dnl over swap c!
 dnl ( char addr -- char )
 dnl store 8-bit number at addr with save char
 define({OVER_SWAP_CSTORE},{
-                        ;[3:21]     over swap c! over_swap_cstore   ( char addr -- char )
-    ld  (HL),E          ; 1:7       over swap c! over_swap_cstore
-    ex   DE, HL         ; 1:4       over swap c! over_swap_cstore
-    pop  DE             ; 1:10      over swap c! over_swap_cstore})dnl
+                        ;[3:21]     over swap c!  over_swap_cstore   ( char addr -- char )
+    ld  (HL),E          ; 1:7       over swap c!  over_swap_cstore
+    ex   DE, HL         ; 1:4       over swap c!  over_swap_cstore
+    pop  DE             ; 1:10      over swap c!  over_swap_cstore})dnl
 dnl
 dnl
 dnl 2dup c!
 dnl ( char addr -- char addr )
 dnl store 8-bit number at addr with save all
 define({_2DUP_CSTORE},{
-                        ;[1:7]      2dup c! _2dup_cstore   ( char addr -- char addr )
-    ld  (HL),E          ; 1:7       2dup c! _2dup_cstore})dnl
+                        ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
+    ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore})dnl
 dnl
 dnl
 dnl 2dup c! 1+
 dnl ( char addr -- char addr+1 )
 dnl store 8-bit number at addr with save all and increment
 define({_2DUP_CSTORE_1ADD},{
-                        ;[2:13]     2dup c! 1+ _2dup_cstore_1add   ( char addr -- char addr+1 )
-    ld  (HL),E          ; 1:7       2dup c! 1+ _2dup_cstore_1add
-    inc  HL             ; 1:6       2dup c! 1+ _2dup_cstore_1add})dnl
+                        ;[2:13]     2dup c! 1+  _2dup_cstore_1add   ( char addr -- char addr+1 )
+    ld  (HL),E          ; 1:7       2dup c! 1+  _2dup_cstore_1add
+    inc  HL             ; 1:6       2dup c! 1+  _2dup_cstore_1add})dnl
 dnl
 dnl
 dnl number over c!
@@ -425,8 +425,8 @@ define({PUSH_OVER_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-                        ;[2:10]     $1 over c! push_over_cstore($1)   ( addr -- addr )
-    ld  (HL),low format({%-7s},$1); 2:10      $1 over c! push_over_cstore($1)})dnl
+                        ;[2:10]     $1 over c!  push_over_cstore($1)   ( addr -- addr )
+    ld  (HL),low format({%-7s},$1); 2:10      $1 over c!  push_over_cstore($1)})dnl
 dnl
 dnl
 dnl over number swap c!
@@ -437,24 +437,38 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(eval($1),0,{dnl
-__{}                        ;[2:11]     over $1 swap c! over_push_swap_cstore($1)   ( addr x -- addr x )
-__{}    xor   A             ; 1:4       over $1 swap c! over_push_swap_cstore($1)},
+__{}                        ;[2:11]     over $1 swap c!  over_push_swap_cstore($1)   ( addr x -- addr x )
+__{}    xor   A             ; 1:4       over $1 swap c!  over_push_swap_cstore($1)},
 __{}{dnl
-__{}                        ;[3:14]     over $1 swap c! over_push_swap_cstore($1)   ( addr x -- addr x )
-__{}    ld    A,low format({%-8s},$1); 2:7       over $1 swap c! over_push_swap_cstore($1)})
-    ld  (DE),A          ; 1:7       over $1 swap c! over_push_swap_cstore($1)})dnl
+__{}                        ;[3:14]     over $1 swap c!  over_push_swap_cstore($1)   ( addr x -- addr x )
+__{}    ld    A,low format({%-8s},$1); 2:7       over $1 swap c!  over_push_swap_cstore($1)})
+    ld  (DE),A          ; 1:7       over $1 swap c!  over_push_swap_cstore($1)})dnl
 dnl
 dnl
 dnl dup number swap c! 1+
+dnl push over c! 1+
 dnl ( addr -- addr+1 )
 dnl store 8-bit number at addr with save addr and increment
 define({DUP_PUSH_SWAP_CSTORE_1ADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-                        ;[3:16]     dup $1 swap c! 1+ dup_push_swap_cstore_1add($1)   ( addr -- addr+1 )
-    ld  (HL),low format({%-7s},$1); 2:10      dup $1 swap c! 1+ dup_push_swap_cstore_1add($1)
-    inc  HL             ; 1:6       dup $1 swap c! 1+ dup_push_swap_cstore_1add($1)})dnl
+                        ;[3:16]     dup $1 swap c! 1+  dup_push_swap_cstore_1add($1)   ( addr -- addr+1 )
+    ld  (HL),low format({%-7s},$1); 2:10      dup $1 swap c! 1+  dup_push_swap_cstore_1add($1)
+    inc  HL             ; 1:6       dup $1 swap c! 1+  dup_push_swap_cstore_1add($1)})dnl
+dnl
+dnl
+dnl dup number swap c! 1+
+dnl push over c! 1+
+dnl ( addr -- addr+1 )
+dnl store 8-bit number at addr with save addr and increment
+define({PUSH_OVER_CSTORE_1ADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+                        ;[3:16]     $1 over c! 1+  push_over_cstore_1add($1)   ( addr -- addr+1 )
+    ld  (HL),low format({%-7s},$1); 2:10      $1 over c! 1+  push_over_cstore_1add($1)
+    inc  HL             ; 1:6       $1 over c! 1+  push_over_cstore_1add($1)})dnl
 dnl
 dnl
 dnl
@@ -1090,6 +1104,7 @@ define({_2DUP_STORE_2ADD},{
     inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add})dnl
 dnl
 dnl
+dnl number over !
 dnl dup number swap !
 dnl ( addr -- addr )
 dnl store 16-bit number at addr
@@ -1104,6 +1119,22 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     dec  HL             ; 1:6       dup $1 swap ! dup_push_swap_store($1)})dnl
 dnl
 dnl
+dnl number over !
+dnl dup number swap !
+dnl ( addr -- addr )
+dnl store 16-bit number at addr
+define({PUSH_OVER_STORE},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+                        ;[6:32]     $1 over ! push_over_store($1)   ( addr -- addr )
+    ld  (HL),low format({%-7s},$1); 2:10      $1 over ! push_over_store($1)
+    inc  HL             ; 1:6       $1 over ! push_over_store($1)
+    ld  (HL),high format({%-6s},$1); 2:10      $1 over ! push_over_store($1)
+    dec  HL             ; 1:6       $1 over ! push_over_store($1)})dnl
+dnl
+dnl
+dnl number over ! 2+
 dnl dup number swap ! 2+
 dnl ( addr -- addr+2 )
 dnl store 16-bit number at addr
@@ -1116,6 +1147,21 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     inc  HL             ; 1:6       dup $1 swap ! 2+ dup_push_swap_store_2add($1)
     ld  (HL),high format({%-6s},$1); 2:10      dup $1 swap ! 2+ dup_push_swap_store_2add($1)
     inc  HL             ; 1:6       dup $1 swap ! 2+ dup_push_swap_store_2add($1)})dnl
+dnl
+dnl
+dnl number over ! 2+
+dnl dup number swap ! 2+
+dnl ( addr -- addr+2 )
+dnl store 16-bit number at addr
+define({PUSH_OVER_STORE_2ADD},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+                        ;[6:32]     $1 over ! 2+ push_over_store_2add($1)   ( addr -- addr+2 )
+    ld  (HL),low format({%-7s},$1); 2:10      $1 over ! 2+ push_over_store_2add($1)
+    inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)
+    ld  (HL),high format({%-6s},$1); 2:10      $1 over ! 2+ push_over_store_2add($1)
+    inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)})dnl
 dnl
 dnl
 dnl move
