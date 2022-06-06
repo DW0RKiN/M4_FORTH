@@ -1437,35 +1437,59 @@ dnl
 dnl
 dnl
 dnl D= if
-define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[15:88]     D= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(TYP_DOUBLE,{fast},{
+                       ;[15:88]     D= if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D= if   lo_2
-    ld    A, C          ; 1:4       D= if
+    ld    A, C          ; 1:4       D= if   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if false
     sub   L             ; 1:4       D= if
     ld    A, B          ; 1:4       D= if
     sbc   A, H          ; 1:4       D= if
     pop  HL             ; 1:10      D= if   hi_2
     jr   nz, $+4        ; 2:7/12    D= if
-    sbc  HL, DE         ; 2:15      D= if
+    sbc  HL, DE         ; 2:15      D= if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
     pop  HL             ; 1:10      D= if
     pop  DE             ; 1:10      D= if
-    jp   nz, else{}IF_COUNT    ; 3:10      D= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      D= if},
+{
+                       ;[14:91]     D= if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+    pop  BC             ; 1:10      D= if   lo_2
+    or    A             ; 1:4       D= if
+    sbc  HL, BC         ; 2:15      D= if   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if false
+    pop  HL             ; 1:10      D= if   hi_2
+    jr   nz, $+4        ; 2:7/12    D= if
+    sbc  HL, DE         ; 2:15      D= if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
+    pop  HL             ; 1:10      D= if
+    pop  DE             ; 1:10      D= if
+    jp   nz, else{}IF_COUNT    ; 3:10      D= if})})dnl
+dnl
 dnl
 dnl
 dnl D<> if
-define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[15:88]     D<> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(TYP_DOUBLE,{fast},{
+                       ;[15:88]     D<> if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<> if   lo_2
-    ld    A, C          ; 1:4       D<> if
+    ld    A, C          ; 1:4       D<> if   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if true
     sub   L             ; 1:4       D<> if
     ld    A, B          ; 1:4       D<> if
     sbc   A, H          ; 1:4       D<> if
     pop  HL             ; 1:10      D<> if   hi_2
     jr   nz, $+4        ; 2:7/12    D<> if
-    sbc  HL, DE         ; 2:15      D<> if
+    sbc  HL, DE         ; 2:15      D<> if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
     pop  HL             ; 1:10      D<> if
     pop  DE             ; 1:10      D<> if
-    jp    z, else{}IF_COUNT    ; 3:10      D<> if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      D<> if},
+{
+                       ;[14:91]     D<> if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+    pop  BC             ; 1:10      D<> if   lo_2
+    or    A             ; 1:4       D<> if
+    sbc  HL, BC         ; 2:15      D<> if   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if true
+    pop  HL             ; 1:10      D<> if   hi_2
+    jr   nz, $+4        ; 2:7/12    D<> if
+    sbc  HL, DE         ; 2:15      D<> if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
+    pop  HL             ; 1:10      D<> if
+    pop  DE             ; 1:10      D<> if
+    jp    z, else{}IF_COUNT    ; 3:10      D<> if})})dnl
+dnl
 dnl
 dnl
 dnl D< if
@@ -1489,7 +1513,8 @@ define({DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     jp   nc, else{}IF_COUNT    ; 3:10      D< if})dnl
 dnl
 dnl
-dnl UD< if
+dnl
+dnl uD< if
 define({UDLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
                        ;[13:81]     uD< if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      uD< if   lo_2
@@ -1502,6 +1527,7 @@ define({UDLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     pop  HL             ; 1:10      uD< if
     pop  DE             ; 1:10      uD< if
     jp   nc, else{}IF_COUNT    ; 3:10      UD< if})dnl
+dnl
 dnl
 dnl
 dnl D>= if
@@ -1525,6 +1551,7 @@ define({DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     jp    c, else{}IF_COUNT    ; 3:10      D>= if})dnl
 dnl
 dnl
+dnl
 dnl uD>= if
 define({UDGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
                        ;[13:81]     uD>= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
@@ -1540,9 +1567,28 @@ define({UDGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     jp    c, else{}IF_COUNT    ; 3:10      uD>= if})dnl
 dnl
 dnl
+dnl
 dnl D<= if
-define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[17:97]     D<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(TYP_DOUBLE,{fast},{
+                       ;[18:94]     D<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+    pop  BC             ; 1:10      D<= if   lo_2
+    ld    A, L          ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sub   C             ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ld    A, H          ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sbc   A, B          ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  BC             ; 1:10      D<= if   hi_2
+    ld    A, E          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, C          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    ld    A, D          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, B          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    rra                 ; 1:4       D<= if   carry --> sign
+    xor   B             ; 1:4       D<= if
+    xor   D             ; 1:4       D<= if
+    pop  HL             ; 1:10      D<= if
+    pop  DE             ; 1:10      D<= if
+    jp    c, else{}IF_COUNT    ; 3:10      D<= if},
+{
+                       ;[18:94]     D<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D<= if   lo_2
     or    A             ; 1:4       D<= if
     sbc  HL, BC         ; 2:15      D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -1556,12 +1602,13 @@ define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     xor   D             ; 1:4       D<= if
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
-    jp    c, else{}IF_COUNT    ; 3:10      D<= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      D<= if})})dnl
+dnl
 dnl
 dnl
 dnl uD<= if
-define({UDLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[15:82]     uD<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+define({UDLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(TYP_DOUBLE,{fast},{
+                       ;[15:82]     uD<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      uD<= if   lo_2
     ld    A, L          ; 1:4       uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -1574,12 +1621,42 @@ define({UDLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     sbc   A, B          ; 1:4       uD<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
     pop  HL             ; 1:10      uD<= if
     pop  DE             ; 1:10      uD<= if
-    jp    c, else{}IF_COUNT    ; 3:10      uD<= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      uD<= if},
+{
+                       ;[13:88]     uD<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+    pop  BC             ; 1:10      uD<= if   lo_2
+    or    A             ; 1:4       uD<= if
+    sbc  HL, BC         ; 2:15      uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  BC             ; 1:10      uD<= if   hi_2
+    ex   DE, HL         ; 1:4       uD<= if
+    sbc  HL, BC         ; 2:15      uD<= if   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  HL             ; 1:10      uD<= if
+    pop  DE             ; 1:10      uD<= if
+    jp    c, else{}IF_COUNT    ; 3:10      uD<= if})})dnl
+dnl
 dnl
 dnl
 dnl D> if
-define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[17:97]     D> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(TYP_DOUBLE,{fast},{
+                       ;[18:94]     D> if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+    pop  BC             ; 1:10      D> if   lo_2
+    ld    A, L          ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    pop  BC             ; 1:10      D> if   hi_2
+    ld    A, E          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, C          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    ld    A, D          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, B          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    rra                 ; 1:4       D> if   carry --> sign
+    xor   B             ; 1:4       D> if
+    xor   D             ; 1:4       D> if
+    pop  HL             ; 1:10      D> if
+    pop  DE             ; 1:10      D> if
+    jp   nc, else{}IF_COUNT    ; 3:10      D> if},
+{
+                       ;[17:97]     D> if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D> if   lo_2
     or    A             ; 1:4       D> if
     sbc  HL, BC         ; 2:15      D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -1593,12 +1670,13 @@ define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     xor   D             ; 1:4       D> if
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
-    jp   nc, else{}IF_COUNT    ; 3:10      D> if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      D> if})})dnl
+dnl
 dnl
 dnl
 dnl UD> if
-define({UDGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[15:82]     uD> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+define({UDGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(TYP_DOUBLE,{fast},{
+                       ;[15:82]     uD> if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      uD> if   lo_2
     ld    A, L          ; 1:4       uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -1611,6 +1689,17 @@ define({UDGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     sbc   A, B          ; 1:4       uD> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
     pop  HL             ; 1:10      uD> if
     pop  DE             ; 1:10      uD> if
-    jp   nc, else{}IF_COUNT    ; 3:10      UD> if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      UD> if},
+{
+                       ;[13:88]     uD> if   ( hi_2 lo_2 . hi_1 lo_1 -- )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+    pop  BC             ; 1:10      uD> if   lo_2
+    or    A             ; 1:4       uD> if
+    sbc  HL, BC         ; 2:15      uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    pop  BC             ; 1:10      uD> if   hi_2
+    ex   DE, HL         ; 1:4       uD> if
+    sbc  HL, BC         ; 2:15      uD> if   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> carry if true
+    pop  HL             ; 1:10      uD> if
+    pop  DE             ; 1:10      uD> if
+    jp   nc, else{}IF_COUNT    ; 3:10      UD> if})})dnl
 dnl
 dnl
