@@ -153,7 +153,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>        swap over       |<sub>       SWAP OVER     |<sub>      TUCK        |<sub>      ( x2 x1 -- x1 x2 x1 )       |
 |<sub>        swap `7`        |<sub>    SWAP PUSH(`7`)   |<sub>  SWAP_PUSH(`7`)  |<sub>      ( x2 x1 -- x1 x2 `7` )      |
 |<sub>        `6` swap        |<sub>    PUSH(`6`) SWAP   |<sub>  PUSH_SWAP(`6`)  |<sub>         ( x1 -- `6` x1 )         |
-|<sub>      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |<sub>DUP_PUSH_SWAP(`5`)|<sub>         ( x1 -- x1 `5` x1 )      |
+|<sub>      dup `5` swap      |<sub>  DUP PUSH(`5`) SWAP |<sub>  PUSH_OVER(`5`)  |<sub>         ( x1 -- x1 `5` x1 )      |
 |<sub>         2swap          |<sub>        _2SWAP       |<sub>                  |<sub> (x1 x2 x3 x4 -- x3 x4 x1 x2)     |
 |<sub>           dup          |<sub>          DUP        |<sub>                  |<sub>         ( x1 -- x1 x1 )          |
 |<sub>         dup dup        |<sub>        DUP DUP      |<sub>     DUP_DUP      |<sub>         ( x1 -- x1 x1 x1 )       |
