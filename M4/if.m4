@@ -1438,10 +1438,12 @@ dnl
 dnl
 dnl D= if
 define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[14:91]     D= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+                       ;[15:88]     D= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      D= if   lo_2
-    or    A             ; 1:4       D= if
-    sbc  HL, BC         ; 2:15      D= if
+    ld    A, C          ; 1:4       D= if
+    sub   L             ; 1:4       D= if
+    ld    A, B          ; 1:4       D= if
+    sbc   A, H          ; 1:4       D= if
     pop  HL             ; 1:10      D= if   hi_2
     jr   nz, $+4        ; 2:7/12    D= if
     sbc  HL, DE         ; 2:15      D= if
@@ -1452,10 +1454,12 @@ dnl
 dnl
 dnl D<> if
 define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[14:91]     D<> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+                       ;[15:88]     D<> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      D<> if   lo_2
-    or    A             ; 1:4       D<> if
-    sbc  HL, BC         ; 2:15      D<> if
+    ld    A, C          ; 1:4       D<> if
+    sub   L             ; 1:4       D<> if
+    ld    A, B          ; 1:4       D<> if
+    sbc   A, H          ; 1:4       D<> if
     pop  HL             ; 1:10      D<> if   hi_2
     jr   nz, $+4        ; 2:7/12    D<> if
     sbc  HL, DE         ; 2:15      D<> if
@@ -1466,109 +1470,127 @@ dnl
 dnl
 dnl D< if
 define({DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+                       ;[18:94]     D< if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      D< if   lo_2
-    ld    A, C          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    sub   L             ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    ld    A, B          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    sbc   A, H          ; 1:4       D< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
+    ld    A, C          ; 1:4       D< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       D< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       D< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       D< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     pop  HL             ; 1:10      D< if   hi_2
-    ld    A, L          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    sbc   A, E          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    ld    A, H          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    sbc   A, D          ; 1:4       D< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
+    ld    A, L          ; 1:4       D< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, E          ; 1:4       D< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       D< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       D< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     rra                 ; 1:4       D< if   carry --> sign
     xor   H             ; 1:4       D< if
     xor   D             ; 1:4       D< if
     pop  HL             ; 1:10      D< if
     pop  DE             ; 1:10      D< if
-    jp    p, else{}IF_COUNT    ; 3:10      D< if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      D< if})dnl
 dnl
 dnl
 dnl UD< if
 define({UDLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    pop  BC             ; 1:10      UD< if   lo_2
-    ld    A, C          ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    sub   L             ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    ld    A, B          ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    sbc   A, H          ; 1:4       UD< if   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    pop  HL             ; 1:10      UD< if   hi_2
-    sbc  HL, DE         ; 2:15      UD< if   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    pop  HL             ; 1:10      UD< if
-    pop  DE             ; 1:10      UD< if
+                       ;[13:81]     uD< if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+    pop  BC             ; 1:10      uD< if   lo_2
+    ld    A, C          ; 1:4       uD< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       uD< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       uD< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       uD< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    pop  HL             ; 1:10      uD< if   hi_2
+    sbc  HL, DE         ; 2:15      uD< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    pop  HL             ; 1:10      uD< if
+    pop  DE             ; 1:10      uD< if
     jp   nc, else{}IF_COUNT    ; 3:10      UD< if})dnl
 dnl
 dnl
 dnl D>= if
 define({DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+                       ;[18:94]     D>= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      D>= if   lo_2
-    ld    A, C          ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    sub   L             ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    ld    A, B          ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    sbc   A, H          ; 1:4       D>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
+    ld    A, C          ; 1:4       D>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sub   L             ; 1:4       D>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ld    A, B          ; 1:4       D>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       D>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     pop  HL             ; 1:10      D>= if   hi_2
-    sbc  HL, DE         ; 2:15      D>= if   HL>=DE --> HL-DE>=0 --> no carry if hi_2 is great or equal
+    ld    A, L          ; 1:4       D>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    sbc   A, E          ; 1:4       D>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    ld    A, H          ; 1:4       D>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    sbc   A, D          ; 1:4       D>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     rra                 ; 1:4       D>= if   carry --> sign
     xor   H             ; 1:4       D>= if
     xor   D             ; 1:4       D>= if
     pop  HL             ; 1:10      D>= if
     pop  DE             ; 1:10      D>= if
-    jp    m, else{}IF_COUNT    ; 3:10      D>= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      D>= if})dnl
 dnl
 dnl
-dnl UD>= if
+dnl uD>= if
 define({UDGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    pop  BC             ; 1:10      UD>= if   lo_2
-    ld    A, C          ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    sub   L             ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    ld    A, B          ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    sbc   A, H          ; 1:4       UD>= if   BC>=HL --> BC-HL>=0 --> no carry if lo_2 is great or equal
-    pop  HL             ; 1:10      UD>= if   hi_2
-    sbc  HL, DE         ; 2:15      UD>= if   HL>=DE --> HL-DE>=0 --> no carry if hi_2 is great or equal
-    pop  HL             ; 1:10      UD>= if
-    pop  DE             ; 1:10      UD>= if
-    jp    c, else{}IF_COUNT    ; 3:10      UD>= if})dnl
+                       ;[13:81]     uD>= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+    pop  BC             ; 1:10      uD>= if   lo_2
+    ld    A, C          ; 1:4       uD>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sub   L             ; 1:4       uD>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ld    A, B          ; 1:4       uD>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       uD>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    pop  HL             ; 1:10      uD>= if   hi_2
+    sbc  HL, DE         ; 2:15      uD>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    pop  HL             ; 1:10      uD>= if
+    pop  DE             ; 1:10      uD>= if
+    jp    c, else{}IF_COUNT    ; 3:10      uD>= if})dnl
 dnl
 dnl
 dnl D<= if
 define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+                       ;[17:97]     D<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      D<= if   lo_2
     or    A             ; 1:4       D<= if
-    sbc  HL, BC         ; 2:15      D<= if   BC<=HL --> 0<=HL-BC --> no carry if lo_1 is great or equal
-    ex   DE, HL         ; 1:4       D<= if
+    sbc  HL, BC         ; 2:15      D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     pop  BC             ; 1:10      D<= if   hi_2
-    sbc  HL, DE         ; 2:15      D<= if   BC<=HL --> 0<=HL-BC --> no carry if hi_1 is great or equal
+    ld    A, E          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, C          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    ld    A, D          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, B          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
     rra                 ; 1:4       D<= if   carry --> sign
     xor   H             ; 1:4       D<= if
     xor   D             ; 1:4       D<= if
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
-    jp    m, else{}IF_COUNT    ; 3:10      D<= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      D<= if})dnl
 dnl
 dnl
-dnl UD<= if
+dnl uD<= if
 define({UDLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    pop  BC             ; 1:10      UD<= if   lo_2
-    or    A             ; 1:4       UD<= if
-    sbc  HL, BC         ; 2:15      UD<= if   BC<=HL --> 0<=HL-BC --> no carry if lo_1 is great or equal
-    ex   DE, HL         ; 1:4       UD<= if
-    pop  BC             ; 1:10      UD<= if   hi_2
-    sbc  HL, DE         ; 2:15      UD<= if   BC<=HL --> 0<=HL-BC --> no carry if hi_1 is great or equal
-    pop  HL             ; 1:10      UD<= if
-    pop  DE             ; 1:10      UD<= if
-    jp    m, else{}IF_COUNT    ; 3:10      UD<= if})dnl
+                       ;[15:82]     uD<= if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+    pop  BC             ; 1:10      uD<= if   lo_2
+    ld    A, L          ; 1:4       uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sub   C             ; 1:4       uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ld    A, H          ; 1:4       uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sbc   A, B          ; 1:4       uD<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  BC             ; 1:10      uD<= if   hi_2
+    ld    A, E          ; 1:4       uD<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, C          ; 1:4       uD<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    ld    A, D          ; 1:4       uD<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, B          ; 1:4       uD<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    pop  HL             ; 1:10      uD<= if
+    pop  DE             ; 1:10      uD<= if
+    jp    c, else{}IF_COUNT    ; 3:10      uD<= if})dnl
 dnl
 dnl
 dnl D> if
 define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+                       ;[17:97]     D> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
     pop  BC             ; 1:10      D> if   lo_2
     or    A             ; 1:4       D> if
-    sbc  HL, BC         ; 2:15      D> if   BC>HL --> 0>HL-BC --> carry if lo_1 is min
-    ex   DE, HL         ; 1:4       D> if
+    sbc  HL, BC         ; 2:15      D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     pop  BC             ; 1:10      D> if   hi_2
-    sbc  HL, DE         ; 2:15      D> if   BC>HL --> 0>HL-BC --> carry if hi_1 is min
+    ld    A, E          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, C          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    ld    A, D          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, B          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
     rra                 ; 1:4       D> if   carry --> sign
-    xor   H             ; 1:4       D> if
     xor   D             ; 1:4       D> if
+    xor   B             ; 1:4       D> if
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
     jp    p, else{}IF_COUNT    ; 3:10      D> if})dnl
@@ -1576,14 +1598,19 @@ dnl
 dnl
 dnl UD> if
 define({UDGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    pop  BC             ; 1:10      UD> if   lo_2
-    or    A             ; 1:4       UD> if
-    sbc  HL, BC         ; 2:15      UD> if   BC>HL --> 0>HL-BC --> carry if lo_1 is min
-    ex   DE, HL         ; 1:4       UD> if
-    pop  BC             ; 1:10      UD> if   hi_2
-    sbc  HL, DE         ; 2:15      UD> if   BC>HL --> 0>HL-BC --> carry if hi_1 is min
-    pop  HL             ; 1:10      UD> if
-    pop  DE             ; 1:10      UD> if
+                       ;[15:82]     uD> if   ( hi_2 lo_2 . hi_1 lo_1 -- )
+    pop  BC             ; 1:10      uD> if   lo_2
+    ld    A, L          ; 1:4       uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       uD> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    pop  BC             ; 1:10      uD> if   hi_2
+    ld    A, E          ; 1:4       uD> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, C          ; 1:4       uD> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    ld    A, D          ; 1:4       uD> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, B          ; 1:4       uD> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
+    pop  HL             ; 1:10      uD> if
+    pop  DE             ; 1:10      uD> if
     jp   nc, else{}IF_COUNT    ; 3:10      UD> if})dnl
 dnl
 dnl
