@@ -1552,7 +1552,7 @@ define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     ld    A, D          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
     sbc   A, B          ; 1:4       D<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
     rra                 ; 1:4       D<= if   carry --> sign
-    xor   H             ; 1:4       D<= if
+    xor   B             ; 1:4       D<= if
     xor   D             ; 1:4       D<= if
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
@@ -1589,11 +1589,11 @@ define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     ld    A, D          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
     sbc   A, B          ; 1:4       D> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
     rra                 ; 1:4       D> if   carry --> sign
-    xor   D             ; 1:4       D> if
     xor   B             ; 1:4       D> if
+    xor   D             ; 1:4       D> if
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
-    jp    p, else{}IF_COUNT    ; 3:10      D> if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      D> if})dnl
 dnl
 dnl
 dnl UD> if
