@@ -451,10 +451,22 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
 | :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
 |<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>   ( x1 x2 -- flag )   |<sub> f=((x1\|x2) == 0)
-|<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
 |<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
-|<sub>      DU<     |<sub>         DULT        |<sub>                     |<sub> ( du1 du2 -- flag )   |<sub> f=(du1 < du2)
+|<sub>      DU<     |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
+|<sub>   4dup D=    |<sub>      _4DUP DEQ      |<sub>      _4DUP_DEQ      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 == d1)    |
+|<sub>   4dup D<>   |<sub>                     |<sub>      _4DUP_DNE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <> d1)    |
+|<sub>   4dup D<    |<sub>      _4DUP DLT      |<sub>      _4DUP_DLT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <  d1)    |
+|<sub>   4dup D<=   |<sub>                     |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
+|<sub>   4dup D>    |<sub>                     |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
+|<sub>   4dup D>=   |<sub>                     |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
+|<sub>   4dup Du<   |<sub>                     |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
+|<sub>   4dup Du<=  |<sub>                     |<sub>      _4DUP_DULE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <= ud1)  |
+|<sub>   4dup Du>   |<sub>                     |<sub>      _4DUP_DUGT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >  ud1)  |
+|<sub>   4dup Du>=  |<sub>                     |<sub>      _4DUP_DUGE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >= ud1)  |
+
+
 
 #### 8bit
 
@@ -670,10 +682,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>    D<= if    |<sub>              |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                  |
 |<sub>    D>  if    |<sub>              |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                  |
 |<sub>    D>= if    |<sub>              |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>   UD<  if    |<sub>              |<sub>      UDLT_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>   UD<= if    |<sub>              |<sub>      UDLE_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>   UD>  if    |<sub>              |<sub>      UDGT_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>   UD>= if    |<sub>              |<sub>      UDGE_IF       |<sub>    (d1 d2 -- )      |                  |
+|<sub>   Du<  if    |<sub>              |<sub>      DULT_IF       |<sub>  (ud1 ud2 -- )      |                  |
+|<sub>   Du<= if    |<sub>              |<sub>      DULE_IF       |<sub>  (ud1 ud2 -- )      |                  |
+|<sub>   Du>  if    |<sub>              |<sub>      DUGT_IF       |<sub>  (ud1 ud2 -- )      |                  |
+|<sub>   Du>= if    |<sub>              |<sub>      DUGE_IF       |<sub>  (ud1 ud2 -- )      |                  |
 
 ### CASE OF ENDOF ENDCASE
 
