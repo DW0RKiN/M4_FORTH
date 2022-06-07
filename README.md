@@ -452,21 +452,25 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 | :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
 |<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>   `0.` D=    |<sub>   PUSHDOT(`0`) DEQ  |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>  `0` `0` D=  |<sub>  PUSH2(`0`,`0`) DEQ |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
 |<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
-|<sub>      DU<     |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
+|<sub>   `0.` D<    |<sub>   PUSHDOT(`0`) DLT  |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>  `0` `0` D<  |<sub>  PUSH2(`0`,`0`) DLT |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>      Du<     |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
 |<sub>   4dup D=    |<sub>      _4DUP DEQ      |<sub>      _4DUP_DEQ      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 == d1)    |
 |<sub>   4dup D<>   |<sub>                     |<sub>      _4DUP_DNE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <> d1)    |
 |<sub>   4dup D<    |<sub>      _4DUP DLT      |<sub>      _4DUP_DLT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <  d1)    |
 |<sub>   4dup D<=   |<sub>                     |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
 |<sub>   4dup D>    |<sub>                     |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
 |<sub>   4dup D>=   |<sub>                     |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
-|<sub>   4dup Du<   |<sub>                     |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
+|<sub>   4dup Du<   |<sub>      _4DUP DULT     |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
 |<sub>   4dup Du<=  |<sub>                     |<sub>      _4DUP_DULE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <= ud1)  |
 |<sub>   4dup Du>   |<sub>                     |<sub>      _4DUP_DUGT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >  ud1)  |
 |<sub>   4dup Du>=  |<sub>                     |<sub>      _4DUP_DUGE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >= ud1)  |
 
-
+![Example of how to check the word D0EQ in the terminal using the bash script check_word.sh](D0EQ_check.png)
 
 #### 8bit
 
@@ -670,22 +674,22 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 
 #### 32bit
 
-|<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment     |
-| :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------- |
-|<sub>    D0= if    |<sub>              |<sub>      D0EQ_IF       |<sub>    (x1 x2 -- )      |                  |
-|<sub> 2dup D0= if  |<sub>              |<sub>   _2DUP_D0EQ_IF    |<sub>    (x1 x2 -- x1 x2) |                  |
-|<sub>    D0< if    |<sub>              |<sub>      D0LT_IF       |<sub>    (x1 x2 -- )      |                  |
-|<sub> 2dup D0< if  |<sub>              |<sub>   _2DUP_D0LT_IF    |<sub>    (x1 x2 -- x1 x2) |                  |
-|<sub>    D=  if    |<sub>              |<sub>       DEQ_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>    D<> if    |<sub>              |<sub>       DNE_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>    D<  if    |<sub>              |<sub>       DLT_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>    D<= if    |<sub>              |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>    D>  if    |<sub>              |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>    D>= if    |<sub>              |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                  |
-|<sub>   Du<  if    |<sub>              |<sub>      DULT_IF       |<sub>  (ud1 ud2 -- )      |                  |
-|<sub>   Du<= if    |<sub>              |<sub>      DULE_IF       |<sub>  (ud1 ud2 -- )      |                  |
-|<sub>   Du>  if    |<sub>              |<sub>      DUGT_IF       |<sub>  (ud1 ud2 -- )      |                  |
-|<sub>   Du>= if    |<sub>              |<sub>      DUGE_IF       |<sub>  (ud1 ud2 -- )      |                  |
+|<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment           |
+| :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------------- |
+|<sub>    D0= if    |<sub>   D0EQ IF    |<sub>      D0EQ_IF       |<sub>    (x1 x2 -- )      |                        |
+|<sub> 2dup D0= if  |<sub>_2DUP D0EQ IF |<sub>   _2DUP_D0EQ_IF    |<sub>    (x1 x2 -- x1 x2) |                        |
+|<sub>    D0< if    |<sub>   D0LT IF    |<sub>      D0LT_IF       |<sub>    (x1 x2 -- )      |                        |
+|<sub> 2dup D0< if  |<sub>_2DUP D0LT IF |<sub>   _2DUP_D0LT_IF    |<sub>    (x1 x2 -- x1 x2) |<sub>very effective code|
+|<sub>    D=  if    |<sub>    DEQ IF    |<sub>       DEQ_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D<> if    |<sub>              |<sub>       DNE_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D<  if    |<sub>    DLT IF    |<sub>       DLT_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D<= if    |<sub>              |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D>  if    |<sub>              |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D>= if    |<sub>              |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>   Du<  if    |<sub>   DULT IF    |<sub>      DULT_IF       |<sub>  (ud1 ud2 -- )      |                        |
+|<sub>   Du<= if    |<sub>              |<sub>      DULE_IF       |<sub>  (ud1 ud2 -- )      |                        |
+|<sub>   Du>  if    |<sub>              |<sub>      DUGT_IF       |<sub>  (ud1 ud2 -- )      |                        |
+|<sub>   Du>= if    |<sub>              |<sub>      DUGE_IF       |<sub>  (ud1 ud2 -- )      |                        |
 
 ### CASE OF ENDOF ENDCASE
 
