@@ -539,30 +539,6 @@ define(FALSE,{
 dnl
 dnl -------------------------------------
 dnl
-dnl D0=
-dnl ( x2 x1 -- flag )
-dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
-dnl 0 if 32-bit number not equal to zero, -1 if equal
-define(D0EQ,{ifelse(TYP_D0EQ,{small},{
-                        ;[8:54]     D0=
-    add  HL, DE         ; 1:11      D0=
-    sbc   A, A          ; 1:4       D0=
-    or    H             ; 1:4       D0=
-    dec  HL             ; 1:6       D0=
-    sub   H             ; 1:4       D0=
-    sbc  HL, HL         ; 2:15      D0=
-    pop   DE            ; 1:10      D0=}
-,{
-                        ;[9:48]     D0=
-    ld    A, D          ; 1:4       D0=
-    or    E             ; 1:4       D0=
-    or    H             ; 1:4       D0=
-    or    L             ; 1:4       D0=
-    sub   0x01          ; 2:7       D0=
-    sbc  HL, HL         ; 2:15      D0=
-    pop   DE            ; 1:10      D0=})})dnl
-dnl
-dnl
 dnl 0=
 dnl ( x1 -- flag )
 dnl if ( x1 ) flag = 0; else flag = 0xFFFF;
@@ -583,13 +559,13 @@ dnl =
 dnl ( x1 x2 -- flag )
 dnl equal ( x1 == x2 )
 define({EQ},{
-                        ;[9:50/49]  =
-    xor   A             ; 1:4       =
+                        ;[9:48/49]  =
+    xor   A             ; 1:4       =   A = 0x00
     sbc  HL, DE         ; 2:15      =
-    ld    L, A          ; 1:4       =
-    ld    H, A          ; 1:4       =   HL = 0x0000
     jr   nz, $+3        ; 2:7/12    =
-    dec  HL             ; 1:6       =
+    dec   A             ; 1:4       =   A = 0xFF
+    ld    L, A          ; 1:4       =
+    ld    H, A          ; 1:4       =   HL= flag
     pop  DE             ; 1:10      =})dnl
 dnl
 dnl
@@ -600,24 +576,24 @@ __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(index({$1},{(}),{0},{dnl
-__{}__{}                        ;[12:60/59] $1 =
+__{}__{}                        ;[12:58/59] $1 =
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 =
-__{}__{}    xor   A             ; 1:4       $1 =
+__{}__{}    xor   A             ; 1:4       $1 =   A = 0x00
 __{}__{}    sbc  HL, BC         ; 2:15      $1 =
-__{}__{}    ld    L, A          ; 1:4       $1 =
-__{}__{}    ld    H, A          ; 1:4       $1 =   HL = 0x0000
 __{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
-__{}__{}    dec  HL             ; 1:6       $1 =},
+__{}__{}    dec   A             ; 1:4       $1 =   A = 0xFF
+__{}__{}    ld    L, A          ; 1:4       $1 =
+__{}__{}    ld    H, A          ; 1:4       $1 =   HL= flag},
 __{}eval($1),{},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}__{}                        ;[11:50/49] $1 =
+__{}__{}                        ;[11:48/49] $1 =
 __{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 =
-__{}__{}    xor   A             ; 1:4       $1 =
+__{}__{}    xor   A             ; 1:4       $1 =   A = 0x00
 __{}__{}    sbc  HL, BC         ; 2:15      $1 =
-__{}__{}    ld    L, A          ; 1:4       $1 =
-__{}__{}    ld    H, A          ; 1:4       $1 =   HL = 0x0000
 __{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
-__{}__{}    dec  HL             ; 1:6       $1 =},
+__{}__{}    dec   A             ; 1:4       $1 =   A = 0xFF
+__{}__{}    ld    L, A          ; 1:4       $1 =
+__{}__{}    ld    H, A          ; 1:4       $1 =   HL= flag},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
 __{}__{}                        ;[6:30]     $1 =
@@ -756,25 +732,6 @@ define({OVER_CFETCH_OVER_CFETCH_CEQ},{
 dnl
 dnl
 dnl
-dnl D=
-dnl ( d1 d2 -- flag )
-dnl equal ( d1 == d2 )
-define({DEQ},{
-                       ;[16:81/95/96]D=
-    pop  BC             ; 1:10      D=   lo word2
-    xor   A             ; 1:4       D=
-    sbc  HL, BC         ; 2:15      D=   lo_1 - lo_2
-    pop  BC             ; 1:10      D=   hi word2
-    jr   nz, $+5        ; 2:7/12    D=
-    ex   DE, HL         ; 1:4       D=
-    sbc  HL, BC         ; 2:15      D=
-    pop  DE             ; 1:10      D=
-    ld    L, A          ; 1:4       D=
-    ld    H, A          ; 1:4       D=   HL = 0x0000
-    jr   nz, $+3        ; 2:7/12    D=
-    dec  HL             ; 1:6       D=})dnl
-dnl
-dnl
 dnl <>
 dnl ( x1 x2 -- flag )
 dnl not equal ( x1 <> x2 )
@@ -803,15 +760,6 @@ define(LT,{
     ld    H, A          ; 1:4       <
     ld    L, A          ; 1:4       <
     pop  DE             ; 1:10      <})dnl
-dnl
-dnl
-dnl D<
-dnl ( d2 d1 -- flag )
-dnl signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
-define(DLT,{define({USE_DLT},{})
-                        ;[4:137]    D<   ( hi_2 lo_2 hi_1 lo_1 -- flag )
-    pop  BC             ; 1:10      D<   BC = lo_2
-    call LT_32          ; 3:17      D<})dnl
 dnl
 dnl
 dnl 0<
@@ -917,48 +865,48 @@ dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define(ULT,{
-                        ;[7:41]     {U<}
-    ld    A, E          ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       {U<}   DE<HL --> DE-HL<0 --> carry if true
-    sbc  HL, HL         ; 2:15      {U<}
-    pop  DE             ; 1:10      {U<}})dnl
+                        ;[7:41]     {u<}
+    ld    A, E          ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
+    sbc  HL, HL         ; 2:15      {u<}
+    pop  DE             ; 1:10      {u<}})dnl
 dnl
 dnl
-dnl DU<
+dnl Du<
 dnl ( d2 d1 -- flag d2<d1 )
 dnl unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
 define(DULT,{
-                        ;[11:76]    {DU<}   ( d2 d1 -- flag d2<d1 )
-    pop  BC             ; 1:10      {DU<}   lo_2 word
-    ld    A, C          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
-    sub   L             ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
-    ld    A, B          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       {DU<}   BC<HL --> BC-HL<0 --> carry if true
-    pop  HL             ; 1:10      {DU<}   hi_2 word
-    sbc  HL, DE         ; 2:15      {DU<}   HL<DE --> HL-DE<0 --> carry if true
-    sbc  HL, HL         ; 2:15      {DU<}   set flag
-    pop  DE             ; 1:10      {DU<}})dnl
+                        ;[11:76]    {Du<}   ( d2 d1 -- flag d2<d1 )
+    pop  BC             ; 1:10      {Du<}   lo_2 word
+    ld    A, C          ; 1:4       {Du<}   BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       {Du<}   BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       {Du<}   BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       {Du<}   BC<HL --> BC-HL<0 --> carry if true
+    pop  HL             ; 1:10      {Du<}   hi_2 word
+    sbc  HL, DE         ; 2:15      {Du<}   HL<DE --> HL-DE<0 --> carry if true
+    sbc  HL, HL         ; 2:15      {Du<}   set flag
+    pop  DE             ; 1:10      {Du<}})dnl
 dnl
 dnl
-dnl 2SWAP DU<
+dnl 2swap Du<
 dnl ( d2 d1 -- flag d2>d1 )
 dnl unsigned ( d2 > d1 ) --> ( 0 > d1 - d2 ) --> carry is true
 define(_2SWAP_DULT,{
-                        ;[13:77]    {_2SWAP_DU<}   ( d2 d1 -- flag d2>d1 )
-    pop  BC             ; 1:10      {_2SWAP_DU<}   lo_2 word
-    ld    A, L          ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
-    sub   C             ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
-    ld    A, H          ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
-    sbc   A, B          ; 1:4       {_2SWAP_DU<}   BC>HL --> 0>HL-BC --> carry if true
-    pop  BC             ; 1:10      {_2SWAP_DU<}   hi_2 word
-    ld    A, E          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
-    sbc   A, C          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
-    ld    A, D          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
-    sbc   A, B          ; 1:4       {_2SWAP_DU<}   BC>DE --> 0>DE-BC --> carry if true
-    sbc  HL, HL         ; 2:15      {_2SWAP_DU<}   set flag
-    pop  DE             ; 1:10      {_2SWAP_DU<}})dnl
+                        ;[13:77]    {2swap Du<}   ( d2 d1 -- flag d2>d1 )
+    pop  BC             ; 1:10      {2swap Du<}   lo_2 word
+    ld    A, L          ; 1:4       {2swap Du<}   BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       {2swap Du<}   BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       {2swap Du<}   BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       {2swap Du<}   BC>HL --> 0>HL-BC --> carry if true
+    pop  BC             ; 1:10      {2swap Du<}   hi_2 word
+    ld    A, E          ; 1:4       {2swap Du<}   BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, C          ; 1:4       {2swap Du<}   BC>DE --> 0>DE-BC --> carry if true
+    ld    A, D          ; 1:4       {2swap Du<}   BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, B          ; 1:4       {2swap Du<}   BC>DE --> 0>DE-BC --> carry if true
+    sbc  HL, HL         ; 2:15      {2swap Du<}   set flag
+    pop  DE             ; 1:10      {2swap Du<}})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
@@ -1466,6 +1414,323 @@ __{}__{}__{}    .error {$0}($@): negative parameters found in macro! Use {PUSH_R
 __{}__{}{
 __{}__{}    .error {$0}($@): $# parameters found in macro!}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl -------------------------- 32 bits --------------------------
+dnl
+dnl
+dnl D0=
+dnl ( d -- f )
+dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
+dnl 0 if 32-bit number not equal to zero, -1 if equal
+define(D0EQ,{ifelse(TYP_D0EQ,{small},{
+                        ;[8:54]     D0=   ( d_hi d_lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
+    add  HL, DE         ; 1:11      D0=   carry: 0    1
+    sbc   A, A          ; 1:4       D0=          0x00 0xff
+    or    H             ; 1:4       D0=          H    0xff
+    dec  HL             ; 1:6       D0=
+    sub   H             ; 1:4       D0=   carry: 1|0  0
+    sbc  HL, HL         ; 2:15      D0=
+    pop   DE            ; 1:10      D0=},
+{
+                        ;[9:48]     D0=   ( d_hi d_lo -- flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
+    ld    A, D          ; 1:4       D0=
+    or    E             ; 1:4       D0=
+    or    H             ; 1:4       D0=
+    or    L             ; 1:4       D0=
+    sub   0x01          ; 2:7       D0=
+    sbc  HL, HL         ; 2:15      D0=
+    pop   DE            ; 1:10      D0=})})dnl
+dnl
+dnl
+dnl ( d2 d1 -- flag )
+dnl equal ( d1 == d2 )
+define({DEQ},{
+                       ;[15:90/69,91]D=  ( d2 d1 -- flag )
+    pop  BC             ; 1:10      D=   BC = lo_2
+    xor   A             ; 1:4       D=    A = 0x00
+    sbc  HL, BC         ; 2:15      D=   HL = lo_1 - lo_2
+    pop  HL             ; 1:10      D=   HL = hi_2
+    jr   nz, $+7        ; 2:7/12    D=
+    sbc  HL, DE         ; 2:15      D=   HL = hi_2 - hi_1
+    jr   nz, $+3        ; 2:7/12    D=
+    dec   A             ; 1:4       D=    A = 0xFF
+    ld    L, A          ; 1:4       D=
+    ld    H, A          ; 1:4       D=   HL = flag
+    pop  DE             ; 1:10      D=})dnl
+dnl
+dnl
+dnl D<
+dnl ( d2 d1 -- flag )
+dnl signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
+define(DLT,{define({USE_DLT},{})
+                        ;[4:137]    D<   ( d2 d1 -- flag )
+    pop  BC             ; 1:10      D<   BC = lo_2
+    call LT_32          ; 3:17      D<})dnl
+dnl
+dnl
+dnl
+dnl 4dup D=
+dnl ( d d -- d d f )
+define({_4DUP_DEQ},{
+                       ;[20:138/-21,+1] 4dup D=   ( d2 d1 -- d2 d1 flag )
+    pop  AF             ; 1:10      4dup D=   h2          . h1 l1  AF= lo(d2) = l2
+    pop  BC             ; 1:10      4dup D=               . h1 l1  BC= hi(d2) = h2
+    push BC             ; 1:11      4dup D=   h2          . h1 l1
+    push AF             ; 1:11      4dup D=   h2 l2       . h1 l1
+    push DE             ; 1:11      4dup D=   h2 l2 h1    . h1 l1
+    push AF             ; 1:11      4dup D=   h2 l2 h1 l2 . h1 l1
+    ex   DE, HL         ; 1:4       4dup D=   h2 l2 h1 l2 . l1 h1
+    xor   A             ; 1:4       4dup D=   h2 l2 h1 l2 . l1 h1  A = 0x00
+    sbc  HL, BC         ; 2:15      4dup D=   h2 l2 h1 l2 . l1 --  hi(d1)-hi(d2)
+    pop  HL             ; 1:10      4dup D=   h2 l2 h1    . l1 l2
+    jr   nz, $+7        ; 2:7/12    4dup D=   h2 l2 h1    . l1 l2
+    sbc  HL, DE         ; 2:15      4dup D=   h2 l2 h1    . l1 --  lo(d2)-lo(d1)
+    jr   nz, $+3        ; 2:7/12    4dup D=   h2 l2 h1    . l1 --
+    dec   A             ; 1:4       4dup D=   h2 l2 h1    . l1 --  A = 0xFF
+    ld    L, A          ; 1:4       4dup D=   h2 l2 h1    . l1 -f
+    ld    H, A          ; 1:4       4dup D=   h2 l2 h1    . l1 ff  HL= flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup D<>
+dnl ( d d -- d d f )
+define({_4DUP_DNE},{ifelse(TYP_DOUBLE,{fast},{
+                       ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+    pop  BC             ; 1:10      4dup D<>   h2       . h1 l1  BC= lo(d2) = l2
+    ld    A, C          ; 1:4       4dup D<>   h2       . h1 l1  A = lo(l2)
+    sub   L             ; 1:4       4dup D<>   h2       . h1 l1  lo(l2) - lo(l1)
+    jr   nz, $+16       ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0xFF
+    ld    A, B          ; 1:4       4dup D<>   h2       . h1 l1  A = hi(l2)
+    sub   H             ; 1:4       4dup D<>   h2       . h1 l1  hi(l2) - hi(l1)
+    jr   nz, $+12       ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0xFF
+    ex (SP), HL         ; 1:19      4dup D<>   l1       . h1 h2  HL= hi(d2) = h2
+    ld    A, L          ; 1:4       4dup D<>   l1       . h1 h2  A = lo(h2)
+    sub   E             ; 1:4       4dup D<>   l1       . h1 h2  lo(h2) - lo(l1)
+    ld    A, H          ; 1:4       4dup D<>   l1       . h1 h2  A = hi(h2)
+    ex (SP), HL         ; 1:19      4dup D<>   h2       . h1 l1
+    jr   nz, $+5        ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0xFF
+    sub   D             ; 1:4       4dup D<>   h2       . h1 l1  hi(h2) - hi(h1)
+    jr    z, $+4        ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0
+    ld    A, 0xFF       ; 2:7       4dup D<>   h2       . h1 l1
+    push BC             ; 1:11      4dup D<>   h2 l2    . h1 l1
+    push DE             ; 1:11      4dup D<>   h2 l2 h1 . h1 l1
+    ex   DE, HL         ; 1:4       4dup D<>   h2 l2 h1 . l1 h1
+    ld    H, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 f-
+    ld    L, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 ff HL= flag},
+{
+                       ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+    pop  AF             ; 1:10      4dup D<>   h2          . h1 l1  AF = lo(d2) = l2
+    pop  BC             ; 1:10      4dup D<>               . h1 l1  BC = hi(d2) = h2
+    push BC             ; 1:11      4dup D<>   h2          . h1 l1
+    push AF             ; 1:11      4dup D<>   h2 l2       . h1 l1
+    push DE             ; 1:11      4dup D<>   h2 l2 h1    . h1 l1
+    push AF             ; 1:11      4dup D<>   h2 l2 h1 l2 . h1 l1
+    ex   DE, HL         ; 1:4       4dup D<>   h2 l2 h1 l2 . l1 h1
+    xor   A             ; 1:4       4dup D<>   h2 l2 h1 l2 . l1 h1  hi(d1)-hi(d2)
+    sbc  HL, BC         ; 2:15      4dup D<>   h2 l2 h1 l2 . l1 --
+    pop  HL             ; 1:10      4dup D<>   h2 l2 h1    . l1 l2
+    jr   nz, $+6        ; 2:7/12    4dup D<>   h2 l2 h1    . l1 l2
+    sbc  HL, DE         ; 2:15      4dup D<>   h2 l2 h1    . l1 --  lo(d2)-lo(d1)
+    jr    z, $+5        ; 2:7/12    4dup D<>   h2 l2 h1    . l1 --
+    ld   HL, 0xFFFF     ; 3:10      4dup D<>   h2 l2 h1    . l1 ff  HL= flag})})dnl
+dnl
+dnl
+dnl
+dnl 4dup D<
+dnl ( d d -- d d f )
+define({_4DUP_DLT},{
+                       ;[20:137]    4dup D<   ( d2 d1 -- d2 d1 flag )
+    pop  BC             ; 1:10      4dup D<   lo_2
+    ld    A, C          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ex (SP), HL         ; 1:19      4dup D<   hi_2
+    ld    A, L          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, E          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    rra                 ; 1:4       4dup D<                                   -->  sign if true
+    xor   H             ; 1:4       4dup D<
+    xor   D             ; 1:4       4dup D<
+    add   A, A          ; 1:4       4dup D<                                   --> carry if true
+    ex (SP), HL         ; 1:19      4dup D<   lo_1
+    push BC             ; 1:11      4dup D<
+    push DE             ; 1:11      4dup D<
+    ex   DE, HL         ; 1:4       4dup D<
+    sbc  HL, HL         ; 2:15      4dup D<   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup Du<
+dnl ( ud ud -- ud ud f )
+define({_4DUP_DULT},{
+                       ;[16:121]    4dup Du<   ( ud2 ud1 -- ud2 ud1 flag )
+    pop  BC             ; 1:10      4dup Du<   lo_2
+    ld    A, C          ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ex (SP), HL         ; 1:19      4dup Du<   hi_2
+    ld    A, L          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, E          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    ex (SP), HL         ; 1:19      4dup Du<   lo_1
+    push BC             ; 1:11      4dup Du<
+    push DE             ; 1:11      4dup Du<
+    ex   DE, HL         ; 1:4       4dup Du<
+    sbc  HL, HL         ; 2:15      4dup Du<   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup D>=
+dnl ( d d -- d d f )
+define({_4DUP_DGE},{
+                       ;[21:141]    4dup D>=   ( d2 d1 -- d2 d1 flag )
+    pop  BC             ; 1:10      4dup D>=   lo_2
+    ld    A, C          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sub   L             ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ld    A, B          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ex (SP), HL         ; 1:19      4dup D>=   hi_2
+    ld    A, L          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    sbc   A, E          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    ld    A, H          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    sbc   A, D          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    rra                 ; 1:4       4dup D>=                                      --> no sign  if true
+    xor   H             ; 1:4       4dup D>=
+    xor   D             ; 1:4       4dup D>=
+    add   A, A          ; 1:4       4dup D>=                                      --> no carry if true
+    ccf                 ; 1:4       4dup D>=                                      --> carry    if true
+    ex (SP), HL         ; 1:19      4dup D>=   lo_1
+    push BC             ; 1:11      4dup D>=
+    push DE             ; 1:11      4dup D>=
+    ex   DE, HL         ; 1:4       4dup D>=
+    sbc  HL, HL         ; 2:15      4dup D>=   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup Du>=
+dnl ( ud ud -- ud ud f )
+define({_4DUP_DUGE},{
+                       ;[17:125]    4dup Du>=   ( ud2 ud1 -- ud2 ud1 flag )
+    pop  BC             ; 1:10      4dup Du>=   lo_2
+    ld    A, C          ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sub   L             ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ld    A, B          ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ex (SP), HL         ; 1:19      4dup Du>=   hi_2
+    ld    A, L          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    sbc   A, E          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    ld    A, H          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    sbc   A, D          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    ccf                 ; 1:4       4dup Du>=                                      --> carry    if true
+    ex (SP), HL         ; 1:19      4dup Du>=   lo_1
+    push BC             ; 1:11      4dup Du>=
+    push DE             ; 1:11      4dup Du>=
+    ex   DE, HL         ; 1:4       4dup Du>=
+    sbc  HL, HL         ; 2:15      4dup Du>=   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup D<=
+dnl ( d d -- d d f )
+define({_4DUP_DLE},{
+                       ;[21:141]    4dup D<=   ( d2 d1 -- d2 d1 flag )
+    pop  BC             ; 1:10      4dup D<=   lo_2
+    ld    A, L          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sub   C             ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ld    A, H          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sbc   A, B          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ex (SP), HL         ; 1:19      4dup D<=   hi_2
+    ld    A, E          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    sbc   A, L          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    ld    A, D          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    sbc   A, H          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    rra                 ; 1:4       4dup D<=                                      --> no sign  if true
+    xor   B             ; 1:4       4dup D<=
+    xor   D             ; 1:4       4dup D<=
+    add   A, A          ; 1:4       4dup D<=                                      --> no carry if true
+    ccf                 ; 1:4       4dup D<=                                      --> carry    if true
+    ex (SP), HL         ; 1:19      4dup D<=   lo_1
+    push BC             ; 1:11      4dup D<=
+    push DE             ; 1:11      4dup D<=
+    ex   DE, HL         ; 1:4       4dup D<=
+    sbc  HL, HL         ; 2:15      4dup D<=   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup Du<=
+dnl ( ud ud -- ud ud f )
+define({_4DUP_DULE},{
+                       ;[17:125]    4dup Du<=   ( ud2 ud1 -- ud2 ud1 flag )
+    pop  BC             ; 1:10      4dup Du<=   lo_2
+    ld    A, L          ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sub   C             ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ld    A, H          ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sbc   A, B          ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ex (SP), HL         ; 1:19      4dup Du<=   hi_2
+    ld    A, E          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    sbc   A, L          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    ld    A, D          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    sbc   A, H          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
+    ccf                 ; 1:4       4dup Du<=                                      --> carry    if true
+    ex (SP), HL         ; 1:19      4dup Du<=   lo_1
+    push BC             ; 1:11      4dup Du<=
+    push DE             ; 1:11      4dup Du<=
+    ex   DE, HL         ; 1:4       4dup Du<=
+    sbc  HL, HL         ; 2:15      4dup Du<=   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup D>
+dnl ( d d -- d d f )
+define({_4DUP_DGT},{
+                       ;[20:137]    4dup D>   ( d2 d1 -- d2 d1 flag )
+    pop  BC             ; 1:10      4dup D>   lo_2
+    ld    A, L          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    ex (SP), HL         ; 1:19      4dup D>   hi_2
+    ld    A, E          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    sbc   A, L          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    ld    A, D          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    sbc   A, H          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    rra                 ; 1:4       4dup D>                                   --> sign  if true
+    xor   B             ; 1:4       4dup D>
+    xor   D             ; 1:4       4dup D>
+    add   A, A          ; 1:4       4dup D>                                   --> carry if true
+    ex (SP), HL         ; 1:19      4dup D>   lo_1
+    push BC             ; 1:11      4dup D>
+    push DE             ; 1:11      4dup D>
+    ex   DE, HL         ; 1:4       4dup D>
+    sbc  HL, HL         ; 2:15      4dup D>   flag})dnl
+dnl
+dnl
+dnl
+dnl 4dup Du>
+dnl ( ud ud -- ud ud f )
+define({_4DUP_DUGT},{
+                       ;[16:121]    4dup Du>   ( ud2 ud1 -- ud2 ud1 flag )
+    pop  BC             ; 1:10      4dup Du>   lo_2
+    ld    A, L          ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
+    ex (SP), HL         ; 1:19      4dup Du>   hi_2
+    ld    A, E          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    sbc   A, L          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    ld    A, D          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    sbc   A, H          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
+    ex (SP), HL         ; 1:19      4dup Du>   lo_1
+    push BC             ; 1:11      4dup Du>
+    push DE             ; 1:11      4dup Du>
+    ex   DE, HL         ; 1:4       4dup Du>
+    sbc  HL, HL         ; 2:15      4dup Du>   flag})dnl
 dnl
 dnl
 dnl
