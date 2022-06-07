@@ -266,6 +266,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>   sm/rem   |<sub>   SMDIVREM   |<sub>                |<sub> ( hi lo u -- rem quot )   |
 |<sub>   um/mod   |<sub>   UMDIVMOD   |<sub>                |<sub> ( hi lo u -- rem quot )   |
 
+![Example of how to check the word PUSH_ADD in the terminal using the bash script check_word.sh](PUSH_ADD_check.png)
+
 #### 32bit
 
 ( d32 -- hi16 lo16 )
