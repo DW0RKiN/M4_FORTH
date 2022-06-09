@@ -776,37 +776,36 @@ define(_0LT,{ifelse(TYP_0LT,{small},{
     ld    H, A          ; 1:4       0<})})dnl
 dnl
 dnl
-dnl
-dnl D0<
-dnl ( d -- flag )
-define(D0LT,{ifelse(TYP_D0LT,{small},{
-                        ;[5:34]     D0<  ( hi lo -- flag D<0 )
-    rl    D             ; 2:8       D0<
-    pop  DE             ; 1:11      D0<
-    sbc  HL, HL         ; 2:15      D0<}
-,{
-                        ;[6:31]     D0<  ( hi lo -- flag D<0 )
-    rl    D             ; 2:8       D0<
-    pop  DE             ; 1:11      D0<
-    sbc   A, A          ; 1:4       D0<
-    ld    L, A          ; 1:4       D0<
-    ld    H, A          ; 1:4       D0<})})dnl
-dnl
-dnl
 dnl <=
 dnl ( x2 x1 -- flag )
 dnl signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
-define(LE,{
+dnl signed ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
+define(LE,{ifelse(TYP_LE,{old},{
+                       ;[15:63,62]  <=
     ld    A, H          ; 1:4       <=
     xor   D             ; 1:4       <=
     jp    p, $+7        ; 3:10      <=
-    rl    D             ; 2:8       <= sign x2
-    jr   $+6            ; 2:12      <=
-    scf                 ; 1:4       <=
-    ex   DE, HL         ; 1:4       <=
-    sbc  HL, DE         ; 2:15      <=
+    rl    D             ; 2:8       <=  sign x2 = flag
+    jr   $+5            ; 2:12      <=
+    sbc  HL, DE         ; 2:15      <=  x2<=x1 --> 0<=x2-x1 --> no carry is true
+    ccf                 ; 1:4       <=
     sbc  HL, HL         ; 2:15      <=
-    pop  DE             ; 1:10      <=})dnl
+    pop  DE             ; 1:10      <=},
+{
+                       ;[13:58]     <=   ( x2 x1 -- flag x2<=x1 )
+    ld    A, L          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
+    sub   E             ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
+    ld    A, H          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
+    sbc   A, D          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
+    ccf                 ; 1:4       <=                       -->    carry if true
+    rra                 ; 1:4       <=   carry --> sign
+    xor   H             ; 1:4       <=
+    xor   D             ; 1:4       <=
+    add   A, A          ; 1:4       <=   sign --> carry
+    sbc   A, A          ; 1:4       <=   0x00 or 0xff
+    ld    H, A          ; 1:4       <=
+    ld    L, A          ; 1:4       <=
+    pop  DE             ; 1:10      <=})})dnl
 dnl
 dnl
 dnl >
@@ -831,16 +830,33 @@ dnl
 dnl >=
 dnl ( x2 x1 -- flag )
 dnl signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
-define({GE},{
+dnl signed ( x2 >= x1 ) --> ( x2 - x1 >= 0 ) --> no carry is true
+define({GE},{ifelse(TYP_GE,{old},{
+                       ;[15:63,62]  >=
     ld    A, H          ; 1:4       >=
     xor   D             ; 1:4       >=
     jp    p, $+7        ; 3:10      >=
-    rl    H             ; 2:8       >= sign x1
+    rl    H             ; 2:8       >= sign x1 = flag
     jr   $+5            ; 2:12      >=
     scf                 ; 1:4       >=
     sbc  HL, DE         ; 2:15      >=
     sbc  HL, HL         ; 2:15      >=
-    pop  DE             ; 1:10      >=})dnl
+    pop  DE             ; 1:10      >=},
+{
+                       ;[13:58]     >=   ( x2 x1 -- flag x2>=x1 )
+    ld    A, E          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
+    sub   L             ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
+    ld    A, D          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
+    ccf                 ; 1:4       >=                       -->    carry if true
+    rra                 ; 1:4       >=   carry --> sign
+    xor   H             ; 1:4       >=
+    xor   D             ; 1:4       >=
+    add   A, A          ; 1:4       >=   sign --> carry
+    sbc   A, A          ; 1:4       >=   0x00 or 0xff
+    ld    H, A          ; 1:4       >=
+    ld    L, A          ; 1:4       >=
+    pop  DE             ; 1:10      >=})})dnl
 dnl
 dnl
 dnl 0>=
@@ -1385,6 +1401,30 @@ dnl
 dnl -------------------------- 32 bits --------------------------
 dnl
 dnl
+dnl D=
+dnl ( d2 d1 -- flag )
+dnl equal ( d1 == d2 )
+define({DEQ},{
+                       ;[15:90/69,91]D=  ( d2 d1 -- flag )
+    pop  BC             ; 1:10      D=   BC = lo_2
+    xor   A             ; 1:4       D=    A = 0x00
+    sbc  HL, BC         ; 2:15      D=   HL = lo_1 - lo_2
+    pop  HL             ; 1:10      D=   HL = hi_2
+    jr   nz, $+7        ; 2:7/12    D=
+    sbc  HL, DE         ; 2:15      D=   HL = hi_2 - hi_1
+    jr   nz, $+3        ; 2:7/12    D=
+    dec   A             ; 1:4       D=    A = 0xFF
+    ld    L, A          ; 1:4       D=
+    ld    H, A          ; 1:4       D=   HL = flag
+    pop  DE             ; 1:10      D=})dnl
+dnl
+dnl
+dnl Du=
+dnl ( ud2 ud1 -- flag )
+dnl equal ( ud1 == ud2 )
+define({DUEQ},{DEQ})dnl
+dnl
+dnl
 dnl D0=
 dnl ( d -- f )
 dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
@@ -1409,24 +1449,6 @@ define(D0EQ,{ifelse(TYP_D0EQ,{small},{
     pop   DE            ; 1:10      D0=})})dnl
 dnl
 dnl
-dnl D=
-dnl ( d2 d1 -- flag )
-dnl equal ( d1 == d2 )
-define({DEQ},{
-                       ;[15:90/69,91]D=  ( d2 d1 -- flag )
-    pop  BC             ; 1:10      D=   BC = lo_2
-    xor   A             ; 1:4       D=    A = 0x00
-    sbc  HL, BC         ; 2:15      D=   HL = lo_1 - lo_2
-    pop  HL             ; 1:10      D=   HL = hi_2
-    jr   nz, $+7        ; 2:7/12    D=
-    sbc  HL, DE         ; 2:15      D=   HL = hi_2 - hi_1
-    jr   nz, $+3        ; 2:7/12    D=
-    dec   A             ; 1:4       D=    A = 0xFF
-    ld    L, A          ; 1:4       D=
-    ld    H, A          ; 1:4       D=   HL = flag
-    pop  DE             ; 1:10      D=})dnl
-dnl
-dnl
 dnl D<>
 dnl ( d2 d1 -- flag )
 dnl not equal ( d1 != d2 )
@@ -1441,6 +1463,12 @@ define({DNE},{
     jr    z, $+5        ; 2:7/12    D<>   n       . h1 h2
     ld   HL, 0xFFFF     ; 3:10      D<>   n       . h1 ff  HL = true
     pop  DE             ; 1:10      D<>           . n  ff})dnl
+dnl
+dnl
+dnl Du<>
+dnl ( ud2 ud1 -- flag )
+dnl not equal ( ud1 != ud2 )
+define({DUNE},{DNE})dnl
 dnl
 dnl
 dnl D<
@@ -1468,6 +1496,22 @@ define(DLT,{ifelse(TYP_DOUBLE,{fast},{
                         ;[4:138]    D<   ( d2 d1 -- flag )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D<   BC = lo_2
     call LT_32          ; 3:17      D<})})dnl
+dnl
+dnl
+dnl D0<
+dnl ( d -- flag )
+define(D0LT,{ifelse(TYP_D0LT,{small},{
+                        ;[5:34]     D0<  ( hi lo -- flag D<0 )
+    rl    D             ; 2:8       D0<
+    pop  DE             ; 1:11      D0<
+    sbc  HL, HL         ; 2:15      D0<}
+,{
+                        ;[6:31]     D0<  ( hi lo -- flag D<0 )
+    rl    D             ; 2:8       D0<
+    pop  DE             ; 1:11      D0<
+    sbc   A, A          ; 1:4       D0<
+    ld    L, A          ; 1:4       D0<
+    ld    H, A          ; 1:4       D0<})})dnl
 dnl
 dnl
 dnl Du<
