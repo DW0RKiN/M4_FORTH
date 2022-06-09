@@ -356,7 +356,8 @@ do
     sed 's#^\([^;{]*\s\|^\)PUSH_OVER(\([^)]\+\))\s\+STORE\(\s\|$\)#\1PUSH_OVER_STORE(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)PUSH_OVER_STORE(\([^)]\+\))\s\+2+\(\s\|$\)#\1PUSH_OVER_CSTORE_2ADD(\2)\3#gi' |
 
-    sed 's#^\([^;{]*\s\|^\)2[Dd]up\(\s\|$\)#\1_2DUP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)2dup\(\s\|$\)#\1_2DUP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)4dup\(\s\|$\)#\1_4DUP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)over\s\+over\(\s\|$\)#\1_2DUP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Dd]rop\(\s\|$\)#\1DROP\2#g' |
@@ -376,6 +377,7 @@ do
     sed 's#^\([^;{]*\s\|^\)[Oo]ver\(\s\|$\)#\1OVER\2#g' |
     sed 's#^\([^;{]*\s\|^\)OVER\s\+SWAP\(\s\|$\)#\1OVER_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2OVER\(\s\|$\)#\1_2OVER\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2OVER\s\+_2OVER\(\s\|$\)#\1_4DUP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
     sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\(\s\|$\)#\1NROT_SWAP\2#gi' |
@@ -638,8 +640,9 @@ do
     cat $TMPFILE |
 
 # stupidni co nikdo neudela
-    sed 's#^\([^;{]*\s\|^\)_2OVER\s\+_2OVER\(\s\|$\)#\1_4DUP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)SWAP\s\+SWAP\(\s\|$\)#\1\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\(\s\|$\)#\1PUSH2_WITHIN(\2,\3)\4#gi' |
 
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+OF\(\s\|$\)#\1PUSH_OF(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+OF\(\s\|$\)#\1PUSH_OF(\2)\3#gi' |

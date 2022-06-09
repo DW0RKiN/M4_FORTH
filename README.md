@@ -159,7 +159,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>         dup dup        |<sub>        DUP DUP      |<sub>     DUP_DUP      |<sub>         ( x1 -- x1 x1 x1 )       |
 |<sub>          ?dup          |<sub>     QUESTIONDUP     |<sub>                  |<sub>         ( x1 -- 0 \| x1 x1 )     |
 |<sub>          2dup          |<sub>        _2DUP        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 x1 )    |
-|<sub>       2over 2over      |<sub>        _4DUP        |<sub>                  |<sub>      ( d2 d1 -- d2 d1 d2 d1 )    |
+|<sub>       2over 2over      |<sub>    _2OVER _2OVER    |<sub>      _4DUP       |<sub>      ( d2 d1 -- d2 d1 d2 d1 )    |
 |<sub>          drop          |<sub>         DROP        |<sub>                  |<sub>         ( x1 -- )                |
 |<sub>         2drop          |<sub>        _2DROP       |<sub>                  |<sub>      ( x2 x1 -- )                |
 |<sub>          nip           |<sub>          NIP        |<sub>                  |<sub>      ( x2 x1 -- x1 )             |
@@ -420,21 +420,31 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>    invert    |<sub>        INVERT       |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
 |<sub>    within    |<sub>        WITHIN       |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
 |<sub>`4` `7` within|<sub>PUSH2(`4`,`7`) WITHIN|<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
-|<sub>     true     |<sub>         TRUE        |<sub>                     |<sub>         ( -- -1 )     |<sub>
-|<sub>    false     |<sub>        FALSE        |<sub>                     |<sub>         ( -- 0 )      |<sub>
-|<sub>       =      |<sub>          EQ         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>     true     |<sub>         TRUE        |<sub>                     |<sub>         ( -- -1 )     |<sub> TRUE=-1
+|<sub>    false     |<sub>        FALSE        |<sub>                     |<sub>         ( -- 0 )      |<sub> FALSE=0
 |<sub>      0=      |<sub>         _0EQ        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
-|<sub>      <>      |<sub>          NE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>       <      |<sub>          LT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      0<      |<sub>         _0LT        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 < 0)
-|<sub>      <=      |<sub>          LE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>       >      |<sub>          GT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      >=      |<sub>          GE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>      0<      |<sub>         _0LT        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 <  0)
 |<sub>      0>=     |<sub>         _0GE        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
-|<sub>      u<      |<sub>         ULT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     u<=      |<sub>         ULE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>      u>      |<sub>         UGT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
-|<sub>     u>=      |<sub>         UGE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> TRUE=-1 FALSE=0
+|<sub>       =      |<sub>          EQ         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
+|<sub>      <>      |<sub>          NE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
+|<sub>    swap =    |<sub>       SWAP EQ       |<sub>         EQ          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
+|<sub>    swap <>   |<sub>       SWAP NE       |<sub>         NE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
+|<sub>      <       |<sub>          LT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
+|<sub>      >=      |<sub>          GE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
+|<sub>      <=      |<sub>          LE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
+|<sub>      >       |<sub>          GT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
+|<sub>    swap <    |<sub>       SWAP LT       |<sub>         GT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
+|<sub>    swap >=   |<sub>       SWAP GE       |<sub>         LE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
+|<sub>    swap <=   |<sub>       SWAP LE       |<sub>         GE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
+|<sub>    swap >    |<sub>       SWAP GT       |<sub>         LT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
+|<sub>      u<      |<sub>         ULT         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <  u1)
+|<sub>     u>=      |<sub>         UGE         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >= u1)
+|<sub>     u<=      |<sub>         ULE         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <= u1)
+|<sub>      u>      |<sub>         UGT         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >  u1)
+|<sub>   swap u<    |<sub>       SWAP ULT      |<sub>         UGT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >  u1)
+|<sub>   swap u>=   |<sub>       SWAP UGE      |<sub>         ULE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <= u1)
+|<sub>   swap u<=   |<sub>       SWAP ULE      |<sub>         UGE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >= u1)
+|<sub>   swap u>    |<sub>       SWAP UGT      |<sub>         ULT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <  u1)
 |<sub>    rshift    |<sub>       RSHIFT        |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 >> u
 |<sub>   u rshift   |<sub>   PUSH(u) RSHIFT    |<sub>   PUSH_RSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> u
 |<sub>   1 rshift   |<sub>                     |<sub>      _1RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 1
@@ -847,20 +857,20 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/case.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 
-|<sub> Original   |<sub>     M4 FORTH      |<sub>    Optimization   |<sub>   Data stack               |<sub>  Return address stack |
-| :-------------: | :--------------------: | :--------------------: | :------------------------------ | :------------------------- |
-|<sub>    name    |<sub>    RCALL(name)    |<sub>                   |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
-|<sub>    name    |<sub>                   |<sub>    SCALL(name)    |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
-|<sub>    name    |<sub>                   |<sub>     CALL(name)    |<sub>           ( -- ret )       |<sub> ( -- ) non-recursive  |
-|<sub>   : name   |<sub>RCOLON(name,coment)|<sub>                   |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- ret )            |
-|<sub>   : name   |<sub>                   |<sub>SCOLON(name,coment)|<sub> ( ret x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
-|<sub>   : name   |<sub>                   |<sub> COLON(name,coment)|<sub>       ( ret -- )           |<sub> ( -- ) non-recursive  |
-|<sub>     ;      |<sub>     RSEMICOLON    |<sub>                   |<sub>           ( -- )           |<sub> ( ret -- )            |
-|<sub>     ;      |<sub>                   |<sub>     SSEMICOLON    |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- )                |
-|<sub>     ;      |<sub>                   |<sub>     SEMICOLON     |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
-|<sub>    exit    |<sub>       REXIT       |<sub>                   |<sub>           ( -- )           |<sub> ( ret -- )            |
-|<sub>    exit    |<sub>                   |<sub>       SEXIT       |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- )                |
-|<sub>    exit    |<sub>                   |<sub>        EXIT       |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
+|<sub> Original   |<sub>     M4 FORTH      |<sub>    Optimization    |<sub>   Data stack               |<sub>  Return address stack |
+| :-------------: | :--------------------: | :---------------------: | :------------------------------ | :------------------------- |
+|<sub>    name1   |<sub>    RCALL(name1)   |<sub>                    |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
+|<sub>   : name1  |<sub>RCOLON(name1,coment)|<sub>                   |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- ret )            |
+|<sub>    exit    |<sub>       REXIT       |<sub>                    |<sub>           ( -- )           |<sub> ( ret -- )            |
+|<sub>     ;      |<sub>     RSEMICOLON    |<sub>                    |<sub>           ( -- )           |<sub> ( ret -- )            |
+|<sub>    name2   |<sub>                   |<sub>    SCALL(name2)    |<sub>     ( x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
+|<sub>   : name2  |<sub>                   |<sub>SCOLON(name2,coment)|<sub> ( ret x2 x1 -- ret x2 x1 ) |<sub> ( -- )                |
+|<sub>    exit    |<sub>                   |<sub>        SEXIT       |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- )                |
+|<sub>     ;      |<sub>                   |<sub>     SSEMICOLON     |<sub> ( ret x2 x1 -- x2 x1 )     |<sub> ( -- )                |
+|<sub>    name3   |<sub>                   |<sub>     CALL(name3)    |<sub>           ( -- ret )       |<sub> ( -- ) non-recursive  |
+|<sub>   : name3  |<sub>                   |<sub> COLON(name3,coment)|<sub>       ( ret -- )           |<sub> ( -- ) non-recursive  |
+|<sub>    exit    |<sub>                   |<sub>        EXIT        |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
+|<sub>     ;      |<sub>                   |<sub>     SEMICOLON      |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 
 
 ### LOOP
