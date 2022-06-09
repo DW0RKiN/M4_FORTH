@@ -452,29 +452,41 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 |<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
 | :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
-|<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> TRUE=-1 FALSE=0
 |<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>   `0.` D=    |<sub>   PUSHDOT(`0`) DEQ  |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>  `0` `0` D=  |<sub>  PUSH2(`0`,`0`) DEQ |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
-|<sub>      D<>     |<sub>         DNE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d1 <> d2)
-|<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
 |<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
 |<sub>   `0.` D<    |<sub>   PUSHDOT(`0`) DLT  |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>  `0` `0` D<  |<sub>  PUSH2(`0`,`0`) DLT |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
+|<sub>      D<>     |<sub>         DNE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
+|<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
 |<sub>      D>=     |<sub>         DGE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
-|<sub>      Du<     |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
-|<sub>  2swap Du>   |<sub>     _2SWAP DUGT     |<sub>        DULT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
+|<sub>      D<=     |<sub>         DLE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <= d1)
+|<sub>      D>      |<sub>         DGT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >  d1)
+|<sub>   2swap D=   |<sub>     _2SWAP DEQ      |<sub>         DEQ         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
+|<sub>   2swap D<>  |<sub>     _2SWAP DNE      |<sub>         DNE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
+|<sub>   2swap D>   |<sub>     _2SWAP DGT      |<sub>         DLT         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
+|<sub>   2swap D<=  |<sub>     _2SWAP DLE      |<sub>         DGE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
+|<sub>   2swap D>=  |<sub>     _2SWAP DGE      |<sub>         DLE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <= d1)
+|<sub>   2swap D<   |<sub>     _2SWAP DLT      |<sub>         DGT         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >  d1)
+|<sub>     Du=      |<sub>         DUEQ        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 == ud1)
+|<sub>     Du<>     |<sub>         DUNE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <> ud1)
+|<sub>     Du<      |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <  ud1)
 |<sub>     Du>=     |<sub>         DUGE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
-|<sub>  2swap Du<=  |<sub>     _2SWAP DULE     |<sub>        DUGE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
 |<sub>     Du<=     |<sub>         DULE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <= ud1)
+|<sub>     Du>      |<sub>         DUGT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >  ud1)
+|<sub>  2swap Du=   |<sub>     _2SWAP DUEQ     |<sub>        DUEQ         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 == ud1)
+|<sub>  2swap Du<>  |<sub>     _2SWAP DUNE     |<sub>        DUNE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <> ud1)
+|<sub>  2swap Du>   |<sub>     _2SWAP DUGT     |<sub>        DULT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <  ud1)
+|<sub>  2swap Du<=  |<sub>     _2SWAP DULE     |<sub>        DUGE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
 |<sub>  2swap Du>=  |<sub>     _2SWAP DUGE     |<sub>        DULE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <= ud1)
-|<sub>      Du>     |<sub>         DUGT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 > ud1)
-|<sub>  2swap Du<   |<sub>     _2SWAP DULT     |<sub>        DUGT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 > ud1)
+|<sub>  2swap Du<   |<sub>     _2SWAP DULT     |<sub>        DUGT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >  ud1)
 |<sub>   4dup D=    |<sub>      _4DUP DEQ      |<sub>      _4DUP_DEQ      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 == d1)    |
 |<sub>   4dup D<>   |<sub>      _4DUP DNE      |<sub>      _4DUP_DNE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <> d1)    |
 |<sub>   4dup D<    |<sub>      _4DUP DLT      |<sub>      _4DUP_DLT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <  d1)    |
-|<sub>   4dup D<=   |<sub>                     |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
-|<sub>   4dup D>    |<sub>                     |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
+|<sub>   4dup D<=   |<sub>      _4DUP DLE      |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
+|<sub>   4dup D>    |<sub>      _4DUP DGT      |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
 |<sub>   4dup D>=   |<sub>      _4DUP DGE      |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
 |<sub>   4dup Du<   |<sub>      _4DUP DULT     |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
 |<sub>   4dup Du<=  |<sub>      _4DUP DULE     |<sub>      _4DUP_DULE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <= ud1)  |
@@ -694,9 +706,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>    D=  if    |<sub>    DEQ IF    |<sub>       DEQ_IF       |<sub>    (d1 d2 -- )      |                        |
 |<sub>    D<> if    |<sub>    DNE IF    |<sub>       DNE_IF       |<sub>    (d1 d2 -- )      |                        |
 |<sub>    D<  if    |<sub>    DLT IF    |<sub>       DLT_IF       |<sub>    (d1 d2 -- )      |                        |
-|<sub>    D<= if    |<sub>              |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                        |
-|<sub>    D>  if    |<sub>              |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D<= if    |<sub>    DLE IF    |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D>  if    |<sub>    DGT IF    |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                        |
 |<sub>    D>= if    |<sub>    DGE IF    |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>   Du=  if    |<sub>   DUEQ IF    |<sub>       DEQ_IF       |<sub>  (ud1 ud2 -- )      |                        |
+|<sub>   Du<> if    |<sub>   DUNE IF    |<sub>       DNE_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du<  if    |<sub>   DULT IF    |<sub>      DULT_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du<= if    |<sub>   DULE IF    |<sub>      DULE_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du>  if    |<sub>   DUGT IF    |<sub>      DUGT_IF       |<sub>  (ud1 ud2 -- )      |                        |
