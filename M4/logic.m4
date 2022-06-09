@@ -1533,16 +1533,17 @@ dnl
 dnl Du>=
 dnl 2swap Du<=
 dnl ( ud2 ud1 -- flag )
+dnl (ud2 >= ud1)  -->  (ud2 + 1 > ud1) -->  (0 > ud1 - ud2 - 1) -->  carry if true
 define(DUGE,{
                         ;[12:80]    Du>=   ( ud2 ud1 -- flag ) flag:ud2>=ud1
     pop  BC             ; 1:10      Du>=   lo(ud2)
-    ld    A, C          ; 1:4       Du>=   BC>=HL --> BC-HL>=0 --> no carry if true
-    sub   L             ; 1:4       Du>=   BC>=HL --> BC-HL>=0 --> no carry if true
-    ld    A, B          ; 1:4       Du>=   BC>=HL --> BC-HL>=0 --> no carry if true
-    sbc   A, H          ; 1:4       Du>=   BC>=HL --> BC-HL>=0 --> no carry if true
+    scf                 ; 1:4       Du>=
+    sbc  HL, BC         ; 2:15      Du>=   BC>=HL --> BC+1>HL --> 0>HL-BC-1 --> carry if true
     pop  HL             ; 1:10      Du>=   hi(ud2)
-    sbc  HL, DE         ; 2:15      Du>=   HL>=DE --> HL-DE>=0 --> no carry if true
-    ccf                 ; 1:4       Du>=                       -->    carry if true
+    ld    A, E          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    sbc   A, L          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    ld    A, D          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    sbc   A, H          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
     sbc  HL, HL         ; 2:15      Du>=   set flag
     pop  DE             ; 1:10      Du>=})dnl
 dnl
@@ -1550,19 +1551,17 @@ dnl
 dnl Du<=
 dnl 2swap Du>=
 dnl ( ud2 ud1 -- flag )
+dnl (ud2 <= ud1)  -->  (ud2 < ud1 + 1) -->  (ud2 - ud1 - 1 < 0) -->  carry if true
 define(DULE,{
-                        ;[14:81]    Du<=   ( ud2 ud1 -- flag ) flag:ud2<=ud1
+                        ;[12:80]    Du<=   ( ud2 ud1 -- flag ) flag:ud2<=ud1
     pop  BC             ; 1:10      Du<=   lo(ud2)
-    ld    A, L          ; 1:4       Du<=   BC<=HL --> 0<=HL-BC --> no carry if true
-    sub   C             ; 1:4       Du<=   BC<=HL --> 0<=HL-BC --> no carry if true
-    ld    A, H          ; 1:4       Du<=   BC<=HL --> 0<=HL-BC --> no carry if true
-    sbc   A, B          ; 1:4       Du<=   BC<=HL --> 0<=HL-BC --> no carry if true
-    pop  BC             ; 1:10      Du<=   hi(ud2)
-    ld    A, E          ; 1:4       Du<=   BC<=DE --> 0<=DE-BC --> no carry if true
-    sbc   A, C          ; 1:4       Du<=   BC<=DE --> 0<=DE-BC --> no carry if true
-    ld    A, D          ; 1:4       Du<=   BC<=DE --> 0<=DE-BC --> no carry if true
-    sbc   A, B          ; 1:4       Du<=   BC<=DE --> 0<=DE-BC --> no carry if true
-    ccf                 ; 1:4       Du>=                       -->    carry if true
+    scf                 ; 1:4       Du<=
+    ld    A, C          ; 1:4       Du<=   BC<=HL --> BC<HL+1 --> BC-HL-1<0 --> carry if true
+    sub   L             ; 1:4       Du<=   BC<=HL --> BC<HL+1 --> BC-HL-1<0 --> carry if true
+    ld    A, B          ; 1:4       Du<=   BC<=HL --> BC<HL+1 --> BC-HL-1<0 --> carry if true
+    sbc   A, H          ; 1:4       Du<=   BC<=HL --> BC<HL+1 --> BC-HL-1<0 --> carry if true
+    pop  HL             ; 1:10      Du<=   hi(ud2)
+    sbc  HL, DE         ; 2:15      Du<=   HL<=DE --> HL<DE+1 --> HL-DE-1<0 --> carry if true
     sbc  HL, HL         ; 2:15      Du<=   set flag
     pop  DE             ; 1:10      Du<=})dnl
 dnl
