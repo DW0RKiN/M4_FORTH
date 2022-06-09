@@ -792,16 +792,15 @@ define(LE,{ifelse(TYP_LE,{old},{
     sbc  HL, HL         ; 2:15      <=
     pop  DE             ; 1:10      <=},
 {
-                       ;[13:58]     <=   ( x2 x1 -- flag x2<=x1 )
+                       ;[13:57]     <=   ( x2 x1 -- flag x2<=x1 )
     ld    A, L          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
     sub   E             ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
     ld    A, H          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
     sbc   A, D          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
-    ccf                 ; 1:4       <=                       -->    carry if true
     rra                 ; 1:4       <=   carry --> sign
     xor   H             ; 1:4       <=
     xor   D             ; 1:4       <=
-    add   A, A          ; 1:4       <=   sign --> carry
+    sub  0x80           ; 2:7       <=   sign --> invert carry
     sbc   A, A          ; 1:4       <=   0x00 or 0xff
     ld    H, A          ; 1:4       <=
     ld    L, A          ; 1:4       <=
@@ -843,16 +842,15 @@ define({GE},{ifelse(TYP_GE,{old},{
     sbc  HL, HL         ; 2:15      >=
     pop  DE             ; 1:10      >=},
 {
-                       ;[13:58]     >=   ( x2 x1 -- flag x2>=x1 )
+                       ;[13:57]     >=   ( x2 x1 -- flag x2>=x1 )
     ld    A, E          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
     sub   L             ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
     ld    A, D          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
     sbc   A, H          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
-    ccf                 ; 1:4       >=                       -->    carry if true
     rra                 ; 1:4       >=   carry --> sign
     xor   H             ; 1:4       >=
     xor   D             ; 1:4       >=
-    add   A, A          ; 1:4       >=   sign --> carry
+    sub  0x80           ; 2:7       >=   sign --> invert carry
     sbc   A, A          ; 1:4       >=   0x00 or 0xff
     ld    H, A          ; 1:4       >=
     ld    L, A          ; 1:4       >=
@@ -881,41 +879,42 @@ dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define(ULT,{
-                        ;[7:41]     {u<}
-    ld    A, E          ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       {u<}   DE<HL --> DE-HL<0 --> carry if true
-    sbc  HL, HL         ; 2:15      {u<}
-    pop  DE             ; 1:10      {u<}})dnl
+                        ;[7:41]     u<
+    ld    A, E          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
+    sbc  HL, HL         ; 2:15      u<
+    pop  DE             ; 1:10      u<})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
-dnl unsigned ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
+dnl unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
+dnl unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
 define(ULE,{
-    scf                 ; 1:4       (u) <=
-    ex   DE, HL         ; 1:4       (u) <=
-    sbc  HL, DE         ; 2:15      (u) <=
-    sbc  HL, HL         ; 2:15      (u) <=
-    pop  DE             ; 1:10      (u) <=})dnl
+    scf                 ; 1:4       u<=
+    ex   DE, HL         ; 1:4       u<=
+    sbc  HL, DE         ; 2:15      u<=
+    sbc  HL, HL         ; 2:15      u<=
+    pop  DE             ; 1:10      u<=})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define(UGT,{
-    or    A             ; 1:4       (u) >
-    sbc  HL, DE         ; 2:15      (u) >
-    sbc  HL, HL         ; 2:15      (u) >
-    pop  DE             ; 1:10      (u) >})dnl
+    or    A             ; 1:4       u>
+    sbc  HL, DE         ; 2:15      u>
+    sbc  HL, HL         ; 2:15      u>
+    pop  DE             ; 1:10      u>})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 define(UGE,{
-    scf                 ; 1:4       (u) >=
-    sbc  HL, DE         ; 2:15      (u) >=
-    sbc  HL, HL         ; 2:15      (u) >=
-    pop  DE             ; 1:10      (u) >=})dnl
+    scf                 ; 1:4       u>=
+    sbc  HL, DE         ; 2:15      u>=
+    sbc  HL, HL         ; 2:15      u>=
+    pop  DE             ; 1:10      u>=})dnl
 dnl
 dnl ------------- shifts ----------------
 dnl
