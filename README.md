@@ -461,6 +461,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
 |<sub>   `0.` D<    |<sub>   PUSHDOT(`0`) DLT  |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>  `0` `0` D<  |<sub>  PUSH2(`0`,`0`) DLT |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>      D>=     |<sub>         DGE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
 |<sub>      Du<     |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
 |<sub>  2swap Du>   |<sub>     _2SWAP DUGT     |<sub>        DULT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 < ud1)
 |<sub>     Du>=     |<sub>         DUGE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
@@ -474,7 +475,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>   4dup D<    |<sub>      _4DUP DLT      |<sub>      _4DUP_DLT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <  d1)    |
 |<sub>   4dup D<=   |<sub>                     |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
 |<sub>   4dup D>    |<sub>                     |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
-|<sub>   4dup D>=   |<sub>                     |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
+|<sub>   4dup D>=   |<sub>      _4DUP DGE      |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
 |<sub>   4dup Du<   |<sub>      _4DUP DULT     |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
 |<sub>   4dup Du<=  |<sub>      _4DUP DULE     |<sub>      _4DUP_DULE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <= ud1)  |
 |<sub>   4dup Du>   |<sub>      _4DUP DUGT     |<sub>      _4DUP_DUGT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >  ud1)  |
@@ -695,7 +696,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>    D<  if    |<sub>    DLT IF    |<sub>       DLT_IF       |<sub>    (d1 d2 -- )      |                        |
 |<sub>    D<= if    |<sub>              |<sub>       DLE_IF       |<sub>    (d1 d2 -- )      |                        |
 |<sub>    D>  if    |<sub>              |<sub>       DGT_IF       |<sub>    (d1 d2 -- )      |                        |
-|<sub>    D>= if    |<sub>              |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                        |
+|<sub>    D>= if    |<sub>    DGE IF    |<sub>       DGE_IF       |<sub>    (d1 d2 -- )      |                        |
 |<sub>   Du<  if    |<sub>   DULT IF    |<sub>      DULT_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du<= if    |<sub>   DULE IF    |<sub>      DULE_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du>  if    |<sub>   DUGT IF    |<sub>      DUGT_IF       |<sub>  (ud1 ud2 -- )      |                        |

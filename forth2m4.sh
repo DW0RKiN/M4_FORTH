@@ -480,13 +480,19 @@ do
 
     sed 's#^\([^;{]*\s\|^\)[Dd]=\(\s\|$\)#\1DEQ\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Dd]<>\(\s\|$\)#\1DNE\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Dd]<\(\s\|$\)#\1DLT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Dd]>=\(\s\|$\)#\1DGE\2#g' |
+
     sed 's#^\([^;{]*\s\|^\)[Dd]0=\(\s\|$\)#\1D0EQ\2#gi' |
     sed 's#^\([^;{]*\s\|^\)[-+]*0\+\s\+[-+]*0\+\s\+DEQ\(\s\|$\)#\1D0EQ\2#g' |
     sed 's#^\([^;{]*\s\|^\)[-+]*0\+\.\s\+DEQ\(\s\|$\)#\1D0EQ\2#g' |
-    sed 's#^\([^;{]*\s\|^\)[Dd]<\(\s\|$\)#\1DLT\2#g' |
+
     sed 's#^\([^;{]*\s\|^\)[Dd]0<\(\s\|$\)#\1D0LT\2#g' |
     sed 's#^\([^;{]*\s\|^\)[-+]*0\+\s\+[-+]*0\+\s\+DLT\(\s\|$\)#\1D0LT\2#g' |
     sed 's#^\([^;{]*\s\|^\)[-+]*0\+\.\s\+DLT\(\s\|$\)#\1D0LT\2#g' |
+
+    sed 's#^\([^;{]*\s\|^\)[Dd][Uu]=\(\s\|$\)#\1DUEQ\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Dd][Uu]<>\(\s\|$\)#\1DUNE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Dd][Uu]<\(\s\|$\)#\1DULT\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Dd][Uu]<=\(\s\|$\)#\1DULE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Dd][Uu]>=\(\s\|$\)#\1DUGE\2#g' |
@@ -495,29 +501,29 @@ do
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DEQ\(\s\|$\)#\1_4DUP_DEQ\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DNE\(\s\|$\)#\1_4DUP_DNE\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DLT\(\s\|$\)#\1_4DUP_DLT\2#g' |
+    sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DGE\(\s\|$\)#\1_4DUP_DGE\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DULT\(\s\|$\)#\1_4DUP_DULT\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DULE\(\s\|$\)#\1_4DUP_DULE\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DUGT\(\s\|$\)#\1_4DUP_DUGT\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+DUGE\(\s\|$\)#\1_4DUP_DUGE\2#g' |
 
-# zmenit az dodelam D<= D> D>=
+# zmenit az dodelam D<= D>
 # z "_4DUP D>" na "_4DUP DGT"
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+[Dd]<=\(\s\|$\)#\1_4DUP_DLE\2#g' |
     sed 's#^\([^;{]*\s\|^\)_4DUP\s\+[Dd]>\(\s\|$\)#\1_4DUP_DGT\2#g' |
-    sed 's#^\([^;{]*\s\|^\)_4DUP\s\+[Dd]>=\(\s\|$\)#\1_4DUP_DGE\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)DEQ\s\+IF\(\s\|$\)#\1DEQ_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)DNE\s\+IF\(\s\|$\)#\1DNE_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)DLT\s\+IF\(\s\|$\)#\1DLT_IF\2#g' |
+    sed 's#^\([^;{]*\s\|^\)DGE\s\+IF\(\s\|$\)#\1DGE_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)DULT\s\+IF\(\s\|$\)#\1DULT_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)DULE\s\+IF\(\s\|$\)#\1DULE_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)DUGT\s\+IF\(\s\|$\)#\1DUGT_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)DUGE\s\+IF\(\s\|$\)#\1DUGE_IF\2#g' |
-# zmenit az dodelam D<= D> D>=
+# zmenit az dodelam D<= D>
 # z "D> IF" na "DGT IF"
     sed 's#^\([^;{]*\s\|^\)[Dd]<=\s\+IF\(\s\|$\)#\1DLE_IF\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Dd]>\s\+IF\(\s\|$\)#\1DGT_IF\2#g' |
-    sed 's#^\([^;{]*\s\|^\)[Dd]>=\s\+IF\(\s\|$\)#\1DGE_IF\2#g' |
 
     sed 's#^\([^;{]*\s\|^\)s>f\(\s\|$\)#\1S2F\2#gi' |
     sed 's#^\([^;{]*\s\|^\)u>f\(\s\|$\)#\1U2F\2#gi' |

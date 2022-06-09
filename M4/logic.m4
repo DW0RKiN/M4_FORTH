@@ -1474,7 +1474,7 @@ dnl D<
 dnl ( d2 d1 -- flag )
 dnl signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
 define(DLT,{ifelse(TYP_DOUBLE,{fast},{
-                       ;[17:94]     D<   ( d2 d1 -- flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+                       ;[17:93]     D<   ( d2 d1 -- flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<   lo_2
     ld    A, C          ; 1:4       D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -1490,7 +1490,7 @@ define(DLT,{ifelse(TYP_DOUBLE,{fast},{
     xor   D             ; 1:4       D<
     add   A, A          ; 1:4       D<                                   --> carry if true
     sbc  HL, HL         ; 2:15      D<   set flag
-    push DE             ; 1:11      D<},
+    pop  DE             ; 1:10      D<},
 {define({USE_DLT},{})
                         ;[4:138]    D<   ( d2 d1 -- flag )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D<   BC = lo_2
@@ -1528,6 +1528,28 @@ define(DULT,{
     sbc  HL, DE         ; 2:15      Du<   HL<DE --> HL-DE<0 --> carry if true
     sbc  HL, HL         ; 2:15      Du<   set flag
     pop  DE             ; 1:10      Du<})dnl
+dnl
+dnl
+dnl D>=
+dnl 2swap D<=
+dnl ( d2 d1 -- flag )
+dnl (d2 >= d1)  -->  (d2 + 1 > d1) -->  (0 > d1 - d2 - 1) -->  carry if true
+define(DGE,{
+                        ;[16:96]    D>=   ( d2 d1 -- flag ) flag:d2>=d1
+    pop  BC             ; 1:10      D>=   lo(ud2)
+    scf                 ; 1:4       D>=
+    sbc  HL, BC         ; 2:15      D>=   BC>=HL --> BC+1>HL --> 0>HL-BC-1 --> carry if true
+    pop  HL             ; 1:10      D>=   hi(ud2)
+    ld    A, E          ; 1:4       D>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    sbc   A, L          ; 1:4       D>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    ld    A, D          ; 1:4       D>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    sbc   A, H          ; 1:4       D>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
+    rra                 ; 1:4       D>=                                    -->  sign if true
+    xor   H             ; 1:4       D>=
+    xor   D             ; 1:4       D>=
+    add   A, A          ; 1:4       D>=                                    --> carry if true
+    sbc  HL, HL         ; 2:15      D>=   set flag
+    pop  DE             ; 1:10      D>=})dnl
 dnl
 dnl
 dnl Du>=
