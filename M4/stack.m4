@@ -531,6 +531,18 @@ __{}eval((TEMP3 == TEMP1) && (TEMP2 == TEMP0)),{1},{dnl
 __{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, L          ; 1:4       pushdot($1)
 __{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
+__{}eval((TEMP3 == TEMP1) && (TEMP3 == TEMP0)),{1},{dnl
+__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
+__{}    ld    L, D          ; 1:4       pushdot($1)
+__{}    ld    H, D          ; 1:4       pushdot($1)   hi word},
+__{}eval((TEMP2 == TEMP1) && (TEMP2 == TEMP0)),{1},{dnl
+__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
+__{}    ld    L, E          ; 1:4       pushdot($1)
+__{}    ld    H, E          ; 1:4       pushdot($1)   hi word},
+__{}eval((TEMP3 == TEMP0) && (TEMP2 == TEMP1)),{1},{dnl
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld    E, H          ; 1:4       pushdot($1)
+__{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
 __{}{dnl
 __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
 __{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word})})}){}dnl
