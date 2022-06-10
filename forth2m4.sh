@@ -780,6 +780,20 @@ do
     sed 's#^\([^;{]*\s\|^\)ULE\s\+WHILE\(\s\|$\)#\1ULE_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)UGT\s\+WHILE\(\s\|$\)#\1UGT_WHILE\2#gi' |
     sed 's#^\([^;{]*\s\|^\)UGE\s\+WHILE\(\s\|$\)#\1UGE_WHILE\2#gi' |
+    
+    sed 's#^\([^;{]*\s\|^\)DEQ\s\+WHILE\(\s\|$\)#\1DEQ_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DNE\s\+WHILE\(\s\|$\)#\1DNE_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DLT\s\+WHILE\(\s\|$\)#\1DLT_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DLE\s\+WHILE\(\s\|$\)#\1DLE_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DGT\s\+WHILE\(\s\|$\)#\1DGT_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)DGE\s\+WHILE\(\s\|$\)#\1DGE_WHILE\2#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)_4DUP_DEQ\s\+WHILE\(\s\|$\)#\1_4DUP_DEQ_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_4DUP_DNE\s\+WHILE\(\s\|$\)#\1_4DUP_DNE_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_4DUP_DLT\s\+WHILE\(\s\|$\)#\1_4DUP_DLT_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_4DUP_DLE\s\+WHILE\(\s\|$\)#\1_4DUP_DLE_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_4DUP_DGT\s\+WHILE\(\s\|$\)#\1_4DUP_DGT_WHILE\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_4DUP_DGE\s\+WHILE\(\s\|$\)#\1_4DUP_DGE_WHILE\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+EQ_WHILE\(\s\|$\)#\1DUP_PUSH_EQ_WHILE(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+NE_WHILE\(\s\|$\)#\1DUP_PUSH_NE_WHILE(\2)\3#gi' |
