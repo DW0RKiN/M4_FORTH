@@ -1743,8 +1743,8 @@ define({_4DUP_DNE},{ifelse(TYP_DOUBLE,{fast},{
     push DE             ; 1:11      4dup D<>   h2 l2 h1    . h1 l1
     push AF             ; 1:11      4dup D<>   h2 l2 h1 l2 . h1 l1
     ex   DE, HL         ; 1:4       4dup D<>   h2 l2 h1 l2 . l1 h1
-    xor   A             ; 1:4       4dup D<>   h2 l2 h1 l2 . l1 h1  hi(d1)-hi(d2)
-    sbc  HL, BC         ; 2:15      4dup D<>   h2 l2 h1 l2 . l1 --
+    xor   A             ; 1:4       4dup D<>   h2 l2 h1 l2 . l1 h1
+    sbc  HL, BC         ; 2:15      4dup D<>   h2 l2 h1 l2 . l1 --  hi(d1)-hi(d2)
     pop  HL             ; 1:10      4dup D<>   h2 l2 h1    . l1 l2
     jr   nz, $+6        ; 2:7/12    4dup D<>   h2 l2 h1    . l1 l2
     sbc  HL, DE         ; 2:15      4dup D<>   h2 l2 h1    . l1 --  lo(d2)-lo(d1)
