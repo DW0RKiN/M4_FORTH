@@ -226,45 +226,57 @@ Support for fast multiplication or division by a constant is here:
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
-|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization  |<sub>  Data stack               |
-| :-------------: | :---------------: | :-----------------: | :----------------------------- |
-|<sub>     +      |<sub>      ADD     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>   `3` +    |<sub>              |<sub>  PUSH_ADD(`3`) |<sub>       ( x -- x+`3` )      |
-|<sub>   dup +    |<sub>              |<sub>     DUP_ADD    |<sub>       ( x -- x+x )        |
-|<sub>   over +   |<sub>              |<sub>    OVER_ADD    |<sub>   ( x2 x1 -- x2 x1+x2  )  |
-|<sub>     -      |<sub>      SUB     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>   `3` -    |<sub>              |<sub>  PUSH_SUB(`3`) |<sub>       ( x -- x-`3` )      |
-|<sub>   over -   |<sub>              |<sub>    OVER_SUB    |<sub>   ( x2 x1 -- x2 x1-x2  )  |
-|<sub>    max     |<sub>      MAX     |<sub>                |<sub>   ( x2 x1 -- max )        |
-|<sub>  `3` max   |<sub> PUSH_MAX(`3`)|<sub>                |<sub>      ( x1 -- max )        |
-|<sub>    min     |<sub>      MIN     |<sub>                |<sub>   ( x2 x1 -- min )        |
-|<sub>  `3` min   |<sub> PUSH_MIN(`3`)|<sub>                |<sub>      ( x1 -- min )        |
-|<sub>   negate   |<sub>     NEGATE   |<sub>                |<sub>      ( x1 -- -x1 )        |
-|<sub>    abs     |<sub>      ABS     |<sub>                |<sub>       ( n -- u )          |
-|<sub>     *      |<sub>      MUL     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>     /      |<sub>      DIV     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>    mod     |<sub>      MOD     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>    /mod    |<sub>    DIVMOD    |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>     u*     |<sub>      MUL     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>  `+12` *   |<sub>              |<sub> PUSH_MUL(`12`) |<sub>   ( x2 x1 -- x )          |
-|<sub>     u/     |<sub>     UDIV     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>    umod    |<sub>     UMOD     |<sub>                |<sub>   ( x2 x1 -- x )          |
-|<sub>    u/mod   |<sub>    UDIVMOD   |<sub>                |<sub>   ( x2 x1 -- rem quot )   |
-|<sub>     1+     |<sub>    _1ADD     |<sub>                |<sub>      ( x1 -- x1++ )       |
-|<sub>     1-     |<sub>    _1SUB     |<sub>                |<sub>      ( x1 -- x1-- )       |
-|<sub>     2+     |<sub>    _2ADD     |<sub>                |<sub>      ( x1 -- x1+2 )       |
-|<sub>     2-     |<sub>    _2SUB     |<sub>                |<sub>      ( x1 -- x1-2 )       |
-|<sub>     2*     |<sub>    _2MUL     |<sub>                |<sub>      ( x1 -- x1*2 )       |
-|<sub>     2/     |<sub>    _2DIV     |<sub>                |<sub>      ( x1 -- x1/2 )       |
-|<sub>    256*    |<sub>   _256MUL    |<sub>                |<sub>      ( x1 -- x1*256 )     |
-|<sub>    256/    |<sub>   _256DIV    |<sub>                |<sub>      ( x1 -- x1/256 )     |
-|<sub>    s>d     |<sub>    S_TO_D    |<sub>                |<sub>      ( x1 -- 0 x1 )       |
-|<sub>     m+     |<sub>     MADD     |<sub>                |<sub>   ( d2 x1 -- d2+x1 )      |
-|<sub>     m*     |<sub>     MMUL     |<sub>                |<sub>   ( x2 x1 -- d32 )        |
-|<sub>     um*    |<sub>     UMMUL    |<sub>                |<sub>   ( u2 u1 -- ud )         |
-|<sub>   fm/mod   |<sub>   FMDIVMOD   |<sub>                |<sub> ( hi lo u -- rem quot )   |
-|<sub>   sm/rem   |<sub>   SMDIVREM   |<sub>                |<sub> ( hi lo u -- rem quot )   |
-|<sub>   um/mod   |<sub>   UMDIVMOD   |<sub>                |<sub> ( hi lo u -- rem quot )   |
+    x  ...   signed 16-bit number
+    s  ...   signed 16-bit number
+    u  ... unsigned 16-bit number
+    d  ...   signed 32-bit number = hi lo
+    ud ... unsigned 32-bit number = hi lo
+    hi ... high(d)= 16-bit number
+    lo ...  low(d)= 16-bit number
+    f  ... floating 16-bit number (Danagy format)
+    r  ... floating 40-bit number (ZX Spectrum format)
+    
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
+| :-------------: | :---------------: | :------------------: | :----------------------------- |
+|<sub>     +      |<sub>      ADD     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>   `3` +    |<sub>              |<sub>  PUSH_ADD(`3`)  |<sub>       ( x -- x+`3` )      |
+|<sub>   dup +    |<sub>              |<sub>     DUP_ADD     |<sub>       ( x -- x+x )        |
+|<sub>   dup +    |<sub>              |<sub>      _2MUL      |<sub>       ( x -- 2*x )        |
+|<sub>  dup `3` + |<sub>              |<sub>DUP_PUSH_ADD(`3`)|<sub>       ( x -- x x+`3` )    |
+|<sub>   over +   |<sub>              |<sub>     OVER_ADD    |<sub>   ( x2 x1 -- x2 x1+x2  )  |
+|<sub>     -      |<sub>      SUB     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>   `3` -    |<sub>              |<sub>  PUSH_SUB(`3`)  |<sub>       ( x -- x-`3` )      |
+|<sub>   over -   |<sub>              |<sub>     OVER_SUB    |<sub>   ( x2 x1 -- x2 x1-x2  )  |
+|<sub>    max     |<sub>      MAX     |<sub>                 |<sub>   ( x2 x1 -- max )        |
+|<sub>  `3` max   |<sub> PUSH_MAX(`3`)|<sub>                 |<sub>      ( x1 -- max )        |
+|<sub>    min     |<sub>      MIN     |<sub>                 |<sub>   ( x2 x1 -- min )        |
+|<sub>  `3` min   |<sub> PUSH_MIN(`3`)|<sub>                 |<sub>      ( x1 -- min )        |
+|<sub>   negate   |<sub>     NEGATE   |<sub>                 |<sub>      ( x1 -- -x1 )        |
+|<sub>    abs     |<sub>      ABS     |<sub>                 |<sub>       ( n -- u )          |
+|<sub>     *      |<sub>      MUL     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>     /      |<sub>      DIV     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>    mod     |<sub>      MOD     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>    /mod    |<sub>    DIVMOD    |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>     u*     |<sub>      MUL     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>  `+12` *   |<sub>              |<sub>  PUSH_MUL(`12`) |<sub>   ( x2 x1 -- x )          |
+|<sub>     u/     |<sub>     UDIV     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>    umod    |<sub>     UMOD     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>    u/mod   |<sub>    UDIVMOD   |<sub>                 |<sub>   ( x2 x1 -- rem quot )   |
+|<sub>     1+     |<sub>    _1ADD     |<sub>                 |<sub>       ( x -- x++ )       |
+|<sub>     1-     |<sub>    _1SUB     |<sub>                 |<sub>       ( x -- x-- )       |
+|<sub>     2+     |<sub>    _2ADD     |<sub>                 |<sub>       ( x -- x+2 )       |
+|<sub>     2-     |<sub>    _2SUB     |<sub>                 |<sub>       ( x -- x-2 )       |
+|<sub>     2*     |<sub>    _2MUL     |<sub>                 |<sub>       ( x -- x*2 )       |
+|<sub>     2/     |<sub>    _2DIV     |<sub>                 |<sub>       ( x -- x/2 )       |
+|<sub>    256*    |<sub>   _256MUL    |<sub>                 |<sub>       ( x -- x*256 )     |
+|<sub>    256/    |<sub>   _256DIV    |<sub>                 |<sub>       ( x -- x/256 )     |
+|<sub>    s>d     |<sub>    S_TO_D    |<sub>                 |<sub>       ( x -- 0 x )       |
+|<sub>     m+     |<sub>     MADD     |<sub>                 |<sub>   ( d2 x1 -- d2+x1 )      |
+|<sub>     m*     |<sub>     MMUL     |<sub>                 |<sub>   ( x2 x1 -- d32 )        |
+|<sub>     um*    |<sub>     UMMUL    |<sub>                 |<sub>   ( u2 u1 -- ud )         |
+|<sub>   fm/mod   |<sub>   FMDIVMOD   |<sub>                 |<sub> ( hi lo u -- rem quot )   |
+|<sub>   sm/rem   |<sub>   SMDIVREM   |<sub>                 |<sub> ( hi lo u -- rem quot )   |
+|<sub>   um/mod   |<sub>   UMDIVMOD   |<sub>                 |<sub> ( hi lo u -- rem quot )   |
 
 ![Example of how to check the word PUSH_ADD in the terminal using the bash script check_word.sh](PUSH_ADD_check.png)
 
