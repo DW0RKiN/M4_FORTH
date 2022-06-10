@@ -5,7 +5,14 @@ if test "$file" = "" ; then
     printf "$0 error: FIRST.M4 not found!\\n"
     exit 1
 fi
-printf "; vvv\ninclude(\`$file')dnl\n; ^^^ ${@}" | m4 | awk '
+i=""
+j=""
+if test "$1" = "--check" ; then
+   shift
+   i="; vvv\n"
+   j="dnl\n; ^^^"
+fi
+printf "${i}include(\`$file')${j} ${@}" | m4 | awk '
 BEGIN {
     sum_bytes=0; 
     sum_clock=0} 
