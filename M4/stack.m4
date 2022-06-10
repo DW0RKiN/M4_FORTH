@@ -515,8 +515,25 @@ ifelse(index({$1},{(}),{0},{dnl
 eval($1),{},{dnl
     .error {$0}($@): M4 does not know $1 parameter value!},
 {dnl
-    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)
-    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)})})dnl
+__{}define({TEMP3},eval((($1)>>24) & 0xff)){}dnl
+__{}define({TEMP2},eval((($1)>>16) & 0xff)){}dnl
+__{}define({TEMP1},eval((($1)>> 8) & 0xff)){}dnl
+__{}define({TEMP0},eval( ($1)      & 0xff)){}dnl
+__{}ifelse(eval((TEMP3 == TEMP0) && (TEMP2 == TEMP0)),{1},{dnl
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld    E, L          ; 1:4       pushdot($1)
+__{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
+__{}eval((TEMP3 == TEMP1) && (TEMP2 == TEMP1)),{1},{dnl
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld    E, H          ; 1:4       pushdot($1)
+__{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
+__{}eval((TEMP3 == TEMP1) && (TEMP2 == TEMP0)),{1},{dnl
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld    E, L          ; 1:4       pushdot($1)
+__{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
+__{}{dnl
+__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word})})}){}dnl
 dnl
 dnl
 dnl

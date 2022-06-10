@@ -15,23 +15,23 @@ define({PUSH_ADD},{ifelse(eval($1),{},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
-__{}eval(($1)+3*256),{0},{
+__{}eval((($1)+3*256) & 0xffff),{0},{
 __{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    dec  H              ; 1:4       $1 +
 __{}    dec  H              ; 1:4       $1 +},
-__{}eval(($1)+2*256),{0},{
+__{}eval((($1)+2*256) & 0xffff),{0},{
 __{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    dec  H              ; 1:4       $1 +},
-__{}eval(($1)+1*256),{0},{
+__{}eval((($1)+1*256) & 0xffff),{0},{
 __{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
-__{}eval(($1)+3),{0},{
+__{}eval((($1)+    3) & 0xffff),{0},{
 __{}    dec  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    dec  HL             ; 1:6       $1 +
 __{}    dec  HL             ; 1:6       $1 +},
-__{}eval(($1)+2),{0},{
+__{}eval((($1)+    2) & 0xffff),{0},{
 __{}    dec  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    dec  HL             ; 1:6       $1 +},
-__{}eval(($1)+1),{0},{
+__{}eval((($1)+    1) & 0xffff),{0},{
 __{}    dec  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
 __{}eval(($1) & 0xFFFF),{0},{
 __{}                        ;           $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
@@ -73,27 +73,27 @@ __{}    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})  
 __{}    add  HL, DE         ; 1:11      dup $1 +},
 {
 __{}    push DE             ; 1:11      dup $1 +   ( x -- x x+{}format({0x%04X},eval(($1) & 0xFFFF)) ){}ifelse(dnl
-__{}eval(($1)+3*256),{0},{
+__{}eval((($1)+3*256) & 0xffff),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
 __{}__{}    dec   H             ; 1:4       dup $1 +
 __{}__{}    dec   H             ; 1:4       dup $1 +
 __{}__{}    dec   H             ; 1:4       dup $1 +},
-__{}eval(($1)+2*256),{0},{
+__{}eval((($1)+2*256) & 0xffff),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
 __{}__{}    dec   H             ; 1:4       dup $1 +
 __{}__{}    dec   H             ; 1:4       dup $1 +},
-__{}eval(($1)+1*256),{0},{
+__{}eval((($1)+1*256) & 0xffff),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
 __{}__{}    dec   H             ; 1:4       dup $1 +},
-__{}eval(($1)+2),{0},{
+__{}eval((($1)+    2) & 0xffff),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
 __{}__{}    dec  HL             ; 1:6       dup $1 +
 __{}__{}    dec  HL             ; 1:6       dup $1 +},
-__{}eval(($1)+1),{0},{
+__{}eval((($1)+    1) & 0xffff),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
 __{}__{}    dec  HL             ; 1:6       dup $1 +},
@@ -183,23 +183,23 @@ __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 -
 __{}    or    A             ; 1:4       $1 -
 __{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
-__{}eval(($1)+3*256),{0},{
+__{}eval((($1)+3*256) & 0xffff),{0},{
 __{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    inc  H              ; 1:4       $1 -
 __{}    inc  H              ; 1:4       $1 -},
-__{}eval(($1)+2*256),{0},{
+__{}eval((($1)+2*256) & 0xffff),{0},{
 __{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    inc  H              ; 1:4       $1 -},
-__{}eval(($1)+1*256),{0},{
+__{}eval((($1)+1*256) & 0xffff),{0},{
 __{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
-__{}eval(($1)+3),{0},{
+__{}eval((($1)+    3) & 0xffff),{0},{
 __{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    inc  HL             ; 1:6       $1 -
 __{}    inc  HL             ; 1:6       $1 -},
-__{}eval(($1)+2),{0},{
+__{}eval((($1)+    2) & 0xffff),{0},{
 __{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
 __{}    inc  HL             ; 1:6       $1 -},
-__{}eval(($1)+1),{0},{
+__{}eval((($1)+    1) & 0xffff),{0},{
 __{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
 __{}eval((-($1)) & 0xFFFF),{0},{
 __{}                        ;           $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},

@@ -1405,7 +1405,7 @@ dnl ( d -- f )
 dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
 dnl 0 if 32-bit number not equal to zero, -1 if equal
 define(D0EQ,{ifelse(TYP_D0EQ,{small},{
-                        ;[8:54]     D0=   ( d_hi d_lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
+                        ;[8:54]     D0=   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
     add  HL, DE         ; 1:11      D0=   carry: 0    1
     sbc   A, A          ; 1:4       D0=          0x00 0xff
     or    H             ; 1:4       D0=          H    0xff
@@ -1414,7 +1414,7 @@ define(D0EQ,{ifelse(TYP_D0EQ,{small},{
     sbc  HL, HL         ; 2:15      D0=   set flag D == 0
     pop   DE            ; 1:10      D0=},
 {
-                        ;[9:48]     D0=   ( d_hi d_lo -- flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
+                        ;[9:48]     D0=   ( hi lo -- flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
     ld    A, D          ; 1:4       D0=
     or    E             ; 1:4       D0=
     or    H             ; 1:4       D0=
