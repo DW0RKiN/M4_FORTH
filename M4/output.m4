@@ -552,33 +552,169 @@ MIN_32:                ;[21:104/129]min_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -
 dnl
 dnl
 dnl
-ifdef({USE_DLT},{
+ifdef({USE_FCE_4DUP_DLT},{define({USE_FCE_DLT},{yes})
 ;==============================================================================
-; D<
-; ( d2 d1 -- flag ) --> BC:lo_2 ( hi_2 ret DE:hi_1 HL:lo_1 -- flag )
-; In: (SP+2) = hi_2, (SP) = ret, BC = lo_2, DE = hi_1, HL = lo_1
-; Out: DE = (SP+4), HL = flag (d2 < d1)
-LT_32:                  ;[20:111]   lt_32   ( hi_2 ret BC:lo_2 DE:hi_1 HL:lo_1 -- flag )
-    ld    A, C          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    sub   L             ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    ld    A, B          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    sbc   A, H          ; 1:4       lt_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    pop  BC             ; 1:10      lt_32   load ret
-    pop  HL             ; 1:10      lt_32   HL = hi_2
-    ld    A, L          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    sbc   A, E          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    ld    A, H          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    sbc   A, D          ; 1:4       lt_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
-    rra                 ; 1:4       lt_32   carry --> sign
-    xor   H             ; 1:4       lt_32
-    xor   D             ; 1:4       lt_32
-    add   A, A          ; 1:4       lt_32   sign --> carry
-    sbc   A, A          ; 1:4       lt_32   0x00 or 0xff
-    ld    H, A          ; 1:4       lt_32
-    ld    L, A          ; 1:4       lt_32
-    pop  DE             ; 1:10      lt_32
-    push BC             ; 1:11      lt_32   save ret
-    ret                 ; 1:10      lt_32}){}dnl
+; ( d2 ret d1 -- d2 d1 )
+;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
+; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+FCE_4DUP_DLT:           ;[9:75]     fce_4dup_dlt   ( d2 ret d1 -- d2 d1 )
+    pop  AF             ; 1:10      fce_4dup_dlt   h2 l2 .. ..  AF = ret
+    pop  BC             ; 1:10      fce_4dup_dlt   h2 .. .. ..  BC = l2
+    ex   AF, AF'        ; 1:4       fce_4dup_dlt   h2 .. .. ..
+    pop  AF             ; 1:10      fce_4dup_dlt   .. .. .. ..  AF'= h2
+    push AF             ; 1:11      fce_4dup_dlt   h2 .. .. ..
+    push BC             ; 1:11      fce_4dup_dlt   h2 l2 .. ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dlt   h2 l2 .. ..
+    push AF             ; 1:11      fce_4dup_dlt   h2 l2 rt ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dlt   h2 l2 rt ..  AF = h2
+    ; fall to fce_dlt}){}dnl
+ifdef({USE_FCE_DLT},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; set carry if d2>d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+FCE_DLT:               ;[15:79]     fce_dlt   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1
+    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  lo(d2)<lo(d1) --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  lo(d2)<lo(d1) --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  lo(d2)<lo(d1) --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  lo(d2)<lo(d1) --> BC<HL --> BC-HL<0 --> carry if true
+    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1
+    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  hi(d2)<hi(d1) --> BC<DE --> BC-DE<0 --> carry if true
+    sbc   A, E          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  hi(d2)<hi(d1) --> BC<DE --> BC-DE<0 --> carry if true
+    ld    A, B          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  hi(d2)<hi(d1) --> BC<DE --> BC-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  hi(d2)<hi(d1) --> BC<DE --> BC-DE<0 --> carry if true
+    rra                 ; 1:4       fce_dlt   h2 l2 rt .. h1 l1                                      --> sign  if true
+    xor   B             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+    xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1                                      --> carry if true
+    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_FCE_4DUP_DGT},{define({USE_FCE_DGT},{yes})
+;==============================================================================
+; ( d2 ret d1 -- d2 d1 )
+;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
+; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+FCE_4DUP_DGT:           ;[9:75]     fce_4dup_dgt   ( d2 ret d1 -- d2 d1 )
+    pop  AF             ; 1:10      fce_4dup_dgt   h2 l2 .. ..  AF = ret
+    pop  BC             ; 1:10      fce_4dup_dgt   h2 .. .. ..  BC = l2
+    ex   AF, AF'        ; 1:4       fce_4dup_dgt   h2 .. .. ..
+    pop  AF             ; 1:10      fce_4dup_dgt   .. .. .. ..  AF'= h2
+    push AF             ; 1:11      fce_4dup_dgt   h2 .. .. ..
+    push BC             ; 1:11      fce_4dup_dgt   h2 l2 .. ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dgt   h2 l2 .. ..
+    push AF             ; 1:11      fce_4dup_dgt   h2 l2 rt ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dgt   h2 l2 rt ..  AF = h2
+    ; fall to fce_dgt}){}dnl
+ifdef({USE_FCE_DGT},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; set carry if d2>d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+FCE_DGT:               ;[15:79]     fce_dgt   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1
+    ld    A, L          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  lo(d2)>lo(d1) --> BC>HL --> 0>HL-BC --> carry if true
+    sub   C             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  lo(d2)>lo(d1) --> BC>HL --> 0>HL-BC --> carry if true
+    ld    A, H          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  lo(d2)>lo(d1) --> BC>HL --> 0>HL-BC --> carry if true
+    sbc   A, B          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  lo(d2)>lo(d1) --> BC>HL --> 0>HL-BC --> carry if true
+    pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
+    ld    A, E          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  hi(d2)>hi(d1) --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, C          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  hi(d2)>hi(d1) --> BC>DE --> 0>DE-BC --> carry if true
+    ld    A, D          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  hi(d2)>hi(d1) --> BC>DE --> 0>DE-BC --> carry if true
+    sbc   A, B          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  hi(d2)>hi(d1) --> BC>DE --> 0>DE-BC --> carry if true
+    rra                 ; 1:4       fce_dgt   h2 l2 rt .. h1 l1                                      --> sign  if true
+    xor   B             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1
+    xor   D             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1
+    add   A, A          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1                                      --> carry if true
+    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_FCE_4DUP_DLE},{define({USE_FCE_DLE},{yes})
+;==============================================================================
+; ( d2 ret d1 -- d2 d1 )
+;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
+; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+FCE_4DUP_DLE:           ;[9:75]     fce_4dup_dle   ( d2 ret d1 -- d2 d1 )
+    pop  AF             ; 1:10      fce_4dup_dle   h2 l2 .. ..  AF = ret
+    pop  BC             ; 1:10      fce_4dup_dle   h2 .. .. ..  BC = l2
+    ex   AF, AF'        ; 1:4       fce_4dup_dle   h2 .. .. ..
+    pop  AF             ; 1:10      fce_4dup_dle   .. .. .. ..  AF'= h2
+    push AF             ; 1:11      fce_4dup_dle   h2 .. .. ..
+    push BC             ; 1:11      fce_4dup_dle   h2 l2 .. ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dle   h2 l2 .. ..
+    push AF             ; 1:11      fce_4dup_dle   h2 l2 rt ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dle   h2 l2 rt ..  AF = h2
+    ; fall to fce_dle}){}dnl
+ifdef({USE_FCE_DLE},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; set carry if d2>d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+FCE_DLE:               ;[16:83]     fce_dle   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_dle   h2 l2 rt h2 h1 l1
+    scf                 ; 1:4       fce_dle   h2 l2 rt h2 h1 l1  set carry
+    ld    A, C          ; 1:4       fce_dle   h2 l2 rt h2 h1 l1  lo(d2)<=lo(d1) --> BC-1<HL --> BC-HL-1<0 --> carry if true
+    sbc   A, L          ; 1:4       fce_dle   h2 l2 rt h2 h1 l1  lo(d2)<=lo(d1) --> BC-1<HL --> BC-HL-1<0 --> carry if true
+    ld    A, B          ; 1:4       fce_dle   h2 l2 rt h2 h1 l1  lo(d2)<=lo(d1) --> BC-1<HL --> BC-HL-1<0 --> carry if true
+    sbc   A, H          ; 1:4       fce_dle   h2 l2 rt h2 h1 l1  lo(d2)<=lo(d1) --> BC-1<HL --> BC-HL-1<0 --> carry if true
+    pop  BC             ; 1:10      fce_dle   h2 l2 rt .. h1 l1
+    ld    A, C          ; 1:4       fce_dle   h2 l2 rt .. h1 l1  hi(d2)<=hi(d1) --> BC<DE --> BC-DE<0     --> carry if true
+    sbc   A, E          ; 1:4       fce_dle   h2 l2 rt .. h1 l1  hi(d2)<=hi(d1) --> BC<DE --> BC-DE<0     --> carry if true
+    ld    A, B          ; 1:4       fce_dle   h2 l2 rt .. h1 l1  hi(d2)<=hi(d1) --> BC<DE --> BC-DE<0     --> carry if true
+    sbc   A, D          ; 1:4       fce_dle   h2 l2 rt .. h1 l1  hi(d2)<=hi(d1) --> BC<DE --> BC-DE<0     --> carry if true
+    rra                 ; 1:4       fce_dle   h2 l2 rt .. h1 l1                                           --> sign  if true
+    xor   B             ; 1:4       fce_dle   h2 l2 rt .. h1 l1
+    xor   D             ; 1:4       fce_dle   h2 l2 rt .. h1 l1
+    add   A, A          ; 1:4       fce_dle   h2 l2 rt .. h1 l1                                           --> carry if true
+    ret                 ; 1:10      fce_dle   h2 l2 .. .. h1 l1}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_FCE_4DUP_DGE},{define({USE_FCE_DGE},{yes})
+;==============================================================================
+; ( d2 ret d1 -- d2 d1 )
+;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
+; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+FCE_4DUP_DGE:           ;[9:75]     fce_4dup_dge   ( d2 ret d1 -- d2 d1 )
+    pop  AF             ; 1:10      fce_4dup_dge   h2 l2 .. ..  AF = ret
+    pop  BC             ; 1:10      fce_4dup_dge   h2 .. .. ..  BC = l2
+    ex   AF, AF'        ; 1:4       fce_4dup_dge   h2 .. .. ..
+    pop  AF             ; 1:10      fce_4dup_dge   .. .. .. ..  AF'= h2
+    push AF             ; 1:11      fce_4dup_dge   h2 .. .. ..
+    push BC             ; 1:11      fce_4dup_dge   h2 l2 .. ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dge   h2 l2 .. ..
+    push AF             ; 1:11      fce_4dup_dge   h2 l2 rt ..
+    ex   AF, AF'        ; 1:4       fce_4dup_dge   h2 l2 rt ..  AF = h2
+    ; fall to fce_dge}){}dnl
+ifdef({USE_FCE_DGE},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; set carry if d2>d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+FCE_DGE:               ;[16:83]     fce_dge   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_dge   h2 l2 rt h2 h1 l1
+    scf                 ; 1:4       fce_dge   h2 l2 rt h2 h1 l1  set carry
+    ld    A, L          ; 1:4       fce_dge   h2 l2 rt h2 h1 l1  lo(d2)>=lo(d1) --> BC>HL-1 --> 0>HL-BC-1 --> carry if true
+    sbc   A, C          ; 1:4       fce_dge   h2 l2 rt h2 h1 l1  lo(d2)>=lo(d1) --> BC>HL-1 --> 0>HL-BC-1 --> carry if true
+    ld    A, H          ; 1:4       fce_dge   h2 l2 rt h2 h1 l1  lo(d2)>=lo(d1) --> BC>HL-1 --> 0>HL-BC-1 --> carry if true
+    sbc   A, B          ; 1:4       fce_dge   h2 l2 rt h2 h1 l1  lo(d2)>=lo(d1) --> BC>HL-1 --> 0>HL-BC-1 --> carry if true
+    pop  BC             ; 1:10      fce_dge   h2 l2 rt .. h1 l1
+    ld    A, E          ; 1:4       fce_dge   h2 l2 rt .. h1 l1  hi(d2)>=hi(d1) --> BC>DE --> 0>DE-BC     --> carry if true
+    sbc   A, C          ; 1:4       fce_dge   h2 l2 rt .. h1 l1  hi(d2)>=hi(d1) --> BC>DE --> 0>DE-BC     --> carry if true
+    ld    A, D          ; 1:4       fce_dge   h2 l2 rt .. h1 l1  hi(d2)>=hi(d1) --> BC>DE --> 0>DE-BC     --> carry if true
+    sbc   A, B          ; 1:4       fce_dge   h2 l2 rt .. h1 l1  hi(d2)>=hi(d1) --> BC>DE --> 0>DE-BC     --> carry if true
+    rra                 ; 1:4       fce_dge   h2 l2 rt .. h1 l1                                           --> sign  if true
+    xor   B             ; 1:4       fce_dge   h2 l2 rt .. h1 l1
+    xor   D             ; 1:4       fce_dge   h2 l2 rt .. h1 l1
+    add   A, A          ; 1:4       fce_dge   h2 l2 rt .. h1 l1                                           --> carry if true
+    ret                 ; 1:10      fce_dge   h2 l2 .. .. h1 l1}){}dnl
 dnl
 dnl
 dnl
