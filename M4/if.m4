@@ -1775,25 +1775,25 @@ TYP_DOUBLE,{fast},{
     jr   nz, $+7        ; 2:7/12    4dup D<> if   h2 l2 . h1 l1  --> exit
     ld    A, B          ; 1:4       4dup D<> if   h2 l2 . h1 l1  A = hi(h2)
     sub   D             ; 1:4       4dup D<> if   h2 l2 . h1 l1  hi(h2) - hi(h1)
-    jp    z, else{}IF_COUNT    ; 3:10      4dup D<> if if},
+    jp    z, else{}IF_COUNT    ; 3:10      4dup D<> if},
 {
             ;[21:51,66,123,122/122] 4dup D<> if  ( d2 d1 -- d2 d1 )   # default version can be changed with "define({TYP_DOUBLE},{name})  name=small,fast"
-    pop  BC             ; 1:10      4dup D<> if   h2       . h1 l1  BC= lo(d2) = l2
-    ld    A, C          ; 1:4       4dup D<> if   h2       . h1 l1  A = lo(l2)
-    sub   L             ; 1:4       4dup D<> if   h2       . h1 l1  lo(l2) - lo(l1)
-    jr   nz, $+14       ; 2:7/12    4dup D<> if   h2       . h1 l1  --> push bc
-    ld    A, B          ; 1:4       4dup D<> if   h2       . h1 l1  A = hi(l2)
-    sub   H             ; 1:4       4dup D<> if   h2       . h1 l1  hi(l2) - hi(l1)
-    jr   nz, $+10       ; 2:7/12    4dup D<> if   h2       . h1 l1  --> push bc
-    ex (SP), HL         ; 1:19      4dup D<> if   l1       . h1 h2  HL= hi(d2) = h2
-    ld    A, L          ; 1:4       4dup D<> if   l1       . h1 h2  A = lo(h2)
-    sub   E             ; 1:4       4dup D<> if   l1       . h1 h2  lo(h2) - lo(l1)
-    ld    A, H          ; 1:4       4dup D<> if   l1       . h1 h2  A = hi(h2)
-    ex (SP), HL         ; 1:19      4dup D<> if   h2       . h1 l1
-    jr   nz, $+3        ; 2:7/12    4dup D<> if   h2       . h1 l1  --> push bc
-    sub   D             ; 1:4       4dup D<> if   h2       . h1 l1  hi(h2) - hi(h1)
-    push BC             ; 1:11      4dup D<> if   h2 l2    . h1 l1
-    jp    z, else{}IF_COUNT    ; 3:10      4dup D<> if if})}){}dnl
+    pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC= lo(d2) = l2
+    ld    A, C          ; 1:4       4dup D<> if   h2    . h1 l1  A = lo(l2)
+    sub   L             ; 1:4       4dup D<> if   h2    . h1 l1  lo(l2) - lo(l1)
+    jr   nz, $+14       ; 2:7/12    4dup D<> if   h2    . h1 l1  --> push bc
+    ld    A, B          ; 1:4       4dup D<> if   h2    . h1 l1  A = hi(l2)
+    sub   H             ; 1:4       4dup D<> if   h2    . h1 l1  hi(l2) - hi(l1)
+    jr   nz, $+10       ; 2:7/12    4dup D<> if   h2    . h1 l1  --> push bc
+    ex (SP), HL         ; 1:19      4dup D<> if   l1    . h1 h2  HL= hi(d2) = h2
+    ld    A, L          ; 1:4       4dup D<> if   l1    . h1 h2  A = lo(h2)
+    sub   E             ; 1:4       4dup D<> if   l1    . h1 h2  lo(h2) - lo(l1)
+    ld    A, H          ; 1:4       4dup D<> if   l1    . h1 h2  A = hi(h2)
+    ex (SP), HL         ; 1:19      4dup D<> if   h2    . h1 l1
+    jr   nz, $+3        ; 2:7/12    4dup D<> if   h2    . h1 l1  --> push bc
+    sub   D             ; 1:4       4dup D<> if   h2    . h1 l1  hi(h2) - hi(h1)
+    push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
+    jp    z, else{}IF_COUNT    ; 3:10      4dup D<> if})}){}dnl
 dnl
 dnl
 dnl

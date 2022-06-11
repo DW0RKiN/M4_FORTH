@@ -789,25 +789,25 @@ dnl ----- 4dup signed_32_bit_cond while ( d2 d1 -- d2 d1 ) -----
 dnl
 dnl 4dup D= while
 define({_4DUP_DEQ_WHILE},{
-                       ;[18:135/125]4dup D=  while BEGIN_STACK   ( d2 d1 -- d2 d1 )
-    pop  BC             ; 1:10      4dup D=  while BEGIN_STACK   h2          . h1 l1  BC= lo(d2) = l2
-    pop  AF             ; 1:10      4dup D=  while BEGIN_STACK               . h1 l1  AF= hi(d2) = h2
-    push AF             ; 1:11      4dup D=  while BEGIN_STACK   h2          . h1 l1
-    push BC             ; 1:11      4dup D=  while BEGIN_STACK   h2 l2       . h1 l1
-    push HL             ; 1:11      4dup D=  while BEGIN_STACK   h2 l2 l1    . h1 l1
-    push AF             ; 1:11      4dup D=  while BEGIN_STACK   h2 l2 l1 h2 . h1 l1
-    xor   A             ; 1:4       4dup D=  while BEGIN_STACK   h2 l2 l1 h2 . h1 l1
-    sbc  HL, BC         ; 2:15      4dup D=  while BEGIN_STACK   h2 l2 l1 h2 . h1 --  lo(d1)-lo(d2)
-    pop  HL             ; 1:10      4dup D=  while BEGIN_STACK   h2 l2 l1    . h1 h2
-    jr   nz, $+4        ; 2:7/12    4dup D=  while BEGIN_STACK   h2 l2 l1    . h1 h2
-    sbc  HL, DE         ; 2:15      4dup D=  while BEGIN_STACK   h2 l2 l1    . h1 --  hi(d2)-hi(d1)
-    pop  HL             ; 1:10      4dup D=  while BEGIN_STACK   h2 l2       . h1 l1
-    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D=  while BEGIN_STACK   h2 l2       . h1 l1})dnl
+                       ;[18:135/125]4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+    pop  BC             ; 1:10      4dup D= while BEGIN_STACK   h2          . h1 l1  BC= lo(d2) = l2
+    pop  AF             ; 1:10      4dup D= while BEGIN_STACK               . h1 l1  AF= hi(d2) = h2
+    push AF             ; 1:11      4dup D= while BEGIN_STACK   h2          . h1 l1
+    push BC             ; 1:11      4dup D= while BEGIN_STACK   h2 l2       . h1 l1
+    push HL             ; 1:11      4dup D= while BEGIN_STACK   h2 l2 l1    . h1 l1
+    push AF             ; 1:11      4dup D= while BEGIN_STACK   h2 l2 l1 h2 . h1 l1
+    xor   A             ; 1:4       4dup D= while BEGIN_STACK   h2 l2 l1 h2 . h1 l1
+    sbc  HL, BC         ; 2:15      4dup D= while BEGIN_STACK   h2 l2 l1 h2 . h1 --  lo(d1)-lo(d2)
+    pop  HL             ; 1:10      4dup D= while BEGIN_STACK   h2 l2 l1    . h1 h2
+    jr   nz, $+4        ; 2:7/12    4dup D= while BEGIN_STACK   h2 l2 l1    . h1 h2
+    sbc  HL, DE         ; 2:15      4dup D= while BEGIN_STACK   h2 l2 l1    . h1 --  hi(d2)-hi(d1)
+    pop  HL             ; 1:10      4dup D= while BEGIN_STACK   h2 l2       . h1 l1
+    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while BEGIN_STACK   h2 l2       . h1 l1})dnl
 dnl
 dnl
 dnl 4dup D<> while
 define({_4DUP_DNE_WHILE},{ifelse(TYP_DOUBLE,{small},{
-                  ;[18:125,135/135] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # small version can be changed with "define({TYP_DOUBLE},{default})"
+                  ;[18:125,135/135] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # small version can be changed with "define({TYP_DOUBLE},{name})"  name=fast,default
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2          . h1 l1  BC = lo(d2) = l2
     pop  AF             ; 1:10      4dup D<> while BEGIN_STACK               . h1 l1  AF = hi(d2) = h2
     push AF             ; 1:11      4dup D<> while BEGIN_STACK   h2          . h1 l1
@@ -821,8 +821,28 @@ define({_4DUP_DNE_WHILE},{ifelse(TYP_DOUBLE,{small},{
     sbc  HL, DE         ; 2:15      4dup D<> while BEGIN_STACK   h2 l2 l1    . h1 --  hi(d2)-hi(d1)
     pop  HL             ; 1:10      4dup D<> while BEGIN_STACK   h2 l2       . h1 l1
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK},
+TYP_DOUBLE,{fast},{
+            ;[23:41,56,113,126/126] 4dup D<> while BEGIN_STACK  ( d2 d1 -- d2 d1 )   # fast version can be changed with "define({TYP_DOUBLE},{name})  name=small,default"
+    pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2    . h1 l1  BC= lo(d2) = l2
+    push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  BC= lo(d2) = l2
+    ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  A = lo(l2)
+    sub   L             ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  lo(l2) - lo(l1)
+    jr   nz, $+19       ; 2:7/12    4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  --> exit
+    ld    A, B          ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  A = hi(l2)
+    sub   H             ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  hi(l2) - hi(l1)
+    jr   nz, $+15       ; 2:7/12    4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  --> exit
+    pop  AF             ; 1:10      4dup D<> while BEGIN_STACK   h2    . h1 l1  AF= lo(d2) = l2
+    pop  BC             ; 1:10      4dup D<> while BEGIN_STACK         . h1 l1  BC= lo(d2) = h2
+    push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2    . h1 l1  BC= lo(d2) = h2
+    push AF             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  AF= lo(d2) = l2
+    ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  A = lo(h2)
+    sub   E             ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  lo(h2) - lo(l1)
+    jr   nz, $+7        ; 2:7/12    4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  --> exit
+    ld    A, B          ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  A = hi(h2)
+    sub   D             ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  hi(h2) - hi(h1)
+    jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK},
 {
-            ;[21:51,66,123,122/122] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({TYP_DOUBLE},{small})"
+            ;[21:51,66,123,122/122] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({TYP_DOUBLE},{name})  name=small,fast"
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  lo(l2) - lo(l1)
@@ -838,7 +858,7 @@ define({_4DUP_DNE_WHILE},{ifelse(TYP_DOUBLE,{small},{
     jr   nz, $+3        ; 2:7/12    4dup D<> while BEGIN_STACK   h2       . h1 l1  --> push bc
     sub   D             ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2    . h1 l1
-    jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK while BEGIN_STACK})}){}dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl

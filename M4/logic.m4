@@ -1712,7 +1712,7 @@ dnl
 dnl 4dup D<>
 dnl ( d d -- d d f )
 define({_4DUP_DNE},{ifelse(TYP_DOUBLE,{fast},{
-                       ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+            ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D<>   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<>   h2       . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<>   h2       . h1 l1  lo(l2) - lo(l1)
@@ -1735,7 +1735,7 @@ define({_4DUP_DNE},{ifelse(TYP_DOUBLE,{fast},{
     ld    H, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 f-
     ld    L, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 ff HL= flag d2<>d1},
 {
-                       ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+                  ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
     pop  AF             ; 1:10      4dup D<>   h2          . h1 l1  AF = lo(d2) = l2
     pop  BC             ; 1:10      4dup D<>               . h1 l1  BC = hi(d2) = h2
     push BC             ; 1:11      4dup D<>   h2          . h1 l1
@@ -1977,6 +1977,198 @@ define({_4DUP_DUGT},{
     push DE             ; 1:11      4dup Du>
     ex   DE, HL         ; 1:4       4dup Du>
     sbc  HL, HL         ; 2:15      4dup Du>   set flag ud2>ud1}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup D. D>
+dnl ( d -- d f )
+define({_2DUP_PUSHDOT_DGT},{ifelse($1,{},{
+    .error {$0}(): Missing parameter!},
+$#,{1},{ifelse(index({$1},{(}),{0},{
+__{}                        ;[24:116]   2dup $1 D>    ( d1 -- d1 flag )
+__{}    ld    A, format({%-11s},$1); 3:13      2dup $1 D>    DEHL>$1     $1 = ...A
+__{}    sub   L             ; 1:4       2dup $1 D>    DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    ld    A,format({%-12s},($1+1)); 3:13      2dup $1 D>    DEHL>$1     $1 = ..A.
+__{}    sbc   A, H          ; 1:4       2dup $1 D>    DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      2dup $1 D>    DEHL>$1     $1 = BC..
+__{}    ld    A, C          ; 1:4       2dup $1 D>    DEHL>$1     $1 = .A..
+__{}    sbc   A, E          ; 1:4       2dup $1 D>    DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    ld    A, B          ; 1:4       2dup $1 D>    DEHL>$1     $1 = A...
+__{}    sbc   A, D          ; 1:4       2dup $1 D>    DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    rra                 ; 1:4       2dup $1 D>    DEHL>$1              --> sign  if true
+__{}    xor   D             ; 1:4       2dup $1 D>
+__{}    xor   B             ; 1:4       2dup $1 D>
+__{}    add   A, A          ; 1:4       2dup $1 D>    DEHL>$1              --> carry if true
+__{}    push DE             ; 1:11      2dup $1 D>
+__{}    ex   DE, HL         ; 1:4       2dup $1 D>
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D>    set flag d1>$1},
+__{}eval($1),{},{
+__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}{
+__{}                       ;[21:92]     2dup $1 D>   ( d1 -- d1 flag )   # default version
+__{}    ld    A, D          ; 1:4       2dup $1 D>
+__{}    sub  0x80           ; 2:7       2dup $1 D>{}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
+__{}__{}    jr    c, $+14       ; 2:7/12    2dup $1 D>   positive d1 > negative constant --> true},
+__{}__{}{
+__{}__{}    jr   nc, $+14       ; 2:7/12    2dup $1 D>   negative d1 > positive constant --> false})
+__{}    ld    A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = ...A
+__{}    sub   L             ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = ..A.
+__{}    sbc   A, H          ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = .A..
+__{}    sbc   A, E          ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = A...
+__{}    sbc   A, D          ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
+__{}    push DE             ; 1:11      2dup $1 D>
+__{}    ex   DE, HL         ; 1:4       2dup $1 D>
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D>   set flag d1>$1})},
+{
+    .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup D. D<=
+dnl ( d -- d f )
+define({_2DUP_PUSHDOT_DLE},{ifelse($1,{},{
+    .error {$0}(): Missing parameter!},
+$#,{1},{ifelse(index({$1},{(}),{0},{
+__{}                        ;[25:119]   2dup $1 D<=    ( d1 -- d1 flag )
+__{}    ld    A, format({%-11s},$1); 3:13      2dup $1 D<=    DEHL<=$1     $1 = ...A
+__{}    sub   L             ; 1:4       2dup $1 D<=    DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ld    A,format({%-12s},($1+1)); 3:13      2dup $1 D<=    DEHL<=$1     $1 = ..A.
+__{}    sbc   A, H          ; 1:4       2dup $1 D<=    DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      2dup $1 D<=    DEHL<=$1     $1 = BC..
+__{}    ld    A, C          ; 1:4       2dup $1 D<=    DEHL<=$1     $1 = .A..
+__{}    sbc   A, E          ; 1:4       2dup $1 D<=    DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ld    A, B          ; 1:4       2dup $1 D<=    DEHL<=$1     $1 = A...
+__{}    sbc   A, D          ; 1:4       2dup $1 D<=    DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    rra                 ; 1:4       2dup $1 D<=    DEHL<=$1               --> no sign  if true
+__{}    xor   D             ; 1:4       2dup $1 D<=
+__{}    xor   B             ; 1:4       2dup $1 D<=
+__{}    sub  0x80           ; 2:7       2dup $1 D<=    DEHL<=$1               --> carry if true
+__{}    push DE             ; 1:11      2dup $1 D<=
+__{}    ex   DE, HL         ; 1:4       2dup $1 D<=
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D<=    set flag d1<=$1},
+__{}eval($1),{},{
+__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}{
+__{}                       ;[21:93]     2dup $1 D<=   ( d1 -- d1 flag )   # default version
+__{}    ld    A, D          ; 1:4       2dup $1 D<=
+__{}    add   A, A          ; 1:4       2dup $1 D<={}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
+__{}__{}    jr   nc, $+15       ; 2:7/12    2dup $1 D<=   positive d1 <= negative constant --> false},
+__{}__{}{
+__{}__{}    jr    c, $+15       ; 2:7/12    2dup $1 D<=   negative d1 <= positive constant --> true})
+__{}    ld    A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = ...A
+__{}    sub   L             ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = ..A.
+__{}    sbc   A, H          ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = .A..
+__{}    sbc   A, E          ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = A...
+__{}    sbc   A, D          ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
+__{}    ccf                 ; 1:4       2dup $1 D<=   DEHL<=$1               -->    carry if true
+__{}    push DE             ; 1:11      2dup $1 D<=
+__{}    ex   DE, HL         ; 1:4       2dup $1 D<=
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D<=   set flag d1<=$1})},
+{
+    .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup D. D<
+dnl ( d -- d f )
+define({_2DUP_PUSHDOT_DLT},{ifelse($1,{},{
+    .error {$0}(): Missing parameter!},
+$#,{1},{ifelse(index({$1},{(}),{0},{
+__{}                        ;[24:118]   2dup $1 D<    ( d1 -- d1 flag )
+__{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D<    DEHL<$1     $1 = ..BC
+__{}    ld    A, L          ; 1:4       2dup $1 D<    DEHL<$1
+__{}    sub   C             ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-..BC<0 --> carry if true
+__{}    ld    A, H          ; 1:4       2dup $1 D<    DEHL<$1
+__{}    sbc   A, B          ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-..BC<0 --> carry if true
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      2dup $1 D<    DEHL<$1     $1 = BC..
+__{}    ld    A, E          ; 1:4       2dup $1 D<    DEHL<$1
+__{}    sbc   A, C          ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-BC..<0 --> carry if true
+__{}    ld    A, D          ; 1:4       2dup $1 D<    DEHL<$1
+__{}    sbc   A, B          ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-BC..<0 --> carry if true
+__{}    rra                 ; 1:4       2dup $1 D<    DEHL<$1                 --> sign  if true
+__{}    xor   D             ; 1:4       2dup $1 D<
+__{}    xor   B             ; 1:4       2dup $1 D<
+__{}    add   A, A          ; 1:4       2dup $1 D<    DEHL<$1                 --> carry if true
+__{}    push DE             ; 1:11      2dup $1 D<
+__{}    ex   DE, HL         ; 1:4       2dup $1 D<
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D<    set flag d1<$1},
+__{}eval($1),{},{
+__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}{
+__{}                       ;[20:89]     2dup $1 D<   ( d1 -- d1 flag )   # default version
+__{}    ld    A, D          ; 1:4       2dup $1 D<
+__{}    add   A, A          ; 1:4       2dup $1 D<{}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
+__{}__{}    jr   nc, $+14       ; 2:7/12    2dup $1 D<   positive d1 < negative constant --> false},
+__{}__{}{
+__{}__{}    jr    c, $+14       ; 2:7/12    2dup $1 D<   negative d1 < positive constant --> true})
+__{}    ld    A, L          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
+__{}    sub   A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))<0 --> carry if true
+__{}    ld    A, H          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
+__{}    sbc   A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..<0 --> carry if true
+__{}    ld    A, E          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
+__{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....<0 --> carry if true
+__{}    ld    A, D          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
+__{}    sbc   A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......<0 --> carry if true
+__{}    push DE             ; 1:11      2dup $1 D<
+__{}    ex   DE, HL         ; 1:4       2dup $1 D<
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D<   set flag d1<$1})},
+{
+    .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup D. D>=
+dnl ( d -- d f )
+define({_2DUP_PUSHDOT_DGE},{ifelse($1,{},{
+    .error {$0}(): Missing parameter!},
+$#,{1},{ifelse(index({$1},{(}),{0},{
+__{}                        ;[25:121]   2dup $1 D>=    ( d1 -- d1 flag )
+__{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D>=    DEHL>=$1     $1 = ..BC
+__{}    ld    A, L          ; 1:4       2dup $1 D>=    DEHL>=$1
+__{}    sub   C             ; 1:4       2dup $1 D>=    DEHL>=$1 --> DEHL-..BC>=0 --> no carry if true
+__{}    ld    A, H          ; 1:4       2dup $1 D>=    DEHL>=$1
+__{}    sbc   A, B          ; 1:4       2dup $1 D>=    DEHL>=$1 --> DEHL-..BC>=0 --> no carry if true
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      2dup $1 D>=    DEHL>=$1     $1 = BC..
+__{}    ld    A, E          ; 1:4       2dup $1 D>=    DEHL>=$1
+__{}    sbc   A, C          ; 1:4       2dup $1 D>=    DEHL>=$1 --> DEHL-BC..>=0 --> no carry if true
+__{}    ld    A, D          ; 1:4       2dup $1 D>=    DEHL>=$1
+__{}    sbc   A, B          ; 1:4       2dup $1 D>=    DEHL>=$1 --> DEHL-BC..>=0 --> no carry if true
+__{}    rra                 ; 1:4       2dup $1 D>=    DEHL>=$1                  --> no sign  if true
+__{}    xor   D             ; 1:4       2dup $1 D>=
+__{}    xor   B             ; 1:4       2dup $1 D>=
+__{}    sub  0x80           ; 2:7       2dup $1 D>=    DEHL>=$1                  --> carry if true
+__{}    push DE             ; 1:11      2dup $1 D>=
+__{}    ex   DE, HL         ; 1:4       2dup $1 D>=
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D>=    set flag d1<$1},
+__{}eval($1),{},{
+__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}{
+__{}                       ;[22:96]     2dup $1 D>=   ( d1 -- d1 flag )   # default version
+__{}    ld    A, D          ; 1:4       2dup $1 D>=
+__{}    sub  0x80           ; 2:7       2dup $1 D>={}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
+__{}__{}    jr    c, $+15       ; 2:7/12    2dup $1 D>=   positive d1 >= negative constant --> true},
+__{}__{}{
+__{}__{}    jr   nc, $+15       ; 2:7/12    2dup $1 D>=   negative d1 >= positive constant --> false})
+__{}    ld    A, L          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
+__{}    sub   A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))>=0 --> no carry if true
+__{}    ld    A, H          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
+__{}    sbc   A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..>=0 --> no carry if true
+__{}    ld    A, E          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
+__{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....>=0 --> no carry if true
+__{}    ld    A, D          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
+__{}    sbc   A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......>=0 --> no carry if true
+__{}    ccf                 ; 1:4       2dup $1 D>=   DEHL<=$1                        -->    carry if true
+__{}    push DE             ; 1:11      2dup $1 D>=
+__{}    ex   DE, HL         ; 1:4       2dup $1 D>=
+__{}    sbc  HL, HL         ; 2:15      2dup $1 D>=   set flag d1<$1})},
+{
+    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
