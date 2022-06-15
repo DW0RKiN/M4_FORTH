@@ -2108,24 +2108,23 @@ __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}{
 __{}__{}____DEQ_INIT_CODE($1){}dnl
-__{}__{}____DEQ_MAKE_CODE($1,6,37,{2dup $1 D=}){}dnl
-
+__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,{2dup $1 D=},{d1 -- d1 flag}){}dnl
 __{}__{}ifelse(eval(($1) & 0xFF0000),{0},{dnl
-__{}__{}__{}define({_TMP},18){}dnl
+__{}__{}__{}define({_TMP_B},18){}dnl
 __{}__{}__{}define({_TMP_C},88){}dnl
 __{}__{}__{}define({_TMP_R1},{H}){}dnl
 __{}__{}__{}define({_TMP_R2},{L}){}dnl
 __{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>24) & 0xFF)))},
 __{}__{}eval(($1) & 0xFF000000),{0},{dnl
-__{}__{}__{}define({_TMP},18){}dnl
+__{}__{}__{}define({_TMP_B},18){}dnl
 __{}__{}__{}define({_TMP_C},88){}dnl
 __{}__{}__{}define({_TMP_R1},{L}){}dnl
 __{}__{}__{}define({_TMP_R2},{H}){}dnl
 __{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>16) & 0xFF)))},
 __{}__{}{
-__{}__{}__{}define({_TMP},20){}dnl
-__{}__{}__{}define({_TMP},95)}){}dnl
-__{}__{}ifelse(eval((____DEQ_CLOCKS+2*____DEQ_BYTES)<(_TMP_C+2*_TMP)),{1},{____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4{}
+__{}__{}__{}define({_TMP_B},20){}dnl
+__{}__{}__{}define({_TMP_C},95)}){}dnl
+__{}__{}ifelse(eval((_TMP_BEST_C+4*_TMP_BEST_B)<(_TMP_C+4*_TMP_B)),{1},{____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4{}
 __{}__{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}__{}    push HL             ; 1:11      2dup $1 D=

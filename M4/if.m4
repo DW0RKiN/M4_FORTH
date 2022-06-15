@@ -1880,29 +1880,8 @@ __{}eval($1),{},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{dnl
 __{}____DEQ_INIT_CODE($1){}dnl
-__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
-__{}__{}define({_TMP_BEST},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
-__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4){}dnl
-__{}____DEQ_PARAMETER_ROTATION{}dnl
-__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
-__{}__{}define({_TMP},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
-__{}__{}ifelse(eval(_TMP_BEST>_TMP),{1},{dnl
-__{}__{}__{}define({_TMP_BEST},_TMP){}dnl
-__{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4)}){}dnl
-__{}____DEQ_PARAMETER_ROTATION{}dnl
-__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
-__{}__{}define({_TMP},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
-__{}__{}ifelse(eval(_TMP_BEST>_TMP),{1},{dnl
-__{}__{}__{}define({_TMP_BEST},_TMP){}dnl
-__{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4)}){}dnl
-__{}____DEQ_PARAMETER_ROTATION{}dnl
-__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
-__{}__{}define({_TMP},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
-__{}__{}ifelse(eval(_TMP_BEST>_TMP),{1},{dnl
-__{}__{}__{}define({_TMP_BEST},_TMP){}dnl
-__{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4)}){}dnl
-__{}__{}ifelse(eval((_TMP_BEST>>8)<=18),{1},{define({_TMP},1)},{ifelse(_TYP_DOUBLE,{small},{define({_TMP},{0})},{define({_TMP},{1})})}){}dnl
-__{}__{}ifelse(_TMP,{1},{
+__{}____DEQ_MAKE_BEST_CODE($1,3,10,{2dup $1 D= if},{d1 -- d1}){}dnl
+__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
 __{}__{}__{}dnl
 __{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if},
