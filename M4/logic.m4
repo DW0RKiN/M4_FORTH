@@ -2001,7 +2001,7 @@ __{}    ld    H, A          ; 1:4       2dup $1 D=   set flag d1==$1},
 __{}eval($1),{},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{ifelse(eval(($1) & 0xFFFFFFFF),{0},{
-__{}__{}                       ;[10:49]     2dup $1 D=   ( d1 -- d1 flag )   # d1 0 D= version
+__{}__{}                       ;[10:53]     2dup $1 D=   ( d1 -- d1 flag )   # d1 0 D= version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld   A, L           ; 1:4       2dup $1 D=
@@ -2011,7 +2011,7 @@ __{}__{}    or   D              ; 1:4       2dup $1 D=
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFFFFFF00),{0},{
-__{}__{}                       ;[12:56]     2dup $1 D=   ( d1 -- d1 flag )   # hi24 == 0 version
+__{}__{}                       ;[12:60]     2dup $1 D=   ( d1 -- d1 flag )   # hi24 == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2022,7 +2022,7 @@ __{}__{}    or    H             ; 1:4       2dup $1 D=   x[4] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFFFF00FF),{0},{
-__{}__{}                       ;[12:56]     2dup $1 D=   ( d1 -- d1 flag )   # (hi16 and lo8) == 0 version
+__{}__{}                       ;[12:60]     2dup $1 D=   ( d1 -- d1 flag )   # (hi16 and lo8) == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2033,7 +2033,7 @@ __{}__{}    or    H             ; 1:4       2dup $1 D=   x[4] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFFFF0000),{0},{
-__{}__{}                     ;[16:70/56,70] 2dup $1 D=   ( d1 -- d1 flag )   # hi16 == 0 version
+__{}__{}                     ;[16:74/60,74] 2dup $1 D=   ( d1 -- d1 flag )   # hi16 == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2046,7 +2046,7 @@ __{}__{}    or    H             ; 1:4       2dup $1 D=   x[4] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFFFFFF),{0},{
-__{}__{}                        ;[12:56]    2dup $1 D=   ( d1 -- d1 flag )   # lo24 == 0 version
+__{}__{}                        ;[12:60]    2dup $1 D=   ( d1 -- d1 flag )   # lo24 == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2057,7 +2057,7 @@ __{}__{}    or    E             ; 1:4       2dup $1 D=   x[1] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFF00FFFF),{0},{
-__{}__{}                        ;[12:56]    2dup $1 D=   ( d1 -- d1 flag )   # (lo16 and hi8) == 0 version
+__{}__{}                        ;[12:60]    2dup $1 D=   ( d1 -- d1 flag )   # (lo16 and hi8) == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2068,7 +2068,7 @@ __{}__{}    or    E             ; 1:4       2dup $1 D=   x[1] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFFFF),{0},{
-__{}__{}                     ;[16:70/56,70] 2dup $1 D=   ( d1 -- d1 flag )   # lo16 == 0 version
+__{}__{}                     ;[16:74/60,74] 2dup $1 D=   ( d1 -- d1 flag )   # lo16 == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2081,7 +2081,7 @@ __{}__{}    or    D             ; 1:4       2dup $1 D=   x[2] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFFFF00),{0},{
-__{}__{}                     ;[16:70/56,70] 2dup $1 D=   ( d1 -- d1 flag )   # E,H == 0 version
+__{}__{}                     ;[16:74/60,74] 2dup $1 D=   ( d1 -- d1 flag )   # E,H == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2094,7 +2094,7 @@ __{}__{}    or    L             ; 1:4       2dup $1 D=   x[3] = 0
 __{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}eval(($1) & 0xFF0000FF),{0},{
-__{}__{}                     ;[16:70/56,70] 2dup $1 D=   ( d1 -- d1 flag )   # D,L == 0 version
+__{}__{}                     ;[16:74/60,74] 2dup $1 D=   ( d1 -- d1 flag )   # D,L == 0 version
 __{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D=
@@ -2129,7 +2129,7 @@ __{}__{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
-__{}__{}{ifelse(_TMP,{18},{
+__{}__{}{ifelse(_TMP_B,{18},{
 __{}__{}__{}                       ;[18:88]     2dup $1 D=   ( d1 -- d1 flag )   # default version with one bytes zero
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}__{}    push HL             ; 1:11      2dup $1 D=
