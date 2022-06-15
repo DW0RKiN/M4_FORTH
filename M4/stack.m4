@@ -1,7 +1,4 @@
 dnl ## Stack manipulation
-define({--},{})dnl
-define({_HEX_HI},{format({0x%02X},eval((($1)>>8) & 0xFF))}){}dnl
-define({_HEX_LO},{format({0x%02X},eval((($1)>>0) & 0xFF))}){}dnl
 dnl
 dnl ( b a -- a b )
 dnl prohodi vrchol zasobniku s druhou polozkou

@@ -6,6 +6,8 @@ sinclude(../M4/path2.m4)dnl
 ifelse(M4PATH,{},{
 .error M4 did not find a relative path from the source file to the M4 libraries.})dnl
 dnl
+include(M4PATH{}macros.m4)dnl
+dnl
 include(M4PATH{}float.m4)dnl
 include(M4PATH{}if.m4)dnl
 include(M4PATH{}case.m4)dnl

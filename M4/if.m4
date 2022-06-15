@@ -1861,3 +1861,64 @@ define({_4DUP_DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, I
 dnl
 dnl
 dnl
+dnl 2dup D. D= if
+dnl ( d -- d )
+define({_2DUP_PUSHDOT_DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+    .error {$0}(): Missing parameter!},
+$#,{1},{ifelse(index({$1},{(}),{0},{
+__{}                        ;[19:108]   2dup $1 D= if    ( d1 -- d1 )
+__{}    push HL             ; 1:11      2dup $1 D= if
+__{}    xor   A             ; 1:4       2dup $1 D= if
+__{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D= if   lo16($1)
+__{}    sbc  HL, BC         ; 2:15      2dup $1 D= if   lo16(d1)-BC
+__{}    jp   nz, $+7        ; 2:7/12    2dup $1 D= if
+__{}    ld   HL,format({%-12s},($1+2)); 3:16      2dup $1 D= if   hi16($1)
+__{}    sbc  HL, DE         ; 2:15      2dup $1 D= if   HL-hi16(d1)
+__{}    pop  HL             ; 1:10      2dup $1 D= if
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if},
+__{}eval($1),{},{
+__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}{dnl
+__{}____DEQ_INIT_CODE($1){}dnl
+__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
+__{}__{}define({_TMP_BEST},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
+__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4){}dnl
+__{}____DEQ_PARAMETER_ROTATION{}dnl
+__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
+__{}__{}define({_TMP},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
+__{}__{}ifelse(eval(_TMP_BEST>_TMP),{1},{dnl
+__{}__{}__{}define({_TMP_BEST},_TMP){}dnl
+__{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4)}){}dnl
+__{}____DEQ_PARAMETER_ROTATION{}dnl
+__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
+__{}__{}define({_TMP},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
+__{}__{}ifelse(eval(_TMP_BEST>_TMP),{1},{dnl
+__{}__{}__{}define({_TMP_BEST},_TMP){}dnl
+__{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4)}){}dnl
+__{}____DEQ_PARAMETER_ROTATION{}dnl
+__{}____DEQ_MAKE_CODE($1,3,10,{2dup $1 D= if}){}dnl
+__{}__{}define({_TMP},eval(____DEQ_CLOCKS+256*_TMP_B1)){}dnl
+__{}__{}ifelse(eval(_TMP_BEST>_TMP),{1},{dnl
+__{}__{}__{}define({_TMP_BEST},_TMP){}dnl
+__{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4)}){}dnl
+__{}__{}ifelse(eval((_TMP_BEST>>8)<=18),{1},{define({_TMP},1)},{ifelse(_TYP_DOUBLE,{small},{define({_TMP},{0})},{define({_TMP},{1})})}){}dnl
+__{}__{}ifelse(_TMP,{1},{
+__{}__{}__{}dnl
+__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if},
+__{}__{}{
+__{}__{}__{}                     ;[18:92/72,92] 2dup $1 D= if   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
+__{}__{}__{}    push HL             ; 1:11      2dup $1 D= if
+__{}__{}__{}    xor   A             ; 1:4       2dup $1 D= if
+__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      2dup $1 D= if   lo16
+__{}__{}__{}    sbc  HL, BC         ; 2:15      2dup $1 D= if   lo16(d1)-BC
+__{}__{}__{}    jr   nz, $+7        ; 2:7/12    2dup $1 D= if
+__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      2dup $1 D= if   hi16
+__{}__{}__{}    sbc  HL, DE         ; 2:15      2dup $1 D= if   HL-hi16(d1)
+__{}__{}__{}    pop  HL             ; 1:10      2dup $1 D= if
+__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if})})},
+{
+    .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
