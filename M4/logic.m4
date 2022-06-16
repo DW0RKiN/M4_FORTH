@@ -2127,7 +2127,7 @@ __{}__{}__{}define({_TMP_C},95)}){}dnl
 __{}__{}ifelse(eval((_TMP_BEST_C+3*_TMP_BEST_B)<=(_TMP_C+3*_TMP_B)),{1},{_TMP_BEST_CODE
 __{}__{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
-__{}__{}__{}    push HL             ; 1:11      2dup $1 D=   _TMP_BEST_B:_TMP_BEST_C
+__{}__{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}__{}{ifelse(_TMP_B,{18},{
 __{}__{}__{}                       ;[18:88]     2dup $1 D=   ( d1 -- d1 flag )   # default version with one bytes zero
