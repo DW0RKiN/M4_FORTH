@@ -2111,26 +2111,26 @@ __{}__{}____DEQ_INIT_CODE($1){}dnl
 __{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,{2dup $1 D=},{d1 -- d1 flag}){}dnl
 __{}__{}ifelse(eval(($1) & 0xFF0000),{0},{dnl
 __{}__{}__{}define({_TMP_B},18){}dnl
-__{}__{}__{}define({_TMP_C},88){}dnl
+__{}__{}__{}define({_TMP_C},80){}dnl   ((88+(57+89)/2)/2) = 80.5
 __{}__{}__{}define({_TMP_R1},{H}){}dnl
 __{}__{}__{}define({_TMP_R2},{L}){}dnl
 __{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>24) & 0xFF)))},
 __{}__{}eval(($1) & 0xFF000000),{0},{dnl
 __{}__{}__{}define({_TMP_B},18){}dnl
-__{}__{}__{}define({_TMP_C},88){}dnl
+__{}__{}__{}define({_TMP_C},80){}dnl   ((88+(57+89)/2)/2) = 80.5
 __{}__{}__{}define({_TMP_R1},{L}){}dnl
 __{}__{}__{}define({_TMP_R2},{H}){}dnl
 __{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>16) & 0xFF)))},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B},20){}dnl
-__{}__{}__{}define({_TMP_C},95)}){}dnl
-__{}__{}ifelse(eval((_TMP_BEST_C+3*_TMP_BEST_B)<=(_TMP_C+3*_TMP_B)),{1},{_TMP_BEST_CODE
+__{}__{}__{}define({_TMP_C},87)}){}dnl   (95+(64+96)/2)/2=87.5
+__{}__{}ifelse(eval((_TMP_BEST_C+4*_TMP_BEST_B)<=(_TMP_C+4*_TMP_B)),{1},{_TMP_BEST_CODE
 __{}__{}__{}    sub 0x01            ; 2:7       2dup $1 D=
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}__{}{ifelse(_TMP_B,{18},{
-__{}__{}__{}                       ;[18:88]     2dup $1 D=   ( d1 -- d1 flag )   # default version with one bytes zero
+__{}__{}__{}                     ;[18:88/57,89] 2dup $1 D=   ( d1 -- d1 flag )   # default version with one bytes zero
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}__{}    ld    A, _TMP_N1       ; 2:7       2dup $1 D=
@@ -2143,7 +2143,7 @@ __{}__{}__{}    jr   nz, $+3        ; 2:7/12    2dup $1 D=
 __{}__{}__{}    scf                 ; 1:4       2dup $1 D=
 __{}__{}__{}    sbc  HL, HL         ; 2:15      2dup $1 D=   set flag d1==$1},
 __{}__{}{
-__{}__{}__{}                       ;[20:95]     2dup $1 D=   ( d1 -- d1 flag )   # default version
+__{}__{}__{}                     ;[20:95/64,96] 2dup $1 D=   ( d1 -- d1 flag )   # default version
 __{}__{}__{}    ex   DE, HL         ; 1:4       2dup $1 D=
 __{}__{}__{}    push HL             ; 1:11      2dup $1 D=
 __{}__{}__{}    xor   A             ; 1:4       2dup $1 D=

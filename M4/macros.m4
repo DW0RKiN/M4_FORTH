@@ -91,13 +91,13 @@ __{}ifelse(____N4,256,{dnl
 __{}__{}define({_TMP_OR3},{xor}){}dnl
 __{}__{}define({_TMP_B4},1){}dnl
 __{}__{}define({_TMP_T4},4){}dnl
-__{}__{}define({_TMP_J4},4){}dnl
+__{}__{}define({_TMP_J3},4){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    or    ____R4             ; 1:4       $4   x[4] = 0})},
 __{}____N4{-}____N3,{255-255},{dnl
 __{}__{}define({_TMP_B4},2){}dnl
 __{}__{}define({_TMP_T4},8){}dnl
-__{}__{}define({_TMP_J4},8){}dnl
+__{}__{}define({_TMP_J3},8){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}__{}    and   ____R4             ; 1:4       $4   x[4] = 0xFF
 __{}__{}__{}    inc   A             ; 1:4       $4})},
@@ -105,7 +105,7 @@ __{}____N4,255,{dnl
 __{}__{}define({_TMP_OR3},{xor}){}dnl
 __{}__{}define({_TMP_B4},3){}dnl
 __{}__{}define({_TMP_T4},12){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}__{}    dec   A             ; 1:4       $4
 __{}__{}__{}    and   ____R4             ; 1:4       $4   x[4] = 0xFF
@@ -114,7 +114,7 @@ __{}____N4,{1},{dnl
 __{}__{}define({_TMP_OR3},{xor}){}dnl
 __{}__{}define({_TMP_B4},3){}dnl
 __{}__{}define({_TMP_T4},12){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    ld    C{,} ____R4          ; 1:4       $4
 __{}__{}    dec   C             ; 1:4       $4
@@ -122,7 +122,7 @@ __{}__{}    or    C             ; 1:4       $4   x[4] = 1})},
 __{}eval(____N4==____N3),{1},{dnl
 __{}__{}define({_TMP_B4},3){}dnl
 __{}__{}define({_TMP_T4},11){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+_TMP_B4        ; 2:7/12    $4
 __{}__{}    xor   ____R4             ; 1:4       $4   x[4] = x[3]})},
@@ -130,7 +130,7 @@ __{}eval(____N4==(____N3+1 & 0xFF)),{1},{dnl
 __{}__{}dnl 10 20 3F 40 --> 10 20 40 3F --> 10 10+10 20+20 40-1
 __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}ifelse(ifelse(eval(____N3==____N2),{1},{1},
 __{}__{}__{}eval(____N3==(____N2+1 & 0xFF)),{1},{1},
 __{}__{}__{}eval(____N3==(____N2+____N1 & 0xFF)),{1},{1},
@@ -150,7 +150,7 @@ __{}__{}__{}    xor   ____R4             ; 1:4       $4   x[4] = x[3] - 1})})},
 __{}eval(____N4==(____N3+____N1 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+_TMP_B4        ; 2:7/12    $4
 __{}__{}    add   A{,} ____R1          ; 1:4       $4
@@ -158,7 +158,7 @@ __{}__{}    xor   ____R4             ; 1:4       $4   x[4] = x[3] + x[1]})},
 __{}eval(____N4==(____N3+____N2 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+_TMP_B4        ; 2:7/12    $4
 __{}__{}    add   A{,} ____R2          ; 1:4       $4
@@ -166,7 +166,7 @@ __{}__{}    xor   ____R4             ; 1:4       $4   x[4] = x[3] + x[2]})},
 __{}eval(____N4==(____N3+____N3 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+_TMP_B4        ; 2:7/12    $4
 __{}__{}    add   A{,} ____R3          ; 1:4       $4
@@ -174,7 +174,7 @@ __{}__{}    xor   ____R4             ; 1:4       $4   x[4] = x[3] + x[3]})},
 __{}{dnl
 __{}__{}define({_TMP_B4},5){}dnl
 __{}__{}define({_TMP_T4},18){}dnl
-__{}__{}define({_TMP_J4},12){}dnl
+__{}__{}define({_TMP_J3},12){}dnl
 __{}__{}define({____DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+_TMP_B4        ; 2:7/12    $4
 __{}__{}    ld    A{,} format({0x%02X},____N4)       ; 2:7       $4
@@ -187,19 +187,19 @@ __{}ifelse(____N3,256,{dnl
 __{}__{}define({_TMP_OR2},{xor}){}dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+1)){}dnl
 __{}__{}define({_TMP_T3},4){}dnl
-__{}__{}define({_TMP_J3},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    or    ____R3             ; 1:4       $4   x[3] = 0})},
 __{}____N4{-}____N3{-}____N2,{255-255-255},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+1)){}dnl
 __{}__{}define({_TMP_T3},4){}dnl
-__{}__{}define({_TMP_J3},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    and   ____R3             ; 1:4       $4   x[3] = 0xFF})},
 __{}____N4{-}____N3{-}____N2,{256-255-255},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+2)){}dnl
 __{}__{}define({_TMP_T3},8){}dnl
-__{}__{}define({_TMP_J3},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    and   ____R3             ; 1:4       $4   x[3] = 0xFF
 __{}__{}    inc   A             ; 1:4       $4})},
@@ -207,7 +207,7 @@ __{}____N4{-}____N3,{255-255},{dnl
 __{}__{}define({_TMP_OR2},{xor}){}dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+2)){}dnl
 __{}__{}define({_TMP_T3},8){}dnl
-__{}__{}define({_TMP_J3},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    dec   A             ; 1:4       $4
 __{}__{}    and   ____R3             ; 1:4       $4   x[3] = 0xFF})},
@@ -215,7 +215,7 @@ __{}____N4{-}____N3,{256-255},{dnl
 __{}__{}define({_TMP_OR2},{xor}){}dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+3)){}dnl
 __{}__{}define({_TMP_T3},12){}dnl
-__{}__{}define({_TMP_J3},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    dec   A             ; 1:4       $4
 __{}__{}    and   ____R3             ; 1:4       $4   x[3] = 0xFF
@@ -224,7 +224,7 @@ __{}eval(((____N4 == 256) || (____N4 == 255) || (____N4 == 1)) && (____N3 == 1))
 __{}__{}define({_TMP_OR2},{xor}){}dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+3)){}dnl
 __{}__{}define({_TMP_T3},12){}dnl
-__{}__{}define({_TMP_J3},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    ld    C{,} ____R3          ; 1:4       $4
 __{}__{}    dec   C             ; 1:4       $4
@@ -232,14 +232,14 @@ __{}__{}    or    C             ; 1:4       $4   x[3] = 1})},
 __{}eval(____N3==____N2),{1},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+3)){}dnl
 __{}__{}define({_TMP_T3},11){}dnl
-__{}__{}define({_TMP_J3},12){}dnl
+__{}__{}define({_TMP_J2},12){}dnl
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B3); 2:7/12    $4
 __{}__{}    _TMP_OR3   ____R3             ; 1:4       $4   x[3] = x[2]})},
 __{}eval(____N3==(____N2+1 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
-__{}__{}define({_TMP_J3},12){}dnl
+__{}__{}define({_TMP_J2},12){}dnl
 __{}__{}dnl Test 10 1F 20 77 --> 10 20 1F 77
 __{}__{}dnl Test 10 1F 20 20 --> 10 20 1F 20 fail
 __{}__{}ifelse(ifelse(eval(_TMP_T4<15),{1},{1},
@@ -260,7 +260,7 @@ __{}__{}__{}    _TMP_OR3   ____R3             ; 1:4       $4   x[3] = x[2] - 1})
 __{}eval(____N3==(____N2+____N1 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
-__{}__{}define({_TMP_J3},12){}dnl
+__{}__{}define({_TMP_J2},12){}dnl
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B3); 2:7/12    $4
 __{}__{}    add   A{,} ____R1          ; 1:4       $4
@@ -268,7 +268,7 @@ __{}__{}    _TMP_OR3   ____R3             ; 1:4       $4   x[3] = x[2] + x[1]})}
 __{}eval(____N3==(____N2+____N2 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
-__{}__{}define({_TMP_J3},12){}dnl
+__{}__{}define({_TMP_J2},12){}dnl
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B3); 2:7/12    $4
 __{}__{}    add   A{,} ____R2          ; 1:4       $4
@@ -276,7 +276,7 @@ __{}__{}    _TMP_OR3   ____R3             ; 1:4       $4   x[3] = x[2] + x[2]})}
 __{}{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+5)){}dnl
 __{}__{}define({_TMP_T3},18){}dnl
-__{}__{}define({_TMP_J3},12){}dnl
+__{}__{}define({_TMP_J2},12){}dnl
 __{}__{}define({____DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B3); 2:7/12    $4
 __{}__{}    ld    A{,} format({0x%02X},____N3)       ; 2:7       $4
@@ -289,19 +289,19 @@ __{}ifelse(____N2,256,{dnl
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+1)){}dnl
 __{}__{}define({_TMP_T2},4){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    or    ____R2             ; 1:4       $4   x[2] = 0})},
 __{}____N3{-}____N2{-}____N1,{255-255-255},{dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+1)){}dnl
 __{}__{}define({_TMP_T2},4){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    and   ____R2             ; 1:4       $4   x[2] = 0xFF})},
 __{}____N3{-}____N2{-}____N1,{256-255-255},{dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+2)){}dnl
 __{}__{}define({_TMP_T2},8){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    and   ____R2             ; 1:4       $4   x[2] = 0xFF
 __{}__{}    inc   A             ; 1:4       $4})},
@@ -309,7 +309,7 @@ __{}____N3{-}____N2,{255-255},{dnl
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+2)){}dnl
 __{}__{}define({_TMP_T2},8){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    dec   A             ; 1:4       $4
 __{}__{}    and   ____R2             ; 1:4       $4   x[2] = 0xFF})},
@@ -317,7 +317,7 @@ __{}____N3{-}____N2,{256-255},{dnl
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+3)){}dnl
 __{}__{}define({_TMP_T2},12){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    dec   A             ; 1:4       $4
 __{}__{}    and   ____R2             ; 1:4       $4   x[2] = 0xFF
@@ -326,7 +326,7 @@ __{}eval(((____N4==256)||(____N4==255)||(____N4==1)) && ((____N3==256)||(____N3=
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+3)){}dnl
 __{}__{}define({_TMP_T2},12){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    ld    C{,} ____R2          ; 1:4       $4
 __{}__{}    dec   C             ; 1:4       $4
@@ -334,7 +334,7 @@ __{}__{}    or    C             ; 1:4       $4   x[2] = 1})},
 __{}eval(____N2==____N1),{1},{dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+3)){}dnl
 __{}__{}define({_TMP_T2},11){}dnl
-__{}__{}define({_TMP_J2},12){}dnl
+__{}__{}define({_TMP_J1},12){}dnl
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B2); 2:7/12    $4
 __{}__{}    _TMP_OR2   ____R2             ; 1:4       $4   x[2] = x[1]})},
@@ -342,7 +342,7 @@ __{}eval(((____N4==256)||(____N4==255)||(____N4==1)) && ((____N3==256)||(____N3=
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+3)){}dnl
 __{}__{}define({_TMP_T2},12){}dnl
-__{}__{}define({_TMP_J2},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2)){}dnl      No jump! Multibyte solution
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    ld    C{,} ____R2          ; 1:4       $4
 __{}__{}    dec   C             ; 1:4       $4
@@ -350,7 +350,7 @@ __{}__{}    or    C             ; 1:4       $4   x[2] = 1})},
 __{}eval(____N2==(____N1+1 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
-__{}__{}define({_TMP_J2},12){}dnl
+__{}__{}define({_TMP_J1},12){}dnl
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B2); 2:7/12    $4
 __{}__{}    inc   A             ; 1:4       $4
@@ -358,7 +358,7 @@ __{}__{}    _TMP_OR2   ____R2             ; 1:4       $4   x[2] = x[1] + 1})},
 __{}eval(____N2==(____N1+____N1 & 0xFF)),{1},{dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
-__{}__{}define({_TMP_J2},12){}dnl
+__{}__{}define({_TMP_J1},12){}dnl
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B2); 2:7/12    $4
 __{}__{}    add   A{,} ____R1          ; 1:4       $4
@@ -366,7 +366,7 @@ __{}__{}    _TMP_OR2   ____R2             ; 1:4       $4   x[2] = x[1] + x[1]})}
 __{}{dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+5)){}dnl
 __{}__{}define({_TMP_T2},18){}dnl
-__{}__{}define({_TMP_J2},12){}dnl
+__{}__{}define({_TMP_J1},12){}dnl
 __{}__{}define({____DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B2); 2:7/12    $4
 __{}__{}    ld    A{,} format({0x%02X},____N2)       ; 2:7       $4
@@ -377,46 +377,49 @@ __{}dnl
 __{}ifelse(____N1,256,{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
 __{}__{}define({_TMP_T1},4){}dnl
-__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
+__{}__{}define({_TMP_J0},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
 __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} ____R1          ; 1:4       $4   x[1] = 0})},
 __{}____N2{-}____N1,{255-255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
 __{}__{}define({_TMP_T1},4){}dnl
-__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
+__{}__{}define({_TMP_J0},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
 __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} ____R1          ; 1:4       $4   x[1] = 0xFF})},
 __{}____N2{-}____N1,{256-255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
-__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
+__{}__{}define({_TMP_J0},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
 __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} ____R1          ; 1:4       $4
 __{}__{}    inc   A             ; 1:4       $4   x[1] = 0xFF})},
 __{}eval(((____N4==256)||(____N4==255)||(____N4==1)) && ((____N3==256)||(____N3==255)||(____N3==1)) && ((____N2==256)||(____N2==255)||(____N2==1)) && (____N1==1)),{1},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},{2}){}dnl
-__{}__{}define({_TMP_J1},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
+__{}__{}define({_TMP_J0},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1)){}dnl
 __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} ____R1          ; 1:4       $4
 __{}__{}    dec   A             ; 1:4       $4   x[1] = 1})},
 __{}{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
-__{}__{}define({_TMP_J1},12){}dnl
+__{}__{}define({_TMP_J0},12){}dnl
 __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} format({0x%02X},____N1)       ; 2:7       $4
 __{}__{}    _TMP_OR1   ____R1             ; 1:4       $4   x[1] = format({0x%02X},____N1)})}){}dnl
 __{}dnl
 __{}dnl --------------------------------------------
 __{}dnl
-__{}define({_TMP_J1},eval(_TMP_J1+$3)){}dnl
-__{}define({_TMP_J2},eval(_TMP_J2+_TMP_T1+$3)){}dnl
-__{}define({_TMP_J3},eval(_TMP_J3+_TMP_T1+_TMP_T2+$3)){}dnl
-__{}define({_TMP_J4},eval(_TMP_J4+_TMP_T1+_TMP_T2+_TMP_T3+$3)){}dnl
-__{}define({____DEQ_CLOCKS},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1+$3)){}dnl
+__{}define({_TMP_J0},eval(_TMP_J0+$3)){}dnl
+__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1+$3)){}dnl
+__{}define({_TMP_J2},eval(_TMP_J2+_TMP_T1+_TMP_T2+$3)){}dnl
+__{}define({_TMP_J3},eval(_TMP_J3+_TMP_T1+_TMP_T2+_TMP_T3+$3)){}dnl
+__{}define({_TMP_J4},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1+$3)){}dnl
+__{}define({____DEQ_CLOCKS_TRUE},eval(_TMP_J4)){}dnl
+__{}define({____DEQ_CLOCKS_FAIL},eval((1+_TMP_J1+_TMP_J2+_TMP_J3+_TMP_J4)/4)){}dnl       0.5 down round / 0.75 up round
+__{}define({____DEQ_CLOCKS},eval((____DEQ_CLOCKS_TRUE+____DEQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({____DEQ_BYTES},eval(_TMP_B1+$2)){}dnl
-__{}define({____DEQ_CODE_0},ifelse(eval(____DEQ_BYTES<10),{1},{ }){               ;[eval(____DEQ_BYTES):____DEQ_CLOCKS/_TMP_J2{,}_TMP_J3{,}_TMP_J4{,}____DEQ_CLOCKS] $4   ( $5 )   format({0x%08X},eval($1)) == DEHL}){}dnl
+__{}define({____DEQ_CODE_0},ifelse(eval(____DEQ_BYTES<10),{1},{ }){               ;[eval(____DEQ_BYTES):____DEQ_CLOCKS_TRUE/_TMP_J1{,}_TMP_J2{,}_TMP_J3{,}_TMP_J4] $4   ( $5 )   format({0x%08X},eval($1)) == DEHL}){}dnl
 __{}dnl
 __{}dnl debug:____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4{}
 }){}dnl
