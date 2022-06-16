@@ -73,7 +73,7 @@ dnl
 dnl Out:
 dnl ____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4
 dnl zero flag if const == DEHL
-dnl A=0 if const == DEHL 
+dnl A = 0 if const == DEHL, because the "cp" instruction can be the last instruction only with a non-zero result. 
 dnl
 define({____DEQ_MAKE_CODE},{dnl
 __{}define({____R1},_TMP_R1){}dnl Protoze obcas muzeme udelat prohozeni registru tak si udelame kopii
@@ -418,7 +418,7 @@ __{}define({____DEQ_CLOCKS},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1+$3)){}dnl
 __{}define({____DEQ_BYTES},eval(_TMP_B1+$2)){}dnl
 __{}define({____DEQ_CODE_0},ifelse(eval(____DEQ_BYTES<10),{1},{ }){               ;[eval(____DEQ_BYTES):____DEQ_CLOCKS/_TMP_J2{,}_TMP_J3{,}_TMP_J4{,}____DEQ_CLOCKS] $4   ( $5 )   format({0x%08X},eval($1)) == DEHL}){}dnl
 __{}dnl
-__{}dnl debug: ____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4{}
+__{}dnl debug:____DEQ_CODE_0{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4{}
 }){}dnl
 dnl
 dnl
