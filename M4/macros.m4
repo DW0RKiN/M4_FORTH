@@ -89,7 +89,8 @@ __{}define({____N1},_TMP_N1){}dnl
 __{}define({____N2},_TMP_N2){}dnl
 __{}define({____N3},_TMP_N3){}dnl
 __{}define({____N4},_TMP_N4){}dnl
-__{}dnl --------------------------------------------
+__{}dnl
+__{}dnl --------------- 4 ---------------
 __{}dnl
 __{}define({_TMP_OR3},{cp }){}dnl
 __{}ifelse(____N4,256,{dnl
@@ -185,7 +186,7 @@ __{}__{}    jr   nz{,} $+_TMP_B4        ; 2:7/12    $4
 __{}__{}    ld    A{,} format({0x%02X},____N4)       ; 2:7       $4
 __{}__{}    xor   ____R4             ; 1:4       $4   x[4] = format({0x%02X},____N4)})}){}dnl
 __{}dnl
-__{}dnl --------------------------------------------
+__{}dnl --------------- 3 ---------------
 __{}dnl
 __{}define({_TMP_OR2},{or }){}dnl
 __{}ifelse(____N3,256,{dnl
@@ -287,7 +288,7 @@ __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B3); 2:7/12    $4
 __{}__{}    ld    A{,} format({0x%02X},____N3)       ; 2:7       $4
 __{}__{}    _TMP_OR3   ____R3             ; 1:4       $4   x[3] = format({0x%02X},____N3)})}){}dnl
 __{}dnl
-__{}dnl --------------------------------------------
+__{}dnl --------------- 2 ---------------
 __{}dnl
 __{}define({_TMP_OR1},{cp }){}dnl
 __{}ifelse(____N2,256,{dnl
@@ -377,7 +378,7 @@ __{}__{}    jr   nz{,} $+format({%-9s},_TMP_B2); 2:7/12    $4
 __{}__{}    ld    A{,} format({0x%02X},____N2)       ; 2:7       $4
 __{}__{}    _TMP_OR2   ____R2             ; 1:4       $4   x[2] = format({0x%02X},____N2)})}){}dnl
 __{}dnl
-__{}dnl --------------------------------------------
+__{}dnl --------------- 1 ---------------
 __{}dnl
 __{}ifelse(____N1,256,{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
@@ -408,16 +409,16 @@ __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} format({0x%02X},____N1)       ; 2:7       $4
 __{}__{}    _TMP_OR1   ____R1             ; 1:4       $4   x[1] = format({0x%02X},____N1)})}){}dnl
 __{}dnl
-__{}dnl --------------------------------------------
+__{}dnl ---------------------------------
 __{}dnl
-__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1+$3)){}dnl
-__{}define({_TMP_J2},eval(_TMP_J2+_TMP_T1+_TMP_T2+$3)){}dnl
-__{}define({_TMP_J3},eval(_TMP_J3+_TMP_T1+_TMP_T2+_TMP_T3+$3)){}dnl
-__{}define({_TMP_J4},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1+$3)){}dnl
+__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1+ifelse($3,{},{0},{$3}))){}dnl
+__{}define({_TMP_J2},eval(_TMP_J2+_TMP_T1+_TMP_T2+ifelse($3,{},{0},{$3}))){}dnl
+__{}define({_TMP_J3},eval(_TMP_J3+_TMP_T1+_TMP_T2+_TMP_T3+ifelse($3,{},{0},{$3}))){}dnl
+__{}define({_TMP_J4},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1+ifelse($3,{},{0},{$3}))){}dnl
 __{}define({____DEQ_CLOCKS_TRUE},eval(_TMP_J4)){}dnl
 __{}define({____DEQ_CLOCKS_FAIL},eval((1+_TMP_J1+_TMP_J2+_TMP_J3+_TMP_J4)/4)){}dnl       0.5 down round / 0.75 up round
 __{}define({____DEQ_CLOCKS},eval((____DEQ_CLOCKS_TRUE+____DEQ_CLOCKS_FAIL)/2)){}dnl
-__{}define({____DEQ_BYTES},eval(_TMP_B1+$2)){}dnl
+__{}define({____DEQ_BYTES},eval(_TMP_B1+ifelse($2,{},{0},{$2}))){}dnl
 __{}define({____DEQ_CODE},format({%47s},;[eval(____DEQ_BYTES):____DEQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2{{{,}}}_TMP_J3{{{,}}}_TMP_J4]){ $4   ( $5 )   format({0x%08X},eval($1)) == DEHL{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4}){}dnl
 __{}dnl
 __{}dnl debug:____DEQ_CODE{}
@@ -482,7 +483,7 @@ __{}__{}____SWAP2DEF({____R1},{____R2})}){}dnl
 __{}ifelse(____N1,{0},{dnl                       0x..00 --> 0x00..
 __{}__{}____SWAP2DEF({____N1},{____N2}){}dnl
 __{}__{}____SWAP2DEF({____R1},{____R2})}){}dnl
-__{}dnl --------------------------------------------
+__{}dnl --------------- 2 ---------------
 __{}dnl
 __{}define({_TMP_OR1},{cp }){}dnl
 __{}ifelse(____N2,0,{dnl
@@ -579,7 +580,7 @@ __{}__{}    jr   nz{{,}} $+format({%-9s},_TMP_B2); 2:7/12    $4
 __{}__{}    ld    A{{,}} format({0x%02X},____N2)       ; 2:7       $4
 __{}__{}    xor   ____R2             ; 1:4       $4   x[2] = format({0x%02X},____N2)})}){}dnl
 __{}dnl
-__{}dnl --------------------------------------------
+__{}dnl --------------- 1 ---------------
 __{}dnl
 __{}ifelse(____N1,0,{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
@@ -630,7 +631,7 @@ __{}__{}define({____EQ_CODE},{
 __{}__{}    ld    A{,} format({0x%02X},____N1)       ; 2:7       $4
 __{}__{}    _TMP_OR1   ____R1             ; 1:4       $4   x[1] = format({0x%02X},____N1)}____EQ_CODE)}){}dnl
 __{}dnl
-__{}dnl --------------------------------------------
+__{}dnl ---------------------------------
 __{}dnl
 __{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1+$3)){}dnl
 __{}define({_TMP_J2},eval(_TMP_T2+_TMP_T1+$3)){}dnl
