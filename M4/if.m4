@@ -1863,81 +1863,93 @@ dnl
 dnl
 dnl 2dup D. D= if
 dnl ( d -- d )
-define({_2DUP_PUSHDOT_DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
-    .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(index({$1},{(}),{0},{
-__{}                        ;[19:108]   2dup $1 D= if    ( d1 -- d1 )
-__{}    push HL             ; 1:11      2dup $1 D= if
-__{}    xor   A             ; 1:4       2dup $1 D= if
-__{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D= if   lo16($1)
-__{}    sbc  HL, BC         ; 2:15      2dup $1 D= if   lo16(d1)-BC
-__{}    jp   nz, $+7        ; 2:7/12    2dup $1 D= if
-__{}    ld   HL,format({%-12s},($1+2)); 3:16      2dup $1 D= if   hi16($1)
-__{}    sbc  HL, DE         ; 2:15      2dup $1 D= if   HL-hi16(d1)
-__{}    pop  HL             ; 1:10      2dup $1 D= if
-__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if},
-__{}eval($1),{},{
-__{}   .error {$0}($@): M4 does not know $1 parameter value!},
-__{}{dnl
-__{}____DEQ_INIT_CODE($1){}dnl
-__{}____DEQ_MAKE_BEST_CODE($1,3,10,{2dup $1 D= if},{d1 -- d1}){}dnl
-__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
-__{}__{}__{}dnl
-__{}__{}__{}_TMP_BEST_CODE
-__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if},
-__{}__{}{
-__{}__{}__{}                     ;[18:92/72,92] 2dup $1 D= if   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
-__{}__{}__{}    push HL             ; 1:11      2dup $1 D= if
-__{}__{}__{}    xor   A             ; 1:4       2dup $1 D= if
-__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      2dup $1 D= if   lo16
-__{}__{}__{}    sbc  HL, BC         ; 2:15      2dup $1 D= if   lo16(d1)-BC
-__{}__{}__{}    jr   nz, $+7        ; 2:7/12    2dup $1 D= if
-__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      2dup $1 D= if   hi16
-__{}__{}__{}    sbc  HL, DE         ; 2:15      2dup $1 D= if   HL-hi16(d1)
-__{}__{}__{}    pop  HL             ; 1:10      2dup $1 D= if
-__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      2dup $1 D= if})})},
-{
-    .error {$0}($@): $# parameters found in macro!})}){}dnl
+define({_2DUP_PUSHDOT_DEQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}define({_TMP_INFO},{2dup $1 D= if})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) == DEHL})dnl
+__{}ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing parameter!},
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
+__{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
+__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
+__{}__{}eval($1),{},{
+__{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__{}{dnl
+__{}__{}__{}____DEQ_INIT_CODE($1){}dnl
+__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
+__{}__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
+__{}__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
+__{}__{}__{}{
+__{}__{}__{}__{}                     ;[18:92/72,92] _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
+__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16
+__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
+__{}__{}__{}__{}    jr   nz, $+7        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16
+__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
+__{}__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO})})},
+__{}{
+__{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
 dnl 2dup D. D<> if
 dnl ( d -- d )
-define({_2DUP_PUSHDOT_DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
-    .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(index({$1},{(}),{0},{
-__{}                        ;[19:108]   2dup $1 D<> if    ( d1 -- d1 )
-__{}    push HL             ; 1:11      2dup $1 D<> if
-__{}    xor   A             ; 1:4       2dup $1 D<> if
-__{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D<> if   lo16($1)
-__{}    sbc  HL, BC         ; 2:15      2dup $1 D<> if   lo16(d1)-BC
-__{}    jp   nz, $+7        ; 2:7/12    2dup $1 D<> if
-__{}    ld   HL,format({%-12s},($1+2)); 3:16      2dup $1 D<> if   hi16($1)
-__{}    sbc  HL, DE         ; 2:15      2dup $1 D<> if   HL-hi16(d1)
-__{}    pop  HL             ; 1:10      2dup $1 D<> if
-__{}    jp    z, else{}IF_COUNT    ; 3:10      2dup $1 D<> if},
-__{}eval($1),{},{
-__{}   .error {$0}($@): M4 does not know $1 parameter value!},
-__{}{dnl
-__{}____DEQ_INIT_CODE($1){}dnl
-__{}____DEQ_MAKE_BEST_CODE($1,3,10,{2dup $1 D<> if},{d1 -- d1}){}dnl
-__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
-__{}__{}__{}dnl
-__{}__{}__{}_TMP_BEST_CODE
-__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      2dup $1 D<> if},
-__{}__{}{
-__{}__{}__{}                     ;[18:92/72,92] 2dup $1 D<> if   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
-__{}__{}__{}    push HL             ; 1:11      2dup $1 D<> if
-__{}__{}__{}    xor   A             ; 1:4       2dup $1 D<> if
-__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      2dup $1 D<> if   lo16
-__{}__{}__{}    sbc  HL, BC         ; 2:15      2dup $1 D<> if   lo16(d1)-BC
-__{}__{}__{}    jr   nz, $+7        ; 2:7/12    2dup $1 D<> if
-__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      2dup $1 D<> if   hi16
-__{}__{}__{}    sbc  HL, DE         ; 2:15      2dup $1 D<> if   HL-hi16(d1)
-__{}__{}__{}    pop  HL             ; 1:10      2dup $1 D<> if
-__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      2dup $1 D<> if})})},
-{
-    .error {$0}($@): $# parameters found in macro!})}){}dnl
+define({_2DUP_PUSHDOT_DNE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}define({_TMP_INFO},{2dup $1 D<> if})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) <> DEHL})dnl
+__{}ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing parameter!},
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
+__{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
+__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
+__{}__{}eval($1),{},{
+__{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__{}{dnl
+__{}__{}__{}____DEQ_INIT_CODE($1){}dnl
+__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
+__{}__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
+__{}__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
+__{}__{}__{}{
+__{}__{}__{}__{}                     ;[18:92/72,92] _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
+__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16
+__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
+__{}__{}__{}__{}    jr   nz, $+7        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16
+__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
+__{}__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO})})},
+__{}{
+__{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
