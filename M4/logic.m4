@@ -705,36 +705,43 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({DUP_PUSH_EQ},{define({_TMP_INFO},{dup $1 =})define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($1)) == HL})ifelse($1,{},{dnl
+define({DUP_PUSH_EQ},{dnl
+__{}define({_TMP_INFO},{dup $1 =})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($1)) == HL})dnl
+__{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},{ifelse(index({$1},{(}),{0},{
-__{}__{}                        ;[13:69/70] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) = HL
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO
-__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
-__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
-__{}__{}    dec   A             ; 1:4       _TMP_INFO
-__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
-__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1},
-__{}__{}{____EQ_MAKE_CODE($1,6,37){}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=(63+4*13)),{1},{
-__{}__{}__{}____EQ_CODE
-__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}                        ;[13:69/70] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) = HL
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag x==$1},
-__{}__{}{
-__{}__{}__{}                        ;[13:63/64]{}_TMP_STACK_INFO
-__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      _TMP_INFO
+__{}__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
-__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1})})},{
+__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1},
+__{}__{}{dnl
+__{}__{}__{}____EQ_MAKE_CODE($1,6,37,0,0)dnl
+__{}__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=(63+4*13)),{1},{
+__{}__{}__{}__{}____EQ_CODE
+__{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
+__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag x==$1},
+__{}__{}__{}{
+__{}__{}__{}__{}                        ;[13:63/64]{}_TMP_STACK_INFO
+__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      _TMP_INFO
+__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
+__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1})})},
+__{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
@@ -778,32 +785,39 @@ define({NE},{
 dnl
 dnl
 dnl
-define({DUP_PUSH_NE},{define({_TMP_INFO},{dup $1 <>})define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($1)) <> HL})ifelse($1,{},{dnl
+define({DUP_PUSH_NE},{dnl
+__{}define({_TMP_INFO},{dup $1 <>})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($1)) <> HL})dnl
+__{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},{ifelse(index({$1},{(}),{0},{
-__{}__{}                        ;[13:67/62] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) <> HL
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO
-__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
-__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1},
-__{}__{}{____EQ_MAKE_CODE($1,6,37){}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=(58+4*13)),{1},{
-__{}__{}__{}____EQ_CODE
-__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}                        ;[13:67/62] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) <> HL
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag x<>$1},
-__{}__{}{
-__{}__{}__{}                        ;[13:61/56]{}_TMP_STACK_INFO
-__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      _TMP_INFO
+__{}__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1})})},{
+__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1},
+__{}__{}{dnl
+__{}__{}__{}____EQ_MAKE_CODE($1,6,37,0,0)dnl
+__{}__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=(58+4*13)),{1},{
+__{}__{}__{}__{}____EQ_CODE
+__{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
+__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag x<>$1},
+__{}__{}__{}{
+__{}__{}__{}__{}                        ;[13:61/56]{}_TMP_STACK_INFO
+__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      _TMP_INFO
+__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
+__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1})})},
+__{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl

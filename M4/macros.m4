@@ -83,8 +83,8 @@ dnl zero flag if const == DEHL
 dnl A = 0 if const == DEHL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
 define({____DEQ_MAKE_CODE},{dnl
-__{}ifelse($4,{},define({_TMP_B0},0),define({_TMP_B0},$4)){}dnl
-__{}ifelse($5,{},define({_TMP_J0},0),define({_TMP_J0},$5)){}dnl
+__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
+__{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}define({____R1},_TMP_R1){}dnl Protoze obcas muzeme udelat prohozeni registru tak si udelame kopii
 __{}define({____R2},_TMP_R2){}dnl
 __{}define({____R3},_TMP_R3){}dnl
@@ -478,8 +478,8 @@ dnl zero flag if const == DEHL
 dnl A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
 define({____EQ_MAKE_CODE},{dnl
-__{}ifelse($4,{},define({_TMP_B0},0),define({_TMP_B0},$4)){}dnl
-__{}ifelse($5,{},define({_TMP_J0},0),define({_TMP_J0},$5)){}dnl
+__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
+__{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}define({____R1},{L}){}dnl
 __{}define({____R2},{H}){}dnl
 __{}define({____N1},eval(($1) & 0xFF)){}dnl
