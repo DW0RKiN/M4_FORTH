@@ -792,7 +792,7 @@ __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
-__{}__{}__{}                        ;[13:67/62] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) <> HL
+__{}__{}__{}                        ;[13:67/62] _TMP_INFO   ( x -- x f )   (addr) <> HL
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO
