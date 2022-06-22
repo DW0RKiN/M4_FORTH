@@ -42,21 +42,6 @@ __{}__{}__{}__{}____SWAP2DEF({_TMP_R4},{_TMP_R3})})})})}){}dnl
 dnl
 dnl
 dnl
-define({____DEQ_PARAMETER_ROTATION},{dnl
-__{}dnl 4 3 2 1 --> 3 2 1 4
-__{}dnl z 3 2 1 --> z 1 2 3
-__{}dnl z z 2 1 --> z z 1 2
-__{}ifelse(eval(_TMP_N4<255),{1},{dnl
-__{}____SWAP2DEF({_TMP_N4},{_TMP_N3}){}dnl
-__{}____SWAP2DEF({_TMP_R4},{_TMP_R3})}){}dnl
-__{}ifelse(eval(_TMP_N3<255),{1},{dnl
-__{}____SWAP2DEF({_TMP_N3},{_TMP_N2}){}dnl
-__{}____SWAP2DEF({_TMP_R3},{_TMP_R2})}){}dnl
-__{}ifelse(eval(_TMP_N2<255),{1},{dnl
-__{}____SWAP2DEF({_TMP_N2},{_TMP_N1}){}dnl
-__{}____SWAP2DEF({_TMP_R2},{_TMP_R1})}){}dnl
-}){}dnl
-dnl
 dnl
 dnl ============================================
 dnl Input parameters:
@@ -284,6 +269,17 @@ __{}__{}    dec   C             ; 1:4       _TMP_INFO
 __{}__{}    or    C             ; 1:4       _TMP_INFO   x[3] = 1
 __{}__{}    dec   A             ; 1:4       _TMP_INFO})},
 __{}dnl
+__{}dnl 255 254 - -
+__{}dnl
+__{}____N4{-}____N3,{255-254},{dnl
+__{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
+__{}__{}define({_TMP_T3},15){}dnl
+__{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
+__{}__{}define({____DEQ_CODE_3},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    ld    A{,} ____R3          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO   x[3] + 1 = 0xFF})},
+__{}dnl
 __{}dnl 255 - - -
 __{}dnl
 __{}____N4,{255},{dnl
@@ -459,6 +455,17 @@ __{}__{}    dec   C             ; 1:4       _TMP_INFO
 __{}__{}    or    C             ; 1:4       _TMP_INFO   x[2] = 1
 __{}__{}    dec   A             ; 1:4       _TMP_INFO})},
 __{}dnl
+__{}dnl  - 255 254 -
+__{}dnl
+__{}____N3{-}____N2,{255-254},{dnl
+__{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
+__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}define({____DEQ_CODE_2},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    ld    A{,} ____R2          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO   x[2] + 1 = 0xFF})},
+__{}dnl
 __{}dnl  - 255 - -
 __{}dnl
 __{}____N3,{255},{dnl
@@ -583,6 +590,15 @@ __{}__{}define({____DEQ_CODE_1},{
 __{}__{}    ld    A{,} ____R1          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[1] = 0xFF})},
 __{}dnl
+__{}dnl - - 255 254    need 255
+__{}dnl
+__{}____N2{-}____N1,{255-254},{dnl
+__{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
+__{}__{}define({_TMP_T1},8){}dnl
+__{}__{}define({____DEQ_CODE_1},{
+__{}__{}    ld    A{,} ____R1          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO   x[1] + 1 = 0xFF})},
+__{}dnl
 __{}dnl - - 255 x    need 255
 __{}dnl
 __{}____N2,{255},{dnl
@@ -660,7 +676,7 @@ __{}{0}){}dnl
 dnl
 dnl
 dnl
-define({____DEQ_ROTATION_21},{dnl
+define({____DEQ_VARIATION_21},{dnl
 __{}dnl debug:
 __{}dnl format({0x%02X},_TMP_N4)-format({0x%02X},_TMP_N3)-format({0x%02X},_TMP_N2)-format({0x%02X},_TMP_N1)
 __{}dnl
@@ -685,15 +701,15 @@ __{}__{}__{}define({_TMP_BEST_CODE},____DEQ_CODE)})})}){}dnl
 dnl
 dnl
 dnl
-define({____DEQ_ROTATION_32},{dnl
-__{}____DEQ_ROTATION_21($1,$2,$3,$4,$5){}dnl
+define({____DEQ_VARIATION_32},{dnl
+__{}____DEQ_VARIATION_21($1,$2,$3,$4,$5){}dnl
 __{}ifelse(eval(_TMP_N3<255),{1},{dnl
 __{}____SWAP2DEF({_TMP_N3},{_TMP_N2}){}dnl
 __{}____SWAP2DEF({_TMP_R3},{_TMP_R2}){}dnl
-__{}____DEQ_ROTATION_21($1,$2,$3,$4,$5){}dnl
+__{}____DEQ_VARIATION_21($1,$2,$3,$4,$5){}dnl
 __{}____SWAP2DEF({_TMP_N3},{_TMP_N2}){}dnl
 __{}____SWAP2DEF({_TMP_R3},{_TMP_R2}){}dnl
-__{}____DEQ_ROTATION_21($1,$2,$3,$4,$5)})}){}dnl
+__{}____DEQ_VARIATION_21($1,$2,$3,$4,$5)})}){}dnl
 dnl
 dnl
 dnl
@@ -702,17 +718,17 @@ ____DEQ_INIT_CODE($1){}dnl
 __{}define({_TMP_BEST_P},10000000){}dnl
 __{}define({_TMP_BEST_B},10000000){}dnl
 __{}define({_TMP_BEST_C},10000000){}dnl
-__{}____DEQ_ROTATION_32($1,$2,$3,$4,$5){}dnl
+__{}____DEQ_VARIATION_32($1,$2,$3,$4,$5){}dnl
 __{}ifelse(eval(_TMP_N4<255),{1},{dnl
 __{}____SWAP2DEF({_TMP_N4},{_TMP_N3}){}dnl
 __{}____SWAP2DEF({_TMP_R4},{_TMP_R3}){}dnl
-__{}____DEQ_ROTATION_32($1,$2,$3,$4,$5){}dnl
+__{}____DEQ_VARIATION_32($1,$2,$3,$4,$5){}dnl
 __{}____SWAP2DEF({_TMP_N4},{_TMP_N3}){}dnl
 __{}____SWAP2DEF({_TMP_R4},{_TMP_R3}){}dnl
-__{}____DEQ_ROTATION_32($1,$2,$3,$4,$5){}dnl
+__{}____DEQ_VARIATION_32($1,$2,$3,$4,$5){}dnl
 __{}____SWAP2DEF({_TMP_N4},{_TMP_N1}){}dnl
 __{}____SWAP2DEF({_TMP_R4},{_TMP_R1}){}dnl
-__{}____DEQ_ROTATION_32($1,$2,$3,$4,$5)})}){}dnl
+__{}____DEQ_VARIATION_32($1,$2,$3,$4,$5)})}){}dnl
 dnl
 dnl
 dnl
