@@ -455,9 +455,10 @@ __{}__{}    dec   C             ; 1:4       _TMP_INFO
 __{}__{}    or    C             ; 1:4       _TMP_INFO   x[2] = 1
 __{}__{}    dec   A             ; 1:4       _TMP_INFO})},
 __{}dnl
-__{}dnl  - 255 254 -
+__{}dnl  - 255 254 -    + send signal 0
 __{}dnl
 __{}____N3{-}____N2,{255-254},{dnl
+__{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
@@ -466,9 +467,10 @@ __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_IN
 __{}__{}    ld    A{,} ____R2          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[2] + 1 = 0xFF})},
 __{}dnl
-__{}dnl  - 255 - -
+__{}dnl  - 255 - -    + send signal 0
 __{}dnl
 __{}____N3,{255},{dnl
+__{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},eval(_TMP_B3+5)){}dnl
 __{}__{}define({_TMP_T2},18){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
@@ -641,12 +643,12 @@ __{}define({_TMP_J2},eval(_TMP_J2+_TMP_T1+_TMP_T2+ifelse($3,{},{0},{$3}))){}dnl
 __{}define({_TMP_J3},eval(_TMP_J3+_TMP_T1+_TMP_T2+_TMP_T3+ifelse($3,{},{0},{$3}))){}dnl
 __{}define({_TMP_J4},eval(_TMP_T4+_TMP_T3+_TMP_T2+_TMP_T1+ifelse($3,{},{0},{$3}))){}dnl
 __{}define({____DEQ_CLOCKS_TRUE},eval(_TMP_J4)){}dnl                                     the longest, full-pass variant
-__{}define({____DEQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2+_TMP_J3+_TMP_J4)){}dnl             the sum of 4 probably jump shortened variants
-__{}define({____DEQ_PRICE},eval((4*____DEQ_CLOCKS_TRUE)+____DEQ_CLOCKS_FAIL)){}dnl
-__{}define({____DEQ_CLOCKS_FAIL},eval((____DEQ_CLOCKS_FAIL+2)/4)){}dnl                   0.5 round up
-__{}define({____DEQ_CLOCKS},eval((____DEQ_PRICE+4)/8)){}dnl                              0.5 round up
+__{}define({____DEQ_CLOCKS_FAIL},eval(4*_TMP_J1+2*_TMP_J2+_TMP_J3+_TMP_J4)){}dnl         It is calculated that each jump has half the chance to be performed, so the probability of the next jump is always half less.
+__{}define({____DEQ_PRICE},eval(8*____DEQ_CLOCKS_TRUE+____DEQ_CLOCKS_FAIL)){}dnl         The TRUE variant is calculated to have the same probability as the FALSE variant.
+__{}define({____DEQ_CLOCKS_FAIL},eval((____DEQ_CLOCKS_FAIL+4)/8)){}dnl                   0.5 round up
+__{}define({____DEQ_CLOCKS},eval((____DEQ_PRICE+8)/16)){}dnl                             0.5 round up
 __{}define({____DEQ_BYTES},eval(_TMP_B1+ifelse($2,{},{0},{$2}))){}dnl
-__{}define({____DEQ_PRICE},eval(____DEQ_PRICE+(32*____DEQ_BYTES)+ifelse(____R1,{L},{0},{1}))){}dnl              = 8*(clocks + 4*bytes) + 1 if it does not check register L first
+__{}define({____DEQ_PRICE},eval(____DEQ_PRICE+(64*____DEQ_BYTES)+ifelse(____R1,{L},{0},{1}))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}define({____DEQ_CODE},format({%47s},;[eval(____DEQ_BYTES):____DEQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2{{{,}}}_TMP_J3{{{,}}}_TMP_J4]){_TMP_STACK_INFO{}____DEQ_CODE_1{}____DEQ_CODE_2{}____DEQ_CODE_3{}____DEQ_CODE_4}){}dnl
 __{}dnl
 __{}dnl debug:
@@ -664,7 +666,7 @@ dnl
 dnl
 dnl
 dnl
-define({____BETTER},{dnl
+define({____SMALLER},{dnl
 __{}ifelse(eval(_TMP_BEST_B>____DEQ_BYTES),{1},{1},
 __{}eval(_TMP_BEST_B==____DEQ_BYTES),{1},{dnl
 __{}__{}ifelse(eval(_TMP_BEST_C>____DEQ_CLOCKS),{1},{1},
@@ -713,11 +715,32 @@ __{}____DEQ_VARIATION_21($1,$2,$3,$4,$5)})}){}dnl
 dnl
 dnl
 dnl
+dnl
+dnl ============================================
+dnl Input parameters:
+dnl               $1 = 32 bit number
+dnl               $2 = +-bytes no jump
+dnl               $3 = +-clocks no jump
+dnl               $4 = +-bytes jump
+dnl               $5 = +-clocks jump
+dnl        _TMP_INFO = info
+dnl  _TMP_STACK_INFO = stack info
+dnl
+dnl
+dnl Out:
+dnl   _TMP_BEST_CODE = code
+dnl      _TMP_BEST_P = price = 16*(clocks + 4*bytes)
+dnl      _TMP_BEST_B = bytes
+dnl      _TMP_BEST_C = clocks
+dnl
+dnl  zero flag if const == DEHL
+dnl  A = 0 if const == DEHL, because the "cp" instruction can be the last instruction only with a non-zero result.
+dnl
 define({____DEQ_MAKE_BEST_CODE},{dnl
 ____DEQ_INIT_CODE($1){}dnl
-__{}define({_TMP_BEST_P},10000000){}dnl
-__{}define({_TMP_BEST_B},10000000){}dnl
-__{}define({_TMP_BEST_C},10000000){}dnl
+__{}define({_TMP_BEST_P},10000000){}dnl    price = 16*(clocks + 4*bytes)
+__{}define({_TMP_BEST_B},10000000){}dnl    bytes
+__{}define({_TMP_BEST_C},10000000){}dnl    clocks
 __{}____DEQ_VARIATION_32($1,$2,$3,$4,$5){}dnl
 __{}ifelse(eval(_TMP_N4<255),{1},{dnl
 __{}____SWAP2DEF({_TMP_N4},{_TMP_N3}){}dnl

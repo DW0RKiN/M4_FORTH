@@ -1886,7 +1886,6 @@ __{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
-__{}__{}__{}____DEQ_INIT_CODE($1){}dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
 __{}__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
@@ -1932,7 +1931,6 @@ __{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
-__{}__{}__{}____DEQ_INIT_CODE($1){}dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
 __{}__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
