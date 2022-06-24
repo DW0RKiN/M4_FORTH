@@ -2085,15 +2085,15 @@ __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
-__{}__{}__{}____DEQ_MAKE_HL_CODE($1,10){}dnl
+__{}__{}__{}____DEQ_MAKE_HLDE_CODE($1,10){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
 __{}__{}__{}ifelse(_TMP_ZERO,{1},{dnl
 __{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl    false
 __{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+20)){}dnl false2
 __{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+19)){}dnl true
-__{}__{}__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
-__{}__{}__{}__{}__{}}_TMP_HL_CODE{
+__{}__{}__{}__{}__{}}_TMP_HLDE_CODE{
 __{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
 __{}__{}__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = true
 __{}__{}__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
@@ -2102,9 +2102,9 @@ __{}__{}__{}{dnl
 __{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+15)){}dnl   false
 __{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+27)){}dnl false2
 __{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+26)){}dnl true
-__{}__{}__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
-__{}__{}__{}__{}__{}}_TMP_HL_CODE{
+__{}__{}__{}__{}__{}}_TMP_HLDE_CODE{
 __{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
 __{}__{}__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
 __{}__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1})}){}dnl
@@ -2121,7 +2121,7 @@ __{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1{}dnl
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}else
 __{}__{}__{}__{}; price: _TMP_P
-__{}__{}__{}__{}_TMP_HL_CODE
+__{}__{}__{}__{}_TMP_HLDE_CODE
 __{}__{}__{}__{}endif})})},
 __{}{
 __{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
@@ -2152,15 +2152,15 @@ __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
-__{}__{}__{}____DEQ_MAKE_HL_CODE($1,9){}dnl
+__{}__{}__{}____DEQ_MAKE_HLDE_CODE($1,9){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
 __{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
 __{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+12)){}dnl
 __{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+17)){}dnl
 __{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
-__{}__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
-__{}__{}__{}__{}}_TMP_HL_CODE{
+__{}__{}__{}__{}}_TMP_HLDE_CODE{
 __{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
 __{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1}){}dnl
 __{}__{}__{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
@@ -2175,7 +2175,7 @@ __{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1{
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}else
 __{}__{}__{}__{}; price: _TMP_P
-__{}__{}__{}__{}_TMP_HL_CODE
+__{}__{}__{}__{}_TMP_HLDE_CODE
 __{}__{}__{}__{}endif})})},
 __{}{
 __{}    .error {$0}($@): $# parameters found in macro!})}){}dnl

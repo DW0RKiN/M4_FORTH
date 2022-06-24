@@ -1887,19 +1887,18 @@ __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
-__{}__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
+__{}__{}__{}____DEQ_MAKE_HL_CODE($1,0,0){}dnl
+__{}__{}__{}define({_TMP_B},eval(_TMP_B+3)){}dnl
+__{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
+__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}ifelse(ifelse(_TYP_DOUBLE,{small},{eval((_TMP_BEST_B<_TMP_B) || ((_TMP_BEST_B==_TMP_B) && (_TMP_BEST_P<_TMP_P)))},{eval(_TMP_BEST_P<=_TMP_P)}),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}__{}{
-__{}__{}__{}__{}                     ;[18:92/72,92] _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
-__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16
-__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
-__{}__{}__{}__{}    jr   nz, $+7        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16
-__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
-__{}__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 )
+__{}__{}__{}__{}_TMP_HL_CODE
 __{}__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO})})},
 __{}{
 __{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
@@ -1932,19 +1931,18 @@ __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
-__{}__{}__{}ifelse(eval((_TMP_BEST_B<=18) || ifelse(_TYP_DOUBLE,{small},{0},{1})),{1},{
+__{}__{}__{}____DEQ_MAKE_HL_CODE($1,3,-10){}dnl
+__{}__{}__{}define({_TMP_B},eval(_TMP_B+3)){}dnl
+__{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
+__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}ifelse(ifelse(_TYP_DOUBLE,{small},{eval((_TMP_BEST_B<_TMP_B) || ((_TMP_BEST_B==_TMP_B) && (_TMP_BEST_P<_TMP_P)))},{eval(_TMP_BEST_P<=_TMP_P)}),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}__{}{
-__{}__{}__{}__{}                     ;[18:92/72,92] _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) -->  default version
-__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16
-__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
-__{}__{}__{}__{}    jr   nz, $+7        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}    ld   HL, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16
-__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
-__{}__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 )
+__{}__{}__{}__{}_TMP_HL_CODE
 __{}__{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO})})},
 __{}{
 __{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
