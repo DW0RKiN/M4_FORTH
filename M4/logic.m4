@@ -2085,37 +2085,30 @@ __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
-__{}__{}__{}ifelse(dnl
-__{}__{}__{}eval((($1)>>16) & 0xFFFF),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},1){}dnl    # 0x0000????
-__{}__{}__{}__{}define({_TMP_B},16){}dnl
-__{}__{}__{}__{}define({_TMP_P},2200)},dnl       (81+(50+82)/2)/2 = 73.5  --> 16*(73.5+4*16)
-__{}__{}__{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},2){}dnl    # 0x????0000
-__{}__{}__{}__{}define({_TMP_B},16){}dnl
-__{}__{}__{}__{}define({_TMP_P},2200)},dnl       (81+(50+82)/2)/2 = 73.5  --> 16*(73.5+4*16)
-__{}__{}__{}eval(($1) & 0xFFFF),eval((($1)>>16) & 0xFFFF),{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},3){}dnl    # hi16(d1) == lo16(d1)
-__{}__{}__{}__{}define({_TMP_B},17){}dnl
-__{}__{}__{}__{}define({_TMP_P},2328)},dnl       (85+(54+86)/2)/2 = 77.5  --> 16*(77.5+4*17)
-__{}__{}__{}eval(($1) & 0xFF0000),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},4){}dnl    # default version with one bytes zero
-__{}__{}__{}__{}define({_TMP_B},18){}dnl
-__{}__{}__{}__{}define({_TMP_P},2440){}dnl       (88+(57+89)/2)/2 = 80.5  --> 16*(80.5+4*18)
-__{}__{}__{}__{}define({_TMP_R1},{H}){}dnl
-__{}__{}__{}__{}define({_TMP_R2},{L}){}dnl
-__{}__{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>24) & 0xFF)))},
-__{}__{}__{}eval(($1) & 0xFF000000),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},4){}dnl    # default version with one bytes zero
-__{}__{}__{}__{}define({_TMP_B},18){}dnl
-__{}__{}__{}__{}define({_TMP_P},2440){}dnl       (88+(57+89)/2)/2 = 80.5  --> 16*(80.5+4*18)
-__{}__{}__{}__{}define({_TMP_R1},{L}){}dnl
-__{}__{}__{}__{}define({_TMP_R2},{H}){}dnl
-__{}__{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>16) & 0xFF)))},
+__{}__{}__{}____DEQ_MAKE_HL_CODE($1,10){}dnl
+__{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
+__{}__{}__{}ifelse(_TMP_ZERO,{1},{dnl
+__{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl    false
+__{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+20)){}dnl false2
+__{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+19)){}dnl true
+__{}__{}__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}__{}__{}}_TMP_HL_CODE{
+__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = true
+__{}__{}__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
+__{}__{}__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==$1})},
 __{}__{}__{}{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},100){}dnl
-__{}__{}__{}__{}define({_TMP_B},20){}dnl
-__{}__{}__{}__{}define({_TMP_P},2680)}){}dnl   (95+(64+96)/2)/2=87.5 --> 16*(87.5+4*20)
+__{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+15)){}dnl   false
+__{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+27)){}dnl false2
+__{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+26)){}dnl true
+__{}__{}__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}__{}__{}}_TMP_HL_CODE{
+__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
+__{}__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1})}){}dnl
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
 __{}__{}__{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}if 0
@@ -2127,74 +2120,11 @@ __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1{}dnl
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}else
-__{}__{}__{}__{}; price: _TMP_P{}ifelse(dnl
-__{}__{}__{}__{}_TMP_VARIANT,{1},{
-__{}__{}__{}__{}__{}                     ;[16:81/50,82] _TMP_INFO   ( d1 -- d1 flag )   # default version with 0x0000????
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    or    H             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    jr   nz, $+10       ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1},
-__{}__{}__{}__{}_TMP_VARIANT,{2},{
-__{}__{}__{}__{}__{}                     ;[16:81/50,82] _TMP_INFO   ( d1 -- d1 flag )   # default version with 0x????0000
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    ld    A, E          ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    or    D             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    jr   nz, $+10       ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   BC, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
-__{}__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   HL-hi16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1},
-__{}__{}__{}__{}_TMP_VARIANT,{3},{
-__{}__{}__{}__{}__{}                     ;[17:85/54,86] _TMP_INFO   ( d1 -- d1 flag )   lo16 = hi16 = format({0x%04X},eval(($1) & 0xFFFF))
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   A = 0
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+10       ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==$1},
-__{}__{}__{}__{}_TMP_VARIANT,{4},{
-__{}__{}__{}__{}__{}                     ;[18:88/57,89] _TMP_INFO   ( d1 -- d1 flag )   # default version with one bytes zero
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    ld    A, _TMP_N1       ; 2:7       _TMP_INFO
-__{}__{}__{}__{}__{}    xor   _TMP_R1             ; 1:4       _TMP_INFO   _TMP_R1 = _TMP_N1
-__{}__{}__{}__{}__{}    or    _TMP_R2             ; 1:4       _TMP_INFO   _TMP_R2 = 0
-__{}__{}__{}__{}__{}    jr   nz, $+10       ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1},
-__{}__{}__{}__{}{
-__{}__{}__{}__{}__{}                     ;[20:95/64,96] _TMP_INFO   ( d1 -- d1 flag )   # default version
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    ld   BC, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
-__{}__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   hi16(d1)-BC
-__{}__{}__{}__{}__{}    jr   nz, $+10       ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = true
-__{}__{}__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==$1})
+__{}__{}__{}__{}; price: _TMP_P
+__{}__{}__{}__{}_TMP_HL_CODE
 __{}__{}__{}__{}endif})})},
 __{}{
-__{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
+__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
@@ -2222,36 +2152,17 @@ __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
-__{}__{}__{}ifelse(eval(($1) & 0xFFFF0000),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},1){}dnl      # default version with 0x0000????
-__{}__{}__{}__{}define({_TMP_B},16){}dnl
-__{}__{}__{}__{}define({_TMP_P},2028)},dnl         (67+(45+72)/2)/2 = 62.75  --> 16*(62.75+4*16)
-__{}__{}__{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},2){}dnl      # default version with 0x????0000
-__{}__{}__{}__{}define({_TMP_B},16){}dnl
-__{}__{}__{}__{}define({_TMP_P},2028)},dnl         (67+(45+72)/2)/2 = 62.75  --> 16*(62.75+4*16)
-__{}__{}__{}eval(($1) & 0xFF0000),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},3){}dnl      # default version with one bytes zero
-__{}__{}__{}__{}define({_TMP_B},18){}dnl
-__{}__{}__{}__{}define({_TMP_P},2268){}dnl         (74+(52+79)/2)/2 = 69.75  --> 16*(69.75+4*18)
-__{}__{}__{}__{}define({_TMP_R1},{H}){}dnl
-__{}__{}__{}__{}define({_TMP_R2},{L}){}dnl
-__{}__{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>24) & 0xFF)))},
-__{}__{}__{}eval(($1) & 0xFF000000),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},3){}dnl      # default version with one bytes zero
-__{}__{}__{}__{}define({_TMP_B},18){}dnl
-__{}__{}__{}__{}define({_TMP_P},2268){}dnl         (74+(52+79)/2)/2 = 69.75  --> 16*(69.75+4*18)
-__{}__{}__{}__{}define({_TMP_R1},{L}){}dnl
-__{}__{}__{}__{}define({_TMP_R2},{H}){}dnl
-__{}__{}__{}__{}define({_TMP_N1},format({0x%02X},eval((($1)>>16) & 0xFF)))},
-__{}__{}__{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},4){}dnl      # hi16(d1) == lo16(d1)
-__{}__{}__{}__{}define({_TMP_B},17){}dnl
-__{}__{}__{}__{}define({_TMP_P},2268)},dnl         (78+(56+83)/2)/2 = 73.75  --> 16*(73.75+4*17)
-__{}__{}__{}{dnl
-__{}__{}__{}__{}define({_TMP_VARIANT},100){}dnl
-__{}__{}__{}__{}define({_TMP_B},20){}dnl
-__{}__{}__{}__{}define({_TMP_P},2620)}){}dnl       (88+(66+93)/2)/2 = 83.75  --> 16*(83.75+4*20)
+__{}__{}__{}____DEQ_MAKE_HL_CODE($1,9){}dnl
+__{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
+__{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
+__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+12)){}dnl
+__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+17)){}dnl
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}__{}}_TMP_HL_CODE{
+__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
+__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1}){}dnl
 __{}__{}__{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}if 0
@@ -2263,64 +2174,8 @@ __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1{}dnl
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}else
-__{}__{}__{}__{}; price: _TMP_P{}ifelse(dnl
-__{}__{}__{}__{}_TMP_VARIANT,{1},{
-__{}__{}__{}__{}__{}                     ;[16:45,72/67] _TMP_INFO   ( d1 -- d1 flag )   # default version with 0x0000????
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    or    H             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    jr   nz, $+9        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1},
-__{}__{}__{}__{}_TMP_VARIANT,{2},{
-__{}__{}__{}__{}__{}                     ;[16:45,72/67] _TMP_INFO   ( d1 -- d1 flag )   # default version with 0x????0000
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    ld    A, E          ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    or    D             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    jr   nz, $+9        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   BC, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
-__{}__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   HL-hi16(d1)
-__{}__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1},
-__{}__{}__{}__{}_TMP_VARIANT,{3},{
-__{}__{}__{}__{}__{}                     ;[18:52,79/74] _TMP_INFO   ( d1 -- d1 flag )   # default version with one bytes zero
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    ld    A, _TMP_N1       ; 2:7       _TMP_INFO
-__{}__{}__{}__{}__{}    xor   _TMP_R1             ; 1:4       _TMP_INFO   _TMP_R1 = _TMP_N1
-__{}__{}__{}__{}__{}    or    _TMP_R2             ; 1:4       _TMP_INFO   _TMP_R2 = 0
-__{}__{}__{}__{}__{}    jr   nz, $+9        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1},
-__{}__{}__{}__{}_TMP_VARIANT,{4},{
-__{}__{}__{}__{}__{}                     ;[17:56,83/78] _TMP_INFO   ( d1 -- d1 flag )   # hi16(d1) == lo16(d1)
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)
-__{}__{}__{}__{}__{}    jr   nz, $+9        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1},
-__{}__{}__{}__{}{
-__{}__{}__{}__{}__{}                     ;[20:66,93/88] _TMP_INFO   ( d1 -- d1 flag )   # default version
-__{}__{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}__{}__{}    ld   BC, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
-__{}__{}__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   hi16(d1)-BC
-__{}__{}__{}__{}__{}    jr   nz, $+9        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
-__{}__{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
-__{}__{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
-__{}__{}__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1})
+__{}__{}__{}__{}; price: _TMP_P
+__{}__{}__{}__{}_TMP_HL_CODE
 __{}__{}__{}__{}endif})})},
 __{}{
 __{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
