@@ -1046,7 +1046,7 @@ __{}__{}define({_TMP_J},35){}dnl
 __{}__{}define({_TMP_NJ},55){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HL_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO    # 0x0000????
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 0x0000????
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO
@@ -1059,7 +1059,7 @@ __{}__{}define({_TMP_J},35){}dnl
 __{}__{}define({_TMP_NJ},55){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HL_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO    # 0x????0000
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 0x????0000
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} E          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO
@@ -1072,7 +1072,7 @@ __{}__{}define({_TMP_J},46){}dnl
 __{}__{}define({_TMP_NJ},66){}dnl
 __{}__{}define({_TMP_ZERO},{1}){}dnl
 __{}__{}define({_TMP_HL_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO    # hi16(d1) == lo16(d1)
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # hi16(d1) == lo16(d1)
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   A = 0
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)
@@ -1085,7 +1085,7 @@ __{}__{}define({_TMP_J},42){}dnl
 __{}__{}define({_TMP_NJ},62){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HL_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO    # 4th byte zero
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 4th byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = format({0x%02X},eval((($1)>>16) & 0xFF))
@@ -1099,7 +1099,7 @@ __{}__{}define({_TMP_J},42){}dnl
 __{}__{}define({_TMP_NJ},62){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HL_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO    # 3th byte zero
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 3th byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = format({0x%02X},eval((($1)>>24) & 0xFF))
@@ -1107,13 +1107,41 @@ __{}__{}__{}    or    L             ; 1:4       _TMP_INFO   L = 0
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL{{,}} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   HL-lo16(d1)})},
+__{}eval(($1) & 0xFF00),{0},{dnl
+__{}__{}define({_TMP_B},13){}dnl
+__{}__{}define({_TMP_J},42){}dnl
+__{}__{}define({_TMP_NJ},62){}dnl
+__{}__{}define({_TMP_ZERO},{0}){}dnl
+__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 2nd byte zero
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    ld    A{{,}} format({0x%02X},eval(($1) & 0xFF))       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = format({0x%02X},eval(($1) & 0xFF))
+__{}__{}__{}    or    D             ; 1:4       _TMP_INFO   D = 0
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
+__{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    sbc  HL{{,}} BC         ; 2:15      _TMP_INFO   HL-hi16(d1)})},
+__{}eval(($1) & 0xFF),{0},{dnl
+__{}__{}define({_TMP_B},13){}dnl
+__{}__{}define({_TMP_J},42){}dnl
+__{}__{}define({_TMP_NJ},62){}dnl
+__{}__{}define({_TMP_ZERO},{0}){}dnl
+__{}__{}define({_TMP_HL_CODE},{dnl
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 1st byte zero
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    ld    A{{,}} format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = format({0x%02X},eval((($1)>>8) & 0xFF))
+__{}__{}__{}    or    E             ; 1:4       _TMP_INFO   E = 0
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
+__{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    sbc  HL{{,}} BC         ; 2:15      _TMP_INFO   HL-hi16(d1)})},
 __{}{dnl
 __{}__{}define({_TMP_B},15){}dnl
 __{}__{}define({_TMP_J},56){}dnl
 __{}__{}define({_TMP_NJ},76){}dnl
 __{}__{}define({_TMP_ZERO},{1}){}dnl
 __{}__{}define({_TMP_HL_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO    # default version
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # default version
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
