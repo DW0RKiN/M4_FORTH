@@ -155,7 +155,7 @@ __{}__{}__{}                        ;[6:22]     dup $1 eq until BEGIN_STACK   va
 __{}__{}__{}    ld    A, H          ; 1:4       dup $1 eq until BEGIN_STACK
 __{}__{}__{}    and   L             ; 1:4       dup $1 eq until BEGIN_STACK
 __{}__{}__{}    inc   A             ; 1:4       dup $1 eq until BEGIN_STACK   A = 0xFF --> 0x00 ?
-__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 eq until BEGIN_STACK},
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 eq until BEGIN_STACK},
 __{}__{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}__{}                        ;[11:18/39] dup $1 eq until BEGIN_STACK   variant: lo($1) = 255
 __{}__{}__{}    ld    A, L          ; 1:4       dup $1 eq until BEGIN_STACK
@@ -220,7 +220,7 @@ __{}__{}eval(0xFF00 - (($1) & 0xFF00)),{0},{dnl
 __{}__{}__{}                        ;[5:18]     dup $1 hi_eq until BEGIN_STACK   variant: hi(stop) == 255
 __{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
 __{}__{}__{}    inc   A             ; 1:4       dup $1 hi_eq until BEGIN_STACK   A = 0xFF --> 0x00 ?
-__{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 hi_eq until BEGIN_STACK},
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK},
 __{}__{}{dnl
 __{}__{}__{}                        ;[6:21]     dup $1 hi_eq until BEGIN_STACK
 __{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
@@ -923,6 +923,89 @@ define({_4DUP_DGT_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DGT},{yes})
                         ;[6:181]    4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D> while BEGIN_STACK   carry if true
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D> while BEGIN_STACK})}){}dnl
+dnl
+dnl
+dnl
+dnl
+dnl
+dnl
+dnl 2dup D. D= while
+dnl ( d -- d )
+define({_2DUP_PUSHDOT_DEQ_WHILE},{dnl
+__{}define({_TMP_INFO},{2dup $1 D= while BEGIN_STACK})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) == DEHL})dnl
+__{}ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing parameter!},
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
+__{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
+__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}__{}eval($1),{},{
+__{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__{}{dnl
+__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
+__{}__{}__{}____DEQ_MAKE_HL_CODE($1,0,0){}dnl
+__{}__{}__{}define({_TMP_B},eval(_TMP_B+3)){}dnl
+__{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
+__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}ifelse(ifelse(_TYP_DOUBLE,{small},{eval((_TMP_BEST_B<_TMP_B) || ((_TMP_BEST_B==_TMP_B) && (_TMP_BEST_P<_TMP_P)))},{eval(_TMP_BEST_P<=_TMP_P)}),{1},{
+__{}__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO   price: _TMP_BEST_P},
+__{}__{}__{}{
+__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 )_TMP_HL_CODE
+__{}__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO   price: _TMP_P})})},
+__{}{
+__{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup D. D<> while
+dnl ( d -- d )
+define({_2DUP_PUSHDOT_DNE_WHILE},{dnl
+__{}define({_TMP_INFO},{2dup $1 D<> while BEGIN_STACK})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) <> DEHL})dnl
+__{}ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing parameter!},
+__{}$#,{1},{dnl
+__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
+__{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
+__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}__{}eval($1),{},{
+__{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__{}{dnl
+__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
+__{}__{}__{}____DEQ_MAKE_HL_CODE($1,3,-10){}dnl
+__{}__{}__{}define({_TMP_B},eval(_TMP_B+3)){}dnl
+__{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
+__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+10)){}dnl
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}ifelse(ifelse(_TYP_DOUBLE,{small},{eval((_TMP_BEST_B<_TMP_B) || ((_TMP_BEST_B==_TMP_B) && (_TMP_BEST_P<_TMP_P)))},{eval(_TMP_BEST_P<=_TMP_P)}),{1},{
+__{}__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO   price: _TMP_BEST_P},
+__{}__{}__{}{
+__{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 )_TMP_HL_CODE
+__{}__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO   price: _TMP_P})})},
+__{}{
+__{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
