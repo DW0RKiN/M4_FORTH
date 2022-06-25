@@ -1173,7 +1173,7 @@ dnl  _TMP_HL_CODE = code
 dnl
 define({____DEQ_MAKE_HL_CODE},{ifelse(dnl
 __{}eval((($1)>>16) & 0xFFFF),{0},{dnl
-__{}__{}define({_TMP_B},11){}dnl
+__{}__{}define({_TMP_B},10){}dnl
 __{}__{}define({_TMP_J},eval(20+$3)){}dnl
 __{}__{}define({_TMP_NJ},51){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # 0x0000????
@@ -1184,7 +1184,7 @@ __{}__{}__{}    ld   BC{,} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      
 __{}__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}define({_TMP_B},11){}dnl
+__{}__{}define({_TMP_B},10){}dnl
 __{}__{}define({_TMP_J},eval(20+$3)){}dnl
 __{}__{}define({_TMP_NJ},51){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # 0x????0000
