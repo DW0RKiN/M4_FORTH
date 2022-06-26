@@ -952,12 +952,11 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
-__{}__{}__{}                       ;[12:70]     _TMP_INFO   ( x1 -- x1 )   (addr) == HL
-__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}                       ;[11:60]     _TMP_INFO   ( x1 -- x1 )   (addr) == HL
 __{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO
-__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO
-__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL, BC
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   cp HL, BC
+__{}__{}__{}    add  HL, BC         ; 1:11      _TMP_INFO   cp HL, BC
 __{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}{____EQ_MAKE_CODE($1,3,10,0,0)dnl
 __{}__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=((42+(21+42)/2)/2+4*12)),{1},{
@@ -986,12 +985,11 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
-__{}__{}__{}                       ;[12:70]     _TMP_INFO   ( x1 -- x1 )   (addr) == HL
-__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}                       ;[11:60]     _TMP_INFO   ( x1 -- x1 )   (addr) == HL
 __{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO
-__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO
-__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL, BC
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   cp HL, BC
+__{}__{}__{}    add  HL, BC         ; 1:11      _TMP_INFO   cp HL, BC
 __{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}{____EQ_MAKE_CODE($1,3,10,3,-10)dnl
 __{}__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=((39+(23+39)/2)/2+4*11)),{1},{

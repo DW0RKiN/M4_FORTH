@@ -552,6 +552,41 @@ MIN_32:                ;[21:104/129]min_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -
 dnl
 dnl
 dnl
+ifdef({USE_FCE_4DUP_DEQ},{define({USE_FCE_DEQ},{yes})
+;==============================================================================
+; ( d2 ret d1 -- d2 d1 )
+;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
+; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+FCE_4DUP_DEQ:           ;[9:75]     fce_4dup_deq   ( d2 ret d1 -- d2 d1 )
+    pop  AF             ; 1:10      fce_4dup_deq   h2 l2 .. ..  AF = ret
+    pop  BC             ; 1:10      fce_4dup_deq   h2 .. .. ..  BC = l2
+    ex   AF, AF'        ; 1:4       fce_4dup_deq   h2 .. .. ..
+    pop  AF             ; 1:10      fce_4dup_deq   .. .. .. ..  AF'= h2
+    push AF             ; 1:11      fce_4dup_deq   h2 .. .. ..
+    push BC             ; 1:11      fce_4dup_deq   h2 l2 .. ..
+    ex   AF, AF'        ; 1:4       fce_4dup_deq   h2 l2 .. ..
+    push AF             ; 1:11      fce_4dup_deq   h2 l2 rt ..
+    ex   AF, AF'        ; 1:4       fce_4dup_deq   h2 l2 rt ..  AF = h2
+    ; fall to fce_deq}){}dnl
+ifdef({USE_FCE_DEQ},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; set zero if d2==d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set zero if true
+FCE_DEQ:           ;[11:100/70,100] fce_deq   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_deq   h2 l2 rt h2 h1 l1
+    ex  (SP),HL         ; 1:19      fce_deq   h2 l2 rt l1 h1 h2
+    or    A             ; 1:4       fce_deq   h2 l2 rt l1 h1 h2
+    sbc  HL, DE         ; 2:15      fce_deq   h2 l2 rt l1 h1 --  hi16(d2)-hi16(d1) --> nz if false
+    pop  HL             ; 1:10      fce_deq   h2 l2 rt .. h1 l1
+    ret  nz             ; 1:5/11    fce_deq   h2 l2 .. .. h1 l1
+    sbc  HL, BC         ; 2:15      fce_deq   h2 l2 rt .. h1 --  lo16(d1)-lo16(d2) --> nz if false
+    add  HL, BC         ; 1:11      fce_deq   h2 l2 rt .. h1 l1
+    ret                 ; 1:10      fce_deq   h2 l2 .. .. h1 l1}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_FCE_4DUP_DLT},{define({USE_FCE_DLT},{yes})
 ;==============================================================================
 ; ( d2 ret d1 -- d2 d1 )
