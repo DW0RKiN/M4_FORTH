@@ -1744,38 +1744,34 @@ dnl ----- 4dup signed_32_bit_cond if ( d2 d1 -- d2 d1 ) -----
 dnl
 dnl 4dup D= if
 define({_4DUP_DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[18:135/125]4dup D= if   ( d2 d1 -- d2 d1 )
-    pop  BC             ; 1:10      4dup D= if   h2          . h1 l1  BC= lo(d2) = l2
-    pop  AF             ; 1:10      4dup D= if               . h1 l1  AF= hi(d2) = h2
-    push AF             ; 1:11      4dup D= if   h2          . h1 l1
-    push BC             ; 1:11      4dup D= if   h2 l2       . h1 l1
-    push HL             ; 1:11      4dup D= if   h2 l2 l1    . h1 l1
-    push AF             ; 1:11      4dup D= if   h2 l2 l1 h2 . h1 l1
-    xor   A             ; 1:4       4dup D= if   h2 l2 l1 h2 . h1 l1
-    sbc  HL, BC         ; 2:15      4dup D= if   h2 l2 l1 h2 . h1 --  lo(d1)-lo(d2)
-    pop  HL             ; 1:10      4dup D= if   h2 l2 l1    . h1 h2
-    jr   nz, $+4        ; 2:7/12    4dup D= if   h2 l2 l1    . h1 h2
-    sbc  HL, DE         ; 2:15      4dup D= if   h2 l2 l1    . h1 --  hi(d2)-hi(d1)
-    pop  HL             ; 1:10      4dup D= if   h2 l2       . h1 l1
-    jp   nz, else{}IF_COUNT    ; 3:10      4dup D= if   h2 l2       . h1 l1})dnl
+                   ;[16:132/73,132] 4dup D= if   ( d2 d1 -- d2 d1 )
+    or   A              ; 1:4       4dup D= if   h2 l2 . h1 l1
+    pop  BC             ; 1:10      4dup D= if   h2    . h1 l1  BC = l2 = lo16(d2)
+    sbc  HL, BC         ; 2:15      4dup D= if   h2    . h1 --  cp l1-l2
+    add  HL, BC         ; 1:11      4dup D= if   h2    . h1 l1  cp l1-l2
+    jr   nz, $+7        ; 2:7/12    4dup D= if   h2    . h1 h2
+    ex  (SP),HL         ; 1:19      4dup D= if   l1    . h1 h2  HL = h2 = hi16(d2)
+    sbc  HL, DE         ; 2:15      4dup D= if   l1    . h1 --  cp h2-h1
+    add  HL, DE         ; 1:11      4dup D= if   l1    . h1 h2  cp h2-h1
+    ex  (SP),HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
+    push BC             ; 1:11      4dup D= if   h2 l2 . h1 l1
+    jp   nz, else{}IF_COUNT    ; 3:10      4dup D= if   h2 l2 . h1 l1})dnl
 dnl
 dnl
 dnl 4dup D<> if
 define({_4DUP_DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{small},{
-                  ;[18:125,135/135] 4dup D<> if   ( d2 d1 -- d2 d1 )   # small version can be changed with "define({_TYP_DOUBLE},{name})  name=fast,default"
-    pop  BC             ; 1:10      4dup D<> if   h2          . h1 l1  BC = lo(d2) = l2
-    pop  AF             ; 1:10      4dup D<> if               . h1 l1  AF = hi(d2) = h2
-    push AF             ; 1:11      4dup D<> if   h2          . h1 l1
-    push BC             ; 1:11      4dup D<> if   h2 l2       . h1 l1
-    push HL             ; 1:11      4dup D<> if   h2 l2 l1    . h1 l1
-    push AF             ; 1:11      4dup D<> if   h2 l2 l1 h2 . h1 l1
-    xor   A             ; 1:4       4dup D<> if   h2 l2 l1 h2 . h1 l1
-    sbc  HL, BC         ; 2:15      4dup D<> if   h2 l2 l1 h2 . h1 --  lo(d1)-lo(d2)
-    pop  HL             ; 1:10      4dup D<> if   h2 l2 l1    . h1 h2
-    jr   nz, $+4        ; 2:7/12    4dup D<> if   h2 l2 l1    . h1 h2
-    sbc  HL, DE         ; 2:15      4dup D<> if   h2 l2 l1    . h1 --  hi(d2)-hi(d1)
-    pop  HL             ; 1:10      4dup D<> if   h2 l2       . h1 l1
-    jp    z, else{}IF_COUNT    ; 3:10      4dup D<> if},
+                   ;[16:73,132/132] 4dup D<> if   ( d2 d1 -- d2 d1 )   # small version can be changed with "define({_TYP_DOUBLE},{name})"  name=fast,default
+    or   A              ; 1:4       4dup D<> if   h2 l2 . h1 l1
+    pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC = l2 = lo16(d2)
+    sbc  HL, BC         ; 2:15      4dup D<> if   h2    . h1 --  cp l1-l2
+    add  HL, BC         ; 1:11      4dup D<> if   h2    . h1 l1  cp l1-l2
+    jr   nz, $+7        ; 2:7/12    4dup D<> if   h2    . h1 h2
+    ex  (SP),HL         ; 1:19      4dup D<> if   l1    . h1 h2  HL = h2 = hi16(d2)
+    sbc  HL, DE         ; 2:15      4dup D<> if   l1    . h1 --  cp h2-h1
+    add  HL, DE         ; 1:11      4dup D<> if   l1    . h1 h2  cp h2-h1
+    ex  (SP),HL         ; 1:19      4dup D<> if   h2    . h1 l1  HL = l1
+    push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
+    jp    z, else{}IF_COUNT    ; 3:10      4dup D<> if   h2 l2 . h1 l1},
 _TYP_DOUBLE,{fast},{
             ;[23:41,56,113,126/126] 4dup D<> if  ( d2 d1 -- d2 d1 )   # fast version can be changed with "define({_TYP_DOUBLE},{name})  name=small,default"
     pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC= lo(d2) = l2
