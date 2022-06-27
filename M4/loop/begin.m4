@@ -741,8 +741,8 @@ define({DNE_WHILE},{
 dnl
 dnl
 dnl D< while
-define({DLT_WHILE},{define({USE_FCE_DLT},{yes})
-                       ;[10:146]    D< while BEGIN_STACK   ( d2 d1 -- )
+define({DLT_WHILE},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+                       ;[10:67]     D< while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D< while BEGIN_STACK   l2
     pop  AF             ; 1:10      D< while BEGIN_STACK   h2
     call FCE_DLT        ; 3:17      D< while BEGIN_STACK   carry if true
@@ -752,30 +752,30 @@ define({DLT_WHILE},{define({USE_FCE_DLT},{yes})
 dnl
 dnl
 dnl D>= while
-define({DGE_WHILE},{define({USE_FCE_DGE},{yes})
-                       ;[10:150]    D>= while BEGIN_STACK   ( d2 d1 -- )
+define({DGE_WHILE},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+                       ;[10:67]     D>= while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D>= while BEGIN_STACK   l2
     pop  AF             ; 1:10      D>= while BEGIN_STACK   h2
-    call FCE_DGE        ; 3:17      D>= while BEGIN_STACK   carry if true
+    call FCE_DLT        ; 3:17      D>= while BEGIN_STACK   D< carry if true --> D>= carry if false
     pop  HL             ; 1:10      D>= while BEGIN_STACK
     pop  DE             ; 1:10      D>= while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      D>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      D>= while BEGIN_STACK})dnl
 dnl
 dnl
 dnl D<= while
-define({DLE_WHILE},{define({USE_FCE_DLE},{yes})
-                       ;[10:150]    D<= while BEGIN_STACK   ( d2 d1 -- )
+define({DLE_WHILE},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+                       ;[10:67]     D<= while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D<= while BEGIN_STACK   l2
     pop  AF             ; 1:10      D<= while BEGIN_STACK   h2
-    call FCE_DLE        ; 3:17      D<= while BEGIN_STACK   carry if true
+    call FCE_DGT        ; 3:17      D<= while BEGIN_STACK   D> carry if true --> D<= carry if false
     pop  HL             ; 1:10      D<= while BEGIN_STACK
     pop  DE             ; 1:10      D<= while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      D<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      D<= while BEGIN_STACK})dnl
 dnl
 dnl
 dnl D> while
-define({DGT_WHILE},{define({USE_FCE_DGT},{yes})
-                       ;[10:146]    D> while BEGIN_STACK   ( d2 d1 -- )
+define({DGT_WHILE},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+                       ;[10:67]     D> while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D> while BEGIN_STACK   l2
     pop  AF             ; 1:10      D> while BEGIN_STACK   h2
     call FCE_DGT        ; 3:17      D> while BEGIN_STACK   carry if true
@@ -839,8 +839,8 @@ define({TEST_4DUP_DNE_WHILE},{
 dnl
 dnl
 dnl 4dup D<> while
-define({_4DUP_DNE_WHILE},{ifelse(TYP_DOUBLE,{small},{
-                  ;[18:125,135/135] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # small version can be changed with "define({TYP_DOUBLE},{name})"  name=fast,default
+define({_4DUP_DNE_WHILE},{ifelse(_TYP_DOUBLE,{small},{
+                  ;[18:125,135/135] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # small version can be changed with "define({_TYP_DOUBLE},{name})"  name=fast,default
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2          . h1 l1  BC = lo(d2) = l2
     pop  AF             ; 1:10      4dup D<> while BEGIN_STACK               . h1 l1  AF = hi(d2) = h2
     push AF             ; 1:11      4dup D<> while BEGIN_STACK   h2          . h1 l1
@@ -854,8 +854,8 @@ define({_4DUP_DNE_WHILE},{ifelse(TYP_DOUBLE,{small},{
     sbc  HL, DE         ; 2:15      4dup D<> while BEGIN_STACK   h2 l2 l1    . h1 --  hi(d2)-hi(d1)
     pop  HL             ; 1:10      4dup D<> while BEGIN_STACK   h2 l2       . h1 l1
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK},
-TYP_DOUBLE,{fast},{
-            ;[23:41,56,113,126/126] 4dup D<> while BEGIN_STACK  ( d2 d1 -- d2 d1 )   # fast version can be changed with "define({TYP_DOUBLE},{name})  name=small,default"
+_TYP_DOUBLE,{fast},{
+            ;[23:41,56,113,126/126] 4dup D<> while BEGIN_STACK  ( d2 d1 -- d2 d1 )   # fast version can be changed with "define({_TYP_DOUBLE},{name})  name=small,default"
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2    . h1 l1  BC= lo(d2) = l2
     push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  A = lo(l2)
@@ -875,7 +875,7 @@ TYP_DOUBLE,{fast},{
     sub   D             ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  hi(h2) - hi(h1)
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK},
 {
-            ;[21:51,66,123,122/122] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({TYP_DOUBLE},{name})  name=small,fast"
+            ;[21:51,66,123,122/122] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({_TYP_DOUBLE},{name})  name=small,fast"
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  lo(l2) - lo(l1)
@@ -896,8 +896,8 @@ dnl
 dnl
 dnl
 dnl 4dup D< while
-define({_4DUP_DLT_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DLT},{yes})
-                       ;[10:148]    4dup D< while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+define({_4DUP_DLT_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+                       ;[10:69]     4dup D< while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D< while BEGIN_STACK
     pop  AF             ; 1:10      4dup D< while BEGIN_STACK
     push AF             ; 1:11      4dup D< while BEGIN_STACK
@@ -905,47 +905,47 @@ define({_4DUP_DLT_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DLT},{yes})
     call FCE_DLT        ; 3:17      4dup D< while BEGIN_STACK   carry if true
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D< while BEGIN_STACK},
 {define({USE_FCE_4DUP_DLT},{yes})
-                        ;[6:181]    4dup D< while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+                        ;[6:27]     4dup D< while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DLT   ; 3:17      4dup D< while BEGIN_STACK   carry if true
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D< while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup D>= while
-define({_4DUP_DGE_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DGE},{yes})
-                       ;[10:152]    4dup D>= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+define({_4DUP_DGE_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+                       ;[10:69]     4dup D>= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D>= while BEGIN_STACK
     pop  AF             ; 1:10      4dup D>= while BEGIN_STACK
     push AF             ; 1:11      4dup D>= while BEGIN_STACK
     push BC             ; 1:11      4dup D>= while BEGIN_STACK
-    call FCE_DGE        ; 3:17      4dup D>= while BEGIN_STACK   carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D>= while BEGIN_STACK},
-{define({USE_FCE_4DUP_DGE},{yes})
-                        ;[6:185]    4dup D>= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
-    call FCE_4DUP_DGE   ; 3:17      4dup D>= while BEGIN_STACK   carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D>= while BEGIN_STACK})}){}dnl
+    call FCE_DLT        ; 3:17      4dup D>= while BEGIN_STACK   D< carry if true --> D>= carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup D>= while BEGIN_STACK},
+{define({USE_FCE_4DUP_DLT},{yes})
+                        ;[6:27]     4dup D>= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+    call FCE_4DUP_DLT   ; 3:17      4dup D>= while BEGIN_STACK   D< carry if true --> D>= carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup D>= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup D<= while
-define({_4DUP_DLE_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DLE},{yes})
-                       ;[10:152]    4dup D<= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+define({_4DUP_DLE_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+                       ;[10:69]     4dup D<= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D<= while BEGIN_STACK
     pop  AF             ; 1:10      4dup D<= while BEGIN_STACK
     push AF             ; 1:11      4dup D<= while BEGIN_STACK
     push BC             ; 1:11      4dup D<= while BEGIN_STACK
-    call FCE_DLE        ; 3:17      4dup D<= while BEGIN_STACK   carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D<= while BEGIN_STACK},
-{define({USE_FCE_4DUP_DLE},{yes})
-                        ;[6:185]    4dup D<= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
-    call FCE_4DUP_DLE   ; 3:17      4dup D<= while BEGIN_STACK   carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D<= while BEGIN_STACK})}){}dnl
+    call FCE_DGT        ; 3:17      4dup D<= while BEGIN_STACK   D> carry if true --> D<= carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup D<= while BEGIN_STACK},
+{define({USE_FCE_4DUP_DGT},{yes})
+                        ;[6:27]     4dup D<= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+    call FCE_4DUP_DGT   ; 3:17      4dup D<= while BEGIN_STACK   D> carry if true --> D<= carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup D<= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup D> while
-define({_4DUP_DGT_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DGT},{yes})
-                       ;[10:148]    4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+define({_4DUP_DGT_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+                       ;[10:69]     4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D> while BEGIN_STACK
     pop  AF             ; 1:10      4dup D> while BEGIN_STACK
     push AF             ; 1:11      4dup D> while BEGIN_STACK
@@ -953,7 +953,7 @@ define({_4DUP_DGT_WHILE},{ifelse(TYP_DOUBLE,{fast},{define({USE_FCE_DGT},{yes})
     call FCE_DGT        ; 3:17      4dup D> while BEGIN_STACK   carry if true
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D> while BEGIN_STACK},
 {define({USE_FCE_4DUP_DGT},{yes})
-                        ;[6:181]    4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
+                        ;[6:27]     4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D> while BEGIN_STACK   carry if true
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D> while BEGIN_STACK})}){}dnl
 dnl

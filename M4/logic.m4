@@ -3,7 +3,7 @@ define({__},{})dnl
 dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 & x2
-define(AND,{
+define({AND},{
     ld    A, E          ; 1:4       and
     and   L             ; 1:4       and
     ld    L, A          ; 1:4       and
@@ -15,7 +15,7 @@ dnl
 dnl
 dnl ( x -- x&n )
 dnl x = x & n
-define(PUSH_AND,{ifelse($1,{},{
+define({PUSH_AND},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -94,7 +94,7 @@ dnl
 dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 | x2
-define(OR,{
+define({OR},{
     ld    A, E          ; 1:4       or
     or    L             ; 1:4       or
     ld    L, A          ; 1:4       or
@@ -106,7 +106,7 @@ dnl
 dnl
 dnl ( x -- x|n )
 dnl x = x | n
-define(PUSH_OR,{ifelse($1,{},{
+define({PUSH_OR},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -185,7 +185,7 @@ dnl
 dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 ^ x2
-define(XOR,{
+define({XOR},{
     ld    A, E          ; 1:4       xor
     xor   L             ; 1:4       xor
     ld    L, A          ; 1:4       xor
@@ -197,7 +197,7 @@ dnl
 dnl
 dnl ( x -- x^n )
 dnl x = x ^ n
-define(PUSH_XOR,{ifelse($1,{},{
+define({PUSH_XOR},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -247,7 +247,7 @@ dnl ( x1 -- x )
 dnl x = ~x1
 dnl -1   -> false
 dnl false-> true
-define(INVERT,{
+define({INVERT},{
     ld    A, L          ; 1:4       invert
     cpl                 ; 1:4       invert
     ld    L, A          ; 1:4       invert
@@ -525,14 +525,14 @@ dnl -------------------------------------
 dnl
 dnl ( -- x )
 dnl x = 0xFFFF
-define(TRUE,{
+define({TRUE},{
     push DE             ; 1:11      true
     ex   DE, HL         ; 1:4       true
     ld   HL, 0xffff     ; 3:10      true})dnl
 dnl
 dnl ( -- x )
 dnl x = 0
-define(FALSE,{
+define({FALSE},{
     push DE             ; 1:11      false
     ex   DE, HL         ; 1:4       false
     ld   HL, 0x0000     ; 3:10      false})dnl
@@ -543,7 +543,7 @@ dnl 0=
 dnl ( x1 -- flag )
 dnl if ( x1 ) flag = 0; else flag = 0xFFFF;
 dnl 0 if 16-bit number not equal to zero, -1 if equal
-define(_0EQ,{
+define({_0EQ},{
                         ;[5:29]     0=
     ld    A, H          ; 1:4       0=
     dec  HL             ; 1:6       0=
@@ -571,7 +571,7 @@ dnl
 dnl
 dnl ( x -- x|n )
 dnl x = x | n
-define(PUSH_EQ,{ifelse($1,{},{
+define({PUSH_EQ},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -825,7 +825,7 @@ dnl
 dnl <
 dnl ( x2 x1 -- flag )
 dnl signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
-define(LT,{
+define({LT},{
                        ;[12:54]     <   ( x2 x1 -- flag x2<x1 )
     ld    A, E          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
@@ -843,7 +843,7 @@ dnl
 dnl
 dnl 0<
 dnl ( x1 -- flag )
-define(_0LT,{ifelse(TYP_0LT,{small},{
+define({_0LT},{ifelse(TYP_0LT,{small},{
                         ;[4:23]     0<  ( x -- flag x<0 )
     rl    H             ; 2:8       0<
     sbc  HL, HL         ; 2:15      0<}
@@ -859,7 +859,7 @@ dnl <=
 dnl ( x2 x1 -- flag )
 dnl signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
 dnl signed ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
-define(LE,{ifelse(TYP_LE,{old},{
+define({LE},{ifelse(TYP_LE,{old},{
                        ;[15:63,62]  <=
     ld    A, H          ; 1:4       <=
     xor   D             ; 1:4       <=
@@ -889,7 +889,7 @@ dnl
 dnl >
 dnl ( x2 x1 -- flag )
 dnl signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
-define(GT,{
+define({GT},{
                        ;[12:54]     >   ( x2 x1 -- flag x2>x1 )
     ld    A, L          ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
@@ -938,7 +938,7 @@ dnl
 dnl
 dnl 0>=
 dnl ( x1 -- flag )
-define(_0GE,{
+define({_0GE},{
     ld    A, H          ; 1:4       0>=
     sub   0x80          ; 2:7       0>=
     sbc  HL, HL         ; 2:15      0>=
@@ -957,7 +957,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
-define(ULT,{
+define({ULT},{
                         ;[7:41]     u<
     ld    A, E          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
@@ -970,7 +970,7 @@ dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
 dnl unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
-define(ULE,{
+define({ULE},{
     scf                 ; 1:4       u<=
     ex   DE, HL         ; 1:4       u<=
     sbc  HL, DE         ; 2:15      u<=
@@ -980,7 +980,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
-define(UGT,{
+define({UGT},{
     or    A             ; 1:4       u>
     sbc  HL, DE         ; 2:15      u>
     sbc  HL, HL         ; 2:15      u>
@@ -989,7 +989,7 @@ dnl
 dnl
 dnl ( x2 x1 -- x )
 dnl unsigned ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
-define(UGE,{
+define({UGE},{
     scf                 ; 1:4       u>=
     sbc  HL, DE         ; 2:15      u>=
     sbc  HL, HL         ; 2:15      u>=
@@ -999,14 +999,14 @@ dnl ------------- shifts ----------------
 dnl
 dnl ( x u -- x)
 dnl shifts x left u places
-define(LSHIFT,{ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
+define({LSHIFT},{ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
     call  DE_LSHIFT     ; 3:17      <<   ( x1 u -- x1<<u )
     pop   DE            ; 1:10      <<})dnl
 dnl
 dnl
 dnl ( x u -- x)
 dnl shifts x right u places
-define(RSHIFT,{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
+define({RSHIFT},{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
     call  DE_RSHIFT     ; 3:17      >>   ( x1 u -- x1>>u )
     pop   DE            ; 1:10      >>})dnl
 dnl
@@ -1403,7 +1403,7 @@ dnl
 dnl
 dnl ( u -- u )
 dnl shifs u right $1 places
-define(PUSH_RSHIFT,{ifelse($1,{},{
+define({PUSH_RSHIFT},{ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
@@ -1440,7 +1440,7 @@ dnl
 dnl
 dnl ( u -- u )
 dnl shifs u left $1 places
-define(PUSH_LSHIFT,{ifelse($1,{},{
+define({PUSH_LSHIFT},{ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
@@ -1483,7 +1483,7 @@ dnl D0=
 dnl ( d -- f )
 dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
 dnl 0 if 32-bit number not equal to zero, -1 if equal
-define(D0EQ,{ifelse(TYP_D0EQ,{small},{
+define({D0EQ},{ifelse(TYP_D0EQ,{small},{
                         ;[8:54]     D0=   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
     add  HL, DE         ; 1:11      D0=   carry: 0    1
     sbc   A, A          ; 1:4       D0=          0x00 0xff
@@ -1505,7 +1505,7 @@ dnl
 dnl
 dnl D0<
 dnl ( d -- flag )
-define(D0LT,{ifelse(TYP_D0LT,{small},{
+define({D0LT},{ifelse(TYP_D0LT,{small},{
                         ;[5:34]     D0<   ( hi lo -- flag D<0 )
     rl    D             ; 2:8       D0<
     pop  DE             ; 1:11      D0<
@@ -1568,15 +1568,15 @@ dnl
 dnl D<
 dnl ( d2 d1 -- flag )
 dnl signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
-define(DLT,{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_DLT},{yes})
-                        ;[8:141]    D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+define({DLT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+                        ;[8:62]     D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<   l2
     pop  AF             ; 1:10      D<   h2
     call FCE_DLT        ; 3:17      D<   carry if true
     pop  DE             ; 1:10      D<
     sbc  HL, HL         ; 2:15      D<   set flag d2<d1},
 {
-                       ;[17:93]     D<   ( d2 d1 -- flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+                       ;[17:93]     D<   ( d2 d1 -- flag )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<   lo_2
     ld    A, C          ; 1:4       D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -1599,7 +1599,7 @@ dnl Du<
 dnl 2swap Du>
 dnl ( ud2 ud1 -- flag d2<d1 )
 dnl unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
-define(DULT,{
+define({DULT},{
                         ;[11:76]    Du<   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du<   lo(ud2)
     ld    A, C          ; 1:4       Du<   BC<HL --> BC-HL<0 --> carry if true
@@ -1616,15 +1616,16 @@ dnl D>=
 dnl 2swap D<=
 dnl ( d2 d1 -- flag )
 dnl (d2 >= d1)  -->  (d2 + 1 > d1) -->  (0 > d1 - d2 - 1) -->  carry if true
-define(DGE,{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_DGE},{yes})
-                        ;[8:145]    D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+define({DGE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+                        ;[9:66]     D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>=   l2
     pop  AF             ; 1:10      D>=   h2
-    call FCE_DGE        ; 3:17      D>=   carry if true
+    call FCE_DLT        ; 3:17      D>=   D< carry if true --> D>= carry if false
+    ccf                 ; 1:4       D>=   invert carry
     pop  DE             ; 1:10      D>=
     sbc  HL, HL         ; 2:15      D>=   set flag d2>=d1},
 {
-                        ;[16:96]    D>=   ( d2 d1 -- flag )   # default version can be changed with "define({TYP_DOUBLE},{function})"
+                        ;[16:96]    D>=   ( d2 d1 -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D>=   lo(ud2)
     scf                 ; 1:4       D>=
     sbc  HL, BC         ; 2:15      D>=   BC>=HL --> BC+1>HL --> 0>HL-BC-1 --> carry if true
@@ -1645,7 +1646,7 @@ dnl Du>=
 dnl 2swap Du<=
 dnl ( ud2 ud1 -- flag )
 dnl (ud2 >= ud1)  -->  (ud2 + 1 > ud1) -->  (0 > ud1 - ud2 - 1) -->  carry if true
-define(DUGE,{
+define({DUGE},{
                         ;[12:80]    Du>=   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du>=   lo(ud2)
     scf                 ; 1:4       Du>=
@@ -1662,15 +1663,16 @@ dnl
 dnl D<=
 dnl 2swap D>=
 dnl ( d2 d1 -- f )
-define({DLE},{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_DLE},{yes})
-                        ;[8:145]    D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+define({DLE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+                        ;[9:66]     D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<=   l2
     pop  AF             ; 1:10      D<=   h2
-    call FCE_DLE        ; 3:17      D<=   carry if true
+    call FCE_DGT        ; 3:17      D<=   D> carry if true --> D<= carry if false
+    ccf                 ; 1:4       D<=   invert carry
     pop  DE             ; 1:10      D<=
     sbc  HL, HL         ; 2:15      D<=   set flag d2<=d1},
 {
-                       ;[18:97]     D<=   ( d2 d1 -- flag )   # default version can be changed with "define({TYP_DOUBLE},{function})"
+                       ;[18:97]     D<=   ( d2 d1 -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D<=   lo_2
     ld    A, L          ; 1:4       D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -1694,7 +1696,7 @@ dnl Du<=
 dnl 2swap Du>=
 dnl ( ud2 ud1 -- flag )
 dnl (ud2 <= ud1)  -->  (ud2 < ud1 + 1) -->  (ud2 - ud1 - 1 < 0) -->  carry if true
-define(DULE,{
+define({DULE},{
                         ;[12:80]    Du<=   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du<=   lo(ud2)
     scf                 ; 1:4       Du<=
@@ -1711,15 +1713,15 @@ dnl
 dnl D>
 dnl 2swap D<
 dnl ( d2 d1 -- flag )
-define(DGT,{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_DGT},{yes})
-                        ;[8:141]    D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+define({DGT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+                        ;[8:62]     D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>   l2
     pop  AF             ; 1:10      D>   h2
     call FCE_DGT        ; 3:17      D>   carry if true
     pop  DE             ; 1:10      D>
     sbc  HL, HL         ; 2:15      D>   set flag d2>d1},
 {
-                        ;[17:93]    D>   ( d2 d1 -- flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+                        ;[17:93]    D>   ( d2 d1 -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>   lo(ud2)
     ld    A, L          ; 1:4       D>   BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       D>   BC>HL --> 0>HL-BC --> carry if true
@@ -1741,7 +1743,7 @@ dnl
 dnl Du>
 dnl 2swap Du<
 dnl ( ud2 ud1 -- flag )
-define(DUGT,{
+define({DUGT},{
                         ;[13:77]    Du>   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du>   lo(ud2)
     ld    A, L          ; 1:4       Du>   BC>HL --> 0>HL-BC --> carry if true
@@ -1790,8 +1792,8 @@ dnl
 dnl
 dnl 4dup D<>
 dnl ( d d -- d d f )
-define({_4DUP_DNE},{ifelse(TYP_DOUBLE,{fast},{
-            ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({TYP_DOUBLE},{default})"
+define({_4DUP_DNE},{ifelse(_TYP_DOUBLE,{fast},{
+            ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D<>   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<>   h2       . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<>   h2       . h1 l1  lo(l2) - lo(l1)
@@ -1814,7 +1816,7 @@ define({_4DUP_DNE},{ifelse(TYP_DOUBLE,{fast},{
     ld    H, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 f-
     ld    L, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 ff HL= flag d2<>d1},
 {
-                  ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{fast})"
+                  ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  AF             ; 1:10      4dup D<>   h2          . h1 l1  AF = lo(d2) = l2
     pop  BC             ; 1:10      4dup D<>               . h1 l1  BC = hi(d2) = h2
     push BC             ; 1:11      4dup D<>   h2          . h1 l1
@@ -1841,14 +1843,14 @@ dnl
 dnl
 dnl 4dup D<
 dnl ( d d -- d d f )
-define({_4DUP_DLT},{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
-                        ;[7:201]    4dup D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+define({_4DUP_DLT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
+                        ;[7:201]    4dup D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D<   carry if true
     push DE             ; 1:11      4dup D<
     ex   DE, HL         ; 1:4       4dup D<
     sbc  HL, HL         ; 2:15      4dup D<   set flag d2<d1},
 {
-                       ;[20:137]    4dup D<   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{function})"
+                       ;[20:137]    4dup D<   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D<   lo_2
     ld    A, C          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -1895,14 +1897,15 @@ dnl
 dnl
 dnl 4dup D>=
 dnl ( d d -- d d f )
-define({_4DUP_DGE},{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGE},{yes})
-                        ;[7:205]    4dup D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
-    call FCE_4DUP_DGE   ; 3:17      4dup D>=   carry if true
+define({_4DUP_DGE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
+                        ;[8:51]     4dup D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+    call FCE_4DUP_DLT   ; 3:17      4dup D>=   D< carry if true --> D>= carry if false
+    ccf                 ; 1:4       4dup D>=   invert carry
     push DE             ; 1:11      4dup D>=
     ex   DE, HL         ; 1:4       4dup D>=
     sbc  HL, HL         ; 2:15      4dup D>=   set flag d2<=d1},
 {
-                       ;[21:141]    4dup D>=   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{function})"
+                       ;[21:141]    4dup D>=   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D>=   lo_2
     ld    A, C          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     sub   L             ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
@@ -1951,14 +1954,15 @@ dnl
 dnl
 dnl 4dup D<=
 dnl ( d d -- d d f )
-define({_4DUP_DLE},{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLE},{yes})
-                        ;[7:205]    4dup D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
-    call FCE_4DUP_DLE   ; 3:17      4dup D<=   carry if true
+define({_4DUP_DLE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
+                        ;[8:51]     4dup D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+    call FCE_4DUP_DGT   ; 3:17      4dup D<=   D> carry if true --> D<= carry if false
+    ccf                 ; 1:4       4dup D<=   invert carry
     push DE             ; 1:11      4dup D<=
     ex   DE, HL         ; 1:4       4dup D<=
     sbc  HL, HL         ; 2:15      4dup D<=   set flag d2<=d1},
 {
-                       ;[21:141]    4dup D<=   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{function})"
+                       ;[21:141]    4dup D<=   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D<=   lo_2
     ld    A, L          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -2007,14 +2011,14 @@ dnl
 dnl
 dnl 4dup D>
 dnl ( d d -- d d f )
-define({_4DUP_DGT},{ifelse(TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
-                        ;[7:201]    4dup D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({TYP_DOUBLE},{default})"
+define({_4DUP_DGT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
+                        ;[7:201]    4dup D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D>   carry if true
     push DE             ; 1:11      4dup D>
     ex   DE, HL         ; 1:4       4dup D>
     sbc  HL, HL         ; 2:15      4dup D>   set flag d2>d1},
 {
-                       ;[20:137]    4dup D>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({TYP_DOUBLE},{function})"
+                       ;[20:137]    4dup D>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D>   lo_2
     ld    A, L          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
