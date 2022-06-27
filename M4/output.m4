@@ -642,7 +642,7 @@ ifdef({USE_FCE_DLT},{
 ; set carry if d2<d1 is true
 ;  In: AF = h2, BC = l2, DE = h1, HL = l1
 ; Out:          BC = h2, DE = h1, HL = l1, set carry if true
-ifelse(USE_FCE_DLT,{small},{dnl
+ifelse(eval(ifelse(USE_FCE_DLT,{small},{1},{0}) && ifdef({USE_FCE_DULT},{0},{1})),{1},{dnl
 __{}FCE_DLT:               ;[15:79]     fce_dlt   ( d2 ret d1 -- d2 d1 )   # small version because "define({_USE_FCE_DLT},{small})"
 __{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1
 __{}    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
@@ -660,24 +660,60 @@ __{}    xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
 __{}    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> carry if true
 __{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1},
 __{}{dnl
-__{}FCE_DLT:               ;[18:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
-__{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
-__{}    sub   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
-__{}    jr    z, $+8        ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
-__{}    rra                 ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1        --> sign  if true
-__{}    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1
-__{}    xor   B             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
-__{}    xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
-__{}    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> carry if true
-__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1
-__{}    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1
-__{}    sub   L             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  C-L<0 --> carry if true
-__{}    ld    A, B          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1
-__{}    sbc   A, H          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  B-H<0 --> carry if true
-__{}    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1  BC = hi16(d2)
-__{}    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
-__{}    sbc   A, E          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  C-E<0 --> carry if true
-__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1})}){}dnl
+__{}ifdef({USE_FCE_DULT},{dnl
+__{}__{}FCE_DLT:               ;[10:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
+__{}__{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
+__{}__{}    sub   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
+__{}__{}    jr    z, FCE_DULT_2 ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
+__{}__{}    rra                 ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1        --> sign  if true
+__{}__{}    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    xor   B             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1},
+__{}{dnl
+__{}__{}FCE_DLT:               ;[18:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
+__{}__{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
+__{}__{}    sub   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
+__{}__{}    jr    z, $+8        ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
+__{}__{}    rra                 ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1        --> sign  if true
+__{}__{}    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    xor   B             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1
+__{}__{}    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1
+__{}__{}    sub   L             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  C-L<0 --> carry if true
+__{}__{}    ld    A, B          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1
+__{}__{}    sbc   A, H          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  B-H<0 --> carry if true
+__{}__{}    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1  BC = hi16(d2)
+__{}__{}    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+__{}__{}    sbc   A, E          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  C-E<0 --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1})})}){}dnl
+dnl
+ifdef({USE_FCE_DULT},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; set carry if d2 u< d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+FCE_DULT:              ;[14:42,71]  fce_dult   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_dult   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
+    sub   D             ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
+    jr    z, FCE_DULT_2 ; 2:7/12    fce_dult   h2 l2 rt h2 h1 l1
+    pop  BC             ; 1:10      fce_dult   h2 l2 rt .. h1 l1
+    ret                 ; 1:10      fce_dult   h2 l2 .. .. h1 l1
+FCE_DULT_2:             ;           fce_dult   h2 l2 rt h2 h1 l1
+    ld    A, C          ; 1:4       fce_dult   h2 l2 rt h2 h1 l1
+    sub   L             ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  C-L<0 --> carry if true
+    ld    A, B          ; 1:4       fce_dult   h2 l2 rt h2 h1 l1
+    sbc   A, H          ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  B-H<0 --> carry if true
+    pop  BC             ; 1:10      fce_dult   h2 l2 rt .. h1 l1  BC = hi16(d2)
+    ld    A, C          ; 1:4       fce_dult   h2 l2 rt .. h1 l1
+    sbc   A, E          ; 1:4       fce_dult   h2 l2 rt .. h1 l1  C-E<0 --> carry if true
+    ret                 ; 1:10      fce_dult   h2 l2 .. .. h1 l1}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl
@@ -703,7 +739,7 @@ ifdef({USE_FCE_DGT},{
 ; carry if d2>d1 is true
 ;  In: AF = h2, BC = l2, DE = h1, HL = l1
 ; Out:          BC = h2, DE = h1, HL = l1, set carry if true
-ifelse(USE_FCE_DGT,{small},{dnl
+ifelse(eval(ifelse(USE_FCE_DGT,{small},{1},{0}) && ifdef({USE_FCE_DUGT},{0},{1})),{1},{dnl
 __{}FCE_DGT:               ;[15:79]     fce_dgt   ( d2 ret d1 -- d2 d1 )   # small version because "define({_USE_FCE_DGT},{small})"
 __{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
 __{}    ld    A, L          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
@@ -721,26 +757,65 @@ __{}    xor   D             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1
 __{}    add   A, A          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1        --> carry if true
 __{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1},
 __{}{dnl
-__{}FCE_DGT:               ;[22:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
-__{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
-__{}    xor   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A==D?
-__{}    jr    z, $+12       ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
-__{}    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1
-__{}    jp    p, $+6        ; 3:10      fce_dlt   h2 l2 rt .. h1 l1
-__{}    ld    A, B          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  opposite signs
-__{}    sub   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  0>B-D --> carry if true
-__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
-__{}    ld    A, D          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  identical signs
-__{}    sub   B             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  0>D-B --> carry if true
-__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
-__{}    ld    A, L          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
-__{}    sub   C             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>L-C --> carry if true
-__{}    ld    A, H          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
-__{}    sbc   A, B          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>H-B --> carry if true
-__{}    pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
-__{}    ld    A, E          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1
-__{}    sbc   A, C          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>E-C --> carry if true
-__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1})}){}dnl
+__{}ifdef({USE_FCE_DUGT},{dnl
+__{}__{}FCE_DGT:               ;[14:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
+__{}__{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
+__{}__{}    xor   D             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  A==D?
+__{}__{}    jr    z, FCE_DUGT_2 ; 2:7/12    fce_dgt   h2 l2 rt h2 h1 l1
+__{}__{}    pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
+__{}__{}    jp    p, $+6        ; 3:10      fce_dgt   h2 l2 rt .. h1 l1
+__{}__{}    ld    A, B          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  opposite signs
+__{}__{}    sub   D             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>B-D --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
+__{}__{}    ld    A, D          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  identical signs
+__{}__{}    sub   B             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>D-B --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1},
+__{}{dnl
+__{}__{}FCE_DGT:               ;[22:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
+__{}__{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
+__{}__{}    xor   D             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  A==D?
+__{}__{}    jr    z, $+12       ; 2:7/12    fce_dgt   h2 l2 rt h2 h1 l1
+__{}__{}    pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
+__{}__{}    jp    p, $+6        ; 3:10      fce_dgt   h2 l2 rt .. h1 l1
+__{}__{}    ld    A, B          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  opposite signs
+__{}__{}    sub   D             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>B-D --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
+__{}__{}    ld    A, D          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  identical signs
+__{}__{}    sub   B             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>D-B --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
+__{}__{}    ld    A, L          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
+__{}__{}    sub   C             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>L-C --> carry if true
+__{}__{}    ld    A, H          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
+__{}__{}    sbc   A, B          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>H-B --> carry if true
+__{}__{}    pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
+__{}__{}    ld    A, E          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1
+__{}__{}    sbc   A, C          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>E-C --> carry if true
+__{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1})})}){}dnl
+dnl
+ifdef({USE_FCE_DUGT},{
+;==============================================================================
+; ( d2 ret d1 -- d1 )
+; carry if d2 u> d1 is true
+;  In: AF = h2, BC = l2, DE = h1, HL = l1
+; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+FCE_DUGT:              ;[15:46,71]  fce_dugt   ( d2 ret d1 -- d2 d1 )
+    push AF             ; 1:11      fce_dugt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
+    sub   D             ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  A==D?
+    jr    z, FCE_DUGT_2 ; 2:7/12    fce_dugt   h2 l2 rt h2 h1 l1
+    pop  BC             ; 1:10      fce_dugt   h2 l2 rt .. h1 l1
+    ccf                 ; 1:4       fce_dugt   h2 l2 rt .. h1 l1
+    ret                 ; 1:10      fce_dugt   h2 l2 .. .. h1 l1
+FCE_DUGT_2:             ;           fce_dugt   h2 l2 rt h2 h1 l1
+    ld    A, L          ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1
+    sub   C             ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  0>L-C --> carry if true
+    ld    A, H          ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1
+    sbc   A, B          ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  0>H-B --> carry if true
+    pop  BC             ; 1:10      fce_dugt   h2 l2 rt .. h1 l1
+    ld    A, E          ; 1:4       fce_dugt   h2 l2 rt .. h1 l1
+    sbc   A, C          ; 1:4       fce_dugt   h2 l2 rt .. h1 l1  0>E-C --> carry if true
+    ret                 ; 1:10      fce_dugt   h2 l2 .. .. h1 l1}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl

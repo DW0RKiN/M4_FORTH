@@ -785,6 +785,62 @@ define({DGT_WHILE},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
 dnl
 dnl
 dnl
+dnl ----------------------- 32 bit -----------------------
+dnl ------ unsigned_32_bit_cond while ( ud2 ud1 -- ) ---------
+dnl
+dnl Du= while
+define({DUEQ_WHILE},{DEQ_WHILE}){}dnl
+dnl
+dnl
+dnl Du<> while
+define({DUNE_WHILE},{DNE_WHILE}){}dnl
+dnl
+dnl
+dnl Du< while
+define({DULT_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:67]     Du< while BEGIN_STACK   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du< while BEGIN_STACK   l2
+    pop  AF             ; 1:10      Du< while BEGIN_STACK   h2
+    call FCE_DULT       ; 3:17      Du< while BEGIN_STACK   carry if true
+    pop  HL             ; 1:10      Du< while BEGIN_STACK
+    pop  DE             ; 1:10      Du< while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      Du< while BEGIN_STACK})dnl
+dnl
+dnl
+dnl Du>= while
+define({DUGE_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:67]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du>= while BEGIN_STACK   l2
+    pop  AF             ; 1:10      Du>= while BEGIN_STACK   h2
+    call FCE_DULT       ; 3:17      Du>= while BEGIN_STACK   D< carry if true --> D>= carry if false
+    pop  HL             ; 1:10      Du>= while BEGIN_STACK
+    pop  DE             ; 1:10      Du>= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      Du>= while BEGIN_STACK})dnl
+dnl
+dnl
+dnl Du<= while
+define({DULE_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:67]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du<= while BEGIN_STACK   l2
+    pop  AF             ; 1:10      Du<= while BEGIN_STACK   h2
+    call FCE_DUGT       ; 3:17      Du<= while BEGIN_STACK   D> carry if true --> D<= carry if false
+    pop  HL             ; 1:10      Du<= while BEGIN_STACK
+    pop  DE             ; 1:10      Du<= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      Du<= while BEGIN_STACK})dnl
+dnl
+dnl
+dnl Du> while
+define({DUGT_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:67]     Du> while BEGIN_STACK   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du> while BEGIN_STACK   l2
+    pop  AF             ; 1:10      Du> while BEGIN_STACK   h2
+    call FCE_DUGT       ; 3:17      Du> while BEGIN_STACK   carry if true
+    pop  HL             ; 1:10      Du> while BEGIN_STACK
+    pop  DE             ; 1:10      Du> while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      Du> while BEGIN_STACK})dnl
+dnl
+dnl
+dnl
 dnl ----- 4dup signed_32_bit_cond while ( d2 d1 -- d2 d1 ) -----
 dnl
 dnl
@@ -937,6 +993,69 @@ define({_4DUP_DGT_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define
                         ;[6:27]     4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D> while BEGIN_STACK   carry if true
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup D> while BEGIN_STACK})}){}dnl
+dnl
+dnl
+dnl
+dnl
+dnl
+dnl ----- 4dup unsigned_32_bit_cond while ( ud2 ud1 -- ud2 ud1 ) -----
+dnl
+dnl
+dnl 4dup Du= while
+define({_4DUP_DUEQ_WHILE},{_4DUP_DEQ_WHILE}){}dnl
+dnl
+dnl
+dnl
+dnl 4dup Du<> while
+define({_4DUP_DUNE_WHILE},{_4DUP_DNE_WHILE}){}dnl
+dnl
+dnl
+dnl
+dnl 4dup Du< while
+define({_4DUP_DULT_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:69]     4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+    pop  BC             ; 1:10      4dup Du< while BEGIN_STACK
+    pop  AF             ; 1:10      4dup Du< while BEGIN_STACK
+    push AF             ; 1:11      4dup Du< while BEGIN_STACK
+    push BC             ; 1:11      4dup Du< while BEGIN_STACK
+    call FCE_DULT       ; 3:17      4dup Du< while BEGIN_STACK   carry if true
+    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while BEGIN_STACK}){}dnl
+dnl
+dnl
+dnl
+dnl 4dup Du>= while
+define({_4DUP_DUGE_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:69]     4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+    pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK
+    pop  AF             ; 1:10      4dup Du>= while BEGIN_STACK
+    push AF             ; 1:11      4dup Du>= while BEGIN_STACK
+    push BC             ; 1:11      4dup Du>= while BEGIN_STACK
+    call FCE_DULT       ; 3:17      4dup Du>= while BEGIN_STACK   D< carry if true --> D>= carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while BEGIN_STACK}){}dnl
+dnl
+dnl
+dnl
+dnl 4dup Du<= while
+define({_4DUP_DULE_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:69]     4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+    pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK
+    pop  AF             ; 1:10      4dup Du<= while BEGIN_STACK
+    push AF             ; 1:11      4dup Du<= while BEGIN_STACK
+    push BC             ; 1:11      4dup Du<= while BEGIN_STACK
+    call FCE_DUGT       ; 3:17      4dup Du<= while BEGIN_STACK   D> carry if true --> D<= carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while BEGIN_STACK}){}dnl
+dnl
+dnl
+dnl
+dnl 4dup Du> while
+define({_4DUP_DUGT_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:69]     4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+    pop  BC             ; 1:10      4dup Du> while BEGIN_STACK
+    pop  AF             ; 1:10      4dup Du> while BEGIN_STACK
+    push AF             ; 1:11      4dup Du> while BEGIN_STACK
+    push BC             ; 1:11      4dup Du> while BEGIN_STACK
+    call FCE_DUGT       ; 3:17      4dup Du> while BEGIN_STACK   carry if true
+    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while BEGIN_STACK}){}dnl
 dnl
 dnl
 dnl
