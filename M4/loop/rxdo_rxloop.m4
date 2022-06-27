@@ -121,7 +121,7 @@ dnl
 dnl
 dnl 2 +loop
 dnl ( -- )
-define(_2_ADDRXLOOP,{
+define({_2_ADDRXLOOP},{
     exx                 ; 1:4       2 +rxloop LOOP_STACK
     ld    E,(HL)        ; 1:7       2 +rxloop LOOP_STACK
     inc   L             ; 1:4       2 +rxloop LOOP_STACK

@@ -1,6 +1,6 @@
 dnl ## Loop
 define({__},{})dnl
-define(LOOP_COUNT,100)dnl
+define({LOOP_COUNT},100)dnl
 dnl
 dnl Discard the loop-control parameters for the current nesting level.
 define({UNLOOP},{UNLOOP_STACK}){}dnl

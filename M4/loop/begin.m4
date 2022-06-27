@@ -6,7 +6,7 @@ dnl
 dnl --------- begin while repeat ------------
 dnl
 dnl
-define(BEGIN_COUNT,100)dnl
+define({BEGIN_COUNT},100)dnl
 dnl
 dnl ( -- )
 define({BEGIN},{define({BEGIN_COUNT}, incr(BEGIN_COUNT))pushdef({BEGIN_STACK}, BEGIN_COUNT)

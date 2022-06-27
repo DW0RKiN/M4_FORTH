@@ -17,8 +17,8 @@ dnl Může použít n , které je na vrcholu zásobníku, ale nesmí ho spotřeb
 dnl Hodnota n je odstraněna touto konstrukcí (buď odpovídající OF, nebo ENDCASE, pokud se žádný OF neshoduje).
 dnl
 dnl
-define(CASE_COUNT,100)dnl
-define(LASTOF_STACK,100000)dnl
+define({CASE_COUNT},100)dnl
+define({LASTOF_STACK},100000)dnl
 dnl
 dnl
 dnl # Non standard CASE: ( n -- n )

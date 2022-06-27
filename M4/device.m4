@@ -220,7 +220,7 @@ __{}RECURSIVE_CHECK_STACK({$1}){}dnl
 dnl
 dnl
 dnl
-define(PRINT_COUNT,100)dnl
+define({PRINT_COUNT},100)dnl
 pushdef({ALL_STRING_STACK},{})dnl
 dnl
 dnl

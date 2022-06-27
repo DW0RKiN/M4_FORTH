@@ -333,7 +333,7 @@ dnl
 dnl
 dnl 2 +loop
 dnl ( -- )
-define(_ADD2_ADDXLOOP,{_LOOP_ANALYSIS(2){}ifelse(_TEMP_X,{1},{
+define({_ADD2_ADDXLOOP},{_LOOP_ANALYSIS(2){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           2 +xloop LOOP_STACK   variant +2.null: positive step and no repeat},
 eval(_TEMP_REAL_STOP),{0},{
 __{}                        ;[10:58/38] 2 +xloop LOOP_STACK   variant +2.A: step 2 and real_stop is zero, run _TEMP_X{}x
@@ -423,7 +423,7 @@ dnl
 dnl
 dnl -2 +loop
 dnl ( -- )
-define(_SUB2_ADDXLOOP,{_LOOP_ANALYSIS(-2){}ifelse(_TEMP_X,{1},{
+define({_SUB2_ADDXLOOP},{_LOOP_ANALYSIS(-2){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           -2 +xloop LOOP_STACK   variant -2.null: positive step and no repeat},
 eval((_TEMP_REAL_STOP+2) & 0xFFFF),{0},{
 __{}                        ;[10:58/38] -2 +xloop LOOP_STACK   variant -2.A: step -2 and real_stop is -2, run _TEMP_X{}x

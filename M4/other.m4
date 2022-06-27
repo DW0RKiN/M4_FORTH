@@ -3,7 +3,7 @@ dnl
 dnl
 dnl ( -- )
 dnl Save shadow reg.
-define(INIT,{
+define({INIT},{
 ;   ===  b e g i n  ===
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
     ld    L, 0x1A       ; 2:7       init   Upper screen
@@ -16,7 +16,7 @@ __{}ifelse(eval(($1+0) & 1),{1},{
 dnl
 dnl ( -- )
 dnl Load shadow reg.
-define(STOP,{
+define({STOP},{
 Stop:                   ;           stop
     ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
     ld   HL, 0x2758     ; 3:10      stop
