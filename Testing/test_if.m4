@@ -6,15 +6,21 @@ ORG 0x8000
     ld  hl, stack_test
     push hl
 
-    PUSH2( 5,-5) CALL(dtest)
-    PUSH2( 5, 5) CALL(dtest)
-    PUSH2(-5,-5) CALL(dtest)
-    PUSH2(-5, 5) CALL(dtest)
-
-    PUSH( 3) CALL(ptestp3)
-    PUSH(-3) CALL(ptestp3)
-    PUSH( 3) CALL(ptestm3)
-    PUSH(-3) CALL(ptestm3)
+    PRINT_I({"( x2 x1 -- ) and ( u2 u1 -- ):",0x0D})
+    PUSH2( 5,-5) CALL(x_x_test)
+    PUSH2( 5, 5) CALL(x_x_test)
+    PUSH2(-5,-5) CALL(x_x_test)
+    PUSH2(-5, 5) CALL(x_x_test)
+    PRINT_I({"( d2 d1 -- ) and ( ud2 ud1 -- ):",0x0D})
+    PUSHDOT( 5) PUSHDOT(-5) CALL(d_d_test)
+    PUSHDOT( 5) PUSHDOT( 5) CALL(d_d_test)
+    PUSHDOT(-5) PUSHDOT(-5) CALL(d_d_test)
+    PUSHDOT(-5) PUSHDOT( 5) CALL(d_d_test)
+    
+    PUSH( 3) CALL(x_p3_test)
+    PUSH(-3) CALL(x_p3_test)
+    PUSH( 3) CALL(x_m3_test)
+    PUSH(-3) CALL(x_m3_test)
 
     PRINT_Z({"RAS:"})
     exx
@@ -24,7 +30,8 @@ ORG 0x8000
     DUP_UDOT
     ret
     
-COLON(dtest)
+COLON(x_x_test)
+    ; signed
      _2DUP EQ IF PRINT_Z( {"=" }) THEN
      _2DUP_EQ_IF PRINT_Z( {"=" }) THEN
      _2DUP EQ_IF PRINT_Z( {"=,"}) THEN
@@ -44,6 +51,7 @@ COLON(dtest)
      _2DUP_GE_IF PRINT_Z({">=" }) THEN
      _2DUP GE_IF PRINT_Z({">=,"}) THEN
     OVER DOT DUP DOT CR  
+    ; unsigned
     _2DUP UEQ IF PRINT_Z( {"=" }) THEN
     _2DUP_UEQ_IF PRINT_Z( {"=" }) THEN
     _2DUP UEQ_IF PRINT_Z( {"=,"}) THEN
@@ -65,7 +73,51 @@ COLON(dtest)
     SWAP UDOT UDOT CR
 SEMICOLON
 
-COLON(ptestp3)
+COLON(d_d_test)
+    ; signed
+     _4DUP DEQ IF PRINT_Z( {"=" }) THEN
+     _4DUP_DEQ_IF PRINT_Z( {"=" }) THEN
+     _4DUP DEQ_IF PRINT_Z( {"=,"}) THEN
+     _4DUP DNE IF PRINT_Z({"<>" }) THEN
+     _4DUP_DNE_IF PRINT_Z({"<>" }) THEN
+     _4DUP DNE_IF PRINT_Z({"<>,"}) THEN
+     _4DUP DLT IF PRINT_Z( {"<" }) THEN
+     _4DUP_DLT_IF PRINT_Z( {"<" }) THEN
+     _4DUP DLT_IF PRINT_Z( {"<,"}) THEN
+     _4DUP DLE IF PRINT_Z({"<=" }) THEN
+     _4DUP_DLE_IF PRINT_Z({"<=" }) THEN
+     _4DUP DLE_IF PRINT_Z({"<=,"}) THEN
+     _4DUP DGT IF PRINT_Z( {">" }) THEN
+     _4DUP_DGT_IF PRINT_Z( {">" }) THEN
+     _4DUP DGT_IF PRINT_Z( {">,"}) THEN
+     _4DUP DGE IF PRINT_Z({">=" }) THEN
+     _4DUP_DGE_IF PRINT_Z({">=" }) THEN
+     _4DUP DGE_IF PRINT_Z({">=,"}) THEN
+    _2OVER DDOT _2DUP DDOT CR
+    ; unsigned
+    _4DUP DUEQ IF PRINT_Z( {"=" }) THEN
+    _4DUP_DUEQ_IF PRINT_Z( {"=" }) THEN
+    _4DUP DUEQ_IF PRINT_Z( {"=,"}) THEN
+    _4DUP DUNE IF PRINT_Z({"<>" }) THEN
+    _4DUP_DUNE_IF PRINT_Z({"<>" }) THEN
+    _4DUP DUNE_IF PRINT_Z({"<>,"}) THEN
+    _4DUP DULT IF PRINT_Z( {"<" }) THEN
+    _4DUP_DULT_IF PRINT_Z( {"<" }) THEN
+    _4DUP DULT_IF PRINT_Z( {"<,"}) THEN
+    _4DUP DULE IF PRINT_Z({"<=" }) THEN
+    _4DUP_DULE_IF PRINT_Z({"<=" }) THEN
+    _4DUP DULE_IF PRINT_Z({"<=,"}) THEN
+    _4DUP DUGT IF PRINT_Z( {">" }) THEN
+    _4DUP_DUGT_IF PRINT_Z( {">" }) THEN
+    _4DUP DUGT_IF PRINT_Z( {">,"}) THEN
+    _4DUP DUGE IF PRINT_Z({">=" }) THEN
+    _4DUP_DUGE_IF PRINT_Z({">=" }) THEN
+    _4DUP DUGE_IF PRINT_Z({">=,"}) THEN
+    _2SWAP UDDOT UDDOT CR
+SEMICOLON
+
+
+COLON(x_p3_test)
     DUP_PUSH_EQ_IF(3) PRINT_Z( {"=,"}) THEN
     DUP_PUSH_NE_IF(3) PRINT_Z({"<>,"}) THEN
     DUP_PUSH_LT_IF(3) PRINT_Z( {"<,"}) THEN
@@ -83,7 +135,7 @@ COLON(ptestp3)
 SEMICOLON
 
 
-COLON(ptestm3)
+COLON(x_m3_test)
     DUP_PUSH_EQ_IF(-3) PRINT_Z( {"=,"}) THEN
     DUP_PUSH_NE_IF(-3) PRINT_Z({"<>,"}) THEN
     DUP_PUSH_LT_IF(-3) PRINT_Z( {"<,"}) THEN

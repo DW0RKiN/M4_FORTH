@@ -1467,7 +1467,7 @@ begin163:               ;           begin 163
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-                       ;[13:81]     Du< while 163   ( ud2 ud1 -- )
+                       ;[13:81]     Du< while 163   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du< while 163   lo_2
     ld    A, C          ; 1:4       Du< while 163   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> carry if true
     sub   L             ; 1:4       Du< while 163   C-L<0 --> carry if true
@@ -1707,7 +1707,7 @@ begin172:               ;           begin 172
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-                       ;[13:81]     Du>= while 172   ( ud2 ud1 -- )
+                       ;[13:81]     Du>= while 172   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du>= while 172   lo_2
     ld    A, C          ; 1:4       Du>= while 172   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
     sub   L             ; 1:4       Du>= while 172   C-L>=0 --> no carry if true
