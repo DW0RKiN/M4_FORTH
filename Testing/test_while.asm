@@ -1437,12 +1437,19 @@ begin161:               ;           begin 161
 break161:               ;           again 161
     
 begin162:               ;           begin 162 
-                       ;[10:69]     4dup Du< while 162   ( ud2 ud1 -- ud2 ud1 )
-    pop  BC             ; 1:10      4dup Du< while 162
-    pop  AF             ; 1:10      4dup Du< while 162
-    push AF             ; 1:11      4dup Du< while 162
+                       ;[15:101]    4dup Du< while 162   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du< while 162   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> carry if true
+    ld    A, C          ; 1:4       4dup Du< while 162
+    sub   L             ; 1:4       4dup Du< while 162   C-L<0 --> carry if true
+    ld    A, B          ; 1:4       4dup Du< while 162
+    sbc   A, H          ; 1:4       4dup Du< while 162   B-H<0 --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du< while 162   HL = hi2
+    ld    A, L          ; 1:4       4dup Du< while 162   HLBC-DE(SP)<0 -- carry if true
+    sbc   A, E          ; 1:4       4dup Du< while 162   L-E<0 --> carry if true
+    ld    A, H          ; 1:4       4dup Du< while 162
+    sbc   A, D          ; 1:4       4dup Du< while 162   H-D<0 --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du< while 162
     push BC             ; 1:11      4dup Du< while 162
-    call FCE_DULT       ; 3:17      4dup Du< while 162   carry if true
     jp   nc, break162   ; 3:10      4dup Du< while 162 
     ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string165
     call PRINT_STRING_I ; 3:17      print_i 
@@ -1460,10 +1467,14 @@ begin163:               ;           begin 163
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-                       ;[10:67]     Du< while 163   ( ud2 ud1 -- )
-    pop  BC             ; 1:10      Du< while 163   l2
-    pop  AF             ; 1:10      Du< while 163   h2
-    call FCE_DULT       ; 3:17      Du< while 163   carry if true
+                       ;[13:81]     Du< while 163   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du< while 163   lo_2
+    ld    A, C          ; 1:4       Du< while 163   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> carry if true
+    sub   L             ; 1:4       Du< while 163   C-L<0 --> carry if true
+    ld    A, B          ; 1:4       Du< while 163
+    sbc   A, H          ; 1:4       Du< while 163   B-H<0 --> carry if true
+    pop  HL             ; 1:10      Du< while 163   hi_2
+    sbc  HL, DE         ; 2:15      Du< while 163   HL-DE<0 --> carry if true
     pop  HL             ; 1:10      Du< while 163
     pop  DE             ; 1:10      Du< while 163
     jp   nc, break163   ; 3:10      Du< while 163 
@@ -1506,12 +1517,19 @@ begin164:               ;           begin 164
 break164:               ;           again 164
     
 begin165:               ;           begin 165 
-                       ;[10:69]     4dup Du<= while 165   ( ud2 ud1 -- ud2 ud1 )
-    pop  BC             ; 1:10      4dup Du<= while 165
-    pop  AF             ; 1:10      4dup Du<= while 165
-    push AF             ; 1:11      4dup Du<= while 165
+                       ;[15:101]    4dup Du<= while 165   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du<= while 165   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    ld    A, L          ; 1:4       4dup Du<= while 165
+    sub   C             ; 1:4       4dup Du<= while 165   0<=L-C --> no carry if true
+    ld    A, H          ; 1:4       4dup Du<= while 165
+    sbc   A, B          ; 1:4       4dup Du<= while 165   0<=H-B --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du<= while 165   HL = hi2
+    ld    A, E          ; 1:4       4dup Du<= while 165   0<=DE(SP)-HLBC -- no carry if true
+    sbc   A, L          ; 1:4       4dup Du<= while 165   0<=E-L --> no carry if true
+    ld    A, D          ; 1:4       4dup Du<= while 165
+    sbc   A, H          ; 1:4       4dup Du<= while 165   0<=D-H --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du<= while 165
     push BC             ; 1:11      4dup Du<= while 165
-    call FCE_DUGT       ; 3:17      4dup Du<= while 165   D> carry if true --> D<= carry if false
     jp    c, break165   ; 3:10      4dup Du<= while 165 
     ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string168
     call PRINT_STRING_I ; 3:17      print_i 
@@ -1529,10 +1547,13 @@ begin166:               ;           begin 166
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-                       ;[10:67]     Du<= while 166   ( ud2 ud1 -- )
-    pop  BC             ; 1:10      Du<= while 166   l2
-    pop  AF             ; 1:10      Du<= while 166   h2
-    call FCE_DUGT       ; 3:17      Du<= while 166   D> carry if true --> D<= carry if false
+                       ;[13:88]     Du<= while 166   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      Du<= while 166   lo_2
+    or    A             ; 1:4       Du<= while 166
+    sbc  HL, BC         ; 2:15      Du<= while 166   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    pop  BC             ; 1:10      Du<= while 166   hi_2
+    ex   DE, HL         ; 1:4       Du<= while 166
+    sbc  HL, BC         ; 2:15      Du<= while 166   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     pop  HL             ; 1:10      Du<= while 166
     pop  DE             ; 1:10      Du<= while 166
     jp    c, break166   ; 3:10      Du<= while 166 
@@ -1577,12 +1598,19 @@ begin167:               ;           begin 167
 break167:               ;           again 167
     
 begin168:               ;           begin 168 
-                       ;[10:69]     4dup Du> while 168   ( ud2 ud1 -- ud2 ud1 )
-    pop  BC             ; 1:10      4dup Du> while 168
-    pop  AF             ; 1:10      4dup Du> while 168
-    push AF             ; 1:11      4dup Du> while 168
+                       ;[15:101]    4dup Du> while 168   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du> while 168   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    ld    A, L          ; 1:4       4dup Du> while 168
+    sub   C             ; 1:4       4dup Du> while 168   0>L-C --> carry if true
+    ld    A, H          ; 1:4       4dup Du> while 168
+    sbc   A, B          ; 1:4       4dup Du> while 168   0>H-B --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du> while 168   HL = hi2
+    ld    A, E          ; 1:4       4dup Du> while 168   0>DE(SP)-HLBC -- carry if true
+    sbc   A, L          ; 1:4       4dup Du> while 168   0>E-L --> carry if true
+    ld    A, D          ; 1:4       4dup Du> while 168
+    sbc   A, H          ; 1:4       4dup Du> while 168   0>D-H --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du> while 168
     push BC             ; 1:11      4dup Du> while 168
-    call FCE_DUGT       ; 3:17      4dup Du> while 168   carry if true
     jp   nc, break168   ; 3:10      4dup Du> while 168 
     ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string171
     call PRINT_STRING_I ; 3:17      print_i 
@@ -1600,10 +1628,13 @@ begin169:               ;           begin 169
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-                       ;[10:67]     Du> while 169   ( ud2 ud1 -- )
-    pop  BC             ; 1:10      Du> while 169   l2
-    pop  AF             ; 1:10      Du> while 169   h2
-    call FCE_DUGT       ; 3:17      Du> while 169   carry if true
+                       ;[13:88]     Du> while 169   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      Du> while 169   lo_2
+    or    A             ; 1:4       Du> while 169
+    sbc  HL, BC         ; 2:15      Du> while 169   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    pop  BC             ; 1:10      Du> while 169   hi_2
+    ex   DE, HL         ; 1:4       Du> while 169
+    sbc  HL, BC         ; 2:15      Du> while 169   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> carry if true
     pop  HL             ; 1:10      Du> while 169
     pop  DE             ; 1:10      Du> while 169
     jp   nc, break169   ; 3:10      Du> while 169 
@@ -1646,12 +1677,19 @@ begin170:               ;           begin 170
 break170:               ;           again 170
     
 begin171:               ;           begin 171 
-                       ;[10:69]     4dup Du>= while 171   ( ud2 ud1 -- ud2 ud1 )
-    pop  BC             ; 1:10      4dup Du>= while 171
-    pop  AF             ; 1:10      4dup Du>= while 171
-    push AF             ; 1:11      4dup Du>= while 171
+                       ;[15:101]    4dup Du>= while 171   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du>= while 171   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
+    ld    A, C          ; 1:4       4dup Du>= while 171
+    sub   L             ; 1:4       4dup Du>= while 171   C-L>=0 --> no carry if true
+    ld    A, B          ; 1:4       4dup Du>= while 171
+    sbc   A, H          ; 1:4       4dup Du>= while 171   B-H>=0 --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du>= while 171   HL = hi2
+    ld    A, L          ; 1:4       4dup Du>= while 171   HLBC-DE(SP)>=0 -- no carry if true
+    sbc   A, E          ; 1:4       4dup Du>= while 171   L-E>=0 --> no carry if true
+    ld    A, H          ; 1:4       4dup Du>= while 171
+    sbc   A, D          ; 1:4       4dup Du>= while 171   H-D>=0 --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du>= while 171
     push BC             ; 1:11      4dup Du>= while 171
-    call FCE_DULT       ; 3:17      4dup Du>= while 171   D< carry if true --> D>= carry if false
     jp    c, break171   ; 3:10      4dup Du>= while 171 
     ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string174
     call PRINT_STRING_I ; 3:17      print_i 
@@ -1669,10 +1707,14 @@ begin172:               ;           begin 172
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-                       ;[10:67]     Du>= while 172   ( ud2 ud1 -- )
-    pop  BC             ; 1:10      Du>= while 172   l2
-    pop  AF             ; 1:10      Du>= while 172   h2
-    call FCE_DULT       ; 3:17      Du>= while 172   D< carry if true --> D>= carry if false
+                       ;[13:81]     Du>= while 172   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du>= while 172   lo_2
+    ld    A, C          ; 1:4       Du>= while 172   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
+    sub   L             ; 1:4       Du>= while 172   C-L>=0 --> no carry if true
+    ld    A, B          ; 1:4       Du>= while 172
+    sbc   A, H          ; 1:4       Du>= while 172   B-H>=0 --> no carry if true
+    pop  HL             ; 1:10      Du>= while 172   hi_2
+    sbc  HL, DE         ; 2:15      Du>= while 172   HL-DE>=0 --> no carry if true
     pop  HL             ; 1:10      Du>= while 172
     pop  DE             ; 1:10      Du>= while 172
     jp    c, break172   ; 3:10      Du>= while 172 
@@ -2292,36 +2334,24 @@ FCE_4DUP_DLT:           ;[9:75]     fce_4dup_dlt   ( d2 ret d1 -- d2 d1 )
 ; set carry if d2<d1 is true
 ;  In: AF = h2, BC = l2, DE = h1, HL = l1
 ; Out:          BC = h2, DE = h1, HL = l1, set carry if true
-FCE_DLT:               ;[10:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
+FCE_DLT:               ;[18:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
     push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
     sub   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
-    jr    z, FCE_DULT_2 ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
+    jr    z, $+8        ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
     rra                 ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1        --> sign  if true
     pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1
     xor   B             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
     xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
     add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> carry if true
     ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; set carry if d2 u< d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set carry if true
-FCE_DULT:              ;[14:42,71]  fce_dult   ( d2 ret d1 -- d2 d1 )
-    push AF             ; 1:11      fce_dult   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
-    sub   D             ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
-    jr    z, FCE_DULT_2 ; 2:7/12    fce_dult   h2 l2 rt h2 h1 l1
-    pop  BC             ; 1:10      fce_dult   h2 l2 rt .. h1 l1
-    ret                 ; 1:10      fce_dult   h2 l2 .. .. h1 l1
-FCE_DULT_2:             ;           fce_dult   h2 l2 rt h2 h1 l1
-    ld    A, C          ; 1:4       fce_dult   h2 l2 rt h2 h1 l1
-    sub   L             ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  C-L<0 --> carry if true
-    ld    A, B          ; 1:4       fce_dult   h2 l2 rt h2 h1 l1
-    sbc   A, H          ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  B-H<0 --> carry if true
-    pop  BC             ; 1:10      fce_dult   h2 l2 rt .. h1 l1  BC = hi16(d2)
-    ld    A, C          ; 1:4       fce_dult   h2 l2 rt .. h1 l1
-    sbc   A, E          ; 1:4       fce_dult   h2 l2 rt .. h1 l1  C-E<0 --> carry if true
-    ret                 ; 1:10      fce_dult   h2 l2 .. .. h1 l1
+    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1
+    sub   L             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  C-L<0 --> carry if true
+    ld    A, B          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1
+    sbc   A, H          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  B-H<0 --> carry if true
+    pop  BC             ; 1:10      fce_dlt   h2 l2 rt .. h1 l1  BC = hi16(d2)
+    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
+    sbc   A, E          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  C-E<0 --> carry if true
+    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1
 ;==============================================================================
 ; ( d2 ret d1 -- d2 d1 )
 ;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
@@ -2342,10 +2372,10 @@ FCE_4DUP_DGT:           ;[9:75]     fce_4dup_dgt   ( d2 ret d1 -- d2 d1 )
 ; carry if d2>d1 is true
 ;  In: AF = h2, BC = l2, DE = h1, HL = l1
 ; Out:          BC = h2, DE = h1, HL = l1, set carry if true
-FCE_DGT:               ;[14:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
+FCE_DGT:               ;[22:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
     push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
     xor   D             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  A==D?
-    jr    z, FCE_DUGT_2 ; 2:7/12    fce_dgt   h2 l2 rt h2 h1 l1
+    jr    z, $+12       ; 2:7/12    fce_dgt   h2 l2 rt h2 h1 l1
     pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
     jp    p, $+6        ; 3:10      fce_dgt   h2 l2 rt .. h1 l1
     ld    A, B          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  opposite signs
@@ -2354,27 +2384,14 @@ FCE_DGT:               ;[14:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default
     ld    A, D          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  identical signs
     sub   B             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>D-B --> carry if true
     ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; carry if d2 u> d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set carry if true
-FCE_DUGT:              ;[15:46,71]  fce_dugt   ( d2 ret d1 -- d2 d1 )
-    push AF             ; 1:11      fce_dugt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
-    sub   D             ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  A==D?
-    jr    z, FCE_DUGT_2 ; 2:7/12    fce_dugt   h2 l2 rt h2 h1 l1
-    pop  BC             ; 1:10      fce_dugt   h2 l2 rt .. h1 l1
-    ccf                 ; 1:4       fce_dugt   h2 l2 rt .. h1 l1
-    ret                 ; 1:10      fce_dugt   h2 l2 .. .. h1 l1
-FCE_DUGT_2:             ;           fce_dugt   h2 l2 rt h2 h1 l1
-    ld    A, L          ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1
-    sub   C             ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  0>L-C --> carry if true
-    ld    A, H          ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1
-    sbc   A, B          ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  0>H-B --> carry if true
-    pop  BC             ; 1:10      fce_dugt   h2 l2 rt .. h1 l1
-    ld    A, E          ; 1:4       fce_dugt   h2 l2 rt .. h1 l1
-    sbc   A, C          ; 1:4       fce_dugt   h2 l2 rt .. h1 l1  0>E-C --> carry if true
-    ret                 ; 1:10      fce_dugt   h2 l2 .. .. h1 l1
+    ld    A, L          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
+    sub   C             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>L-C --> carry if true
+    ld    A, H          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
+    sbc   A, B          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>H-B --> carry if true
+    pop  BC             ; 1:10      fce_dgt   h2 l2 rt .. h1 l1
+    ld    A, E          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1
+    sbc   A, C          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>E-C --> carry if true
+    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1
 ;==============================================================================
 ; Print string ending with inverted most significant bit
 ; In: BC = addr string_imsb
