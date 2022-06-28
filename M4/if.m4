@@ -22,7 +22,7 @@ dnl
 define({THEN},{
 ifelse(ELSE_STACK, THEN_STACK,{else{}ELSE_STACK  EQU $          ;           = endif
 popdef({ELSE_STACK})})endif{}THEN_STACK:dnl
-popdef({THEN_STACK})})dnl
+popdef({THEN_STACK})}){}dnl
 dnl
 dnl
 dnl 0= if
@@ -103,7 +103,11 @@ dnl -------- signed ---------
 dnl
 dnl
 dnl dup num = if
-define({DUP_PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_EQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -236,7 +240,11 @@ dnl
 dnl
 dnl
 dnl dup num <> if
-define({DUP_PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_NE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -352,7 +360,11 @@ __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})})dnl
 dnl
 dnl
 dnl dup num < if
-define({DUP_PUSH_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_LT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -389,7 +401,11 @@ __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})})dnl
 dnl
 dnl
 dnl dup num >= if
-define({DUP_PUSH_GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_GE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -426,7 +442,11 @@ __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})})dnl
 dnl
 dnl
 dnl dup num <= if
-define({DUP_PUSH_LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_LE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -463,7 +483,11 @@ __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})})dnl
 dnl
 dnl
 dnl dup num > if
-define({DUP_PUSH_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_GT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -501,7 +525,11 @@ dnl
 dnl -------- unsigned ---------
 dnl
 dnl dup unum u= if
-define({DUP_PUSH_UEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_UEQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -633,7 +661,11 @@ __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if})})dnl
 dnl
 dnl
 dnl dup unum u<> if
-define({DUP_PUSH_UNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_UNE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -749,7 +781,11 @@ __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if})})dnl
 dnl
 dnl
 dnl dup 123 u< if
-define({DUP_PUSH_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_ULT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -769,7 +805,11 @@ __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if})})dnl
 dnl
 dnl
 dnl dup 123 u>= if
-define({DUP_PUSH_UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_UGE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -789,7 +829,11 @@ __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if})})dnl
 dnl
 dnl
 dnl dup 123 u<= if
-define({DUP_PUSH_ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_ULE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -801,7 +845,11 @@ __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u<= if})dnl
 dnl
 dnl
 dnl dup 123 u> if
-define({DUP_PUSH_UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_UGT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1072,7 +1120,11 @@ dnl
 dnl ------ push scond if ---------
 dnl
 dnl num = if
-define({PUSH_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({PUSH_EQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1212,7 +1264,11 @@ __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if})})dnl
 dnl
 dnl
 dnl num <> if
-define({PUSH_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({PUSH_NE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1380,7 +1436,11 @@ dnl ---------------------------------------------------------------------------
 dnl
 dnl
 dnl dup char = if
-define({DUP_PUSH_CEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_CEQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1392,7 +1452,11 @@ dnl
 dnl
 dnl
 dnl dup char <> if
-define({DUP_PUSH_CNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse($1,{},{
+define({DUP_PUSH_CNE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1472,7 +1536,11 @@ dnl
 dnl
 dnl D< if
 dnl ( d d -- )
-define({DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({DLT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                        ;[10:67]     D< if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D< if   l2
     pop  AF             ; 1:10      D< if   h2
@@ -1503,7 +1571,11 @@ dnl
 dnl
 dnl D>= if
 dnl ( d d -- )
-define({DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({DGE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                        ;[10:67]     D>= if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>= if   l2
     pop  AF             ; 1:10      D>= if   h2
@@ -1534,7 +1606,11 @@ dnl
 dnl
 dnl D<= if
 dnl ( d d -- )
-define({DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
+define({DLE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{
                        ;[18:94]     D<= if   ( d2 d1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<= if   lo_2
     ld    A, L          ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -1581,7 +1657,11 @@ dnl
 dnl
 dnl D> if
 dnl ( d d -- )
-define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
+define({DGT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{
                        ;[18:94]     D> if   ( d2 d1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D> if   lo_2
     ld    A, L          ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -1678,7 +1758,11 @@ dnl
 dnl
 dnl Du<= if
 dnl ( ud ud -- )
-define({DULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
+define({DULE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{
                        ;[15:82]     Du<= if   ( ud2 ud1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du<= if   lo_2
     ld    A, L          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -1709,7 +1793,11 @@ dnl
 dnl
 dnl Du> if
 dnl ( ud ud -- )
-define({DUGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
+define({DUGT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{
                        ;[15:82]     Du> if   ( ud2 ud1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du> if   lo_2
     ld    A, L          ; 1:4       Du> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -1742,7 +1830,11 @@ dnl ----- 4dup signed_32_bit_cond if ( d2 d1 -- d2 d1 ) -----
 dnl
 dnl
 dnl 4dup D= if
-define({_4DUP_DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
+define({_4DUP_DEQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
                        ;[10:69]     4dup D= if   ( d2 d1 -- d2 d1 )   # function version can be changed with define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D= if
     pop  AF             ; 1:10      4dup D= if
@@ -1766,7 +1858,11 @@ define({_4DUP_DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, I
 dnl
 dnl
 dnl 4dup D<> if
-define({_4DUP_DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
+define({_4DUP_DNE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
                        ;[10:69]     4dup D<> if   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{function})" version can be changed with small,fast,default
     pop  BC             ; 1:10      4dup D<> if
     pop  AF             ; 1:10      4dup D<> if
@@ -1829,7 +1925,11 @@ dnl
 dnl
 dnl
 dnl 4dup D< if
-define({_4DUP_DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({_4DUP_DLT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                        ;[10:69]     4dup D< if   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D< if
     pop  AF             ; 1:10      4dup D< if
@@ -1845,7 +1945,11 @@ dnl
 dnl
 dnl
 dnl 4dup D>= if
-define({_4DUP_DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({_4DUP_DGE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                        ;[10:69]     4dup D>= if   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D>= if
     pop  AF             ; 1:10      4dup D>= if
@@ -1861,7 +1965,11 @@ dnl
 dnl
 dnl
 dnl 4dup D<= if
-define({_4DUP_DLE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({_4DUP_DLE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                        ;[10:69]     4dup D<= if   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D<= if
     pop  AF             ; 1:10      4dup D<= if
@@ -1877,7 +1985,11 @@ dnl
 dnl
 dnl
 dnl 4dup D> if
-define({_4DUP_DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({_4DUP_DGT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                        ;[10:69]     4dup D> if   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D> if
     pop  AF             ; 1:10      4dup D> if
@@ -1907,7 +2019,10 @@ dnl
 dnl
 dnl
 dnl 4dup Du< if
-define({_4DUP_DULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+define({_4DUP_DULT_IF},{define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
                        ;[10:69]     4dup D< if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D< if
     pop  AF             ; 1:10      4dup D< if
@@ -1934,7 +2049,11 @@ dnl
 dnl
 dnl
 dnl 4dup Du>= if
-define({_4DUP_DUGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+define({_4DUP_DUGE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
                        ;[10:69]     4dup D>= if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D>= if
     pop  AF             ; 1:10      4dup D>= if
@@ -1961,7 +2080,11 @@ dnl
 dnl
 dnl
 dnl 4dup Du<= if
-define({_4DUP_DULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+define({_4DUP_DULE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[10:69]     4dup D<= if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D<= if
     pop  AF             ; 1:10      4dup D<= if
@@ -1988,7 +2111,11 @@ dnl
 dnl
 dnl
 dnl 4dup Du> if
-define({_4DUP_DUGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+define({_4DUP_DUGT_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[10:69]     4dup D> if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D> if
     pop  AF             ; 1:10      4dup D> if
@@ -2025,8 +2152,9 @@ dnl 2dup 0. D= if
 dnl 2dup D0= if
 dnl ( d -- d )
 define({_2DUP_D0EQ_IF},{dnl
-__{}define({IF_COUNT}, incr(IF_COUNT))dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       2dup D0= if  ( d -- d )
     or    L             ; 1:4       2dup D0= if
     or    D             ; 1:4       2dup D0= if
@@ -2040,8 +2168,9 @@ dnl 2dup 0. D<> if
 dnl 2dup D0<> if
 dnl ( d -- d )
 define({_2DUP_D0NE_IF},{dnl
-__{}define({IF_COUNT}, incr(IF_COUNT))dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       2dup D0<> if  ( d -- d )
     or    L             ; 1:4       2dup D0<> if
     or    D             ; 1:4       2dup D0<> if
@@ -2055,8 +2184,9 @@ dnl 2dup 0. D< if
 dnl 2dup D0< if
 dnl ( d -- d )
 define({_2DUP_D0LT_IF},{dnl
-__{}define({IF_COUNT}, incr(IF_COUNT))dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       2dup D0< if
     jp    z, else{}IF_COUNT    ; 3:10      2dup D0< if})dnl
 dnl
@@ -2067,8 +2197,9 @@ dnl 2dup 0. D>= if
 dnl 2dup D0>= if
 dnl ( d -- d )
 define({_2DUP_D0GE_IF},{dnl
-__{}define({IF_COUNT}, incr(IF_COUNT))dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       2dup D0>= if
     jp   nz, else{}IF_COUNT    ; 3:10      2dup D0>= if})dnl
 dnl
