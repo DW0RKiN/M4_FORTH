@@ -806,7 +806,7 @@ define({DULT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,defi
     pop  DE             ; 1:10      Du< while BEGIN_STACK
     jp   nc, break{}BEGIN_STACK   ; 3:10      Du< while BEGIN_STACK},
 {
-                       ;[13:81]     Du< while BEGIN_STACK   ( ud2 ud1 -- )
+                       ;[13:81]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du< while BEGIN_STACK   lo_2
     ld    A, C          ; 1:4       Du< while BEGIN_STACK   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> carry if true
     sub   L             ; 1:4       Du< while BEGIN_STACK   C-L<0 --> carry if true
@@ -829,7 +829,7 @@ define({DUGE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,defi
     pop  DE             ; 1:10      Du>= while BEGIN_STACK
     jp    c, break{}BEGIN_STACK   ; 3:10      Du>= while BEGIN_STACK},
 {
-                       ;[13:81]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )
+                       ;[13:81]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du>= while BEGIN_STACK   lo_2
     ld    A, C          ; 1:4       Du>= while BEGIN_STACK   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
     sub   L             ; 1:4       Du>= while BEGIN_STACK   C-L>=0 --> no carry if true
