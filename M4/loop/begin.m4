@@ -1165,7 +1165,58 @@ define({_4DUP_DUGT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT}
 dnl
 dnl
 dnl
-dnl ---------------------------------------------
+dnl
+dnl +============================ 32 bit ===============================+
+dnl |        2dup pushdot signed_32_bit_cond while ( ud1 -- ud1 )       |
+dnl +===================================================================+
+dnl
+dnl
+dnl
+dnl 2dup 0 0 D= while
+dnl 2dup 0. D= while
+dnl 2dup D0= while
+dnl ( d -- d )
+define({_2DUP_D0EQ_WHILE},{
+    ld    A, H          ; 1:4       2dup D0= while BEGIN_STACK  ( d -- d )
+    or    L             ; 1:4       2dup D0= while BEGIN_STACK
+    or    D             ; 1:4       2dup D0= while BEGIN_STACK
+    or    E             ; 1:4       2dup D0= while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0= while BEGIN_STACK}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup 0 0 D<> while
+dnl 2dup 0. D<> while
+dnl 2dup D0<> while
+dnl ( d -- d )
+define({_2DUP_D0NE_WHILE},{
+    ld    A, H          ; 1:4       2dup D0<> while BEGIN_STACK  ( d -- d )
+    or    L             ; 1:4       2dup D0<> while BEGIN_STACK
+    or    D             ; 1:4       2dup D0<> while BEGIN_STACK
+    or    E             ; 1:4       2dup D0<> while BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0<> while BEGIN_STACK}){}dnl
+dnl
+dnl
+dnl
+dnl 2dup 0 0 D< while
+dnl 2dup 0. D< while
+dnl 2dup D0< while
+dnl ( d -- d )
+define({_2DUP_D0LT_WHILE},{
+    bit   7, D          ; 2:8       2dup D0< while BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0< while BEGIN_STACK})dnl
+dnl
+dnl
+dnl
+dnl 2dup 0 0 D>= while
+dnl 2dup 0. D>= while
+dnl 2dup D0>= while
+dnl ( d -- d )
+define({_2DUP_D0GE_WHILE},{
+    bit   7, D          ; 2:8       2dup D0>= while BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0>= while BEGIN_STACK})dnl
+dnl
+dnl
 dnl
 dnl
 dnl
