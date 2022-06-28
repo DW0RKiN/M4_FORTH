@@ -1456,6 +1456,10 @@ dnl
 dnl
 dnl
 dnl
+dnl ----------------------- 32 bit -----------------------
+dnl ------ signed_32_bit_cond if ( d2 d1 -- ) ---------
+dnl
+dnl
 dnl D= if
 dnl ( d d -- )
 define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
@@ -1519,23 +1523,6 @@ define({DLT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
 dnl
 dnl
 dnl
-dnl Du< if
-dnl ( ud ud -- )
-define({DULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[13:81]     Du< if   ( ud2 ud1 -- )
-    pop  BC             ; 1:10      Du< if   lo_2
-    ld    A, C          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    sub   L             ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    ld    A, B          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    pop  HL             ; 1:10      Du< if   hi_2
-    sbc  HL, DE         ; 2:15      Du< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
-    pop  HL             ; 1:10      Du< if
-    pop  DE             ; 1:10      Du< if
-    jp   nc, else{}IF_COUNT    ; 3:10      Du< if})dnl
-dnl
-dnl
-dnl
 dnl D>= if
 dnl ( d d -- )
 define({DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
@@ -1564,23 +1551,6 @@ define({DGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     pop  HL             ; 1:10      D>= if
     pop  DE             ; 1:10      D>= if
     jp    m, else{}IF_COUNT    ; 3:10      D>= if})}){}dnl
-dnl
-dnl
-dnl
-dnl Du>= if
-dnl ( ud ud -- )
-define({DUGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-                       ;[13:81]     Du>= if   ( ud2 ud1 -- )
-    pop  BC             ; 1:10      Du>= if   lo_2
-    ld    A, C          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
-    sub   L             ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
-    ld    A, B          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
-    sbc   A, H          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
-    pop  HL             ; 1:10      Du>= if   hi_2
-    sbc  HL, DE         ; 2:15      Du>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
-    pop  HL             ; 1:10      Du>= if
-    pop  DE             ; 1:10      Du>= if
-    jp    c, else{}IF_COUNT    ; 3:10      Du>= if})dnl
 dnl
 dnl
 dnl
@@ -1631,37 +1601,6 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
 dnl
 dnl
 dnl
-dnl Du<= if
-dnl ( ud ud -- )
-define({DULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
-                       ;[15:82]     Du<= if   ( ud2 ud1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
-    pop  BC             ; 1:10      Du<= if   lo_2
-    ld    A, L          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    sub   C             ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    ld    A, H          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    sbc   A, B          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    pop  BC             ; 1:10      Du<= if   hi_2
-    ld    A, E          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
-    sbc   A, C          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
-    ld    A, D          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
-    sbc   A, B          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
-    pop  HL             ; 1:10      Du<= if
-    pop  DE             ; 1:10      Du<= if
-    jp    c, else{}IF_COUNT    ; 3:10      Du<= if},
-{
-                       ;[13:88]     Du<= if   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
-    pop  BC             ; 1:10      Du<= if   lo_2
-    or    A             ; 1:4       Du<= if
-    sbc  HL, BC         ; 2:15      Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    pop  BC             ; 1:10      Du<= if   hi_2
-    ex   DE, HL         ; 1:4       Du<= if
-    sbc  HL, BC         ; 2:15      Du<= if   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    pop  HL             ; 1:10      Du<= if
-    pop  DE             ; 1:10      Du<= if
-    jp    c, else{}IF_COUNT    ; 3:10      Du<= if})})dnl
-dnl
-dnl
-dnl
 dnl D> if
 dnl ( d d -- )
 define({DGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
@@ -1706,6 +1645,87 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
     jp    p, else{}IF_COUNT    ; 3:10      D> if})}){}dnl
+dnl
+dnl
+dnl
+dnl ----------------------- 32 bit -----------------------
+dnl ------ unsigned_32_bit_cond if ( d2 d1 -- ) ---------
+dnl
+dnl
+dnl Du= if
+dnl ( ud ud -- )
+define({DUEQ_IF},{DEQ_IF}){}dnl
+dnl
+dnl
+dnl
+dnl Du<> if
+dnl ( ud ud -- )
+define({DUNE_IF},{DNE_IF}){}dnl
+dnl
+dnl
+dnl
+dnl Du< if
+dnl ( ud ud -- )
+define({DULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+                       ;[13:81]     Du< if   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du< if   lo_2
+    ld    A, C          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    pop  HL             ; 1:10      Du< if   hi_2
+    sbc  HL, DE         ; 2:15      Du< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    pop  HL             ; 1:10      Du< if
+    pop  DE             ; 1:10      Du< if
+    jp   nc, else{}IF_COUNT    ; 3:10      Du< if})dnl
+dnl
+dnl
+dnl
+dnl Du>= if
+dnl ( ud ud -- )
+define({DUGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+                       ;[13:81]     Du>= if   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du>= if   lo_2
+    ld    A, C          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sub   L             ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    ld    A, B          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
+    pop  HL             ; 1:10      Du>= if   hi_2
+    sbc  HL, DE         ; 2:15      Du>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
+    pop  HL             ; 1:10      Du>= if
+    pop  DE             ; 1:10      Du>= if
+    jp    c, else{}IF_COUNT    ; 3:10      Du>= if})dnl
+dnl
+dnl
+dnl
+dnl Du<= if
+dnl ( ud ud -- )
+define({DULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT){}ifelse(_TYP_DOUBLE,{fast},{
+                       ;[15:82]     Du<= if   ( ud2 ud1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
+    pop  BC             ; 1:10      Du<= if   lo_2
+    ld    A, L          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sub   C             ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    ld    A, H          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sbc   A, B          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  BC             ; 1:10      Du<= if   hi_2
+    ld    A, E          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, C          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    ld    A, D          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    sbc   A, B          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
+    pop  HL             ; 1:10      Du<= if
+    pop  DE             ; 1:10      Du<= if
+    jp    c, else{}IF_COUNT    ; 3:10      Du<= if},
+{
+                       ;[13:88]     Du<= if   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+    pop  BC             ; 1:10      Du<= if   lo_2
+    or    A             ; 1:4       Du<= if
+    sbc  HL, BC         ; 2:15      Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  BC             ; 1:10      Du<= if   hi_2
+    ex   DE, HL         ; 1:4       Du<= if
+    sbc  HL, BC         ; 2:15      Du<= if   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  HL             ; 1:10      Du<= if
+    pop  DE             ; 1:10      Du<= if
+    jp    c, else{}IF_COUNT    ; 3:10      Du<= if})})dnl
 dnl
 dnl
 dnl

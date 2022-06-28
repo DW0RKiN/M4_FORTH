@@ -797,47 +797,93 @@ define({DUNE_WHILE},{DNE_WHILE}){}dnl
 dnl
 dnl
 dnl Du< while
-define({DULT_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:67]     Du< while BEGIN_STACK   ( ud2 ud1 -- )
+define({DULT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:67]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du< while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du< while BEGIN_STACK   h2
     call FCE_DULT       ; 3:17      Du< while BEGIN_STACK   carry if true
     pop  HL             ; 1:10      Du< while BEGIN_STACK
     pop  DE             ; 1:10      Du< while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      Du< while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      Du< while BEGIN_STACK},
+{
+                       ;[13:81]     Du< while BEGIN_STACK   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du< while BEGIN_STACK   lo_2
+    ld    A, C          ; 1:4       Du< while BEGIN_STACK   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> carry if true
+    sub   L             ; 1:4       Du< while BEGIN_STACK   C-L<0 --> carry if true
+    ld    A, B          ; 1:4       Du< while BEGIN_STACK
+    sbc   A, H          ; 1:4       Du< while BEGIN_STACK   B-H<0 --> carry if true
+    pop  HL             ; 1:10      Du< while BEGIN_STACK   hi_2
+    sbc  HL, DE         ; 2:15      Du< while BEGIN_STACK   HL-DE<0 --> carry if true
+    pop  HL             ; 1:10      Du< while BEGIN_STACK
+    pop  DE             ; 1:10      Du< while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      Du< while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl Du>= while
-define({DUGE_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:67]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )
+define({DUGE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:67]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du>= while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du>= while BEGIN_STACK   h2
     call FCE_DULT       ; 3:17      Du>= while BEGIN_STACK   D< carry if true --> D>= carry if false
     pop  HL             ; 1:10      Du>= while BEGIN_STACK
     pop  DE             ; 1:10      Du>= while BEGIN_STACK
-    jp    c, break{}BEGIN_STACK   ; 3:10      Du>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      Du>= while BEGIN_STACK},
+{
+                       ;[13:81]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )
+    pop  BC             ; 1:10      Du>= while BEGIN_STACK   lo_2
+    ld    A, C          ; 1:4       Du>= while BEGIN_STACK   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
+    sub   L             ; 1:4       Du>= while BEGIN_STACK   C-L>=0 --> no carry if true
+    ld    A, B          ; 1:4       Du>= while BEGIN_STACK
+    sbc   A, H          ; 1:4       Du>= while BEGIN_STACK   B-H>=0 --> no carry if true
+    pop  HL             ; 1:10      Du>= while BEGIN_STACK   hi_2
+    sbc  HL, DE         ; 2:15      Du>= while BEGIN_STACK   HL-DE>=0 --> no carry if true
+    pop  HL             ; 1:10      Du>= while BEGIN_STACK
+    pop  DE             ; 1:10      Du>= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      Du>= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl Du<= while
-define({DULE_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:67]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )
+define({DULE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:67]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du<= while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du<= while BEGIN_STACK   h2
     call FCE_DUGT       ; 3:17      Du<= while BEGIN_STACK   D> carry if true --> D<= carry if false
     pop  HL             ; 1:10      Du<= while BEGIN_STACK
     pop  DE             ; 1:10      Du<= while BEGIN_STACK
-    jp    c, break{}BEGIN_STACK   ; 3:10      Du<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      Du<= while BEGIN_STACK},
+{
+                       ;[13:88]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      Du<= while BEGIN_STACK   lo_2
+    or    A             ; 1:4       Du<= while BEGIN_STACK
+    sbc  HL, BC         ; 2:15      Du<= while BEGIN_STACK   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    pop  BC             ; 1:10      Du<= while BEGIN_STACK   hi_2
+    ex   DE, HL         ; 1:4       Du<= while BEGIN_STACK
+    sbc  HL, BC         ; 2:15      Du<= while BEGIN_STACK   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    pop  HL             ; 1:10      Du<= while BEGIN_STACK
+    pop  DE             ; 1:10      Du<= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      Du<= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl Du> while
-define({DUGT_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:67]     Du> while BEGIN_STACK   ( ud2 ud1 -- )
+define({DUGT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:67]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du> while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du> while BEGIN_STACK   h2
     call FCE_DUGT       ; 3:17      Du> while BEGIN_STACK   carry if true
     pop  HL             ; 1:10      Du> while BEGIN_STACK
     pop  DE             ; 1:10      Du> while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      Du> while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      Du> while BEGIN_STACK},
+{
+                       ;[13:88]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      Du> while BEGIN_STACK   lo_2
+    or    A             ; 1:4       Du> while BEGIN_STACK
+    sbc  HL, BC         ; 2:15      Du> while BEGIN_STACK   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    pop  BC             ; 1:10      Du> while BEGIN_STACK   hi_2
+    ex   DE, HL         ; 1:4       Du> while BEGIN_STACK
+    sbc  HL, BC         ; 2:15      Du> while BEGIN_STACK   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> carry if true
+    pop  HL             ; 1:10      Du> while BEGIN_STACK
+    pop  DE             ; 1:10      Du> while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      Du> while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
@@ -1012,53 +1058,114 @@ dnl
 dnl
 dnl
 dnl 4dup Du< while
-define({_4DUP_DULT_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:69]     4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+define({_4DUP_DULT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:69]     4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du< while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du< while BEGIN_STACK
     push AF             ; 1:11      4dup Du< while BEGIN_STACK
     push BC             ; 1:11      4dup Du< while BEGIN_STACK
     call FCE_DULT       ; 3:17      4dup Du< while BEGIN_STACK   carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while BEGIN_STACK}){}dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while BEGIN_STACK},
+{
+                       ;[15:101]    4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du< while BEGIN_STACK   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> carry if true
+    ld    A, C          ; 1:4       4dup Du< while BEGIN_STACK
+    sub   L             ; 1:4       4dup Du< while BEGIN_STACK   C-L<0 --> carry if true
+    ld    A, B          ; 1:4       4dup Du< while BEGIN_STACK
+    sbc   A, H          ; 1:4       4dup Du< while BEGIN_STACK   B-H<0 --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du< while BEGIN_STACK   HL = hi2
+    ld    A, L          ; 1:4       4dup Du< while BEGIN_STACK   HLBC-DE(SP)<0 -- carry if true
+    sbc   A, E          ; 1:4       4dup Du< while BEGIN_STACK   L-E<0 --> carry if true
+    ld    A, H          ; 1:4       4dup Du< while BEGIN_STACK
+    sbc   A, D          ; 1:4       4dup Du< while BEGIN_STACK   H-D<0 --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du< while BEGIN_STACK
+    push BC             ; 1:11      4dup Du< while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup Du>= while
-define({_4DUP_DUGE_WHILE},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:69]     4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+define({_4DUP_DUGE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+                       ;[10:69]     4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du>= while BEGIN_STACK
     push AF             ; 1:11      4dup Du>= while BEGIN_STACK
     push BC             ; 1:11      4dup Du>= while BEGIN_STACK
     call FCE_DULT       ; 3:17      4dup Du>= while BEGIN_STACK   D< carry if true --> D>= carry if false
-    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while BEGIN_STACK}){}dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while BEGIN_STACK},
+{
+                       ;[15:101]    4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
+    ld    A, C          ; 1:4       4dup Du>= while BEGIN_STACK
+    sub   L             ; 1:4       4dup Du>= while BEGIN_STACK   C-L>=0 --> no carry if true
+    ld    A, B          ; 1:4       4dup Du>= while BEGIN_STACK
+    sbc   A, H          ; 1:4       4dup Du>= while BEGIN_STACK   B-H>=0 --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du>= while BEGIN_STACK   HL = hi2
+    ld    A, L          ; 1:4       4dup Du>= while BEGIN_STACK   HLBC-DE(SP)>=0 -- no carry if true
+    sbc   A, E          ; 1:4       4dup Du>= while BEGIN_STACK   L-E>=0 --> no carry if true
+    ld    A, H          ; 1:4       4dup Du>= while BEGIN_STACK
+    sbc   A, D          ; 1:4       4dup Du>= while BEGIN_STACK   H-D>=0 --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du>= while BEGIN_STACK
+    push BC             ; 1:11      4dup Du>= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup Du<= while
-define({_4DUP_DULE_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:69]     4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+define({_4DUP_DULE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:69]     4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du<= while BEGIN_STACK
     push AF             ; 1:11      4dup Du<= while BEGIN_STACK
     push BC             ; 1:11      4dup Du<= while BEGIN_STACK
     call FCE_DUGT       ; 3:17      4dup Du<= while BEGIN_STACK   D> carry if true --> D<= carry if false
-    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while BEGIN_STACK}){}dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while BEGIN_STACK},
+{
+                       ;[15:101]    4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    ld    A, L          ; 1:4       4dup Du<= while BEGIN_STACK
+    sub   C             ; 1:4       4dup Du<= while BEGIN_STACK   0<=L-C --> no carry if true
+    ld    A, H          ; 1:4       4dup Du<= while BEGIN_STACK
+    sbc   A, B          ; 1:4       4dup Du<= while BEGIN_STACK   0<=H-B --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du<= while BEGIN_STACK   HL = hi2
+    ld    A, E          ; 1:4       4dup Du<= while BEGIN_STACK   0<=DE(SP)-HLBC -- no carry if true
+    sbc   A, L          ; 1:4       4dup Du<= while BEGIN_STACK   0<=E-L --> no carry if true
+    ld    A, D          ; 1:4       4dup Du<= while BEGIN_STACK
+    sbc   A, H          ; 1:4       4dup Du<= while BEGIN_STACK   0<=D-H --> no carry if true
+    ex  (SP),HL         ; 1:19      4dup Du<= while BEGIN_STACK
+    push BC             ; 1:11      4dup Du<= while BEGIN_STACK
+    jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup Du> while
-define({_4DUP_DUGT_WHILE},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:69]     4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )
+define({_4DUP_DUGT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+                       ;[10:69]     4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du> while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du> while BEGIN_STACK
     push AF             ; 1:11      4dup Du> while BEGIN_STACK
     push BC             ; 1:11      4dup Du> while BEGIN_STACK
     call FCE_DUGT       ; 3:17      4dup Du> while BEGIN_STACK   carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while BEGIN_STACK}){}dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while BEGIN_STACK},
+{
+                       ;[15:101]    4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+    pop  BC             ; 1:10      4dup Du> while BEGIN_STACK   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    ld    A, L          ; 1:4       4dup Du> while BEGIN_STACK
+    sub   C             ; 1:4       4dup Du> while BEGIN_STACK   0>L-C --> carry if true
+    ld    A, H          ; 1:4       4dup Du> while BEGIN_STACK
+    sbc   A, B          ; 1:4       4dup Du> while BEGIN_STACK   0>H-B --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du> while BEGIN_STACK   HL = hi2
+    ld    A, E          ; 1:4       4dup Du> while BEGIN_STACK   0>DE(SP)-HLBC -- carry if true
+    sbc   A, L          ; 1:4       4dup Du> while BEGIN_STACK   0>E-L --> carry if true
+    ld    A, D          ; 1:4       4dup Du> while BEGIN_STACK
+    sbc   A, H          ; 1:4       4dup Du> while BEGIN_STACK   0>D-H --> carry if true
+    ex  (SP),HL         ; 1:19      4dup Du> while BEGIN_STACK
+    push BC             ; 1:11      4dup Du> while BEGIN_STACK
+    jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
+dnl ---------------------------------------------
 dnl
 dnl
 dnl
