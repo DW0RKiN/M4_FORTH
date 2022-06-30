@@ -19,114 +19,136 @@ begin{}BEGIN_STACK:               ;           begin BEGIN_STACK})dnl
 dnl
 dnl
 dnl ( flag -- )
-define({WHILE},{
+define({WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       while BEGIN_STACK
     or    L             ; 1:4       while BEGIN_STACK
     ex   DE, HL         ; 1:4       while BEGIN_STACK
     pop  DE             ; 1:10      while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( flag -- flag )
-define({DUP_WHILE},{
+define({DUP_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       dup_while BEGIN_STACK
     or    L             ; 1:4       dup_while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup_while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      dup_while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( -- )
 define({BREAK},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}.error {REPEAT for non-existent BEGIN}},
-__{}{
-__{}__{}    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK})})dnl
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( -- )
 define({REPEAT},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}.error {REPEAT for non-existent BEGIN}},
-__{}{
-__{}__{}    jp   begin{}BEGIN_STACK       ; 3:10      repeat BEGIN_STACK
-__{}__{}break{}BEGIN_STACK:               ;           repeat BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    jp   begin{}BEGIN_STACK       ; 3:10      repeat BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           repeat BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl ( -- )
 define({AGAIN},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}.error {REPEAT for non-existent BEGIN}},
-__{}{
-__{}__{}    jp   begin{}BEGIN_STACK       ; 3:10      again BEGIN_STACK
-__{}__{}break{}BEGIN_STACK:               ;           again BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    jp   begin{}BEGIN_STACK       ; 3:10      again BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           again BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl ( flag -- )
-define({UNTIL},{
+define({UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       until BEGIN_STACK   ( flag -- )
     or    L             ; 1:4       until BEGIN_STACK
     ex   DE, HL         ; 1:4       until BEGIN_STACK
     pop  DE             ; 1:10      until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      until BEGIN_STACK
-break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( flag -- )
-define({_0EQ_UNTIL},{
+define({_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       0= until BEGIN_STACK   ( flag -- )
     or    L             ; 1:4       0= until BEGIN_STACK
     ex   DE, HL         ; 1:4       0= until BEGIN_STACK
     pop  DE             ; 1:10      0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      0= until BEGIN_STACK
-break{}BEGIN_STACK:               ;           0= until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( flag -- flag )
-define({DUP_UNTIL},{
+define({DUP_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       dup until BEGIN_STACK   ( flag -- flag )
     or    L             ; 1:4       dup until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      dup until BEGIN_STACK
-break{}BEGIN_STACK:               ;           dup until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           dup until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( flag -- flag )
-define({DUP_0EQ_UNTIL},{
+define({DUP_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       dup 0= until BEGIN_STACK   ( flag -- flag )
     or    L             ; 1:4       dup 0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      dup 0= until BEGIN_STACK
-break{}BEGIN_STACK:               ;           dup 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           dup 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( addr -- addr )
-define({DUP_CFETCH_UNTIL},{
+define({DUP_CFETCH_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A,(HL)        ; 1:7       dup C@ until BEGIN_STACK   ( addr -- addr )
     or    A             ; 1:4       dup C@ until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      dup C@ until BEGIN_STACK
-break{}BEGIN_STACK:               ;           dup C@ until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           dup C@ until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( addr -- addr )
-define({DUP_CFETCH_0EQ_UNTIL},{
+define({DUP_CFETCH_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A,(HL)        ; 1:7       dup C@ 0= until BEGIN_STACK   ( addr -- addr )
     or    A             ; 1:4       dup C@ 0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      dup C@ 0= until BEGIN_STACK
-break{}BEGIN_STACK:               ;           dup C@ 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           dup C@ 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( flag x -- flag x )
-define({OVER_UNTIL},{
+define({OVER_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, D          ; 1:4       over until BEGIN_STACK   ( flag x -- flag x )
     or    E             ; 1:4       over until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      over until BEGIN_STACK
-break{}BEGIN_STACK:               ;           over until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           over until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( x1 x2 -- x1 x2 )
-define({OVER_0EQ_UNTIL},{
+define({OVER_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, D          ; 1:4       over 0= until BEGIN_STACK   ( x1 x2 -- x1 x2 )
     or    E             ; 1:4       over 0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      over 0= until BEGIN_STACK
-break{}BEGIN_STACK:               ;           over 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+__{}break{}BEGIN_STACK:               ;           over 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl ( b a -- b a )
-define({_2DUP_EQ_UNTIL},{
+define({_2DUP_EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
 __{}                        ;[10:18/36] 2dup eq until BEGIN_STACK
 __{}    ld    A, L          ; 1:4       2dup eq until BEGIN_STACK
 __{}    xor   E             ; 1:4       2dup eq until BEGIN_STACK   lo({TOS}) ^ lo({NOS})
@@ -134,11 +156,13 @@ __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      2dup eq until BEGIN_STACK
 __{}    ld    A, H          ; 1:4       2dup eq until BEGIN_STACK
 __{}    xor   D             ; 1:4       2dup eq until BEGIN_STACK   hi({TOS}) ^ hi({NOS})
 __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      2dup eq until BEGIN_STACK
-__{}break{}BEGIN_STACK:               ;           2dup eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+__{}break{}BEGIN_STACK:               ;           2dup eq until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl ( n -- n )
-define({DUP_PUSH_EQ_UNTIL},{ifelse($1,{},{
+define({DUP_PUSH_EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -207,7 +231,9 @@ dnl
 dnl
 dnl
 dnl ( n -- n )
-define({DUP_PUSH_HI_EQ_UNTIL},{ifelse($1,{},{
+define({DUP_PUSH_HI_EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -240,80 +266,98 @@ dnl
 dnl
 dnl ------ 2dup ucond while ( b a -- b a ) ---------
 dnl
-define({_2DUP_UEQ_WHILE},{
+define({_2DUP_UEQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup u= while BEGIN_STACK
     sub   L             ; 1:4       2dup u= while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      2dup u= while BEGIN_STACK
     ld    A, D          ; 1:4       2dup u= while BEGIN_STACK
     sub   H             ; 1:4       2dup u= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup u= while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup u= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({_2DUP_UNE_WHILE},{
+define({_2DUP_UNE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup u<> while BEGIN_STACK
     sub   L             ; 1:4       2dup u<> while BEGIN_STACK
     jr   nz, $+7        ; 2:7/12    2dup u<> while BEGIN_STACK
     ld    A, D          ; 1:4       2dup u<> while BEGIN_STACK
     sbc   A, H          ; 1:4       2dup u<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      2dup u<> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup u<> while BEGIN_STACK})})dnl
 dnl
 dnl
-define({_2DUP_ULT_WHILE},{
+define({_2DUP_ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       2dup u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       2dup u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       2dup u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      2dup u< while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      2dup u< while BEGIN_STACK})})dnl
 dnl
 dnl
-define({_2DUP_UGE_WHILE},{
+define({_2DUP_UGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       2dup u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       2dup u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       2dup u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
-    jp    c, break{}BEGIN_STACK   ; 3:10      2dup u>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      2dup u>= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({_2DUP_ULE_WHILE},{
+define({_2DUP_ULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       2dup u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     sub   E             ; 1:4       2dup u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     ld    A, H          ; 1:4       2dup u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     sbc   A, D          ; 1:4       2dup u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
-    jp    c, break{}BEGIN_STACK   ; 3:10      2dup u<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      2dup u<= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({_2DUP_UGT_WHILE},{
+define({_2DUP_UGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       2dup u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       2dup u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     ld    A, H          ; 1:4       2dup u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     sbc   A, D          ; 1:4       2dup u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      2dup u> while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      2dup u> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ------ 2dup scond while ( b a -- b a ) ---------
 dnl
 dnl 2dup = while
-define({_2DUP_EQ_WHILE},{
+define({_2DUP_EQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup = while BEGIN_STACK
     sub   L             ; 1:4       2dup = while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      2dup = while BEGIN_STACK
     ld    A, D          ; 1:4       2dup = while BEGIN_STACK
     sub   H             ; 1:4       2dup = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup = while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup = while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl 2dup <> while
-define({_2DUP_NE_WHILE},{
+define({_2DUP_NE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup <> while BEGIN_STACK
     sub   L             ; 1:4       2dup <> while BEGIN_STACK
     jr   nz, $+7        ; 2:7/12    2dup <> while BEGIN_STACK
     ld    A, D          ; 1:4       2dup <> while BEGIN_STACK
     sub   H             ; 1:4       2dup <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      2dup <> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup <> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl 2dup < while
-define({_2DUP_LT_WHILE},{
+define({_2DUP_LT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       2dup < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
@@ -321,11 +365,13 @@ define({_2DUP_LT_WHILE},{
     rra                 ; 1:4       2dup < while BEGIN_STACK
     xor   D             ; 1:4       2dup < while BEGIN_STACK
     xor   H             ; 1:4       2dup < while BEGIN_STACK
-    jp    p, break{}BEGIN_STACK   ; 3:10      2dup < while BEGIN_STACK})dnl
+    jp    p, break{}BEGIN_STACK   ; 3:10      2dup < while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl 2dup >= while
-define({_2DUP_GE_WHILE},{
+define({_2DUP_GE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       2dup >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
@@ -333,11 +379,13 @@ define({_2DUP_GE_WHILE},{
     rra                 ; 1:4       2dup >= while BEGIN_STACK
     xor   D             ; 1:4       2dup >= while BEGIN_STACK
     xor   H             ; 1:4       2dup >= while BEGIN_STACK
-    jp    m, break{}BEGIN_STACK   ; 3:10      2dup >= while BEGIN_STACK})dnl
+    jp    m, break{}BEGIN_STACK   ; 3:10      2dup >= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl 2dup <= while
-define({_2DUP_LE_WHILE},{
+define({_2DUP_LE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     sub   E             ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     ld    A, H          ; 1:4       2dup <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
@@ -345,11 +393,13 @@ define({_2DUP_LE_WHILE},{
     rra                 ; 1:4       2dup <= while BEGIN_STACK
     xor   D             ; 1:4       2dup <= while BEGIN_STACK
     xor   H             ; 1:4       2dup <= while BEGIN_STACK
-    jp    m, break{}BEGIN_STACK   ; 3:10      2dup <= while BEGIN_STACK})dnl
+    jp    m, break{}BEGIN_STACK   ; 3:10      2dup <= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl 2dup > while
-define({_2DUP_GT_WHILE},{
+define({_2DUP_GT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     sub   E             ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       2dup > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
@@ -357,91 +407,109 @@ define({_2DUP_GT_WHILE},{
     rra                 ; 1:4       2dup > while BEGIN_STACK
     xor   D             ; 1:4       2dup > while BEGIN_STACK
     xor   H             ; 1:4       2dup > while BEGIN_STACK
-    jp    p, break{}BEGIN_STACK   ; 3:10      2dup > while BEGIN_STACK})dnl
+    jp    p, break{}BEGIN_STACK   ; 3:10      2dup > while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl
 dnl
 dnl ------ ucond while ( b a -- b a ) ---------
 dnl
-define({UEQ_WHILE},{
+define({UEQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     or    A             ; 1:4       u= while BEGIN_STACK
     sbc  HL, DE         ; 2:15      u= while BEGIN_STACK
     pop  HL             ; 1:10      u= while BEGIN_STACK
     pop  DE             ; 1:10      u= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      u= while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      u= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({UNE_WHILE},{
+define({UNE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     or    A             ; 1:4       u<> while BEGIN_STACK
     sbc  HL, DE         ; 2:15      u<> while BEGIN_STACK
     pop  HL             ; 1:10      u<> while BEGIN_STACK
     pop  DE             ; 1:10      u<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      u<> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      u<> while BEGIN_STACK})})dnl
 dnl
 dnl
-define({ULT_WHILE},{
+define({ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       u< while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     pop  HL             ; 1:10      u< while BEGIN_STACK
     pop  DE             ; 1:10      u< while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      u< while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      u< while BEGIN_STACK})})dnl
 dnl
 dnl
-define({UGE_WHILE},{
+define({UGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       u>= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= while BEGIN_STACK
     pop  DE             ; 1:10      u>= while BEGIN_STACK
-    jp    c, break{}BEGIN_STACK   ; 3:10      u>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      u>= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({ULE_WHILE},{
+define({ULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     sub   E             ; 1:4       u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     ld    A, H          ; 1:4       u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     sbc   A, D          ; 1:4       u<= while BEGIN_STACK    DE<=HL --> 0<=HL-DE --> not carry if true
     pop  HL             ; 1:10      u<= while BEGIN_STACK
     pop  DE             ; 1:10      u<= while BEGIN_STACK
-    jp    c, break{}BEGIN_STACK   ; 3:10      u<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      u<= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({UGT_WHILE},{
+define({UGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     ld    A, H          ; 1:4       u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     sbc   A, D          ; 1:4       u> while BEGIN_STACK    DE>HL --> 0>HL-DE --> carry if true
     pop  HL             ; 1:10      u> while BEGIN_STACK
     pop  DE             ; 1:10      u> while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      u> while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      u> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ------ scond while ( b a -- b a ) ---------
 dnl
 dnl = while
-define({EQ_WHILE},{
+define({EQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     or    A             ; 1:4       = while BEGIN_STACK
     sbc  HL, DE         ; 2:15      = while BEGIN_STACK
     pop  HL             ; 1:10      = while BEGIN_STACK
     pop  DE             ; 1:10      = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      = while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      = while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl <> while
-define({NE_WHILE},{
+define({NE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     or    A             ; 1:4       <> while BEGIN_STACK
     sbc  HL, DE         ; 2:15      <> while BEGIN_STACK
     pop  HL             ; 1:10      <> while BEGIN_STACK
     pop  DE             ; 1:10      <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      <> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      <> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl < while
-define({LT_WHILE},{
+define({LT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> carry if true
@@ -451,11 +519,13 @@ define({LT_WHILE},{
     xor   H             ; 1:4       < while BEGIN_STACK
     pop  HL             ; 1:10      < while BEGIN_STACK
     pop  DE             ; 1:10      < while BEGIN_STACK
-    jp    p, break{}BEGIN_STACK   ; 3:10      < while BEGIN_STACK})dnl
+    jp    p, break{}BEGIN_STACK   ; 3:10      < while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl >= while
-define({GE_WHILE},{
+define({GE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, E          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> not carry if true
@@ -465,11 +535,13 @@ define({GE_WHILE},{
     xor   H             ; 1:4       >= while BEGIN_STACK
     pop  HL             ; 1:10      >= while BEGIN_STACK
     pop  DE             ; 1:10      >= while BEGIN_STACK
-    jp    m, break{}BEGIN_STACK   ; 3:10      >= while BEGIN_STACK})dnl
+    jp    m, break{}BEGIN_STACK   ; 3:10      >= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl <= while
-define({LE_WHILE},{
+define({LE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     sub   E             ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
     ld    A, H          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> not carry if true
@@ -479,11 +551,13 @@ define({LE_WHILE},{
     xor   H             ; 1:4       <= while BEGIN_STACK
     pop  HL             ; 1:10      <= while BEGIN_STACK
     pop  DE             ; 1:10      <= while BEGIN_STACK
-    jp    m, break{}BEGIN_STACK   ; 3:10      <= while BEGIN_STACK})dnl
+    jp    m, break{}BEGIN_STACK   ; 3:10      <= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl > while
-define({GT_WHILE},{
+define({GT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     sub   E             ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> carry if true
@@ -493,85 +567,103 @@ define({GT_WHILE},{
     xor   H             ; 1:4       > while BEGIN_STACK
     pop  HL             ; 1:10      > while BEGIN_STACK
     pop  DE             ; 1:10      > while BEGIN_STACK
-    jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})dnl
+    jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl
 dnl ------ dup const ucond while ( b a -- b a ) ---------
 dnl
-define({DUP_PUSH_UEQ_WHILE},{
+define({DUP_PUSH_UEQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, low format({%-7s},$1); 2:7       dup $1 u= while BEGIN_STACK
     xor   L             ; 1:4       dup $1 u= while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK
     ld    A, high format({%-6s},$1); 2:7       dup $1 u= while BEGIN_STACK
     xor   H             ; 1:4       dup $1 u= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({DUP_PUSH_UNE_WHILE},{
+define({DUP_PUSH_UNE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, low format({%-7s},$1); 2:7       dup $1 u<> while BEGIN_STACK
     xor   L             ; 1:4       dup $1 u<> while BEGIN_STACK
     jr   nz, $+8        ; 2:7/12    dup $1 u<> while BEGIN_STACK
     ld    A, high format({%-6s},$1); 2:7       dup $1 u<> while BEGIN_STACK
     xor   H             ; 1:4       dup $1 u<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 u<> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 u<> while BEGIN_STACK})})dnl
 dnl
 dnl
-define({DUP_PUSH_ULT_WHILE},{
+define({DUP_PUSH_ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
     sub   low format({%-10s},$1); 2:7       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
     ld    A, H          ; 1:4       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
     sbc   A, high format({%-6s},$1); 2:7       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u< while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u< while BEGIN_STACK})})dnl
 dnl
 dnl
-define({DUP_PUSH_UGE_WHILE},{
+define({DUP_PUSH_UGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, L          ; 1:4       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
     sub   low format({%-10s},$1); 2:7       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
     ld    A, H          ; 1:4       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
     sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
-    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u>= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({DUP_PUSH_ULE_WHILE},{
+define({DUP_PUSH_ULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, low format({%-7s},$1); 2:7       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
     sub   L             ; 1:4       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
     ld    A, high format({%-6s},$1); 2:7       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
     sbc   A, H          ; 1:4       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
-    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u<= while BEGIN_STACK})})dnl
 dnl
 dnl
-define({DUP_PUSH_UGT_WHILE},{
+define({DUP_PUSH_UGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, low format({%-7s},$1); 2:7       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
     sub   L             ; 1:4       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
     ld    A, high format({%-6s},$1); 2:7       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
     sbc   A, H          ; 1:4       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
-    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u> while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ------ dup const scond while ( b a -- b a ) ---------
 dnl
 dnl dup const = while
-define({DUP_PUSH_EQ_WHILE},{
+define({DUP_PUSH_EQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, low format({%-7s},$1); 2:7       dup $1 = while BEGIN_STACK
     xor   L             ; 1:4       dup $1 = while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK
     ld    A, high format({%-6s},$1); 2:7       dup $1 = while BEGIN_STACK
     xor   H             ; 1:4       dup $1 = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK})})dnl
 dnl
 dnl
-define({DUP_PUSH_NE_WHILE},{
+define({DUP_PUSH_NE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, low format({%-7s},$1); 2:7       dup $1 <> while BEGIN_STACK
     xor   L             ; 1:4       dup $1 <> while BEGIN_STACK
     jr   nz, $+8        ; 2:7/12    dup $1 <> while BEGIN_STACK
     ld    A, high format({%-6s},$1); 2:7       dup $1 <> while BEGIN_STACK
     xor   H             ; 1:4       dup $1 <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 <> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 <> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl dup const < while
-define({DUP_PUSH_LT_WHILE},{ifelse(index({$1},{(}),{0},{
+define({DUP_PUSH_LT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}index({$1},{(}),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 < while BEGIN_STACK
 __{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
@@ -607,7 +699,9 @@ __{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK})})
 dnl
 dnl
 dnl dup const >= while
-define({DUP_PUSH_GE_WHILE},{ifelse(index({$1},{(}),{0},{
+define({DUP_PUSH_GE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}index({$1},{(}),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 >= while BEGIN_STACK
 __{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
@@ -643,7 +737,9 @@ __{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK})}
 dnl
 dnl
 dnl dup const <= while
-define({DUP_PUSH_LE_WHILE},{ifelse(index({$1},{(}),{0},{
+define({DUP_PUSH_LE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}index({$1},{(}),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 <= while BEGIN_STACK
 __{}    ld    A, C          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
@@ -679,7 +775,9 @@ __{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK})}
 dnl
 dnl
 dnl dup const > while
-define({DUP_PUSH_GT_WHILE},{ifelse(index({$1},{(}),{0},{
+define({DUP_PUSH_GT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}index({$1},{(}),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 > while BEGIN_STACK
 __{}    ld    A, C          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
@@ -719,7 +817,9 @@ dnl ----------------------- 32 bit -----------------------
 dnl ------ signed_32_bit_cond while ( d2 d1 -- ) ---------
 dnl
 dnl D= while
-define({DEQ_WHILE},{
+define({DEQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
                        ;[14:91]     D= while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D= while BEGIN_STACK   lo_2
     or    A             ; 1:4       D= while BEGIN_STACK
@@ -729,11 +829,13 @@ define({DEQ_WHILE},{
     sbc  HL, DE         ; 2:15      D= while BEGIN_STACK   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
     pop  HL             ; 1:10      D= while BEGIN_STACK
     pop  DE             ; 1:10      D= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      D= while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      D= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl D<> while
-define({DNE_WHILE},{
+define({DNE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
                        ;[14:91]     D<> while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D<> while BEGIN_STACK   lo_2
     or    A             ; 1:4       D<> while BEGIN_STACK
@@ -743,51 +845,63 @@ define({DNE_WHILE},{
     sbc  HL, DE         ; 2:15      D<> while BEGIN_STACK   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
     pop  HL             ; 1:10      D<> while BEGIN_STACK
     pop  DE             ; 1:10      D<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      D<> while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      D<> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl D< while
-define({DLT_WHILE},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({DLT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+__{}ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes})){}dnl
                        ;[10:67]     D< while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D< while BEGIN_STACK   l2
     pop  AF             ; 1:10      D< while BEGIN_STACK   h2
     call FCE_DLT        ; 3:17      D< while BEGIN_STACK   carry if true
     pop  HL             ; 1:10      D< while BEGIN_STACK
     pop  DE             ; 1:10      D< while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      D< while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      D< while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl D>= while
-define({DGE_WHILE},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({DGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+__{}ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes})){}dnl
                        ;[10:67]     D>= while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D>= while BEGIN_STACK   l2
     pop  AF             ; 1:10      D>= while BEGIN_STACK   h2
     call FCE_DLT        ; 3:17      D>= while BEGIN_STACK   D< carry if true --> D>= carry if false
     pop  HL             ; 1:10      D>= while BEGIN_STACK
     pop  DE             ; 1:10      D>= while BEGIN_STACK
-    jp    c, break{}BEGIN_STACK   ; 3:10      D>= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      D>= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl D<= while
-define({DLE_WHILE},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({DLE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+__{}ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes})){}dnl
                        ;[10:67]     D<= while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D<= while BEGIN_STACK   l2
     pop  AF             ; 1:10      D<= while BEGIN_STACK   h2
     call FCE_DGT        ; 3:17      D<= while BEGIN_STACK   D> carry if true --> D<= carry if false
     pop  HL             ; 1:10      D<= while BEGIN_STACK
     pop  DE             ; 1:10      D<= while BEGIN_STACK
-    jp    c, break{}BEGIN_STACK   ; 3:10      D<= while BEGIN_STACK})dnl
+    jp    c, break{}BEGIN_STACK   ; 3:10      D<= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl D> while
-define({DGT_WHILE},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({DGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+__{}ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes})){}dnl
                        ;[10:67]     D> while BEGIN_STACK   ( d2 d1 -- )
     pop  BC             ; 1:10      D> while BEGIN_STACK   l2
     pop  AF             ; 1:10      D> while BEGIN_STACK   h2
     call FCE_DGT        ; 3:17      D> while BEGIN_STACK   carry if true
     pop  HL             ; 1:10      D> while BEGIN_STACK
     pop  DE             ; 1:10      D> while BEGIN_STACK
-    jp   nc, break{}BEGIN_STACK   ; 3:10      D> while BEGIN_STACK})dnl
+    jp   nc, break{}BEGIN_STACK   ; 3:10      D> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl
@@ -803,7 +917,9 @@ define({DUNE_WHILE},{DNE_WHILE}){}dnl
 dnl
 dnl
 dnl Du< while
-define({DULT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+define({DULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
                        ;[10:67]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du< while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du< while BEGIN_STACK   h2
@@ -826,7 +942,9 @@ define({DULT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,defi
 dnl
 dnl
 dnl Du>= while
-define({DUGE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+define({DUGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
                        ;[10:67]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du>= while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du>= while BEGIN_STACK   h2
@@ -849,7 +967,9 @@ define({DUGE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,defi
 dnl
 dnl
 dnl Du<= while
-define({DULE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+define({DULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[10:67]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du<= while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du<= while BEGIN_STACK   h2
@@ -871,7 +991,9 @@ define({DULE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,defi
 dnl
 dnl
 dnl Du> while
-define({DUGT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+define({DUGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[10:67]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du> while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du> while BEGIN_STACK   h2
@@ -897,7 +1019,9 @@ dnl ----- 4dup signed_32_bit_cond while ( d2 d1 -- d2 d1 ) -----
 dnl
 dnl
 dnl 4dup D= while
-define({_4DUP_DEQ_WHILE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
+define({_4DUP_DEQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
                        ;[10:69]     4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D= while BEGIN_STACK
     pop  AF             ; 1:10      4dup D= while BEGIN_STACK
@@ -922,7 +1046,9 @@ dnl
 dnl
 dnl
 dnl 4dup D<> while
-define({_4DUP_DNE_WHILE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
+define({_4DUP_DNE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
                        ;[10:69]     4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{function})" version can be changed with small,fast,default
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK
     pop  AF             ; 1:10      4dup D<> while BEGIN_STACK
@@ -985,7 +1111,9 @@ dnl
 dnl
 dnl
 dnl 4dup D< while
-define({_4DUP_DLT_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({_4DUP_DLT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                        ;[10:69]     4dup D< while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D< while BEGIN_STACK
     pop  AF             ; 1:10      4dup D< while BEGIN_STACK
@@ -1001,7 +1129,9 @@ dnl
 dnl
 dnl
 dnl 4dup D>= while
-define({_4DUP_DGE_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({_4DUP_DGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                        ;[10:69]     4dup D>= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D>= while BEGIN_STACK
     pop  AF             ; 1:10      4dup D>= while BEGIN_STACK
@@ -1017,7 +1147,9 @@ dnl
 dnl
 dnl
 dnl 4dup D<= while
-define({_4DUP_DLE_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({_4DUP_DLE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                        ;[10:69]     4dup D<= while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D<= while BEGIN_STACK
     pop  AF             ; 1:10      4dup D<= while BEGIN_STACK
@@ -1033,7 +1165,9 @@ dnl
 dnl
 dnl
 dnl 4dup D> while
-define({_4DUP_DGT_WHILE},{ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({_4DUP_DGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                        ;[10:69]     4dup D> while BEGIN_STACK   ( d2 d1 -- d2 d1 )
     pop  BC             ; 1:10      4dup D> while BEGIN_STACK
     pop  AF             ; 1:10      4dup D> while BEGIN_STACK
@@ -1064,7 +1198,9 @@ dnl
 dnl
 dnl
 dnl 4dup Du< while
-define({_4DUP_DULT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+define({_4DUP_DULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
                        ;[10:69]     4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du< while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du< while BEGIN_STACK
@@ -1091,7 +1227,9 @@ dnl
 dnl
 dnl
 dnl 4dup Du>= while
-define({_4DUP_DUGE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
+define({_4DUP_DUGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
                        ;[10:69]     4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du>= while BEGIN_STACK
@@ -1118,7 +1256,9 @@ dnl
 dnl
 dnl
 dnl 4dup Du<= while
-define({_4DUP_DULE_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+define({_4DUP_DULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[10:69]     4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du<= while BEGIN_STACK
@@ -1145,7 +1285,9 @@ dnl
 dnl
 dnl
 dnl 4dup Du> while
-define({_4DUP_DUGT_WHILE},{ifelse({_TYP_DOUBLE},{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
+define({_4DUP_DUGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[10:69]     4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du> while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du> while BEGIN_STACK
@@ -1182,12 +1324,14 @@ dnl 2dup 0 0 D= while
 dnl 2dup 0. D= while
 dnl 2dup D0= while
 dnl ( d -- d )
-define({_2DUP_D0EQ_WHILE},{
+define({_2DUP_D0EQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       2dup D0= while BEGIN_STACK  ( d -- d )
     or    L             ; 1:4       2dup D0= while BEGIN_STACK
     or    D             ; 1:4       2dup D0= while BEGIN_STACK
     or    E             ; 1:4       2dup D0= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0= while BEGIN_STACK}){}dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0= while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
@@ -1195,12 +1339,14 @@ dnl 2dup 0 0 D<> while
 dnl 2dup 0. D<> while
 dnl 2dup D0<> while
 dnl ( d -- d )
-define({_2DUP_D0NE_WHILE},{
+define({_2DUP_D0NE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     ld    A, H          ; 1:4       2dup D0<> while BEGIN_STACK  ( d -- d )
     or    L             ; 1:4       2dup D0<> while BEGIN_STACK
     or    D             ; 1:4       2dup D0<> while BEGIN_STACK
     or    E             ; 1:4       2dup D0<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0<> while BEGIN_STACK}){}dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0<> while BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
@@ -1208,9 +1354,11 @@ dnl 2dup 0 0 D< while
 dnl 2dup 0. D< while
 dnl 2dup D0< while
 dnl ( d -- d )
-define({_2DUP_D0LT_WHILE},{
+define({_2DUP_D0LT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     bit   7, D          ; 2:8       2dup D0< while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0< while BEGIN_STACK})dnl
+    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0< while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl
@@ -1218,9 +1366,11 @@ dnl 2dup 0 0 D>= while
 dnl 2dup 0. D>= while
 dnl 2dup D0>= while
 dnl ( d -- d )
-define({_2DUP_D0GE_WHILE},{
+define({_2DUP_D0GE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
     bit   7, D          ; 2:8       2dup D0>= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0>= while BEGIN_STACK})dnl
+    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0>= while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl
@@ -1231,7 +1381,9 @@ dnl ( d -- d )
 define({_2DUP_PUSHDOT_DEQ_WHILE},{dnl
 __{}define({_TMP_INFO},{2dup $1 D= while BEGIN_STACK})dnl
 __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) == DEHL})dnl
-__{}ifelse($1,{},{
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}    .error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
@@ -1271,7 +1423,9 @@ dnl ( d -- d )
 define({_2DUP_PUSHDOT_DNE_WHILE},{dnl
 __{}define({_TMP_INFO},{2dup $1 D<> while BEGIN_STACK})dnl
 __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) <> DEHL})dnl
-__{}ifelse($1,{},{
+ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}    .error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(index({$1},{(}),{0},{
