@@ -19,10 +19,13 @@ else{}ELSE_STACK:popdef({ELSE_STACK}){}dnl
 })dnl
 dnl
 dnl
-define({THEN},{
-ifelse(ELSE_STACK, THEN_STACK,{else{}ELSE_STACK  EQU $          ;           = endif
-popdef({ELSE_STACK})})endif{}THEN_STACK:dnl
-popdef({THEN_STACK})}){}dnl
+define({THEN},{dnl
+__{}ifelse(ELSE_STACK, THEN_STACK,{
+__{}__{}else{}ELSE_STACK  EQU $          ;           = endif{}popdef({ELSE_STACK})}){}dnl
+__{}ifelse(THEN_STACK,{THEN_STACK},{
+__{}__{}.error {THEN for non-existent IF}},
+__{}{
+__{}__{}endif{}THEN_STACK:{}popdef({THEN_STACK})})}){}dnl
 dnl
 dnl
 dnl 0= if

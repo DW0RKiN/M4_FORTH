@@ -35,20 +35,26 @@ define({DUP_WHILE},{
 dnl
 dnl
 dnl ( -- )
-define({BREAK},{
-    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK})dnl
+define({BREAK},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {REPEAT for non-existent BEGIN}},
+__{}{
+__{}__{}    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK})})dnl
 dnl
 dnl
 dnl ( -- )
-define({REPEAT},{
-    jp   begin{}BEGIN_STACK       ; 3:10      repeat BEGIN_STACK
-break{}BEGIN_STACK:               ;           repeat BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+define({REPEAT},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {REPEAT for non-existent BEGIN}},
+__{}{
+__{}__{}    jp   begin{}BEGIN_STACK       ; 3:10      repeat BEGIN_STACK
+__{}__{}break{}BEGIN_STACK:               ;           repeat BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl ( -- )
-define({AGAIN},{
-    jp   begin{}BEGIN_STACK       ; 3:10      again BEGIN_STACK
-break{}BEGIN_STACK:               ;           again BEGIN_STACK{}popdef({BEGIN_STACK})})dnl
+define({AGAIN},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {REPEAT for non-existent BEGIN}},
+__{}{
+__{}__{}    jp   begin{}BEGIN_STACK       ; 3:10      again BEGIN_STACK
+__{}__{}break{}BEGIN_STACK:               ;           again BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl ( flag -- )
