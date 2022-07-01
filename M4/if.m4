@@ -105,7 +105,7 @@ dnl
 dnl -------- signed ---------
 dnl
 dnl
-dnl dup num = if
+dnl dup const = if
 define({DUP_PUSH_EQ_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -242,7 +242,7 @@ __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})})dnl
 dnl
 dnl
 dnl
-dnl dup num <> if
+dnl dup const <> if
 define({DUP_PUSH_NE_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -362,7 +362,7 @@ __{}__{}    xor   H             ; 1:4       dup $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})})dnl
 dnl
 dnl
-dnl dup num < if
+dnl dup const < if
 define({DUP_PUSH_LT_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -403,7 +403,7 @@ __{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> 
 __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})})dnl
 dnl
 dnl
-dnl dup num >= if
+dnl dup const >= if
 define({DUP_PUSH_GE_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -444,7 +444,7 @@ __{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --
 __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})})dnl
 dnl
 dnl
-dnl dup num <= if
+dnl dup const <= if
 define({DUP_PUSH_LE_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -485,7 +485,7 @@ __{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL 
 __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})})dnl
 dnl
 dnl
-dnl dup num > if
+dnl dup const > if
 define({DUP_PUSH_GT_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl

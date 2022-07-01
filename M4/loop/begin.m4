@@ -663,7 +663,10 @@ dnl
 dnl dup const < while
 define({DUP_PUSH_LT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
 __{}index({$1},{(}),{0},{
+__{}                       ;[14:58]     dup $1 < while BEGIN_STACK
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 < while BEGIN_STACK
 __{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
 __{}    sub   C             ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> carry if true
@@ -701,7 +704,10 @@ dnl
 dnl dup const >= while
 define({DUP_PUSH_GE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
 __{}index({$1},{(}),{0},{
+__{}                       ;[14:58]     dup $1 >= while BEGIN_STACK
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 >= while BEGIN_STACK
 __{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    sub   C             ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> not carry if true
@@ -739,7 +745,10 @@ dnl
 dnl dup const <= while
 define({DUP_PUSH_LE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
 __{}index({$1},{(}),{0},{
+__{}                       ;[14:58]     dup $1 <= while BEGIN_STACK
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 <= while BEGIN_STACK
 __{}    ld    A, C          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> not carry if true
@@ -777,7 +786,10 @@ dnl
 dnl dup const > while
 define({DUP_PUSH_GT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
 __{}index({$1},{(}),{0},{
+__{}                       ;[14:58]     dup $1 > while BEGIN_STACK
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 > while BEGIN_STACK
 __{}    ld    A, C          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> carry if true
