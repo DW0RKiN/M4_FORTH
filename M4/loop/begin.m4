@@ -761,9 +761,9 @@ __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK  
 __{}    rra                 ; 1:4       dup $1 >= while BEGIN_STACK    no sign if true
 __{}    xor   H             ; 1:4       dup $1 >= while BEGIN_STACK
 __{}  if (($1) & 0x8000)
-__{}    jp    p, break101   ; 3:10      dup $1 < while 101    negative constant --> no sign if false 
+__{}    jp    p, break101   ; 3:10      dup $1 >= while 101    negative constant --> no sign if false 
 __{}  else
-__{}    jp    m, break101   ; 3:10      dup $1 < while 101    positive constant --> sign if false 
+__{}    jp    m, break101   ; 3:10      dup $1 >= while 101    positive constant --> sign if false 
 __{}  endif},
 __{}_TYP_SINGLE,{sign_first},{ifelse(eval(($1) & 0x8000),{0},{
 __{}__{}                     ;[14:50/18,50] dup $1 >= while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
@@ -820,9 +820,9 @@ __{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --
 __{}    rra                 ; 1:4       dup $1 <= while BEGIN_STACK    no sign if true
 __{}    xor   H             ; 1:4       dup $1 <= while BEGIN_STACK
 __{}  if (($1) & 0x8000)
-__{}    jp    p, break101   ; 3:10      dup $1 < while 101    negative constant --> no sign if false 
+__{}    jp    p, break101   ; 3:10      dup $1 <= while 101    negative constant --> no sign if false 
 __{}  else
-__{}    jp    m, break101   ; 3:10      dup $1 < while 101    positive constant --> sign if false 
+__{}    jp    m, break101   ; 3:10      dup $1 <= while 101    positive constant --> sign if false 
 __{}  endif},
 __{}_TYP_SINGLE,{sign_first},{ifelse(eval(($1) & 0x8000),{0},{
 __{}__{}                     ;[13:20,47/47] dup $1 <= while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
@@ -879,9 +879,9 @@ __{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 
 __{}    rra                 ; 1:4       dup $1 > while BEGIN_STACK    sign if true
 __{}    xor   H             ; 1:4       dup $1 > while BEGIN_STACK
 __{}  if (($1) & 0x8000)
-__{}    jp    m, break101   ; 3:10      dup $1 < while 101    negative constant --> sign if false 
+__{}    jp    m, break101   ; 3:10      dup $1 > while 101    negative constant --> sign if false 
 __{}  else
-__{}    jp    p, break101   ; 3:10      dup $1 < while 101    positive constant --> no sign if false 
+__{}    jp    p, break101   ; 3:10      dup $1 > while 101    positive constant --> no sign if false 
 __{}  endif},
 __{}_TYP_SINGLE,{sign_first},{ifelse(eval(($1) & 0x8000),{0},{
 __{}__{}                     ;[14:50/18,50] dup $1 > while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
