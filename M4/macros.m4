@@ -6,6 +6,36 @@ define({_HEX_LO},{format({0x%02X},eval((($1)>>0) & 0xFF))}){}dnl
 dnl
 dnl
 dnl
+dnl -----------------------------------
+dnl parameters:
+dnl   1st cond
+dnl   2nd no_zero_variant_without_newline
+dnl   3th zero_variant_without_newline
+dnl 
+dnl use (____if starts on a new line): 
+dnl
+dnl ____if({($1) == 5},{five},{no five})
+dnl
+dnl ____if({($1) == 5},{dnl
+dnl __{}five},
+dnl {dnl
+dnl __{}{no five})
+dnl
+dnl
+define({____if},{define({____if_tmp},eval($1)){}ifelse(dnl
+____if_tmp,{},{dnl
+__{}  ; warning The condition >>>$1<<< cannot be evaluated
+__{}  if ($1)
+__{}__{}__{}$2
+__{}  else
+__{}__{}__{}$3
+__{}  endif},
+____if_tmp,{0},{dnl
+__{}__{}$3},
+__{}{dnl
+__{}__{}$2})}){}dnl
+dnl
+dnl
 dnl
 define({____SWAP2DEF},{dnl
 __{}define({____SWAP2DEF_TMP},$1)define({$1},$2)define({$2},____SWAP2DEF_TMP)}){}dnl
