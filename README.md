@@ -1166,11 +1166,23 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |<sub>     random      |<sub>          RANDOM        |<sub>                             |<sub>      ( max -- random )   |<sub> random < max     |
 |<sub>                 |<sub>         PUTPIXEL       |<sub>                             |<sub>       ( yx -- HL )       |<sub>                  |
 
-### Output
+### Runtime library
 
-https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/output.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/float_runtime.m4
 
-The small Runtime library.
+The small Runtime library for floating point Danagy format (16-bit).
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_runtime.m4
+
+The small Runtime library for floating point ZX format (48-bit).
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/graphic_runtime.m4
+
+The small Runtime library for ZX Spectrum graphic.
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/runtime.m4
+
+The small Runtime library. I/O, math, etc. 
 Variable section.
 String section.
 
