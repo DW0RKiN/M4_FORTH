@@ -25,10 +25,10 @@ dnl
 define({__},{})dnl
 dnl
 define({last_action},{dnl
-__{}include(M4PATH{}float_last.m4)dnl
-__{}include(M4PATH{}graphic.m4)dnl
-__{}include(M4PATH{}zx48float_end.m4)dnl
-__{}include(M4PATH{}output.m4)dnl
+__{}include(M4PATH{}float_runtime.m4)dnl
+__{}include(M4PATH{}graphic_runtime.m4)dnl
+__{}include(M4PATH{}zx48float_runtime.m4)dnl
+__{}include(M4PATH{}runtime.m4)dnl
 })dnl
 m4wrap({last_action})dnl
 dnl
