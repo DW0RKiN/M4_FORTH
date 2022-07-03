@@ -649,53 +649,104 @@ dnl
 dnl
 dnl ------ dup const scond while ( b a -- b a ) ---------
 dnl
+dnl
 dnl dup const = while
-define({DUP_PUSH_EQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-$1,{},{
-__{}.error {$0}(): Missing parameter!},
-index({$1},{(}),{0},{
-    ld    A, format({%-11s},$1); 3:13      dup $1 = while BEGIN_STACK
-    xor   L             ; 1:4       dup $1 = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK
-    ld    A, format({%-11s},(1+$1)); 3:13      dup $1 = while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK},
-eval($1),{0},{
-    ld    A, L          ; 1:4       dup $1 = while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK},
-{
-    ld    A, low format({%-7s},$1); 2:7       dup $1 = while BEGIN_STACK
-    xor   L             ; 1:4       dup $1 = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK
-    ld    A, high format({%-6s},$1); 2:7       dup $1 = while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 = while BEGIN_STACK})})dnl
+define({DUP_PUSH_EQ_WHILE},{dnl
+__{}define({_TMP_INFO},{dup $1 = while BEGIN_STACK})dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}index({$1},{(}),{0},{dnl
+__{}__{}ifelse(_TYP_SINGLE,{small},{
+__{}__{}__{}                       ;[11:60]     _TMP_INFO   ( x1 -- x1 )   (addr) == HL
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL, BC
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   cp HL, BC
+__{}__{}__{}    add  HL, BC         ; 1:11      _TMP_INFO   cp HL, BC
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}__{}{
+__{}__{}__{}                     ;[14:54/27,54] _TMP_INFO   ( x1 -- x1 )   (addr) == HL
+__{}__{}__{}    ld    A, format({%-11s},$1); 3:13      _TMP_INFO
+__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      _TMP_INFO
+__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})},
+__{}eval($1),{},{
+__{}__{}                     ;[12:42/21,42] _TMP_INFO   ( x1 -- x1 )   $1 == HL
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       _TMP_INFO
+__{}__{}    xor   L             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       _TMP_INFO
+__{}__{}    xor   H             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   format({0x%04X},eval($1)) == HL})dnl
+__{}__{}____EQ_MAKE_CODE($1,3,10,0,0)dnl
+__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=((42+(21+42)/2)/2+4*12)),{1},{
+__{}__{}__{}____EQ_CODE
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}__{}{
+__{}__{}__{}                     ;[12:42/21,42]{}_TMP_STACK_INFO
+__{}__{}__{}    ld    A, low format({%-7s},$1); 2:7       _TMP_INFO
+__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}__{}__{}    ld    A, high format({%-6s},$1); 2:7       _TMP_INFO
+__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})})}){}dnl
 dnl
 dnl
-define({DUP_PUSH_NE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-$1,{},{
-__{}.error {$0}(): Missing parameter!},
-index({$1},{(}),{0},{
-    ld    A, format({%-11s},$1); 3:13      dup $1 <> while BEGIN_STACK
-    xor   L             ; 1:4       dup $1 <> while BEGIN_STACK
-    jr   nz, $+9        ; 2:7/12    dup $1 <> while BEGIN_STACK
-    ld    A, format({%-11s},(1+$1)); 3:13      dup $1 <> while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 <> while BEGIN_STACK},
-eval($1),{0},{
-    ld    A, L          ; 1:4       dup $1 <> while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 <> while BEGIN_STACK},
-{
-    ld    A, low format({%-7s},$1); 2:7       dup $1 <> while BEGIN_STACK
-    xor   L             ; 1:4       dup $1 <> while BEGIN_STACK
-    jr   nz, $+8        ; 2:7/12    dup $1 <> while BEGIN_STACK
-    ld    A, high format({%-6s},$1); 2:7       dup $1 <> while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 <> while BEGIN_STACK})})dnl
+dnl
+dnl dup const <> while
+define({DUP_PUSH_NE_WHILE},{dnl
+__{}define({_TMP_INFO},{dup $1 <> while BEGIN_STACK})dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}index({$1},{(}),{0},{dnl
+__{}__{}ifelse(_TYP_SINGLE,{small},{
+__{}__{}__{}                       ;[11:60]     _TMP_INFO   ( x1 -- x1 )   (addr) <> HL
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO
+__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL, BC
+__{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   cp HL, BC
+__{}__{}__{}    add  HL, BC         ; 1:11      _TMP_INFO   cp HL, BC
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}__{}{
+__{}__{}__{}                     ;[13:29,51/51] _TMP_INFO   ( x1 -- x1 )   (addr) <> HL
+__{}__{}__{}    ld    A, format({%-11s},$1); 3:13      _TMP_INFO
+__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO
+__{}__{}__{}    jr   nz, $+9        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      _TMP_INFO
+__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})},
+__{}eval($1),{},{
+__{}__{}                     ;[11:23,39/39] _TMP_INFO   ( x1 -- x1 )   $1 <> HL
+__{}__{}    ld    A, low format({%-7s},$1); 2:7       _TMP_INFO
+__{}__{}    xor   L             ; 1:4       _TMP_INFO
+__{}__{}    jr   nz, $+8        ; 2:7/12    _TMP_INFO
+__{}__{}    ld    A, high format({%-6s},$1); 2:7       _TMP_INFO
+__{}__{}    xor   H             ; 1:4       _TMP_INFO
+__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   format({0x%04X},eval($1)) <> HL})dnl
+__{}__{}____EQ_MAKE_CODE($1,3,10,3,-10)dnl
+__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=((39+(23+39)/2)/2+4*11)),{1},{
+__{}__{}__{}____EQ_CODE
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}__{}{
+__{}__{}__{}                     ;[11:23,39/39]{}_TMP_STACK_INFO
+__{}__{}__{}    ld    A, low format({%-7s},$1); 2:7       _TMP_INFO
+__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO
+__{}__{}__{}    jr   nz, $+8        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld    A, high format({%-6s},$1); 2:7       _TMP_INFO
+__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})})}){}dnl
 dnl
 dnl
 dnl
