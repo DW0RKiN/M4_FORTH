@@ -1,5 +1,5 @@
 dnl ## Arithmetic
-define({___},{})dnl
+define({__},{})dnl
 dnl
 dnl
 dnl ( x2 x1 -- x )
@@ -13,7 +13,7 @@ dnl ( x -- x+n )
 dnl x = x + n
 define({PUSH_ADD},{ifelse(eval($1),{},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 +
+__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
 __{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
@@ -69,7 +69,7 @@ define({DUP_PUSH_ADD},{ifelse(eval($1),{},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
 __{}    ex   DE, HL         ; 1:4       dup $1 +
-__{}    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1 +
+__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1 +
 __{}    add  HL, DE         ; 1:11      dup $1 +},
 {
 __{}    push DE             ; 1:11      dup $1 +   ( x -- x x+{}format({0x%04X},eval(($1) & 0xFFFF)) ){}ifelse(dnl
@@ -180,7 +180,7 @@ dnl ( x -- x-n )
 dnl x = x - n
 define({PUSH_SUB},{ifelse(eval($1),{},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 -
+__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 -
 __{}    or    A             ; 1:4       $1 -
 __{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
@@ -256,7 +256,7 @@ dnl
 dnl
 dnl ( 5 3 -- 5 )
 dnl ( -5 -3 -- -3 )
-define({PUSH_MAX},{ifelse(index({$1},{(}),{0},{
+define({PUSH_MAX},{ifelse(__IS_MEM_REF($1),{1},{
     ld   BC, format({%-11s},$1); 4:20      $1 max
     ld    A, L          ; 1:4       $1 max    HL<$1 --> HL-$1<0 --> carry if $1 is max
     sub   C             ; 1:4       $1 max    HL<$1 --> HL-$1<0 --> carry if $1 is max
@@ -305,7 +305,7 @@ dnl
 dnl
 dnl ( 5 3 -- 3 )
 dnl ( -5 -3 -- -5 )
-define({PUSH_MIN},{ifelse(index({$1},{(}),{0},{
+define({PUSH_MIN},{ifelse(__IS_MEM_REF($1),{1},{
                         ;[16:~62]   $1 min
     ld   BC, format({%-11s},$1); 4:20      $1 min
     ld    A, C          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
@@ -500,42 +500,42 @@ dnl
 dnl
 dnl
 define({PRINT_NIBBLE},{ifelse(eval(TEMP_BIN),{0},{define({TEMP_BIN_OUT},{_0000}TEMP_BIN_OUT)},{dnl
-___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
-___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
-___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
-___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
-___{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
-___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
-___{}define({TEMP_BIN_OUT},{_}eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
-___{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
-___{}ifelse(eval(TEMP_BIN),{0},,{PRINT_NIBBLE}){}dnl
+__{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}define({TEMP_BIN_OUT},{_}eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}ifelse(eval(TEMP_BIN),{0},,{PRINT_NIBBLE}){}dnl
 })})dnl
 dnl
 dnl
 dnl
 define({PRINT_BINARY},{dnl
-___{}define({TEMP_BIN},eval(($1) & 0xffff)){}dnl
-___{}define({TEMP_BIN_OUT},{}){}dnl
-___{}PRINT_NIBBLE{}dnl
-___{}b{}TEMP_BIN_OUT{}dnl
+__{}define({TEMP_BIN},eval(($1) & 0xffff)){}dnl
+__{}define({TEMP_BIN_OUT},{}){}dnl
+__{}PRINT_NIBBLE{}dnl
+__{}b{}TEMP_BIN_OUT{}dnl
 })dnl
 dnl
 dnl
 dnl
 define({SUM_1BITS},{define({TEMP},eval((($1) & 0x5555) + (($1) & 0xAAAA)/2)){}dnl
-___{}define({TEMP},eval((TEMP & 0x3333) + (TEMP & 0xCCCC)/4)){}dnl
-___{}define({TEMP},eval((TEMP & 0x0F0F) + (TEMP & 0xF0F0)/16)){}dnl
-___{}eval((TEMP & 0x00FF) + (TEMP & 0xFF00)/256)})dnl
+__{}define({TEMP},eval((TEMP & 0x3333) + (TEMP & 0xCCCC)/4)){}dnl
+__{}define({TEMP},eval((TEMP & 0x0F0F) + (TEMP & 0xF0F0)/16)){}dnl
+__{}eval((TEMP & 0x00FF) + (TEMP & 0xFF00)/256)})dnl
 dnl
 dnl
 dnl
 define({SUM_0BITS},{define({INV_BITS},eval(($1) | (($1) >> 1)))dnl
-___{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 2)))dnl
-___{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 4)))dnl
-___{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 8)))dnl
-___{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 16)))dnl
-___{}define({INV_BITS},eval(INV_BITS-($1)))dnl
-___{}SUM_1BITS(eval(INV_BITS))})dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 2)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 4)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 8)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 16)))dnl
+__{}define({INV_BITS},eval(INV_BITS-($1)))dnl
+__{}SUM_1BITS(eval(INV_BITS))})dnl
 dnl
 dnl
 dnl
@@ -552,16 +552,16 @@ dnl
 dnl
 dnl
 define({HI_BIT_LOOP},{ifelse(eval(($1)>0),{1},{dnl
-___{}define({HI_BIT_TEMP},eval(HI_BIT_TEMP|($1)))dnl
-___{}HI_BIT_LOOP(eval(($1)/2))dnl
+__{}define({HI_BIT_TEMP},eval(HI_BIT_TEMP|($1)))dnl
+__{}HI_BIT_LOOP(eval(($1)/2))dnl
 })})dnl
 dnl
 dnl
 dnl
 define({HI_BIT},{dnl
-___{}define({HI_BIT_TEMP},{0})dnl
-___{}HI_BIT_LOOP(eval($1))dnl
-___{}eval((HI_BIT_TEMP+1)/2)dnl
+__{}define({HI_BIT_TEMP},{0})dnl
+__{}HI_BIT_LOOP(eval($1))dnl
+__{}eval((HI_BIT_TEMP+1)/2)dnl
 })dnl
 dnl
 dnl
@@ -573,21 +573,21 @@ dnl (eval(_COST&255):eval(_COST/256))dnl
 dnl
 dnl
 define({PUSH_MUL_INFO_MINUS},{dnl
-___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
+__{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
                         ;format({%-9s},XMUL_INFO_TEMP)  $2 *   $3 = HL * (PRINT_BINARY($4) - PRINT_BINARY($5)){}dnl
 })dnl
 dnl
 dnl
 define({PUSH_MUL_INFO_PLUS},{dnl
-___{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
+__{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]})dnl
                         ;format({%-9s},XMUL_INFO_TEMP)  $2 *   $3 = HL * (PRINT_BINARY($2)){}dnl
 })dnl
 dnl
 dnl
 dnl
 define({PUSH_MUL_CHECK_FIRST_IS_BETTER},{dnl
-___{}eval((($1 & 0xff) < ($2 & 0xff)) || ((($1 & 0xff) == ($2 & 0xff)) && ($1 < $2))){}dnl
-___{}})dnl
+__{}eval((($1 & 0xff) < ($2 & 0xff)) || ((($1 & 0xff) == ($2 & 0xff)) && ($1 < $2))){}dnl
+__{}})dnl
 dnl
 dnl
 dnl
@@ -599,30 +599,30 @@ dnl
 dnl
 dnl
 define({PUSH_MUL},{dnl
-___{}PUSH_MUL_MK1($1){}dnl
-___{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
-___{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
-___{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
-___{}PUSH_MUL_MK2($1){}dnl
-___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK2_COST,_BEST_COST),{1},{dnl
-___{}___{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
-___{}___{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
-___{}___{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
-___{}})dnl
-___{}PUSH_MUL_MK3($1){}dnl
-___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK3_COST,_BEST_COST),{1},{dnl
-___{}___{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
-___{}___{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
-___{}___{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
-___{}})dnl
-___{}PUSH_MUL_MK4($1){}dnl
-___{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK4_COST,_BEST_COST),{1},{dnl
-___{}___{}define({_BEST_OUT},{PUSH_MUL_MK4_OUT}){}dnl
-___{}___{}define({_BEST_COST},PUSH_MUL_MK4_COST){}dnl
-___{}___{}define({_BEST_INFO},PUSH_MUL_MK4_INFO){}dnl
-___{}})dnl
-___{}_BEST_INFO{}dnl
-___{}_BEST_OUT{}dnl
+__{}PUSH_MUL_MK1($1){}dnl
+__{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
+__{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
+__{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
+__{}PUSH_MUL_MK2($1){}dnl
+__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK2_COST,_BEST_COST),{1},{dnl
+__{}__{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
+__{}__{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
+__{}__{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
+__{}})dnl
+__{}PUSH_MUL_MK3($1){}dnl
+__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK3_COST,_BEST_COST),{1},{dnl
+__{}__{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
+__{}__{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
+__{}__{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
+__{}})dnl
+__{}PUSH_MUL_MK4($1){}dnl
+__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK4_COST,_BEST_COST),{1},{dnl
+__{}__{}define({_BEST_OUT},{PUSH_MUL_MK4_OUT}){}dnl
+__{}__{}define({_BEST_COST},PUSH_MUL_MK4_COST){}dnl
+__{}__{}define({_BEST_INFO},PUSH_MUL_MK4_INFO){}dnl
+__{}})dnl
+__{}_BEST_INFO{}dnl
+__{}_BEST_OUT{}dnl
 })dnl
 dnl
 dnl
@@ -711,7 +711,7 @@ define({PUSH_CADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld    A, format({%-11s},$1); 3:13     $1 C+
 __{}    add   A, L          ; 1:4      $1 C+
@@ -872,7 +872,7 @@ define({PUSHDOT_DADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 4:20      $1 D+
 __{}    add  HL, BC         ; 1:11      $1 D+
@@ -1126,7 +1126,7 @@ define({PUSHDOT_DSUB},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); 4:20      $1 D-
 __{}    or    A, A          ; 1:4       $1 D-
@@ -1289,7 +1289,7 @@ define({PUSHDOT_DMAX},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}                        ;[27:94/118]$1 dmax
 __{}    ld   BC, format({%-11s},$1); 4:20      $1 dmax
 __{}    ld    A, L          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
@@ -1347,7 +1347,7 @@ define({PUSHDOT_DMIN},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}                        ;[27:94/118]$1 dmin
 __{}    ld   BC, format({%-11s},$1); 4:20      $1 dmin
 __{}    ld    A, C          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min

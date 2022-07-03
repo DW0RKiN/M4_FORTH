@@ -948,7 +948,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 {index}(LOOP_STACK) push_xi($1)
     push HL             ; 1:11      $1 {index}(LOOP_STACK) push_xi($1)
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 {index}(LOOP_STACK) push_xi($1)
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 {index}(LOOP_STACK) push_xi($1)
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      $1 {index}(LOOP_STACK) push_xi($1)   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
@@ -959,7 +959,7 @@ define({PUSH_XI_STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[13:66]    $1 {index}(LOOP_STACK) ! push_xi_store($1)
 __{}__{}    ld   BC, (idx{}LOOP_STACK)   ; 4:20      $1 {index}(LOOP_STACK) ! push_xi_store($1)   idx always points to a 16-bit index
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 {index}(LOOP_STACK) ! push_xi_store($1)
@@ -984,7 +984,7 @@ define({PUSH_XI_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[8:40]     $1 {index}(LOOP_STACK) C! push_xi_cstore($1)
 __{}__{}    ld   BC, (idx{}LOOP_STACK)   ; 4:20      $1 {index}(LOOP_STACK) C! push_xi_cstore($1)   idx always points to a 16-bit index
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 {index}(LOOP_STACK) C! push_xi_cstore($1)},

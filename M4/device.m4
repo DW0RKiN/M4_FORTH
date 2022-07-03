@@ -156,7 +156,7 @@ dnl ( addr -- )
 dnl print stringZ
 define({PUSH_TYPE_Z},{
 __{}define({USE_STRING_Z},{})dnl
-    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 type_z   ( -- )
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_z   ( -- )
     call PRINT_STRING_Z ; 3:17      $1 type_z})dnl
 dnl
 dnl

@@ -1,5 +1,5 @@
 dnl ## Binary Division by a Constant, variant 1
-define({___},{})dnl
+define({__},{})dnl
 dnl
 dnl
 dnl

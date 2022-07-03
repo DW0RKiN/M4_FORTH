@@ -1,5 +1,5 @@
 dnl ## ZX Spectrum 48 ROM Floating point Arithmetic
-define({___},{})dnl
+define({__},{})dnl
 dnl
 dnl
 dnl

@@ -114,7 +114,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:27/54] dup $1 = if
 __{}__{}    ld    A, format({%-11s},$1); 3:13      dup $1 = if
 __{}__{}    xor   L             ; 1:4       dup $1 = if
@@ -251,7 +251,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[13:29/51] dup $1 <> if
 __{}__{}    ld    A, format({%-11s},$1); 3:13      dup $1 <> if
 __{}__{}    xor   L             ; 1:4       dup $1 <> if
@@ -371,7 +371,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:58]    dup $1 < if
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 < if
 __{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
@@ -412,7 +412,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:58]    dup $1 >= if
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 >= if
 __{}__{}    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
@@ -453,7 +453,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:58]    dup $1 <= if
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 <= if
 __{}__{}    ld    A, C          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
@@ -478,9 +478,9 @@ __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
 __{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    negative HL <= positive constant ---> true},
 __{}__{}__{}{dnl
 __{}__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
-__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})})dnl
 dnl
@@ -494,7 +494,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:58]    dup $1 > if
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 > if
 __{}__{}    ld    A, C          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
@@ -519,9 +519,9 @@ __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
 __{}__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    negative HL > positive constant ---> false},
 __{}__{}__{}{dnl
 __{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    positive HL > negative constant ---> true})
-__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-__{}__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})})dnl
 dnl
@@ -536,7 +536,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:27/54] dup $1 u= if
 __{}__{}    ld    A, format({%-11s},$1); 3:13      dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
@@ -672,7 +672,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[13:29/51] dup $1 u<> if
 __{}__{}    ld    A, format({%-11s},$1); 3:13      dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
@@ -792,7 +792,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    sub   C             ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
@@ -816,7 +816,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ld   BC, format({%-11s},$1); 4:20      dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    sub   C             ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
@@ -840,9 +840,9 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sub   L             ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u<= if})dnl
 dnl
@@ -856,9 +856,9 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sub   L             ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    ld    A, ifelse(index({$1},{(}),{0},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u> if})dnl
 dnl
@@ -1131,7 +1131,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[12:63]    $1 = if
 __{}    ld   BC, format({%-11s},$1); 4:20      $1 = if
 __{}    or    A             ; 1:4       $1 = if
@@ -1275,7 +1275,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[12:63] $1 <> if
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 <> if
 __{}__{}    or    A             ; 1:4       $1 <> if
@@ -1447,7 +1447,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 = if
+__{}    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      dup $1 = if
 __{}    xor   L             ; 1:4       dup $1 = if
 __{}    or    H             ; 1:4       dup $1 = if
 __{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
@@ -1463,7 +1463,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      dup $1 <> if
+__{}    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      dup $1 <> if
 __{}    xor   L             ; 1:4       dup $1 <> if
 __{}    or    H             ; 1:4       dup $1 <> if
 __{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
@@ -2220,7 +2220,7 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
@@ -2234,8 +2234,8 @@ __{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
-__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
-__{}__{}__{}____DEQ_MAKE_HL_CODE($1,0,0){}dnl
+__{}__{}__{}__DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
+__{}__{}__{}__DEQ_MAKE_HL_CODE($1,0,0){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+3)){}dnl
 __{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
 __{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+10)){}dnl
@@ -2263,7 +2263,7 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
@@ -2277,8 +2277,8 @@ __{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
 __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
-__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
-__{}__{}__{}____DEQ_MAKE_HL_CODE($1,3,-10){}dnl
+__{}__{}__{}__DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
+__{}__{}__{}__DEQ_MAKE_HL_CODE($1,3,-10){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+3)){}dnl
 __{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
 __{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+10)){}dnl

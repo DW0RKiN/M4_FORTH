@@ -18,7 +18,7 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push HL             ; 1:11      swap $1
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      swap $1 ( b a -- a b $1 )})dnl
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      swap $1 ( b a -- a b $1 )})dnl
 dnl
 dnl
 dnl 3 swap
@@ -28,7 +28,7 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 swap
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
 dnl
 dnl
 dnl dup 3 swap
@@ -39,7 +39,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      dup $1 swap
     push HL             ; 1:11      dup $1 swap
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
 dnl
 dnl
 dnl swap drop 3 swap
@@ -48,7 +48,7 @@ define({SWAP_DROP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      swap drop $1 swap ( b a -- $1 a )})dnl
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      swap drop $1 swap ( b a -- $1 a )})dnl
 dnl
 dnl
 dnl nip 3 swap
@@ -57,7 +57,7 @@ define({NIP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      nip $1 swap ( b a -- $1 a )})dnl
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      nip $1 swap ( b a -- $1 a )})dnl
 dnl
 dnl
 dnl ( d c b a -- b a d c )
@@ -222,7 +222,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 over
     push HL             ; 1:11      $1 over
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
 dnl
 dnl
 dnl over 3
@@ -233,7 +233,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      over $1
     push HL             ; 1:11      over $1
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      over $1 ( b a -- b a b $1 )})dnl
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      over $1 ( b a -- b a b $1 )})dnl
 dnl
 dnl
 dnl ( d c b a -- d c b a d c )
@@ -395,28 +395,28 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
     push DE             ; 1:11      push($1)
     ex   DE, HL         ; 1:4       push($1)
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      push($1)})dnl
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      push($1)})dnl
 dnl
 dnl
 dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse($#,{2},,{
 __{}.error {$0}($@): The wrong number of parameters in macro!}){}ifelse(dnl
-index({$1},{(}),{0},{
+__IS_MEM_REF($1),{1},{
     push DE             ; 1:11      push2($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)},
-index({$2},{(}),{0},{
+    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
+__IS_MEM_REF($2),{1},{
     push DE             ; 1:11      push2($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)},
+    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
 eval($1==$2),{},{
     push DE             ; 1:11      push2($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2($1,$2)},
+    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
 {ifelse(dnl
 __{}eval($1==$2),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
@@ -468,7 +468,7 @@ define({DROP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      drop $1})dnl
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop $1})dnl
 dnl
 dnl
 dnl 2drop 50
@@ -479,7 +479,7 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     pop  DE             ; 1:10      2drop $1
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      2drop $1})dnl
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop $1})dnl
 dnl
 dnl
 dnl dup 50
@@ -492,7 +492,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      dup $1
     push HL             ; 1:11      dup $1
     ex   DE, HL         ; 1:4       dup $1
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      dup $1})dnl
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1})dnl
 dnl
 dnl
 dnl
@@ -506,7 +506,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      pushdot($1)   ( -- hi lo )
     push HL             ; 1:11      pushdot($1)
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
     ld   DE,format({%-12s},($1+2)); 4:20      pushdot($1)   hi word
     ld   HL, format({%-11s},$1); 3:16      pushdot($1)   lo word},
 eval($1),{},{dnl
@@ -572,7 +572,7 @@ __{}eval($1),{},{
     ; warning The condition >>>$1<<< cannot be evaluated
     push DE             ; 1:11      $1 pick
     push HL             ; 1:11      $1 pick
-    ld   HL, ifelse(index({$1},{(}),{0},{format({%-11s},$1); 3:16},{format({%-11s},$1); 3:10})      $1 pick
+    ld   HL, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:16},{format({%-11s},$1); 3:10})      $1 pick
     add  HL, HL         ; 1:11      $1 pick
     add  HL, SP         ; 1:11      $1 pick
     ld    E,(HL)        ; 1:7       $1 pick

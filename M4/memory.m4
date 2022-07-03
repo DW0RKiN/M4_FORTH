@@ -140,7 +140,7 @@ __{}$#,{2},{
     ld    A,format({%-12s},($1)); 3:13      $1 @ $2  push_cfetch_push($1,$2)
     ld    D, 0x00       ; 2:7       $1 @ $2  push_cfetch_push($1,$2)
     ld    E, A          ; 1:4       $1 @ $2  push_cfetch_push($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      $1 @ $2  push_cfetch_push($1,$2)},
+    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      $1 @ $2  push_cfetch_push($1,$2)},
 __{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
 dnl
 dnl
@@ -155,7 +155,7 @@ __{}__{}.error {$0}():  The second parameter is missing!},
 __{}$#,{2},{
     push DE             ; 1:11      $1 $2 @  push2_cfetch($1,$2)
     push HL             ; 1:11      $1 $2 @  push2_cfetch($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      $1 $2 @  push2_cfetch($1,$2)
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 $2 @  push2_cfetch($1,$2)
     ld   HL,format({%-12s},($2)); 3:16      $1 $2 @  push2_cfetch($1,$2)
     ld    H, 0x00       ; 2:7       $1 $2 @  push2_cfetch($1,$2)},
 __{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
@@ -225,7 +225,7 @@ define({PUSH_SWAP_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 swap C! push_swap_cstore($1)   ( addr -- )
+    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 swap C! push_swap_cstore($1)   ( addr -- )
     ld  (HL),A          ; 1:7       $1 swap C! push_swap_cstore($1)
     ex   DE, HL         ; 1:4       $1 swap C! push_swap_cstore($1)
     pop  DE             ; 1:10      $1 swap C! push_swap_cstore($1)})dnl
@@ -238,12 +238,12 @@ define({PUSH_OVER_PUSH_ADD_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
-__{}$#,{2},{ifelse(index({$2},{(}),{0},{
+__{}$#,{2},{ifelse(__IS_MEM_REF($2),{1},{
     ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
     ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld   HL, format({%-11s},$2); 3:16      $1 over $2 add C! push_over_push_add_cstore($1,$2)
     add  HL, BC         ; 1:11      $1 over $2 add C! push_over_push_add_cstore($1,$2)
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
 __{},{dnl
@@ -258,18 +258,18 @@ __{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_pu
     ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
 ,{dnl
 __{}ifelse(eval($2),0,{
-__{}__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
 __{}__{},{dnl
 __{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})},
 __{}eval($2),1,{
 __{}    inc  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-__{}__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
 __{}__{},{dnl
@@ -277,7 +277,7 @@ __{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_ove
 __{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
 __{}eval($2),-1,{
 __{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-__{}__{}ifelse(index({$1},{(}),{0},{dnl
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
 __{}__{},{dnl
@@ -290,14 +290,14 @@ __{}    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cst
 __{}    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    sub   C             ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-__{}    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
 __{}eval(($2) & 0xFF),0,{
 __{}    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
 __{}    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    add   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-__{}    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
 __{}{
 __{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
@@ -306,7 +306,7 @@ __{}    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cst
 __{}    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
-__{}    ifelse(index({$1},{(}),{0},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)})})},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
@@ -366,7 +366,7 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld    A, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:13},{2:7 })      push2_cstore($1,$2)
+    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      push2_cstore($1,$2)
     ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)})dnl
 dnl
 dnl
@@ -494,7 +494,7 @@ define({PUSH_CMOVE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                       ;[13:54+21*u]$1 cmove   ( from_addr to_addr -- )
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 cmove   BC = u
 __{}__{}    ld    A, B          ; 1:4       $1 cmove
@@ -741,7 +741,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 ifelse(eval($2),{0},{dnl
 __{}                        ;           $1 $2 $3 fill {$0}(addr,u,char)   variant null: 0 byte},
 eval($2),{1},{dnl
-__{}ifelse(index({$3},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[6:26]     $1 $2 $3 fill {$0}(addr,u,char)   variant A.1: 1 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill},
 __{}__{}{dnl
@@ -749,7 +749,7 @@ __{}__{}                        ;[5:20]     $1 $2 $3 fill {$0}(addr,u,char)   va
 __{}__{}    ld    A, format({%-11s},$3); 2:7       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill},
 eval($2),{2},{dnl
-__{}ifelse(index({$3},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[9:39]     $1 $2 $3 fill {$0}(addr,u,char)   variant B.1: 2 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
@@ -759,7 +759,7 @@ __{}__{}                        ;[7:30]     $1 $2 $3 fill {$0}(addr,u,char)   va
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill})},
 eval($2),{3},{dnl
-__{}ifelse(index({$3},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[12:52]    $1 $2 $3 fill {$0}(addr,u,char)   variant C.1: 3 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill},
 __{}__{}{dnl
@@ -769,7 +769,7 @@ __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} A); 3:13      $1 $2 $3 fill},
 eval($2),{4},{dnl
-__{}__{}ifelse(index({$3},{(}),{0},{dnl
+__{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[13:61]    $1 $2 $3 fill {$0}(addr,u,char)   variant D.1: 4 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
@@ -780,7 +780,7 @@ __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill},
 eval($2),{5},{dnl
-__{}__{}ifelse(index({$3},{(}),{0},{dnl
+__{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[16:74]    $1 $2 $3 fill {$0}(addr,u,char)   variant E.1: 5 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
@@ -793,7 +793,7 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(4+$1){,} A); 3:13      $1 $2 $3 fill},
 eval($2),{6},{dnl
-__{}__{}ifelse(index({$3},{(}),{0},{dnl
+__{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[17:81]    $1 $2 $3 fill {$0}(addr,u,char)   variant F.1: 6 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
@@ -915,7 +915,7 @@ __{}                       ;[24:format({%-8s},eval(48+46*($2)/4+13*(_TEMP_B+(_TE
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},256*_TEMP_B+_TEMP_C); 3:10      $1 $2 $3 fill   $2{}x = (C-1)*4*256 + 4*B
-__{}    ld    A, format({%-11s},$3); ifelse(index({$3},{(}),{0},{3:13},{2:7 })      $1 $2 $3 fill   A = char
+__{}    ld    A, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:13},{2:7 })      $1 $2 $3 fill   A = char
 __{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
 __{}ifelse(eval(($1+1) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
@@ -1041,7 +1041,7 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_store($1,$2)
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_store($1,$2)
     ld   format({%-15s},($2){,} BC); 4:20      push2_store($1,$2)})dnl
 dnl
 dnl
@@ -1186,7 +1186,7 @@ define({PUSH_MOVE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                       ;[17:70+42*u]$1 move   ( from_addr to_addr -- )
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 move   BC = u
 __{}__{}    ld    A, H          ; 1:4       $1 move
@@ -1259,12 +1259,12 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 ifelse(eval($1),{},{dnl
     push HL             ; 1:11      push2_addstore($1,$2)
     .warning {$0}($1): M4 does not know $1 parameter value!
-    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_addstore($1,$2)
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_addstore($1,$2)
     ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
     add  HL, BC         ; 1:11      push2_addstore($1,$2)
     ld   format({%-15s},($2){,} HL); 3:16      push2_addstore($1,$2)
     pop  HL             ; 1:10      push2_addstore($1,$2)},
-index({$1},{(}),{0},{dnl
+__IS_MEM_REF($1),{1},{dnl
     push HL             ; 1:11      push2_addstore($1,$2)
     ld   BC, format({%-11s},$1); 4:20      push2_addstore($1,$2)
     ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
@@ -1304,7 +1304,7 @@ eval((($1) & 0xffff) == 0xfffd),1,{dnl
     dec  BC             ; 1:6       push2_addstore($1,$2)
     ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
 {dnl
-    ld   BC, format({%-11s},$2); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push2_addstore($1,$2)
+    ld   BC, format({%-11s},$2); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_addstore($1,$2)
     ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
     add   A, format({0x%02X},eval(($1) & 0xff))       ; 2:7       push2_addstore($1,$2)   lo($1)
     ld  (BC),A          ; 1:7       push2_addstore($1,$2)
@@ -1400,7 +1400,7 @@ __{}ifelse(eval(2+$2),{},{dnl
 __{}    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi}dnl
 __{},{dnl
 __{}    ld   (format({%-14s},eval(($2)+2){),} HL); 3:16      $1 $2 2! push2_2store($1,$2) hi})
-    ld   HL, format({%-11s},$1); ifelse(index({$1},{(}),{0},{3:16},{3:10})      $1 $2 2! push2_2store($1,$2)
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2! push2_2store($1,$2)
     ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) lo
     pop  HL             ; 1:10      $1 $2 2! push2_2store($1,$2)})dnl
 dnl

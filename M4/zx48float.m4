@@ -1,55 +1,55 @@
 dnl ## ZX Spectrum 48 ROM Floating point Arithmetic
-define({___},{})dnl
+define({__},{})dnl
 dnl
 dnl
 define({ZX_READCHAR},{dnl
-___{}define({ZXTEMP_CHAR},substr(ZXTEMP_STRING,0,1)){}dnl
-___{}define({ZXTEMP_STRING},substr(ZXTEMP_STRING,1)){}dnl
+__{}define({ZXTEMP_CHAR},substr(ZXTEMP_STRING,0,1)){}dnl
+__{}define({ZXTEMP_STRING},substr(ZXTEMP_STRING,1)){}dnl
 })dnl
 dnl
 dnl
 define({ZX_READ_MANT},{dnl
-___{}define({ZX_READ_TEMP},ZXTEMP_CHAR){}dnl
-___{}ifelse(ZX_READ_TEMP,{p},{define({ZX_READ_TEMP},{0})}){}dnl
-___{}ifelse(len(ZXTEMP_MANTISSA),{10},{define({ZX_READ_TEMP},{})}){}dnl
-___{}define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{}ZX_READ_TEMP){}dnl
-___{}ifelse(ZXTEMP_CHAR,{p},{dnl
-___{}___{}ifelse(eval(len(ZXTEMP_MANTISSA)<10),{1},{ZX_READ_MANT})},
-___{}{dnl
-___{}___{}ZX_READCHAR{}dnl
-___{}___{}ZX_READ_MANT}){}dnl
+__{}define({ZX_READ_TEMP},ZXTEMP_CHAR){}dnl
+__{}ifelse(ZX_READ_TEMP,{p},{define({ZX_READ_TEMP},{0})}){}dnl
+__{}ifelse(len(ZXTEMP_MANTISSA),{10},{define({ZX_READ_TEMP},{})}){}dnl
+__{}define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{}ZX_READ_TEMP){}dnl
+__{}ifelse(ZXTEMP_CHAR,{p},{dnl
+__{}__{}ifelse(eval(len(ZXTEMP_MANTISSA)<10),{1},{ZX_READ_MANT})},
+__{}{dnl
+__{}__{}ZX_READCHAR{}dnl
+__{}__{}ZX_READ_MANT}){}dnl
 }){}dnl
 dnl
 dnl
 define({ZX48FSTRING_TO_FHEX},{dnl
-___{}define({ZXTEMP_STRING},format({%a},$1)){}dnl
-___{}ZX_READCHAR{}dnl                               0 or -+
-___{}define({ZXTEMP_SIGN},0){}dnl
-___{}define({ZXTEMP_EXP},{}){}dnl
-___{}define({ZXTEMP_MANTISSA},{0x}){}dnl
-___{}ifelse(ZXTEMP_CHAR,{+},{ZX_READCHAR}){}dnl
-___{}ifelse(ZXTEMP_CHAR,{-},{ZX_READCHAR{}define({ZXTEMP_SIGN},0x80)}){}dnl
-___{}ZX_READCHAR{}dnl                               x
-___{}ZX_READCHAR{}dnl                               1
-___{}ifelse(ZXTEMP_CHAR,{1},{ZX_READCHAR}){}dnl     .
-___{}ifelse(ZXTEMP_CHAR,{.},{ZX_READCHAR}){}dnl     ?
-___{}ZX_READ_MANT{}dnl
-___{}ifelse(ZXTEMP_CHAR,{p},{dnl
-___{}___{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
-___{}})dnl
-___{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
-___{}define({ZXTEMP_EXP},format({%02x},eval(ZXTEMP_EXP+129))){}dnl
-___{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
-___{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
-___{}define({ZXTEMP_MANTISSA_2},format({%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF))){}dnl
-___{}define({ZXTEMP_MANTISSA_3},format({%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF))){}dnl
-___{}define({ZXTEMP_MANTISSA_4},format({%02x},eval(ZXTEMP_MANTISSA & 0xFF))){}dnl
+__{}define({ZXTEMP_STRING},format({%a},$1)){}dnl
+__{}ZX_READCHAR{}dnl                               0 or -+
+__{}define({ZXTEMP_SIGN},0){}dnl
+__{}define({ZXTEMP_EXP},{}){}dnl
+__{}define({ZXTEMP_MANTISSA},{0x}){}dnl
+__{}ifelse(ZXTEMP_CHAR,{+},{ZX_READCHAR}){}dnl
+__{}ifelse(ZXTEMP_CHAR,{-},{ZX_READCHAR{}define({ZXTEMP_SIGN},0x80)}){}dnl
+__{}ZX_READCHAR{}dnl                               x
+__{}ZX_READCHAR{}dnl                               1
+__{}ifelse(ZXTEMP_CHAR,{1},{ZX_READCHAR}){}dnl     .
+__{}ifelse(ZXTEMP_CHAR,{.},{ZX_READCHAR}){}dnl     ?
+__{}ZX_READ_MANT{}dnl
+__{}ifelse(ZXTEMP_CHAR,{p},{dnl
+__{}__{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
+__{}})dnl
+__{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
+__{}define({ZXTEMP_EXP},format({%02x},eval(ZXTEMP_EXP+129))){}dnl
+__{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
+__{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
+__{}define({ZXTEMP_MANTISSA_2},format({%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF))){}dnl
+__{}define({ZXTEMP_MANTISSA_3},format({%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF))){}dnl
+__{}define({ZXTEMP_MANTISSA_4},format({%02x},eval(ZXTEMP_MANTISSA & 0xFF))){}dnl
 }){}dnl
 dnl
 dnl
 define({ZX48FLOAT2ARRAY},{dnl
-___{}ZX48FSTRING_TO_FHEX($1){}dnl
-___{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MANTISSA_3,0x{}ZXTEMP_MANTISSA_4 ; = $1 = format({%a},$1){}dnl
+__{}ZX48FSTRING_TO_FHEX($1){}dnl
+__{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MANTISSA_3,0x{}ZXTEMP_MANTISSA_4 ; = $1 = format({%a},$1){}dnl
 }){}dnl
 dnl
 dnl
@@ -263,7 +263,7 @@ define({PUSH_ZX48U_TO_F},{define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{dnl
+ifelse(__IS_MEM_REF($1),{1},{dnl
     ld   BC, format({%-11s},$1); 4:20      push_zx48s>f($1)   ( F: -- $1 )
     call _ZX48BC_TO_F   ; 3:17      push_zx48s>f($1)},
 eval($1>=0),{1},{dnl
@@ -285,7 +285,7 @@ define({PUSH_ZX48S_TO_F},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(index({$1},{(}),{0},{define({USE_ZX48BBC_TO_F},{}){}dnl
+ifelse(__IS_MEM_REF($1),{1},{define({USE_ZX48BBC_TO_F},{}){}dnl
     ld   BC, format({%-11s},$1); 4:20      push_zx48s>f($1)   ( F: -- $1 )
     call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)},
 eval($1>=0),{1},{dnl

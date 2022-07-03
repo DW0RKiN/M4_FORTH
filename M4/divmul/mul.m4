@@ -1,5 +1,5 @@
 dnl ## multiplication
-define({___},{})dnl
+define({__},{})dnl
 dnl
 dnl
 dnl

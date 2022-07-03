@@ -19,7 +19,7 @@ define({PUSH_AND},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[10:42]    $1 and
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 and
 __{}__{}    and   H             ; 1:4       $1 and
@@ -110,7 +110,7 @@ define({PUSH_OR},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[10:42]    $1 or
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 or
 __{}__{}    or    H             ; 1:4       $1 or
@@ -201,7 +201,7 @@ define({PUSH_XOR},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[10:42]    $1 xor
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 xor
 __{}__{}    xor   H             ; 1:4       $1 xor
@@ -302,13 +302,13 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
-__{}__{}                        ;[22:ifelse(index({$2},{(}),{0},{137},{131})]   push2_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}__{}                        ;[22:ifelse(__IS_MEM_REF($2),{1},{137},{131})]   push2_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      push2_within($1,$2)   BC = $1
 __{}__{}    or    A             ; 1:4       push2_within($1,$2)
 __{}__{}    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = a-$1
 __{}__{}    push HL             ; 1:11      push2_within($1,$2)
-__{}__{}    ld   HL, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:16},{3:10})      push2_within($1,$2)
+__{}__{}    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2_within($1,$2)
 __{}__{}    or    A             ; 1:4       push2_within($1,$2)
 __{}__{}    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = $2-$1
 __{}__{}    ld    C, L          ; 1:4       push2_within($1,$2)
@@ -317,7 +317,7 @@ __{}__{}    pop  HL             ; 1:10      push2_within($1,$2)
 __{}__{}    or    A             ; 1:4       push2_within($1,$2)
 __{}__{}    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = (a-$1) - ($2-$1)
 __{}__{}    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff},
-__{}index({$2},{(}),{0},{dnl
+__{}__IS_MEM_REF($2),{1},{dnl
 __{}__{}ifelse(eval(-($1)),{},{dnl
 __{}__{}__{}                        ;[17:111]   push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
 __{}__{}__{}    ld   BC, format({%-11s},-($1)); 3:10      push2_within($1,$2)   BC = -($1)
@@ -456,18 +456,18 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
-__{}                        ;[ifelse(index({$2},{(}),{0},{14:65},{13:59})]    push2_lo_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{14:65},{13:59})]    push2_lo_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      push2_lo_within($1,$2)
 __{}    ld    C, A          ; 1:4       push2_lo_within($1,$2)   C = $1
-__{}    ld    A, format({%-11s},$2); ifelse(index({$2},{(}),{0},{3:13},{2:7 })      push2_lo_within($1,$2)
+__{}    ld    A, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:13},{2:7 })      push2_lo_within($1,$2)
 __{}    sub   C             ; 1:4       push2_lo_within($1,$2)
 __{}    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = ($2)-[$1]
 __{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
 __{}    sub   C             ; 1:4       push2_lo_within($1,$2)   A = a -($1)
 __{}    sub   B             ; 1:4       push2_lo_within($1,$2)   A = (a -($1)) - ([$2]-($1))
 __{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff}dnl
-__{},index({$2},{(}),{0},{dnl
+__{},__IS_MEM_REF($2),{1},{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
 __{}__{}__{}                        ;[8:40]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
 __{}__{}__{}    ld    A, format({%-11s},$2); 3:13      push2_lo_within($1,$2)
@@ -575,7 +575,7 @@ define({PUSH_EQ},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(index({$1},{(}),{0},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[12:58/59] $1 =
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 =
 __{}__{}    xor   A             ; 1:4       $1 =   A = 0x00
@@ -711,7 +711,7 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}                        ;[13:69/70] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) = HL
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -723,9 +723,9 @@ __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1},
 __{}__{}{dnl
-__{}__{}__{}____EQ_MAKE_CODE($1,6,37,0,0)dnl
-__{}__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=(63+4*13)),{1},{
-__{}__{}__{}__{}____EQ_CODE
+__{}__{}__{}__EQ_MAKE_CODE($1,6,37,0,0)dnl
+__{}__{}__{}ifelse(eval((__EQ_CLOCKS+4*__EQ_BYTES)<=(63+4*13)),{1},{
+__{}__{}__{}__{}__EQ_CODE
 __{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -791,7 +791,7 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}                        ;[13:67/62] _TMP_INFO   ( x -- x f )   (addr) <> HL
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -801,9 +801,9 @@ __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1},
 __{}__{}{dnl
-__{}__{}__{}____EQ_MAKE_CODE($1,6,37,0,0)dnl
-__{}__{}__{}ifelse(eval((____EQ_CLOCKS+4*____EQ_BYTES)<=(58+4*13)),{1},{
-__{}__{}__{}__{}____EQ_CODE
+__{}__{}__{}__EQ_MAKE_CODE($1,6,37,0,0)dnl
+__{}__{}__{}ifelse(eval((__EQ_CLOCKS+4*__EQ_BYTES)<=(58+4*13)),{1},{
+__{}__{}__{}__{}__EQ_CODE
 __{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -1406,7 +1406,7 @@ dnl shifs u right $1 places
 define({PUSH_RSHIFT},{ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}    .error {$0}($@): Pointer as parameter is not supported!},
 __{}__{}eval($1),{},{
 __{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore cannot create the code!},
@@ -1443,7 +1443,7 @@ dnl shifs u left $1 places
 define({PUSH_LSHIFT},{ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}    .error {$0}($@): Pointer as parameter is not supported!},
 __{}__{}eval($1),{},{
 __{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore cannot create the code!},
@@ -2071,7 +2071,7 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   format({0x%08X},e
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}                        ;[21:111]   _TMP_INFO    ( d1 -- d1 flag )
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -2088,8 +2088,8 @@ __{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==$1},
 __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
-__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
-__{}__{}__{}____DEQ_MAKE_HLDE_CODE($1,10){}dnl
+__{}__{}__{}__DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
+__{}__{}__{}__DEQ_MAKE_HLDE_CODE($1,10){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
 __{}__{}__{}ifelse(_TMP_ZERO,{1},{dnl
 __{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl    false
@@ -2140,7 +2140,7 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   format({0x%08X},e
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(index({$1},{(}),{0},{
+__{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}                        ;[21:109]   _TMP_INFO    ( d1 -- d1 flag )
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -2155,8 +2155,8 @@ __{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1},
 __{}__{}eval($1),{},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
-__{}__{}__{}____DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
-__{}__{}__{}____DEQ_MAKE_HLDE_CODE($1,9){}dnl
+__{}__{}__{}__DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
+__{}__{}__{}__DEQ_MAKE_HLDE_CODE($1,9){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
 __{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
 __{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+12)){}dnl
@@ -2190,7 +2190,7 @@ dnl 2dup D. D>
 dnl ( d -- d f )
 define({_2DUP_PUSHDOT_DGT},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(index({$1},{(}),{0},{
+$#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[24:116]   2dup $1 D>    ( d1 -- d1 flag )
 __{}    ld    A, format({%-11s},$1); 3:13      2dup $1 D>    DEHL>$1     $1 = ...A
 __{}    sub   L             ; 1:4       2dup $1 D>    DEHL>$1 --> 0>A-DEHL --> carry if true
@@ -2237,7 +2237,7 @@ dnl 2dup D. D<=
 dnl ( d -- d f )
 define({_2DUP_PUSHDOT_DLE},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(index({$1},{(}),{0},{
+$#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[25:119]   2dup $1 D<=    ( d1 -- d1 flag )
 __{}    ld    A, format({%-11s},$1); 3:13      2dup $1 D<=    DEHL<=$1     $1 = ...A
 __{}    sub   L             ; 1:4       2dup $1 D<=    DEHL<=$1 --> 0<=A-DEHL --> no carry if true
@@ -2285,7 +2285,7 @@ dnl 2dup D. D<
 dnl ( d -- d f )
 define({_2DUP_PUSHDOT_DLT},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(index({$1},{(}),{0},{
+$#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[24:118]   2dup $1 D<    ( d1 -- d1 flag )
 __{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D<    DEHL<$1     $1 = ..BC
 __{}    ld    A, L          ; 1:4       2dup $1 D<    DEHL<$1
@@ -2333,7 +2333,7 @@ dnl 2dup D. D>=
 dnl ( d -- d f )
 define({_2DUP_PUSHDOT_DGE},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(index({$1},{(}),{0},{
+$#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[25:121]   2dup $1 D>=    ( d1 -- d1 flag )
 __{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D>=    DEHL>=$1     $1 = ..BC
 __{}    ld    A, L          ; 1:4       2dup $1 D>=    DEHL>=$1

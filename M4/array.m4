@@ -1,5 +1,5 @@
 dnl ## Array
-define({___},{})dnl
+define({__},{})dnl
 dnl
 dnl
 dnl
@@ -22,7 +22,7 @@ define({ARRAY_ADD},{
 dnl
 dnl
 define({PUSH_ARRAY_ADD},{
-    ld   BC, format({%-11s},$1); ifelse(index({$1},{(}),{0},{4:20},{3:10})      push_array_add($1)   ( -- )
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push_array_add($1)   ( -- )
     add  IX, BC         ; 2:15      push_array_add($1)}){}dnl
 dnl
 dnl
