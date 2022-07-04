@@ -1,8 +1,13 @@
 define({__},{})dnl
 dnl
 dnl
-define({_HEX_HI},{format({0x%02X},eval((($1)>>8) & 0xFF))}){}dnl
-define({_HEX_LO},{format({0x%02X},eval((($1)>>0) & 0xFF))}){}dnl
+define({__HEX_L},{format({0x%02X},eval(($1) & 0xFF))}){}dnl
+define({__HEX_H},{format({0x%02X},eval((($1)>>8) & 0xFF))}){}dnl
+define({__HEX_E},{format({0x%02X},eval((($1)>>16) & 0xFF))}){}dnl
+define({__HEX_D},{format({0x%02X},eval((($1)>>24) & 0xFF))}){}dnl
+define({__HEX_HL},{format({0x%04X},eval(($1) & 0xFFFF))}){}dnl
+define({__HEX_DE},{format({0x%04X},eval((($1)>>16) & 0xFFFF))}){}dnl
+define({__HEX_DEHL},{format({0x%08X},eval($1))}){}dnl
 dnl
 dnl
 dnl # (abc) --> 1

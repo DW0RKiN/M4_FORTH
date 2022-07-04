@@ -1368,7 +1368,7 @@ dnl 2dup D. D= while
 dnl ( d -- d )
 define({_2DUP_PUSHDOT_DEQ_WHILE},{dnl
 __{}define({_TMP_INFO},{2dup $1 D= while BEGIN_STACK})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) == DEHL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) == DEHL})dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}    .error {$0} for non-existent {BEGIN}},
 __{}$1,{},{
@@ -1410,7 +1410,7 @@ dnl 2dup D. D<> while
 dnl ( d -- d )
 define({_2DUP_PUSHDOT_DNE_WHILE},{dnl
 __{}define({_TMP_INFO},{2dup $1 D<> while BEGIN_STACK})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) <> DEHL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) <> DEHL})dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}    .error {$0} for non-existent {BEGIN}},
 __{}$1,{},{

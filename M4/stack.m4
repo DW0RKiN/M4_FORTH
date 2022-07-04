@@ -424,31 +424,31 @@ __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   HL, format({%-11s},$1); 3:10      push2($1,$2)
 __{}    ld    D, H          ; 1:4       push2($1,$2)
 __{}    ld    E, L          ; 1:4       push2($1,$2)},
-__{}eval((_HEX_HI($1) == _HEX_LO($2)) && (_HEX_LO($1) == _HEX_HI($2))),{1},{
+__{}eval((__HEX_H($1) == __HEX_L($2)) && (__HEX_L($1) == __HEX_H($2))),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
 __{}    ld    D, L          ; 1:4       push2($1,$2)
 __{}    ld    E, H          ; 1:4       push2($1,$2)},
-__{}eval((_HEX_HI($1) == _HEX_HI($2)) && (_HEX_HI($1) == _HEX_LO($2))),{1},{
+__{}eval((__HEX_H($1) == __HEX_H($2)) && (__HEX_H($1) == __HEX_L($2))),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
 __{}    ld    H, D          ; 1:4       push2($1,$2)
 __{}    ld    L, D          ; 1:4       push2($1,$2)},
-__{}eval((_HEX_LO($1) == _HEX_HI($2)) && (_HEX_LO($1) == _HEX_LO($2))),{1},{
+__{}eval((__HEX_L($1) == __HEX_H($2)) && (__HEX_L($1) == __HEX_L($2))),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
 __{}    ld    H, E          ; 1:4       push2($1,$2)
 __{}    ld    L, E          ; 1:4       push2($1,$2)},
-__{}eval((_HEX_HI($2) == _HEX_HI($1)) && (_HEX_HI($2) == _HEX_LO($1))),{1},{
+__{}eval((__HEX_H($2) == __HEX_H($1)) && (__HEX_H($2) == __HEX_L($1))),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
 __{}    ld    D, H          ; 1:4       push2($1,$2)
 __{}    ld    E, H          ; 1:4       push2($1,$2)},
-__{}eval((_HEX_LO($2) == _HEX_HI($1)) && (_HEX_LO($2) == _HEX_LO($1))),{1},{
+__{}eval((__HEX_L($2) == __HEX_H($1)) && (__HEX_L($2) == __HEX_L($1))),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
 __{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)

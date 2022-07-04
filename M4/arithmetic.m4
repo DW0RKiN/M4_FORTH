@@ -16,49 +16,49 @@ __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
-__{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    dec  H              ; 1:4       $1 +
 __{}    dec  H              ; 1:4       $1 +},
 __{}eval((($1)+2*256) & 0xffff),{0},{
-__{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    dec  H              ; 1:4       $1 +},
 __{}eval((($1)+1*256) & 0xffff),{0},{
-__{}    dec  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    dec  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )},
 __{}eval((($1)+    3) & 0xffff),{0},{
-__{}    dec  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  HL             ; 1:6       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    dec  HL             ; 1:6       $1 +
 __{}    dec  HL             ; 1:6       $1 +},
 __{}eval((($1)+    2) & 0xffff),{0},{
-__{}    dec  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  HL             ; 1:6       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    dec  HL             ; 1:6       $1 +},
 __{}eval((($1)+    1) & 0xffff),{0},{
-__{}    dec  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    dec  HL             ; 1:6       $1 +   ( x -- x+__HEX_HL($1) )},
 __{}eval(($1) & 0xFFFF),{0},{
-__{}                        ;           $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}                        ;           $1 +   ( x -- x+__HEX_HL($1) )},
 __{}eval(($1)-1),{0},{
-__{}    inc  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    inc  HL             ; 1:6       $1 +   ( x -- x+__HEX_HL($1) )},
 __{}eval(($1)-2),{0},{
-__{}    inc  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  HL             ; 1:6       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    inc  HL             ; 1:6       $1 +},
 __{}eval(($1)-3),{0},{
-__{}    inc  HL             ; 1:6       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  HL             ; 1:6       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    inc  HL             ; 1:6       $1 +
 __{}    inc  HL             ; 1:6       $1 +},
 __{}eval(($1)-1*256),{0},{
-__{}    inc  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    inc  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )},
 __{}eval(($1)-2*256),{0},{
-__{}    inc  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    inc  H              ; 1:4       $1 +},
 __{}eval(($1)-3*256),{0},{
-__{}    inc  H              ; 1:4       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    inc  H              ; 1:4       $1 +
 __{}    inc  H              ; 1:4       $1 +},
 __{}eval((($1)) & 0xFF),{0},{
-__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    ld    A, __HEX_H($1)       ; 2:7       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    add   A, H          ; 1:4       $1 +
 __{}    ld    H, A          ; 1:4       $1 +},
 __{}{
-__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 +   ( x -- x+format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 +   ( x -- x+__HEX_HL($1) )
 __{}    add  HL, BC         ; 1:11      $1 +})})})dnl
 dnl
 dnl
@@ -72,7 +72,7 @@ __{}    ex   DE, HL         ; 1:4       dup $1 +
 __{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1 +
 __{}    add  HL, DE         ; 1:11      dup $1 +},
 {
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+{}format({0x%04X},eval(($1) & 0xFFFF)) ){}ifelse(dnl
+__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+{}__HEX_HL($1) ){}ifelse(dnl
 __{}eval((($1)+3*256) & 0xffff),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
@@ -127,12 +127,12 @@ __{}__{}    inc   H             ; 1:4       dup $1 +},
 __{}eval((($1)) & 0xFF),{0},{
 __{}__{}    ld    D, H          ; 1:4       dup $1 +
 __{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       dup $1 +
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       dup $1 +
 __{}__{}    add   A, H          ; 1:4       dup $1 +
 __{}__{}    ld    H, A          ; 1:4       dup $1 +},
 __{}{
 __{}__{}    ex   DE, HL         ; 1:4       dup $1 +
-__{}__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      dup $1 +
+__{}__{}    ld   HL, __HEX_HL($1)     ; 3:10      dup $1 +
 __{}__{}    add  HL, DE         ; 1:11      dup $1 +}){}dnl
 __{}}){}dnl
 })dnl
@@ -184,49 +184,49 @@ __{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10}) 
 __{}    or    A             ; 1:4       $1 -
 __{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
-__{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    inc  H              ; 1:4       $1 -
 __{}    inc  H              ; 1:4       $1 -},
 __{}eval((($1)+2*256) & 0xffff),{0},{
-__{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    inc  H              ; 1:4       $1 -},
 __{}eval((($1)+1*256) & 0xffff),{0},{
-__{}    inc  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )},
 __{}eval((($1)+    3) & 0xffff),{0},{
-__{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    inc  HL             ; 1:6       $1 -
 __{}    inc  HL             ; 1:6       $1 -},
 __{}eval((($1)+    2) & 0xffff),{0},{
-__{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    inc  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    inc  HL             ; 1:6       $1 -},
 __{}eval((($1)+    1) & 0xffff),{0},{
-__{}    inc  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    inc  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )},
 __{}eval((-($1)) & 0xFFFF),{0},{
-__{}                        ;           $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}                        ;           $1 -   ( x -- x-__HEX_HL($1) )},
 __{}eval(($1)-1),{0},{
-__{}    dec  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    dec  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )},
 __{}eval(($1)-2),{0},{
-__{}    dec  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    dec  HL             ; 1:6       $1 -},
 __{}eval(($1)-3),{0},{
-__{}    dec  HL             ; 1:6       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    dec  HL             ; 1:6       $1 -
 __{}    dec  HL             ; 1:6       $1 -},
 __{}eval(($1)-1*256),{0},{
-__{}    dec  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )},
+__{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )},
 __{}eval(($1)-2*256),{0},{
-__{}    dec  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    dec  H              ; 1:4       $1 -},
 __{}eval(($1)-3*256),{0},{
-__{}    dec  H              ; 1:4       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    dec  H              ; 1:4       $1 -
 __{}    dec  H              ; 1:4       $1 -},
 __{}eval((-($1)) & 0xFF),{0},{
-__{}    ld    A, format({0x%02X},eval(((-($1))>>8) & 0xFF))       ; 2:7       $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    ld    A, format({0x%02X},eval(((-($1))>>8) & 0xFF))       ; 2:7       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    add   A, H          ; 1:4       $1 -
 __{}    ld    H, A          ; 1:4       $1 -},
 __{}{
-__{}    ld   BC, format({0x%04X},eval(-($1) & 0xFFFF))     ; 3:10      $1 -   ( x -- x-format({0x%04X},eval(($1) & 0xFFFF)) )
+__{}    ld   BC, format({0x%04X},eval(-($1) & 0xFFFF))     ; 3:10      $1 -   ( x -- x-__HEX_HL($1) )
 __{}    add  HL, BC         ; 1:11      $1 -})})})dnl
 dnl
 dnl
@@ -926,7 +926,7 @@ __{}__{}    sub   H             ; 1:4       $1 D+
 __{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
 __{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
 __{}__{}eval(((($1) & 0xFFFF0000) == 0xFFFF0000) && ((($1) & 0xFF) == 0)),{1},{dnl
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 D+   ( d -- d+$1 )
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 D+   ( d -- d+$1 )
 __{}__{}    add   A, H          ; 1:4       $1 D+
 __{}__{}    ld    H, A          ; 1:4       $1 D+
 __{}__{}    jr    c, $+3        ; 2:7/12    $1 D+
@@ -957,7 +957,7 @@ __{}__{}    inc   H             ; 1:4       $1 D+   ( d -- d+256 )
 __{}__{}    jr   nz, $+3        ; 2:7/12    $1 D+
 __{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
 __{}__{}eval(($1) & 0xFFFF00FF),{0},{dnl
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 D+   ( d -- d+$1 )
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 D+   ( d -- d+$1 )
 __{}__{}    add   A, H          ; 1:4       $1 D+
 __{}__{}    ld    H, A          ; 1:4       $1 D+
 __{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
@@ -1001,7 +1001,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 D+
 __{}__{}    add  HL, BC         ; 1:11      $1 D+
 __{}__{}    ex   DE, HL         ; 1:4       $1 D+},
 __{}__{}eval(($1) & 0xFFFF0000),{0},{dnl
-__{}__{}    ld   BC, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 D+   ( d -- d+$1 )
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 D+   ( d -- d+$1 )
 __{}__{}    add  HL, BC         ; 1:11      $1 D+
 __{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
 __{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
@@ -1200,7 +1200,7 @@ __{}__{}    dec  DE             ; 1:6       $1 D-   hi--
 __{}__{}    dec   H             ; 1:4       $1 D-},
 __{}__{}eval(($1) & 0xFFFF00FF),{0},{dnl
 __{}__{}    ld    A, H          ; 1:4       $1 D-   ( d -- d-$1 )
-__{}__{}    sub  format({0x%02X},eval((($1)>>8) & 0xFF))           ; 2:7       $1 D-
+__{}__{}    sub  __HEX_H($1)           ; 2:7       $1 D-
 __{}__{}    ld    H, A          ; 1:4       $1 D-
 __{}__{}    jr   nc, $+3        ; 2:7/12    $1 D-
 __{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
@@ -1315,7 +1315,7 @@ __{}                        ;[23:62/82] $1 dmax
 __{}    ld    A, L          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    sub   format({0x%02X},eval(($1) & 0xFF))          ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, H          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
-__{}    sbc   A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, __HEX_H($1)       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, E          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, D          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
@@ -1326,7 +1326,7 @@ __{}ifelse(eval(($1)<0),{1},{dnl
 __{}__{}    jp    m, $+9        ; 3:10      $1 dmax   negative constant format({0x%08X},eval($1))},
 __{}{dnl
 __{}__{}    jp    p, $+9        ; 3:10      $1 dmax   positive constant format({0x%08X},eval($1))})
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 dmax
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      $1 dmax
 __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 dmax}){}dnl
 })dnl
 dnl
@@ -1372,7 +1372,7 @@ eval($1),{},{dnl
 __{}                        ;[23:62/82] $1 dmin
 __{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sub   L             ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
-__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, __HEX_H($1)       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, H          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, E          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
@@ -1384,7 +1384,7 @@ __{}ifelse(eval(($1)<0),{1},{dnl
 __{}__{}    jp    m, $+9        ; 3:10      $1 dmin   negative constant format({0x%08X},eval($1))},
 __{}{dnl
 __{}__{}    jp    p, $+9        ; 3:10      $1 dmin   positive constant format({0x%08X},eval($1))})
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      $1 dmin
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      $1 dmin
 __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 dmin}){}dnl
 })dnl
 dnl
