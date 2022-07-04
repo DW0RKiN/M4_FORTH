@@ -496,50 +496,52 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl 255.
-dnl ( -- 0x0000 0x00FF )
-dnl ( -- d )
-dnl push(number32bit) ulozi na zasobnik 32 bitove cislo
-define({PUSHDOT},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
-    push HL             ; 1:11      pushdot($1)
-ifelse(__IS_MEM_REF($1),{1},{dnl
-    ld   DE,format({%-12s},($1+2)); 4:20      pushdot($1)   hi word
-    ld   HL, format({%-11s},$1); 3:16      pushdot($1)   lo word},
-eval($1),{},{dnl
-    .error {$0}($@): M4 does not know $1 parameter value!},
-{dnl
-__{}define({TEMP3},eval((($1)>>24) & 0xff)){}dnl
-__{}define({TEMP2},eval((($1)>>16) & 0xff)){}dnl
-__{}define({TEMP1},eval((($1)>> 8) & 0xff)){}dnl
-__{}define({TEMP0},eval( ($1)      & 0xff)){}dnl
-__{}ifelse(eval((TEMP3 == TEMP0) && (TEMP2 == TEMP0)),{1},{dnl
+dnl # ( -- d )
+dnl # PUSHDOT(number32bit) ulozi na zasobnik 32 bitove cislo
+dnl # 255. --> ( -- 0x0000 0x00FF )
+define({PUSHDOT},{ifelse(dnl
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+eval($1),{},{
+__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__IS_MEM_REF($1),{1},{
+__{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
+__{}    push HL             ; 1:11      pushdot($1)
+__{}    ld   DE,format({%-12s},($1+2)); 4:20      pushdot($1)   hi word
+__{}    ld   HL, format({%-11s},$1); 3:16      pushdot($1)   lo word},
+{
+__{}define({__D},eval((($1)>>24) & 0xff)){}dnl
+__{}define({__E},eval((($1)>>16) & 0xff)){}dnl
+__{}define({__H},eval((($1)>> 8) & 0xff)){}dnl
+__{}define({__L},eval( ($1)      & 0xff)){}dnl
+__{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
+__{}    push HL             ; 1:11      pushdot($1)
+__{}ifelse(eval((__E == __L) && (__D == __L)),{1},{dnl
 __{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, L          ; 1:4       pushdot($1)
 __{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
-__{}eval((TEMP3 == TEMP1) && (TEMP2 == TEMP1)),{1},{dnl
+__{}eval((__E == __H) && (__D == __H)),{1},{dnl
 __{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, H          ; 1:4       pushdot($1)
 __{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
-__{}eval((TEMP3 == TEMP1) && (TEMP2 == TEMP0)),{1},{dnl
+__{}eval((__E == __L) && (__D == __H)),{1},{dnl
 __{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, L          ; 1:4       pushdot($1)
 __{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
-__{}eval((TEMP3 == TEMP1) && (TEMP3 == TEMP0)),{1},{dnl
+__{}eval((__E == __H) && (__D == __L)),{1},{dnl
+__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld    E, H          ; 1:4       pushdot($1)
+__{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
+__{}eval((__L == __D) && (__H == __D)),{1},{dnl
 __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
 __{}    ld    L, D          ; 1:4       pushdot($1)
 __{}    ld    H, D          ; 1:4       pushdot($1)   hi word},
-__{}eval((TEMP2 == TEMP1) && (TEMP2 == TEMP0)),{1},{dnl
+__{}eval((__L == __E) && (__H == __E)),{1},{dnl
 __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
 __{}    ld    L, E          ; 1:4       pushdot($1)
 __{}    ld    H, E          ; 1:4       pushdot($1)   hi word},
-__{}eval((TEMP3 == TEMP0) && (TEMP2 == TEMP1)),{1},{dnl
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
-__{}    ld    E, H          ; 1:4       pushdot($1)
-__{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
 __{}{dnl
 __{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
 __{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word})})}){}dnl

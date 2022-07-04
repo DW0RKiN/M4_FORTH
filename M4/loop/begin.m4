@@ -749,7 +749,7 @@ dnl
 define({DUP_PUSH_UEQ_WHILE},{DUP_PUSH_EQ_WHILE})dnl
 dnl
 dnl
-define({DUP_PUSH_UNE_WHILE},{DUP_PUSH_NE_WHILE})})dnl
+define({DUP_PUSH_UNE_WHILE},{DUP_PUSH_NE_WHILE})dnl
 dnl
 dnl
 define({DUP_PUSH_ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
