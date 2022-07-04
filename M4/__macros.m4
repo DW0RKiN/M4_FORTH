@@ -170,7 +170,7 @@ __{}__{}define({_TMP_T4},14){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
-__{}__{}    xor   format({0x%02X},__N4)          ; 2:7       _TMP_INFO   x[4] = format({0x%02X},__N4)  termination of identical values})},
+__{}__{}    xor   __HEX_L(__N4)          ; 2:7       _TMP_INFO   x[4] = __HEX_L(__N4)  termination of identical values})},
 __{}dnl
 __{}dnl a+1 a - -
 __{}dnl
@@ -267,8 +267,8 @@ __{}__{}define({_TMP_T4},18){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
-__{}__{}    ld    A{,} format({0x%02X},__N4)       ; 2:7       _TMP_INFO
-__{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = format({0x%02X},__N4)})}){}dnl
+__{}__{}    ld    A{,} __HEX_L(__N4)       ; 2:7       _TMP_INFO
+__{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = __HEX_L(__N4)})}){}dnl
 __{}dnl
 __{}dnl --------------- 3 ---------------
 __{}dnl
@@ -311,7 +311,7 @@ __{}__{}define({_TMP_T3},14){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
-__{}__{}    xor   format({0x%02X},eval(__N3 ^    0xFF))          ; 2:7       _TMP_INFO   x[3] = format({0x%02X},__N3) = 0xFF ^ format({0x%02X},eval(__N3 ^ 0xFF))  termination of identical values})},
+__{}__{}    xor   __HEX_L(__N3 ^ 0xFF)          ; 2:7       _TMP_INFO   x[3] = __HEX_L(__N3) = 0xFF ^ __HEX_L(__N3 ^ 0xFF)  termination of identical values})},
 __{}dnl
 __{}dnl 255 1 - -    + send signal 0
 __{}dnl
@@ -346,7 +346,7 @@ __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R3          ; 1:4       _TMP_INFO
-__{}__{}    xor   format({0x%02X},eval(__N3 ^ 0xFF))          ; 2:7       _TMP_INFO   x[3] = format({0x%02X},__N3) = 0xFF ^ format({0x%02X},eval(__N3 ^ 0xFF))})},
+__{}__{}    xor   __HEX_L(__N3 ^ 0xFF)          ; 2:7       _TMP_INFO   x[3] = __HEX_L(__N3) = 0xFF ^ __HEX_L(__N3 ^ 0xFF)})},
 __{}dnl
 __{}dnl 0 1 - -    + send signal 0
 __{}dnl
@@ -389,7 +389,7 @@ __{}__{}define({_TMP_T3},14){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
-__{}__{}    _TMP_OR3  format({0x%02X},__N3)           ; 2:7       _TMP_INFO   x[3] = format({0x%02X},__N3)  termination of identical values})},
+__{}__{}    _TMP_OR3  __HEX_L(__N3)           ; 2:7       _TMP_INFO   x[3] = __HEX_L(__N3)  termination of identical values})},
 __{}dnl
 __{}dnl - b+1 b -
 __{}dnl
@@ -464,8 +464,8 @@ __{}__{}define({_TMP_T3},18){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
-__{}__{}    ld    A{,} format({0x%02X},__N3)       ; 2:7       _TMP_INFO
-__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = format({0x%02X},__N3)})}){}dnl
+__{}__{}    ld    A{,} __HEX_L(__N3)       ; 2:7       _TMP_INFO
+__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = __HEX_L(__N3)})}){}dnl
 __{}dnl
 __{}dnl --------------- 2 ---------------
 __{}dnl
@@ -508,7 +508,7 @@ __{}__{}define({_TMP_T2},14){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}    xor   format({0x%02X},eval(__N2 ^    0xFF))          ; 2:7       _TMP_INFO   x[2] = format({0x%02X},__N2) = 0xFF ^ format({0x%02X},eval(__N2 ^ 0xFF))      termination of identical values})},
+__{}__{}    xor   __HEX_L(__N2 ^    0xFF)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2) = 0xFF ^ __HEX_L(__N2 ^ 0xFF)      termination of identical values})},
 __{}dnl
 __{}dnl - 255 1 -  and __R1!=L  + send signal 0
 __{}dnl
@@ -545,7 +545,7 @@ __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R2          ; 1:4       _TMP_INFO
-__{}__{}    xor   format({0x%02X},eval(__N2 ^    0xFF))          ; 2:7       _TMP_INFO   x[2] = format({0x%02X},__N2) = 0xFF ^ format({0x%02X},eval(__N2 ^ 0xFF))})},
+__{}__{}    xor   __HEX_L(__N2 ^    0xFF)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2) = 0xFF ^ __HEX_L(__N2 ^ 0xFF)})},
 __{}dnl
 __{}dnl 0 0 1 -    + send signal 0
 __{}dnl
@@ -588,7 +588,7 @@ __{}__{}define({_TMP_T2},14){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}    _TMP_OR2   format({0x%02X},__N2)          ; 2:7       _TMP_INFO   x[2] = format({0x%02X},__N2)  termination of identical values})},
+__{}__{}    _TMP_OR2   __HEX_L(__N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2)  termination of identical values})},
 __{}dnl
 __{}dnl - - a+1 a
 __{}dnl
@@ -641,8 +641,8 @@ __{}__{}define({_TMP_T2},18){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}    ld    A{,} format({0x%02X},__N2)       ; 2:7       _TMP_INFO
-__{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = format({0x%02X},__N2)})}){}dnl
+__{}__{}    ld    A{,} __HEX_L(__N2)       ; 2:7       _TMP_INFO
+__{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(__N2)})}){}dnl
 __{}dnl
 __{}dnl --------------- 1 ---------------
 __{}dnl
@@ -687,7 +687,7 @@ __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__DEQ_CODE_1},{
 __{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
-__{}__{}    xor   format({0x%02X},eval(__N1 ^ 0xFF))          ; 2:7       _TMP_INFO   x[1] = format({0x%02X},__N1) = 0xFF ^ format({0x%02X},eval(__N1 ^ 0xFF))})},
+__{}__{}    xor   __HEX_L(__N1 ^ 0xFF)          ; 2:7       _TMP_INFO   x[1] = __HEX_L(__N1) = 0xFF ^ __HEX_L(__N1 ^ 0xFF)})},
 __{}dnl
 __{}dnl - - - 1    + need 0, need for zero optimization
 __{}dnl
@@ -712,8 +712,8 @@ __{}{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__DEQ_CODE_1},{
-__{}__{}    ld    A{,} format({0x%02X},__N1)       ; 2:7       _TMP_INFO
-__{}__{}    _TMP_OR1   __R1             ; 1:4       _TMP_INFO   x[1] = format({0x%02X},__N1)})}){}dnl
+__{}__{}    ld    A{,} __HEX_L(__N1)       ; 2:7       _TMP_INFO
+__{}__{}    _TMP_OR1   __R1             ; 1:4       _TMP_INFO   x[1] = __HEX_L(__N1)})}){}dnl
 __{}dnl
 __{}dnl ---------------------------------
 __{}dnl
@@ -763,7 +763,7 @@ dnl
 dnl
 define({__DEQ_VARIATION_21},{dnl
 __{}dnl debug:
-__{}dnl format({0x%02X},_TMP_N4)-format({0x%02X},_TMP_N3)-format({0x%02X},_TMP_N2)-format({0x%02X},_TMP_N1)
+__{}dnl __HEX_L(_TMP_N4)-__HEX_L(_TMP_N3)-__HEX_L(_TMP_N2)-__HEX_L(_TMP_N1)
 __{}dnl
 __{}__DEQ_MAKE_CODE($1,$2,$3,$4,$5){}dnl
 __{}__{}ifelse(__BETTER,{1},{dnl
@@ -775,7 +775,7 @@ __{}ifelse(eval(_TMP_N2<255),{1},{dnl
 __{}__SWAP2DEF({_TMP_N2},{_TMP_N1}){}dnl
 __{}__SWAP2DEF({_TMP_R2},{_TMP_R1}){}dnl
 __{}dnl debug:
-__{}dnl format({0x%02X},_TMP_N4)-format({0x%02X},_TMP_N3)-format({0x%02X},_TMP_N2)-format({0x%02X},_TMP_N1)
+__{}dnl __HEX_L(_TMP_N4)-__HEX_L(_TMP_N3)-__HEX_L(_TMP_N2)-__HEX_L(_TMP_N1)
 __{}dnl
 __{}__DEQ_MAKE_CODE($1,$2,$3,$4,$5){}dnl
 __{}__{}ifelse(__BETTER,{1},{dnl
@@ -918,14 +918,14 @@ __{}__{}__{}define({_TMP_T2},14){}dnl
 __{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    xor   format({0x%02X},__N2)          ; 2:7       _TMP_INFO   x[2] = format({0x%02X},__N2)})},
+__{}__{}__{}    xor   __HEX_L(__N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2)})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},17){}dnl
 __{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
-__{}__{}__{}    xor   format({0x%02X},__N2)          ; 2:7       _TMP_INFO   x[2] = format({0x%02X},__N2)})})},
+__{}__{}__{}    xor   __HEX_L(__N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2)})})},
 __{}eval(__N2==(__N1+1 & 0xFF)),{1},{dnl
 __{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
@@ -1001,16 +1001,16 @@ __{}__{}__{}define({_TMP_T2},18){}dnl
 __{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld    A{{,}} format({0x%02X},__N2)       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = format({0x%02X},__N2)})},
+__{}__{}__{}    ld    A{{,}} __HEX_L(__N2)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(__N2)})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},6){}dnl
 __{}__{}__{}define({_TMP_T2},21){}dnl
 __{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
-__{}__{}__{}    ld    A{{,}} format({0x%02X},__N2)       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = format({0x%02X},__N2)})})}){}dnl
+__{}__{}__{}    ld    A{{,}} __HEX_L(__N2)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(__N2)})})}){}dnl
 __{}dnl
 __{}dnl --------------- 1 ---------------
 __{}dnl
@@ -1035,7 +1035,7 @@ __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
-__{}__{}    xor   format({0x%02X},eval(__N1 ^ 0xFF))          ; 2:7       _TMP_INFO   x[1] = 0xFF ^ format({0x%02X},eval(__N1 ^ 0xFF))})},
+__{}__{}    xor   __HEX_L(__N1 ^ 0xFF)          ; 2:7       _TMP_INFO   x[1] = 0xFF ^ __HEX_L(__N1 ^ 0xFF)})},
 __{}__N2{-}__N1,{0-255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
@@ -1065,8 +1065,8 @@ __{}{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} format({0x%02X},__N1)       ; 2:7       _TMP_INFO
-__{}__{}    _TMP_OR1   __R1             ; 1:4       _TMP_INFO   x[1] = format({0x%02X},__N1)})}){}dnl
+__{}__{}    ld    A{,} __HEX_L(__N1)       ; 2:7       _TMP_INFO
+__{}__{}    _TMP_OR1   __R1             ; 1:4       _TMP_INFO   x[1] = __HEX_L(__N1)})}){}dnl
 __{}dnl
 __{}dnl ---------------------------------
 __{}dnl
@@ -1267,7 +1267,7 @@ __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{{,}} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   HL{{,}} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   HL-lo16(d1)})},
 __{}eval(($1) & 0xFFFF),{0},{dnl
 __{}__{}define({_TMP_B},11){}dnl
@@ -1280,7 +1280,7 @@ __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} E          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   BC{{,}} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{{,}} BC         ; 2:15      _TMP_INFO   HL-hi16(d1)})},
 __{}eval(($1) & 0xFFFF),eval((($1)>>16) & 0xFFFF),{dnl
 __{}__{}define({_TMP_B},12){}dnl
@@ -1293,7 +1293,7 @@ __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   A = 0
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{{,}} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   HL{{,}} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)})},
 __{}eval(($1) & 0xFF000000),{0},{dnl
 __{}__{}define({_TMP_B},13){}dnl
@@ -1303,11 +1303,11 @@ __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 4th byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    ld    A{{,}} format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = format({0x%02X},eval((($1)>>16) & 0xFF))
+__{}__{}__{}    ld    A{{,}} __HEX_E($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = __HEX_E($1)
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO   H = 0
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{{,}} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   HL{{,}} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   HL-lo16(d1)})},
 __{}eval(($1) & 0xFF0000),{0},{dnl
 __{}__{}define({_TMP_B},13){}dnl
@@ -1317,11 +1317,11 @@ __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 3th byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    ld    A{{,}} format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = format({0x%02X},eval((($1)>>24) & 0xFF))
+__{}__{}__{}    ld    A{{,}} __HEX_D($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = __HEX_D($1)
 __{}__{}__{}    or    L             ; 1:4       _TMP_INFO   L = 0
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{{,}} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   HL{{,}} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   HL-lo16(d1)})},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}define({_TMP_B},13){}dnl
@@ -1331,11 +1331,11 @@ __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 2nd byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    ld    A{{,}} format({0x%02X},eval(($1) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = format({0x%02X},eval(($1) & 0xFF))
+__{}__{}__{}    ld    A{{,}} __HEX_L($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = __HEX_L($1)
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO   D = 0
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   BC{{,}} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{{,}} BC         ; 2:15      _TMP_INFO   HL-hi16(d1)})},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}define({_TMP_B},13){}dnl
@@ -1345,11 +1345,11 @@ __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 1st byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}    ld    A{{,}} format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = format({0x%02X},eval((($1)>>8) & 0xFF))
+__{}__{}__{}    ld    A{{,}} __HEX_H($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = __HEX_H($1)
 __{}__{}__{}    or    E             ; 1:4       _TMP_INFO   E = 0
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   BC{{,}} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{{,}} BC         ; 2:15      _TMP_INFO   HL-hi16(d1)})},
 __{}{dnl
 __{}__{}define({_TMP_B},15){}dnl
@@ -1360,10 +1360,10 @@ __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # default version
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld   BC{{,}} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   BC{{,}} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{{,}} BC         ; 2:15      _TMP_INFO   hi16(d1)-BC
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},$2); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{{,}} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   HL{{,}} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   HL-lo16(d1)})})}){}dnl
 dnl
 dnl
@@ -1392,7 +1392,7 @@ __{}__{}define({_TMP_HL_CODE},{   # 0x0000????
 __{}__{}__{}    ld    A{,} E          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{,} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC{,} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFFFF),{0},{dnl
@@ -1403,7 +1403,7 @@ __{}__{}define({_TMP_HL_CODE},{   # 0x????0000
 __{}__{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{,} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL{,} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    add  HL{,} DE         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFFFF),eval((($1)>>16) & 0xFFFF),{dnl
@@ -1415,7 +1415,7 @@ __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   A = 0
 __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   lo16(d1)-hi16(d1)
 __{}__{}__{}    add  HL{,} DE         ; 1:11      _TMP_INFO
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{,} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC{,} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFF000000),{0},{dnl
@@ -1424,11 +1424,11 @@ __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # 4th byte zero
-__{}__{}__{}    ld    A{,} format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = format({0x%02X},eval((($1)>>16) & 0xFF))
+__{}__{}__{}    ld    A{,} __HEX_E($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = __HEX_E($1)
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO   D = 0
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{,} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC{,} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFF0000),{0},{dnl
@@ -1437,11 +1437,11 @@ __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # 3th byte zero
-__{}__{}__{}    ld    A{,} format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = format({0x%02X},eval((($1)>>24) & 0xFF))
+__{}__{}__{}    ld    A{,} __HEX_D($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = __HEX_D($1)
 __{}__{}__{}    or    E             ; 1:4       _TMP_INFO   E = 0
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   BC{,} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC{,} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFF00),{0},{dnl
@@ -1449,11 +1449,11 @@ __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # 2nd byte zero
-__{}__{}__{}    ld    A{,} format({0x%02X},eval(($1) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = format({0x%02X},eval(($1) & 0xFF))
+__{}__{}__{}    ld    A{,} __HEX_L($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = __HEX_L($1)
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO   H = 0
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{,} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL{,} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    add  HL{,} DE         ; 1:11      _TMP_INFO})},
 __{}eval(($1) & 0xFF),{0},{dnl
@@ -1461,11 +1461,11 @@ __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # 1st byte zero
-__{}__{}__{}    ld    A{,} format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = format({0x%02X},eval((($1)>>8) & 0xFF))
+__{}__{}__{}    ld    A{,} __HEX_H($1)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = __HEX_H($1)
 __{}__{}__{}    or    L             ; 1:4       _TMP_INFO   L = 0
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{,} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL{,} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    add  HL{,} DE         ; 1:11      _TMP_INFO})},
 __{}{dnl
@@ -1475,10 +1475,10 @@ __{}__{}define({_TMP_NJ},82){}dnl
 __{}__{}define({_TMP_HL_CODE},{   # default version
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld   BC{,} format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC{,} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    jr   nz{,} $+7        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL{,} format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL{,} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   hi16(d1)-DE
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO})})}){}dnl
 dnl

@@ -60,7 +60,7 @@ __{}__{}__{}    res   6, H          ; 2:8       $1 and},
 __{}__{}eval(0xFF00 - 0x8000 - (($1) & 0xFF00)),{0},{dnl
 __{}__{}__{}    res   7, H          ; 2:8       $1 and},
 __{}__{}{dnl
-__{}__{}__{}    ld    A, format({%-11s},eval(($1)>>8)); 2:7       $1 and
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 and
 __{}__{}__{}    and   H             ; 1:4       $1 and
 __{}__{}__{}    ld    H, A          ; 1:4       $1 and})
 __{}__{}ifelse(eval($1),{0},,
@@ -85,7 +85,7 @@ __{}__{}__{}    res   6, L          ; 2:8       $1 and},
 __{}__{}eval(0xFF - 0x80 - (($1) & 0xFF)),{0},{dnl
 __{}__{}__{}    res   7, L          ; 2:8       $1 and},
 __{}__{}{dnl
-__{}__{}    ld    A, format({%-11s},eval(($1) & 0xFF)); 2:7       $1 and
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 and
 __{}__{}    and   L             ; 1:4       $1 and
 __{}__{}    ld    L, A          ; 1:4       $1 and}){}dnl
 __{}}){}dnl
@@ -638,21 +638,21 @@ __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}eval(($1) & 0xff00),{0},{dnl
 __{}__{}                        ;[8:37]     $1 =
-__{}__{}    ld    A, format({0x%02X},eval(($1)&0xff))       ; 2:7       $1 =   lo($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
 __{}__{}    xor   L             ; 1:4       $1 =
 __{}__{}    or    H             ; 1:4       $1 =
 __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}eval(($1) & 0xff),{0},{dnl
 __{}__{}                        ;[8:37]     $1 =
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8)&0xff))       ; 2:7       $1 =   hi($1)
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
 __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    or    L             ; 1:4       $1 =
 __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}eval((($1)>>8) & 0xff),{1},{dnl
 __{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, format({0x%02X},eval(($1)&0xff))       ; 2:7       $1 =   lo($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
 __{}__{}    xor   L             ; 1:4       $1 =
 __{}__{}    dec   H             ; 1:4       $1 =
 __{}__{}    or    H             ; 1:4       $1 =
@@ -660,7 +660,7 @@ __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}eval((($1)>>8) & 0xff),{255},{dnl
 __{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, format({0x%02X},eval(($1)&0xff))       ; 2:7       $1 =   lo($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
 __{}__{}    xor   L             ; 1:4       $1 =
 __{}__{}    inc   H             ; 1:4       $1 =
 __{}__{}    or    H             ; 1:4       $1 =
@@ -668,7 +668,7 @@ __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}eval(($1) & 0xff),{1},{dnl
 __{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8)&0xff))       ; 2:7       $1 =   hi($1)
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
 __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    dec   L             ; 1:4       $1 =
 __{}__{}    or    L             ; 1:4       $1 =
@@ -676,7 +676,7 @@ __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}eval(($1) & 0xff),{255},{dnl
 __{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8)&0xff))       ; 2:7       $1 =   hi($1)
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
 __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    inc   L             ; 1:4       $1 =
 __{}__{}    or    L             ; 1:4       $1 =
@@ -687,16 +687,16 @@ __{}__{}                        ;[11:48/35] $1 =
 __{}__{}    ld    A, L          ; 1:4       $1 =
 __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 =
-__{}__{}    ld    A, format({0x%02X},eval(($1) & 0xff))       ; 2:7       $1 =   lo($1) = hi($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1) = hi($1)
 __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =},
 __{}__{}{dnl
 __{}__{}                        ;[12:51/38] $1 =
-__{}__{}    ld    A, format({0x%02X},eval(($1) & 0xff))       ; 2:7       $1 =   lo($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
 __{}__{}    xor   L             ; 1:4       $1 =
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 =
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xff))       ; 2:7       $1 =   hi($1)
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
 __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =}){}dnl
@@ -707,12 +707,12 @@ dnl
 dnl
 define({DUP_PUSH_EQ},{dnl
 __{}define({_TMP_INFO},{dup $1 =})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($1)) == HL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL})dnl
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{
-__{}__{}__{}                        ;[13:69/70] _TMP_INFO   ( x -- x f )   (addr) = (format({0x%04X},eval($1))) = HL
+__{}__{}__{}                        ;[13:69/70] _TMP_INFO   ( x -- x f )   (addr) = (__HEX_HL($1)) = HL
 __{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO
@@ -787,7 +787,7 @@ dnl
 dnl
 define({DUP_PUSH_NE},{dnl
 __{}define({_TMP_INFO},{dup $1 <>})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   format({0x%04X},eval($1)) <> HL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) <> HL})dnl
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2067,7 +2067,7 @@ dnl 2dup D. D=
 dnl ( d -- d f )
 define({_2DUP_PUSHDOT_DEQ},{dnl
 __{}define({_TMP_INFO},{2dup $1 D=})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   format({0x%08X},eval($1)) == DEHL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) == DEHL})dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2136,7 +2136,7 @@ dnl 2dup D. D<>
 dnl ( d -- d f )
 define({_2DUP_PUSHDOT_DNE},{dnl
 __{}define({_TMP_INFO},{2dup $1 D<>})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   format({0x%08X},eval($1)) <> DEHL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) <> DEHL})dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2217,13 +2217,13 @@ __{}    sub  0x80           ; 2:7       2dup $1 D>{}ifelse(eval((($1) & 0x800000
 __{}__{}    jr    c, $+14       ; 2:7/12    2dup $1 D>   positive d1 > negative constant --> true},
 __{}__{}{
 __{}__{}    jr   nc, $+14       ; 2:7/12    2dup $1 D>   negative d1 > positive constant --> false})
-__{}    ld    A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = ...A
+__{}    ld    A, __HEX_L($1)       ; 2:7       2dup $1 D>   DEHL>$1     $1 = ...A
 __{}    sub   L             ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
-__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = ..A.
+__{}    ld    A, __HEX_H($1)       ; 2:7       2dup $1 D>   DEHL>$1     $1 = ..A.
 __{}    sbc   A, H          ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
-__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = .A..
+__{}    ld    A, __HEX_E($1)       ; 2:7       2dup $1 D>   DEHL>$1     $1 = .A..
 __{}    sbc   A, E          ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
-__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D>   DEHL>$1     $1 = A...
+__{}    ld    A, __HEX_D($1)       ; 2:7       2dup $1 D>   DEHL>$1     $1 = A...
 __{}    sbc   A, D          ; 1:4       2dup $1 D>   DEHL>$1 --> 0>A-DEHL --> carry if true
 __{}    push DE             ; 1:11      2dup $1 D>
 __{}    ex   DE, HL         ; 1:4       2dup $1 D>
@@ -2264,13 +2264,13 @@ __{}    add   A, A          ; 1:4       2dup $1 D<={}ifelse(eval((($1) & 0x80000
 __{}__{}    jr   nc, $+15       ; 2:7/12    2dup $1 D<=   positive d1 <= negative constant --> false},
 __{}__{}{
 __{}__{}    jr    c, $+15       ; 2:7/12    2dup $1 D<=   negative d1 <= positive constant --> true})
-__{}    ld    A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = ...A
+__{}    ld    A, __HEX_L($1)       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = ...A
 __{}    sub   L             ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
-__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = ..A.
+__{}    ld    A, __HEX_H($1)       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = ..A.
 __{}    sbc   A, H          ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
-__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = .A..
+__{}    ld    A, __HEX_E($1)       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = .A..
 __{}    sbc   A, E          ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
-__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = A...
+__{}    ld    A, __HEX_D($1)       ; 2:7       2dup $1 D<=   DEHL<=$1     $1 = A...
 __{}    sbc   A, D          ; 1:4       2dup $1 D<=   DEHL<=$1 --> 0<=A-DEHL --> no carry if true
 __{}    ccf                 ; 1:4       2dup $1 D<=   DEHL<=$1               -->    carry if true
 __{}    push DE             ; 1:11      2dup $1 D<=
@@ -2313,14 +2313,14 @@ __{}    add   A, A          ; 1:4       2dup $1 D<{}ifelse(eval((($1) & 0x800000
 __{}__{}    jr   nc, $+14       ; 2:7/12    2dup $1 D<   positive d1 < negative constant --> false},
 __{}__{}{
 __{}__{}    jr    c, $+14       ; 2:7/12    2dup $1 D<   negative d1 < positive constant --> true})
-__{}    ld    A, L          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
-__{}    sub   A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))<0 --> carry if true
-__{}    ld    A, H          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
-__{}    sbc   A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..<0 --> carry if true
-__{}    ld    A, E          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
-__{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....<0 --> carry if true
-__{}    ld    A, D          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-format({0x%08X},eval($1))<0 --> carry if true
-__{}    sbc   A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D<   DEHL<$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......<0 --> carry if true
+__{}    ld    A, L          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sub   A, __HEX_L($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))<0 --> carry if true
+__{}    ld    A, H          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sbc   A, __HEX_H($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..<0 --> carry if true
+__{}    ld    A, E          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sbc   A, __HEX_E($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....<0 --> carry if true
+__{}    ld    A, D          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sbc   A, __HEX_D($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......<0 --> carry if true
 __{}    push DE             ; 1:11      2dup $1 D<
 __{}    ex   DE, HL         ; 1:4       2dup $1 D<
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D<   set flag d1<$1})},
@@ -2361,14 +2361,14 @@ __{}    sub  0x80           ; 2:7       2dup $1 D>={}ifelse(eval((($1) & 0x80000
 __{}__{}    jr    c, $+15       ; 2:7/12    2dup $1 D>=   positive d1 >= negative constant --> true},
 __{}__{}{
 __{}__{}    jr   nc, $+15       ; 2:7/12    2dup $1 D>=   negative d1 >= positive constant --> false})
-__{}    ld    A, L          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
-__{}    sub   A, format({0x%02X},eval((($1)>>0) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))>=0 --> no carry if true
-__{}    ld    A, H          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
-__{}    sbc   A, format({0x%02X},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..>=0 --> no carry if true
-__{}    ld    A, E          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
-__{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....>=0 --> no carry if true
-__{}    ld    A, D          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-format({0x%08X},eval($1))>=0 --> no carry if true
-__{}    sbc   A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 D>=   DEHL>=$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......>=0 --> no carry if true
+__{}    ld    A, L          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-__HEX_DEHL($1)>=0 --> no carry if true
+__{}    sub   A, __HEX_L($1)       ; 2:7       2dup $1 D>=   DEHL>=$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))>=0 --> no carry if true
+__{}    ld    A, H          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-__HEX_DEHL($1)>=0 --> no carry if true
+__{}    sbc   A, __HEX_H($1)       ; 2:7       2dup $1 D>=   DEHL>=$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..>=0 --> no carry if true
+__{}    ld    A, E          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-__HEX_DEHL($1)>=0 --> no carry if true
+__{}    sbc   A, __HEX_E($1)       ; 2:7       2dup $1 D>=   DEHL>=$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....>=0 --> no carry if true
+__{}    ld    A, D          ; 1:4       2dup $1 D>=   DEHL>=$1 --> DEHL-__HEX_DEHL($1)>=0 --> no carry if true
+__{}    sbc   A, __HEX_D($1)       ; 2:7       2dup $1 D>=   DEHL>=$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......>=0 --> no carry if true
 __{}    ccf                 ; 1:4       2dup $1 D>=   DEHL<=$1                        -->    carry if true
 __{}    push DE             ; 1:11      2dup $1 D>=
 __{}    ex   DE, HL         ; 1:4       2dup $1 D>=
