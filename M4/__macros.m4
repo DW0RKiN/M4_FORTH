@@ -441,7 +441,7 @@ __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_IN
 __{}__{}    add   A{,} __R2          ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] + x[2]})},
 __{}dnl
-__{}dnl - b+b b -
+__{}dnl - b/2 b -
 __{}dnl
 __{}eval(__N3==(__N2/2)),{1},{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
