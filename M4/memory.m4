@@ -54,7 +54,7 @@ define({VARIABLE},{ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
+__IS_REG({$1}),{1},{
 __{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},

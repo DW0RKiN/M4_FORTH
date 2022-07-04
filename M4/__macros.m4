@@ -35,7 +35,7 @@ dnl # Xor  --> 1
 dnl # cP   --> 1
 dnl # jmp  --> 0
 dnl # xchg --> 0
-define({__IS_INSTRUCTION},{eval(1+regexp(translit({$1},{ABCDEFGHIJKLMNOPQRSTUVWXYZ},{abcdefghijklmnopqrstuvwxyz}),{^\(adc\|add\|and\|bit\|call\|ccf\|cp\|cpd\|cpdr\|cpi\|cpir\|cpl\|daa\|dec\|di\|djnz\|ei\|ex\|exx\|halt\|im\|in\|inc\|ind\|indr\|ini\|inir\|jp\|jr\|ld\|ldd\|lddr\|ldi\|ldir\|neg\|nop\|or\|otdr\|otir\|out\|outd\|outi\|pop\|push\|res\|ret\|reti\|retn\|rl\|rla\|rlc\|rlca\|rld\|rr\|rra\|rrc\|rrca\|rrd\|rst\|sbc\|scf\|set\|sla\|sra\|srl\|sub\|xor\)$}))}){}dnl
+define({__IS_INSTRUCTION},{eval(1+regexp(translit({$1},{ABCDEFGHIJKLMNOPQRSTUVWXYZ},{abcdefghijklmnopqrstuvwxyz}),{^\(ad[cd]\|and\|bit\|call\|ccf\|cp[dil]?\|cpdr\|cpir\|daa\|dec\|di\|djnz\|ei\|ex[x]?\|halt\|im\|in[cdi]?\|indr\|inir\|j[pr]\|ld[di]?\|lddr\|ldir\|neg\|nop\|or\|otdr\|otir\|out[di]?\|pop\|push\|res\|ret[in]?\|rl[acd]?\|rlca\|rr[acd]?\|rrca\|rst\|sbc\|scf\|set\|sla\|sr[al]\|sub\|xor\)$}))}){}dnl
 dnl
 dnl
 dnl
