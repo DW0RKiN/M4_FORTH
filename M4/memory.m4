@@ -21,24 +21,51 @@ __{},{$1: db $2{}})dnl
 })})dnl
 dnl
 dnl
-define({DVARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($1,{},{.error dvariable: Missing parameter with variable name!}dnl
-__{},$#,{1},{$1:
+dnl # DVARIABLE(name)        --> (name) = 0
+dnl # DVARIABLE(name,100)    --> (name) = 100
+dnl # DVARIABLE(name,0x88442211)    --> (name) = 0x88442211
+define({DVARIABLE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval(($#==2) && ifelse(eval($2),{},{1},{0})),{1},{
+__{}  .error {$0}($@): M4 does not know $2 parameter value!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}ifelse($#,{1},{$1:
 __{}  dw 0x0000
-__{}  dw 0x0000{}}dnl
-__{},{format({%-24s},$1:); = $2{}dnl
-__{} = ifelse(substr($2,0,2),{0x},eval($2),0x{}format({%08x},eval($2))){}dnl
-__{} = db 0x{}format({%02x},eval(($2) & 0xff)) 0x{}format({%02x},eval((($2) >> 8) & 0xff)) 0x{}format({%02x},eval((($2) >> 16) & 0xff)) 0x{}format({%02x},eval((($2) >> 24) & 0xff))
-__{}  dw 0x{}format({%04x},eval(($2) & 0xffff))             ; = eval(($2) & 0xffff)
-__{}  dw 0x{}format({%04x},eval((($2) >> 16) & 0xffff))             ; = eval((($2) >> 16) & 0xffff)})dnl
-})})dnl
+__{}  dw 0x0000},
+__{}{format({%-24s},$1:); = $2{}dnl
+__{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
+__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
+__{}  dw __HEX_HL($2)             ; = eval(($2) & 0xffff)
+__{}  dw __HEX_DE($2)             ; = eval((($2) >> 16) & 0xffff)})dnl
+})})})dnl
 dnl
 dnl
-define({VARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($1,{},{.error variable: Missing parameter with variable name!}dnl
-__{},$#,{1},{$1: dw 0x0000{}}dnl
-__{},{$1: dw $2{}})dnl
-})})dnl
+dnl
+dnl # VARIABLE(name)        --> (name) = 0
+dnl # VARIABLE(name,100)    --> (name) = 100
+dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
+define({VARIABLE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+$#,{1},{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}$1: dw 0x0000})},
+{dnl
+__{}ifelse(eval($2),{},{
+__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1: dw $2})})}){}dnl
 dnl
 dnl
 dnl -------------------------------------------------------------------------------------
@@ -1306,11 +1333,11 @@ eval((($1) & 0xffff) == 0xfffd),1,{dnl
 {dnl
     ld   BC, format({%-11s},$2); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_addstore($1,$2)
     ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
-    add   A, format({0x%02X},eval(($1) & 0xff))       ; 2:7       push2_addstore($1,$2)   lo($1)
+    add   A, __HEX_L($1)       ; 2:7       push2_addstore($1,$2)   lo($1)
     ld  (BC),A          ; 1:7       push2_addstore($1,$2)
     inc  BC             ; 1:6       push2_addstore($1,$2)
     ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
-    adc   A, format({0x%02X},eval((($1)>>8) & 0xff))       ; 2:7       push2_addstore($1,$2)   hi($1)
+    adc   A, __HEX_H($1)       ; 2:7       push2_addstore($1,$2)   hi($1)
     ld  (BC),A          ; 1:7       push2_addstore($1,$2)})})dnl
 dnl
 dnl

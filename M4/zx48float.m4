@@ -38,12 +38,12 @@ __{}ifelse(ZXTEMP_CHAR,{p},{dnl
 __{}__{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 __{}})dnl
 __{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
-__{}define({ZXTEMP_EXP},format({%02x},eval(ZXTEMP_EXP+129))){}dnl
+__{}define({ZXTEMP_EXP},__HEX_L(ZXTEMP_EXP+129)){}dnl
 __{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
 __{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
-__{}define({ZXTEMP_MANTISSA_2},format({%02x},eval((ZXTEMP_MANTISSA>>16) & 0xFF))){}dnl
-__{}define({ZXTEMP_MANTISSA_3},format({%02x},eval((ZXTEMP_MANTISSA>>8) & 0xFF))){}dnl
-__{}define({ZXTEMP_MANTISSA_4},format({%02x},eval(ZXTEMP_MANTISSA & 0xFF))){}dnl
+__{}define({ZXTEMP_MANTISSA_2},__HEX_E(ZXTEMP_MANTISSA)){}dnl
+__{}define({ZXTEMP_MANTISSA_3},__HEX_H(ZXTEMP_MANTISSA)){}dnl
+__{}define({ZXTEMP_MANTISSA_4},__HEX_L(ZXTEMP_MANTISSA)){}dnl
 }){}dnl
 dnl
 dnl
@@ -83,10 +83,10 @@ __{}__{}ifelse($#,{1},{dnl
 __{}__{}__{}ifelse(eval(($1)<1),{1},{
 __{}__{}__{}__{}    .error {$0}($@): Bad parameter!},
 __{}__{}__{}eval(($1)>51),{1},{define({USE_ZX48FPICK_BC},{})
-__{}__{}__{}__{}    ld   BC, 0x{}format({%04X},eval((-5*($1)) & 0xFFFF))     ; 3:10      $1 fpick  push_zx48fpick($1)   ( F: -- r )
+__{}__{}__{}__{}    ld   BC, __HEX_HL(-5*($1))     ; 3:10      $1 fpick  push_zx48fpick($1)   ( F: -- r )
 __{}__{}__{}__{}    call _ZX48FPICK_BC  ; 3:17      $1 fpick  push_zx48fpick($1)},
 __{}__{}__{}{define({USE_ZX48FPICK_C},{})
-__{}__{}__{}__{}    ld    C, 0x{}format({%02X},eval((-5*($1)) & 0xFF))       ; 2:7       $1 fpick  push_zx48fpick($1)   ( F: -- r )
+__{}__{}__{}__{}    ld    C, __HEX_L(-5*($1))       ; 2:7       $1 fpick  push_zx48fpick($1)   ( F: -- r )
 __{}__{}__{}__{}    call _ZX48FPICK_C   ; 3:17      $1 fpick  push_zx48fpick($1)})},
 __{}__{}{
 __{}__{}    .error zx48fvariable($@): To many parameters!}){}dnl

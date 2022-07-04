@@ -15,9 +15,27 @@ dnl # (123) --> 1
 dnl # ()+() --> 1 fail
 dnl # ()    --> 0
 dnl # other --> 0
-dnl
 define({__IS_MEM_REF},{dnl
 __{}eval(1+regexp({$1},{^\s*(.+)\s*$}))}){}dnl
+dnl
+dnl
+dnl
+dnl # a  --> 1
+dnl # Hl --> 1
+dnl # aF --> 1
+dnl # dh --> 0
+dnl # ix --> 1
+define({__IS_REG},{dnl
+__{}eval(1+regexp({$1},{^\([a-eA-E]\|[Aa][Ff]\|[Bb][Cc]\|[Dd][Ee]\|[Hh][Ll]\|[Ii][Xx]\|[Ii][Yy]\)$}))}){}dnl
+dnl
+dnl
+dnl
+dnl # ld   --> 1
+dnl # Xor  --> 1
+dnl # cP   --> 1
+dnl # jmp  --> 0
+dnl # xchg --> 0
+define({__IS_INSTRUCTION},{eval(1+regexp(translit({$1},{ABCDEFGHIJKLMNOPQRSTUVWXYZ},{abcdefghijklmnopqrstuvwxyz}),{^\(adc\|add\|and\|bit\|call\|ccf\|cp\|cpd\|cpdr\|cpi\|cpir\|cpl\|daa\|dec\|di\|djnz\|ei\|ex\|exx\|halt\|im\|in\|inc\|ind\|indr\|ini\|inir\|jp\|jr\|ld\|ldd\|lddr\|ldi\|ldir\|neg\|nop\|or\|otdr\|otir\|out\|outd\|outi\|pop\|push\|res\|ret\|reti\|retn\|rl\|rla\|rlc\|rlca\|rld\|rr\|rra\|rrc\|rrca\|rrd\|rst\|sbc\|scf\|set\|sla\|sra\|srl\|sub\|xor\)$}))}){}dnl
 dnl
 dnl
 dnl

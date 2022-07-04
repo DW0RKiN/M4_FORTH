@@ -103,7 +103,7 @@ __{}    or    H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval(($1) & 255),{0},{dnl
 __{}                        ;[7:25]     _OF_INFO(push_of($1))   version: lo($1) = 0
-__{}    ld    A, format({0x%02X},eval((($1)>>8) & 0xff))       ; 2:7       _OF_INFO(push_of($1))   hi($1)
+__{}    ld    A, __HEX_H($1)       ; 2:7       _OF_INFO(push_of($1))   hi($1)
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    or    L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},

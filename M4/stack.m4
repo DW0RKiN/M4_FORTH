@@ -519,32 +519,32 @@ __{}define({__L},eval( ($1)      & 0xff)){}dnl
 __{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
 __{}    push HL             ; 1:11      pushdot($1)
 __{}ifelse(eval((__E == __L) && (__D == __L)),{1},{dnl
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, L          ; 1:4       pushdot($1)
 __{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
 __{}eval((__E == __H) && (__D == __H)),{1},{dnl
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, H          ; 1:4       pushdot($1)
 __{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
 __{}eval((__E == __L) && (__D == __H)),{1},{dnl
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, L          ; 1:4       pushdot($1)
 __{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
 __{}eval((__E == __H) && (__D == __L)),{1},{dnl
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
 __{}    ld    E, H          ; 1:4       pushdot($1)
 __{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
 __{}eval((__L == __D) && (__H == __D)),{1},{dnl
-__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
+__{}    ld   DE, __HEX_DE($1)     ; 3:10      pushdot($1)   hi_word
 __{}    ld    L, D          ; 1:4       pushdot($1)
 __{}    ld    H, D          ; 1:4       pushdot($1)   hi word},
 __{}eval((__L == __E) && (__H == __E)),{1},{dnl
-__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
+__{}    ld   DE, __HEX_DE($1)     ; 3:10      pushdot($1)   hi_word
 __{}    ld    L, E          ; 1:4       pushdot($1)
 __{}    ld    H, E          ; 1:4       pushdot($1)   hi word},
 __{}{dnl
-__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      pushdot($1)   hi_word
-__{}    ld   HL, format({0x%04X},eval(($1) & 0xFFFF))     ; 3:10      pushdot($1)   lo_word})})}){}dnl
+__{}    ld   DE, __HEX_DE($1)     ; 3:10      pushdot($1)   hi_word
+__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word})})}){}dnl
 dnl
 dnl
 dnl
@@ -562,53 +562,70 @@ define({PICK},{ifelse($#,{0},,{
     pop  DE             ; 1:10      pick})dnl
 dnl
 dnl
-dnl 0 pick ( a 0 -- a a )
-dnl 1 pick ( b a 1 -- b a b )
-dnl 2 pick ( c b a 2 -- c b a c )
-dnl 3 pick ( d c b a 3 -- d c b a d )
-dnl 4 pick ( e d c b a 4 -- e d c b a e )
-dnl u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu )
-dnl Remove u. Copy the xu to the top of the stack.
-define({PUSH_PICK},{ifelse($#,{0},{.error _push_pick(): Parameter is missing!},
-__{}eval($1),{},{
-    ; warning The condition >>>$1<<< cannot be evaluated
-    push DE             ; 1:11      $1 pick
-    push HL             ; 1:11      $1 pick
-    ld   HL, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:16},{format({%-11s},$1); 3:10})      $1 pick
-    add  HL, HL         ; 1:11      $1 pick
-    add  HL, SP         ; 1:11      $1 pick
-    ld    E,(HL)        ; 1:7       $1 pick
-    inc  HL             ; 1:6       $1 pick
-    ld    D,(HL)        ; 1:7       $1 pick
-    ex   DE, HL         ; 1:4       $1 pick
-    pop  DE             ; 1:10      $1 pick},
-__{}{ifelse(eval($1),{0},{DUP},
-__{}__{}eval($1),{1},{OVER},
-__{}__{}eval($1),{2},{
-__{}    pop  BC             ; 1:10      2 pick
-__{}    push BC             ; 1:11      2 pick
-__{}    push DE             ; 1:11      2 pick
-__{}    ex   DE, HL         ; 1:4       2 pick
-__{}    ld    H, B          ; 1:4       2 pick
-__{}    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c )},
-__{}__{}eval($1),{3},{
-__{}    pop  AF             ; 1:10      3 pick
-__{}    pop  BC             ; 1:10      3 pick
-__{}    push BC             ; 1:11      3 pick
-__{}    push AF             ; 1:11      3 pick
-__{}    push DE             ; 1:11      3 pick
-__{}    ex   DE, HL         ; 1:4       3 pick
-__{}    ld    H, B          ; 1:4       3 pick
-__{}    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )},
-__{}__{}{
+dnl # 0 pick ( a 0 -- a a )
+dnl # 1 pick ( b a 1 -- b a b )
+dnl # 2 pick ( c b a 2 -- c b a c )
+dnl # 3 pick ( d c b a 3 -- d c b a d )
+dnl # 4 pick ( e d c b a 4 -- e d c b a e )
+dnl # u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu )
+dnl # Remove u. Copy the xu to the top of the stack.
+define({PUSH_PICK},{ifelse($#,{0},{
+__{}  .error _push_pick(): Parameter is missing!},
+__IS_MEM_REF($1),{1},{
 __{}    push DE             ; 1:11      $1 pick
-__{}    ex   DE, HL         ; 1:4       $1 pick
-__{}    ld   HL, 0x{}format({%04x},eval(2*($1)-2))     ; 3:10      $1 pick
+__{}    push HL             ; 1:11      $1 pick
+__{}    ld   HL, format({%-11s},$1); 3:16      $1 pick
+__{}    add  HL, HL         ; 1:11      $1 pick
 __{}    add  HL, SP         ; 1:11      $1 pick
-__{}    ld    A,(HL)        ; 1:7       $1 pick
+__{}    ld    E,(HL)        ; 1:7       $1 pick
 __{}    inc  HL             ; 1:6       $1 pick
-__{}    ld    H,(HL)        ; 1:7       $1 pick
-__{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})})dnl
+__{}    ld    D,(HL)        ; 1:7       $1 pick
+__{}    ex   DE, HL         ; 1:4       $1 pick
+__{}    pop  DE             ; 1:10      $1 pick},
+eval($1),{},{
+__{}  ; warning The condition >>>$1<<< cannot be evaluated
+__{}    push DE             ; 1:11      $1 pick
+__{}    push HL             ; 1:11      $1 pick
+__{}    ld   HL, format({%-11s},$1); 3:10      $1 pick
+__{}    add  HL, HL         ; 1:11      $1 pick
+__{}    add  HL, SP         ; 1:11      $1 pick
+__{}    ld    E,(HL)        ; 1:7       $1 pick
+__{}    inc  HL             ; 1:6       $1 pick
+__{}    ld    D,(HL)        ; 1:7       $1 pick
+__{}    ex   DE, HL         ; 1:4       $1 pick
+__{}    pop  DE             ; 1:10      $1 pick},
+{dnl
+__{}ifelse(dnl
+__{}eval($1),{0},{DUP},
+__{}eval($1),{1},{OVER},
+__{}eval($1),{2},{
+__{}__{}                       ;[ 6:44]     2 pick
+__{}__{}    pop  BC             ; 1:10      2 pick
+__{}__{}    push BC             ; 1:11      2 pick
+__{}__{}    push DE             ; 1:11      2 pick
+__{}__{}    ex   DE, HL         ; 1:4       2 pick
+__{}__{}    ld    H, B          ; 1:4       2 pick
+__{}__{}    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c )},
+__{}eval($1),{3},{
+__{}__{}                       ;[ 8:65]     3 pick
+__{}__{}    pop  AF             ; 1:10      3 pick
+__{}__{}    pop  BC             ; 1:10      3 pick
+__{}__{}    push BC             ; 1:11      3 pick
+__{}__{}    push AF             ; 1:11      3 pick
+__{}__{}    push DE             ; 1:11      3 pick
+__{}__{}    ex   DE, HL         ; 1:4       3 pick
+__{}__{}    ld    H, B          ; 1:4       3 pick
+__{}__{}    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )},
+__{}{
+__{}__{}                       ;[10:60]     $1 pick
+__{}__{}    push DE             ; 1:11      $1 pick
+__{}__{}    ex   DE, HL         ; 1:4       $1 pick
+__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      $1 pick
+__{}__{}    add  HL, SP         ; 1:11      $1 pick
+__{}__{}    ld    A,(HL)        ; 1:7       $1 pick
+__{}__{}    inc  HL             ; 1:6       $1 pick
+__{}__{}    ld    H,(HL)        ; 1:7       $1 pick
+__{}__{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})})dnl
 dnl
 dnl
 dnl depth

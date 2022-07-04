@@ -1477,13 +1477,13 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     jp   nc, break{}BEGIN_STACK   ; 3:10      2dup Du< while BEGIN_STACK},
 _TYP_DOUBLE,{small},{
                         ;[17:62]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # small version can be changed with "define({_TYP_DOUBLE},{function})" or default
-    ld    A, format({0x%02x},eval(($1) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK    DEHL>format({0x%08x},eval($1))
+    ld    A, __HEX_L($1)       ; 2:7       2dup $1 > while BEGIN_STACK    DEHL>__HEX_DEHL($1)
     sub   L             ; 1:4       2dup $1 > while BEGIN_STACK    L>A --> A-L<0 --> no carry if false
-    ld    A, format({0x%02x},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_H($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, H          ; 1:4       2dup $1 > while BEGIN_STACK    H>A --> A-H<0 --> no carry if false
-    ld    A, format({0x%02x},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_E($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, E          ; 1:4       2dup $1 > while BEGIN_STACK    E>A --> A-E<0 --> no carry if false
-    ld    A, format({0x%02x},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_D($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, D          ; 1:4       2dup $1 > while BEGIN_STACK    D>A --> A-D<0 --> no carry if false
     rra                 ; 1:4       2dup $1 > while BEGIN_STACK    carry --> sign
     xor   D             ; 1:4       2dup $1 > while BEGIN_STACK    invert signs if negative d1
@@ -1494,21 +1494,21 @@ __{}    jp    m, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK   
 {
 __{}ifelse(eval(($1)&0x80000000),0,{dnl
 __{}                     ;[20:72/18,72] 2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})" or small
-__{}    ld    A, D          ; 1:4       2dup $1 > while BEGIN_STACK    DEHL>format({0x%08x},eval($1))
+__{}    ld    A, D          ; 1:4       2dup $1 > while BEGIN_STACK    DEHL>__HEX_DEHL($1)
 __{}    add   A, A          ; 1:4       2dup $1 > while BEGIN_STACK    check d1 signs
 __{}    jp    c, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK    different signs --> negative d1 --> false},
 __{}{dnl
 __{}                     ;[19:20,69/69] 2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})" or small
-__{}    ld    A, D          ; 1:4       2dup $1 > while BEGIN_STACK    DEHL>format({0x%08x},eval($1))
+__{}    ld    A, D          ; 1:4       2dup $1 > while BEGIN_STACK    DEHL>__HEX_DEHL($1)
 __{}    add   A, A          ; 1:4       2dup $1 > while BEGIN_STACK    check d1 signs
 __{}    jr   nc, $+17       ; 2:7/12    2dup $1 > while BEGIN_STACK    different signs --> positive d1 --> true})
-    ld    A, format({0x%02x},eval(($1) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_L($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sub   L             ; 1:4       2dup $1 > while BEGIN_STACK    L>A --> A-L<0 --> no carry if false
-    ld    A, format({0x%02x},eval((($1)>>8) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_H($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, H          ; 1:4       2dup $1 > while BEGIN_STACK    H>A --> A-H<0 --> no carry if false
-    ld    A, format({0x%02x},eval((($1)>>16) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_E($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, E          ; 1:4       2dup $1 > while BEGIN_STACK    E>A --> A-E<0 --> no carry if false
-    ld    A, format({0x%02x},eval((($1)>>24) & 0xFF))       ; 2:7       2dup $1 > while BEGIN_STACK
+    ld    A, __HEX_D($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, D          ; 1:4       2dup $1 > while BEGIN_STACK    D>A --> A-D<0 --> no carry if false
     jp   nc, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK})}){}dnl
 dnl
