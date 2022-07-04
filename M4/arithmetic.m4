@@ -222,11 +222,11 @@ __{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    dec  H              ; 1:4       $1 -
 __{}    dec  H              ; 1:4       $1 -},
 __{}eval((-($1)) & 0xFF),{0},{
-__{}    ld    A, format({0x%02X},eval(((-($1))>>8) & 0xFF))       ; 2:7       $1 -   ( x -- x-__HEX_HL($1) )
+__{}    ld    A, __HEX_H(-($1))       ; 2:7       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    add   A, H          ; 1:4       $1 -
 __{}    ld    H, A          ; 1:4       $1 -},
 __{}{
-__{}    ld   BC, format({0x%04X},eval(-($1) & 0xFFFF))     ; 3:10      $1 -   ( x -- x-__HEX_HL($1) )
+__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      $1 -   ( x -- x-__HEX_HL($1) )
 __{}    add  HL, BC         ; 1:11      $1 -})})})dnl
 dnl
 dnl
@@ -745,7 +745,7 @@ __{}__{}    inc   L             ; 1:4       $1 C+},
 __{}__{}{ifelse(eval((((($1) | 255) + 1) > 256) || (($1 + 256) < 128)),{1},{dnl
 __{}__{}__{}    ; warning {$0}($@): Parameter $1 exceeds one byte limit!
 __{}__{}__{}})dnl
-__{}__{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       $1 C+   ( d -- d+$1 )
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 C+   ( d -- d+$1 )
 __{}__{}    add   A, L          ; 1:4       $1 C+
 __{}__{}    ld    L, A          ; 1:4       $1 C+}){}dnl
 })})dnl
@@ -992,11 +992,11 @@ __{}__{}    inc   D             ; 1:4       $1 D+   ( d -- d+3*2^24 )
 __{}__{}    inc   D             ; 1:4       $1 D+
 __{}__{}    inc   D             ; 1:4       $1 D+},
 __{}__{}eval(($1) & 0xFFFFFF),{0},{dnl
-__{}__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       $1 D+   ( d -- d+$1 )
+__{}__{}    ld    A, __HEX_D($1)       ; 2:7       $1 D+   ( d -- d+$1 )
 __{}__{}    add   A, D          ; 1:4       $1 D+
 __{}__{}    ld    D, A          ; 1:4       $1 D+},
 __{}__{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}    ld   BC, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 D+
+__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1 D+
 __{}__{}    ex   DE, HL         ; 1:4       $1 D+
 __{}__{}    add  HL, BC         ; 1:11      $1 D+
 __{}__{}    ex   DE, HL         ; 1:4       $1 D+},
@@ -1235,7 +1235,7 @@ __{}__{}    dec   D             ; 1:4       $1 D-
 __{}__{}    dec   D             ; 1:4       $1 D-},
 __{}__{}eval(($1) & 0xFFFFFF),{0},{dnl
 __{}__{}    ld    A, D          ; 1:4       $1 D-   ( d -- d-($1) )
-__{}__{}    sub  format({0x%02X},eval((($1)>>24) & 0xFF))           ; 2:7       $1 D-   ( d -- d-($1) )
+__{}__{}    sub  __HEX_D($1)           ; 2:7       $1 D-   ( d -- d-($1) )
 __{}__{}    ld    D, A          ; 1:4       $1 D-},
 __{}__{}eval(($1) & 0xFFFF),{0},{dnl
 __{}__{}    ld   BC, format({0x%04X},eval(0x10000-(($1)>>16) & 0xFFFF))     ; 3:10      $1 D-   ( d -- d-($1) )
@@ -1313,21 +1313,21 @@ eval($1),{},{dnl
 {
 __{}                        ;[23:62/82] $1 dmax
 __{}    ld    A, L          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
-__{}    sub   format({0x%02X},eval(($1) & 0xFF))          ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sub   __HEX_L($1)          ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, H          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    sbc   A, __HEX_H($1)       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, E          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
-__{}    sbc   A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, __HEX_E($1)       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, D          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
-__{}    sbc   A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
+__{}    sbc   A, __HEX_D($1)       ; 2:7       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    rra                 ; 1:4       $1 dmax   carry --> sign
 __{}    xor   D             ; 1:4       $1 dmax
 __{}ifelse(eval(($1)<0),{1},{dnl
-__{}__{}    jp    m, $+9        ; 3:10      $1 dmax   negative constant format({0x%08X},eval($1))},
+__{}__{}    jp    m, $+9        ; 3:10      $1 dmax   negative constant __HEX_DEHL($1)},
 __{}{dnl
-__{}__{}    jp    p, $+9        ; 3:10      $1 dmax   positive constant format({0x%08X},eval($1))})
+__{}__{}    jp    p, $+9        ; 3:10      $1 dmax   positive constant __HEX_DEHL($1)})
 __{}    ld   HL, __HEX_HL($1)     ; 3:10      $1 dmax
-__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 dmax}){}dnl
+__{}    ld   DE, __HEX_DE($1)     ; 3:10      $1 dmax}){}dnl
 })dnl
 dnl
 dnl
@@ -1370,22 +1370,22 @@ eval($1),{},{dnl
     .error {$0}($@): M4 does not know $1 parameter value!},
 {dnl
 __{}                        ;[23:62/82] $1 dmin
-__{}    ld    A, format({0x%02X},eval(($1) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, __HEX_L($1)       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sub   L             ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    ld    A, __HEX_H($1)       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, H          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
-__{}    ld    A, format({0x%02X},eval((($1)>>16) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, __HEX_E($1)       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, E          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
-__{}    ld    A, format({0x%02X},eval((($1)>>24) & 0xFF))       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
+__{}    ld    A, __HEX_D($1)       ; 2:7       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, D          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    rra                 ; 1:4       $1 dmin
 __{}    xor   D             ; 1:4       $1 dmin
 __{}ifelse(eval(($1)<0),{1},{dnl
-__{}__{}    jp    m, $+9        ; 3:10      $1 dmin   negative constant format({0x%08X},eval($1))},
+__{}__{}    jp    m, $+9        ; 3:10      $1 dmin   negative constant __HEX_DEHL($1)},
 __{}{dnl
-__{}__{}    jp    p, $+9        ; 3:10      $1 dmin   positive constant format({0x%08X},eval($1))})
+__{}__{}    jp    p, $+9        ; 3:10      $1 dmin   positive constant __HEX_DEHL($1)})
 __{}    ld   HL, __HEX_HL($1)     ; 3:10      $1 dmin
-__{}    ld   DE, format({0x%04X},eval((($1)>>16) & 0xFFFF))     ; 3:10      $1 dmin}){}dnl
+__{}    ld   DE, __HEX_DE($1)     ; 3:10      $1 dmin}){}dnl
 })dnl
 dnl
 dnl

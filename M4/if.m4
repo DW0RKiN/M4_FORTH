@@ -1099,7 +1099,7 @@ __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}ifelse(_TYP_SINGLE,{small},{dnl
 __{}__{}__{}                        ;[10:43]    $1 <> if   variant: lo($1) = 255
 __{}__{}__{}    ld    A, H          ; 1:4       $1 <> if
-__{}__{}__{}    xor  format({0x%02X},eval(((($1)>>8) & 0xFF) ^ 0xFF))           ; 2:7       $1 <> if
+__{}__{}__{}    xor  __HEX_H(($1)^0xFFFF)           ; 2:7       $1 <> if
 __{}__{}__{}    and   L             ; 1:4       $1 <> if
 __{}__{}__{}    inc   A             ; 1:4       $1 <> if
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
@@ -1118,7 +1118,7 @@ __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}ifelse(_TYP_SINGLE,{small},{dnl
 __{}__{}__{}                        ;[10:43]    $1 <> if   variant: hi($1) = 255
 __{}__{}__{}    ld    A, L          ; 1:4       $1 <> if
-__{}__{}__{}    xor  format({0x%02X},eval((($1) & 0xFF) ^ 0xFF))           ; 2:7       $1 <> if
+__{}__{}__{}    xor  __HEX_L(($1)^0xFF)           ; 2:7       $1 <> if
 __{}__{}__{}    and   H             ; 1:4       $1 <> if
 __{}__{}__{}    inc   A             ; 1:4       $1 <> if
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
@@ -1997,7 +1997,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
 __{}define({_TMP_INFO},{2dup $1 D= if})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) == DEHL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) == DEHL})dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2040,7 +2040,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
 __{}define({_TMP_INFO},{2dup $1 D<> if})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   format({0x%08X},eval($1)) <> DEHL})dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) <> DEHL})dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
