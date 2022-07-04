@@ -662,9 +662,9 @@ eval($#>1),{1},{
 __{}.error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}define({_TMP_INFO},{dup $1 = while BEGIN_STACK})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL})
-__{}__EQ_MAKE_CODE($1,3,10,break{}BEGIN_STACK,0)dnl
-__{}__EQ_CODE
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL})dnl
+__{}__EQ_MAKE_BEST_CODE($1,3,10,break{}BEGIN_STACK,0)
+__{}_TMP_BEST_CODE
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
@@ -679,9 +679,9 @@ eval($#>1),{1},{
 __{}.error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}define({_TMP_INFO},{dup $1 <> while BEGIN_STACK})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL})
-__{}__EQ_MAKE_CODE($1,3,10,3,-10)dnl
-__{}__EQ_CODE
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL})dnl
+__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10)
+__{}_TMP_BEST_CODE
 __{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
