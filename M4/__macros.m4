@@ -902,9 +902,26 @@ __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
 __{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10     _TMP_INFO
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
 __{}__{}__{}    inc   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})})},
+__{}eval(__N2==(__N1-1 & 0xFF)),{1},{dnl
+__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}__{}define({_TMP_B2},4){}dnl
+__{}__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({__EQ_CODE_2},{
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})},
+__{}__{}{dnl
+__{}__{}__{}define({_TMP_B2},5){}dnl
+__{}__{}__{}define({_TMP_T2},18){}dnl
+__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({__EQ_CODE_2},{
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
+__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})})},
 __{}eval(__N2==(__N1+__N1 & 0xFF)),{1},{dnl
 __{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
