@@ -519,84 +519,6 @@ __{}.error {$0} for non-existent {BEGIN}},
     jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})})dnl
 dnl
 dnl
-dnl
-dnl ------ dup const ucond while ( b a -- b a ) ---------
-dnl
-define({DUP_PUSH_UEQ_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-{
-    ld    A, low format({%-7s},$1); 2:7       dup $1 u= while BEGIN_STACK
-    xor   L             ; 1:4       dup $1 u= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK
-    ld    A, high format({%-6s},$1); 2:7       dup $1 u= while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 u= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 u= while BEGIN_STACK})})dnl
-dnl
-dnl
-define({DUP_PUSH_UNE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-{
-    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> while BEGIN_STACK
-    xor   L             ; 1:4       dup $1 u<> while BEGIN_STACK
-    jr   nz, $+8        ; 2:7/12    dup $1 u<> while BEGIN_STACK
-    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> while BEGIN_STACK
-    xor   H             ; 1:4       dup $1 u<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      dup $1 u<> while BEGIN_STACK})})dnl
-dnl
-dnl
-define({DUP_PUSH_ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-{
-    ld    A, L          ; 1:4       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-    sub   low format({%-10s},$1); 2:7       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-    ld    A, H          ; 1:4       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-    sbc   A, high format({%-6s},$1); 2:7       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u< while BEGIN_STACK})})dnl
-dnl
-dnl
-define({DUP_PUSH_UGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-{
-    ld    A, L          ; 1:4       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-    sub   low format({%-10s},$1); 2:7       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-    ld    A, H          ; 1:4       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-    sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u>= while BEGIN_STACK})})dnl
-dnl
-dnl
-define({DUP_PUSH_ULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-{
-    ld    A, low format({%-7s},$1); 2:7       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-    sub   L             ; 1:4       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-    ld    A, high format({%-6s},$1); 2:7       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-    sbc   A, H          ; 1:4       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u<= while BEGIN_STACK})})dnl
-dnl
-dnl
-define({DUP_PUSH_UGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-{
-    ld    A, low format({%-7s},$1); 2:7       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-    sub   L             ; 1:4       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-    ld    A, high format({%-6s},$1); 2:7       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-    sbc   A, H          ; 1:4       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u> while BEGIN_STACK})})dnl
-dnl
-dnl
-dnl
 dnl # ----------------------- 16 bit -----------------------
 dnl # ------- dup const scond while ( b a -- b a ) ---------
 dnl
@@ -817,6 +739,65 @@ __{}__IF({($1) & 0x8000},{dnl
 __{}__{}    jp    m, break101   ; 3:10      dup $1 > while 101    negative constant --> sign if false},
 __{}{dnl
 __{}__{}    jp    p, break101   ; 3:10      dup $1 > while 101    positive constant --> no sign if false})})})dnl
+dnl
+dnl
+dnl
+dnl ------ dup const ucond while ( b a -- b a ) ---------
+dnl
+dnl
+dnl
+define({DUP_PUSH_UEQ_WHILE},{DUP_PUSH_EQ_WHILE})dnl
+dnl
+dnl
+define({DUP_PUSH_UNE_WHILE},{DUP_PUSH_NE_WHILE})})dnl
+dnl
+dnl
+define({DUP_PUSH_ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+{
+    ld    A, L          ; 1:4       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
+    sub   low format({%-10s},$1); 2:7       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
+    ld    A, H          ; 1:4       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
+    sbc   A, high format({%-6s},$1); 2:7       dup $1 u< while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
+    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u< while BEGIN_STACK})})dnl
+dnl
+dnl
+define({DUP_PUSH_UGE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+{
+    ld    A, L          ; 1:4       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
+    sub   low format({%-10s},$1); 2:7       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
+    ld    A, H          ; 1:4       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
+    sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u>= while BEGIN_STACK})})dnl
+dnl
+dnl
+define({DUP_PUSH_ULE_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
+    sub   L             ; 1:4       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
+    sbc   A, H          ; 1:4       dup $1 u<= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
+    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 u<= while BEGIN_STACK})})dnl
+dnl
+dnl
+define({DUP_PUSH_UGT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+{
+    ld    A, low format({%-7s},$1); 2:7       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
+    sub   L             ; 1:4       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
+    ld    A, high format({%-6s},$1); 2:7       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
+    sbc   A, H          ; 1:4       dup $1 u> while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
+    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 u> while BEGIN_STACK})})dnl
 dnl
 dnl
 dnl

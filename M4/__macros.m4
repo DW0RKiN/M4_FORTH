@@ -244,6 +244,17 @@ __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_IN
 __{}__{}    add   A{,} __R3          ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] + x[3]})},
 __{}dnl
+__{}dnl c/2 c - -
+__{}dnl
+__{}eval(__N4==(__N3/2)),{1},{dnl
+__{}__{}define({_TMP_B4},4){}dnl
+__{}__{}define({_TMP_T4},15){}dnl
+__{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_4},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    rra                 ; 1:4       _TMP_INFO
+__{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3]/2})},
+__{}dnl
 __{}dnl   default version
 __{}{dnl
 __{}__{}define({_TMP_B4},5){}dnl
@@ -430,6 +441,17 @@ __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_IN
 __{}__{}    add   A{,} __R2          ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] + x[2]})},
 __{}dnl
+__{}dnl - b+b b -
+__{}dnl
+__{}eval(__N3==(__N2/2)),{1},{dnl
+__{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
+__{}__{}define({_TMP_T3},15){}dnl
+__{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_3},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    rra                 ; 1:4       _TMP_INFO
+__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2]/2})},
+__{}dnl
 __{}dnl  default version
 __{}{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+5)){}dnl
@@ -595,6 +617,17 @@ __{}__{}define({__DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R1          ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})},
+__{}dnl
+__{}dnl - - a/2 a
+__{}dnl
+__{}eval(__N2==(__N1/2)),{1},{dnl
+__{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
+__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_2},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    rra                 ; 1:4       _TMP_INFO
+__{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})},
 __{}dnl
 __{}dnl - - - -     default version
 __{}{dnl
@@ -1182,41 +1215,6 @@ __{}__{}__{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
 __{}__{}__{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
 __{}__{}__{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
 __{}__{}__{}define({_TMP_BEST_CODE},__EQ_CODE)})})})}){}dnl
-dnl
-dnl
-dnl
-dnl # dup const = if
-define({TEST_DUP_PUSH_EQ_IF},{dnl
-__{}define({IF_COUNT}, incr(IF_COUNT))dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)dnl
-__{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
-__{}{dnl
-__{}__{}define({_TMP_INFO},{dup $1 = if})dnl
-__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL})dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,else{}IF_COUNT,0)
-__{}__{}_TMP_BEST_CODE
-__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
-dnl
-dnl
-dnl # dup const <> if
-define({TEST_DUP_PUSH_NE_IF},{dnl
-__{}define({IF_COUNT}, incr(IF_COUNT))dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)dnl
-__{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
-__{}{dnl
-__{}__{}define({_TMP_INFO},{dup $1 <> if})dnl
-__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL})dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10)
-__{}__{}_TMP_BEST_CODE
-__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
