@@ -392,7 +392,8 @@ do
     sed 's#^\([^;{]*\s\|^\)OVER\s\+SWAP\(\s\|$\)#\1OVER_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2OVER\(\s\|$\)#\1_2OVER\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2OVER\s\+_2OVER\(\s\|$\)#\1_4DUP\2#gi' |
-
+    sed 's#^\([^;{]*\s\|^\)[+]*[0]*3\s\+PICK\s\+[+]*[0]*3\s\+PICK\s\+[+]*[0]*3\s\+PICK\s\+[+]*[0]*3\s\+PICK\(\s\|$\)#\1_4DUP\2#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
     sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\(\s\|$\)#\1NROT_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)ROT\s\+DROP\s\+SWAP\(\s\|$\)#\1NROT_NIP\2#gi' |
@@ -516,10 +517,14 @@ do
     sed 's#^\([^;{]*\s\|^\)_2SWAP\s\+DGE\(\s\|$\)#\1DLE\2#g' |
     sed 's#^\([^;{]*\s\|^\)_2SWAP\s\+DGT\(\s\|$\)#\1DLT\2#g' |
     
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*[0-9]\+\)\.\s\+DEQ\(\s\|$\)#\1_2DUP_PUSHDOT_DEQ(\2)\3#g' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*[0-9]\+\)\.\s\+DNE\(\s\|$\)#\1_2DUP_PUSHDOT_DNE(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*[0-9]\+\)\.\s\+DLT\(\s\|$\)#\1_2DUP_PUSHDOT_DLT(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*[0-9]\+\)\.\s\+DLE\(\s\|$\)#\1_2DUP_PUSHDOT_DLE(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*[0-9]\+\)\.\s\+DGE\(\s\|$\)#\1_2DUP_PUSHDOT_DGE(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*[0-9]\+\)\.\s\+DGT\(\s\|$\)#\1_2DUP_PUSHDOT_DGT(\2)\3#g' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*0[Xx][0-9a-fA-F]\+\)\.\s\+DEQ\(\s\|$\)#\1_2DUP_PUSHDOT_DEQ(\2)\3#g' |
+    sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*0[Xx][0-9a-fA-F]\+\)\.\s\+DNE\(\s\|$\)#\1_2DUP_PUSHDOT_DNE(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*0[Xx][0-9a-fA-F]\+\)\.\s\+DLT\(\s\|$\)#\1_2DUP_PUSHDOT_DLT(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*0[Xx][0-9a-fA-F]\+\)\.\s\+DLE\(\s\|$\)#\1_2DUP_PUSHDOT_DLE(\2)\3#g' |
     sed 's#^\([^;{]*\s\|^\)_2DUP\s\+\([-+]*0[Xx][0-9a-fA-F]\+\)\.\s\+DGE\(\s\|$\)#\1_2DUP_PUSHDOT_DGE(\2)\3#g' |
@@ -712,8 +717,9 @@ do
     sed 's#^\([^;{]*\s\|^\)\([0-9]\+\)\(\s\+\)MOVE\(\s\|$\)#\1PUSH(2*(\2))\3CMOVE\4#g' |
     sed 's#^\([^;{]*\s\|^\)\([0-9]\+\)\(\s\+\)MOVEGT\(\s\|$\)#\1PUSH(2*(\2))\3CMOVEGT\4#g' |
 
+    sed 's#^\([^;{]*\s\|^\)[+]*[0]*2\s\+PICK\s\+[+]*[0]*2\s\+PICK\s\+[+]*[0]*2\s\+PICK\(\s\|$\)#\1_3DUP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+]*[0-9][0-9]*\)\s\+PICK\(\s\|$\)#\1PUSH_PICK(\2)\3#gi' |
-
+    
     sed 's#^\([^;{]*\s\|^\)_0EQ\s\+UNTIL\(\s\|$\)#\1_0EQ_UNTIL\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)DUP\s\+UNTIL\(\s\|$\)#\1DUP_UNTIL\2#gi' |
