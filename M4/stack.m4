@@ -431,23 +431,23 @@ dnl -rot 2swap
 dnl ( d c b a -- c b d a )
 dnl 4th --> 2th
 define({NROT_2SWAP},{
-                        ;[6:50]     nrot_2swap ( d c b a -- c b d a )
-    pop  AF             ; 1:10      nrot_2swap d   . b a    AF = c
+                        ;[6:50]     nrot_2swap   ( d c b a -- c b d a )
+    pop  AF             ; 1:10      nrot_2swap   d   . b a    AF = c
     ld    B, D          ; 1:4       nrot_2swap
-    ld    C, E          ; 1:4       nrot_2swap              BC = b
-    pop  DE             ; 1:10      nrot_2swap     . d a
-    push AF             ; 1:11      nrot_2swap c   . d a
-    push BC             ; 1:11      nrot_2swap c b . d a})dnl
+    ld    C, E          ; 1:4       nrot_2swap                BC = b
+    pop  DE             ; 1:10      nrot_2swap       . d a
+    push AF             ; 1:11      nrot_2swap   c   . d a
+    push BC             ; 1:11      nrot_2swap   c b . d a})dnl
 dnl
 dnl
 dnl nrot swap 2swap swap
 dnl ( d c b a -- b c a d )
 define({STACK_BCAD},{
-                        ;[4:44]     stack_bcad ( d c b a -- b c a d )
-    ex   DE, HL         ; 1:4       stack_bcad d c a b
-    pop  AF             ; 1:10      stack_bcad AF = c
-    ex  (SP), HL        ; 1:19      stack_bcad b a d
-    push AF             ; 1:11      stack_bcad b c a d })dnl
+                        ;[4:44]     stack_bcad   ( d c b a -- b c a d )
+    ex   DE, HL         ; 1:4       stack_bcad   d c a b
+    pop  AF             ; 1:10      stack_bcad   AF = c
+    ex  (SP), HL        ; 1:19      stack_bcad   b a d
+    push AF             ; 1:11      stack_bcad   b c a d })dnl
 dnl
 dnl
 dnl 2 pick 2 pick swap
@@ -457,32 +457,68 @@ dnl over 2over drop
 dnl      ( c b a -- c b a b c )
 dnl -- c b a b c )
 define({STACK_CBABC},{
-                        ;[6:51]     stack_cbabc ( c b a -- c b a b c )
-    pop  BC             ; 1:10      stack_cbabc BC = c
+                        ;[6:51]     stack_cbabc   ( c b a -- c b a b c )
+    pop  BC             ; 1:10      stack_cbabc   BC = c
     push BC             ; 1:11      stack_cbabc
-    push DE             ; 1:11      stack_cbabc c b b a
-    push HL             ; 1:11      stack_cbabc c b a b a
+    push DE             ; 1:11      stack_cbabc   c b b a
+    push HL             ; 1:11      stack_cbabc   c b a b a
     ld    H, B          ; 1:4       stack_cbabc
-    ld    L, C          ; 1:4       stack_cbabc c b a b c})dnl
+    ld    L, C          ; 1:4       stack_cbabc   c b a b c})dnl
+dnl
+dnl
+dnl 3dup rot
+dnl        ( c b a -- c b a b a c )
+dnl -- c b a b a c )
+define({STACK_CBABAC},{
+                        ;[8:66]     stack_cbabc   ( c b a -- c b a b a c )
+    pop  BC             ; 1:10      stack_cbabc   BC = c
+    push BC             ; 1:11      stack_cbabc   c . . . b a
+    push DE             ; 1:11      stack_cbabc   c b . . b a
+    push HL             ; 1:11      stack_cbabc   c b a . b a
+    push DE             ; 1:11      stack_cbabc   c b a b b a
+    ex   DE, HL         ; 1:4       stack_cbabc   c b a b a b
+    ld    H, B          ; 1:4       stack_cbabc   c b a b a -
+    ld    L, C          ; 1:4       stack_cbabc   c b a b a c})dnl
+dnl
+dnl
+define({_3DUP_ROT},{STACK_CBABAC}){}dnl
+dnl
+dnl
+dnl 3dup -rot
+dnl        ( c b a -- c b a a c b )
+dnl -- c b a a c b )
+define({STACK_CBAACB},{
+                        ;[8:66]     stack_cbabc   ( c b a -- c b a a c b )
+    pop  BC             ; 1:10      stack_cbabc   BC = c
+    push BC             ; 1:11      stack_cbabc   c . . . b a
+    push DE             ; 1:11      stack_cbabc   c b . . b a
+    push HL             ; 1:11      stack_cbabc   c b a . b a
+    push HL             ; 1:11      stack_cbabc   c b a a b a
+    ex   DE, HL         ; 1:4       stack_cbabc   c b a a a b
+    ld    D, B          ; 1:4       stack_cbabc   c b a a - b
+    ld    E, C          ; 1:4       stack_cbabc   c b a a c b})dnl
+dnl
+dnl
+define({_3DUP_NROT},{STACK_CBAACB}){}dnl
 dnl
 dnl
 dnl ( f e d c b a -- b a f e d c )
 define({N2ROT},{
-                        ;[14:123]   n2rot ( f e d c b a -- b a f e d c )
-    pop  BC             ; 1:10      n2rot f e d     . b a   BC = c
-    pop  AF             ; 1:10      n2rot f e       . b a   AF = d
-    ex   AF, AF'        ; 1:4       n2rot f e       . b a
-    pop  AF             ; 1:10      n2rot f         . b a   AF'= e
-    ex   DE, HL         ; 1:4       n2rot f         . a b
-    ex  (SP),HL         ; 1:19      n2rot b         . a f
-    push DE             ; 1:11      n2rot b a       . a f
-    push HL             ; 1:11      n2rot b a f     . a f
-    push AF             ; 1:11      n2rot b a f e   . a f
-    ex   AF, AF'        ; 1:4       n2rot b a f e   . a f
-    push AF             ; 1:11      n2rot b a f e d . a f
-    pop  DE             ; 1:10      n2rot b a f e   . d f
-    ld    H, B          ; 1:4       n2rot b a f e   . d -
-    ld    L, C          ; 1:4       n2rot b a f e   . d c})dnl
+                        ;[14:123]   n2rot   ( f e d c b a -- b a f e d c )
+    pop  BC             ; 1:10      n2rot   f e d     . b a   BC = c
+    pop  AF             ; 1:10      n2rot   f e       . b a   AF = d
+    ex   AF, AF'        ; 1:4       n2rot   f e       . b a
+    pop  AF             ; 1:10      n2rot   f         . b a   AF'= e
+    ex   DE, HL         ; 1:4       n2rot   f         . a b
+    ex  (SP),HL         ; 1:19      n2rot   b         . a f
+    push DE             ; 1:11      n2rot   b a       . a f
+    push HL             ; 1:11      n2rot   b a f     . a f
+    push AF             ; 1:11      n2rot   b a f e   . a f
+    ex   AF, AF'        ; 1:4       n2rot   b a f e   . a f
+    push AF             ; 1:11      n2rot   b a f e d . a f
+    pop  DE             ; 1:10      n2rot   b a f e   . d f
+    ld    H, B          ; 1:4       n2rot   b a f e   . d -
+    ld    L, C          ; 1:4       n2rot   b a f e   . d c})dnl
 dnl
 dnl
 dnl ( -- a )
