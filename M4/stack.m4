@@ -16,9 +16,9 @@ dnl ( b a -- a b 3 )
 define({SWAP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push HL             ; 1:11      swap $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      swap $1 ( b a -- a b $1 )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    push HL             ; 1:11      swap1
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      swap1 ( b a -- a b1 )})dnl
 dnl
 dnl
 dnl 3 swap
@@ -26,9 +26,9 @@ dnl ( a -- 3 a )
 define({PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 swap
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    push DE             ; 1:11     1 swap
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})     1 swap ( a --1 a )})dnl
 dnl
 dnl
 dnl dup 3 swap
@@ -36,10 +36,10 @@ dnl ( a -- a 3 a )
 define({DUP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      dup $1 swap
-    push HL             ; 1:11      dup $1 swap
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    push DE             ; 1:11      dup1 swap
+    push HL             ; 1:11      dup1 swap
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      dup1 swap ( a -- a1 a )})dnl
 dnl
 dnl
 dnl swap drop 3 swap
@@ -47,8 +47,8 @@ dnl ( b a -- 3 a )
 define({SWAP_DROP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      swap drop $1 swap ( b a -- $1 a )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      swap drop1 swap ( b a --1 a )})dnl
 dnl
 dnl
 dnl nip 3 swap
@@ -56,8 +56,8 @@ dnl ( b a -- 3 a )
 define({NIP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      nip $1 swap ( b a -- $1 a )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      nip1 swap ( b a --1 a )})dnl
 dnl
 dnl
 dnl ( d c b a -- b a d c )
@@ -104,7 +104,7 @@ dnl vytvori kopii vrcholu zasobniku pokud je nenulovy
 define({QUESTIONDUP},{
     ld    A, H          ; 1:4       ?dup
     or    L             ; 1:4       ?dup
-    jr    z, $+5        ; 2:7/12    ?dup
+    jr    z,+5        ; 2:7/12    ?dup
     push DE             ; 1:11      ?dup
     ld    D, H          ; 1:4       ?dup
     ld    E, L          ; 1:4       ?dup ( a -- 0 | a a )})dnl
@@ -118,21 +118,24 @@ define({_2DUP},{
     push HL             ; 1:11      2dup  ( b a -- b a b a )})dnl
 dnl
 dnl
-dnl 3dup
-dnl ( c b a -- c b a c b a )
 dnl 2 pick 2 pick 2 pick
+dnl 3dup
+dnl        ( c b a -- c b a c b a )
+dnl -- c b a c b a )
 define({_3DUP},{
-    pop  AF             ; 1:10      3dup
-    push AF             ; 1:11      3dup
-    push DE             ; 1:11      3dup
-    push HL             ; 1:11      3dup   ( c b a -- c b a c b a )})dnl
+                        ;[5:54]     3dup ( c b a -- c b a c b a )
+    pop  AF             ; 1:10      3dup . . . . b a
+    push AF             ; 1:11      3dup c . . . b a
+    push DE             ; 1:11      3dup c b . . b a
+    push HL             ; 1:11      3dup c b a . b a
+    push AF             ; 1:11      3dup c b a c b a})dnl
 dnl
 dnl
+dnl 2over 2over
+dnl 3 pick 3 pick 3 pick 3 pick
 dnl 4dup
-dnl 4 pick 4 pick 4 pick 4 pick
 dnl ( d c b a  --  d c b a d c b a )
 dnl ( d2 d1 -- d2 d1 d2 d1 )
-dnl over over
 define({_4DUP},{
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
@@ -143,6 +146,55 @@ define({_4DUP},{
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup})dnl
+dnl
+dnl
+dnl 5dup
+dnl 4 pick 4 pick 4 pick 4 pick 4 pick
+dnl ( e d c b a  --  e d c b a e d c b a )
+dnl ( x d2 d1 -- x d2 d1 x d2 d1 )
+define({_5DUP},{
+                       ;[15:134]    5dup   ( e d c b a -- e d c b a e d c b a )
+    pop  BC             ; 1:10      5dup   e d . . . . . . b a
+    pop  AF             ; 1:10      5dup   e . . . . . . . b a
+    ex   AF, AF'        ; 1:4       5dup
+    pop  AF             ; 1:10      5dup   . . . . . . . . b a
+    push AF             ; 1:11      5dup   e . . . . . . . b a
+    ex   AF, AF'        ; 1:4       5dup
+    push AF             ; 1:11      5dup   e d . . . . . . b a
+    push BC             ; 1:11      5dup   e d c . . . . . b a
+    push DE             ; 1:11      5dup   e d c b . . . . b a
+    push HL             ; 1:11      5dup   e d c b a . . . b a
+    ex   AF, AF'        ; 1:4       5dup
+    push AF             ; 1:11      5dup   e d c b a e . . b a
+    ex   AF, AF'        ; 1:4       5dup
+    push AF             ; 1:11      5dup   e d c b a e d . b a
+    push BC             ; 1:11      5dup   e d c b a e d c b a})dnl
+dnl
+dnl
+dnl 6dup
+dnl 5 pick 5 pick 5 pick 5 pick 5 pick 5 pick
+dnl ( f e d c b a  --  f e d c b a f e d c b a )
+dnl ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )
+define({_6DUP},{
+                       ;[18:166]    6dup   ( e d c b a -- e d c b a e d c b a )
+    pop  BC             ; 1:10      6dup   f e d . . . . . . . b a
+    exx                 ; 1:4       6dup
+    pop  AF             ; 1:10      6dup   f e . . . . . . . . - -
+    pop  BC             ; 1:10      6dup   f . . . . . . . . . - -
+    pop  DE             ; 1:10      6dup   . . . . . . . . . . - -
+    push DE             ; 1:11      6dup   f . . . . . . . . . - -
+    push BC             ; 1:11      6dup   f e . . . . . . . . - -
+    push AF             ; 1:11      6dup   f e d . . . . . . . - -
+    exx                 ; 1:4       6dup
+    push BC             ; 1:11      6dup   f e d c . . . . . . b a
+    push DE             ; 1:11      6dup   f e d c b . . . . . b a
+    push HL             ; 1:11      6dup   f e d c b a . . . . b a
+    exx                 ; 1:4       6dup
+    push DE             ; 1:11      6dup   f e d c b a f . . . - -
+    push BC             ; 1:11      6dup   f e d c b a f e . . - -
+    push AF             ; 1:11      6dup   f e d c b a f e d . - -
+    exx                 ; 1:4       6dup
+    push BC             ; 1:11      6dup   f e d c b a f e d c b a})dnl
 dnl
 dnl
 dnl ( a -- )
@@ -219,10 +271,10 @@ dnl ( a -- a 3 a )
 define({PUSH_OVER},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 over
-    push HL             ; 1:11      $1 over
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    push DE             ; 1:11     1 over
+    push HL             ; 1:11     1 over
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})     1 over ( a -- a1 a )})dnl
 dnl
 dnl
 dnl over 3
@@ -230,10 +282,10 @@ dnl ( b a -- b a b 3 )
 define({OVER_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      over $1
-    push HL             ; 1:11      over $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      over $1 ( b a -- b a b $1 )})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    push DE             ; 1:11      over1
+    push HL             ; 1:11      over1
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      over1 ( b a -- b a b1 )})dnl
 dnl
 dnl
 dnl ( d c b a -- d c b a d c )
@@ -249,6 +301,53 @@ define({_2OVER},{
     ex  (SP),HL         ; 1:19      2over d c b a . b c
     ld    D, B          ; 1:4       2over
     ld    E, C          ; 1:4       2over d c b a . d c})dnl
+dnl
+dnl
+dnl ( f e d c b a -- f e d c b a f e d )
+dnl Copy cell pair "f e d" to the top of the stack.
+define({_3OVER},{ifelse(_TYP_SINGLE,{small},{
+                       ;[19:175]    3over ( f e d c b a -- f e d c b a f e d )   small version
+    push DE             ; 1:11      3over f e d c b . . b a
+    push HL             ; 1:11      3over f e d c b a . b a
+    exx                 ; 1:4       3over f e d c b a . - -
+    pop  AF             ; 1:10      3over f e d c b . . - -    AF = a
+    pop  BC             ; 1:10      3over f e d c . . . - -    BC'= b
+    pop  DE             ; 1:10      3over f e d . . . . - -    DE'= c
+    exx                 ; 1:4       3over f e d . . . . b a
+    pop  HL             ; 1:10      3over f e . . . . . b d    HL = d
+    pop  DE             ; 1:10      3over f . . . . . . e d    DE = e
+    pop  BC             ; 1:10      3over . . . . . . . e d    BC = f
+    push BC             ; 1:11      3over f . . . . . . e d
+    push DE             ; 1:11      3over f e . . . . . e d
+    push HL             ; 1:11      3over f e d . . . . e d
+    exx                 ; 1:4       3over f e d . . . . - -
+    push DE             ; 1:11      3over f e d c . . . - -
+    push BC             ; 1:11      3over f e d c b . . - -
+    push AF             ; 1:11      3over f e d c b a . - -
+    exx                 ; 1:4       3over f e d c b a . e d
+    push BC             ; 1:11      3over f e d c b a f e d},
+{
+                       ;[20:153]    3over ( f e d c b a -- f e d c b a f e d )   default version
+    pop  BC             ; 1:10      3over f e d . . . . b a    BC = c
+    exx                 ; 1:4       3over f e d . . . . - r
+    ld    A, H          ; 1:4       3over f e d c b . . - r    A  = hi ras
+    ex   AF, AF'        ; 1:4       3over f e d c b . . - r
+    ld    A, L          ; 1:4       3over f e d c b . . - r    A  = lo ras
+    pop  HL             ; 1:10      3over f e d . . . . - d    HL = d
+    pop  DE             ; 1:10      3over f e d . . . . e d    DE = e
+    pop  BC             ; 1:10      3over . . . . . . . e d    BC = f
+    push BC             ; 1:11      3over f . . . . . . e d
+    push DE             ; 1:11      3over f e . . . . . e d
+    push HL             ; 1:11      3over f e d . . . . e d
+    exx                 ; 1:4       3over f e d c b a . b a
+    push BC             ; 1:11      3over f e d c . . . b a
+    push DE             ; 1:11      3over f e d c b . . b a
+    push HL             ; 1:11      3over f e d c b a . b a
+    ld    L, A          ; 1:4       3over f e d c b a . - -
+    ex   AF, AF'        ; 1:4       3over f e d c b a . - -
+    ld    H, A          ; 1:4       3over f e d c b a . - r   HL = ras
+    exx                 ; 1:4       3over f e d c b a . e d
+    push BC             ; 1:11      3over f e d c b a f e d})})dnl
 dnl
 dnl
 dnl ( c b a -- b a c )
@@ -392,7 +491,7 @@ dnl push(a) ulozi na zasobnik nasledujici polozku
 define({PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
+__{}__{}.error {$0}($@):# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
     push DE             ; 1:11      push($1)
     ex   DE, HL         ; 1:4       push($1)
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      push($1)})dnl
@@ -467,8 +566,8 @@ dnl zmeni hodnotu top
 define({DROP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop $1})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop1})dnl
 dnl
 dnl
 dnl 2drop 50
@@ -477,9 +576,9 @@ dnl zmeni hodnotu top
 define({_2DROP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    pop  DE             ; 1:10      2drop $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop $1})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    pop  DE             ; 1:10      2drop1
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop1})dnl
 dnl
 dnl
 dnl dup 50
@@ -488,11 +587,11 @@ dnl zmeni hodnotu top
 define({DUP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      dup $1
-    push HL             ; 1:11      dup $1
-    ex   DE, HL         ; 1:4       dup $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1})dnl
+__{}__{}.error {$0}($@):# parameters found in macro!})
+    push DE             ; 1:11      dup1
+    push HL             ; 1:11      dup1
+    ex   DE, HL         ; 1:4       dup1
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup1})dnl
 dnl
 dnl
 dnl
@@ -503,9 +602,9 @@ define({PUSHDOT},{ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
+__{}  .error {$0}($@):# parameters found in macro!},
 eval($1),{},{
-__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__{}  .error {$0}($@): M4 does not know1 parameter value!},
 __IS_MEM_REF($1),{1},{
 __{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
 __{}    push HL             ; 1:11      pushdot($1)
@@ -551,7 +650,7 @@ dnl
 dnl ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
 dnl Remove x. Copy the nx to the top of the stack.
 define({PICK},{ifelse($#,{0},,{
-.error pick: Unexpected parameter $@, pick uses a parameter from the stack!})
+.error pick: Unexpected parameter@, pick uses a parameter from the stack!})
     push DE             ; 1:11      pick
     add  HL, HL         ; 1:11      pick
     add  HL, SP         ; 1:11      pick
