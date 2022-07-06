@@ -304,49 +304,71 @@ dnl
 dnl
 dnl ( f e d c b a -- f e d c b a f e d )
 dnl Copy cell pair "f e d" to the top of the stack.
-define({_3OVER},{ifelse(_TYP_SINGLE,{small},{
-                       ;[19:175]    3over ( f e d c b a -- f e d c b a f e d )   small version
-    push DE             ; 1:11      3over f e d c b . . b a
-    push HL             ; 1:11      3over f e d c b a . b a
-    exx                 ; 1:4       3over f e d c b a . - -
-    pop  AF             ; 1:10      3over f e d c b . . - -    AF = a
-    pop  BC             ; 1:10      3over f e d c . . . - -    BC'= b
-    pop  DE             ; 1:10      3over f e d . . . . - -    DE'= c
-    exx                 ; 1:4       3over f e d . . . . b a
-    pop  HL             ; 1:10      3over f e . . . . . b d    HL = d
-    pop  DE             ; 1:10      3over f . . . . . . e d    DE = e
-    pop  BC             ; 1:10      3over . . . . . . . e d    BC = f
-    push BC             ; 1:11      3over f . . . . . . e d
-    push DE             ; 1:11      3over f e . . . . . e d
-    push HL             ; 1:11      3over f e d . . . . e d
-    exx                 ; 1:4       3over f e d . . . . - -
-    push DE             ; 1:11      3over f e d c . . . - -
-    push BC             ; 1:11      3over f e d c b . . - -
-    push AF             ; 1:11      3over f e d c b a . - -
-    exx                 ; 1:4       3over f e d c b a . e d
-    push BC             ; 1:11      3over f e d c b a f e d},
+define({_3OVER},{
+                       ;[19:130]    3over   ( f e d c b a -- f e d c b a f e d )
+    push DE             ; 1:11      3over   f e d c b . . b a
+    push HL             ; 1:11      3over   f e d c b a . b a
+    ld   HL, 0x000B     ; 3:10      3over   f e d c b a . b 11
+    add  HL, SP         ; 1:11      3over   f e d c b a . b -
+    ld    D,(HL)        ; 1:7       3over   f e d c b a . - -
+    dec  HL             ; 1:6       3over   f e d c b a . - -
+    ld    E,(HL)        ; 1:7       3over   f e d c b a . f -
+    dec  HL             ; 1:6       3over   f e d c b a . f -
+    push DE             ; 1:11      3over   f e d c b a f f -
+    ld    D,(HL)        ; 1:7       3over   f e d c b a f - -
+    dec  HL             ; 1:6       3over   f e d c b a f - -
+    ld    E,(HL)        ; 1:7       3over   f e d c b a f e -
+    dec  HL             ; 1:6       3over   f e d c b a f e -
+    ld    A,(HL)        ; 1:7       3over   f e d c b a f e -
+    dec  HL             ; 1:6       3over   f e d c b a f e -
+    ld    L,(HL)        ; 1:7       3over   f e d c b a f e -
+    ld    H, A          ; 1:4       3over   f e d c b a f e d}){}dnl
+dnl
+dnl
+dnl ( h g f e d c b a -- h g f e d c b a h g f e )
+dnl ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )
+dnl Copy cell pair "d4 d3" to the top of the stack.
+define({_4OVER},{ifelse(_TYP_SINGLE,{small},{
+                       ;[19:212]    4over   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
+    ex   DE, HL         ; 1:4       4over   h g f e d c . . . . a b
+    push HL             ; 1:11      4over   h g f e d c b . . . a b
+    ld   HL, 0x000D     ; 3:10      4over   h g f e d c b . . . a 13
+    add  HL, SP         ; 1:11      4over   h g f e d c b . . . a -
+    ld    B, 0x03       ; 2:7       4over   h g f e d c b . . . a -
+    push DE             ; 1:11      4over   h g f e d c b(a-h-g)f -
+    ld    D,(HL)        ; 1:7       4over   h g f e d c b(a-h-g)f -
+    dec  HL             ; 1:6       4over   h g f e d c b(a-h-g)f -
+    ld    E,(HL)        ; 1:7       4over   h g f e d c b(a-h-g)f -
+    dec  HL             ; 1:6       4over   h g f e d c b(a-h-g)f -
+    djnz $-5            ; 2:8/13    4over   h g f e d c b(a-h-g)f -
+    ld    A,(HL)        ; 1:7       4over   h g f e d c b a h g f -
+    dec  HL             ; 1:6       4over   h g f e d c b a h g f -
+    ld    L,(HL)        ; 1:7       4over   h g f e d c b a h g f -
+    ld    H, A          ; 1:4       4over   h g f e d c b a h g f e},
 {
-                       ;[20:153]    3over ( f e d c b a -- f e d c b a f e d )   default version
-    pop  BC             ; 1:10      3over f e d . . . . b a    BC = c
-    exx                 ; 1:4       3over f e d . . . . - r
-    ld    A, H          ; 1:4       3over f e d c b . . - r    A  = hi ras
-    ex   AF, AF'        ; 1:4       3over f e d c b . . - r
-    ld    A, L          ; 1:4       3over f e d c b . . - r    A  = lo ras
-    pop  HL             ; 1:10      3over f e d . . . . - d    HL = d
-    pop  DE             ; 1:10      3over f e d . . . . e d    DE = e
-    pop  BC             ; 1:10      3over . . . . . . . e d    BC = f
-    push BC             ; 1:11      3over f . . . . . . e d
-    push DE             ; 1:11      3over f e . . . . . e d
-    push HL             ; 1:11      3over f e d . . . . e d
-    exx                 ; 1:4       3over f e d c b a . b a
-    push BC             ; 1:11      3over f e d c . . . b a
-    push DE             ; 1:11      3over f e d c b . . b a
-    push HL             ; 1:11      3over f e d c b a . b a
-    ld    L, A          ; 1:4       3over f e d c b a . - -
-    ex   AF, AF'        ; 1:4       3over f e d c b a . - -
-    ld    H, A          ; 1:4       3over f e d c b a . - r   HL = ras
-    exx                 ; 1:4       3over f e d c b a . e d
-    push BC             ; 1:11      3over f e d c b a f e d})})dnl
+                       ;[24:167]    4over   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   # default version can be changed with "define({_TYP_SINGLE},{small})"
+    push DE             ; 1:11      4over   h g f e d c b . . . b a
+    push HL             ; 1:11      4over   h g f e d c b a . . b a
+    ld   HL, 0x000F     ; 3:10      4over   h g f e d c b a . . b 15
+    add  HL, SP         ; 1:11      4over   h g f e d c b a . . b -
+    ld    D,(HL)        ; 1:7       4over   h g f e d c b a . . - -
+    dec  HL             ; 1:6       4over   h g f e d c b a . . - -
+    ld    E,(HL)        ; 1:7       4over   h g f e d c b a . . h -
+    dec  HL             ; 1:6       4over   h g f e d c b a . . h -
+    push DE             ; 1:11      4over   h g f e d c b a h . h -
+    ld    D,(HL)        ; 1:7       4over   h g f e d c b a h . - -
+    dec  HL             ; 1:6       4over   h g f e d c b a h . - -
+    ld    E,(HL)        ; 1:7       4over   h g f e d c b a h . g -
+    dec  HL             ; 1:6       4over   h g f e d c b a h . g -
+    push DE             ; 1:11      4over   h g f e d c b a h g g -
+    ld    D,(HL)        ; 1:7       4over   h g f e d c b a h g - -
+    dec  HL             ; 1:6       4over   h g f e d c b a h g - -
+    ld    E,(HL)        ; 1:7       4over   h g f e d c b a h g f -
+    dec  HL             ; 1:6       4over   h g f e d c b a h g f -
+    ld    A,(HL)        ; 1:7       4over   h g f e d c b a h g f -
+    dec  HL             ; 1:6       4over   h g f e d c b a h g f -
+    ld    L,(HL)        ; 1:7       4over   h g f e d c b a h g f -
+    ld    H, A          ; 1:4       4over   h g f e d c b a h g f e})}){}dnl
 dnl
 dnl
 dnl ( c b a -- b a c )
