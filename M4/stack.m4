@@ -147,6 +147,35 @@ define({_4DUP},{
     push BC             ; 1:11      4dup})dnl
 dnl
 dnl
+dnl 4dup drop
+dnl 3 pick 3 pick 3 pick
+dnl 2over 2over drop
+dnl ( d c b a  --  d c b a d c b )
+define({_4DUP_DROP},{ifelse(_TYP_SINGLE,{small},{
+                        ;[9:98]     4dup drop   ( d c b a -- d c b a d c b )
+    ex  (SP),HL         ; 1:19      4dup drop   HL = c
+    pop  AF             ; 1:10      4dup drop   AF = a
+    pop  BC             ; 1:10      4dup drop   BC = d
+    push BC             ; 1:11      4dup drop
+    push HL             ; 1:11      4dup drop
+    push DE             ; 1:11      4dup drop
+    push AF             ; 1:11      4dup drop
+    push BC             ; 1:11      4dup drop
+    ex   DE, HL         ; 1:4       4dup drop},
+{
+                       ;[10:87]     4dup drop   ( d c b a -- d c b a d c b )
+    ex   DE, HL         ; 1:4       4dup drop
+    pop  BC             ; 1:10      4dup drop   BC = c
+    pop  AF             ; 1:10      4dup drop   AF = d
+    push AF             ; 1:11      4dup drop
+    push BC             ; 1:11      4dup drop
+    push HL             ; 1:11      4dup drop
+    push DE             ; 1:11      4dup drop
+    push AF             ; 1:11      4dup drop
+    ld    L, C          ; 1:4       4dup drop
+    ld    H, B          ; 1:4       4dup drop})})dnl
+dnl
+dnl
 dnl 5dup
 dnl 4 pick 4 pick 4 pick 4 pick 4 pick
 dnl ( e d c b a  --  e d c b a e d c b a )
