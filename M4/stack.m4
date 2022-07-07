@@ -174,7 +174,19 @@ dnl 6dup
 dnl 5 pick 5 pick 5 pick 5 pick 5 pick 5 pick
 dnl ( f e d c b a  --  f e d c b a f e d c b a )
 dnl ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )
-define({_6DUP},{
+define({_6DUP},{ifelse(_TYP_SINGLE,{small},{
+                       ;[14:440]    6dup   ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
+    ld    B, 0x06       ; 2:7       6dup   6x "5 pick"
+    push DE             ; 1:11      6dup
+    ex   DE, HL         ; 1:4       6dup
+    ld   HL, 0x0008     ; 3:10      6dup
+    add  HL, SP         ; 1:11      6dup
+    ld    A,(HL)        ; 1:7       6dup
+    inc  HL             ; 1:6       6dup
+    ld    H,(HL)        ; 1:7       6dup
+    ld    L, A          ; 1:4       6dup
+    djnz $-10           ; 2:8/13    6dup},
+{
                        ;[18:166]    6dup   ( e d c b a -- e d c b a e d c b a )
     pop  BC             ; 1:10      6dup   f e d . . . . . . . b a
     exx                 ; 1:4       6dup
@@ -193,7 +205,7 @@ define({_6DUP},{
     push BC             ; 1:11      6dup   f e d c b a f e . . - -
     push AF             ; 1:11      6dup   f e d c b a f e d . - -
     exx                 ; 1:4       6dup
-    push BC             ; 1:11      6dup   f e d c b a f e d c b a})dnl
+    push BC             ; 1:11      6dup   f e d c b a f e d c b a})})dnl
 dnl
 dnl
 dnl ( a -- )
