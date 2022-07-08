@@ -3,36 +3,50 @@ define({__},{})dnl
 dnl
 dnl .
 dnl ( x -- )
+dnl print space and 16 bit number
+define({DOT},{ifdef({USE_PRT_SP_S16},,{define({USE_PRT_SP_S16},{})})
+    call PRT_SP_S16     ; 3:17      .   ( s -- )})dnl
+dnl
+dnl
+dnl .
+dnl ( x -- )
 dnl print 16 bit number
-define({DOT},{ifdef({USE_S16},,define({USE_S16},{}))
-    call PRINT_S16      ; 3:17      .})dnl
+define({NS_DOT},{ifdef({USE_PRT_S16},,{define({USE_PRT_S16},{})})
+    call PRT_S16        ; 3:17      .   ( s -- )})dnl
 dnl
 dnl
 dnl u.
 dnl ( u -- )
-dnl print 16 bit unsign number
-define({UDOT},{ifdef({USE_U16},,define({USE_U16},{}))
-    call PRINT_U16      ; 3:17      u.   ( u -- )})dnl
+dnl print space and unsigned 16 bit number
+define({UDOT},{ifdef({USE_PRT_SP_U16},,{define({USE_PRT_SP_U16},{})})
+    call PRT_SP_U16     ; 3:17      u.   ( u -- )})dnl
 dnl
 dnl
 dnl u.
 dnl ( u -- )
-dnl print 16 bit unsign number
-define({UDOTZXROM},{ifdef({USE_ZXROM_U16},,define({USE_ZXROM_U16},{}))
+dnl print unsigned 16 bit number
+define({NS_UDOT},{ifdef({USE_PRT_U16},,{define({USE_PRT_U16},{})})
+    call PRT_U16        ; 3:17      u.   ( u -- )})dnl
+dnl
+dnl
+dnl u.
+dnl ( u -- )
+dnl print unsigned 16 bit number
+define({UDOTZXROM},{ifdef({USE_ZXROM_U16},,{define({USE_ZXROM_U16},{})})
     call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )})dnl
 dnl
 dnl
 dnl dup u.
 dnl ( u -- u )
-dnl dup and print 16 bit unsign number
-define({DUP_UDOTZXROM},{ifdef({USE_DUP_ZXROM_U16},,define({USE_DUP_ZXROM_U16},{}))
+dnl dup and print unsigned 16 bit number
+define({DUP_UDOTZXROM},{ifdef({USE_DUP_ZXROM_U16},,{define({USE_DUP_ZXROM_U16},{})})
     call PRINT_DUP_ZXROM_U16; 3:17      dup u.zxrom   ( u -- u )})dnl
 dnl
 dnl
 dnl .
 dnl ( x -- )
 dnl print 16 bit number
-define({DOTZXROM},{ifdef({USE_ZXROM_S16},,define({USE_ZXROM_S16},{}))
+define({DOTZXROM},{ifdef({USE_ZXROM_S16},,{define({USE_ZXROM_S16},{})})
     call PRINT_ZXROM_S16; 3:17      .zxrom   ( x -- )})dnl
 dnl
 dnl
@@ -45,29 +59,61 @@ define({DUP_DOT},{
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
 dnl
 dnl
+dnl dup .
+dnl ( x -- )
+dnl non-destructively print number
+define({DUP_NS_DOT},{
+    push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
+{}{}NS_DOT
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
+dnl
+dnl
 dnl dup u.
 dnl ( x -- )
 dnl non-destructively print number
 define({DUP_UDOT},{
-    push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1{}dnl
 {}{}UDOT
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1})dnl
+dnl
+dnl
+dnl dup u.
+dnl ( x -- )
+dnl non-destructively print number
+define({DUP_NS_UDOT},{
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1{}dnl
+{}{}NS_UDOT
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1})dnl
 dnl
 dnl
 dnl
 dnl d.
 dnl ( d -- )
+dnl print space and 32 bit number
+define({DDOT},{ifdef({USE_PRT_SP_S32},,{define({USE_PRT_SP_S32},{})})
+    call PRT_SP_S32     ; 3:17      d.   ( d -- )})dnl
+dnl
+dnl
+dnl d.
+dnl ( d -- )
 dnl print 32 bit number
-define({DDOT},{define({USE_S32},{})
-    call PRINT_S32      ; 3:17      d.})dnl
+define({NS_DDOT},{ifdef({USE_PRT_S32},,{define({USE_PRT_S32},{})})
+    call PRT_S32        ; 3:17      d.   ( d -- )})dnl
 dnl
 dnl
 dnl
 dnl ud.
 dnl ( ud -- )
-dnl print 32 bit unsign number
-define({UDDOT},{define({USE_U32},{})
-    call PRINT_U32      ; 3:17      ud.})dnl
+dnl print space and unsigned 32 bit number
+define({UDDOT},{ifdef({USE_PRT_SP_U32},,{define({USE_PRT_SP_U32},{})})
+    call PRT_SP_U32     ; 3:17      ud.   ( ud -- )})dnl
+dnl
+dnl
+dnl ud.
+dnl ( ud -- )
+dnl print unsigned 32 bit number
+define({NS_UDDOT},{ifdef({USE_PRT_U32},,{define({USE_PRT_U32},{})})
+    call PRT_SP_U32     ; 3:17      ud.   ( ud -- )})dnl
 dnl
 dnl
 dnl

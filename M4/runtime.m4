@@ -1,5 +1,5 @@
 dnl ## Runtime enviroment
-define({__},{})dnl
+define({__},{}){}dnl
 dnl
 dnl
 dnl
@@ -243,75 +243,86 @@ PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only   ( x -- )
 dnl
 dnl
 dnl
-ifdef({USE_S32},{define({USE_DNEGATE},{}){}define({USE_U32},{})
+ifdef({USE_PRT_SP_S32},{ifdef({USE_PRT_S32},,{define({USE_PRT_S32},{})})
 ;==============================================================================
 ; ( hi lo -- )
-; Input: HL
+; Input: DEHL
 ; Output: Print space and signed decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_S32:              ;           print_s32
-    ld    A, D          ; 1:4       print_s32
-    add   A, A          ; 1:4       print_s32
-    jr   nc, PRINT_U32  ; 2:7/12    print_s32
-    call NEGATE_32      ; 3:17      print_s32
-    ld    A, ' '        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s32   putchar with {ZX 48K ROM} in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s32   ld   BC, **
-    ; fall to print_u32})dnl
+PRT_SP_S32:             ;           prt_sp_s32
+    ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with {ZX 48K ROM}
+    ; fall to prt_s32}){}dnl
+ifdef({USE_PRT_S32},{ifdef({USE_DNEGATE},,{define({USE_DNEGATE},{})}){}ifdef({USE_PRT_U32},,{define({USE_PRT_U32},{})})
+;------------------------------------------------------------------------------
+; ( hi lo -- )
+; Input: DEHL
+; Output: Print signed decimal number in DEHL
+; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+PRT_S32:                ;           prt_s32
+    ld    A, D          ; 1:4       prt_s32
+    add   A, A          ; 1:4       prt_s32
+    jr   nc, PRT_U32    ; 2:7/12    prt_s32
+    ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with {ZX 48K ROM}
+    call NEGATE_32      ; 3:17      prt_s32
+__{}ifdef({USE_PRT_SP_U32},{dnl
+__{}    jr   PRT_U32        ; 2:12      prt_s32},
+__{}{dnl
+__{}    ; fall to prt_u32})}){}dnl
 dnl
 dnl
-ifdef({USE_U32},{
+ifdef({USE_PRT_SP_U32},{ifdef({USE_PRT_U32},,{define({USE_PRT_U32},{})})
 ;==============================================================================
-; Input: HL
+; Input: DEHL
 ; Output: Print space and unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32:              ;           print_u32
-    ld    A, ' '        ; 2:7       print_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u32   putchar with {ZX 48K ROM} in, this will print char in A
-    ; fall to print_u32_only
+PRT_SP_U32:             ;           prt_sp_u32
+    ld    A, ' '        ; 2:7       prt_sp_u32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u32   putchar(reg A) with {ZX 48K ROM}
+    ; fall to prt_u32}){}dnl
+ifdef({USE_PRT_U32},{
 ;------------------------------------------------------------------------------
-; Input: HL
+; Input: DEHL
 ; Output: Print unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32_ONLY:         ;           print_u32_only
-    xor   A             ; 1:4       print_u32_only   HL = 103 & A=0 => 103, HL = 103 & A='0' => 00103
-    push IX             ; 2:15      print_u32_only
-    ex   DE, HL         ; 1:4       print_u32_only   HL = hi word
-    ld  IXl, E          ; 2:8       print_u32_only
-    ld  IXh, D          ; 2:8       print_u32_only   IX = lo word
-    ld   DE, 0x3600     ; 3:10      print_u32_only   C4 65 36 00 = -1000000000
-    ld   BC, 0xC465     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    D, 0x1F       ; 2:7       print_u32_only   FA 0A 1F 00 = -100000000
-    ld   BC, 0xFA0A     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x6980     ; 3:10      print_u32_only   FF 67 69 80 = -10000000
-    ld   BC, 0xFF67     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xBDC0     ; 3:10      print_u32_only   FF F0 BD C0 = -1000000
-    ld    C, 0xF0       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x7960     ; 3:10      print_u32_only   FF FE 79 60 = -100000
-    ld    C, 0xFE       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xD8F0     ; 3:10      print_u32_only   FF FF D8 F0 = -10000
-    ld    C, B          ; 1:4       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFC18     ; 3:10      print_u32_only   FF FF FC 18 = -1000
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFF9C     ; 3:10      print_u32_only   FF FF FF 9C = -100
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    E, 0xF6       ; 2:7       print_u32_only   FF FF FF F6 = -10
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    A, IXl        ; 2:8       print_u32_only
-    pop  IX             ; 2:14      print_u32_only
-    pop  BC             ; 1:10      print_u32_only   load ret
-    pop  HL             ; 1:10      print_u32_only
-    pop  DE             ; 1:10      print_u32_only
-    push BC             ; 1:11      print_u32_only   save ret
-    
-    jr   BIN32_DEC_CHAR ; 2:12      print_u32_only
+PRT_U32:                ;           prt_u32
+    xor   A             ; 1:4       prt_u32   HL = 103 & A=0 => 103, HL = 103 & A='0' => 00103
+    push IX             ; 2:15      prt_u32
+    ex   DE, HL         ; 1:4       prt_u32   HL = hi word
+    ld  IXl, E          ; 2:8       prt_u32
+    ld  IXh, D          ; 2:8       prt_u32   IX = lo word
+    ld   DE, 0x3600     ; 3:10      prt_u32   C4 65 36 00 = -1000000000
+    ld   BC, 0xC465     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    D, 0x1F       ; 2:7       prt_u32   FA 0A 1F 00 = -100000000
+    ld   BC, 0xFA0A     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x6980     ; 3:10      prt_u32   FF 67 69 80 = -10000000
+    ld   BC, 0xFF67     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xBDC0     ; 3:10      prt_u32   FF F0 BD C0 = -1000000
+    ld    C, 0xF0       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x7960     ; 3:10      prt_u32   FF FE 79 60 = -100000
+    ld    C, 0xFE       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xD8F0     ; 3:10      prt_u32   FF FF D8 F0 = -10000
+    ld    C, B          ; 1:4       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFC18     ; 3:10      prt_u32   FF FF FC 18 = -1000
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFF9C     ; 3:10      prt_u32   FF FF FF 9C = -100
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    E, 0xF6       ; 2:7       prt_u32   FF FF FF F6 = -10
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    A, IXl        ; 2:8       prt_u32
+    pop  IX             ; 2:14      prt_u32
+    pop  BC             ; 1:10      prt_u32   load ret
+    pop  HL             ; 1:10      prt_u32
+    pop  DE             ; 1:10      prt_u32
+    push BC             ; 1:11      prt_u32   save ret
+    jr   BIN32_DEC_CHAR ; 2:12      prt_u32
 ;------------------------------------------------------------------------------
 ; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
@@ -339,57 +350,67 @@ BIN32_DEC_CHAR:         ;           bin32_dec
     ret                 ; 1:10      bin32_dec}){}dnl
 dnl
 dnl
-ifdef({USE_S16},{
+ifdef({USE_PRT_SP_S16},{ifdef({USE_PRT_S16},,{define({USE_PRT_S16},{})})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_S16:              ;           print_s16
-    ld    A, H          ; 1:4       print_s16
-    add   A, A          ; 1:4       print_s16
-    jr   nc, PRINT_U16  ; 2:7/12    print_s16
-    xor   A             ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    L, A          ; 1:4       print_s16   neg
-    sbc   A, H          ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    H, A          ; 1:4       print_s16   neg
-    ld    A, ' '        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s16   putchar with {ZX 48K ROM} in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s16   ld   BC, **
-__{}define({USE_U16},{}){}dnl
-    ; fall to print_u16}){}dnl
+PRT_SP_S16:             ;           prt_sp_s16
+    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with {ZX 48K ROM}
+    ; fall to prt_s16}){}dnl
+ifdef({USE_PRT_S16},{ifdef({USE_PRT_U16},,{define({USE_PRT_U16},{})})
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print signed decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_S16:                ;           prt_s16
+    ld    A, H          ; 1:4       prt_s16
+    add   A, A          ; 1:4       prt_s16
+    jr   nc, PRT_U16    ; 2:7/12    prt_s16
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with {ZX 48K ROM}
+    xor   A             ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    L, A          ; 1:4       prt_s16   neg
+    sbc   A, H          ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    H, A          ; 1:4       prt_s16   neg
+__{}ifdef({USE_PRT_SP_U16},{dnl
+__{}    jr   PRT_U16        ; 2:12      prt_s16},
+__{}{dnl
+__{}    ; fall to prt_u16})}){}dnl
 dnl
 dnl
-ifdef({USE_U16},{
+ifdef({USE_PRT_SP_U16},{ifdef({USE_PRT_U16},,{define({USE_PRT_U16},{})})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16:              ;           print_u16
-    ld    A, ' '        ; 2:7       print_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u16   putchar with {ZX 48K ROM} in, this will print char in A
-    ; fall to print_u16_only
+PRT_SP_U16:             ;           prt_sp_u16
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u16   putchar with {ZX 48K ROM} in, this will print char in A
+    ; fall to prt_u16}){}dnl
+ifdef({USE_PRT_U16},{
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16_ONLY:         ;           print_u16_only
-    xor   A             ; 1:4       print_u16_only   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
-    ld   BC, -10000     ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld   BC, -1000      ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld   BC, -100       ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    C, -10        ; 2:7       print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    A, L          ; 1:4       print_u16_only
-    pop  HL             ; 1:10      print_u16_only   load ret
-    ex  (SP),HL         ; 1:19      print_u16_only    
-    ex   DE, HL         ; 1:4       print_u16_only
-    jr   BIN16_DEC_CHAR ; 2:12      print_u16_only
+PRT_U16:                ;           prt_u16
+    xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+    ld   BC, -10000     ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -1000      ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -100       ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    C, -10        ; 2:7       prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    A, L          ; 1:4       prt_u16
+    pop  HL             ; 1:10      prt_u16   load ret
+    ex  (SP),HL         ; 1:19      prt_u16
+    ex   DE, HL         ; 1:4       prt_u16
+    jr   BIN16_DEC_CHAR ; 2:12      prt_u16
 ;------------------------------------------------------------------------------
 ; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
@@ -822,21 +843,21 @@ dnl
 ifdef({USE_MUL},{
 ;==============================================================================
 include(M4PATH{}divmul/mul.m4){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_DIV},{ifdef({USE_UDIV},,define({USE_UDIV},{}))
 ;==============================================================================
 include(M4PATH{}divmul/div.m4){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_UDIV},{
 ;==============================================================================
 include(M4PATH{}divmul/udiv.m4){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1497,7 +1518,7 @@ ifdef({USE_ACCEPT},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
 READSTRING:
 __{}ifdef({USE_ACCEPT_Z},{dnl
 __{}    dec  HL             ; 1:6       readstring_z
-__{}})dnl
+__{}}){}dnl
     ld   BC, 0x0000     ; 3:10      readstring   loaded
     call CLEARBUFF      ; 3:17      readstring
 READSTRING2:
@@ -1540,7 +1561,7 @@ READSTRING4:            ;           readstring   A = 0, flag: z, nc
 __{}ifdef({USE_ACCEPT_Z},{dnl
 __{}    xor   A             ; 1:7       readstring_z
 __{}    ld  (DE),A          ; 1:7       readstring_z  set zero char
-__{}})dnl
+__{}}){}dnl
     pop  HL             ; 1:10      readstring   ret
     pop  DE             ; 1:10      readstring
     push HL             ; 1:11      readstring   ret
@@ -1607,7 +1628,7 @@ ifdef({USE_TYPE_Z},{
 PRINT_TYPE_Z:           ;           print_type_z
     ld    B, H          ; 1:4       print_type_z
     ld    C, L          ; 1:4       print_type_z   BC = addr stringZ
-__{}define({USE_STRING_Z},{})dnl
+__{}define({USE_STRING_Z},{}){}dnl
     jr    PRINT_STRING_Z; 2:12      print_type_z
 }){}dnl
 dnl
@@ -1637,7 +1658,7 @@ ifdef({USE_TYPE_I},{
 PRINT_TYPE_I:           ;           print_type_i
     ld    B, H          ; 1:4       print_type_i
     ld    C, L          ; 1:4       print_type_i   BC = addr string_imsb
-__{}define({USE_STRING_I},{})dnl
+__{}define({USE_STRING_I},{}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1669,7 +1690,7 @@ dnl
 dnl
 ifdef({STRING_NUM_STACK},{
 STRING_SECTION:{}PRINT_STRING_STACK
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
