@@ -536,19 +536,23 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub> Original   |<sub>    M4 FORTH     |<sub>     Optimization    |<sub>  Data stack              |<sub>   Comment    |
 | :-------------: | :------------------: | :----------------------: | :---------------------------- | :---------------- |
 |<sub>     .      |<sub>       DOT       |<sub>for 0..32767 use UDOT|<sub>       ( x1 -- )          |<sub> -32768..32767|
+|<sub>     .      |<sub>                 |<sub>       NS_DOT        |<sub>       ( x1 -- )          |<sub> no space     |
 |<sub>     u.     |<sub>      UDOT       |<sub>                     |<sub>       ( u1 -- )          |<sub> 0..65535     |
+|<sub>     u.     |<sub>                 |<sub>       NS_UDOT       |<sub>       ( u1 -- )          |<sub> no space     |
 |<sub>     .      |<sub>     DOTZXROM    |<sub>                     |<sub>       ( x1 -- )          |<sub> use ZX ROM   |
 |<sub>     u.     |<sub>    UDOTZXROM    |<sub>                     |<sub>       ( u1 -- )          |<sub> use ZX ROM   |
 |<sub>   dup .    |<sub>                 |<sub>       DUP_DOT       |<sub>       ( x1 -- x1 )       |<sub>              |
 |<sub>   dup u.   |<sub>                 |<sub>       DUP_UDOT      |<sub>       ( u1 -- u1 )       |<sub>              |
 |<sub>     D.     |<sub>      DDOT       |<sub>    use UDDOT(+num)  |<sub>        ( d -- )          |<sub>( d -- hi lo )|
+|<sub>     D.     |<sub>                 |<sub>       NS_DDOT       |<sub>        ( d -- )          |<sub> no space     |
 |<sub>     uD.    |<sub>      UDDOT      |<sub>                     |<sub>       ( ud -- )          |<sub>( d -- hi lo )|
+|<sub>     uD.    |<sub>                 |<sub>       NS_UDDOT      |<sub>       ( ud -- )          |<sub> no space     |
 |<sub>     .s     |<sub>      DOTS       |<sub>                     |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
 |<sub>     cr     |<sub>       CR        |<sub>                     |<sub>          ( -- )          |<sub>              |
 |<sub>    emit    |<sub>      EMIT       |<sub>                     |<sub>      ( 'a' -- )          |<sub>              |
 |<sub>  dup emit  |<sub>    DUP  EMIT    |<sub>      DUP_EMIT       |<sub>      ( 'a' -- 'a' )      |<sub>              |
 |<sub>   space    |<sub>      SPACE      |<sub>                     |<sub>          ( -- )          |<sub>              |
-|<sub>  'a' emit  |<sub>                 |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>              |
+|<sub>  'a' emit  |<sub>  PUSH_EMIT('a') |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>              |
 |<sub>    type    |<sub>      TYPE       |<sub>                     |<sub>   ( addr n -- )          |<sub>              |
 |<sub> 2dup type  |<sub>                 |<sub>      _2DUP_TYPE     |<sub>   ( addr n -- addr n )   |<sub>              |
 |<sub> .( Hello)  |<sub> PRINT({"Hello"})|<sub>                     |<sub>          ( -- )          |<sub>              |
@@ -564,6 +568,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>   accept   |<sub>     ACCEPT      |<sub>                     |<sub> ( addr max -- loaded )   |<sub>              |
 |<sub>   accept   |<sub>    ACCEPT_Z     |<sub>                     |<sub> ( addr max -- loaded )   |<sub>C-style string|
 
+    PUTCHAR(0x08)   --> deletes the last character
+    PUTCHAR(8)      --> deletes the last character
+    PUTCHAR(' ')    --> SPACE
+    PUTCHAR(0x20)   --> SPACE
+    PUTCHAR(32)     --> SPACE
+    PUTCHAR(0x0D)   --> CR
+    PUTCHAR(0x0D)   --> CR
+    
 KEY returns the first non-zero value read from the variable containing the last key pressed and then resets it. If you want to reset the variable before the first reading, use the word CLEARKEY.
 
 The non-standard PRINT_Z extends each text string by zero bytes, but in return it cuts each string print by 5 bytes. An eight-byte routine to print zero-terminated strings must be added to the code, making it more convenient from printing 2 strings.
