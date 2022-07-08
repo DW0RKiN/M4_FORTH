@@ -161,7 +161,7 @@ dnl .( char )
 define({PUTCHAR},{ifelse($2,{},,{
 .error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
     ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with {ZX 48K ROM} in, this will print char in A})dnl
+    rst   0x10          ; 1:11      putchar(reg A) with {ZX 48K ROM}})dnl
 dnl
 dnl
 dnl ( -- )
@@ -169,7 +169,7 @@ dnl .( char )
 define({PUSH_EMIT},{ifelse($2,{},,{
 .error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
     ld    A, format({%-11s},{{$1}})  ; 2:7       $1 emit  push_emit($1)   Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      $1 emit  push_emit($1)   putchar with {ZX 48K ROM} in, this will print char in A})dnl
+    rst   0x10          ; 1:11      $1 emit  push_emit($1)   putchar(reg A) with {ZX 48K ROM}})dnl
 dnl
 dnl
 dnl ( addr n -- )
