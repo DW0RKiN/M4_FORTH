@@ -574,7 +574,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
     PUTCHAR(0x20)   --> SPACE
     PUTCHAR(32)     --> SPACE
     PUTCHAR(0x0D)   --> CR
-    PUTCHAR(0x0D)   --> CR
+    PUTCHAR(13)   --> CR
     
 KEY returns the first non-zero value read from the variable containing the last key pressed and then resets it. If you want to reset the variable before the first reading, use the word CLEARKEY.
 
