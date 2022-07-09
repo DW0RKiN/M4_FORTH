@@ -151,99 +151,102 @@ BIN32BCD_D:
 dnl
 dnl
 dnl
-ifdef({USE_DUP_ZXROM_U16},{
+ifdef({USE_DUP_ZXPRT_SP_U16},{__def({USE_DUP_ZXPRT_U16})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC
-PRINT_DUP_ZXROM_U16:    ;           print_dup_zxrom_u16
-    ld    A, ' '        ; 2:7       print_dup_zxrom_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_dup_zxrom_u16   putchar with {ZX 48K ROM} in, this will print char in A
-    ; fall to print_dup_zxrom_u16_only
+DUP_ZXPRT_SP_U16:       ;           dup_zxprt_sp_u16
+    ld    A, ' '        ; 2:7       dup_zxprt_sp_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      dup_zxprt_sp_u16   putchar(reg A) with {ZX 48K ROM}
+    ; fall to dup_zxprt_u16}){}dnl
+ifdef({USE_DUP_ZXPRT_U16},{
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC
-PRINT_DUP_ZXROM_U16_ONLY:;          print_dup_zxrom_u16_only   ( u -- )
-    ld    B, H          ; 1:4       print_dup_zxrom_u16_only
-    ld    C, L          ; 1:4       print_dup_zxrom_u16_only
-    push DE             ; 1:11      print_dup_zxrom_u16_only
-    push HL             ; 1:11      print_dup_zxrom_u16_only   save ret
+DUP_ZXPRT_U16:          ;           dup_zxprt_u16   ( u -- )
+    ld    B, H          ; 1:4       dup_zxprt_u16
+    ld    C, L          ; 1:4       dup_zxprt_u16
+    push DE             ; 1:11      dup_zxprt_u16
+    push HL             ; 1:11      dup_zxprt_u16   save ret
 
-    call 0x2D2B         ; 3:17      print_dup_zxrom_u16_only   {call ZX ROM stack BC routine}
-    call 0x2DE3         ; 3:17      print_dup_zxrom_u16_only   {call ZX ROM print a floating-point number routine}
+    call 0x2D2B         ; 3:17      dup_zxprt_u16   {call ZX ROM stack BC routine}
+    call 0x2DE3         ; 3:17      dup_zxprt_u16   {call ZX ROM print a floating-point number routine}
 
-    pop  HL             ; 1:10      print_dup_zxrom_u16_only
-    pop  DE             ; 1:10      print_dup_zxrom_u16_only
-    ret                 ; 1:10      print_dup_zxrom_u16_only}){}dnl
+    pop  HL             ; 1:10      dup_zxprt_u16
+    pop  DE             ; 1:10      dup_zxprt_u16
+    ret                 ; 1:10      dup_zxprt_u16}){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_ZXROM_U16},{
+ifdef({USE_ZXPRT_SP_U16},{__def({USE_ZXPRT_U16})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_U16:        ;           print_zxrom_u16
-    ld    A, ' '        ; 2:7       print_zxrom_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_zxrom_u16   putchar with {ZX 48K ROM} in, this will print char in A
-    ; fall to print_zxrom_u16_only
+ZXPRT_SP_U16:           ;           zxprt_sp_u16
+    ld    A, ' '        ; 2:7       zxprt_sp_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      zxprt_sp_u16   putchar(reg A) with {ZX 48K ROM}
+    ; fall to zxprt_u16}){}dnl
+ifdef({USE_ZXPRT_U16},{
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_U16_ONLY:   ;           print_zxrom_u16_only   ( u -- )
-    push DE             ; 1:11      print_zxrom_u16_only
-    ld    B, H          ; 1:4       print_zxrom_u16_only
-    ld    C, L          ; 1:4       print_zxrom_u16_only
-    call 0x2D2B         ; 3:17      print_zxrom_u16_only   {call ZX ROM stack BC routine}
-    call 0x2DE3         ; 3:17      print_zxrom_u16_only   {call ZX ROM print a floating-point number routine}
+ZXPRT_U16:              ;           zxprt_u16   ( u -- )
+    push DE             ; 1:11      zxprt_u16
+    ld    B, H          ; 1:4       zxprt_u16
+    ld    C, L          ; 1:4       zxprt_u16
+    call 0x2D2B         ; 3:17      zxprt_u16   {call ZX ROM stack BC routine}
+    call 0x2DE3         ; 3:17      zxprt_u16   {call ZX ROM print a floating-point number routine}
 
-    pop  HL             ; 1:10      print_zxrom_u16_only
-    pop  BC             ; 1:10      print_zxrom_u16_only   load ret
-    pop  DE             ; 1:10      print_zxrom_u16_only
-    push BC             ; 1:11      print_zxrom_u16_only   save ret
-    ret                 ; 1:10      print_zxrom_u16_only}){}dnl
+    pop  HL             ; 1:10      zxprt_u16
+    pop  BC             ; 1:10      zxprt_u16   load ret
+    pop  DE             ; 1:10      zxprt_u16
+    push BC             ; 1:11      zxprt_u16   save ret
+    ret                 ; 1:10      zxprt_u16}){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_ZXROM_S16},{
+ifdef({USE_ZXPRT_SP_S16},{__def({USE_ZXPRT_S16})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_S16:        ;           print_zxrom_s16
-    ld    A, ' '        ; 2:7       print_zxrom_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_zxrom_s16   putchar with {ZX 48K ROM} in, this will print char in A
-    ; fall to print_zxrom_s16_only
+ZXPRT_SP_S16:           ;           zxprt_sp_s16
+    ld    A, ' '        ; 2:7       zxprt_sp_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      zxprt_sp_s16   putchar with {ZX 48K ROM} in, this will print char in A
+    ; fall to zxprt_s16}){}dnl
+ifdef({USE_ZXPRT_S16},{
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_S16_ONLY:   ;           print_zxrom_s16_only   ( x -- )
-    push DE             ; 1:11      print_zxrom_s16_only
-    ld    A, H          ; 1:4       print_zxrom_s16_only
-    add   A, A          ; 1:4       print_zxrom_s16_only
-    sbc   A, A          ; 1:4       print_zxrom_s16_only   sign
-    ld    E, A          ; 1:4       print_zxrom_s16_only   2. byte sign
-    xor   A             ; 1:4       print_zxrom_s16_only   1. byte = 0
-    ld    D, L          ; 1:4       print_zxrom_s16_only   3. byte lo
-    ld    C, H          ; 1:4       print_zxrom_s16_only   4. byte hi
-    ld    B, A          ; 1:4       print_zxrom_s16_only   5. byte = 0
+ZXPRT_S16:              ;           zxprt_s16   ( x -- )
+    push DE             ; 1:11      zxprt_s16
+    ld    A, H          ; 1:4       zxprt_s16
+    add   A, A          ; 1:4       zxprt_s16
+    sbc   A, A          ; 1:4       zxprt_s16   sign
+    ld    E, A          ; 1:4       zxprt_s16   2. byte sign
+    xor   A             ; 1:4       zxprt_s16   1. byte = 0
+    ld    D, L          ; 1:4       zxprt_s16   3. byte lo
+    ld    C, H          ; 1:4       zxprt_s16   4. byte hi
+    ld    B, A          ; 1:4       zxprt_s16   5. byte = 0
 
-    ld   IY, 0x5C3A     ; 4:14      print_zxrom_s16_only   {Re-initialise IY to ERR-NR.}
+    ld   IY, 0x5C3A     ; 4:14      zxprt_s16   {Re-initialise IY to ERR-NR.}
 
-    call 0x2AB6         ; 3:17      print_zxrom_s16_only   {call ZX ROM STK store routine}
-    call 0x2DE3         ; 3:17      print_zxrom_s16_only   {call ZX ROM print a floating-point number routine}
-    pop  HL             ; 1:10      print_zxrom_s16_only
-    pop  BC             ; 1:10      print_zxrom_s16_only   load ret
-    pop  DE             ; 1:10      print_zxrom_s16_only
-    push BC             ; 1:11      print_zxrom_s16_only   save ret
-    ret                 ; 1:10      print_zxrom_u16_only}){}dnl
+    call 0x2AB6         ; 3:17      zxprt_s16   {call ZX ROM STK store routine}
+    call 0x2DE3         ; 3:17      zxprt_s16   {call ZX ROM print a floating-point number routine}
+    pop  HL             ; 1:10      zxprt_s16
+    pop  BC             ; 1:10      zxprt_s16   load ret
+    pop  DE             ; 1:10      zxprt_s16
+    push BC             ; 1:11      zxprt_s16   save ret
+    ret                 ; 1:10      zxprt_u16}){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_PRT_SP_S32},{ifdef({USE_PRT_S32},,{define({USE_PRT_S32},{})})
+ifdef({USE_PRT_SP_S32},{__def({USE_PRT_S32})
 ;==============================================================================
 ; ( hi lo -- )
 ; Input: DEHL
@@ -253,7 +256,7 @@ PRT_SP_S32:             ;           prt_sp_s32
     ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with {ZX 48K ROM}
     ; fall to prt_s32}){}dnl
-ifdef({USE_PRT_S32},{ifdef({USE_DNEGATE},,{define({USE_DNEGATE},{})}){}ifdef({USE_PRT_U32},,{define({USE_PRT_U32},{})})
+ifdef({USE_PRT_S32},{__def({USE_DNEGATE}){}__def({USE_PRT_U32})
 ;------------------------------------------------------------------------------
 ; ( hi lo -- )
 ; Input: DEHL
@@ -272,7 +275,7 @@ __{}{dnl
 __{}    ; fall to prt_u32})}){}dnl
 dnl
 dnl
-ifdef({USE_PRT_SP_U32},{ifdef({USE_PRT_U32},,{define({USE_PRT_U32},{})})
+ifdef({USE_PRT_SP_U32},{__def({USE_PRT_U32})
 ;==============================================================================
 ; Input: DEHL
 ; Output: Print space and unsigned decimal number in DEHL
@@ -350,7 +353,7 @@ BIN32_DEC_CHAR:         ;           bin32_dec
     ret                 ; 1:10      bin32_dec}){}dnl
 dnl
 dnl
-ifdef({USE_PRT_SP_S16},{ifdef({USE_PRT_S16},,{define({USE_PRT_S16},{})})
+ifdef({USE_PRT_SP_S16},{__def({USE_PRT_S16})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
@@ -359,7 +362,7 @@ PRT_SP_S16:             ;           prt_sp_s16
     ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with {ZX 48K ROM}
     ; fall to prt_s16}){}dnl
-ifdef({USE_PRT_S16},{ifdef({USE_PRT_U16},,{define({USE_PRT_U16},{})})
+ifdef({USE_PRT_S16},{__def({USE_PRT_U16})
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print signed decimal number in HL
@@ -382,7 +385,7 @@ __{}{dnl
 __{}    ; fall to prt_u16})}){}dnl
 dnl
 dnl
-ifdef({USE_PRT_SP_U16},{ifdef({USE_PRT_U16},,{define({USE_PRT_U16},{})})
+ifdef({USE_PRT_SP_U16},{__def({USE_PRT_U16})
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL

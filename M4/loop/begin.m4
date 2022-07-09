@@ -95,11 +95,11 @@ __{}.error {$0} for non-existent {BEGIN}},
 __{}break{}BEGIN_STACK:               ;           dup until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
-dnl ( flag -- flag )
+dnl ( x -- x )
 define({DUP_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
-    ld    A, H          ; 1:4       dup 0= until BEGIN_STACK   ( flag -- flag )
+    ld    A, H          ; 1:4       dup 0= until BEGIN_STACK   ( x -- x )
     or    L             ; 1:4       dup 0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      dup 0= until BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           dup 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
@@ -1360,6 +1360,18 @@ __{}.error {$0} for non-existent {BEGIN}},
     bit   7, D          ; 2:8       2dup D0>= while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0>= while BEGIN_STACK})})dnl
 dnl
+dnl
+dnl
+dnl ( d -- d )
+define({_2DUP_D0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    ld    A, H          ; 1:4       2dup 0.= until BEGIN_STACK   ( d -- d )
+    or    L             ; 1:4       2dup 0.= until BEGIN_STACK
+    or    D             ; 1:4       2dup 0.= until BEGIN_STACK
+    or    E             ; 1:4       2dup 0.= until BEGIN_STACK
+    jp   nz, begin{}BEGIN_STACK   ; 3:10      2dup 0.= until BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           2dup 0.= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
 dnl

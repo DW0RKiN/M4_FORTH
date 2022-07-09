@@ -1,6 +1,9 @@
 define({__},{})dnl
 dnl
 dnl
+define({__def},{ifdef({$1},,{define({$1},{$2})})}){}dnl
+dnl
+dnl
 define({__HEX_L},{format({0x%02X},eval(($1) & 0xFF))}){}dnl
 define({__HEX_H},{format({0x%02X},eval((($1)>>8) & 0xFF))}){}dnl
 define({__HEX_E},{format({0x%02X},eval((($1)>>16) & 0xFF))}){}dnl
