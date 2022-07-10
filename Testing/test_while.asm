@@ -17,27 +17,27 @@ ORG 0x8000
     ld   DE, 5          ; 3:10      push2(5,-5)
     push HL             ; 1:11      push2(5,-5)
     ld   HL, -5         ; 3:10      push2(5,-5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      push2(5,5)
     push HL             ; 1:11      push2(5,5)
     ld   HL, 5          ; 3:10      push2(5,5)
     ld    D, H          ; 1:4       push2(5,5)
     ld    E, L          ; 1:4       push2(5,5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      push2(-5,-5)
     push HL             ; 1:11      push2(-5,-5)
     ld   HL, -5         ; 3:10      push2(-5,-5)
     ld    D, H          ; 1:4       push2(-5,-5)
     ld    E, L          ; 1:4       push2(-5,-5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      push2(-5,5)
     ld   DE, -5         ; 3:10      push2(-5,5)
     push HL             ; 1:11      push2(-5,5)
     ld   HL, 5          ; 3:10      push2(-5,5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     ld   BC, string102  ; 3:10      print_i   Address of string102 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -52,7 +52,7 @@ ORG 0x8000
     ld   HL, 0xFFFB     ; 3:10      pushdot(-5)   lo_word
     ld    E, H          ; 1:4       pushdot(-5)
     ld    D, H          ; 1:4       pushdot(-5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      pushdot(5)   ( -- hi lo )
     push HL             ; 1:11      pushdot(5)
@@ -64,7 +64,7 @@ ORG 0x8000
     ld   HL, 0x0005     ; 3:10      pushdot(5)   lo_word
     ld    E, H          ; 1:4       pushdot(5)
     ld    D, H          ; 1:4       pushdot(5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      pushdot(-5)   ( -- hi lo )
     push HL             ; 1:11      pushdot(-5)
@@ -76,7 +76,7 @@ ORG 0x8000
     ld   HL, 0xFFFB     ; 3:10      pushdot(-5)   lo_word
     ld    E, H          ; 1:4       pushdot(-5)
     ld    D, H          ; 1:4       pushdot(-5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      pushdot(-5)   ( -- hi lo )
     push HL             ; 1:11      pushdot(-5)
@@ -88,31 +88,36 @@ ORG 0x8000
     ld   HL, 0x0005     ; 3:10      pushdot(5)   lo_word
     ld    E, H          ; 1:4       pushdot(5)
     ld    D, H          ; 1:4       pushdot(5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
-
-    
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    call x_p3_test      ; 3:17      call ( -- ret ) R:( -- )
-    
-    push DE             ; 1:11      push(-3)
-    ex   DE, HL         ; 1:4       push(-3)
-    ld   HL, -3         ; 3:10      push(-3) 
-    call x_p3_test      ; 3:17      call ( -- ret ) R:( -- )
-    
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    call x_m3_test      ; 3:17      call ( -- ret ) R:( -- )
-    
-    push DE             ; 1:11      push(-3)
-    ex   DE, HL         ; 1:4       push(-3)
-    ld   HL, -3         ; 3:10      push(-3) 
-    call x_m3_test      ; 3:17      call ( -- ret ) R:( -- )
-
+    call d_d_test       ; 3:17      call ( -- )
     
     ld   BC, string103  ; 3:10      print_i   Address of string103 ending with inverted most significant bit
+    call PRINT_STRING_I ; 3:17      print_i
+    
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call x_p3_test      ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
+    call x_p3_test      ; 3:17      call ( -- )
+    
+    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit
+    call PRINT_STRING_I ; 3:17      print_i
+    
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call x_m3_test      ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
+    call x_m3_test      ; 3:17      call ( -- )
+
+    
+    ld   BC, string105  ; 3:10      print_i   Address of string105 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
     
                         ;[13:72]    depth   ( -- +n )
@@ -124,7 +129,7 @@ ORG 0x8000
     srl   H             ; 2:8       depth
     rr    L             ; 2:8       depth
     dec  HL             ; 1:6       depth 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -139,7 +144,7 @@ Stop:                   ;           stop
 ;   ---  the beginning of a non-recursive function  ---
 x_x_test:               ;           
     pop  BC             ; 1:10      : ret
-    ld  (x_x_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (x_x_test_end+1),BC; 4:20      : ( ret -- )
     ; signed
      
 begin101:               ;           begin 101 
@@ -158,7 +163,7 @@ begin101:               ;           begin 101
     ex   DE, HL         ; 1:4       while 101
     pop  DE             ; 1:10      while 101
     jp    z, break101   ; 3:10      while 101 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break101       ; 3:10      break 101 
     jp   begin101       ; 3:10      again 101
@@ -171,7 +176,7 @@ begin102:               ;           begin 102
     ld    A, D          ; 1:4       2dup = while 102
     sub   H             ; 1:4       2dup = while 102
     jp   nz, break102   ; 3:10      2dup = while 102 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string105
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break102       ; 3:10      break 102 
     jp   begin102       ; 3:10      again 102
@@ -185,7 +190,7 @@ begin103:               ;           begin 103
     pop  HL             ; 1:10      = while 103
     pop  DE             ; 1:10      = while 103
     jp   nz, break103   ; 3:10      = while 103 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break103       ; 3:10      break 103 
     jp   begin103       ; 3:10      again 103
@@ -204,7 +209,7 @@ begin104:               ;           begin 104
     ex   DE, HL         ; 1:4       while 104
     pop  DE             ; 1:10      while 104
     jp    z, break104   ; 3:10      while 104 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break104       ; 3:10      break 104 
     jp   begin104       ; 3:10      again 104
@@ -217,7 +222,7 @@ begin105:               ;           begin 105
     ld    A, D          ; 1:4       2dup <> while 105
     sub   H             ; 1:4       2dup <> while 105
     jp    z, break105   ; 3:10      2dup <> while 105 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string108
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break105       ; 3:10      break 105 
     jp   begin105       ; 3:10      again 105
@@ -231,7 +236,7 @@ begin106:               ;           begin 106
     pop  HL             ; 1:10      <> while 106
     pop  DE             ; 1:10      <> while 106
     jp    z, break106   ; 3:10      <> while 106 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break106       ; 3:10      break 106 
     jp   begin106       ; 3:10      again 106
@@ -258,22 +263,22 @@ begin107:               ;           begin 107
     ex   DE, HL         ; 1:4       while 107
     pop  DE             ; 1:10      while 107
     jp    z, break107   ; 3:10      while 107 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break107       ; 3:10      break 107 
     jp   begin107       ; 3:10      again 107
 break107:               ;           again 107
      
 begin108:               ;           begin 108 
-    ld    A, E          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, E          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> no carry if false
+    sub   L             ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> no carry if false
+    ld    A, D          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> no carry if false
+    sbc   A, H          ; 1:4       2dup < while 108    DE<HL --> DE-HL<0 --> no carry if false
     rra                 ; 1:4       2dup < while 108
     xor   D             ; 1:4       2dup < while 108
     xor   H             ; 1:4       2dup < while 108
     jp    p, break108   ; 3:10      2dup < while 108 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string111
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break108       ; 3:10      break 108 
     jp   begin108       ; 3:10      again 108
@@ -282,17 +287,17 @@ break108:               ;           again 108
 begin109:               ;           begin 109 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, E          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, E          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> no carry if false
+    sub   L             ; 1:4       < while 109    DE<HL --> DE-HL<0 --> no carry if false
+    ld    A, D          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> no carry if false
+    sbc   A, H          ; 1:4       < while 109    DE<HL --> DE-HL<0 --> no carry if false
     rra                 ; 1:4       < while 109
     xor   D             ; 1:4       < while 109
     xor   H             ; 1:4       < while 109
     pop  HL             ; 1:10      < while 109
     pop  DE             ; 1:10      < while 109
     jp    p, break109   ; 3:10      < while 109 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break109       ; 3:10      break 109 
     jp   begin109       ; 3:10      again 109
@@ -319,22 +324,22 @@ begin110:               ;           begin 110
     ex   DE, HL         ; 1:4       while 110
     pop  DE             ; 1:10      while 110
     jp    z, break110   ; 3:10      while 110 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break110       ; 3:10      break 110 
     jp   begin110       ; 3:10      again 110
 break110:               ;           again 110
      
 begin111:               ;           begin 111 
-    ld    A, L          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
-    sub   E             ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
-    ld    A, H          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
-    sbc   A, D          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> not carry if true
+    ld    A, L          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> carry if false
+    sub   E             ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> carry if false
+    ld    A, H          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> carry if false
+    sbc   A, D          ; 1:4       2dup <= while 111    DE<=HL --> HL-DE>=0 --> carry if false
     rra                 ; 1:4       2dup <= while 111
     xor   D             ; 1:4       2dup <= while 111
     xor   H             ; 1:4       2dup <= while 111
     jp    m, break111   ; 3:10      2dup <= while 111 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string114
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break111       ; 3:10      break 111 
     jp   begin111       ; 3:10      again 111
@@ -343,17 +348,17 @@ break111:               ;           again 111
 begin112:               ;           begin 112 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, L          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
-    sub   E             ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
-    ld    A, H          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
-    sbc   A, D          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> not carry if true
+    ld    A, L          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> carry if false
+    sub   E             ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> carry if false
+    ld    A, H          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> carry if false
+    sbc   A, D          ; 1:4       <= while 112    DE<=HL --> HL-DE>=0 --> carry if false
     rra                 ; 1:4       <= while 112
     xor   D             ; 1:4       <= while 112
     xor   H             ; 1:4       <= while 112
     pop  HL             ; 1:10      <= while 112
     pop  DE             ; 1:10      <= while 112
     jp    m, break112   ; 3:10      <= while 112 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break112       ; 3:10      break 112 
     jp   begin112       ; 3:10      again 112
@@ -380,22 +385,22 @@ begin113:               ;           begin 113
     ex   DE, HL         ; 1:4       while 113
     pop  DE             ; 1:10      while 113
     jp    z, break113   ; 3:10      while 113 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break113       ; 3:10      break 113 
     jp   begin113       ; 3:10      again 113
 break113:               ;           again 113
      
 begin114:               ;           begin 114 
-    ld    A, L          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
-    sub   E             ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
-    ld    A, H          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
-    sbc   A, D          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> carry if true
+    ld    A, L          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> no carry if false
+    sub   E             ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> no carry if false
+    ld    A, H          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> no carry if false
+    sbc   A, D          ; 1:4       2dup > while 114    DE>HL --> HL-DE<0 --> no carry if false
     rra                 ; 1:4       2dup > while 114
     xor   D             ; 1:4       2dup > while 114
     xor   H             ; 1:4       2dup > while 114
     jp    p, break114   ; 3:10      2dup > while 114 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string117
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break114       ; 3:10      break 114 
     jp   begin114       ; 3:10      again 114
@@ -404,17 +409,17 @@ break114:               ;           again 114
 begin115:               ;           begin 115 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, L          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
-    sub   E             ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
-    ld    A, H          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
-    sbc   A, D          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> carry if true
+    ld    A, L          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> no carry if false
+    sub   E             ; 1:4       > while 115    DE>HL --> HL-DE<0 --> no carry if false
+    ld    A, H          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> no carry if false
+    sbc   A, D          ; 1:4       > while 115    DE>HL --> HL-DE<0 --> no carry if false
     rra                 ; 1:4       > while 115
     xor   D             ; 1:4       > while 115
     xor   H             ; 1:4       > while 115
     pop  HL             ; 1:10      > while 115
     pop  DE             ; 1:10      > while 115
     jp    p, break115   ; 3:10      > while 115 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break115       ; 3:10      break 115 
     jp   begin115       ; 3:10      again 115
@@ -441,22 +446,22 @@ begin116:               ;           begin 116
     ex   DE, HL         ; 1:4       while 116
     pop  DE             ; 1:10      while 116
     jp    z, break116   ; 3:10      while 116 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break116       ; 3:10      break 116 
     jp   begin116       ; 3:10      again 116
 break116:               ;           again 116
      
 begin117:               ;           begin 117 
-    ld    A, E          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, E          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> carry if false
+    sub   L             ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> carry if false
+    ld    A, D          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> carry if false
+    sbc   A, H          ; 1:4       2dup >= while 117    DE>=HL --> DE-HL>=0 --> carry if false
     rra                 ; 1:4       2dup >= while 117
     xor   D             ; 1:4       2dup >= while 117
     xor   H             ; 1:4       2dup >= while 117
     jp    m, break117   ; 3:10      2dup >= while 117 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string120
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string122
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break117       ; 3:10      break 117 
     jp   begin117       ; 3:10      again 117
@@ -465,17 +470,17 @@ break117:               ;           again 117
 begin118:               ;           begin 118 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, E          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, E          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> carry if false
+    sub   L             ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> carry if false
+    ld    A, D          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> carry if false
+    sbc   A, H          ; 1:4       >= while 118    DE>=HL --> DE-HL>=0 --> carry if false
     rra                 ; 1:4       >= while 118
     xor   D             ; 1:4       >= while 118
     xor   H             ; 1:4       >= while 118
     pop  HL             ; 1:10      >= while 118
     pop  DE             ; 1:10      >= while 118
     jp    m, break118   ; 3:10      >= while 118 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break118       ; 3:10      break 118 
     jp   begin118       ; 3:10      again 118
@@ -483,11 +488,10 @@ break118:               ;           again 118
     
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
+    push HL             ; 1:11      dup space .   x3 x1 x2 x1
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )
+    ex   DE, HL         ; 1:4       dup space .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A  
     ; unsigned
@@ -508,7 +512,7 @@ begin119:               ;           begin 119
     ex   DE, HL         ; 1:4       while 119
     pop  DE             ; 1:10      while 119
     jp    z, break119   ; 3:10      while 119 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string122
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string124
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break119       ; 3:10      break 119 
     jp   begin119       ; 3:10      again 119
@@ -521,7 +525,7 @@ begin120:               ;           begin 120
     ld    A, D          ; 1:4       2dup u= while 120
     sub   H             ; 1:4       2dup u= while 120
     jp   nz, break120   ; 3:10      2dup u= while 120 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string123
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string125
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break120       ; 3:10      break 120 
     jp   begin120       ; 3:10      again 120
@@ -535,7 +539,7 @@ begin121:               ;           begin 121
     pop  HL             ; 1:10      u= while 121
     pop  DE             ; 1:10      u= while 121
     jp   nz, break121   ; 3:10      u= while 121 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string124
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string126
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break121       ; 3:10      break 121 
     jp   begin121       ; 3:10      again 121
@@ -554,7 +558,7 @@ begin122:               ;           begin 122
     ex   DE, HL         ; 1:4       while 122
     pop  DE             ; 1:10      while 122
     jp    z, break122   ; 3:10      while 122 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string125
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string127
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break122       ; 3:10      break 122 
     jp   begin122       ; 3:10      again 122
@@ -567,7 +571,7 @@ begin123:               ;           begin 123
     ld    A, D          ; 1:4       2dup u<> while 123
     sbc   A, H          ; 1:4       2dup u<> while 123
     jp    z, break123   ; 3:10      2dup u<> while 123 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string126
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string128
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break123       ; 3:10      break 123 
     jp   begin123       ; 3:10      again 123
@@ -581,7 +585,7 @@ begin124:               ;           begin 124
     pop  HL             ; 1:10      u<> while 124
     pop  DE             ; 1:10      u<> while 124
     jp    z, break124   ; 3:10      u<> while 124 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string127
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string129
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break124       ; 3:10      break 124 
     jp   begin124       ; 3:10      again 124
@@ -602,19 +606,19 @@ begin125:               ;           begin 125
     ex   DE, HL         ; 1:4       while 125
     pop  DE             ; 1:10      while 125
     jp    z, break125   ; 3:10      while 125 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string128
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string130
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break125       ; 3:10      break 125 
     jp   begin125       ; 3:10      again 125
 break125:               ;           again 125
     
 begin126:               ;           begin 126 
-    ld    A, E          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, E          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> no carry if false
+    sub   L             ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> no carry if false
+    ld    A, D          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> no carry if false
+    sbc   A, H          ; 1:4       2dup u< while 126    DE<HL --> DE-HL<0 --> no carry if false
     jp   nc, break126   ; 3:10      2dup u< while 126 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string129
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string131
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break126       ; 3:10      break 126 
     jp   begin126       ; 3:10      again 126
@@ -623,14 +627,14 @@ break126:               ;           again 126
 begin127:               ;           begin 127 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, E          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, E          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> no carry if false
+    sub   L             ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> no carry if false
+    ld    A, D          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> no carry if false
+    sbc   A, H          ; 1:4       u< while 127    DE<HL --> DE-HL<0 --> no carry if false
     pop  HL             ; 1:10      u< while 127
     pop  DE             ; 1:10      u< while 127
     jp   nc, break127   ; 3:10      u< while 127 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string130
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string132
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break127       ; 3:10      break 127 
     jp   begin127       ; 3:10      again 127
@@ -649,19 +653,19 @@ begin128:               ;           begin 128
     ex   DE, HL         ; 1:4       while 128
     pop  DE             ; 1:10      while 128
     jp    z, break128   ; 3:10      while 128 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string131
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string133
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break128       ; 3:10      break 128 
     jp   begin128       ; 3:10      again 128
 break128:               ;           again 128
     
 begin129:               ;           begin 129 
-    ld    A, L          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
-    sub   E             ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
-    ld    A, H          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
-    sbc   A, D          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, L          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> carry if false
+    sub   E             ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> carry if false
+    ld    A, H          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> carry if false
+    sbc   A, D          ; 1:4       2dup u<= while 129    DE<=HL --> 0<=HL-DE --> carry if false
     jp    c, break129   ; 3:10      2dup u<= while 129 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string132
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string134
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break129       ; 3:10      break 129 
     jp   begin129       ; 3:10      again 129
@@ -670,14 +674,14 @@ break129:               ;           again 129
 begin130:               ;           begin 130 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, L          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
-    sub   E             ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
-    ld    A, H          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
-    sbc   A, D          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, L          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> carry if false
+    sub   E             ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> carry if false
+    ld    A, H          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> carry if false
+    sbc   A, D          ; 1:4       u<= while 130    DE<=HL --> 0<=HL-DE --> carry if false
     pop  HL             ; 1:10      u<= while 130
     pop  DE             ; 1:10      u<= while 130
     jp    c, break130   ; 3:10      u<= while 130 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string133
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string135
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break130       ; 3:10      break 130 
     jp   begin130       ; 3:10      again 130
@@ -695,19 +699,19 @@ begin131:               ;           begin 131
     ex   DE, HL         ; 1:4       while 131
     pop  DE             ; 1:10      while 131
     jp    z, break131   ; 3:10      while 131 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string134
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string136
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break131       ; 3:10      break 131 
     jp   begin131       ; 3:10      again 131
 break131:               ;           again 131
     
 begin132:               ;           begin 132 
-    ld    A, L          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
-    sub   E             ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
-    ld    A, H          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
-    sbc   A, D          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, L          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> no carry if false
+    sub   E             ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> no carry if false
+    ld    A, H          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> no carry if false
+    sbc   A, D          ; 1:4       2dup u> while 132    DE>HL --> 0>HL-DE --> no carry if false
     jp   nc, break132   ; 3:10      2dup u> while 132 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string135
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string137
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break132       ; 3:10      break 132 
     jp   begin132       ; 3:10      again 132
@@ -716,14 +720,14 @@ break132:               ;           again 132
 begin133:               ;           begin 133 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, L          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
-    sub   E             ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
-    ld    A, H          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
-    sbc   A, D          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, L          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> no carry if false
+    sub   E             ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> no carry if false
+    ld    A, H          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> no carry if false
+    sbc   A, D          ; 1:4       u> while 133    DE>HL --> 0>HL-DE --> no carry if false
     pop  HL             ; 1:10      u> while 133
     pop  DE             ; 1:10      u> while 133
     jp   nc, break133   ; 3:10      u> while 133 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string136
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string138
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break133       ; 3:10      break 133 
     jp   begin133       ; 3:10      again 133
@@ -741,19 +745,19 @@ begin134:               ;           begin 134
     ex   DE, HL         ; 1:4       while 134
     pop  DE             ; 1:10      while 134
     jp    z, break134   ; 3:10      while 134 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string137
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string139
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break134       ; 3:10      break 134 
     jp   begin134       ; 3:10      again 134
 break134:               ;           again 134
     
 begin135:               ;           begin 135 
-    ld    A, E          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, E          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> carry if false
+    sub   L             ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> carry if false
+    ld    A, D          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> carry if false
+    sbc   A, H          ; 1:4       2dup u>= while 135    DE>=HL --> DE-HL>=0 --> carry if false
     jp    c, break135   ; 3:10      2dup u>= while 135 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string138
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string140
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break135       ; 3:10      break 135 
     jp   begin135       ; 3:10      again 135
@@ -762,22 +766,22 @@ break135:               ;           again 135
 begin136:               ;           begin 136 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    ld    A, E          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, E          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> carry if false
+    sub   L             ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> carry if false
+    ld    A, D          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> carry if false
+    sbc   A, H          ; 1:4       u>= while 136    DE>=HL --> DE-HL>=0 --> carry if false
     pop  HL             ; 1:10      u>= while 136
     pop  DE             ; 1:10      u>= while 136
     jp    c, break136   ; 3:10      u>= while 136 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string139
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string141
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break136       ; 3:10      break 136 
     jp   begin136       ; 3:10      again 136
 break136:               ;           again 136
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -790,7 +794,7 @@ x_x_test_end:
 ;   ---  the beginning of a non-recursive function  ---
 d_d_test:               ;           
     pop  BC             ; 1:10      : ret
-    ld  (d_d_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (d_d_test_end+1),BC; 4:20      : ( ret -- )
     ; signed
      
 begin137:               ;           begin 137 
@@ -820,7 +824,7 @@ begin137:               ;           begin 137
     ex   DE, HL         ; 1:4       while 137
     pop  DE             ; 1:10      while 137
     jp    z, break137   ; 3:10      while 137 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string140
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string142
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break137       ; 3:10      break 137 
     jp   begin137       ; 3:10      again 137
@@ -839,7 +843,7 @@ begin138:               ;           begin 138
     ex  (SP),HL         ; 1:19      4dup D= while 138   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= while 138   h2 l2 . h1 l1
     jp   nz, break138   ; 3:10      4dup D= while 138   h2 l2 . h1 l1 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string141
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string143
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break138       ; 3:10      break 138 
     jp   begin138       ; 3:10      again 138
@@ -858,14 +862,14 @@ begin139:               ;           begin 139
                        ;[14:91]     D= while 139   ( d2 d1 -- )
     pop  BC             ; 1:10      D= while 139   lo_2
     or    A             ; 1:4       D= while 139
-    sbc  HL, BC         ; 2:15      D= while 139   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if false
+    sbc  HL, BC         ; 2:15      D= while 139   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> no zero if false
     pop  HL             ; 1:10      D= while 139   hi_2
     jr   nz, $+4        ; 2:7/12    D= while 139
-    sbc  HL, DE         ; 2:15      D= while 139   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
+    sbc  HL, DE         ; 2:15      D= while 139   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> no zero if false
     pop  HL             ; 1:10      D= while 139
     pop  DE             ; 1:10      D= while 139
     jp   nz, break139   ; 3:10      D= while 139 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string142
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string144
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break139       ; 3:10      break 139 
     jp   begin139       ; 3:10      again 139
@@ -896,7 +900,7 @@ begin140:               ;           begin 140
     ex   DE, HL         ; 1:4       while 140
     pop  DE             ; 1:10      while 140
     jp    z, break140   ; 3:10      while 140 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string143
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string145
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break140       ; 3:10      break 140 
     jp   begin140       ; 3:10      again 140
@@ -920,7 +924,7 @@ begin141:               ;           begin 141
     sub   D             ; 1:4       4dup D<> while 141   h2       . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> while 141   h2 l2    . h1 l1
     jp    z, break141   ; 3:10      4dup D<> while 141 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string144
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string146
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break141       ; 3:10      break 141 
     jp   begin141       ; 3:10      again 141
@@ -939,14 +943,14 @@ begin142:               ;           begin 142
                        ;[14:91]     D<> while 142   ( d2 d1 -- )
     pop  BC             ; 1:10      D<> while 142   lo_2
     or    A             ; 1:4       D<> while 142
-    sbc  HL, BC         ; 2:15      D<> while 142   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if true
+    sbc  HL, BC         ; 2:15      D<> while 142   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> zero if false
     pop  HL             ; 1:10      D<> while 142   hi_2
     jr   nz, $+4        ; 2:7/12    D<> while 142
-    sbc  HL, DE         ; 2:15      D<> while 142   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
+    sbc  HL, DE         ; 2:15      D<> while 142   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> zero if false
     pop  HL             ; 1:10      D<> while 142
     pop  DE             ; 1:10      D<> while 142
     jp    z, break142   ; 3:10      D<> while 142 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string145
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string147
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break142       ; 3:10      break 142 
     jp   begin142       ; 3:10      again 142
@@ -984,7 +988,7 @@ begin143:               ;           begin 143
     ex   DE, HL         ; 1:4       while 143
     pop  DE             ; 1:10      while 143
     jp    z, break143   ; 3:10      while 143 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string146
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string148
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break143       ; 3:10      break 143 
     jp   begin143       ; 3:10      again 143
@@ -992,9 +996,9 @@ break143:               ;           again 143
      
 begin144:               ;           begin 144 
                         ;[6:27]     4dup D< while 144   ( d2 d1 -- d2 d1 )
-    call FCE_4DUP_DLT   ; 3:17      4dup D< while 144   carry if true
+    call FCE_4DUP_DLT   ; 3:17      4dup D< while 144   no carry if false
     jp   nc, break144   ; 3:10      4dup D< while 144 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string147
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string149
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break144       ; 3:10      break 144 
     jp   begin144       ; 3:10      again 144
@@ -1013,11 +1017,11 @@ begin145:               ;           begin 145
                        ;[10:67]     D< while 145   ( d2 d1 -- )
     pop  BC             ; 1:10      D< while 145   l2
     pop  AF             ; 1:10      D< while 145   h2
-    call FCE_DLT        ; 3:17      D< while 145   carry if true
+    call FCE_DLT        ; 3:17      D< while 145   no carry if false
     pop  HL             ; 1:10      D< while 145
     pop  DE             ; 1:10      D< while 145
     jp   nc, break145   ; 3:10      D< while 145 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string148
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string150
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break145       ; 3:10      break 145 
     jp   begin145       ; 3:10      again 145
@@ -1056,7 +1060,7 @@ begin146:               ;           begin 146
     ex   DE, HL         ; 1:4       while 146
     pop  DE             ; 1:10      while 146
     jp    z, break146   ; 3:10      while 146 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string149
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string151
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break146       ; 3:10      break 146 
     jp   begin146       ; 3:10      again 146
@@ -1066,7 +1070,7 @@ begin147:               ;           begin 147
                         ;[6:27]     4dup D<= while 147   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D<= while 147   D> carry if true --> D<= carry if false
     jp    c, break147   ; 3:10      4dup D<= while 147 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string150
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string152
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break147       ; 3:10      break 147 
     jp   begin147       ; 3:10      again 147
@@ -1089,7 +1093,7 @@ begin148:               ;           begin 148
     pop  HL             ; 1:10      D<= while 148
     pop  DE             ; 1:10      D<= while 148
     jp    c, break148   ; 3:10      D<= while 148 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string151
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string153
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break148       ; 3:10      break 148 
     jp   begin148       ; 3:10      again 148
@@ -1127,7 +1131,7 @@ begin149:               ;           begin 149
     ex   DE, HL         ; 1:4       while 149
     pop  DE             ; 1:10      while 149
     jp    z, break149   ; 3:10      while 149 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string152
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string154
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break149       ; 3:10      break 149 
     jp   begin149       ; 3:10      again 149
@@ -1135,9 +1139,9 @@ break149:               ;           again 149
      
 begin150:               ;           begin 150 
                         ;[6:27]     4dup D> while 150   ( d2 d1 -- d2 d1 )
-    call FCE_4DUP_DGT   ; 3:17      4dup D> while 150   carry if true
+    call FCE_4DUP_DGT   ; 3:17      4dup D> while 150   no carry if false
     jp   nc, break150   ; 3:10      4dup D> while 150 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string153
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string155
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break150       ; 3:10      break 150 
     jp   begin150       ; 3:10      again 150
@@ -1156,11 +1160,11 @@ begin151:               ;           begin 151
                        ;[10:67]     D> while 151   ( d2 d1 -- )
     pop  BC             ; 1:10      D> while 151   l2
     pop  AF             ; 1:10      D> while 151   h2
-    call FCE_DGT        ; 3:17      D> while 151   carry if true
+    call FCE_DGT        ; 3:17      D> while 151   no carry if false
     pop  HL             ; 1:10      D> while 151
     pop  DE             ; 1:10      D> while 151
     jp   nc, break151   ; 3:10      D> while 151 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string154
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string156
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break151       ; 3:10      break 151 
     jp   begin151       ; 3:10      again 151
@@ -1196,7 +1200,7 @@ begin152:               ;           begin 152
     ex   DE, HL         ; 1:4       while 152
     pop  DE             ; 1:10      while 152
     jp    z, break152   ; 3:10      while 152 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string155
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string157
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break152       ; 3:10      break 152 
     jp   begin152       ; 3:10      again 152
@@ -1206,7 +1210,7 @@ begin153:               ;           begin 153
                         ;[6:27]     4dup D>= while 153   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DLT   ; 3:17      4dup D>= while 153   D< carry if true --> D>= carry if false
     jp    c, break153   ; 3:10      4dup D>= while 153 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string156
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string158
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break153       ; 3:10      break 153 
     jp   begin153       ; 3:10      again 153
@@ -1229,7 +1233,7 @@ begin154:               ;           begin 154
     pop  HL             ; 1:10      D>= while 154
     pop  DE             ; 1:10      D>= while 154
     jp    c, break154   ; 3:10      D>= while 154 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string157
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string159
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break154       ; 3:10      break 154 
     jp   begin154       ; 3:10      again 154
@@ -1245,10 +1249,10 @@ break154:               ;           again 154
     ex  (SP),HL         ; 1:19      2over d c b a . b c
     ld    D, B          ; 1:4       2over
     ld    E, C          ; 1:4       2over d c b a . d c 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A  
     ; unsigned
@@ -1280,7 +1284,7 @@ begin155:               ;           begin 155
     ex   DE, HL         ; 1:4       while 155
     pop  DE             ; 1:10      while 155
     jp    z, break155   ; 3:10      while 155 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string158
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string160
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break155       ; 3:10      break 155 
     jp   begin155       ; 3:10      again 155
@@ -1299,7 +1303,7 @@ begin156:               ;           begin 156
     ex  (SP),HL         ; 1:19      4dup D= while 156   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= while 156   h2 l2 . h1 l1
     jp   nz, break156   ; 3:10      4dup D= while 156   h2 l2 . h1 l1 
-    ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit == string159
+    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string161
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break156       ; 3:10      break 156 
     jp   begin156       ; 3:10      again 156
@@ -1318,14 +1322,14 @@ begin157:               ;           begin 157
                        ;[14:91]     D= while 157   ( d2 d1 -- )
     pop  BC             ; 1:10      D= while 157   lo_2
     or    A             ; 1:4       D= while 157
-    sbc  HL, BC         ; 2:15      D= while 157   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if false
+    sbc  HL, BC         ; 2:15      D= while 157   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> no zero if false
     pop  HL             ; 1:10      D= while 157   hi_2
     jr   nz, $+4        ; 2:7/12    D= while 157
-    sbc  HL, DE         ; 2:15      D= while 157   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
+    sbc  HL, DE         ; 2:15      D= while 157   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> no zero if false
     pop  HL             ; 1:10      D= while 157
     pop  DE             ; 1:10      D= while 157
     jp   nz, break157   ; 3:10      D= while 157 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string160
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string162
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break157       ; 3:10      break 157 
     jp   begin157       ; 3:10      again 157
@@ -1356,7 +1360,7 @@ begin158:               ;           begin 158
     ex   DE, HL         ; 1:4       while 158
     pop  DE             ; 1:10      while 158
     jp    z, break158   ; 3:10      while 158 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string161
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string163
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break158       ; 3:10      break 158 
     jp   begin158       ; 3:10      again 158
@@ -1380,7 +1384,7 @@ begin159:               ;           begin 159
     sub   D             ; 1:4       4dup D<> while 159   h2       . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> while 159   h2 l2    . h1 l1
     jp    z, break159   ; 3:10      4dup D<> while 159 
-    ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit == string162
+    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string164
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break159       ; 3:10      break 159 
     jp   begin159       ; 3:10      again 159
@@ -1399,14 +1403,14 @@ begin160:               ;           begin 160
                        ;[14:91]     D<> while 160   ( d2 d1 -- )
     pop  BC             ; 1:10      D<> while 160   lo_2
     or    A             ; 1:4       D<> while 160
-    sbc  HL, BC         ; 2:15      D<> while 160   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if true
+    sbc  HL, BC         ; 2:15      D<> while 160   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> zero if false
     pop  HL             ; 1:10      D<> while 160   hi_2
     jr   nz, $+4        ; 2:7/12    D<> while 160
-    sbc  HL, DE         ; 2:15      D<> while 160   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
+    sbc  HL, DE         ; 2:15      D<> while 160   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> zero if false
     pop  HL             ; 1:10      D<> while 160
     pop  DE             ; 1:10      D<> while 160
     jp    z, break160   ; 3:10      D<> while 160 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string163
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string165
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break160       ; 3:10      break 160 
     jp   begin160       ; 3:10      again 160
@@ -1437,7 +1441,7 @@ begin161:               ;           begin 161
     ex   DE, HL         ; 1:4       while 161
     pop  DE             ; 1:10      while 161
     jp    z, break161   ; 3:10      while 161 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string164
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string166
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break161       ; 3:10      break 161 
     jp   begin161       ; 3:10      again 161
@@ -1445,20 +1449,20 @@ break161:               ;           again 161
     
 begin162:               ;           begin 162 
                        ;[15:101]    4dup Du< while 162   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du< while 162   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> carry if true
+    pop  BC             ; 1:10      4dup Du< while 162   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> no carry if false
     ld    A, C          ; 1:4       4dup Du< while 162
-    sub   L             ; 1:4       4dup Du< while 162   C-L<0 --> carry if true
+    sub   L             ; 1:4       4dup Du< while 162   C-L<0 --> no carry if false
     ld    A, B          ; 1:4       4dup Du< while 162
-    sbc   A, H          ; 1:4       4dup Du< while 162   B-H<0 --> carry if true
+    sbc   A, H          ; 1:4       4dup Du< while 162   B-H<0 --> no carry if false
     ex  (SP),HL         ; 1:19      4dup Du< while 162   HL = hi2
-    ld    A, L          ; 1:4       4dup Du< while 162   HLBC-DE(SP)<0 -- carry if true
-    sbc   A, E          ; 1:4       4dup Du< while 162   L-E<0 --> carry if true
+    ld    A, L          ; 1:4       4dup Du< while 162   HLBC-DE(SP)<0 -- no carry if false
+    sbc   A, E          ; 1:4       4dup Du< while 162   L-E<0 --> no carry if false
     ld    A, H          ; 1:4       4dup Du< while 162
-    sbc   A, D          ; 1:4       4dup Du< while 162   H-D<0 --> carry if true
+    sbc   A, D          ; 1:4       4dup Du< while 162   H-D<0 --> no carry if false
     ex  (SP),HL         ; 1:19      4dup Du< while 162
     push BC             ; 1:11      4dup Du< while 162
     jp   nc, break162   ; 3:10      4dup Du< while 162 
-    ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit == string165
+    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string167
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break162       ; 3:10      break 162 
     jp   begin162       ; 3:10      again 162
@@ -1476,16 +1480,16 @@ begin163:               ;           begin 163
     push BC             ; 1:11      4dup 
                        ;[13:81]     Du< while 163   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du< while 163   lo_2
-    ld    A, C          ; 1:4       Du< while 163   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> carry if true
-    sub   L             ; 1:4       Du< while 163   C-L<0 --> carry if true
+    ld    A, C          ; 1:4       Du< while 163   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> no carry if false
+    sub   L             ; 1:4       Du< while 163   C-L<0 --> no carry if false
     ld    A, B          ; 1:4       Du< while 163
-    sbc   A, H          ; 1:4       Du< while 163   B-H<0 --> carry if true
+    sbc   A, H          ; 1:4       Du< while 163   B-H<0 --> no carry if false
     pop  HL             ; 1:10      Du< while 163   hi_2
-    sbc  HL, DE         ; 2:15      Du< while 163   HL-DE<0 --> carry if true
+    sbc  HL, DE         ; 2:15      Du< while 163   HL-DE<0 --> no carry if false
     pop  HL             ; 1:10      Du< while 163
     pop  DE             ; 1:10      Du< while 163
     jp   nc, break163   ; 3:10      Du< while 163 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string166
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string168
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break163       ; 3:10      break 163 
     jp   begin163       ; 3:10      again 163
@@ -1517,7 +1521,7 @@ begin164:               ;           begin 164
     ex   DE, HL         ; 1:4       while 164
     pop  DE             ; 1:10      while 164
     jp    z, break164   ; 3:10      while 164 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string167
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string169
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break164       ; 3:10      break 164 
     jp   begin164       ; 3:10      again 164
@@ -1525,20 +1529,20 @@ break164:               ;           again 164
     
 begin165:               ;           begin 165 
                        ;[15:101]    4dup Du<= while 165   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du<= while 165   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    pop  BC             ; 1:10      4dup Du<= while 165   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> carry if false
     ld    A, L          ; 1:4       4dup Du<= while 165
-    sub   C             ; 1:4       4dup Du<= while 165   0<=L-C --> no carry if true
+    sub   C             ; 1:4       4dup Du<= while 165   0<=L-C --> carry if false
     ld    A, H          ; 1:4       4dup Du<= while 165
-    sbc   A, B          ; 1:4       4dup Du<= while 165   0<=H-B --> no carry if true
+    sbc   A, B          ; 1:4       4dup Du<= while 165   0<=H-B --> carry if false
     ex  (SP),HL         ; 1:19      4dup Du<= while 165   HL = hi2
-    ld    A, E          ; 1:4       4dup Du<= while 165   0<=DE(SP)-HLBC -- no carry if true
-    sbc   A, L          ; 1:4       4dup Du<= while 165   0<=E-L --> no carry if true
+    ld    A, E          ; 1:4       4dup Du<= while 165   0<=DE(SP)-HLBC -- carry if false
+    sbc   A, L          ; 1:4       4dup Du<= while 165   0<=E-L --> carry if false
     ld    A, D          ; 1:4       4dup Du<= while 165
-    sbc   A, H          ; 1:4       4dup Du<= while 165   0<=D-H --> no carry if true
+    sbc   A, H          ; 1:4       4dup Du<= while 165   0<=D-H --> carry if false
     ex  (SP),HL         ; 1:19      4dup Du<= while 165
     push BC             ; 1:11      4dup Du<= while 165
     jp    c, break165   ; 3:10      4dup Du<= while 165 
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string168
+    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string170
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break165       ; 3:10      break 165 
     jp   begin165       ; 3:10      again 165
@@ -1557,14 +1561,14 @@ begin166:               ;           begin 166
                        ;[13:88]     Du<= while 166   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du<= while 166   lo_2
     or    A             ; 1:4       Du<= while 166
-    sbc  HL, BC         ; 2:15      Du<= while 166   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    sbc  HL, BC         ; 2:15      Du<= while 166   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> carry if false
     pop  BC             ; 1:10      Du<= while 166   hi_2
     ex   DE, HL         ; 1:4       Du<= while 166
-    sbc  HL, BC         ; 2:15      Du<= while 166   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
+    sbc  HL, BC         ; 2:15      Du<= while 166   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> carry if false
     pop  HL             ; 1:10      Du<= while 166
     pop  DE             ; 1:10      Du<= while 166
     jp    c, break166   ; 3:10      Du<= while 166 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string169
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string171
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break166       ; 3:10      break 166 
     jp   begin166       ; 3:10      again 166
@@ -1598,7 +1602,7 @@ begin167:               ;           begin 167
     ex   DE, HL         ; 1:4       while 167
     pop  DE             ; 1:10      while 167
     jp    z, break167   ; 3:10      while 167 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string170
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string172
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break167       ; 3:10      break 167 
     jp   begin167       ; 3:10      again 167
@@ -1606,20 +1610,20 @@ break167:               ;           again 167
     
 begin168:               ;           begin 168 
                        ;[15:101]    4dup Du> while 168   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du> while 168   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    pop  BC             ; 1:10      4dup Du> while 168   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> no carry if false
     ld    A, L          ; 1:4       4dup Du> while 168
-    sub   C             ; 1:4       4dup Du> while 168   0>L-C --> carry if true
+    sub   C             ; 1:4       4dup Du> while 168   0>L-C --> no carry if false
     ld    A, H          ; 1:4       4dup Du> while 168
-    sbc   A, B          ; 1:4       4dup Du> while 168   0>H-B --> carry if true
+    sbc   A, B          ; 1:4       4dup Du> while 168   0>H-B --> no carry if false
     ex  (SP),HL         ; 1:19      4dup Du> while 168   HL = hi2
-    ld    A, E          ; 1:4       4dup Du> while 168   0>DE(SP)-HLBC -- carry if true
-    sbc   A, L          ; 1:4       4dup Du> while 168   0>E-L --> carry if true
+    ld    A, E          ; 1:4       4dup Du> while 168   0>DE(SP)-HLBC -- no carry if false
+    sbc   A, L          ; 1:4       4dup Du> while 168   0>E-L --> no carry if false
     ld    A, D          ; 1:4       4dup Du> while 168
-    sbc   A, H          ; 1:4       4dup Du> while 168   0>D-H --> carry if true
+    sbc   A, H          ; 1:4       4dup Du> while 168   0>D-H --> no carry if false
     ex  (SP),HL         ; 1:19      4dup Du> while 168
     push BC             ; 1:11      4dup Du> while 168
     jp   nc, break168   ; 3:10      4dup Du> while 168 
-    ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string171
+    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string173
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break168       ; 3:10      break 168 
     jp   begin168       ; 3:10      again 168
@@ -1638,14 +1642,14 @@ begin169:               ;           begin 169
                        ;[13:88]     Du> while 169   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du> while 169   lo_2
     or    A             ; 1:4       Du> while 169
-    sbc  HL, BC         ; 2:15      Du> while 169   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    sbc  HL, BC         ; 2:15      Du> while 169   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> no carry if false
     pop  BC             ; 1:10      Du> while 169   hi_2
     ex   DE, HL         ; 1:4       Du> while 169
-    sbc  HL, BC         ; 2:15      Du> while 169   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> carry if true
+    sbc  HL, BC         ; 2:15      Du> while 169   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> no carry if false
     pop  HL             ; 1:10      Du> while 169
     pop  DE             ; 1:10      Du> while 169
     jp   nc, break169   ; 3:10      Du> while 169 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string172
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string174
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break169       ; 3:10      break 169 
     jp   begin169       ; 3:10      again 169
@@ -1677,7 +1681,7 @@ begin170:               ;           begin 170
     ex   DE, HL         ; 1:4       while 170
     pop  DE             ; 1:10      while 170
     jp    z, break170   ; 3:10      while 170 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string173
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string175
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break170       ; 3:10      break 170 
     jp   begin170       ; 3:10      again 170
@@ -1685,20 +1689,20 @@ break170:               ;           again 170
     
 begin171:               ;           begin 171 
                        ;[15:101]    4dup Du>= while 171   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du>= while 171   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
+    pop  BC             ; 1:10      4dup Du>= while 171   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> carry if false
     ld    A, C          ; 1:4       4dup Du>= while 171
-    sub   L             ; 1:4       4dup Du>= while 171   C-L>=0 --> no carry if true
+    sub   L             ; 1:4       4dup Du>= while 171   C-L>=0 --> carry if false
     ld    A, B          ; 1:4       4dup Du>= while 171
-    sbc   A, H          ; 1:4       4dup Du>= while 171   B-H>=0 --> no carry if true
+    sbc   A, H          ; 1:4       4dup Du>= while 171   B-H>=0 --> carry if false
     ex  (SP),HL         ; 1:19      4dup Du>= while 171   HL = hi2
-    ld    A, L          ; 1:4       4dup Du>= while 171   HLBC-DE(SP)>=0 -- no carry if true
-    sbc   A, E          ; 1:4       4dup Du>= while 171   L-E>=0 --> no carry if true
+    ld    A, L          ; 1:4       4dup Du>= while 171   HLBC-DE(SP)>=0 -- carry if false
+    sbc   A, E          ; 1:4       4dup Du>= while 171   L-E>=0 --> carry if false
     ld    A, H          ; 1:4       4dup Du>= while 171
-    sbc   A, D          ; 1:4       4dup Du>= while 171   H-D>=0 --> no carry if true
+    sbc   A, D          ; 1:4       4dup Du>= while 171   H-D>=0 --> carry if false
     ex  (SP),HL         ; 1:19      4dup Du>= while 171
     push BC             ; 1:11      4dup Du>= while 171
     jp    c, break171   ; 3:10      4dup Du>= while 171 
-    ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string174
+    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string176
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break171       ; 3:10      break 171 
     jp   begin171       ; 3:10      again 171
@@ -1716,16 +1720,16 @@ begin172:               ;           begin 172
     push BC             ; 1:11      4dup 
                        ;[13:81]     Du>= while 172   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du>= while 172   lo_2
-    ld    A, C          ; 1:4       Du>= while 172   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
-    sub   L             ; 1:4       Du>= while 172   C-L>=0 --> no carry if true
+    ld    A, C          ; 1:4       Du>= while 172   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> carry if false
+    sub   L             ; 1:4       Du>= while 172   C-L>=0 --> carry if false
     ld    A, B          ; 1:4       Du>= while 172
-    sbc   A, H          ; 1:4       Du>= while 172   B-H>=0 --> no carry if true
+    sbc   A, H          ; 1:4       Du>= while 172   B-H>=0 --> carry if false
     pop  HL             ; 1:10      Du>= while 172   hi_2
-    sbc  HL, DE         ; 2:15      Du>= while 172   HL-DE>=0 --> no carry if true
+    sbc  HL, DE         ; 2:15      Du>= while 172   HL-DE>=0 --> carry if false
     pop  HL             ; 1:10      Du>= while 172
     pop  DE             ; 1:10      Du>= while 172
     jp    c, break172   ; 3:10      Du>= while 172 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string175
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string177
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break172       ; 3:10      break 172 
     jp   begin172       ; 3:10      again 172
@@ -1738,8 +1742,8 @@ break172:               ;           again 172
     ex  (SP),HL         ; 1:19      2swap b   . c d
     ex   DE, HL         ; 1:4       2swap b   . d c
     push AF             ; 1:11      2swap b a . d c 
-    call PRINT_U32      ; 3:17      ud. 
-    call PRINT_U32      ; 3:17      ud. 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
+    call PRT_SP_U32     ; 3:17      space ud.   ( ud -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1753,188 +1757,175 @@ d_d_test_end:
 ;   ---  the beginning of a non-recursive function  ---
 x_p3_test:              ;           
     pop  BC             ; 1:10      : ret
-    ld  (x_p3_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (x_p3_test_end+1),BC; 4:20      : ( ret -- )
     ; signed
     
 begin173:               ;           begin 173 
-    ld    A, low 3      ; 2:7       dup 3 = while 173
-    xor   L             ; 1:4       dup 3 = while 173
-    jp   nz, break173   ; 3:10      dup 3 = while 173
-    ld    A, high 3     ; 2:7       dup 3 = while 173
-    xor   H             ; 1:4       dup 3 = while 173
+                      ;[7:25/25,25] dup 3 = while 173   ( x1 -- x1 )   3 == HL
+    ld    A, 0x03       ; 2:7       dup 3 = while 173
+    xor   L             ; 1:4       dup 3 = while 173   x[1] = 0x03
+    or    H             ; 1:4       dup 3 = while 173   x[2] = 0
     jp   nz, break173   ; 3:10      dup 3 = while 173 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string176
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string178
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break173       ; 3:10      break 173 
     jp   begin173       ; 3:10      again 173
 break173:               ;           again 173
     
 begin174:               ;           begin 174 
-    ld    A, low 3      ; 2:7       dup 3 <> while 174
-    xor   L             ; 1:4       dup 3 <> while 174
-    jr   nz, $+8        ; 2:7/12    dup 3 <> while 174
-    ld    A, high 3     ; 2:7       dup 3 <> while 174
-    xor   H             ; 1:4       dup 3 <> while 174
+                      ;[7:25/25,25] dup 3 <> while 174   ( x1 -- x1 )   3 <> HL
+    ld    A, 0x03       ; 2:7       dup 3 <> while 174
+    xor   L             ; 1:4       dup 3 <> while 174   x[1] = 0x03
+    or    H             ; 1:4       dup 3 <> while 174   x[2] = 0
     jp    z, break174   ; 3:10      dup 3 <> while 174 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string177
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string179
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break174       ; 3:10      break 174 
     jp   begin174       ; 3:10      again 174
 break174:               ;           again 174
     
 begin175:               ;           begin 175 
-    ld    A, H          ; 1:4       dup 3 < while 175
-    add   A, A          ; 1:4       dup 3 < while 175
-    jr    c, $+11       ; 2:7/12    dup 3 < while 175    negative HL < positive constant ---> true
-    ld    A, L          ; 1:4       dup 3 < while 175    HL<3 --> HL-3<0 --> carry if true
-    sub   low 3         ; 2:7       dup 3 < while 175    HL<3 --> HL-3<0 --> carry if true
-    ld    A, H          ; 1:4       dup 3 < while 175    HL<3 --> HL-3<0 --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 < while 175    HL<3 --> HL-3<0 --> carry if true
-    jp   nc, break175   ; 3:10      dup 3 < while 175 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string178
+                       ;[11:40]     dup 3 < while 175    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, L          ; 1:4       dup 3 < while 175    HL<3 --> HL-3<0 --> no carry if false
+    sub   low 3         ; 2:7       dup 3 < while 175    HL<3 --> HL-3<0 --> no carry if false
+    ld    A, H          ; 1:4       dup 3 < while 175    HL<3 --> HL-3<0 --> no carry if false
+    sbc   A, high 3     ; 2:7       dup 3 < while 175    HL<3 --> HL-3<0 --> no carry if false
+    rra                 ; 1:4       dup 3 < while 175
+    xor   H             ; 1:4       dup 3 < while 175    invert sign if x is negative
+    jp    p, break175   ; 3:10      dup 3 < while 101    positive constant --> no sign if false 
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string180
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break175       ; 3:10      break 175 
     jp   begin175       ; 3:10      again 175
 break175:               ;           again 175
     
 begin176:               ;           begin 176 
-    ld    A, H          ; 1:4       dup 3 <= while 176
-    add   A, A          ; 1:4       dup 3 <= while 176
-    jr    c, $+11       ; 2:7/12    dup 3 <= while 176    negative HL <= positive constant ---> true
-    ld    A, low 3      ; 2:7       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> not carry if true
-    sub   L             ; 1:4       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> not carry if true
-    jp    c, break176   ; 3:10      dup 3 <= while 176 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string179
+                       ;[11:40]     dup 3 <= while 176    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, low 3      ; 2:7       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> carry if false
+    sub   L             ; 1:4       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> carry if false
+    ld    A, high 3     ; 2:7       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> carry if false
+    sbc   A, H          ; 1:4       dup 3 <= while 176    HL<=3 --> 0<=3-HL --> carry if false
+    rra                 ; 1:4       dup 3 <= while 176
+    xor   H             ; 1:4       dup 3 <= while 176    invert sign if x is negative
+    jp    m, break176   ; 3:10      dup 3 <= while 101    positive constant --> sign if false 
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string181
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break176       ; 3:10      break 176 
     jp   begin176       ; 3:10      again 176
 break176:               ;           again 176
     
 begin177:               ;           begin 177 
-    ld    A, H          ; 1:4       dup 3 > while 177
-    add   A, A          ; 1:4       dup 3 > while 177
-    jp    c, break177   ; 3:10      dup 3 > while 177    negative HL > positive constant ---> false
-    ld    A, low 3      ; 2:7       dup 3 > while 177    HL>3 --> 0>3-HL --> carry if true
-    sub   L             ; 1:4       dup 3 > while 177    HL>3 --> 0>3-HL --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 > while 177    HL>3 --> 0>3-HL --> carry if true
-    sbc   A, H          ; 1:4       dup 3 > while 177    HL>3 --> 0>3-HL --> carry if true
-    jp   nc, break177   ; 3:10      dup 3 < while 177 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string180
+                       ;[11:40]     dup 3 > while 177    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, low 3      ; 2:7       dup 3 > while 177    HL>3 --> 0>3-HL --> no carry if false
+    sub   L             ; 1:4       dup 3 > while 177    HL>3 --> 0>3-HL --> no carry if false
+    ld    A, high 3     ; 2:7       dup 3 > while 177    HL>3 --> 0>3-HL --> no carry if false
+    sbc   A, H          ; 1:4       dup 3 > while 177    HL>3 --> 0>3-HL --> no carry if false
+    rra                 ; 1:4       dup 3 > while 177
+    xor   H             ; 1:4       dup 3 > while 177    invert sign if x is negative
+    jp    p, break177   ; 3:10      dup 3 > while 101    positive constant --> no sign if false 
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string182
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break177       ; 3:10      break 177 
     jp   begin177       ; 3:10      again 177
 break177:               ;           again 177
     
 begin178:               ;           begin 178 
-    ld    A, H          ; 1:4       dup 3 >= while 178
-    add   A, A          ; 1:4       dup 3 >= while 178
-    jp    c, break178   ; 3:10      dup 3 >= while 178    negative HL >= positive constant ---> false
-    ld    A, L          ; 1:4       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> not carry if true
-    sub   low 3         ; 2:7       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> not carry if true
-    jp    c, break178   ; 3:10      dup 3 >= while 178 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string181
+                       ;[11:40]     dup 3 >= while 178    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, L          ; 1:4       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> carry if false
+    sub   low 3         ; 2:7       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> carry if false
+    ld    A, H          ; 1:4       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> carry if false
+    sbc   A, high 3     ; 2:7       dup 3 >= while 178    HL>=3 --> HL-3>=0 --> carry if false
+    rra                 ; 1:4       dup 3 >= while 178
+    xor   H             ; 1:4       dup 3 >= while 178    invert sign if x is negative
+    jp    m, break178   ; 3:10      dup 3 >= while 101    positive constant --> sign if false 
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string183
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break178       ; 3:10      break 178 
     jp   begin178       ; 3:10      again 178
 break178:               ;           again 178
     
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    call PRINT_S16      ; 3:17      . 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    ld   BC, string184  ; 3:10      print_i   Address of string184 ending with inverted most significant bit
+    call PRINT_STRING_I ; 3:17      print_i
     ; unsigned
     
 begin179:               ;           begin 179 
-    ld    A, low 3      ; 2:7       dup 3 u= while 179
-    xor   L             ; 1:4       dup 3 u= while 179
-    jp   nz, break179   ; 3:10      dup 3 u= while 179
-    ld    A, high 3     ; 2:7       dup 3 u= while 179
-    xor   H             ; 1:4       dup 3 u= while 179
-    jp   nz, break179   ; 3:10      dup 3 u= while 179 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string182
+                      ;[7:25/25,25] dup 3 = while 179   ( x1 -- x1 )   3 == HL
+    ld    A, 0x03       ; 2:7       dup 3 = while 179
+    xor   L             ; 1:4       dup 3 = while 179   x[1] = 0x03
+    or    H             ; 1:4       dup 3 = while 179   x[2] = 0
+    jp   nz, break179   ; 3:10      dup 3 = while 179 
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string185
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break179       ; 3:10      break 179 
     jp   begin179       ; 3:10      again 179
 break179:               ;           again 179
     
 begin180:               ;           begin 180 
-    ld    A, low 3      ; 2:7       dup 3 u<> while 180
-    xor   L             ; 1:4       dup 3 u<> while 180
-    jr   nz, $+8        ; 2:7/12    dup 3 u<> while 180
-    ld    A, high 3     ; 2:7       dup 3 u<> while 180
-    xor   H             ; 1:4       dup 3 u<> while 180
-    jp    z, break180   ; 3:10      dup 3 u<> while 180 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string183
+                      ;[7:25/25,25] dup 3 <> while 180   ( x1 -- x1 )   3 <> HL
+    ld    A, 0x03       ; 2:7       dup 3 <> while 180
+    xor   L             ; 1:4       dup 3 <> while 180   x[1] = 0x03
+    or    H             ; 1:4       dup 3 <> while 180   x[2] = 0
+    jp    z, break180   ; 3:10      dup 3 <> while 180 
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string186
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break180       ; 3:10      break 180 
     jp   begin180       ; 3:10      again 180
 break180:               ;           again 180
     
 begin181:               ;           begin 181 
-    ld    A, L          ; 1:4       dup 3 u< while 181    HL<3 --> HL-3<0 --> carry if true
-    sub   low 3         ; 2:7       dup 3 u< while 181    HL<3 --> HL-3<0 --> carry if true
-    ld    A, H          ; 1:4       dup 3 u< while 181    HL<3 --> HL-3<0 --> carry if true
-    sbc   A, high 3     ; 2:7       dup 3 u< while 181    HL<3 --> HL-3<0 --> carry if true
+    ld    A, L          ; 1:4       dup 3 u< while 181    HL<3 --> HL-3<0 --> no carry if false
+    sub   low 3         ; 2:7       dup 3 u< while 181    HL<3 --> HL-3<0 --> no carry if false
+    ld    A, H          ; 1:4       dup 3 u< while 181    HL<3 --> HL-3<0 --> no carry if false
+    sbc   A, high 3     ; 2:7       dup 3 u< while 181    HL<3 --> HL-3<0 --> no carry if false
     jp   nc, break181   ; 3:10      dup 3 u< while 181 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string184
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string187
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break181       ; 3:10      break 181 
     jp   begin181       ; 3:10      again 181
 break181:               ;           again 181
     
 begin182:               ;           begin 182 
-    ld    A, low 3      ; 2:7       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> not carry if true
-    sub   L             ; 1:4       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> not carry if true
-    ld    A, high 3     ; 2:7       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> not carry if true
+    ld    A, low 3      ; 2:7       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> carry if false
+    sub   L             ; 1:4       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> carry if false
+    ld    A, high 3     ; 2:7       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> carry if false
+    sbc   A, H          ; 1:4       dup 3 u<= while 182    HL<=3 --> 0<=3-HL --> carry if false
     jp    c, break182   ; 3:10      dup 3 u<= while 182 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string185
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string188
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break182       ; 3:10      break 182 
     jp   begin182       ; 3:10      again 182
 break182:               ;           again 182
     
 begin183:               ;           begin 183 
-    ld    A, low 3      ; 2:7       dup 3 u> while 183    HL>3 --> 0>3-HL --> carry if true
-    sub   L             ; 1:4       dup 3 u> while 183    HL>3 --> 0>3-HL --> carry if true
-    ld    A, high 3     ; 2:7       dup 3 u> while 183    HL>3 --> 0>3-HL --> carry if true
-    sbc   A, H          ; 1:4       dup 3 u> while 183    HL>3 --> 0>3-HL --> carry if true
+    ld    A, low 3      ; 2:7       dup 3 u> while 183    HL>3 --> 0>3-HL --> no carry if false
+    sub   L             ; 1:4       dup 3 u> while 183    HL>3 --> 0>3-HL --> no carry if false
+    ld    A, high 3     ; 2:7       dup 3 u> while 183    HL>3 --> 0>3-HL --> no carry if false
+    sbc   A, H          ; 1:4       dup 3 u> while 183    HL>3 --> 0>3-HL --> no carry if false
     jp   nc, break183   ; 3:10      dup 3 u> while 183 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string186
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string189
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break183       ; 3:10      break 183 
     jp   begin183       ; 3:10      again 183
 break183:               ;           again 183
     
 begin184:               ;           begin 184 
-    ld    A, L          ; 1:4       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> not carry if true
-    sub   low 3         ; 2:7       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> not carry if true
-    sbc   A, high 3     ; 2:7       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> not carry if true
+    ld    A, L          ; 1:4       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> carry if false
+    sub   low 3         ; 2:7       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> carry if false
+    ld    A, H          ; 1:4       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> carry if false
+    sbc   A, high 3     ; 2:7       dup 3 u>= while 184    HL>=3 --> HL-3>=0 --> carry if false
     jp    c, break184   ; 3:10      dup 3 u>= while 184 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string187
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string190
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break184       ; 3:10      break 184 
     jp   begin184       ; 3:10      again 184
 break184:               ;           again 184
     
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
+    ld   BC, string184  ; 3:10      print_i   Address of string184 ending with inverted most significant bit == string191
+    call PRINT_STRING_I ; 3:17      print_i
 
 x_p3_test_end:
     jp   0x0000         ; 3:10      ;
@@ -1945,186 +1936,181 @@ x_p3_test_end:
 ;   ---  the beginning of a non-recursive function  ---
 x_m3_test:              ;           
     pop  BC             ; 1:10      : ret
-    ld  (x_m3_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (x_m3_test_end+1),BC; 4:20      : ( ret -- )
     ; signed
     
 begin185:               ;           begin 185 
-    ld    A, low -3     ; 2:7       dup -3 = while 185
-    xor   L             ; 1:4       dup -3 = while 185
-    jp   nz, break185   ; 3:10      dup -3 = while 185
-    ld    A, high -3    ; 2:7       dup -3 = while 185
-    xor   H             ; 1:4       dup -3 = while 185
+                      ;[8:29/29,29] dup -3 = while 185   ( x1 -- x1 )   -3 == HL
+    ld    A, L          ; 1:4       dup -3 = while 185
+    xor   0x02          ; 2:7       dup -3 = while 185   x[1] = 0xFF ^ 0x02
+    and   H             ; 1:4       dup -3 = while 185
+    inc   A             ; 1:4       dup -3 = while 185   x[2] = 0xFF
     jp   nz, break185   ; 3:10      dup -3 = while 185 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string188
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string192
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break185       ; 3:10      break 185 
     jp   begin185       ; 3:10      again 185
 break185:               ;           again 185
     
 begin186:               ;           begin 186 
-    ld    A, low -3     ; 2:7       dup -3 <> while 186
-    xor   L             ; 1:4       dup -3 <> while 186
-    jr   nz, $+8        ; 2:7/12    dup -3 <> while 186
-    ld    A, high -3    ; 2:7       dup -3 <> while 186
-    xor   H             ; 1:4       dup -3 <> while 186
+                      ;[8:29/29,29] dup -3 <> while 186   ( x1 -- x1 )   -3 <> HL
+    ld    A, L          ; 1:4       dup -3 <> while 186
+    xor   0x02          ; 2:7       dup -3 <> while 186   x[1] = 0xFF ^ 0x02
+    and   H             ; 1:4       dup -3 <> while 186
+    inc   A             ; 1:4       dup -3 <> while 186   x[2] = 0xFF
     jp    z, break186   ; 3:10      dup -3 <> while 186 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string189
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string193
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break186       ; 3:10      break 186 
     jp   begin186       ; 3:10      again 186
 break186:               ;           again 186
     
 begin187:               ;           begin 187 
-    ld    A, H          ; 1:4       dup -3 < while 187
-    add   A, A          ; 1:4       dup -3 < while 187
-    jp   nc, break187   ; 3:10      dup -3 < while 187    positive HL < negative constant ---> false
-    ld    A, L          ; 1:4       dup -3 < while 187    HL<-3 --> HL--3<0 --> carry if true
-    sub   low -3        ; 2:7       dup -3 < while 187    HL<-3 --> HL--3<0 --> carry if true
-    ld    A, H          ; 1:4       dup -3 < while 187    HL<-3 --> HL--3<0 --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 < while 187    HL<-3 --> HL--3<0 --> carry if true
-    jp   nc, break187   ; 3:10      dup -3 < while 187 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string190
+                       ;[11:40]     dup -3 < while 187    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, L          ; 1:4       dup -3 < while 187    HL<-3 --> HL--3<0 --> no carry if false
+    sub   low -3        ; 2:7       dup -3 < while 187    HL<-3 --> HL--3<0 --> no carry if false
+    ld    A, H          ; 1:4       dup -3 < while 187    HL<-3 --> HL--3<0 --> no carry if false
+    sbc   A, high -3    ; 2:7       dup -3 < while 187    HL<-3 --> HL--3<0 --> no carry if false
+    rra                 ; 1:4       dup -3 < while 187
+    xor   H             ; 1:4       dup -3 < while 187    invert sign if x is negative
+    jp    m, break187   ; 3:10      dup -3 < while 101    negative constant --> sign if false 
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string194
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break187       ; 3:10      break 187 
     jp   begin187       ; 3:10      again 187
 break187:               ;           again 187
     
 begin188:               ;           begin 188 
-    ld    A, H          ; 1:4       dup -3 <= while 188
-    add   A, A          ; 1:4       dup -3 <= while 188
-    jp   nc, break188   ; 3:10      dup -3 <= while 188    positive HL <= negative constant ---> false
-    ld    A, low -3     ; 2:7       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> not carry if true
-    sub   L             ; 1:4       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> not carry if true
-    jp    c, break188   ; 3:10      dup -3 <= while 188 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string191
+                       ;[11:40]     dup -3 <= while 188    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, low -3     ; 2:7       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> carry if false
+    sub   L             ; 1:4       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> carry if false
+    ld    A, high -3    ; 2:7       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> carry if false
+    sbc   A, H          ; 1:4       dup -3 <= while 188    HL<=-3 --> 0<=-3-HL --> carry if false
+    rra                 ; 1:4       dup -3 <= while 188
+    xor   H             ; 1:4       dup -3 <= while 188    invert sign if x is negative
+    jp    p, break188   ; 3:10      dup -3 <= while 101    negative constant --> no sign if false 
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string195
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break188       ; 3:10      break 188 
     jp   begin188       ; 3:10      again 188
 break188:               ;           again 188
     
 begin189:               ;           begin 189 
-    ld    A, H          ; 1:4       dup -3 > while 189
-    add   A, A          ; 1:4       dup -3 > while 189
-    jr   nc, $+11       ; 2:7/12    dup -3 > while 189    positive HL > negative constant ---> true
-    ld    A, low -3     ; 2:7       dup -3 > while 189    HL>-3 --> 0>-3-HL --> carry if true
-    sub   L             ; 1:4       dup -3 > while 189    HL>-3 --> 0>-3-HL --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 > while 189    HL>-3 --> 0>-3-HL --> carry if true
-    sbc   A, H          ; 1:4       dup -3 > while 189    HL>-3 --> 0>-3-HL --> carry if true
-    jp   nc, break189   ; 3:10      dup -3 < while 189 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string192
+                       ;[11:40]     dup -3 > while 189    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, low -3     ; 2:7       dup -3 > while 189    HL>-3 --> 0>-3-HL --> no carry if false
+    sub   L             ; 1:4       dup -3 > while 189    HL>-3 --> 0>-3-HL --> no carry if false
+    ld    A, high -3    ; 2:7       dup -3 > while 189    HL>-3 --> 0>-3-HL --> no carry if false
+    sbc   A, H          ; 1:4       dup -3 > while 189    HL>-3 --> 0>-3-HL --> no carry if false
+    rra                 ; 1:4       dup -3 > while 189
+    xor   H             ; 1:4       dup -3 > while 189    invert sign if x is negative
+    jp    m, break189   ; 3:10      dup -3 > while 101    negative constant --> sign if false 
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string196
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break189       ; 3:10      break 189 
     jp   begin189       ; 3:10      again 189
 break189:               ;           again 189
     
 begin190:               ;           begin 190 
-    ld    A, H          ; 1:4       dup -3 >= while 190
-    add   A, A          ; 1:4       dup -3 >= while 190
-    jr   nc, $+11       ; 2:7/11    dup -3 >= while 190    positive HL >= negative constant ---> true
-    ld    A, L          ; 1:4       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> not carry if true
-    sub   low -3        ; 2:7       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> not carry if true
-    jp    c, break190   ; 3:10      dup -3 >= while 190 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string193
+                       ;[11:40]     dup -3 >= while 190    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
+    ld    A, L          ; 1:4       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> carry if false
+    sub   low -3        ; 2:7       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> carry if false
+    ld    A, H          ; 1:4       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> carry if false
+    sbc   A, high -3    ; 2:7       dup -3 >= while 190    HL>=-3 --> HL--3>=0 --> carry if false
+    rra                 ; 1:4       dup -3 >= while 190
+    xor   H             ; 1:4       dup -3 >= while 190    invert sign if x is negative
+    jp    p, break190   ; 3:10      dup -3 >= while 101    negative constant --> no sign if false 
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string197
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break190       ; 3:10      break 190 
     jp   begin190       ; 3:10      again 190
 break190:               ;           again 190
     
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
-    push DE             ; 1:11      push(-3)
-    ex   DE, HL         ; 1:4       push(-3)
-    ld   HL, -3         ; 3:10      push(-3) 
-    call PRINT_S16      ; 3:17      . 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    ld   BC, string198  ; 3:10      print_i   Address of string198 ending with inverted most significant bit
+    call PRINT_STRING_I ; 3:17      print_i
     ; unsigned
     
 begin191:               ;           begin 191 
-    ld    A, low -3     ; 2:7       dup -3 u= while 191
-    xor   L             ; 1:4       dup -3 u= while 191
-    jp   nz, break191   ; 3:10      dup -3 u= while 191
-    ld    A, high -3    ; 2:7       dup -3 u= while 191
-    xor   H             ; 1:4       dup -3 u= while 191
-    jp   nz, break191   ; 3:10      dup -3 u= while 191 
-    ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit == string194
+                      ;[8:29/29,29] dup -3 = while 191   ( x1 -- x1 )   -3 == HL
+    ld    A, L          ; 1:4       dup -3 = while 191
+    xor   0x02          ; 2:7       dup -3 = while 191   x[1] = 0xFF ^ 0x02
+    and   H             ; 1:4       dup -3 = while 191
+    inc   A             ; 1:4       dup -3 = while 191   x[2] = 0xFF
+    jp   nz, break191   ; 3:10      dup -3 = while 191 
+    ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit == string199
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break191       ; 3:10      break 191 
     jp   begin191       ; 3:10      again 191
 break191:               ;           again 191
     
 begin192:               ;           begin 192 
-    ld    A, low -3     ; 2:7       dup -3 u<> while 192
-    xor   L             ; 1:4       dup -3 u<> while 192
-    jr   nz, $+8        ; 2:7/12    dup -3 u<> while 192
-    ld    A, high -3    ; 2:7       dup -3 u<> while 192
-    xor   H             ; 1:4       dup -3 u<> while 192
-    jp    z, break192   ; 3:10      dup -3 u<> while 192 
-    ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit == string195
+                      ;[8:29/29,29] dup -3 <> while 192   ( x1 -- x1 )   -3 <> HL
+    ld    A, L          ; 1:4       dup -3 <> while 192
+    xor   0x02          ; 2:7       dup -3 <> while 192   x[1] = 0xFF ^ 0x02
+    and   H             ; 1:4       dup -3 <> while 192
+    inc   A             ; 1:4       dup -3 <> while 192   x[2] = 0xFF
+    jp    z, break192   ; 3:10      dup -3 <> while 192 
+    ld   BC, string111  ; 3:10      print_i   Address of string111 ending with inverted most significant bit == string200
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break192       ; 3:10      break 192 
     jp   begin192       ; 3:10      again 192
 break192:               ;           again 192
     
 begin193:               ;           begin 193 
-    ld    A, L          ; 1:4       dup -3 u< while 193    HL<-3 --> HL--3<0 --> carry if true
-    sub   low -3        ; 2:7       dup -3 u< while 193    HL<-3 --> HL--3<0 --> carry if true
-    ld    A, H          ; 1:4       dup -3 u< while 193    HL<-3 --> HL--3<0 --> carry if true
-    sbc   A, high -3    ; 2:7       dup -3 u< while 193    HL<-3 --> HL--3<0 --> carry if true
+    ld    A, L          ; 1:4       dup -3 u< while 193    HL<-3 --> HL--3<0 --> no carry if false
+    sub   low -3        ; 2:7       dup -3 u< while 193    HL<-3 --> HL--3<0 --> no carry if false
+    ld    A, H          ; 1:4       dup -3 u< while 193    HL<-3 --> HL--3<0 --> no carry if false
+    sbc   A, high -3    ; 2:7       dup -3 u< while 193    HL<-3 --> HL--3<0 --> no carry if false
     jp   nc, break193   ; 3:10      dup -3 u< while 193 
-    ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit == string196
+    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string201
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break193       ; 3:10      break 193 
     jp   begin193       ; 3:10      again 193
 break193:               ;           again 193
     
 begin194:               ;           begin 194 
-    ld    A, low -3     ; 2:7       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> not carry if true
-    sub   L             ; 1:4       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> not carry if true
-    ld    A, high -3    ; 2:7       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> not carry if true
-    sbc   A, H          ; 1:4       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> not carry if true
+    ld    A, low -3     ; 2:7       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> carry if false
+    sub   L             ; 1:4       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> carry if false
+    ld    A, high -3    ; 2:7       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> carry if false
+    sbc   A, H          ; 1:4       dup -3 u<= while 194    HL<=-3 --> 0<=-3-HL --> carry if false
     jp    c, break194   ; 3:10      dup -3 u<= while 194 
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string197
+    ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string202
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break194       ; 3:10      break 194 
     jp   begin194       ; 3:10      again 194
 break194:               ;           again 194
     
 begin195:               ;           begin 195 
-    ld    A, low -3     ; 2:7       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> carry if true
-    sub   L             ; 1:4       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> carry if true
-    ld    A, high -3    ; 2:7       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> carry if true
-    sbc   A, H          ; 1:4       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> carry if true
+    ld    A, low -3     ; 2:7       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> no carry if false
+    sub   L             ; 1:4       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> no carry if false
+    ld    A, high -3    ; 2:7       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> no carry if false
+    sbc   A, H          ; 1:4       dup -3 u> while 195    HL>-3 --> 0>-3-HL --> no carry if false
     jp   nc, break195   ; 3:10      dup -3 u> while 195 
-    ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string198
+    ld   BC, string120  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string203
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break195       ; 3:10      break 195 
     jp   begin195       ; 3:10      again 195
 break195:               ;           again 195
     
 begin196:               ;           begin 196 
-    ld    A, L          ; 1:4       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> not carry if true
-    sub   low -3        ; 2:7       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> not carry if true
-    ld    A, H          ; 1:4       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> not carry if true
-    sbc   A, high -3    ; 2:7       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> not carry if true
+    ld    A, L          ; 1:4       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> carry if false
+    sub   low -3        ; 2:7       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> carry if false
+    ld    A, H          ; 1:4       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> carry if false
+    sbc   A, high -3    ; 2:7       dup -3 u>= while 196    HL>=-3 --> HL--3>=0 --> carry if false
     jp    c, break196   ; 3:10      dup -3 u>= while 196 
-    ld   BC, string121  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string199
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string204
     call PRINT_STRING_I ; 3:17      print_i 
     jp   break196       ; 3:10      break 196 
     jp   begin196       ; 3:10      again 196
 break196:               ;           again 196
     
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -2134,75 +2120,80 @@ x_m3_test_end:
 
 ;==============================================================================
 ; ( hi lo -- )
-; Input: HL
+; Input: DEHL
 ; Output: Print space and signed decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_S32:              ;           print_s32
-    ld    A, D          ; 1:4       print_s32
-    add   A, A          ; 1:4       print_s32
-    jr   nc, PRINT_U32  ; 2:7/12    print_s32
-    call NEGATE_32      ; 3:17      print_s32
-    ld    A, ' '        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s32   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s32   ld   BC, **
-    ; fall to print_u32dnl
-
+PRT_SP_S32:             ;           prt_sp_s32
+    ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_s32
+;------------------------------------------------------------------------------
+; ( hi lo -- )
+; Input: DEHL
+; Output: Print signed decimal number in DEHL
+; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+PRT_S32:                ;           prt_s32
+    ld    A, D          ; 1:4       prt_s32
+    add   A, A          ; 1:4       prt_s32
+    jr   nc, PRT_U32    ; 2:7/12    prt_s32
+    ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with ZX 48K ROM
+    call NEGATE_32      ; 3:17      prt_s32
+    jr   PRT_U32        ; 2:12      prt_s32
 ;==============================================================================
-; Input: HL
+; Input: DEHL
 ; Output: Print space and unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32:              ;           print_u32
-    ld    A, ' '        ; 2:7       print_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u32   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u32_only
+PRT_SP_U32:             ;           prt_sp_u32
+    ld    A, ' '        ; 2:7       prt_sp_u32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u32   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_u32
 ;------------------------------------------------------------------------------
-; Input: HL
+; Input: DEHL
 ; Output: Print unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32_ONLY:         ;           print_u32_only
-    xor   A             ; 1:4       print_u32_only   A=0 => 103, A='0' => 00103
-    push IX             ; 2:15      print_u32_only
-    ex   DE, HL         ; 1:4       print_u32_only   HL = hi word
-    ld  IXl, E          ; 2:8       print_u32_only
-    ld  IXh, D          ; 2:8       print_u32_only   IX = lo word
-    ld   DE, 0x3600     ; 3:10      print_u32_only   C4 65 36 00 = -1000000000
-    ld   BC, 0xC465     ; 3:10      print_u32_only
-    call BIN32_DEC+2    ; 3:17      print_u32_only
-    ld    D, 0x1F       ; 2:7       print_u32_only   FA 0A 1F 00 = -100000000
-    ld   BC, 0xFA0A     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x6980     ; 3:10      print_u32_only   FF 67 69 80 = -10000000
-    ld   BC, 0xFF67     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xBDC0     ; 3:10      print_u32_only   FF F0 BD C0 = -1000000
-    ld    C, 0xF0       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x7960     ; 3:10      print_u32_only   FF FE 79 60 = -100000
-    ld    C, 0xFE       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xD8F0     ; 3:10      print_u32_only   FF FF D8 F0 = -10000
-    ld    C, B          ; 1:4       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFC18     ; 3:10      print_u32_only   FF FF FC 18 = -1000
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFF9C     ; 3:10      print_u32_only   FF FF FF 9C = -100
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    E, 0xF6       ; 2:7       print_u32_only   FF FF FF F6 = -10
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    A, IXl        ; 2:8       print_u32_only
-    pop  IX             ; 2:14      print_u32_only
-    pop  BC             ; 1:10      print_u32_only   load ret
-    pop  HL             ; 1:10      print_u32_only
-    pop  DE             ; 1:10      print_u32_only
-    push BC             ; 1:10      print_u32_only   save ret
-    jr   BIN32_DEC_CHAR ; 2:12      print_u32_only
+PRT_U32:                ;           prt_u32
+    xor   A             ; 1:4       prt_u32   HL = 103 & A=0 => 103, HL = 103 & A='0' => 00103
+    push IX             ; 2:15      prt_u32
+    ex   DE, HL         ; 1:4       prt_u32   HL = hi word
+    ld  IXl, E          ; 2:8       prt_u32
+    ld  IXh, D          ; 2:8       prt_u32   IX = lo word
+    ld   DE, 0x3600     ; 3:10      prt_u32   C4 65 36 00 = -1000000000
+    ld   BC, 0xC465     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    D, 0x1F       ; 2:7       prt_u32   FA 0A 1F 00 = -100000000
+    ld   BC, 0xFA0A     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x6980     ; 3:10      prt_u32   FF 67 69 80 = -10000000
+    ld   BC, 0xFF67     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xBDC0     ; 3:10      prt_u32   FF F0 BD C0 = -1000000
+    ld    C, 0xF0       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x7960     ; 3:10      prt_u32   FF FE 79 60 = -100000
+    ld    C, 0xFE       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xD8F0     ; 3:10      prt_u32   FF FF D8 F0 = -10000
+    ld    C, B          ; 1:4       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFC18     ; 3:10      prt_u32   FF FF FC 18 = -1000
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFF9C     ; 3:10      prt_u32   FF FF FF 9C = -100
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    E, 0xF6       ; 2:7       prt_u32   FF FF FF F6 = -10
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    A, IXl        ; 2:8       prt_u32
+    pop  IX             ; 2:14      prt_u32
+    pop  BC             ; 1:10      prt_u32   load ret
+    pop  HL             ; 1:10      prt_u32
+    pop  DE             ; 1:10      prt_u32
+    push BC             ; 1:11      prt_u32   save ret
+    jr   BIN32_DEC_CHAR ; 2:12      prt_u32
 ;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
 ; Pollutes: AF, AF', IX, HL
 BIN32_DEC:              ;           bin32_dec
-    and  0xF0           ; 2:7       bin32_dec   reset A to 0 or '0'
     add  IX, DE         ; 2:15      bin32_dec   lo word
     adc  HL, BC         ; 2:15      bin32_dec   hi word
     inc   A             ; 1:4       bin32_dec
@@ -2221,69 +2212,75 @@ BIN32_DEC:              ;           bin32_dec
 BIN32_DEC_CHAR:         ;           bin32_dec
     or   '0'            ; 2:7       bin32_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst  0x10           ; 1:11      bin32_dec   putchar with ZX 48K ROM in, this will print char in A
+    and  0xF0           ; 2:7       bin32_dec   reset A to 0 or '0'
     ret                 ; 1:10      bin32_dec
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_S16:              ;           print_s16
-    ld    A, H          ; 1:4       print_s16
-    add   A, A          ; 1:4       print_s16
-    jr   nc, PRINT_U16  ; 2:7/12    print_s16
-    xor   A             ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    L, A          ; 1:4       print_s16   neg
-    sbc   A, H          ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    H, A          ; 1:4       print_s16   neg
-    ld    A, ' '        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s16   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s16   ld   BC, **
-    ; fall to print_u16
+PRT_SP_S16:             ;           prt_sp_s16
+    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_s16
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print signed decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_S16:                ;           prt_s16
+    ld    A, H          ; 1:4       prt_s16
+    add   A, A          ; 1:4       prt_s16
+    jr   nc, PRT_U16    ; 2:7/12    prt_s16
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
+    xor   A             ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    L, A          ; 1:4       prt_s16   neg
+    sbc   A, H          ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    H, A          ; 1:4       prt_s16   neg
+    jr   PRT_U16        ; 2:12      prt_s16
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16:              ;           print_u16
-    ld    A, ' '        ; 2:7       print_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u16   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u16_only
+PRT_SP_U16:             ;           prt_sp_u16
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u16   putchar with ZX 48K ROM in, this will print char in A
+    ; fall to prt_u16
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16_ONLY:         ;           print_u16_only
-    xor   A             ; 1:4       print_u16_only   A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10      print_u16_only
-    call BIN16_DEC+2    ; 3:17      print_u16_only
-    ld   BC, -1000      ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld   BC, -100       ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    C, -10        ; 2:7       print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    A, L          ; 1:4       print_u16_only
-    pop  BC             ; 1:10      print_u16_only   load ret
-    ex   DE, HL         ; 1:4       print_u16_only
-    pop  DE             ; 1:10      print_u16_only
-    push BC             ; 1:10      print_u16_only   save ret
-    jr   BIN16_DEC_CHAR ; 2:12      print_u16_only
+PRT_U16:                ;           prt_u16
+    xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+    ld   BC, -10000     ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -1000      ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -100       ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    C, -10        ; 2:7       prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    A, L          ; 1:4       prt_u16
+    pop  HL             ; 1:10      prt_u16   load ret
+    ex  (SP),HL         ; 1:19      prt_u16
+    ex   DE, HL         ; 1:4       prt_u16
+    jr   BIN16_DEC_CHAR ; 2:12      prt_u16
 ;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
 ; Pollutes: AF, HL
-BIN16_DEC:              ;           bin16_dec
-    and  0xF0           ; 2:7       bin16_dec   reset A to 0 or '0'
-    add  HL, BC         ; 1:11      bin16_dec
     inc   A             ; 1:4       bin16_dec
+BIN16_DEC:              ;           bin16_dec
+    add  HL, BC         ; 1:11      bin16_dec
     jr    c, $-2        ; 2:7/12    bin16_dec
     sbc  HL, BC         ; 2:15      bin16_dec
-    dec   A             ; 1:4       bin16_dec
+    or    A             ; 1:4       bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
+    and  0xF0           ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
 ;==============================================================================
 ; ( d -- -d )
@@ -2395,44 +2392,56 @@ PRINT_STRING_I:         ;           print_string_i
     ret                 ; 1:10      print_string_i
 
 STRING_SECTION:
-string121:
+string198:
+db " -3", 0x0D + 0x80
+size198 EQU $ - string198
+string184:
+db " 3", 0x0D + 0x80
+size184 EQU $ - string184
+string123:
 db ">=",","+0x80
-size121 EQU $ - string121
-string119:
+size123 EQU $ - string123
+string121:
 db ">","="+0x80
-size119 EQU $ - string119
-string118:
+size121 EQU $ - string121
+string120:
 db ">",","+0x80
-size118 EQU $ - string118
-string116:
+size120 EQU $ - string120
+string118:
 db ">" + 0x80
-size116 EQU $ - string116
-string115:
+size118 EQU $ - string118
+string117:
 db "<=",","+0x80
-size115 EQU $ - string115
-string113:
+size117 EQU $ - string117
+string115:
 db "<","="+0x80
-size113 EQU $ - string113
-string112:
+size115 EQU $ - string115
+string114:
 db "<",","+0x80
-size112 EQU $ - string112
-string110:
+size114 EQU $ - string114
+string112:
 db "<" + 0x80
-size110 EQU $ - string110
-string109:
+size112 EQU $ - string112
+string111:
 db "<>",","+0x80
-size109 EQU $ - string109
-string107:
+size111 EQU $ - string111
+string109:
 db "<",">"+0x80
-size107 EQU $ - string107
-string106:
+size109 EQU $ - string109
+string108:
 db "=",","+0x80
-size106 EQU $ - string106
-string104:
+size108 EQU $ - string108
+string106:
 db "=" + 0x80
+size106 EQU $ - string106
+string105:
+db "Depth",":"+0x80
+size105 EQU $ - string105
+string104:
+db "( x1 -3 -- ) and ( u1 -3 -- ):",0x0D + 0x80
 size104 EQU $ - string104
 string103:
-db "Depth",":"+0x80
+db "( x1 3 -- ) and ( u1 3 -- ):",0x0D + 0x80
 size103 EQU $ - string103
 string102:
 db "( d2 d1 -- ) and ( ud2 ud1 -- ):",0x0D + 0x80
