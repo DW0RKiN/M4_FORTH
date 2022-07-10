@@ -25,7 +25,7 @@ dnl # DVARIABLE(name)        --> (name) = 0
 dnl # DVARIABLE(name,100)    --> (name) = 100
 dnl # DVARIABLE(name,0x88442211)    --> (name) = 0x88442211
 define({DVARIABLE},{ifelse($1,{},{
-__{}  .error {$0}(): Missing parameter!},
+__{}  .error {$0}(): Missing name parameter!},
 eval(($#==2) && ifelse(eval($2),{},{1},{0})),{1},{
 __{}  .error {$0}($@): M4 does not know $2 parameter value!},
 eval($#>2),{1},{
@@ -51,7 +51,7 @@ dnl # VARIABLE(name)        --> (name) = 0
 dnl # VARIABLE(name,100)    --> (name) = 100
 dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
 define({VARIABLE},{ifelse($1,{},{
-__{}  .error {$0}(): Missing parameter!},
+__{}  .error {$0}(): Missing name parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_REG($1),{1},{
@@ -66,6 +66,25 @@ __{}ifelse(eval($2),{},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1: dw $2})})}){}dnl
+dnl
+dnl
+dnl
+dnl # BUFFER(name,8)      --> Reserve 8 bytes
+define({BUFFER},{ifelse($1,{},{
+__{}  .error {$0}(): Missing name parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+$#,{1},{
+__{}  .error {$0}(): Missing byte size parameter!},
+{dnl
+__{}ifelse(eval($2),{},{
+__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1: DS $2})})}){}dnl
 dnl
 dnl
 dnl -------------------------------------------------------------------------------------

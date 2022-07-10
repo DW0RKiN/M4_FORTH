@@ -598,7 +598,11 @@ include(M4PATH{}divmul/pmul_mk4.m4){}dnl
 dnl
 dnl
 dnl
-define({PUSH_MUL},{dnl
+define({PUSH_MUL},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+{dnl
 __{}PUSH_MUL_MK1($1){}dnl
 __{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
 __{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
@@ -623,7 +627,7 @@ __{}__{}define({_BEST_INFO},PUSH_MUL_MK4_INFO){}dnl
 __{}})dnl
 __{}_BEST_INFO{}dnl
 __{}_BEST_OUT{}dnl
-})dnl
+})})dnl
 dnl
 dnl
 dnl

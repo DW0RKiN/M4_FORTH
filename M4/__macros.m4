@@ -79,6 +79,17 @@ __{}define({__SWAP2DEF_TMP},$1)define({$1},$2)define({$2},__SWAP2DEF_TMP)}){}dnl
 dnl
 dnl
 dnl
+define({__RAS},{
+    ex   DE, HL         ; 1:4       __ras   ( -- return_address_stack )
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    pop  HL             ; 1:10      __ras}){}dnl
+dnl
+dnl
+dnl
+dnl
 define({__DEQ_INIT_CODE},{dnl
 __{}__{}define({_TMP_R1},{D})define({_TMP_N1},eval((($1)>>24) & 0xFF)){}dnl
 __{}__{}define({_TMP_R2},{E})define({_TMP_N2},eval((($1)>>16) & 0xFF)){}dnl

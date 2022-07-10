@@ -175,6 +175,13 @@ define({DUP_EMIT},{
     rst   0x10          ; 1:11      dup emit    with {48K ROM} in, this will print char in A})dnl
 dnl
 dnl
+dnl ( addr -- addr )
+dnl print char from address
+define({DUP_FETCH_EMIT},{
+    ld    A,(HL)        ; 1:7       dup @ emit    Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      dup @ emit    with {48K ROM} in, this will print char in A})dnl
+dnl
+dnl
 dnl ( -- )
 dnl print space
 define({SPACE},{

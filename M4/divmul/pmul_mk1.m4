@@ -226,22 +226,24 @@ __{}define({PUSH_MUL_MK1_1BITS},SUM_1BITS($1)){}dnl
 __{}define({PUSH_MUL_MK1_0BITS},SUM_0BITS($1-1)){}dnl
 __{}PUSH_MUL_MK1_RESET{}dnl
 dnl
-ifelse(eval($1==0),{1},{
+ifelse(eval($1==0),{1},{dnl
 dnl n = 0
 dnl
 __{}define({PUSH_MUL_MK1_OUT},{
     ld   HL, 0x0000     ; 3:10      0 *})dnl
 __{}define({PUSH_MUL_MK1_COST},eval(3+256*10)){}dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(2563,$1,{Variant mk1: HL * 0}))dnl
-},PUSH_MUL_MK1_1BITS,{1},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(2563,$1,{Variant mk1: HL * 0})})},
+PUSH_MUL_MK1_1BITS,{1},{dnl
 dnl n = 2^a
 dnl 1,2,4,8,16,32,...
 __{}PUSH_MUL_MK1_LOOP($1){}dnl
 __{}_MUL_DEF_ALL($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * 2^a}))dnl
-},PUSH_MUL_MK1_1BITS,{2},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * 2^a})})},
+PUSH_MUL_MK1_1BITS,{2},{dnl
 dnl n = 2^a + 2^b
 dnl 3,5,6,9,10,12,17,18,20,24,...
 dnl Not all variants are optimal. For example, 258.
@@ -249,16 +251,18 @@ __{}PUSH_MUL_MK1_LOOP($1){}dnl
 __{}_MUL_DEF_ADD_BC($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * (2^a + 2^b)}))dnl
-},PUSH_MUL_MK1_0BITS,{1},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * (2^a + 2^b)})})},
+PUSH_MUL_MK1_0BITS,{1},{dnl
 dnl n = 2^a - 2^b, a > b
 dnl 60=64-4
 __{}PUSH_MUL_MK1_NEGLOOP($1){}dnl
 __{}_MUL_DEF_SUB_BC($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * (2^a - 2^b)}))dnl
-},PUSH_MUL_MK1_1BITS,{3},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * (2^a - 2^b)})})},
+PUSH_MUL_MK1_1BITS,{3},{dnl
 dnl
 dnl n = 2^a + 2^b + 2^c
 dnl 11=8+2+1,69=64+4+1
@@ -266,8 +270,9 @@ __{}PUSH_MUL_MK1_LOOP($1){}dnl
 __{}_MUL_DEF_ADD_BA($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT){}dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * (2^a + 2^b + 2^c)}))dnl
-},PUSH_MUL_MK1_0BITS,{2},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * (2^a + 2^b + 2^c)})})},
+PUSH_MUL_MK1_0BITS,{2},{dnl
 dnl
 dnl n = 2^a - 2^b - 2^c, a > b > c
 dnl 27=32-4-1,54=64-8-2
@@ -275,22 +280,25 @@ __{}PUSH_MUL_MK1_NEGLOOP($1){}dnl
 __{}_MUL_DEF_SUB_BA($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * (2^a - 2^b - 2^c)}))dnl
-},eval(PUSH_MUL_MK1_1BITS <= PUSH_MUL_MK1_0BITS + 2),{1},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * (2^a - 2^b - 2^c)})})},
+eval(PUSH_MUL_MK1_1BITS <= PUSH_MUL_MK1_0BITS + 2),{1},{dnl
 dnl n = 2^a + 2^b + 2^c + ...
 __{}PUSH_MUL_MK1_LOOP($1){}dnl
 __{}_MUL_DEF_ADD_DE($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * (2^a + 2^b + 2^c + ...)}))dnl
-},{
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * (2^a + 2^b + 2^c + ...)})})},
+{dnl
 dnl n = 2^a - 2^b - 2^c - ...
 dnl 187=128+32+16+8+2+1=256-64-4-1
 __{}PUSH_MUL_MK1_NEGLOOP($1){}dnl
 __{}_MUL_DEF_SUB_DE($1)dnl
 __{}define({PUSH_MUL_MK1_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK1_COST},_COST)dnl
-__{}define({PUSH_MUL_MK1_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk1: HL * (2^a - 2^b - 2^c - ...)}))dnl
+__{}define({PUSH_MUL_MK1_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk1: HL * (2^a - 2^b - 2^c - ...)})})dnl
 })})dnl
 dnl
 dnl

@@ -185,14 +185,16 @@ define({PUSH_MUL_MK4},{ifelse(eval((($1) & 0xffff)==0),{1},{dnl
 __{}define({PUSH_MUL_MK4_OUT},{
 __{}__{}ld   HL{,} 0x0000     ; 3:10      $1 *})dnl
 __{}define({PUSH_MUL_MK4_COST},{3+256*10})dnl
-__{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: HL * 0}))dnl
+__{}define({PUSH_MUL_MK4_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk4: HL * 0})})dnl
 },{dnl
 __{}define({XMUL_HI},{0})dnl
 __{}PUSH_MUL_MK4_CREATE_TOKENS($1)dnl
 __{}MK4_TOKENS_HL_ADD_BC_MUL($1){}dnl
 __{}define({PUSH_MUL_MK4_OUT},_OUTPUT)dnl
 __{}define({PUSH_MUL_MK4_COST},_COST)dnl
-__{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: ...(((HL*2^a)+HL)*2^b)+...}))dnl
+__{}define({PUSH_MUL_MK4_INFO},{
+__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk4: ...(((HL*2^a)+HL)*2^b)+...})})dnl
 dnl
 __{}define({XMUL_HI},eval(($1)/256))dnl
 __{}define({XMUL_LO},eval(($1) & 0xff))dnl
@@ -207,7 +209,8 @@ __{}__{}__{}define({PUSH_MUL_MK4_TEMP},_OUTPUT)dnl
 __{}__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(_COST,PUSH_MUL_MK4_COST),{1},{dnl
 __{}__{}__{}__{}define({PUSH_MUL_MK4_OUT},{PUSH_MUL_MK4_TEMP})dnl
 __{}__{}__{}__{}define({PUSH_MUL_MK4_COST},_COST)dnl
-__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: 256*...(((L*2^a)+L)*2^b)+...}))dnl
+__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},{
+__{}__{}__{}__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk4: 256*...(((L*2^a)+L)*2^b)+...})})dnl
 __{}__{}__{}})dnl
 __{}__{}},XMUL_LO,{1},{dnl
 __{}__{}__{}define({XMUL_LO},XMUL_HI)dnl
@@ -223,7 +226,8 @@ __{}__{}__{}define({PUSH_MUL_MK4_TEMP},_OUTPUT)dnl
 __{}__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(_COST,PUSH_MUL_MK4_COST),{1},{dnl
 __{}__{}__{}__{}define({PUSH_MUL_MK4_OUT},{PUSH_MUL_MK4_TEMP})dnl
 __{}__{}__{}__{}define({PUSH_MUL_MK4_COST},_COST)dnl
-__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: 256*...(((L*2^a)+L)*2^b)+...+HL}))dnl
+__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},{
+__{}__{}__{}__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk4: 256*...(((L*2^a)+L)*2^b)+...+HL})})dnl
 __{}__{}__{}})dnl
 __{}__{}},{dnl
 __{}__{}__{}PUSH_MUL_MK4_CREATE_TOKENS(XMUL_LO)dnl
@@ -233,7 +237,8 @@ __{}__{}__{}__{}define({PUSH_MUL_MK4_TEMP},_OUTPUT)dnl
 __{}__{}__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(_COST,PUSH_MUL_MK4_COST),{1},{dnl
 __{}__{}__{}__{}__{}define({PUSH_MUL_MK4_OUT},{PUSH_MUL_MK4_TEMP})dnl
 __{}__{}__{}__{}__{}define({PUSH_MUL_MK4_COST},_COST)dnl
-__{}__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+...}))dnl
+__{}__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},{
+__{}__{}__{}__{}__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk4: ...(((HL*2^a)+256*L+HL)*2^b)+...})})dnl
 __{}__{}__{}__{}})dnl
 __{}__{}__{}},{dnl
 __{}__{}__{}__{}define({XMUL_HI},{0})dnl
@@ -263,7 +268,8 @@ __{}__{}__{}__{}define({PUSH_MUL_MK4_TEMP2},{PUSH_MUL_MK4_TEMP}_OUTPUT)dnl
 __{}__{}__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(_COST,PUSH_MUL_MK4_COST),{1},{dnl
 __{}__{}__{}__{}__{}define({PUSH_MUL_MK4_OUT},{PUSH_MUL_MK4_TEMP2})dnl
 __{}__{}__{}__{}__{}define({PUSH_MUL_MK4_COST},_COST)dnl
-__{}__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},PUSH_MUL_INFO_PLUS(_COST,$1,{Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+...}))dnl
+__{}__{}__{}__{}__{}define({PUSH_MUL_MK4_INFO},{
+__{}__{}__{}__{}__{}__{}PUSH_MUL_INFO_PLUS(}_COST{,$1,{Variant mk4: ...((L*2^a)+L*^b)+...(((HL*2^c)+HL)*2^d)+...})})dnl
 __{}__{}__{}__{}})dnl
 __{}__{}__{}})dnl
 __{}__{}})dnl

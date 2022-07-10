@@ -598,9 +598,9 @@ __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK   
 __{}    rra                 ; 1:4       dup $1 < while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 < while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    m, break101   ; 3:10      dup $1 < while 101    negative constant --> sign if false},
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 < while 101    negative constant --> sign if false},
 __{}{dnl
-__{}__{}    jp    p, break101   ; 3:10      dup $1 < while 101    positive constant --> no sign if false})})})dnl
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 < while 101    positive constant --> no sign if false})})})dnl
 dnl
 dnl
 dnl # dup const >= while
@@ -644,9 +644,9 @@ __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK  
 __{}    rra                 ; 1:4       dup $1 >= while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 >= while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    p, break101   ; 3:10      dup $1 >= while 101    negative constant --> no sign if false},
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 >= while 101    negative constant --> no sign if false},
 __{}{dnl
-__{}__{}    jp    m, break101   ; 3:10      dup $1 >= while 101    positive constant --> sign if false})})})dnl
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 >= while 101    positive constant --> sign if false})})})dnl
 dnl
 dnl
 dnl # dup const <= while
@@ -690,9 +690,9 @@ __{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --
 __{}    rra                 ; 1:4       dup $1 <= while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 <= while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    p, break101   ; 3:10      dup $1 <= while 101    negative constant --> no sign if false},
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 <= while 101    negative constant --> no sign if false},
 __{}{dnl
-__{}__{}    jp    m, break101   ; 3:10      dup $1 <= while 101    positive constant --> sign if false})})})dnl
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 <= while 101    positive constant --> sign if false})})})dnl
 dnl
 dnl
 dnl # dup const > while
@@ -736,9 +736,9 @@ __{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 
 __{}    rra                 ; 1:4       dup $1 > while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 > while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    m, break101   ; 3:10      dup $1 > while 101    negative constant --> sign if false},
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 > while 101    negative constant --> sign if false},
 __{}{dnl
-__{}__{}    jp    p, break101   ; 3:10      dup $1 > while 101    positive constant --> no sign if false})})})dnl
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 > while 101    positive constant --> no sign if false})})})dnl
 dnl
 dnl
 dnl
@@ -746,10 +746,10 @@ dnl ------ dup const ucond while ( b a -- b a ) ---------
 dnl
 dnl
 dnl
-define({DUP_PUSH_UEQ_WHILE},{DUP_PUSH_EQ_WHILE})dnl
+define({DUP_PUSH_UEQ_WHILE},{DUP_PUSH_EQ_WHILE($1)})dnl
 dnl
 dnl
-define({DUP_PUSH_UNE_WHILE},{DUP_PUSH_NE_WHILE})dnl
+define({DUP_PUSH_UNE_WHILE},{DUP_PUSH_NE_WHILE($1)})dnl
 dnl
 dnl
 define({DUP_PUSH_ULT_WHILE},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
