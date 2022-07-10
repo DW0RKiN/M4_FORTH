@@ -14,18 +14,139 @@ __{}format({%-20s},$1) EQU $2{}dnl
 __{}define({$1},{$2})})dnl
 dnl
 dnl
-define({CVARIABLE},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($1,{},{.error cvariable: Missing parameter with variable name!}dnl
-__{},$#,{1},{$1: db 0x00{}}dnl
-__{},{$1: db $2{}})dnl
-})})dnl
+dnl
+dnl # VALUE(name)    --> (name) = TOS
+define({VALUE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}p_$1: dw 0x0000}){}dnl
+__{}define({$1},{
+__{}__{}    push DE             ; 1:11      {$1}
+__{}__{}    ex   DE, HL         ; 1:4       {$1}
+__{}__{}    ld   HL, format({%-11s},{(p_$1)}); 3:16      {$1}})
+__{}    ld  format({%-16s},{(p_$1), HL}); 3:16      value {$1}
+__{}    ex   DE, HL         ; 1:4       value {$1}
+__{}    pop  DE             ; 1:10      value {$1}})}){}dnl
 dnl
 dnl
-dnl # DVARIABLE(name)        --> (name) = 0
-dnl # DVARIABLE(name,100)    --> (name) = 100
-dnl # DVARIABLE(name,0x88442211)    --> (name) = 0x88442211
+dnl
+dnl # PUSH_VALUE(name,100)    --> (name) = 100
+dnl # PUSH_VALUE(name,0x2211) --> (name) = 0x2211
+define({PUSH_VALUE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+$#,{1},{
+__{}  .error {$0}(): The second parameter with the initial value is missing!},
+{dnl
+__{}ifelse(eval($2),{},{
+__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}p_$1: dw $2}){}dnl
+__{}define({$1},{
+__{}__{}    push DE             ; 1:11      {$1}
+__{}__{}    ex   DE, HL         ; 1:4       {$1}
+__{}__{}    ld   HL, format({%-11s},{(p_$1)}); 3:16      {$1}}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # TO(name)    --> (name) = TOS
+define({TO},{ifelse({$1},{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval(ifdef({$1},{0},{1})),{1},{
+__{}  .error {$0}($@): The variable with this name not exist!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld  format({%-16s},{(p_$1), HL}); 3:16      to {$1}
+__{}    pop  HL             ; 1:10      to {$1}
+__{}    ex   DE, HL         ; 1:4       to {$1}{}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # PUSH_TO(name,200)    --> (name) = 200
+dnl # PUSH_TO(name,0x4422) --> (name) = 0x4422
+define({PUSH_TO},{ifelse({$1},{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval(ifdef({$1},{0},{1})),{1},{
+__{}  .error {$0}($@): The variable with this name not exist!},
+$#,{1},{
+__{}  .error {$0}(): The second parameter with the initial value is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($2),{1},{
+__{}    ld   BC, format({%-11s},{$2}); 4:20      $2 to {$1}
+__{}    ld  format({%-16s},{(p_$1), BC}); 4:20      $2 to {$1}},
+{dnl
+__{}ifelse(eval($2),{},{
+__{}  .warning {$0}($@): M4 does not know $2 parameter value!})
+__{}    ld   BC, format({%-11s},{$2}); 3:10      $2 to {$1}
+__{}    ld  format({%-16s},{(p_$1), BC}); 4:20      $2 to {$1}{}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # CVARIABLE(name)        --> (name) = 0
+dnl # CVARIABLE(name,100)    --> (name) = 100
+dnl # CVARIABLE(name,0x88)   --> (name) = 0x88
+define({CVARIABLE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+$#,{1},{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}$1: db 0x00})},
+{dnl
+__{}ifelse(eval($2),{},{
+__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1: db $2})})}){}dnl
+dnl
+dnl
+dnl
+dnl # VARIABLE(name)        --> (name) = 0
+dnl # VARIABLE(name,100)    --> (name) = 100
+dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
+define({VARIABLE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+$#,{1},{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}$1: dw 0x0000})},
+{dnl
+__{}ifelse(eval($2),{},{
+__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1: dw $2})})}){}dnl
+dnl
+dnl
+dnl # _DVARIABLE(name)             --> (name) = 0
+dnl # _DVARIABLE(name,100)         --> (name) = 100
+dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
 define({DVARIABLE},{ifelse($1,{},{
-__{}  .error {$0}(): Missing name parameter!},
+__{}  .error {$0}(): Missing parameter with variable name!},
 eval(($#==2) && ifelse(eval($2),{},{1},{0})),{1},{
 __{}  .error {$0}($@): M4 does not know $2 parameter value!},
 eval($#>2),{1},{
@@ -44,28 +165,6 @@ __{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
 __{}  dw __HEX_HL($2)             ; = eval(($2) & 0xffff)
 __{}  dw __HEX_DE($2)             ; = eval((($2) >> 16) & 0xffff)})dnl
 })})})dnl
-dnl
-dnl
-dnl
-dnl # VARIABLE(name)        --> (name) = 0
-dnl # VARIABLE(name,100)    --> (name) = 100
-dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
-define({VARIABLE},{ifelse($1,{},{
-__{}  .error {$0}(): Missing name parameter!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-$#,{1},{dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}$1: dw 0x0000})},
-{dnl
-__{}ifelse(eval($2),{},{
-__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1: dw $2})})}){}dnl
 dnl
 dnl
 dnl
@@ -95,6 +194,17 @@ __{}  .error {$0}($@): M4 does not support negative allocation (deallocation)!},
 __{}{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}DS $1})})})}){}dnl
+dnl
+dnl
+dnl
+dnl # PUSH_COMMA(8)      --> reserve one word = 8
+define({PUSH_COMMA},{ifelse($1,{},{
+__{}  .error {$0}(): Missing value parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}DW $1})})}){}dnl
 dnl
 dnl
 dnl
