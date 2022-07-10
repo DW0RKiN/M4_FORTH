@@ -8,8 +8,6 @@ ORG 0x8000
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-    ld  hl, stack_test
-    push hl
 
     
     ld   BC, string101  ; 3:10      print_i   Address of string101 ending with inverted most significant bit
@@ -113,21 +111,30 @@ ORG 0x8000
     ld   HL, -3         ; 3:10      push(-3) 
     call x_m3_test      ; 3:17      call ( -- ret ) R:( -- )
 
-
-
     
     ld   BC, string103  ; 3:10      print_i   Address of string103 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-    exx
-    push HL
-    exx
-    pop HL
     
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1
-    ret
+                        ;[13:72]    depth   ( -- +n )
+    push DE             ; 1:11      depth
+    ex   DE, HL         ; 1:4       depth
+    ld   HL,(Stop+1)    ; 3:16      depth
+    or    A             ; 1:4       depth
+    sbc  HL, SP         ; 2:15      depth
+    srl   H             ; 2:8       depth
+    rr    L             ; 2:8       depth
+    dec  HL             ; 1:6       depth 
+    call PRINT_S16      ; 3:17      . 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
+;   =====  e n d  =====
+        
 
 ;   ---  the beginning of a non-recursive function  ---
 x_x_test:               ;           
@@ -2125,25 +2132,6 @@ x_m3_test_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
 
-
-
-;   ---  the beginning of a data stack function  ---
-stack_test:             ;           
-    
-    ld   BC, string200  ; 3:10      print_i   Address of string200 ending with inverted most significant bit
-    call PRINT_STRING_I ; 3:17      print_i
-    
-Stop:                   ;           stop
-    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
-    ld   HL, 0x2758     ; 3:10      stop
-    exx                 ; 1:4       stop
-    ret                 ; 1:10      stop
-;   =====  e n d  =====
-
-stack_test_end:
-    ret                 ; 1:10      s;
-;   ---------  end of data stack function  ---------
-
 ;==============================================================================
 ; ( hi lo -- )
 ; Input: HL
@@ -2407,9 +2395,6 @@ PRINT_STRING_I:         ;           print_string_i
     ret                 ; 1:10      print_string_i
 
 STRING_SECTION:
-string200:
-db 0xD, "Data stack OK!", 0xD + 0x80
-size200 EQU $ - string200
 string121:
 db ">=",","+0x80
 size121 EQU $ - string121
@@ -2447,7 +2432,7 @@ string104:
 db "=" + 0x80
 size104 EQU $ - string104
 string103:
-db "RAS",":"+0x80
+db "Depth",":"+0x80
 size103 EQU $ - string103
 string102:
 db "( d2 d1 -- ) and ( ud2 ud1 -- ):",0x0D + 0x80

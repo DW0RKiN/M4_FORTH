@@ -3,8 +3,6 @@ include(`../M4/FIRST.M4')dnl
 ; ^^^^^
 ORG 0x8000
     INIT(60000)
-    ld  hl, stack_test
-    push hl
 
     PRINT_I({"( x2 x1 -- ) and ( u2 u1 -- ):",0x0D})
     PUSH2( 5,-5) CALL(x_x_test)
@@ -22,16 +20,10 @@ ORG 0x8000
     PUSH( 3) CALL(x_m3_test)
     PUSH(-3) CALL(x_m3_test)
 
-
-
-    PRINT_I({"RAS:"})
-    exx
-    push HL
-    exx
-    pop HL
-    DUP_UDOT
-    ret
-    
+    PRINT_I({"Depth:"})
+    DEPTH DOT CR
+    STOP
+        
 COLON(x_x_test)
     ; signed
      BEGIN _2DUP EQ WHILE PRINT_I( {"=" }) BREAK AGAIN
@@ -159,9 +151,3 @@ COLON(x_m3_test)
     BEGIN DUP_PUSH_UGE_WHILE(-3) PRINT_I({">=,"}) BREAK AGAIN
     UDOT PUSH(-3) UDOT CR
 SEMICOLON
-
-
-SCOLON(stack_test)
-    PRINT_I({0xD, "Data stack OK!", 0xD})
-    STOP
-SSEMICOLON

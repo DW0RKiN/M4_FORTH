@@ -1,30 +1,33 @@
 include(`../M4/FIRST.M4')dnl
 dnl
-    ORG 0x8000
-    INIT(60000)
-    ld  hl, stack_test
-    push hl
+   ORG 0x8000
+   INIT(60000)
+   BUFFER(buffer,10)
 
-    BEGIN PRINT({"Press any key: "}) KEY DUP PUSH(0xD) XOR WHILE DUP EMIT PUTCHAR('=') UDOT CR REPEAT DROP
-    PRINT({0xD,"10 char string: "})
-    PUSH2(BUFFER,10) ACCEPT CR
-    PUSH(BUFFER) ADD PUSH(BUFFER) DO I FETCH PUSH(0xFF) AND EMIT LOOP CR
+   CLEARKEY
+   BEGIN 
+      PRINT_Z({"Press any key: "}) 
+      KEY 
+      DUP_PUSH_NE_WHILE(0x0D) 
+         DUP_EMIT PUTCHAR('=') UDOT CR 
+   REPEAT 
+   DROP
     
-    PRINT({"RAS:"})
-    exx
-    push HL
-    exx
-    pop HL
-    DUP_UDOT
-    ret
+   PRINT_Z({0x0D,"10 char string: "})
+   PUSH2(buffer,10) ACCEPT
+   CR
+   DUP
+   PUSH_ADD(buffer) PUSH(buffer)
+   BEGIN
+      _2DUP_UGT_WHILE
+         DUP_FETCH_EMIT
+         _1ADD
+   AGAIN
+   _2DROP
+   CR
+   PUSH_SWAP(buffer) TYPE
     
-SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})    
-    STOP
-SSEMICOLON
-
-;# I need to have label buffer at the end.
-include({../M4/LAST.M4})dnl
-
-BUFFER:
-DS 10
+   PRINT_Z({0x0D, "RAS: "}) __RAS UDOT
+   PRINT_Z({0x0D, "Data stack: "}) DEPTH UDOT
+   CR
+   STOP
