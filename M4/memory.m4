@@ -90,8 +90,11 @@ __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}DS $1})})}){}dnl
+__{}ifelse(eval($1<0),{1},{
+__{}  .error {$0}($@): M4 does not support negative allocation (deallocation)!},
+__{}{dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}DS $1})})})}){}dnl
 dnl
 dnl
 dnl
