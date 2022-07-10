@@ -69,6 +69,32 @@ __{}__{}$1: dw $2})})}){}dnl
 dnl
 dnl
 dnl
+dnl # CREATE(name)         --> make data space pointer
+define({CREATE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing name parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1:})})}){}dnl
+dnl
+dnl
+dnl
+dnl # PUSH_ALLOT(8)      --> reserve 8 bytes
+define({PUSH_ALLOT},{ifelse($1,{},{
+__{}  .error {$0}(): Missing name parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}DS $1})})}){}dnl
+dnl
+dnl
+dnl
 dnl # BUFFER(name,8)      --> Reserve 8 bytes
 define({BUFFER},{ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
