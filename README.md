@@ -568,6 +568,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>      cr       |<sub>       CR        |<sub>                     |<sub>          ( -- )          |<sub>              |
 |<sub>     emit      |<sub>      EMIT       |<sub>                     |<sub>      ( 'a' -- )          |<sub>              |
 |<sub>   dup emit    |<sub>    DUP  EMIT    |<sub>      DUP_EMIT       |<sub>      ( 'a' -- 'a' )      |<sub>              |
+|<sub>  dup @ emit   |<sub>  DUP FETCH EMIT |<sub>    DUP_FETCH_EMIT   |<sub>     ( addr -- addr )     |<sub>              |
 |<sub>    space      |<sub>      SPACE      |<sub>                     |<sub>          ( -- )          |<sub>              |
 |<sub>   'a' emit    |<sub>  PUSH_EMIT('a') |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>              |
 |<sub>     type      |<sub>      TYPE       |<sub>                     |<sub>   ( addr n -- )          |<sub>              |
@@ -1104,13 +1105,16 @@ The variables are stored in the data stack.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 
-|<sub>    Original     |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment          |
-| :------------------: | :-------------------------: | :------------------------------: | :---------------------------- | :-------------------- |
-|<sub>`1` constant ONE |<sub>   CONSTANT(ONE,`1`)    |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`      |
-|<sub>    `3` var X    |<sub>    VARIABLE(X,`3`)     |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`        |
-|<sub>   variable X    |<sub>      VARIABLE(X)       |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000     |
-|<sub>   'a' cvar X    |<sub>    CVARIABLE(X,'a')    |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'        |
-|<sub>   `4` dvar X    |<sub>    DVARIABLE(X,`4`)    |<sub>                             |<sub>          ( -- )          |<sub> X: dw `4`, 0x0000|
+|<sub>       Original       |<sub>           M4 FORTH           |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment          |
+| :-----------------------: | :-------------------------------: | :------------------------------: | :---------------------------- | :-------------------- |
+|<sub>   `1` constant ONE   |<sub>      CONSTANT(ONE,`1`)       |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`      |
+|<sub>       `3` var X      |<sub>       VARIABLE(X,`3`)        |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`        |
+|<sub>      variable X      |<sub>         VARIABLE(X)          |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000     |
+|<sub>      'a' cvar X      |<sub>       CVARIABLE(X,'a')       |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'        |
+|<sub>      `4` dvar X      |<sub>       DVARIABLE(X,`4`)       |<sub>                             |<sub>          ( -- )          |<sub> X: dw `4`, 0x0000|
+|<sub>    " name" create    |<sub>       CREATE({"name"})       |<sub>                             |<sub>          ( -- )          |<sub> name:            |
+|<sub>      `10` allot      |<sub>                              |<sub>       PUSH_ALLOT(`10`)      |<sub>          ( -- )          |<sub> DS `10`          |
+|<sub>" x" create `10` allot|<sub>CREATE({"x"}) PUSH_ALLOT(`10`)|<sub>        BUFFER(x,`10`)       |<sub>          ( -- )          |<sub> X: DS `10`       |
 
 #### 8bit
 
