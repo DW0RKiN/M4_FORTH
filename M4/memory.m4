@@ -147,24 +147,26 @@ dnl # _DVARIABLE(name,100)         --> (name) = 100
 dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
 define({DVARIABLE},{ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter with variable name!},
-eval(($#==2) && ifelse(eval($2),{},{1},{0})),{1},{
-__{}  .error {$0}($@): M4 does not know $2 parameter value!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_REG($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}ifelse($#,{1},{$1:
+$#,{1},{define({ALL_VARIABLE},ALL_VARIABLE{$1:
 __{}  dw 0x0000
-__{}  dw 0x0000},
-__{}{format({%-24s},$1:); = $2{}dnl
+__{}  dw 0x0000})},
+{dnl
+__{}ifelse(eval(ifelse(eval($2),{},{1},{0})),{1},{
+__{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
+__{}{dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}format({%-24s},$1:); = $2{}dnl
 __{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
 __{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
 __{}  dw __HEX_HL($2)             ; = eval(($2) & 0xffff)
-__{}  dw __HEX_DE($2)             ; = eval((($2) >> 16) & 0xffff)})dnl
-})})})dnl
+__{}  dw __HEX_DE($2)             ; = eval((($2) >> 16) & 0xffff)})}){}dnl
+})}){}dnl
 dnl
 dnl
 dnl
@@ -1562,14 +1564,15 @@ dnl ( hi lo -- )
 dnl store(addr) store 32-bit number at addr
 define({PUSH_2STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   format({%-15s},($1){,} HL); 3:16      $1 2! push_2store($1) lo
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{
+    ld   format({%-15s},{($1), HL}); 3:16      $1 2! push_2store($1) lo
 __{}ifelse(eval(($1)),{},{dnl
     ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2! push_2store($1) hi},{dnl
     ld   (format({%-14s},eval(($1)+2){),} DE); 4:20      $1 2! push_2store($1) hi})
     pop  HL             ; 1:10      $1 2! push_2store($1)
-    pop  DE             ; 1:10      $1 2! push_2store($1)})dnl
+    pop  DE             ; 1:10      $1 2! push_2store($1)})})dnl
 dnl
 dnl
 dnl lo addr 2!
@@ -1579,15 +1582,77 @@ define({PUSH2_2STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
-__{}$#,{2},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval(2+$2),{},{dnl
-__{}    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi}dnl
-__{},{dnl
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}ifelse(eval(2+$2),{},{
+__{}    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi},
+__{}{
 __{}    ld   (format({%-14s},eval(($2)+2){),} HL); 3:16      $1 $2 2! push2_2store($1,$2) hi})
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2! push2_2store($1,$2)
     ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) lo
-    pop  HL             ; 1:10      $1 $2 2! push2_2store($1,$2)})dnl
+    pop  HL             ; 1:10      $1 $2 2! push2_2store($1,$2)
+    ex   DE, HL         ; 1:4       $1 $2 2! push2_2store($1,$2)})})dnl
+dnl
+dnl
+dnl
+dnl
+dnl
+dnl d addr 2!
+dnl ( -- )
+dnl store 32-bit number at addr
+define({PUSHDOT_PUSH_2STORE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing parameters!},
+$#,{1},{
+__{}  .error {$0}($@): The second parameter is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
+__{}    push HL             ; 1:11      $1. $2 2!  pushdot_push_2store($1,$2)
+__{}    ld   HL,format({%-12s},{$2}); 3:16      $1. $2 2!  pushdot_push_2store($1,$2)   addr
+__{}    ld   BC,format({%-12s},{$1}); 4:20      $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld  (HL),C          ; 1:7       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    inc  HL             ; 1:6       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld  (HL),B          ; 1:7       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    inc  HL             ; 1:6       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld  (HL),C          ; 1:7       $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    inc  HL             ; 1:6       $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld  (HL),B          ; 1:7       $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    pop  HL             ; 1:10      $1. $2 2!  pushdot_push_2store($1,$2)},
+eval(__IS_MEM_REF($1)),{1},{
+__{}    ld   BC,format({%-12s},{$1}); 4:20      $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld    A, C          ; 1:4       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld  format({%-16s},{($2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld    A, B          ; 1:4       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld  format({%-16s},{(1+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld    A, C          ; 1:4       $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld  format({%-16s},{(2+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld    A, B          ; 1:4       $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld  format({%-16s},{(3+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   hi},
+eval($1),{},{
+__{}  .error {$0}($@): M4 cannot calculate {$1}},
+eval(__IS_MEM_REF($2)),{1},{
+__{}    push HL             ; 1:11      $1. $2 2!  pushdot_push_2store($1,$2)
+__{}    ld   HL,format({%-12s},{$2}); 3:16      $1. $2 2!  pushdot_push_2store($1,$2)   addr
+__{}    ld  (HL),__HEX_L($1)       ; 2:10      $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    inc  HL             ; 1:6       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld  (HL),__HEX_H($1)       ; 2:10      $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    inc  HL             ; 1:6       $1. $2 2!  pushdot_push_2store($1,$2)   lo
+__{}    ld  (HL),__HEX_E($1)       ; 2:10      $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    inc  HL             ; 1:6       $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    ld  (HL),__HEX_D($1)       ; 2:10      $1. $2 2!  pushdot_push_2store($1,$2)   hi
+__{}    pop  HL             ; 1:10      $1. $2 2!  pushdot_push_2store($1,$2)},
+{
+__{}    ld    A, __HEX_L($1)       ; 2:7       $1. $2 2!  pushdot_push_2store($1,$2)   L
+__{}    ld  format({%-16s},{($2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   L{}ifelse(__HEX_L($1),__HEX_H($1),,{
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1. $2 2!  pushdot_push_2store($1,$2)   H})
+__{}    ld  format({%-16s},{(1+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   H{}ifelse(__HEX_H($1),__HEX_E($1),,{
+__{}__{}    ld    A, __HEX_E($1)       ; 2:7       $1. $2 2!  pushdot_push_2store($1,$2)   E})
+__{}    ld  format({%-16s},{(2+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   E{}ifelse(__HEX_D($1),__HEX_E($1),,{
+__{}__{}    ld    A, __HEX_D($1)       ; 2:7       $1. $2 2!  pushdot_push_2store($1,$2)   D})
+__{}    ld  format({%-16s},{(3+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   D})})dnl
 dnl
 dnl
 dnl
