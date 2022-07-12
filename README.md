@@ -1125,8 +1125,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- x )        |<sub> _P_A: dw x               |
 |<sub>     `1234` to _A     |<sub>                                  |<sub>        PUSH_TO({_A})        |<sub>          ( -- )          |<sub> _P_A: dw `1234`          |
 |<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `1234` )   |<sub> _P_A: dw `1234`          |
-|<sub>      dvalue _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _P_B: dw x               |
-|<sub> `123456.` dvalue _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _P_B: dw 0xE240, 0x0001  |
+|<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _P_B: dw x               |
+|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _P_B: dw 0xE240, 0x0001  |
 |<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `123456.` )|<sub> _P_B: dw 0xE240, 0x0001  |
 |<sub>         to _B        |<sub>            DTO({_B})             |<sub>                             |<sub>        ( d -- )          |<sub> _P_B: dw lo(d), hi(d)    |
 |<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- d )        |<sub> _P_B: dw lo(d), hi(d)    |
