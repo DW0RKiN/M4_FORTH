@@ -1141,36 +1141,36 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 
 Be very careful when choosing a name for VALUE because it will become a new word. This is why changing the value using TO({name}) is wrapped in {}.
    
-    ./check_word.sh 'PUSH2(123,456) VALUE(alfa) alfa UDOT PUSH_TO({alfa},5) alfa SPACE_UDOT TO({alfa}) alfa SPACE_UDOT'
+    ./check_word.sh 'PUSH2(123,456) VALUE(_alfa) _alfa UDOT PUSH_TO({_alfa},5) _alfa SPACE_UDOT TO({_alfa}) _alfa SPACE_UDOT'
 
         push DE             ; 1:11      push2(123,456)
         ld   DE, 123        ; 3:10      push2(123,456)
         push HL             ; 1:11      push2(123,456)
         ld   HL, 456        ; 3:10      push2(123,456) 
-        ld  (p_alfa), HL    ; 3:16      value alfa
-        ex   DE, HL         ; 1:4       value alfa
-        pop  DE             ; 1:10      value alfa 
-        push DE             ; 1:11      alfa
-        ex   DE, HL         ; 1:4       alfa
-        ld   HL, (p_alfa)   ; 3:16      alfa 
+        ld  (_p_alfa), HL   ; 3:16      value _alfa
+        ex   DE, HL         ; 1:4       value _alfa
+        pop  DE             ; 1:10      value _alfa 
+        push DE             ; 1:11      _alfa
+        ex   DE, HL         ; 1:4       _alfa
+        ld   HL, (_p_alfa)  ; 3:16      _alfa 
         call PRT_U16        ; 3:17      u.   ( u -- ) 
-        ld   BC, 5          ; 3:10      5 to alfa
-        ld  (p_alfa), BC    ; 4:20      5 to alfa 
-        push DE             ; 1:11      alfa
-        ex   DE, HL         ; 1:4       alfa
-        ld   HL, (p_alfa)   ; 3:16      alfa 
+        ld   BC, 5          ; 3:10      5 to _alfa
+        ld  (_p_alfa), BC   ; 4:20      5 to _alfa 
+        push DE             ; 1:11      _alfa
+        ex   DE, HL         ; 1:4       _alfa
+        ld   HL, (_p_alfa)  ; 3:16      _alfa 
         call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
-        ld  (p_alfa), HL    ; 3:16      to alfa
-        pop  HL             ; 1:10      to alfa
-        ex   DE, HL         ; 1:4       to alfa 
-        push DE             ; 1:11      alfa
-        ex   DE, HL         ; 1:4       alfa
-        ld   HL, (p_alfa)   ; 3:16      alfa 
+        ld  (_p_alfa), HL   ; 3:16      to _alfa
+        pop  HL             ; 1:10      to _alfa
+        ex   DE, HL         ; 1:4       to _alfa 
+        push DE             ; 1:11      _alfa
+        ex   DE, HL         ; 1:4       _alfa
+        ld   HL, (_p_alfa)  ; 3:16      _alfa 
         call PRT_SP_U16     ; 3:17      space u.   ( u -- )
 
     VARIABLE_SECTION:
 
-    p_alfa: dw 0x0000
+    _p_alfa: dw 0x0000
 
 Output:
 
