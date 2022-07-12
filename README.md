@@ -1105,26 +1105,34 @@ The variables are stored in the data stack.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 
-|<sub>       Original       |<sub>           M4 FORTH           |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment                  |
-| :-----------------------: | :-------------------------------: | :------------------------------: | :---------------------------- | :---------------------------- |
-|<sub>   `1` constant ONE   |<sub>      CONSTANT(ONE,`1`)       |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`              |
-|<sub>     create name      |<sub>         CREATE(name)         |<sub>                             |<sub>          ( -- )          |<sub> name:                    |
-|<sub>      `10` allot      |<sub>                              |<sub>       PUSH_ALLOT(`10`)      |<sub>          ( -- )          |<sub> DS `10`                  |
-|<sub>  create x `10` allot |<sub>  CREATE(x) PUSH_ALLOT(`10`)  |<sub>        BUFFER(x,`10`)       |<sub>          ( -- )          |<sub> x: DS `10`               |
-|<sub>        `55` ,        |<sub>                              |<sub>       PUSH_COMMA(`55`)      |<sub>          ( -- )          |<sub> DW: `55`                 |
-|<sub>      'a' cvar X      |<sub>       CVARIABLE(X,'a')       |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'                |
-|<sub>       `3` var X      |<sub>       VARIABLE(X,`3`)        |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`                |
-|<sub> variable X `3` X !   |<sub>VARIABLE(X) PUSH2_STORE(`3`,X)|<sub>       VARIABLE(X,`3`)       |<sub>          ( -- )          |<sub> X: dw `3`                |
-|<sub> variable X `2` allot |<sub>         VARIABLE(X)          |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000             |
-|<sub>   `1234567.` dvar X  |<sub>    DVARIABLE(X,`1234567`)    |<sub>                             |<sub>          ( -- )          |<sub> X: db 0x87,0xD6,0x12,0x00|
-|<sub> 2variable X `4.` X ! |<sub>DVARIABLE(X) PUSHDOT_STORE(`4`,X)|<sub>       DVARIABLE(X,`4`)      |<sub>          ( -- )          |<sub> X: db 4,0,0,0            |
-|<sub>     value VAL_A      |<sub>         VALUE(VAL_A)         |<sub>                             |<sub>        ( x -- )          |<sub> P_VAL_A: dw x            |
-|<sub>   `7` value VAL_A    |<sub>                              |<sub>       VALUE(VAL_A,`7`)      |<sub>          ( -- )          |<sub> P_VAL_A: dw `7`          |
-|<sub>         VAL_A        |<sub>             VAL_A            |<sub>                             |<sub>          ( -- `7` )      |<sub> P_VAL_A: dw `7`          |
-|<sub>       to VAL_A       |<sub>          TO({VAL_A})         |<sub>                             |<sub>        (x  -- )          |<sub> P_VAL_A: dw x            |
-|<sub>         VAL_A        |<sub>             VAL_A            |<sub>                             |<sub>          ( -- x )        |<sub> P_VAL_A: dw x            |
-|<sub>    `1234` to VAL_A   |<sub>                              |<sub>       PUSH_TO({VAL_A})      |<sub>          ( -- )          |<sub> P_VAL_A: dw `1234`       |
-|<sub>         VAL_A        |<sub>             VAL_A            |<sub>                             |<sub>          ( -- `1234` )   |<sub> P_VAL_A: dw `1234`       |
+|<sub>       Original       |<sub>             M4 FORTH             |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment                  |
+| :-----------------------: | :-----------------------------------: | :------------------------------: | :---------------------------- | :---------------------------- |
+|<sub>   `1` constant ONE   |<sub>        CONSTANT(ONE,`1`)         |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`              |
+|<sub>     create name      |<sub>           CREATE(name)           |<sub>                             |<sub>          ( -- )          |<sub> name:                    |
+|<sub>      `10` allot      |<sub>                                  |<sub>       PUSH_ALLOT(`10`)      |<sub>          ( -- )          |<sub> DS `10`                  |
+|<sub>  create x `10` allot |<sub>    CREATE(x) PUSH_ALLOT(`10`)    |<sub>        BUFFER(x,`10`)       |<sub>          ( -- )          |<sub> x: DS `10`               |
+|<sub>        `55` ,        |<sub>                                  |<sub>       PUSH_COMMA(`55`)      |<sub>          ( -- )          |<sub> DW: `55`                 |
+|<sub>      'a' cvar X      |<sub>         CVARIABLE(X,'a')         |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'                |
+|<sub>       `3` var X      |<sub>         VARIABLE(X,`3`)          |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`                |
+|<sub> variable X `3` X !   |<sub>  VARIABLE(X) PUSH2_STORE(`3`,X)  |<sub>       VARIABLE(X,`3`)       |<sub>          ( -- )          |<sub> X: dw `3`                |
+|<sub> variable X `2` allot |<sub>           VARIABLE(X)            |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000             |
+|<sub>   `1234567.` dvar X  |<sub>      DVARIABLE(X,`1234567`)      |<sub>                             |<sub>          ( -- )          |<sub> X: db 0x87,0xD6,0x12,0x00|
+|<sub> 2variable X `4.` X ! |<sub> DVARIABLE(X) PUSHDOT_STORE(`4`,X)|<sub>       DVARIABLE(X,`4`)      |<sub>          ( -- )          |<sub> X: db 4,0,0,0            |
+|<sub>       value _A       |<sub>             VALUE(_A)            |<sub>                             |<sub>        ( x -- )          |<sub> _P_A: dw x               |
+|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(_A,`7`)      |<sub>          ( -- )          |<sub> _P_A: dw `7`             |
+|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `7` )      |<sub> _P_A: dw `7`             |
+|<sub>         to _A        |<sub>             TO({_A})             |<sub>                             |<sub>        ( x -- )          |<sub> _P_A: dw x               |
+|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- x )        |<sub> _P_A: dw x               |
+|<sub>     `1234` to _A     |<sub>                                  |<sub>        PUSH_TO({_A})        |<sub>          ( -- )          |<sub> _P_A: dw `1234`          |
+|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `1234` )   |<sub> _P_A: dw `1234`          |
+|<sub>      dvalue _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _P_B: dw x               |
+|<sub> `123456.` dvalue _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _P_B: dw 0xE240, 0x0001  |
+|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `123456.` )|<sub> _P_B: dw 0xE240, 0x0001  |
+|<sub>        dto _B        |<sub>            DTO({_B})             |<sub>                             |<sub>        ( d -- )          |<sub> _P_B: dw lo(d), hi(d)    |
+|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- d )        |<sub> _P_B: dw lo(d), hi(d)    |
+|<sub>    `12345` dto _B    |<sub>                                  |<sub>      PUSHDOT_DTO({_B})      |<sub>          ( -- )          |<sub> _P_B: dw 0x3039, 0x0000  |
+|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _P_B: dw 0x3039, 0x0000  |
+
 
     100 CHAR+   -->  100 _1ADD
     100 CELL+   -->  100 _2ADD

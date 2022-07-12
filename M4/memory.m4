@@ -26,12 +26,12 @@ __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}p_$1: dw 0x0000}){}dnl
+__{}__{}_p$1: dw 0x0000}){}dnl
 __{}define({$1},{
 __{}__{}    push DE             ; 1:11      {$1}
 __{}__{}    ex   DE, HL         ; 1:4       {$1}
 __{}__{}    ld   HL, format({%-11s},{(p_$1)}); 3:16      {$1}})
-__{}    ld  format({%-16s},{(p_$1), HL}); 3:16      value {$1}
+__{}    ld  format({%-16s},{(_p$1), HL}); 3:16      value {$1}
 __{}    ex   DE, HL         ; 1:4       value {$1}
 __{}    pop  DE             ; 1:10      value {$1}})}){}dnl
 dnl
@@ -53,11 +53,13 @@ __{}  .error {$0}(): The second parameter with the initial value is missing!},
 __{}ifelse(eval($2),{},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}p_$1: dw $2}){}dnl
+__{}__{}_p$1: dw $2}){}dnl
 __{}define({$1},{
 __{}__{}    push DE             ; 1:11      {$1}
 __{}__{}    ex   DE, HL         ; 1:4       {$1}
-__{}__{}    ld   HL, format({%-11s},{(p_$1)}); 3:16      {$1}}){}dnl
+__{}__{}    ld   HL, format({%-11s},{(_p$1)}); 3:16      {$1}})
+__{}    ld   BC, format({%-11s},{$2}); 3:10      $2 value {$1}
+__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2 value {$1}
 })}){}dnl
 dnl
 dnl
@@ -70,7 +72,7 @@ __{}  .error {$0}($@): The variable with this name not exist!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {
-__{}    ld  format({%-16s},{(p_$1), HL}); 3:16      to {$1}
+__{}    ld  format({%-16s},{(_p$1), HL}); 3:16      to {$1}
 __{}    pop  HL             ; 1:10      to {$1}
 __{}    ex   DE, HL         ; 1:4       to {$1}{}dnl
 })}){}dnl
@@ -89,12 +91,133 @@ eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_MEM_REF($2),{1},{
 __{}    ld   BC, format({%-11s},{$2}); 4:20      $2 to {$1}
-__{}    ld  format({%-16s},{(p_$1), BC}); 4:20      $2 to {$1}},
+__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2 to {$1}},
 {dnl
 __{}ifelse(eval($2),{},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!})
 __{}    ld   BC, format({%-11s},{$2}); 3:10      $2 to {$1}
-__{}    ld  format({%-16s},{(p_$1), BC}); 4:20      $2 to {$1}{}dnl
+__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2 to {$1}{}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # DVALUE(name)    --> (name) = TOS,NOS
+define({DVALUE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},{_p$1:});
+__{}__{}__{}    dw 0x0000
+__{}__{}__{}    dw 0x0000}){}dnl
+__{}define({$1},{
+__{}__{}    push DE             ; 1:11      {$1}
+__{}__{}    push HL             ; 1:11      {$1}
+__{}__{}    ld   HL, format({%-11s},{(_p$1+2)}); 3:16      {$1}
+__{}__{}    ex   DE, HL         ; 1:4       {$1}
+__{}__{}    ld   HL, format({%-11s},{(_p$1)}); 3:16      {$1}})
+__{}    ld  format({%-16s},{(_p$1), HL}); 3:16      value {$1}   lo
+__{}    ex   DE, HL         ; 1:4       value {$1}
+__{}    ld  format({%-16s},{(_p$1+2), HL}); 3:16      value {$1}   hi
+__{}    pop  HL             ; 1:10      value {$1}
+__{}    pop  DE             ; 1:10      value {$1}})}){}dnl
+dnl
+dnl
+dnl
+dnl # PUSHDOT_DVALUE(name,100000)    --> (name) = 100000
+dnl # PUSHDOT_DVALUE(name,0x44332211) --> (name) = 0x2211,0x4433
+define({PUSHDOT_DVALUE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+$#,{1},{
+__{}  .error {$0}(): The second parameter with the initial value is missing!},
+{dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($2),{1},{dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},{_p$1:});
+__{}__{}__{}    dw 0x0000
+__{}__{}__{}    dw 0x0000}){}dnl
+__{}__{}define({$1},{
+__{}__{}    push DE             ; 1:11      {$1}
+__{}__{}    push HL             ; 1:11      {$1}
+__{}__{}    ld   HL, format({%-11s},{(_p$1+2)}); 3:16      {$1}
+__{}__{}    ex   DE, HL         ; 1:4       {$1}
+__{}__{}    ld   HL, format({%-11s},{(_p$1)}); 3:16      {$1}})
+__{}__{}    ld   BC,format({%-12s},{$2}); 4:20      $2 value {$1}   lo
+__{}__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2 value {$1}   lo
+__{}__{}    ld   BC,format({%-12s},{(2+$2)}); 4:20      $2 value {$1}   hi
+__{}__{}    ld  format({%-16s},{(_p$1+2), BC}); 4:20      $2 value {$1}   hi},
+__{}eval($2),{},{
+__{}__{}  .warning {$0}($@): M4 does not know $2 parameter value!},
+__{}{dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},{_p$1:});{}dnl
+__{}__{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
+__{}__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
+__{}__{}__{}    dw __HEX_HL($2)
+__{}__{}__{}    dw __HEX_DE($2)}){}dnl
+__{}__{}define({$1},{
+__{}__{}    push DE             ; 1:11      {$1}
+__{}__{}    push HL             ; 1:11      {$1}
+__{}__{}    ld   HL, format({%-11s},{(_p$1+2)}); 3:16      {$1}
+__{}__{}    ex   DE, HL         ; 1:4       {$1}
+__{}__{}    ld   HL, format({%-11s},{(_p$1)}); 3:16      {$1}})
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      $2 value {$1}   lo
+__{}__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2 value {$1}   lo
+__{}__{}    ld   BC, __HEX_DE($2)     ; 3:10      $2 value {$1}   hi
+__{}__{}    ld  format({%-16s},{(_p$1+2), BC}); 4:20      $2 value {$1}   hi})})}){}dnl
+dnl
+dnl
+dnl
+dnl # DTO(name)    --> (name) = TOS,NOS
+define({DTO},{ifelse({$1},{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval(ifdef({$1},{0},{1})),{1},{
+__{}  .error {$0}($@): The variable with this name not exist!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld  format({%-16s},{(_p$1), HL}); 3:16      dto {$1}   lo
+__{}    ex   DE, HL         ; 1:4       dto {$1}
+__{}    ld  format({%-16s},{(_p$1+2), HL}); 3:16      dto {$1}   hi
+__{}    pop  HL             ; 1:10      dto {$1}
+__{}    pop  DE             ; 1:10      dto {$1}})}){}dnl
+dnl
+dnl
+dnl
+dnl # PUSHDOT_DTO(name,200)        --> (name) = 200
+dnl # PUSHDOT_DTO(name,0x44221100) --> (name) = 0x1100,0x4422
+define({PUSHDOT_DTO},{ifelse({$1},{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval(ifdef({$1},{0},{1})),{1},{
+__{}  .error {$0}($@): The variable with this name not exist!},
+$#,{1},{
+__{}  .error {$0}(): The second parameter with the initial value is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($2),{1},{
+__{}    ld   BC, format({%-11s},{$2}); 4:20      $2 dto {$1}   lo
+__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2 dto {$1}   lo
+__{}    ld   BC, format({%-11s},{(2+$2)}); 4:20      $2 dto {$1}   hi
+__{}    ld  format({%-16s},{(_p$1+2), BC}); 4:20      $2 dto {$1}   hi},
+eval($2),{},{
+__{}  .error {$0}($@): M4 does not know $2 parameter value!},
+{
+__{}    ld   BC, __HEX_HL($2)     ; 3:10      $2. dto {$1}   lo
+__{}    ld  format({%-16s},{(_p$1), BC}); 4:20      $2. dto {$1}   lo
+__{}    ld   BC, __HEX_DE($2)     ; 3:10      $2. dto {$1}   hi
+__{}    ld  format({%-16s},{(_p$1+2), BC}); 4:20      $2. dto {$1}   hi{}dnl
 })}){}dnl
 dnl
 dnl
