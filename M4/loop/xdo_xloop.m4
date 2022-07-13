@@ -117,9 +117,11 @@ __{}__{}    jp   xleave{}LOOP_STACK      ;           xleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}__{}                                 ;           xunloop LOOP_STACK}){}dnl
 __{}ifelse({$1},{$2},{
-__{}__{}    jp   xexit{}LOOP_STACK       ; 3:10      ?xdo($1,$2) LOOP_STACK{}dnl
-__{}},{
+__{}__{}    jp   xexit{}LOOP_STACK       ; 3:10      ?xdo($1,$2) LOOP_STACK
+__{}xdo{}LOOP_STACK{}save:             ;           ?xdo($1,$2) LOOP_STACK},
+__{}{
 __{}__{}    ld   BC, format({%-11s},$2); 3:10      ?xdo($1,$2) LOOP_STACK
+__{}xdo{}LOOP_STACK{}save:             ;           ?xdo($1,$2) LOOP_STACK
 __{}__{}    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      ?xdo($1,$2) LOOP_STACK})
 __{}xdo{}LOOP_STACK:                 ;           ?xdo($1,$2) LOOP_STACK})dnl
 dnl
