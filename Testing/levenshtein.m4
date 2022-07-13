@@ -4,10 +4,16 @@ include(`../M4/FIRST.M4')dnl
 ORG 0x8000
 
     INIT(60000)
-    PRINT({"The Levenshtein distance between ", 0x22})
-    PUSH2(word_1, word_1_len)
-    ACCEPT_Z
+    CONSTANT(max_len,25)
     CVARIABLE(len_1)
+    CVARIABLE(len_2)
+    CREATE(word_1) PUSH_ALLOT(max_len)
+    CREATE(word_2) PUSH_ALLOT(max_len)
+    CREATE(table)
+    
+    PRINT({"The Levenshtein distance between ", 0x22})
+    PUSH2(word_1, max_len)
+    ACCEPT_Z
     
     ;# self-modifying code
     DUP_PUSH_CSTORE(label_03)
@@ -31,14 +37,13 @@ ORG 0x8000
     _1ADD
     
     PRINT({0x22, " and ", 0x22})
-    PUSH2(word_2, word_2_len)
+    PUSH2(word_2, max_len)
     ACCEPT_Z
     
     _1ADD
-    CVARIABLE(len_2)
     DUP_PUSH_CSTORE(len_2)
     
-    PRINT({0x22, " is"})
+    PRINT({0x22, " is "})
         
     ;# ( table 1 word_2_len )
     
@@ -149,14 +154,3 @@ SCOLON(clear_table)
     OVER_0EQ_UNTIL
     _2DROP
 SSEMICOLON
-
-include({../M4/LAST.M4})dnl
-
-word_1:
-db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-word_1_len EQU $-word_1
-row_size EQU $-word_1
-word_2:
-db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-word_2_len EQU $-word_2
-table:

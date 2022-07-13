@@ -10,19 +10,26 @@ ORG 0x8000
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
     
+max_len              EQU 25
+    
+    
+     
+     
+    
+    
+    
     push DE             ; 1:11      print     "The Levenshtein distance between ", 0x22
     ld   BC, size101    ; 3:10      print     Length of string101
     ld   DE, string101  ; 3:10      print     Address of string101
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push DE             ; 1:11      push2(word_1,word_1_len)
-    ld   DE, word_1     ; 3:10      push2(word_1,word_1_len)
-    push HL             ; 1:11      push2(word_1,word_1_len)
-    ld   HL, word_1_len ; 3:10      push2(word_1,word_1_len)
+    push DE             ; 1:11      push2(word_1,25)
+    ld   DE, word_1     ; 3:10      push2(word_1,25)
+    push HL             ; 1:11      push2(word_1,25)
+    ld   HL, 25         ; 3:10      push2(word_1,25)
     
     call READSTRING     ; 3:17      accept_z
-    
     
     ;# self-modifying code
     
@@ -52,8 +59,8 @@ ORG 0x8000
     
 begin101:               ;           begin 101
         
-                        ;[1:7]      2dup c! _2dup_cstore   ( char addr -- char addr )
-    ld  (HL),E          ; 1:7       2dup c! _2dup_cstore
+                        ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
+    ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore
         
     dec  HL             ; 1:6       1- 
         
@@ -78,22 +85,21 @@ break101:               ;           over 0= until 101
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
     pop  DE             ; 1:10      print
     
-    push DE             ; 1:11      push2(word_2,word_2_len)
-    ld   DE, word_2     ; 3:10      push2(word_2,word_2_len)
-    push HL             ; 1:11      push2(word_2,word_2_len)
-    ld   HL, word_2_len ; 3:10      push2(word_2,word_2_len)
+    push DE             ; 1:11      push2(word_2,25)
+    ld   DE, word_2     ; 3:10      push2(word_2,25)
+    push HL             ; 1:11      push2(word_2,25)
+    ld   HL, 25         ; 3:10      push2(word_2,25)
     
     call READSTRING     ; 3:17      accept_z
     
     
     inc  HL             ; 1:6       1+
     
-    
     ld    A, L          ; 1:4       dup len_2 C! dup push(len_2) cstore
     ld   (len_2), A     ; 3:13      dup len_2 C! dup push(len_2) cstore
     
     
-    push DE             ; 1:11      print     0x22, " is"
+    push DE             ; 1:11      print     0x22, " is "
     ld   BC, size103    ; 3:10      print     Length of string103
     ld   DE, string103  ; 3:10      print     Address of string103
     call 0x203C         ; 3:17      print     Print our string with ZX 48K ROM
@@ -110,8 +116,8 @@ begin102:               ;           begin 102
         
     ex  (SP),HL         ; 1:19      nrot_swap ( c b a -- a b c )
         
-                        ;[1:7]      2dup c! _2dup_cstore   ( char addr -- char addr )
-    ld  (HL),E          ; 1:7       2dup c! _2dup_cstore
+                        ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
+    ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore
         
     ld    A,(len_1)     ; 3:13      len_1 @ +  push_cfetch_add(len_1)   ( x -- x+(len_1) )
     add   A, L          ; 1:4       len_1 @ +  push_cfetch_add(len_1)
@@ -126,7 +132,7 @@ begin102:               ;           begin 102
         
     dec  HL             ; 1:6       1-
     
-    ld    A, H          ; 1:4       dup 0= until 102   ( flag -- flag )
+    ld    A, H          ; 1:4       dup 0= until 102   ( x -- x )
     or    L             ; 1:4       dup 0= until 102
     jp   nz, begin102   ; 3:10      dup 0= until 102
 break102:               ;           dup 0= until 102
@@ -255,7 +261,7 @@ label_03  EQU $+2
     ;#CR
 
     
-    call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )
+    call ZXPRT_U16      ; 3:17      u.zxrom   ( u -- )
     
     push DE             ; 1:11      print     ".", 0x0D
     ld   BC, size104    ; 3:10      print     Length of string104
@@ -299,13 +305,13 @@ begin106:               ;           begin 106
     ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
     ld    H, 0x00       ; 2:7       C@ cfetch
             
-    call PRINT_ZXROM_U16; 3:17      u.zxrom   ( u -- )
+    call ZXPRT_U16      ; 3:17      u.zxrom   ( u -- )
             
     inc  DE             ; 1:6       swap 1+ swap 
             
     dec  HL             ; 1:6       1-
         
-    ld    A, H          ; 1:4       dup 0= until 106   ( flag -- flag )
+    ld    A, H          ; 1:4       dup 0= until 106   ( x -- x )
     or    L             ; 1:4       dup 0= until 106
     jp   nz, begin106   ; 3:10      dup 0= until 106
 break106:               ;           dup 0= until 106
@@ -348,15 +354,15 @@ begin107:               ;           begin 107
         
 begin108:               ;           begin 108
             
-                        ;[2:11]     over 0 swap c! over_push_swap_cstore(0)   ( addr x -- addr x )
-    xor   A             ; 1:4       over 0 swap c! over_push_swap_cstore(0)
-    ld  (DE),A          ; 1:7       over 0 swap c! over_push_swap_cstore(0)
+                        ;[2:11]     over 0 swap c!  over_push_swap_cstore(0)   ( addr x -- addr x )
+    xor   A             ; 1:4       over 0 swap c!  over_push_swap_cstore(0)
+    ld  (DE),A          ; 1:7       over 0 swap c!  over_push_swap_cstore(0)
             
     inc  DE             ; 1:6       swap 1+ swap
             
     dec  HL             ; 1:6       1-
         
-    ld    A, H          ; 1:4       dup 0= until 108   ( flag -- flag )
+    ld    A, H          ; 1:4       dup 0= until 108   ( x -- x )
     or    L             ; 1:4       dup 0= until 108
     jp   nz, begin108   ; 3:10      dup 0= until 108
 break108:               ;           dup 0= until 108
@@ -378,31 +384,22 @@ clear_table_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
 
-
-;==============================================================================
-; Input: HL
-; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_U16:        ;           print_zxrom_u16
-    ld    A, ' '        ; 2:7       print_zxrom_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_zxrom_u16   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_zxrom_u16_only
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_ZXROM_U16_ONLY:   ;           print_zxrom_u16_only   ( u -- )
-    push DE             ; 1:11      print_zxrom_u16_only
-    ld    B, H          ; 1:4       print_zxrom_u16_only
-    ld    C, L          ; 1:4       print_zxrom_u16_only
-    call 0x2D2B         ; 3:17      print_zxrom_u16_only   call ZX ROM stack BC routine
-    call 0x2DE3         ; 3:17      print_zxrom_u16_only   call ZX ROM print a floating-point number routine
+ZXPRT_U16:              ;           zxprt_u16   ( u -- )
+    push DE             ; 1:11      zxprt_u16
+    ld    B, H          ; 1:4       zxprt_u16
+    ld    C, L          ; 1:4       zxprt_u16
+    call 0x2D2B         ; 3:17      zxprt_u16   call ZX ROM stack BC routine
+    call 0x2DE3         ; 3:17      zxprt_u16   call ZX ROM print a floating-point number routine
 
-    pop  HL             ; 1:10      print_zxrom_u16_only
-    pop  BC             ; 1:10      print_zxrom_u16_only   load ret
-    pop  DE             ; 1:10      print_zxrom_u16_only
-    push BC             ; 1:11      print_zxrom_u16_only   save ret
-    ret                 ; 1:10      print_zxrom_u16_only
+    pop  HL             ; 1:10      zxprt_u16
+    pop  BC             ; 1:10      zxprt_u16   load ret
+    pop  DE             ; 1:10      zxprt_u16
+    push BC             ; 1:11      zxprt_u16   save ret
+    ret                 ; 1:10      zxprt_u16
 ;==============================================================================
 ; Read string from keyboard
 ; In: DE = addr_string, HL = max_length
@@ -428,18 +425,18 @@ READSTRING2:
     dec  BC             ; 1:6       readstring   loaded--
     inc  HL             ; 1:6       readstring   space++
     ld    A, 0x08       ; 2:7       readstring
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      readstring   putchar(reg A) with ZX 48K ROM
     ld    A, 0x20       ; 2:7       readstring
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      readstring   putchar(reg A) with ZX 48K ROM
     ld    A, 0x08       ; 2:7       readstring
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      readstring   putchar(reg A) with ZX 48K ROM
     jr   READSTRING2    ; 2:12      readstring
 READSTRING3:
 
     cp  0x0D            ; 2:7       readstring   enter?
     jr    z, READSTRING4; 2:7/12    readstring
 
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
+    rst   0x10          ; 1:11      readstring   putchar(reg A) with ZX 48K ROM
     inc  DE             ; 1:6       readstring   addr++
     inc  BC             ; 1:6       readstring   loaded++
     dec  HL             ; 1:6       readstring   space--
@@ -466,17 +463,12 @@ CLEARBUFF:
     ld  (HL),0x00       ; 2:10      clearbuff
     pop  HL             ; 1:10      clearbuff
     ret                 ; 1:10      clearbuff
-VARIABLE_SECTION:
-
-len_1: db 0x00
-len_2: db 0x00
-
 STRING_SECTION:
 string104:
 db ".", 0x0D
 size104 EQU $ - string104
 string103:
-db 0x22, " is"
+db 0x22, " is "
 size103 EQU $ - string103
 string102:
 db 0x22, " and ", 0x22
@@ -485,11 +477,12 @@ string101:
 db "The Levenshtein distance between ", 0x22
 size101 EQU $ - string101
 
+VARIABLE_SECTION:
+
+len_1: db 0x00
+len_2: db 0x00
 word_1:
-db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-word_1_len EQU $-word_1
-row_size EQU $-word_1
+DS 25
 word_2:
-db 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-word_2_len EQU $-word_2
+DS 25
 table:

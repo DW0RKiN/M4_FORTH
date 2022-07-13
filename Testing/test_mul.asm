@@ -53,14 +53,14 @@ sfor101:                ;           sfor 101 ( index -- index )
     pop  DE             ; 1:10      2drop ( b a -- ) 
     jp   endif101       ; 3:10      else
 else101: 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string102  ; 3:10      print_z   Address of null-terminated string102
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -105,14 +105,14 @@ endif101:
     pop  DE             ; 1:10      2drop ( b a -- ) 
     jp   endif102       ; 3:10      else
 else102: 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string103
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -158,14 +158,14 @@ endif102:
     pop  DE             ; 1:10      2drop ( b a -- ) 
     jp   endif103       ; 3:10      else
 else103: 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string105
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -212,14 +212,14 @@ endif103:
     pop  DE             ; 1:10      2drop ( b a -- ) 
     jp   endif104       ; 3:10      else
 else104: 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string107
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -267,14 +267,14 @@ endif104:
     pop  DE             ; 1:10      2drop ( b a -- ) 
     jp   endif105       ; 3:10      else
 else105: 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string109
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -329,14 +329,14 @@ endif105:
     pop  DE             ; 1:10      2drop ( b a -- ) 
     jp   endif106       ; 3:10      else
 else106: 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string111
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112
     call PRINT_STRING_Z ; 3:17      print_z 
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
@@ -360,87 +360,70 @@ Stop:                   ;           stop
 ;   =====  e n d  =====
 
 
+;------------------------------------------------------------------------------
 ; Input: HL
-; Output: Print space and signed decimal number in HL
-; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
-PRINT_S16:
-    ld    A, H          ; 1:4
-    add   A, A          ; 1:4
-    jr   nc, PRINT_U16  ; 2:7/12
-
-    xor   A             ; 1:4       neg
-    sub   L             ; 1:4       neg
-    ld    L, A          ; 1:4       neg
-    sbc   A, H          ; 1:4       neg
-    sub   L             ; 1:4       neg
-    ld    H, A          ; 1:4       neg
-    
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, **
-
-    ; fall to print_u16
-; Input: HL
-; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
-PRINT_U16:
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-
+; Output: Print signed decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_S16:                ;           prt_s16
+    ld    A, H          ; 1:4       prt_s16
+    add   A, A          ; 1:4       prt_s16
+    jr   nc, PRT_U16    ; 2:7/12    prt_s16
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
+    xor   A             ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    L, A          ; 1:4       prt_s16   neg
+    sbc   A, H          ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    H, A          ; 1:4       prt_s16   neg
+    ; fall to prt_u16
+;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
-PRINT_U16_ONLY:
-    call BIN2DEC        ; 3:17
-    pop  BC             ; 1:10      ret
-    ex   DE, HL         ; 1:4
-    pop  DE             ; 1:10
-    push BC             ; 1:10      ret
-    ret                 ; 1:10
-
-; Input: HL = number
-; Output: print number
-; Pollutes: AF, HL, BC
-BIN2DEC:
-    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17
-    ld   BC, -1000      ; 3:10
-    call BIN2DEC_CHAR   ; 3:17
-    ld   BC, -100       ; 3:10
-    call BIN2DEC_CHAR   ; 3:17
-    ld    C, -10        ; 2:7
-    call BIN2DEC_CHAR   ; 3:17
-    ld    A, L          ; 1:4
-    add   A,'0'         ; 2:7
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
-
-BIN2DEC_CHAR:
-    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-
-    add  HL, BC         ; 1:11
-    inc   A             ; 1:4
-    jr    c, $-2        ; 2:7/12
-    sbc  HL, BC         ; 2:15
-    dec   A             ; 1:4
-    ret   z             ; 1:5/11
-
-    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_U16:                ;           prt_u16
+    xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+    ld   BC, -10000     ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -1000      ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -100       ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    C, -10        ; 2:7       prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    A, L          ; 1:4       prt_u16
+    pop  HL             ; 1:10      prt_u16   load ret
+    ex  (SP),HL         ; 1:19      prt_u16
+    ex   DE, HL         ; 1:4       prt_u16
+    jr   BIN16_DEC_CHAR ; 2:12      prt_u16
+;------------------------------------------------------------------------------
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
+; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
+; Pollutes: AF, HL
+    inc   A             ; 1:4       bin16_dec
+BIN16_DEC:              ;           bin16_dec
+    add  HL, BC         ; 1:11      bin16_dec
+    jr    c, $-2        ; 2:7/12    bin16_dec
+    sbc  HL, BC         ; 2:15      bin16_dec
+    or    A             ; 1:4       bin16_dec
+    ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
+BIN16_DEC_CHAR:         ;           bin16_dec
+    or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
+    rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
+    and  0xF0           ; 2:7       bin16_dec   reset A to '0'
+    ret                 ; 1:10      bin16_dec
+;==============================================================================
 ; Input: HL,DE
 ; Output: HL=HL*DE ((un)signed)
 ; It does not matter whether it is signed or unsigned multiplication.
 ; Pollutes: AF, BC, DE
 MULTIPLY:
                         ;[148:cca 359-428] fast version
-   
+
                         ;           HL = HL*DE = HL*E + 256*D*L
     ld    B, H          ; 1:4
     ld    C, L          ; 1:4       HL = BC = base 1x
-    
+
     ld    A, E          ; 1:4       DE check bits
     add   A, A          ; 1:4
     jr    c, MULTIPLY_E7; 2:7/12
@@ -459,8 +442,8 @@ MULTIPLY:
     jr    c, MULTIPLY_E1; 2:7/12                  |
     add   A, A          ; 1:4                     |
     jr    c, MULTIPLY_E0; 2:7/12    always carry -+
-                        ;           
-MULTIPLY_D:             ;           A == E == 0 
+                        ;
+MULTIPLY_D:             ;           A == E == 0
     ld    H, A          ; 1:4
     ld    L, A          ; 1:4       HL = 0
 
@@ -478,67 +461,67 @@ MULTIPLY_D:             ;           A == E == 0
     sla   D             ; 2:8       check D 0000_0100 bit
     jr    c, MULTIPLY_D2; 2:7/12
     sla   D             ; 2:8       check D 0000_0010 bit
-    jr    c, MULTIPLY_D1; 2:7/12    
+    jr    c, MULTIPLY_D1; 2:7/12
                         ;           D == 1
     ld    H, C          ; 1:4       HL = 256*HL
     ret                 ; 1:10
 
 MULTIPLY_E7:            ;           HL 1x --> 128x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0100_0000 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E6:            ;           HL 1x --> 64x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0010_0000 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E5:            ;           HL 1x --> 32x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0001_0000 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E4:            ;           HL 1x --> 16x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0000_1000 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E3:            ;           HL 1x --> 8x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0000_0100 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E2:            ;           HL 1x --> 4x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0000_0010 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E1:            ;           HL 1x --> 2x
     add  HL, HL         ; 1:11
-    
+
     add   A, A          ; 1:4       check E 0000_0001 bit
     jr   nc, $+3        ; 2:7/12
     add  HL, BC         ; 1:11
 MULTIPLY_E0:            ;           A = 0
-    
+
     sla   D             ; 2:8       check D 1000_0000 bit
     jr   nc, $+3        ; 2:7/12
 MULTIPLY_D7:
     add   A, C          ; 1:4
     ret   z             ; 1:5/11    (D == 0 || C == 0) --> zero flag --> HL = HL*E
-    
+
     add   A, A          ; 1:4
     sla   D             ; 2:8       check D 0100_0000 bit
     jr   nc, $+3        ; 2:7/12
 MULTIPLY_D6:
     add   A, C          ; 1:4
-    
+
     add   A, A          ; 1:4
     sla   D             ; 2:8       check D 0010_0000 bit
     jr   nc, $+3        ; 2:7/12
@@ -562,7 +545,7 @@ MULTIPLY_D3:
     jr   nc, $+3        ; 2:7/12
 MULTIPLY_D2:
     add   A, C          ; 1:4
-    
+
     add   A, A          ; 1:4
     sla   D             ; 2:8       check D 0000_0010 bit
     jr   nc, $+3        ; 2:7/12
@@ -575,13 +558,15 @@ MULTIPLY_D1:
 MULTIPLY_D0:
     add   A, C          ; 1:4
 
-    add   A, H          ; 1:4    
+    add   A, H          ; 1:4
     ld    H, A          ; 1:4
     ret                 ; 1:10
-MULTIPLY_SIZE EQU  $-MULTIPLY; Print C-style stringZ
+MULTIPLY_SIZE EQU  $-MULTIPLY
+;==============================================================================
+; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero
-    rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    rst  0x10           ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
     inc  BC             ; 1:6       print_string_z
 PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
