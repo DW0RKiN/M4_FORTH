@@ -597,24 +597,21 @@ dnl
 dnl
 dnl ( -- b a)
 dnl push2(b,a) ulozi na zasobnik nasledujici polozky
-define({PUSH2},{ifelse($#,{2},,{
-__{}.error {$0}($@): The wrong number of parameters in macro!}){}ifelse(dnl
-__IS_MEM_REF($1),{1},{
+define({PUSH2},{ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
     ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
-__IS_MEM_REF($2),{1},{
+{ifelse(eval($1==$2),{},{
     push DE             ; 1:11      push2($1,$2)
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
     ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
-eval($1==$2),{},{
-    push DE             ; 1:11      push2($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
-    push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
-{ifelse(dnl
+__{}{ifelse(dnl
 __{}eval($1==$2),{1},{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
@@ -655,7 +652,7 @@ __{}{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)})})})dnl
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)})})})})dnl
 dnl
 dnl
 dnl drop 50
