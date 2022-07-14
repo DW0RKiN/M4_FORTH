@@ -1,4 +1,4 @@
-    ORG 32768  
+    ORG 32768
     
 ;   ===  b e g i n  ===
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
@@ -6,12 +6,12 @@
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-    
+
     
 ZX_LEFT              EQU 0x08
     
 ZX_RIGHT             EQU 0x09
-  
+
     
 ZX_INK               EQU 0x10
     
@@ -30,7 +30,7 @@ ZX_AT                EQU 0x16
 ZX_TAB               EQU 0x17
     
 ZX_CR                EQU 0x0D
-    
+
     
 ZX_INK_BLACK         EQU 0x00
     
@@ -69,22 +69,22 @@ ZX_PAPER_WHITE       EQU 0x38
 ZX_FLASHING          EQU 0x80
     
 ZX_BRIGHTNESS        EQU 0x40
-    
+
     ; set 0 lines in the lower section of the screen
     
     ld    A, 0          ; 2:7       push2_cstore(0,23659)
     ld   (23659), A     ; 3:13      push2_cstore(0,23659)
-    
+
     
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
     call PRINT_STRING_Z ; 3:17      print_z
 ;lum ultrices.
-    
+
     ; set 2 lines in the lower section of the screen
     
     ld    A, 2          ; 2:7       push2_cstore(2,23659)
     ld   (23659), A     ; 3:13      push2_cstore(2,23659)
-      
+
     ; blue shadow
     
                         ;[15:450]   0x5A85 23 0x08+0x00 fill PUSH3_FILL(addr,u,char)   variant H: 2..513 byte
@@ -123,8 +123,8 @@ next101:                ;           next 101
     
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
-    
-    ; cyan 
+
+    ; cyan
     
                         ;[16:404]   0x5884 24 0x028+0x05 fill PUSH3_FILL(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
     push HL             ; 1:11      0x5884 24 0x028+0x05 fill
@@ -138,7 +138,7 @@ next101:                ;           next 101
     inc   L             ; 1:4       0x5884 24 0x028+0x05 fill
     djnz $-6            ; 2:13/8    0x5884 24 0x028+0x05 fill
     pop  HL             ; 1:10      0x5884 24 0x028+0x05 fill
-    
+
     ; light cyan
     
     push DE             ; 1:11      push(0x58A4)
@@ -178,8 +178,8 @@ next102:                ;           next 102
     
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
-  
-    
+
+
     
     ld   BC, string102  ; 3:10      print_z   Address of null-terminated string102
     call PRINT_STRING_Z ; 3:17      print_z 
@@ -200,7 +200,7 @@ next102:                ;           next 102
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
     call PRINT_STRING_Z ; 3:17      print_z
 
-    
+
     
     push DE             ; 1:11      push2(40*256+31,8)
     ld   DE, 40*256+31  ; 3:10      push2(40*256+31,8)
@@ -251,13 +251,13 @@ Stop:                   ;           stop
 
 ;#COLON(diagonala,{})
 ;# diagonala(y,x) 0,0 --> 99,99
-;#    XDO(25700,0)  
-;#        XI 
+;#    XDO(25700,0)
+;#        XI
 ;#        PUTPIXEL   ; ( Y*256+X -- addr )
 ;#        DROP
 ;#    PUSH_ADDXLOOP(256+1)
 ;#SEMICOLON
-    
+
 
 ;   ---  the beginning of a non-recursive function  ---
 left:                   ;           ( yx n -- yx )

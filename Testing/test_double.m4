@@ -1,9 +1,6 @@
-; vvvvv
 include(`../M4/FIRST.M4')dnl
-; ^^^^^
-ORG 0x8000
+    ORG 0x8000
     INIT(60000)
-    SCALL(Init_stack_test)
         
     DVARIABLE(A_32,0x87432110)
 
@@ -71,21 +68,21 @@ ORG 0x8000
     PUSHDOT(0x00010002)
     PUSHDOT(0x00010001)
     _4DUP
-     _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+     _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP DNEGATE
-    _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP
-    _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP DNEGATE
-    _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _4DUP DNEGATE
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP DNEGATE
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _2DROP _2DROP
     SCALL(Check_stack)
 
@@ -93,53 +90,31 @@ ORG 0x8000
     PUSHDOT(500000)
     PUSHDOT(100000)
     _4DUP
-     _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+     _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP DNEGATE
-    _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP
-    _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP DNEGATE
-    _4DUP DDOT DDOT DMIN PRINT_Z({" min"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMIN PRINT_Z({" min"}) DDOT CR
     _4DUP
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _4DUP DNEGATE
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _4DUP _2SWAP DNEGATE _2SWAP DNEGATE
-    _4DUP DDOT DDOT DMAX PRINT_Z({" max"}) DDOT CR
+    _4DUP DDOT SPACE_DDOT DMAX PRINT_Z({" max"}) DDOT CR
     _2DROP _2DROP
     SCALL(Check_stack)
 
-    exx
-    push HL
-    exx
-    pop HL
-    PRINT_Z({"RAS:"}) DUP_UDOT CR
+    __RAS
+    PRINT_Z({"RAS: "}) UDOT CR
 
     SCALL(Check_stack)
     STOP
-
-SCOLON(Init_stack_test)
-    push HL
-    ld   HL, 0x0000
-    add  HL, SP
-    ld  (Check_stack_data), HL
-    pop  HL
-SSEMICOLON
     
-SCOLON(Check_stack)
-    push HL
-    ld   HL, 0x0000
-    add  HL, SP
-    ld    B, H
-    ld    C, L
-Check_stack_data EQU $+1
-    ld   HL, 0x0000
-    or    A
-    sbc  HL, BC             ; Ma byt, minus jest, nemohu se splest!
-    PRINT_Z({"Stack contains"})
-    DUP_DOT 
-    PRINT_Z({" bytes", 0x0D})
-    pop  HL
-SSEMICOLON
+COLON(Check_stack)
+    DEPTH DOT 
+    PRINT_Z({" values in data stack", 0x0D})
+SEMICOLON

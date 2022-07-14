@@ -1,6 +1,4 @@
-; vvvvv
-; ^^^^^
-ORG 0x8000
+    ORG 0x8000
     
 ;   ===  b e g i n  ===
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
@@ -8,8 +6,6 @@ ORG 0x8000
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-    
-    call Init_stack_test; 3:17      scall
         
     
 
@@ -916,7 +912,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -949,7 +945,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -996,7 +992,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -1045,7 +1041,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -1076,7 +1072,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1109,7 +1105,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1156,7 +1152,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1205,7 +1201,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1260,7 +1256,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -1293,7 +1289,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -1340,7 +1336,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -1389,7 +1385,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
@@ -1420,7 +1416,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1453,7 +1449,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1500,7 +1496,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1549,7 +1545,7 @@ ORG 0x8000
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
     call PRT_S32        ; 3:17      d.   ( d -- ) 
-    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
@@ -1567,16 +1563,17 @@ ORG 0x8000
     
     call Check_stack    ; 3:17      scall
 
-    exx
-    push HL
-    exx
-    pop HL
+    
+    ex   DE, HL         ; 1:4       __ras   ( -- return_address_stack )
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    pop  HL             ; 1:10      __ras
     
     ld   BC, string138  ; 3:10      print_z   Address of null-terminated string138
     call PRINT_STRING_Z ; 3:17      print_z 
-    push HL             ; 1:11      dup u.   x3 x1 x2 x1
-    call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1589,48 +1586,40 @@ Stop:                   ;           stop
     exx                 ; 1:4       stop
     ret                 ; 1:10      stop
 ;   =====  e n d  =====
-
-
-;   ---  the beginning of a data stack function  ---
-Init_stack_test:        ;           
-    push HL
-    ld   HL, 0x0000
-    add  HL, SP
-    ld  (Check_stack_data), HL
-    pop  HL
-
-Init_stack_test_end:
-    ret                 ; 1:10      s;
-;   ---------  end of data stack function  ---------
     
 
-;   ---  the beginning of a data stack function  ---
+;   ---  the beginning of a non-recursive function  ---
 Check_stack:            ;           
-    push HL
-    ld   HL, 0x0000
-    add  HL, SP
-    ld    B, H
-    ld    C, L
-Check_stack_data EQU $+1
-    ld   HL, 0x0000
-    or    A
-    sbc  HL, BC             ; Ma byt, minus jest, nemohu se splest!
+    pop  BC             ; 1:10      : ret
+    ld  (Check_stack_end+1),BC; 4:20      : ( ret -- )
+    
+                        ;[13:72]    depth   ( -- +n )
+    push DE             ; 1:11      depth
+    ex   DE, HL         ; 1:4       depth
+    ld   HL,(Stop+1)    ; 3:16      depth
+    or    A             ; 1:4       depth
+    sbc  HL, SP         ; 2:15      depth
+    srl   H             ; 2:8       depth
+    rr    L             ; 2:8       depth
+    dec  HL             ; 1:6       depth 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     
     ld   BC, string139  ; 3:10      print_z   Address of null-terminated string139
     call PRINT_STRING_Z ; 3:17      print_z
-    
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRT_S16        ; 3:17      .   ( s -- )
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    
-    ld   BC, string140  ; 3:10      print_z   Address of null-terminated string140
-    call PRINT_STRING_Z ; 3:17      print_z
-    pop  HL
 
 Check_stack_end:
-    ret                 ; 1:10      s;
-;   ---------  end of data stack function  ---------
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
 
+;==============================================================================
+; ( hi lo -- )
+; Input: DEHL
+; Output: Print space and signed decimal number in DEHL
+; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+PRT_SP_S32:             ;           prt_sp_s32
+    ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_s32
 ;------------------------------------------------------------------------------
 ; ( hi lo -- )
 ; Input: DEHL
@@ -1840,14 +1829,11 @@ PRINT_STRING_Z:         ;           print_string_z
     ret                 ; 1:10      print_string_z
 
 STRING_SECTION:
-string140:
-db " bytes", 0x0D, 0x00
-size140 EQU $ - string140
 string139:
-db "Stack contains", 0x00
+db " values in data stack", 0x0D, 0x00
 size139 EQU $ - string139
 string138:
-db "RAS:", 0x00
+db "RAS: ", 0x00
 size138 EQU $ - string138
 string125:
 db " max", 0x00

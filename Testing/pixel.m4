@@ -1,10 +1,10 @@
 include(`../M4/FIRST.M4')dnl
-    ORG 32768  
+    ORG 32768
     INIT(60000)
-    
+
     CONSTANT(ZX_LEFT,0x08)
     CONSTANT(ZX_RIGHT,0x09)
-  
+
     CONSTANT(ZX_INK,0x10)
     CONSTANT(ZX_PAPER,0x11)
     CONSTANT(ZX_FLASH,0x12)
@@ -14,7 +14,7 @@ include(`../M4/FIRST.M4')dnl
     CONSTANT(ZX_AT,0x16)
     CONSTANT(ZX_TAB,0x17)
     CONSTANT(ZX_CR,0x0D)
-    
+
     CONSTANT(ZX_INK_BLACK,0x00)
     CONSTANT(ZX_INK_BLUE,0x01)
     CONSTANT(ZX_INK_RED,0x02)
@@ -35,10 +35,10 @@ include(`../M4/FIRST.M4')dnl
 
     CONSTANT(ZX_FLASHING,0x80)
     CONSTANT(ZX_BRIGHTNESS,0x40)
-    
+
     ; set 0 lines in the lower section of the screen
     PUSH2_CSTORE(0,23659)
-    
+
     PRINT_Z(dnl
 {"Lorem ipsum dolor sit amet, cons}dnl
 {ectetur adipiscing elit. Etiam p}dnl
@@ -61,14 +61,14 @@ include(`../M4/FIRST.M4')dnl
 {es nibh vitae pretium placerat. }dnl
 {Fusce et nibh at ante vehicula p}dnl
 {haretra sed quis nisi. Aliquam t}dnl
-{incidunt nulla at enim efficitur}dnl 
+{incidunt nulla at enim efficitur}dnl
 {laoreet. Maecenas aliquam libero}dnl
 {metus, nec commodo lacus vestibu"})
 ;lum ultrices.
-    
+
     ; set 2 lines in the lower section of the screen
     PUSH2_CSTORE(2,23659)
-      
+
     ; blue shadow
     PUSH3_FILL(0x5A85,23,ZX_PAPER_BLUE+ZX_INK_BLACK)
     PUSH(0x589C)
@@ -77,10 +77,10 @@ include(`../M4/FIRST.M4')dnl
        PUSH_OVER_CSTORE(ZX_PAPER_BLUE+ZX_INK_BLACK)
     NEXT
     DROP
-    
-    ; cyan 
+
+    ; cyan
     PUSH3_FILL(0x5884,24,ZX_PAPER_CYAN+ZX_INK_CYAN)
-    
+
     ; light cyan
     PUSH(0x58A4)
     PUSH_FOR(14)
@@ -89,8 +89,8 @@ include(`../M4/FIRST.M4')dnl
         PUSH_ADD(32)
     NEXT
     DROP
-  
-    
+
+
     PRINT_Z({ZX_AT,4,4,ZX_PAPER,ZX_INK_CYAN}) DEPTH DOT PRINT_Z({" values in data stack"})
 
     PRINT_Z({ZX_BRIGHT,1,}dnl
@@ -107,7 +107,7 @@ dnl          123456789012345678901234
 {ZX_AT,14,4,"hendrerit  nibh   luctus",}dnl
 {ZX_AT,15,4,"condimentum.",ZX_AT,1,1})
 
-    
+
     PUSH2(40*256+31,8)
     call(up)
     PUSH(192)
@@ -128,13 +128,13 @@ dnl          123456789012345678901234
 
 ;#COLON(diagonala,{})
 ;# diagonala(y,x) 0,0 --> 99,99
-;#    XDO(25700,0)  
-;#        XI 
+;#    XDO(25700,0)
+;#        XI
 ;#        PUTPIXEL   ; ( Y*256+X -- addr )
 ;#        DROP
 ;#    PUSH_ADDXLOOP(256+1)
 ;#SEMICOLON
-    
+
 COLON(left,{( yx n -- yx )})
     ;( yx n -- yx )
     FOR
