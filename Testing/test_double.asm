@@ -1,5 +1,4 @@
 ; vvvvv
-
 ; ^^^^^
 ORG 0x8000
     
@@ -23,17 +22,17 @@ ORG 0x8000
     
     push DE             ; 1:11      pushdot(-7654321)   ( -- hi lo )
     push HL             ; 1:11      pushdot(-7654321)
-    ld   DE, 0xFF8B     ; 3:10      pushdot(-7654321)
-    ld   HL, 0x344F     ; 3:10      pushdot(-7654321) 
+    ld   DE, 0xFF8B     ; 3:10      pushdot(-7654321)   hi_word
+    ld   HL, 0x344F     ; 3:10      pushdot(-7654321)   lo_word 
        
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
        
@@ -46,8 +45,8 @@ ORG 0x8000
     add   A, A          ; 1:4       dabs
     call  c, NEGATE_32  ; 3:17      dabs 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
        
@@ -60,7 +59,7 @@ ORG 0x8000
     add   A, A          ; 1:4       dabs
     call  c, NEGATE_32  ; 3:17      dabs 
     
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -75,12 +74,12 @@ ORG 0x8000
     
     push DE             ; 1:11      pushdot(0x0000FFFE)   ( -- hi lo )
     push HL             ; 1:11      pushdot(0x0000FFFE)
-    ld   DE, 0x0000     ; 3:10      pushdot(0x0000FFFE)
-    ld   HL, 0xFFFE     ; 3:10      pushdot(0x0000FFFE)
+    ld   DE, 0x0000     ; 3:10      pushdot(0x0000FFFE)   hi_word
+    ld   HL, 0xFFFE     ; 3:10      pushdot(0x0000FFFE)   lo_word
       
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -95,8 +94,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -111,8 +110,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -127,8 +126,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -143,8 +142,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1-
     dec  DE             ; 1:6       D1-   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -159,8 +158,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1-
     dec  DE             ; 1:6       D1-   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -175,7 +174,7 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1-
     dec  DE             ; 1:6       D1-   hi word 
     
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A    
 
@@ -190,12 +189,13 @@ ORG 0x8000
     
     push DE             ; 1:11      pushdot(0xFFFFFFFE)   ( -- hi lo )
     push HL             ; 1:11      pushdot(0xFFFFFFFE)
-    ld   DE, 0xFFFF     ; 3:10      pushdot(0xFFFFFFFE)
-    ld   HL, 0xFFFE     ; 3:10      pushdot(0xFFFFFFFE)
+    ld   HL, 0xFFFE     ; 3:10      pushdot(0xFFFFFFFE)   lo_word
+    ld    E, H          ; 1:4       pushdot(0xFFFFFFFE)
+    ld    D, H          ; 1:4       pushdot(0xFFFFFFFE)   hi word
       
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -210,8 +210,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -226,8 +226,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -242,8 +242,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -258,8 +258,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1-
     dec  DE             ; 1:6       D1-   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -274,8 +274,8 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1-
     dec  DE             ; 1:6       D1-   hi word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_S32      ; 3:17      d. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -290,7 +290,7 @@ ORG 0x8000
     jr   nz, $+3        ; 2:7/12    D1-
     dec  DE             ; 1:6       D1-   hi word 
     
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A    
     
@@ -305,23 +305,24 @@ ORG 0x8000
     
     push DE             ; 1:11      pushdot(0)   ( -- hi lo )
     push HL             ; 1:11      pushdot(0)
-    ld   DE, 0x0000     ; 3:10      pushdot(0)
-    ld   HL, 0x0000     ; 3:10      pushdot(0) 
+    ld   HL, 0x0000     ; 3:10      pushdot(0)   lo_word
+    ld    E, L          ; 1:4       pushdot(0)
+    ld    D, L          ; 1:4       pushdot(0)   hi word 
            
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -332,19 +333,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -355,19 +356,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -378,19 +379,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -401,19 +402,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -424,19 +425,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -447,19 +448,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -470,19 +471,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -493,19 +494,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -516,19 +517,19 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '+'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -539,8 +540,8 @@ ORG 0x8000
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+ 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
@@ -551,277 +552,327 @@ ORG 0x8000
     pop  DE             ; 1:10      print
            
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud. 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      pushdot(111111111)   ( -- hi lo )
     push HL             ; 1:11      pushdot(111111111)
-    ld   DE, 0x069F     ; 3:10      pushdot(111111111)
-    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111) 
+    ld   DE, 0x069F     ; 3:10      pushdot(111111111)   hi_word
+    ld   HL, 0x6BC7     ; 3:10      pushdot(111111111)   lo_word 
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
-    call PRINT_U32      ; 3:17      ud.  
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
+    call PRT_U32        ; 3:17      ud.   ( ud -- )  
     ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
       
-    ld    B, D          ; 1:4       D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
-    ld    C, E          ; 1:4       D-
-    ex   DE, HL         ; 1:4       D-   DE = lo1
-    pop  HL             ; 1:10      D-   HL = lo2
-    or    A             ; 1:4       D-
-    sbc  HL, DE         ; 2:15      D-   lo2-lo1
-    ex   DE, HL         ; 1:4       D-
-    pop  HL             ; 1:10      D-   HL=hi2
-    sbc  HL, BC         ; 1:11      D-   hi2-hi1
-    ex   DE, HL         ; 1:4       D- 
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+    pop  BC             ; 1:10      D-   BC = lo2
+    ld    A, C          ; 1:4       D-
+    sub   L             ; 1:4       D-   lo2-lo1
+    ld    L, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, H          ; 1:4       D-   lo2-lo1
+    ld    H, A          ; 1:4       D-
+    pop  BC             ; 1:10      D-   BC = hi2
+    ld    A, C          ; 1:4       D-
+    sbc   A, E          ; 1:4       D-   hi2-hi1
+    ld    E, A          ; 1:4       D-
+    ld    A, B          ; 1:4       D-
+    sbc   A, D          ; 1:4       D-   hi2-hi1
+    ld    D, A          ; 1:4       D- 
     
-    call PRINT_U32      ; 3:17      ud. 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -836,13 +887,14 @@ ORG 0x8000
     
     push DE             ; 1:11      pushdot(0x00010002)   ( -- hi lo )
     push HL             ; 1:11      pushdot(0x00010002)
-    ld   DE, 0x0001     ; 3:10      pushdot(0x00010002)
-    ld   HL, 0x0002     ; 3:10      pushdot(0x00010002)
+    ld   DE, 0x0001     ; 3:10      pushdot(0x00010002)   hi_word
+    ld   HL, 0x0002     ; 3:10      pushdot(0x00010002)   lo_word
     
     push DE             ; 1:11      pushdot(0x00010001)   ( -- hi lo )
     push HL             ; 1:11      pushdot(0x00010001)
-    ld   DE, 0x0001     ; 3:10      pushdot(0x00010001)
-    ld   HL, 0x0001     ; 3:10      pushdot(0x00010001)
+    ld   HL, 0x0001     ; 3:10      pushdot(0x00010001)   lo_word
+    ld    E, L          ; 1:4       pushdot(0x00010001)
+    ld    D, H          ; 1:4       pushdot(0x00010001)   hi word
     
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
@@ -863,15 +915,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -896,15 +948,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string122
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -943,15 +995,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string123
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -992,15 +1044,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string124
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1023,15 +1075,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1056,15 +1108,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string126
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1103,15 +1155,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string127
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1152,15 +1204,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string128
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1180,13 +1232,13 @@ ORG 0x8000
     
     push DE             ; 1:11      pushdot(500000)   ( -- hi lo )
     push HL             ; 1:11      pushdot(500000)
-    ld   DE, 0x0007     ; 3:10      pushdot(500000)
-    ld   HL, 0xA120     ; 3:10      pushdot(500000)
+    ld   DE, 0x0007     ; 3:10      pushdot(500000)   hi_word
+    ld   HL, 0xA120     ; 3:10      pushdot(500000)   lo_word
     
     push DE             ; 1:11      pushdot(100000)   ( -- hi lo )
     push HL             ; 1:11      pushdot(100000)
-    ld   DE, 0x0001     ; 3:10      pushdot(100000)
-    ld   HL, 0x86A0     ; 3:10      pushdot(100000)
+    ld   DE, 0x0001     ; 3:10      pushdot(100000)   hi_word
+    ld   HL, 0x86A0     ; 3:10      pushdot(100000)   lo_word
     
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
@@ -1207,15 +1259,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string130
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1240,15 +1292,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string131
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1287,15 +1339,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string132
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1336,15 +1388,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmin   ( hi_2 lo_2 hi_1 lo_1 -- hi_min lo_min )
     pop  BC             ; 1:10      dmin   BC = lo_2
     pop  AF             ; 1:10      dmin   AF = hi_2
     call MIN_32         ; 3:17      dmin 
     ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string133
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1367,15 +1419,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string134
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1400,15 +1452,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string135
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1447,15 +1499,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string136
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1496,15 +1548,15 @@ ORG 0x8000
     push HL             ; 1:11      4dup
     push AF             ; 1:11      4dup
     push BC             ; 1:11      4dup 
-    call PRINT_S32      ; 3:17      d. 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
                         ;[5:141/166]dmax   ( hi_2 lo_2 hi_1 lo_1 -- hi_max lo_max )
     pop  BC             ; 1:10      dmax   BC = lo_2
     pop  AF             ; 1:10      dmax   AF = hi_2
     call MAX_32         ; 3:17      dmax 
     ld   BC, string125  ; 3:10      print_z   Address of null-terminated string125 == string137
     call PRINT_STRING_Z ; 3:17      print_z 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -1522,9 +1574,9 @@ ORG 0x8000
     
     ld   BC, string138  ; 3:10      print_z   Address of null-terminated string138
     call PRINT_STRING_Z ; 3:17      print_z 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1568,7 +1620,7 @@ Check_stack_data EQU $+1
     call PRINT_STRING_Z ; 3:17      print_z
     
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_S16      ; 3:17      .
+    call PRT_S16        ; 3:17      .   ( s -- )
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
     
     ld   BC, string140  ; 3:10      print_z   Address of null-terminated string140
@@ -1579,77 +1631,65 @@ Check_stack_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
 
-;==============================================================================
-; ( hi lo -- )
-; Input: HL
-; Output: Print space and signed decimal number in DEHL
-; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_S32:              ;           print_s32
-    ld    A, D          ; 1:4       print_s32
-    add   A, A          ; 1:4       print_s32
-    jr   nc, PRINT_U32  ; 2:7/12    print_s32
-    call NEGATE_32      ; 3:17      print_s32
-    ld    A, ' '        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s32   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s32   ld   BC, **
-    ; fall to print_u32dnl
-
-;==============================================================================
-; Input: HL
-; Output: Print space and unsigned decimal number in DEHL
-; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32:              ;           print_u32
-    ld    A, ' '        ; 2:7       print_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u32   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u32_only
 ;------------------------------------------------------------------------------
-; Input: HL
+; ( hi lo -- )
+; Input: DEHL
+; Output: Print signed decimal number in DEHL
+; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+PRT_S32:                ;           prt_s32
+    ld    A, D          ; 1:4       prt_s32
+    add   A, A          ; 1:4       prt_s32
+    jr   nc, PRT_U32    ; 2:7/12    prt_s32
+    ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with ZX 48K ROM
+    call NEGATE_32      ; 3:17      prt_s32
+    ; fall to prt_u32
+;------------------------------------------------------------------------------
+; Input: DEHL
 ; Output: Print unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32_ONLY:         ;           print_u32_only
-    xor   A             ; 1:4       print_u32_only   A=0 => 103, A='0' => 00103
-    push IX             ; 2:15      print_u32_only
-    ex   DE, HL         ; 1:4       print_u32_only   HL = hi word
-    ld  IXl, E          ; 2:8       print_u32_only
-    ld  IXh, D          ; 2:8       print_u32_only   IX = lo word
-    ld   DE, 0x3600     ; 3:10      print_u32_only   C4 65 36 00 = -1000000000
-    ld   BC, 0xC465     ; 3:10      print_u32_only
-    call BIN32_DEC+2    ; 3:17      print_u32_only
-    ld    D, 0x1F       ; 2:7       print_u32_only   FA 0A 1F 00 = -100000000
-    ld   BC, 0xFA0A     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x6980     ; 3:10      print_u32_only   FF 67 69 80 = -10000000
-    ld   BC, 0xFF67     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xBDC0     ; 3:10      print_u32_only   FF F0 BD C0 = -1000000
-    ld    C, 0xF0       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x7960     ; 3:10      print_u32_only   FF FE 79 60 = -100000
-    ld    C, 0xFE       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xD8F0     ; 3:10      print_u32_only   FF FF D8 F0 = -10000
-    ld    C, B          ; 1:4       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFC18     ; 3:10      print_u32_only   FF FF FC 18 = -1000
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFF9C     ; 3:10      print_u32_only   FF FF FF 9C = -100
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    E, 0xF6       ; 2:7       print_u32_only   FF FF FF F6 = -10
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    A, IXl        ; 2:8       print_u32_only
-    pop  IX             ; 2:14      print_u32_only
-    pop  BC             ; 1:10      print_u32_only   load ret
-    pop  HL             ; 1:10      print_u32_only
-    pop  DE             ; 1:10      print_u32_only
-    push BC             ; 1:10      print_u32_only   save ret
-    jr   BIN32_DEC_CHAR ; 2:12      print_u32_only
+PRT_U32:                ;           prt_u32
+    xor   A             ; 1:4       prt_u32   HL = 103 & A=0 => 103, HL = 103 & A='0' => 00103
+    push IX             ; 2:15      prt_u32
+    ex   DE, HL         ; 1:4       prt_u32   HL = hi word
+    ld  IXl, E          ; 2:8       prt_u32
+    ld  IXh, D          ; 2:8       prt_u32   IX = lo word
+    ld   DE, 0x3600     ; 3:10      prt_u32   C4 65 36 00 = -1000000000
+    ld   BC, 0xC465     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    D, 0x1F       ; 2:7       prt_u32   FA 0A 1F 00 = -100000000
+    ld   BC, 0xFA0A     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x6980     ; 3:10      prt_u32   FF 67 69 80 = -10000000
+    ld   BC, 0xFF67     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xBDC0     ; 3:10      prt_u32   FF F0 BD C0 = -1000000
+    ld    C, 0xF0       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x7960     ; 3:10      prt_u32   FF FE 79 60 = -100000
+    ld    C, 0xFE       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xD8F0     ; 3:10      prt_u32   FF FF D8 F0 = -10000
+    ld    C, B          ; 1:4       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFC18     ; 3:10      prt_u32   FF FF FC 18 = -1000
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFF9C     ; 3:10      prt_u32   FF FF FF 9C = -100
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    E, 0xF6       ; 2:7       prt_u32   FF FF FF F6 = -10
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    A, IXl        ; 2:8       prt_u32
+    pop  IX             ; 2:14      prt_u32
+    pop  BC             ; 1:10      prt_u32   load ret
+    pop  HL             ; 1:10      prt_u32
+    pop  DE             ; 1:10      prt_u32
+    push BC             ; 1:11      prt_u32   save ret
+    jr   BIN32_DEC_CHAR ; 2:12      prt_u32
 ;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
 ; Pollutes: AF, AF', IX, HL
 BIN32_DEC:              ;           bin32_dec
-    and  0xF0           ; 2:7       bin32_dec   reset A to 0 or '0'
     add  IX, DE         ; 2:15      bin32_dec   lo word
     adc  HL, BC         ; 2:15      bin32_dec   hi word
     inc   A             ; 1:4       bin32_dec
@@ -1668,73 +1708,63 @@ BIN32_DEC:              ;           bin32_dec
 BIN32_DEC_CHAR:         ;           bin32_dec
     or   '0'            ; 2:7       bin32_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst  0x10           ; 1:11      bin32_dec   putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '0'        ; 2:7       bin32_dec   reset A to '0'
     ret                 ; 1:10      bin32_dec
-;==============================================================================
+;------------------------------------------------------------------------------
 ; Input: HL
-; Output: Print space and signed decimal number in HL
+; Output: Print signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_S16:              ;           print_s16
-    ld    A, H          ; 1:4       print_s16
-    add   A, A          ; 1:4       print_s16
-    jr   nc, PRINT_U16  ; 2:7/12    print_s16
-    xor   A             ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    L, A          ; 1:4       print_s16   neg
-    sbc   A, H          ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    H, A          ; 1:4       print_s16   neg
-    ld    A, ' '        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s16   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s16   ld   BC, **
-    ; fall to print_u16
-;==============================================================================
-; Input: HL
-; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16:              ;           print_u16
-    ld    A, ' '        ; 2:7       print_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u16   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u16_only
+PRT_S16:                ;           prt_s16
+    ld    A, H          ; 1:4       prt_s16
+    add   A, A          ; 1:4       prt_s16
+    jr   nc, PRT_U16    ; 2:7/12    prt_s16
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
+    xor   A             ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    L, A          ; 1:4       prt_s16   neg
+    sbc   A, H          ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    H, A          ; 1:4       prt_s16   neg
+    ; fall to prt_u16
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16_ONLY:         ;           print_u16_only
-    xor   A             ; 1:4       print_u16_only   A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10      print_u16_only
-    call BIN16_DEC+2    ; 3:17      print_u16_only
-    ld   BC, -1000      ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld   BC, -100       ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    C, -10        ; 2:7       print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    A, L          ; 1:4       print_u16_only
-    pop  BC             ; 1:10      print_u16_only   load ret
-    ex   DE, HL         ; 1:4       print_u16_only
-    pop  DE             ; 1:10      print_u16_only
-    push BC             ; 1:10      print_u16_only   save ret
-    jr   BIN16_DEC_CHAR ; 2:12      print_u16_only
+PRT_U16:                ;           prt_u16
+    xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+    ld   BC, -10000     ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -1000      ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -100       ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    C, -10        ; 2:7       prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    A, L          ; 1:4       prt_u16
+    pop  HL             ; 1:10      prt_u16   load ret
+    ex  (SP),HL         ; 1:19      prt_u16
+    ex   DE, HL         ; 1:4       prt_u16
+    jr   BIN16_DEC_CHAR ; 2:12      prt_u16
 ;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
 ; Pollutes: AF, HL
-BIN16_DEC:              ;           bin16_dec
-    and  0xF0           ; 2:7       bin16_dec   reset A to 0 or '0'
-    add  HL, BC         ; 1:11      bin16_dec
     inc   A             ; 1:4       bin16_dec
+BIN16_DEC:              ;           bin16_dec
+    add  HL, BC         ; 1:11      bin16_dec
     jr    c, $-2        ; 2:7/12    bin16_dec
     sbc  HL, BC         ; 2:15      bin16_dec
-    dec   A             ; 1:4       bin16_dec
+    or    A             ; 1:4       bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
 ;==============================================================================
 ; ( d -- -d )
-NEGATE_32:              ;[14:62]    negate_32
+NEGATE_32:              ;[14:62]    negate_32   ( hi lo -- 0-hi-carry 0-lo )
     xor   A             ; 1:4       negate_32
     ld    C, A          ; 1:4       negate_32
     sub   L             ; 1:4       negate_32
@@ -1748,8 +1778,7 @@ NEGATE_32:              ;[14:62]    negate_32
     ld    A, C          ; 1:4       negate_32
     sbc   A, D          ; 1:4       negate_32
     ld    D, A          ; 1:4       negate_32
-    ret                 ; 1:10      negate_32dnl
-
+    ret                 ; 1:10      negate_32
 ;==============================================================================
 ; ( 5 3 -- 5 )
 ; ( -5 -3 -- -3 )
@@ -1773,8 +1802,7 @@ MAX_32:                ;[21:104/129]max_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -
     pop  HL             ; 1:10      max_32   removing lo_1 from the stack
     push BC             ; 1:11      max_32
     pop  HL             ; 1:10      max_32
-    ret                 ; 1:10      max_32dnl
-
+    ret                 ; 1:10      max_32
 ;==============================================================================
 ; ( 5 3 -- 3 )
 ; ( -5 -3 -- -5 )
@@ -1798,25 +1826,18 @@ MIN_32:                ;[21:104/129]min_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -
     pop  HL             ; 1:10      min_32   removing lo_1 from the stack
     push BC             ; 1:11      min_32
     pop  HL             ; 1:10      min_32
-    ret                 ; 1:10      min_32dnl
-
+    ret                 ; 1:10      min_32
 ;==============================================================================
 ; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero
-    rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    rst  0x10           ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
     inc  BC             ; 1:6       print_string_z
 PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
     or    A             ; 1:4       print_string_z
     jp   nz, $-4        ; 3:10      print_string_z
     ret                 ; 1:10      print_string_z
-
-VARIABLE_SECTION:
-
-A_32:
-  dw 8464
-  dw -30908
 
 STRING_SECTION:
 string140:
@@ -1858,3 +1879,9 @@ size102 EQU $ - string102
 string101:
 db "  unsigned 4287312975 = signed   -7654321", 0x0D
 size101 EQU $ - string101
+
+VARIABLE_SECTION:
+
+A_32:                   ; = 0x87432110 = -2025643760 = db 0x10 0x21 0x43 0x87
+  dw 0x2110             ; = 8464
+  dw 0x8743             ; = 34627

@@ -1,11 +1,9 @@
 include(`../M4/FIRST.M4')dnl
     ORG 32768  
     INIT(60000)
-  
+    
     CONSTANT(ZX_LEFT,0x08)
     CONSTANT(ZX_RIGHT,0x09)
-    CONSTANT(ZX_DOWN,0x0A)
-    CONSTANT(ZX_UP,0x0B)
   
     CONSTANT(ZX_INK,0x10)
     CONSTANT(ZX_PAPER,0x11)
@@ -109,6 +107,7 @@ dnl          123456789012345678901234
 {ZX_AT,14,4,"hendrerit  nibh   luctus",}dnl
 {ZX_AT,15,4,"condimentum.",ZX_AT,1,1})
 
+    
     PUSH2(40*256+31,8)
     call(up)
     PUSH(192)

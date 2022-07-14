@@ -6345,7 +6345,7 @@ BIN16_DEC:              ;           bin16_dec
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
-    and  0xF0           ; 2:7       bin16_dec   reset A to '0'
+    ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
 ;==============================================================================
 ; Print C-style stringZ
