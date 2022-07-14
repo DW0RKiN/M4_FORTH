@@ -351,21 +351,21 @@ __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1: DS $2})})}){}dnl
 dnl
 dnl
-dnl -------------------------------------------------------------------------------------
+dnl # -------------------------------------------------------------------------------------
 dnl ## Memory access 8bit
-dnl -------------------------------------------------------------------------------------
+dnl # -------------------------------------------------------------------------------------
 dnl
-dnl C@
-dnl ( addr -- char )
-dnl fetch 8-bit char from addr
+dnl # C@
+dnl # ( addr -- char )
+dnl # fetch 8-bit char from addr
 define({CFETCH},{
     ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
     ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl
 dnl
-dnl dup C@
-dnl ( addr -- addr char )
-dnl save addr and fetch 8-bit number from addr
+dnl # dup C@
+dnl # ( addr -- addr char )
+dnl # save addr and fetch 8-bit number from addr
 define({DUP_CFETCH},{
                         ;[5:29]     dup C@ dup_cfetch ( addr -- addr char )
     push DE             ; 1:11      dup C@ dup_cfetch
@@ -374,9 +374,9 @@ define({DUP_CFETCH},{
     ex   DE, HL         ; 1:4       dup C@ dup_cfetch})dnl
 dnl
 dnl
-dnl dup C@ swap
-dnl ( addr -- char addr )
-dnl save addr and fetch 8-bit number from addr and swap
+dnl # dup C@ swap
+dnl # ( addr -- char addr )
+dnl # save addr and fetch 8-bit number from addr and swap
 define({DUP_CFETCH_SWAP},{
                         ;[4:25]     dup C@ swap dup_cfetch_swap ( addr -- char addr )
     push DE             ; 1:11      dup C@ swap dup_cfetch_swap
@@ -384,9 +384,9 @@ define({DUP_CFETCH_SWAP},{
     ld    D, 0x00       ; 2:7       dup C@ swap dup_cfetch_swap})dnl
 dnl
 dnl
-dnl C@ swap C@
-dnl ( addr2 addr1 -- char1 char2 )
-dnl double fetch 8-bit number and swap
+dnl # C@ swap C@
+dnl # ( addr2 addr1 -- char1 char2 )
+dnl # double fetch 8-bit number and swap
 define({CFETCH_SWAP_CFETCH},{
                         ;[6:29]     @C swap @C cfetch_swap_cfetch ( addr2 addr1 -- char1 char2 )
     ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
@@ -396,9 +396,9 @@ define({CFETCH_SWAP_CFETCH},{
     ld    H, D          ; 1:4       @C swap @C cfetch_swap_cfetch})dnl
 dnl
 dnl
-dnl C@ swap C@ swap
-dnl ( addr2 addr1 -- char1 char2 )
-dnl double fetch 8-bit number
+dnl # C@ swap C@ swap
+dnl # ( addr2 addr1 -- char1 char2 )
+dnl # double fetch 8-bit number
 define({CFETCH_SWAP_CFETCH_SWAP},{
                         ;[6:29]     @C swap @C swap cfetch_swap_cfetch_swap ( addr2 addr1 -- char2 char1 )
     ld    L, (HL)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
@@ -408,9 +408,9 @@ define({CFETCH_SWAP_CFETCH_SWAP},{
     ld    D, H          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap})dnl
 dnl
 dnl
-dnl over C@ over C@
-dnl ( addr2 addr1 -- addr2 addr1 char2 char1 )
-dnl double fetch 8-bit number with save address
+dnl # over C@ over C@
+dnl # ( addr2 addr1 -- addr2 addr1 char2 char1 )
+dnl # double fetch 8-bit number with save address
 define({OVER_CFETCH_OVER_CFETCH},{
                         ;[8:51]     over @C over @C over_cfetch_over_cfetch ( addr2 addr1 -- addr2 addr1 char2 char1 )
     push DE             ; 1:11      over @C over @C over_cfetch_over_cfetch
@@ -423,9 +423,9 @@ define({OVER_CFETCH_OVER_CFETCH},{
 dnl
 dnl
 dnl
-dnl addr C@
-dnl ( -- x )
-dnl push_cfetch(addr), load 8-bit char from addr
+dnl # addr C@
+dnl # ( -- x )
+dnl # push_cfetch(addr), load 8-bit char from addr
 define({PUSH_CFETCH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -437,9 +437,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl addr C@ x
-dnl ( -- (addr) x )
-dnl push_cfetch_push(addr,x), load 8-bit char from addr and push x
+dnl # addr C@ x
+dnl # ( -- (addr) x )
+dnl # push_cfetch_push(addr,x), load 8-bit char from addr and push x
 define({PUSH_CFETCH_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address and second parameter!},
 __{}$#,{1},{
@@ -455,9 +455,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
 dnl
 dnl
 dnl
-dnl addr C@ x
-dnl ( -- (addr) x )
-dnl push2_cfetch(x,addr), push x and load 8-bit char from addr
+dnl # addr C@ x
+dnl # ( -- (addr) x )
+dnl # push2_cfetch(x,addr), push x and load 8-bit char from addr
 define({PUSH2_CFETCH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address and second parameter!},
 __{}$#,{1},{
@@ -472,9 +472,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
 dnl
 dnl
 dnl
-dnl addr C@ +
-dnl ( x -- x+(addr) )
-dnl push_cfetch(addr), add 8-bit char from addr
+dnl # addr C@ +
+dnl # ( x -- x+(addr) )
+dnl # push_cfetch(addr), add 8-bit char from addr
 define({PUSH_CFETCH_ADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -488,9 +488,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl addr C@ -
-dnl ( x -- x-(addr) )
-dnl push_cfetch(addr), sub 8-bit char from addr
+dnl # addr C@ -
+dnl # ( x -- x-(addr) )
+dnl # push_cfetch(addr), sub 8-bit char from addr
 define({PUSH_CFETCH_SUB},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -506,18 +506,18 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl C!
-dnl ( char addr -- )
-dnl store 8-bit char at addr
+dnl # C!
+dnl # ( char addr -- )
+dnl # store 8-bit char at addr
 define({CSTORE},{
     ld  (HL),E          ; 1:7       C! cstore   ( char addr -- )
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore})dnl
 dnl
 dnl
-dnl addr C!
-dnl ( char -- )
-dnl store(addr) store 8-bit char at addr
+dnl # addr C!
+dnl # ( char -- )
+dnl # store(addr) store 8-bit char at addr
 define({PUSH_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -528,9 +528,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
 dnl
 dnl
-dnl addr swap n C!
-dnl ( addr -- )
-dnl store(addr) store 8-bit char at addr
+dnl # addr swap n C!
+dnl # ( addr -- )
+dnl # store(addr) store 8-bit char at addr
 define({PUSH_SWAP_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -541,15 +541,15 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     pop  DE             ; 1:10      $1 swap C! push_swap_cstore($1)})dnl
 dnl
 dnl
-dnl n --> n char addr+n -- n )
-dnl ( n -- )
-dnl store(addr) store 8-bit char at addr
+dnl # ( addr+$2) = $1
+dnl # ( addr -- addr )
+dnl # store(addr+$1) store 8-bit char at addr
 define({PUSH_OVER_PUSH_ADD_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
 __{}$#,{2},{ifelse(__IS_MEM_REF($2),{1},{
-    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+    ld    B, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
     ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld   HL, format({%-11s},$2); 3:16      $1 over $2 add C! push_over_push_add_cstore($1,$2)
     add  HL, BC         ; 1:11      $1 over $2 add C! push_over_push_add_cstore($1,$2)
@@ -562,7 +562,7 @@ __{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_pu
     ld    L, C          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)}
 ,eval($2),,{
     .warning {$0}($1,$2): M4 does not know $2 parameter value!
-    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
     add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
     ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
@@ -573,20 +573,20 @@ __{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_pu
 ,{dnl
 __{}ifelse(eval($2),0,{
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
 __{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
 __{}__{},{dnl
-__{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})},
+__{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1})},
 __{}eval($2),1,{
-__{}    inc  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}    inc  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
 __{}__{},{dnl
 __{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})
 __{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
-__{}eval($2),-1,{
-__{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)
+__{}__HEX_HL($2),{0xFFFF},{
+__{}    dec  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}__{}    ld  (HL),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)}dnl
@@ -594,7 +594,7 @@ __{}__{},{dnl
 __{}__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over $2 add C! push_over_push_add_cstore($1,$2)})
 __{}    inc  HL             ; 1:6       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
 __{}eval(($2) & 0xFF00),0,{
-__{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+__{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
 __{}    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    adc   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
@@ -603,14 +603,14 @@ __{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cst
 __{}    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
 __{}eval(($2) & 0xFF),0,{
-__{}    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+__{}    ld    C, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
 __{}    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    add   A, H          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)},
 __{}{
-__{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- )
+__{}    ld    A, low format({%-7s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)   ( addr -- addr )   (addr+$2)=$1
 __{}    add   A, L          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    C, A          ; 1:4       $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld    A, high format({%-6s},$2); 2:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)
@@ -622,9 +622,9 @@ __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
 dnl
 dnl
-dnl addr C!
-dnl ( char -- char )
-dnl store(addr) store 8-bit char at addr
+dnl # addr C!
+dnl # ( char -- char )
+dnl # store(addr) store 8-bit char at addr
 define({DUP_PUSH_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -633,9 +633,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup push($1) cstore})dnl
 dnl
 dnl
-dnl addr C!
-dnl ( char -- char )
-dnl store(addr) store 8-bit char at addr
+dnl # addr C!
+dnl # ( char -- char )
+dnl # store(addr) store 8-bit char at addr
 define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
@@ -648,9 +648,9 @@ __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
 dnl
 dnl
-dnl addr C!
-dnl ( char -- char )
-dnl store(addr) store 8-bit char at addr
+dnl # addr C!
+dnl # ( char -- char )
+dnl # store(addr) store 8-bit char at addr
 define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
@@ -667,9 +667,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
 dnl
 dnl
 dnl
-dnl char addr C!
-dnl ( -- )
-dnl store(addr) store 8-bit number at addr
+dnl # char addr C!
+dnl # ( -- )
+dnl # store(addr) store 8-bit number at addr
 define({PUSH2_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -682,18 +682,18 @@ dnl
 dnl
 dnl
 dnl
-dnl tuck C!
-dnl ( char addr -- addr )
-dnl store 8-bit number at addr with save addr
+dnl # tuck C!
+dnl # ( char addr -- addr )
+dnl # store 8-bit number at addr with save addr
 define({TUCK_CSTORE},{
                         ;[2:17]     tuck c!  tuck_cstore   ( char addr -- addr )
     ld  (HL),E          ; 1:7       tuck c!  tuck_cstore
     pop  DE             ; 1:10      tuck c!  tuck_cstore})dnl
 dnl
 dnl
-dnl tuck c! 1+
-dnl ( char addr -- addr+1 )
-dnl store 8-bit number at addr and increment
+dnl # tuck c! 1+
+dnl # ( char addr -- addr+1 )
+dnl # store 8-bit number at addr and increment
 define({TUCK_CSTORE_1ADD},{
                         ;[3:23]     tuck c! +1  tuck_cstore_1add   ( x addr -- addr+2 )
     ld  (HL),E          ; 1:7       tuck c! +1  tuck_cstore_1add
@@ -701,9 +701,9 @@ define({TUCK_CSTORE_1ADD},{
     pop  DE             ; 1:10      tuck c! +1  tuck_cstore_1add})dnl
 dnl
 dnl
-dnl over swap c!
-dnl ( char addr -- char )
-dnl store 8-bit number at addr with save char
+dnl # over swap c!
+dnl # ( char addr -- char )
+dnl # store 8-bit number at addr with save char
 define({OVER_SWAP_CSTORE},{
                         ;[3:21]     over swap c!  over_swap_cstore   ( char addr -- char )
     ld  (HL),E          ; 1:7       over swap c!  over_swap_cstore
@@ -711,37 +711,39 @@ define({OVER_SWAP_CSTORE},{
     pop  DE             ; 1:10      over swap c!  over_swap_cstore})dnl
 dnl
 dnl
-dnl 2dup c!
-dnl ( char addr -- char addr )
-dnl store 8-bit number at addr with save all
+dnl # 2dup c!
+dnl # ( char addr -- char addr )
+dnl # store 8-bit number at addr with save all
 define({_2DUP_CSTORE},{
                         ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
     ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore})dnl
 dnl
 dnl
-dnl 2dup c! 1+
-dnl ( char addr -- char addr+1 )
-dnl store 8-bit number at addr with save all and increment
+dnl # 2dup c! 1+
+dnl # ( char addr -- char addr+1 )
+dnl # store 8-bit number at addr with save all and increment
 define({_2DUP_CSTORE_1ADD},{
                         ;[2:13]     2dup c! 1+  _2dup_cstore_1add   ( char addr -- char addr+1 )
     ld  (HL),E          ; 1:7       2dup c! 1+  _2dup_cstore_1add
     inc  HL             ; 1:6       2dup c! 1+  _2dup_cstore_1add})dnl
 dnl
 dnl
-dnl number over c!
-dnl ( addr -- addr )
-dnl store 8-bit number at addr with save addr
-define({PUSH_OVER_CSTORE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-                        ;[2:10]     $1 over c!  push_over_cstore($1)   ( addr -- addr )
-    ld  (HL),low format({%-7s},$1); 2:10      $1 over c!  push_over_cstore($1)})dnl
+dnl # number over c!
+dnl # ( addr -- addr )
+dnl # store 8-bit number at addr with save addr
+define({PUSH_OVER_CSTORE},{ifelse(
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{
+__{}                        ;[2:10]     $1 over c!  push_over_cstore($1)   ( addr -- addr )   (addr)=$1
+__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over c!  push_over_cstore($1)})})dnl
 dnl
 dnl
-dnl over number swap c!
-dnl ( addr x -- addr x )
-dnl store 8-bit number at addr with save addr
+dnl # over number swap c!
+dnl # ( addr x -- addr x )
+dnl # store 8-bit number at addr with save addr
 define({OVER_PUSH_SWAP_CSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -755,10 +757,10 @@ __{}    ld    A,low format({%-8s},$1); 2:7       over $1 swap c!  over_push_swap
     ld  (DE),A          ; 1:7       over $1 swap c!  over_push_swap_cstore($1)})dnl
 dnl
 dnl
-dnl dup number swap c! 1+
-dnl push over c! 1+
-dnl ( addr -- addr+1 )
-dnl store 8-bit number at addr with save addr and increment
+dnl # dup number swap c! 1+
+dnl # push over c! 1+
+dnl # ( addr -- addr+1 )
+dnl # store 8-bit number at addr with save addr and increment
 define({DUP_PUSH_SWAP_CSTORE_1ADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -768,10 +770,10 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     inc  HL             ; 1:6       dup $1 swap c! 1+  dup_push_swap_cstore_1add($1)})dnl
 dnl
 dnl
-dnl dup number swap c! 1+
-dnl push over c! 1+
-dnl ( addr -- addr+1 )
-dnl store 8-bit number at addr with save addr and increment
+dnl # dup number swap c! 1+
+dnl # push over c! 1+
+dnl # ( addr -- addr+1 )
+dnl # store 8-bit number at addr with save addr and increment
 define({PUSH_OVER_CSTORE_1ADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -782,9 +784,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl cmove
-dnl ( from_addr to_addr u -- )
-dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+dnl # cmove
+dnl # ( from_addr to_addr u -- )
+dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVE},{
     ld    A, H          ; 1:4       cmove   ( from_addr to_addr u -- )
     or    L             ; 1:4       cmove
@@ -797,9 +799,9 @@ define({CMOVE},{
     pop  DE             ; 1:10      cmove})dnl
 dnl
 dnl
-dnl u cmove
-dnl ( from_addr to_addr -- )
-dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+dnl # u cmove
+dnl # ( from_addr to_addr -- )
+dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({PUSH_CMOVE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -833,9 +835,9 @@ __{}__{}__{}    pop  HL             ; 1:10      $1 cmove
 __{}__{}__{}    pop  DE             ; 1:10      $1 cmove})})})dnl
 dnl
 dnl
-dnl cmove>
-dnl ( addr1 addr2 u -- )
-dnl If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+dnl # cmove>
+dnl # ( addr1 addr2 u -- )
+dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVEGT},{
     ld    A, H          ; 1:4       cmove>
     or    L             ; 1:4       cmove>
@@ -849,9 +851,9 @@ define({CMOVEGT},{
 dnl
 dnl
 dnl
-dnl addr u char fill
-dnl ( addr u char -- )
-dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+dnl # addr u char fill
+dnl # ( addr u char -- )
+dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({FILL},{ifelse({fast},{fast},{
 __{}    ld    A, D          ; 1:4       fill
 __{}    or    E             ; 1:4       fill
@@ -889,9 +891,9 @@ __{}    pop  DE             ; 1:10      fill})})dnl
 dnl
 dnl
 dnl
-dnl addr u char fill
-dnl ( addr u -- )
-dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+dnl # addr u char fill
+dnl # ( addr u -- )
+dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH_FILL},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -930,9 +932,9 @@ __{}    pop  DE             ; 1:10      $1 fill})})dnl
 dnl
 dnl
 dnl
-dnl addr u char fill
-dnl ( addr -- )
-dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+dnl # addr u char fill
+dnl # ( addr -- )
+dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH2_FILL},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -999,7 +1001,7 @@ __{}    ld  (HL),C          ; 1:7       $1 $2 fill
 __{}    inc  HL             ; 1:6       $1 $2 fill
 __{}    ld  (HL),C          ; 1:7       $1 $2 fill
 __{}    inc  HL             ; 1:6       $1 $2 fill
-__{}    djnz $-4            ; 2:13/8    $1 $2 fill
+__{}    djnz $-6            ; 2:13/8    $1 $2 fill
 __{}    ex   DE, HL         ; 1:4       $1 $2 fill
 __{}    pop  DE             ; 1:10      $1 $2 fill},
 __{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{dnl
@@ -1037,9 +1039,9 @@ __{}    pop  DE             ; 1:10      $1 $2 fill})})dnl
 dnl
 dnl
 dnl
-dnl addr u char fill
-dnl ( -- )
-dnl If u is greater than zero, fill the contents of u consecutive characters at addr.
+dnl # addr u char fill
+dnl # ( -- )
+dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH3_FILL},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -1126,7 +1128,7 @@ __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}    inc   L             ; 1:4       $1 $2 $3 fill
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}    inc   L             ; 1:4       $1 $2 $3 fill
-__{}    djnz $-4            ; 2:13/8    $1 $2 $3 fill
+__{}    djnz $-6            ; 2:13/8    $1 $2 $3 fill
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
 eval(($2) <= 2*256+1),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
@@ -1263,14 +1265,14 @@ __{}    pop  HL             ; 1:10      $1 $2 $3 fill
 __{}    pop  DE             ; 1:10      $1 $2 $3 fill})})dnl
 dnl
 dnl
-dnl -------------------------------------------------------------------------------------
+dnl # -------------------------------------------------------------------------------------
 dnl ## Memory access 16bit
-dnl -------------------------------------------------------------------------------------
+dnl # -------------------------------------------------------------------------------------
 dnl
 dnl
-dnl @
-dnl ( addr -- x )
-dnl fetch 16-bit number from addr
+dnl # @
+dnl # ( addr -- x )
+dnl # fetch 16-bit number from addr
 define({FETCH},{
     ld    A, (HL)       ; 1:7       @ fetch   ( addr -- x )
     inc  HL             ; 1:6       @ fetch
@@ -1278,9 +1280,9 @@ define({FETCH},{
     ld    L, A          ; 1:4       @ fetch})dnl
 dnl
 dnl
-dnl dup @
-dnl ( addr -- addr x )
-dnl save addr and fetch 16-bit number from addr
+dnl # dup @
+dnl # ( addr -- addr x )
+dnl # save addr and fetch 16-bit number from addr
 define({DUP_FETCH},{
                         ;[6:41]     dup @ dup_fetch ( addr -- addr x )
     push DE             ; 1:11      dup @ dup_fetch
@@ -1291,9 +1293,9 @@ define({DUP_FETCH},{
     ex   DE, HL         ; 1:4       dup @ dup_fetch})dnl
 dnl
 dnl
-dnl dup @ swap
-dnl ( addr -- x addr )
-dnl save addr and fetch 16-bit number from addr and swap
+dnl # dup @ swap
+dnl # ( addr -- x addr )
+dnl # save addr and fetch 16-bit number from addr and swap
 define({DUP_FETCH_SWAP},{
                         ;[5:37]     dup @ swap dup_fetch_swap ( addr -- x addr )
     push DE             ; 1:11      dup @ swap dup_fetch_swap
@@ -1303,9 +1305,9 @@ define({DUP_FETCH_SWAP},{
     dec  HL             ; 1:6       dup @ swap dup_fetch_swap})dnl
 dnl
 dnl
-dnl addr @
-dnl ( -- x )
-dnl push_fetch(addr), load 16-bit number from addr
+dnl # addr @
+dnl # ( -- x )
+dnl # push_fetch(addr), load 16-bit number from addr
 define({PUSH_FETCH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -1316,9 +1318,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl !
-dnl ( x addr -- )
-dnl store 16-bit number at addr
+dnl # !
+dnl # ( x addr -- )
+dnl # store 16-bit number at addr
 define({STORE},{
                         ;[5:40]     ! store   ( x addr -- )
     ld  (HL),E          ; 1:7       ! store
@@ -1329,9 +1331,9 @@ define({STORE},{
 dnl
 dnl
 dnl
-dnl addr !
-dnl ( x -- )
-dnl store(addr) store 16-bit number at addr
+dnl # addr !
+dnl # ( x -- )
+dnl # store(addr) store 16-bit number at addr
 define({PUSH_STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -1342,9 +1344,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl x addr !
-dnl ( -- )
-dnl store(addr) store 16-bit number at addr
+dnl # x addr !
+dnl # ( -- )
+dnl # store(addr) store 16-bit number at addr
 define({PUSH2_STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -1356,9 +1358,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl tuck !
-dnl ( x addr -- addr )
-dnl store 16-bit number at addr
+dnl # tuck !
+dnl # ( x addr -- addr )
+dnl # store 16-bit number at addr
 define({TUCK_STORE},{
                         ;[5:36]     tuck ! tuck_store   ( x addr -- addr )
     ld  (HL),E          ; 1:7       tuck ! tuck_store
@@ -1368,9 +1370,9 @@ define({TUCK_STORE},{
     pop  DE             ; 1:10      tuck ! tuck_store})dnl
 dnl
 dnl
-dnl tuck ! 2+
-dnl ( x addr -- addr+2 )
-dnl store 16-bit number at addr
+dnl # tuck ! 2+
+dnl # ( x addr -- addr+2 )
+dnl # store 16-bit number at addr
 define({TUCK_STORE_2ADD},{
                         ;[5:36]     tuck ! +2 tuck_store_2add   ( x addr -- addr+2 )
     ld  (HL),E          ; 1:7       tuck ! +2 tuck_store_2add
@@ -1380,9 +1382,9 @@ define({TUCK_STORE_2ADD},{
     pop  DE             ; 1:10      tuck ! +2 tuck_store_2add})dnl
 dnl
 dnl
-dnl over swap !
-dnl ( x addr -- x )
-dnl store 16-bit number at addr
+dnl # over swap !
+dnl # ( x addr -- x )
+dnl # store 16-bit number at addr
 define({OVER_SWAP_STORE},{
                         ;[5:34]     over swap ! over_swap_store   ( x addr -- x )
     ld  (HL),E          ; 1:7       over swap ! over_swap_store
@@ -1392,9 +1394,9 @@ define({OVER_SWAP_STORE},{
     pop  DE             ; 1:10      over swap ! over_swap_store})dnl
 dnl
 dnl
-dnl 2dup !
-dnl ( x addr -- x addr )
-dnl store 16-bit number at addr
+dnl # 2dup !
+dnl # ( x addr -- x addr )
+dnl # store 16-bit number at addr
 define({_2DUP_STORE},{
                         ;[4:26]     2dup ! _2dup_store   ( x addr -- x addr )
     ld  (HL),E          ; 1:7       2dup ! _2dup_store
@@ -1403,9 +1405,9 @@ define({_2DUP_STORE},{
     dec  HL             ; 1:6       2dup ! _2dup_store})dnl
 dnl
 dnl
-dnl 2dup ! 2+
-dnl ( x addr -- x addr+2 )
-dnl store 16-bit number at addr
+dnl # 2dup ! 2+
+dnl # ( x addr -- x addr+2 )
+dnl # store 16-bit number at addr
 define({_2DUP_STORE_2ADD},{
                         ;[4:26]     2dup ! 2+ _2dup_store_2add   ( x addr -- x addr+2 )
     ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_2add
@@ -1414,10 +1416,10 @@ define({_2DUP_STORE_2ADD},{
     inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add})dnl
 dnl
 dnl
-dnl number over !
-dnl dup number swap !
-dnl ( addr -- addr )
-dnl store 16-bit number at addr
+dnl # number over !
+dnl # dup number swap !
+dnl # ( addr -- addr )
+dnl # store 16-bit number at addr
 define({DUP_PUSH_SWAP_STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -1429,10 +1431,10 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     dec  HL             ; 1:6       dup $1 swap ! dup_push_swap_store($1)})dnl
 dnl
 dnl
-dnl number over !
-dnl dup number swap !
-dnl ( addr -- addr )
-dnl store 16-bit number at addr
+dnl # number over !
+dnl # dup number swap !
+dnl # ( addr -- addr )
+dnl # store 16-bit number at addr
 define({PUSH_OVER_STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -1444,10 +1446,10 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     dec  HL             ; 1:6       $1 over ! push_over_store($1)})dnl
 dnl
 dnl
-dnl number over ! 2+
-dnl dup number swap ! 2+
-dnl ( addr -- addr+2 )
-dnl store 16-bit number at addr
+dnl # number over ! 2+
+dnl # dup number swap ! 2+
+dnl # ( addr -- addr+2 )
+dnl # store 16-bit number at addr
 define({DUP_PUSH_SWAP_STORE_2ADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -1459,10 +1461,10 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     inc  HL             ; 1:6       dup $1 swap ! 2+ dup_push_swap_store_2add($1)})dnl
 dnl
 dnl
-dnl number over ! 2+
-dnl dup number swap ! 2+
-dnl ( addr -- addr+2 )
-dnl store 16-bit number at addr
+dnl # number over ! 2+
+dnl # dup number swap ! 2+
+dnl # ( addr -- addr+2 )
+dnl # store 16-bit number at addr
 define({PUSH_OVER_STORE_2ADD},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -1474,9 +1476,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)})dnl
 dnl
 dnl
-dnl move
-dnl ( addr1 addr2 u -- )
-dnl If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
+dnl # move
+dnl # ( addr1 addr2 u -- )
+dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
 define({MOVE},{
     or    A             ; 1:4       move
     adc  HL, HL         ; 1:11      move
@@ -1489,9 +1491,9 @@ define({MOVE},{
     pop  DE             ; 1:10      move})dnl
 dnl
 dnl
-dnl u move
-dnl ( from_addr to_addr -- )
-dnl If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
+dnl # u move
+dnl # ( from_addr to_addr -- )
+dnl # If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
 define({PUSH_MOVE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -1528,9 +1530,9 @@ __{}__{}__{}    pop  HL             ; 1:10      $1 move
 __{}__{}__{}    pop  DE             ; 1:10      $1 move})})})dnl
 dnl
 dnl
-dnl move>
-dnl ( addr1 addr2 u -- )
-dnl If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
+dnl # move>
+dnl # ( addr1 addr2 u -- )
+dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
 define({MOVEGT},{
     or    A             ; 1:4       move>
     adc  HL, HL         ; 1:11      move>
@@ -1544,9 +1546,9 @@ define({MOVEGT},{
 dnl
 dnl
 dnl
-dnl +!
-dnl ( num addr -- )
-dnl Adds num to the 16-bit number stored at addr.
+dnl # +!
+dnl # ( num addr -- )
+dnl # Adds num to the 16-bit number stored at addr.
 define({ADDSTORE},{
     ld    A, E          ; 1:4       +! addstore
     add   A,(HL)        ; 1:7       +! addstore
@@ -1559,9 +1561,9 @@ define({ADDSTORE},{
     pop  DE             ; 1:10      +! addstore})dnl
 dnl
 dnl
-dnl num addr +!
-dnl ( -- )
-dnl Adds num to the 16-bit number stored at addr.
+dnl # num addr +!
+dnl # ( -- )
+dnl # Adds num to the 16-bit number stored at addr.
 define({PUSH2_ADDSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{2},,{
@@ -1624,14 +1626,14 @@ eval((($1) & 0xffff) == 0xfffd),1,{dnl
     ld  (BC),A          ; 1:7       push2_addstore($1,$2)})})dnl
 dnl
 dnl
-dnl -------------------------------------------------------------------------------------
+dnl # -------------------------------------------------------------------------------------
 dnl ## Memory access 32bit
-dnl -------------------------------------------------------------------------------------
+dnl # -------------------------------------------------------------------------------------
 dnl
 dnl
-dnl 2@
-dnl ( addr -- hi lo )
-dnl fetch 32-bit number from addr
+dnl # 2@
+dnl # ( addr -- hi lo )
+dnl # fetch 32-bit number from addr
 define({_2FETCH},{
                         ;[10:65]    2@ _2fetch
     push DE             ; 1:11      2@ _2fetch
@@ -1648,9 +1650,9 @@ dnl
 dnl
 dnl
 dnl
-dnl addr 2@
-dnl ( -- hi lo )
-dnl push_2fetch(addr), load 32-bit number from addr
+dnl # addr 2@
+dnl # ( -- hi lo )
+dnl # push_2fetch(addr), load 32-bit number from addr
 define({PUSH_2FETCH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -1665,9 +1667,9 @@ __{}    ld   DE,format({%-12s},(eval(2+$1))); 4:20      $1 2@ push_2fetch($1) hi
 dnl
 dnl
 dnl
-dnl 2!
-dnl ( hi lo addr -- )
-dnl store 32-bit number at addr
+dnl # 2!
+dnl # ( hi lo addr -- )
+dnl # store 32-bit number at addr
 define({_2STORE},{
     ld  (HL),E          ; 1:7       2! _2store   ( hi lo addr -- )
     inc  HL             ; 1:6       2! _2store
@@ -1682,9 +1684,9 @@ define({_2STORE},{
 dnl
 dnl
 dnl
-dnl addr 2!
-dnl ( hi lo -- )
-dnl store(addr) store 32-bit number at addr
+dnl # addr 2!
+dnl # ( hi lo -- )
+dnl # store(addr) store 32-bit number at addr
 define({PUSH_2STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
@@ -1698,9 +1700,9 @@ __{}ifelse(eval(($1)),{},{dnl
     pop  DE             ; 1:10      $1 2! push_2store($1)})})dnl
 dnl
 dnl
-dnl lo addr 2!
-dnl ( hi -- )
-dnl store(addr) store 32-bit number at addr
+dnl # lo addr 2!
+dnl # ( hi -- )
+dnl # store(addr) store 32-bit number at addr
 define({PUSH2_2STORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -1721,9 +1723,9 @@ dnl
 dnl
 dnl
 dnl
-dnl d addr 2!
-dnl ( -- )
-dnl store 32-bit number at addr
+dnl # d addr 2!
+dnl # ( -- )
+dnl # store 32-bit number at addr
 define({PUSHDOT_PUSH_2STORE},{ifelse($1,{},{
 __{}  .error {$0}(): Missing parameters!},
 $#,{1},{

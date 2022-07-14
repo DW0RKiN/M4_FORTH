@@ -244,6 +244,12 @@ define({DROP},{
     pop  DE             ; 1:10      drop ( a -- )})dnl
 dnl
 dnl
+dnl ( b a -- b b )
+define({DROP_DUP},{
+    ld   H, D           ; 1:4       drop_dup   ( b a -- b b )
+    ld   L, E           ; 1:4       drop_dup})dnl
+dnl
+dnl
 dnl 2drop
 dnl ( b a -- )
 dnl odstrani 2x vrchol zasobniku

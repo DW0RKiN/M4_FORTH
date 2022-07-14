@@ -4,7 +4,7 @@ dnl
 dnl
 dnl
 define({_LOOP_ANALYSIS_RECURSE},{dnl
-__{}ifelse(eval(($1!=$2)),{1},{dnl
+__{}ifelse(eval((($1)!=($2))),{1},{dnl
 __{}__{}define({_TEMP_X},eval(1+_TEMP_X)){}dnl
 __{}__{}ifelse(eval((($1)^($2)) & 0x00FF), {0}, {define({_TEMP_LO_FALSE_POSITIVE},eval(1+_TEMP_LO_FALSE_POSITIVE))}){}dnl
 __{}__{}ifelse(eval((($1)^($2)) & 0xFF00), {0}, {define({_TEMP_HI_FALSE_POSITIVE},eval(1+_TEMP_HI_FALSE_POSITIVE))}){}dnl
@@ -14,10 +14,10 @@ __{}}){}dnl
 dnl
 dnl
 define({_LOOP_ANALYSIS},{dnl
-__{}ifelse(eval($1<0),{1},{dnl
-__{}__{}define({_TEMP_REAL_STOP},{eval((INDEX_STACK+$1*(1+((0x10000+INDEX_STACK-(STOP_STACK)) & 0xffff)/(-($1)))) & 0xffff)})},
+__{}ifelse(eval(($1)<0),{1},{dnl
+__{}__{}define({_TEMP_REAL_STOP},{eval((INDEX_STACK+($1)*(1+((0x10000+INDEX_STACK-(STOP_STACK)) & 0xffff)/(-($1)))) & 0xffff)})},
 __{}{dnl
-__{}__{}define({_TEMP_REAL_STOP},{eval((INDEX_STACK+$1*(1+((0x10000+STOP_STACK-(INDEX_STACK)-1) & 0xffff)/($1))) & 0xffff)})}){}dnl
+__{}__{}define({_TEMP_REAL_STOP},{eval((INDEX_STACK+($1)*(1+((0x10000+STOP_STACK-(INDEX_STACK)-1) & 0xffff)/($1))) & 0xffff)})}){}dnl
 __{}define({_TEMP_X},{1}){}dnl
 __{}define({_TEMP_HI_FALSE_POSITIVE},{0}){}dnl
 __{}define({_TEMP_LO_FALSE_POSITIVE},{0}){}dnl

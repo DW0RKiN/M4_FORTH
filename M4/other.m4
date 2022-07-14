@@ -48,7 +48,7 @@ dnl
 dnl
 dnl ( yx -- addr )
 define({PUTPIXEL},{ifdef({USE_PIXEL},,define({USE_PIXEL},{}))
-    call PIXEL          ; 3:17      pixel})dnl
+    call PIXEL          ; 3:17      pixel   ( yx -- yx )})dnl
 dnl
 dnl
 dnl

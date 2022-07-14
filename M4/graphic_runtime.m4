@@ -1,7 +1,6 @@
 dnl
 dnl
 ifdef({USE_PIXEL},{
-
 ; Rutina ziska adresu bajtu s pixelem v HL a v A bude maska pro dany bajt
 ; Input: H = Y, L = X
 ; Y = bb rrr sss X = ccccc ...
@@ -11,8 +10,8 @@ ifdef({USE_PIXEL},{
 ; sss:   číslo řádky v jednom znaku, který je vysoký osm obrazových řádků
 ; rrr:   pozice textového řádku v bloku. Každý blok je vysoký 64 obrazových řádků, což odpovídá osmi řádkům textovým
 ; ccccc: index sloupce bajtu v rozmezí 0..31, kde je uložena osmice sousedních pixelů
-
 PIXEL:
+    push HL             ; 1:11
     ld    B, H          ; 1:4
     ld    C, L          ; 1:4
 
@@ -48,8 +47,8 @@ PIXEL_MODE:
     set   0,(HL)        ; 2:15      0xCB 0xC6..+8..0xFE %11xx x110
 ;   bit   0,(HL)        ; 2:12      0xCB 0x46..+8..0x7E %01xx x110
 ;   res   0,(HL)        ; 2:15      0xCB 0x86..+8..0xBE %10xx x110
-    ret                 ; 1:10
-})dnl
+    pop  HL             ; 1:10
+    ret                 ; 1:10})dnl
 dnl
 dnl
 ifdef({USE_LINE},{
@@ -328,17 +327,15 @@ Pixel_U:
     ld    D, A          ; 1:4
     ret                 ; 1:10
 
-
 ; Rutina ziska adresu bajtu s pixelem v HL a v A bude maska pro dany bajt
-; Input: H = Y, L = X
+; Input: D = Y, E = X
 ; Y = bb rrr sss X = ccccc ...
-; Output: HL = adresa bajtu, A = maska pixelu
-; H = 010 bb sss L = rrr ccccc
+; Output: DE' = adresa bajtu, C' = maska pixelu
+; D' = 010 bb sss E' = rrr ccccc
 ; bb:    číslo bloku 0,1,2 (v bloku číslo 3 je atributová paměť)
 ; sss:   číslo řádky v jednom znaku, který je vysoký osm obrazových řádků
 ; rrr:   pozice textového řádku v bloku. Každý blok je vysoký 64 obrazových řádků, což odpovídá osmi řádkům textovým
 ; ccccc: index sloupce bajtu v rozmezí 0..31, kde je uložena osmice sousedních pixelů
-
 Pixel_addr:
     push DE             ; 1:11      YX
     exx                 ; 1:4
@@ -375,5 +372,6 @@ Pixel_addr:
     ld    C, A          ; 1:11
     exx                 ; 1:4
     ret                 ; 1:10})dnl
+dnl
 dnl
 dnl

@@ -16,7 +16,7 @@ __{}                        ;           for unloop LOOP_STACK})
     ex   DE, HL         ; 1:4       for LOOP_STACK
     pop  DE             ; 1:10      for LOOP_STACK index
 for{}LOOP_STACK:                 ;           for LOOP_STACK
-    ld  (idx{}LOOP_STACK),BC     ; 4:20      next LOOP_STACK save index})dnl
+    ld  (idx{}LOOP_STACK),BC     ; 4:20      for LOOP_STACK save index})dnl
 dnl
 dnl
 dnl
