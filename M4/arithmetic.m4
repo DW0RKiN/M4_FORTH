@@ -63,6 +63,43 @@ __{}    add  HL, BC         ; 1:11      $1 +})})})dnl
 dnl
 dnl
 dnl
+define({PUSH2_ADD},{ifelse(dnl
+dnl # ( -- x )
+dnl # x = $1 + $2
+dnl # CONSTANT(_a,5) CONSTANT(_b,7) PUSH2_ADD({_a},{_b}) -->  ld   HL, 0x000C     ; 3:10      _a _b +
+dnl # CONSTANT(_a,5) CONSTANT(_b,7) PUSH2_ADD(_a,_b)     -->  ld   HL, 0x000C     ; 3:10      5 7 +
+eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{dnl
+__{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
+__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      {$1} {$2} +
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      {$1} {$2} +
+__{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} +
+__{}__{}    ld   BC, format({%-11s},$2); 3:10      {$1} {$2} +
+__{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +},
+__{}{
+__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      {$1} {$2} +
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      {$1} {$2} +
+__{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +})},
+{dnl
+__{}__{}ifelse(eval($1+$2),{},{
+__{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
+__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
+__{}__{}    ld   HL, format({%-11s},$1+$2); 3:10      {$1} {$2} +},
+__{}{
+__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
+__{}__{}    ld   HL, __HEX_HL($1+$2)     ; 3:10      {$1} {$2} +})})})dnl
+dnl
+dnl
+dnl
 dnl # dup 5 +
 dnl # ( x -- x x+n )
 define({DUP_PUSH_ADD},{ifelse(eval($1),{},{
@@ -228,6 +265,47 @@ __{}    ld    H, A          ; 1:4       $1 -},
 __{}{
 __{}    ld   BC, __HEX_HL(-($1))     ; 3:10      $1 -   ( x -- x-__HEX_HL($1) )
 __{}    add  HL, BC         ; 1:11      $1 -})})})dnl
+dnl
+dnl
+dnl
+define({PUSH2_SUB},{ifelse(dnl
+dnl # ( -- x )
+dnl # x = $1 - $2
+dnl # CONSTANT(_a,7) CONSTANT(_b,5) PUSH2_SUB({_a},{_b}) -->  ld   HL, 0x0002     ; 3:10      _a _b -
+dnl # CONSTANT(_a,7) CONSTANT(_b,5) PUSH2_SUB(_a,_b)     -->  ld   HL, 0x0002     ; 3:10      5 7 -
+eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{dnl
+__{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
+__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} -
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      {$1} {$2} -
+__{}__{}    or    A             ; 1:4       {$1} {$2} -
+__{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} -
+__{}__{}    ld   BC, format({%-11s},$2); 3:10      {$1} {$2} -
+__{}__{}    or    A             ; 1:4       {$1} {$2} -
+__{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -},
+__{}{
+__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      {$1} {$2} -
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      {$1} {$2} -
+__{}__{}    or    A             ; 1:4       {$1} {$2} -
+__{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -})},
+{dnl
+__{}__{}ifelse(eval($1+$2),{},{
+__{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
+__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
+__{}__{}    ld   HL, format({%-11s},$1-($2)); 3:10      {$1} {$2} -},
+__{}{
+__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
+__{}__{}    ld   HL, __HEX_HL($1-($2))     ; 3:10      {$1} {$2} -})})})dnl
+dnl
 dnl
 dnl
 dnl # ( x -- u )
