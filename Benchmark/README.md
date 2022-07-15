@@ -270,15 +270,15 @@ Fill the screen with pixels, and set all attributes to 255.
 
 [Performance of Forth](https://spectrumcomputing.co.uk/forums/viewtopic.php?f=6&t=3487 "Spectrum Computing Forums")
 
-In my opinion, using a loop is not the best way to write the solution, because the loop has its own overhead. 
+In my opinion, using a loop is not the best way to write the solution, because the loop has its own overhead.
 We say to make a new variable on the side, and then we copy that into the TOS. So using `BEGIN ... flag UNTIL` I see as exactly what we want.
 
-For best results, I try to limit movement on the stack, such as inserting or removing values. 
-That is, words that change the total number of values on the stack. 
+For best results, I try to limit movement on the stack, such as inserting or removing values.
+That is, words that change the total number of values on the stack.
 That's why I use words or word combination like `DROP_I`, which overrides TOS, but I also show the worst `DROP I` variant, which moves the stack twice.
 
-Here I copy the results listed in the forum, with an assembler with essentially the same code as my measurement instead of the 0.04 seconds measured by 0.07 seconds. 
-Plus or minus 0.01 makes an interruption. What causes the rest of the difference I have no idea. 
+Here I copy the results listed in the forum, with an assembler with essentially the same code as my measurement instead of the 0.04 seconds measured by 0.07 seconds.
+Plus or minus 0.01 makes an interruption. What causes the rest of the difference I have no idea.
 Maybe I'm doing the measurements through POKE in BASIC and that has some small constant overhead.
 
     Results (Time taken):
@@ -304,4 +304,5 @@ Maybe I'm doing the measurements through POKE in BASIC and that has some small c
 |[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />_2DROP                                                                                                ](./fillin_v13.asm)  |   50  | 0.07s  |
 |[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br /> DUP_PUSH_EQ_UNTIL(0x5B00) <br />_2DROP                        ](./fillin_v14.asm)  |   58  | 0.06s  |
 |[PUSH3_FILL(0x4000,6912,255)                                                                                                                                                                                     ](./fillin_v15.asm)  |   42  | 0.07s  |
+|[push HL<br />ld   HL, 0xFFFF<br />ld    B, 216<br />di<br />ld  ($+7+16+3),SP<br />ld   SP, 0x5B00<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />djnz $-16<br />ld   SP, 0x0000<br />ei<br />pop  HL](./fillin_v16.asm)  |   58  | 0.01s  |
 
