@@ -3,8 +3,6 @@ include(`../M4/FIRST.M4')dnl
 ; ^^^^^
 ORG 0x8000
     INIT(60000)
-    ld  hl, stack_test
-    push hl
 
     PRINT_I({"( x2 x1 -- ) and ( u2 u1 -- ):",0x0D})
     PUSH2( 5,-5) CALL(x_x_test)
@@ -22,13 +20,9 @@ ORG 0x8000
     PUSH( 3) CALL(x_m3_test)
     PUSH(-3) CALL(x_m3_test)
 
-    PRINT_Z({"RAS:"})
-    exx
-    push HL
-    exx
-    pop HL
-    DUP_UDOT
-    ret
+    PRINT_Z({0xD, "Data stack:"}) DEPTH DOT
+    PRINT_Z({0x0D, "RAS:"}) __RAS UDOT CR
+    STOP
     
 COLON(x_x_test)
     ; signed
@@ -50,7 +44,7 @@ COLON(x_x_test)
      _2DUP GE IF PRINT_Z({">=" }) THEN
      _2DUP_GE_IF PRINT_Z({">=" }) THEN
      _2DUP GE_IF PRINT_Z({">=,"}) THEN
-    OVER DOT DUP DOT CR  
+    OVER DOT DUP SPACE_DOT CR  
     ; unsigned
     _2DUP UEQ IF PRINT_Z( {"=" }) THEN
     _2DUP_UEQ_IF PRINT_Z( {"=" }) THEN
@@ -70,7 +64,7 @@ COLON(x_x_test)
     _2DUP UGE IF PRINT_Z({">=" }) THEN
     _2DUP_UGE_IF PRINT_Z({">=" }) THEN
     _2DUP UGE_IF PRINT_Z({">=,"}) THEN
-    SWAP UDOT UDOT CR
+    SWAP UDOT SPACE_UDOT CR
 SEMICOLON
 
 COLON(d_d_test)
@@ -93,7 +87,7 @@ COLON(d_d_test)
      _4DUP DGE IF PRINT_Z({">=" }) THEN
      _4DUP_DGE_IF PRINT_Z({">=" }) THEN
      _4DUP DGE_IF PRINT_Z({">=,"}) THEN
-    _2OVER DDOT _2DUP DDOT CR
+    _2OVER DDOT _2DUP SPACE_DDOT CR
     ; unsigned
     _4DUP DUEQ IF PRINT_Z( {"=" }) THEN
     _4DUP_DUEQ_IF PRINT_Z( {"=" }) THEN
@@ -113,7 +107,7 @@ COLON(d_d_test)
     _4DUP DUGE IF PRINT_Z({">=" }) THEN
     _4DUP_DUGE_IF PRINT_Z({">=" }) THEN
     _4DUP DUGE_IF PRINT_Z({">=,"}) THEN
-    _2SWAP UDDOT UDDOT CR
+    _2SWAP UDDOT SPACE_UDDOT CR
 SEMICOLON
 
 
@@ -124,14 +118,14 @@ COLON(x_p3_test)
     DUP_PUSH_LE_IF(3) PRINT_Z({"<=,"}) THEN
     DUP_PUSH_GT_IF(3) PRINT_Z( {">,"}) THEN
     DUP_PUSH_GE_IF(3) PRINT_Z({">=,"}) THEN
-    DUP DOT PUSH(3) DOT CR 
+    DUP DOT PUSH(3) SPACE_DOT CR 
     DUP_PUSH_UEQ_IF(3) PRINT_Z( {"=,"}) THEN
     DUP_PUSH_UNE_IF(3) PRINT_Z({"<>,"}) THEN
     DUP_PUSH_ULT_IF(3) PRINT_Z( {"<,"}) THEN
     DUP_PUSH_ULE_IF(3) PRINT_Z({"<=,"}) THEN
     DUP_PUSH_UGT_IF(3) PRINT_Z( {">,"}) THEN
     DUP_PUSH_UGE_IF(3) PRINT_Z({">=,"}) THEN
-    UDOT PUSH(3) UDOT CR
+    UDOT PUSH(3) SPACE_UDOT CR
 SEMICOLON
 
 
@@ -142,18 +136,12 @@ COLON(x_m3_test)
     DUP_PUSH_LE_IF(-3) PRINT_Z({"<=,"}) THEN
     DUP_PUSH_GT_IF(-3) PRINT_Z( {">,"}) THEN
     DUP_PUSH_GE_IF(-3) PRINT_Z({">=,"}) THEN
-    DUP DOT PUSH(-3) DOT CR 
+    DUP DOT PUSH(-3) SPACE_DOT CR 
     DUP_PUSH_UEQ_IF(-3) PRINT_Z( {"=,"}) THEN
     DUP_PUSH_UNE_IF(-3) PRINT_Z({"<>,"}) THEN
     DUP_PUSH_ULT_IF(-3) PRINT_Z( {"<,"}) THEN
     DUP_PUSH_ULE_IF(-3) PRINT_Z({"<=,"}) THEN
     DUP_PUSH_UGT_IF(-3) PRINT_Z( {">,"}) THEN
     DUP_PUSH_UGE_IF(-3) PRINT_Z({">=,"}) THEN
-    UDOT PUSH(-3) UDOT CR
+    UDOT PUSH(-3) SPACE_UDOT CR
 SEMICOLON
-
-
-SCOLON(stack_test)
-    PRINT_Z({0xD, "Data stack OK!", 0xD})
-    STOP
-SSEMICOLON

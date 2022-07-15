@@ -1,17 +1,12 @@
-; vvvv
 include(`../M4/FIRST.M4')dnl
-; ^^^^
     ORG 32768
-    
     INIT(60000)
-    ld  hl, stack_test
-    push hl
 
-    PUSH2(4, 0)  DO  I PUSH(0)  QUESTIONDO  J DOT  I DOT  LOOP PUTCHAR({','})  LOOP CR
-    PUSH2(4, 0) SDO SI PUSH(0) QUESTIONSDO SJ DOT SI DOT SLOOP PUTCHAR({','}) SLOOP CR
-      XDO(4, 0)      I PUSH(0) QUESTIONSDO  J DOT SI DOT SLOOP PUTCHAR({','}) XLOOP CR
-    PUSH2(3, 0) SDO SI                 FOR SI DOT  I DOT  NEXT PUTCHAR({','}) SLOOP CR
-    PUSH2(3, 0)  DO  I                SFOR  J DOT SI DOT SNEXT PUTCHAR({','})  LOOP CR
+    PUSH2(4, 0)  DO  I PUSH(0)  QUESTIONDO  J DOT  I PUSH_EMIT('/') DOT PUTCHAR({','})  LOOP   LOOP CR
+    PUSH2(4, 0) SDO SI PUSH(0) QUESTIONSDO SJ DOT SI PUSH_EMIT('/') DOT PUTCHAR({','}) SLOOP  SLOOP CR
+      XDO(4, 0)      I PUSH(0) QUESTIONSDO  J DOT SI PUSH_EMIT('/') DOT PUTCHAR({','}) SLOOP  XLOOP CR
+    PUSH2(3, 0) SDO SI                 FOR SI DOT  I PUSH_EMIT('/') DOT PUTCHAR({','})  NEXT  SLOOP CR
+    PUSH2(3, 0)  DO  I                SFOR  J DOT SI PUSH_EMIT('/') DOT PUTCHAR({','}) SNEXT   LOOP CR
 
     PUSH(5)          SFOR    SI DOT       PUTCHAR({','})          SNEXT CR
     PUSH(5)           FOR     I DOT       PUTCHAR({','})           NEXT CR
@@ -34,14 +29,14 @@ include(`../M4/FIRST.M4')dnl
                    XDO(60000,60000) PUTCHAR('l') LEAVE PUSH_ADDXLOOP(3100)
 
     PRINT({0xD, "Leave >= 7", 0xD})
-    PUSH2(12,3)  DO         I DUP_DOT PUSH(7) GE IF LEAVE THEN          LOOP    CR
-    PUSH2(12,3) SDO        SI DUP_DOT PUSH(7) GE IF LEAVE THEN         SLOOP    CR
-                XDO(12,3)   I DUP_DOT PUSH(7) GE IF LEAVE THEN         XLOOP    CR
-                XDO(550,3)  I DUP_DOT PUSH(7) GE IF LEAVE THEN         XLOOP    CR
-                XDO(12,3)   I DUP_DOT PUSH(7) GE IF LEAVE THEN PUSH_ADDXLOOP(2) CR
-                XDO(550,3)  I DUP_DOT PUSH(7) GE IF LEAVE THEN PUSH_ADDXLOOP(2) CR
-    PUSH(12)    FOR         I DUP_DOT PUSH(7) LE IF LEAVE THEN          NEXT    CR
-    PUSH(12)   SFOR        SI DUP_DOT PUSH(7) LE IF LEAVE THEN         SNEXT    CR
+    PUSH2(12,3)  DO         I DUP_SPACE_DOT PUSH(7) GE IF LEAVE THEN          LOOP    CR
+    PUSH2(12,3) SDO        SI DUP_SPACE_DOT PUSH(7) GE IF LEAVE THEN         SLOOP    CR
+                XDO(12,3)   I DUP_SPACE_DOT PUSH(7) GE IF LEAVE THEN         XLOOP    CR
+                XDO(550,3)  I DUP_SPACE_DOT PUSH(7) GE IF LEAVE THEN         XLOOP    CR
+                XDO(12,3)   I DUP_SPACE_DOT PUSH(7) GE IF LEAVE THEN PUSH_ADDXLOOP(2) CR
+                XDO(550,3)  I DUP_SPACE_DOT PUSH(7) GE IF LEAVE THEN PUSH_ADDXLOOP(2) CR
+    PUSH(12)    FOR         I DUP_SPACE_DOT PUSH(7) LE IF LEAVE THEN          NEXT    CR
+    PUSH(12)   SFOR        SI DUP_SPACE_DOT PUSH(7) LE IF LEAVE THEN         SNEXT    CR
     
     PRINT("Once:")
     PUSH2(1,0) DO PUTCHAR('a') LOOP 
@@ -57,15 +52,6 @@ include(`../M4/FIRST.M4')dnl
     XDO(60000,30000) PUTCHAR('k') PUSH_ADDXLOOP(40000)
     XDO(60000,30000) PUTCHAR('l') PUSH_ADDXLOOP(31000)
 
-    PRINT({0xD, "RAS:"})
-    exx
-    push HL
-    exx
-    pop HL
-    DUP_UDOT
-    ret
-    
-SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})    
+    PRINT({0xD, "Data stack:"}) DEPTH DOT    
+    PRINT({0xD, "RAS:"}) __RAS UDOT CR
     STOP
-SSEMICOLON

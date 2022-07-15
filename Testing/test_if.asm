@@ -8,8 +8,6 @@ ORG 0x8000
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-    ld  hl, stack_test
-    push hl
 
     
     ld   BC, string101  ; 3:10      print_i   Address of string101 ending with inverted most significant bit
@@ -19,27 +17,27 @@ ORG 0x8000
     ld   DE, 5          ; 3:10      push2(5,-5)
     push HL             ; 1:11      push2(5,-5)
     ld   HL, -5         ; 3:10      push2(5,-5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      push2(5,5)
     push HL             ; 1:11      push2(5,5)
     ld   HL, 5          ; 3:10      push2(5,5)
     ld    D, H          ; 1:4       push2(5,5)
     ld    E, L          ; 1:4       push2(5,5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      push2(-5,-5)
     push HL             ; 1:11      push2(-5,-5)
     ld   HL, -5         ; 3:10      push2(-5,-5)
     ld    D, H          ; 1:4       push2(-5,-5)
     ld    E, L          ; 1:4       push2(-5,-5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      push2(-5,5)
     ld   DE, -5         ; 3:10      push2(-5,5)
     push HL             ; 1:11      push2(-5,5)
     ld   HL, 5          ; 3:10      push2(-5,5) 
-    call x_x_test       ; 3:17      call ( -- ret ) R:( -- )
+    call x_x_test       ; 3:17      call ( -- )
     
     ld   BC, string102  ; 3:10      print_i   Address of string102 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -54,7 +52,7 @@ ORG 0x8000
     ld   HL, 0xFFFB     ; 3:10      pushdot(-5)   lo_word
     ld    E, H          ; 1:4       pushdot(-5)
     ld    D, H          ; 1:4       pushdot(-5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      pushdot(5)   ( -- hi lo )
     push HL             ; 1:11      pushdot(5)
@@ -66,7 +64,7 @@ ORG 0x8000
     ld   HL, 0x0005     ; 3:10      pushdot(5)   lo_word
     ld    E, H          ; 1:4       pushdot(5)
     ld    D, H          ; 1:4       pushdot(5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      pushdot(-5)   ( -- hi lo )
     push HL             ; 1:11      pushdot(-5)
@@ -78,7 +76,7 @@ ORG 0x8000
     ld   HL, 0xFFFB     ; 3:10      pushdot(-5)   lo_word
     ld    E, H          ; 1:4       pushdot(-5)
     ld    D, H          ; 1:4       pushdot(-5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     push DE             ; 1:11      pushdot(-5)   ( -- hi lo )
     push HL             ; 1:11      pushdot(-5)
@@ -90,47 +88,67 @@ ORG 0x8000
     ld   HL, 0x0005     ; 3:10      pushdot(5)   lo_word
     ld    E, H          ; 1:4       pushdot(5)
     ld    D, H          ; 1:4       pushdot(5)   hi word 
-    call d_d_test       ; 3:17      call ( -- ret ) R:( -- )
+    call d_d_test       ; 3:17      call ( -- )
     
     
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    call x_p3_test      ; 3:17      call ( -- ret ) R:( -- )
+    call x_p3_test      ; 3:17      call ( -- )
     
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call x_p3_test      ; 3:17      call ( -- ret ) R:( -- )
+    call x_p3_test      ; 3:17      call ( -- )
     
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    call x_m3_test      ; 3:17      call ( -- ret ) R:( -- )
+    call x_m3_test      ; 3:17      call ( -- )
     
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call x_m3_test      ; 3:17      call ( -- ret ) R:( -- )
+    call x_m3_test      ; 3:17      call ( -- )
 
     
     ld   BC, string103  ; 3:10      print_z   Address of null-terminated string103
-    call PRINT_STRING_Z ; 3:17      print_z
-    exx
-    push HL
-    exx
-    pop HL
+    call PRINT_STRING_Z ; 3:17      print_z 
+                        ;[13:72]    depth   ( -- +n )
+    push DE             ; 1:11      depth
+    ex   DE, HL         ; 1:4       depth
+    ld   HL,(Stop+1)    ; 3:16      depth
+    or    A             ; 1:4       depth
+    sbc  HL, SP         ; 2:15      depth
+    srl   H             ; 2:8       depth
+    rr    L             ; 2:8       depth
+    dec  HL             ; 1:6       depth 
+    call PRT_S16        ; 3:17      .   ( s -- )
     
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1
-    ret
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
+    call PRINT_STRING_Z ; 3:17      print_z 
+    ex   DE, HL         ; 1:4       __ras   ( -- return_address_stack )
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    pop  HL             ; 1:10      __ras 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
+;   =====  e n d  =====
     
 
 ;   ---  the beginning of a non-recursive function  ---
 x_x_test:               ;           
     pop  BC             ; 1:10      : ret
-    ld  (x_x_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (x_x_test_end+1),BC; 4:20      : ( ret -- )
     ; signed
      
     push DE             ; 1:11      2dup
@@ -148,7 +166,7 @@ x_x_test:               ;
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else101    ; 3:10      if 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105
     call PRINT_STRING_Z ; 3:17      print_z 
 else101  EQU $          ;           = endif
 endif101:
@@ -159,7 +177,7 @@ endif101:
     ld    A, D          ; 1:4       2dup = if
     sub   H             ; 1:4       2dup = if
     jp   nz, else102    ; 3:10      2dup = if 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string105
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string106
     call PRINT_STRING_Z ; 3:17      print_z 
 else102  EQU $          ;           = endif
 endif102:
@@ -171,7 +189,7 @@ endif102:
     pop  HL             ; 1:10      = if
     pop  DE             ; 1:10      = if
     jp   nz, else103    ; 3:10      = if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107
     call PRINT_STRING_Z ; 3:17      print_z 
 else103  EQU $          ;           = endif
 endif103:
@@ -188,7 +206,7 @@ endif103:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else104    ; 3:10      if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108
     call PRINT_STRING_Z ; 3:17      print_z 
 else104  EQU $          ;           = endif
 endif104:
@@ -199,7 +217,7 @@ endif104:
     ld    A, D          ; 1:4       2dup <> if
     sub   H             ; 1:4       2dup <> if
     jp    z, else105    ; 3:10      2dup <> if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string108
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string109
     call PRINT_STRING_Z ; 3:17      print_z 
 else105  EQU $          ;           = endif
 endif105:
@@ -211,7 +229,7 @@ endif105:
     pop  HL             ; 1:10      <> if
     pop  DE             ; 1:10      <> if
     jp    z, else106    ; 3:10      <> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110
     call PRINT_STRING_Z ; 3:17      print_z 
 else106  EQU $          ;           = endif
 endif106:
@@ -236,7 +254,7 @@ endif106:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else107    ; 3:10      if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111
     call PRINT_STRING_Z ; 3:17      print_z 
 else107  EQU $          ;           = endif
 endif107:
@@ -249,7 +267,7 @@ endif107:
     xor   D             ; 1:4       2dup < if
     xor   H             ; 1:4       2dup < if
     jp    p, else108    ; 3:10      2dup < if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string111
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string112
     call PRINT_STRING_Z ; 3:17      print_z 
 else108  EQU $          ;           = endif
 endif108:
@@ -266,7 +284,7 @@ endif108:
     pop  HL             ; 1:10      < if
     pop  DE             ; 1:10      < if
     jp    p, else109    ; 3:10      < if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113
     call PRINT_STRING_Z ; 3:17      print_z 
 else109  EQU $          ;           = endif
 endif109:
@@ -291,7 +309,7 @@ endif109:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else110    ; 3:10      if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114
     call PRINT_STRING_Z ; 3:17      print_z 
 else110  EQU $          ;           = endif
 endif110:
@@ -304,7 +322,7 @@ endif110:
     xor   D             ; 1:4       2dup <= if
     xor   H             ; 1:4       2dup <= if
     jp    m, else111    ; 3:10      2dup <= if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string114
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string115
     call PRINT_STRING_Z ; 3:17      print_z 
 else111  EQU $          ;           = endif
 endif111:
@@ -321,7 +339,7 @@ endif111:
     pop  HL             ; 1:10      <= if
     pop  DE             ; 1:10      <= if
     jp    m, else112    ; 3:10      <= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116
     call PRINT_STRING_Z ; 3:17      print_z 
 else112  EQU $          ;           = endif
 endif112:
@@ -346,7 +364,7 @@ endif112:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else113    ; 3:10      if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117
     call PRINT_STRING_Z ; 3:17      print_z 
 else113  EQU $          ;           = endif
 endif113:
@@ -359,7 +377,7 @@ endif113:
     xor   D             ; 1:4       2dup > if
     xor   H             ; 1:4       2dup > if
     jp    p, else114    ; 3:10      2dup > if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string117
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string118
     call PRINT_STRING_Z ; 3:17      print_z 
 else114  EQU $          ;           = endif
 endif114:
@@ -376,7 +394,7 @@ endif114:
     pop  HL             ; 1:10      > if
     pop  DE             ; 1:10      > if
     jp    p, else115    ; 3:10      > if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119
     call PRINT_STRING_Z ; 3:17      print_z 
 else115  EQU $          ;           = endif
 endif115:
@@ -401,7 +419,7 @@ endif115:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else116    ; 3:10      if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120
     call PRINT_STRING_Z ; 3:17      print_z 
 else116  EQU $          ;           = endif
 endif116:
@@ -414,7 +432,7 @@ endif116:
     xor   D             ; 1:4       2dup >= if
     xor   H             ; 1:4       2dup >= if
     jp    m, else117    ; 3:10      2dup >= if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string120
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string121
     call PRINT_STRING_Z ; 3:17      print_z 
 else117  EQU $          ;           = endif
 endif117:
@@ -431,18 +449,18 @@ endif117:
     pop  HL             ; 1:10      >= if
     pop  DE             ; 1:10      >= if
     jp    m, else118    ; 3:10      >= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122
     call PRINT_STRING_Z ; 3:17      print_z 
 else118  EQU $          ;           = endif
 endif118:
     
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A  
     ; unsigned
@@ -462,7 +480,7 @@ endif118:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else119    ; 3:10      if 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string122
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string123
     call PRINT_STRING_Z ; 3:17      print_z 
 else119  EQU $          ;           = endif
 endif119:
@@ -473,7 +491,7 @@ endif119:
     ld    A, D          ; 1:4       2dup u= if
     sub   H             ; 1:4       2dup u= if
     jp   nz, else120    ; 3:10      2dup u= if 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string123
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string124
     call PRINT_STRING_Z ; 3:17      print_z 
 else120  EQU $          ;           = endif
 endif120:
@@ -485,7 +503,7 @@ endif120:
     pop  HL             ; 1:10      u= if
     pop  DE             ; 1:10      u= if
     jp   nz, else121    ; 3:10      u= if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string124
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string125
     call PRINT_STRING_Z ; 3:17      print_z 
 else121  EQU $          ;           = endif
 endif121:
@@ -502,7 +520,7 @@ endif121:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else122    ; 3:10      if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string125
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string126
     call PRINT_STRING_Z ; 3:17      print_z 
 else122  EQU $          ;           = endif
 endif122:
@@ -513,7 +531,7 @@ endif122:
     ld    A, D          ; 1:4       2dup u<> if
     sbc   A, H          ; 1:4       2dup u<> if
     jp    z, else123    ; 3:10      2dup u<> if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string126
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string127
     call PRINT_STRING_Z ; 3:17      print_z 
 else123  EQU $          ;           = endif
 endif123:
@@ -525,7 +543,7 @@ endif123:
     pop  HL             ; 1:10      u<> if
     pop  DE             ; 1:10      u<> if
     jp    z, else124    ; 3:10      u<> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string127
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string128
     call PRINT_STRING_Z ; 3:17      print_z 
 else124  EQU $          ;           = endif
 endif124:
@@ -544,7 +562,7 @@ endif124:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else125    ; 3:10      if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string128
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string129
     call PRINT_STRING_Z ; 3:17      print_z 
 else125  EQU $          ;           = endif
 endif125:
@@ -554,7 +572,7 @@ endif125:
     ld    A, D          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     jp   nc, else126    ; 3:10      2dup u< if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string129
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string130
     call PRINT_STRING_Z ; 3:17      print_z 
 else126  EQU $          ;           = endif
 endif126:
@@ -568,7 +586,7 @@ endif126:
     pop  HL             ; 1:10      u< if
     pop  DE             ; 1:10      u< if
     jp   nc, else127    ; 3:10      u< if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string130
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string131
     call PRINT_STRING_Z ; 3:17      print_z 
 else127  EQU $          ;           = endif
 endif127:
@@ -585,7 +603,7 @@ endif127:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else128    ; 3:10      if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string131
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string132
     call PRINT_STRING_Z ; 3:17      print_z 
 else128  EQU $          ;           = endif
 endif128:
@@ -595,7 +613,7 @@ endif128:
     ld    A, H          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sbc   A, D          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     jp    c, else129    ; 3:10      2dup u<= if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string132
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string133
     call PRINT_STRING_Z ; 3:17      print_z 
 else129  EQU $          ;           = endif
 endif129:
@@ -609,7 +627,7 @@ endif129:
     pop  HL             ; 1:10      u<= if
     pop  DE             ; 1:10      u<= if
     jp    c, else130    ; 3:10      u<= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string133
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string134
     call PRINT_STRING_Z ; 3:17      print_z 
 else130  EQU $          ;           = endif
 endif130:
@@ -625,7 +643,7 @@ endif130:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else131    ; 3:10      if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string134
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string135
     call PRINT_STRING_Z ; 3:17      print_z 
 else131  EQU $          ;           = endif
 endif131:
@@ -635,7 +653,7 @@ endif131:
     ld    A, H          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     sbc   A, D          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     jp   nc, else132    ; 3:10      2dup u> if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string135
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string136
     call PRINT_STRING_Z ; 3:17      print_z 
 else132  EQU $          ;           = endif
 endif132:
@@ -649,7 +667,7 @@ endif132:
     pop  HL             ; 1:10      u> if
     pop  DE             ; 1:10      u> if
     jp   nc, else133    ; 3:10      u> if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string136
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string137
     call PRINT_STRING_Z ; 3:17      print_z 
 else133  EQU $          ;           = endif
 endif133:
@@ -665,7 +683,7 @@ endif133:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else134    ; 3:10      if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string137
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string138
     call PRINT_STRING_Z ; 3:17      print_z 
 else134  EQU $          ;           = endif
 endif134:
@@ -675,7 +693,7 @@ endif134:
     ld    A, D          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     jp    c, else135    ; 3:10      2dup u>= if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string138
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string139
     call PRINT_STRING_Z ; 3:17      print_z 
 else135  EQU $          ;           = endif
 endif135:
@@ -689,14 +707,14 @@ endif135:
     pop  HL             ; 1:10      u>= if
     pop  DE             ; 1:10      u>= if
     jp    c, else136    ; 3:10      u>= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string139
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string140
     call PRINT_STRING_Z ; 3:17      print_z 
 else136  EQU $          ;           = endif
 endif136:
     
     ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -708,7 +726,7 @@ x_x_test_end:
 ;   ---  the beginning of a non-recursive function  ---
 d_d_test:               ;           
     pop  BC             ; 1:10      : ret
-    ld  (d_d_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (d_d_test_end+1),BC; 4:20      : ( ret -- )
     ; signed
      
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
@@ -737,7 +755,7 @@ d_d_test:               ;
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else137    ; 3:10      if 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string140
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string141
     call PRINT_STRING_Z ; 3:17      print_z 
 else137  EQU $          ;           = endif
 endif137:
@@ -754,7 +772,7 @@ endif137:
     ex  (SP),HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= if   h2 l2 . h1 l1
     jp   nz, else138    ; 3:10      4dup D= if   h2 l2 . h1 l1 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string141
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string142
     call PRINT_STRING_Z ; 3:17      print_z 
 else138  EQU $          ;           = endif
 endif138:
@@ -778,7 +796,7 @@ endif138:
     pop  HL             ; 1:10      D= if
     pop  DE             ; 1:10      D= if
     jp   nz, else139    ; 3:10      D= if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string142
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string143
     call PRINT_STRING_Z ; 3:17      print_z 
 else139  EQU $          ;           = endif
 endif139:
@@ -807,7 +825,7 @@ endif139:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else140    ; 3:10      if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string143
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string144
     call PRINT_STRING_Z ; 3:17      print_z 
 else140  EQU $          ;           = endif
 endif140:
@@ -829,7 +847,7 @@ endif140:
     sub   D             ; 1:4       4dup D<> if   h2    . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
     jp    z, else141    ; 3:10      4dup D<> if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string144
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string145
     call PRINT_STRING_Z ; 3:17      print_z 
 else141  EQU $          ;           = endif
 endif141:
@@ -853,7 +871,7 @@ endif141:
     pop  HL             ; 1:10      D<> if
     pop  DE             ; 1:10      D<> if
     jp    z, else142    ; 3:10      D<> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string145
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string146
     call PRINT_STRING_Z ; 3:17      print_z 
 else142  EQU $          ;           = endif
 endif142:
@@ -889,7 +907,7 @@ endif142:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else143    ; 3:10      if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string146
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string147
     call PRINT_STRING_Z ; 3:17      print_z 
 else143  EQU $          ;           = endif
 endif143:
@@ -897,7 +915,7 @@ endif143:
                         ;[6:27]     4dup D< if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DLT   ; 3:17      4dup D< if   carry if true
     jp   nc, else144    ; 3:10      4dup D< if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string147
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string148
     call PRINT_STRING_Z ; 3:17      print_z 
 else144  EQU $          ;           = endif
 endif144:
@@ -928,7 +946,7 @@ endif144:
     pop  HL             ; 1:10      D< if
     pop  DE             ; 1:10      D< if
     jp    p, else145    ; 3:10      D< if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string148
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string149
     call PRINT_STRING_Z ; 3:17      print_z 
 else145  EQU $          ;           = endif
 endif145:
@@ -965,7 +983,7 @@ endif145:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else146    ; 3:10      if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string149
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string150
     call PRINT_STRING_Z ; 3:17      print_z 
 else146  EQU $          ;           = endif
 endif146:
@@ -973,7 +991,7 @@ endif146:
                         ;[6:27]     4dup D<= if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D<= if   D> carry if true --> D<= carry if false
     jp    c, else147    ; 3:10      4dup D<= if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string150
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string151
     call PRINT_STRING_Z ; 3:17      print_z 
 else147  EQU $          ;           = endif
 endif147:
@@ -1002,7 +1020,7 @@ endif147:
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
     jp    m, else148    ; 3:10      D<= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string151
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string152
     call PRINT_STRING_Z ; 3:17      print_z 
 else148  EQU $          ;           = endif
 endif148:
@@ -1038,7 +1056,7 @@ endif148:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else149    ; 3:10      if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string152
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string153
     call PRINT_STRING_Z ; 3:17      print_z 
 else149  EQU $          ;           = endif
 endif149:
@@ -1046,7 +1064,7 @@ endif149:
                         ;[6:27]     4dup D> if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D> if   carry if true
     jp   nc, else150    ; 3:10      4dup D> if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string153
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string154
     call PRINT_STRING_Z ; 3:17      print_z 
 else150  EQU $          ;           = endif
 endif150:
@@ -1075,7 +1093,7 @@ endif150:
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
     jp    p, else151    ; 3:10      D> if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string154
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string155
     call PRINT_STRING_Z ; 3:17      print_z 
 else151  EQU $          ;           = endif
 endif151:
@@ -1109,7 +1127,7 @@ endif151:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else152    ; 3:10      if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string155
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string156
     call PRINT_STRING_Z ; 3:17      print_z 
 else152  EQU $          ;           = endif
 endif152:
@@ -1117,7 +1135,7 @@ endif152:
                         ;[6:27]     4dup D>= if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DLT   ; 3:17      4dup D>= if   D< carry if true --> D>= carry if false
     jp    c, else153    ; 3:10      4dup D>= if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string156
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string157
     call PRINT_STRING_Z ; 3:17      print_z 
 else153  EQU $          ;           = endif
 endif153:
@@ -1148,7 +1166,7 @@ endif153:
     pop  HL             ; 1:10      D>= if
     pop  DE             ; 1:10      D>= if
     jp    m, else154    ; 3:10      D>= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string157
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string158
     call PRINT_STRING_Z ; 3:17      print_z 
 else154  EQU $          ;           = endif
 endif154:
@@ -1163,10 +1181,10 @@ endif154:
     ex  (SP),HL         ; 1:19      2over d c b a . b c
     ld    D, B          ; 1:4       2over
     ld    E, C          ; 1:4       2over d c b a . d c 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_S32        ; 3:17      d.   ( d -- ) 
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    call PRINT_S32      ; 3:17      d. 
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ; unsigned
@@ -1197,7 +1215,7 @@ endif154:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else155    ; 3:10      if 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string158
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string159
     call PRINT_STRING_Z ; 3:17      print_z 
 else155  EQU $          ;           = endif
 endif155:
@@ -1214,7 +1232,7 @@ endif155:
     ex  (SP),HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= if   h2 l2 . h1 l1
     jp   nz, else156    ; 3:10      4dup D= if   h2 l2 . h1 l1 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string159
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string160
     call PRINT_STRING_Z ; 3:17      print_z 
 else156  EQU $          ;           = endif
 endif156:
@@ -1238,7 +1256,7 @@ endif156:
     pop  HL             ; 1:10      D= if
     pop  DE             ; 1:10      D= if
     jp   nz, else157    ; 3:10      D= if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string160
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string161
     call PRINT_STRING_Z ; 3:17      print_z 
 else157  EQU $          ;           = endif
 endif157:
@@ -1267,7 +1285,7 @@ endif157:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else158    ; 3:10      if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string161
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string162
     call PRINT_STRING_Z ; 3:17      print_z 
 else158  EQU $          ;           = endif
 endif158:
@@ -1289,7 +1307,7 @@ endif158:
     sub   D             ; 1:4       4dup D<> if   h2    . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
     jp    z, else159    ; 3:10      4dup D<> if 
-    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string162
+    ld   BC, string108  ; 3:10      print_z   Address of null-terminated string108 == string163
     call PRINT_STRING_Z ; 3:17      print_z 
 else159  EQU $          ;           = endif
 endif159:
@@ -1313,7 +1331,7 @@ endif159:
     pop  HL             ; 1:10      D<> if
     pop  DE             ; 1:10      D<> if
     jp    z, else160    ; 3:10      D<> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string163
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string164
     call PRINT_STRING_Z ; 3:17      print_z 
 else160  EQU $          ;           = endif
 endif160:
@@ -1342,7 +1360,7 @@ endif160:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else161    ; 3:10      if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string164
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string165
     call PRINT_STRING_Z ; 3:17      print_z 
 else161  EQU $          ;           = endif
 endif161:
@@ -1361,7 +1379,7 @@ endif161:
     ex  (SP),HL         ; 1:19      4dup Du< if
     push BC             ; 1:11      4dup Du< if
     jp   nc, else162    ; 3:10      4dup D< if 
-    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string165
+    ld   BC, string111  ; 3:10      print_z   Address of null-terminated string111 == string166
     call PRINT_STRING_Z ; 3:17      print_z 
 else162  EQU $          ;           = endif
 endif162:
@@ -1386,7 +1404,7 @@ endif162:
     pop  HL             ; 1:10      Du< if
     pop  DE             ; 1:10      Du< if
     jp   nc, else163    ; 3:10      Du< if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string166
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string167
     call PRINT_STRING_Z ; 3:17      print_z 
 else163  EQU $          ;           = endif
 endif163:
@@ -1416,7 +1434,7 @@ endif163:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else164    ; 3:10      if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string167
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string168
     call PRINT_STRING_Z ; 3:17      print_z 
 else164  EQU $          ;           = endif
 endif164:
@@ -1435,7 +1453,7 @@ endif164:
     ex  (SP),HL         ; 1:19      4dup Du<= if
     push BC             ; 1:11      4dup Du<= if
     jp    c, else165    ; 3:10      4dup D<= if 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string168
+    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114 == string169
     call PRINT_STRING_Z ; 3:17      print_z 
 else165  EQU $          ;           = endif
 endif165:
@@ -1459,7 +1477,7 @@ endif165:
     pop  HL             ; 1:10      Du<= if
     pop  DE             ; 1:10      Du<= if
     jp    c, else166    ; 3:10      Du<= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string169
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string170
     call PRINT_STRING_Z ; 3:17      print_z 
 else166  EQU $          ;           = endif
 endif166:
@@ -1491,7 +1509,7 @@ endif166:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else167    ; 3:10      if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string170
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string171
     call PRINT_STRING_Z ; 3:17      print_z 
 else167  EQU $          ;           = endif
 endif167:
@@ -1510,7 +1528,7 @@ endif167:
     ex  (SP),HL         ; 1:19      4dup Du> if
     push BC             ; 1:11      4dup Du> if
     jp   nc, else168    ; 3:10      4dup D> if 
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string171
+    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117 == string172
     call PRINT_STRING_Z ; 3:17      print_z 
 else168  EQU $          ;           = endif
 endif168:
@@ -1534,7 +1552,7 @@ endif168:
     pop  HL             ; 1:10      Du> if
     pop  DE             ; 1:10      Du> if
     jp   nc, else169    ; 3:10      Du> if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string172
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string173
     call PRINT_STRING_Z ; 3:17      print_z 
 else169  EQU $          ;           = endif
 endif169:
@@ -1564,7 +1582,7 @@ endif169:
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
     jp    z, else170    ; 3:10      if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string173
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string174
     call PRINT_STRING_Z ; 3:17      print_z 
 else170  EQU $          ;           = endif
 endif170:
@@ -1583,7 +1601,7 @@ endif170:
     ex  (SP),HL         ; 1:19      4dup Du>= if
     push BC             ; 1:11      4dup Du>= if
     jp    c, else171    ; 3:10      4dup D>= if 
-    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string174
+    ld   BC, string120  ; 3:10      print_z   Address of null-terminated string120 == string175
     call PRINT_STRING_Z ; 3:17      print_z 
 else171  EQU $          ;           = endif
 endif171:
@@ -1608,7 +1626,7 @@ endif171:
     pop  HL             ; 1:10      Du>= if
     pop  DE             ; 1:10      Du>= if
     jp    c, else172    ; 3:10      Du>= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string175
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string176
     call PRINT_STRING_Z ; 3:17      print_z 
 else172  EQU $          ;           = endif
 endif172:
@@ -1620,8 +1638,8 @@ endif172:
     ex  (SP),HL         ; 1:19      2swap b   . c d
     ex   DE, HL         ; 1:4       2swap b   . d c
     push AF             ; 1:11      2swap b a . d c 
-    call PRINT_U32      ; 3:17      ud. 
-    call PRINT_U32      ; 3:17      ud. 
+    call PRT_U32        ; 3:17      ud.   ( ud -- ) 
+    call PRT_SP_U32     ; 3:17      space ud.   ( ud -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1634,24 +1652,24 @@ d_d_test_end:
 ;   ---  the beginning of a non-recursive function  ---
 x_p3_test:              ;           
     pop  BC             ; 1:10      : ret
-    ld  (x_p3_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (x_p3_test_end+1),BC; 4:20      : ( ret -- )
     
-                        ;[7:25]     dup 3 = if   variant: hi(3) = zero
-    ld    A, low 3      ; 2:7       dup 3 = if
-    xor   L             ; 1:4       dup 3 = if
-    or    H             ; 1:4       dup 3 = if
+                      ;[7:25/25,25] dup 3 = if   ( x1 -- x1 )   3 == HL
+    ld    A, 0x03       ; 2:7       dup 3 = if
+    xor   L             ; 1:4       dup 3 = if   x[1] = 0x03
+    or    H             ; 1:4       dup 3 = if   x[2] = 0
     jp   nz, else173    ; 3:10      dup 3 = if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string176
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string177
     call PRINT_STRING_Z ; 3:17      print_z 
 else173  EQU $          ;           = endif
 endif173:
     
-                        ;[7:25]     dup 3 <> if   variant: hi(3) = zero
-    ld    A, low 3      ; 2:7       dup 3 <> if
-    xor   L             ; 1:4       dup 3 <> if
-    or    H             ; 1:4       dup 3 <> if
+                      ;[7:25/25,25] dup 3 <> if   ( x1 -- x1 )   3 <> HL
+    ld    A, 0x03       ; 2:7       dup 3 <> if
+    xor   L             ; 1:4       dup 3 <> if   x[1] = 0x03
+    or    H             ; 1:4       dup 3 <> if   x[2] = 0
     jp    z, else174    ; 3:10      dup 3 <> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string177
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string178
     call PRINT_STRING_Z ; 3:17      print_z 
 else174  EQU $          ;           = endif
 endif174:
@@ -1664,7 +1682,7 @@ endif174:
     ld    A, H          ; 1:4       dup 3 < if    HL<3 --> HL-3<0 --> carry if true
     sbc   A, high 3     ; 2:7       dup 3 < if    HL<3 --> HL-3<0 --> carry if true
     jp   nc, else175    ; 3:10      dup 3 < if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string178
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string179
     call PRINT_STRING_Z ; 3:17      print_z 
 else175  EQU $          ;           = endif
 endif175:
@@ -1677,7 +1695,7 @@ endif175:
     ld    A, high 3     ; 2:7       dup 3 <= if    HL<=3 --> 0<=3-HL --> not carry if true
     sbc   A, H          ; 1:4       dup 3 <= if    HL<=3 --> 0<=3-HL --> not carry if true
     jp    c, else176    ; 3:10      dup 3 <= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string179
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string180
     call PRINT_STRING_Z ; 3:17      print_z 
 else176  EQU $          ;           = endif
 endif176:
@@ -1690,7 +1708,7 @@ endif176:
     ld    A, high 3     ; 2:7       dup 3 > if    HL>3 --> 0>3-HL --> carry if true
     sbc   A, H          ; 1:4       dup 3 > if    HL>3 --> 0>3-HL --> carry if true
     jp   nc, else177    ; 3:10      dup 3 > if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string180
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string181
     call PRINT_STRING_Z ; 3:17      print_z 
 else177  EQU $          ;           = endif
 endif177:
@@ -1703,7 +1721,7 @@ endif177:
     ld    A, H          ; 1:4       dup 3 >= if    HL>=3 --> HL-3>=0 --> not carry if true
     sbc   A, high 3     ; 2:7       dup 3 >= if    HL>=3 --> HL-3>=0 --> not carry if true
     jp    c, else178    ; 3:10      dup 3 >= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string181
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string182
     call PRINT_STRING_Z ; 3:17      print_z 
 else178  EQU $          ;           = endif
 endif178:
@@ -1711,11 +1729,11 @@ endif178:
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -1724,7 +1742,7 @@ endif178:
     xor   L             ; 1:4       dup 3 u= if
     or    H             ; 1:4       dup 3 u= if
     jp   nz, else179    ; 3:10      dup 3 u= if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string182
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string183
     call PRINT_STRING_Z ; 3:17      print_z 
 else179  EQU $          ;           = endif
 endif179:
@@ -1734,7 +1752,7 @@ endif179:
     xor   L             ; 1:4       dup 3 u<> if
     or    H             ; 1:4       dup 3 u<> if
     jp    z, else180    ; 3:10      dup 3 u<> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string183
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string184
     call PRINT_STRING_Z ; 3:17      print_z 
 else180  EQU $          ;           = endif
 endif180:
@@ -1744,7 +1762,7 @@ endif180:
     ld    A, H          ; 1:4       dup 3 u< if    HL<3 --> HL-3<0 --> carry if true
     sbc   A, high 3     ; 2:7       dup 3 u< if    HL<3 --> HL-3<0 --> carry if true
     jp   nc, else181    ; 3:10      dup 3 u< if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string184
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string185
     call PRINT_STRING_Z ; 3:17      print_z 
 else181  EQU $          ;           = endif
 endif181:
@@ -1754,7 +1772,7 @@ endif181:
     ld    A, high 3     ; 2:7       dup 3 u<= if    HL<=3 --> 0<=3-HL --> not carry if true
     sbc   A, H          ; 1:4       dup 3 u<= if    HL<=3 --> 0<=3-HL --> not carry if true
     jp    c, else182    ; 3:10      dup 3 u<= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string185
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string186
     call PRINT_STRING_Z ; 3:17      print_z 
 else182  EQU $          ;           = endif
 endif182:
@@ -1764,7 +1782,7 @@ endif182:
     ld    A, high 3     ; 2:7       dup 3 u> if    HL>3 --> 0>3-HL --> carry if true
     sbc   A, H          ; 1:4       dup 3 u> if    HL>3 --> 0>3-HL --> carry if true
     jp   nc, else183    ; 3:10      dup 3 u> if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string186
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string187
     call PRINT_STRING_Z ; 3:17      print_z 
 else183  EQU $          ;           = endif
 endif183:
@@ -1774,16 +1792,16 @@ endif183:
     ld    A, H          ; 1:4       dup 3 u>= if    HL>=3 --> HL-3>=0 --> not carry if true
     sbc   A, high 3     ; 2:7       dup 3 u>= if    HL>=3 --> HL-3>=0 --> not carry if true
     jp    c, else184    ; 3:10      dup 3 u>= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string187
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string188
     call PRINT_STRING_Z ; 3:17      print_z 
 else184  EQU $          ;           = endif
 endif184:
     
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
     push DE             ; 1:11      push(3)
     ex   DE, HL         ; 1:4       push(3)
     ld   HL, 3          ; 3:10      push(3) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1796,28 +1814,26 @@ x_p3_test_end:
 ;   ---  the beginning of a non-recursive function  ---
 x_m3_test:              ;           
     pop  BC             ; 1:10      : ret
-    ld  (x_m3_test_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (x_m3_test_end+1),BC; 4:20      : ( ret -- )
     
-                        ;[11:18/39] dup -3 = if   variant: hi(-3) = 255
-    ld    A, H          ; 1:4       dup -3 = if
-    inc   A             ; 1:4       dup -3 = if
-    jp   nz, else185    ; 3:10      dup -3 = if
-    ld    A, low -3     ; 2:7       dup -3 = if
-    xor   L             ; 1:4       dup -3 = if
+                      ;[8:29/29,29] dup -3 = if   ( x1 -- x1 )   -3 == HL
+    ld    A, L          ; 1:4       dup -3 = if
+    xor   0x02          ; 2:7       dup -3 = if   x[1] = 0xFF ^ 0x02
+    and   H             ; 1:4       dup -3 = if
+    inc   A             ; 1:4       dup -3 = if   x[2] = 0xFF
     jp   nz, else185    ; 3:10      dup -3 = if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string188
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string189
     call PRINT_STRING_Z ; 3:17      print_z 
 else185  EQU $          ;           = endif
 endif185:
     
-                        ;[10:20/36] dup -3 <> if   variant: hi(-3) = 255
-    ld    A, H          ; 1:4       dup -3 <> if
-    inc   A             ; 1:4       dup -3 <> if
-    jr   nz, $+8        ; 2:7/12    dup -3 <> if
-    ld    A, low -3     ; 2:7       dup -3 <> if
-    xor   L             ; 1:4       dup -3 <> if
+                      ;[8:29/29,29] dup -3 <> if   ( x1 -- x1 )   -3 <> HL
+    ld    A, L          ; 1:4       dup -3 <> if
+    xor   0x02          ; 2:7       dup -3 <> if   x[1] = 0xFF ^ 0x02
+    and   H             ; 1:4       dup -3 <> if
+    inc   A             ; 1:4       dup -3 <> if   x[2] = 0xFF
     jp    z, else186    ; 3:10      dup -3 <> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string189
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string190
     call PRINT_STRING_Z ; 3:17      print_z 
 else186  EQU $          ;           = endif
 endif186:
@@ -1830,7 +1846,7 @@ endif186:
     ld    A, H          ; 1:4       dup -3 < if    HL<-3 --> HL--3<0 --> carry if true
     sbc   A, high -3    ; 2:7       dup -3 < if    HL<-3 --> HL--3<0 --> carry if true
     jp   nc, else187    ; 3:10      dup -3 < if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string190
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string191
     call PRINT_STRING_Z ; 3:17      print_z 
 else187  EQU $          ;           = endif
 endif187:
@@ -1843,7 +1859,7 @@ endif187:
     ld    A, high -3    ; 2:7       dup -3 <= if    HL<=-3 --> 0<=-3-HL --> not carry if true
     sbc   A, H          ; 1:4       dup -3 <= if    HL<=-3 --> 0<=-3-HL --> not carry if true
     jp    c, else188    ; 3:10      dup -3 <= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string191
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string192
     call PRINT_STRING_Z ; 3:17      print_z 
 else188  EQU $          ;           = endif
 endif188:
@@ -1856,7 +1872,7 @@ endif188:
     ld    A, high -3    ; 2:7       dup -3 > if    HL>-3 --> 0>-3-HL --> carry if true
     sbc   A, H          ; 1:4       dup -3 > if    HL>-3 --> 0>-3-HL --> carry if true
     jp   nc, else189    ; 3:10      dup -3 > if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string192
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string193
     call PRINT_STRING_Z ; 3:17      print_z 
 else189  EQU $          ;           = endif
 endif189:
@@ -1869,7 +1885,7 @@ endif189:
     ld    A, H          ; 1:4       dup -3 >= if    HL>=-3 --> HL--3>=0 --> not carry if true
     sbc   A, high -3    ; 2:7       dup -3 >= if    HL>=-3 --> HL--3>=0 --> not carry if true
     jp    c, else190    ; 3:10      dup -3 >= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string193
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string194
     call PRINT_STRING_Z ; 3:17      print_z 
 else190  EQU $          ;           = endif
 endif190:
@@ -1877,11 +1893,11 @@ endif190:
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
     
@@ -1892,7 +1908,7 @@ endif190:
     ld    A, low -3     ; 2:7       dup -3 u= if
     xor   L             ; 1:4       dup -3 u= if
     jp   nz, else191    ; 3:10      dup -3 u= if 
-    ld   BC, string106  ; 3:10      print_z   Address of null-terminated string106 == string194
+    ld   BC, string107  ; 3:10      print_z   Address of null-terminated string107 == string195
     call PRINT_STRING_Z ; 3:17      print_z 
 else191  EQU $          ;           = endif
 endif191:
@@ -1904,7 +1920,7 @@ endif191:
     ld    A, low -3     ; 2:7       dup -3 u<> if
     xor   L             ; 1:4       dup -3 u<> if
     jp    z, else192    ; 3:10      dup -3 u<> if 
-    ld   BC, string109  ; 3:10      print_z   Address of null-terminated string109 == string195
+    ld   BC, string110  ; 3:10      print_z   Address of null-terminated string110 == string196
     call PRINT_STRING_Z ; 3:17      print_z 
 else192  EQU $          ;           = endif
 endif192:
@@ -1914,7 +1930,7 @@ endif192:
     ld    A, H          ; 1:4       dup -3 u< if    HL<-3 --> HL--3<0 --> carry if true
     sbc   A, high -3    ; 2:7       dup -3 u< if    HL<-3 --> HL--3<0 --> carry if true
     jp   nc, else193    ; 3:10      dup -3 u< if 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112 == string196
+    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113 == string197
     call PRINT_STRING_Z ; 3:17      print_z 
 else193  EQU $          ;           = endif
 endif193:
@@ -1924,7 +1940,7 @@ endif193:
     ld    A, high -3    ; 2:7       dup -3 u<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
     sbc   A, H          ; 1:4       dup -3 u<= if    HL<=-3 --> 0<=-3-HL --> not carry if true
     jp    c, else194    ; 3:10      dup -3 u<= if 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115 == string197
+    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116 == string198
     call PRINT_STRING_Z ; 3:17      print_z 
 else194  EQU $          ;           = endif
 endif194:
@@ -1934,7 +1950,7 @@ endif194:
     ld    A, high -3    ; 2:7       dup -3 u> if    HL>-3 --> 0>-3-HL --> carry if true
     sbc   A, H          ; 1:4       dup -3 u> if    HL>-3 --> 0>-3-HL --> carry if true
     jp   nc, else195    ; 3:10      dup -3 u> if 
-    ld   BC, string118  ; 3:10      print_z   Address of null-terminated string118 == string198
+    ld   BC, string119  ; 3:10      print_z   Address of null-terminated string119 == string199
     call PRINT_STRING_Z ; 3:17      print_z 
 else195  EQU $          ;           = endif
 endif195:
@@ -1944,16 +1960,16 @@ endif195:
     ld    A, H          ; 1:4       dup -3 u>= if    HL>=-3 --> HL--3>=0 --> not carry if true
     sbc   A, high -3    ; 2:7       dup -3 u>= if    HL>=-3 --> HL--3>=0 --> not carry if true
     jp    c, else196    ; 3:10      dup -3 u>= if 
-    ld   BC, string121  ; 3:10      print_z   Address of null-terminated string121 == string199
+    ld   BC, string122  ; 3:10      print_z   Address of null-terminated string122 == string200
     call PRINT_STRING_Z ; 3:17      print_z 
 else196  EQU $          ;           = endif
 endif196:
     
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
     push DE             ; 1:11      push(-3)
     ex   DE, HL         ; 1:4       push(-3)
     ld   HL, -3         ; 3:10      push(-3) 
-    call PRINT_U16      ; 3:17      u.   ( u -- ) 
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -1961,96 +1977,82 @@ x_m3_test_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
 
-
-
-;   ---  the beginning of a data stack function  ---
-stack_test:             ;           
-    
-    ld   BC, string200  ; 3:10      print_z   Address of null-terminated string200
-    call PRINT_STRING_Z ; 3:17      print_z
-    
-Stop:                   ;           stop
-    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
-    ld   HL, 0x2758     ; 3:10      stop
-    exx                 ; 1:4       stop
-    ret                 ; 1:10      stop
-;   =====  e n d  =====
-
-stack_test_end:
-    ret                 ; 1:10      s;
-;   ---------  end of data stack function  ---------
-
 ;==============================================================================
 ; ( hi lo -- )
-; Input: HL
+; Input: DEHL
 ; Output: Print space and signed decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_S32:              ;           print_s32
-    ld    A, D          ; 1:4       print_s32
-    add   A, A          ; 1:4       print_s32
-    jr   nc, PRINT_U32  ; 2:7/12    print_s32
-    call NEGATE_32      ; 3:17      print_s32
-    ld    A, ' '        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s32   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s32   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s32   ld   BC, **
-    ; fall to print_u32dnl
-
+PRT_SP_S32:             ;           prt_sp_s32
+    ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_s32
+;------------------------------------------------------------------------------
+; ( hi lo -- )
+; Input: DEHL
+; Output: Print signed decimal number in DEHL
+; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+PRT_S32:                ;           prt_s32
+    ld    A, D          ; 1:4       prt_s32
+    add   A, A          ; 1:4       prt_s32
+    jr   nc, PRT_U32    ; 2:7/12    prt_s32
+    ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with ZX 48K ROM
+    call NEGATE_32      ; 3:17      prt_s32
+    jr   PRT_U32        ; 2:12      prt_s32
 ;==============================================================================
-; Input: HL
+; Input: DEHL
 ; Output: Print space and unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32:              ;           print_u32
-    ld    A, ' '        ; 2:7       print_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u32   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u32_only
+PRT_SP_U32:             ;           prt_sp_u32
+    ld    A, ' '        ; 2:7       prt_sp_u32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u32   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_u32
 ;------------------------------------------------------------------------------
-; Input: HL
+; Input: DEHL
 ; Output: Print unsigned decimal number in DEHL
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
-PRINT_U32_ONLY:         ;           print_u32_only
-    xor   A             ; 1:4       print_u32_only   A=0 => 103, A='0' => 00103
-    push IX             ; 2:15      print_u32_only
-    ex   DE, HL         ; 1:4       print_u32_only   HL = hi word
-    ld  IXl, E          ; 2:8       print_u32_only
-    ld  IXh, D          ; 2:8       print_u32_only   IX = lo word
-    ld   DE, 0x3600     ; 3:10      print_u32_only   C4 65 36 00 = -1000000000
-    ld   BC, 0xC465     ; 3:10      print_u32_only
-    call BIN32_DEC+2    ; 3:17      print_u32_only
-    ld    D, 0x1F       ; 2:7       print_u32_only   FA 0A 1F 00 = -100000000
-    ld   BC, 0xFA0A     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x6980     ; 3:10      print_u32_only   FF 67 69 80 = -10000000
-    ld   BC, 0xFF67     ; 3:10      print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xBDC0     ; 3:10      print_u32_only   FF F0 BD C0 = -1000000
-    ld    C, 0xF0       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0x7960     ; 3:10      print_u32_only   FF FE 79 60 = -100000
-    ld    C, 0xFE       ; 2:7       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xD8F0     ; 3:10      print_u32_only   FF FF D8 F0 = -10000
-    ld    C, B          ; 1:4       print_u32_only
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFC18     ; 3:10      print_u32_only   FF FF FC 18 = -1000
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld   DE, 0xFF9C     ; 3:10      print_u32_only   FF FF FF 9C = -100
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    E, 0xF6       ; 2:7       print_u32_only   FF FF FF F6 = -10
-    call BIN32_DEC      ; 3:17      print_u32_only
-    ld    A, IXl        ; 2:8       print_u32_only
-    pop  IX             ; 2:14      print_u32_only
-    pop  BC             ; 1:10      print_u32_only   load ret
-    pop  HL             ; 1:10      print_u32_only
-    pop  DE             ; 1:10      print_u32_only
-    push BC             ; 1:10      print_u32_only   save ret
-    jr   BIN32_DEC_CHAR ; 2:12      print_u32_only
+PRT_U32:                ;           prt_u32
+    xor   A             ; 1:4       prt_u32   HL = 103 & A=0 => 103, HL = 103 & A='0' => 00103
+    push IX             ; 2:15      prt_u32
+    ex   DE, HL         ; 1:4       prt_u32   HL = hi word
+    ld  IXl, E          ; 2:8       prt_u32
+    ld  IXh, D          ; 2:8       prt_u32   IX = lo word
+    ld   DE, 0x3600     ; 3:10      prt_u32   C4 65 36 00 = -1000000000
+    ld   BC, 0xC465     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    D, 0x1F       ; 2:7       prt_u32   FA 0A 1F 00 = -100000000
+    ld   BC, 0xFA0A     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x6980     ; 3:10      prt_u32   FF 67 69 80 = -10000000
+    ld   BC, 0xFF67     ; 3:10      prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xBDC0     ; 3:10      prt_u32   FF F0 BD C0 = -1000000
+    ld    C, 0xF0       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0x7960     ; 3:10      prt_u32   FF FE 79 60 = -100000
+    ld    C, 0xFE       ; 2:7       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xD8F0     ; 3:10      prt_u32   FF FF D8 F0 = -10000
+    ld    C, B          ; 1:4       prt_u32
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFC18     ; 3:10      prt_u32   FF FF FC 18 = -1000
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld   DE, 0xFF9C     ; 3:10      prt_u32   FF FF FF 9C = -100
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    E, 0xF6       ; 2:7       prt_u32   FF FF FF F6 = -10
+    call BIN32_DEC      ; 3:17      prt_u32
+    ld    A, IXl        ; 2:8       prt_u32
+    pop  IX             ; 2:14      prt_u32
+    pop  BC             ; 1:10      prt_u32   load ret
+    pop  HL             ; 1:10      prt_u32
+    pop  DE             ; 1:10      prt_u32
+    push BC             ; 1:11      prt_u32   save ret
+    jr   BIN32_DEC_CHAR ; 2:12      prt_u32
 ;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
 ; Pollutes: AF, AF', IX, HL
 BIN32_DEC:              ;           bin32_dec
-    and  0xF0           ; 2:7       bin32_dec   reset A to 0 or '0'
     add  IX, DE         ; 2:15      bin32_dec   lo word
     adc  HL, BC         ; 2:15      bin32_dec   hi word
     inc   A             ; 1:4       bin32_dec
@@ -2069,69 +2071,75 @@ BIN32_DEC:              ;           bin32_dec
 BIN32_DEC_CHAR:         ;           bin32_dec
     or   '0'            ; 2:7       bin32_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst  0x10           ; 1:11      bin32_dec   putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '0'        ; 2:7       bin32_dec   reset A to '0'
     ret                 ; 1:10      bin32_dec
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_S16:              ;           print_s16
-    ld    A, H          ; 1:4       print_s16
-    add   A, A          ; 1:4       print_s16
-    jr   nc, PRINT_U16  ; 2:7/12    print_s16
-    xor   A             ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    L, A          ; 1:4       print_s16   neg
-    sbc   A, H          ; 1:4       print_s16   neg
-    sub   L             ; 1:4       print_s16   neg
-    ld    H, A          ; 1:4       print_s16   neg
-    ld    A, ' '        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_s16   putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       print_s16   putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      print_s16   ld   BC, **
-    ; fall to print_u16
+PRT_SP_S16:             ;           prt_sp_s16
+    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_s16
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print signed decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_S16:                ;           prt_s16
+    ld    A, H          ; 1:4       prt_s16
+    add   A, A          ; 1:4       prt_s16
+    jr   nc, PRT_U16    ; 2:7/12    prt_s16
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
+    xor   A             ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    L, A          ; 1:4       prt_s16   neg
+    sbc   A, H          ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    H, A          ; 1:4       prt_s16   neg
+    jr   PRT_U16        ; 2:12      prt_s16
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16:              ;           print_u16
-    ld    A, ' '        ; 2:7       print_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      print_u16   putchar with ZX 48K ROM in, this will print char in A
-    ; fall to print_u16_only
+PRT_SP_U16:             ;           prt_sp_u16
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u16   putchar with ZX 48K ROM in, this will print char in A
+    ; fall to prt_u16
 ;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
-PRINT_U16_ONLY:         ;           print_u16_only
-    xor   A             ; 1:4       print_u16_only   A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10      print_u16_only
-    call BIN16_DEC+2    ; 3:17      print_u16_only
-    ld   BC, -1000      ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld   BC, -100       ; 3:10      print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    C, -10        ; 2:7       print_u16_only
-    call BIN16_DEC      ; 3:17      print_u16_only
-    ld    A, L          ; 1:4       print_u16_only
-    pop  BC             ; 1:10      print_u16_only   load ret
-    ex   DE, HL         ; 1:4       print_u16_only
-    pop  DE             ; 1:10      print_u16_only
-    push BC             ; 1:10      print_u16_only   save ret
-    jr   BIN16_DEC_CHAR ; 2:12      print_u16_only
+PRT_U16:                ;           prt_u16
+    xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+    ld   BC, -10000     ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -1000      ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -100       ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    C, -10        ; 2:7       prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    A, L          ; 1:4       prt_u16
+    pop  HL             ; 1:10      prt_u16   load ret
+    ex  (SP),HL         ; 1:19      prt_u16
+    ex   DE, HL         ; 1:4       prt_u16
+    jr   BIN16_DEC_CHAR ; 2:12      prt_u16
 ;------------------------------------------------------------------------------
-; Input: A = 0..9 or '0'..'9' = 0x30..0x39 = 48..57, HL, IX, BC, DE
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
 ; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
 ; Pollutes: AF, HL
-BIN16_DEC:              ;           bin16_dec
-    and  0xF0           ; 2:7       bin16_dec   reset A to 0 or '0'
-    add  HL, BC         ; 1:11      bin16_dec
     inc   A             ; 1:4       bin16_dec
+BIN16_DEC:              ;           bin16_dec
+    add  HL, BC         ; 1:11      bin16_dec
     jr    c, $-2        ; 2:7/12    bin16_dec
     sbc  HL, BC         ; 2:15      bin16_dec
-    dec   A             ; 1:4       bin16_dec
+    or    A             ; 1:4       bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
 ;==============================================================================
 ; ( d -- -d )
@@ -2255,47 +2263,47 @@ PRINT_STRING_I:         ;           print_string_i
     ret                 ; 1:10      print_string_i
 
 STRING_SECTION:
-string200:
-db 0xD, "Data stack OK!", 0xD, 0x00
-size200 EQU $ - string200
-string121:
+string122:
 db ">=,", 0x00
-size121 EQU $ - string121
-string119:
+size122 EQU $ - string122
+string120:
 db ">=" , 0x00
-size119 EQU $ - string119
-string118:
+size120 EQU $ - string120
+string119:
 db ">,", 0x00
-size118 EQU $ - string118
-string116:
+size119 EQU $ - string119
+string117:
 db ">" , 0x00
-size116 EQU $ - string116
-string115:
+size117 EQU $ - string117
+string116:
 db "<=,", 0x00
-size115 EQU $ - string115
-string113:
+size116 EQU $ - string116
+string114:
 db "<=" , 0x00
-size113 EQU $ - string113
-string112:
+size114 EQU $ - string114
+string113:
 db "<,", 0x00
-size112 EQU $ - string112
-string110:
+size113 EQU $ - string113
+string111:
 db "<" , 0x00
-size110 EQU $ - string110
-string109:
+size111 EQU $ - string111
+string110:
 db "<>,", 0x00
-size109 EQU $ - string109
-string107:
+size110 EQU $ - string110
+string108:
 db "<>" , 0x00
-size107 EQU $ - string107
-string106:
+size108 EQU $ - string108
+string107:
 db "=,", 0x00
-size106 EQU $ - string106
-string104:
+size107 EQU $ - string107
+string105:
 db "=" , 0x00
+size105 EQU $ - string105
+string104:
+db 0x0D, "RAS:", 0x00
 size104 EQU $ - string104
 string103:
-db "RAS:", 0x00
+db 0xD, "Data stack:", 0x00
 size103 EQU $ - string103
 string102:
 db "( d2 d1 -- ) and ( ud2 ud1 -- ):",0x0D + 0x80

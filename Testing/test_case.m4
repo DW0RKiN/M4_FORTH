@@ -5,15 +5,16 @@ ORG 0x8000
 INIT(0xF500)
 
 PUSH_FOR(7)
-I
-LO_CASE
-    LO_OF(1) PRINT_Z(" one") LO_ENDOF
-    LO_OF(2) PRINT_Z(" two") LO_ENDOF
-    LO_WITHIN_OF(3,6) PRINT_Z(" 3..5") LO_ENDOF
-    LO_OF(2) PRINT_Z(" six") LO_ENDOF
-    DUP_DOT
-LO_ENDCASE
-DROP
+    I
+    LO_CASE
+        LO_OF(1) PRINT_Z("one") LO_ENDOF
+        LO_OF(2) PRINT_Z("two") LO_ENDOF
+        LO_WITHIN_OF(3,6) PRINT_Z("3..5") LO_ENDOF
+        LO_OF(2) PRINT_Z("six") LO_ENDOF
+        DUP_UDOT
+    LO_ENDCASE
+    DROP
+    SPACE
 NEXT
 CR
 
@@ -44,9 +45,9 @@ SCOLON(check_prime)
         PUSH_OF(8)       PRINT_Z("eight")  ENDOF
         PUSH_OF(9)       PRINT_Z("nine")   ENDOF
         PUSH_OF(5+5*256) PRINT_Z("five+five*256") ENDOF
-        DUP_DOT
+        DUP_UDOT
     ENDCASE    PRINT_Z({")="})
-    DUP PUSH_AND(255) DOT
+    DUP PUSH_AND(255) UDOT
     PRINT_Z({" is"})
     LO_CASE
         LO_OF(2)  LO_ENDOF
@@ -65,11 +66,11 @@ SCOLON(check_prime)
                 _1SUB ZERO_OF PRINT_Z("seven")  ENDOF
                 _1SUB ZERO_OF PRINT_Z("eight")  ENDOF
                 _1SUB ZERO_OF PRINT_Z("nine")   ENDOF
-                PUSH_ADD(9) DOT DUP
+                PUSH_ADD(9) UDOT DUP
             ENDCASE
             DROP
-            PRINT_Z({")="})            
-            DUP _256UDIV DOT
+            PRINT_Z({")="})
+            DUP _256UDIV UDOT
             PRINT_Z({" is"})
             HI_CASE
                 HI_OF(2)  HI_ENDOF

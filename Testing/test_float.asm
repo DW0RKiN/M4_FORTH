@@ -1,5 +1,3 @@
-; vvvvv
-; ^^^^^
 ;# log10(2^n) = y
 ;# 10^y = 2^n
 ;# log10(2^n)=n*log10(2)
@@ -14,8 +12,6 @@ ORG 0x8000
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-    ld  hl, stack_test
-    push hl
 
     
     push DE             ; 1:11      push2(0x4000,49)
@@ -24,6 +20,21 @@ ORG 0x8000
     ld   HL, 49         ; 3:10      push2(0x4000,49)
     
 sfor101:                ;           sfor 101 ( index -- index )
+        
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
+    call PRINT_STRING_Z ; 3:17      print_z 
+    push DE             ; 1:11      push(50)
+    ex   DE, HL         ; 1:4       push(50)
+    ld   HL, 50         ; 3:10      push(50) 
+    push DE             ; 1:11      over
+    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    ex   DE, HL         ; 1:4       -
+    or    A             ; 1:4       -
+    sbc  HL, DE         ; 2:15      -
+    pop  DE             ; 1:10      - 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
+    ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM
         
     ex   DE, HL         ; 1:4       swap ( b a -- a b )
         
@@ -36,6 +47,13 @@ sfor101:                ;           sfor 101 ( index -- index )
     call fDiv           ; 3:17      f/ HL = BC/HL
     pop  DE             ; 1:10      f/
         
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+        
     ex   DE, HL         ; 1:4       swap ( b a -- a b )
     
     ld   A, H           ; 1:4       snext 101
@@ -46,134 +64,104 @@ snext101:               ;           snext 101
     ex   DE, HL         ; 1:4       sfor unloop 101
     pop  DE             ; 1:10      sfor unloop 101
     
-    call fDot           ; 3:17      f. 
+    ex   DE, HL         ; 1:4       drop
+    pop  DE             ; 1:10      drop ( a -- )
+    
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
+    
+    ld   BC, string102  ; 3:10      print_z   Address of null-terminated string102
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      push2(0x4000,0x4100)
     ld   DE, 0x4000     ; 3:10      push2(0x4000,0x4100)
     push HL             ; 1:11      push2(0x4000,0x4100)
-    ld   HL, 0x4100     ; 3:10      push2(0x4000,0x4100)
-    
+    ld   HL, 0x4100     ; 3:10      push2(0x4000,0x4100) 
     call fAdd           ; 3:17      f+
     pop  DE             ; 1:10      f+ 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
+    ld   BC, string103  ; 3:10      print_z   Address of null-terminated string103
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      push2(0x4000,0x4100)
     ld   DE, 0x4000     ; 3:10      push2(0x4000,0x4100)
     push HL             ; 1:11      push2(0x4000,0x4100)
-    ld   HL, 0x4100     ; 3:10      push2(0x4000,0x4100)
-    
+    ld   HL, 0x4100     ; 3:10      push2(0x4000,0x4100) 
     call fSub           ; 3:17      f-
     pop  DE             ; 1:10      f- 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    
-    push DE             ; 1:11      push2(0,0)
-    ld   DE, 0          ; 3:10      push2(0,0)
-    push HL             ; 1:11      push2(0,0)
-    ld   HL, 0          ; 3:10      push2(0,0) 
-    call fIld           ; 3:17      s>f 
-    call fDot           ; 3:17      f. 
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push2(-3,3)
-    ld   DE, -3         ; 3:10      push2(-3,3)
-    push HL             ; 1:11      push2(-3,3)
-    ld   HL, 3          ; 3:10      push2(-3,3) 
-    call fIld           ; 3:17      s>f 
-    call fDot           ; 3:17      f. 
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(-3)
+    ex   DE, HL         ; 1:4       push(-3)
+    ld   HL, -3         ; 3:10      push(-3) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(-503)
+    ex   DE, HL         ; 1:4       push(-503)
+    ld   HL, -503       ; 3:10      push(-503) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(503)
+    ex   DE, HL         ; 1:4       push(503)
+    ld   HL, 503        ; 3:10      push(503) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(-512)
+    ex   DE, HL         ; 1:4       push(-512)
+    ld   HL, -512       ; 3:10      push(-512) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(512)
+    ex   DE, HL         ; 1:4       push(512)
+    ld   HL, 512        ; 3:10      push(512) 
+    call test_s2f_f2s   ; 3:17      call ( -- )
+    
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push2(-503,503)
-    ld   DE, -503       ; 3:10      push2(-503,503)
-    push HL             ; 1:11      push2(-503,503)
-    ld   HL, 503        ; 3:10      push2(-503,503) 
-    call fIld           ; 3:17      s>f 
-    call fDot           ; 3:17      f. 
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push2(-512,512)
-    ld   DE, -512       ; 3:10      push2(-512,512)
-    push HL             ; 1:11      push2(-512,512)
-    ld   HL, 512        ; 3:10      push2(-512,512) 
-    call fIld           ; 3:17      s>f 
-    call fDot           ; 3:17      f. 
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
-    call fIld           ; 3:17      s>f 
+    push DE             ; 1:11      push(512)
+    ex   DE, HL         ; 1:4       push(512)
+    ld   HL, 512        ; 3:10      push(512) 
+sfor102:                ;           sfor 102 ( index -- index )
+        
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    call fIld           ; 3:17      s>f 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
-    
-    push DE             ; 1:11      push(0x7FFF )
-    ex   DE, HL         ; 1:4       push(0x7FFF )
-    ld   HL, 0x7FFF     ; 3:10      push(0x7FFF ) 
-sfor102:                ;           sfor 102 ( index -- index ) 
+    push DE             ; 1:11      over
+    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    or    A             ; 1:4       <> if
+    sbc  HL, DE         ; 2:15      <> if
+    pop  HL             ; 1:10      <> if
+    pop  DE             ; 1:10      <> if
+    jp    z, else101    ; 3:10      <> if 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      push(20224)
-    ex   DE, HL         ; 1:4       push(20224)
-    ld   HL, 20224      ; 3:10      push(20224) 
-    or    A             ; 1:4       <>
-    sbc  HL, DE         ; 2:15      <>
-    jr    z, $+5        ; 2:7/12    <>
-    ld   HL, 0xFFFF     ; 3:10      <>
-    pop  DE             ; 1:10      <> 
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else101    ; 3:10      if 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
-    jp   snext102       ; 3:10      sfor leave 102 
+    call test_s2f_f2s   ; 3:17      call ( -- ) 
 else101  EQU $          ;           = endif
-endif101: 
+endif101:
+    
     ld   A, H           ; 1:4       snext 102
     or   L              ; 1:4       snext 102
     dec  HL             ; 1:6       snext 102 index--
@@ -186,50 +174,38 @@ snext102:               ;           snext 102
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
     
-    push DE             ; 1:11      push(0x0000 )
-    ex   DE, HL         ; 1:4       push(0x0000 )
-    ld   HL, 0x0000     ; 3:10      push(0x0000 ) 
+    push DE             ; 1:11      push(0x4080)
+    ex   DE, HL         ; 1:4       push(0x4080)
+    ld   HL, 0x4080     ; 3:10      push(0x4080) 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push(0x3c9a)
-    ex   DE, HL         ; 1:4       push(0x3c9a)
-    ld   HL, 0x3c9a     ; 3:10      push(0x3c9a) 
+    push DE             ; 1:11      push(0x4000)
+    ex   DE, HL         ; 1:4       push(0x4000)
+    ld   HL, 0x4000     ; 3:10      push(0x4000)   
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string102
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string106
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x3f00)
-    ex   DE, HL         ; 1:4       push(0x3f00)
-    ld   HL, 0x3f00     ; 3:10      push(0x3f00) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string103
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string107
     call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      fsin
-    call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -240,44 +216,68 @@ snext102:               ;           snext 102
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string104
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string108
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string109
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push(0x4000)
-    ex   DE, HL         ; 1:4       push(0x4000)
-    ld   HL, 0x4000     ; 3:10      push(0x4000) 
+    push DE             ; 1:11      push(0x3f00)
+    ex   DE, HL         ; 1:4       push(0x3f00)
+    ld   HL, 0x3f00     ; 3:10      push(0x3f00) 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string105
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string110
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string111
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push(0x4080)
-    ex   DE, HL         ; 1:4       push(0x4080)
-    ld   HL, 0x4080     ; 3:10      push(0x4080) 
+    push DE             ; 1:11      push(0x3c9a)
+    ex   DE, HL         ; 1:4       push(0x3c9a)
+    ld   HL, 0x3c9a     ; 3:10      push(0x3c9a) 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string106
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string112
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string113
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(0x0000 )
+    ex   DE, HL         ; 1:4       push(0x0000 )
+    ld   HL, 0x0000     ; 3:10      push(0x0000 )   
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string114
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string115
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -288,12 +288,14 @@ snext102:               ;           snext 102
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string107
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string116
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string117
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -304,12 +306,14 @@ snext102:               ;           snext 102
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string108
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string118
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string119
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -320,28 +324,32 @@ snext102:               ;           snext 102
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string109
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string120
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string121
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(0xc000)
     ex   DE, HL         ; 1:4       push(0xc000)
-    ld   HL, 0xc000     ; 3:10      push(0xc000) 
+    ld   HL, 0xc000     ; 3:10      push(0xc000)   
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string110
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string122
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string123
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -352,28 +360,83 @@ snext102:               ;           snext 102
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101 == string111
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string124
     call PRINT_STRING_Z ; 3:17      print_z 
+    call fDot           ; 3:17      f. 
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
     pop  DE             ; 1:10      fsin 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string125
+    call PRINT_STRING_Z ; 3:17      print_z 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+
+    
+    push DE             ; 1:11      push(0)
+    ex   DE, HL         ; 1:4       push(0)
+    ld   HL, 0          ; 3:10      push(0)   
+    call test_sqrt      ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(1)
+    ex   DE, HL         ; 1:4       push(1)
+    ld   HL, 1          ; 3:10      push(1)   
+    call test_sqrt      ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(4)
+    ex   DE, HL         ; 1:4       push(4)
+    ld   HL, 4          ; 3:10      push(4)   
+    call test_sqrt      ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(50)
+    ex   DE, HL         ; 1:4       push(50)
+    ld   HL, 50         ; 3:10      push(50)  
+    call test_sqrt      ; 3:17      call ( -- )
+    
+    push DE             ; 1:11      push(123)
+    ex   DE, HL         ; 1:4       push(123)
+    ld   HL, 123        ; 3:10      push(123) 
+    call test_sqrt      ; 3:17      call ( -- )
 
     
     
     push DE             ; 1:11      push(5)
     ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5)   
+    ld   HL, 5          ; 3:10      push(5) 
     call fIld           ; 3:17      s>f 
-    call fSqrt          ; 3:17      fsqrt 
+    ld   BC, string126  ; 3:10      print_z   Address of null-terminated string126
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    ld   BC, string112  ; 3:10      print_z   Address of null-terminated string112
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string127
+    call PRINT_STRING_Z ; 3:17      print_z 
+    call fSqrt          ; 3:17      fsqrt 
+    call fDot           ; 3:17      f. 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    
+    push DE             ; 1:11      push(5)
+    ex   DE, HL         ; 1:4       push(5)
+    ld   HL, 5          ; 3:10      push(5) 
+    call fIld           ; 3:17      s>f 
+    call fSqrt          ; 3:17      fsqrt 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a )
+    
+    ld   BC, string128  ; 3:10      print_z   Address of null-terminated string128
+    call PRINT_STRING_Z ; 3:17      print_z 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string129
     call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fexp
     call fExp           ; 3:17      fexp HL = e^HL
@@ -382,16 +445,13 @@ snext102:               ;           snext 102
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push(5)
-    ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5)   
-    call fIld           ; 3:17      s>f 
-    call fSqrt          ; 3:17      fsqrt 
+    ld   BC, string130  ; 3:10      print_z   Address of null-terminated string130
+    call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    ld   BC, string113  ; 3:10      print_z   Address of null-terminated string113
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string131
     call PRINT_STRING_Z ; 3:17      print_z 
     push DE             ; 1:11      fln
     call fLn            ; 3:17      fln HL = ln(HL)
@@ -400,30 +460,31 @@ snext102:               ;           snext 102
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
-    push DE             ; 1:11      push2(5,3)
-    ld   DE, 5          ; 3:10      push2(5,3)
-    push HL             ; 1:11      push2(5,3)
-    ld   HL, 3          ; 3:10      push2(5,3) 
+    push DE             ; 1:11      push(3)
+    ex   DE, HL         ; 1:4       push(3)
+    ld   HL, 3          ; 3:10      push(3) 
     call fIld           ; 3:17      s>f 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    ld   BC, string114  ; 3:10      print_z   Address of null-terminated string114
+    ld   BC, string132  ; 3:10      print_z   Address of null-terminated string132
     call PRINT_STRING_Z ; 3:17      print_z 
-    ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
+    push DE             ; 1:11      push(5)
+    ex   DE, HL         ; 1:4       push(5)
+    ld   HL, 5          ; 3:10      push(5) 
     call fIld           ; 3:17      s>f 
     call fSqrt          ; 3:17      fsqrt 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    ld   BC, string115  ; 3:10      print_z   Address of null-terminated string115
-    call PRINT_STRING_Z ; 3:17      print_z 
+    ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     ld    B, D          ; 1:4       fmod
     ld    C, E          ; 1:4       fmod
     call fMod           ; 3:17      fmod HL = BC % HL
-    pop  DE             ; 1:10      fmod  
+    pop  DE             ; 1:10      fmod 
     call fDot           ; 3:17      f. 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
@@ -465,18 +526,18 @@ snext102:               ;           snext 102
     pop  DE             ; 1:10      drop ( a -- )
     
     
-
     ld   BC, 0          ; 3:10      xdo(65535,0 ) 103
+xdo103save:             ;           xdo(65535,0 ) 103
     ld  (idx103),BC     ; 4:20      xdo(65535,0 ) 103
 xdo103:                 ;           xdo(65535,0 ) 103 
-    push DE             ; 1:11      index xi 103
-    ex   DE, HL         ; 1:4       index xi 103
-    ld   HL, (idx103)   ; 3:16      index xi 103 idx always points to a 16-bit index 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push DE             ; 1:11      index(103) xi
+    ex   DE, HL         ; 1:4       index(103) xi
+    ld   HL, (idx103)   ; 3:16      index(103) xi   idx always points to a 16-bit index 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
@@ -486,7 +547,7 @@ xdo103:                 ;           xdo(65535,0 ) 103
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
@@ -494,27 +555,23 @@ xdo103:                 ;           xdo(65535,0 ) 103
     xor  0x80           ; 2:7       fnegate
     ld    H, A          ; 1:4       fnegate 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     call fSqrt          ; 3:17      fsqrt 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
-    push HL             ; 1:11      777 +xloop 103
-idx103 EQU $+1          ;           777 +xloop 103
-    ld   HL, 0x0000     ; 3:10      777 +xloop 103
-    ld   BC, 777        ; 3:10      777 +xloop 103 BC = step
-    add  HL, BC         ; 1:11      777 +xloop 103 HL = index+step
-    ld  (idx103), HL    ; 3:16      777 +xloop 103 save index
-    ld    A, low 65534  ; 2:7       777 +xloop 103
-    sub   L             ; 1:4       777 +xloop 103
-    ld    L, A          ; 1:4       777 +xloop 103
-    ld    A, high 65534 ; 2:7       777 +xloop 103
-    sbc   A, H          ; 1:4       777 +xloop 103
-    ld    H, A          ; 1:4       777 +xloop 103 HL = stop-(index+step)
-    add  HL, BC         ; 1:11      777 +xloop 103 HL = stop-index
-    pop  HL             ; 1:10      777 +xloop 103
-    jp   nc, xdo103     ; 3:10      777 +xloop 103 positive step
+                        ;[16:77/57] 777 +xloop 103   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 85x
+idx103 EQU $+1          ;           777 +xloop 103   idx always points to a 16-bit index
+    ld   BC, 0x0000     ; 3:10      777 +xloop 103   0 .. +777 ..(65535), real_stop:0x01FD
+    ld    A, C          ; 1:4       777 +xloop 103
+    add   A, low 777    ; 2:7       777 +xloop 103
+    ld    C, A          ; 1:4       777 +xloop 103
+    ld    A, B          ; 1:4       777 +xloop 103
+    adc   A, high 777   ; 2:7       777 +xloop 103
+    ld    B, A          ; 1:4       777 +xloop 103
+    xor  0x01           ; 2:7       777 +xloop 103   hi(real_stop)
+    jp   nz, xdo103save ; 3:10      777 +xloop 103
 xleave103:              ;           777 +xloop 103
 xexit103:               ;           777 +xloop 103
     
@@ -522,88 +579,84 @@ xexit103:               ;           777 +xloop 103
     push DE             ; 1:11      push(32736 )
     ex   DE, HL         ; 1:4       push(32736 )
     ld   HL, 32736      ; 3:10      push(32736 ) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f         
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(32737 )
     ex   DE, HL         ; 1:4       push(32737 )
     ld   HL, 32737      ; 3:10      push(32737 ) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f         
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(0x7FFF)
     ex   DE, HL         ; 1:4       push(0x7FFF)
     ld   HL, 0x7FFF     ; 3:10      push(0x7FFF) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f         
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(0x8000)
     ex   DE, HL         ; 1:4       push(0x8000)
     ld   HL, 0x8000     ; 3:10      push(0x8000) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f         
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
@@ -611,11 +664,11 @@ xexit103:               ;           777 +xloop 103
     push DE             ; 1:11      push(32736 )
     ex   DE, HL         ; 1:4       push(32736 )
     ld   HL, 32736      ; 3:10      push(32736 ) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f 
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
@@ -624,23 +677,22 @@ xexit103:               ;           777 +xloop 103
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(32737 )
     ex   DE, HL         ; 1:4       push(32737 )
     ld   HL, 32737      ; 3:10      push(32737 ) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f 
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
@@ -649,23 +701,22 @@ xexit103:               ;           777 +xloop 103
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(0x7FFF)
     ex   DE, HL         ; 1:4       push(0x7FFF)
     ld   HL, 0x7FFF     ; 3:10      push(0x7FFF) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f 
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
@@ -674,23 +725,22 @@ xexit103:               ;           777 +xloop 103
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
     push DE             ; 1:11      push(0x8000)
     ex   DE, HL         ; 1:4       push(0x8000)
     ld   HL, 0x8000     ; 3:10      push(0x8000) 
-    push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     call fWld           ; 3:17      u>f 
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
@@ -699,12 +749,11 @@ xexit103:               ;           777 +xloop 103
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_U16      ; 3:17      . 
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
     call fIst           ; 3:17      f>s 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_S16        ; 3:17      .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -718,24 +767,129 @@ xexit103:               ;           777 +xloop 103
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call fDot           ; 3:17      f. 
     call fWst           ; 3:17      f>u 
-    call PRINT_U16      ; 3:17      . 
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+
+    
+    ld   BC, string133  ; 3:10      print_z   Address of null-terminated string133
+    call PRINT_STRING_Z ; 3:17      print_z 
+                        ;[13:72]    depth   ( -- +n )
+    push DE             ; 1:11      depth
+    ex   DE, HL         ; 1:4       depth
+    ld   HL,(Stop+1)    ; 3:16      depth
+    or    A             ; 1:4       depth
+    sbc  HL, SP         ; 2:15      depth
+    srl   H             ; 2:8       depth
+    rr    L             ; 2:8       depth
+    dec  HL             ; 1:6       depth 
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    
+    ld   BC, string134  ; 3:10      print_z   Address of null-terminated string134
+    call PRINT_STRING_Z ; 3:17      print_z 
+    ex   DE, HL         ; 1:4       __ras   ( -- return_address_stack )
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    push HL             ; 1:11      __ras
+    exx                 ; 1:4       __ras
+    pop  HL             ; 1:10      __ras 
+    call PRT_U16        ; 3:17      u.   ( u -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
+;   =====  e n d  =====
+    
 
-    
-    
-    ld   BC, string116  ; 3:10      print_z   Address of null-terminated string116
-    call PRINT_STRING_Z ; 3:17      print_z
-    exx
-    push HL
-    exx
-    pop  HL
+;   ---  the beginning of a non-recursive function  ---
+test_s2f_f2s:           ;           
+    pop  BC             ; 1:10      : ret
+    ld  (test_s2f_f2s_end+1),BC; 4:20      : ( ret -- )
     
     push HL             ; 1:11      dup .   x3 x1 x2 x1
-    call PRINT_U16      ; 3:17      .
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1    
-    ret
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    ld    A, '>'        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fIld           ; 3:17      s>f 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    ld    A, '>'        ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
+    call fIst           ; 3:17      f>s 
+    push HL             ; 1:11      dup .   x3 x1 x2 x1
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    or    A             ; 1:4       <> if
+    sbc  HL, DE         ; 2:15      <> if
+    pop  HL             ; 1:10      <> if
+    pop  DE             ; 1:10      <> if
+    jp    z, else102    ; 3:10      <> if 
+    ld   BC, string135  ; 3:10      print_z   Address of null-terminated string135
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endif102       ; 3:10      else
+else102: 
+    ld   BC, string136  ; 3:10      print_z   Address of null-terminated string136
+    call PRINT_STRING_Z ; 3:17      print_z 
+endif102:
+
+test_s2f_f2s_end:
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
+
+
+;   ---  the beginning of a non-recursive function  ---
+test_sqrt:              ;           
+    pop  BC             ; 1:10      : ret
+    ld  (test_sqrt_end+1),BC; 4:20      : ( ret -- )
+    
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call MULTIPLY       ; 3:17      *
+    pop  DE             ; 1:10      * 
+    ld   BC, string126  ; 3:10      print_z   Address of null-terminated string126 == string137
+    call PRINT_STRING_Z ; 3:17      print_z 
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
+    call fIld           ; 3:17      s>f 
+    call fSqrt          ; 3:17      fsqrt 
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string138
+    call PRINT_STRING_Z ; 3:17      print_z 
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    call fDot           ; 3:17      f. 
+    call fIst           ; 3:17      f>s 
+    or    A             ; 1:4       <> if
+    sbc  HL, DE         ; 2:15      <> if
+    pop  HL             ; 1:10      <> if
+    pop  DE             ; 1:10      <> if
+    jp    z, else103    ; 3:10      <> if 
+    ld   BC, string135  ; 3:10      print_z   Address of null-terminated string135 == string139
+    call PRINT_STRING_Z ; 3:17      print_z 
+    jp   endif103       ; 3:10      else
+else103: 
+    ld   BC, string136  ; 3:10      print_z   Address of null-terminated string136 == string140
+    call PRINT_STRING_Z ; 3:17      print_z 
+endif103:
+
+test_sqrt_end:
+    jp   0x0000         ; 3:10      ;
+;   ---------  end of non-recursive function  ---------
     
 
 ;   ---  the beginning of a data stack function  ---
@@ -749,7 +903,7 @@ test:                   ;
     call fDot           ; 3:17      f. 
     call fFrac          ; 3:17      ffrac 
     ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A 
+    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
@@ -758,7 +912,7 @@ test:                   ;
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRINT_S16      ; 3:17      . 
+    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 
@@ -767,23 +921,6 @@ test_end:
 ;   ---------  end of data stack function  ---------
 
     
-
-;   ---  the beginning of a data stack function  ---
-stack_test:             ;           
-    
-    ld   BC, string117  ; 3:10      print_z   Address of null-terminated string117
-    call PRINT_STRING_Z ; 3:17      print_z
-    
-Stop:                   ;           stop
-    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
-    ld   HL, 0x2758     ; 3:10      stop
-    exx                 ; 1:4       stop
-    ret                 ; 1:10      stop
-;   =====  e n d  =====
-
-stack_test_end:
-    ret                 ; 1:10      s;
-;   ---------  end of data stack function  ---------
 
 ; Remainder after division
 ;  In: BC dividend, HL modulus
@@ -794,77 +931,77 @@ stack_test_end:
 ; *****************************************
 
     res   7, H          ; 2:8       HL = abs(HL), exp HL will be used for the result
-    ld    A, B          ; 1:4 
+    ld    A, B          ; 1:4
     and  0x80           ; 2:7       sign mask
     ld    D, A          ; 1:4       Result sign only
-    xor   B             ; 1:4 
-    sub   H             ; 1:4 
-    jr    c, fMod_HL_GR ; 2:12/7 
-    ld    E, A          ; 1:4       diff exp        
-    ld    A, C          ; 1:4  
-    jr   nz, fMod_Sub   ; 2:12/7 
-        
-    cp    L             ; 1:4 
-    jr    z, fMod_FPmin ; 2:12/7 
-    jr    c, fMod_HL_GR ; 2:12/7 
+    xor   B             ; 1:4
+    sub   H             ; 1:4
+    jr    c, fMod_HL_GR ; 2:12/7
+    ld    E, A          ; 1:4       diff exp
+    ld    A, C          ; 1:4
+    jr   nz, fMod_Sub   ; 2:12/7
+
+    cp    L             ; 1:4
+    jr    z, fMod_FPmin ; 2:12/7
+    jr    c, fMod_HL_GR ; 2:12/7
 
 fMod_Sub:               ;           BC_mantis - HL_mantis
-    sub   L             ; 1:4 
+    sub   L             ; 1:4
     jr    z, fMod_FPmin ; 2:7/11    fpmin
-    jr   nc, fMod_NORM  ; 2:7/11 
-        
-; fMod_Add_HALF:           
-    dec   E             ; 1:4        
-    jp    m, fMod_STOP  ; 3:10 
-        
-    add   A, A          ; 1:4 
-    jr   nc, fMod_X     ; 2:7/11 
-    add   A, L          ; 1:4 
-    jr    c, fMod_Sub   ; 2:7/11 
+    jr   nc, fMod_NORM  ; 2:7/11
+
+; fMod_Add_HALF:
+    dec   E             ; 1:4
+    jp    m, fMod_STOP  ; 3:10
+
+    add   A, A          ; 1:4
+    jr   nc, fMod_X     ; 2:7/11
+    add   A, L          ; 1:4
+    jr    c, fMod_Sub   ; 2:7/11
     db   0x06           ;           ld B, $85
 fMod_X:
-    add   A, L          ; 1:4 
-        
+    add   A, L          ; 1:4
+
 fMod_NORM:
-    add   A, A          ; 1:4 
-    dec   E             ; 1:4        
-    jr   nc, fMod_NORM  ; 2:7/11 
-        
+    add   A, A          ; 1:4
+    dec   E             ; 1:4
+    jr   nc, fMod_NORM  ; 2:7/11
+
     jp    p, fMod_Sub   ; 3:10      E >= 0
 
-    ld    L, A          ; 1:4 
-    ld    A, H          ; 1:4 
-    add   A, E          ; 1:4 
-    xor   D             ; 1:4 
-    ld    H, A          ; 1:4 
-    xor   D             ; 1:4 
-    ret   p             ; 1:5/11 
+    ld    L, A          ; 1:4
+    ld    A, H          ; 1:4
+    add   A, E          ; 1:4
+    xor   D             ; 1:4
+    ld    H, A          ; 1:4
+    xor   D             ; 1:4
+    ret   p             ; 1:5/11
 ;       fall
 
-; Input: D = sign only        
+; Input: D = sign only
 fMod_UNDERFLOW:
-    ld    H, D          ; 1:4 
-    ld    L, 0x00       ; 2:7 
+    ld    H, D          ; 1:4
+    ld    L, 0x00       ; 2:7
     scf                 ; 1:4       carry = error
-    ret                 ; 1:10 
-        
+    ret                 ; 1:10
+
 fMod_STOP:
-    add   A, L          ; 1:4 
-    ld    L, A          ; 1:4 
-    ld    A, H          ; 1:4 
-    xor   D             ; 1:4 
-    ld    H, A          ; 1:4 
-    ret                 ; 1:10 
-        
+    add   A, L          ; 1:4
+    ld    L, A          ; 1:4
+    ld    A, H          ; 1:4
+    xor   D             ; 1:4
+    ld    H, A          ; 1:4
+    ret                 ; 1:10
+
 fMod_HL_GR:
     or    A             ; 1:4
-    ld    H, B          ; 1:4 
-    ld    L, C          ; 1:4 
-    ret                 ; 1:10 
+    ld    H, B          ; 1:4
+    ld    L, C          ; 1:4
+    ret                 ; 1:10
 
 fMod_FPmin:             ;           RET with reset carry
-    ld    L, 0x00       ; 2:7 
-    ld    H, D          ; 1:4 
+    ld    L, 0x00       ; 2:7
+    ld    H, D          ; 1:4
     ret                 ; 1:10
 ; Fractional part, remainder after division by 1
 ;  In: HL any floating-point number
@@ -873,33 +1010,33 @@ fMod_FPmin:             ;           RET with reset carry
 ; *****************************************
                     fFrac                ; *
 ; *****************************************
-    ld    A, H          ; 1:4 
+    ld    A, H          ; 1:4
     and  0x7F           ; 2:7       delete sign
     cp   0x48           ; 2:7       bias + mant bits
     jr   nc, fFrac_ZERO ; 2:7/12    Already integer
-    sub  0x40           ; 2:7       bias 
+    sub  0x40           ; 2:7       bias
     ret   c             ; 1:5/11    Pure fraction
 
     inc   A             ; 1:4       2^0*1.xxx > 1
-    ld    B, A          ; 1:4 
-    ld    A, L          ; 2:7 
+    ld    B, A          ; 1:4
+    ld    A, L          ; 2:7
 fFrac_Loop:             ;           odmazani mantisy pred plovouci radovou carkou
-    dec   H             ; 1:4 
-    add   A, A          ; 1:4 
-    djnz fFrac_Loop     ; 2:13/8 
+    dec   H             ; 1:4
+    add   A, A          ; 1:4
+    djnz fFrac_Loop     ; 2:13/8
 
-    ld    L, A          ; 1:4 
-    ret   c             ; 1:11/5 
- 
+    ld    L, A          ; 1:4
+    ret   c             ; 1:11/5
+
     jr    z, fFrac_ZERO ; 2:7/12
 
 fFrac_Norm:             ;           normalizace cisla
-    dec   H             ; 1:4 
-    add   A, A          ; 1:4 
-    jr   nc, fFrac_Norm ; 2:12/7 
+    dec   H             ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, fFrac_Norm ; 2:12/7
 
-    ld    L, A          ; 1:4 
-    ret                 ; 1:10 
+    ld    L, A          ; 1:4
+    ret                 ; 1:10
 
 fFrac_ZERO:
     ld    HL, 0x0000    ; 3:10      fpmin
@@ -909,19 +1046,19 @@ fFrac_ZERO:
 ; *****************************************
                     fSqrt                 ; *
 ; *****************************************
-    ld    A, H          ; 1:4 
+    ld    A, H          ; 1:4
     and  0x7F           ; 2:7       abs(HL)
-    add   A, 0x40       ; 2:7 
+    add   A, 0x40       ; 2:7
     rra                 ; 1:4       A = (exp-bias)/2 + bias = (exp+bias)/2
                         ;           carry => out = out * 2^0.5
-    ld    H, SQR_TAB/256; 2:7 
-    jr   nc, fSqrt1     ; 2:12/7 
+    ld    H, SQR_TAB/256; 2:7
+    jr   nc, fSqrt1     ; 2:12/7
     inc   H             ; 1:4
     or    A             ; 1:4       RET with reset carry
 fSqrt1:
-    ld    L, (HL)       ; 1:7 
-    ld    H, A          ; 1:4 
-    ret                 ; 1:10 
+    ld    L, (HL)       ; 1:7
+    ld    H, A          ; 1:4
+    ret                 ; 1:10
 
 ; Load Integer. Convert signed 16-bit integer into floating-point number
 ;  In: HL = Integer to convert
@@ -951,37 +1088,37 @@ fSqrt1:
 ; *****************************************
                     fWld                ; *
 ; *****************************************
-    ld    A, H          ; 1:4       HL = xxxx xxxx xxxx xxxx 
-    or    A             ; 1:4 
-    jr    z, fWld_B     ; 2:12/7 
+    ld    A, H          ; 1:4       HL = xxxx xxxx xxxx xxxx
+    or    A             ; 1:4
+    jr    z, fWld_B     ; 2:12/7
     ld    A, 0x50       ; 2:7       bias+16
 fWld_NORM:
-    add  HL, HL         ; 1:11 
-    dec   A             ; 1:4 
-    jp   nc, fWld_NORM  ; 3:10        
-        
+    add  HL, HL         ; 1:11
+    dec   A             ; 1:4
+    jp   nc, fWld_NORM  ; 3:10
+
     sla   L             ; 2:8       rounding
-    ld    L, H          ; 1:4 
-    ld    H, A          ; 1:4 
-    ret   nc            ; 1:11/5 
-    ccf                 ; 1:4 
-    ret   z             ; 1:11/5 
+    ld    L, H          ; 1:4
+    ld    H, A          ; 1:4
+    ret   nc            ; 1:11/5
+    ccf                 ; 1:4
+    ret   z             ; 1:11/5
     inc   L             ; 1:4       rounding up
-    ret   nz            ; 1:11/5 
+    ret   nz            ; 1:11/5
     inc   H             ; 1:4       exp++
-    ret                 ; 1:10 
-        
+    ret                 ; 1:10
+
 fWld_B:                 ;           HL = 0000 0000 xxxx xxxx
-    or    L             ; 1:4 
-    ret   z             ; 1:5/11 
-                
+    or    L             ; 1:4
+    ret   z             ; 1:5/11
+
     ld    H, 0x48       ; 2:7       bias+8
 fWld_B_NORM:
-    dec   H             ; 1:4 
-    add   A, A          ; 1:4 
-    jr   nc, fWld_B_NORM; 2:12/7 
+    dec   H             ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, fWld_B_NORM; 2:12/7
 
-    ld    L, A          ; 1:4 
+    ld    L, A          ; 1:4
     ret                 ; 1:10
 ; Store Integer. Convert value of a floating-point number into signed 16-bit integer.
 ;  In: HL = floating point to convert
@@ -993,14 +1130,14 @@ fWld_B_NORM:
     ld    A, H          ; 1:4
     cp   0x4F           ; 2:7
     jr    c, fWst       ; 2:7/12
-    
+
     add   A, A          ; 1:4
     jr   nc, fIst_OVER_P; 2:7/11
-    
+
     rrca                ; 1:4
     add  A, 0xB1        ; 2:7
     jr    c, fIst_OVER_N; 2:7/12
-    
+
     call fWst           ; 3:17
     xor   A             ; 1:4
     sub   L             ; 1:4
@@ -1009,12 +1146,12 @@ fWld_B_NORM:
     sub   L             ; 1:4
     ld    H, A          ; 1:4
     ret                 ; 1:10
-    
-    
+
+
 fIst_OVER_N:
     ld   HL, 0x8000     ; 3:10
     ret                 ; 1:10
-    
+
 fIst_OVER_P:
     ld   HL, 0x7FFF     ; 3:10
     scf                 ; 1:4
@@ -1027,70 +1164,70 @@ fIst_OVER_P:
 ; *****************************************
                     fWst                ; *
 ; *****************************************
-    ld    A, H          ; 1:4 
-    and  0x7F           ; 2:7       exp mask 
-        
+    ld    A, H          ; 1:4
+    and  0x7F           ; 2:7       exp mask
+
     cp   0x50           ; 2:7       bias + 0x10
-    jr   nc, fWst_OVER  ; 2:7/12 
+    jr   nc, fWst_OVER  ; 2:7/12
 
     sub  0x3F           ; 2:7       bias - 1
-    jr    c, fWst_ZERO  ; 2:7/12 
+    jr    c, fWst_ZERO  ; 2:7/12
                         ;           A = 0..16
     if 0
 
-    ld    B, A          ; 1:4 
-    ld    A, L          ; 1:4 
-    ld    HL, 0x0000    ; 3:10 
-    jr    z, fWst_Round ; 2:7/12 
-    scf                 ; 1:4 
-        
-    adc  HL, HL         ; 2:15 
-    add   A, A          ; 1:4 
-    djnz $-3            ; 2:13/8 
+    ld    B, A          ; 1:4
+    ld    A, L          ; 1:4
+    ld    HL, 0x0000    ; 3:10
+    jr    z, fWst_Round ; 2:7/12
+    scf                 ; 1:4
 
-    ret   nc            ; 1:11/5 
-fWst_Round:        
-    or    A             ; 1:4 
-    ret   z             ; 1:11/5 
-    inc   HL            ; 1:6 
-    ret                 ; 1:10 
-        
+    adc  HL, HL         ; 2:15
+    add   A, A          ; 1:4
+    djnz $-3            ; 2:13/8
+
+    ret   nc            ; 1:11/5
+fWst_Round:
+    or    A             ; 1:4
+    ret   z             ; 1:11/5
+    inc   HL            ; 1:6
+    ret                 ; 1:10
+
     else
-    
-    ld    H, 0x01       ; 2:7 
-    sub  0x09           ; 2:7 
-    jr   nc, fWst256Plus; 2:7 
-        
+
+    ld    H, 0x01       ; 2:7
+    sub  0x09           ; 2:7
+    jr   nc, fWst256Plus; 2:7
+
     dec   HL            ; 1:6       rounding ( 0.5000 down => 0.4999 down )
-    srl   H             ; 2:8 
-    rr    L             ; 2:8 
-    inc   A             ; 1:4 
-    jr    z, $+7        ; 2:12/7 
-    srl   L             ; 2:8 
-    inc   A             ; 1:4 
-    jr   nz, $-3        ; 2:12/7 
-    ret   nc            ; 1:11/5 
+    srl   H             ; 2:8
+    rr    L             ; 2:8
+    inc   A             ; 1:4
+    jr    z, $+7        ; 2:12/7
+    srl   L             ; 2:8
+    inc   A             ; 1:4
+    jr   nz, $-3        ; 2:12/7
+    ret   nc            ; 1:11/5
     inc   L             ; 1:4
     or    A             ; 1:4
-    ret                 ; 1:10 
+    ret                 ; 1:10
 
 fWst256Plus:
-    ret   z             ; 1:5/11 
-    ld    B, A          ; 1:4 
-    add  HL, HL         ; 1:11 
-    djnz $-1            ; 2:13/8 
-    ret                 ; 1:10 
-    
+    ret   z             ; 1:5/11
+    ld    B, A          ; 1:4
+    add  HL, HL         ; 1:11
+    djnz $-1            ; 2:13/8
+    ret                 ; 1:10
+
     endif
-    
+
 fWst_OVER:
     ld    HL, 0xFFFF    ; 3:10
     scf                 ; 1:4
     ret                 ; 1:10      RET with carry
 
 fWst_ZERO:
-    xor   A             ; 1:4 
-    ld    H, A          ; 1:4 
+    xor   A             ; 1:4
+    ld    H, A          ; 1:4
     ld    L, A          ; 1:4
     ret                 ; 1:10      RET with carry
         ; continue from @
@@ -1106,7 +1243,7 @@ fWst_ZERO:
                     fSub                ; *
 ; *****************************************
     ld    A, H          ; 1:4
-    xor  0x80           ; 2:7       sign mask       
+    xor  0x80           ; 2:7       sign mask
     ld    H, A          ; 1:4       HL = -HL
     ; continue
 
@@ -1121,7 +1258,7 @@ fWst_ZERO:
     xor   D             ; 1:4
     jp    m, fAdd_OP_SGN; 3:10
     ; continue
-     
+
 ; Add two floating point numbers with the same sign
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = DE + HL,  if ( 1 && overflow ) set carry
@@ -1134,16 +1271,16 @@ fWst_ZERO:
 ; *****************************************
     ld    A, H          ; 1:4
     sub   D             ; 1:4
-    jr   nc, fAdd_HL_GR ; 2:7/12   
-    ex   DE, HL         ; 1:4      
+    jr   nc, fAdd_HL_GR ; 2:7/12
+    ex   DE, HL         ; 1:4
     neg                 ; 2:8
 fAdd_HL_GR:
     and  0x7F           ; 2:7       exp mask
     jr    z, fAdd_Eq_Exp; 2:12/7    neresime zaokrouhlovani
-    cp   0x0A           ; 2:7       pri posunu o NEUKLADANY_BIT+BITS_MANTIS uz mantisy nemaji prekryt, ale jeste se muze zaokrouhlovat 
+    cp   0x0A           ; 2:7       pri posunu o NEUKLADANY_BIT+BITS_MANTIS uz mantisy nemaji prekryt, ale jeste se muze zaokrouhlovat
     ret  nc             ; 1:11/5    HL + DE = HL, ret with reset carry
 
-                        ;           Out: A = --( E | 1 0000 0000 ) >> A        
+                        ;           Out: A = --( E | 1 0000 0000 ) >> A
     ld    B, A          ; 1:4
     ld    A, E          ; 1:4
     dec   A             ; 1:4
@@ -1153,33 +1290,33 @@ fAdd_Loop:
     or    A             ; 1:4
     rra                 ; 1:4
     djnz  fAdd_Loop     ; 2:13/8
-        
+
     jr    c, fAdd1      ; 2:12/7
 
     add   A, L          ; 1:4       soucet mantis
     jr   nc, fAdd0_OkExp; 2:12/7
-fAdd_Exp_PLUS:          ;           A = 10 mmmm mmmr, r = rounding bit                                    
+fAdd_Exp_PLUS:          ;           A = 10 mmmm mmmr, r = rounding bit
     adc   A, B          ; 1:4       rounding
     rra                 ; 1:4       A = 01 cmmm mmmm
     ld    L, A          ; 1:4
-    ld    A, H          ; 1:4        
+    ld    A, H          ; 1:4
     inc   H             ; 1:4
     xor   H             ; 1:4       ret with reset carry
-    ret   p             ; 1:11/5        
+    ret   p             ; 1:11/5
     jr    fAdd_OVERFLOW ; 2:12
 
 fAdd0_OkExp:            ;           A = 01 mmmm mmmm 0
     ld    L, A          ; 1:4
-    ret                 ; 1:10   
-        
+    ret                 ; 1:10
+
 fAdd1:
     add   A, L          ; 1:4       soucet mantis
     jr    c, fAdd_Exp_PLUS; 2:12/7
-        
+
 fAdd1_OkExp:            ;           A = 01 mmmm mmmm 1, reset carry
 
     ld    L, A          ; 1:4
-    ld    A, H          ; 1:4        
+    ld    A, H          ; 1:4
     inc  HL             ; 1:6
     xor   H             ; 1:4       ret with reset carry
     ret   p             ; 1:11/5
@@ -1189,10 +1326,10 @@ fAdd_Eq_Exp:            ;           HL exp = DE exp
     ld    A, L          ; 1:4       1 mmmm mmmm
     add   A, E          ; 1:4      +1 mmmm mmmm
                         ;           1m mmmm mmmm
-    rra                 ; 1:4       sign in && shift       
+    rra                 ; 1:4       sign in && shift
     ld    L, A          ; 1:4
-        
-    ld    A, H          ; 1:4        
+
+    ld    A, H          ; 1:4
     inc   H             ; 1:4
     xor   H             ; 1:4       ret with reset carry
     ret   p             ; 1:11/5
@@ -1201,12 +1338,12 @@ fAdd_Eq_Exp:            ;           HL exp = DE exp
 ; In: H = s111 1111 + 1
 ; Out: HL = +-max
 fAdd_OVERFLOW:
-    dec   H             ; 1:4      
+    dec   H             ; 1:4
     ld    L, $FF        ; 2:7
     scf                 ; 1:4       carry = error
     ret                 ; 1:10
-    
-    
+
+
 ; Subtraction two floating-point numbers with the same signs
 ;  In: HL,DE numbers to add, no restrictions
 ; Out: HL = DE + HL, if ( 1 && underflow ) set carry
@@ -1217,9 +1354,9 @@ fAdd_OVERFLOW:
 ; *****************************************
                    fSubP                ; *
 ; *****************************************
-    ld    A, D          ; 1:4 
-    xor  0x80           ; 2:7       sign mask 
-    ld    D, A          ; 1:4 
+    ld    A, D          ; 1:4
+    xor  0x80           ; 2:7       sign mask
+    ld    D, A          ; 1:4
 
 ; Add two floating-point numbers with the opposite signs
 ;  In: HL, DE numbers to add, no restrictions
@@ -1229,236 +1366,236 @@ fAdd_OVERFLOW:
 ; HL = (+DE) + (-HL)
 ; HL = (-DE) + (+HL)
 fAdd_OP_SGN:
-    ld    A, H          ; 1:4 
-    sub   D             ; 1:4 
-    jp    m, fSub_HL_GR ; 3:10 
-    ex   DE, HL         ; 1:4 
-    ld    A, H          ; 1:4 
-    sub   D             ; 1:4 
+    ld    A, H          ; 1:4
+    sub   D             ; 1:4
+    jp    m, fSub_HL_GR ; 3:10
+    ex   DE, HL         ; 1:4
+    ld    A, H          ; 1:4
+    sub   D             ; 1:4
 fSub_HL_GR:
-    and  0x7F           ; 2:7       exp mask 
-    jr    z, fSub_Eq_Exp; 2:12/7 
+    and  0x7F           ; 2:7       exp mask
+    jr    z, fSub_Eq_Exp; 2:12/7
 
     cp   0x0A           ; 2:7       pri posunu vetsim nez o MANT_BITS + NEUKLADANY_BIT + ZAOKROUHLOVACI_BIT uz mantisy nemaji prekryt
     jr   nc, fSub_TOOBIG; 2:12/7    HL - DE = HL
-        
-                        ;           Out: E = ( E | 1 0000 0000 ) >> A        
-    ld    B, A          ; 1:4 
-    ld    A, E          ; 1:4 
+
+                        ;           Out: E = ( E | 1 0000 0000 ) >> A
+    ld    B, A          ; 1:4
+    ld    A, E          ; 1:4
     rra                 ; 1:4       1mmm mmmm m
-    dec   B             ; 1:4 
-    jr    z, fSub_NOLoop; 2:12/7 
-    dec   B             ; 1:4 
-    jr    z, fSub_LAST  ; 2:12/7 
+    dec   B             ; 1:4
+    jr    z, fSub_NOLoop; 2:12/7
+    dec   B             ; 1:4
+    jr    z, fSub_LAST  ; 2:12/7
 fSub_Loop:
-    or    A             ; 1:4 
-    rra                 ; 1:4 
-    djnz fSub_Loop      ; 2:13/8 
+    or    A             ; 1:4
+    rra                 ; 1:4
+    djnz fSub_Loop      ; 2:13/8
 fSub_LAST:
     rl    B             ; 2:8       B = rounding 0.25
-    rra                 ; 1:4         
+    rra                 ; 1:4
 fSub_NOLoop:            ;           carry = rounding 0.5
-    ld    E, A          ; 1:4 
-    ld    A, L          ; 1:4               
-        
-    jr    c, fSub1      ; 2:12/7 
-        
-    sub   E             ; 1:4 
-    jr   nc, fSub0_OkExp; 2:12/7 
-        
+    ld    E, A          ; 1:4
+    ld    A, L          ; 1:4
+
+    jr    c, fSub1      ; 2:12/7
+
+    sub   E             ; 1:4
+    jr   nc, fSub0_OkExp; 2:12/7
+
 fSub_Norm_RESET:
-    or    A             ; 1:4 
+    or    A             ; 1:4
 fSub_Norm:              ;           normalizace cisla
     dec   H             ; 1:4       exp--
-    adc   A, A          ; 1:4 
-    jr   nc, fSub_Norm  ; 2:7/12 
-        
-    sub   B             ; 1:4 
-        
-    ld    L, A          ; 1:4         
-    ld    A, D          ; 1:4 
-    xor   H             ; 1:4 
+    adc   A, A          ; 1:4
+    jr   nc, fSub_Norm  ; 2:7/12
+
+    sub   B             ; 1:4
+
+    ld    L, A          ; 1:4
+    ld    A, D          ; 1:4
+    xor   H             ; 1:4
     ret   m             ; 1:11/5    RET with reset carry
-    jr   fSub_UNDER     ; 2:12 
+    jr   fSub_UNDER     ; 2:12
 
 fSub0_OkExp:            ;           reset carry
-    ld    L, A          ; 1:4       
-    ret   nz            ; 1:11/5 
+    ld    L, A          ; 1:4
+    ret   nz            ; 1:11/5
 
-    sub   B             ; 1:4       exp--? => rounding 0.25 => 0.5 
-    ret   z             ; 1:11/5 
+    sub   B             ; 1:4       exp--? => rounding 0.25 => 0.5
+    ret   z             ; 1:11/5
 
-    dec   HL            ; 1:6 
-    ld    A, D          ; 1:4 
-    xor   H             ; 1:4 
+    dec   HL            ; 1:6
+    ld    A, D          ; 1:4
+    xor   H             ; 1:4
     ret   m             ; 1:11/5    RET with reset carry
-    jr   fSub_UNDER     ; 2:12 
+    jr   fSub_UNDER     ; 2:12
 
 fSub1:
     sbc   A, E          ; 1:4       rounding half down
     jr    c, fSub_Norm  ; 2:12/7    carry => need half up
-    ld    L, A          ; 1:4  
-    ret                 ; 1:10 
-   
+    ld    L, A          ; 1:4
+    ret                 ; 1:10
+
 fSub_Eq_Exp:
-    ld    A, L          ; 1:4 
-    sub   E             ; 1:4 
+    ld    A, L          ; 1:4
+    sub   E             ; 1:4
     jr    z, fSub_UNDER ; 2:12/7    (HL_exp = DE_exp && HL_mant = DE_mant) => HL = -DE
-    jr   nc, fSub_EqNorm; 2:12/7 
-    ex   DE, HL         ; 1:4 
-    neg                 ; 2:8 
+    jr   nc, fSub_EqNorm; 2:12/7
+    ex   DE, HL         ; 1:4
+    neg                 ; 2:8
 
 fSub_EqNorm:            ;           normalizace cisla
     dec   H             ; 1:4       exp--
     add   A, A          ; 1:4       musime posouvat minimalne jednou, protoze NEUKLADANY_BIT byl vynulovan
-    jr   nc, fSub_EqNorm; 2:7/12 
-        
-    ld    L, A          ; 1:4         
-    ld    A, D          ; 1:4 
-    xor   H             ; 1:4  
-    ret   m             ; 1:11/5 
+    jr   nc, fSub_EqNorm; 2:7/12
+
+    ld    L, A          ; 1:4
+    ld    A, D          ; 1:4
+    xor   H             ; 1:4
+    ret   m             ; 1:11/5
 
 fSub_UNDER:
-    ld    L, 0x00       ; 2:7       
-    ld    A, D          ; 1:4 
-    cpl                 ; 1:4 
-    and  0x80           ; 2:7       sign mask 
+    ld    L, 0x00       ; 2:7
+    ld    A, D          ; 1:4
+    cpl                 ; 1:4
+    and  0x80           ; 2:7       sign mask
     ld    H, A          ; 1:4
     scf                 ; 1:4       carry = error
-    ret                 ; 1:10 
+    ret                 ; 1:10
 
 fSub_TOOBIG:
     ret   nz            ; 1:11/5    HL_exp - DE_exp > 7+1+1 => HL - DE = HL
 
-    ld    A, L          ; 1:4 
-    or    A             ; 1:4 
+    ld    A, L          ; 1:4
+    or    A             ; 1:4
     ret   nz            ; 1:11/5    HL_mant > 1.0           => HL - DE = HL
 
-    dec   L             ; 1:4 
+    dec   L             ; 1:4
     dec   H             ; 1:4       HL_exp = 8 + 1 + DE_exp  => HL_exp >= 9 => not underflow
-    ret                 ; 1:10 
+    ret                 ; 1:10
 
 ; logaritmus naturalis
-; Input: HL 
+; Input: HL
 ; Output: HL = ln(abs(HL)) +- lowest bit (with exponent -1($7E) the error is bigger...)
 ; ln(2^e*m) = ln(2^e) + ln(m) = e*ln(2) + ln(m) = ln2_exp[e] + ln_m[m]
 ; Pollutes: AF, B, DE
 ; *****************************************
                      fLn                ; *
 ; *****************************************
-                        ;           fixes input errors with exponent equal to -1 
-    ld    A, H          ; 1:4        
-    add   A, A          ; 1:4 
-    xor  2*0x3F         ; 2:7 
-    jr    z, fLn_FIX    ; 2:12/7  
+                        ;           fixes input errors with exponent equal to -1
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    xor  2*0x3F         ; 2:7
+    jr    z, fLn_FIX    ; 2:12/7
 
     ld    A, H          ; 1:4       save
 
-    ld    H, high Ln_M  ; 2:7       Ln_M[]        
-    ld    E, (HL)       ; 1:7 
+    ld    H, high Ln_M  ; 2:7       Ln_M[]
+    ld    E, (HL)       ; 1:7
     inc   H             ; 1:4       hi Ln_M[]
-    ld    D, (HL)       ; 1:7 
+    ld    D, (HL)       ; 1:7
 
     add   A, A          ; 1:4       sign out, HL = abs(HL)
-    ld    L, A          ; 1:4 
-    cp   0x80           ; 2:7       2*bias 
-    jr    z, fLn_NO_Add ; 2:7/11 
+    ld    L, A          ; 1:4
+    cp   0x80           ; 2:7       2*bias
+    jr    z, fLn_NO_Add ; 2:7/11
 
     inc   H             ; 1:4       Ln2_Exp[]
 
-    ld    A, (HL)       ; 1:7 
-    inc   L             ; 1:4 
-    ld    H, (HL)       ; 1:7 
-    ld    L, A          ; 1:4 
-        
-    ld    A, D          ; 1:4 
-    or    E             ; 1:4 
+    ld    A, (HL)       ; 1:7
+    inc   L             ; 1:4
+    ld    H, (HL)       ; 1:7
+    ld    L, A          ; 1:4
+
+    ld    A, D          ; 1:4
+    or    E             ; 1:4
     jp   nz, fAdd       ; 3:10      HL = HL + DE = +-Ln2_Exp[] + Ln_M[]
-    ret                 ; 1:10 
-        
+    ret                 ; 1:10
+
 fLn_FIX:
-    ld    H, high Ln_FIX; 2:7 
-    ld    E, (HL)       ; 1:7 
-    inc   H             ; 1:4 
-    ld    D, (HL)       ; 1:7 
+    ld    H, high Ln_FIX; 2:7
+    ld    E, (HL)       ; 1:7
+    inc   H             ; 1:4
+    ld    D, (HL)       ; 1:7
 
 fLn_NO_Add:
-    ex   DE, HL         ; 1:4 
-    ret                 ; 1:10    
+    ex   DE, HL         ; 1:4
+    ret                 ; 1:10
 ; Natural exponential function
-; Input: HL 
+; Input: HL
 ; Output: HL = exp(HL)) +- lowest 2 bit
-; e^((2^e)*m) = 
-; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625)) 
+; e^((2^e)*m) =
+; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625))
 ; m1 => b1 = 1, m0.5 => b0.5 = 0 or 1, m0.25 => b0.25 = 0 or 1, ...
-; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) = 
-;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ... 
+; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) =
+;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ...
 ; Pollutes: AF, BC, DE
 ; *****************************************
                     fExp                ; *
 ; *****************************************
-    ld    D, EXP_TAB/256; 2:7 
-    ld    A, H          ; 1:4 
-    add   A, A          ; 1:4 
-    ld    E, A          ; 1:4 
-    jr   nc, $+3        ; 2:7/11 
-    inc   D             ; 1:4 
+    ld    D, EXP_TAB/256; 2:7
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    ld    E, A          ; 1:4
+    jr   nc, $+3        ; 2:7/11
+    inc   D             ; 1:4
 
-    cp   2*0x37         ; 2:7 
-    jr    c, fExp_ONE   ; 2:7/11 
-    cp   2*0x46         ; 2:7 
-    jr   nc, fExp_FLOW  ; 2:7/11 
+    cp   2*0x37         ; 2:7
+    jr    c, fExp_ONE   ; 2:7/11
+    cp   2*0x46         ; 2:7
+    jr   nc, fExp_FLOW  ; 2:7/11
 
     ld    A, L          ; 1:4       fraction
 
-    ex   DE, HL         ; 1:4 
-    inc   L             ; 1:4 
-    ld    D, (HL)       ; 1:7 
-    dec   L             ; 1:4 
-    ld    E, (HL)       ; 1:7 
+    ex   DE, HL         ; 1:4
+    inc   L             ; 1:4
+    ld    D, (HL)       ; 1:7
+    dec   L             ; 1:4
+    ld    E, (HL)       ; 1:7
 
 fExp_0_BIT:
-    jr    z, fExp_EXIT  ; 2:7/11 
+    jr    z, fExp_EXIT  ; 2:7/11
 fExp_Loop:
     dec   L             ; 1:4       exp--
-    ld    B, (HL)       ; 1:7 
-    dec   L             ; 1:4 
-    add   A, A          ; 1:4 
-    jr   nc, fExp_0_BIT ; 2:7/11 
-    ld    C, (HL)       ; 1:7 
-        
+    ld    B, (HL)       ; 1:7
+    dec   L             ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, fExp_0_BIT ; 2:7/11
+    ld    C, (HL)       ; 1:7
+
     push HL             ; 1:11
     push AF             ; 1:11
     call fMul           ; 3:17      HL = BC * DE
     pop  AF             ; 1:10
-    ex   DE, HL         ; 1:4 
+    ex   DE, HL         ; 1:4
     pop  HL             ; 1:10
-        
-    jp  fExp_Loop       ; 3:10 
-        
+
+    jp  fExp_Loop       ; 3:10
+
 fExp_ONE:
     ld    DE, 0x4000    ; 3:10      bias*256
 fExp_EXIT:
-    ex   DE, HL         ; 1:4 
-    ret                 ; 1:10 
-        
+    ex   DE, HL         ; 1:4
+    ret                 ; 1:10
+
 fExp_FLOW:
-    ld    A, H          ; 1:4 
+    ld    A, H          ; 1:4
     add   A, A          ; 1:4       sign out
-    jr    c, fExp_UNDER ; 2:7/11 
+    jr    c, fExp_UNDER ; 2:7/11
 fExp_OVER:              ;
     scf                 ; 1:4
-    ld    HL, 0x7FFF    ; 3:10      fpmax 
-    ret                 ; 1:10 
+    ld    HL, 0x7FFF    ; 3:10      fpmax
+    ret                 ; 1:10
 
 fExp_UNDER:
-    ld    HL, 0x0000    ; 3:10      fpmin 
+    ld    HL, 0x0000    ; 3:10      fpmin
     ret                 ; 1:10
 ;  Input:  BC, HL with a mantissa equal to 1.0 (eeee eeee s000 0000)
 ; Output: HL = BC / HL = BC / (1.0 * 2^HL_exp) = BC * 1.0 * 2^-HL_exp, if ( overflow or underflow ) set carry
 ; Pollutes: AF, BC, DE
 
-;# if ( 1.m = 1.0 ) => 1/(2^x * 1.0) = 1/2^x * 1/1.0 = 2^-x * 1.0    
+;# if ( 1.m = 1.0 ) => 1/(2^x * 1.0) = 1/2^x * 1/1.0 = 2^-x * 1.0
 ;# New_sign = BC_sign ^ HL_sign
 ;# New_exp  = (BC_exp - bias) + ( bias - HL_exp ) + bias = bias + BC_exp - HL_exp
 ;# New_mant = BC_mant * 1.0 = BC_mant
@@ -1468,47 +1605,47 @@ fExp_UNDER:
     ld    A, B          ; 1:4       BC_exp
     sub   H             ; 1:4      -HL_exp
     add   A, 0x40       ; 2:7       bias
-    ld    L, A          ; 1:4 
+    ld    L, A          ; 1:4
     xor   H             ; 1:4       xor sign
     xor   B             ; 1:4       xor sign
-    jp    m, fDiv_FLOW  ; 3:10 
-    ld    H, L          ; 1:4 
-    ld    L, C          ; 1:4 
-    ret                 ; 1:10 
-fDiv_FLOW:        
+    jp    m, fDiv_FLOW  ; 3:10
+    ld    H, L          ; 1:4
+    ld    L, C          ; 1:4
+    ret                 ; 1:10
+fDiv_FLOW:
     bit   6, L          ; 2:8       sign+(0x00..0x3F)=overflow, sign+(0x41..0x7F)=underflow
-    jr    z, fDiv_OVER  ; 2:12/7 
-        
-fDiv_UNDER:      
-    ld    A, L          ; 1:4 
-    cpl                 ; 1:4 
+    jr    z, fDiv_OVER  ; 2:12/7
+
+fDiv_UNDER:
+    ld    A, L          ; 1:4
+    cpl                 ; 1:4
     and  0x80           ; 2:7       sign mask
-    ld    H, A          ; 1:4 
+    ld    H, A          ; 1:4
     ld    L, 0x00       ; 2:7
     scf                 ; 1:4       carry = error
-    ret                 ; 1:10 
+    ret                 ; 1:10
 
 fDiv_OVER:
-    ld    A, L          ; 1:4 
-    cpl                 ; 1:4 
+    ld    A, L          ; 1:4
+    cpl                 ; 1:4
     or   0x7F           ; 2:7       exp mask
-    ld    H, A          ; 1:4 
+    ld    H, A          ; 1:4
     ld    L, 0xFF       ; 2:7
     scf                 ; 1:4       carry = error
-    ret                 ; 1:10 
-     
+    ret                 ; 1:10
+
 ; ---------------------------------------------
 ;  Input:  BC , HL
 ; Output: HL = BC / HL   =>   DE = 1 / HL   =>   HL = BC * DE
-; if ( 1.m = 1.0 ) => 1/(2^x * 1.0) = 1/2^x * 1/1.0 = 2^-x * 1.0    
-; if ( 1.m > 1.0 ) => 1/(2^x * 1.m) = 1/2^x * 1/1.m = 2^-x * 0.9999 .. 0.5001   =>   2^(-x-1) * 1.0002 .. 1.9998    
+; if ( 1.m = 1.0 ) => 1/(2^x * 1.0) = 1/2^x * 1/1.0 = 2^-x * 1.0
+; if ( 1.m > 1.0 ) => 1/(2^x * 1.m) = 1/2^x * 1/1.m = 2^-x * 0.9999 .. 0.5001   =>   2^(-x-1) * 1.0002 .. 1.9998
 ; Pollutes: AF, BC, DE
 ; *****************************************
                     fDiv                ; *
 ; *****************************************
-    ld    A, L          ; 1:4 
-    or    A             ; 1:4 
-    jr    z, fDiv_POW2  ; 2:12/7 
+    ld    A, L          ; 1:4
+    or    A             ; 1:4
+    jr    z, fDiv_POW2  ; 2:12/7
     ld    A, H          ; 1:4       NegE - 1 = (0 - (E - bias)) + bias - 1 = 2*bias - E - 1 = 128 - E - 1 = 127 - E
     xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F 
     ld    A, E          ; 1:4       xor
@@ -1517,11 +1654,11 @@ fDiv_OVER:
     ld    A, D          ; 1:4       xor
     xor   H             ; 1:4       xor
     ld    H, A          ; 1:4       xor
-    pop  DE             ; 1:10      xor E     
-    ld    D, A          ; 1:4 
+    pop  DE             ; 1:10      xor E
+    ld    D, A          ; 1:4
 
-    ld    H, DIVTAB/256 ; 2:7 
-    ld    E, (HL)       ; 1:7 
+    ld    H, DIVTAB/256 ; 2:7
+    ld    E, (HL)       ; 1:7
     ; continues with fMul (HL = BC * DE), DE = 1 / HL
 ; Floating-point multiplication
 ;  In: DE, BC multiplicands
@@ -1529,106 +1666,106 @@ fDiv_OVER:
 ; Pollutes: AF, BC, DE
 
 ; SEEE EEEE MMMM MMMM
-; Sign       0 .. 1           = 0??? ???? ???? ???? .. 1??? ???? ???? ???? 
+; Sign       0 .. 1           = 0??? ???? ???? ???? .. 1??? ???? ???? ????
 ; Exp      -64 .. 63          = ?000 0000 ???? ???? .. ?111 1111 ???? ????;   (Bias 64 = 0x40)
 ; Mantis   1.0 .. 1.99609375  = ???? ???? 0000 0000 .. ???? ???  1111 1111 = 1.0000 0000 .. 1.1111 1111
 ; use POW2TAB
 ; *****************************************
                    fMul                 ; *
 ; *****************************************
-    ld    A, B          ; 1:4 
-    add   A, D          ; 1:4 
+    ld    A, B          ; 1:4
+    add   A, D          ; 1:4
     sub  0x40           ; 2:7       HL_exp = (BC_exp-bias + DE_exp-bias) + bias = BC_exp + DE_exp - bias
     ld    H, A          ; 1:4       seee eeee
-        
-    xor   B             ; 1:4 
-    xor   D             ; 1:4 
-    jp    m, fMul_FLOW  ; 3:10 
+
+    xor   B             ; 1:4
+    xor   D             ; 1:4
+    jp    m, fMul_FLOW  ; 3:10
     ld    B, H          ; 1:4       seee eeee
 fMul_HOPE:
 
-    ld    A, C          ; 1:4 
-    sub   E             ; 1:4 
-    jr   nc, fMul_DIFF  ; 2:12/7 
-    ld    A, E          ; 1:4 
-    sub   C             ; 1:4 
+    ld    A, C          ; 1:4
+    sub   E             ; 1:4
+    jr   nc, fMul_DIFF  ; 2:12/7
+    ld    A, E          ; 1:4
+    sub   C             ; 1:4
 fMul_DIFF:
     ld    L, A          ; 1:4       L = a - b
-    ld    A, E          ; 1:4 
-    ld    H, Tab_AmB/256; 2:7           
-    ld    E, (HL)       ; 1:7 
-    inc   H             ; 1:4         
-    ld    D, (HL)       ; 1:7 
-    add   A, C          ; 1:4 
+    ld    A, E          ; 1:4
+    ld    H, Tab_AmB/256; 2:7
+    ld    E, (HL)       ; 1:7
+    inc   H             ; 1:4
+    ld    D, (HL)       ; 1:7
+    add   A, C          ; 1:4
     ld    L, A          ; 1:4       L = a + b
-        
-    sbc   A, A          ; 1:4 
-    add   A, A          ; 1:4 
-    add   A, Tab_ApB/256; 2:7 
-    ld    H, A          ; 1:4 
-        
-    ld    A, (HL)       ; 1:4 
-    add   A, E          ; 1:4 
+
+    sbc   A, A          ; 1:4
+    add   A, A          ; 1:4
+    add   A, Tab_ApB/256; 2:7
+    ld    H, A          ; 1:4
+
+    ld    A, (HL)       ; 1:4
+    add   A, E          ; 1:4
     ld    E, A          ; 1:4       for rounding
-    inc   H             ; 1:4 
-    ld    A, (HL)       ; 1:4 
-    adc   A, D          ; 1:4   
-    ld    H, A          ; 1:4 
-    ld    L, E          ; 1:4 
-           
+    inc   H             ; 1:4
+    ld    A, (HL)       ; 1:4
+    adc   A, D          ; 1:4
+    ld    H, A          ; 1:4
+    ld    L, E          ; 1:4
+
     jp    p, fMul_NOADD ; 3:10      (ApB)+(AmB) >= 0x4000 => pricti: 0x00
                         ;           (ApB)+(AmB) >= 0x8000 => pricti: 0x20
     ld   DE, 0x0020     ; 3:10
-    add  HL, DE         ; 1:11 
-    add  HL, HL         ; 1:11 
+    add  HL, DE         ; 1:11
+    add  HL, HL         ; 1:11
 
-    ld    L, H          ; 1:4 
-    ld    H, B          ; 1:4         
+    ld    L, H          ; 1:4
+    ld    H, B          ; 1:4
 
-    inc   H             ; 1:4 
-    ld    A, B          ; 1:4 
-    xor   H             ; 1:4 
-    ret   p             ; 1:11/5 
-        
+    inc   H             ; 1:4
+    ld    A, B          ; 1:4
+    xor   H             ; 1:4
+    ret   p             ; 1:11/5
+
 ; In: B sign
 fMul_OVER:
-    ld    A, B          ; 1:4 
+    ld    A, B          ; 1:4
 fMul_OVER_A:
     or   0x7F           ; 2:7       exp_mask
-    ld    H, A          ; 1:4 
+    ld    H, A          ; 1:4
     ld    L, 0xFF       ; 2:7
     scf                 ; 1:4       carry = error
-    ret                 ; 1:10 
+    ret                 ; 1:10
 
 fMul_NOADD:
-    add  HL, HL         ; 1:11 
-    add  HL, HL         ; 1:11 
+    add  HL, HL         ; 1:11
+    add  HL, HL         ; 1:11
 
-    ld    L, H          ; 1:4 
+    ld    L, H          ; 1:4
     ld    H, B          ; 1:4
     or    A             ; 1:4
-    ret                 ; 1:10 
-        
+    ret                 ; 1:10
+
 fMul_FLOW:
-    ld    A, H          ; 1:4 
+    ld    A, H          ; 1:4
     cpl                 ; 1:4       real sign
     bit   6, H          ; 2:8       sign+(0x00..0x3E)=overflow, sign+(0x40..0x7F)=underflow
-    jr    z, fMul_OVER_A; 2:12/7 
+    jr    z, fMul_OVER_A; 2:12/7
 
     add   A, A          ; 1:4       sign out
-    jr   nz, fMul_UNDER ; 2:12/7 
-        
-    rra                 ; 1:4 
-    ld    B, A          ; 1:4       s000 0000 
+    jr   nz, fMul_UNDER ; 2:12/7
+
+    rra                 ; 1:4
+    ld    B, A          ; 1:4       s000 0000
     call fMul_HOPE      ; 3:17      exp+1
-    ld    A, H          ; 1:4 
+    ld    A, H          ; 1:4
     dec   H             ; 1:4       exp-1
-    xor   H             ; 1:4 
-    ret   p             ; 1:11/5   
-        
+    xor   H             ; 1:4
+    ret   p             ; 1:11/5
+
     xor   H             ; 1:4       sign
     add   A, A          ; 1:4       sign out
-                
+
 fMul_UNDER:
     ld   HL, 0x0100     ; 3:10
     rr    H             ; 2:8       sign in, set carry
@@ -1641,51 +1778,51 @@ fMul_UNDER:
                     fSin                ; *
 ; *****************************************
 
-    ld    A, H          ; 1:4 
+    ld    A, H          ; 1:4
     and  0x7F           ; 2:7       abs(HL)
-    sub  0x3F           ; 2:7 
-    jr   nc, fSin_3F40  ; 2:12/7 
-    add   A, 0x02       ; 2:7 
-    jr    c, fSin_3D3E  ; 2:12/7 
-    inc   A             ; 1:4 
-    ret   nz            ; 1:5/11 
-    ld    A, 0x71       ; 2:7 
-    sub   L             ; 1:4 
+    sub  0x3F           ; 2:7
+    jr   nc, fSin_3F40  ; 2:12/7
+    add   A, 0x02       ; 2:7
+    jr    c, fSin_3D3E  ; 2:12/7
+    inc   A             ; 1:4
+    ret   nz            ; 1:5/11
+    ld    A, 0x71       ; 2:7
+    sub   L             ; 1:4
     ret   nc            ; 1:5/11
     or    A             ; 1:4       reset carry
-    dec   L             ; 1:4 
-    ret                 ; 1:10 
+    dec   L             ; 1:4
+    ret                 ; 1:10
 fSin_3D3E:
-    ld    D, SinTab_3D3E/256; 2:7 
-    rra                 ; 1:4 
-    ld    A, L          ; 1:4 
-    rra                 ; 1:4 
-    ld    E, A          ; 1:4 
-    ld    A, (DE)       ; 1:7 
-    jr    c, $+6        ; 2:12/7         
-    rra                 ; 1:4 
-    rra                 ; 1:4 
-    rra                 ; 1:4 
-    rra                 ; 1:4 
-    or   0xF0           ; 2:7 
-    rl    E             ; 2:8 
-        
-    jr   nc, fSin_OK    ; 2:12/7 
-    jp    p, fSin_OK    ; 3:10 
-    sub  0x08           ; 2:7 
+    ld    D, SinTab_3D3E/256; 2:7
+    rra                 ; 1:4
+    ld    A, L          ; 1:4
+    rra                 ; 1:4
+    ld    E, A          ; 1:4
+    ld    A, (DE)       ; 1:7
+    jr    c, $+6        ; 2:12/7
+    rra                 ; 1:4
+    rra                 ; 1:4
+    rra                 ; 1:4
+    rra                 ; 1:4
+    or   0xF0           ; 2:7
+    rl    E             ; 2:8
+
+    jr   nc, fSin_OK    ; 2:12/7
+    jp    p, fSin_OK    ; 3:10
+    sub  0x08           ; 2:7
 fSin_OK:
-    ld    E, A          ; 1:4 
-    ld    D, 0xFF       ; 2:7 
+    ld    E, A          ; 1:4
+    ld    D, 0xFF       ; 2:7
     add  HL, DE         ; 1:11
     or    A             ; 1:4       reset carry
-    ret                 ; 1:10 
+    ret                 ; 1:10
 fSin_3F40:
-    add   A, high SinTab_3F ; 2:7 
-    ex   DE, HL         ; 1:4 
-    ld    H, A          ; 1:4 
-    ld    L, E          ; 1:4 
-    ld    L, (HL)       ; 1:7 
-    ld    H, 0xFF       ; 2:7 
+    add   A, high SinTab_3F ; 2:7
+    ex   DE, HL         ; 1:4
+    ld    H, A          ; 1:4
+    ld    L, E          ; 1:4
+    ld    L, (HL)       ; 1:7
+    ld    H, 0xFF       ; 2:7
     add  HL, DE         ; 1:11
     or    A             ; 1:4       reset carry
     ret                 ; 1:10
@@ -1781,33 +1918,33 @@ db 0xee,0xec,0xeb,0xe9,0xe7,0xe5,0xe4,0xe2,0xe0,0xde,0xdc,0xdb,0xd9,0xd7,0xd5,0x
 ; Align to 256-byte page boundary
 DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
-; e^((2^e)*m) = 
-; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625)) 
+; e^((2^e)*m) =
+; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625))
 ; m1 => b1 = 1, m0.5 => b0.5 = 0 or 1, m0.25 => b0.25 = 0 or 1, ...
-; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) = 
-;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ... 
+; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) =
+;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ...
 
 EXP_TAB:
 ; plus
 ;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 0_  
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 1_  
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 2_  
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4001,0x4001,0x4002,0x4004,0x4008,0x4011,0x4022,0x4049,0x40a6   ; 3_  
-dw 0x415c,0x42d9,0x45b5,0x4b75,0x570f,0x6e1f,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 4_  
-dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 5_  
-dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 6_  
-dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 7_  
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 0_
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 1_
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 2_
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4001,0x4001,0x4002,0x4004,0x4008,0x4011,0x4022,0x4049,0x40a6   ; 3_
+dw 0x415c,0x42d9,0x45b5,0x4b75,0x570f,0x6e1f,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 4_
+dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 5_
+dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 6_
+dw 0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff,0x7fff   ; 7_
 ; minus
 ;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 0_  
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 1_  
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 2_  
-dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x3fff,0x3ffe,0x3ffc,0x3ff8,0x3ff0,0x3fe1,0x3fc4,0x3f8f,0x3f37   ; 3_  
-dw 0x3e79,0x3d15,0x3a2c,0x3460,0x28e3,0x11c8,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 4_  
-dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 5_  
-dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 6_  
-dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 7_ 
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 0_
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 1_
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000   ; 2_
+dw 0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x3fff,0x3ffe,0x3ffc,0x3ff8,0x3ff0,0x3fe1,0x3fc4,0x3f8f,0x3f37   ; 3_
+dw 0x3e79,0x3d15,0x3a2c,0x3460,0x28e3,0x11c8,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 4_
+dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 5_
+dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 6_
+dw 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000   ; 7_
 
 ; rozdíl: má být mínus jest, nemohu se splést...
 ; nepřesnost: 2963 (4.521179 %)
@@ -1822,9 +1959,9 @@ DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 ; #define POSUN_VPRAVO 7
 ; #define POCET_BITU 8
 
-; # 1000 0000  0... ....  
-; #              11 1111  
-; #  765 4321  0... ....   
+; # 1000 0000  0... ....
+; #              11 1111
+; #  765 4321  0... ....
 
 ; #       neni presne: 31568 (48.168945%), preteceni: 31568, podteceni: 0
 ; # neni zaokrouhleno: 0 (0.000000%), preteceni: 0, podteceni: 0
@@ -1857,22 +1994,22 @@ db 0xa0,0x84,0x68,0x4c,0x2f,0x14,0xf6,0xd9,0xbc,0x9f,0x82,0x65,0x47,0x2a,0x0c,0x
 db 0xd0,0xb2,0x94,0x76,0x57,0x39,0x1a,0xfb,0xdc,0xbd,0x9e,0x7f,0x5f,0x40,0x20,0x00  ; F_  1d0,1b2,194,176,157,139,11a, fb, dc, bd, 9e, 7f, 5f, 40, 20, 00 F_
 ;Tab_AmB_hi:	; 0xFE0 - tab _minus[i]
 ;    _0   _1   _2   _3   _4   _5   _6   _7   _8   _9   _A   _B   _C   _D   _E   _F
-db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f  ; 0_  
-db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f  ; 1_  
-db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f  ; 2_  
-db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0e,0x0e,0x0e,0x0e  ; 3_  
-db 0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e  ; 4_  
-db 0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d  ; 5_  
-db 0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0c,0x0c,0x0c  ; 6_  
-db 0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0b  ; 7_  
-db 0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0a,0x0a  ; 8_  
-db 0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x09,0x09,0x09,0x09  ; 9_  
-db 0x09,0x09,0x09,0x09,0x09,0x09,0x09,0x09,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08  ; A_  
-db 0x08,0x08,0x08,0x08,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x06  ; B_  
-db 0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x05,0x05,0x05,0x05,0x05,0x05  ; C_  
-db 0x05,0x05,0x05,0x05,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x03,0x03,0x03  ; D_  
-db 0x03,0x03,0x03,0x03,0x03,0x03,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x01  ; E_  
-db 0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00  ; F_  
+db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f  ; 0_
+db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f  ; 1_
+db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f  ; 2_
+db 0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0e,0x0e,0x0e,0x0e  ; 3_
+db 0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e  ; 4_
+db 0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0e,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d  ; 5_
+db 0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0d,0x0c,0x0c,0x0c  ; 6_
+db 0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0b  ; 7_
+db 0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0a,0x0a  ; 8_
+db 0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x0a,0x09,0x09,0x09,0x09  ; 9_
+db 0x09,0x09,0x09,0x09,0x09,0x09,0x09,0x09,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08  ; A_
+db 0x08,0x08,0x08,0x08,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x07,0x06  ; B_
+db 0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x06,0x05,0x05,0x05,0x05,0x05,0x05  ; C_
+db 0x05,0x05,0x05,0x05,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x03,0x03,0x03  ; D_
+db 0x03,0x03,0x03,0x03,0x03,0x03,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x01  ; E_
+db 0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00  ; F_
 
 Tab_ApB_lo_1:	; tab _plus[i] - 0xFE0
 ;    _0   _1   _2   _3   _4   _5   _6   _7   _8   _9   _A   _B   _C   _D   _E   _F
@@ -1894,22 +2031,22 @@ db 0x7f,0xfb,0x77,0xf3,0x70,0xec,0x69,0xe6,0x63,0xe0,0x5d,0xda,0x58,0xd5,0x53,0x
 db 0x4f,0xcd,0x4b,0xc9,0x48,0xc6,0x45,0xc4,0x43,0xc2,0x41,0xc0,0x40,0xbf,0x3f,0x00  ; F_  e84f,e8cd,e94b,e9c9,ea48,eac6,eb45,ebc4,ec43,ecc2,ed41,edc0,ee40,eebf,ef3f,  00 F_
 ;Tab_ApB_hi_1:	; tab _plus[i] - 0xFE0
 ;    _0   _1   _2   _3   _4   _5   _6   _7   _8   _9   _A   _B   _C   _D   _E   _F
-db 0x80,0x80,0x81,0x81,0x81,0x82,0x82,0x82,0x83,0x83,0x84,0x84,0x84,0x85,0x85,0x85  ; 0_  
-db 0x86,0x86,0x87,0x87,0x87,0x88,0x88,0x89,0x89,0x89,0x8a,0x8a,0x8a,0x8b,0x8b,0x8c  ; 1_  
-db 0x8c,0x8c,0x8d,0x8d,0x8e,0x8e,0x8e,0x8f,0x8f,0x90,0x90,0x90,0x91,0x91,0x92,0x92  ; 2_  
-db 0x92,0x93,0x93,0x94,0x94,0x94,0x95,0x95,0x96,0x96,0x96,0x97,0x97,0x98,0x98,0x98  ; 3_  
-db 0x99,0x99,0x9a,0x9a,0x9a,0x9b,0x9b,0x9c,0x9c,0x9c,0x9d,0x9d,0x9e,0x9e,0x9e,0x9f  ; 4_  
-db 0x9f,0xa0,0xa0,0xa1,0xa1,0xa1,0xa2,0xa2,0xa3,0xa3,0xa3,0xa4,0xa4,0xa5,0xa5,0xa6  ; 5_  
-db 0xa6,0xa6,0xa7,0xa7,0xa8,0xa8,0xa9,0xa9,0xa9,0xaa,0xaa,0xab,0xab,0xac,0xac,0xac  ; 6_  
-db 0xad,0xad,0xae,0xae,0xaf,0xaf,0xaf,0xb0,0xb0,0xb1,0xb1,0xb2,0xb2,0xb2,0xb3,0xb3  ; 7_  
-db 0xb4,0xb4,0xb5,0xb5,0xb6,0xb6,0xb6,0xb7,0xb7,0xb8,0xb8,0xb9,0xb9,0xb9,0xba,0xba  ; 8_  
-db 0xbb,0xbb,0xbc,0xbc,0xbd,0xbd,0xbd,0xbe,0xbe,0xbf,0xbf,0xc0,0xc0,0xc1,0xc1,0xc2  ; 9_  
-db 0xc2,0xc2,0xc3,0xc3,0xc4,0xc4,0xc5,0xc5,0xc6,0xc6,0xc7,0xc7,0xc7,0xc8,0xc8,0xc9  ; A_  
-db 0xc9,0xca,0xca,0xcb,0xcb,0xcc,0xcc,0xcd,0xcd,0xcd,0xce,0xce,0xcf,0xcf,0xd0,0xd0  ; B_  
-db 0xd1,0xd1,0xd2,0xd2,0xd3,0xd3,0xd4,0xd4,0xd5,0xd5,0xd5,0xd6,0xd6,0xd7,0xd7,0xd8  ; C_  
-db 0xd8,0xd9,0xd9,0xda,0xda,0xdb,0xdb,0xdc,0xdc,0xdd,0xdd,0xde,0xde,0xdf,0xdf,0xe0  ; D_  
-db 0xe0,0xe0,0xe1,0xe1,0xe2,0xe2,0xe3,0xe3,0xe4,0xe4,0xe5,0xe5,0xe6,0xe6,0xe7,0xe7  ; E_  
-db 0xe8,0xe8,0xe9,0xe9,0xea,0xea,0xeb,0xeb,0xec,0xec,0xed,0xed,0xee,0xee,0xef,0x00  ; F_ 
+db 0x80,0x80,0x81,0x81,0x81,0x82,0x82,0x82,0x83,0x83,0x84,0x84,0x84,0x85,0x85,0x85  ; 0_
+db 0x86,0x86,0x87,0x87,0x87,0x88,0x88,0x89,0x89,0x89,0x8a,0x8a,0x8a,0x8b,0x8b,0x8c  ; 1_
+db 0x8c,0x8c,0x8d,0x8d,0x8e,0x8e,0x8e,0x8f,0x8f,0x90,0x90,0x90,0x91,0x91,0x92,0x92  ; 2_
+db 0x92,0x93,0x93,0x94,0x94,0x94,0x95,0x95,0x96,0x96,0x96,0x97,0x97,0x98,0x98,0x98  ; 3_
+db 0x99,0x99,0x9a,0x9a,0x9a,0x9b,0x9b,0x9c,0x9c,0x9c,0x9d,0x9d,0x9e,0x9e,0x9e,0x9f  ; 4_
+db 0x9f,0xa0,0xa0,0xa1,0xa1,0xa1,0xa2,0xa2,0xa3,0xa3,0xa3,0xa4,0xa4,0xa5,0xa5,0xa6  ; 5_
+db 0xa6,0xa6,0xa7,0xa7,0xa8,0xa8,0xa9,0xa9,0xa9,0xaa,0xaa,0xab,0xab,0xac,0xac,0xac  ; 6_
+db 0xad,0xad,0xae,0xae,0xaf,0xaf,0xaf,0xb0,0xb0,0xb1,0xb1,0xb2,0xb2,0xb2,0xb3,0xb3  ; 7_
+db 0xb4,0xb4,0xb5,0xb5,0xb6,0xb6,0xb6,0xb7,0xb7,0xb8,0xb8,0xb9,0xb9,0xb9,0xba,0xba  ; 8_
+db 0xbb,0xbb,0xbc,0xbc,0xbd,0xbd,0xbd,0xbe,0xbe,0xbf,0xbf,0xc0,0xc0,0xc1,0xc1,0xc2  ; 9_
+db 0xc2,0xc2,0xc3,0xc3,0xc4,0xc4,0xc5,0xc5,0xc6,0xc6,0xc7,0xc7,0xc7,0xc8,0xc8,0xc9  ; A_
+db 0xc9,0xca,0xca,0xcb,0xcb,0xcc,0xcc,0xcd,0xcd,0xcd,0xce,0xce,0xcf,0xcf,0xd0,0xd0  ; B_
+db 0xd1,0xd1,0xd2,0xd2,0xd3,0xd3,0xd4,0xd4,0xd5,0xd5,0xd5,0xd6,0xd6,0xd7,0xd7,0xd8  ; C_
+db 0xd8,0xd9,0xd9,0xda,0xda,0xdb,0xdb,0xdc,0xdc,0xdd,0xdd,0xde,0xde,0xdf,0xdf,0xe0  ; D_
+db 0xe0,0xe0,0xe1,0xe1,0xe2,0xe2,0xe3,0xe3,0xe4,0xe4,0xe5,0xe5,0xe6,0xe6,0xe7,0xe7  ; E_
+db 0xe8,0xe8,0xe9,0xe9,0xea,0xea,0xeb,0xeb,0xec,0xec,0xed,0xed,0xee,0xee,0xef,0x00  ; F_
 
 ;Tab_ApB_lo_0:	; tab _plus[i] - 0xFE0
 Tab_ApB:
@@ -1932,26 +2069,26 @@ db 0x7f,0xdb,0x37,0x93,0xf0,0x4f,0xa9,0x07,0x63,0xc0,0x1d,0x7b,0xd8,0x35,0x93,0x
 db 0x4f,0xac,0x0b,0x69,0xc8,0x27,0x85,0xe4,0x43,0xa2,0x02,0x60,0xc0,0x1f,0x80,0xe0  ; F_  7a4f,7aac,7b0b,7b69,7bc8,7c27,7c85,7ce4,7d43,7da2,7e02,7e60,7ec0,7f1f,7f80,7fe0 F_
 ;Tab_ApB_hi_0:	; tab _plus[i] - 0xFE0
 ;    _0   _1   _2   _3   _4   _5   _6   _7   _8   _9   _A   _B   _C   _D   _E   _F
-db 0x30,0x30,0x30,0x30,0x31,0x31,0x31,0x32,0x32,0x32,0x32,0x33,0x33,0x33,0x33,0x34  ; 0_  
-db 0x34,0x34,0x34,0x35,0x35,0x35,0x35,0x36,0x36,0x36,0x36,0x37,0x37,0x37,0x37,0x38  ; 1_  
-db 0x38,0x38,0x39,0x39,0x39,0x39,0x3a,0x3a,0x3a,0x3a,0x3b,0x3b,0x3b,0x3b,0x3c,0x3c  ; 2_  
-db 0x3c,0x3d,0x3d,0x3d,0x3d,0x3e,0x3e,0x3e,0x3f,0x3f,0x3f,0x3f,0x40,0x40,0x40,0x40  ; 3_  
-db 0x41,0x41,0x41,0x42,0x42,0x42,0x42,0x43,0x43,0x43,0x44,0x44,0x44,0x44,0x45,0x45  ; 4_  
-db 0x45,0x46,0x46,0x46,0x46,0x47,0x47,0x47,0x48,0x48,0x48,0x49,0x49,0x49,0x49,0x4a  ; 5_  
-db 0x4a,0x4a,0x4b,0x4b,0x4b,0x4b,0x4c,0x4c,0x4c,0x4d,0x4d,0x4d,0x4e,0x4e,0x4e,0x4f  ; 6_  
-db 0x4f,0x4f,0x4f,0x50,0x50,0x50,0x51,0x51,0x51,0x52,0x52,0x52,0x53,0x53,0x53,0x53  ; 7_  
-db 0x54,0x54,0x54,0x55,0x55,0x55,0x56,0x56,0x56,0x57,0x57,0x57,0x58,0x58,0x58,0x58  ; 8_  
-db 0x59,0x59,0x59,0x5a,0x5a,0x5a,0x5b,0x5b,0x5b,0x5c,0x5c,0x5c,0x5d,0x5d,0x5d,0x5e  ; 9_  
-db 0x5e,0x5e,0x5f,0x5f,0x5f,0x60,0x60,0x60,0x61,0x61,0x61,0x62,0x62,0x62,0x63,0x63  ; A_  
-db 0x63,0x64,0x64,0x64,0x65,0x65,0x65,0x66,0x66,0x66,0x67,0x67,0x67,0x68,0x68,0x68  ; B_  
-db 0x69,0x69,0x69,0x6a,0x6a,0x6a,0x6b,0x6b,0x6c,0x6c,0x6c,0x6d,0x6d,0x6d,0x6e,0x6e  ; C_  
-db 0x6e,0x6f,0x6f,0x6f,0x70,0x70,0x70,0x71,0x71,0x71,0x72,0x72,0x73,0x73,0x73,0x74  ; D_  
-db 0x74,0x74,0x75,0x75,0x75,0x76,0x76,0x77,0x77,0x77,0x78,0x78,0x78,0x79,0x79,0x79  ; E_  
-db 0x7a,0x7a,0x7b,0x7b,0x7b,0x7c,0x7c,0x7c,0x7d,0x7d,0x7e,0x7e,0x7e,0x7f,0x7f,0x7f  ; F_  
+db 0x30,0x30,0x30,0x30,0x31,0x31,0x31,0x32,0x32,0x32,0x32,0x33,0x33,0x33,0x33,0x34  ; 0_
+db 0x34,0x34,0x34,0x35,0x35,0x35,0x35,0x36,0x36,0x36,0x36,0x37,0x37,0x37,0x37,0x38  ; 1_
+db 0x38,0x38,0x39,0x39,0x39,0x39,0x3a,0x3a,0x3a,0x3a,0x3b,0x3b,0x3b,0x3b,0x3c,0x3c  ; 2_
+db 0x3c,0x3d,0x3d,0x3d,0x3d,0x3e,0x3e,0x3e,0x3f,0x3f,0x3f,0x3f,0x40,0x40,0x40,0x40  ; 3_
+db 0x41,0x41,0x41,0x42,0x42,0x42,0x42,0x43,0x43,0x43,0x44,0x44,0x44,0x44,0x45,0x45  ; 4_
+db 0x45,0x46,0x46,0x46,0x46,0x47,0x47,0x47,0x48,0x48,0x48,0x49,0x49,0x49,0x49,0x4a  ; 5_
+db 0x4a,0x4a,0x4b,0x4b,0x4b,0x4b,0x4c,0x4c,0x4c,0x4d,0x4d,0x4d,0x4e,0x4e,0x4e,0x4f  ; 6_
+db 0x4f,0x4f,0x4f,0x50,0x50,0x50,0x51,0x51,0x51,0x52,0x52,0x52,0x53,0x53,0x53,0x53  ; 7_
+db 0x54,0x54,0x54,0x55,0x55,0x55,0x56,0x56,0x56,0x57,0x57,0x57,0x58,0x58,0x58,0x58  ; 8_
+db 0x59,0x59,0x59,0x5a,0x5a,0x5a,0x5b,0x5b,0x5b,0x5c,0x5c,0x5c,0x5d,0x5d,0x5d,0x5e  ; 9_
+db 0x5e,0x5e,0x5f,0x5f,0x5f,0x60,0x60,0x60,0x61,0x61,0x61,0x62,0x62,0x62,0x63,0x63  ; A_
+db 0x63,0x64,0x64,0x64,0x65,0x65,0x65,0x66,0x66,0x66,0x67,0x67,0x67,0x68,0x68,0x68  ; B_
+db 0x69,0x69,0x69,0x6a,0x6a,0x6a,0x6b,0x6b,0x6c,0x6c,0x6c,0x6d,0x6d,0x6d,0x6e,0x6e  ; C_
+db 0x6e,0x6f,0x6f,0x6f,0x70,0x70,0x70,0x71,0x71,0x71,0x72,0x72,0x73,0x73,0x73,0x74  ; D_
+db 0x74,0x74,0x75,0x75,0x75,0x76,0x76,0x77,0x77,0x77,0x78,0x78,0x78,0x79,0x79,0x79  ; E_
+db 0x7a,0x7a,0x7b,0x7b,0x7b,0x7c,0x7c,0x7c,0x7d,0x7d,0x7e,0x7e,0x7e,0x7f,0x7f,0x7f  ; F_
 
 ; nic nemusi: 25482(38.882446%), musi pricitat 0x20: 40054(61.117554%), pretece pricteni: 0
 ; neni presne: 0 (0.000000%), chyb: 0, sum: 65536
-    
+
 ; Align to 256-byte page boundary
 DEFS    (($ + 0xFF) / 0x100) * 0x100 - $
 
@@ -2065,22 +2202,22 @@ db 0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x50,0x51,0x
 db 0x53,0x54,0x55,0x56,0x57,0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,0x60,0x61,0x62   ; F_     3f53,3f54,3f55,3f56,3f57,3f58,3f59,3f5a,3f5b,3f5c,3f5d,3f5e,3f5f,3f60,3f61,3f62 F_
 ; hi
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db 0x00,0x37,0x38,0x39,0x39,0x3a,0x3a,0x3a,0x3a,0x3b,0x3b,0x3b,0x3b,0x3b,0x3b,0x3b   ; 0_  
-db 0x3b,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c   ; 1_  
-db 0x3c,0x3c,0x3c,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d   ; 2_  
-db 0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d   ; 3_  
-db 0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 4_  
-db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 5_  
-db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 6_  
-db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 7_  
-db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 8_  
-db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 9_  
-db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; A_  
-db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; B_  
-db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; C_  
-db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; D_  
-db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; E_  
-db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; F_  
+db 0x00,0x37,0x38,0x39,0x39,0x3a,0x3a,0x3a,0x3a,0x3b,0x3b,0x3b,0x3b,0x3b,0x3b,0x3b   ; 0_
+db 0x3b,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c,0x3c   ; 1_
+db 0x3c,0x3c,0x3c,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d   ; 2_
+db 0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d   ; 3_
+db 0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3d,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 4_
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 5_
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 6_
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 7_
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 8_
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e   ; 9_
+db 0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; A_
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; B_
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; C_
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; D_
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; E_
+db 0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f   ; F_
 
 ; Numbers with exponent -1 ($3f) have lower result accuracy
 Ln2_Exp:
@@ -2239,96 +2376,135 @@ db 0x08,0x00,0xef,0xde,0xcd,0xbc,0xab,0x9a,0x89,0x79,0x68,0x57,0x46,0x36,0x25,0x
 db 0x04,0xe7,0xc6,0xa5,0x85,0x64,0x43,0x23,0x02,0xc3,0x82,0x42,0x01,0x81,0x01,0x00   ; F_     bb04,bae7,bac6,baa5,ba85,ba64,ba43,ba23,ba02,b9c3,b982,b942,b901,b881,b801,b700 F_
 ; hi
 ;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
-db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 0_  
-db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 1_  
-db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 2_  
-db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 3_  
-db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 4_  
-db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 5_  
-db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 6_  
-db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 7_  
-db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbd   ; 8_  
-db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; 9_  
-db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; A_  
-db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; B_  
-db 0xbd,0xbd,0xbd,0xbd,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc   ; C_  
-db 0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc   ; D_  
-db 0xbc,0xbc,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb   ; E_  
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 0_
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 1_
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf   ; 2_
+db 0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbf,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 3_
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 4_
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 5_
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 6_
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe   ; 7_
+db 0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbe,0xbd   ; 8_
+db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; 9_
+db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; A_
+db 0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd,0xbd   ; B_
+db 0xbd,0xbd,0xbd,0xbd,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc   ; C_
+db 0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc,0xbc   ; D_
+db 0xbc,0xbc,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb,0xbb   ; E_
 db 0xbb,0xba,0xba,0xba,0xba,0xba,0xba,0xba,0xba,0xb9,0xb9,0xb9,0xb9,0xb8,0xb8,0xb7   ; F_
 
+;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
-; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
-PRINT_S16:
-    ld    A, H          ; 1:4
-    add   A, A          ; 1:4
-    jr   nc, PRINT_U16  ; 2:7/12
-
-    xor   A             ; 1:4       neg
-    sub   L             ; 1:4       neg
-    ld    L, A          ; 1:4       neg
-    sbc   A, H          ; 1:4       neg
-    sub   L             ; 1:4       neg
-    ld    H, A          ; 1:4       neg
-    
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ld    A, '-'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    db 0x01             ; 3:10      ld   BC, **
-
-    ; fall to print_u16
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_SP_S16:             ;           prt_sp_s16
+    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with ZX 48K ROM
+    ; fall to prt_s16
+;------------------------------------------------------------------------------
+; Input: HL
+; Output: Print signed decimal number in HL
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_S16:                ;           prt_s16
+    ld    A, H          ; 1:4       prt_s16
+    add   A, A          ; 1:4       prt_s16
+    jr   nc, PRT_U16    ; 2:7/12    prt_s16
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
+    xor   A             ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    L, A          ; 1:4       prt_s16   neg
+    sbc   A, H          ; 1:4       prt_s16   neg
+    sub   L             ; 1:4       prt_s16   neg
+    ld    H, A          ; 1:4       prt_s16   neg
+    jr   PRT_U16        ; 2:12      prt_s16
+;==============================================================================
 ; Input: HL
 ; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, AF', BC, DE, HL = DE, DE = (SP)
-PRINT_U16:
-    ld    A, ' '        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_SP_U16:             ;           prt_sp_u16
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_u16   putchar with ZX 48K ROM in, this will print char in A
+    ; fall to prt_u16
+;------------------------------------------------------------------------------
 ; Input: HL
 ; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC, DE, HL = DE, DE = (SP)
-PRINT_U16_ONLY:
-    call BIN2DEC        ; 3:17
-    pop  BC             ; 1:10      ret
-    ex   DE, HL         ; 1:4
-    pop  DE             ; 1:10
-    push BC             ; 1:10      ret
+; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+PRT_U16:                ;           prt_u16
+    xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+    ld   BC, -10000     ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -1000      ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld   BC, -100       ; 3:10      prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    C, -10        ; 2:7       prt_u16
+    call BIN16_DEC      ; 3:17      prt_u16
+    ld    A, L          ; 1:4       prt_u16
+    pop  HL             ; 1:10      prt_u16   load ret
+    ex  (SP),HL         ; 1:19      prt_u16
+    ex   DE, HL         ; 1:4       prt_u16
+    jr   BIN16_DEC_CHAR ; 2:12      prt_u16
+;------------------------------------------------------------------------------
+; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
+; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
+; Pollutes: AF, HL
+    inc   A             ; 1:4       bin16_dec
+BIN16_DEC:              ;           bin16_dec
+    add  HL, BC         ; 1:11      bin16_dec
+    jr    c, $-2        ; 2:7/12    bin16_dec
+    sbc  HL, BC         ; 2:15      bin16_dec
+    or    A             ; 1:4       bin16_dec
+    ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
+BIN16_DEC_CHAR:         ;           bin16_dec
+    or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
+    rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
+    ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
+    ret                 ; 1:10      bin16_dec
+;==============================================================================
+; Input: HL,DE
+; Output: HL=HL*DE ((un)signed)
+; It does not matter whether it is signed or unsigned multiplication.
+; HL = HL*DE = H0*E + L*DE
+; Pollutes: AF, C, DE
+MULTIPLY:
+                        ;[36:471-627] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+    xor   A             ; 1:4
+    ld    C, E          ; 1:4
+
+    srl   H             ; 2:8       H /= 2
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY1:              ;           H0*0E
+    add   A, C          ; 1:4       A += C(original E)
+
+    sla   C             ; 2:8       C(original E) *= 2
+    srl   H             ; 2:8       H /= 2
+    jr    c, MULTIPLY1  ; 2:7/12
+    jp   nz, MULTIPLY1+1; 3:10      H = ?
+
+    ld    C, L          ; 1:4
+    ld    L, H          ; 1:4       L = 0
+    ld    H, A          ; 1:4       HL *= E
+
+    srl   C             ; 2:8       C(original L) /= 2
+    jr   nc, $+3        ; 2:7/12
+MULTIPLY2:              ;           0L*DE
+    add  HL, DE         ; 1:11
+
+    sla   E             ; 2:8
+    rl    D             ; 2:8       DE *= 2
+
+    srl   C             ; 2:8       C(original L) /= 2
+    jr    c, MULTIPLY2  ; 2:7/12
+    jp   nz, MULTIPLY2+1; 3:10      C(original L) = ?
+
     ret                 ; 1:10
-
-; Input: HL = number
-; Output: print number
-; Pollutes: AF, HL, BC
-BIN2DEC:
-    xor   A             ; 1:4       A=0 => 103, A='0' => 00103
-    ld   BC, -10000     ; 3:10
-    call BIN2DEC_CHAR+2 ; 3:17
-    ld   BC, -1000      ; 3:10
-    call BIN2DEC_CHAR   ; 3:17
-    ld   BC, -100       ; 3:10
-    call BIN2DEC_CHAR   ; 3:17
-    ld    C, -10        ; 2:7
-    call BIN2DEC_CHAR   ; 3:17
-    ld    A, L          ; 1:4
-    add   A,'0'         ; 2:7
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10
-
-BIN2DEC_CHAR:
-    and  0xF0           ; 2:7       '0'..'9' => '0', unchanged 0
-
-    add  HL, BC         ; 1:11
-    inc   A             ; 1:4
-    jr    c, $-2        ; 2:7/12
-    sbc  HL, BC         ; 2:15
-    dec   A             ; 1:4
-    ret   z             ; 1:5/11
-
-    or   '0'            ; 2:7       0 => '0', unchanged '0'..'9'
-    rst   0x10          ; 1:11      putchar with ZX 48K ROM in, this will print char in A
-    ret                 ; 1:10; Print C-style stringZ
+MULTIPLY_SIZE EQU  $-MULTIPLY
+;==============================================================================
+; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero
-    rst   0x10          ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    rst  0x10           ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
     inc  BC             ; 1:6       print_string_z
 PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
@@ -2337,24 +2513,42 @@ PRINT_STRING_Z:         ;           print_string_z
     ret                 ; 1:10      print_string_z
 
 STRING_SECTION:
-string117:
-db 0xD, "Data stack OK!", 0xD, 0x00
-size117 EQU $ - string117
-string116:
-db "RAS:", 0x00
-size116 EQU $ - string116
-string115:
-db ":  a%b -> ", 0x00
-size115 EQU $ - string115
-string114:
+string136:
+db " ok", 0x0D, 0x00
+size136 EQU $ - string136
+string135:
+db " false", 0x0D, 0x00
+size135 EQU $ - string135
+string134:
+db 0x0D, "RAS:", 0x00
+size134 EQU $ - string134
+string133:
+db "Data stack:", 0x00
+size133 EQU $ - string133
+string132:
 db " % ", 0x00
-size114 EQU $ - string114
-string113:
-db ":  ln -> ", 0x00
-size113 EQU $ - string113
-string112:
-db ": exp -> ", 0x00
-size112 EQU $ - string112
+size132 EQU $ - string132
+string130:
+db "  ln(", 0x00
+size130 EQU $ - string130
+string128:
+db " exp(", 0x00
+size128 EQU $ - string128
+string126:
+db "sqrt(", 0x00
+size126 EQU $ - string126
+string105:
+db ")=", 0x00
+size105 EQU $ - string105
+string104:
+db "sin(", 0x00
+size104 EQU $ - string104
+string103:
+db "1.0-2.0=", 0x00
+size103 EQU $ - string103
+string102:
+db "1.0+2.0=", 0x00
+size102 EQU $ - string102
 string101:
-db ": sin -> ", 0x00
+db "1.0/2**", 0x00
 size101 EQU $ - string101

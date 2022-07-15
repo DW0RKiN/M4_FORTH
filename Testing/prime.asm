@@ -20571,9 +20571,10 @@ ORG 0x6000
     add  HL, BC         ; 1:11      9973 *      +1 = 245x 
     add   A, H          ; 1:4       9973 *
     ld    H, A          ; 1:4       9973 *     [9973x] = 245x + 256*38x  
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    call PRT_S16        ; 3:17      .   ( s -- )
+
+    ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
+    call PRINT_STRING_Z ; 3:17      print_z
 
 Stop:                   ;           stop
     ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
@@ -20634,3 +20635,19 @@ BIN16_DEC_CHAR:         ;           bin16_dec
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
     ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
+;==============================================================================
+; Print C-style stringZ
+; In: BC = addr
+; Out: BC = addr zero
+    rst  0x10           ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
+    inc  BC             ; 1:6       print_string_z
+PRINT_STRING_Z:         ;           print_string_z
+    ld    A,(BC)        ; 1:7       print_string_z
+    or    A             ; 1:4       print_string_z
+    jp   nz, $-4        ; 3:10      print_string_z
+    ret                 ; 1:10      print_string_z
+
+STRING_SECTION:
+string101:
+db "=20838",0x0D, 0x00
+size101 EQU $ - string101

@@ -1,30 +1,26 @@
 include(`../M4/FIRST.M4')dnl 
-ORG 0x8000
+    ORG 0x8000
     INIT(60000)
-    ld  hl, stack_test
-    push hl
+    
+    CONSTANT(max,10)
+    CREATE(data)
+    PUSH_ALLOT(2*max)
 
-;#  PUSH2(orig,test) PUSH(2*10) CMOVE
-;#  PUSH2(test,10) CALL(print)
-    PUSH2(test,10) CALL(generate)
-;#  PUSH2(test,10) CALL(print)
-    PUSH2(test,10) CALL(sort)
-    PUSH2(test,10) CALL(print)
+    PUSH2(data,max) CALL(generate)
+    PUSH2(data,max) CALL(print)
+    PUSH2(data,max) CALL(sort)
+    PUSH2(data,max) CALL(print)
     CR
 
-    PRINT({"RAS:"})
-    exx
-    push HL
-    exx
-    pop HL
-    DUP_UDOT
-    ret
+    DEPTH DOT PRINT_Z({" values in data stack.", 0x0D})
+    __RAS
+    PRINT({"RAS:"}) UDOT CR
+    STOP
     
 COLON(generate,(addr len -- ))
     _2MUL OVER ADD SWAP ; ( addr+len addr )
     DO 
-        RND
-        DUP_DOT I STORE
+        RND I STORE
     PUSH_ADDLOOP(2)
     CR
 SEMICOLON
@@ -32,7 +28,7 @@ SEMICOLON
 COLON(print,(addr len -- ))
     _2MUL OVER ADD SWAP ; ( addr+len addr )
     DO 
-        I FETCH DOT
+        I FETCH SPACE_DOT
     PUSH_ADDLOOP(2)
     CR
 SEMICOLON
@@ -80,16 +76,3 @@ COLON(sort),( array len -- ))
     _1SUB _2MUL OVER ADD RCALL(qsort) 
 SEMICOLON
 
-SCOLON(stack_test)
-    PRINT({0xD, "Data stack OK!", 0xD})
-    STOP
-SSEMICOLON
-
-;# I need to have label test and orig at the end.
-include({../M4/LAST.M4})dnl
-
-test:
-dw 700 , 3 , 0 , 2 , 9 , 1 , 6 , 8 , 4 , 5
-
-orig:
-dw 7 , 3 , 0 , 2 , 9 , 1 , 6 , 8 , 4 , 5
