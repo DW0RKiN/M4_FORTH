@@ -22,13 +22,14 @@ Fillin:                 ;           ( -- )
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
-    ld   BC, 16384      ; 3:10      xdo(23296,16384) 101
-xdo101save:             ;           xdo(23296,16384) 101
-    ld  (idx101),BC     ; 4:20      xdo(23296,16384) 101
-xdo101:                 ;           xdo(23296,16384) 101 
-    ld   HL, (idx101)   ; 3:16      drop index(101) drop_xi   idx always points to a 16-bit index 
-                        ;[2:10]     dup 255 swap c! dup_push_swap_cstore(255)   ( addr -- addr )
-    ld  (HL),low 255    ; 2:10      dup 255 swap c! dup_push_swap_cstore(255) 
+    ld   BC, 16384      ; 3:10      xdo_drop_xi(23296,16384) 101
+xdo101save:             ;           xdo_drop_xi(23296,16384) 101
+    ld  (idx101),BC     ; 4:20      xdo_drop_xi(23296,16384) 101
+xdo101:                 ;           xdo_drop_xi(23296,16384) 101
+    ld    H, B          ; 1:4       xdo_drop_xi(23296,16384) 101
+    ld    L, C          ; 1:4       xdo_drop_xi(23296,16384) 101 
+                        ;[2:10]     255 over c!  push_over_cstore(255)   ( addr -- addr )   (addr)=255
+    ld  (HL),low 255    ; 2:10      255 over c!  push_over_cstore(255) 
                         ;[10:57/37] xloop 101   variant +1.I: step one with hi(real_stop) exclusivity, run 6912x
 idx101 EQU $+1          ;           xloop 101   idx always points to a 16-bit index
     ld   BC, 0x0000     ; 3:10      xloop 101   16384.. +1 ..(23296), real_stop:0x5B00

@@ -1,3 +1,4 @@
+dnldnl
     ORG 32768
     
 ;   ===  b e g i n  ===
@@ -22,18 +23,27 @@ Fillin:                 ;           ( -- )
     push DE             ; 1:11      push(0x4000)
     ex   DE, HL         ; 1:4       push(0x4000)
     ld   HL, 0x4000     ; 3:10      push(0x4000) 
-begin101:               ;           begin 101 
-                        ;[3:16]     dup 255 swap c! 1+ dup_push_swap_cstore_1add(255)   ( addr -- addr+1 )
-    ld  (HL),low 255    ; 2:10      dup 255 swap c! 1+ dup_push_swap_cstore_1add(255)
-    inc  HL             ; 1:6       dup 255 swap c! 1+ dup_push_swap_cstore_1add(255) 
-                        ;[11:18/39] dup 0x5B00 eq until 101   variant: lo(0x5B00) = 0
-    ld    A, L          ; 1:4       dup 0x5B00 eq until 101
-    or    A             ; 1:4       dup 0x5B00 eq until 101
-    jp   nz, begin101   ; 3:10      dup 0x5B00 eq until 101
-    ld    A, high 0x5B00; 2:7       dup 0x5B00 eq until 101
-    xor   H             ; 1:4       dup 0x5B00 eq until 101
-    jp   nz, begin101   ; 3:10      dup 0x5B00 eq until 101
-break101:               ;           dup 0x5B00 eq until 101 
+        
+begin101:               ;           begin 101
+        
+begin102:               ;           begin 102
+            
+                        ;[3:16]     255 over c! 1+  push_over_cstore_1add(255)   ( addr -- addr+1 )
+    ld  (HL),low 255    ; 2:10      255 over c! 1+  push_over_cstore_1add(255)
+    inc  HL             ; 1:6       255 over c! 1+  push_over_cstore_1add(255)
+        
+                        ;[5:18]     dup 0x5B00 lo_eq until 102   variant: zero
+    ld    A, L          ; 1:4       dup 0x5B00 lo_eq until 102
+    or    A             ; 1:4       dup 0x5B00 lo_eq until 102   lo(TOS) ^ lo(stop)
+    jp   nz, begin102   ; 3:10      dup 0x5B00 lo_eq until 102
+break102:               ;           dup 0x5B00 lo_eq until 102
+        
+                        ;[6:21]     dup 0x5B00 hi_eq until 101
+    ld    A, H          ; 1:4       dup 0x5B00 hi_eq until 101
+    xor  high 0x5B00    ; 2:7       dup 0x5B00 hi_eq until 101   hi(TOS) ^ hi(stop)
+    jp   nz, begin101   ; 3:10      dup 0x5B00 hi_eq until 101
+break101:               ;           dup 0x5B00 hi_eq until 101
+        
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )
     
