@@ -73,6 +73,14 @@ __{}.error {$0} for non-existent {BEGIN}},
 __{}break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
+dnl ( -- )
+define({ZF_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    jp   nz, begin{}BEGIN_STACK   ; 3:10      zf until BEGIN_STACK   ( -- )   zero flag
+__{}break{}BEGIN_STACK:               ;           zf until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
+dnl
+dnl
 dnl ( flag -- )
 define({_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
@@ -209,6 +217,39 @@ __{}__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 hi_eq until BEGIN
 __{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK}){}dnl
 __{}})
 __{}break{}BEGIN_STACK:               ;           dup $1 hi_eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+dnl
+dnl
+dnl
+dnl ( n -- n )
+define({DUP_PUSH_LO_EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}.error {$0} for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(eval($1),{},{dnl
+__{}__{}                        ;[6:21]     dup $1 lo_eq until BEGIN_STACK
+__{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
+__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK},
+__{}{dnl
+__{}__{}ifelse(eval(($1) & 0xFF),{0},{dnl
+__{}__{}__{}                        ;[5:18]     dup $1 lo_eq until BEGIN_STACK   variant: zero
+__{}__{}__{}    inc   L             ; 1:4       dup $1 lo_eq until BEGIN_STACK
+__{}__{}__{}    dec   L             ; 1:4       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK},
+__{}__{}eval(($1) & 0xFF),{255},{dnl
+__{}__{}__{}                        ;[5:18]     dup $1 lo_eq until BEGIN_STACK   variant: lo(stop) == 255
+__{}__{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
+__{}__{}__{}    inc   A             ; 1:4       dup $1 lo_eq until BEGIN_STACK   A = 0xFF --> 0x00 ?
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK},
+__{}__{}{dnl
+__{}__{}__{}                        ;[6:21]     dup $1 lo_eq until BEGIN_STACK
+__{}__{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
+__{}__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK}){}dnl
+__{}})
+__{}break{}BEGIN_STACK:               ;           dup $1 lo_eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
@@ -517,6 +558,72 @@ __{}.error {$0} for non-existent {BEGIN}},
     pop  HL             ; 1:10      > while BEGIN_STACK
     pop  DE             ; 1:10      > while BEGIN_STACK
     jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})})dnl
+dnl
+dnl
+dnl
+dnl # ----------------------- 8 bit -----------------------
+dnl # ------- dup const scond while ( b a -- b a ) ---------
+dnl
+dnl
+dnl # dup const = while
+define({DUP_PUSH_CEQ_WHILE},{ifelse(dnl
+BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}.error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}.error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},{dup $1 c= while BEGIN_STACK})dnl
+__{}define({_TMP_STACK_INFO},{_TMP_INFO   ( x1 -- x1 )   $1 == HL})dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}    ld    A,format({%-12s},$1); 3:13      _TMP_STACK_INFO
+__{}    cp    L             ; 1:4       _TMP_INFO
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}eval($1),{},{
+__{}    ld    A, format({%-11s},$1); 2:7       _TMP_STACK_INFO
+__{}    cp    L             ; 1:4       _TMP_INFO
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+{ifelse(eval($1),{0},{
+__{}__{}    ld    A, L          ; 1:4       _TMP_STACK_INFO
+__{}__{}    or    A             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}{
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       _TMP_STACK_INFO
+__{}__{}    cp    L             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})})})}){}dnl
+dnl
+dnl
+dnl
+dnl # dup const <> while
+define({DUP_PUSH_CNE_WHILE},{ifelse(dnl
+BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}.error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}.error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},{dup $1 c<> while BEGIN_STACK})dnl
+__{}define({_TMP_STACK_INFO},{_TMP_INFO   ( x1 -- x1 )   $1 == HL})dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}    ld    A,format({%-12s},$1); 3:13      _TMP_STACK_INFO
+__{}    cp    L             ; 1:4       _TMP_INFO
+__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}eval($1),{},{
+__{}    ld    A, format({%-11s},$1); 2:7       _TMP_STACK_INFO
+__{}    cp    L             ; 1:4       _TMP_INFO
+__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+{ifelse(eval($1),{0},{
+__{}__{}    ld    A, L          ; 1:4       _TMP_STACK_INFO
+__{}__{}    or    A             ; 1:4       _TMP_INFO
+__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
+__{}{
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       _TMP_STACK_INFO
+__{}__{}    cp    L             ; 1:4       _TMP_INFO
+__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})})})}){}dnldnl
+dnl
+dnl
 dnl
 dnl
 dnl # ----------------------- 16 bit -----------------------
