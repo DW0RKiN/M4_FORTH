@@ -12,8 +12,8 @@ COLON(_decomp,( n -- ))
     BEGIN  
         _2DUP DUP MUL 
     UGE_WHILE  
-        _2DUP UDIVMOD SWAP 
-        IF 
+        _2DUP UDIVMOD 
+        SWAP_IF 
             DROP _1ADD PUSH_OR(1) ; next odd number
         ELSE 
             NROT_NIP

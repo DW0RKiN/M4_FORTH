@@ -1,19 +1,19 @@
 ORG 0x8000
 
 ;   ===  b e g i n  ===
-    ld  (Stop+1), SP    ; 4:20      not need
-    ld    L, 0x1A       ; 2:7       Upper screen
-    call 0x1605         ; 3:17      Open channel
-    ld   HL, 60000      ; 3:10      Init Return address stack
-    exx                 ; 1:4
+    ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
+    ld    L, 0x1A       ; 2:7       init   Upper screen
+    call 0x1605         ; 3:17      init   Open channel
+    ld   HL, 60000      ; 3:10      init   Init Return address stack
+    exx                 ; 1:4       init
 
     call _bench         ; 3:17      scall
 
-Stop:
-    ld   SP, 0x0000     ; 3:10      not need
-    ld   HL, 0x2758     ; 3:10
-    exx                 ; 1:4
-    ret                 ; 1:10
+Stop:                   ;           stop
+    ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
+    ld   HL, 0x2758     ; 3:10      stop
+    exx                 ; 1:4       stop
+    ret                 ; 1:10      stop
 ;   =====  e n d  =====
 
 
@@ -23,44 +23,43 @@ Stop:
 ;   ---  the beginning of a non-recursive function  ---
 _decomp:                ;           ( n -- )
     pop  BC             ; 1:10      : ret
-    ld  (_decomp_end+1),BC; 4:20      : ( ret -- ) R:( -- )
+    ld  (_decomp_end+1),BC; 4:20      : ( ret -- )
     
     push DE             ; 1:11      push(2)
     ex   DE, HL         ; 1:4       push(2)
     ld   HL, 2          ; 3:10      push(2)
     
-begin101:  
+begin101:               ;           begin 101  
         
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
     call MULTIPLY       ; 3:17      *
     pop  DE             ; 1:10      * 
     
-    ld    A, E          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, E          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
+    sub   L             ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
+    ld    A, D          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
+    sbc   A, H          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
     pop  HL             ; 1:10      u>= while 101
     pop  DE             ; 1:10      u>= while 101
     jp    c, break101   ; 3:10      u>= while 101  
         
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup ( a b -- a b a b ) 
+    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
     call UDIVIDE        ; 3:17      u/mod 
-    ex   DE, HL         ; 1:4       swap ( b a -- a b ) 
         
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else101    ; 3:10      if 
+    ld    A, D          ; 1:4       swap if
+    or    E             ; 1:4       swap if
+    pop  DE             ; 1:10      swap if
+    jp    z, else101    ; 3:10      swap if 
             
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- ) 
     inc  HL             ; 1:6       1+ 
+                        ;           1 or   (H or 0x00) = H
     set   0, L          ; 2:8       1 or ; next odd number
         
     jp   endif101       ; 3:10      else
@@ -93,7 +92,7 @@ sfor101:                ;           sfor 101 ( index -- index )
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call _decomp        ; 3:17      call ( -- ret ) R:( -- ) 
+    call _decomp        ; 3:17      call ( -- ) 
     ld   A, H           ; 1:4       snext 101
     or   L              ; 1:4       snext 101
     dec  HL             ; 1:6       snext 101 index--
@@ -106,19 +105,19 @@ _bench_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
 
-
+;==============================================================================
 ; Input: HL,DE
 ; Output: HL=HL*DE ((un)signed)
 ; It does not matter whether it is signed or unsigned multiplication.
 ; HL = HL*DE = H0*E + L*DE
 ; Pollutes: AF, C, DE
 MULTIPLY:
-                        ;[36:471-627] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...   
+                        ;[36:471-627] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
     xor   A             ; 1:4
     ld    C, E          ; 1:4
 
     srl   H             ; 2:8       H /= 2
-    jr   nc, $+3        ; 2:7/12        
+    jr   nc, $+3        ; 2:7/12
 MULTIPLY1:              ;           H0*0E
     add   A, C          ; 1:4       A += C(original E)
 
@@ -132,12 +131,12 @@ MULTIPLY1:              ;           H0*0E
     ld    H, A          ; 1:4       HL *= E
 
     srl   C             ; 2:8       C(original L) /= 2
-    jr   nc, $+3        ; 2:7/12    
+    jr   nc, $+3        ; 2:7/12
 MULTIPLY2:              ;           0L*DE
     add  HL, DE         ; 1:11
-    
+
     sla   E             ; 2:8
-    rl    D             ; 2:8       DE *= 2    
+    rl    D             ; 2:8       DE *= 2
 
     srl   C             ; 2:8       C(original L) /= 2
     jr    c, MULTIPLY2  ; 2:7/12
@@ -145,23 +144,24 @@ MULTIPLY2:              ;           0L*DE
 
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
+;==============================================================================
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
 UDIVIDE:
-                        ;[37:cca 900] # default version can be changed with "define({TYPDIV},{name})", name=old_fast,old,fast,small,synthesis
+                        ;[51:cca 900] # default version can be changed with "define({TYPDIV},{name})", name=old_fast,old,fast,small,synthesis
                         ; /3 --> cca 1551, /5 --> cca 1466, 7/ --> cca 1414, /15 --> cca 1290, /17 --> cca 1262, /31 --> cca 1172, /51 --> cca 1098, /63 --> cca 1058, /85 --> cca 1014, /255 --> cca 834
     ld    A, H          ; 1:4
     or    L             ; 1:4       HL = DE / HL
     ret   z             ; 1:5/11    HL = DE / 0?
-    
+
     ld   BC, 0x0000     ; 3:10
 if 0
-UDIVIDE_LE:    
+UDIVIDE_LE:
     inc   B             ; 1:4       B++
-    add  HL, HL         ; 1:11   
+    add  HL, HL         ; 1:11
     jr    c, UDIVIDE_GT ; 2:7/12
-    ld    A, H          ; 1:4       
+    ld    A, H          ; 1:4
     sub   D             ; 1:4
     jp    c, UDIVIDE_LE ; 3:10
     jp   nz, UDIVIDE_GT ; 3:10
@@ -169,9 +169,9 @@ UDIVIDE_LE:
     sub   L             ; 1:4
 else
     ld    A, D          ; 1:4
-UDIVIDE_LE:    
+UDIVIDE_LE:
     inc   B             ; 1:4       B++
-    add  HL, HL         ; 1:11   
+    add  HL, HL         ; 1:11
     jr    c, UDIVIDE_GT ; 2:7/12
     cp    H             ; 1:4
 endif
@@ -191,12 +191,8 @@ UDIVIDE_LOOP:
     adc   A, A          ; 1:4
     rl    C             ; 2:8
     djnz UDIVIDE_LOOP   ; 2:8/13    B--
-    
-    ex   DE, HL         ; 1:4    
+
+    ex   DE, HL         ; 1:4
     ld    L, A          ; 1:4
     ld    H, C          ; 1:4
     ret                 ; 1:10
-VARIABLE_SECTION:
-
-STRING_SECTION:
-
