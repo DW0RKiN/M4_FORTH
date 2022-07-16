@@ -28,6 +28,14 @@ __{}{
 __{}__{}endif{}THEN_STACK:{}popdef({THEN_STACK})})}){}dnl
 dnl
 dnl
+dnl
+define({SWAP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, D          ; 1:4       swap if
+    or    E             ; 1:4       swap if
+    pop  DE             ; 1:10      swap if
+    jp    z, else{}IF_COUNT    ; 3:10      swap if})dnl
+dnl
+dnl
 dnl 0= if
 dnl ( x1 -- )
 define({_0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
