@@ -16,13 +16,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.c
 
 |       Name        |                System                |        Forth / C               |  Benchmark   | Time (sec/round) |
 | :---------------: | :----------------------------------: | :----------------------------: | :----------: | :--------------- |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                       | Decompose    | 1m7.18s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                       | Decompose    | 1m6.81s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH div:old               | Decompose    | 1m0.03s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH div:old_fast          | Decompose    | 47.54s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH div:fast              | Decompose    | 1m3.07s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:fast              | Decompose    | 1m3.07s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:old_fast          | Decompose    | 1m4.75s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:fast div:old_fast | Decompose    | 43.44s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:fast div:old_fast | Decompose    | 43.08s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209               | Decompose    | 1m40.47s
 
 ### Gcd 1
@@ -295,11 +295,11 @@ Maybe I'm doing the measurements through POKE in BASIC and that has some small c
 |[PUSH2(65535,0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP<br />&nbsp; &nbsp; XI<br />&nbsp; &nbsp; _2DUP<br />&nbsp; &nbsp; STORE <br />XLOOP <br />DROP                                                    ](./fillin_v04.asm)  |   66  | 0.36s  |
 |[PUSH2(65535,0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />XLOOP <br />_2DROP                                                                                        ](./fillin_v05.asm)  |   59  | 0.24s  |
 |[PUSH(0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; DUP_PUSH_SWAP_CSTORE(255) <br />XLOOP <br />DROP                                                                                   ](./fillin_v06.asm)  |   54  | 0.19s  |
-|[PUSH(0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; DUP_PUSH_SWAP_STORE(65535) <br />PUSH_ADDXLOOP(2) <br />DROP                                                                       ](./fillin_v07.asm)  |   59  | 0.14s  |
+|[PUSH(0)<br /> XDO_DROP_XI(23296,16384)<br />&nbsp; &nbsp; PUSH_OVER_STORE(65535) <br />PUSH_ADDXLOOP(2) <br />DROP                                                                       ](./fillin_v07.asm)  |   58  | 0.14s  |
 |[PUSH2(65535,0)<br /> XDO(23296,16384)<br />&nbsp; &nbsp; DROP_XI<br />&nbsp; &nbsp; _2DUP_STORE <br />PUSH_ADDXLOOP(2) <br />_2DROP                                                                             ](./fillin_v08.asm)  |   60  | 0.14s  |
 |[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(255)<br />&nbsp; &nbsp; SWAP<br />&nbsp; &nbsp; CSTORE<br />&nbsp; &nbsp; _1ADD<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(0x5B00)<br />&nbsp; &nbsp; EQ <br />UNTIL <br />DROP](./fillin_v09.asm)  |   71  | 0.46s  |
 |[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; DUP_PUSH_SWAP_CSTORE_1ADD(255) <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />DROP                                                                                           ](./fillin_v10.asm)  |   46  | 0.09s  |
-|[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; DUP_PUSH_SWAP_STORE_2ADD(65535) <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />DROP                                                                                          ](./fillin_v11.asm)  |   49  | 0.07s  |
+|[PUSH(0x4000)<br /> BEGIN<br />&nbsp; &nbsp; PUSH_OVER_STORE_2ADD(65535) <br />DUP_PUSH_HI_EQ_UNTIL(0x5B00) <br />DROP                                                                                          ](./fillin_v11.asm)  |   44  | 0.07s  |
 |[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP<br />&nbsp; &nbsp; STORE<br />&nbsp; &nbsp; _2ADD<br />&nbsp; &nbsp; DUP<br />&nbsp; &nbsp; PUSH(0x5B00)<br />&nbsp; &nbsp; EQ <br />UNTIL <br />_2DROP](./fillin_v12.asm)  |   69  | 0.24s  |
 |[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD <br />DUP_PUSH_EQ_UNTIL(0x5B00) <br />_2DROP                                                                                                ](./fillin_v13.asm)  |   50  | 0.07s  |
 |[PUSH2(65535,0x4000)<br /> BEGIN<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br />&nbsp; &nbsp; _2DUP_STORE_2ADD<br /> DUP_PUSH_EQ_UNTIL(0x5B00) <br />_2DROP                        ](./fillin_v14.asm)  |   58  | 0.06s  |

@@ -22,16 +22,17 @@ Fillin:                 ;           ( -- )
     push DE             ; 1:11      push(0)
     ex   DE, HL         ; 1:4       push(0)
     ld   HL, 0          ; 3:10      push(0) 
-    ld   BC, 16384      ; 3:10      xdo(23296,16384) 101
-xdo101save:             ;           xdo(23296,16384) 101
-    ld  (idx101),BC     ; 4:20      xdo(23296,16384) 101
-xdo101:                 ;           xdo(23296,16384) 101 
-    ld   HL, (idx101)   ; 3:16      drop index(101) drop_xi   idx always points to a 16-bit index 
-                        ;[6:32]     dup 65535 swap ! dup_push_swap_store(65535)   ( addr -- addr )
-    ld  (HL),low 65535  ; 2:10      dup 65535 swap ! dup_push_swap_store(65535)
-    inc  HL             ; 1:6       dup 65535 swap ! dup_push_swap_store(65535)
-    ld  (HL),high 65535 ; 2:10      dup 65535 swap ! dup_push_swap_store(65535)
-    dec  HL             ; 1:6       dup 65535 swap ! dup_push_swap_store(65535) 
+    ld   BC, 16384      ; 3:10      xdo_drop_xi(23296,16384) 101
+xdo101save:             ;           xdo_drop_xi(23296,16384) 101
+    ld  (idx101),BC     ; 4:20      xdo_drop_xi(23296,16384) 101
+xdo101:                 ;           xdo_drop_xi(23296,16384) 101
+    ld    H, B          ; 1:4       xdo_drop_xi(23296,16384) 101
+    ld    L, C          ; 1:4       xdo_drop_xi(23296,16384) 101 
+                        ;[6:32]     65535 over ! push_over_store(65535)   ( addr -- addr )
+    ld  (HL),low 65535  ; 2:10      65535 over ! push_over_store(65535)
+    inc  HL             ; 1:6       65535 over ! push_over_store(65535)
+    ld  (HL),high 65535 ; 2:10      65535 over ! push_over_store(65535)
+    dec  HL             ; 1:6       65535 over ! push_over_store(65535) 
                         ;[11:61/41] 2 +xloop 101   variant +2.D: step 2 with hi(real_stop) exclusivity, run 3456x
 idx101 EQU $+1          ;           2 +xloop 101   idx always points to a 16-bit index
     ld   BC, 0x0000     ; 3:10      2 +xloop 101   16384.. +2 ..(23296), real_stop:0x5B00
