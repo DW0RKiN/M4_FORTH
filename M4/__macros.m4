@@ -1129,9 +1129,12 @@ dnl #   _TMP_INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl # __EQ_CODE
-dnl # zero flag if const == DEHL
-dnl # A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+dnl #   _TMP_BEST_CODE    asm code
+dnl #   zero flag if const == DEHL
+dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
 define({__EQ_MAKE_BEST_CODE},{ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}dnl ---------------------------------

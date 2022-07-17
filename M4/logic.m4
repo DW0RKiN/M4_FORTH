@@ -723,9 +723,9 @@ __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1},
 __{}__{}{dnl
-__{}__{}__{}__EQ_MAKE_CODE($1,6,37,0,0)dnl
-__{}__{}__{}ifelse(eval((__EQ_CLOCKS+4*__EQ_BYTES)<=(63+4*13)),{1},{
-__{}__{}__{}__{}__EQ_CODE
+__{}__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,0)dnl
+__{}__{}__{}ifelse(eval(_TMP_BEST_P<=1848),{1},{
+__{}__{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
@@ -801,10 +801,10 @@ __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1},
 __{}__{}{dnl
-__{}__{}__{}__EQ_MAKE_CODE($1,6,37,0,0)dnl
-__{}__{}__{}ifelse(eval((__EQ_CLOCKS+4*__EQ_BYTES)<=(58+4*13)),{1},{
-__{}__{}__{}__{}__EQ_CODE
-__{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
+__{}__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,0)dnl
+__{}__{}__{}ifelse(eval(_TMP_BEST_P<=1768),{1},{
+__{}__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag x<>$1},
