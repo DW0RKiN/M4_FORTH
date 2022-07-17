@@ -1541,6 +1541,125 @@ __{}__{}__{}    pop  HL             ; 1:10      $1 move
 __{}__{}__{}    pop  DE             ; 1:10      $1 move})})})}){}dnl
 dnl
 dnl
+dnl
+dnl # u move
+dnl # ( from_addr to_addr -- )
+dnl # If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
+define({PUSH3_MOVE},{ifelse(eval($#<3),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>3),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($3),{1},{dnl
+__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_C},16)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL,format({%-12s},$1); 3:16      $1 $2 $3 move   from_addr})},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_C},10)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL, format({%-11s},$1); 3:10      $1 $2 $3 move   from_addr})}){}dnl
+__{}__{}__{}ifelse(__IS_MEM_REF($2),{1},{dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(20+PUSH3_MOVE_C))dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_B},25)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE,format({%-12s},$2); 4:20      $1 $2 $3 move   to_addr})},
+__{}__{}__{}{
+__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(10+PUSH3_MOVE_C))dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_B},24)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE, format({%-11s},$2); 3:10      $1 $2 $3 move   to_addr})}){}dnl
+__{}__{}__{}define({PUSH3_MOVE_C},eval(88+PUSH3_MOVE_C))
+__{}__{}                      ;[PUSH3_MOVE_B:PUSH3_MOVE_C+42*u]$1 $2 $3 move   ( -- ) from = $1, to = $2, u = $3 words
+__{}__{}    ld   BC, format({%-11s},$3); 4:20      $1 $2 $3 move   BC = u_words
+__{}__{}    sla   C             ; 2:8       $1 $2 $3 move
+__{}__{}    rl    B             ; 2:8       $1 $2 $3 move
+__{}__{};   jr    c, $+eval(PUSH3_MOVE_B-6)       ; 2:7/12    $1 $2 $3 move   negative or unsigned overflow?
+__{}__{}    ld    A, C          ; 1:4       $1 $2 $3 move
+__{}__{}    or    B             ; 1:4       $1 $2 $3 move
+__{}__{}    jr    z, $+eval(PUSH3_MOVE_B-10)       ; 2:7/12    $1 $2 $3 move   zero?
+__{}__{}    push DE             ; 1:11      $1 $2 $3 move
+__{}__{}    push HL             ; 1:11      $1 $2 $3 move
+__{}__{}PUSH3_MOVE_HL
+__{}__{}PUSH3_MOVE_DE
+__{}__{}    ldir                ; 2:u*42-5  $1 $2 $3 move   addr++
+__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move
+__{}__{}    pop  DE             ; 1:10      $1 $2 $3 move},
+__{}eval($3),{},{dnl
+__{}__{}  .error  {$0}(): Bad parameter!},
+__{}{dnl
+__{}__{}ifelse(eval(($3)<1),{1},{
+__{}__{}__{}                        ;[0:0]      $1 $2 $3 move   ( -- ) from: $1, to: $2, u: 0 or negative},
+__{}__{}eval((($3)==1) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==2)),{1},{
+__{}__{}__{}                        ;[14:93]    $1 $2 $3 move   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3 move
+__{}__{}__{}    mov  HL,format({%-12s},$1); 3:16      $1 $2 $3 move   from_addr
+__{}__{}__{}    mov   C,(HL)        ; 1:7       $1 $2 $3 move   from_addr
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move   from_addr
+__{}__{}__{}    mov   B,(HL)        ; 1:7       $1 $2 $3 move   from_addr
+__{}__{}__{}    mov  HL,format({%-12s},$2); 3:16      $1 $2 $3 move   to_addr
+__{}__{}__{}    mov (HL),C          ; 1:7       $1 $2 $3 move   to_addr
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move   to_addr
+__{}__{}__{}    mov (HL),B          ; 1:7       $1 $2 $3 move   to_addr
+__{}__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move},
+__{}__{}eval((($3)==1) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==0)),{1},{
+__{}__{}__{}                        ;[8:40]     $1 $2 $3 move   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}__{}    mov  BC,format({%-12s},($1)); 4:20      $1 $2 $3 move   from_addr
+__{}__{}__{}    mov format({%-16s},($2){,}BC); 4:20      $1 $2 $3 move   to_addr},
+__{}__{}eval((($3)==2) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==0)),{1},{
+__{}__{}__{}                       ;[14:85]     $1 $2 $3 move   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3 move
+__{}__{}__{}    mov  HL,format({%-12s},($1)); 3:16      $1 $2 $3 move   from_addr
+__{}__{}__{}    mov format({%-16s},($2){,}HL); 3:16      $1 $2 $3 move   to_addr
+__{}__{}__{}    mov  HL,format({%-12s},(2+$1)); 3:16      $1 $2 $3 move   from_addr
+__{}__{}__{}    mov format({%-16s},(2+$2){,}HL); 3:16      $1 $2 $3 move   to_addr
+__{}__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move},
+__{}__{}eval($3),{1},{
+__{}__{}__{}                        ;[12:77]    $1 $2 $3 move   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3 move
+__{}__{}__{}    mov  HL,format({%-12s},$1); 3:16      $1 $2 $3 move   from_addr
+__{}__{}__{}    mov   C,(HL)        ; 1:7       $1 $2 $3 move   from_addr
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move   from_addr
+__{}__{}__{}    mov   B,(HL)        ; 1:7       $1 $2 $3 move   from_addr
+__{}__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move},
+__{}__{}__{}{dnl
+__{}__{}__{}    mov  BC,format({%-12s},($1)); 4:20      $1 $2 $3 move   from_addr})
+__{}__{}__{}ifelse(__IS_MEM_REF($2),{1},{dnl
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3 move
+__{}__{}__{}    mov  HL,format({%-12s},$2); 3:16      $1 $2 $3 move   to_addr
+__{}__{}__{}    mov (HL),C          ; 1:7       $1 $2 $3 move   to_addr
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move   to_addr
+__{}__{}__{}    mov (HL),B          ; 1:7       $1 $2 $3 move   to_addr
+__{}__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move},
+__{}__{}__{}{dnl
+__{}__{}__{}    mov format({%-16s},($2){,}BC); 4:20      $1 $2 $3 move   to_addr})},
+__{}__{}{ifelse(eval(2*($3)>65535),{1},{
+__{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!}){}dnl
+__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_C},16)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL,format({%-12s},$1); 3:16      $1 $2 $3 move   from_addr})},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_C},10)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL, format({%-11s},$1); 3:10      $1 $2 $3 move   from_addr})}){}dnl
+__{}__{}__{}ifelse(__IS_MEM_REF($2),{1},{dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(20+PUSH3_MOVE_C))dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_B},16)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE,format({%-12s},$2); 4:20      $1 $2 $3 move   to_addr})},
+__{}__{}__{}{
+__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(10+PUSH3_MOVE_C))dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_B},15)dnl
+__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE, format({%-11s},$2); 3:10      $1 $2 $3 move   to_addr})}){}dnl
+__{}__{}__{}define({PUSH3_MOVE_C},eval(47+42*($3)+PUSH3_MOVE_C))
+__{}__{}__{}                        ;format({%-11s},[PUSH3_MOVE_B:PUSH3_MOVE_C])$1 $2 $3 move   ( -- ) from = $1, to = $2, u = $3 words
+__{}__{}__{}    ld   BC, __HEX_HL(2*($3))     ; 3:10      $1 $2 $3 move   BC = eval(2*($3)) chars
+__{}__{}__{}    push DE             ; 1:11      $1 $2 $3 move
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3 move
+__{}__{}__{}PUSH3_MOVE_HL
+__{}__{}__{}PUSH3_MOVE_DE
+__{}__{}__{}    ldir                ; 2:u*42-5  $1 $2 $3 move   addr++
+__{}__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move
+__{}__{}__{}    pop  DE             ; 1:10      $1 $2 $3 move})})})}){}dnl
+dnl
+dnl
+dnl
 dnl # move>
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
