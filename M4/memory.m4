@@ -333,6 +333,18 @@ __{}__{}DW $1})})}){}dnl
 dnl
 dnl
 dnl
+dnl # PUSH_COMMA(1,2,3,4,5,6,7,8,9,10)      --> reserve 10 words
+define({PUSHS_COMMA},{ifelse($1,{},{
+__{}  .error {$0}(): Missing value parameter!},
+eval($#>1),{1},{dnl
+__{}PUSHS_COMMA($1){}dnl
+__{}PUSHS_COMMA(shift($@))},
+{dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}DW $1})})}){}dnl
+dnl
+dnl
+dnl
 dnl # BUFFER(name,8)      --> Reserve 8 bytes
 define({BUFFER},{ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
@@ -519,13 +531,14 @@ dnl # addr C!
 dnl # ( char -- )
 dnl # store(addr) store 8-bit char at addr
 define({PUSH_CSTORE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld    A, L          ; 1:4       $1 C! push($1) cstore
-    ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
-    ex   DE, HL         ; 1:4       $1 C! push($1) cstore
-    pop  DE             ; 1:10      $1 C! push($1) cstore})dnl
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld    A, L          ; 1:4       $1 C! push($1) cstore
+__{}    ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
+__{}    ex   DE, HL         ; 1:4       $1 C! push($1) cstore
+__{}    pop  DE             ; 1:10      $1 C! push($1) cstore})}){}dnl
 dnl
 dnl
 dnl # addr swap n C!
@@ -778,10 +791,10 @@ dnl # cmove
 dnl # ( from_addr to_addr u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVE},{
-    ld    A, H          ; 1:4       cmove   ( from_addr to_addr u -- )
+    ld    A, H          ; 1:4       cmove   ( from_addr to_addr u_chars -- )
     or    L             ; 1:4       cmove
     ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u
+    ld    C, L          ; 1:4       cmove BC = u_chars
     pop  HL             ; 1:10      cmove HL = from_addr
     jr    z, $+4        ; 2:7/12    cmove
     ldir                ; 2:u*21/16 cmove
@@ -793,12 +806,12 @@ dnl # u cmove
 dnl # ( from_addr to_addr -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({PUSH_CMOVE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}                       ;[13:54+21*u]$1 cmove   ( from_addr to_addr -- )
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 cmove   BC = u
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 cmove   BC = u_chars
 __{}__{}    ld    A, B          ; 1:4       $1 cmove
 __{}__{}    or    C             ; 1:4       $1 cmove
 __{}__{}    jr    z, $+5        ; 2:7/12    $1 cmove
@@ -806,30 +819,51 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_a
 __{}__{}    ldir                ; 2:u*21/16 $1 cmove   addr++
 __{}__{}    pop  HL             ; 1:10      $1 cmove
 __{}__{}    pop  DE             ; 1:10      $1 cmove},
-__{}eval($1),{},{dnl
+__{}eval($1),{},{
 __{}    .error  {$0}(): Bad parameter!},
 __{}{dnl
-__{}__{}ifelse(eval($1>0),{1},{dnl
-__{}__{}__{}                        ;format({%-11s},[8:eval(29+21*($1))])$1 cmove   ( from_addr to_addr -- )
+__{}__{}ifelse(eval(($1)<1),{1},{
+__{}__{}__{}                        ;[2:20]     $1 cmove   ( from_addr to_addr -- )   u = 0 or negative
+__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
+__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}eval($1),{1},{
+__{}__{}__{}                        ;[5:40]     $1 cmove   ( from_addr to_addr -- )   u = 1 char
+__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      $1 cmove   1x
+__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
+__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}eval($1),{2},{
+__{}__{}__{}                        ;[7:56]     $1 cmove   ( from_addr to_addr -- )   u = 2 chars
+__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      $1 cmove   1x
+__{}__{}__{}    ldi                 ; 2:16      $1 cmove   2x
+__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
+__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}eval($1),{3},{
+__{}__{}__{}                        ;[8:72]     $1 cmove   ( from_addr to_addr -- )   u = 3 chars
+__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      $1 cmove   1x
+__{}__{}__{}    ldi                 ; 2:16      $1 cmove   2x
+__{}__{}__{}    ldi                 ; 2:16      $1 cmove   3x
+__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
+__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}{
+__{}__{}__{}                        ;format({%-11s},[8:eval(29+21*($1))])$1 cmove   ( from_addr to_addr -- )   u = $1 chars
 __{}__{}__{}ifelse(eval(($1)>65535),{1},{dnl
 __{}__{}__{}    .warning  {$0}($@): Trying to copy data bigger 64k!
 __{}__{}__{}}){}dnl
-__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 cmove   BC = eval(($1) & 0xFFFF)
+__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 cmove   BC = __HEX_HL($1)
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
 __{}__{}__{}    ldir                ; 2:u*21/16 $1 cmove
 __{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
-__{}__{}{dnl
-__{}__{}__{}                        ;[2:20]     $1 cmove   ( from_addr to_addr -- )
-__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove})})})dnl
+__{}__{}__{}    pop  DE             ; 1:10      $1 cmove})})})}){}dnl
 dnl
 dnl
 dnl # cmove>
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVEGT},{
-    ld    A, H          ; 1:4       cmove>
+    ld    A, H          ; 1:4       cmove>   ( from_addr to_addr u_chars -- )
     or    L             ; 1:4       cmove>
     ld    B, H          ; 1:4       cmove>
     ld    C, L          ; 1:4       cmove>   BC = u
@@ -1448,7 +1482,7 @@ dnl # move
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
 define({MOVE},{
-    or    A             ; 1:4       move
+    or    A             ; 1:4       move   ( from_addr to_addr u_words -- )
     adc  HL, HL         ; 1:11      move
     ld    B, H          ; 1:4       move
     ld    C, L          ; 1:4       move   BC = 2*u
@@ -1463,39 +1497,48 @@ dnl # u move
 dnl # ( from_addr to_addr -- )
 dnl # If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
 define({PUSH_MOVE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                       ;[17:70+42*u]$1 move   ( from_addr to_addr -- )
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 move   BC = u
-__{}__{}    ld    A, H          ; 1:4       $1 move
-__{}__{}    or    L             ; 1:4       $1 move
-__{}__{}    jr    z, $+9        ; 2:7/12    $1 move
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                       ;[15:70+42*u]$1 move   ( from_addr to_addr -- )
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 move   BC = u_words
+__{}__{}    sla   C             ; 2:8       $1 move
+__{}__{}    rl    B             ; 2:8       $1 move
+__{}__{};   jr    c, $+9        ; 2:7/12    $1 move   negative or unsigned overflow?
+__{}__{}    ld    A, C          ; 1:4       $1 move
+__{}__{}    or    B             ; 1:4       $1 move
+__{}__{}    jr    z, $+5        ; 2:7/12    $1 move   zero?
 __{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_addr
-__{}__{}    push BC             ; 1:11      $1 move
-__{}__{}    ldir                ; 2:u*21/16 $1 move   addr++
-__{}__{}    pop  BC             ; 1:10      $1 move
-__{}__{}    ldir                ; 2:u*21/16 $1 move
+__{}__{}    ldir                ; 2:u*42-5  $1 move   addr++
 __{}__{}    pop  HL             ; 1:10      $1 move
 __{}__{}    pop  DE             ; 1:10      $1 move},
 __{}eval($1),{},{dnl
-__{}    .error  {$0}(): Bad parameter!},
+__{}__{}  .error  {$0}(): Bad parameter!},
 __{}{dnl
-__{}__{}ifelse(eval($1>0),{1},{dnl
-__{}__{}__{}                        ;format({%-11s},[8:eval(29+42*($1))])$1 move   ( from_addr to_addr -- )
+__{}__{}ifelse(eval(($1)<1),{1},{
+__{}__{}__{}                        ;[2:20]     $1 move   ( from_addr to_addr -- )   u = 0 or negative
+__{}__{}__{}    pop  HL             ; 1:10      $1 move
+__{}__{}__{}    pop  DE             ; 1:10      $1 move},
+__{}__{}eval($1),{1},{
+__{}__{}__{}                        ;[7:56]     $1 move   ( from_addr to_addr -- )   u = 1 word
+__{}__{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      $1 move   addr++
+__{}__{}__{}    ldi                 ; 2:16      $1 move   addr++
+__{}__{}__{}    pop  HL             ; 1:10      $1 move
+__{}__{}__{}    pop  DE             ; 1:10      $1 move},
+__{}__{}{
+__{}__{}__{}                        ;format({%-11s},[8:eval(29+42*($1))])$1 move   ( from_addr to_addr -- )   u = $1 words
 __{}__{}__{}ifelse(eval(2*($1)>65535),{1},{dnl
 __{}__{}__{}    .warning  {$0}($@): Trying to copy data bigger 64k!
 __{}__{}__{}}){}dnl
-__{}__{}__{}    ld   BC, format({%-11s},eval(2*($1))); 3:10      $1 move   BC = eval((2*($1)) & 0xFFFF)
+__{}__{}__{}    ld   BC, __HEX_HL(2*($1))     ; 3:10      $1 move   BC = eval(2*($1)) chars
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldir                ; 2:u*21/16 $1 move   addr++
+__{}__{}__{}    ldir                ; 2:u*42-5  $1 move   addr++
 __{}__{}__{}    pop  HL             ; 1:10      $1 move
-__{}__{}__{}    pop  DE             ; 1:10      $1 move},
-__{}__{}{dnl
-__{}__{}__{}                        ;[2:20]     $1 move   ( from_addr to_addr -- )
-__{}__{}__{}    pop  HL             ; 1:10      $1 move
-__{}__{}__{}    pop  DE             ; 1:10      $1 move})})})dnl
+__{}__{}__{}    pop  DE             ; 1:10      $1 move})})})}){}dnl
 dnl
 dnl
 dnl # move>
