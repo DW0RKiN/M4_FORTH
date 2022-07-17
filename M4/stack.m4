@@ -31,17 +31,6 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
 dnl
 dnl
-dnl dup 3 swap
-dnl ( a -- a 3 a )
-define({DUP_PUSH_SWAP},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      dup $1 swap
-    push HL             ; 1:11      dup $1 swap
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      dup $1 swap ( a -- a $1 a )})dnl
-dnl
-dnl
 dnl swap drop 3 swap
 dnl ( b a -- 3 a )
 define({SWAP_DROP_PUSH_SWAP},{ifelse($1,{},{
@@ -321,6 +310,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 over
     push HL             ; 1:11      $1 over
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 over ( a -- a $1 a )})dnl
+dnl
+dnl
+define({DUP_PUSH_SWAP},{PUSH_OVER($1)}){}dnl
 dnl
 dnl
 dnl over 3

@@ -1365,8 +1365,8 @@ __{}define({_TMP_BEST_P},eval(8*__EQ_CLOCKS_TRUE+4*__EQ_CLOCKS_FAIL)){}dnl
 __{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
 __{}define({_TMP_BEST_B},eval(_TMP_B1+_TMP_B2+_TMP_B3+ifelse($2,{},{0},{$2}))){}dnl
-__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
-__{}define({_TMP_BEST_CODE},format({%39s},;[eval(_TMP_BEST_B):__EQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2]){_TMP_STACK_INFO{}__EQ_CODE_1{}__EQ_CODE_2{}__EQ_CODE_3})},
+__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes)
+__{}define({_TMP_BEST_CODE},format({%39s},;[eval(_TMP_BEST_B):__EQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2]){_TMP_STACK_INFO   L_first variant{}__EQ_CODE_1{}__EQ_CODE_2{}__EQ_CODE_3})},
 {dnl
 __{}define({__R1},{L}){}dnl
 __{}define({__R2},{H}){}dnl
