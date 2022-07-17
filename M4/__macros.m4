@@ -1258,28 +1258,28 @@ __{}dnl ---------------------------------
 __{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}ifelse(__HEX_L($1),{0x00},{dnl
-__{}__{}define({_TMP_A1},0){}dnl
+__{}__{}define({_TMP_A1},{0x00}){}dnl
 __{}__{}define({_TMP_B1},2){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}    or    A             ; 1:4       _TMP_INFO   L = 0x00})},
 __{}__HEX_L($1),{0x01},{dnl
-__{}__{}define({_TMP_A1},0){}dnl
+__{}__{}define({_TMP_A1},{0x00}){}dnl
 __{}__{}define({_TMP_B1},2){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}    dec   A             ; 1:4       _TMP_INFO   L = 0x01})},
 __{}__HEX_L($1),{0xFF},{dnl
-__{}__{}define({_TMP_A1},0){}dnl
+__{}__{}define({_TMP_A1},{0x00}){}dnl
 __{}__{}define({_TMP_B1},2){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   L = 0xFF})},
 __{}eval(__HEX_H($1+1)<3),{1},{dnl
-__{}__{}define({_TMP_A1},0){}dnl
+__{}__{}define({_TMP_A1},{0x00}){}dnl
 __{}__{}define({_TMP_B1},3){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__EQ_CODE_1},{
@@ -1298,13 +1298,13 @@ __{}__{}define({_TMP_B3},1){}dnl
 __{}__{}define({_TMP_T3},4){}dnl
 __{}__{}define({__EQ_CODE_3},{
 __{}__{}    xor   H             ; 1:4       _TMP_INFO   H = __HEX_H($1)})},
-__{}__HEX_H($1+1),_TMP_A1,{dnl
+__{}__HEX_H($1),__HEX_L(_TMP_A1-1),{dnl
 __{}__{}define({_TMP_B3},2){}dnl
 __{}__{}define({_TMP_T3},8){}dnl
 __{}__{}define({__EQ_CODE_3},{
 __{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO   H = __HEX_H($1)})},
-__{}__HEX_H($1-1),_TMP_A1,{dnl
+__{}__HEX_H($1),__HEX_L(_TMP_A1+1),{dnl
 __{}__{}define({_TMP_B3},2){}dnl
 __{}__{}define({_TMP_T3},8){}dnl
 __{}__{}define({__EQ_CODE_3},{
