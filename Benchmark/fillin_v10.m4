@@ -4,11 +4,9 @@ include(`../M4/FIRST.M4')dnl
     SCALL(Fillin)
     STOP   
     SCOLON(Fillin,( -- ))
-        PUSH(0x4000) 
-        BEGIN
+        PUSH(0x4000)
         BEGIN
             PUSH_OVER_CSTORE_1ADD(255)
-        DUP_PUSH_LO_EQ_UNTIL(0x5B00)
-        DUP_PUSH_HI_EQ_UNTIL(0x5B00)
+            define({_TYP_SINGLE},{L_first}) DUP_PUSH_EQ_UNTIL(0x5B00)
         DROP
     SSEMICOLON
