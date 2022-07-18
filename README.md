@@ -197,7 +197,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>           pick           |<sub>         PICK        |<sub>                  |<sub>          ( u -- xu )             |
 |<sub>         `2` pick         |<sub>                     |<sub>  PUSH_PICK(`2`)  |<sub>   ( x2 x1 x0 -- x2 x1 x0 x2 )    |
 |<sub>          depth           |<sub>        DEPTH        |<sub>                  |<sub>            ( -- x )              |
-                                
+
 |<sub>        Original          |<sub>    M4 FORTH         |<sub>  Data stack                  |<sub> Return address stack |
 | :---------------------------: | :----------------------: | :-------------------------------- | :------------------------ |
 |<sub>            >r            |<sub>         TO_R        |<sub>         ( x1 -- )            |<sub>        ( -- x1 )     |
@@ -238,7 +238,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
     lo ...  low(d)= 16-bit number
     f  ... floating 16-bit number (Danagy format)
     r  ... floating 40-bit number (ZX Spectrum format)
-    
+
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
 |<sub>     +      |<sub>      ADD     |<sub>                 |<sub>   ( x2 x1 -- x )          |
@@ -534,14 +534,14 @@ I added two non-standard extensions for the strings. One for strings that end wi
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
     --- Forth Standard
-    
+
     : bs ( -- backspace ) 8 emit ;
-    
+
     5 .         --> "5 "
     5 . bs      --> "5"
-    
+
     --- M4 FORTH
-    
+
     5 DOT       --> "5"
     5 SPACE_DOT --> " 5"
 
@@ -593,7 +593,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
     PUTCHAR(32)     --> SPACE
     PUTCHAR(0x0D)   --> CR
     PUTCHAR(13)     --> CR
-    
+
 KEY returns the first non-zero value read from the variable containing the last key pressed and then resets it. If you want to reset the variable before the first reading, use the word CLEARKEY.
 
 The non-standard PRINT_Z extends each text string by zero bytes, but in return it cuts each string print by 5 bytes. An eight-byte routine to print zero-terminated strings must be added to the code, making it more convenient from printing 2 strings.
@@ -692,7 +692,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment     |
 | :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------- |
 |<sub>      if      |<sub>      IF      |<sub>                    |<sub>    ( flag -- )      |                  |
-|<sub>    dup if    |<sub>              |<sub>      DUP_IF        |<sub>    ( flag -- flag ) |                  |
+|<sub>    dup if    |<sub>              |<sub>       DUP_IF       |<sub>    ( flag -- flag ) |                  |
+|<sub>   swap if    |<sub>              |<sub>      SWAP_IF       |<sub>    ( flag -- flag ) |                  |
 |<sub>     else     |<sub>     ELSE     |<sub>                    |<sub>         ( -- )      |                  |
 |<sub>     then     |<sub>     THEN     |<sub>                    |<sub>         ( -- )      |                  |
 |<sub>     0= if    |<sub>              |<sub>      _0EQ_IF       |<sub>      ( x1 -- )      |                  |
@@ -1118,20 +1119,20 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub> variable X `2` allot |<sub>           VARIABLE(X)            |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000             |
 |<sub>   `1234567.` dvar X  |<sub>      DVARIABLE(X,`1234567`)      |<sub>                             |<sub>          ( -- )          |<sub> X: db 0x87,0xD6,0x12,0x00|
 |<sub> 2variable X `4.` X ! |<sub> DVARIABLE(X) PUSHDOT_STORE(`4`,X)|<sub>       DVARIABLE(X,`4`)      |<sub>          ( -- )          |<sub> X: db 4,0,0,0            |
-|<sub>       value _A       |<sub>             VALUE(_A)            |<sub>                             |<sub>        ( x -- )          |<sub> _P_A: dw x               |
-|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(_A,`7`)      |<sub>          ( -- )          |<sub> _P_A: dw `7`             |
-|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `7` )      |<sub> _P_A: dw `7`             |
-|<sub>         to _A        |<sub>             TO({_A})             |<sub>                             |<sub>        ( x -- )          |<sub> _P_A: dw x               |
-|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- x )        |<sub> _P_A: dw x               |
-|<sub>     `1234` to _A     |<sub>                                  |<sub>        PUSH_TO({_A})        |<sub>          ( -- )          |<sub> _P_A: dw `1234`          |
-|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `1234` )   |<sub> _P_A: dw `1234`          |
-|<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _P_B: dw x               |
-|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _P_B: dw 0xE240, 0x0001  |
-|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `123456.` )|<sub> _P_B: dw 0xE240, 0x0001  |
-|<sub>         to _B        |<sub>            DTO({_B})             |<sub>                             |<sub>        ( d -- )          |<sub> _P_B: dw lo(d), hi(d)    |
-|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- d )        |<sub> _P_B: dw lo(d), hi(d)    |
-|<sub>    `12345` to _B     |<sub>                                  |<sub>      PUSHDOT_DTO({_B})      |<sub>          ( -- )          |<sub> _P_B: dw 0x3039, 0x0000  |
-|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _P_B: dw 0x3039, 0x0000  |
+|<sub>       value _A       |<sub>             VALUE(_A)            |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x               |
+|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(_A,`7`)      |<sub>          ( -- )          |<sub> _A: dw `7`             |
+|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `7` )      |<sub> _A: dw `7`             |
+|<sub>         to _A        |<sub>             TO({_A})             |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x               |
+|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- x )        |<sub> _A: dw x               |
+|<sub>     `1234` to _A     |<sub>                                  |<sub>        PUSH_TO({_A})        |<sub>          ( -- )          |<sub> _A: dw `1234`          |
+|<sub>          _A          |<sub>                _A                |<sub>                             |<sub>          ( -- `1234` )   |<sub> _A: dw `1234`          |
+|<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _B: dw x               |
+|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _B: dw 0xE240, 0x0001  |
+|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `123456.` )|<sub> _B: dw 0xE240, 0x0001  |
+|<sub>         to _B        |<sub>            DTO({_B})             |<sub>                             |<sub>        ( d -- )          |<sub> _B: dw lo(d), hi(d)    |
+|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- d )        |<sub> _B: dw lo(d), hi(d)    |
+|<sub>    `12345` to _B     |<sub>                                  |<sub>      PUSHDOT_DTO({_B})      |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000  |
+|<sub>          _B          |<sub>                _B                |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000  |
 
 
     100 CHAR+   -->  100 _1ADD
@@ -1139,43 +1140,58 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
     100 CHARS   -->  100
     100 CELLS   -->  100 _2MUL
 
-Be very careful when choosing a name for VALUE because it will become a new word. This is why changing the value using TO({name}) is wrapped in {}.
-   
-    ./check_word.sh 'PUSH2(123,456) VALUE(_alfa) _alfa UDOT PUSH_TO({_alfa},5) _alfa SPACE_UDOT TO({_alfa}) _alfa SPACE_UDOT'
+Input:
 
-        push DE             ; 1:11      push2(123,456)
-        ld   DE, 123        ; 3:10      push2(123,456)
-        push HL             ; 1:11      push2(123,456)
-        ld   HL, 456        ; 3:10      push2(123,456) 
-        ld  (_p_alfa), HL   ; 3:16      value _alfa
-        ex   DE, HL         ; 1:4       value _alfa
-        pop  DE             ; 1:10      value _alfa 
-        push DE             ; 1:11      _alfa
-        ex   DE, HL         ; 1:4       _alfa
-        ld   HL, (_p_alfa)  ; 3:16      _alfa 
-        call PRT_U16        ; 3:17      u.   ( u -- ) 
-        ld   BC, 5          ; 3:10      5 to _alfa
-        ld  (_p_alfa), BC   ; 4:20      5 to _alfa 
-        push DE             ; 1:11      _alfa
-        ex   DE, HL         ; 1:4       _alfa
-        ld   HL, (_p_alfa)  ; 3:16      _alfa 
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
-        ld  (_p_alfa), HL   ; 3:16      to _alfa
-        pop  HL             ; 1:10      to _alfa
-        ex   DE, HL         ; 1:4       to _alfa 
-        push DE             ; 1:11      _alfa
-        ex   DE, HL         ; 1:4       _alfa
-        ld   HL, (_p_alfa)  ; 3:16      _alfa 
+    echo "5 value a a 1+ value b b a u. u. 10 to a a 1- to b b a u. u." | ./forth2m4.sh
+
+Output:
+
+    PUSH_VALUE(_a,5) PUSH((_a)) _1ADD VALUE(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT PUSH_TO(_a,10) PUSH((_a)) _1SUB TO(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT
+
+Output:
+
+    ./check_word.sh 'PUSH_VALUE(_a,5) PUSH((_a)) _1ADD VALUE(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT PUSH_TO(_a,10) PUSH((_a)) _1SUB TO(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT'
+
+        ld   BC, 5          ; 3:10      5 value _a
+        ld  (_a), BC        ; 4:20      5 value _a
+        push DE             ; 1:11      push((_a))
+        ex   DE, HL         ; 1:4       push((_a))
+        ld   HL, (_a)       ; 3:16      push((_a))
+        inc  HL             ; 1:6       1+
+        ld  (_b), HL        ; 3:16      value _b
+        ex   DE, HL         ; 1:4       value _b
+        pop  DE             ; 1:10      value _b
+        push DE             ; 1:11      push2((_b),(_a))
+        ld   DE, (_b)       ; 4:20      push2((_b),(_a))
+        push HL             ; 1:11      push2((_b),(_a))
+        ld   HL, (_a)       ; 3:16      push2((_b),(_a))
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+        ld   BC, 10         ; 3:10      10 to _a
+        ld  (_a), BC        ; 4:20      10 to _a
+        push DE             ; 1:11      push((_a))
+        ex   DE, HL         ; 1:4       push((_a))
+        ld   HL, (_a)       ; 3:16      push((_a))
+        dec  HL             ; 1:6       1-
+        ld  (_b), HL        ; 3:16      to _b
+        pop  HL             ; 1:10      to _b
+        ex   DE, HL         ; 1:4       to _b
+        push DE             ; 1:11      push2((_b),(_a))
+        ld   DE, (_b)       ; 4:20      push2((_b),(_a))
+        push HL             ; 1:11      push2((_b),(_a))
+        ld   HL, (_a)       ; 3:16      push2((_b),(_a))
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
         call PRT_SP_U16     ; 3:17      space u.   ( u -- )
 
     VARIABLE_SECTION:
 
-    _p_alfa: dw 0x0000
+    _a: dw 5
+    _b: dw 0x0000
 
 Output:
 
-    456 5 123
-    
+    5 6 10 9
+
 #### 8bit
 
 |<sub>     Original     |<sub>        M4 FORTH           |<sub>        Optimization         |<sub>   Data stack                             |<sub> Comment           |
@@ -1278,7 +1294,7 @@ The small Runtime library for ZX Spectrum graphic.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/runtime.m4
 
-The small Runtime library. I/O, math, etc. 
+The small Runtime library. I/O, math, etc.
 Variable section.
 String section.
 
