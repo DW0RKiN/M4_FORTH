@@ -1129,9 +1129,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _B: dw x               |
 |<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _B: dw 0xE240, 0x0001  |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `123456.` )|<sub> _B: dw 0xE240, 0x0001  |
-|<sub>         to _B        |<sub>             DTO(_B)              |<sub>                             |<sub>        ( d -- )          |<sub> _B: dw lo(d), hi(d)    |
+|<sub>         to _B        |<sub>              TO(_B)              |<sub>                             |<sub>        ( d -- )          |<sub> _B: dw lo(d), hi(d)    |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- d )        |<sub> _B: dw lo(d), hi(d)    |
-|<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_DTO(_B)       |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000  |
+|<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_TO(_B)        |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000  |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000  |
 
 
