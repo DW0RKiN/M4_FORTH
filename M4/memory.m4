@@ -27,6 +27,7 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
+__{}define({__VARIABLE_}$1)dnl
 __{}define({LAST_HERE_NAME},_p$1)dnl
 __{}define({LAST_HERE_ADD},2)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
@@ -50,6 +51,7 @@ __{}  .error {$0}($@): The variable name is identical to the instruction name! T
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 {dnl
+__{}define({__VARIABLE_}$1)dnl
 __{}define({LAST_HERE_NAME},$1)dnl
 __{}define({LAST_HERE_ADD},2)dnl
 __{}ifelse(eval($2),{},{
@@ -64,7 +66,7 @@ dnl
 dnl # TO(name)    --> (name) = TOS
 define({TO},{ifelse({$1},{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
-eval(ifdef({$1},{0},{1})),{1},{
+eval(ifdef({__VARIABLE_$1},{0},{1})),{1},{
 __{}  .error {$0}($@): The variable with this name not exist!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -80,7 +82,7 @@ dnl # PUSH_TO(name,200)    --> (name) = 200
 dnl # PUSH_TO(name,0x4422) --> (name) = 0x4422
 define({PUSH_TO},{ifelse({$1},{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
-eval(ifdef({$1},{0},{1})),{1},{
+eval(ifdef({__VARIABLE_$1},{0},{1})),{1},{
 __{}  .error {$0}($@): The variable with this name not exist!},
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},

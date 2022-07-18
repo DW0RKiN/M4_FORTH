@@ -13,6 +13,7 @@ define({__HEX_DE},{format({0x%04X},eval((($1)>>16) & 0xFFFF))}){}dnl
 define({__HEX_DEHL},{format({0x%08X},eval($1))}){}dnl
 dnl
 dnl
+dnl
 dnl # (abc) --> 1
 dnl # (123) --> 1
 dnl # ()+() --> 1 fail
