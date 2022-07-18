@@ -38,28 +38,28 @@ __{}    pop  DE             ; 1:10      value {$1}})}){}dnl
 dnl
 dnl
 dnl
-dnl # PUSH_VALUE(name,100)    --> (name) = 100
-dnl # PUSH_VALUE(name,0x2211) --> (name) = 0x2211
-define({PUSH_VALUE},{ifelse($1,{},{
+define({PUSH_VALUE},{ifelse($2,{},{
+dnl # PUSH_VALUE(100,name)    --> (name) = 100
+dnl # PUSH_VALUE(0x2211,name) --> (name) = 0x2211
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__IS_REG($2),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$2}},
+__IS_INSTRUCTION($2),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$2}},
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 {dnl
-__{}define({__VALUE_}$1)dnl
-__{}define({LAST_HERE_NAME},$1)dnl
+__{}define({__VALUE_}$2)dnl
+__{}define({LAST_HERE_NAME},$2)dnl
 __{}define({LAST_HERE_ADD},2)dnl
-__{}ifelse(eval($2),{},{
-__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
+__{}ifelse(eval($1),{},{
+__{}  .warning {$0}($@): M4 does not know $1 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1: dw $2})
-__{}    ld   BC, format({%-11s},{$2}); 3:10      $2 value {$1}
-__{}    ld  format({%-16s},{($1), BC}); 4:20      $2 value {$1}})}){}dnl
+__{}__{}$2: dw $1})
+__{}    ld   BC, format({%-11s},{$1}); 3:10      $1 value {$2}
+__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 value {$2}})}){}dnl
 dnl
 dnl
 dnl
@@ -80,52 +80,52 @@ __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}format({%-24s},{$1:});
 __{}__{}__{}    dw 0x0000
 __{}__{}__{}    dw 0x0000})
-__{}    ld  format({%-16s},{($1), HL}); 3:16      value {$1}   lo
-__{}    ld  format({%-16s},{($1+2), DE}); 4:20      value {$1}   hi
-__{}    pop  HL             ; 1:10      value {$1}
-__{}    pop  DE             ; 1:10      value {$1}})}){}dnl
+__{}    ld  format({%-16s},{($1), HL}); 3:16      dvalue {$1}   lo
+__{}    ld  format({%-16s},{($1+2), DE}); 4:20      dvalue {$1}   hi
+__{}    pop  HL             ; 1:10      dvalue {$1}
+__{}    pop  DE             ; 1:10      dvalue {$1}})}){}dnl
 dnl
 dnl
 dnl
-dnl # PUSHDOT_DVALUE(name,100000)    --> (name) = 100000
-dnl # PUSHDOT_DVALUE(name,0x44332211) --> (name) = 0x2211,0x4433
-define({PUSHDOT_DVALUE},{ifelse($1,{},{
+define({PUSHDOT_DVALUE},{ifelse($2,{},{
+dnl # PUSHDOT_DVALUE(100000,name)     --> (name) = 100000
+dnl # PUSHDOT_DVALUE(0x44332211,name) --> (name) = 0x2211,0x4433
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__IS_REG($2),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$2}},
+__IS_INSTRUCTION($2),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$2}},
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 {dnl
-__{}define({__DVALUE_}$1)dnl
-__{}define({LAST_HERE_NAME},$1)dnl
+__{}define({__DVALUE_}$2)dnl
+__{}define({LAST_HERE_NAME},$2)dnl
 __{}define({LAST_HERE_ADD},4)dnl
 __{}ifelse(dnl
-__{}__IS_MEM_REF($2),{1},{dnl
+__{}__IS_MEM_REF($1),{1},{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},{$1:});
+__{}__{}__{}format({%-24s},{$2:});
 __{}__{}__{}    dw 0x0000
 __{}__{}__{}    dw 0x0000})
-__{}__{}    ld   BC,format({%-12s},{$2}); 4:20      $2 value {$1}   lo
-__{}__{}    ld  format({%-16s},{($1), BC}); 4:20      $2 value {$1}   lo
-__{}__{}    ld   BC,format({%-12s},{(2+$2)}); 4:20      $2 value {$1}   hi
-__{}__{}    ld  format({%-16s},{($1+2), BC}); 4:20      $2 value {$1}   hi},
-__{}eval($2),{},{
-__{}__{}  .warning {$0}($@): M4 does not know $2 parameter value!},
+__{}__{}    ld   BC,format({%-12s},{$1}); 4:20      $1 dvalue {$2}   lo
+__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 dvalue {$2}   lo
+__{}__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      $1 dvalue {$2}   hi
+__{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1 dvalue {$2}   hi},
+__{}eval($1),{},{
+__{}__{}  .warning {$0}($@): M4 does not know $1 parameter value!},
 __{}{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},{$1:});{}dnl
-__{}__{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
-__{}__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
-__{}__{}__{}    dw __HEX_HL($2)
-__{}__{}__{}    dw __HEX_DE($2)})
-__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      $2 value {$1}   lo
-__{}__{}    ld  format({%-16s},{($1), BC}); 4:20      $2 value {$1}   lo
-__{}__{}    ld   BC, __HEX_DE($2)     ; 3:10      $2 value {$1}   hi
-__{}__{}    ld  format({%-16s},{($1+2), BC}); 4:20      $2 value {$1}   hi})})}){}dnl
+__{}__{}__{}format({%-24s},{$2:});{}dnl
+__{}__{} = ifelse(substr($1,0,2),{0x},eval($1),__HEX_DEHL($1)){}dnl
+__{}__{} = db __HEX_L($1) __HEX_H($1) __HEX_E($1) __HEX_D($1)
+__{}__{}__{}    dw __HEX_HL($1)
+__{}__{}__{}    dw __HEX_DE($1)})
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 dvalue {$2}   lo
+__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 dvalue {$2}   lo
+__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1 dvalue {$2}   hi
+__{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1 dvalue {$2}   hi})})}){}dnl
 dnl
 dnl
 dnl
@@ -150,50 +150,50 @@ __{}  .error {$0}($@): The variable with this name not exist!})}){}dnl
 dnl
 dnl
 dnl
-dnl # PUSH_TO(name,200)    --> (name) = 200
-dnl # PUSH_TO(name,0x4422) --> (name) = 0x4422
-define({PUSH_TO},{ifelse({$1},{},{
+define({PUSH_TO},{ifelse({$2},{},{
+dnl # PUSH_TO(200,name)    --> (name) = 200
+dnl # PUSH_TO(0x4422,name) --> (name) = 0x4422
 __{}  .error {$0}(): Missing  parameter with variable name!},
-ifdef({__VALUE_$1},{1},{0}),{0},{
-__{}  .error {$0}($@): The single variable with this name not exist!ifelse(ifdef({__DVALUE_$1},{1},{0}),{1},{ Did you want to write {PUSHDOT_TO}?})},
+ifdef({__VALUE_$2},{1},{0}),{0},{
+__{}  .error {$0}($@): The single variable with this name not exist!ifelse(ifdef({__DVALUE_$2},{1},{0}),{1},{ Did you want to write {PUSHDOT_TO}?})},
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($2),{1},{
-__{}    ld   BC, format({%-11s},{$2}); 4:20      $2 to {$1}
-__{}    ld  format({%-16s},{($1), BC}); 4:20      $2 to {$1}},
+__IS_MEM_REF($1),{1},{
+__{}    ld   BC, format({%-11s},{$1}); 4:20      $1 to {$2}
+__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}},
 {dnl
-__{}ifelse(eval($2),{},{
-__{}  .warning {$0}($@): M4 does not know $2 parameter value!})
-__{}    ld   BC, format({%-11s},{$2}); 3:10      $2 to {$1}
-__{}    ld  format({%-16s},{($1), BC}); 4:20      $2 to {$1}{}dnl
+__{}ifelse(eval($1),{},{
+__{}  .warning {$0}($@): M4 does not know $1 parameter value!})
+__{}    ld   BC, format({%-11s},{$1}); 3:10      $1 to {$2}
+__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}{}dnl
 })}){}dnl
 dnl
 dnl
 dnl
-dnl # PUSHDOT_TO(name,200)        --> (name) = 200
-dnl # PUSHDOT_TO(name,0x44221100) --> (name) = 0x1100,0x4422
-define({PUSHDOT_TO},{ifelse({$1},{},{
+define({PUSHDOT_TO},{ifelse({$2},{},{
+dnl # PUSHDOT_TO(200,name)        --> (name) = 200
+dnl # PUSHDOT_TO(0x44221100,name) --> (name) = 0x1100,0x4422
 __{}  .error {$0}(): Missing  parameter with variable name!},
-eval(ifdef({__DVALUE_$1},{0},{1})),{1},{
-__{}  .error {$0}($@): The double variable with this name not exist!ifelse(ifdef({__VALUE_$1},{1},{0}),{1},{ Did you want to write {PUSH_TO}?})},
+eval(ifdef({__DVALUE_$2},{0},{1})),{1},{
+__{}  .error {$0}($@): The double variable with this name not exist!ifelse(ifdef({__VALUE_$2},{1},{0}),{1},{ Did you want to write {PUSH_TO}?})},
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($2),{1},{
-__{}    ld   BC, format({%-11s},{$2}); 4:20      $2 dto {$1}   lo
-__{}    ld  format({%-16s},{($1), BC}); 4:20      $2 dto {$1}   lo
-__{}    ld   BC, format({%-11s},{(2+$2)}); 4:20      $2 dto {$1}   hi
-__{}    ld  format({%-16s},{($1+2), BC}); 4:20      $2 dto {$1}   hi},
-eval($2),{},{
-__{}  .error {$0}($@): M4 does not know $2 parameter value!},
+__IS_MEM_REF($1),{1},{
+__{}    ld   BC, format({%-11s},{$1}); 4:20      $1. to {$2}   lo
+__{}    ld  format({%-16s},{($2), BC}); 4:20      $1. to {$2}   lo
+__{}    ld   BC, format({%-11s},{(2+$1)}); 4:20      $1. to {$2}   hi
+__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1. to {$2}   hi},
+eval($1),{},{
+__{}  .error {$0}($@): M4 does not know $1 parameter value!},
 {
-__{}    ld   BC, __HEX_HL($2)     ; 3:10      $2. dto {$1}   lo
-__{}    ld  format({%-16s},{($1), BC}); 4:20      $2. dto {$1}   lo
-__{}    ld   BC, __HEX_DE($2)     ; 3:10      $2. dto {$1}   hi
-__{}    ld  format({%-16s},{($1+2), BC}); 4:20      $2. dto {$1}   hi{}dnl
+__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1. to {$2}   lo
+__{}    ld  format({%-16s},{($2), BC}); 4:20      $1. to {$2}   lo
+__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1. to {$2}   hi
+__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1. to {$2}   hi{}dnl
 })}){}dnl
 dnl
 dnl
