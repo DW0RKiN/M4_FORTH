@@ -349,13 +349,47 @@ __{}__{}DW $1})})}){}dnl
 dnl
 dnl
 dnl
-define({PUSHS_COMMA_REC},{
-__{}    ld   HL, format({%-11s},$1); 3:10      $1 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD>0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}DW $1}){}dnl
+define({PUSHS_COMMA_REC},{define({PUSHS_COMMA_REC_TMP},__HEX_H($2){}__HEX_L($2)){}ifelse(dnl
+eval($2),eval($1),,
+PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    inc  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1+1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    inc  HL             ; 1:6       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    dec  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1-1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    dec  HL             ; 1:6       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    inc  H              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    dec  H              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H(2*$1){}__HEX_L(2*$1),{define({PUSHS_COMMA_REC_T},eval(27+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}    add  HL, HL         ; 1:11      $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}    inc  L              ; 1:4       $2 ,
+__{}    inc  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}    dec  L              ; 1:4       $2 ,
+__{}    dec  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}    inc  H              ; 1:4       $2 ,
+__{}    inc  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}    inc  H              ; 1:4       $2 ,
+__{}    dec  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}    dec  H              ; 1:4       $2 ,
+__{}    inc  L              ; 1:4       $2 ,},
+PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}    dec  H              ; 1:4       $2 ,
+__{}    dec  L              ; 1:4       $2 ,},
+{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
+__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,})
+__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,{}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
-__{}ifelse(eval($#>1),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}DW $2}){}dnl
+__{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
 dnl
 dnl
 dnl
@@ -364,11 +398,16 @@ define({PUSHS_COMMA},{ifelse($1,{},{
 __{}  .error {$0}(): Missing value parameter!},
 eval($#),{1},{PUSH_COMMA($1)},
 eval($#),{2},{PUSH_COMMA($1)PUSH_COMMA($2)},
-{
-__{}                        ;format({%-11s},[eval(6*$#+2):eval(26*$#+21)])$@,
-__{}    push HL             ; 1:11      $@,{}dnl
+{define({PUSHS_COMMA_REC_T},47){}define({PUSHS_COMMA_REC_B},8)
+__{}    push HL             ; 1:11      $@,
+__{}    ld   HL, format({%-11s},$1); 3:10      $1 ,
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD>0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
+__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}DW $1}){}dnl
 __{}PUSHS_COMMA_REC($@)
-__{}    pop  HL             ; 1:10      $@,})}){}dnl
+__{}    pop  HL             ; 1:10      $@,
+__{}                        ;format({%-11s},[PUSHS_COMMA_REC_B:PUSHS_COMMA_REC_T])$@,})}){}dnl
 dnl
 dnl
 dnl
