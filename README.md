@@ -1116,18 +1116,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>      'a' cvar X      |<sub>         CVARIABLE(X,'a')         |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'                |
 |<sub>       `3` var X      |<sub>         VARIABLE(X,`3`)          |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`                |
 |<sub> variable X `3` X !   |<sub>  VARIABLE(X) PUSH2_STORE(`3`,X)  |<sub>       VARIABLE(X,`3`)       |<sub>          ( -- )          |<sub> X: dw `3`                |
-|<sub> variable X `2` allot |<sub>           VARIABLE(X)            |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000             |
+|<sub>    variable X `2`    |<sub>           VARIABLE(X)            |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000             |
 |<sub>   `1234567.` dvar X  |<sub>      DVARIABLE(X,`1234567`)      |<sub>                             |<sub>          ( -- )          |<sub> X: db 0x87,0xD6,0x12,0x00|
 |<sub> 2variable X `4.` X ! |<sub> DVARIABLE(X) PUSHDOT_STORE(`4`,X)|<sub>       DVARIABLE(X,`4`)      |<sub>          ( -- )          |<sub> X: db 4,0,0,0            |
 |<sub>       value _A       |<sub>             VALUE(_A)            |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x               |
-|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(_A,`7`)      |<sub>          ( -- )          |<sub> _A: dw `7`             |
+|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(`7`,_A)      |<sub>          ( -- )          |<sub> _A: dw `7`             |
 |<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- `7` )      |<sub> _A: dw `7`             |
 |<sub>         to _A        |<sub>              TO(_A)              |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x               |
 |<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- x )        |<sub> _A: dw x               |
 |<sub>     `1234` to _A     |<sub>                                  |<sub>         PUSH_TO(_A)         |<sub>          ( -- )          |<sub> _A: dw `1234`          |
 |<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- `1234` )   |<sub> _A: dw `1234`          |
 |<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _B: dw x               |
-|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(_B,`123456`) |<sub>          ( -- )          |<sub> _B: dw 0xE240, 0x0001  |
+|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(`123456`,_B) |<sub>          ( -- )          |<sub> _B: dw 0xE240, 0x0001  |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `123456.` )|<sub> _B: dw 0xE240, 0x0001  |
 |<sub>         to _B        |<sub>              TO(_B)              |<sub>                             |<sub>        ( d -- )          |<sub> _B: dw lo(d), hi(d)    |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- d )        |<sub> _B: dw lo(d), hi(d)    |
@@ -1146,47 +1146,48 @@ Input:
 
 Output:
 
-    PUSH_VALUE(_a,5) PUSH((_a)) _1ADD VALUE(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT PUSH_TO(_a,10) PUSH((_a)) _1SUB TO(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT
+    PUSH_VALUE(5,_a) PUSH((_a)) _1ADD VALUE(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT PUSH_TO(10,_a) PUSH((_a)) _1SUB TO(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT
+
 
 Input:
 
-    ./check_word.sh 'PUSH_VALUE(_a,5) PUSH((_a)) _1ADD VALUE(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT PUSH_TO(_a,10) PUSH((_a)) _1SUB TO(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT'
+    ./check_word.sh 'PUSH_VALUE(5,_a) PUSH((_a)) _1ADD VALUE(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT PUSH_TO(10,_a) PUSH((_a)) _1SUB TO(_b) PUSH2((_b),(_a)) SPACE_UDOT SPACE_UDOT'
 
 Output:
 
         ld   BC, 5          ; 3:10      5 value _a
-        ld  (_a), BC        ; 4:20      5 value _a
+        ld  (_a), BC        ; 4:20      5 value _a 
         push DE             ; 1:11      push((_a))
         ex   DE, HL         ; 1:4       push((_a))
-        ld   HL, (_a)       ; 3:16      push((_a))
-        inc  HL             ; 1:6       1+
+        ld   HL, (_a)       ; 3:16      push((_a)) 
+        inc  HL             ; 1:6       1+ 
         ld  (_b), HL        ; 3:16      value _b
         ex   DE, HL         ; 1:4       value _b
-        pop  DE             ; 1:10      value _b
+        pop  DE             ; 1:10      value _b 
         push DE             ; 1:11      push2((_b),(_a))
         ld   DE, (_b)       ; 4:20      push2((_b),(_a))
         push HL             ; 1:11      push2((_b),(_a))
-        ld   HL, (_a)       ; 3:16      push2((_b),(_a))
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+        ld   HL, (_a)       ; 3:16      push2((_b),(_a)) 
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
         ld   BC, 10         ; 3:10      10 to _a
-        ld  (_a), BC        ; 4:20      10 to _a
+        ld  (_a), BC        ; 4:20      10 to _a 
         push DE             ; 1:11      push((_a))
         ex   DE, HL         ; 1:4       push((_a))
-        ld   HL, (_a)       ; 3:16      push((_a))
-        dec  HL             ; 1:6       1-
+        ld   HL, (_a)       ; 3:16      push((_a)) 
+        dec  HL             ; 1:6       1- 
         ld  (_b), HL        ; 3:16      to _b
         pop  HL             ; 1:10      to _b
-        ex   DE, HL         ; 1:4       to _b
+        ex   DE, HL         ; 1:4       to _b 
         push DE             ; 1:11      push2((_b),(_a))
         ld   DE, (_b)       ; 4:20      push2((_b),(_a))
         push HL             ; 1:11      push2((_b),(_a))
-        ld   HL, (_a)       ; 3:16      push2((_b),(_a))
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+        ld   HL, (_a)       ; 3:16      push2((_b),(_a)) 
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
         call PRT_SP_U16     ; 3:17      space u.   ( u -- )
 
     VARIABLE_SECTION:
-
+    
     _a: dw 5
     _b: dw 0x0000
 

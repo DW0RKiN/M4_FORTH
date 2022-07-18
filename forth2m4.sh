@@ -469,16 +469,23 @@ do
     sed 's#^\([^;{]*\s\|^\)\([^ 	]\+\)\s\+dvar\s\+\([^ 	]\+\)\(\s\|$\)#\1DVARIABLE(\3,\2)\4#gi' |
    
     sed 's#^\([^;{]*\s\|^\)to\s\+\([^ 	]\+\)\(\s\|$\)#\1\TO(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+TO(\([^ 	]\+\))\(\s\|$\)#\1PUSH_TO(\3,\2)\4#gi' |
-    sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+TO(\([^ 	]\+\))\(\s\|$\)#\1PUSH_TO(\3,\2)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+TO(\([^ 	]\+\))\(\s\|$\)#\1PUSH_TO(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+TO(\([^ 	]\+\))\(\s\|$\)#\1PUSH_TO(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\.\s\+TO(\([^ 	]\+\))\(\s\|$\)#\1PUSHDOT_TO(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\.\s\+TO(\([^ 	]\+\))\(\s\|$\)#\1PUSHDOT_TO(\2,\3)\4#gi' |
+
     
     sed 's#^\([^;{]*\s\|^\)value\s\+\([^ 	]\+\)\(\s\|$\)#\1\VALUE(\2)\3#gi' |
-    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+VALUE(\([^ 	]\+\))\(\s\|$\)#\1PUSH_VALUE(\3,\2)\4#gi' |
-    sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+VALUE(\([^ 	]\+\))\(\s\|$\)#\1PUSH_VALUE(\3,\2)\4#gi' |
-    
-    sed 's#^\([^;{]*\s\|^\)[Vv]ariable\(\s\|$\)#\1VARIABLE\2#g' |
-    sed 's#^\([^;{]*\s\|^\)VARIABLE\s\+\([^ 	]\+\)\(\s\|$\)#\1VARIABLE(\2)\3#g' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+VALUE(\([^ 	]\+\))\(\s\|$\)#\1PUSH_VALUE(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+VALUE(\([^ 	]\+\))\(\s\|$\)#\1PUSH_VALUE(\2,\3)\4#gi' |
 
+    sed 's#^\([^;{]*\s\|^\)2value\s\+\([^ 	]\+\)\(\s\|$\)#\1\DVALUE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\.\s\+DVALUE(\([^ 	]\+\))\(\s\|$\)#\1PUSHDOT_DVALUE(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\.\s\+DVALUE(\([^ 	]\+\))\(\s\|$\)#\1PUSHDOT_DVALUE(\2,\3)\4#gi' |
+
+    sed 's#^\([^;{]*\s\|^\)variable\s\+\([^ 	]\+\)\(\s\|$\)#\1VARIABLE(\2)\3#gi' |
+    sed 's#^\([^;{]*\s\|^\)2variable\s\+\([^ 	]\+\)\(\s\|$\)#\1DVARIABLE(\2)\3#gi' |
+    
     sed 's#^\([^;{]*\s\|^\)[Ee]xit\(\s\|$\)#\1EXIT\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ff]alse\(\s\|$\)#\1FALSE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Tt]rue\(\s\|$\)#\1TRUE\2#g' |
@@ -708,8 +715,11 @@ done
 
 # value --> 0000000000xxx
 VAL=""
-VAL="$VAL `cat $TMPFILE | grep '^\([^;{]*\s\|^\)PUSH_VALUE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)PUSH_VALUE(\([^,)]\+\)[,)].*#\2#g'`"
 VAL="$VAL `cat $TMPFILE | grep '^\([^;{]*\s\|^\)VALUE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)VALUE(\([^,)]\+\)[,)].*#\2#g'`"
+VAL="$VAL `cat $TMPFILE | grep '^\([^;{]*\s\|^\)DVALUE(\([^,)]\+\)[,)].*' | sed 's#^\([^;{]*\s\|^\)DVALUE(\([^,)]\+\)[,)].*#\2#g'`"
+
+VAL="$VAL `cat $TMPFILE |     grep '^\([^;{]*\s\|^\)PUSH_VALUE([^,)]\+,\([_a-zA-Z][0-9_a-zA-Z]*\)).*' |     sed 's#^\([^;{]*\s\|^\)PUSH_VALUE([^,)]\+,\([_a-zA-Z][0-9_a-zA-Z]*\)).*#\2#g'`"
+VAL="$VAL `cat $TMPFILE | grep '^\([^;{]*\s\|^\)PUSHDOT_DVALUE([^,)]\+,\([_a-zA-Z][0-9_a-zA-Z]*\)).*' | sed 's#^\([^;{]*\s\|^\)PUSHDOT_DVALUE([^,)]\+,\([_a-zA-Z][0-9_a-zA-Z]*\)).*#\2#g'`"
 
 oddelovac="`printf "\a"`"
 for x in $VAL
@@ -719,7 +729,7 @@ do
 
     while :
     do
-        cat $TMPFILE | sed "s${oddelovac}^\([^;{]*(\)${x}\([,)]\)${oddelovac}\1${name}\2${oddelovac}g" > $TMPFILE2
+        cat $TMPFILE | sed "s${oddelovac}^\([^;{]*[(,]\)${x}\([,)]\)${oddelovac}\1${name}\2${oddelovac}g" > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
         error=$?
         cat $TMPFILE2 > $TMPFILE
@@ -1167,18 +1177,25 @@ done
 
 
 
-# VALUE((_name),...)      --> VALUE(_name,...)
-# PUSH_VALUE((_name),...) --> PUSH_VALUE(_name,...)
-# PUSH_TO((_name),...)    --> PUSH_TO(_name,...)
-# TO((_name))             --> TO(_name)
+# VALUE((_name))              --> VALUE(_name)
+# DVALUE((_name))             --> DVALUE(_name)
+# TO((_name))                 --> TO(_name)
+
+# PUSH_VALUE(123,(_name))     --> PUSH_VALUE(123,_name)
+# PUSHDOT_DVALUE(123,(_name)) --> PUSHDOT_DVALUE(123,_name)
+# PUSH_TO(123,(_name))        --> PUSH_TO(123,_name)
+# PUSHDOT_TO(123,(_name))     --> PUSHDOT_TO(123,_name)
 while :
 do
         cat $TMPFILE | 
            sed 's#^\([^;{]*\s\|^\)TO(\((_[^)]*\)))\(\s\|$\)#\1TO\2)\3#g' |
         sed 's#^\([^;{]*\s\|^\)VALUE(\((_[^)]*\)))\(\s\|$\)#\1VALUE\2)\3#g' |
+       sed 's#^\([^;{]*\s\|^\)DVALUE(\((_[^)]*\)))\(\s\|$\)#\1DVALUE\2)\3#g' |
 
-           sed 's#^\([^;{]*\s\|^\)PUSH_TO(\((_[^,)]*\))#\1PUSH_TO\2#g' |
-        sed 's#^\([^;{]*\s\|^\)PUSH_VALUE(\((_[^,)]*\))#\1PUSH_VALUE\2#g' > $TMPFILE2
+               sed 's#^\([^;{]*\s\|^\)PUSH_TO(\([^,]\+\),(\([^)]\+\)))#\1PUSH_TO(\2,\3)#g' |
+            sed 's#^\([^;{]*\s\|^\)PUSHDOT_TO(\([^,]\+\),(\([^)]\+\)))#\1PUSHDOT_TO(\2,\3)#g' |
+            sed 's#^\([^;{]*\s\|^\)PUSH_VALUE(\([^,]\+\),(\([^)]\+\)))#\1PUSH_VALUE(\2,\3)#g' |
+        sed 's#^\([^;{]*\s\|^\)PUSHDOT_DVALUE(\([^,]\+\),(\([^)]\+\)))#\1PUSHDOT_DVALUE(\2,\3)#g'  > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
         error=$?
         cat $TMPFILE2 > $TMPFILE
