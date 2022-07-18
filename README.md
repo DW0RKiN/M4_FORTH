@@ -1110,8 +1110,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 | :-----------------------: | :-----------------------------------: | :------------------------------: | :---------------------------- | :---------------------------- |
 |<sub>   `1` constant ONE   |<sub>        CONSTANT(ONE,`1`)         |<sub>                             |<sub>          ( -- )          |<sub> ONE equ `1`              |
 |<sub>     create name      |<sub>           CREATE(name)           |<sub>                             |<sub>          ( -- )          |<sub> name:                    |
+|<sub>         here         |<sub>               HERE               |<sub>                             |<sub>          ( -- addr )     |<sub> addr == first empty mem  |
 |<sub>      `10` allot      |<sub>                                  |<sub>       PUSH_ALLOT(`10`)      |<sub>          ( -- )          |<sub> DS `10`                  |
 |<sub>  create x `10` allot |<sub>    CREATE(x) PUSH_ALLOT(`10`)    |<sub>        BUFFER(x,`10`)       |<sub>          ( -- )          |<sub> x: DS `10`               |
+|<sub>           ,          |<sub>              COMMA               |<sub>                             |<sub>        ( x -- )          |<sub> DW: x                    |
 |<sub>        `55` ,        |<sub>                                  |<sub>       PUSH_COMMA(`55`)      |<sub>          ( -- )          |<sub> DW: `55`                 |
 |<sub>      'a' cvar X      |<sub>         CVARIABLE(X,'a')         |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'                |
 |<sub>       `3` var X      |<sub>         VARIABLE(X,`3`)          |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`                |
@@ -1119,20 +1121,20 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>    variable X `2`    |<sub>           VARIABLE(X)            |<sub>                             |<sub>          ( -- )          |<sub> X: dw 0x0000             |
 |<sub>   `1234567.` dvar X  |<sub>      DVARIABLE(X,`1234567`)      |<sub>                             |<sub>          ( -- )          |<sub> X: db 0x87,0xD6,0x12,0x00|
 |<sub> 2variable X `4.` X ! |<sub> DVARIABLE(X) PUSHDOT_STORE(`4`,X)|<sub>       DVARIABLE(X,`4`)      |<sub>          ( -- )          |<sub> X: db 4,0,0,0            |
-|<sub>       value _A       |<sub>             VALUE(_A)            |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x               |
-|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(`7`,_A)      |<sub>          ( -- )          |<sub> _A: dw `7`             |
-|<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- `7` )      |<sub> _A: dw `7`             |
-|<sub>         to _A        |<sub>              TO(_A)              |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x               |
-|<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- x )        |<sub> _A: dw x               |
-|<sub>     `1234` to _A     |<sub>                                  |<sub>         PUSH_TO(_A)         |<sub>          ( -- )          |<sub> _A: dw `1234`          |
-|<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- `1234` )   |<sub> _A: dw `1234`          |
-|<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _B: dw x               |
-|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(`123456`,_B) |<sub>          ( -- )          |<sub> _B: dw 0xE240, 0x0001  |
-|<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `123456.` )|<sub> _B: dw 0xE240, 0x0001  |
-|<sub>         to _B        |<sub>              TO(_B)              |<sub>                             |<sub>        ( d -- )          |<sub> _B: dw lo(d), hi(d)    |
-|<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- d )        |<sub> _B: dw lo(d), hi(d)    |
-|<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_TO(_B)        |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000  |
-|<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000  |
+|<sub>       value _A       |<sub>             VALUE(_A)            |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x                 |
+|<sub>     `7` value _A     |<sub>                                  |<sub>     PUSH_VALUE(`7`,_A)      |<sub>          ( -- )          |<sub> _A: dw `7`               |
+|<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- `7` )      |<sub> _A: dw `7`               |
+|<sub>         to _A        |<sub>              TO(_A)              |<sub>                             |<sub>        ( x -- )          |<sub> _A: dw x                 |
+|<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- x )        |<sub> _A: dw x                 |
+|<sub>     `1234` to _A     |<sub>                                  |<sub>         PUSH_TO(_A)         |<sub>          ( -- )          |<sub> _A: dw `1234`            |
+|<sub>          _A          |<sub>            PUSH((_A))            |<sub>                             |<sub>          ( -- `1234` )   |<sub> _A: dw `1234`            |
+|<sub>      2value _B       |<sub>            DVALUE(_B)            |<sub>                             |<sub>        ( x -- )          |<sub> _B: dw x                 |
+|<sub> `123456.` 2value _B  |<sub>                                  |<sub> PUSHDOT_DVALUE(`123456`,_B) |<sub>          ( -- )          |<sub> _B: dw 0xE240, 0x0001    |
+|<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `123456.` )|<sub> _B: dw 0xE240, 0x0001    |
+|<sub>         to _B        |<sub>              TO(_B)              |<sub>                             |<sub>        ( d -- )          |<sub> _B: dw lo(d), hi(d)      |
+|<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- d )        |<sub> _B: dw lo(d), hi(d)      |
+|<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_TO(_B)        |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000    |
+|<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000    |
 
 
     100 CHAR+   -->  100 _1ADD
