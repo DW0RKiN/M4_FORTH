@@ -132,7 +132,7 @@ If you have the source file elsewhere it will help to define the path manually u
 Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. `2dup` to `_2DUP`. `3` to `PUSH(3)`.
 All FORTH words must be capitalized! Because `+` is written as `ADD`. And `add` is reserved for assembler instructions.
 
-Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
+Theoretically, your function name or variable may conflict with the name of the macro used. So check it out. `ifdef({your_name},{used},{not used})` The worse case is when you make a mistake in the name of the macro. Then it will not expand and will probably be hidden in the comment of the previous macro.
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/forth2m4.sh
 
