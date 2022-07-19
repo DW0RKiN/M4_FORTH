@@ -28,8 +28,8 @@ __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
 __{}define({__VALUE_}$1)dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},2)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},2)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1: dw 0x0000})
 __{}    ld  format({%-16s},{($1), HL}); 3:16      value {$1}
@@ -52,8 +52,8 @@ $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 {dnl
 __{}define({__VALUE_}$2)dnl
-__{}define({LAST_HERE_NAME},$2)dnl
-__{}define({LAST_HERE_ADD},2)dnl
+__{}pushdef({LAST_HERE_NAME},$2)dnl
+__{}pushdef({LAST_HERE_ADD},2)dnl
 __{}ifelse(eval($1),{},{
 __{}  .warning {$0}($@): M4 does not know $1 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
@@ -74,8 +74,8 @@ __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
 __{}define({__DVALUE_}$1)dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},4)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},4)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}format({%-24s},{$1:});
 __{}__{}__{}    dw 0x0000
@@ -101,8 +101,8 @@ $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
 {dnl
 __{}define({__DVALUE_}$2)dnl
-__{}define({LAST_HERE_NAME},$2)dnl
-__{}define({LAST_HERE_ADD},4)dnl
+__{}pushdef({LAST_HERE_NAME},$2)dnl
+__{}pushdef({LAST_HERE_ADD},4)dnl
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1),{1},{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
@@ -210,17 +210,19 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 $#,{1},{dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},1)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}$1: db 0x00})},
+__{}$1:
+__{}    db 0x00})},
 {dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},1)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},1)dnl
 __{}ifelse(eval($2),{},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1: db $2})})}){}dnl
+__{}__{}$1:
+__{}__{}    db $2})})}){}dnl
 dnl
 dnl
 dnl
@@ -236,17 +238,19 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 $#,{1},{dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},2)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},2)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}$1: dw 0x0000})},
+__{}$1:
+__{}    dw 0x0000})},
 {dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},2)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},2)dnl
 __{}ifelse(eval($2),{},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1: dw $2})})}){}dnl
+__{}__{}$1:
+__{}__{}    dw $2})})}){}dnl
 dnl
 dnl
 dnl # _DVARIABLE(name)             --> (name) = 0
@@ -261,23 +265,24 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 $#,{1},{dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},2)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{$1:
-__{}  dw 0x0000
-__{}  dw 0x0000})},
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},4)dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}$1:
+__{}__{}    dw 0x0000
+__{}__{}    dw 0x0000})},
 {dnl
 __{}ifelse(eval(ifelse(eval($2),{},{1},{0})),{1},{
 __{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
 __{}{dnl
-__{}__{}define({LAST_HERE_NAME},$1)dnl
-__{}__{}define({LAST_HERE_ADD},4)dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},4)dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}format({%-24s},$1:); = $2{}dnl
-__{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
-__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
-__{}  dw __HEX_HL($2)             ; = eval(($2) & 0xffff)
-__{}  dw __HEX_DE($2)             ; = eval((($2) >> 16) & 0xffff)})}){}dnl
+__{}__{}format({%-24s},$1:); = $2{}dnl
+__{}__{}__{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
+__{}__{}__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
+__{}__{}__{}    dw __HEX_HL($2)           ; = eval(($2) & 0xffff)
+__{}__{}__{}    dw __HEX_DE($2)           ; = eval((($2) >> 16) & 0xffff)})}){}dnl
 })}){}dnl
 dnl
 dnl
@@ -292,8 +297,8 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
-__{}define({LAST_HERE_NAME},$1)dnl
-__{}define({LAST_HERE_ADD},0)dnl
+__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}pushdef({LAST_HERE_ADD},0)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1:})})}){}dnl
 dnl
@@ -303,7 +308,7 @@ dnl # HERE
 define({HERE},{
     push DE             ; 1:11      here
     ex   DE, HL         ; 1:4       here
-    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD>0),1,+LAST_HERE_ADD)); 3:10      here}){}dnl
+    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      here}){}dnl
 dnl
 dnl
 dnl
@@ -312,13 +317,28 @@ define({PUSH_ALLOT},{ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
+eval($1),{},{
+__{}  .error {$0}($@): Bad parameter! M4 does not know the numeric value of the parameter.},
 {dnl
-__{}ifelse(eval($1<0),{1},{
-__{}  .error {$0}($@): M4 does not support negative allocation (deallocation)!},
-__{}{dnl
-__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
+__{}ifelse(eval((LAST_HERE_ADD+$1)<0),{1},{dnl
+__{}__{}ifelse(LAST_HERE_NAME,{VARIABLE_SECTION},{dnl
+__{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1)){}dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}  .warning push_allot($1): Deallocation under VARIABLE_SECTION!
+__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   (deallocation)})},
+__{}__{}{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}DS $1})})})}){}dnl
+__{}__{}__{}}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           $1 allot   (deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME{)}){}dnl
+__{}__{}__{}popdef({LAST_HERE_NAME}){}dnl
+__{}__{}__{}define({PUSH_ALLOT_TEMP},eval($1+LAST_HERE_ADD)){}dnl
+__{}__{}__{}popdef({LAST_HERE_ADD}){}dnl
+__{}__{}__{}PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
+__{}{dnl
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
+__{}__{}ifelse(eval(($1)>0),{1},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}ds $1})},
+__{}__{}eval(($1)<0),{1},{define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   ( allocation }$1{ bytes from }LAST_HERE_NAME{)})})})})}){}dnl
 dnl
 dnl
 dnl
@@ -326,12 +346,12 @@ dnl # COMMA      --> reserve one word = TOS
 define({COMMA},{ifelse(eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD>0),1,+LAST_HERE_ADD)){,}HL); 3:16      ,
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      ,
 __{}    pop  HL             ; 1:10      ,
 __{}    ex   DE, HL         ; 1:4       ,{}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}DW 0x0000})})}){}dnl
+__{}__{}    dw 0x0000})})}){}dnl
 dnl
 dnl
 dnl
@@ -342,53 +362,61 @@ eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD>0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}DW $1})})}){}dnl
+__{}__{}    dw $1})})}){}dnl
 dnl
 dnl
 dnl
-define({PUSHS_COMMA_REC},{define({PUSHS_COMMA_REC_TMP},__HEX_H($2){}__HEX_L($2)){}ifelse(dnl
-eval($2),eval($1),,
-PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    inc  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1+1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    inc  HL             ; 1:6       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    dec  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1-1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    dec  HL             ; 1:6       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    inc  H              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    dec  H              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H(2*$1){}__HEX_L(2*$1),{define({PUSHS_COMMA_REC_T},eval(27+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}    add  HL, HL         ; 1:11      $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}    inc  L              ; 1:4       $2 ,
-__{}    inc  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}    dec  L              ; 1:4       $2 ,
-__{}    dec  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}    inc  H              ; 1:4       $2 ,
-__{}    inc  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}    inc  H              ; 1:4       $2 ,
-__{}    dec  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}    dec  H              ; 1:4       $2 ,
-__{}    inc  L              ; 1:4       $2 ,},
-PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}    dec  H              ; 1:4       $2 ,
-__{}    dec  L              ; 1:4       $2 ,},
-{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,})
+define({PUSHS_COMMA_REC},{ifelse(eval($1),{},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
+__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,},
+eval($2),{},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
+__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,},
+{dnl
+__{}define({PUSHS_COMMA_REC_TMP},__HEX_H($2){}__HEX_L($2)){}dnl
+__{}ifelse(dnl
+__{}eval(ifelse(eval($1),{},{1},{0})+ifelse(eval($2),{},{1},{0})>0),{1},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
+__{}__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,},
+__{}eval($2),eval($1),,
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    inc  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    inc  HL             ; 1:6       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    dec  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    dec  HL             ; 1:6       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    inc  H              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    dec  H              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H(2*$1){}__HEX_L(2*$1),{define({PUSHS_COMMA_REC_T},eval(27+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
+__{}__{}    add  HL, HL         ; 1:11      $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}__{}    inc  L              ; 1:4       $2 ,
+__{}__{}    inc  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}__{}    dec  L              ; 1:4       $2 ,
+__{}__{}    dec  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}__{}    inc  H              ; 1:4       $2 ,
+__{}__{}    inc  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}__{}    inc  H              ; 1:4       $2 ,
+__{}__{}    dec  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}__{}    dec  H              ; 1:4       $2 ,
+__{}__{}    inc  L              ; 1:4       $2 ,},
+__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
+__{}__{}    dec  H              ; 1:4       $2 ,
+__{}__{}    dec  L              ; 1:4       $2 ,},
+__{}{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
+__{}__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,})})
 __{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,{}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}DW $2}){}dnl
+__{}__{}    dw $2}){}dnl
 __{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
 dnl
 dnl
@@ -401,10 +429,10 @@ eval($#),{2},{PUSH_COMMA($1)PUSH_COMMA($2)},
 {define({PUSHS_COMMA_REC_T},47){}define({PUSHS_COMMA_REC_B},8)
 __{}    push HL             ; 1:11      $@,
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD>0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}DW $1}){}dnl
+__{}__{}    dw $1}){}dnl
 __{}PUSHS_COMMA_REC($@)
 __{}    pop  HL             ; 1:10      $@,
 __{}                        ;format({%-11s},[PUSHS_COMMA_REC_B:PUSHS_COMMA_REC_T])$@,})}){}dnl
@@ -426,7 +454,8 @@ __{}  .error {$0}(): Missing byte size parameter!},
 __{}ifelse(eval($2),{},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1: DS $2})})}){}dnl
+__{}__{}$1:
+__{}__{}    ds $2})})}){}dnl
 dnl
 dnl
 dnl # -------------------------------------------------------------------------------------
