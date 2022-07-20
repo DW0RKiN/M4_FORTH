@@ -4,13 +4,13 @@ dnl
 define({__def},{ifdef({$1},,{define({$1},{$2})})}){}dnl
 dnl
 dnl
-define({__HEX_L},{format({0x%02X},eval(($1) & 0xFF))}){}dnl
-define({__HEX_H},{format({0x%02X},eval((($1)>>8) & 0xFF))}){}dnl
-define({__HEX_E},{format({0x%02X},eval((($1)>>16) & 0xFF))}){}dnl
-define({__HEX_D},{format({0x%02X},eval((($1)>>24) & 0xFF))}){}dnl
-define({__HEX_HL},{format({0x%04X},eval(($1) & 0xFFFF))}){}dnl
-define({__HEX_DE},{format({0x%04X},eval((($1)>>16) & 0xFFFF))}){}dnl
-define({__HEX_DEHL},{format({0x%08X},eval($1))}){}dnl
+define({__HEX_L},{ifelse($1,{},,{format({0x%02X},eval(($1) & 0xFF))})}){}dnl
+define({__HEX_H},{ifelse($1,{},,{format({0x%02X},eval((($1)>>8) & 0xFF))})}){}dnl
+define({__HEX_E},{ifelse($1,{},,{format({0x%02X},eval((($1)>>16) & 0xFF))})}){}dnl
+define({__HEX_D},{ifelse($1,{},,{format({0x%02X},eval((($1)>>24) & 0xFF))})}){}dnl
+define({__HEX_HL},{ifelse($1,{},,{format({0x%04X},eval(($1) & 0xFFFF))})}){}dnl
+define({__HEX_DE},{ifelse($1,{},,{format({0x%04X},eval((($1)>>16) & 0xFFFF))})}){}dnl
+define({__HEX_DEHL},{ifelse($1,{},,{format({0x%08X},eval($1))})}){}dnl
 dnl
 dnl
 dnl
@@ -87,6 +87,205 @@ define({__RAS},{
     push HL             ; 1:11      __ras
     exx                 ; 1:4       __ras
     pop  HL             ; 1:10      __ras}){}dnl
+dnl
+dnl
+dnl
+dnl
+define({__LD4},{dnl
+dnl $2->$1 && $3=$4
+dnl # Input:
+dnl #  __CLOCKS
+dnl #  $1 Name of the target registry
+dnl #  $2 Searched value that is needed
+dnl #  $3 Source registry name
+dnl #  $4 Source registry value
+dnl # Output:
+dnl #  __CLOCKS
+dnl #  __BYTES
+dnl #  __CODE
+__{}ifelse($1,$3,{dnl # Identical register
+__{}__{}ifelse($2,$4,{dnl # match found
+__{}__{}__{}define({__CLOCKS},0){}dnl
+__{}__{}__{}define({__BYTES},0){}dnl
+__{}__{}__{}define({__CODE},{dnl})},
+__{}__{}$2,__HEX_L($4+1),{dnl
+__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}define({__CODE},{    inc   $1             ; 1:4       _TMP_INFO})})},
+__{}__{}$2,__HEX_L($4-1),{dnl
+__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}define({__CODE},{    dec   $1             ; 1:4       _TMP_INFO})})},
+__{}__{}{dnl # no match found
+__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},7){}dnl
+__{}__{}__{}__{}define({__BYTES},2){}dnl
+__{}__{}__{}__{}define({__CODE},{    ld    $1{{,}} $2       ; 2:7       _TMP_INFO})})})},
+__{}$3,{},,dnl # empty register
+__{}{dnl # different register
+__{}__{}ifelse($2,$4,{dnl # match found
+__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}define({__CODE},{    ld    $1{{,}} $3          ; 1:4       _TMP_INFO   $1 = $3 = $4})})},
+__{}__{}{dnl # no match found
+__{}__{}__{}ifelse(eval(__CLOCKS>7),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},7){}dnl
+__{}__{}__{}__{}define({__BYTES},2){}dnl
+__{}__{}__{}__{}define({__CODE},{    ld    $1{{,}} $2       ; 2:7       _TMP_INFO})})}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_REG8_8BIT},{dnl
+dnl $1->$2 from ($3,$5,$7,$9,$11,$13,$15)
+dnl
+dnl # Input:
+dnl # _TMP_INFO
+dnl # __NAME_CODE
+dnl #  $1 Name of the target registry
+dnl #  $2 Searched value that is needed
+dnl #  $3 Source registry name
+dnl #  $4 Source registry value
+dnl #  $5 Source registry name
+dnl #  $6 Source registry value
+dnl #  $7 Source registry name
+dnl #  $8 Source registry value
+dnl #  $9 Source registry name
+dnl # $10 Source registry value
+dnl # $11 Source registry name
+dnl # $12 Source registry value
+dnl # $13 Source registry name
+dnl # $14 Source registry value
+dnl # $15 Source registry name
+dnl # $16 Source registry value
+dnl # Output:
+dnl # __CLOCKS
+dnl # __BYTES
+dnl # __CODE
+dnl # __NAME_CODE
+dnl
+__{}define({__CLOCKS},100000){}dnl
+__{}__LD4($1,$2,$3,$4){}dnl
+__{}__LD4($1,$2,$5,$6){}dnl
+__{}__LD4($1,$2,$7,$8){}dnl
+__{}__LD4($1,$2,$9,$10){}dnl
+__{}__LD4($1,$2,$11,$12){}dnl
+__{}__LD4($1,$2,$13,$14){}dnl
+__{}__LD4($1,$2,$15,$16){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_REG16_16BIT},{dnl
+dnl # Use: __LD_REG16_16BIT({HL},0x2200,{DE},1,{BC},0x3322,{HL},-1)
+dnl # Input:
+dnl # _TMP_INFO
+dnl #  $1 Name of target register pair
+dnl #  $2 Searched 16-bit value that is needed
+dnl
+dnl #  $3 Source registry name
+dnl #  $4 Source registry 16-bit value
+dnl #  $5 Source registry name
+dnl #  $6 Source registry 16-bit value
+dnl #  $7 Source registry name
+dnl #  $8 Source registry 16-bit value
+dnl
+dnl # Output:
+dnl # __CLOCKS_HI
+dnl # __CLOCKS_LO
+dnl # __CLOCKS_16BIT
+dnl # __BYTES_HI
+dnl # __BYTES_LO
+dnl # __BYTES_16BIT
+dnl # __CODE_HI
+dnl # __CODE_LO
+dnl # __CODE_16BIT
+dnl
+__{}__LD_REG8_8BIT(substr($1,0,1),__HEX_H($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6),substr($7,0,1),__HEX_H($8),substr($7,1,1),__HEX_L($8)){}dnl
+__{}define({__CODE_HI},__CODE){}dnl
+__{}define({__CLOCKS_HI},__CLOCKS){}dnl
+__{}define({__BYTES_HI},__BYTES){}dnl
+__{}__LD_REG8_8BIT(substr($1,1,1),__HEX_L($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6),substr($7,0,1),__HEX_H($8),substr($7,1,1),__HEX_L($8)){}dnl
+__{}define({__CODE_LO},__CODE){}dnl
+__{}define({__CLOCKS_LO},__CLOCKS){}dnl
+__{}define({__BYTES_LO},__BYTES){}dnl
+__{}define({__CLOCKS_16BIT},eval(__CLOCKS_HI+__CLOCKS)){}dnl
+__{}define({__BYTES_16BIT},eval(__BYTES_HI+__BYTES)){}dnl
+__{}define({__CODE_16BIT},__CODE_HI
+__{}__{}__CODE_LO){}dnl
+__{}ifelse(eval(__CLOCKS_16BIT>10),{1},{dnl
+__{}__{}define({__CLOCKS_16BIT},10){}dnl
+__{}__{}define({__BYTES_16BIT},3){}dnl
+__{}__{}define({__CODE_16BIT},{    ld   $1{,} __HEX_HL($2)     ; 3:10      _TMP_INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_REG16_16BIT_BEFORE_AFTER},{dnl
+dnl # Input:
+dnl # _TMP_INFO
+dnl #  $1 Name of target register pair
+dnl #  $2 Searched 16-bit value that is needed
+dnl
+dnl #  $3 Source registry name
+dnl #  $4 Source registry 16-bit value before
+dnl #  $5 Source registry name
+dnl #  $6 Source registry 16-bit value after
+dnl
+dnl # Output:
+dnl # __CLOCKS_16BIT
+dnl # __BYTES_16BIT
+dnl # __CODE_BEFORE_16BIT
+dnl # __CODE_AFTER_16BIT
+dnl
+__{}__LD_REG8_8BIT(substr($1,0,1),__HEX_H($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4)){}dnl
+__{}define({__CODE_BEFORE_HI},__CODE){}dnl
+__{}define({__CLOCKS_BEFORE_HI},__CLOCKS){}dnl
+__{}define({__BYTES_BEFORE_HI},__BYTES){}dnl
+__{}__LD_REG8_8BIT(substr($1,1,1),__HEX_L($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4)){}dnl
+__{}define({__CODE_BEFORE_LO},__CODE){}dnl
+__{}define({__CLOCKS_BEFORE_LO},__CLOCKS){}dnl
+__{}define({__BYTES_BEFORE_LO},__BYTES){}dnl
+__{}__LD_REG8_8BIT(substr($1,0,1),__HEX_H($2),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6)){}dnl
+__{}define({__CODE_AFTER_HI},__CODE){}dnl
+__{}define({__CLOCKS_AFTER_HI},__CLOCKS){}dnl
+__{}define({__BYTES_AFTER_HI},__BYTES){}dnl
+__{}__LD_REG8_8BIT(substr($1,1,1),__HEX_L($2),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6)){}dnl
+__{}define({__CODE_AFTER_LO},__CODE){}dnl
+__{}define({__CLOCKS_AFTER_LO},__CLOCKS){}dnl
+__{}define({__BYTES_AFTER_LO},__BYTES){}dnl
+__{}ifelse(eval((__CLOCKS_BEFORE_HI<__CLOCKS_AFTER_HI) && (__CLOCKS_BEFORE_LO<__CLOCKS_AFTER_LO)),{1},{dnl
+__{}__{}define({__CLOCKS_16BIT},eval(__CLOCKS_BEFORE_HI+__CLOCKS_BEFORE_LO)){}dnl
+__{}__{}define({__BYTES_16BIT},eval(__BYTES_BEFORE_HI+__BYTES_BEFORE_LO)){}dnl
+__{}__{}define({__CODE_BEFORE_16BIT},{__CODE_BEFORE_HI
+__{}__{}__{}__CODE_BEFORE_LO}){}dnl
+__{}__{}define({__CODE_AFTER_16BIT},{dnl})},
+__{}eval((__CLOCKS_BEFORE_HI<__CLOCKS_AFTER_HI) && (__CLOCKS_BEFORE_LO>=__CLOCKS_AFTER_LO)),{1},{dnl
+__{}__{}define({__CLOCKS_16BIT},eval(__CLOCKS_BEFORE_HI+__CLOCKS_AFTER_LO)){}dnl
+__{}__{}define({__BYTES_16BIT},eval(__BYTES_BEFORE_HI+__BYTES_AFTER_LO)){}dnl
+__{}__{}define({__CODE_BEFORE_16BIT},{__CODE_BEFORE_HI}){}dnl
+__{}__{}define({__CODE_AFTER_16BIT},{__CODE_AFTER_LO})},
+__{}eval((__CLOCKS_BEFORE_HI>=__CLOCKS_AFTER_HI) && (__CLOCKS_BEFORE_LO>=__CLOCKS_AFTER_LO)),{1},{dnl
+__{}__{}define({__CLOCKS_16BIT},eval(__CLOCKS_AFTER_HI+__CLOCKS_AFTER_LO)){}dnl
+__{}__{}define({__BYTES_16BIT},eval(__BYTES_AFTER_HI+__BYTES_AFTER_LO)){}dnl
+__{}__{}define({__CODE_AFTER_16BIT},{__CODE_AFTER_HI
+__{}__{}__{}__CODE_AFTER_LO}){}dnl
+__{}__{}define({__CODE_BEFORE_16BIT},{dnl})},
+__{}eval((__CLOCKS_BEFORE_HI>=__CLOCKS_AFTER_HI) && (__CLOCKS_BEFORE_LO<__CLOCKS_AFTER_LO)),{1},{dnl
+__{}__{}define({__CLOCKS_16BIT},eval(__CLOCKS_AFTER_HI+__CLOCKS_BEFORE_LO)){}dnl
+__{}__{}define({__BYTES_16BIT},eval(__BYTES_AFTER_HI+__BYTES_BEFORE_LO)){}dnl
+__{}__{}define({__CODE_BEFORE_16BIT},__CODE_BEFORE_LO){}dnl
+__{}__{}define({__CODE_AFTER_16BIT},__CODE_AFTER_HI)}){}dnl
+__{}ifelse(eval(__CLOCKS_16BIT>10),{1},{dnl
+__{}__{}define({__CLOCKS_16BIT},10){}dnl
+__{}__{}define({__BYTES_16BIT},3){}dnl
+__{}__{}define({__CODE_BEFORE_16BIT},{dnl}){}dnl
+__{}__{}define({__CODE_AFTER_16BIT},{    ld   $1{,} __HEX_HL($2)     ; 3:10      _TMP_INFO})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

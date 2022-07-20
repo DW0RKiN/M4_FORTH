@@ -1,18 +1,18 @@
 dnl ## Stack manipulation
 dnl
-dnl ( b a -- a b )
-dnl prohodi vrchol zasobniku s druhou polozkou
+dnl # ( b a -- a b )
+dnl # prohodi vrchol zasobniku s druhou polozkou
 define({SWAP},{
     ex   DE, HL         ; 1:4       swap ( b a -- a b )})dnl
 dnl
 dnl
-dnl ( b a -- a b a )
+dnl # ( b a -- a b a )
 define({SWAP_OVER},{
     push HL             ; 1:11      swap_over ( b a -- a b a )})dnl
 dnl
 dnl
-dnl swap 3
-dnl ( b a -- a b 3 )
+dnl # swap 3
+dnl # ( b a -- a b 3 )
 define({SWAP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -21,8 +21,8 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      swap $1 ( b a -- a b $1 )})dnl
 dnl
 dnl
-dnl 3 swap
-dnl ( a -- 3 a )
+dnl # 3 swap
+dnl # ( a -- 3 a )
 define({PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -31,8 +31,8 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 swap ( a -- $1 a )})dnl
 dnl
 dnl
-dnl swap drop 3 swap
-dnl ( b a -- 3 a )
+dnl # swap drop 3 swap
+dnl # ( b a -- 3 a )
 define({SWAP_DROP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -40,8 +40,8 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      swap drop $1 swap ( b a -- $1 a )})dnl
 dnl
 dnl
-dnl nip 3 swap
-dnl ( b a -- 3 a )
+dnl # nip 3 swap
+dnl # ( b a -- 3 a )
 define({NIP_PUSH_SWAP},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -49,8 +49,8 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      nip $1 swap ( b a -- $1 a )})dnl
 dnl
 dnl
-dnl ( d c b a -- b a d c )
-dnl Exchange the top two cell pairs.
+dnl # ( d c b a -- b a d c )
+dnl # Exchange the top two cell pairs.
 define({_2SWAP},{ifelse(TYP_2SWAP,{fast},{
                         ;[7:56]     2swap ( d c b a -- b a d c ) # fast version can be changed with "define({TYP_2SWAP},{name})", name=default
     ex   DE, HL         ; 1:4       2swap d c . a b
@@ -70,16 +70,16 @@ define({_2SWAP},{ifelse(TYP_2SWAP,{fast},{
     push AF             ; 1:11      2swap b a . d c})}){}dnl
 dnl
 dnl
-dnl ( a -- a a )
-dnl vytvori kopii vrcholu zasobniku
+dnl # ( a -- a a )
+dnl # vytvori kopii vrcholu zasobniku
 define({DUP},{
     push DE             ; 1:11      dup
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup ( a -- a a )})dnl
 dnl
 dnl
-dnl ( a -- a a a )
-dnl vytvori 2x kopii vrcholu zasobniku
+dnl # ( a -- a a a )
+dnl # vytvori 2x kopii vrcholu zasobniku
 define({DUP_DUP},{
     push DE             ; 1:11      dup dup ( a -- a a a )
     push HL             ; 1:11      dup dup
@@ -87,9 +87,9 @@ define({DUP_DUP},{
     ld    E, L          ; 1:4       dup dup})dnl
 dnl
 dnl
-dnl ?dup
-dnl ( a -- a a ) or ( 0 -- 0 )
-dnl vytvori kopii vrcholu zasobniku pokud je nenulovy
+dnl # ?dup
+dnl # ( a -- a a ) or ( 0 -- 0 )
+dnl # vytvori kopii vrcholu zasobniku pokud je nenulovy
 define({QUESTIONDUP},{
     ld    A, H          ; 1:4       ?dup
     or    L             ; 1:4       ?dup
@@ -99,17 +99,17 @@ define({QUESTIONDUP},{
     ld    E, L          ; 1:4       ?dup ( a -- 0 | a a )})dnl
 dnl
 dnl
-dnl 2dup
-dnl ( b a -- b a b a )
-dnl over over
+dnl # 2dup
+dnl # ( b a -- b a b a )
+dnl # over over
 define({_2DUP},{
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup  ( b a -- b a b a )})dnl
 dnl
 dnl
-dnl 3dup
-dnl ( c b a -- c b a c b a )
-dnl 2 pick 2 pick 2 pick
+dnl # 3dup
+dnl # ( c b a -- c b a c b a )
+dnl # 2 pick 2 pick 2 pick
 define({_3DUP},{
                         ;[5:54]     3dup   ( c b a -- c b a c b a )
     pop  AF             ; 1:10      3dup   . . . . b a
@@ -119,11 +119,11 @@ define({_3DUP},{
     push AF             ; 1:11      3dup   c b a c b a})dnl
 dnl
 dnl
-dnl 4dup
-dnl 3 pick 3 pick 3 pick 3 pick
-dnl 2over 2over
-dnl ( d c b a  --  d c b a d c b a )
-dnl ( d2 d1 -- d2 d1 d2 d1 )
+dnl # 4dup
+dnl # 3 pick 3 pick 3 pick 3 pick
+dnl # 2over 2over
+dnl # ( d c b a  --  d c b a d c b a )
+dnl # ( d2 d1 -- d2 d1 d2 d1 )
 define({_4DUP},{
                         ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
     pop  BC             ; 1:10      4dup
@@ -136,10 +136,10 @@ define({_4DUP},{
     push BC             ; 1:11      4dup})dnl
 dnl
 dnl
-dnl 4dup drop
-dnl 3 pick 3 pick 3 pick
-dnl 2over 2over drop
-dnl ( d c b a  --  d c b a d c b )
+dnl # 4dup drop
+dnl # 3 pick 3 pick 3 pick
+dnl # 2over 2over drop
+dnl # ( d c b a  --  d c b a d c b )
 define({_4DUP_DROP},{ifelse(_TYP_SINGLE,{small},{
                         ;[9:98]     4dup drop   ( d c b a -- d c b a d c b )
     ex  (SP),HL         ; 1:19      4dup drop   HL = c
@@ -165,10 +165,10 @@ define({_4DUP_DROP},{ifelse(_TYP_SINGLE,{small},{
     ld    H, B          ; 1:4       4dup drop})})dnl
 dnl
 dnl
-dnl 5dup
-dnl 4 pick 4 pick 4 pick 4 pick 4 pick
-dnl ( e d c b a  --  e d c b a e d c b a )
-dnl ( x d2 d1 -- x d2 d1 x d2 d1 )
+dnl # 5dup
+dnl # 4 pick 4 pick 4 pick 4 pick 4 pick
+dnl # ( e d c b a  --  e d c b a e d c b a )
+dnl # ( x d2 d1 -- x d2 d1 x d2 d1 )
 define({_5DUP},{
                        ;[15:134]    5dup   ( e d c b a -- e d c b a e d c b a )
     pop  BC             ; 1:10      5dup   e d . . . . . . b a
@@ -188,10 +188,10 @@ define({_5DUP},{
     push BC             ; 1:11      5dup   e d c b a e d c b a})dnl
 dnl
 dnl
-dnl 6dup
-dnl 5 pick 5 pick 5 pick 5 pick 5 pick 5 pick
-dnl ( f e d c b a  --  f e d c b a f e d c b a )
-dnl ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )
+dnl # 6dup
+dnl # 5 pick 5 pick 5 pick 5 pick 5 pick 5 pick
+dnl # ( f e d c b a  --  f e d c b a f e d c b a )
+dnl # ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )
 define({_6DUP},{ifelse(_TYP_SINGLE,{small},{
                        ;[14:440]    6dup   ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
     ld    B, 0x06       ; 2:7       6dup   6x "5 pick"
@@ -226,59 +226,59 @@ define({_6DUP},{ifelse(_TYP_SINGLE,{small},{
     push BC             ; 1:11      6dup   f e d c b a f e d c b a})})dnl
 dnl
 dnl
-dnl ( a -- )
-dnl odstrani vrchol zasobniku
+dnl # ( a -- )
+dnl # odstrani vrchol zasobniku
 define({DROP},{
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop ( a -- )})dnl
 dnl
 dnl
-dnl ( b a -- b b )
+dnl # ( b a -- b b )
 define({DROP_DUP},{
     ld   H, D           ; 1:4       drop_dup   ( b a -- b b )
     ld   L, E           ; 1:4       drop_dup})dnl
 dnl
 dnl
-dnl 2drop
-dnl ( b a -- )
-dnl odstrani 2x vrchol zasobniku
+dnl # 2drop
+dnl # ( b a -- )
+dnl # odstrani 2x vrchol zasobniku
 define({_2DROP},{
     pop  HL             ; 1:10      2drop
     pop  DE             ; 1:10      2drop ( b a -- )})dnl
 dnl
 dnl
-dnl drop 2drop
-dnl ( c b a -- )
-dnl odstrani 3x vrchol zasobniku
+dnl # drop 2drop
+dnl # ( c b a -- )
+dnl # odstrani 3x vrchol zasobniku
 define({DROP_2DROP},{
     pop  HL             ; 1:10      drop 2drop ( c b a -- )
     pop  HL             ; 1:10      drop 2drop
     pop  DE             ; 1:10      drop 2drop})dnl
 dnl
 dnl
-dnl ( b a -- a )
-dnl : nip swap drop ;
-dnl drop_second
+dnl # ( b a -- a )
+dnl # : nip swap drop ;
+dnl # drop_second
 define({NIP},{
     pop  DE             ; 1:10      nip ( b a -- a )})dnl
 dnl
 dnl
-dnl ( d c b a – b a )
-dnl : 2nip 2swap 2drop ;
-dnl drop_second
+dnl # ( d c b a – b a )
+dnl # : 2nip 2swap 2drop ;
+dnl # drop_second
 define({_2NIP},{
     pop  AF             ; 1:10      2nip
     pop  AF             ; 1:10      2nip ( d c b a – b a )})dnl
 dnl
 dnl
-dnl ( b a -- a b a )
-dnl : tuck swap over ;
+dnl # ( b a -- a b a )
+dnl # : tuck swap over ;
 define({TUCK},{
     push HL             ; 1:11      tuck ( b a -- a b a )})dnl
 dnl
 dnl
-dnl ( d c b a -- b a d c b a )
-dnl : 2tuck 2swap 2over ;
+dnl # ( d c b a -- b a d c b a )
+dnl # : 2tuck 2swap 2over ;
 define({_2TUCK},{
                         ;[6:64]     2tuck ( d c b a -- b a d c b a )
     pop  AF             ; 1:10      2tuck     d   . b a     AF = c
@@ -289,20 +289,20 @@ define({_2TUCK},{
     push AF             ; 1:11      2tuck b a d c . b a})dnl
 dnl
 dnl
-dnl ( b a -- b a b )
-dnl vytvori kopii druhe polozky na zasobniku
+dnl # ( b a -- b a b )
+dnl # vytvori kopii druhe polozky na zasobniku
 define({OVER},{
     push DE             ; 1:11      over
     ex   DE, HL         ; 1:4       over ( b a -- b a b )})dnl
 dnl
 dnl
-dnl ( b a -- b b a )
+dnl # ( b a -- b b a )
 define({OVER_SWAP},{
     push DE             ; 1:11      over_swap ( b a -- b b a )})dnl
 dnl
 dnl
-dnl 3 over
-dnl ( a -- a 3 a )
+dnl # 3 over
+dnl # ( a -- a 3 a )
 define({PUSH_OVER},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -315,8 +315,8 @@ dnl
 define({DUP_PUSH_SWAP},{PUSH_OVER($1)}){}dnl
 dnl
 dnl
-dnl over 3
-dnl ( b a -- b a b 3 )
+dnl # over 3
+dnl # ( b a -- b a b 3 )
 define({OVER_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -326,8 +326,8 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      over $1 ( b a -- b a b $1 )})dnl
 dnl
 dnl
-dnl ( d c b a -- d c b a d c )
-dnl Copy cell pair "d c" to the top of the stack.
+dnl # ( d c b a -- d c b a d c )
+dnl # Copy cell pair "d c" to the top of the stack.
 define({_2OVER},{
                         ;[9:91]     2over ( d c b a -- d c b a d c )
     pop  AF             ; 1:10      2over d       . b a     AF = c
@@ -341,8 +341,8 @@ define({_2OVER},{
     ld    E, C          ; 1:4       2over d c b a . d c})dnl
 dnl
 dnl
-dnl ( f e d c b a -- f e d c b a f e d )
-dnl Copy cell pair "f e d" to the top of the stack.
+dnl # ( f e d c b a -- f e d c b a f e d )
+dnl # Copy cell pair "f e d" to the top of the stack.
 define({_3OVER},{
                        ;[19:130]    3over   ( f e d c b a -- f e d c b a f e d )
     push DE             ; 1:11      3over   f e d c b . . b a
@@ -364,9 +364,9 @@ define({_3OVER},{
     ld    H, A          ; 1:4       3over   f e d c b a f e d}){}dnl
 dnl
 dnl
-dnl ( h g f e d c b a -- h g f e d c b a h g f e )
-dnl ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )
-dnl Copy cell pair "d4 d3" to the top of the stack.
+dnl # ( h g f e d c b a -- h g f e d c b a h g f e )
+dnl # ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )
+dnl # Copy cell pair "d4 d3" to the top of the stack.
 define({_4OVER},{ifelse(_TYP_SINGLE,{small},{
                        ;[19:212]    4over   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
     ex   DE, HL         ; 1:4       4over   h g f e d c . . . . a b
@@ -410,22 +410,22 @@ define({_4OVER},{ifelse(_TYP_SINGLE,{small},{
     ld    H, A          ; 1:4       4over   h g f e d c b a h g f e})}){}dnl
 dnl
 dnl
-dnl ( c b a -- b a c )
-dnl vyjme treti polozku a ulozi ji na vrchol, rotace doleva
+dnl # ( c b a -- b a c )
+dnl # vyjme treti polozku a ulozi ji na vrchol, rotace doleva
 define({ROT},{
     ex   DE, HL         ; 1:4       rot
     ex  (SP),HL         ; 1:19      rot ( c b a -- b a c )})dnl
 dnl
 dnl
-dnl rot drop
-dnl ( c b a -- b a )
-dnl Remove third item from stack
+dnl # rot drop
+dnl # ( c b a -- b a )
+dnl # Remove third item from stack
 define({ROT_DROP},{
     pop  AF             ; 1:10      rot drop ( c b a -- b a )})dnl
 dnl
 dnl
-dnl ( f e d c b a -- d c b a f e )
-dnl vyjme treti 32-bit polozku a ulozi ji na vrchol
+dnl # ( f e d c b a -- d c b a f e )
+dnl # vyjme treti 32-bit polozku a ulozi ji na vrchol
 define({_2ROT},{ifelse(TYP_2ROT,{fast},{
                        ;[17:120]    2rot ( f e d c b a -- d c b a f e ) # fast version can be changed with "define({TYP_2ROT},{default})"
     pop  BC             ; 1:10      2rot f e d   . b a  BC = c
@@ -464,33 +464,33 @@ define({_2ROT},{ifelse(TYP_2ROT,{fast},{
     push AF             ; 1:11      2rot d c b a . f e})}){}dnl
 dnl
 dnl
-dnl -rot
-dnl ( c b a -- a c b )
-dnl vyjme vrchol zasobniku a ulozi ho jako treti polozku, rotace doprava
+dnl # -rot
+dnl # ( c b a -- a c b )
+dnl # vyjme vrchol zasobniku a ulozi ho jako treti polozku, rotace doprava
 define({NROT},{
                         ;[2:23]     nrot ( c b a -- a c b )
     ex  (SP),HL         ; 1:19      nrot a . b c
     ex   DE, HL         ; 1:4       nrot a . c b})dnl
 dnl
 dnl
-dnl -rot swap
-dnl ( c b a -- a b c )
-dnl prohodi hodnotu na vrcholu zasobniku s treti polozkou
+dnl # -rot swap
+dnl # ( c b a -- a b c )
+dnl # prohodi hodnotu na vrcholu zasobniku s treti polozkou
 define({NROT_SWAP},{
     ex  (SP),HL         ; 1:19      nrot_swap ( c b a -- a b c )})dnl
 dnl
 dnl
-dnl -rot nip
-dnl ( c b a -- a b )
-dnl Remove third item from stack and swap
+dnl # -rot nip
+dnl # ( c b a -- a b )
+dnl # Remove third item from stack and swap
 define({NROT_NIP},{
     pop  AF             ; 1:10      nrot nip
     ex   DE, HL         ; 1:4       nrot nip ( c b a -- a b )})dnl
 dnl
 dnl
-dnl -rot 2swap
-dnl ( d c b a -- c b d a )
-dnl 4th --> 2th
+dnl # -rot 2swap
+dnl # ( d c b a -- c b d a )
+dnl # 4th --> 2th
 define({NROT_2SWAP},{
                         ;[6:50]     nrot_2swap   ( d c b a -- c b d a )
     pop  AF             ; 1:10      nrot_2swap   d   . b a    AF = c
@@ -501,8 +501,8 @@ define({NROT_2SWAP},{
     push BC             ; 1:11      nrot_2swap   c b . d a})dnl
 dnl
 dnl
-dnl nrot swap 2swap swap
-dnl ( d c b a -- b c a d )
+dnl # nrot swap 2swap swap
+dnl # ( d c b a -- b c a d )
 define({STACK_BCAD},{
                         ;[4:44]     stack_bcad   ( d c b a -- b c a d )
     ex   DE, HL         ; 1:4       stack_bcad   d c a b
@@ -511,12 +511,12 @@ define({STACK_BCAD},{
     push AF             ; 1:11      stack_bcad   b c a d })dnl
 dnl
 dnl
-dnl 2 pick 2 pick swap
-dnl over 3 pick
-dnl 2over nip 2over nip swap
-dnl over 2over drop
-dnl      ( c b a -- c b a b c )
-dnl -- c b a b c )
+dnl # 2 pick 2 pick swap
+dnl # over 3 pick
+dnl # 2over nip 2over nip swap
+dnl # over 2over drop
+dnl #      ( c b a -- c b a b c )
+dnl # -- c b a b c )
 define({STACK_CBABC},{
                         ;[6:51]     stack_cbabc   ( c b a -- c b a b c )
     pop  BC             ; 1:10      stack_cbabc   BC = c
@@ -527,9 +527,9 @@ define({STACK_CBABC},{
     ld    L, C          ; 1:4       stack_cbabc   c b a b c})dnl
 dnl
 dnl
-dnl 3dup rot
-dnl        ( c b a -- c b a b a c )
-dnl -- c b a b a c )
+dnl # 3dup rot
+dnl #        ( c b a -- c b a b a c )
+dnl # -- c b a b a c )
 define({STACK_CBABAC},{
                         ;[8:66]     stack_cbabc   ( c b a -- c b a b a c )
     pop  BC             ; 1:10      stack_cbabc   BC = c
@@ -545,9 +545,9 @@ dnl
 define({_3DUP_ROT},{STACK_CBABAC}){}dnl
 dnl
 dnl
-dnl 3dup -rot
-dnl        ( c b a -- c b a a c b )
-dnl -- c b a a c b )
+dnl # 3dup -rot
+dnl #        ( c b a -- c b a a c b )
+dnl # -- c b a a c b )
 define({STACK_CBAACB},{
                         ;[8:66]     stack_cbabc   ( c b a -- c b a a c b )
     pop  BC             ; 1:10      stack_cbabc   BC = c
@@ -563,7 +563,7 @@ dnl
 define({_3DUP_NROT},{STACK_CBAACB}){}dnl
 dnl
 dnl
-dnl ( f e d c b a -- b a f e d c )
+dnl # ( f e d c b a -- b a f e d c )
 define({N2ROT},{
                         ;[14:123]   n2rot   ( f e d c b a -- b a f e d c )
     pop  BC             ; 1:10      n2rot   f e d     . b a   BC = c
@@ -582,8 +582,8 @@ define({N2ROT},{
     ld    L, C          ; 1:4       n2rot   b a f e   . d c})dnl
 dnl
 dnl
-dnl ( -- a )
-dnl push(a) ulozi na zasobnik nasledujici polozku
+dnl # ( -- a )
+dnl # push(a) ulozi na zasobnik nasledujici polozku
 define({PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -593,8 +593,8 @@ __{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PU
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      push($1)})dnl
 dnl
 dnl
-dnl ( -- b a)
-dnl push2(b,a) ulozi na zasobnik nasledujici polozky
+dnl # ( -- b a)
+dnl # push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{ifelse(eval($#<2),{1},{
 __{}  .error {$0}($@): Missing parameter!},
 eval($#!=2),{1},{
@@ -609,53 +609,222 @@ eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
     push HL             ; 1:11      push2($1,$2)
     ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
-__{}{ifelse(dnl
-__{}eval($1==$2),{1},{
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$1); 3:10      push2($1,$2)
-__{}    ld    D, H          ; 1:4       push2($1,$2)
-__{}    ld    E, L          ; 1:4       push2($1,$2)},
-__{}eval((__HEX_H($1) == __HEX_L($2)) && (__HEX_L($1) == __HEX_H($2))),{1},{
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
-__{}    ld    D, L          ; 1:4       push2($1,$2)
-__{}    ld    E, H          ; 1:4       push2($1,$2)},
-__{}eval((__HEX_H($1) == __HEX_H($2)) && (__HEX_H($1) == __HEX_L($2))),{1},{
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
-__{}    ld    H, D          ; 1:4       push2($1,$2)
-__{}    ld    L, D          ; 1:4       push2($1,$2)},
-__{}eval((__HEX_L($1) == __HEX_H($2)) && (__HEX_L($1) == __HEX_L($2))),{1},{
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
-__{}    ld    H, E          ; 1:4       push2($1,$2)
-__{}    ld    L, E          ; 1:4       push2($1,$2)},
-__{}eval((__HEX_H($2) == __HEX_H($1)) && (__HEX_H($2) == __HEX_L($1))),{1},{
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
-__{}    ld    D, H          ; 1:4       push2($1,$2)
-__{}    ld    E, H          ; 1:4       push2($1,$2)},
-__{}eval((__HEX_L($2) == __HEX_H($1)) && (__HEX_L($2) == __HEX_L($1))),{1},{
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
-__{}    ld    D, L          ; 1:4       push2($1,$2)
-__{}    ld    E, L          ; 1:4       push2($1,$2)},
 __{}{
 __{}    push DE             ; 1:11      push2($1,$2)
+__{}    push HL             ; 1:11      push2($1,$2){}dnl
+__{}define({_TMP_INFO},{push2($1,$2)}){}dnl
+__{}__LD_REG16_16BIT({DE},$1,{HL},$2){}dnl
+__{}define({PUSH2_C},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16_16BIT({HL},$2,{DE},$1){}dnl
+__{}ifelse(eval(__CLOCKS_16BIT<=PUSH2_C),{1},{
 __{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)})})})})dnl
+__{}__CODE_16BIT},
+__{}{dnl
+__{}__LD_REG16_16BIT({DE},$1,{HL},$2)
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
+__{}__CODE_16BIT})})})}){}dnl
 dnl
 dnl
-dnl drop 50
-dnl ( a -- 50 )
-dnl zmeni hodnotu top
+dnl
+dnl # ( -- c b a)
+dnl # push3(c,b,a) ulozi na zasobnik nasledujici polozky
+define({PUSH3},{ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=3),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+eval((__IS_MEM_REF($1)+__IS_MEM_REF($2)+__IS_MEM_REF($3))>0),{1},{
+    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 $3  push3($1,$2,$3)
+    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+    ld   DE, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{4:20},{3:10})      $1 $2 $3  push3($1,$2,$3)
+    ld   HL, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:16},{3:10})      $1 $2 $3  push3($1,$2,$3)},
+{ifelse(eval($1 && $2 && $3),{},{
+    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
+    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)},
+__{}{
+__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}dnl
+__{}define({_TMP_INFO},$1{ }$2{ }$3{  push3(}$1{,}$2{,}$3{)}){}dnl
+__{}ifelse(dnl
+__{}__HEX_HL($3),__HEX_HL($1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT({DE},$2,{HL},$1){}dnl
+__{}__{}__CODE_16BIT},
+__{}__HEX_HL($2),__HEX_HL($1),{
+__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT({HL},$3,{DE},$1){}dnl
+__{}__{}__CODE_16BIT},
+__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1){}__HEX_L($1+1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    inc   L             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1){}__HEX_L($1+1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    inc   E             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1){}__HEX_L($1-1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    dec   L             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1){}__HEX_L($1-1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    dec   E             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1+1){}__HEX_L($1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    inc   H             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1+1){}__HEX_L($1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    inc   D             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1-1){}__HEX_L($1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    dec   H             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1-1){}__HEX_L($1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    dec   D             ; 1:4       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_HL($3),__HEX_HL($1+1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_HL($2),__HEX_HL($1+1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    inc  DE             ; 1:6       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_HL($3),__HEX_HL($1-1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    dec  HL             ; 1:6       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_HL($2),__HEX_HL($1-1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    dec  DE             ; 1:6       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($3),__HEX_H($1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    ld    L, __HEX_L($3)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_H($2),__HEX_H($1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    ld    E, __HEX_L($2)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_L($3),__HEX_L($1),{
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    ld    H, __HEX_H($3)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}__HEX_L($2),__HEX_L($1),{
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__CODE_BEFORE_16BIT
+__{}__{}    ld    D, __HEX_H($2)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
+__{}__{}__CODE_AFTER_16BIT},
+__{}{dnl
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}__{}define({PUSH3_X},1){}dnl
+__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}ifelse(eval(PUSH3_C>__CLOCKS_16BIT),{1},{dnl
+__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}__{}define({PUSH3_X},2)}){}dnl
+__{}__{}define({PUSH3_C1},__CLOCKS_16BIT){}dnl
+__{}__{}__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3){}dnl
+__{}__{}ifelse(eval(PUSH3_C>__CLOCKS_16BIT),{1},{dnl
+__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}__{}define({PUSH3_X},3)}){}dnl
+__{}__{}__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2){}dnl
+__{}__{}ifelse(eval(PUSH3_C>__CLOCKS_16BIT),{1},{dnl
+__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}__{}define({PUSH3_X},4)}){}dnl
+__{}__{}ifelse(PUSH3_X,1,{
+__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__{}__{}__CODE_BEFORE_16BIT
+__{}__{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}__CODE_AFTER_16BIT},
+__{}__{}PUSH3_X,2,{
+__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__{}__{}__CODE_BEFORE_16BIT
+__{}__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}__CODE_AFTER_16BIT},
+__{}__{}PUSH3_X,3,{
+__{}__{}__{}__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3){}dnl
+__{}__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}__CODE_16BIT},
+__{}__{}{
+__{}__{}__{}__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2){}dnl
+__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}__{}__CODE_16BIT}){}dnl
+})})})})dnl
+dnl
+dnl
+dnl
+dnl # drop 50
+dnl # ( a -- 50 )
+dnl # zmeni hodnotu top
 define({DROP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -663,9 +832,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop $1})dnl
 dnl
 dnl
-dnl 2drop 50
-dnl ( a -- 50 )
-dnl zmeni hodnotu top
+dnl # 2drop 50
+dnl # ( a -- 50 )
+dnl # zmeni hodnotu top
 define({_2DROP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -674,9 +843,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop $1})dnl
 dnl
 dnl
-dnl dup 50
-dnl ( a -- a a 50 )
-dnl zmeni hodnotu top
+dnl # dup 50
+dnl # ( a -- a a 50 )
+dnl # zmeni hodnotu top
 define({DUP_PUSH},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
@@ -688,9 +857,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
-dnl # ( -- d )
-dnl # PUSHDOT(number32bit) ulozi na zasobnik 32 bitove cislo
-dnl # 255. --> ( -- 0x0000 0x00FF )
+dnl # # ( -- d )
+dnl # # PUSHDOT(number32bit) ulozi na zasobnik 32 bitove cislo
+dnl # # 255. --> ( -- 0x0000 0x00FF )
 define({PUSHDOT},{ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing parameter!},
@@ -740,8 +909,8 @@ __{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word})})}){}dnl
 dnl
 dnl
 dnl
-dnl ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
-dnl Remove x. Copy the nx to the top of the stack.
+dnl # ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
+dnl # Remove x. Copy the nx to the top of the stack.
 define({PICK},{ifelse($#,{0},,{
 .error pick: Unexpected parameter $@, pick uses a parameter from the stack!})
     push DE             ; 1:11      pick
@@ -754,13 +923,13 @@ define({PICK},{ifelse($#,{0},,{
     pop  DE             ; 1:10      pick})dnl
 dnl
 dnl
-dnl # 0 pick ( a 0 -- a a )
-dnl # 1 pick ( b a 1 -- b a b )
-dnl # 2 pick ( c b a 2 -- c b a c )
-dnl # 3 pick ( d c b a 3 -- d c b a d )
-dnl # 4 pick ( e d c b a 4 -- e d c b a e )
-dnl # u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu )
-dnl # Remove u. Copy the xu to the top of the stack.
+dnl # # 0 pick ( a 0 -- a a )
+dnl # # 1 pick ( b a 1 -- b a b )
+dnl # # 2 pick ( c b a 2 -- c b a c )
+dnl # # 3 pick ( d c b a 3 -- d c b a d )
+dnl # # 4 pick ( e d c b a 4 -- e d c b a e )
+dnl # # u pick ( ...x3 x2 x1 x0 u -- ...x3 x2 x1 x0 xu )
+dnl # # Remove u. Copy the xu to the top of the stack.
 define({PUSH_PICK},{ifelse($#,{0},{
 __{}  .error _push_pick(): Parameter is missing!},
 __IS_MEM_REF($1),{1},{
@@ -820,12 +989,12 @@ __{}__{}    ld    H,(HL)        ; 1:7       $1 pick
 __{}__{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})})dnl
 dnl
 dnl
-dnl depth
-dnl ( -- 0 )
-dnl ( x -- x 1 )
-dnl ( x x -- x x 2 )
-dnl ( -- +n )
-dnl +n is the number of single-cell values contained in the data stack before +n was placed on the stack
+dnl # depth
+dnl # ( -- 0 )
+dnl # ( x -- x 1 )
+dnl # ( x x -- x x 2 )
+dnl # ( -- +n )
+dnl # +n is the number of single-cell values contained in the data stack before +n was placed on the stack
 define({DEPTH},{
                         ;[13:72]    depth   ( -- +n )
     push DE             ; 1:11      depth
@@ -839,11 +1008,11 @@ define({DEPTH},{
 dnl
 dnl
 dnl
-dnl ------------- return address stack ------------------
+dnl # ------------- return address stack ------------------
 dnl
-dnl >r
-dnl ( x -- ) ( R: -- x )
-dnl Move x to the return stack.
+dnl # >r
+dnl # ( x -- ) ( R: -- x )
+dnl # Move x to the return stack.
 define({TO_R},{
                         ;[9:65]     to_r   ( c b a -- c b ) ( R: -- a )
     ex  (SP), HL        ; 1:19      to_r   a . b c
@@ -857,9 +1026,9 @@ define({TO_R},{
     exx                 ; 1:4       to_r})dnl
 dnl
 dnl
-dnl dup >r
-dnl ( x -- x ) ( R: -- x )
-dnl Copy x to the return stack.
+dnl # dup >r
+dnl # ( x -- x ) ( R: -- x )
+dnl # Copy x to the return stack.
 define({DUP_TO_R},{
                         ;[8:53]     dup_to_r   ( a -- a ) ( R: -- a )
     push HL             ; 1:11      dup_to_r
@@ -872,9 +1041,9 @@ define({DUP_TO_R},{
     exx                 ; 1:4       dup_to_r})dnl
 dnl
 dnl
-dnl r>
-dnl ( -- x ) ( R: x -- )
-dnl Move x from the return stack to the data stack.
+dnl # r>
+dnl # ( -- x ) ( R: x -- )
+dnl # Move x from the return stack to the data stack.
 define({R_FROM},{
                         ;[9:66]     r_from ( b a -- b a i ) ( R: i -- )
     exx                 ; 1:4       r_from
@@ -888,20 +1057,20 @@ define({R_FROM},{
     ex  (SP), HL        ; 1:19      r_from b . a i})dnl
 dnl
 dnl
-dnl r@
-dnl ( -- x ) ( R: x -- x )
-dnl Copy x from the return stack to the data stack.
+dnl # r@
+dnl # ( -- x ) ( R: x -- x )
+dnl # Copy x from the return stack to the data stack.
 define({R_FETCH},{
-dnl                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
-dnl    exx                 ; 1:4       r_fetch   .
-dnl    push HL             ; 1:11      r_fetch r .
-dnl    exx                 ; 1:4       r_fetch r . b a
-dnl    ex   DE, HL         ; 1:4       r_fetch r . a b
-dnl    ex  (SP), HL        ; 1:19      r_fetch b . a r     HL = r.a.s.
-dnl    ld    A,(HL)        ; 1:7       r_fetch
-dnl    inc   L             ; 1:4       r_fetch
-dnl    ld    H,(HL)        ; 1:7       r_fetch
-dnl    ld    L, A          ; 1:4       r_fetch b . a i
+dnl #                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
+dnl #    exx                 ; 1:4       r_fetch   .
+dnl #    push HL             ; 1:11      r_fetch r .
+dnl #    exx                 ; 1:4       r_fetch r . b a
+dnl #    ex   DE, HL         ; 1:4       r_fetch r . a b
+dnl #    ex  (SP), HL        ; 1:19      r_fetch b . a r     HL = r.a.s.
+dnl #    ld    A,(HL)        ; 1:7       r_fetch
+dnl #    inc   L             ; 1:4       r_fetch
+dnl #    ld    H,(HL)        ; 1:7       r_fetch
+dnl #    ld    L, A          ; 1:4       r_fetch b . a i
                         ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
     exx                 ; 1:4       r_fetch
     ld    E,(HL)        ; 1:7       r_fetch
@@ -914,9 +1083,9 @@ dnl    ld    L, A          ; 1:4       r_fetch b . a i
     ex  (SP), HL        ; 1:19      r_fetch})dnl
 dnl
 dnl
-dnl rdrop
-dnl r:( a -- )
-dnl odstrani vrchol zasobniku navratovych adres
+dnl # rdrop
+dnl # r:( a -- )
+dnl # odstrani vrchol zasobniku navratovych adres
 define({RDROP},{
                         ;[4:18]     rdrop
     exx                 ; 1:4       rdrop
@@ -925,12 +1094,12 @@ define({RDROP},{
     exx                 ; 1:4       rdrop r:( a -- )})dnl
 dnl
 dnl
-dnl r> r> swap >r >r
-dnl 2r> >r >r
-dnl r> r> 2>r
-dnl 2r> swap 2>r
-dnl ( R: x1 x2 -- x2 x1 )
-dnl Swap cell x1 x2 in the return stack.
+dnl # r> r> swap >r >r
+dnl # 2r> >r >r
+dnl # r> r> 2>r
+dnl # 2r> swap 2>r
+dnl # ( R: x1 x2 -- x2 x1 )
+dnl # Swap cell x1 x2 in the return stack.
 define({RSWAP},{
                         ;[14:86]    rswap ( R: j i -- i j )
     exx                 ; 1:4       rswap
@@ -944,13 +1113,13 @@ define({RSWAP},{
     exx                 ; 1:4       rswap})dnl
 dnl
 dnl
-dnl ------------------- 32 bits ---------------------
+dnl # ------------------- 32 bits ---------------------
 dnl
 dnl
-dnl 2>r
-dnl swap >r >r
-dnl ( x1 x2 -- ) ( R: -- x1 x2 )
-dnl Transfer cell pair x1 x2 to the return stack.
+dnl # 2>r
+dnl # swap >r >r
+dnl # ( x1 x2 -- ) ( R: -- x1 x2 )
+dnl # Transfer cell pair x1 x2 to the return stack.
 define({_2TO_R},{
                         ;[15:116]   _2to_r ( d c b a -- d c ) ( R: -- b a )
     ex  (SP), HL        ; 1:19      _2to_r d a   . b c
@@ -970,10 +1139,10 @@ define({_2TO_R},{
     pop  DE             ; 1:10      _2to_r       . d c})dnl
 dnl
 dnl
-dnl 2r>
-dnl r> r> swap
-dnl ( -- x1 x2 ) ( R: x1 x2 -- )
-dnl Transfer cell pair x1 x2 from the return stack.
+dnl # 2r>
+dnl # r> r> swap
+dnl # ( -- x1 x2 ) ( R: x1 x2 -- )
+dnl # Transfer cell pair x1 x2 from the return stack.
 define({_2R_FROM},{
                         ;[15:118]   _2r_from ( b a -- b a j i ) ( R: j i -- )
     push DE             ; 1:11      _2r_from b     . b a
@@ -993,10 +1162,10 @@ define({_2R_FROM},{
     ex  (SP), HL        ; 1:19      _2r_from b a   . j i})dnl
 dnl
 dnl
-dnl 2r@
-dnl r> r> 2dup >r >r swap
-dnl ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 )
-dnl Copy cell pair x1 x2 from the return stack.
+dnl # 2r@
+dnl # r> r> 2dup >r >r swap
+dnl # ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 )
+dnl # Copy cell pair x1 x2 from the return stack.
 define({_2R_FETCH},{
                         ;[14:99]    _2r_fetch ( b a -- b a j i ) ( R: j i -- j i )
     push DE             ; 1:11      _2r_fetch b   . b a
@@ -1015,9 +1184,9 @@ define({_2R_FETCH},{
     ex   DE, HL         ; 1:4       _2r_fetch b a . j i})dnl
 dnl
 dnl
-dnl 2rdrop
-dnl r:( j i -- )
-dnl odstrani dve polozky ze zasobniku navratovych adres
+dnl # 2rdrop
+dnl # r:( j i -- )
+dnl # odstrani dve polozky ze zasobniku navratovych adres
 define({_2RDROP},{
                         ;[6:28]     _2rdrop
     exx                 ; 1:4       _2rdrop
@@ -1028,10 +1197,10 @@ define({_2RDROP},{
     exx                 ; 1:4       _2rdrop r:( x1 x2 -- )})dnl
 dnl
 dnl
-dnl r> r> r> r> _2swap >r >r >r >r
-dnl 2r> 2r> _2swap 2>r 2>r
-dnl ( R: x4 x3 x2 x1 -- x2 x1 )
-dnl Swap cell pair x4 x3 and x2 x1 in the return stack.
+dnl # r> r> r> r> _2swap >r >r >r >r
+dnl # 2r> 2r> _2swap 2>r 2>r
+dnl # ( R: x4 x3 x2 x1 -- x2 x1 )
+dnl # Swap cell pair x4 x3 and x2 x1 in the return stack.
 define({_2RSWAP},{
                         ;[19:134]   rswap ( R: l k j i -- j i l k )
     exx                 ; 1:4       rswap
