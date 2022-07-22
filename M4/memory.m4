@@ -369,21 +369,33 @@ __{}__{}    dw $1})})}){}dnl
 dnl
 dnl
 dnl
-define({PUSHS_COMMA_REC},{ifelse(eval($1),{},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,},
-eval($2),{},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,},
-{dnl
+define({PUSHS_COMMA_REC},{dnl
 __{}undefine({__COMMA}){}dnl
 __{}define({_TMP_INFO},{{{$2}}}{ }__COMMA){}dnl
-__{}__LD_REG16_16BIT({HL},$2,{HL},$1){}dnl
-__{}define({PUSHS_COMMA_REC_T},eval(16+__CLOCKS_16BIT+PUSHS_COMMA_REC_T)){}dnl
-__{}define({PUSHS_COMMA_REC_B},eval(3+__BYTES_16BIT+PUSHS_COMMA_REC_B)){}dnl
-__{}define({__COMMA},{,}){}dnl
-__{}__CODE_16BIT
-__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      {$2} ,}){}dnl
+__{}dnl # BC variant
+__{}__LD_REG16_16BIT({HL},$3,{HL},PUSHS_COMMA_HL,{BC},$2){}dnl
+__{}define({PUSHS_COMMA_REC_P_BC},__PRICE_16BIT){}dnl
+__{}__LD_REG16_16BIT({BC},$2,{HL},PUSHS_COMMA_HL,ifelse(PUSHS_COMMA_BC,{},{},{BC}),ifelse(PUSHS_COMMA_BC,{},{},{PUSHS_COMMA_BC})){}dnl
+__{}define({PUSHS_COMMA_REC_P_BC},eval(8+PUSHS_COMMA_REC_P_BC+__PRICE_16BIT)){}dnl
+__{}dnl # HL variant
+__{}__LD_REG16_16BIT({HL},$3,{HL},$2,ifelse(PUSHS_COMMA_BC,{},{},{BC}),ifelse(PUSHS_COMMA_BC,{},{},{PUSHS_COMMA_BC})){}dnl
+__{}define({PUSHS_COMMA_REC_P_HL},__PRICE_16BIT){}dnl
+__{}__LD_REG16_16BIT({HL},$2,{HL},PUSHS_COMMA_HL,ifelse(PUSHS_COMMA_BC,{},{},{BC}),ifelse(PUSHS_COMMA_BC,{},{},{PUSHS_COMMA_BC})){}dnl
+__{}define({PUSHS_COMMA_REC_P_HL},eval(PUSHS_COMMA_REC_P_HL+__PRICE_16BIT)){}dnl
+__{}dnl
+__{}ifelse(eval(PUSHS_COMMA_REC_P_HL<PUSHS_COMMA_REC_P_BC),{1},{dnl
+__{}__{}define({PUSHS_COMMA_REC_T},eval(16+__CLOCKS_16BIT+PUSHS_COMMA_REC_T)){}dnl
+__{}__{}define({PUSHS_COMMA_REC_B},eval(3+__BYTES_16BIT+PUSHS_COMMA_REC_B)){}dnl
+__{}__{}define({__COMMA},{,}){}define({PUSHS_COMMA_HL},$2){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      {$2} ,},
+__{}{dnl
+__{}__{}__LD_REG16_16BIT({BC},$2,{HL},PUSHS_COMMA_HL,ifelse(PUSHS_COMMA_BC,{},{},{BC}),ifelse(PUSHS_COMMA_BC,{},{},{PUSHS_COMMA_BC})){}dnl
+__{}__{}define({PUSHS_COMMA_REC_T},eval(20+__CLOCKS_16BIT+PUSHS_COMMA_REC_T)){}dnl
+__{}__{}define({PUSHS_COMMA_REC_B},eval(4+__BYTES_16BIT+PUSHS_COMMA_REC_B)){}dnl
+__{}__{}define({__COMMA},{,}){}define({PUSHS_COMMA_BC},$2){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}BC); 4:20      {$2} ,}){}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
 __{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
 dnl
@@ -603,7 +615,7 @@ __{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_L
 __{}__{}                        ;format({%-11s},[18:eval(36+45*$#+11*__HEX_H(256+$#))])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
 __{}{define({PUSHS_COMMA_REC_T},47){}define({PUSHS_COMMA_REC_B},8)
 __{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   default version
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 ,
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 ,{}define({PUSHS_COMMA_HL},$1){}define({PUSHS_COMMA_BC},{})
 __{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
 __{}__{}PUSHS_COMMA_REC($@)
