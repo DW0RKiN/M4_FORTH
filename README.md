@@ -1115,6 +1115,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>  create x `10` allot |<sub>    CREATE(x) PUSH_ALLOT(`10`)    |<sub>        BUFFER(x,`10`)       |<sub>          ( -- )          |<sub> x: DS `10`               |
 |<sub>           ,          |<sub>              COMMA               |<sub>                             |<sub>        ( x -- )          |<sub> DW: x                    |
 |<sub>        `55` ,        |<sub>                                  |<sub>       PUSH_COMMA(`55`)      |<sub>          ( -- )          |<sub> DW: `55`                 |
+|<sub>`1` , `2` , `3` ,`4` ,|<sub>                                  |<sub> PUSHS_COMMA(`1`,`2`,`3`,`4`)|<sub>          ( -- )          |<sub> DW: `1`,`2`,`3`,`4`      |
 |<sub>      'a' cvar X      |<sub>         CVARIABLE(X,'a')         |<sub>                             |<sub>          ( -- )          |<sub> X: db 'a'                |
 |<sub>       `3` var X      |<sub>         VARIABLE(X,`3`)          |<sub>                             |<sub>          ( -- )          |<sub> X: dw `3`                |
 |<sub> variable X `3` X !   |<sub>  VARIABLE(X) PUSH2_STORE(`3`,X)  |<sub>       VARIABLE(X,`3`)       |<sub>          ( -- )          |<sub> X: dw `3`                |
