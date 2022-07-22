@@ -361,7 +361,7 @@ __{}  .error {$0}(): Missing value parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {
-__{}    ld   BC, format({%-11s},$1); 3:10      $1 ,
+__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 ,
 __{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
@@ -377,30 +377,31 @@ __{}    ld   HL, format({%-11s},$2); 3:10      $2 ,
 __{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,},
 {dnl
 __{}undefine({__COMMA}){}dnl
-__{}define({_TMP_INFO},$2{ }__COMMA){}dnl
+__{}define({_TMP_INFO},{{{$2}}}{ }__COMMA){}dnl
 __{}__LD_REG16_16BIT({HL},$2,{HL},$1){}dnl
 __{}define({PUSHS_COMMA_REC_T},eval(16+__CLOCKS_16BIT+PUSHS_COMMA_REC_T)){}dnl
 __{}define({PUSHS_COMMA_REC_B},eval(3+__BYTES_16BIT+PUSHS_COMMA_REC_B)){}dnl
 __{}define({__COMMA},{,}){}dnl
 __{}__CODE_16BIT
-__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,}){}dnl
+__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      {$2} ,}){}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
 __{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
 dnl
 dnl
 dnl
 define({PUSHS_COMMA_ANALYSIS},{ifelse(dnl
-__{}eval($1),{},{},
-__{}eval($2),{},{},
+__{}eval($1),{},{define({PUSHS_COMMA_ANALYSIS_LAST},0xEAA0A)},
+__{}eval($2),{},{define({PUSHS_COMMA_ANALYSIS_LAST},0xEAA0A)},
 __{}{dnl
-__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1){_}__HEX_L($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD1},eval(1+PUSHS_COMMA_ANALYSIS_ADD1))}){}dnl
-__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1){_}__HEX_L($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB1},eval(1+PUSHS_COMMA_ANALYSIS_SUB1))}){}dnl
-__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1+256){_}__HEX_L($1),{define({PUSHS_COMMA_ANALYSIS_ADD256},eval(1+PUSHS_COMMA_ANALYSIS_ADD256))}){}dnl
-__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1-256){_}__HEX_L($1),{define({PUSHS_COMMA_ANALYSIS_SUB256},eval(1+PUSHS_COMMA_ANALYSIS_SUB256))}){}dnl
-__{}__{}ifelse(__HEX_HL($2),__HEX_HL($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD16},eval(1+PUSHS_COMMA_ANALYSIS_ADD16))}){}dnl
-__{}__{}ifelse(__HEX_HL($2),__HEX_HL($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB16},eval(1+PUSHS_COMMA_ANALYSIS_SUB16))}){}dnl
-__{}__{}ifelse(__HEX_HL($2),__HEX_HL($1),{define({PUSHS_COMMA_ANALYSIS_SAME},eval(1+PUSHS_COMMA_ANALYSIS_SAME))})}){}dnl
-__{}define({PUSHS_COMMA_ANALYSIS_LAST},$2){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1){_}__HEX_L($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD1},eval(1+PUSHS_COMMA_ANALYSIS_ADD1))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1){_}__HEX_L($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB1},eval(1+PUSHS_COMMA_ANALYSIS_SUB1))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1+256){_}__HEX_L($1),{define({PUSHS_COMMA_ANALYSIS_ADD256},eval(1+PUSHS_COMMA_ANALYSIS_ADD256))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1-256){_}__HEX_L($1),{define({PUSHS_COMMA_ANALYSIS_SUB256},eval(1+PUSHS_COMMA_ANALYSIS_SUB256))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD16},eval(1+PUSHS_COMMA_ANALYSIS_ADD16))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB16},eval(1+PUSHS_COMMA_ANALYSIS_SUB16))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL($1),{define({PUSHS_COMMA_ANALYSIS_SAME},eval(1+PUSHS_COMMA_ANALYSIS_SAME))}){}dnl
+__{}__{}define({PUSHS_COMMA_ANALYSIS_LAST},$2){}dnl
+__{}}){}dnl
 __{}dnl # PUSHS_COMMA_ANALYSIS_ADD1
 __{}dnl # PUSHS_COMMA_ANALYSIS_ADD256
 __{}dnl # PUSHS_COMMA_ANALYSIS_ADD16
@@ -422,7 +423,19 @@ dnl # PUSH_COMMA(1,2,3,4,5,6,7,8,9,10)      --> reserve 10 words
 define({PUSHS_COMMA},{ifelse($1,{},{
 __{}  .error {$0}(): Missing value parameter!},
 eval($#),{1},{PUSH_COMMA($1)},
-eval($#),{2},{PUSH_COMMA($1)PUSH_COMMA($2)},
+eval($#),{2},{
+__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 ,
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
+__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
+__{}undefine({__COMMA}){}dnl
+__{}define({_TMP_INFO},$2{ }__COMMA){}dnl
+__{}__LD_REG16_16BIT({BC},$2,{BC},$1){}dnl
+__{}define({__COMMA},{,}){}dnl
+__{}__CODE_16BIT
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}+LAST_HERE_ADD){,}BC); 4:20      $2 ,{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}    dw $1
+__{}__{}    dw $2})},
 {dnl
 __{}define({PUSHS_COMMA_ANALYSIS_ADD1},1){}dnl
 __{}define({PUSHS_COMMA_ANALYSIS_ADD256},1){}dnl
