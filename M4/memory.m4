@@ -370,54 +370,51 @@ dnl
 dnl
 dnl
 define({PUSHS_COMMA_REC},{ifelse(eval($1),{},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,},
+__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,
+__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,},
 eval($2),{},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,},
+__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,
+__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,},
 {dnl
-__{}define({PUSHS_COMMA_REC_TMP},__HEX_H($2){}__HEX_L($2)){}dnl
-__{}ifelse(dnl
-__{}eval(ifelse(eval($1),{},{1},{0})+ifelse(eval($2),{},{1},{0})>0),{1},{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,},
-__{}eval($2),eval($1),,
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    inc  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+1){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    inc  HL             ; 1:6       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    dec  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-1){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(22+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    dec  HL             ; 1:6       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    inc  H              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1),{define({PUSHS_COMMA_REC_T},eval(20+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    dec  H              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H(2*$1){}__HEX_L(2*$1),{define({PUSHS_COMMA_REC_T},eval(27+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(4+PUSHS_COMMA_REC_B))
-__{}__{}    add  HL, HL         ; 1:11      $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1+2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}__{}    inc  L              ; 1:4       $2 ,
-__{}__{}    inc  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1){}__HEX_L($1-2),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}__{}    dec  L              ; 1:4       $2 ,
-__{}__{}    dec  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}__{}    inc  H              ; 1:4       $2 ,
-__{}__{}    inc  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1+256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}__{}    inc  H              ; 1:4       $2 ,
-__{}__{}    dec  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1+1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}__{}    dec  H              ; 1:4       $2 ,
-__{}__{}    inc  L              ; 1:4       $2 ,},
-__{}PUSHS_COMMA_REC_TMP,__HEX_H($1-256){}__HEX_L($1-1),{define({PUSHS_COMMA_REC_T},eval(24+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(5+PUSHS_COMMA_REC_B))
-__{}__{}    dec  H              ; 1:4       $2 ,
-__{}__{}    dec  L              ; 1:4       $2 ,},
-__{}{define({PUSHS_COMMA_REC_T},eval(26+PUSHS_COMMA_REC_T)){}define({PUSHS_COMMA_REC_B},eval(6+PUSHS_COMMA_REC_B))
-__{}__{}    ld   HL, format({%-11s},$2); 3:10      $2 ,})})
-__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,{}dnl
+__{}undefine({__COMMA}){}dnl
+__{}define({_TMP_INFO},$2{ }__COMMA){}dnl
+__{}__LD_REG16_16BIT({HL},$2,{HL},$1){}dnl
+__{}define({PUSHS_COMMA_REC_T},eval(16+__CLOCKS_16BIT+PUSHS_COMMA_REC_T)){}dnl
+__{}define({PUSHS_COMMA_REC_B},eval(3+__BYTES_16BIT+PUSHS_COMMA_REC_B)){}dnl
+__{}define({__COMMA},{,}){}dnl
+__{}__CODE_16BIT
+__{}    ld  format({%-16s},(LAST_HERE_NAME+LAST_HERE_ADD){,}HL); 3:16      $2 ,}){}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw $2}){}dnl
 __{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
+dnl
+dnl
+dnl
+define({PUSHS_COMMA_ANALYSIS},{ifelse(dnl
+__{}eval($1),{},{},
+__{}eval($2),{},{},
+__{}{dnl
+__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1){_}__HEX_L($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD1},eval(1+PUSHS_COMMA_ANALYSIS_ADD1))}){}dnl
+__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1){_}__HEX_L($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB1},eval(1+PUSHS_COMMA_ANALYSIS_SUB1))}){}dnl
+__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1+256){_}__HEX_L($1),{define({PUSHS_COMMA_ANALYSIS_ADD256},eval(1+PUSHS_COMMA_ANALYSIS_ADD256))}){}dnl
+__{}__{}ifelse(__HEX_H($2){_}__HEX_L($2),__HEX_H($1-256){_}__HEX_L($1),{define({PUSHS_COMMA_ANALYSIS_SUB256},eval(1+PUSHS_COMMA_ANALYSIS_SUB256))}){}dnl
+__{}__{}ifelse(__HEX_HL($2),__HEX_HL($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD16},eval(1+PUSHS_COMMA_ANALYSIS_ADD16))}){}dnl
+__{}__{}ifelse(__HEX_HL($2),__HEX_HL($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB16},eval(1+PUSHS_COMMA_ANALYSIS_SUB16))}){}dnl
+__{}__{}ifelse(__HEX_HL($2),__HEX_HL($1),{define({PUSHS_COMMA_ANALYSIS_SAME},eval(1+PUSHS_COMMA_ANALYSIS_SAME))})}){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_LAST},$2){}dnl
+__{}dnl # PUSHS_COMMA_ANALYSIS_ADD1
+__{}dnl # PUSHS_COMMA_ANALYSIS_ADD256
+__{}dnl # PUSHS_COMMA_ANALYSIS_ADD16
+__{}dnl # PUSHS_COMMA_ANALYSIS_SUB1
+__{}dnl # PUSHS_COMMA_ANALYSIS_SUB256
+__{}dnl # PUSHS_COMMA_ANALYSIS_SUB16
+__{}dnl # PUSHS_COMMA_ANALYSIS_SAME
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}    dw $1}){}dnl
+__{}ifelse(eval($#>2),{1},{PUSHS_COMMA_ANALYSIS(shift($@))},
+__{}{dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}    dw $2})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -426,16 +423,179 @@ define({PUSHS_COMMA},{ifelse($1,{},{
 __{}  .error {$0}(): Missing value parameter!},
 eval($#),{1},{PUSH_COMMA($1)},
 eval($#),{2},{PUSH_COMMA($1)PUSH_COMMA($2)},
-{define({PUSHS_COMMA_REC_T},47){}define({PUSHS_COMMA_REC_B},8)
-__{}    push HL             ; 1:11      $@,
-__{}    ld   HL, format({%-11s},$1); 3:10      $1 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
-__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw $1}){}dnl
-__{}PUSHS_COMMA_REC($@)
-__{}    pop  HL             ; 1:10      $@,
-__{}                        ;format({%-11s},[PUSHS_COMMA_REC_B:PUSHS_COMMA_REC_T])$@,})}){}dnl
+{dnl
+__{}define({PUSHS_COMMA_ANALYSIS_ADD1},1){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_ADD256},1){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_ADD16},1){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_SUB1},1){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_SUB256},1){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_SUB16},1){}dnl
+__{}define({PUSHS_COMMA_ANALYSIS_SAME},1){}dnl
+__{}PUSHS_COMMA_ANALYSIS($@){}dnl
+__{}ifelse(dnl
+__{}eval($#>3 && PUSHS_COMMA_ANALYSIS_ADD1==$#),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +1
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#)+__HEX_L($1))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),__HEX_H($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc   C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-6            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[16:eval(36+$#*46)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>3 && PUSHS_COMMA_ANALYSIS_ADD256==$#),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +256
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#)+__HEX_H($1))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),__HEX_L($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc   C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-6            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[16:eval(36+$#*46)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>4 && PUSHS_COMMA_ANALYSIS_ADD16==$# && $#<256),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +1 16-bit
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld    A, __HEX_L(PUSHS_COMMA_ANALYSIS_LAST+1)       ; 2:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),B          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  BC             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    cp    C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    jr   nz, $-6        ; 2:7/12    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[18:eval(43+48*$#)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>5 && PUSHS_COMMA_ANALYSIS_ADD16==$#),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +1 16-bit
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld    A, __HEX_L(PUSHS_COMMA_ANALYSIS_LAST+1)       ; 2:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),B          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  BC             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    cp    C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    jr   nz, $-6        ; 2:7/12    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld    A, __HEX_H(PUSHS_COMMA_ANALYSIS_LAST+1)       ; 2:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    cp    B             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    jr   nz, $-13       ; 2:7/12    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[23:cca eval(36+48*$#+(1+LAST_HERE_ADD/256-$1/256)*23)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>3 && PUSHS_COMMA_ANALYSIS_SUB1==$# && PUSHS_COMMA_ANALYSIS_LAST==1),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   -1 to 1
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(__HEX_L($1))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),B          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-4            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[14:eval(36+$#*39)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>3 && PUSHS_COMMA_ANALYSIS_SUB1==$#),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   -1
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#)+__HEX_L($1))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),__HEX_H($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    dec   C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-6            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[16:eval(36+$#*46)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>3 && PUSHS_COMMA_ANALYSIS_SUB256==$# && PUSHS_COMMA_ANALYSIS_LAST==256),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   -256 to 256
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),B          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-4            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[14:eval(36+$#*39)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>3 && PUSHS_COMMA_ANALYSIS_SUB256==$#),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   -256
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#)+__HEX_H($1))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),__HEX_L($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    dec   C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-6            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[16:eval(36+$#*46)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>4 && PUSHS_COMMA_ANALYSIS_SUB16==$# && $#<256),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   -1 16-bit
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld    A, __HEX_L(PUSHS_COMMA_ANALYSIS_LAST-1)       ; 2:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),B          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    dec  BC             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    cp    C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    jr   nz, $-6        ; 2:7/12    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[18:eval(43+48*$#)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}eval($#>4 && PUSHS_COMMA_ANALYSIS_SAME==$# && PUSHS_COMMA_ANALYSIS_LAST<257),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#)+__HEX_L($1))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,{}ifelse(__HEX_H($1),__HEX_L($1),{
+__{}__{}    ld  (HL),C          ; 1:7       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-4            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[14:eval(36+39*$#)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},{
+__{}__{}    ld  (HL),__HEX_H($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz $-5            ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[15:eval(36+42*$#)])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,})},
+__{}eval($#>256 && PUSHS_COMMA_ANALYSIS_SAME==$#),{1},{
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L($#)+1+__HEX_H($#))     ; 3:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),__HEX_L($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    ld  (HL),__HEX_H($1)       ; 2:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    inc  HL             ; 1:6       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    djnz nz, $-6        ; 2:8/13    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    dec   C             ; 1:4       $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    jr   nz, $-9        ; 2:7/12    $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[18:eval(36+45*$#+11*__HEX_H(256+$#))])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,},
+__{}{define({PUSHS_COMMA_REC_T},47){}define({PUSHS_COMMA_REC_B},8)
+__{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   default version
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 ,
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      $1 ,{}dnl
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
+__{}__{}PUSHS_COMMA_REC($@)
+__{}__{}    pop  HL             ; 1:10      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,
+__{}__{}                        ;format({%-11s},[PUSHS_COMMA_REC_B:PUSHS_COMMA_REC_T])$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,})})}){}dnl
 dnl
 dnl
 dnl

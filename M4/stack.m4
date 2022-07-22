@@ -617,12 +617,10 @@ __{}__LD_REG16_16BIT({DE},$1,{HL},$2){}dnl
 __{}define({PUSH2_C},__CLOCKS_16BIT){}dnl
 __{}__LD_REG16_16BIT({HL},$2,{DE},$1){}dnl
 __{}ifelse(eval(__CLOCKS_16BIT<=PUSH2_C),{1},{
-__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2)
-__{}__CODE_16BIT},
+__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2){}__CODE_16BIT},
 __{}{dnl
 __{}__LD_REG16_16BIT({DE},$1,{HL},$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2)
-__{}__CODE_16BIT})})})}){}dnl
+__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2){}__CODE_16BIT})})})}){}dnl
 dnl
 dnl
 dnl
@@ -646,179 +644,54 @@ eval((__IS_MEM_REF($1)+__IS_MEM_REF($2)+__IS_MEM_REF($3))>0),{1},{
     ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
     push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
     ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)},
-__{}{
+{
 __{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
 __{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}dnl
 __{}define({_TMP_INFO},$1{ }$2{ }$3{  push3(}$1{,}$2{,}$3{)}){}dnl
-__{}ifelse(dnl
-__{}__HEX_HL($3),__HEX_HL($1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT({DE},$2,{HL},$1){}dnl
-__{}__{}__CODE_16BIT},
-__{}__HEX_HL($2),__HEX_HL($1),{
-__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT({HL},$3,{DE},$1){}dnl
-__{}__{}__CODE_16BIT},
-__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1){}__HEX_L($1+1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    inc   L             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1){}__HEX_L($1+1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    inc   E             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1){}__HEX_L($1-1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    dec   L             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1){}__HEX_L($1-1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    dec   E             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1+1){}__HEX_L($1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    inc   H             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1+1){}__HEX_L($1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    inc   D             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($3){}__HEX_L($3),__HEX_H($1-1){}__HEX_L($1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    dec   H             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($2){}__HEX_L($2),__HEX_H($1-1){}__HEX_L($1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    dec   D             ; 1:4       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_HL($3),__HEX_HL($1+1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    inc  HL             ; 1:6       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_HL($2),__HEX_HL($1+1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    inc  DE             ; 1:6       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_HL($3),__HEX_HL($1-1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    dec  HL             ; 1:6       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_HL($2),__HEX_HL($1-1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    dec  DE             ; 1:6       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($3),__HEX_H($1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    ld    L, __HEX_L($3)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_H($2),__HEX_H($1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    ld    E, __HEX_L($2)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_L($3),__HEX_L($1),{
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    ld    H, __HEX_H($3)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}__HEX_L($2),__HEX_L($1),{
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__CODE_BEFORE_16BIT
-__{}__{}    ld    D, __HEX_H($2)       ; 2:7       $1 $2 $3  push3($1,$2,$3)
-__{}__{}__CODE_AFTER_16BIT},
-__{}{dnl
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
-__{}__{}define({PUSH3_X},1){}dnl
-__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}ifelse(eval(PUSH3_C>__CLOCKS_16BIT),{1},{dnl
-__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}define({PUSH3_P1},__PRICE_16BIT){}dnl
+__{}__LD_REG16_16BIT({HL},$3,{HL},$1){}dnl
+__{}define({PUSH3_P1},eval(PUSH3_P1+__PRICE_16BIT)){}dnl
+__{}define({PUSH3_P},PUSH3_P1){}dnl
+__{}define({PUSH3_X},1){}dnl
+__{}dnl
+__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}define({PUSH3_P2},__PRICE_16BIT){}dnl
+__{}__LD_REG16_16BIT({DE},$2,{DE},$1){}dnl
+__{}define({PUSH3_P2},eval(PUSH3_P2+__PRICE_16BIT)){}dnl
+__{}ifelse(eval(PUSH3_P>PUSH3_P2),{1},{dnl
+__{}__{}define({PUSH3_P},PUSH3_P2){}dnl
 __{}__{}define({PUSH3_X},2)}){}dnl
-__{}__{}define({PUSH3_C1},__CLOCKS_16BIT){}dnl
-__{}__{}__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3){}dnl
-__{}__{}ifelse(eval(PUSH3_C>__CLOCKS_16BIT),{1},{dnl
-__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}dnl
+__{}__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3){}dnl
+__{}__{}define({PUSH3_P3},eval(22+__PRICE_16BIT)){}dnl
+__{}ifelse(eval(PUSH3_P>22+__PRICE_16BIT),{1},{dnl
+__{}__{}define({PUSH3_P},PUSH3_P3){}dnl
 __{}__{}define({PUSH3_X},3)}){}dnl
-__{}__{}__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2){}dnl
-__{}__{}ifelse(eval(PUSH3_C>__CLOCKS_16BIT),{1},{dnl
-__{}__{}define({PUSH3_C},__CLOCKS_16BIT){}dnl
+__{}dnl
+__{}__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2){}dnl
+__{}__{}define({PUSH3_P4},eval(22+__PRICE_16BIT)){}dnl
+__{}ifelse(eval(PUSH3_P>PUSH3_P4),{1},{dnl
+__{}__{}define({PUSH3_P},PUSH3_P4){}dnl
 __{}__{}define({PUSH3_X},4)}){}dnl
-__{}__{}ifelse(PUSH3_X,1,{
-__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}__{}__{}__CODE_BEFORE_16BIT
-__{}__{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}__CODE_AFTER_16BIT},
-__{}__{}PUSH3_X,2,{
-__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}__{}__{}__CODE_BEFORE_16BIT
-__{}__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}__CODE_AFTER_16BIT},
-__{}__{}PUSH3_X,3,{
-__{}__{}__{}__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3){}dnl
-__{}__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}__CODE_16BIT},
-__{}__{}{
-__{}__{}__{}__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2){}dnl
-__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}__{}__CODE_16BIT}){}dnl
-})})})})dnl
+__{}dnl # PUSH3_P1 PUSH3_P2 PUSH3_P3 PUSH3_P4 --> PUSH3_X
+__{}dnl ---- case PUSH3_X ----
+__{}ifelse(dnl
+__{}PUSH3_X,1,{__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16_16BIT({HL},$3,{HL},$1)
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}PUSH3_X,2,{__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16_16BIT({DE},$2,{DE},$1)
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3){}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}PUSH3_X,3,{__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3)
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT},
+__{}{__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2)
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
+__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT}){}dnl
+})})})dnl
 dnl
 dnl
 dnl
