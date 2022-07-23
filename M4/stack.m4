@@ -599,28 +599,22 @@ define({PUSH2},{ifelse(eval($#<2),{1},{
 __{}  .error {$0}($@): Missing parameter!},
 eval($#!=2),{1},{
 __{}  .error {$0}($@): The wrong number of parameters in macro!},
-eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{
-    push DE             ; 1:11      push2($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
-    push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
-{ifelse(eval($1==$2),{},{
-    push DE             ; 1:11      push2($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2($1,$2)
-    push HL             ; 1:11      push2($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      push2($1,$2)},
-__{}{
+{
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2){}dnl
 __{}define({_TMP_INFO},{push2($1,$2)}){}dnl
 __{}__LD_REG16_16BIT({DE},$1,{HL},$2){}dnl
-__{}define({PUSH2_C},__CLOCKS_16BIT){}dnl
+__{}define({PUSH2_HL},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16_16BIT({HL},$2){}dnl
+__{}define({PUSH2_HL},eval(PUSH2_HL+__CLOCKS_16BIT)){}dnl
 __{}__LD_REG16_16BIT({HL},$2,{DE},$1){}dnl
-__{}ifelse(eval(__CLOCKS_16BIT<=PUSH2_C),{1},{
-__{}    ld   DE, format({%-11s},$1); 3:10      push2($1,$2){}__CODE_16BIT},
+__{}define({PUSH2_DE},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16_16BIT({DE},$1){}dnl
+__{}define({PUSH2_DE},eval(PUSH2_DE+__CLOCKS_16BIT)){}dnl
+__{}ifelse(eval(PUSH2_DE<=PUSH2_HL),{1},{__CODE_16BIT{}__{}__LD_REG16_16BIT({HL},$2,{DE},$1){}__CODE_16BIT},
 __{}{dnl
-__{}__LD_REG16_16BIT({DE},$1,{HL},$2)
-__{}    ld   HL, format({%-11s},$2); 3:10      push2($1,$2){}__CODE_16BIT})})})}){}dnl
+__{}__LD_REG16_16BIT({HL},$2){}__CODE_16BIT{}__LD_REG16_16BIT({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
+})}){}dnl
 dnl
 dnl
 dnl
