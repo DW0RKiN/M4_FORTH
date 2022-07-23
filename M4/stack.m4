@@ -602,18 +602,21 @@ __{}  .error {$0}($@): The wrong number of parameters in macro!},
 {
 __{}    push DE             ; 1:11      push2($1,$2)
 __{}    push HL             ; 1:11      push2($1,$2){}dnl
-__{}define({_TMP_INFO},{push2($1,$2)}){}dnl
-__{}__LD_REG16_16BIT({DE},$1,{HL},$2){}dnl
+__{}define({_TMP_INFO},{push2($1,$2)}){}dnl # HL first check
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
 __{}define({PUSH2_HL},__CLOCKS_16BIT){}dnl
-__{}__LD_REG16_16BIT({HL},$2){}dnl
+__{}__LD_REG16({HL},$2){}dnl
 __{}define({PUSH2_HL},eval(PUSH2_HL+__CLOCKS_16BIT)){}dnl
-__{}__LD_REG16_16BIT({HL},$2,{DE},$1){}dnl
+__{}dnl
+__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
 __{}define({PUSH2_DE},__CLOCKS_16BIT){}dnl
-__{}__LD_REG16_16BIT({DE},$1){}dnl
+__{}__LD_REG16({DE},$1){}dnl
 __{}define({PUSH2_DE},eval(PUSH2_DE+__CLOCKS_16BIT)){}dnl
-__{}ifelse(eval(PUSH2_DE<=PUSH2_HL),{1},{__CODE_16BIT{}__{}__LD_REG16_16BIT({HL},$2,{DE},$1){}__CODE_16BIT},
-__{}{dnl
-__{}__LD_REG16_16BIT({HL},$2){}__CODE_16BIT{}__LD_REG16_16BIT({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
+__{}dnl
+__{}ifelse(eval(PUSH2_DE<=PUSH2_HL),{1},{dnl # DE first
+__{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
+__{}{dnl # HL first
+__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
 })}){}dnl
 dnl
 dnl
@@ -642,28 +645,28 @@ eval((__IS_MEM_REF($1)+__IS_MEM_REF($2)+__IS_MEM_REF($3))>0),{1},{
 __{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
 __{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}dnl
 __{}define({_TMP_INFO},$1{ }$2{ }$3{  push3(}$1{,}$2{,}$3{)}){}dnl
-__{}__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
 __{}define({PUSH3_P1},__PRICE_16BIT){}dnl
-__{}__LD_REG16_16BIT({HL},$3,{HL},$1){}dnl
+__{}__LD_REG16({HL},$3,{HL},$1){}dnl
 __{}define({PUSH3_P1},eval(PUSH3_P1+__PRICE_16BIT)){}dnl
 __{}define({PUSH3_P},PUSH3_P1){}dnl
 __{}define({PUSH3_X},1){}dnl
 __{}dnl
-__{}__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
 __{}define({PUSH3_P2},__PRICE_16BIT){}dnl
-__{}__LD_REG16_16BIT({DE},$2,{DE},$1){}dnl
+__{}__LD_REG16({DE},$2,{DE},$1){}dnl
 __{}define({PUSH3_P2},eval(PUSH3_P2+__PRICE_16BIT)){}dnl
 __{}ifelse(eval(PUSH3_P>PUSH3_P2),{1},{dnl
 __{}__{}define({PUSH3_P},PUSH3_P2){}dnl
 __{}__{}define({PUSH3_X},2)}){}dnl
 __{}dnl
-__{}__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3){}dnl
+__{}__LD_REG16({DE},$2,{DE},$1,{HL},$3){}dnl
 __{}__{}define({PUSH3_P3},eval(22+__PRICE_16BIT)){}dnl
 __{}ifelse(eval(PUSH3_P>22+__PRICE_16BIT),{1},{dnl
 __{}__{}define({PUSH3_P},PUSH3_P3){}dnl
 __{}__{}define({PUSH3_X},3)}){}dnl
 __{}dnl
-__{}__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2){}dnl
+__{}__LD_REG16({HL},$3,{HL},$1,{DE},$2){}dnl
 __{}__{}define({PUSH3_P4},eval(22+__PRICE_16BIT)){}dnl
 __{}ifelse(eval(PUSH3_P>PUSH3_P4),{1},{dnl
 __{}__{}define({PUSH3_P},PUSH3_P4){}dnl
@@ -671,17 +674,17 @@ __{}__{}define({PUSH3_X},4)}){}dnl
 __{}dnl # PUSH3_P1 PUSH3_P2 PUSH3_P3 PUSH3_P4 --> PUSH3_X
 __{}dnl ---- case PUSH3_X ----
 __{}ifelse(dnl
-__{}PUSH3_X,1,{__LD_REG16_16BIT_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16_16BIT({HL},$3,{HL},$1)
+__{}PUSH3_X,1,{__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16({HL},$3,{HL},$1)
 __{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
-__{}PUSH3_X,2,{__LD_REG16_16BIT_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16_16BIT({DE},$2,{DE},$1)
+__{}PUSH3_X,2,{__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16({DE},$2,{DE},$1)
 __{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3){}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
-__{}PUSH3_X,3,{__LD_REG16_16BIT({DE},$2,{DE},$1,{HL},$3)
+__{}PUSH3_X,3,{__LD_REG16({DE},$2,{DE},$1,{HL},$3)
 __{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT},
-__{}{__LD_REG16_16BIT({HL},$3,{HL},$1,{DE},$2)
+__{}{__LD_REG16({HL},$3,{HL},$1,{DE},$2)
 __{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT}){}dnl
