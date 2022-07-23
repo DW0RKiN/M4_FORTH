@@ -58,7 +58,30 @@ __{};# ^^^ ---
 })dnl
 m4wrap({last_action})dnl
 dnl\n${@}"
-   printf "$_first" | m4 | awk '
+   printf "$_first" | m4 --debug= | awk '
+BEGIN {
+    sum_bytes=0; 
+    sum_clock=0} 
+{
+    match($0,/^[^;]+;([ 0-9]+):([0-9]+)/,arr);
+    sum_bytes+= arr[1]; 
+    sum_clock+=arr[2];
+    print $0
+} 
+END {
+    printf "                       ;[%2i:%i]\n",sum_bytes,sum_clock
+}'
+elif test "$1" = "--silent" ; then
+
+   shift
+   file=`find ./ -name "FIRST.M4" -exec echo {} \;`
+   test "$file" = "" && file=`find ../ -name "FIRST.M4" -exec echo {} \;`
+   if test "$file" = "" ; then
+      printf "$0 error: FIRST.M4 not found!\\n"
+      exit 1
+   fi
+
+   printf "include(\`$file')${@}" | m4 --silent | awk '
 BEGIN {
     sum_bytes=0; 
     sum_clock=0} 
