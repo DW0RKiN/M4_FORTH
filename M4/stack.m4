@@ -627,20 +627,6 @@ define({PUSH3},{ifelse(eval($#<2),{1},{
 __{}  .error {$0}($@): Missing parameter!},
 eval($#!=3),{1},{
 __{}  .error {$0}($@): The wrong number of parameters in macro!},
-eval((__IS_MEM_REF($1)+__IS_MEM_REF($2)+__IS_MEM_REF($3))>0),{1},{
-    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 $3  push3($1,$2,$3)
-    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-    ld   DE, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{4:20},{3:10})      $1 $2 $3  push3($1,$2,$3)
-    ld   HL, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:16},{3:10})      $1 $2 $3  push3($1,$2,$3)},
-{ifelse(eval($1 && $2 && $3),{},{
-    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3)
-    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3)},
 {
 __{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
 __{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}dnl
@@ -688,7 +674,7 @@ __{}{__LD_REG16({HL},$3,{HL},$1,{DE},$2)
 __{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
 __{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT}){}dnl
-})})})dnl
+})})dnl
 dnl
 dnl
 dnl
