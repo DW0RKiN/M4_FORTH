@@ -54,7 +54,7 @@ __{}  .error {$0}(): The second parameter with the initial value is missing!},
 __{}define({__VALUE_}$2)dnl
 __{}pushdef({LAST_HERE_NAME},$2)dnl
 __{}pushdef({LAST_HERE_ADD},2)dnl
-__{}ifelse(eval($1),{},{
+__{}ifelse(__IS_NUM($1),{0},{
 __{}  .warning {$0}($@): M4 does not know $1 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$2: dw $1})
@@ -113,7 +113,7 @@ __{}__{}    ld   BC,format({%-12s},{$1}); 4:20      $1 dvalue {$2}   lo
 __{}__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 dvalue {$2}   lo
 __{}__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      $1 dvalue {$2}   hi
 __{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1 dvalue {$2}   hi},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}__{}  .warning {$0}($@): M4 does not know $1 parameter value!},
 __{}{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
@@ -164,7 +164,7 @@ __IS_MEM_REF($1),{1},{
 __{}    ld   BC, format({%-11s},{$1}); 4:20      $1 to {$2}
 __{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}},
 {dnl
-__{}ifelse(eval($1),{},{
+__{}ifelse(__IS_NUM($1),{0},{
 __{}  .warning {$0}($@): M4 does not know $1 parameter value!})
 __{}    ld   BC, format({%-11s},{$1}); 3:10      $1 to {$2}
 __{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}{}dnl
@@ -187,7 +187,7 @@ __{}    ld   BC, format({%-11s},{$1}); 4:20      $1. to {$2}   lo
 __{}    ld  format({%-16s},{($2), BC}); 4:20      $1. to {$2}   lo
 __{}    ld   BC, format({%-11s},{(2+$1)}); 4:20      $1. to {$2}   hi
 __{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1. to {$2}   hi},
-eval($1),{},{
+__IS_NUM($1),{0},{
 __{}  .error {$0}($@): M4 does not know $1 parameter value!},
 {
 __{}    ld   BC, __HEX_HL($1)     ; 3:10      $1. to {$2}   lo
@@ -218,7 +218,7 @@ __{}    db 0x00})},
 {dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},1)dnl
-__{}ifelse(eval($2),{},{
+__{}ifelse(__IS_NUM($2),{0},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1:
@@ -246,7 +246,7 @@ __{}    dw 0x0000})},
 {dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},2)dnl
-__{}ifelse(eval($2),{},{
+__{}ifelse(__IS_NUM($2),{0},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1:
@@ -272,7 +272,7 @@ __{}__{}$1:
 __{}__{}    dw 0x0000
 __{}__{}    dw 0x0000})},
 {dnl
-__{}ifelse(eval(ifelse(eval($2),{},{1},{0})),{1},{
+__{}ifelse(eval(ifelse(__IS_NUM($2),{0},{1},{0})),{1},{
 __{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
 __{}{dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
@@ -317,7 +317,7 @@ define({PUSH_ALLOT},{ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-eval($1),{},{
+__IS_NUM($1),{0},{
 __{}  .error {$0}($@): Bad parameter! M4 does not know the numeric value of the parameter.},
 {dnl
 __{}ifelse(eval((LAST_HERE_ADD+$1)<0),{1},{dnl
@@ -401,8 +401,8 @@ dnl
 dnl
 dnl
 define({PUSHS_COMMA_ANALYSIS},{ifelse(dnl
-__{}eval($1),{},{define({PUSHS_COMMA_ANALYSIS_LAST},0xEAA0A)},
-__{}eval($2),{},{define({PUSHS_COMMA_ANALYSIS_LAST},0xEAA0A)},
+__{}__IS_NUM($1),{0},{define({PUSHS_COMMA_ANALYSIS_LAST},0xEAA0A)},
+__{}__IS_NUM($2),{0},{define({PUSHS_COMMA_ANALYSIS_LAST},0xEAA0A)},
 __{}{dnl
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1){_}__HEX_L($1+1),{define({PUSHS_COMMA_ANALYSIS_ADD1},eval(1+PUSHS_COMMA_ANALYSIS_ADD1))}){}dnl
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1){_}__HEX_L($1-1),{define({PUSHS_COMMA_ANALYSIS_SUB1},eval(1+PUSHS_COMMA_ANALYSIS_SUB1))}){}dnl
@@ -684,7 +684,7 @@ __{}  .error {$0}($@): The variable name is identical to the instruction name! T
 $#,{1},{
 __{}  .error {$0}(): Missing byte size parameter!},
 {dnl
-__{}ifelse(eval($2),{},{
+__{}ifelse(__IS_NUM($2),{0},{
 __{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}$1:
@@ -1147,7 +1147,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_a
 __{}__{}    ldir                ; 2:u*21/16 $1 cmove   addr++
 __{}__{}    pop  HL             ; 1:10      $1 cmove
 __{}__{}    pop  DE             ; 1:10      $1 cmove},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}    .error  {$0}(): Bad parameter!},
 __{}{dnl
 __{}__{}ifelse(eval(($1)<1),{1},{
@@ -1843,7 +1843,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_ad
 __{}__{}    ldir                ; 2:u*42-5  $1 move   addr++
 __{}__{}    pop  HL             ; 1:10      $1 move
 __{}__{}    pop  DE             ; 1:10      $1 move},
-__{}eval($1),{},{dnl
+__{}__IS_NUM($1),{0},{dnl
 __{}__{}  .error  {$0}(): Bad parameter!},
 __{}{dnl
 __{}__{}ifelse(eval(($1)<1),{1},{
@@ -1910,7 +1910,7 @@ __{}__{}PUSH3_MOVE_DE
 __{}__{}    ldir                ; 2:u*42-5  $1 $2 $3 move   addr++
 __{}__{}    pop  HL             ; 1:10      $1 $2 $3 move
 __{}__{}    pop  DE             ; 1:10      $1 $2 $3 move},
-__{}eval($3),{},{dnl
+__{}__IS_NUM($3),{0},{dnl
 __{}__{}  .error  {$0}(): Bad parameter!},
 __{}{dnl
 __{}__{}ifelse(eval(($3)<1),{1},{
@@ -2026,7 +2026,7 @@ define({PUSH2_ADDSTORE},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(eval($1),{},{dnl
+ifelse(__IS_NUM($1),{0},{dnl
     push HL             ; 1:11      push2_addstore($1,$2)
     .warning {$0}($1): M4 does not know $1 parameter value!
     ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_addstore($1,$2)
@@ -2117,7 +2117,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 2@ push_2fetch($1)
     push HL             ; 1:11      $1 2@ push_2fetch($1)
-__{}ifelse(eval(2+$1),{},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2@ push_2fetch($1) hi}dnl
 __{},{dnl
 __{}    ld   DE,format({%-12s},(eval(2+$1))); 4:20      $1 2@ push_2fetch($1) hi})
@@ -2214,7 +2214,7 @@ __{}    ld    A, C          ; 1:4       $1. $2 2!  pushdot_push_2store($1,$2)   
 __{}    ld  format({%-16s},{(2+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   hi
 __{}    ld    A, B          ; 1:4       $1. $2 2!  pushdot_push_2store($1,$2)   hi
 __{}    ld  format({%-16s},{(3+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   hi},
-eval($1),{},{
+__IS_NUM($1),{0},{
 __{}  .error {$0}($@): M4 cannot calculate {$1}},
 eval(__IS_MEM_REF($2)),{1},{
 __{}    push HL             ; 1:11      $1. $2 2!  pushdot_push_2store($1,$2)

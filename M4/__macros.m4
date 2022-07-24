@@ -34,8 +34,12 @@ dnl # ()      --> 0
 dnl # abc     --> 0
 dnl # 5       --> 1
 dnl # 25*3    --> 1
-define({__IS_NUM},{dnl
-__{}ifelse($1,{},{0},{eval(__IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1}))})}){}dnl
+define({__IS_NUM},{ifelse(dnl
+$1,{},{0},
+eval(1+regexp({$1},{^\s*[_a-zA-Z][_a-zA-Z0-9]+\s*$})),{1},{0},
+{dnl
+__{}eval(__IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1})){}dnl
+})}){}dnl
 dnl
 dnl
 dnl
@@ -279,7 +283,7 @@ $2,{},{dnl
 __{}__{}define({__CLOCKS_16BIT},0){}dnl
 __{}__{}define({__BYTES_16BIT},0){}dnl
 __{}__{}define({__CODE_16BIT},{})},
-eval($2),{},{dnl # unknown number
+__IS_NUM($2),{0},{dnl # unknown number
 __{}ifelse(dnl
 __{}$1{_}$2,$3{_}$4,{define({__CODE_16BIT},__LD_MEM16($1,$2,$3,$4))},
 __{}$1{_}$2,$5{_}$6,{define({__CODE_16BIT},__LD_MEM16($1,$2,$5,$6))},
@@ -396,7 +400,7 @@ __{}define({__CLOCKS_16BIT},0){}dnl
 __{}define({__BYTES_16BIT},0){}dnl
 __{}define({__CODE_BEFORE_16BIT},{}){}dnl
 __{}define({__CODE_AFTER_16BIT},{})},
-eval($2),{},{dnl # unknown number
+__IS_NUM($2),{0},{dnl # unknown number
 __{}define({__CODE_BEFORE_16BIT},{}){}dnl
 __{}define({__CODE_AFTER_16BIT},{}){}dnl
 __{}ifelse(dnl
@@ -1570,7 +1574,7 @@ __{}__{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
 __{}__{}define({_TMP_BEST_B},eval(11+ifelse($2,{},{0},{$2}))){}dnl
 __{}__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},format({%37s},;[eval(_TMP_BEST_B):__EQ_CLOCKS_TRUE/_TMP_J1{{,}}_TMP_J2]){_TMP_STACK_INFO{}__EQ_CODE_1})})},
-eval($1),{},{dnl
+__IS_NUM($1),{0},{dnl
 __{}dnl ---------------------------------
 __{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
