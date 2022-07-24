@@ -1674,39 +1674,85 @@ dnl # !
 dnl # ( x addr -- )
 dnl # store 16-bit number at addr
 define({STORE},{
-                        ;[5:40]     ! store   ( x addr -- )
-    ld  (HL),E          ; 1:7       ! store
-    inc  HL             ; 1:6       ! store
-    ld  (HL),D          ; 1:7       ! store
-    pop  HL             ; 1:10      ! store
-    pop  DE             ; 1:10      ! store})dnl
+                        ;[5:40]     !  store   ( x addr -- )
+    ld  (HL),E          ; 1:7       !  store
+    inc  HL             ; 1:6       !  store
+    ld  (HL),D          ; 1:7       !  store
+    pop  HL             ; 1:10      !  store
+    pop  DE             ; 1:10      !  store})dnl
 dnl
 dnl
 dnl
 dnl # addr !
 dnl # ( x -- )
 dnl # store(addr) store 16-bit number at addr
-define({PUSH_STORE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   format({%-15s},($1){,} HL); 3:16      $1 ! push($1) store
-    ex   DE, HL         ; 1:4       $1 ! push($1) store
-    pop  DE             ; 1:10      $1 ! push($1) store})dnl
+define({PUSH_STORE},{ifelse(dnl
+$1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[10:58]    $1 !  push_store($1)   ( x -- )  addr=$1
+__{}    ld    C, L          ; 1:4       $1 !  push_store($1)
+__{}    ld    B, H          ; 1:4       $1 !  push_store($1)
+__{}    ld   HL, format({%-11s},$1); 3:16      $1 !  push_store($1)
+__{}    ld  (HL), C         ; 1:7       $1 !  push_store($1)
+__{}    inc  HL             ; 1:6       $1 !  push_store($1)
+__{}    ld  (HL), B         ; 1:7       $1 !  push_store($1)
+__{}    ex   DE, HL         ; 1:4       $1 !  push_store($1)
+__{}    pop  DE             ; 1:10      $1 !  push_store($1)},
+{
+__{}                        ;[5:30]     $1 !  push_store($1)   ( x -- )  addr=$1
+__{}    ld   format({%-15s},($1){,} HL); 3:16      $1 !  push_store($1)
+__{}    ex   DE, HL         ; 1:4       $1 !  push_store($1)
+__{}    pop  DE             ; 1:10      $1 !  push_store($1)})})dnl
 dnl
 dnl
 dnl
 dnl # x addr !
 dnl # ( -- )
 dnl # store(addr) store 16-bit number at addr
-define({PUSH2_STORE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameters!},
-__{}$#,{1},{
-__{}__{}.error {$0}($@): The second parameter is missing!},
-__{}$#,{2},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_store($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_store($1,$2)})dnl
+define({PUSH2_STORE},{ifelse(dnl
+$1,{},{
+__{}  .error {$0}(): Missing parameters!},
+$#,{1},{
+__{}  .error {$0}($@): The second parameter is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($2),{1},{dnl
+__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}__{}__{}                        ;[12:78]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}__{}__{}    push HL             ; 1:11      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    pop  HL             ; 1:11      $1 $2 !  push2_store($1,$2)},
+__{}__{}__{}_TYP_SINGLE,{smal},{
+__{}__{}__{}                        ;[10:64]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}__{}__{}    push HL             ; 1:11      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld  (HL),format({%-11s}, low $1); 2:10      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    pop  HL             ; 1:11      $1 $2 !  push2_store($1,$2)},
+__{}__{}__{}{
+__{}__{}__{}                        ;[11:54]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld    A, format({%-11s}, low $1); 2:7       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    inc  BC             ; 1:6       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld    A, format({%-11s}, high $1); 2:7       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)})},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[8:40]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 !  push2_store($1,$2)
+__{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)},
+{
+__{}                        ;[5:30]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}    ld   BC, format({%-11s},$1); 3:10      $1 $2 !  push2_store($1,$2)
+__{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)})})dnl
 dnl
 dnl
 dnl
@@ -2129,53 +2175,101 @@ dnl # 2!
 dnl # ( hi lo addr -- )
 dnl # store 32-bit number at addr
 define({_2STORE},{
-    ld  (HL),E          ; 1:7       2! _2store   ( hi lo addr -- )
-    inc  HL             ; 1:6       2! _2store
-    ld  (HL),D          ; 1:7       2! _2store
-    inc  HL             ; 1:6       2! _2store
-    pop  DE             ; 1:10      2! _2store
-    ld  (HL),E          ; 1:7       2! _2store
-    inc  HL             ; 1:6       2! _2store
-    ld  (HL),D          ; 1:7       2! _2store
-    pop  HL             ; 1:10      2! _2store
-    pop  DE             ; 1:10      2! _2store})dnl
+                        ;[10:76]    2!  _2store   ( hi lo addr -- )
+    ld  (HL),E          ; 1:7       2!  _2store
+    inc  HL             ; 1:6       2!  _2store
+    ld  (HL),D          ; 1:7       2!  _2store
+    inc  HL             ; 1:6       2!  _2store
+    pop  DE             ; 1:10      2!  _2store
+    ld  (HL),E          ; 1:7       2!  _2store
+    inc  HL             ; 1:6       2!  _2store
+    ld  (HL),D          ; 1:7       2!  _2store
+    pop  HL             ; 1:10      2!  _2store
+    pop  DE             ; 1:10      2!  _2store})dnl
 dnl
 dnl
 dnl
 dnl # addr 2!
 dnl # ( hi lo -- )
 dnl # store(addr) store 32-bit number at addr
-define({PUSH_2STORE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
-__{}{
-    ld   format({%-15s},{($1), HL}); 3:16      $1 2! push_2store($1) lo
-__{}ifelse(eval(($1)),{},{dnl
-    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2! push_2store($1) hi},{dnl
-    ld   (format({%-14s},eval(($1)+2){),} DE); 4:20      $1 2! push_2store($1) hi})
-    pop  HL             ; 1:10      $1 2! push_2store($1)
-    pop  DE             ; 1:10      $1 2! push_2store($1)})})dnl
+define({PUSH_2STORE},{ifelse(dnl
+$1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[14:90]    $1 2!  push_2store($1)   ( hi lo -- )  addr=$1
+__{}    ld    C, L          ; 1:4       $1 2!  push_2store($1)
+__{}    ld    B, H          ; 1:4       $1 2!  push_2store($1)
+__{}    ld   HL, format({%-11s},$1); 3:16      $1 2!  push_2store($1)
+__{}    ld  (HL), C         ; 1:7       $1 2!  push_2store($1)
+__{}    inc  HL             ; 1:6       $1 2!  push_2store($1)
+__{}    ld  (HL), B         ; 1:7       $1 2!  push_2store($1)
+__{}    inc  HL             ; 1:6       $1 2!  push_2store($1)
+__{}    ld  (HL), E         ; 1:7       $1 2!  push_2store($1)
+__{}    inc  HL             ; 1:6       $1 2!  push_2store($1)
+__{}    ld  (HL), D         ; 1:7       $1 2!  push_2store($1)
+__{}    pop  HL             ; 1:10      $1 2!  push_2store($1)
+__{}    pop  DE             ; 1:10      $1 2!  push_2store($1)},
+{
+__{}                        ;[9:56]     $1 2!  push_2store($1)   ( hi lo -- ) adr = $1
+__{}    ld   format({%-15s},{($1), HL}); 3:16      $1 2!  push_2store($1)   lo
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2!  push_2store($1)   hi},{dnl
+__{}    ld   (__HEX_HL($1+2)), DE   ; 4:20      $1 2!  push_2store($1)   hi})
+__{}    pop  HL             ; 1:10      $1 2!  push_2store($1)
+__{}    pop  DE             ; 1:10      $1 2!  push_2store($1)})})dnl
 dnl
 dnl
-dnl # lo addr 2!
-dnl # ( hi -- )
+dnl # hi lo addr 2!
+dnl # ( hi -- ) lo=$1 addr=$2
 dnl # store(addr) store 32-bit number at addr
-define({PUSH2_2STORE},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameters!},
-__{}$#,{1},{
-__{}__{}.error {$0}($@): The second parameter is missing!},
-__{}eval($#>2),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
+define({PUSH2_2STORE},{ifelse(dnl
+$1,{},{
+__{}  .error {$0}(): Missing parameters!},
+$#,{1},{
+__{}  .error {$0}($@): The second parameter is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}ifelse(__IS_MEM_REF($2),{1},{
+__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}__{}__{}                        ;[18:118]   $1 $2 2!  push2_2store($1,$2)   ( hi -- )  lo=$1, addr=$2
+__{}__{}__{}    push HL             ; 1:11      $1 $2 2!  push2_2store($1,$2)   save hi
+__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 2!  push2_2store($1,$2)   lo
+__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    pop  BC             ; 1:11      $1 $2 2!  push2_2store($1,$2)   load hi
+__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 2!  push2_2store($1,$2)},
+__{}__{}__{}{dnl
+__{}__{}__{}                        ;[16:90]    $1 $2 2!  push2_2store($1,$2)   ( hi -- )  lo=$1, addr=$2
+__{}__{}__{}    ld    C, L          ; 1:4       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld    B, H          ; 1:4       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld  (HL), format({%-10s}, low $1); 2:10      $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 2!  push2_2store($1,$2)})},
 __{}{dnl
-__{}ifelse(eval(2+$2),{},{
-__{}    ld   format({%-15s},{(2+$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) hi},
-__{}{
-__{}    ld   (format({%-14s},eval(($2)+2){),} HL); 3:16      $1 $2 2! push2_2store($1,$2) hi})
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2! push2_2store($1,$2)
-    ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2! push2_2store($1,$2) lo
-    pop  HL             ; 1:10      $1 $2 2! push2_2store($1,$2)
-    ex   DE, HL         ; 1:4       $1 $2 2! push2_2store($1,$2)})})dnl
+__{}__{}                        ;[11:ifelse(__IS_MEM_REF($1),{1},{62},{56})]    $1 $2 2!  push2_2store($1,$2)   ( hi -- )  lo=$1, addr=$2
+__{}__{}ifelse(__IS_NUM($2),{0},{dnl
+__{}__{}__{}    ld   format({%-15s},{($2+2), HL}); 3:16      $1 $2 2!  push2_2store($1,$2)   hi
+__{}__{}__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2!  push2_2store($1,$2)   lo},
+__{}__{}__{}{dnl
+__{}__{}__{}    ld   (__HEX_HL($2+2)), HL   ; 3:16      $1 $2 2!  push2_2store($1,$2)   hi
+__{}__{}__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2!  push2_2store($1,$2)
+__{}__{}__{}    ld   (__HEX_HL($2)), HL   ; 3:16      $1 $2 2!  push2_2store($1,$2)   lo})})
+__{}    pop  HL             ; 1:10      $1 $2 2!  push2_2store($1,$2)
+__{}    ex   DE, HL         ; 1:4       $1 $2 2!  push2_2store($1,$2)})})dnl
 dnl
 dnl
 dnl

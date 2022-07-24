@@ -173,7 +173,7 @@ __{}__{}    jp    p, else{}IF_COUNT    ; 3:10      dup $1 < if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 < if
 __{}__{}    add   A, A          ; 1:4       dup $1 < if
-__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
 __{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}__{}__{}    jr c, $+11
@@ -215,7 +215,7 @@ __{}__{}    jp    m, else{}IF_COUNT    ; 3:10      dup $1 >= if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 >= if
 __{}__{}    add   A, A          ; 1:4       dup $1 >= if
-__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
 __{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}__{}__{}    jp c, else{}IF_COUNT
@@ -256,7 +256,7 @@ __{}__{}    jp    m, else{}IF_COUNT    ; 3:10      dup $1 <= if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 <= if
 __{}__{}    add   A, A          ; 1:4       dup $1 <= if
-__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
 __{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}__{}__{}    jr c, $+11
@@ -297,7 +297,7 @@ __{}__{}    jp    p, else{}IF_COUNT    ; 3:10      dup $1 > if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 > if
 __{}__{}    add   A, A          ; 1:4       dup $1 > if
-__{}__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
 __{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}__{}__{}    jp c, else{}IF_COUNT
@@ -2020,7 +2020,7 @@ __{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
@@ -2063,7 +2063,7 @@ __{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl

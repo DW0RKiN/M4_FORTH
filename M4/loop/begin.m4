@@ -194,7 +194,7 @@ __{}$1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval($1),{},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}                        ;[6:21]     dup $1 hi_eq until BEGIN_STACK
 __{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
 __{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
@@ -227,7 +227,7 @@ __{}$1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval($1),{},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}                        ;[6:21]     dup $1 lo_eq until BEGIN_STACK
 __{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
 __{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
@@ -580,7 +580,7 @@ __{}ifelse(__IS_MEM_REF($1),{1},{
 __{}    ld    A,format({%-12s},$1); 3:13      _TMP_STACK_INFO
 __{}    cp    L             ; 1:4       _TMP_INFO
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}    ld    A, format({%-11s},$1); 2:7       _TMP_STACK_INFO
 __{}    cp    L             ; 1:4       _TMP_INFO
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
@@ -610,7 +610,7 @@ __{}ifelse(__IS_MEM_REF($1),{1},{
 __{}    ld    A,format({%-12s},$1); 3:13      _TMP_STACK_INFO
 __{}    cp    L             ; 1:4       _TMP_INFO
 __{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}    ld    A, format({%-11s},$1); 2:7       _TMP_STACK_INFO
 __{}    cp    L             ; 1:4       _TMP_INFO
 __{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
@@ -1505,7 +1505,7 @@ __{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,3,10,0,0){}dnl
@@ -1547,7 +1547,7 @@ __{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl

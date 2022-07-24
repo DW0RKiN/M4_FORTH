@@ -11,7 +11,7 @@ dnl
 dnl
 dnl # ( x -- x+n )
 dnl # x = x + n
-define({PUSH_ADD},{ifelse(eval($1),{},{
+define({PUSH_ADD},{ifelse(__IS_NUM($1),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
@@ -88,7 +88,7 @@ __{}__{}    ld   BC, format({%-11s},$1); 3:10      {$1} {$2} +
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      {$1} {$2} +
 __{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +})},
 {dnl
-__{}__{}ifelse(eval($1+$2),{},{
+__{}__{}ifelse(__IS_NUM($1+$2),{0},{
 __{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
 __{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
@@ -102,7 +102,7 @@ dnl
 dnl
 dnl # dup 5 +
 dnl # ( x -- x x+n )
-define({DUP_PUSH_ADD},{ifelse(eval($1),{},{
+define({DUP_PUSH_ADD},{ifelse(__IS_NUM($1),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
 __{}    ex   DE, HL         ; 1:4       dup $1 +
@@ -215,7 +215,7 @@ dnl
 dnl
 dnl # ( x -- x-n )
 dnl # x = x - n
-define({PUSH_SUB},{ifelse(eval($1),{},{
+define({PUSH_SUB},{ifelse(__IS_NUM($1),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 -
 __{}    or    A             ; 1:4       $1 -
@@ -296,7 +296,7 @@ __{}__{}    ld   BC,format({%-12s},$2); 4:20      {$1} {$2} -
 __{}__{}    or    A             ; 1:4       {$1} {$2} -
 __{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -})},
 {dnl
-__{}__{}ifelse(eval($1+$2),{},{
+__{}__{}ifelse(__IS_NUM($1+$2),{0},{
 __{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
 __{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
 __{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
@@ -352,7 +352,7 @@ define({PUSH_MAX},{ifelse(__IS_MEM_REF($1),{1},{
     sbc   A, H          ; 1:4       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
     rra                 ; 1:4       $1 max
     xor   H             ; 1:4       $1 max
-ifelse(eval($1),{},{dnl
+ifelse(__IS_NUM($1),{0},{dnl
 __{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}    jp    m, $+6        ; 3:10      $1 max    positive constant $1
 __{}  else
@@ -404,7 +404,7 @@ define({PUSH_MIN},{ifelse(__IS_MEM_REF($1),{1},{
     sbc   A, H          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
     rra                 ; 1:4       $1 min
     xor   H             ; 1:4       $1 min{}dnl
-__{}ifelse(eval($1),{},{
+__{}ifelse(__IS_NUM($1),{0},{
 __{}__{}  if (($1)>=0x8000 || ($1)<0)=0
 __{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1
 __{}__{}  else
@@ -798,7 +798,7 @@ __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld    A, format({%-11s},$1); 3:13     $1 C+
 __{}    add   A, L          ; 1:4      $1 C+
 __{}    ld    L, A          ; 1:4      $1 C+},
-eval($1),{},{dnl
+__IS_NUM($1),{0},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld    A, format({%-11s},$1); 2:7      $1 C+
 __{}    add   A, L          ; 1:4      $1 C+
@@ -962,7 +962,7 @@ __{}    ex   DE, HL         ; 1:4       $1 D+
 __{}    ld   BC,format({%-12s},($1+2)); 4:20      $1 D+
 __{}    adc  HL, BC         ; 2:15      $1 D+
 __{}    ex   DE, HL         ; 1:4       $1 D+},
-eval($1),{},{dnl
+__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): The condition $1 cannot be evaluated},
 {ifelse(dnl
 __{}__{}eval(($1)+3*256*256*256),{0},{dnl
@@ -1217,7 +1217,7 @@ __{}    ex   DE, HL         ; 1:4       $1 D-
 __{}    ld   BC,format({%-12s},($1+2)); 4:20      $1 D-
 __{}    sbc  HL, BC         ; 2:15      $1 D-
 __{}    ex   DE, HL         ; 1:4       $1 D-},
-eval($1),{},{dnl
+__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): The condition $1 cannot be evaluated},
 {ifelse(dnl
 __{}__{}eval(($1)+3*256*256*256),{0},{dnl
@@ -1390,7 +1390,7 @@ __{}    jp    p, $+8        ; 3:10      $1 dmax
 __{}    ld    D, B          ; 1:4       $1 dmax
 __{}    ld    E, C          ; 1:4       $1 dmax
 __{}    ld   HL, format({%-11s},$1); 3:16      $1 dmax},
-eval($1),{},{dnl
+__IS_NUM($1),{0},{dnl
     .error {$0}($@): M4 does not know $1 parameter value!},
 {
 __{}                        ;[23:62/82] $1 dmax
@@ -1448,7 +1448,7 @@ __{}    jp    p, $+8        ; 3:10      $1 dmin
 __{}    ld    D, B          ; 1:4       $1 dmin
 __{}    ld    E, C          ; 1:4       $1 dmin
 __{}    ld   HL, format({%-11s},$1); 3:16      $1 dmin},
-eval($1),{},{dnl
+__IS_NUM($1),{0},{dnl
     .error {$0}($@): M4 does not know $1 parameter value!},
 {dnl
 __{}                        ;[23:62/82] $1 dmin

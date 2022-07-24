@@ -130,82 +130,82 @@ __{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    .error "within_of($1,$2): within_of does not support variable parameters stored in memory."}
 __{},__IS_MEM_REF($2),{1},{dnl
 __{}    .error "within_of($1,$2): within_of does not support variable parameters stored in memory."},
-__{}eval($1),{},{dnl
-__{}                        ;[17:62]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
+__{}__IS_NUM($1),{0},{dnl
+__{}                        ;[17:62]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
 __{}    ld    A, L          ; 1:4       _OF_INFO(within_of($1),within_)
 __{}    sub   low format({%-10s},$1); 2:7       _OF_INFO(within_of($1),within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(within_of($1),within_)
 __{}    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
 __{}    sbc   A, high format({%-6s},$1); 2:7       _OF_INFO(within_of($1),within_)
-__{}    ld    B, A          ; 1:4       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}
+__{}    ld    B, A          ; 1:4       _OF_INFO(within_of($1),within_)   BC = a - ($1)
 __{}    ld    A, C          ; 1:4       _OF_INFO(within_of($1),within_)
 __{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(within_of($1),within_)
 __{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}    sbc   A, high format({%-6s},$2-($1)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - {{$1}}) - ($2 - {{$1}}
+__{}    sbc   A,high format({%-7s},$2-($1)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)},
-__{}eval($1),{0},{dnl
-__{}                        ;[9:32]     _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) ) variant: 0,x
-__{}    ld    A, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}    sub  low format({%-11s},$2); 2:7       _OF_INFO(within_of($1),within_)
-__{}    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}    sbc   A, high format({%-6s},$2); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - {{$1}}) - ($2 - {{$1}}
-__{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)},
-__{}{dnl
-__{}__{}ifelse(eval($1),{1},{dnl
-__{}__{}                        ;[12:46]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
-__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}},
-__{}__{}eval($1),{-1},{dnl
-__{}__{}                        ;[12:46]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
-__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}},
-__{}__{}eval($1),{2},{dnl
-__{}__{}                        ;[13:52]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
-__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)
-__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}},
-__{}__{}eval($1),{-2},{dnl
-__{}__{}                        ;[13:52]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
-__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)
-__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}},
-__{}__{}eval($1),{3},{dnl
-__{}__{}                        ;[14:58]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
-__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)
-__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)
-__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}},
-__{}__{}eval($1),{-3},{dnl
-__{}__{}                        ;[14:58]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
-__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)
-__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)
-__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}},
-__{}__{}{dnl
-__{}__{}                        ;[17:62]    _OF_INFO(within_of($1),within_)   ( a -- flag=($1<=a<$2) )
+__{}{ifelse(eval($1),{0},{dnl
+__{}__{}                        ;[9:32]     _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2) variant: 0,x
 __{}__{}    ld    A, L          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    sub   low format({%-10s},$1); 2:7       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    C, A          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}    sub  low format({%-11s},$2); 2:7       _OF_INFO(within_of($1),within_)
 __{}__{}    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    sbc   A, high format({%-6s},$1); 2:7       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    B, A          ; 1:4       _OF_INFO(within_of($1),within_)   BC = a - {{$1}}})
-__{}    ld    A, C          ; 1:4       _OF_INFO(within_of($1),within_){}dnl
-__{}__{}ifelse(eval((($2)-($1)) & 0xff),{},{
-__{}__{}    sub  low format({%-11s},($2)-($1)); 2:7       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    sbc   A, high format({%-6s},($2)-($1)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - {{$1}}) - ($2 - {{$1}})},
-__{}__{}{
-__{}__{}    sub  format({%-15s},eval((($2)-($1)) & 0xff)); 2:7       _OF_INFO(within_of($1),within_)
-__{}__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
-__{}__{}    sbc   A, format({%-11s},eval((($2)-($1))>>8)); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - {{$1}}) - ($2 - {{$1}})})
-__{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)}){}dnl
-})dnl
+__{}__{}    sbc   A, high format({%-6s},$2); 2:7       _OF_INFO(within_of($1),within_)   carry:(a - ($1)) - ($2 - ($1))
+__{}__{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)},
+__{}__{}{dnl
+__{}__{}__{}ifelse(eval($1),{1},{dnl
+__{}__{}__{}__{}                        ;[12:46]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - ($1)},
+__{}__{}__{}eval($1),{-1},{dnl
+__{}__{}__{}__{}                        ;[12:46]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - ($1)},
+__{}__{}__{}eval($1),{2},{dnl
+__{}__{}__{}__{}                        ;[13:52]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - ($1)},
+__{}__{}__{}eval($1),{-2},{dnl
+__{}__{}__{}__{}                        ;[13:52]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - ($1)},
+__{}__{}__{}eval($1),{3},{dnl
+__{}__{}__{}__{}                        ;[14:58]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    dec  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - ($1)},
+__{}__{}__{}eval($1),{-3},{dnl
+__{}__{}__{}__{}                        ;[14:58]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    C, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    inc  BC             ; 1:6       _OF_INFO(within_of($1),within_)   BC = a - ($1)},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}                        ;[17:62]    _OF_INFO(within_of($1),within_)   ( a -- a ) carry=($1<=a<$2)
+__{}__{}__{}__{}    ld    A, L          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    sub   __HEX_L($1)          ; 2:7       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    C, A          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    A, H          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    sbc   A, __HEX_H($1)       ; 2:7       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    B, A          ; 1:4       _OF_INFO(within_of($1),within_)   BC = a - ($1)})
+__{}__{}__{}    ld    A, C          ; 1:4       _OF_INFO(within_of($1),within_){}dnl
+__{}__{}__{}ifelse(__IS_NUM($2),{0},{
+__{}__{}__{}__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    sbc   A,high format({%-7s},$2-($1)); 2:7       _OF_INFO(within_of($1),within_)   carry: BC - ($2 - ($1))},
+__{}__{}__{}{
+__{}__{}__{}__{}    sub  __HEX_L($2-($1))           ; 2:7       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    ld    A, B          ; 1:4       _OF_INFO(within_of($1),within_)
+__{}__{}__{}__{}    sbc   A, __HEX_H($2-($1))       ; 2:7       _OF_INFO(within_of($1),within_)   carry: BC - ($2 - ($1))})
+__{}__{}__{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(within_of($1),within_)}){}dnl
+})})dnl
 dnl
 dnl
 define({ENDOF},{
@@ -250,7 +250,7 @@ define({LO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LA
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval($1),{},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): M4 cannot calculate "$1".},
 __{}__IS_MEM_REF($1),{1},{dnl
 __{}    .error {$0}($@): Does not support variable parameters stored in memory.},
@@ -292,32 +292,32 @@ __{}                        ;[13:59]    _OF_INFO(lo_within_of($1),lo_within_)   
 __{}    ld    C, format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
-__{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - {{$1}}
+__{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - ($1)
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
-__{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a  - {{$1}}
-__{}    sub   B             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = (a - {{$1}}) - ($2 - {{$1}})
+__{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a  - ($1)
+__{}    sub   B             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:17]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{1},{dnl
 __{}                        ;[7:25]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    dec   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - {{$1}}
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    dec   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{-1},{dnl
 __{}                        ;[7:25]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    inc   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - {{$1}}
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    inc   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}{dnl
 __{}                        ;[8:28]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a - {{$1}}
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)})})dnl
 dnl
@@ -365,7 +365,7 @@ define({HI_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LA
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval($1),{},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): M4 cannot calculate "$1".},
 __{}__IS_MEM_REF($1),{1},{dnl
 __{}    .error {$0}($@): Does not support variable parameters stored in memory.},
@@ -407,7 +407,7 @@ __{}                        ;[13:59]    _OF_INFO(hi_within_of($1),hi_within_)   
 __{}    ld    C, format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
-__{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = $2 - {{$1}}
+__{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = $2 - ($1)
 __{}    ld    A, L          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a -($1)
 __{}    sub   B             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = (a -($1)) - ([$2]-($1))
@@ -415,24 +415,24 @@ __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:17]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{1},{dnl
 __{}                        ;[7:25]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    dec   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - {{$1}}
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    dec   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - ($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{-1},{dnl
 __{}                        ;[7:25]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    inc   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - {{$1}}
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - {{$1}}) - ($2 - {{$1}})
+__{}    inc   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - ($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}{
 __{}                        ;[8:28]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
 __{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
-__{}    sub  low format({%-11s},($2)-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)})})dnl
 dnl

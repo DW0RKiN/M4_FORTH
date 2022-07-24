@@ -721,7 +721,7 @@ $1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-eval($1),{},{
+__IS_NUM($1),{0},{
 __{}  .error {$0}($@): M4 does not know $1 parameter value!},
 __IS_MEM_REF($1),{1},{
 __{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
@@ -799,7 +799,7 @@ __{}    inc  HL             ; 1:6       $1 pick
 __{}    ld    D,(HL)        ; 1:7       $1 pick
 __{}    ex   DE, HL         ; 1:4       $1 pick
 __{}    pop  DE             ; 1:10      $1 pick},
-eval($1),{},{
+__IS_NUM($1),{0},{
 __{}  ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      $1 pick
 __{}    push HL             ; 1:11      $1 pick

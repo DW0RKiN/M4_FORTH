@@ -27,7 +27,7 @@ __{}__{}    ld    H, A          ; 1:4       $1 and
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 and
 __{}__{}    and   L             ; 1:4       $1 and
 __{}__{}    ld    L, A          ; 1:4       $1 and},
-__{}eval($1),{},{dnl
+__{}__IS_NUM($1),{0},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
 __{}__{}                        ;[8:30]     $1 and
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 and
@@ -118,7 +118,7 @@ __{}__{}    ld    H, A          ; 1:4       $1 or
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 or
 __{}__{}    or    L             ; 1:4       $1 or
 __{}__{}    ld    L, A          ; 1:4       $1 or},
-__{}eval($1),{},{dnl
+__{}__IS_NUM($1),{0},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
 __{}__{}                        ;[8:30]     $1 or
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 or
@@ -209,7 +209,7 @@ __{}__{}    ld    H, A          ; 1:4       $1 xor
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 xor
 __{}__{}    xor   L             ; 1:4       $1 xor
 __{}__{}    ld    L, A          ; 1:4       $1 xor},
-__{}eval($1),{},{dnl
+__{}__IS_NUM($1),{0},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
 __{}__{}                        ;[8:30]     $1 xor
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 xor
@@ -318,18 +318,20 @@ __{}__{}    or    A             ; 1:4       push2_within($1,$2)
 __{}__{}    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = (a-$1) - ($2-$1)
 __{}__{}    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff},
 __{}__IS_MEM_REF($2),{1},{dnl
-__{}__{}ifelse(eval(-($1)),{},{dnl
+__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}__{}                        ;[17:111]   push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
 __{}__{}__{}    ld   BC, format({%-11s},-($1)); 3:10      push2_within($1,$2)   BC = -($1)
 __{}__{}__{}    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = a-($1) = 0x10000-($1)+a
 __{}__{}__{}    push HL             ; 1:11      push2_within($1,$2)
 __{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      push2_within($1,$2)
-__{}__{}__{}    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = $2-($1)},
+__{}__{}__{}    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = $2-($1)
+__{}__{}__{}    ld    C, L          ; 1:4       push2_within($1,$2)
+__{}__{}__{}    ld    B, H          ; 1:4       push2_within($1,$2)   BC = $2-$1
+__{}__{}__{}    pop  HL             ; 1:10      push2_within($1,$2)},
 __{}__{}{dnl
 __{}__{}__{}ifelse(eval($1),{0},{dnl
-__{}__{}__{}__{}                        ;[17:111]   push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}__{}    push HL             ; 1:11      push2_within($1,$2)
-__{}__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      push2_within($1,$2)},
+__{}__{}__{}__{}                        ;[9:54]    push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      push2_within($1,$2)},
 __{}__{}__{}eval($1),{1},{dnl
 __{}__{}__{}__{}                        ;[11:66]    push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
 __{}__{}__{}__{}    dec  HL             ; 1:6       push2_within($1,$2)   HL = a-($1)
@@ -374,7 +376,7 @@ __{}__{}__{}__{}    inc  BC             ; 1:6       push2_within($1,$2)
 __{}__{}__{}__{}    inc  BC             ; 1:6       push2_within($1,$2)   BC = $2-($1)},
 __{}__{}__{}{
 __{}__{}__{}__{}                        ;[17:111]   push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}__{}    ld   BC, format({%-11s},eval((65536-($1)) & 0xFFFF)); 3:10      push2_within($1,$2)   BC = -($1)
+__{}__{}__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      push2_within($1,$2)   BC = -($1)
 __{}__{}__{}__{}    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = a-($1) = 0x10000-($1)+a
 __{}__{}__{}__{}    push HL             ; 1:11      push2_within($1,$2)
 __{}__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      push2_within($1,$2)
@@ -384,6 +386,15 @@ __{}__{}__{}__{}    ld    B, H          ; 1:4       push2_within($1,$2)   BC = (
 __{}__{}__{}__{}    pop  HL             ; 1:10      push2_within($1,$2)})})
 __{}__{}    or    A             ; 1:4       push2_within($1,$2)
 __{}__{}    sbc  HL, BC         ; 2:15      push2_within($1,$2)   HL = (a-($1))-($2-($1))
+__{}__{}    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff},
+__{}__IS_NUM($1),{0},{dnl
+__{}__{}                        ;[12:58]    push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
+__{}__{}    ld   BC, format({%-11s},-($1)); 3:10      push2_within($1,$2)   BC = -($1)
+__{}__{}    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = a-($1) = a+(-$1)
+__{}__{}    ld    A, L          ; 1:4       push2_within($1,$2)
+__{}__{}    sub  low format({%-11s},$2-($1)); 2:7       push2_within($1,$2)
+__{}__{}    ld    A, H          ; 1:4       push2_within($1,$2)
+__{}__{}    sbc   A, high format({%-6s},$2-($1)); 2:7       push2_within($1,$2)   carry:(a-($1))-($2-($1))
 __{}__{}    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
@@ -414,20 +425,17 @@ __{}__{}__{}    inc  HL             ; 1:6       push2_within($1,$2)
 __{}__{}__{}    inc  HL             ; 1:6       push2_within($1,$2)   HL = (a-($1))},
 __{}__{}{
 __{}__{}__{}                        ;[12:58]    push2_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}ifelse(eval(-($1)),{},{dnl
-__{}__{}__{}__{}    ld   BC, format({%-11s},-($1)); 3:10      push2_within($1,$2)   BC = -($1)},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}    ld   BC, format({%-11s},eval((65536-($1)) & 0xFFFF)); 3:10      push2_within($1,$2)   BC = -($1)})
+__{}__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      push2_within($1,$2)   BC = -($1)
 __{}__{}__{}    add  HL, BC         ; 1:11      push2_within($1,$2)   HL = a-($1) = 0x10000-($1)+a})
 __{}__{}    ld    A, L          ; 1:4       push2_within($1,$2){}dnl
-__{}__{}__{}ifelse(eval((($2)-($1)) & 0xff),{},{
-__{}__{}__{}    sub  low format({%-11s},($2)-($1)); 2:7       push2_within($1,$2)
+__{}__{}__{}ifelse(__IS_NUM($2),{0},{
+__{}__{}__{}    sub  low format({%-11s},$2-($1)); 2:7       push2_within($1,$2)
 __{}__{}__{}    ld    A, H          ; 1:4       push2_within($1,$2)
-__{}__{}__{}    sbc   A, high format({%-6s},($2)-($1)); 2:7       push2_within($1,$2)   carry:(a-($1))-(($2)-($1)){}dnl
+__{}__{}__{}    sbc   A, high format({%-6s},$2-($1)); 2:7       push2_within($1,$2)   carry:(a-($1))-($2-($1)){}dnl
 __{}__{}__{}},{
-__{}__{}__{}    sub  format({%-15s},eval((($2)-($1)) & 0xff)); 2:7       push2_within($1,$2)
+__{}__{}__{}    sub  __HEX_L($2-($1))           ; 2:7       push2_within($1,$2)
 __{}__{}__{}    ld    A, H          ; 1:4       push2_within($1,$2)
-__{}__{}__{}    sbc   A, format({%-11s},eval(((($2)-($1)) & 0xff00)>>8)); 2:7       push2_within($1,$2)   carry:(a-($1))-(($2)-($1))})
+__{}__{}__{}    sbc   A, __HEX_H($2-($1))       ; 2:7       push2_within($1,$2)   carry:(a-($1))-($2-($1))})
 __{}__{}    sbc  HL, HL         ; 2:15      push2_within($1,$2)   HL = 0x0000 or 0xffff}){}dnl
 })dnl
 dnl
@@ -497,7 +505,7 @@ __{}__{}__{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)   A =
 __{}    sub   B             ; 1:4       push2_lo_within($1,$2)   A = (a - {{$1}}) - ($2 - {{$1}})
 __{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff}dnl
 __{},{dnl
-__{}__{}ifelse(eval($1),{},{dnl
+__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}                        ;[7:33]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
 __{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
 __{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)   A = a-($1)},
@@ -584,7 +592,7 @@ __{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
 __{}__{}    dec   A             ; 1:4       $1 =   A = 0xFF
 __{}__{}    ld    L, A          ; 1:4       $1 =
 __{}__{}    ld    H, A          ; 1:4       $1 =   HL= flag},
-__{}eval($1),{},{dnl
+__{}__IS_NUM($1),{0},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
 __{}__{}                        ;[11:48/49] $1 =
 __{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 =
@@ -1408,7 +1416,7 @@ __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}    .error {$0}($@): Pointer as parameter is not supported!},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore cannot create the code!},
 __{}__{}{dnl
 __{}__{}__{}ifelse(eval($1),{0},{
@@ -1445,7 +1453,7 @@ __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{
 __{}__{}__{}    .error {$0}($@): Pointer as parameter is not supported!},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore cannot create the code!},
 __{}__{}{dnl
 __{}__{}__{}ifelse(eval($1),{0},{
@@ -2085,7 +2093,7 @@ __{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = true
 __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==$1},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
@@ -2152,7 +2160,7 @@ __{}__{}__{}    ld   HL, format({%-11s},$1); 3:16      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-lo16(d1)
 __{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d1<>$1},
-__{}__{}eval($1),{},{
+__{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
 __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
@@ -2208,7 +2216,7 @@ __{}    add   A, A          ; 1:4       2dup $1 D>    DEHL>$1              --> c
 __{}    push DE             ; 1:11      2dup $1 D>
 __{}    ex   DE, HL         ; 1:4       2dup $1 D>
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D>    set flag d1>$1},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
 __{}                       ;[21:92]     2dup $1 D>   ( d1 -- d1 flag )   # default version
@@ -2255,7 +2263,7 @@ __{}    sub  0x80           ; 2:7       2dup $1 D<=    DEHL<=$1               --
 __{}    push DE             ; 1:11      2dup $1 D<=
 __{}    ex   DE, HL         ; 1:4       2dup $1 D<=
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D<=    set flag d1<=$1},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
 __{}                       ;[21:93]     2dup $1 D<=   ( d1 -- d1 flag )   # default version
@@ -2304,7 +2312,7 @@ __{}    add   A, A          ; 1:4       2dup $1 D<    DEHL<$1                 --
 __{}    push DE             ; 1:11      2dup $1 D<
 __{}    ex   DE, HL         ; 1:4       2dup $1 D<
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D<    set flag d1<$1},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
 __{}                       ;[20:89]     2dup $1 D<   ( d1 -- d1 flag )   # default version
@@ -2352,7 +2360,7 @@ __{}    sub  0x80           ; 2:7       2dup $1 D>=    DEHL>=$1                 
 __{}    push DE             ; 1:11      2dup $1 D>=
 __{}    ex   DE, HL         ; 1:4       2dup $1 D>=
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D>=    set flag d1<$1},
-__{}eval($1),{},{
+__{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
 __{}                       ;[22:96]     2dup $1 D>=   ( d1 -- d1 flag )   # default version

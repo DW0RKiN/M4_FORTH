@@ -794,7 +794,7 @@ __{}    ld   HL, 0x0000     ; 3:10      $1 +xloop LOOP_STACK
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 +xloop LOOP_STACK   BC = step
 __{}    add  HL, BC         ; 1:11      $1 +xloop LOOP_STACK   HL = index+step
 __{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      $1 +xloop LOOP_STACK   save new index
-__{}ifelse(eval(STOP_STACK),{},{dnl
+__{}ifelse(__IS_NUM(STOP_STACK),{0},{dnl
 __{}__{}    ld    A, low format({%-7s},STOP_STACK-1); 2:7       $1 +xloop LOOP_STACK
 __{}__{}    sub   L             ; 1:4       $1 +xloop LOOP_STACK
 __{}__{}    ld    L, A          ; 1:4       $1 +xloop LOOP_STACK
@@ -832,7 +832,7 @@ __{}},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!
 __{}})dnl
-__{}ifelse(eval($1),{},{X_ADDXLOOP($1)},{dnl
+__{}ifelse(__IS_NUM($1),{0},{X_ADDXLOOP($1)},{dnl
 __{}__{}ifelse(eval($1),{1},{
 __{}__{}__{}                        ;           push_addxloop($1) --> xloop LOOP_STACK{}XLOOP{}},
 __{}__{}eval($1),{-1},{dnl
@@ -856,17 +856,17 @@ __{}    ld    C, L          ; 1:4       +xloop LOOP_STACK   BC = step
 __{}idx{}LOOP_STACK EQU $+1          ;           +xloop LOOP_STACK
 __{}    ld   HL, 0x0000     ; 3:10      +xloop LOOP_STACK
 __{}    add  HL, BC         ; 1:11      +xloop LOOP_STACK   HL = index+step
-__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      +xloop LOOP_STACK   save index{}dnl
-__{}__{}ifelse(eval(STOP_STACK),{},{
-__{}__{}    ld    A, format({%-11s},1*(STOP_STACK)-1); 2:7       +xloop LOOP_STACK},
-__{}__{}{
-__{}__{}    ld    A, low format({%-7s},eval(STOP_STACK-1)); 2:7       +xloop LOOP_STACK})
-__{}    sub   L             ; 1:4       +xloop LOOP_STACK
-__{}    ld    L, A          ; 1:4       +xloop LOOP_STACK{}dnl
-__{}__{}ifelse(eval(STOP_STACK),{},{
-__{}__{}    ld    A, 1*((STOP_STACK)+65535)/256; 2:7       +xloop LOOP_STACK},
-__{}__{}{
-__{}__{}    ld    A, high format({%-6s},eval(STOP_STACK-1)); 2:7       +xloop LOOP_STACK})
+__{}    ld  (idx{}LOOP_STACK), HL    ; 3:16      +xloop LOOP_STACK   save index
+__{}ifelse(__IS_NUM(STOP_STACK),{0},{dnl
+__{}__{}    ld    A, format({%-11s},STOP_STACK-1); 2:7       +xloop LOOP_STACK
+__{}__{}    sub   L             ; 1:4       +xloop LOOP_STACK
+__{}__{}    ld    L, A          ; 1:4       +xloop LOOP_STACK
+__{}__{}    ld    A,high format({%-7s},STOP_STACK-1); 2:7       +xloop LOOP_STACK},
+__{}{dnl
+__{}__{}    ld    A, __HEX_L(STOP_STACK-1)       ; 2:7       +xloop LOOP_STACK
+__{}__{}    sub   L             ; 1:4       +xloop LOOP_STACK
+__{}__{}    ld    L, A          ; 1:4       +xloop LOOP_STACK
+__{}__{}    ld    A, __HEX_H(STOP_STACK-1)       ; 2:7       +xloop LOOP_STACK})
 __{}    sbc   A, H          ; 1:4       +xloop LOOP_STACK
 __{}    ld    H, A          ; 1:4       +xloop LOOP_STACK   HL = stop-(index+step)
 __{}    add  HL, BC         ; 1:11      +xloop LOOP_STACK   HL = stop-index
