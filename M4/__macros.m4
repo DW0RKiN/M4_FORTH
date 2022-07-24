@@ -17,28 +17,37 @@ define({__HEX_DEHL},{ifelse($1,{},,{format({0x%08X},eval($1))})}){}dnl
 dnl
 dnl
 dnl
+define({__IS_MEM_REF},{dnl
 dnl # (abc) --> 1
 dnl # (123) --> 1
 dnl # ()+() --> 1 fail
 dnl # ()    --> 0
 dnl # other --> 0
-define({__IS_MEM_REF},{dnl
-__{}eval(1+regexp({$1},{^\s*(.+)\s*$}))}){}dnl
+__{}eval( 1 + regexp({$1},{^\s*(.+)\s*$}) )}){}dnl
 dnl
 dnl
 dnl
+define({__IS_NUM},{dnl
 dnl # (abc)   --> 0
 dnl # (123)   --> 0
 dnl # (1)+(2) --> 0 fail
 dnl # ()      --> 0
+dnl #         --> 0
 dnl # abc     --> 0
+dnl # 0a      --> 0
+dnl # 0g      --> 0
+dnl # 0xa     --> 1
 dnl # 5       --> 1
 dnl # 25*3    --> 1
-define({__IS_NUM},{ifelse(dnl
-$1,{},{0},
-eval(1+regexp({$1},{^\s*[_a-zA-Z][_a-zA-Z0-9]+\s*$})),{1},{0},
-{dnl
-__{}eval(__IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1})){}dnl
+__{}ifelse(dnl
+__{}$1,{},{0},
+__{}$1,(),{0},
+__{}eval( regexp({$1},{[yzYZ_g-wG-W]}) != -1 ),{1},{0},dnl # Any letter and underscore _ except a,b,c,d,e,f,x
+__{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
+__{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
+__{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x
+__{}{dnl
+__{}__{}eval( __IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1}) ){}dnl
 })}){}dnl
 dnl
 dnl
