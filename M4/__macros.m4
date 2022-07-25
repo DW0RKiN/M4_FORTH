@@ -71,6 +71,69 @@ define({__IS_INSTRUCTION},{eval(1+regexp(translit({$1},{ABCDEFGHIJKLMNOPQRSTUVWX
 dnl
 dnl
 dnl
+dnl # return the first element of a list when called in the funny way seen below
+define({__ARG1}, {$1})dnl
+define({__ARG2}, {$2})dnl
+define({__ARG1_1}, {__ARG1$1})dnl
+define({__ARG1_2}, {__ARG2$1})dnl
+define({__ARG2_1}, {__ARG1$2})dnl
+define({__ARG2_2}, {__ARG2$2})dnl
+define({__ARG3_1}, {__ARG1$3})dnl
+define({__ARG3_2}, {__ARG2$3})dnl
+dnl
+dnl
+dnl # return the first element of a list when called in the funny way seen below
+dnl # define({__ARG1}, {$1})dnl
+define({__APPEND},{ifelse({$1},{()},
+__{}{$2},
+{dnl
+__{}ifelse({$2},{()},
+__{}__{}{$1},
+__{}{dnl
+__{}__{}substr($1,0,decr(len($1))),substr($2,1)})})})dnl
+dnl
+dnl
+dnl # separate list 2 based on pivot 1, appending to left 3 and right 4,
+dnl # until 2 is empty, and then combine the sort of left with pivot with
+dnl # sort of right
+define({__SEP},{ifelse({$2}, {()},
+__{}{__APPEND(__APPEND(__QUICKSORT($3),($1)),__QUICKSORT($4))},
+{dnl
+__{}ifelse(__IS_NUM(__ARG1_1$2){_}__IS_NUM(__ARG1$1),{1_1},{dnl
+__{}__{}ifelse(eval(__ARG1_1$2<=__ARG1$1),1,{dnl
+__{}__{}__{}__SEP($1,(shift$2),__APPEND($3,(__ARG1$2)),$4)},
+__{}__{}{dnl
+__{}__{}__{}__SEP($1,(shift$2),$3,__APPEND($4,(__ARG1$2)))})},
+__{}{dnl
+__{}__{}ifelse(eval(200*__IS_MEM_REF(__ARG1_1$2)+100*(1-__IS_NUM(__ARG1_1$2))+len(__ARG1_1$2)<=200*__IS_MEM_REF(__ARG1$1)+100*(1-__IS_NUM(__ARG1$1))+len(__ARG1$1)),1,{dnl
+__{}__{}__{}__SEP($1,(shift$2),__APPEND($3,(__ARG1$2)),$4)},
+__{}__{}{dnl
+__{}__{}__{}__SEP($1,(shift$2),$3,__APPEND($4,(__ARG1$2)))}){}dnl
+__{}}){}dnl
+})})dnl
+dnl
+dnl
+dnl # pick first element of list 1 as pivot and separate based on that
+define({__QUICKSORT},{ifelse({$1}, {()}, 
+__{}{()},
+{dnl
+__{}__{}__SEP(__ARG1$1,(shift$1),{()},{()})dnl
+})})dnl
+dnl
+dnl
+define({__MAKE_ARRAY_NUM_ADR},{dnl
+__{}define({__ARRAY_NUM},eval(__ARRAY_NUM+2))dnl
+__{}{($1,}__ARRAY_NUM{)}ifelse(eval($#>1),{1},{,__MAKE_ARRAY_NUM_ADR(shift($@))}){}dnl
+})dnl
+dnl
+dnl
+define({__CALL_QUICKSORT},{dnl
+__{}define({__ARRAY_NUM},-2)dnl
+__{}__QUICKSORT((__MAKE_ARRAY_NUM_ADR($@))){}dnl
+})dnl
+dnl
+dnl
+dnl
 dnl -----------------------------------
 dnl # parameters:
 dnl #   1st cond
@@ -115,6 +178,8 @@ define({__RAS},{
     push HL             ; 1:11      __ras
     exx                 ; 1:4       __ras
     pop  HL             ; 1:10      __ras}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl
