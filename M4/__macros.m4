@@ -70,67 +70,62 @@ dnl # xchg --> 0
 define({__IS_INSTRUCTION},{eval(1+regexp(translit({$1},{ABCDEFGHIJKLMNOPQRSTUVWXYZ},{abcdefghijklmnopqrstuvwxyz}),{^\(ad[cd]\|and\|bit\|call\|ccf\|cp[dil]?\|cpdr\|cpir\|daa\|dec\|di\|djnz\|ei\|ex[x]?\|halt\|im\|in[cdi]?\|indr\|inir\|j[pr]\|ld[di]?\|lddr\|ldir\|neg\|nop\|or\|otdr\|otir\|out[di]?\|pop\|push\|res\|ret[in]?\|rl[acd]?\|rlca\|rr[acd]?\|rrca\|rst\|sbc\|scf\|set\|sla\|sr[al]\|sub\|xor\)$}))}){}dnl
 dnl
 dnl
+define({__SORT_SET},{define({$1[$2]},{$3})}){}dnl
+define({__SORT_GET},{defn({$1[$2]})}){}dnl
 dnl
-dnl # return the first element of a list when called in the funny way seen below
-define({__ARG1}, {$1})dnl
-define({__ARG2}, {$2})dnl
-define({__ARG1_1}, {__ARG1$1})dnl
-define({__ARG1_2}, {__ARG2$1})dnl
-define({__ARG2_1}, {__ARG1$2})dnl
-define({__ARG2_2}, {__ARG2$2})dnl
-define({__ARG3_1}, {__ARG1$3})dnl
-define({__ARG3_2}, {__ARG2$3})dnl
+dnl # for the heap calculations, it's easier if origin is 0, so set value first
+define({__SORT_NEW},{__SORT_SET($1,size,0)}){}dnl
 dnl
 dnl
-dnl # return the first element of a list when called in the funny way seen below
-dnl # define({__ARG1}, {$1})dnl
-define({__APPEND},{ifelse({$1},{()},
-__{}{$2},
-{dnl
-__{}ifelse({$2},{()},
-__{}__{}{$1},
-__{}{dnl
-__{}__{}substr($1,0,decr(len($1))),substr($2,1)})})})dnl
+define({__SORT_APPEND},{__SORT_SET($1,size,incr(__SORT_GET($1,size))){}__SORT_SET($1,__SORT_GET($1,size),$2)}){}dnl
 dnl
 dnl
-dnl # separate list 2 based on pivot 1, appending to left 3 and right 4,
-dnl # until 2 is empty, and then combine the sort of left with pivot with
-dnl # sort of right
-define({__SEP},{ifelse({$2}, {()},
-__{}{__APPEND(__APPEND(__QUICKSORT($3),($1)),__QUICKSORT($4))},
-{dnl
-__{}ifelse(__IS_NUM(__ARG1_1$2){_}__IS_NUM(__ARG1$1),{1_1},{dnl
-__{}__{}ifelse(eval(__ARG1_1$2<=__ARG1$1),1,{dnl
-__{}__{}__{}__SEP($1,(shift$2),__APPEND($3,(__ARG1$2)),$4)},
-__{}__{}{dnl
-__{}__{}__{}__SEP($1,(shift$2),$3,__APPEND($4,(__ARG1$2)))})},
-__{}{dnl
-__{}__{}ifelse(eval(200*__IS_MEM_REF(__ARG1_1$2)+100*(1-__IS_NUM(__ARG1_1$2))+len(__ARG1_1$2)<=200*__IS_MEM_REF(__ARG1$1)+100*(1-__IS_NUM(__ARG1$1))+len(__ARG1$1)),1,{dnl
-__{}__{}__{}__SEP($1,(shift$2),__APPEND($3,(__ARG1$2)),$4)},
-__{}__{}{dnl
-__{}__{}__{}__SEP($1,(shift$2),$3,__APPEND($4,(__ARG1$2)))}){}dnl
-__{}}){}dnl
-})})dnl
+dnl # __SORT_SWAP(<name>,<j>,<name>[<j>],<k>)  using arg stack for the temporary
+define({__SORT_SWAP},{__SORT_SET($1,$2,__SORT_GET($1,$4)){}__SORT_SET($1,$4,$3)}){}dnl
 dnl
 dnl
-dnl # pick first element of list 1 as pivot and separate based on that
-define({__QUICKSORT},{ifelse({$1}, {()}, 
-__{}{()},
-{dnl
-__{}__{}__SEP(__ARG1$1,(shift$1),{()},{()})dnl
-})})dnl
+define({__SORT_VAL},$1){}dnl
+define({__SORT_OFFSET},$2){}dnl
+define({__SORT_ARG1_1},{__SORT_VAL$1}){}dnl
 dnl
 dnl
-define({__MAKE_ARRAY_NUM_ADR},{dnl
-__{}define({__ARRAY_NUM},eval(__ARRAY_NUM+2))dnl
-__{}{($1,}__ARRAY_NUM{)}ifelse(eval($#>1),{1},{,__MAKE_ARRAY_NUM_ADR(shift($@))}){}dnl
-})dnl
+define({__SORT_INIT},{ifelse($#,3,
+    {__SORT_APPEND({$1},($3,$2))},
+    eval($#>3),{1},{__SORT_APPEND({$1},($3,{eval($2)})){}$0($1,eval($2+2),shift(shift(shift($@))))})}){}dnl
 dnl
 dnl
-define({__CALL_QUICKSORT},{dnl
-__{}define({__ARRAY_NUM},-2)dnl
-__{}__QUICKSORT((__MAKE_ARRAY_NUM_ADR($@))){}dnl
-})dnl
+dnl # Input
+dnl #   $1 counter_name
+dnl #   $2 from
+dnl #   $3 to
+dnl #   $4 what
+define({__FOR},{ifelse($#,0,
+{{$0}},
+{ifelse(eval($2<=$3),1,
+    {pushdef({$1},$2)$4{}popdef({$1})$0({$1},incr($2),$3,{$4})})})}){}dnl
+dnl
+dnl
+define({__SORT_ONCE},{__FOR({x},1,$2,
+    {ifelse(eval(__SORT_ARG1_1(__SORT_GET($1,x))>__SORT_ARG1_1(__SORT_GET($1,incr(x)))),1,
+        {__SORT_SWAP($1,x,__SORT_GET($1,x),incr(x)){}1})})0}){}dnl
+dnl
+dnl
+define({__SORT_UP_TO},
+    {ifelse(__SORT_ONCE($1,$2),0,
+        {},
+        {__SORT_UP_TO($1,decr($2))})}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 = array name
+dnl #   $2 = offset first value
+dnl #   $3,$4,$5,... = values
+define({__SORT},
+    {__SORT_NEW({$1}){}__SORT_INIT($@){}__SORT_UP_TO($1,decr(__SORT_GET($1,size)))}){}dnl
+dnl
+dnl
+define({__SORT_SHOW},
+   {__SORT_GET($1,1){}__FOR({x},2,__SORT_GET($1,size),{,__SORT_GET($1,x)})}){}dnl
 dnl
 dnl
 dnl

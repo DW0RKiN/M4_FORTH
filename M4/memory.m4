@@ -372,62 +372,58 @@ dnl
 define({PUSHS_COMMA_REC},{dnl
 __{}ifelse({debug},{},{
 __{}rec:$@
-__{}>PUSHS_COMMA_BC< BC
-__{}>PUSHS_COMMA_HL< HL
-__{}>__ARG1$1< val before
-__{}>__ARG2$1< offset before
-__{}>__ARG1$2< val now
-__{}>__ARG2$2< offset now
-__{}>__ARG1$3< val next
-__{}>__ARG2$3< offset next}){}dnl
+__{}BC            >PUSHS_COMMA_BC<
+__{}HL            >PUSHS_COMMA_HL<
+__{}before val    >__SORT_VAL$1<
+__{}before offset >__SORT_OFFSET$1<
+__{}now val       >__SORT_VAL$2<
+__{}noe offset    >__SORT_OFFSET$2<
+__{}next val      >__SORT_VAL$3<
+__{}next offset   >__SORT_OFFSET$3<}){}dnl
 __{}undefine({_TMP_INFO}){}dnl
 __{}dnl # BC variant
-__{}ifelse(eval($#>2),{1},{__LD_REG16({HL},__ARG1$3,{HL},PUSHS_COMMA_HL,{BC},__ARG1$2)},{define({__PRICE_16BIT},0)}){}dnl
+__{}ifelse(eval($#>2),{1},{__LD_REG16({HL},__SORT_VAL$3,{HL},PUSHS_COMMA_HL,{BC},__SORT_VAL$2)},{define({__PRICE_16BIT},0)}){}dnl
 __{}define({PUSHS_COMMA_REC_BC_P},__PRICE_16BIT){}dnl
-__{}__LD_REG16({BC},__ARG1$2,{HL},PUSHS_COMMA_HL,BC,PUSHS_COMMA_BC){}dnl
+__{}__LD_REG16({BC},__SORT_VAL$2,{HL},PUSHS_COMMA_HL,BC,PUSHS_COMMA_BC){}dnl
 __{}define({PUSHS_COMMA_REC_BC_P},eval(8+PUSHS_COMMA_REC_BC_P+__PRICE_16BIT)){}dnl
 __{}dnl # HL variant
-__{}__{}ifelse(eval($#>2),{1},{__LD_REG16({HL},__ARG1$3,{HL},__ARG1$2,{BC},PUSHS_COMMA_BC)},{define({__PRICE_16BIT},0)}){}dnl
+__{}__{}ifelse(eval($#>2),{1},{__LD_REG16({HL},__SORT_VAL$3,{HL},__SORT_VAL$2,{BC},PUSHS_COMMA_BC)},{define({__PRICE_16BIT},0)}){}dnl
 __{}define({PUSHS_COMMA_REC_HL_P},__PRICE_16BIT){}dnl
-__{}__LD_REG16({HL},__ARG1$2,{HL},PUSHS_COMMA_HL,{BC},PUSHS_COMMA_BC){}dnl
+__{}__LD_REG16({HL},__SORT_VAL$2,{HL},PUSHS_COMMA_HL,{BC},PUSHS_COMMA_BC){}dnl
 __{}define({PUSHS_COMMA_REC_HL_P},eval(PUSHS_COMMA_REC_HL_P+__PRICE_16BIT)){}dnl
 __{}dnl
 __{}ifelse(eval(PUSHS_COMMA_REC_HL_P<PUSHS_COMMA_REC_BC_P),{1},{dnl # HL variant
 __{}__{}define({PUSHS_COMMA_C},eval(PUSHS_COMMA_C+__CLOCKS_16BIT+16)){}dnl
 __{}__{}define({PUSHS_COMMA_B},eval(PUSHS_COMMA_B+__BYTES_16BIT+3)){}dnl
-__{}__{}__{}define({_TMP_INFO},{__ARG1$2 ,}){}define({PUSHS_COMMA_HL},__ARG1$2){}dnl
+__{}__{}__{}define({_TMP_INFO},{__SORT_VAL$2 ,}){}define({PUSHS_COMMA_HL},__SORT_VAL$2){}dnl
 __{}__{}__CODE_16BIT
-__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval((LAST_HERE_ADD+__ARG2$2)!=0),1,+eval(LAST_HERE_ADD+__ARG2$2))){,}HL); 3:16      __ARG1$2 ,{}dnl
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(__SORT_OFFSET$2,{0},{},+__SORT_OFFSET$2)){,}HL); 3:16      __SORT_VAL$2 ,{}dnl
 __{}},
 __{}{dnl
 __{}__{}__LD_REG16({BC},$2,{HL},PUSHS_COMMA_HL,{BC},PUSHS_COMMA_BC){}dnl # BC variant
 __{}__{}define({PUSHS_COMMA_C},eval(PUSHS_COMMA_C+__CLOCKS_16BIT+20)){}dnl
 __{}__{}define({PUSHS_COMMA_B},eval(PUSHS_COMMA_B+__BYTES_16BIT+4)){}dnl
-__{}__{}__{}define({_TMP_INFO},{__ARG1$2 ,}){}define({PUSHS_COMMA_HL},__ARG1$2){}dnl
+__{}__{}__{}define({_TMP_INFO},{__SORT_VAL$2 ,}){}define({PUSHS_COMMA_HL},__SORT_VAL$2){}dnl
 __{}__{}__CODE_16BIT
-__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval((LAST_HERE_ADD+__ARG2$2)!=0),1,+eval(LAST_HERE_ADD+__ARG2$2))){,}BC); 4:20      __ARG1$2 ,}){}dnl
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(__SORT_OFFSET$2,{0},{},+__SORT_OFFSET$2)){,}BC); 4:20      __SORT_VAL$2 ,}){}dnl
 __{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
 dnl
 dnl
-dnl
-define({PUSHS_COMMA_SORTED},{dnl
+define({PUSHS_COMMA_SORTED},{ifelse({debug},{},{
+sorted:$@
+now val     = __SORT_VAL$1
+now offset  = __SORT_OFFSET$1
+next val    = __SORT_VAL$2
+next offset = __SORT_OFFSET$2}){}dnl
 __{}define({PUSHS_COMMA_C},47){}dnl
 __{}define({PUSHS_COMMA_B},8)
-dnl # sorted:$@
-dnl # 1 __ARG1_1$1 val now
-dnl # 1 __ARG1_2$1 offset now
-dnl # 2 __ARG2_1$1 val next
-dnl # 2 __ARG2_2$1 offset next
-dnl # 3 __ARG3_1$1
-dnl # 3 __ARG3_2$1
-__{}__{}    push HL             ; 1:11      _TMP_MAIN_INFO   default version
-__{}__{}    ld   HL, format({%-11s},__ARG1_1$1); 3:10      __ARG1_1$1 ,{}define({PUSHS_COMMA_HL},__ARG1_1$1){}define({PUSHS_COMMA_BC},{})
-__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval((LAST_HERE_ADD+__ARG1_2$1)!=0),1,+eval(LAST_HERE_ADD+__ARG1_2$1))){,}HL); 3:16      __ARG1_1$1 ,{}dnl
-__{}__{}define({PUSHS_COMMA_SORTED_LEN},eval(len($@)-2)){}dnl
-__{}__{}PUSHS_COMMA_REC(substr($@,1,PUSHS_COMMA_SORTED_LEN))
-__{}__{}    pop  HL             ; 1:10      _TMP_MAIN_INFO
-__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
-__{}__{}                        ;format({%-11s},[PUSHS_COMMA_B:PUSHS_COMMA_C])_TMP_MAIN_INFO}){}dnl
+__{}    push HL             ; 1:11      _TMP_MAIN_INFO   default version
+__{}    ld   HL, format({%-11s},__SORT_VAL$1); 3:10      __SORT_VAL$1 ,{}define({PUSHS_COMMA_HL},__SORT_VAL$1){}define({PUSHS_COMMA_BC},{})
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(__SORT_OFFSET$1,{0},{},+__SORT_OFFSET$1)){,}HL); 3:16      __SORT_VAL$1 ,{}dnl
+__{}PUSHS_COMMA_REC($@)
+__{}    pop  HL             ; 1:10      _TMP_MAIN_INFO
+__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$#+$#)){}dnl
+__{}                        ;format({%-11s},[PUSHS_COMMA_B:PUSHS_COMMA_C])_TMP_MAIN_INFO}){}dnl
 dnl
 dnl
 dnl
@@ -483,6 +479,7 @@ __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}    dw $1
 __{}__{}    dw $2})},
 {dnl
+__{}define({PUSHS_COMMA_SUM},$#){}dnl
 __{}define({PUSHS_COMMA_ANALYSIS_ADD1},1){}dnl
 __{}define({PUSHS_COMMA_ANALYSIS_ADD256},1){}dnl
 __{}define({PUSHS_COMMA_ANALYSIS_ADD16},1){}dnl
@@ -495,6 +492,19 @@ __{}define({PUSHS_COMMA_ANALYSIS_2MUL},1){}dnl
 __{}define({PUSHS_COMMA_ANALYSIS_SAME},1){}dnl
 __{}define({PUSHS_COMMA_ANALYSIS_LAST_NUM},0xBAAAD){}dnl # ERR0R
 __{}PUSHS_COMMA_ANALYSIS($@){}dnl
+__{}ifelse({debug},{},{errprint(
+__{}__{}              {PUSHS_COMMA_SUM} = PUSHS_COMMA_SUM
+__{}__{}    {PUSHS_COMMA_ANALYSIS_ADD1} = PUSHS_COMMA_ANALYSIS_ADD1
+__{}__{}  {PUSHS_COMMA_ANALYSIS_ADD256} = PUSHS_COMMA_ANALYSIS_ADD256
+__{}__{}   {PUSHS_COMMA_ANALYSIS_ADD16} = PUSHS_COMMA_ANALYSIS_ADD16
+__{}__{}    {PUSHS_COMMA_ANALYSIS_SUB1} = PUSHS_COMMA_ANALYSIS_SUB1
+__{}__{}  {PUSHS_COMMA_ANALYSIS_SUB256} = PUSHS_COMMA_ANALYSIS_SUB256
+__{}__{}   {PUSHS_COMMA_ANALYSIS_SUB16} = PUSHS_COMMA_ANALYSIS_SUB16
+__{}__{}  {PUSHS_COMMA_ANALYSIS_LO2MUL} = PUSHS_COMMA_ANALYSIS_LO2MUL
+__{}__{}  {PUSHS_COMMA_ANALYSIS_HI2MUL} = PUSHS_COMMA_ANALYSIS_HI2MUL
+__{}__{}    {PUSHS_COMMA_ANALYSIS_2MUL} = PUSHS_COMMA_ANALYSIS_2MUL
+__{}__{}    {PUSHS_COMMA_ANALYSIS_SAME} = PUSHS_COMMA_ANALYSIS_SAME
+__{}__{}{PUSHS_COMMA_ANALYSIS_LAST_NUM} = PUSHS_COMMA_ANALYSIS_LAST_NUM)}){}dnl
 __{}ifelse(dnl
 __{}eval($#>3 && PUSHS_COMMA_ANALYSIS_ADD1==$#),{1},{
 __{}__{}    push HL             ; 1:11      $1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,   +1
@@ -697,7 +707,8 @@ __{}__{}                        ;format({%-11s},[18:eval(36+45*$#+11*__HEX_H(256
 __{}{dnl
 __{}__{}undefine({__COMMA}){}dnl
 __{}__{}define({_TMP_MAIN_INFO},{$1 , $2 , ... PUSHS_COMMA_ANALYSIS_LAST ,}){}dnl
-__{}__{}PUSHS_COMMA_SORTED(__CALL_QUICKSORT($@)){}dnl
+__{}__{}__SORT({a},LAST_HERE_ADD,$@){}dnl
+__{}__{}PUSHS_COMMA_SORTED(__SORT_SHOW({a})){}dnl
 __{}}){}dnl
 })}){}dnl
 dnl
@@ -2372,7 +2383,7 @@ define({FAST_COPY_16_BYTES_INIT},{
     exx                 ; 1:4
     push HL             ; 1:11      save ras
     ld   format({%-15s},($1){,}SP); 4:20      save orig SP})dnl
-dnl    
+dnl
 define({FAST_COPY_16_BYTES_STOP},{
                         ;[9:58]
     ld   SP, format({%-11s},($1)); 4:20      load orig SP
@@ -2398,7 +2409,7 @@ define({FAST_COPY_16_BYTES},{
     ex   AF, AF'        ; 1:4
     pop  AF             ; 1:10
     ld   SP, format({%-11s},$2); 3:10      to
-    push AF             ; 1:11    
+    push AF             ; 1:11
     ex   AF, AF'        ; 1:4
     push HL             ; 1:11
     push DE             ; 1:11
@@ -2407,6 +2418,7 @@ define({FAST_COPY_16_BYTES},{
     push HL             ; 1:11
     push DE             ; 1:11
     push BC             ; 1:11
-    push AF             ; 1:11})
+    push AF             ; 1:11})dnl
+dnl
 dnl
 dnl
