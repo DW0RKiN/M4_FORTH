@@ -477,9 +477,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 |<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
 | :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
-|<sub>              |<sub>        DAND         |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 & d1          |
+|<sub>              |<sub>         DAND        |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 & d1          |
+|<sub>              |<sub>     `123.` DAND     |<sub> PUSHDOT_DAND(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 & `123`       |
 |<sub>              |<sub>         DOR         |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 \| d1         |
-|<sub>              |<sub>        DXOR         |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 ^ d1          |
+|<sub>              |<sub>     `123.` DOR      |<sub>  PUSHDOT_DOR(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 \| `123`      |
+|<sub>              |<sub>         DXOR        |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 ^ d1          |
+|<sub>              |<sub>     `123.` DXOR     |<sub> PUSHDOT_DXOR(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 ^ `123`       |
 |<sub>              |<sub>       DINVERT       |<sub>                     |<sub>      ( d1 -- d )      |<sub>d = ~d1              |
 |<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>   `0.` D=    |<sub>   PUSHDOT(`0`) DEQ  |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
