@@ -1,8 +1,8 @@
 dnl ## Logic
 define({__},{})dnl
 dnl
-dnl ( x1 x2 -- x )
-dnl x = x1 & x2
+dnl # ( x1 x2 -- x )
+dnl # x = x1 & x2
 define({AND},{
     ld    A, E          ; 1:4       and   ( x2 x1 -- x )  x = x2 & x1
     and   L             ; 1:4       and
@@ -13,8 +13,8 @@ define({AND},{
     pop  DE             ; 1:10      and})dnl
 dnl
 dnl
-dnl ( x -- x&n )
-dnl x = x & n
+dnl # ( x -- x&n )
+dnl # x = x & n
 define({PUSH_AND},{ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -42,8 +42,8 @@ __{}__AND_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
 dnl
-dnl ( x1 x2 -- x )
-dnl x = x1 | x2
+dnl # ( x1 x2 -- x )
+dnl # x = x1 | x2
 define({OR},{
     ld    A, E          ; 1:4       or   ( x2 x1 -- x )  x = x2 | x1
     or    L             ; 1:4       or
@@ -54,8 +54,8 @@ define({OR},{
     pop  DE             ; 1:10      or})dnl
 dnl
 dnl
-dnl ( x -- x|n )
-dnl x = x | n
+dnl # ( x -- x|n )
+dnl # x = x | n
 define({PUSH_OR},{ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -83,8 +83,8 @@ __{}__OR_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
 dnl
-dnl ( x1 x2 -- x )
-dnl x = x1 ^ x2
+dnl # ( x1 x2 -- x )
+dnl # x = x1 ^ x2
 define({XOR},{
     ld    A, E          ; 1:4       xor   ( x2 x1 -- x )  x = x2 ^ x1
     xor   L             ; 1:4       xor
@@ -95,8 +95,8 @@ define({XOR},{
     pop  DE             ; 1:10      xor})dnl
 dnl
 dnl
-dnl ( x -- x^n )
-dnl x = x ^ n
+dnl # ( x -- x^n )
+dnl # x = x ^ n
 define({PUSH_XOR},{ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -124,10 +124,10 @@ __{}__XOR_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
 dnl
-dnl ( x1 -- x )
-dnl x = ~x1
-dnl -1   -> false
-dnl false-> true
+dnl # ( x1 -- x )
+dnl # x = ~x1
+dnl # -1   -> false
+dnl # false-> true
 define({INVERT},{
     ld    A, L          ; 1:4       invert
     cpl                 ; 1:4       invert
@@ -137,8 +137,8 @@ define({INVERT},{
     ld    H, A          ; 1:4       invert})dnl
 dnl
 dnl
-dnl ( a b c -- ((a-b) (c-b) U<) )
-dnl b <= a < c
+dnl # ( a b c -- ((a-b) (c-b) U<) )
+dnl # b <= a < c
 define({WITHIN},{ifelse(TYP_WITHIN,{fast},{
                         ;[18:91]    within ( a b c -- flag=(b<=a<c) )   # fast version can be changed with "define({TYP_WITHIN},{name})", name=fast
     ld    A, L          ; 1:4       within
@@ -175,8 +175,8 @@ define({WITHIN},{ifelse(TYP_WITHIN,{fast},{
     pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )})})dnl
 dnl
 dnl
-dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
-dnl $1 <= a < $2
+dnl # ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl # $1 <= a < $2
 define({PUSH2_WITHIN},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -191,8 +191,8 @@ __{}    sbc  HL, HL         ; 2:15      _TMP_INFO   HL = 0x0000 or 0xffff}){}dnl
 dnl
 dnl
 dnl
-dnl ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) )
-dnl c2 <= c3 < c1
+dnl # ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) )
+dnl # c2 <= c3 < c1
 define({LO_WITHIN},{
                         ;[10:59]    lo_within   ( c3 c2 c1 -- flag=(c2<=c3<c1) )
     ld    A, L          ; 1:4       lo_within
@@ -207,8 +207,8 @@ define({LO_WITHIN},{
 })dnl
 dnl
 dnl
-dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
-dnl $1 <= a < $2
+dnl # ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl # $1 <= a < $2
 define({PUSH2_LO_WITHIN},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -280,28 +280,28 @@ __{}    sub  low format({%-11s},($2)-($1)); 2:7       push2_lo_within($1,$2)   c
 __{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff})})dnl
 dnl
 dnl
-dnl -------------------------------------
+dnl # -------------------------------------
 dnl
-dnl ( -- x )
-dnl x = 0xFFFF
+dnl # ( -- x )
+dnl # x = 0xFFFF
 define({TRUE},{
     push DE             ; 1:11      true
     ex   DE, HL         ; 1:4       true
     ld   HL, 0xffff     ; 3:10      true})dnl
 dnl
-dnl ( -- x )
-dnl x = 0
+dnl # ( -- x )
+dnl # x = 0
 define({FALSE},{
     push DE             ; 1:11      false
     ex   DE, HL         ; 1:4       false
     ld   HL, 0x0000     ; 3:10      false})dnl
 dnl
-dnl -------------------------------------
+dnl # -------------------------------------
 dnl
-dnl 0=
-dnl ( x1 -- flag )
-dnl if ( x1 ) flag = 0; else flag = 0xFFFF;
-dnl 0 if 16-bit number not equal to zero, -1 if equal
+dnl # 0=
+dnl # ( x1 -- flag )
+dnl # if ( x1 ) flag = 0; else flag = 0xFFFF;
+dnl # 0 if 16-bit number not equal to zero, -1 if equal
 define({_0EQ},{
                         ;[5:29]     0=
     ld    A, H          ; 1:4       0=
@@ -311,12 +311,12 @@ define({_0EQ},{
 dnl
 dnl
 dnl
-dnl ------------ signed -----------------
+dnl # ------------ signed -----------------
 dnl
 dnl
-dnl =
-dnl ( x1 x2 -- flag )
-dnl equal ( x1 == x2 )
+dnl # =
+dnl # ( x1 x2 -- flag )
+dnl # equal ( x1 == x2 )
 define({EQ},{
                         ;[9:48/49]  =
     xor   A             ; 1:4       =   A = 0x00
@@ -328,8 +328,8 @@ define({EQ},{
     pop  DE             ; 1:10      =})dnl
 dnl
 dnl
-dnl ( x -- x|n )
-dnl x = x | n
+dnl # ( x -- x|n )
+dnl # x = x | n
 define({PUSH_EQ},{ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
@@ -505,9 +505,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
-dnl C=
-dnl ( c1 c2 -- flag )
-dnl equal ( lo c1 == lo c2 )
+dnl # C=
+dnl # ( c1 c2 -- flag )
+dnl # equal ( lo c1 == lo c2 )
 define({CEQ},{
                         ;[7:40]     C=   ( c1 c2 -- flag )
     ld    A, L          ; 1:4       C=
@@ -517,10 +517,10 @@ define({CEQ},{
     pop  DE             ; 1:10      C=})dnl
 dnl
 dnl
-dnl over C@ over C@ C=
-dnl ( addr2 addr1 -- addr2 addr1 flag )
-dnl flag = char2 == char1
-dnl 8-bit compares the contents of two addresses.
+dnl # over C@ over C@ C=
+dnl # ( addr2 addr1 -- addr2 addr1 flag )
+dnl # flag = char2 == char1
+dnl # 8-bit compares the contents of two addresses.
 define({OVER_CFETCH_OVER_CFETCH_CEQ},{
                         ;[8:51]     over @C over @C C= over_cfetch_over_cfetch_ceq ( addr2 addr1 -- addr2 addr1 flag(char2==char1) )
     push DE             ; 1:11      over @C over @C C= over_cfetch_over_cfetch_ceq
@@ -532,9 +532,9 @@ define({OVER_CFETCH_OVER_CFETCH_CEQ},{
 dnl
 dnl
 dnl
-dnl <>
-dnl ( x1 x2 -- flag )
-dnl not equal ( x1 <> x2 )
+dnl # <>
+dnl # ( x1 x2 -- flag )
+dnl # not equal ( x1 <> x2 )
 define({NE},{
     or    A             ; 1:4       <>
     sbc  HL, DE         ; 2:15      <>
@@ -581,9 +581,9 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
-dnl <
-dnl ( x2 x1 -- flag )
-dnl signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
+dnl # <
+dnl # ( x2 x1 -- flag )
+dnl # signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define({LT},{
                        ;[12:54]     <   ( x2 x1 -- flag x2<x1 )
     ld    A, E          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
@@ -600,8 +600,8 @@ define({LT},{
     pop  DE             ; 1:10      <})dnl
 dnl
 dnl
-dnl 0<
-dnl ( x1 -- flag )
+dnl # 0<
+dnl # ( x1 -- flag )
 define({_0LT},{ifelse(TYP_0LT,{small},{
                         ;[4:23]     0<  ( x -- flag x<0 )
     rl    H             ; 2:8       0<
@@ -614,10 +614,10 @@ define({_0LT},{ifelse(TYP_0LT,{small},{
     ld    H, A          ; 1:4       0<})})dnl
 dnl
 dnl
-dnl <=
-dnl ( x2 x1 -- flag )
-dnl signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
-dnl signed ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
+dnl # <=
+dnl # ( x2 x1 -- flag )
+dnl # signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
+dnl # signed ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
 define({LE},{ifelse(TYP_LE,{old},{
                        ;[15:63,62]  <=
     ld    A, H          ; 1:4       <=
@@ -645,9 +645,9 @@ define({LE},{ifelse(TYP_LE,{old},{
     pop  DE             ; 1:10      <=})})dnl
 dnl
 dnl
-dnl >
-dnl ( x2 x1 -- flag )
-dnl signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
+dnl # >
+dnl # ( x2 x1 -- flag )
+dnl # signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define({GT},{
                        ;[12:54]     >   ( x2 x1 -- flag x2>x1 )
     ld    A, L          ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
@@ -664,10 +664,10 @@ define({GT},{
     pop  DE             ; 1:10      >})dnl
 dnl
 dnl
-dnl >=
-dnl ( x2 x1 -- flag )
-dnl signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
-dnl signed ( x2 >= x1 ) --> ( x2 - x1 >= 0 ) --> no carry is true
+dnl # >=
+dnl # ( x2 x1 -- flag )
+dnl # signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
+dnl # signed ( x2 >= x1 ) --> ( x2 - x1 >= 0 ) --> no carry is true
 define({GE},{ifelse(TYP_GE,{old},{
                        ;[15:63,62]  >=
     ld    A, H          ; 1:4       >=
@@ -695,27 +695,27 @@ define({GE},{ifelse(TYP_GE,{old},{
     pop  DE             ; 1:10      >=})})dnl
 dnl
 dnl
-dnl 0>=
-dnl ( x1 -- flag )
+dnl # 0>=
+dnl # ( x1 -- flag )
 define({_0GE},{
     ld    A, H          ; 1:4       0>=
     sub   0x80          ; 2:7       0>=
     sbc  HL, HL         ; 2:15      0>=
     pop  DE             ; 1:10      0>=})dnl
 dnl
-dnl ------------ unsigned ---------------
+dnl # ------------ unsigned ---------------
 dnl
-dnl ( x1 x2 -- x )
-dnl equal ( x1 == x2 )
+dnl # ( x1 x2 -- x )
+dnl # equal ( x1 == x2 )
 define({UEQ},{EQ})dnl
 dnl
-dnl ( x1 x2 -- x )
-dnl not equal ( x1 <> x2 )
+dnl # ( x1 x2 -- x )
+dnl # not equal ( x1 <> x2 )
 define({UNE},{NE})dnl
 dnl
 dnl
-dnl ( x2 x1 -- x )
-dnl unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
+dnl # ( x2 x1 -- x )
+dnl # unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define({ULT},{
                         ;[7:41]     u<
     ld    A, E          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
@@ -726,9 +726,9 @@ define({ULT},{
     pop  DE             ; 1:10      u<})dnl
 dnl
 dnl
-dnl ( x2 x1 -- x )
-dnl unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
-dnl unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
+dnl # ( x2 x1 -- x )
+dnl # unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
+dnl # unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
 define({ULE},{
     scf                 ; 1:4       u<=
     ex   DE, HL         ; 1:4       u<=
@@ -737,8 +737,8 @@ define({ULE},{
     pop  DE             ; 1:10      u<=})dnl
 dnl
 dnl
-dnl ( x2 x1 -- x )
-dnl unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
+dnl # ( x2 x1 -- x )
+dnl # unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define({UGT},{
     or    A             ; 1:4       u>
     sbc  HL, DE         ; 2:15      u>
@@ -746,61 +746,61 @@ define({UGT},{
     pop  DE             ; 1:10      u>})dnl
 dnl
 dnl
-dnl ( x2 x1 -- x )
-dnl unsigned ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
+dnl # ( x2 x1 -- x )
+dnl # unsigned ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 define({UGE},{
     scf                 ; 1:4       u>=
     sbc  HL, DE         ; 2:15      u>=
     sbc  HL, HL         ; 2:15      u>=
     pop  DE             ; 1:10      u>=})dnl
 dnl
-dnl ------------- shifts ----------------
+dnl # ------------- shifts ----------------
 dnl
-dnl ( x u -- x)
-dnl shifts x left u places
+dnl # ( x u -- x)
+dnl # shifts x left u places
 define({LSHIFT},{ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
     call  DE_LSHIFT     ; 3:17      <<   ( x1 u -- x1<<u )
     pop   DE            ; 1:10      <<})dnl
 dnl
 dnl
-dnl ( x u -- x)
-dnl shifts x right u places
+dnl # ( x u -- x)
+dnl # shifts x right u places
 define({RSHIFT},{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
     call  DE_RSHIFT     ; 3:17      >>   ( x1 u -- x1>>u )
     pop   DE            ; 1:10      >>})dnl
 dnl
 dnl
-dnl 1 <<
-dnl x 1 lshift
-dnl ( x -- x)
-dnl shifts x left 1 place
+dnl # 1 <<
+dnl # x 1 lshift
+dnl # ( x -- x)
+dnl # shifts x left 1 place
 define({_1LSHIFT},{
     add  HL, HL         ; 1:11      1 lshift   ( u -- u<<1 )})dnl
 dnl
 dnl
-dnl 2 <<
-dnl x 2 lshift
-dnl ( x -- x)
-dnl shifts x left 2 places
+dnl # 2 <<
+dnl # x 2 lshift
+dnl # ( x -- x)
+dnl # shifts x left 2 places
 define({_2LSHIFT},{
     add  HL, HL         ; 1:11      2 lshift   ( u -- u<<2 )
     add  HL, HL         ; 1:11      2 lshift})dnl
 dnl
 dnl
-dnl 3 <<
-dnl x 3 lshift
-dnl ( x -- x)
-dnl shifts x left 3 places
+dnl # 3 <<
+dnl # x 3 lshift
+dnl # ( x -- x)
+dnl # shifts x left 3 places
 define({_3LSHIFT},{
     add  HL, HL         ; 1:11      3 lshift   ( u -- u<<3 )
     add  HL, HL         ; 1:11      3 lshift
     add  HL, HL         ; 1:11      3 lshift})dnl
 dnl
 dnl
-dnl 4 <<
-dnl x 4 lshift
-dnl ( x -- x)
-dnl shifts x left 4 places
+dnl # 4 <<
+dnl # x 4 lshift
+dnl # ( x -- x)
+dnl # shifts x left 4 places
 define({_4LSHIFT},{
     add  HL, HL         ; 1:11      4 lshift   ( u -- u<<4 )
     add  HL, HL         ; 1:11      4 lshift
@@ -808,10 +808,10 @@ define({_4LSHIFT},{
     add  HL, HL         ; 1:11      4 lshift})dnl
 dnl
 dnl
-dnl 5 <<
-dnl x 5 lshift
-dnl ( x -- x)
-dnl shifts x left 5 places
+dnl # 5 <<
+dnl # x 5 lshift
+dnl # ( x -- x)
+dnl # shifts x left 5 places
 define({_5LSHIFT},{
     add  HL, HL         ; 1:11      5 lshift   ( u -- u<<5 )
     add  HL, HL         ; 1:11      5 lshift
@@ -820,10 +820,10 @@ define({_5LSHIFT},{
     add  HL, HL         ; 1:11      5 lshift})dnl
 dnl
 dnl
-dnl 6 <<
-dnl x 6 lshift
-dnl ( x -- x)
-dnl shifts x left 6 places
+dnl # 6 <<
+dnl # x 6 lshift
+dnl # ( x -- x)
+dnl # shifts x left 6 places
 define({_6LSHIFT},{
                        ;[12:47]     6 lshift   ( u -- u<<6 )
     ld    A, H          ; 1:4       6 lshift
@@ -837,10 +837,10 @@ define({_6LSHIFT},{
     ld    L, A          ; 1:4       6 lshift})dnl
 dnl
 dnl
-dnl 7 <<
-dnl x 7 lshift
-dnl ( x -- x)
-dnl shifts x left 7 places
+dnl # 7 <<
+dnl # x 7 lshift
+dnl # ( x -- x)
+dnl # shifts x left 7 places
 define({_7LSHIFT},{
     xor   A             ; 1:4       7 lshift   ( u -- u<<7 )
     srl   H             ; 2:8       7 lshift
@@ -850,29 +850,29 @@ define({_7LSHIFT},{
     ld    L, A          ; 1:4       7 lshift})dnl
 dnl
 dnl
-dnl 8 <<
-dnl x 8 lshift
-dnl ( x -- x)
-dnl shifts x left 8 places
+dnl # 8 <<
+dnl # x 8 lshift
+dnl # ( x -- x)
+dnl # shifts x left 8 places
 define({_8LSHIFT},{
     ld    H, L          ; 1:4       8 lshift   ( u -- u<<8 )
     ld    L, 0x00       ; 2:7       8 lshift})dnl
 dnl
 dnl
-dnl 9 <<
-dnl x 9 lshift
-dnl ( x -- x)
-dnl shifts x left 9 places
+dnl # 9 <<
+dnl # x 9 lshift
+dnl # ( x -- x)
+dnl # shifts x left 9 places
 define({_9LSHIFT},{
     sla   L             ; 2:8       9 lshift   ( u -- u<<9 )
     ld    H, L          ; 1:4       9 lshift
     ld    L, 0x00       ; 2:7       9 lshift})dnl
 dnl
 dnl
-dnl 10 <<
-dnl x 10 lshift
-dnl ( x -- x)
-dnl shifts x left 10 places
+dnl # 10 <<
+dnl # x 10 lshift
+dnl # ( x -- x)
+dnl # shifts x left 10 places
 define({_10LSHIFT},{
     ld    A, L          ; 1:4       10 lshift   ( u -- u<<10 )
     add   A, A          ; 1:4       10 lshift
@@ -881,10 +881,10 @@ define({_10LSHIFT},{
     ld    L, 0x00       ; 2:7       10 lshift})dnl
 dnl
 dnl
-dnl 11 <<
-dnl x 11 lshift
-dnl ( x -- x)
-dnl shifts x left 11 places
+dnl # 11 <<
+dnl # x 11 lshift
+dnl # ( x -- x)
+dnl # shifts x left 11 places
 define({_11LSHIFT},{
     ld    A, L          ; 1:4       11 lshift   ( u -- u<<11 )
     add   A, A          ; 1:4       11 lshift
@@ -894,10 +894,10 @@ define({_11LSHIFT},{
     ld    L, 0x00       ; 2:7       11 lshift})dnl
 dnl
 dnl
-dnl 12 <<
-dnl x 12 lshift
-dnl ( x -- x)
-dnl shifts x left 12 places
+dnl # 12 <<
+dnl # x 12 lshift
+dnl # ( x -- x)
+dnl # shifts x left 12 places
 define({_12LSHIFT},{
     ld    A, L          ; 1:4       12 lshift   ( u -- u<<12 )
     add   A, A          ; 1:4       12 lshift
@@ -908,10 +908,10 @@ define({_12LSHIFT},{
     ld    L, 0x00       ; 2:7       12 lshift})dnl
 dnl
 dnl
-dnl 13 <<
-dnl x 13 lshift
-dnl ( x -- x)
-dnl shifts x left 13 places
+dnl # 13 <<
+dnl # x 13 lshift
+dnl # ( x -- x)
+dnl # shifts x left 13 places
 define({_13LSHIFT},{
     ld    A, L          ; 1:4       13 lshift   ( u -- u<<13 )
     rrca                ; 1:4       13 lshift
@@ -922,10 +922,10 @@ define({_13LSHIFT},{
     ld    L, 0x00       ; 2:7       13 lshift})dnl
 dnl
 dnl
-dnl 14 <<
-dnl x 14 lshift
-dnl ( x -- x)
-dnl shifts x left 14 places
+dnl # 14 <<
+dnl # x 14 lshift
+dnl # ( x -- x)
+dnl # shifts x left 14 places
 define({_14LSHIFT},{
     ld    A, L          ; 1:4       14 lshift   ( u -- u<<14 )
     rrca                ; 1:4       14 lshift
@@ -935,10 +935,10 @@ define({_14LSHIFT},{
     ld    L, 0x00       ; 2:7       14 lshift})dnl
 dnl
 dnl
-dnl 15 <<
-dnl x 15 lshift
-dnl ( x -- x)
-dnl shifts x left 15 places
+dnl # 15 <<
+dnl # x 15 lshift
+dnl # ( x -- x)
+dnl # shifts x left 15 places
 define({_15LSHIFT},{
     xor   A             ; 1:4       15 lshift   ( u -- u<<15 )
     rr    L             ; 2:8       15 lshift
@@ -947,28 +947,28 @@ define({_15LSHIFT},{
     ld    H, A          ; 1:4       15 lshift})dnl
 dnl
 dnl
-dnl 16 <<
-dnl x 16 lshift
-dnl ( x -- x)
-dnl shifts x left 16 places
+dnl # 16 <<
+dnl # x 16 lshift
+dnl # ( x -- x)
+dnl # shifts x left 16 places
 define({_16LSHIFT},{
     ld   HL, 0x0000     ; 3:10      16 lshift   ( u -- u<<16 )})dnl
 dnl
 dnl
 dnl
-dnl 1 >>
-dnl x 1 rshift
-dnl ( u -- u )
-dnl shifts u right 1 place
+dnl # 1 >>
+dnl # x 1 rshift
+dnl # ( u -- u )
+dnl # shifts u right 1 place
 define({_1RSHIFT},{
     srl   H             ; 2:8       1 rshift   ( u -- u>>1 )
     rr    L             ; 2:8       1 rshift})dnl
 dnl
 dnl
-dnl 2 >>
-dnl x 2 rshift
-dnl ( u -- u )
-dnl shifts u right 2 places
+dnl # 2 >>
+dnl # x 2 rshift
+dnl # ( u -- u )
+dnl # shifts u right 2 places
 define({_2RSHIFT},{
     srl   H             ; 2:8       2 rshift   ( u -- u>>2 )
     rr    L             ; 2:8       2 rshift
@@ -976,10 +976,10 @@ define({_2RSHIFT},{
     rr    L             ; 2:8       2 rshift})dnl
 dnl
 dnl
-dnl 3 >>
-dnl x 3 rshift
-dnl ( u -- u )
-dnl shifts u right 3 places
+dnl # 3 >>
+dnl # x 3 rshift
+dnl # ( u -- u )
+dnl # shifts u right 3 places
 define({_3RSHIFT},{
     ld    A, L          ; 1:4       3 rshift   ( u -- u>>3 )
     srl   H             ; 2:8       3 rshift
@@ -991,10 +991,10 @@ define({_3RSHIFT},{
     ld    L, A          ; 1:4       3 rshift})dnl
 dnl
 dnl
-dnl 4 >>
-dnl x 4 rshift
-dnl ( u -- u )
-dnl shifts u right 4 places
+dnl # 4 >>
+dnl # x 4 rshift
+dnl # ( u -- u )
+dnl # shifts u right 4 places
 define({_4RSHIFT},{
     ld    A, L          ; 1:4       4 rshift   ( u -- u>>4 )
     srl   H             ; 2:8       4 rshift
@@ -1009,10 +1009,10 @@ define({_4RSHIFT},{
 dnl
 dnl
 dnl
-dnl 5 >>
-dnl u 5 rshift
-dnl ( u -- u )
-dnl shifts u right 5 places
+dnl # 5 >>
+dnl # u 5 rshift
+dnl # ( u -- u )
+dnl # shifts u right 5 places
 define({_5RSHIFT},{
     xor   A             ; 1:4       5 rshift   ( u -- u>>5 )
     add  HL, HL         ; 1:11      5 rshift
@@ -1026,10 +1026,10 @@ define({_5RSHIFT},{
 dnl
 dnl
 dnl
-dnl 6 >>
-dnl u 6 rshift
-dnl ( u -- u )
-dnl shifts u right 6 places
+dnl # 6 >>
+dnl # u 6 rshift
+dnl # ( u -- u )
+dnl # shifts u right 6 places
 define({_6RSHIFT},{
     xor   A             ; 1:4       6 rshift   ( u -- u>>6 )
     add  HL, HL         ; 1:11      6 rshift
@@ -1041,10 +1041,10 @@ define({_6RSHIFT},{
 dnl
 dnl
 dnl
-dnl 7 >>
-dnl u 7 rshift
-dnl ( u -- u )
-dnl shifts u right 7 places
+dnl # 7 >>
+dnl # u 7 rshift
+dnl # ( u -- u )
+dnl # shifts u right 7 places
 define({_7RSHIFT},{
     xor   A             ; 1:4       7 rshift   ( u -- u>>7 )
     add  HL, HL         ; 1:11      7 rshift
@@ -1053,29 +1053,29 @@ define({_7RSHIFT},{
     ld    H, A          ; 1:4       7 rshift})dnl
 dnl
 dnl
-dnl 8 >>
-dnl u 8 rshift
-dnl ( u -- u )
-dnl shifts u right 8 places
+dnl # 8 >>
+dnl # u 8 rshift
+dnl # ( u -- u )
+dnl # shifts u right 8 places
 define({_8RSHIFT},{
     ld    L, H          ; 1:4       8 rshift   ( u -- u>>8 )
     ld    H, 0x00       ; 2:7       8 rshift})dnl
 dnl
 dnl
-dnl 9 >>
-dnl u 9 rshift
-dnl ( u -- u )
-dnl shifts u right 9 places
+dnl # 9 >>
+dnl # u 9 rshift
+dnl # ( u -- u )
+dnl # shifts u right 9 places
 define({_9RSHIFT},{
     srl   H             ; 2:8       9 rshift   ( u -- u>>9 )
     ld    L, H          ; 1:4       9 rshift
     ld    H, 0x00       ; 2:7       9 rshift})dnl
 dnl
 dnl
-dnl 10 >>
-dnl u 10 rshift
-dnl ( u -- u )
-dnl shifts u right 10 places
+dnl # 10 >>
+dnl # u 10 rshift
+dnl # ( u -- u )
+dnl # shifts u right 10 places
 define({_10RSHIFT},{
     srl   H             ; 2:8       10 rshift   ( u -- u>>10 )
     srl   H             ; 2:8       10 rshift
@@ -1083,10 +1083,10 @@ define({_10RSHIFT},{
     ld    H, 0x00       ; 2:7       10 rshift})dnl
 dnl
 dnl
-dnl 11 >>
-dnl u 11 rshift
-dnl ( u -- u )
-dnl shifts u right 11 places
+dnl # 11 >>
+dnl # u 11 rshift
+dnl # ( u -- u )
+dnl # shifts u right 11 places
 define({_11RSHIFT},{
     ld    A, H          ; 1:4       11 rshift   ( u -- u>>11 )
     and  0xF8           ; 2:7       11 rshift
@@ -1097,10 +1097,10 @@ define({_11RSHIFT},{
     ld    H, 0x00       ; 2:7       11 rshift})dnl
 dnl
 dnl
-dnl 12 >>
-dnl u 12 rshift
-dnl ( u -- u )
-dnl shifts u right 12 places
+dnl # 12 >>
+dnl # u 12 rshift
+dnl # ( u -- u )
+dnl # shifts u right 12 places
 define({_12RSHIFT},{
     ld    A, H          ; 1:4       12 rshift   ( u -- u>>12 )
     and  0xF0           ; 2:7       12 rshift
@@ -1112,10 +1112,10 @@ define({_12RSHIFT},{
     ld    H, 0x00       ; 2:7       12 rshift})dnl
 dnl
 dnl
-dnl 13 >>
-dnl u 13 rshift
-dnl ( u -- u )
-dnl shifts u right 13 places
+dnl # 13 >>
+dnl # u 13 rshift
+dnl # ( u -- u )
+dnl # shifts u right 13 places
 define({_13RSHIFT},{
     ld    A, H          ; 1:4       13 rshift   ( u -- u>>13 )
     and  0xE0           ; 2:7       13 rshift
@@ -1126,10 +1126,10 @@ define({_13RSHIFT},{
     ld    H, 0x00       ; 2:7       13 rshift})dnl
 dnl
 dnl
-dnl 14 >>
-dnl u 14 rshift
-dnl ( u -- u )
-dnl shifts u right 14 places
+dnl # 14 >>
+dnl # u 14 rshift
+dnl # ( u -- u )
+dnl # shifts u right 14 places
 define({_14RSHIFT},{
     ld    A, H          ; 1:4       14 rshift   ( u -- u>>14 )
     and  0xC0           ; 2:7       14 rshift
@@ -1139,10 +1139,10 @@ define({_14RSHIFT},{
     ld    H, 0x00       ; 2:7       14 rshift})dnl
 dnl
 dnl
-dnl 15 >>
-dnl u 15 rshift
-dnl ( u -- u )
-dnl shifts u right 15 places
+dnl # 15 >>
+dnl # u 15 rshift
+dnl # ( u -- u )
+dnl # shifts u right 15 places
 define({_15RSHIFT},{
     xor   A             ; 1:4       15 rshift   ( u -- u>>15 )
     rl    H             ; 2:8       15 rshift
@@ -1151,17 +1151,17 @@ define({_15RSHIFT},{
     ld    L, A          ; 1:4       15 rshift})dnl
 dnl
 dnl
-dnl 16 >>
-dnl u 16 rshift
-dnl ( u -- u )
-dnl shifts u right 16 places
+dnl # 16 >>
+dnl # u 16 rshift
+dnl # ( u -- u )
+dnl # shifts u right 16 places
 define({_16RSHIFT},{
     ld   HL, 0x0000     ; 3:10      16 rshift   ( u -- u>>16 )})dnl
 dnl
 dnl
 dnl
-dnl ( u -- u )
-dnl shifs u right $1 places
+dnl # ( u -- u )
+dnl # shifs u right $1 places
 define({PUSH_RSHIFT},{ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
@@ -1197,8 +1197,8 @@ __{}__{}    .error {$0}($@): $# parameters found in macro!}){}dnl
 }){}dnl
 dnl
 dnl
-dnl ( u -- u )
-dnl shifs u left $1 places
+dnl # ( u -- u )
+dnl # shifs u left $1 places
 define({PUSH_LSHIFT},{ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
@@ -1235,11 +1235,11 @@ __{}__{}    .error {$0}($@): $# parameters found in macro!}){}dnl
 dnl
 dnl
 dnl
-dnl -------------------------- 32 bits --------------------------
+dnl # -------------------------- 32 bits --------------------------
 dnl
 dnl
-dnl ( d1 d2 -- d )
-dnl d = d1 & d2
+dnl # ( d1 d2 -- d )
+dnl # d = d1 & d2
 define({DAND},{
     pop  BC             ; 1:10      dand   ( d2 d1 -- d )  d = d2 & d1
     ld    A, C          ; 1:4       dand
@@ -1257,8 +1257,8 @@ define({DAND},{
     ld    D, A          ; 1:4       dand})dnl
 dnl
 dnl
-dnl ( d1 -- d )
-dnl d = d1 & n
+dnl # ( d1 -- d )
+dnl # d = d1 & n
 define({PUSHDOT_DAND},{ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -1287,8 +1287,8 @@ __{}}){}dnl
 })dnl
 dnl
 dnl
-dnl ( d1 d2 -- d )
-dnl d = d1 | d2
+dnl # ( d1 d2 -- d )
+dnl # d = d1 | d2
 define({DOR},{
     pop  BC             ; 1:10      dor   ( d2 d1 -- d )  d = d2 | d1
     ld    A, C          ; 1:4       dor
@@ -1306,8 +1306,8 @@ define({DOR},{
     ld    D, A          ; 1:4       dor})dnl
 dnl
 dnl
-dnl ( d1 -- d )
-dnl d = d1 | n
+dnl # ( d1 -- d )
+dnl # d = d1 | n
 define({PUSHDOT_DOR},{ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -1336,8 +1336,8 @@ __{}}){}dnl
 })dnl
 dnl
 dnl
-dnl ( d1 d2 -- d )
-dnl d = d1 ^ d2
+dnl # ( d1 d2 -- d )
+dnl # d = d1 ^ d2
 define({DXOR},{
     pop  BC             ; 1:10      dxor   ( d2 d1 -- d )  d = d2 ^ d1
     ld    A, C          ; 1:4       dxor
@@ -1355,8 +1355,8 @@ define({DXOR},{
     ld    D, A          ; 1:4       dxor})dnl
 dnl
 dnl
-dnl ( d1 -- d )
-dnl d = d1 ^ n
+dnl # ( d1 -- d )
+dnl # d = d1 ^ n
 define({PUSHDOT_DXOR},{ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -1385,8 +1385,8 @@ __{}}){}dnl
 })dnl
 dnl
 dnl
-dnl ( d1 -- d )
-dnl d = ~d1
+dnl # ( d1 -- d )
+dnl # d = ~d1
 define({DINVERT},{
     ld    A, L          ; 1:4       dinvert   ( d1 -- d )  d = ~d1
     cpl                 ; 1:4       dinvert
@@ -1402,10 +1402,10 @@ define({DINVERT},{
     ld    D, A          ; 1:4       dinvert})dnl
 dnl
 dnl
-dnl D0=
-dnl ( d -- f )
-dnl if ( x1x2 ) flag = 0; else flag = 0xFFFF;
-dnl 0 if 32-bit number not equal to zero, -1 if equal
+dnl # D0=
+dnl # ( d -- f )
+dnl # if ( x1x2 ) flag = 0; else flag = 0xFFFF;
+dnl # 0 if 32-bit number not equal to zero, -1 if equal
 define({D0EQ},{ifelse(TYP_D0EQ,{small},{
                         ;[8:54]     D0=   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
     add  HL, DE         ; 1:11      D0=   carry: 0    1
@@ -1426,8 +1426,8 @@ define({D0EQ},{ifelse(TYP_D0EQ,{small},{
     pop   DE            ; 1:10      D0=})})dnl
 dnl
 dnl
-dnl D0<
-dnl ( d -- flag )
+dnl # D0<
+dnl # ( d -- flag )
 define({D0LT},{ifelse(TYP_D0LT,{small},{
                         ;[5:34]     D0<   ( hi lo -- flag D<0 )
     rl    D             ; 2:8       D0<
@@ -1442,9 +1442,9 @@ define({D0LT},{ifelse(TYP_D0LT,{small},{
     ld    H, A          ; 1:4       D0<   set flag D < 0})})dnl
 dnl
 dnl
-dnl D=
-dnl ( d2 d1 -- flag )
-dnl equal ( d1 == d2 )
+dnl # D=
+dnl # ( d2 d1 -- flag )
+dnl # equal ( d1 == d2 )
 define({DEQ},{
                        ;[15:90/69,91]D=  ( d2 d1 -- flag )
     pop  BC             ; 1:10      D=   BC = lo_2
@@ -1460,15 +1460,15 @@ define({DEQ},{
     pop  DE             ; 1:10      D=})dnl
 dnl
 dnl
-dnl Du=
-dnl ( ud2 ud1 -- flag )
-dnl equal ( ud1 == ud2 )
+dnl # Du=
+dnl # ( ud2 ud1 -- flag )
+dnl # equal ( ud1 == ud2 )
 define({DUEQ},{DEQ})dnl
 dnl
 dnl
-dnl D<>
-dnl ( d2 d1 -- flag )
-dnl not equal ( d1 != d2 )
+dnl # D<>
+dnl # ( d2 d1 -- flag )
+dnl # not equal ( d1 != d2 )
 define({DNE},{
                        ;[15:71,88/83]D<>  ( d2 d1 -- flag )
     pop  BC             ; 1:10      D<>   n h2    . h1 l1  BC= lo(d2) = l2
@@ -1482,15 +1482,15 @@ define({DNE},{
     pop  DE             ; 1:10      D<>           . n  ff})dnl
 dnl
 dnl
-dnl Du<>
-dnl ( ud2 ud1 -- flag )
-dnl not equal ( ud1 != ud2 )
+dnl # Du<>
+dnl # ( ud2 ud1 -- flag )
+dnl # not equal ( ud1 != ud2 )
 define({DUNE},{DNE})dnl
 dnl
 dnl
-dnl D<
-dnl ( d2 d1 -- flag )
-dnl signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
+dnl # D<
+dnl # ( d2 d1 -- flag )
+dnl # signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
 define({DLT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                         ;[8:62]     D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<   l2
@@ -1518,10 +1518,10 @@ define({DLT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FC
     pop  DE             ; 1:10      D<})})dnl
 dnl
 dnl
-dnl Du<
-dnl 2swap Du>
-dnl ( ud2 ud1 -- flag d2<d1 )
-dnl unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
+dnl # Du<
+dnl # 2swap Du>
+dnl # ( ud2 ud1 -- flag d2<d1 )
+dnl # unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
 define({DULT},{
                         ;[11:76]    Du<   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du<   lo(ud2)
@@ -1535,10 +1535,10 @@ define({DULT},{
     pop  DE             ; 1:10      Du<})dnl
 dnl
 dnl
-dnl D>=
-dnl 2swap D<=
-dnl ( d2 d1 -- flag )
-dnl (d2 >= d1)  -->  (d2 + 1 > d1) -->  (0 > d1 - d2 - 1) -->  carry if true
+dnl # D>=
+dnl # 2swap D<=
+dnl # ( d2 d1 -- flag )
+dnl # (d2 >= d1)  -->  (d2 + 1 > d1) -->  (0 > d1 - d2 - 1) -->  carry if true
 define({DGE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                         ;[9:66]     D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>=   l2
@@ -1565,10 +1565,10 @@ define({DGE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FC
     pop  DE             ; 1:10      D>=})})dnl
 dnl
 dnl
-dnl Du>=
-dnl 2swap Du<=
-dnl ( ud2 ud1 -- flag )
-dnl (ud2 >= ud1)  -->  (ud2 + 1 > ud1) -->  (0 > ud1 - ud2 - 1) -->  carry if true
+dnl # Du>=
+dnl # 2swap Du<=
+dnl # ( ud2 ud1 -- flag )
+dnl # (ud2 >= ud1)  -->  (ud2 + 1 > ud1) -->  (0 > ud1 - ud2 - 1) -->  carry if true
 define({DUGE},{
                         ;[12:80]    Du>=   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du>=   lo(ud2)
@@ -1583,9 +1583,9 @@ define({DUGE},{
     pop  DE             ; 1:10      Du>=})dnl
 dnl
 dnl
-dnl D<=
-dnl 2swap D>=
-dnl ( d2 d1 -- f )
+dnl # D<=
+dnl # 2swap D>=
+dnl # ( d2 d1 -- f )
 define({DLE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                         ;[9:66]     D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<=   l2
@@ -1615,10 +1615,10 @@ define({DLE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FC
     pop  DE             ; 1:10      D<=})})dnl
 dnl
 dnl
-dnl Du<=
-dnl 2swap Du>=
-dnl ( ud2 ud1 -- flag )
-dnl (ud2 <= ud1)  -->  (ud2 < ud1 + 1) -->  (ud2 - ud1 - 1 < 0) -->  carry if true
+dnl # Du<=
+dnl # 2swap Du>=
+dnl # ( ud2 ud1 -- flag )
+dnl # (ud2 <= ud1)  -->  (ud2 < ud1 + 1) -->  (ud2 - ud1 - 1 < 0) -->  carry if true
 define({DULE},{
                         ;[12:80]    Du<=   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du<=   lo(ud2)
@@ -1633,9 +1633,9 @@ define({DULE},{
     pop  DE             ; 1:10      Du<=})dnl
 dnl
 dnl
-dnl D>
-dnl 2swap D<
-dnl ( d2 d1 -- flag )
+dnl # D>
+dnl # 2swap D<
+dnl # ( d2 d1 -- flag )
 define({DGT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                         ;[8:62]     D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>   l2
@@ -1663,9 +1663,9 @@ define({DGT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FC
     pop  DE             ; 1:10      D>})})dnl
 dnl
 dnl
-dnl Du>
-dnl 2swap Du<
-dnl ( ud2 ud1 -- flag )
+dnl # Du>
+dnl # 2swap Du<
+dnl # ( ud2 ud1 -- flag )
 define({DUGT},{
                         ;[13:77]    Du>   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du>   lo(ud2)
@@ -1683,8 +1683,8 @@ define({DUGT},{
 dnl
 dnl
 dnl
-dnl 4dup D=
-dnl ( d d -- d d f )
+dnl # 4dup D=
+dnl # ( d d -- d d f )
 define({_4DUP_DEQ},{
                        ;[20:138/-21,+1] 4dup D=   ( d2 d1 -- d2 d1 flag )
     pop  AF             ; 1:10      4dup D=   h2          . h1 l1  AF= lo(d2) = l2
@@ -1706,15 +1706,15 @@ define({_4DUP_DEQ},{
 dnl
 dnl
 dnl
-dnl 4dup Du=
-dnl ( ud2 ud1 -- ud2 ud1 flag )
-dnl equal ( ud1 == ud2 )
+dnl # 4dup Du=
+dnl # ( ud2 ud1 -- ud2 ud1 flag )
+dnl # equal ( ud1 == ud2 )
 define({_4DUP_DUEQ},{_4DUP_DEQ})dnl
 dnl
 dnl
 dnl
-dnl 4dup D<>
-dnl ( d d -- d d f )
+dnl # 4dup D<>
+dnl # ( d d -- d d f )
 define({_4DUP_DNE},{ifelse(_TYP_DOUBLE,{fast},{
             ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D<>   h2       . h1 l1  BC= lo(d2) = l2
@@ -1757,15 +1757,15 @@ define({_4DUP_DNE},{ifelse(_TYP_DOUBLE,{fast},{
 dnl
 dnl
 dnl
-dnl 4dup Du<>
-dnl ( ud2 ud1 -- ud2 ud1 flag )
-dnl not equal ( ud1 <> ud2 )
+dnl # 4dup Du<>
+dnl # ( ud2 ud1 -- ud2 ud1 flag )
+dnl # not equal ( ud1 <> ud2 )
 define({_4DUP_DUNE},{_4DUP_DNE})dnl
 dnl
 dnl
 dnl
-dnl 4dup D<
-dnl ( d d -- d d f )
+dnl # 4dup D<
+dnl # ( d d -- d d f )
 define({_4DUP_DLT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
                         ;[7:201]    4dup D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D<   carry if true
@@ -1796,8 +1796,8 @@ define({_4DUP_DLT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{ye
 dnl
 dnl
 dnl
-dnl 4dup Du<
-dnl ( ud ud -- ud ud f )
+dnl # 4dup Du<
+dnl # ( ud ud -- ud ud f )
 define({_4DUP_DULT},{
                        ;[16:121]    4dup Du<   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du<   lo_2
@@ -1818,8 +1818,8 @@ define({_4DUP_DULT},{
 dnl
 dnl
 dnl
-dnl 4dup D>=
-dnl ( d d -- d d f )
+dnl # 4dup D>=
+dnl # ( d d -- d d f )
 define({_4DUP_DGE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
                         ;[8:51]     4dup D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D>=   D< carry if true --> D>= carry if false
@@ -1852,8 +1852,8 @@ define({_4DUP_DGE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{ye
 dnl
 dnl
 dnl
-dnl 4dup Du>=
-dnl ( ud ud -- ud ud f )
+dnl # 4dup Du>=
+dnl # ( ud ud -- ud ud f )
 define({_4DUP_DUGE},{
                        ;[17:125]    4dup Du>=   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du>=   lo_2
@@ -1875,8 +1875,8 @@ define({_4DUP_DUGE},{
 dnl
 dnl
 dnl
-dnl 4dup D<=
-dnl ( d d -- d d f )
+dnl # 4dup D<=
+dnl # ( d d -- d d f )
 define({_4DUP_DLE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
                         ;[8:51]     4dup D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D<=   D> carry if true --> D<= carry if false
@@ -1909,8 +1909,8 @@ define({_4DUP_DLE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{ye
 dnl
 dnl
 dnl
-dnl 4dup Du<=
-dnl ( ud ud -- ud ud f )
+dnl # 4dup Du<=
+dnl # ( ud ud -- ud ud f )
 define({_4DUP_DULE},{
                        ;[17:125]    4dup Du<=   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du<=   lo_2
@@ -1932,8 +1932,8 @@ define({_4DUP_DULE},{
 dnl
 dnl
 dnl
-dnl 4dup D>
-dnl ( d d -- d d f )
+dnl # 4dup D>
+dnl # ( d d -- d d f )
 define({_4DUP_DGT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
                         ;[7:201]    4dup D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D>   carry if true
@@ -1964,8 +1964,8 @@ define({_4DUP_DGT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{ye
 dnl
 dnl
 dnl
-dnl 4dup Du>
-dnl ( ud ud -- ud ud f )
+dnl # 4dup Du>
+dnl # ( ud ud -- ud ud f )
 define({_4DUP_DUGT},{
                        ;[16:121]    4dup Du>   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du>   lo_2
@@ -1986,8 +1986,8 @@ define({_4DUP_DUGT},{
 dnl
 dnl
 dnl
-dnl 2dup D. D=
-dnl ( d -- d f )
+dnl # 2dup D. D=
+dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DEQ},{dnl
 __{}define({_TMP_INFO},{2dup $1 D=})dnl
 __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) == DEHL})dnl
@@ -2015,9 +2015,9 @@ __{}__{}__{}__DEQ_MAKE_BEST_CODE($1,6,37,0,0){}dnl
 __{}__{}__{}__DEQ_MAKE_HLDE_CODE($1,10){}dnl
 __{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
 __{}__{}__{}ifelse(_TMP_ZERO,{1},{dnl
-__{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl    false
-__{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+20)){}dnl false2
-__{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+19)){}dnl true
+__{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl #    false
+__{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+20)){}dnl # false2
+__{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+19)){}dnl # true
 __{}__{}__{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
 __{}__{}__{}__{}__{}}_TMP_HLDE_CODE{
@@ -2026,16 +2026,16 @@ __{}__{}__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = t
 __{}__{}__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
 __{}__{}__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==$1})},
 __{}__{}__{}{dnl
-__{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+15)){}dnl   false
-__{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+27)){}dnl false2
-__{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+26)){}dnl true
+__{}__{}__{}__{}define({_TMP_J},eval(_TMP_J+15)){}dnl #   false
+__{}__{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+27)){}dnl # false2
+__{}__{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+26)){}dnl # true
 __{}__{}__{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
 __{}__{}__{}__{}__{}}_TMP_HLDE_CODE{
 __{}__{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
 __{}__{}__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
 __{}__{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==$1})}){}dnl
-__{}__{}__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl #     price = 16*(clocks + 4*bytes)
 __{}__{}__{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
 __{}__{}__{}ifelse(_TMP,{0},{
 __{}__{}__{}__{}if 0
@@ -2055,8 +2055,8 @@ __{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
-dnl 2dup D. D<>
-dnl ( d -- d f )
+dnl # 2dup D. D<>
+dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DNE},{dnl
 __{}define({_TMP_INFO},{2dup $1 D<>})dnl
 __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) <> DEHL})dnl
@@ -2084,7 +2084,7 @@ __{}__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
 __{}__{}__{}define({_TMP_J},eval(_TMP_J+10)){}dnl
 __{}__{}__{}define({_TMP_J2},eval(_TMP_NJ+12)){}dnl
 __{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+17)){}dnl
-__{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
+__{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl #     price = 16*(clocks + 4*bytes)
 __{}__{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
 __{}__{}__{}__{}}_TMP_HLDE_CODE{
@@ -2109,8 +2109,8 @@ __{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
-dnl 2dup D. D>
-dnl ( d -- d f )
+dnl # 2dup D. D>
+dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DGT},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
@@ -2156,8 +2156,8 @@ __{}    sbc  HL, HL         ; 2:15      2dup $1 D>   set flag d1>$1})},
 dnl
 dnl
 dnl
-dnl 2dup D. D<=
-dnl ( d -- d f )
+dnl # 2dup D. D<=
+dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DLE},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
@@ -2204,8 +2204,8 @@ __{}    sbc  HL, HL         ; 2:15      2dup $1 D<=   set flag d1<=$1})},
 dnl
 dnl
 dnl
-dnl 2dup D. D<
-dnl ( d -- d f )
+dnl # 2dup D. D<
+dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DLT},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
@@ -2252,8 +2252,8 @@ __{}    sbc  HL, HL         ; 2:15      2dup $1 D<   set flag d1<$1})},
 dnl
 dnl
 dnl
-dnl 2dup D. D>=
-dnl ( d -- d f )
+dnl # 2dup D. D>=
+dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DGE},{ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
