@@ -51,6 +51,7 @@ define({SWAP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     jp    z, else{}IF_COUNT    ; 3:10      swap if})dnl
 dnl
 dnl
+dnl # ( x -- )
 dnl # $1 $2 within if
 define({PUSH2_WITHIN_IF},{dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
@@ -70,6 +71,26 @@ __{}__{}PUSH2_WITHIN_IF_CODE
 __{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}    pop  DE             ; 1:10      _TMP_INFO
 __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
+dnl
+dnl
+dnl # dup $1 $2 within if
+define({DUP_PUSH2_WITHIN_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}__{}define({_TMP_INFO},{dup $1 $2 within if})dnl
+__{}__{}__{}define({DUP_PUSH2_WITHIN_IF_CODE},__SAVE_HL_WITHIN($1,$2))
+__{}__{}                        ;format({%-11s},[eval(3+__SAVE_HL_WITHIN_B):eval(10+__SAVE_HL_WITHIN_C)])_TMP_INFO   ( x -- x )  true=($1<=x<$2){}dnl
+__{}__{}DUP_PUSH2_WITHIN_IF_CODE
+__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
+dnl
 dnl
 dnl
 dnl 0= if

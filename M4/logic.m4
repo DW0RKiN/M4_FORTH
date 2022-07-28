@@ -190,6 +190,7 @@ __{}    sbc  HL, HL         ; 2:15      _TMP_INFO   HL = 0x0000 or 0xffff}){}dnl
 }){}dnl
 dnl
 dnl
+dnl
 dnl ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) )
 dnl c2 <= c3 < c1
 define({LO_WITHIN},{
