@@ -234,10 +234,12 @@ while :
 do
     cat $TMPFILE |
 
+    sed "s#^\([^;{]*\s\|^\)\[char\]\s\+\([^[:space:]]\)[^[:space:]]*\(\s\|$\)#\1PUSH(\'\2\')\3#g" |
+    
     sed 's#^\([^;{]*\s\|^\)\h[Ee][Rr][Ee]\(\s\|$\)#\1HERE\2#g' |
-    sed 's#^\([^;{]*\s\|^\)\[Hh]e[Rr][Ee]\(\s\|$\)#\1HERE\2#g' |
-    sed 's#^\([^;{]*\s\|^\)\[Hh][Ee]r[Ee]\(\s\|$\)#\1HERE\2#g' |
-    sed 's#^\([^;{]*\s\|^\)\[Hh][Ee][Rr]e\(\s\|$\)#\1HERE\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Hh]e[Rr][Ee]\(\s\|$\)#\1HERE\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Hh][Ee]r[Ee]\(\s\|$\)#\1HERE\2#g' |
+    sed 's#^\([^;{]*\s\|^\)[Hh][Ee][Rr]e\(\s\|$\)#\1HERE\2#g' |
     
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+allot\(\s\|$\)#\1PUSH_ALLOT(\2)\3#gi' |
     sed 's#^\([^;{]*\s\|^\)\(0x[0-9A-F]\+\)\s\+allot\(\s\|$\)#\1PUSH_ALLOT(\2)\3#gi' |
