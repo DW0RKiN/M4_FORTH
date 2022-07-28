@@ -16,80 +16,30 @@ dnl
 dnl ( x -- x&n )
 dnl x = x & n
 define({PUSH_AND},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                        ;[10:42]    $1 and
-__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 and
-__{}__{}    and   H             ; 1:4       $1 and
-__{}__{}    ld    H, A          ; 1:4       $1 and
-__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 and
-__{}__{}    and   L             ; 1:4       $1 and
-__{}__{}    ld    L, A          ; 1:4       $1 and},
-__{}__IS_NUM($1),{0},{dnl
-__{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}__{}                        ;[8:30]     $1 and
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 and
-__{}__{}    and   H             ; 1:4       $1 and
-__{}__{}    ld    H, A          ; 1:4       $1 and
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 and
-__{}__{}    and   L             ; 1:4       $1 and
-__{}__{}    ld    L, A          ; 1:4       $1 and},
-__{}{dnl
-__{}__{}ifelse(eval($1),{0},{dnl
-__{}__{}    ld   HL, 0x0000     ; 3:10      $1 and},
-__{}__{}eval(($1) & 0xFF00),{0},{dnl
-__{}__{}__{}    ld    H, 0x00       ; 2:7       $1 and},
-__{}__{}eval(0xFF00 - 0x00 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}                        ;           $1 and   (H and 0xFF) = H},
-__{}__{}eval(0xFF00 - 0x0100 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   0, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x0200 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   1, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x0400 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   2, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x0800 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   3, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x1000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   4, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x2000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   5, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x4000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   6, H          ; 2:8       $1 and},
-__{}__{}eval(0xFF00 - 0x8000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    res   7, H          ; 2:8       $1 and},
-__{}__{}{dnl
-__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 and
-__{}__{}__{}    and   H             ; 1:4       $1 and
-__{}__{}__{}    ld    H, A          ; 1:4       $1 and})
-__{}__{}ifelse(eval($1),{0},,
-__{}__{}eval(($1) & 0xFF),{0},{dnl
-__{}__{}__{}    ld    L, 0x00       ; 2:7       $1 and},
-__{}__{}eval(0xFF - 0x00 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}                        ;           $1 and   (L and 0xFF) = L},
-__{}__{}eval(0xFF - 0x01 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   0, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x02 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   1, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x04 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   2, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x08 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   3, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x10 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   4, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x20 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   5, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x40 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   6, L          ; 2:8       $1 and},
-__{}__{}eval(0xFF - 0x80 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    res   7, L          ; 2:8       $1 and},
-__{}__{}{dnl
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 and
-__{}__{}    and   L             ; 1:4       $1 and
-__{}__{}    ld    L, A          ; 1:4       $1 and}){}dnl
-__{}}){}dnl
-})dnl
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[10:42]    $1 and   ( x1 -- x )  x = x1 & $1
+__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 and
+__{}    and   H             ; 1:4       $1 and
+__{}    ld    H, A          ; 1:4       $1 and
+__{}    ld    A, format({%-11s},$1); 3:13      $1 and
+__{}    and   L             ; 1:4       $1 and
+__{}    ld    L, A          ; 1:4       $1 and},
+__IS_NUM($1),{0},{
+__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
+__{}                        ;[8:30]     $1 and   ( x1 -- x )  x = x1 & $1
+__{}    ld    A, high format({%-6s},$1); 2:7       $1 and
+__{}    and   H             ; 1:4       $1 and
+__{}    ld    H, A          ; 1:4       $1 and
+__{}    ld    A, low format({%-7s},$1); 2:7       $1 and
+__{}    and   L             ; 1:4       $1 and
+__{}    ld    L, A          ; 1:4       $1 and},
+{dnl
+__{}define({_TMP_INFO},{$1 and}){}dnl
+__{}__AND_REG16_16BIT({HL},$1){}dnl
+})}){}dnl
 dnl
 dnl
 dnl ( x1 x2 -- x )
@@ -107,80 +57,30 @@ dnl
 dnl ( x -- x|n )
 dnl x = x | n
 define({PUSH_OR},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                        ;[10:42]    $1 or
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{
+__{}__{}                        ;[10:42]    $1 or   ( x1 -- x )  x = x1 | $1
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 or
 __{}__{}    or    H             ; 1:4       $1 or
 __{}__{}    ld    H, A          ; 1:4       $1 or
 __{}__{}    ld    A, format({%-11s},$1); 3:13      $1 or
 __{}__{}    or    L             ; 1:4       $1 or
 __{}__{}    ld    L, A          ; 1:4       $1 or},
-__{}__IS_NUM($1),{0},{dnl
+__IS_NUM($1),{0},{
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}__{}                        ;[8:30]     $1 or
+__{}__{}                        ;[8:30]     $1 or   ( x1 -- x )  x = x1 | $1
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 or
 __{}__{}    or    H             ; 1:4       $1 or
 __{}__{}    ld    H, A          ; 1:4       $1 or
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 or
 __{}__{}    or    L             ; 1:4       $1 or
 __{}__{}    ld    L, A          ; 1:4       $1 or},
-__{}{dnl
-__{}__{}ifelse(eval(0xFFFF-($1)),{0},{dnl
-__{}__{}    ld   HL, 0xFFFF     ; 3:10      $1 or},
-__{}__{}eval(0xFF00 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    ld    H, 0xFF       ; 2:7       $1 or},
-__{}__{}eval(0x0000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}                        ;           $1 or   (H or 0x00) = H},
-__{}__{}eval(0x0100 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   0, H          ; 2:8       $1 or},
-__{}__{}eval(0x0200 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   1, H          ; 2:8       $1 or},
-__{}__{}eval(0x0400 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   2, H          ; 2:8       $1 or},
-__{}__{}eval(0x0800 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   3, H          ; 2:8       $1 or},
-__{}__{}eval(0x1000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   4, H          ; 2:8       $1 or},
-__{}__{}eval(0x2000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   5, H          ; 2:8       $1 or},
-__{}__{}eval(0x4000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   6, H          ; 2:8       $1 or},
-__{}__{}eval(0x8000 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    set   7, H          ; 2:8       $1 or},
-__{}__{}{dnl
-__{}__{}__{}    ld    A, format({%-11s},eval(($1)>>8)); 2:7       $1 or
-__{}__{}__{}    or    H             ; 1:4       $1 or
-__{}__{}__{}    ld    H, A          ; 1:4       $1 or})
-__{}__{}ifelse(eval(0xFFFF-($1)),{0},,
-__{}__{}eval(0xFF - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    ld    L, 0xFF       ; 2:7       $1 or},
-__{}__{}eval(0x00 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}                        ;           $1 or   (L or 0x00) = L},
-__{}__{}eval(0x01 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   0, L          ; 2:8       $1 or},
-__{}__{}eval(0x02 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   1, L          ; 2:8       $1 or},
-__{}__{}eval(0x04 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   2, L          ; 2:8       $1 or},
-__{}__{}eval(0x08 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   3, L          ; 2:8       $1 or},
-__{}__{}eval(0x10 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   4, L          ; 2:8       $1 or},
-__{}__{}eval(0x20 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   5, L          ; 2:8       $1 or},
-__{}__{}eval(0x40 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   6, L          ; 2:8       $1 or},
-__{}__{}eval(0x80 - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    set   7, L          ; 2:8       $1 or},
-__{}__{}{dnl
-__{}__{}    ld    A, format({%-11s},eval(($1) & 0xFF)); 2:7       $1 or
-__{}__{}    or    L             ; 1:4       $1 or
-__{}__{}    ld    L, A          ; 1:4       $1 or}){}dnl
-__{}}){}dnl
-})dnl
+{dnl
+__{}__{}define({_TMP_INFO},{$1 or}){}dnl
+__{}__{}__OR_REG16_16BIT({HL},$1){}dnl
+})}){}dnl
 dnl
 dnl
 dnl ( x1 x2 -- x )
@@ -198,49 +98,30 @@ dnl
 dnl ( x -- x^n )
 dnl x = x ^ n
 define({PUSH_XOR},{ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                        ;[10:42]    $1 xor
-__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 xor
-__{}__{}    xor   H             ; 1:4       $1 xor
-__{}__{}    ld    H, A          ; 1:4       $1 xor
-__{}__{}    ld    A, format({%-11s},$1); 3:13      $1 xor
-__{}__{}    xor   L             ; 1:4       $1 xor
-__{}__{}    ld    L, A          ; 1:4       $1 xor},
-__{}__IS_NUM($1),{0},{dnl
-__{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}__{}                        ;[8:30]     $1 xor
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 xor
-__{}__{}    xor   H             ; 1:4       $1 xor
-__{}__{}    ld    H, A          ; 1:4       $1 xor
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 xor
-__{}__{}    xor   L             ; 1:4       $1 xor
-__{}__{}    ld    L, A          ; 1:4       $1 xor},
-__{}{dnl
-__{}__{}ifelse(eval(0xFF00 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}    ld    A, H          ; 1:4       $1 xor
-__{}__{}__{}    cpl                 ; 1:4       $1 xor
-__{}__{}__{}    ld    H, A          ; 1:4       $1 xor   (H xor 0xFF) = invert H},
-__{}__{}eval(($1) & 0xFF00),{0},{dnl
-__{}__{}__{}                        ;           $1 xor   (H xor 0x00) = H},
-__{}__{}{dnl
-__{}__{}__{}    ld    A, format({%-11s},eval(($1)>>8)); 2:7       $1 xor
-__{}__{}__{}    xor   H             ; 1:4       $1 xor
-__{}__{}__{}    ld    H, A          ; 1:4       $1 xor})
-__{}__{}ifelse(eval(0xFF - (($1) & 0xFF)),{0},{dnl
-__{}__{}__{}    ld    A, L          ; 1:4       $1 xor
-__{}__{}__{}    cpl                 ; 1:4       $1 xor
-__{}__{}__{}    ld    L, A          ; 1:4       $1 xor   (L xor 0xFF) = invert L},
-__{}__{}eval(($1) & 0xFF),{0},{dnl
-__{}__{}__{}                        ;           $1 xor   (L xor 0x00) = L},
-__{}__{}{dnl
-__{}__{}__{}    ld    A, format({%-11s},eval(($1) & 0xFF)); 2:7       $1 xor
-__{}__{}__{}    xor   L             ; 1:4       $1 xor
-__{}__{}__{}    ld    L, A          ; 1:4       $1 xor}){}dnl
-__{}}){}dnl
-})dnl
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[10:42]    $1 xor   ( x1 -- x )  x = x1 ^ $1
+__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 xor
+__{}    xor   H             ; 1:4       $1 xor
+__{}    ld    H, A          ; 1:4       $1 xor
+__{}    ld    A, format({%-11s},$1); 3:13      $1 xor
+__{}    xor   L             ; 1:4       $1 xor
+__{}    ld    L, A          ; 1:4       $1 xor},
+__IS_NUM($1),{0},{
+__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
+__{}                        ;[8:30]     $1 xor   ( x1 -- x )  x = x1 ^ $1
+__{}    ld    A, high format({%-6s},$1); 2:7       $1 xor
+__{}    xor   H             ; 1:4       $1 xor
+__{}    ld    H, A          ; 1:4       $1 xor
+__{}    ld    A, low format({%-7s},$1); 2:7       $1 xor
+__{}    xor   L             ; 1:4       $1 xor
+__{}    ld    L, A          ; 1:4       $1 xor},
+{dnl
+__{}__{}define({_TMP_INFO},{$1 xor}){}dnl
+__{}__{}__XOR_REG16_16BIT({HL},$1){}dnl
+})}){}dnl
 dnl
 dnl
 dnl ( x1 -- x )
@@ -1506,6 +1387,36 @@ define({DAND},{
     ld    D, A          ; 1:4       dand})dnl
 dnl
 dnl
+dnl ( d1 -- d )
+dnl d = d1 & n
+define({PUSHDOT_DAND},{ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{dnl
+__{}__{}                        ;[20:84]    $1. dand
+__{}__{}    ld    A,format({%-12s},(3+$1)); 3:13      $1. dand
+__{}__{}    and   D             ; 1:4       $1. dand
+__{}__{}    ld    D, A          ; 1:4       $1. dand
+__{}__{}    ld    A,format({%-12s},(2+$1)); 3:13      $1. dand
+__{}__{}    and   E             ; 1:4       $1. dand
+__{}__{}    ld    E, A          ; 1:4       $1. dand
+__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1. dand
+__{}__{}    and   H             ; 1:4       $1. dand
+__{}__{}    ld    H, A          ; 1:4       $1. dand
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1. dand
+__{}__{}    and   L             ; 1:4       $1. dand
+__{}__{}    ld    L, A          ; 1:4       $1. dand},
+__IS_NUM($1),{0},{dnl
+__{}__{}  .error {$0}($@): M4 does not know the 32-bit value "{$1}"!},
+{dnl
+__{}__{}define({_TMP_INFO},{$1. dand}){}dnl
+__{}__{}__AND_REG16_16BIT({HL},$1){}dnl
+__{}__{}__AND_REG16_16BIT({DE},__HEX_DE($1)){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
 dnl ( d1 d2 -- d )
 dnl d = d1 | d2
 define({DOR},{
@@ -1525,6 +1436,36 @@ define({DOR},{
     ld    D, A          ; 1:4       dor})dnl
 dnl
 dnl
+dnl ( d1 -- d )
+dnl d = d1 | n
+define({PUSHDOT_DOR},{ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{dnl
+__{}__{}                        ;[20:84]    $1. dor
+__{}__{}    ld    A,format({%-12s},(3+$1)); 3:13      $1. dor
+__{}__{}    or    D             ; 1:4       $1. dor
+__{}__{}    ld    D, A          ; 1:4       $1. dor
+__{}__{}    ld    A,format({%-12s},(2+$1)); 3:13      $1. dor
+__{}__{}    or    E             ; 1:4       $1. dor
+__{}__{}    ld    E, A          ; 1:4       $1. dor
+__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1. dor
+__{}__{}    or    H             ; 1:4       $1. dor
+__{}__{}    ld    H, A          ; 1:4       $1. dor
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1. dor
+__{}__{}    or    L             ; 1:4       $1. dor
+__{}__{}    ld    L, A          ; 1:4       $1. dor},
+__IS_NUM($1),{0},{dnl
+__{}__{}  .error {$0}($@): M4 does not know the 32-bit value "{$1}"!},
+{dnl
+__{}__{}define({_TMP_INFO},{$1. dor}){}dnl
+__{}__{}__OR_REG16_16BIT({HL},$1){}dnl
+__{}__{}__OR_REG16_16BIT({DE},__HEX_DE($1)){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
 dnl ( d1 d2 -- d )
 dnl d = d1 ^ d2
 define({DXOR},{
@@ -1542,6 +1483,36 @@ define({DXOR},{
     ld    A, B          ; 1:4       dxor
     xor    D            ; 1:4       dxor
     ld    D, A          ; 1:4       dxor})dnl
+dnl
+dnl
+dnl ( d1 -- d )
+dnl d = d1 ^ n
+define({PUSHDOT_DXOR},{ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{dnl
+__{}__{}                        ;[20:84]    $1. dxor
+__{}__{}    ld    A,format({%-12s},(3+$1)); 3:13      $1. dxor
+__{}__{}    xor   D             ; 1:4       $1. dxor
+__{}__{}    ld    D, A          ; 1:4       $1. dxor
+__{}__{}    ld    A,format({%-12s},(2+$1)); 3:13      $1. dxor
+__{}__{}    xor   E             ; 1:4       $1. dxor
+__{}__{}    ld    E, A          ; 1:4       $1. dxor
+__{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1. dxor
+__{}__{}    xor   H             ; 1:4       $1. dxor
+__{}__{}    ld    H, A          ; 1:4       $1. dxor
+__{}__{}    ld    A, format({%-11s},$1); 3:13      $1. dxor
+__{}__{}    xor   L             ; 1:4       $1. dxor
+__{}__{}    ld    L, A          ; 1:4       $1. dxor},
+__IS_NUM($1),{0},{dnl
+__{}__{}  .error {$0}($@): M4 does not know the 32-bit value "{$1}"!},
+{dnl
+__{}__{}define({_TMP_INFO},{$1. dxor}){}dnl
+__{}__{}__XOR_REG16_16BIT({HL},$1){}dnl
+__{}__{}__XOR_REG16_16BIT({DE},__HEX_DE($1)){}dnl
+__{}}){}dnl
+})dnl
 dnl
 dnl
 dnl ( d1 -- d )
