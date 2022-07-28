@@ -29,11 +29,47 @@ __{}__{}endif{}THEN_STACK:{}popdef({THEN_STACK})})}){}dnl
 dnl
 dnl
 dnl
+dnl ( x1 -- x1 )
+dnl dup if
+define({DUP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, H          ; 1:4       dup if
+    or    L             ; 1:4       dup if
+    jp    z, else{}IF_COUNT    ; 3:10      dup if})dnl
+dnl
+dnl
+dnl over if
+define({OVER_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+    ld    A, D          ; 1:4       over if
+    or    E             ; 1:4       over if
+    jp    z, else{}IF_COUNT    ; 3:10      over if})dnl
+dnl
+dnl
 define({SWAP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, D          ; 1:4       swap if
     or    E             ; 1:4       swap if
     pop  DE             ; 1:10      swap if
     jp    z, else{}IF_COUNT    ; 3:10      swap if})dnl
+dnl
+dnl
+dnl # $1 $2 within if
+define({PUSH2_WITHIN_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}__{}define({_TMP_INFO},{$1 $2 within if})dnl
+__{}__{}__{}define({PUSH2_WITHIN_IF_CODE},__WITHIN($1,$2))
+__{}__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WITHIN_C)])_TMP_INFO   ( {TOS} -- )  true=($1<={TOS}<$2){}dnl
+__{}__{}PUSH2_WITHIN_IF_CODE
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    pop  DE             ; 1:10      _TMP_INFO
+__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl 0= if
@@ -95,20 +131,6 @@ define({_2DUP_D0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, 
     or    E             ; 1:4       2dup D0= if
     jp   nz, else{}IF_COUNT    ; 3:10      2dup D0= if})dnl
 dnl
-dnl
-dnl ( x1 -- x1 )
-dnl dup if
-define({DUP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       dup if
-    or    L             ; 1:4       dup if
-    jp    z, else{}IF_COUNT    ; 3:10      dup if})dnl
-dnl
-dnl
-dnl over if
-define({OVER_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, D          ; 1:4       over if
-    or    E             ; 1:4       over if
-    jp    z, else{}IF_COUNT    ; 3:10      over if})dnl
 dnl
 dnl -------- signed ---------
 dnl

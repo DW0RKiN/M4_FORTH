@@ -11,10 +11,16 @@ dnl
 dnl
 dnl # ( x -- x+n )
 dnl # x = x + n
-define({PUSH_ADD},{ifelse(__IS_NUM($1),{0},{
-__{}    ; warning The condition >>>$1<<< cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 +
-__{}    add  HL, BC         ; 1:11      $1 +},{ifelse(
+define({PUSH_ADD},{ifelse(dnl
+__IS_MEM_REF($1),{1},{
+__{}    ; warning >>>$1<<< is a pointer to memory
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 +
+__{}    add  HL, BC         ; 1:11      $1 +},
+__IS_NUM($1),{0},{
+__{}    ; warning M4 does not know the numerical value of >>>$1<<<
+__{}    ld   BC, format({%-11s},$1); 3:10      $1 +
+__{}    add  HL, BC         ; 1:11      $1 +},
+{ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
 __{}    dec  H              ; 1:4       $1 +   ( x -- x+__HEX_HL($1) )
 __{}    dec  H              ; 1:4       $1 +
@@ -215,11 +221,17 @@ dnl
 dnl
 dnl # ( x -- x-n )
 dnl # x = x - n
-define({PUSH_SUB},{ifelse(__IS_NUM($1),{0},{
-__{}    ; warning The condition >>>$1<<< cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 -
+define({PUSH_SUB},{ifelse(dnl
+__IS_MEM_REF($1),{1},{
+__{}    ; warning >>>$1<<< is a pointer to memory
+__{}    ld   BC, format({%-11s},$1); 4:20      $1 -
 __{}    or    A             ; 1:4       $1 -
-__{}    sbc  HL, BC         ; 2:15      $1 -},{ifelse(
+__{}    sbc  HL, BC         ; 2:15      $1 -},
+__IS_NUM($1),{0},{
+__{}    ; warning M4 does not know the numerical value of >>>$1<<<
+__{}    ld   BC, format({%-11s},-($1)); 3:10      $1 -
+__{}    add  HL, BC         ; 1:11      $1 -},
+{ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
 __{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
 __{}    inc  H              ; 1:4       $1 -

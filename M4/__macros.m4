@@ -2217,8 +2217,143 @@ __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   hi16(d1)-DE
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO})})}){}dnl
 dnl
 dnl
-dnl
-dnl
+dnl # Input:
+dnl #   $1 <= HL < $2
+dnl #   _TMP_INFO
+dnl #   _TMP_MAIN_INFO
+dnl #   __WITHIN_ADD_BYTES
+dnl #   __WITHIN_ADD_CLOCK
+dnl # Output:
+dnl # carry if true, (HL-$1) U< ($2-$1)
+define({__WITHIN},{ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{define({__WITHIN_B},20){}define({__WITHIN_C},ifelse(__IS_MEM_REF($2),{0},{116},{122}))
+__{}    ld   BC{,} format({%-11s},$1); 4:20      _TMP_INFO   BC = $1
+__{}    or    A             ; 1:4       _TMP_INFO
+__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   HL = {TOS}-$1
+__{}    push HL             ; 1:11      _TMP_INFO
+__{}    ld   HL{,} format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      _TMP_INFO
+__{}    or    A             ; 1:4       _TMP_INFO
+__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO
+__{}    ld    C{,} L          ; 1:4       _TMP_INFO
+__{}    ld    B{,} H          ; 1:4       _TMP_INFO   BC = $2-$1
+__{}    pop  HL             ; 1:10      _TMP_INFO
+__{}    or    A             ; 1:4       _TMP_INFO
+__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   carry: HL-BC},
+__IS_NUM($1),{0},{dnl
+__{}ifelse(__IS_MEM_REF($2),{1},{
+__{}__{}    ld   BC{,} format({%-11s},-($1)); 3:10      _TMP_INFO   BC = -($1)
+__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   HL = {TOS}-($1)
+__{}__{}ifelse(_TYP_SINGLE,{small},{define({__WITHIN_B},15){}define({__WITHIN_C},96)dnl
+__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}__{}    ld   HL{,} format({%-11s},$2); 3:16      _TMP_INFO
+__{}__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO
+__{}__{}__{}    ld    C{,} L          ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    B{,} H          ; 1:4       _TMP_INFO   BC = $2-($1)
+__{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO},
+__{}__{}{define({__WITHIN_B},17){}define({__WITHIN_C},82)dnl
+__{}__{}__{}    ld    A{,} format({%-11s},$2); 3:13      _TMP_INFO
+__{}__{}__{}    add   A{,} C          ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    C{,} A          ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    A{,} format({%-11s},($2+1)); 3:13      _TMP_INFO
+__{}__{}__{}    adc   A{,} B          ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    B{,} A          ; 1:4       _TMP_INFO   BC = $2-($1)})
+__{}__{}    or    A             ; 1:4       _TMP_INFO
+__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   carry: HL-BC},
+__{}{define({__WITHIN_B},10){}define({__WITHIN_C},43)
+__{}    ld   BC{,} format({%-11s},-($1)); 3:10      _TMP_INFO   BC = -($1)
+__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   HL = {TOS}-($1)
+__{}    ld    A{,} L          ; 1:4       _TMP_INFO
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _TMP_INFO
+__{}    ld    A{,} H          ; 1:4       _TMP_INFO
+__{}    sbc   A{,}high format({%-7s},$2-($1)); 2:7       _TMP_INFO   carry: HL-($2-($1))})},
+__IS_MEM_REF($2),{1},{dnl
+__{}ifelse(eval($1),{0},{define({__WITHIN_B},7){}define({__WITHIN_C},39)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO},
+__{}eval($1),{1},{define({__WITHIN_B},9){}define({__WITHIN_C},51)
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO
+__{}__{}    dec  BC             ; 1:6       _TMP_INFO   BC = $2-1},
+__{}__HEX_HL($1),{0xFFFF},{define({__WITHIN_B},9){}define({__WITHIN_C},51)
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO
+__{}__{}    inc  BC             ; 1:6       _TMP_INFO   BC = $2+1},
+__{}eval($1),{2},{define({__WITHIN_B},11){}define({__WITHIN_C},63)
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO
+__{}__{}    dec  BC             ; 1:6       _TMP_INFO
+__{}__{}    dec  BC             ; 1:6       _TMP_INFO   BC = $2-2},
+__{}__HEX_HL($1),{0xFFFE},{define({__WITHIN_B},11){}define({__WITHIN_C},63)
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO
+__{}__{}    inc  BC             ; 1:6       _TMP_INFO
+__{}__{}    inc  BC             ; 1:6       _TMP_INFO   BC = $2+2},
+__{}eval($1),{3},{define({__WITHIN_B},13){}define({__WITHIN_C},75)
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO
+__{}__{}    dec  BC             ; 1:6       _TMP_INFO
+__{}__{}    dec  BC             ; 1:6       _TMP_INFO
+__{}__{}    dec  BC             ; 1:6       _TMP_INFO   BC = $2-3},
+__{}__HEX_HL($1),{0xFFFD},{define({__WITHIN_B},13){}define({__WITHIN_C},75)
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    ld   BC{,} format({%-11s},$2); 4:20      _TMP_INFO
+__{}__{}    inc  BC             ; 1:6       _TMP_INFO
+__{}__{}    inc  BC             ; 1:6       _TMP_INFO
+__{}__{}    inc  BC             ; 1:6       _TMP_INFO   BC = $2+3},
+__{}{define({__WITHIN_B},15){}define({__WITHIN_C},96)
+__{}__{}    ld   BC{,} __HEX_HL(-($1))     ; 3:10      _TMP_INFO   BC = -($1)
+__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   HL = {TOS}-($1)
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld   HL{,} format({%-11s},$2); 3:16      _TMP_INFO
+__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO
+__{}__{}    ld    C{,} L          ; 1:4       _TMP_INFO
+__{}__{}    ld    B{,} H          ; 1:4       _TMP_INFO   BC = $2-($1)
+__{}__{}    pop  HL             ; 1:10      _TMP_INFO})
+__{}    or    A             ; 1:4       _TMP_INFO
+__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   carry: HL-BC},
+{dnl
+__{}ifelse(eval($1),{0},{define({__WITHIN_B},6){}define({__WITHIN_C},22)},
+__{}eval($1),{1},{define({__WITHIN_B},7){}define({__WITHIN_C},28)
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO   HL = ({TOS}-($1))},
+__{}eval($1),{-1},{define({__WITHIN_B},7){}define({__WITHIN_C},28)
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO   HL = ({TOS}-($1))},
+__{}eval($1),{2},{define({__WITHIN_B},8){}define({__WITHIN_C},34)
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO   HL = ({TOS}-($1))},
+__{}eval($1),{-2},{define({__WITHIN_B},8){}define({__WITHIN_C},34)
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO   HL = ({TOS}-($1))},
+__{}eval($1),{3},{define({__WITHIN_B},9){}define({__WITHIN_C},40)
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO
+__{}__{}    dec  HL             ; 1:6       _TMP_INFO   HL = ({TOS}-($1))},
+__{}eval($1),{-3},{define({__WITHIN_B},9){}define({__WITHIN_C},40)
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO
+__{}__{}    inc  HL             ; 1:6       _TMP_INFO   HL = ({TOS}-($1))},
+__{}{define({__WITHIN_B},10){}define({__WITHIN_C},43)
+__{}__{}    ld   BC{,} __HEX_HL(-($1))     ; 3:10      _TMP_INFO   BC = -($1)
+__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   HL = {TOS}-($1)})
+__{}    ld    A{,} L          ; 1:4       _TMP_INFO
+__{}ifelse(__IS_NUM($2),{0},{dnl
+__{}__{}    sub  low format({%-11s},$2-($1)); 2:7       _TMP_INFO
+__{}__{}    ld    A{,} H          ; 1:4       _TMP_INFO
+__{}__{}    sbc   A{,} high format({%-6s},$2-($1)); 2:7       _TMP_INFO   carry: HL-($2-($1))},
+__{}{dnl
+__{}__{}    sub  __HEX_L($2-($1))           ; 2:7       _TMP_INFO
+__{}__{}    ld    A{,} H          ; 1:4       _TMP_INFO
+__{}__{}    sbc   A{,} __HEX_H($2-($1))       ; 2:7       _TMP_INFO   carry: HL-($2-($1))})}){}dnl
+})dnl
 dnl
 dnl
 dnl

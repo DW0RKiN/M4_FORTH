@@ -143,6 +143,30 @@ __{}.error {$0} for non-existent {BEGIN}},
 __{}break{}BEGIN_STACK:               ;           over until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
+dnl
+dnl # ( n -- )
+dnl # $1 $2 within until
+define({PUSH2_WITHIN_UNTIL},{ifelse(dnl
+BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+$#,{1},{
+__{}  .error {$0}($@): The second parameter is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},{$1 $2 within until BEGIN_STACK})dnl
+__{}__{}define({PUSH2_WITHIN_UNTIL_CODE},__WITHIN($1,$2))
+__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WITHIN_C)])_TMP_INFO   ( {TOS} -- )  true=($1<={TOS}<$2){}dnl
+__{}PUSH2_WITHIN_UNTIL_CODE
+__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}    pop  DE             ; 1:10      _TMP_INFO
+__{}    jp   nc, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
+dnl
+dnl
+dnl
 dnl ( x1 x2 -- x1 x2 )
 define({OVER_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
@@ -251,6 +275,30 @@ __{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEG
 __{}})
 __{}break{}BEGIN_STACK:               ;           dup $1 lo_eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
 dnl
+dnl
+dnl
+dnl ------ $1 $2 within while ( a -- ) ---------
+dnl
+dnl # ( n -- )
+dnl # $1 $2 within while
+define({PUSH2_WITHIN_WHILE},{ifelse(dnl
+BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+$#,{1},{
+__{}  .error {$0}($@): The second parameter is missing!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},{$1 $2 within while BEGIN_STACK})dnl
+__{}__{}define({PUSH2_WITHIN_WHILE_CODE},__WITHIN($1,$2))
+__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WITHIN_C)])_TMP_INFO   ( {TOS} -- )  true=($1<={TOS}<$2){}dnl
+__{}PUSH2_WITHIN_WHILE_CODE
+__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}    pop  DE             ; 1:10      _TMP_INFO
+__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl
