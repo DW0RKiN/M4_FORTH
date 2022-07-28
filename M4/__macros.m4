@@ -299,7 +299,7 @@ __{}ifelse(eval(__CLOCKS_GARBAGE>__CLOCKS),{1},{dnl
 __{}__{}define({__CLOCKS_FIRST},__CLOCKS){}dnl
 __{}__{}define({__BYTES_FIRST},__BYTES){}dnl
 __{}__{}dnl # hi target value is entry now for lo target
-__{}__{}define({__CODE_SECOND},__LD_REG8(substr($1,1,1),__HEX_L($2),substr($1,0,1),__HEX_H($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6),substr($7,0,1),__HEX_H($8),substr($7,1,1),__HEX_L($8))){}dnl
+__{}__{}define({__CODE_SECOND},__LD_REG8(substr($1,1,1),__HEX_L($2),substr($1,0,1),__HEX_H($2),ifelse($1,$3,,substr($3,0,1)),__HEX_H($4),substr($3,1,1),__HEX_L($4),ifelse($1,$5,,substr($5,0,1)),__HEX_H($6),substr($5,1,1),__HEX_L($6),ifelse($1,$7,,substr($7,0,1)),__HEX_H($8),substr($7,1,1),__HEX_L($8))){}dnl
 __{}__{}define({__CLOCKS_SECOND},__CLOCKS){}dnl
 __{}__{}define({__BYTES_SECOND},__BYTES){}dnl
 __{}},{dnl
@@ -307,7 +307,7 @@ __{}__{}define({__CODE_FIRST},__LD_REG8(substr($1,1,1),__HEX_L($2),substr($3,0,1
 __{}__{}define({__CLOCKS_FIRST},__CLOCKS){}dnl
 __{}__{}define({__BYTES_FIRST},__BYTES){}dnl
 __{}__{}dnl # lo target value is entry now for hi target
-__{}__{}define({__CODE_SECOND},__LD_REG8(substr($1,0,1),__HEX_H($2),substr($1,1,1),__HEX_L($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6),substr($7,0,1),__HEX_H($8),substr($7,1,1),__HEX_L($8))){}dnl
+__{}__{}define({__CODE_SECOND},__LD_REG8(substr($1,0,1),__HEX_H($2),substr($1,1,1),__HEX_L($2),substr($3,0,1),__HEX_H($4),ifelse($1,$3,,substr($3,1,1)),__HEX_L($4),substr($5,0,1),__HEX_H($6),ifelse($1,$5,,substr($5,1,1)),__HEX_L($6),substr($7,0,1),__HEX_H($8),ifelse($1,$7,,substr($7,1,1)),__HEX_L($8))){}dnl
 __{}__{}define({__CLOCKS_SECOND},__CLOCKS){}dnl
 __{}__{}define({__BYTES_SECOND},__BYTES){}dnl
 __{}}){}dnl

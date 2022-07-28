@@ -4,7 +4,7 @@ dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 & x2
 define({AND},{
-    ld    A, E          ; 1:4       and
+    ld    A, E          ; 1:4       and   ( x2 x1 -- x )  x = x2 & x1
     and   L             ; 1:4       and
     ld    L, A          ; 1:4       and
     ld    A, D          ; 1:4       and
@@ -95,7 +95,7 @@ dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 | x2
 define({OR},{
-    ld    A, E          ; 1:4       or
+    ld    A, E          ; 1:4       or   ( x2 x1 -- x )  x = x2 | x1
     or    L             ; 1:4       or
     ld    L, A          ; 1:4       or
     ld    A, D          ; 1:4       or
@@ -186,7 +186,7 @@ dnl
 dnl ( x1 x2 -- x )
 dnl x = x1 ^ x2
 define({XOR},{
-    ld    A, E          ; 1:4       xor
+    ld    A, E          ; 1:4       xor   ( x2 x1 -- x )  x = x2 ^ x1
     xor   L             ; 1:4       xor
     ld    L, A          ; 1:4       xor
     ld    A, D          ; 1:4       xor
@@ -1485,6 +1485,80 @@ dnl
 dnl
 dnl
 dnl -------------------------- 32 bits --------------------------
+dnl
+dnl
+dnl ( d1 d2 -- d )
+dnl d = d1 & d2
+define({DAND},{
+    pop  BC             ; 1:10      dand   ( d2 d1 -- d )  d = d2 & d1
+    ld    A, C          ; 1:4       dand
+    and   L             ; 1:4       dand
+    ld    L, A          ; 1:4       dand
+    ld    A, B          ; 1:4       dand
+    and   H             ; 1:4       dand
+    ld    H, A          ; 1:4       dand
+    pop  BC             ; 1:10      dand
+    ld    A, C          ; 1:4       dand
+    and   E             ; 1:4       dand
+    ld    E, A          ; 1:4       dand
+    ld    A, B          ; 1:4       dand
+    and   D             ; 1:4       dand
+    ld    D, A          ; 1:4       dand})dnl
+dnl
+dnl
+dnl ( d1 d2 -- d )
+dnl d = d1 | d2
+define({DOR},{
+    pop  BC             ; 1:10      dor   ( d2 d1 -- d )  d = d2 | d1
+    ld    A, C          ; 1:4       dor
+    or    L             ; 1:4       dor
+    ld    L, A          ; 1:4       dor
+    ld    A, B          ; 1:4       dor
+    or    H             ; 1:4       dor
+    ld    H, A          ; 1:4       dor
+    pop  BC             ; 1:10      dor
+    ld    A, C          ; 1:4       dor
+    or    E             ; 1:4       dor
+    ld    E, A          ; 1:4       dor
+    ld    A, B          ; 1:4       dor
+    or    D             ; 1:4       dor
+    ld    D, A          ; 1:4       dor})dnl
+dnl
+dnl
+dnl ( d1 d2 -- d )
+dnl d = d1 ^ d2
+define({DXOR},{
+    pop  BC             ; 1:10      dxor   ( d2 d1 -- d )  d = d2 ^ d1
+    ld    A, C          ; 1:4       dxor
+    xor    L            ; 1:4       dxor
+    ld    L, A          ; 1:4       dxor
+    ld    A, B          ; 1:4       dxor
+    xor    H            ; 1:4       dxor
+    ld    H, A          ; 1:4       dxor
+    pop  BC             ; 1:10      dxor
+    ld    A, C          ; 1:4       dxor
+    xor    E            ; 1:4       dxor
+    ld    E, A          ; 1:4       dxor
+    ld    A, B          ; 1:4       dxor
+    xor    D            ; 1:4       dxor
+    ld    D, A          ; 1:4       dxor})dnl
+dnl
+dnl
+dnl ( d1 -- d )
+dnl d = ~d1
+define({DINVERT},{
+    ld    A, L          ; 1:4       dinvert   ( d1 -- d )  d = ~d1
+    cpl                 ; 1:4       dinvert
+    ld    L, A          ; 1:4       dinvert
+    ld    A, H          ; 1:4       dinvert
+    cpl                 ; 1:4       dinvert
+    ld    H, A          ; 1:4       dinvert
+    ld    A, E          ; 1:4       dinvert
+    cpl                 ; 1:4       dinvert
+    ld    E, A          ; 1:4       dinvert
+    ld    A, D          ; 1:4       dinvert
+    cpl                 ; 1:4       dinvert
+    ld    D, A          ; 1:4       dinvert})dnl
 dnl
 dnl
 dnl D0=

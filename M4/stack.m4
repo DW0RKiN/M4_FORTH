@@ -729,39 +729,56 @@ __{}    push HL             ; 1:11      pushdot($1)
 __{}    ld   DE,format({%-12s},($1+2)); 4:20      pushdot($1)   hi word
 __{}    ld   HL, format({%-11s},$1); 3:16      pushdot($1)   lo word},
 {
-__{}define({__D},eval((($1)>>24) & 0xff)){}dnl
-__{}define({__E},eval((($1)>>16) & 0xff)){}dnl
-__{}define({__H},eval((($1)>> 8) & 0xff)){}dnl
-__{}define({__L},eval( ($1)      & 0xff)){}dnl
+__{}define({__DE},__HEX_DE($1)){}dnl
+__{}define({__HL},__HEX_HL($1)){}dnl
 __{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
-__{}    push HL             ; 1:11      pushdot($1)
-__{}ifelse(eval((__E == __L) && (__D == __L)),{1},{dnl
-__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
-__{}    ld    E, L          ; 1:4       pushdot($1)
-__{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
-__{}eval((__E == __H) && (__D == __H)),{1},{dnl
-__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
-__{}    ld    E, H          ; 1:4       pushdot($1)
-__{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
-__{}eval((__E == __L) && (__D == __H)),{1},{dnl
-__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
-__{}    ld    E, L          ; 1:4       pushdot($1)
-__{}    ld    D, H          ; 1:4       pushdot($1)   hi word},
-__{}eval((__E == __H) && (__D == __L)),{1},{dnl
-__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word
-__{}    ld    E, H          ; 1:4       pushdot($1)
-__{}    ld    D, L          ; 1:4       pushdot($1)   hi word},
-__{}eval((__L == __D) && (__H == __D)),{1},{dnl
-__{}    ld   DE, __HEX_DE($1)     ; 3:10      pushdot($1)   hi_word
-__{}    ld    L, D          ; 1:4       pushdot($1)
-__{}    ld    H, D          ; 1:4       pushdot($1)   hi word},
-__{}eval((__L == __E) && (__H == __E)),{1},{dnl
-__{}    ld   DE, __HEX_DE($1)     ; 3:10      pushdot($1)   hi_word
-__{}    ld    L, E          ; 1:4       pushdot($1)
-__{}    ld    H, E          ; 1:4       pushdot($1)   hi word},
-__{}{dnl
-__{}    ld   DE, __HEX_DE($1)     ; 3:10      pushdot($1)   hi_word
-__{}    ld   HL, __HEX_HL($1)     ; 3:10      pushdot($1)   lo_word})})}){}dnl
+__{}    push HL             ; 1:11      pushdot($1){}dnl
+__{}define({_TMP_INFO},{pushdot($1)}){}dnl # HL first check
+__{}__LD_REG16({DE},__DE,{HL},__HL){}dnl
+__{}define({PUSH2_HL},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16({HL},__HL){}dnl
+__{}define({PUSH2_HL},eval(PUSH2_HL+__CLOCKS_16BIT)){}dnl
+__{}dnl
+__{}__LD_REG16({HL},__HL,{DE},__DE){}dnl # DE first check
+__{}define({PUSH2_DE},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16({DE},__DE){}dnl
+__{}define({PUSH2_DE},eval(PUSH2_DE+__CLOCKS_16BIT)){}dnl
+__{}dnl
+__{}ifelse(eval(PUSH2_DE<=PUSH2_HL),{1},{dnl # DE first
+__{}__{}__CODE_16BIT{}__LD_REG16({HL},__HL,{DE},__DE){}__CODE_16BIT},
+__{}{dnl # HL first
+__{}__{}__LD_REG16({HL},__HL){}__CODE_16BIT{}__LD_REG16({DE},__DE,{HL},__HL){}__CODE_16BIT}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # # ( d_old -- d_new d_old )
+dnl # # PUSHDOT_2SWAP(number32bit) ulozi za nejvyssi 32 bitove cislo na zasobnik 32 bitove cislo
+dnl # # 255. --> ( 0x1122 0x3344 -- 0x0000 0x00FF 0x1122 0x3344 )
+define({PUSHDOT_2SWAP},{ifelse(dnl
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_NUM($1),{0},{
+__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__IS_MEM_REF($1),{1},{
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      pushdot_2swap($1)   hi word
+__{}    push BC             ; 1:11      pushdot_2swap($1){}dnl
+__{}    ld   BC, format({%-11s},$1); 4:20      pushdot_2swap($1)   lo word
+__{}    push BC             ; 1:11      pushdot_2swap($1)},
+{
+__{}define({__DE},__HEX_DE($1)){}dnl
+__{}define({__HL},__HEX_HL($1)){}dnl
+__{}define({_TMP_INFO},{pushdot_2swap($1)   hi word}){}dnl
+__{}__LD_REG16({BC},__DE){}dnl
+__{}__CODE_16BIT
+__{}    push BC             ; 1:11      pushdot_2swap($1){}dnl
+__{}define({_TMP_INFO},{pushdot_2swap($1)   lo word}){}dnl
+__{}__LD_REG16({BC},__HL,{BC},__DE){}dnl
+__{}__CODE_16BIT
+__{}    push BC             ; 1:11      pushdot_2swap($1){}dnl
+})}){}dnl
 dnl
 dnl
 dnl
