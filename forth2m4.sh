@@ -759,7 +759,11 @@ do
 
 # stupidni co nikdo neudela
     sed 's#^\([^;{]*\s\|^\)SWAP\s\+SWAP\(\s\|$\)#\1\2#gi' |
-    
+
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\s\+IF\(\s\|$\)#\1DUP_PUSH2_WITHIN_IF(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\s\+UNTIL\(\s\|$\)#\1DUP_PUSH2_WITHIN_UNTIL(\2,\3)\4#gi' |
+    sed 's#^\([^;{]*\s\|^\)DUP\s\+\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\s\+WHILE\(\s\|$\)#\1DUP_PUSH2_WITHIN_WHILE(\2,\3)\4#gi' |
+
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\s\+IF\(\s\|$\)#\1PUSH2_WITHIN_IF(\2,\3)\4#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\s\+UNTIL\(\s\|$\)#\1PUSH2_WITHIN_UNTIL(\2,\3)\4#gi' |
     sed 's#^\([^;{]*\s\|^\)\([+-]*[0-9]\+\)\s\+\([+-]*[0-9]\+\)\s\+WITHIN\s\+WHILE\(\s\|$\)#\1PUSH2_WITHIN_WHILE(\2,\3)\4#gi' |

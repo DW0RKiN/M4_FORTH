@@ -696,62 +696,63 @@ If you're trying to insert duplicate text, the translator recognizes it and does
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 
-|<sub>     Original     |<sub>   M4 FORTH   |<sub>      Optimization      |<sub>   Data stack        |<sub> Comment     |
-| :-------------------: | :---------------: | :-------------------------: | :----------------------- | :--------------- |
-|<sub>        if        |<sub>      IF      |<sub>                        |<sub>    ( flag -- )      |                  |
-|<sub>       else       |<sub>     ELSE     |<sub>                        |<sub>         ( -- )      |                  |
-|<sub>       then       |<sub>     THEN     |<sub>                        |<sub>         ( -- )      |                  |
-|<sub>      dup if      |<sub>              |<sub>         DUP_IF         |<sub>    ( flag -- flag ) |                  |
-|<sub>     over if      |<sub>              |<sub>        OVER_IF         |<sub>    ( flag -- flag ) |                  |
-|<sub>     swap if      |<sub>              |<sub>        SWAP_IF         |<sub>  ( flag x -- x )    |                  |
-|<sub>`0` `8` within if |<sub>              |<sub>PUSH2_WITHIN_IF(`0`,`8`)|<sub>      ( x1 -- )      |                  |
-|<sub>       0= if      |<sub>              |<sub>        _0EQ_IF         |<sub>      ( x1 -- )      |                  |
-|<sub>    dup 0= if     |<sub>              |<sub>       DUP_0EQ_IF       |<sub>      ( x1 -- x1 )   |                  |
-|<sub>       0< if      |<sub>              |<sub>        _0LT_IF         |<sub>      ( x1 -- )      |                  |
-|<sub>    dup 0< if     |<sub>              |<sub>       DUP_0LT_IF       |<sub>      ( x1 -- x1 )   |                  |
-|<sub>       0>= if     |<sub>              |<sub>        _0GE_IF         |<sub>      ( x1 -- )      |                  |
-|<sub>    dup 0>= if    |<sub>              |<sub>       DUP_0GE_IF       |<sub>      ( x1 -- x1 )   |                  |
-|<sub>       =  if      |<sub>              |<sub>         EQ_IF          |<sub>    (x1 x2 -- )      |                  |
-|<sub>       <> if      |<sub>              |<sub>         NE_IF          |<sub>    (x1 x2 -- )      |                  |
-|<sub>       <  if      |<sub>              |<sub>         LT_IF          |<sub>    (x1 x2 -- )      |                  |
-|<sub>       <= if      |<sub>              |<sub>         LE_IF          |<sub>    (x1 x2 -- )      |                  |
-|<sub>       >  if      |<sub>              |<sub>         GT_IF          |<sub>    (x1 x2 -- )      |                  |
-|<sub>       >= if      |<sub>              |<sub>         GE_IF          |<sub>    (x1 x2 -- )      |                  |
-|<sub>      u=  if      |<sub>              |<sub>         UEQ_IF         |<sub>    (x1 x2 -- )      |                  |
-|<sub>      u<> if      |<sub>              |<sub>         UNE_IF         |<sub>    (x1 x2 -- )      |                  |
-|<sub>      u<  if      |<sub>              |<sub>         ULT_IF         |<sub>    (x1 x2 -- )      |                  |
-|<sub>      u<= if      |<sub>              |<sub>         ULE_IF         |<sub>    (x1 x2 -- )      |                  |
-|<sub>      u>  if      |<sub>              |<sub>         UGT_IF         |<sub>    (x1 x2 -- )      |                  |
-|<sub>      u>= if      |<sub>              |<sub>         UGE_IF         |<sub>    (x1 x2 -- )      |                  |
-|<sub>    `3` =  if     |<sub>              |<sub>    PUSH_EQ_IF(`3`)     |<sub>       (x1 -- )      |                  |
-|<sub>    `3` <> if     |<sub>              |<sub>    PUSH_NE_IF(`3`)     |<sub>       (x1 -- )      |                  |
-|<sub>  dup `5`  =  if  |<sub>              |<sub>  DUP_PUSH_EQ_IF(`5`)   |<sub>         ( -- )      |                  |
-|<sub>  dup `5`  <> if  |<sub>              |<sub>  DUP_PUSH_NE_IF(`5`)   |<sub>         ( -- )      |                  |
-|<sub>  dup `5`  <  if  |<sub>              |<sub>  DUP_PUSH_LT_IF(`5`)   |<sub>         ( -- )      |                  |
-|<sub>  dup `5`  <= if  |<sub>              |<sub>  DUP_PUSH_LE_IF(`5`)   |<sub>         ( -- )      |                  |
-|<sub>  dup `5`  >  if  |<sub>              |<sub>  DUP_PUSH_GT_IF(`5`)   |<sub>         ( -- )      |                  |
-|<sub>  dup `5`  >= if  |<sub>              |<sub>  DUP_PUSH_GE_IF(`5`)   |<sub>         ( -- )      |                  |
-|<sub>  dup `5` u=  if  |<sub>              |<sub>  DUP_PUSH_UEQ_IF(`5`)  |<sub>         ( -- )      |                  |
-|<sub>  dup `5` u<> if  |<sub>              |<sub>  DUP_PUSH_UNE_IF(`5`)  |<sub>         ( -- )      |                  |
-|<sub>  dup `5` u<  if  |<sub>              |<sub>  DUP_PUSH_ULT_IF(`5`)  |<sub>         ( -- )      |                  |
-|<sub>  dup `5` u<= if  |<sub>              |<sub>  DUP_PUSH_ULE_IF(`5`)  |<sub>         ( -- )      |                  |
-|<sub>  dup `5` u>  if  |<sub>              |<sub>  DUP_PUSH_UGT_IF(`5`)  |<sub>         ( -- )      |                  |
-|<sub>  dup `5` u>= if  |<sub>              |<sub>  DUP_PUSH_UGE_IF(`5`)  |<sub>         ( -- )      |                  |
-|<sub>  `3` over = if   |<sub>              |<sub>   DUP_PUSH_EQ_IF(`3`)  |<sub>         ( -- )      |                  |
-|<sub>  `3` over <> if  |<sub>              |<sub>   DUP_PUSH_NE_IF(`3`)  |<sub>         ( -- )      |                  |
-|<sub>       dtto       |<sub>              |<sub>          dtto          |<sub>         ( -- )      |                  |
-|<sub>    2dup  =  if   |<sub>              |<sub>      _2DUP_EQ_IF       |<sub>         ( -- )      |                  |
-|<sub>    2dup  <> if   |<sub>              |<sub>      _2DUP_NE_IF       |<sub>         ( -- )      |                  |
-|<sub>    2dup  <  if   |<sub>              |<sub>      _2DUP_LT_IF       |<sub>         ( -- )      |                  |
-|<sub>    2dup  <= if   |<sub>              |<sub>      _2DUP_LE_IF       |<sub>         ( -- )      |                  |
-|<sub>    2dup  >  if   |<sub>              |<sub>      _2DUP_GT_IF       |<sub>         ( -- )      |                  |
-|<sub>    2dup  >= if   |<sub>              |<sub>      _2DUP_GE_IF       |<sub>         ( -- )      |                  |
-|<sub>    2dup u=  if   |<sub>              |<sub>      _2DUP_UEQ_IF      |<sub>         ( -- )      |                  |
-|<sub>    2dup u<> if   |<sub>              |<sub>      _2DUP_UNE_IF      |<sub>         ( -- )      |                  |
-|<sub>    2dup u<  if   |<sub>              |<sub>      _2DUP_ULT_IF      |<sub>         ( -- )      |                  |
-|<sub>    2dup u<= if   |<sub>              |<sub>      _2DUP_ULE_IF      |<sub>         ( -- )      |                  |
-|<sub>    2dup u>  if   |<sub>              |<sub>      _2DUP_UGT_IF      |<sub>         ( -- )      |                  |
-|<sub>    2dup u>= if   |<sub>              |<sub>      _2DUP_UGE_IF      |<sub>         ( -- )      |                  |
+|<sub>       Original       |<sub>   M4 FORTH   |<sub>        Optimization        |<sub>   Data stack        |<sub> Comment     |
+| :-----------------------: | :---------------: | :-----------------------------: | :----------------------- | :--------------- |
+|<sub>          if          |<sub>      IF      |<sub>                            |<sub>    ( flag -- )      |                  |
+|<sub>         else         |<sub>     ELSE     |<sub>                            |<sub>         ( -- )      |                  |
+|<sub>         then         |<sub>     THEN     |<sub>                            |<sub>         ( -- )      |                  |
+|<sub>        dup if        |<sub>              |<sub>           DUP_IF           |<sub>    ( flag -- flag ) |                  |
+|<sub>       over if        |<sub>              |<sub>          OVER_IF           |<sub>    ( flag -- flag ) |                  |
+|<sub>       swap if        |<sub>              |<sub>          SWAP_IF           |<sub>  ( flag x -- x )    |                  |
+|<sub>  `0` `8` within if   |<sub>              |<sub>  PUSH2_WITHIN_IF(`0`,`8`)  |<sub>      ( x1 -- )      |                  |
+|<sub>dup `0` `8` within if |<sub>              |<sub>DUP_PUSH2_WITHIN_IF(`0`,`8`)|<sub>      ( x1 -- x1 )   |                  |
+|<sub>         0= if        |<sub>              |<sub>          _0EQ_IF           |<sub>      ( x1 -- )      |                  |
+|<sub>      dup 0= if       |<sub>              |<sub>         DUP_0EQ_IF         |<sub>      ( x1 -- x1 )   |                  |
+|<sub>         0< if        |<sub>              |<sub>          _0LT_IF           |<sub>      ( x1 -- )      |                  |
+|<sub>      dup 0< if       |<sub>              |<sub>         DUP_0LT_IF         |<sub>      ( x1 -- x1 )   |                  |
+|<sub>         0>= if       |<sub>              |<sub>          _0GE_IF           |<sub>      ( x1 -- )      |                  |
+|<sub>      dup 0>= if      |<sub>              |<sub>         DUP_0GE_IF         |<sub>      ( x1 -- x1 )   |                  |
+|<sub>         =  if        |<sub>              |<sub>           EQ_IF            |<sub>    (x1 x2 -- )      |                  |
+|<sub>         <> if        |<sub>              |<sub>           NE_IF            |<sub>    (x1 x2 -- )      |                  |
+|<sub>         <  if        |<sub>              |<sub>           LT_IF            |<sub>    (x1 x2 -- )      |                  |
+|<sub>         <= if        |<sub>              |<sub>           LE_IF            |<sub>    (x1 x2 -- )      |                  |
+|<sub>         >  if        |<sub>              |<sub>           GT_IF            |<sub>    (x1 x2 -- )      |                  |
+|<sub>         >= if        |<sub>              |<sub>           GE_IF            |<sub>    (x1 x2 -- )      |                  |
+|<sub>        u=  if        |<sub>              |<sub>           UEQ_IF           |<sub>    (x1 x2 -- )      |                  |
+|<sub>        u<> if        |<sub>              |<sub>           UNE_IF           |<sub>    (x1 x2 -- )      |                  |
+|<sub>        u<  if        |<sub>              |<sub>           ULT_IF           |<sub>    (x1 x2 -- )      |                  |
+|<sub>        u<= if        |<sub>              |<sub>           ULE_IF           |<sub>    (x1 x2 -- )      |                  |
+|<sub>        u>  if        |<sub>              |<sub>           UGT_IF           |<sub>    (x1 x2 -- )      |                  |
+|<sub>        u>= if        |<sub>              |<sub>           UGE_IF           |<sub>    (x1 x2 -- )      |                  |
+|<sub>      `3` =  if       |<sub>              |<sub>      PUSH_EQ_IF(`3`)       |<sub>       (x1 -- )      |                  |
+|<sub>      `3` <> if       |<sub>              |<sub>      PUSH_NE_IF(`3`)       |<sub>       (x1 -- )      |                  |
+|<sub>    dup `5`  =  if    |<sub>              |<sub>    DUP_PUSH_EQ_IF(`5`)     |<sub>         ( -- )      |                  |
+|<sub>    dup `5`  <> if    |<sub>              |<sub>    DUP_PUSH_NE_IF(`5`)     |<sub>         ( -- )      |                  |
+|<sub>    dup `5`  <  if    |<sub>              |<sub>    DUP_PUSH_LT_IF(`5`)     |<sub>         ( -- )      |                  |
+|<sub>    dup `5`  <= if    |<sub>              |<sub>    DUP_PUSH_LE_IF(`5`)     |<sub>         ( -- )      |                  |
+|<sub>    dup `5`  >  if    |<sub>              |<sub>    DUP_PUSH_GT_IF(`5`)     |<sub>         ( -- )      |                  |
+|<sub>    dup `5`  >= if    |<sub>              |<sub>    DUP_PUSH_GE_IF(`5`)     |<sub>         ( -- )      |                  |
+|<sub>    dup `5` u=  if    |<sub>              |<sub>    DUP_PUSH_UEQ_IF(`5`)    |<sub>         ( -- )      |                  |
+|<sub>    dup `5` u<> if    |<sub>              |<sub>    DUP_PUSH_UNE_IF(`5`)    |<sub>         ( -- )      |                  |
+|<sub>    dup `5` u<  if    |<sub>              |<sub>    DUP_PUSH_ULT_IF(`5`)    |<sub>         ( -- )      |                  |
+|<sub>    dup `5` u<= if    |<sub>              |<sub>    DUP_PUSH_ULE_IF(`5`)    |<sub>         ( -- )      |                  |
+|<sub>    dup `5` u>  if    |<sub>              |<sub>    DUP_PUSH_UGT_IF(`5`)    |<sub>         ( -- )      |                  |
+|<sub>    dup `5` u>= if    |<sub>              |<sub>    DUP_PUSH_UGE_IF(`5`)    |<sub>         ( -- )      |                  |
+|<sub>    `3` over = if     |<sub>              |<sub>     DUP_PUSH_EQ_IF(`3`)    |<sub>         ( -- )      |                  |
+|<sub>    `3` over <> if    |<sub>              |<sub>     DUP_PUSH_NE_IF(`3`)    |<sub>         ( -- )      |                  |
+|<sub>         dtto         |<sub>              |<sub>            dtto            |<sub>         ( -- )      |                  |
+|<sub>      2dup  =  if     |<sub>              |<sub>        _2DUP_EQ_IF         |<sub>         ( -- )      |                  |
+|<sub>      2dup  <> if     |<sub>              |<sub>        _2DUP_NE_IF         |<sub>         ( -- )      |                  |
+|<sub>      2dup  <  if     |<sub>              |<sub>        _2DUP_LT_IF         |<sub>         ( -- )      |                  |
+|<sub>      2dup  <= if     |<sub>              |<sub>        _2DUP_LE_IF         |<sub>         ( -- )      |                  |
+|<sub>      2dup  >  if     |<sub>              |<sub>        _2DUP_GT_IF         |<sub>         ( -- )      |                  |
+|<sub>      2dup  >= if     |<sub>              |<sub>        _2DUP_GE_IF         |<sub>         ( -- )      |                  |
+|<sub>      2dup u=  if     |<sub>              |<sub>        _2DUP_UEQ_IF        |<sub>         ( -- )      |                  |
+|<sub>      2dup u<> if     |<sub>              |<sub>        _2DUP_UNE_IF        |<sub>         ( -- )      |                  |
+|<sub>      2dup u<  if     |<sub>              |<sub>        _2DUP_ULT_IF        |<sub>         ( -- )      |                  |
+|<sub>      2dup u<= if     |<sub>              |<sub>        _2DUP_ULE_IF        |<sub>         ( -- )      |                  |
+|<sub>      2dup u>  if     |<sub>              |<sub>        _2DUP_UGT_IF        |<sub>         ( -- )      |                  |
+|<sub>      2dup u>= if     |<sub>              |<sub>        _2DUP_UGE_IF        |<sub>         ( -- )      |                  |
 
 #### 8bit
 
@@ -1046,72 +1047,74 @@ The variables are stored in the return address stack.
 
 The variables are stored in the data stack.
 
-|<sub>       Original      |<sub>        M4 FORTH       |<sub>     Optimization      |<sub>  Data stack                |<sub>  R. a. stack |
-| :----------------------: | :------------------------: | :------------------------: | :------------------------------ | :---------------- |
-|<sub>        unloop       |<sub>         UNLOOP        |<sub>                           |<sub>         ( ? -- )           |<sub> ( ? -- )     |
-|<sub>        leave        |<sub>         LEAVE         |<sub>                           |<sub>         ( ? -- )           |<sub> ( ? -- )     |
-|<sub>          i          |<sub>                       |<sub>             SI            |<sub>         ( i -- i i )       |<sub> ( -- )       |
-|<sub>         do          |<sub>                       |<sub>            SDO            |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
-|<sub>         ?do         |<sub>                       |<sub>        QUESTIONSDO        |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
-|<sub>        loop         |<sub>                       |<sub>           SLOOP           |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
-|<sub>        +loop        |<sub>                       |<sub>          ADDSLOOP         |<sub>( end i step -- end i+step )|<sub> ( -- )       |
-|<sub>      `4` +loop      |<sub>                       |<sub>     PUSH_ADDSLOOP(`4`)    |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
-|<sub>         for         |<sub>                       |<sub>            SFOR           |<sub>     ( index -- index )     |<sub> ( -- )       |
-|<sub>        next         |<sub>                       |<sub>           SNEXT           |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
-|<sub>        begin        |<sub>         BEGIN         |<sub>                           |<sub>           ( -- )           |<sub>              |
-|<sub>                     |<sub>         BREAK         |<sub>                           |<sub>           ( -- )           |<sub>              |
-|<sub>       while         |<sub>         WHILE         |<sub>                           |<sub>      ( flag -- )           |<sub>              |
-|<sub>     dup while       |<sub>                       |<sub>         DUP_WHILE         |<sub>      ( flag -- flag )      |<sub>              |
-|<sub>`0` `8` within while |<sub>                       |<sub>PUSH2_WITHIN_WHILE(`0`,`8`)|<sub>      ( x -- )              |<sub>              |
-|<sub>       =  while      |<sub>                       |<sub>         EQ_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>       <> while      |<sub>                       |<sub>         NE_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>       <  while      |<sub>                       |<sub>         LT_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>       <= while      |<sub>                       |<sub>         LE_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>       >  while      |<sub>                       |<sub>         GT_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>       >= while      |<sub>                       |<sub>         GE_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>      u=  while      |<sub>                       |<sub>        UEQ_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>      u<> while      |<sub>                       |<sub>        UNE_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>      u<  while      |<sub>                       |<sub>        ULT_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>      u<= while      |<sub>                       |<sub>        ULE_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>      u>  while      |<sub>                       |<sub>        UGT_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>      u>= while      |<sub>                       |<sub>        UGE_WHILE          |<sub>     ( x2 x1 -- )           |<sub>              |
-|<sub>  dup `2`  =  while  |<sub>                       |<sub>   DUP_PUSH_EQ_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2`  <> while  |<sub>                       |<sub>   DUP_PUSH_NE_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2`  <  while  |<sub>                       |<sub>   DUP_PUSH_LT_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2`  <= while  |<sub>                       |<sub>   DUP_PUSH_LE_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2`  >  while  |<sub>                       |<sub>   DUP_PUSH_GT_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2`  >= while  |<sub>                       |<sub>   DUP_PUSH_GE_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2` u=  while  |<sub>                       |<sub>  DUP_PUSH_UEQ_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2` u<> while  |<sub>                       |<sub>  DUP_PUSH_UNE_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2` u<  while  |<sub>                       |<sub>  DUP_PUSH_ULT_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2` u<= while  |<sub>                       |<sub>  DUP_PUSH_ULE_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2` u>  while  |<sub>                       |<sub>  DUP_PUSH_UGT_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>  dup `2` u>= while  |<sub>                       |<sub>  DUP_PUSH_UGE_WHILE(`2`)  |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup  =  while    |<sub>                       |<sub>      _2DUP_EQ_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup  <> while    |<sub>                       |<sub>      _2DUP_NE_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup  <  while    |<sub>                       |<sub>      _2DUP_LT_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup  <= while    |<sub>                       |<sub>      _2DUP_LE_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup  >  while    |<sub>                       |<sub>      _2DUP_GT_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup  >= while    |<sub>                       |<sub>      _2DUP_GE_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup u=  while    |<sub>                       |<sub>     _2DUP_UEQ_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup u<> while    |<sub>                       |<sub>     _2DUP_UNE_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup u<  while    |<sub>                       |<sub>     _2DUP_ULT_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup u<= while    |<sub>                       |<sub>     _2DUP_ULE_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup u>  while    |<sub>                       |<sub>     _2DUP_UGT_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>   2dup u>= while    |<sub>                       |<sub>     _2DUP_UGE_WHILE       |<sub>           ( -- )           |<sub>              |
-|<sub>        repeat       |<sub>         REPEAT        |<sub>                           |<sub>           ( -- )           |<sub>              |
-|<sub>        again        |<sub>         AGAIN         |<sub>                           |<sub>           ( -- )           |<sub>              |
-|<sub>        until        |<sub>         UNTIL         |<sub>                           |<sub>      ( flag -- )           |<sub>              |
-|<sub>`0` `8` within until |<sub>                       |<sub>PUSH2_WITHIN_UNTIL(`0`,`8`)|<sub>         ( x -- )           |<sub>              |
-|<sub>      0= until       |<sub>      _0EQ UNTIL       |<sub>        _0EQ_UNTIL         |<sub>         ( x -- )           |<sub>              |
-|<sub>      dup until      |<sub>       DUP UNTIL       |<sub>         DUP_UNTIL         |<sub>         ( x -- x )         |<sub>              |
-|<sub>    dup 0= until     |<sub>    DUP _0EQ UNTIL     |<sub>       DUP_0EQ_UNTIL       |<sub>         ( x -- x )         |<sub>              |
-|<sub>     over until      |<sub>       OVER UNTIL      |<sub>        OVER_UNTIL         |<sub>         ( x -- x )         |<sub>              |
-|<sub>    over 0= until    |<sub>    OVER _0EQ UNTIL    |<sub>      OVER_0EQ_UNTIL       |<sub>         ( x -- x )         |<sub>              |
-|<sub>     dup c@ until    |<sub>   DUP CFETCH UNTIL    |<sub>      DUP_CFETCH_UNTIL     |<sub>      ( addr -- addr )      |<sub>              |
-|<sub>   dup c@ 0= until   |<sub> DUP CFETCH _0EQ UNTIL |<sub>    DUP_CFETCH_0EQ_UNTIL   |<sub>      ( addr -- addr )      |<sub>              |
-|<sub>    2dup eq until    |<sub>     _2DUP EQ UNTIL    |<sub>      _2DUP_EQ_UNTIL       |<sub>       ( b a -- b a )       |<sub>              |
-|<sub>  dup `2` eq until   |<sub> DUP PUSH(`2`) EQ UNTIL|<sub>   DUP_PUSH_EQ_UNTIL(`2`)  |<sub>         ( n -- n )         |<sub>              |
+|<sub>         Original        |<sub>        M4 FORTH       |<sub>         Optimization          |<sub>  Data stack                |<sub>  R. a. stack |
+| :--------------------------: | :------------------------: | :--------------------------------: | :------------------------------ | :---------------- |
+|<sub>          unloop         |<sub>         UNLOOP        |<sub>                               |<sub>         ( ? -- )           |<sub> ( ? -- )     |
+|<sub>          leave          |<sub>         LEAVE         |<sub>                               |<sub>         ( ? -- )           |<sub> ( ? -- )     |
+|<sub>            i            |<sub>                       |<sub>               SI              |<sub>         ( i -- i i )       |<sub> ( -- )       |
+|<sub>           do            |<sub>                       |<sub>              SDO              |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
+|<sub>           ?do           |<sub>                       |<sub>          QUESTIONSDO          |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
+|<sub>          loop           |<sub>                       |<sub>             SLOOP             |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
+|<sub>          +loop          |<sub>                       |<sub>            ADDSLOOP           |<sub>( end i step -- end i+step )|<sub> ( -- )       |
+|<sub>        `4` +loop        |<sub>                       |<sub>       PUSH_ADDSLOOP(`4`)      |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
+|<sub>           for           |<sub>                       |<sub>              SFOR             |<sub>     ( index -- index )     |<sub> ( -- )       |
+|<sub>          next           |<sub>                       |<sub>             SNEXT             |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
+|<sub>          begin          |<sub>         BEGIN         |<sub>                               |<sub>           ( -- )           |<sub>              |
+|<sub>                         |<sub>         BREAK         |<sub>                               |<sub>           ( -- )           |<sub>              |
+|<sub>         while           |<sub>         WHILE         |<sub>                               |<sub>      ( flag -- )           |<sub>              |
+|<sub>       dup while         |<sub>                       |<sub>           DUP_WHILE           |<sub>      ( flag -- flag )      |<sub>              |
+|<sub>  `0` `8` within while   |<sub>                       |<sub>  PUSH2_WITHIN_WHILE(`0`,`8`)  |<sub>      ( x -- )              |<sub>              |
+|<sub>dup `0` `8` within while |<sub>                       |<sub>DUP_PUSH2_WITHIN_WHILE(`0`,`8`)|<sub>      ( x -- x )            |<sub>              |
+|<sub>         =  while        |<sub>                       |<sub>           EQ_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>         <> while        |<sub>                       |<sub>           NE_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>         <  while        |<sub>                       |<sub>           LT_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>         <= while        |<sub>                       |<sub>           LE_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>         >  while        |<sub>                       |<sub>           GT_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>         >= while        |<sub>                       |<sub>           GE_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>        u=  while        |<sub>                       |<sub>          UEQ_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>        u<> while        |<sub>                       |<sub>          UNE_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>        u<  while        |<sub>                       |<sub>          ULT_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>        u<= while        |<sub>                       |<sub>          ULE_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>        u>  while        |<sub>                       |<sub>          UGT_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>        u>= while        |<sub>                       |<sub>          UGE_WHILE            |<sub>     ( x2 x1 -- )           |<sub>              |
+|<sub>    dup `2`  =  while    |<sub>                       |<sub>     DUP_PUSH_EQ_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2`  <> while    |<sub>                       |<sub>     DUP_PUSH_NE_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2`  <  while    |<sub>                       |<sub>     DUP_PUSH_LT_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2`  <= while    |<sub>                       |<sub>     DUP_PUSH_LE_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2`  >  while    |<sub>                       |<sub>     DUP_PUSH_GT_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2`  >= while    |<sub>                       |<sub>     DUP_PUSH_GE_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2` u=  while    |<sub>                       |<sub>    DUP_PUSH_UEQ_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2` u<> while    |<sub>                       |<sub>    DUP_PUSH_UNE_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2` u<  while    |<sub>                       |<sub>    DUP_PUSH_ULT_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2` u<= while    |<sub>                       |<sub>    DUP_PUSH_ULE_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2` u>  while    |<sub>                       |<sub>    DUP_PUSH_UGT_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>    dup `2` u>= while    |<sub>                       |<sub>    DUP_PUSH_UGE_WHILE(`2`)    |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup  =  while      |<sub>                       |<sub>        _2DUP_EQ_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup  <> while      |<sub>                       |<sub>        _2DUP_NE_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup  <  while      |<sub>                       |<sub>        _2DUP_LT_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup  <= while      |<sub>                       |<sub>        _2DUP_LE_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup  >  while      |<sub>                       |<sub>        _2DUP_GT_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup  >= while      |<sub>                       |<sub>        _2DUP_GE_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup u=  while      |<sub>                       |<sub>       _2DUP_UEQ_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup u<> while      |<sub>                       |<sub>       _2DUP_UNE_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup u<  while      |<sub>                       |<sub>       _2DUP_ULT_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup u<= while      |<sub>                       |<sub>       _2DUP_ULE_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup u>  while      |<sub>                       |<sub>       _2DUP_UGT_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>     2dup u>= while      |<sub>                       |<sub>       _2DUP_UGE_WHILE         |<sub>           ( -- )           |<sub>              |
+|<sub>          repeat         |<sub>         REPEAT        |<sub>                               |<sub>           ( -- )           |<sub>              |
+|<sub>          again          |<sub>         AGAIN         |<sub>                               |<sub>           ( -- )           |<sub>              |
+|<sub>          until          |<sub>         UNTIL         |<sub>                               |<sub>      ( flag -- )           |<sub>              |
+|<sub>  `0` `8` within until   |<sub>                       |<sub>  PUSH2_WITHIN_UNTIL(`0`,`8`)  |<sub>         ( x -- )           |<sub>              |
+|<sub>dup `0` `8` within until |<sub>                       |<sub>DUP_PUSH2_WITHIN_UNTIL(`0`,`8`)|<sub>         ( x -- x )         |<sub>              |
+|<sub>        0= until         |<sub>      _0EQ UNTIL       |<sub>          _0EQ_UNTIL           |<sub>         ( x -- )           |<sub>              |
+|<sub>        dup until        |<sub>       DUP UNTIL       |<sub>           DUP_UNTIL           |<sub>         ( x -- x )         |<sub>              |
+|<sub>      dup 0= until       |<sub>    DUP _0EQ UNTIL     |<sub>         DUP_0EQ_UNTIL         |<sub>         ( x -- x )         |<sub>              |
+|<sub>       over until        |<sub>       OVER UNTIL      |<sub>          OVER_UNTIL           |<sub>         ( x -- x )         |<sub>              |
+|<sub>      over 0= until      |<sub>    OVER _0EQ UNTIL    |<sub>        OVER_0EQ_UNTIL         |<sub>         ( x -- x )         |<sub>              |
+|<sub>       dup c@ until      |<sub>   DUP CFETCH UNTIL    |<sub>        DUP_CFETCH_UNTIL       |<sub>      ( addr -- addr )      |<sub>              |
+|<sub>     dup c@ 0= until     |<sub> DUP CFETCH _0EQ UNTIL |<sub>      DUP_CFETCH_0EQ_UNTIL     |<sub>      ( addr -- addr )      |<sub>              |
+|<sub>      2dup eq until      |<sub>     _2DUP EQ UNTIL    |<sub>        _2DUP_EQ_UNTIL         |<sub>       ( b a -- b a )       |<sub>              |
+|<sub>    dup `2` eq until     |<sub> DUP PUSH(`2`) EQ UNTIL|<sub>     DUP_PUSH_EQ_UNTIL(`2`)    |<sub>         ( n -- n )         |<sub>              |
 
 ### Memory
 
