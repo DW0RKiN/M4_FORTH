@@ -171,7 +171,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>          2tuck           |<sub>       _2TUCK        |<sub>                  |<sub>    ( d c b a -- b a d c b a )    |
 |<sub>           over           |<sub>         OVER        |<sub>                  |<sub>      ( x2 x1 -- x2 x1 x2 )       |
 |<sub>         over swap        |<sub>       OVER SWAP     |<sub>     OVER_SWAP    |<sub>      ( x2 x1 -- x2 x2 x1 )       |
-|<sub>          2over           |<sub>       _2OVER        |<sub>                  |<sub>    ( a b c d -- a b c d a b )    |
+|<sub>          2over           |<sub>       _2OVER        |<sub>                  |<sub>    ( d c b a -- d c b a d c )    |
+|<sub>        2over nip         |<sub>     _2OVER NIP      |<sub>    _2OVER_NIP    |<sub>      ( c b a -- c b a c )        |
 |<sub>           rot            |<sub>         ROT         |<sub>                  |<sub>   ( x3 x2 x1 -- x2 x1 x3 )       |
 |<sub>         rot drop         |<sub>       ROT DROP      |<sub>     ROT_DROP     |<sub>   ( x3 x2 x1 -- x2 x1 )          |
 |<sub>          2rot            |<sub>        _2ROT        |<sub>                  |<sub>( f e d c b a -- d c b a f e )    |

@@ -413,6 +413,7 @@ do
     sed 's#^\([^;{]*\s\|^\)OVER\s\+SWAP\(\s\|$\)#\1OVER_SWAP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)2OVER\(\s\|$\)#\1_2OVER\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2OVER\s\+_2OVER\(\s\|$\)#\1_4DUP\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)_2OVER\s\+NIP\(\s\|$\)#\1_2OVER_NIP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)[+]*[0]*3\s\+PICK\s\+[+]*[0]*3\s\+PICK\s\+[+]*[0]*3\s\+PICK\s\+[+]*[0]*3\s\+PICK\(\s\|$\)#\1_4DUP\2#gi' |
     
     sed 's#^\([^;{]*\s\|^\)[Rr]ot\(\s\|$\)#\1ROT\2#g' |
