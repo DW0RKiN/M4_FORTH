@@ -2504,13 +2504,13 @@ __{}__{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    sub   __HEX_L($1)          ; 2:7       _TMP_INFO
 __{}__{}__{}    ld    B{,} H          ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nc{,} $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    dec   B             ; 1:4       _TMP_INFO},
+__{}__{}__{}    dec   B             ; 1:4       _TMP_INFO   BA = {TOS}-($1)},
 __{}__{}__HEX_H($1),{0xFF},{define({__SAVE_HL_WITHIN_B},12){}define({__SAVE_HL_WITHIN_C},44)
 __{}__{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    sub   __HEX_L($1)          ; 2:7       _TMP_INFO
 __{}__{}__{}    ld    B{,} H          ; 1:4       _TMP_INFO
 __{}__{}__{}    jr    c{,} $+3        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    inc   B             ; 1:4       _TMP_INFO},
+__{}__{}__{}    inc   B             ; 1:4       _TMP_INFO   BA = {TOS}-($1)},
 __{}__{}{define({__SAVE_HL_WITHIN_B},14){}define({__SAVE_HL_WITHIN_C},52)
 __{}__{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    sub   __HEX_L($1)          ; 2:7       _TMP_INFO
