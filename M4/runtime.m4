@@ -465,7 +465,7 @@ BC_LSHIFT32:            ;[34:]      lshift32
     ld    B, A          ; 1:4       lshift32
     add  HL, HL         ; 1:11      lshift32
     rl    E             ; 2:8       lshift32
-    rl    D             ; 2:8       lshift32   DEHL = DEHL << 1 
+    rl    D             ; 2:8       lshift32   DEHL = DEHL << 1
     djnz $-5            ; 2:8/13    lshift32
     xor   C             ; 1:4       lshift32   A = u & 0xF8
     ret   z             ; 1:5/11    lshift32
@@ -480,6 +480,77 @@ LSHIFT32_Z:             ;           lshift32
     ld    H, D          ; 1:4       lshift32
     ld    L, E          ; 1:4       lshift32   DEHL = 0
     ret                 ; 1:10      lshift32}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_DRSHIFT},{__def({USE_ROT_DRSHIFT})
+;==============================================================================
+; ( d1 u -- d )  d = d1>>u
+; shifts d1 right u places
+;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
+; Output: DEHL = d1 >> u
+; Pollutes: AF, BC, DE, HL
+RSHIFT32:               ;[39:]      rshift32
+    ld    C, L          ; 1:4       rshift32
+    ld    B, H          ; 1:4       rshift32   BC = u
+    pop  HL             ; 1:10      rshift32   ret
+    ex  (SP),HL         ; 1:19      rshift32
+    ex   DE, HL         ; 1:4       rshift32   DEHL = d1
+    ; fall to BC_DRSHIFT32}){}dnl
+ifdef({USE_ROT_DRSHIFT},{
+;-------------------------------------------------------------------------------
+; ( d1 -- d )  d = d1>>BC
+; shifts d1 right BC places
+;  Input: BC=u, DEHL=d1, (SP)=ret
+; Output: DEHL >>=  BC
+; Pollutes: AF, BC, DE, HL
+BC_RSHIFT32:            ;[37:]      rshift32
+    ld    A, 0xE0       ; 2:7       rshift32
+    and   C             ; 1:4       rshift32
+    or    B             ; 1:4       rshift32
+    jr   nz, ifdef({USE_ROT_DLSHIFT},{LSHIFT32_Z},{RSHIFT32_Z}) ; 2:7/12    rshift32   overflow
+__{}ifelse({1},{1},{dnl
+    ld    A, C          ; 1:4       rshift32
+    and  0x07           ; 1:4       rshift32   A = u & 0x07
+    jr    z, $+13       ; 2:7/12    rshift32
+    ld    B, A          ; 1:4       rshift32
+    srl   D             ; 2:8       rshift32   unsigned
+    rr    E             ; 2:8       rshift32
+    rr    H             ; 2:8       rshift32
+    rr    L             ; 2:8       rshift32   DEHL = DEHL >> 1
+    djnz $-8            ; 2:8/13    rshift32
+    xor   C             ; 1:4       rshift32   A = u & 0xF8
+    ret   z             ; 1:5/11    rshift32
+    sub  0x08           ; 2:7       rshift32
+    ld    L, H          ; 1:4       rshift32
+    ld    H, E          ; 1:4       rshift32
+    ld    E, D          ; 1:4       rshift32
+    ld    D, B          ; 1:4       rshift32   DEHL = DEHL >> 8
+    jr   $-7            ; 2:12      rshift32},
+__{}{dnl
+    or    C             ; 1:4       rshift32   A = u
+    jr   $+7            ; 2:12      rshift32
+    ld    L, H          ; 1:4       rshift32
+    ld    H, E          ; 1:4       rshift32
+    ld    E, D          ; 1:4       rshift32
+    ld    D, B          ; 1:4       rshift32   DEHL = DEHL >> 8
+    ld    C, A          ; 1:4       rshift32
+    ret   z             ; 1:5/11    rshift32
+    sub  0x08           ; 2:7       rshift32
+    jr   nc, $-8        ; 2:7/12    rshift32
+    ld    B, C          ; 1:4       rshift32
+    srl   D             ; 2:8       rshift32   unsigned
+    rr    E             ; 2:8       rshift32
+    rr    H             ; 2:8       rshift32
+    rr    L             ; 2:8       rshift32   DEHL = DEHL >> 1
+    djnz $-8            ; 2:8/13    rshift32
+    ret                 ; 1:10      rshift32}){}dnl
+__{}ifdef({USE_ROT_DLSHIFT},{},{
+__{}RSHIFT32_Z:             ;           rshift32
+__{}    ld   DE, 0x0000     ; 3:10      rshift32
+__{}    ld    H, D          ; 1:4       rshift32
+__{}    ld    L, E          ; 1:4       rshift32   DEHL = 0
+__{}    ret                 ; 1:10      rshift32})}){}dnl
 dnl
 dnl
 dnl

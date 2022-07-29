@@ -1237,8 +1237,8 @@ dnl
 dnl
 dnl # -------------------------- 32 bits --------------------------
 dnl
-dnl
 dnl # ------------- double shifts ----------------
+dnl
 dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
@@ -1252,6 +1252,21 @@ dnl # shifts d1 left u places
 define({ROT_DLSHIFT},{__def({USE_ROT_DLSHIFT})
     pop  BC             ; 1:10      rot D<<   ( d1 -- d )  d = d1 << BC
     call BC_LSHIFT32    ; 3:17      rot D<<})dnl
+dnl
+dnl
+dnl
+dnl # ( d1 u -- d )  d = d1 >> u
+dnl # shifts d1 right u places
+define({DRSHIFT},{__def({USE_DRSHIFT})
+    call RSHIFT32       ; 3:17      D>>   ( d1 u -- d )  d = d1 >> u})dnl
+dnl
+dnl
+dnl
+dnl # ( d1 u -- d )  d = d1 >> u
+dnl # shifts d1 right u places
+define({ROT_DRSHIFT},{__def({USE_ROT_DRSHIFT})
+    pop  BC             ; 1:10      rot D>>   ( d1 -- d )  d = d1 >> BC
+    call BC_RSHIFT32    ; 3:17      rot D>>})dnl
 dnl
 dnl
 dnl
