@@ -341,6 +341,25 @@ define({_2OVER},{
     ld    E, C          ; 1:4       2over d c b a . d c})dnl
 dnl
 dnl
+dnl # ( d c b a -- d c b a c )
+dnl #   ( c b a -- c b a c )
+define({_2OVER_NIP},{ifelse(_TYP_SINGLE,{small},{
+                        ;[5:55]     2over nip  ( c b a -- c b a c )
+    pop  BC             ; 1:10      2over nip      . b a     BC = c
+    push BC             ; 1:11      2over nip  c   . b a
+    push BC             ; 1:11      2over nip  c c . b a
+    ex   DE, HL         ; 1:4       2over nip  c c . a b
+    ex  (SP),HL         ; 1:19      2over nip  c b . a c},
+{
+                        ;[6:44]     2over nip  ( c b a -- c b a c )
+    pop  BC             ; 1:10      2over nip      . b a   BC = c
+    push BC             ; 1:11      2over nip  c   . b a
+    push DE             ; 1:11      2over nip  c b . b a
+    ex   DE, HL         ; 1:4       2over nip  c b . a b
+    ld    L, C          ; 1:4       2over nip  c b . a -
+    ld    H, B          ; 1:4       2over nip  c b . a c})})dnl
+dnl
+dnl
 dnl # ( f e d c b a -- f e d c b a f e d )
 dnl # Copy cell pair "f e d" to the top of the stack.
 define({_3OVER},{
