@@ -490,6 +490,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
 |<sub>   `0.` D<    |<sub>   PUSHDOT(`0`) DLT  |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
 |<sub>  `0` `0` D<  |<sub>  PUSH2(`0`,`0`) DLT |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>  `135.` D=   |<sub>  PUSHDOT(`135`) DEQ |<sub>  PUSHDOT_DEQ(`135`) |<sub>      ( d1 -- flag )   |<sub> f=(d1 == `135`)
 |<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
 |<sub>      D<>     |<sub>         DNE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
 |<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
