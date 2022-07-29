@@ -754,20 +754,20 @@ define({UGE},{
     sbc  HL, HL         ; 2:15      u>=
     pop  DE             ; 1:10      u>=})dnl
 dnl
-dnl # ------------- shifts ----------------
+dnl # ------------- single shifts ----------------
 dnl
 dnl # ( x u -- x)
 dnl # shifts x left u places
 define({LSHIFT},{ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
-    call  DE_LSHIFT     ; 3:17      <<   ( x1 u -- x1<<u )
-    pop   DE            ; 1:10      <<})dnl
+    call DE_LSHIFT      ; 3:17      <<   ( x1 u -- x1<<u )
+    pop  DE             ; 1:10      <<})dnl
 dnl
 dnl
 dnl # ( x u -- x)
 dnl # shifts x right u places
 define({RSHIFT},{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
-    call  DE_RSHIFT     ; 3:17      >>   ( x1 u -- x1>>u )
-    pop   DE            ; 1:10      >>})dnl
+    call DE_RSHIFT      ; 3:17      >>   ( x1 u -- x1>>u )
+    pop  DE             ; 1:10      >>})dnl
 dnl
 dnl
 dnl # 1 <<
@@ -1238,6 +1238,23 @@ dnl
 dnl # -------------------------- 32 bits --------------------------
 dnl
 dnl
+dnl # ------------- double shifts ----------------
+dnl
+dnl # ( d1 u -- d )  d = d1 << u
+dnl # shifts d1 left u places
+define({DLSHIFT},{__def({USE_DLSHIFT})
+    call LSHIFT32       ; 3:17      D<<   ( d1 u -- d )  d = d1 << u})dnl
+dnl
+dnl
+dnl
+dnl # ( d1 u -- d )  d = d1 << u
+dnl # shifts d1 left u places
+define({ROT_DLSHIFT},{__def({USE_ROT_DLSHIFT})
+    pop  BC             ; 1:10      rot D<<   ( d1 -- d )  d = d1 << BC
+    call BC_LSHIFT32    ; 3:17      rot D<<})dnl
+dnl
+dnl
+dnl
 dnl # ( d1 d2 -- d )
 dnl # d = d1 & d2
 define({DAND},{
@@ -1458,6 +1475,55 @@ define({DEQ},{
     ld    L, A          ; 1:4       D=
     ld    H, A          ; 1:4       D=   HL = flag d2==d1
     pop  DE             ; 1:10      D=})dnl
+dnl
+dnl
+dnl
+dnl # $1 D=
+dnl # ( d1 -- flag )
+dnl # equal ( d1 == $1 )
+define({PUSHDOT_DEQ},{ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[20:106]   $1. D=   ( d1 -- flag )  flag: d1 == $1
+__{}    ld   BC,format({%-12s},$1); 4:20      $1. D=
+__{}    xor   A             ; 1:4       $1. D=
+__{}    sbc  HL, BC         ; 2:15      $1. D=
+__{}    jr   nz, $+10       ; 2:7/12    $1. D=
+__{}    ld   HL,format({%-12s},($1+2)); 3:16      $1. D=
+__{}    sbc  HL, DE         ; 2:15      $1. D=
+__{}    jr   nz, $+3        ; 2:7/12    $1. D=
+__{}    dec   A             ; 1:4       $1. D=   A = 0xFF
+__{}    ld    L, A          ; 1:4       $1. D=
+__{}    ld    H, A          ; 1:4       $1. D=   HL = flag
+__{}    pop  DE             ; 1:10      $1. D=},
+__IS_NUM($1),{0},{
+__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+{ifelse(eval($1),0,{D0EQ},
+__{}__{}{define({_TMP_INFO},{$1. D=}){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_DE($1),{HL},0,{BC},__HEX_HL($1)){}
+__{}__{}__DEQ_MAKE_BEST_CODE($1,6,29,0,0){}dnl
+__{}__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
+__{}__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
+__{}__{}                        ;[eval(16+__BYTES_16BIT):59/eval(80+__CLOCKS_16BIT)] $1. D=   ( d1 -- flag )  flag: d1 == $1
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1. D=
+__{}__{}    xor   A             ; 1:4       $1. D=
+__{}__{}    sbc  HL, BC         ; 2:15      $1. D=
+__{}__{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    $1. D={}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    sbc  HL, DE         ; 2:15      $1. D=
+__{}__{}    jr   nz, $+3        ; 2:7/12    $1. D=
+__{}__{}    dec   A             ; 1:4       $1. D=   A = 0xFF
+__{}__{}    ld    L, A          ; 1:4       $1. D=
+__{}__{}    ld    H, A          ; 1:4       $1. D=   HL = flag
+__{}__{}    pop  DE             ; 1:10      $1. D=},{
+__{}__{}_TMP_BEST_CODE
+__{}__{}    sub  0x01           ; 2:7       $1. D=
+__{}__{}    sbc   A, A          ; 1:4       $1. D=
+__{}__{}    ld    L, A          ; 1:4       $1. D=
+__{}__{}    ld    H, A          ; 1:4       $1. D=   HL = flag
+__{}__{}    pop  DE             ; 1:10      $1. D=})})})}){}dnl
+dnl
 dnl
 dnl
 dnl # Du=

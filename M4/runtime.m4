@@ -433,6 +433,56 @@ BIN16_DEC_CHAR:         ;           bin16_dec
 dnl
 dnl
 dnl
+ifdef({USE_DLSHIFT},{__def({USE_ROT_DLSHIFT})
+;==============================================================================
+; ( d1 u -- d )  d = d1<<u
+; shifts d1 left u places
+;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
+; Output: DEHL = d1 << u
+; Pollutes: AF, BC, DE, HL
+LSHIFT32:               ;[39:]      lshift32
+    ld    C, L          ; 1:4       lshift32
+    ld    B, H          ; 1:4       lshift32   BC = u
+    pop  HL             ; 1:10      lshift32   ret
+    ex  (SP),HL         ; 1:19      lshift32
+    ex   DE, HL         ; 1:4       lshift32   DEHL = d1
+    ; fall to BC_DLSHIFT32}){}dnl
+ifdef({USE_ROT_DLSHIFT},{
+;-------------------------------------------------------------------------------
+; ( d1 -- d )  d = d1<<BC
+; shifts d1 left BC places
+;  Input: BC=u, DEHL=d1, (SP)=ret
+; Output: DEHL <<=  BC
+; Pollutes: AF, BC, DE, HL
+BC_LSHIFT32:            ;[34:]      lshift32
+    ld    A, 0xE0       ; 2:7       lshift32
+    and   C             ; 1:4       lshift32
+    or    B             ; 1:4       lshift32
+    jr   nz, LSHIFT32_Z ; 2:7/12    lshift32   overflow
+    ld    A, C          ; 1:4       lshift32
+    and  0x07           ; 1:4       lshift32   A = u & 0x07
+    jr    z, $+10       ; 2:7/12    lshift32
+    ld    B, A          ; 1:4       lshift32
+    add  HL, HL         ; 1:11      lshift32
+    rl    E             ; 2:8       lshift32
+    rl    D             ; 2:8       lshift32   DEHL = DEHL << 1 
+    djnz $-5            ; 2:8/13    lshift32
+    xor   C             ; 1:4       lshift32   A = u & 0xF8
+    ret   z             ; 1:5/11    lshift32
+    sub  0x08           ; 2:7       lshift32
+    ld    D, E          ; 1:4       lshift32
+    ld    E, H          ; 1:4       lshift32
+    ld    H, L          ; 1:4       lshift32
+    ld    L, B          ; 1:4       lshift32   DEHL = DEHL << 8
+    jr   $-7            ; 2:12      lshift32
+LSHIFT32_Z:             ;           lshift32
+    ld   DE, 0x0000     ; 3:10      lshift32
+    ld    H, D          ; 1:4       lshift32
+    ld    L, E          ; 1:4       lshift32   DEHL = 0
+    ret                 ; 1:10      lshift32}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_LSHIFT},{
 ;==============================================================================
 ; ( x u -- ? x<<u )
@@ -440,15 +490,14 @@ ifdef({USE_LSHIFT},{
 ;  Input: HL, DE
 ; Output: HL = DE << HL
 ; Pollutes: AF, B, DE, HL
-DE_LSHIFT:              ;[28:]      de_lshift
-    ld    A, 15         ; 2:7       de_lshift
-    sub   L             ; 1:4       de_lshift
-    sbc   A, A          ; 1:4       de_lshift
+DE_LSHIFT:              ;[27:]      de_lshift
+    ld    A, 0xF0       ; 2:7       de_lshift
+    and   L             ; 1:4       de_lshift
     or    H             ; 1:4       de_lshift
-    jr   nz, DE_LSHIFTZ ; 2:7/12    de_lshift
+    jr   nz, DE_LSHIFTZ ; 2:7/12    de_lshift   overflow
     or    L             ; 1:4       de_lshift
     ex   DE, HL         ; 1:4       de_lshift   HL = x
-    ret   z             ; 1:5/11    de_lshift    A = u
+    ret   z             ; 1:5/11    de_lshift    A = E = u
     ld    B, A          ; 1:4       de_lshift
     sub   0x08          ; 2:7       de_lshift
     jr    c, $+7        ; 2:7/12    de_lshift
