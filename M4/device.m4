@@ -413,10 +413,11 @@ dnl ." string"
 dnl .( string)
 dnl ( -- addr )
 dnl store null-terminated string
-define({_STRING_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
-    push DE             ; 1:11      string_z   ( -- addr )
-    ex   DE, HL         ; 1:4       string_z   {$*}
-    ld   HL, string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+define({_STRING_Z},{dnl
+__{}define({USE_STRING_Z},{}){}dnl
+__{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
+__{}SEARCH_FOR_MATCHING_STRING({{$*}}){}dnl
+__{}string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 __{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
@@ -425,7 +426,10 @@ dnl ." string"
 dnl .( string)
 dnl ( -- addr )
 dnl store null-terminated string
-define({STRING_Z},{_STRING_Z({$*, 0x00})})dnl
+define({STRING_Z},{
+    push DE             ; 1:11      string_z   ( -- addr )
+    ex   DE, HL         ; 1:4       string_z   {$*}
+    ld   HL, _STRING_Z({$*, 0x00})})dnl
 dnl
 dnl
 dnl
@@ -433,10 +437,11 @@ dnl ." string"
 dnl .( string)
 dnl ( -- addr )
 dnl store inverted_msb-terminated string
-define({_STRING_I},{define({USE_STRING_I},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
-    push DE             ; 1:11      string_i   ( -- addr )
-    ex   DE, HL         ; 1:4       string_i   {$*}
-    ld   HL, string{}TEMP_FOUND  ; 3:10      string_i   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+define({_STRING_I},{dnl
+__{}define({USE_STRING_I},{}){}dnl
+__{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
+__{}SEARCH_FOR_MATCHING_STRING({{$*}}){}dnl
+__{}string{}TEMP_FOUND  ; 3:10      string_i   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 __{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
@@ -446,14 +451,16 @@ dnl ." string"
 dnl .( string)
 dnl ( -- addr )
 dnl store inverted_msb-terminated string
-define({STRING_I},{dnl
-__{}ifelse(dnl
-__{}regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
-__{}__{}{_STRING_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{\1",\2 + 0x80}}))},
-__{}regexp({$*},{"\s*$},{"text"}),{"text"},
-__{}__{}{_STRING_I(regexp({$*},{^\(.+\)\(.\)"\s*$},{{\1","\2"+0x80}}))},
+define({STRING_I},{
+    push DE             ; 1:11      string_i   ( -- addr )
+    ex   DE, HL         ; 1:4       string_i   {$*}
+    ld   HL, ifelse(dnl
+__{}regexp({$*},               {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
+__{}__{}{_STRING_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl        # "Hell","o"    --> "Hell","o" + 0x80
+__{}regexp({$*},               {^\(.+[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{...xx"}}),{...xx"},
+__{}__{}{_STRING_I(regexp({$*},{^\(.+[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"       --> "Hell","o"+0x80
 __{}{dnl
-__{}__{}_STRING_I(regexp({$*},{^\(.+\)"\([^"]+[^" ]\)\s*$},{{\1"\2 + 0x80}})){}dnl
+__{}__{}_STRING_I(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}})){}dnl                                     # "Hello", 0x0D --> "Hello", 0x0D + 0x80
 __{}}){}dnl
 })dnl
 dnl
