@@ -143,6 +143,59 @@ __{}.error {$0} for non-existent {BEGIN}},
 __{}break{}BEGIN_STACK:               ;           over until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
 dnl
 dnl
+dnl ( x2 x1 -- x2 x1 )
+define({OVER_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    ld    A, D          ; 1:4       over 0= until BEGIN_STACK   ( x2 x1 -- x2 x1 )
+    or    E             ; 1:4       over 0= until BEGIN_STACK
+    jp   nz, begin{}BEGIN_STACK   ; 3:10      over 0= until BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           over 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
+dnl
+dnl
+dnl ( addr x -- addr x )
+define({OVER_CFETCH_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    ld    A,(DE)        ; 1:7       over C@ until BEGIN_STACK   ( addr x -- addr x )
+    or    A             ; 1:4       over C@ until BEGIN_STACK
+    jp    z, begin{}BEGIN_STACK   ; 3:10      over C@ until BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           over C@ until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
+dnl
+dnl
+dnl ( addr x -- addr x )
+define({OVER_CFETCH_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    ld    A,(DE)        ; 1:7       over C@ 0= until BEGIN_STACK   ( addr x -- addr x )
+    or    A             ; 1:4       over C@ 0= until BEGIN_STACK
+    jp   nz, begin{}BEGIN_STACK   ; 3:10      over C@ 0= until BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           over C@ 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
+dnl
+dnl
+dnl ( flag d -- flag d )
+define({_2OVER_NIP_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    pop  BC             ; 1:10      2over nip until BEGIN_STACK   ( flag x -- flag x )
+    push BC             ; 1:11      2over nip until BEGIN_STACK
+    ld    A, B          ; 1:4       2over nip until BEGIN_STACK   BC = flag
+    or    C             ; 1:4       2over nip until BEGIN_STACK
+    jp    z, begin{}BEGIN_STACK   ; 3:10      2over nip until BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           2over nip until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
+dnl
+dnl
+dnl ( x d -- x d )
+define({_2OVER_NIP_0EQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+{
+    pop  BC             ; 1:10      2over nip 0= until BEGIN_STACK   ( x d -- x d )
+    push BC             ; 1:11      2over nip 0= until BEGIN_STACK
+    ld    A, B          ; 1:4       2over nip 0= until BEGIN_STACK   BC = x
+    or    C             ; 1:4       2over nip 0= until BEGIN_STACK
+    jp   nz, begin{}BEGIN_STACK   ; 3:10      2over nip 0= until BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           2over nip 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})})dnl
+dnl
 dnl
 dnl 2over nip c@ 0 c= until
 dnl ( addr d -- addr d )
