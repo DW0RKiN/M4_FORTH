@@ -233,10 +233,11 @@ dnl
 dnl
 dnl ( -- )  $1 = addr
 dnl print stringZ
-define({PUSH_TYPE_Z},{
-__{}define({USE_STRING_Z},{})dnl
+define({PUSH_TYPE_Z},{$1,{},{
+__{}__{}    .error {$0}(): Missing parameter!},
+{define({USE_STRING_Z},{})
     ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_z   ( -- )
-    call PRINT_STRING_Z ; 3:17      $1 type_z})dnl
+    call PRINT_STRING_Z ; 3:17      $1 type_z})})dnl
 dnl
 dnl
 dnl ( addr -- addr )
@@ -244,6 +245,32 @@ dnl non-destructively print stringZ
 define({DUP_TYPE_Z},{
 __{}define({USE_TYPE_Z},{})dnl
     call PRINT_TYPE_Z   ; 3:17      dup type_z   ( addr -- addr )})dnl
+dnl
+dnl
+dnl ( addr -- )
+dnl print inverted_msb-terminated string
+define({TYPE_I},{
+__{}define({USE_TYPE_I},{})dnl
+    call PRINT_TYPE_I   ; 3:17      type_i   ( addr -- )
+    ex   DE, HL         ; 1:4       type_i
+    pop  DE             ; 1:10      type_i})dnl
+dnl
+dnl
+dnl ( -- )  $1 = addr
+dnl print inverted_msb-terminated string
+define({PUSH_TYPE_I},{ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+{define({USE_STRING_I},{})
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_i   ( -- )
+    call PRINT_STRING_I ; 3:17      $1 type_i})})dnl
+dnl
+dnl
+dnl ( addr -- addr )
+dnl non-destructively print inverted_msb-terminated string
+define({DUP_TYPE_I},{
+__{}define({USE_TYPE_I},{})dnl
+    call PRINT_TYPE_I   ; 3:17      dup type_i   ( addr -- addr )})dnl
+dnl
 dnl
 dnl
 define({RECURSIVE_REVERSE_STACK},{ifdef({STRING_NUM_STACK},{dnl
