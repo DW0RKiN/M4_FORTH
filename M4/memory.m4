@@ -756,6 +756,19 @@ define({DUP_CFETCH},{
     ex   DE, HL         ; 1:4       dup C@ dup_cfetch})dnl
 dnl
 dnl
+dnl # 2over nip C@
+dnl # ( addr d -- addr d char )
+define({_2OVER_NIP_CFETCH},{
+                        ;[8:54]     2over nip C@ ( addr d -- addr d char )
+    pop  BC             ; 1:10      2over nip C@
+    push BC             ; 1:11      2over nip C@
+    push DE             ; 1:11      2over nip C@
+    ex   DE, HL         ; 1:4       2over nip C@
+    ld    A,(BC)        ; 1:7       2over nip C@
+    ld    L, A          ; 1:4       2over nip C@
+    ld    H, 0x00       ; 2:7       2over nip C@})dnl
+dnl
+dnl
 dnl # dup C@ swap
 dnl # ( addr -- char addr )
 dnl # save addr and fetch 8-bit number from addr and swap
