@@ -1798,12 +1798,14 @@ dnl
 dnl
 dnl
 ifdef({STRING_NUM_STACK},{
+
 STRING_SECTION:{}PRINT_STRING_STACK
 }){}dnl
 dnl
 dnl
 dnl
 ifelse(ALL_VARIABLE,{},,{
+
 VARIABLE_SECTION:
 }ALL_VARIABLE
 ){}dnl
