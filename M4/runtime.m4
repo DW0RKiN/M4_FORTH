@@ -1743,7 +1743,7 @@ PRINT_TYPE:             ;[10:76]    print_string
 dnl
 dnl
 dnl
-ifdef({USE_TYPE_Z},{
+ifdef({USE_TYPE_Z},{define({USE_STRING_Z},{})
 ;==============================================================================
 ; Print C-style stringZ
 ; In: HL = addr stringZ
@@ -1751,29 +1751,25 @@ ifdef({USE_TYPE_Z},{
 PRINT_TYPE_Z:           ;           print_type_z
     ld    B, H          ; 1:4       print_type_z
     ld    C, L          ; 1:4       print_type_z   BC = addr stringZ
-__{}define({USE_STRING_Z},{}){}dnl
-    jr    PRINT_STRING_Z; 2:12      print_type_z
-}){}dnl
-dnl
-dnl
+    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
+    ; fall to PRINT_STRING_Z}){}dnl
 dnl
 ifdef({USE_STRING_Z},{
-;==============================================================================
+;------------------------------------------------------------------------------
 ; Print C-style stringZ
 ; In: BC = addr
-; Out: BC = addr zero
+; Out: BC = addr zero + 1
     rst  0x10           ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
-    inc  BC             ; 1:6       print_string_z
 PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
+    inc  BC             ; 1:6       print_string_z
     or    A             ; 1:4       print_string_z
     jp   nz, $-4        ; 3:10      print_string_z
-    ret                 ; 1:10      print_string_z
-}){}dnl
+    ret                 ; 1:10      print_string_z}){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_TYPE_I},{
+ifdef({USE_TYPE_I},{__def({USE_STRING_I})
 ;==============================================================================
 ; Print string ending with inverted most significant bit
 ; In: HL = addr string_imsb
@@ -1781,26 +1777,23 @@ ifdef({USE_TYPE_I},{
 PRINT_TYPE_I:           ;           print_type_i
     ld    B, H          ; 1:4       print_type_i
     ld    C, L          ; 1:4       print_type_i   BC = addr string_imsb
-__{}define({USE_STRING_I},{}){}dnl
-}){}dnl
-dnl
-dnl
+    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
+    ; fall to PRINT_STRING_I}){}dnl
 dnl
 ifdef({USE_STRING_I},{
-;==============================================================================
+;------------------------------------------------------------------------------
 ; Print string ending with inverted most significant bit
 ; In: BC = addr string_imsb
 ; Out: BC = addr last_char + 1
+    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
 PRINT_STRING_I:         ;           print_string_i
     ld    A,(BC)        ; 1:7       print_string_i
+    inc  BC             ; 1:6       print_string_i
+    or    A             ; 1:4       print_string_i
+    jp    p, $-4        ; 3:10      print_string_i
     and  0x7f           ; 2:7       print_string_i
     rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
-    ld    A,(BC)        ; 1:7       print_string_i
-    add   A, A          ; 1:4       print_string_i
-    inc  BC             ; 1:6       print_string_i
-    jp   nc, $-7        ; 3:10      print_string_i
-    ret                 ; 1:10      print_string_i
-}){}dnl
+    ret                 ; 1:10      print_string_i}){}dnl
 dnl
 dnl
 dnl
