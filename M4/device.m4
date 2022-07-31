@@ -336,7 +336,7 @@ dnl ( -- )
 dnl print string
 define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}}){}ifelse({$#},1,,{
     .error {$0}({$@}): Text containing a comma and not closed in {{}}. {$0}($*) --> {$0}({{$*}})})
-    push DE             ; 1:11      print     {$*}
+    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
     ld   BC, size{}TEMP_FOUND    ; 3:10      print     Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
@@ -428,7 +428,7 @@ dnl ( -- addr )
 dnl store null-terminated string
 define({STRING_Z},{
     push DE             ; 1:11      string_z   ( -- addr )
-    ex   DE, HL         ; 1:4       string_z   {$*}
+    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
     ld   HL, _STRING_Z({$*, 0x00})})dnl
 dnl
 dnl
@@ -453,7 +453,7 @@ dnl ( -- addr )
 dnl store inverted_msb-terminated string
 define({STRING_I},{
     push DE             ; 1:11      string_i   ( -- addr )
-    ex   DE, HL         ; 1:4       string_i   {$*}
+    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
     ld   HL, ifelse(dnl
 __{}regexp({$*},               {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
 __{}__{}{_STRING_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "Hell","o"    --> "Hell","o" + 0x80
