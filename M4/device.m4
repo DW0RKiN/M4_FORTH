@@ -231,7 +231,7 @@ __{}define({USE_TYPE_Z},{})dnl
     pop  DE             ; 1:10      type_z})dnl
 dnl
 dnl
-dnl ( addr -- )
+dnl ( -- )  $1 = addr
 dnl print stringZ
 define({PUSH_TYPE_Z},{
 __{}define({USE_STRING_Z},{})dnl
@@ -384,17 +384,19 @@ dnl
 dnl
 dnl ." string"
 dnl .( string)
-dnl ( -- )
+dnl ( -- addr )
 dnl store null-terminated string
 define({_STRING_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
-    ld   BC, string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+    push DE             ; 1:11      string_z   ( -- addr )
+    ex   DE, HL         ; 1:4       string_z   {$*}
+    ld   HL, string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 __{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
 dnl
 dnl ." string"
 dnl .( string)
-dnl ( -- )
+dnl ( -- addr )
 dnl store null-terminated string
 define({STRING_Z},{_STRING_Z({$*, 0x00})})dnl
 dnl
@@ -402,10 +404,12 @@ dnl
 dnl
 dnl ." string"
 dnl .( string)
-dnl ( -- )
+dnl ( -- addr )
 dnl store inverted_msb-terminated string
 define({_STRING_I},{define({USE_STRING_I},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
-    ld   BC, string{}TEMP_FOUND  ; 3:10      string_i   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+    push DE             ; 1:11      string_i   ( -- addr )
+    ex   DE, HL         ; 1:4       string_i   {$*}
+    ld   HL, string{}TEMP_FOUND  ; 3:10      string_i   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 __{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
 })dnl
@@ -413,7 +417,7 @@ dnl
 dnl
 dnl ." string"
 dnl .( string)
-dnl ( -- )
+dnl ( -- addr )
 dnl store inverted_msb-terminated string
 define({STRING_I},{dnl
 __{}ifelse(dnl
