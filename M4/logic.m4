@@ -517,6 +517,43 @@ define({CEQ},{
     pop  DE             ; 1:10      C=})dnl
 dnl
 dnl
+dnl
+dnl # 0 C=
+dnl # ( c1 -- flag )  flag = lo c1 == 0
+define({_0CEQ},{
+                        ;[5:26]     0 C=   ( c1 -- flag )  flag = lo(c1) == 0
+    ld    A, L          ; 1:4       0 C=   ignores higher bytes
+    sub  0x01           ; 2:7       0 C=
+    sbc  HL, HL         ; 2:15      0 C=})dnl
+dnl
+dnl
+dnl # C@ 0 C=
+dnl # ( addr -- flag )  flag = byte from (addr) == 0
+define({CFETCH_0CEQ},{
+                        ;[5:29]     C@ 0 C=   ( addr -- flag )  flag = byte from (addr) == 0
+    ld    A,(HL)        ; 1:7       C@ 0 C=
+    sub  0x01           ; 2:7       C@ 0 C=
+    sbc  HL, HL         ; 2:15      C@ 0 C=})dnl
+dnl
+dnl
+dnl # 0 C<>
+dnl # ( c1 -- flag )  flag = lo c1 <> 0
+define({_0CNE},{
+                        ;[5:26]     0 C<>   ( c1 -- flag )  flag = lo(c1) <> 0
+    ld    A, L          ; 1:4       0 C<>   ignores higher bytes
+    add   A, 0xFF       ; 2:7       0 C<>
+    sbc  HL, HL         ; 2:15      0 C<>})dnl
+dnl
+dnl
+dnl # C@ 0 C<>
+dnl # ( addr -- flag )  flag = byte from (addr) <> 0
+define({CFETCH_0CNE},{
+                        ;[5:29]     C@ 0 C<>   ( addr -- flag )  flag = byte from (addr) <> 0
+    ld    A,(HL)        ; 1:7       C@ 0 C<>
+    add   A, 0xFF       ; 2:7       C@ 0 C<>
+    sbc  HL, HL         ; 2:15      C@ 0 C<>})dnl
+dnl
+dnl
 dnl # over C@ over C@ C=
 dnl # ( addr2 addr1 -- addr2 addr1 flag )
 dnl # flag = char2 == char1

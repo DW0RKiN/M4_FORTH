@@ -93,6 +93,40 @@ __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
+dnl # 2over nip c@ 0 c= if
+define({_2OVER_NIP_CFETCH_0CEQ_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}ifelse(eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{define({_TMP_INFO},{2over nip c@ 0 c= if})
+__{}__{}                        ;[7:42]     _TMP_INFO   ( addr1 d1 -- addr1 d1 )
+__{}__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
+__{}__{}    push BC             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}__{}    or    A             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2over nip c@ 0 c<> if
+define({_2OVER_NIP_CFETCH_0CNE_IF},{dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}ifelse(eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{define({_TMP_INFO},{2over nip c@ 0 c<> if})
+__{}__{}                        ;[7:42]     _TMP_INFO   ( addr1 d1 -- addr1 d1 )
+__{}__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
+__{}__{}    push BC             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}__{}    or    A             ; 1:4       _TMP_INFO
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
+dnl
+dnl
+dnl
 dnl 0= if
 dnl ( x1 -- )
 define({_0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)

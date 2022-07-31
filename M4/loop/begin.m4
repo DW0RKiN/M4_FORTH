@@ -144,6 +144,22 @@ __{}break{}BEGIN_STACK:               ;           over until BEGIN_STACK{}popdef
 dnl
 dnl
 dnl
+dnl 2over nip c@ 0 c= until
+dnl ( addr d -- addr d )
+define({_2OVER_NIP_CFETCH_0CEQ_UNTIL},{ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{define({_TMP_INFO},{2over nip c@ 0 c= until BEGIN_STACK})
+__{}                        ;[7:42]     _TMP_INFO   ( addr1 d1 -- addr1 d1 )
+__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
+__{}    push BC             ; 1:11      _TMP_INFO
+__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}    or    A             ; 1:4       _TMP_INFO
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})})dnl
+dnl
+dnl
 dnl # ( n -- )
 dnl # $1 $2 within until
 define({PUSH2_WITHIN_UNTIL},{ifelse(dnl

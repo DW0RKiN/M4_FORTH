@@ -555,6 +555,40 @@ define({SWAP_2SUB_SWAP},{
     dec  DE             ; 1:6       swap 2- swap})dnl
 dnl
 dnl
+dnl # "rot 1+ nrot"
+dnl # ( x3 x2 x1 -- x3+1 x2 x1 )
+define({ROT_1ADD_NROT},{
+    pop  BC             ; 1:10      rot 1+ nrot   ( x3 x2 x1 -- x3+1 x2 x1 )
+    inc  BC             ; 1:6       rot 1+ nrot
+    push BC             ; 1:11      rot 1+ nrot})dnl
+dnl
+dnl
+dnl # "rot 1- nrot"
+dnl # ( x3 x2 x1 -- x3-1 x2 x1 )
+define({ROT_1SUB_NROT},{
+    pop  BC             ; 1:10      rot 1- nrot   ( x3 x2 x1 -- x3-1 x2 x1 )
+    dec  BC             ; 1:6       rot 1- nrot
+    push BC             ; 1:11      rot 1- nrot})dnl
+dnl
+dnl
+dnl # "rot 2+ nrot"
+dnl # ( x3 x2 x1 -- x3+2 x2 x1 )
+define({ROT_2ADD_NROT},{
+    pop  BC             ; 1:10      rot 2+ nrot   ( x3 x2 x1 -- x3+2 x2 x1 )
+    inc  BC             ; 1:6       rot 2+ nrot
+    inc  BC             ; 1:6       rot 2+ nrot
+    push BC             ; 1:11      rot 2+ nrot})dnl
+dnl
+dnl
+dnl # "rot 2- nrot"
+dnl # ( x3 x2 x1 -- x3-2 x2 x1 )
+define({ROT_2SUB_NROT},{
+    pop  BC             ; 1:10      rot 2- nrot   ( x3 x2 x1 -- x3-2 x2 x1 )
+    dec  BC             ; 1:6       rot 2- nrot
+    dec  BC             ; 1:6       rot 2- nrot
+    push BC             ; 1:11      rot 2- nrot})dnl
+dnl
+dnl
 dnl # "2*"
 dnl # ( x1 -- x )
 dnl # x = x1 * 2
