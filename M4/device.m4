@@ -334,16 +334,23 @@ dnl ." string"
 dnl .( string)
 dnl ( -- )
 dnl print string
-define({PRINT},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}}){}ifelse({$#},1,,{
-    .error {$0}({$@}): Text containing a comma and not closed in {{}}. {$0}($*) --> {$0}({{$*}})})
-    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
-    ld   BC, size{}TEMP_FOUND    ; 3:10      print     Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
-    ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
-    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
-    pop  DE             ; 1:10      print{}dnl
+define({PRINT},{ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{dnl
+__{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
+__{}SEARCH_FOR_MATCHING_STRING({{$*}})
+__{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    ld   BC, size{}TEMP_FOUND    ; 3:10      print     Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+__{}    ld   DE, string{}TEMP_FOUND  ; 3:10      print     Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+__{}    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
+__{}    pop  DE             ; 1:10      print{}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 __{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
-})dnl
+})})dnl
 dnl
 dnl
 dnl ." string"
@@ -361,7 +368,14 @@ dnl ." string"
 dnl .( string)
 dnl ( -- )
 dnl print null-terminated string
-define({PRINT_Z},{_PRINT_Z({$1, 0x00})})dnl
+define({PRINT_Z},{ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{dnl
+__{}_PRINT_Z({$1, 0x00})})})dnl
 dnl
 dnl
 dnl
@@ -381,31 +395,46 @@ dnl ." string"
 dnl .( string)
 dnl ( -- )
 dnl print string ending with inverted most significant bit
-define({PRINT_I},{dnl
+define({PRINT_I},{ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{dnl
 __{}ifelse(dnl
-__{}regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{"text","x"}}),{"text","x"},
-__{}__{}{_PRINT_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*$},{{\1\2 + 0x80}}))},
-__{}regexp({$*},{"\s*$},{"text"}),{"text"},
-__{}__{}{_PRINT_I(regexp({$*},{^\(.+\)\(.\)"\s*$},{{\1","\2"+0x80}}))},
+__{}regexp({$*},               {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
+__{}__{}{_PRINT_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
+__{}regexp({$*},               {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
+__{}__{}{_PRINT_I(regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"                  --> "Hell","o"+0x80
+__{}regexp({$*},               {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
+__{}__{}{_PRINT_I(regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
 __{}{dnl
-__{}__{}_PRINT_I(regexp({$*},{^\(.+\)"\([^"]+[^" ]\)\s*$},{{\1"\2 + 0x80}})){}dnl
-__{}}){}dnl
-})dnl
+__{}__{}_PRINT_I(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}))
+__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.}){}dnl                       # ???                      --> ??? + 0x80
+})})dnl
 dnl
 dnl
 dnl
 dnl s" string"
 dnl ( -- addr n )
 dnl addr = address string, n = lenght(string)
-define({STRING},{define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}}){}ifelse({$#},1,,{
-    .error {$0}({$@}): Text containing a comma and not closed in {{}}. {$0}($*) --> {$0}({{$*}})})
-    push DE             ; 1:11      string    ( -- addr size )
-    push HL             ; 1:11      string    {$*}
-    ld   DE, string{}TEMP_FOUND  ; 3:10      string    Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
-    ld   HL, size{}TEMP_FOUND    ; 3:10      string    Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
+define({STRING},{ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{dnl
+__{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
+__{}SEARCH_FOR_MATCHING_STRING({{$*}})
+__{}    push DE             ; 1:11      string    ( -- addr size )
+__{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    ld   DE, string{}TEMP_FOUND  ; 3:10      string    Address of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
+__{}    ld   HL, size{}TEMP_FOUND    ; 3:10      string    Length of string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
 __{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
-})dnl
+})})dnl
 dnl
 dnl
 dnl
@@ -426,10 +455,16 @@ dnl ." string"
 dnl .( string)
 dnl ( -- addr )
 dnl store null-terminated string
-define({STRING_Z},{
+define({STRING_Z},{ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{
     push DE             ; 1:11      string_z   ( -- addr )
     ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
-    ld   HL, _STRING_Z({$*, 0x00})})dnl
+    ld   HL, _STRING_Z({$*, 0x00})})})dnl
 dnl
 dnl
 dnl
@@ -451,18 +486,26 @@ dnl ." string"
 dnl .( string)
 dnl ( -- addr )
 dnl store inverted_msb-terminated string
-define({STRING_I},{
+define({STRING_I},{ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{
     push DE             ; 1:11      string_i   ( -- addr )
     ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
     ld   HL, ifelse(dnl
 __{}regexp({$*},               {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
-__{}__{}{_STRING_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "Hell","o"    --> "Hell","o" + 0x80
+__{}__{}{_STRING_I(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
 __{}regexp({$*},               {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
-__{}__{}{_STRING_I(regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"       --> "Hell","o"+0x80
+__{}__{}{_STRING_I(regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"                  --> "Hell","o"+0x80
+__{}regexp({$*},               {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
+__{}__{}{_STRING_I(regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
 __{}{dnl
-__{}__{}_STRING_I(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}})){}dnl                                        # "Hello", 0x0D --> "Hello", 0x0D + 0x80
-__{}}){}dnl
-})dnl
+__{}__{}_STRING_I(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}))
+__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.}){}dnl                        # ???                      --> ??? + 0x80
+})})dnl
 dnl
 dnl
 dnl
