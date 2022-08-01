@@ -151,6 +151,76 @@ BIN32BCD_D:
 dnl
 dnl
 dnl
+ifdef({USE_PRT_SP_HEX_U32},{__def({USE_PRT_HEX_U32})
+;==============================================================================
+;    Input: 32-bit unsigned number in DEHL
+;   Output: Print space and Hex DEHL
+; Pollutes: A
+PRT_SP_HEX_U32:         ;           prt_sp_hex_u32
+    ld    A, ' '        ; 2:7       prt_sp_hex_u32   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_hex_u32   putchar(reg A) with {ZX 48K ROM}
+    ; fall to prt_hex_u32}){}dnl
+ifdef({USE_PRT_HEX_U32},{__def({USE_PRT_HEX_U16})
+;------------------------------------------------------------------------------
+;    Input: 32-bit unsigned number in DEHL
+;   Output: Print Hex DEHL
+; Pollutes: A
+PRT_HEX_U32:            ;           prt_hex_u32
+    ld    A, D          ; 1:4       prt_hex_u32
+    call PRT_HEX_A      ; 3:17      prt_hex_u32
+    ld    A, E          ; 1:4       prt_hex_u32
+    call PRT_HEX_A      ; 3:17      prt_hex_u32
+__{}ifdef({USE_PRT_SP_HEX_U16},{dnl
+__{}    jr   PRT_HEX_U16    ; 2:12      prt_hex_u32},
+__{}{dnl
+__{}    ; fall to prt_hex_u16})}){}dnl
+dnl
+ifdef({USE_PRT_SP_HEX_U16},{__def({USE_PRT_HEX_U16})
+;==============================================================================
+;    Input: 16-bit unsigned number in DEHL
+;   Output: Print space and Hex HL
+; Pollutes: A
+PRT_SP_HEX_U16:         ;           prt_sp_hex_u16
+    ld    A, ' '        ; 2:7       prt_sp_hex_u16   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_hex_u16   putchar(reg A) with {ZX 48K ROM}
+    ; fall to prt_hex_u16}){}dnl
+ifdef({USE_PRT_HEX_U16},{
+;------------------------------------------------------------------------------
+;   Input: 16-bit unsigned number in HL
+;   Output: Print Hex HL
+; Pollutes: A
+PRT_HEX_U16:            ;           prt_hex_u16
+    ld    A, H          ;  1:4      prt_hex_u16
+    call PRT_HEX_A      ;  3:17     prt_hex_u16
+    ld    A, L          ;  1:4      prt_hex_u16
+    ; fall to prt_hex_a
+;------------------------------------------------------------------------------
+;    Input: A
+;   Output: 00 .. FF
+; Pollutes: A
+PRT_HEX_A:              ;           prt_hex_a
+    push AF             ; 1:11      prt_hex_a
+    rra                 ; 1:4       prt_hex_a
+    rra                 ; 1:4       prt_hex_a
+    rra                 ; 1:4       prt_hex_a
+    rra                 ; 1:4       prt_hex_a
+    call PRT_HEX_NIBBLE ; 3:17      prt_hex_a
+    pop  AF             ; 1:10      prt_hex_a
+    ; fall to prt_hex_nibble
+;------------------------------------------------------------------------------
+;    Input: A = number, DE = adr
+;   Output: (A & $0F) => '0'..'9','A'..'F'
+; Pollutes: A
+PRT_HEX_NIBBLE:         ;           prt_hex_nibble
+    or      $F0         ; 2:7       prt_hex_nibble   reset H flag
+    daa                 ; 1:4       prt_hex_nibble   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
+    add   A, $A0        ; 2:7       prt_hex_nibble   $F0..$F9, $100..$105
+    adc   A, $40        ; 2:7       prt_hex_nibble   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
+    rst   0x10          ; 1:11      prt_hex_nibble   putchar(reg A) with {ZX 48K ROM}
+    ret                 ; 1:10}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_DUP_ZXPRT_SP_U16},{__def({USE_DUP_ZXPRT_U16})
 ;==============================================================================
 ; Input: HL

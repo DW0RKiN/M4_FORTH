@@ -29,6 +29,20 @@ define({UDOT},{__def({USE_PRT_U16})
     call PRT_U16        ; 3:17      u.   ( u -- )})dnl
 dnl
 dnl
+dnl space dup hex u.
+dnl ( u -- u )
+dnl print space and unsigned 16 bit number
+define({SPACE_DUP_HEX_UDOT},{__def({USE_PRT_SP_HEX_U16})
+    call PRT_SP_HEX_U16 ; 3:17      space dup hex u.   ( u -- u )})dnl
+dnl
+dnl
+dnl dup hex u.
+dnl ( u -- u )
+dnl print unsigned 16 bit number
+define({DUP_HEX_UDOT},{__def({USE_PRT_HEX_U16})
+    call PRT_HEX_U16    ; 3:17      dup hex u.   ( u -- u )})dnl
+dnl
+dnl
 dnl ------- zx rom routines ---------
 dnl
 dnl
@@ -137,6 +151,20 @@ dnl ( ud -- )
 dnl print unsigned 32 bit number
 define({UDDOT},{__def({USE_PRT_U32})
     call PRT_U32        ; 3:17      ud.   ( ud -- )})dnl
+dnl
+dnl
+dnl space 2dup hex ud.
+dnl ( d -- d )
+dnl print space and hex unsigned 32 bit number
+define({SPACE_2DUP_HEX_UDDOT},{__def({USE_PRT_SP_HEX_U32})
+    call PRT_SP_HEX_U32 ; 3:17      space 2dup hex ud.   ( d -- d )})dnl
+dnl
+dnl
+dnl 2dup hex ud.
+dnl ( d -- d )
+dnl print hex unsigned 32 bit number
+define({_2DUP_HEX_UDDOT},{__def({USE_PRT_HEX_U32})
+    call PRT_HEX_U32    ; 3:17      2dup hex ud.   ( d -- d )})dnl
 dnl
 dnl
 dnl
