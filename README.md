@@ -1410,7 +1410,7 @@ https://www.gnu.org/savannah-checkouts/gnu/m4/manual/html_node/index.html#SEC_Co
 
 http://wiki.laptop.org/go/Forth_Lessons
 
-http://astro.pas.rochester.edu/Forth/forth-words.html
+https://www.complang.tuwien.ac.at/forth/gforth/Docs-html/
 
 http://www.retroprogramming.com/2012/04/itsy-forth-primitives.html
 
