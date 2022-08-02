@@ -559,7 +559,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
     5 SPACE_DOT --> " 5"
 
 
-|<sub>      Original       |<sub>      M4 FORTH       |<sub>     Optimization    |<sub>  Data stack              |<sub> Comment            b   |
+|<sub>      Original       |<sub>      M4 FORTH       |<sub>     Optimization    |<sub>  Data stack              |<sub> Comment               |
 | :----------------------: | :----------------------: | :----------------------: | :---------------------------- | :------------------------- |
 |<sub>        . bs         |<sub>         DOT         |<sub>for 0..32767 use UDOT|<sub>       ( x -- )           |<sub> -32768..32767         |
 |<sub>      dup . bs       |<sub>       DUP DOT       |<sub>       DUP_DOT       |<sub>       ( x -- x )         |<sub>                       |
