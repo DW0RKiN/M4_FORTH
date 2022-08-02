@@ -559,53 +559,53 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
     5 SPACE_DOT --> " 5"
 
 
-|<sub>     Original      |<sub>     M4 FORTH     |<sub>     Optimization    |<sub>  Data stack              |<sub>   Comment    |
-| :--------------------: | :-------------------: | :----------------------: | :---------------------------- | :---------------- |
-|<sub>        . bs         |<sub>         DOT         |<sub>for 0..32767 use UDOT|<sub>       ( x -- )           |<sub> -32768..32767|
-|<sub>      dup . bs       |<sub>       DUP DOT       |<sub>       DUP_DOT       |<sub>       ( x -- x )         |<sub>              |
-|<sub>        u. bs        |<sub>        UDOT         |<sub>                     |<sub>       ( u -- )           |<sub> 0..65535     |
-|<sub>      dup u. bs      |<sub>      DUP UDOT       |<sub>       DUP_UDOT      |<sub>       ( u -- u )         |<sub>              |
-|<sub>     space . bs      |<sub>      SPACE DOT      |<sub>      SPACE_DOT      |<sub>       ( x -- )           |<sub>              |
-|<sub>   dup space . bs    |<sub>    DUP SPACE DOT    |<sub>    DUP_SPACE_DOT    |<sub>       ( x -- x )         |<sub>              |
-|<sub>     space u. bs     |<sub>     SPACE UDOT      |<sub>      SPACE_UDOT     |<sub>       ( u -- )           |<sub>              |
-|<sub>   dup space u. bs   |<sub>   DUP SPACE UDOT    |<sub>    DUP_SPACE_UDOT   |<sub>       ( u -- u )         |<sub>              |
-|<sub>      hex u. bs      |<sub>                     |<sub>       HEX_UDOT      |<sub>       ( u -- )           |<sub> 0..65535     |
-|<sub>    dup hex u. bs    |<sub>     DUP HEX_UDOT    |<sub>     DUP_HEX_UDOT    |<sub>       ( u -- u )         |<sub>              |
-|<sub>   space hex u. bs   |<sub>    SPACE HEX_UDOT   |<sub>    SPACE_HEX_UDOT   |<sub>       ( u -- )           |<sub>              |
-|<sub> space dup hex u. bs |<sub>  SPACE DUP HEX_UDOT |<sub>  SPACE_DUP_HEX_UDOT |<sub>       ( u -- u )         |<sub>              |
-|<sub>        . bs         |<sub>       DOTZXROM      |<sub>                     |<sub>       ( x1 -- )          |<sub> use ZX ROM   |
-|<sub>     space . bs      |<sub>    SPACE DOTZXROM   |<sub>   SPACE_DOTZXROM    |<sub>       ( x1 -- )          |<sub> use ZX ROM   |
-|<sub>        u. bs        |<sub>      UDOTZXROM      |<sub>                     |<sub>       ( u1 -- )          |<sub> use ZX ROM   |
-|<sub>     space u. bs     |<sub>   SPACE UDOTZXROM   |<sub>   SPACE_UDOTZXROM   |<sub>       ( u1 -- )          |<sub> use ZX ROM   |
-|<sub>         D. bs       |<sub>         DDOT        |<sub> for +num use UDDOT  |<sub>        ( d -- )          |<sub>( d -- hi lo )|
-|<sub>     space D. bs     |<sub>      SPACE DDOT     |<sub>      SPACE_DDOT     |<sub>        ( d -- )          |<sub>              |
-|<sub>       uD. bs        |<sub>        UDDOT        |<sub>                     |<sub>       ( ud -- )          |<sub>( d -- hi lo )|
-|<sub>    space uD. bs     |<sub>      SPACE UDDOT    |<sub>     SPACE_UDDOT     |<sub>       ( ud -- )          |<sub>              |
-|<sub>      hex uD. bs     |<sub>                     |<sub>      HEX_UDDOT      |<sub>        ( d -- )          |<sub>              |
-|<sub>   2dup hex uD. bs   |<sub>   _2DUP HEX_UDDOT   |<sub>   _2DUP_HEX_UDDOT   |<sub>        ( d -- d )        |<sub>              |
-|<sub>   space hex uD. bs  |<sub>    SPACE HEX_UDDOT  |<sub>   SPACE_HEX_UDDOT   |<sub>        ( d -- )          |<sub>              |
-|<sub>space 2dup hex uD. bs|<sub>SPACE _2DUP HEX_UDDOT|<sub> SPACE_2DUP_HEX_UDDOT|<sub>        ( d -- d )        |<sub>              |
-|<sub>         .s          |<sub>         DOTS        |<sub>                     |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>              |
-|<sub>         cr          |<sub>          CR         |<sub>                     |<sub>          ( -- )          |<sub>              |
-|<sub>        emit         |<sub>         EMIT        |<sub>                     |<sub>      ( 'a' -- )          |<sub>              |
-|<sub>      dup emit       |<sub>      DUP  EMIT      |<sub>      DUP_EMIT       |<sub>      ( 'a' -- 'a' )      |<sub>              |
-|<sub>     dup @ emit      |<sub>    DUP FETCH EMIT   |<sub>    DUP_FETCH_EMIT   |<sub>     ( addr -- addr )     |<sub>              |
-|<sub>       space         |<sub>        SPACE        |<sub>                     |<sub>          ( -- )          |<sub>              |
-|<sub>      'a' emit       |<sub>    PUSH_EMIT('a')   |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>              |
-|<sub>        type         |<sub>         TYPE        |<sub>                     |<sub>   ( addr n -- )          |<sub>              |
-|<sub>     2dup type       |<sub>                     |<sub>      _2DUP_TYPE     |<sub>   ( addr n -- addr n )   |<sub>              |
-|<sub>     .( Hello)       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>              |
-|<sub>     ." Hello"       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>              |
-|<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub>C-style string|
-|<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub>C-style string|
-|<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub>msb string end|
-|<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub>msb string end|
-|<sub>     s" Hello"       |<sub>  STRING({"Hello"})  |<sub>                     |<sub>          ( -- addr n )   |<sub>              |
-|<sub>                     |<sub>       CLEARKEY      |<sub>                     |<sub>          ( -- )          |<sub>clear key buff|
-|<sub>         key         |<sub>         KEY         |<sub>                     |<sub>          ( -- key )      |<sub>              |
-|<sub>        key?         |<sub>         KEY?        |<sub>                     |<sub>          ( -- flag )     |<sub>              |
-|<sub>       accept        |<sub>        ACCEPT       |<sub>                     |<sub> ( addr max -- loaded )   |<sub>              |
-|<sub>       accept        |<sub>       ACCEPT_Z      |<sub>                     |<sub> ( addr max -- loaded )   |<sub>C-style string|
+|<sub>      Original       |<sub>      M4 FORTH       |<sub>     Optimization    |<sub>  Data stack              |<sub> Comment            b   |
+| :----------------------: | :----------------------: | :----------------------: | :---------------------------- | :------------------------- |
+|<sub>        . bs         |<sub>         DOT         |<sub>for 0..32767 use UDOT|<sub>       ( x -- )           |<sub> -32768..32767         |
+|<sub>      dup . bs       |<sub>       DUP DOT       |<sub>       DUP_DOT       |<sub>       ( x -- x )         |<sub>                       |
+|<sub>        u. bs        |<sub>        UDOT         |<sub>                     |<sub>       ( u -- )           |<sub> 0..65535              |
+|<sub>      dup u. bs      |<sub>      DUP UDOT       |<sub>       DUP_UDOT      |<sub>       ( u -- u )         |<sub>                       |
+|<sub>     space . bs      |<sub>      SPACE DOT      |<sub>      SPACE_DOT      |<sub>       ( x -- )           |<sub>                       |
+|<sub>   dup space . bs    |<sub>    DUP SPACE DOT    |<sub>    DUP_SPACE_DOT    |<sub>       ( x -- x )         |<sub>                       |
+|<sub>     space u. bs     |<sub>     SPACE UDOT      |<sub>      SPACE_UDOT     |<sub>       ( u -- )           |<sub>                       |
+|<sub>   dup space u. bs   |<sub>   DUP SPACE UDOT    |<sub>    DUP_SPACE_UDOT   |<sub>       ( u -- u )         |<sub>                       |
+|<sub>      hex u. bs      |<sub>                     |<sub>       HEX_UDOT      |<sub>       ( u -- )           |<sub> 0000..FFFF            |
+|<sub>    dup hex u. bs    |<sub>     DUP HEX_UDOT    |<sub>     DUP_HEX_UDOT    |<sub>       ( u -- u )         |<sub>                       |
+|<sub>   space hex u. bs   |<sub>    SPACE HEX_UDOT   |<sub>    SPACE_HEX_UDOT   |<sub>       ( u -- )           |<sub>                       |
+|<sub> space dup hex u. bs |<sub>  SPACE DUP HEX_UDOT |<sub>  SPACE_DUP_HEX_UDOT |<sub>       ( u -- u )         |<sub>                       |
+|<sub>        . bs         |<sub>       DOTZXROM      |<sub>                     |<sub>       ( x1 -- )          |<sub> use ZX ROM            |
+|<sub>     space . bs      |<sub>    SPACE DOTZXROM   |<sub>   SPACE_DOTZXROM    |<sub>       ( x1 -- )          |<sub> use ZX ROM            |
+|<sub>        u. bs        |<sub>      UDOTZXROM      |<sub>                     |<sub>       ( u1 -- )          |<sub> use ZX ROM            |
+|<sub>     space u. bs     |<sub>   SPACE UDOTZXROM   |<sub>   SPACE_UDOTZXROM   |<sub>       ( u1 -- )          |<sub> use ZX ROM            |
+|<sub>         D. bs       |<sub>         DDOT        |<sub> for +num use UDDOT  |<sub>        ( d -- )          |<sub>-2147483648..2147483647|
+|<sub>     space D. bs     |<sub>      SPACE DDOT     |<sub>      SPACE_DDOT     |<sub>        ( d -- )          |<sub>                       |
+|<sub>       uD. bs        |<sub>        UDDOT        |<sub>                     |<sub>       ( ud -- )          |<sub> 0..4294967295         |
+|<sub>    space uD. bs     |<sub>      SPACE UDDOT    |<sub>     SPACE_UDDOT     |<sub>       ( ud -- )          |<sub>                       |
+|<sub>      hex uD. bs     |<sub>                     |<sub>      HEX_UDDOT      |<sub>       ( ud -- )          |<sub> 00000000..FFFFFFFF    |
+|<sub>   2dup hex uD. bs   |<sub>   _2DUP HEX_UDDOT   |<sub>   _2DUP_HEX_UDDOT   |<sub>       ( ud -- ud )       |<sub> ( d -- hi lo )        |
+|<sub>   space hex uD. bs  |<sub>    SPACE HEX_UDDOT  |<sub>   SPACE_HEX_UDDOT   |<sub>       ( ud -- )          |<sub>                       |
+|<sub>space 2dup hex uD. bs|<sub>SPACE _2DUP HEX_UDDOT|<sub> SPACE_2DUP_HEX_UDDOT|<sub>       ( ud -- ud )       |<sub> ( d -- hi lo )        |
+|<sub>         .s          |<sub>         DOTS        |<sub>                     |<sub> ( x3 x2 x1 -- x3 x2 x1 ) |<sub>                       |
+|<sub>         cr          |<sub>          CR         |<sub>                     |<sub>          ( -- )          |<sub>                       |
+|<sub>        emit         |<sub>         EMIT        |<sub>                     |<sub>      ( 'a' -- )          |<sub>                       |
+|<sub>      dup emit       |<sub>      DUP  EMIT      |<sub>      DUP_EMIT       |<sub>      ( 'a' -- 'a' )      |<sub>                       |
+|<sub>     dup @ emit      |<sub>    DUP FETCH EMIT   |<sub>    DUP_FETCH_EMIT   |<sub>     ( addr -- addr )     |<sub>                       |
+|<sub>       space         |<sub>        SPACE        |<sub>                     |<sub>          ( -- )          |<sub>                       |
+|<sub>      'a' emit       |<sub>    PUSH_EMIT('a')   |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>                       |
+|<sub>        type         |<sub>         TYPE        |<sub>                     |<sub>   ( addr n -- )          |<sub>                       |
+|<sub>     2dup type       |<sub>                     |<sub>      _2DUP_TYPE     |<sub>   ( addr n -- addr n )   |<sub>                       |
+|<sub>     .( Hello)       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>                       |
+|<sub>     ." Hello"       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>                       |
+|<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
+|<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
+|<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
+|<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
+|<sub>     s" Hello"       |<sub>  STRING({"Hello"})  |<sub>                     |<sub>          ( -- addr n )   |<sub>                       |
+|<sub>                     |<sub>       CLEARKEY      |<sub>                     |<sub>          ( -- )          |<sub> clear key buff        |
+|<sub>         key         |<sub>         KEY         |<sub>                     |<sub>          ( -- key )      |<sub>                       |
+|<sub>        key?         |<sub>         KEY?        |<sub>                     |<sub>          ( -- flag )     |<sub>                       |
+|<sub>       accept        |<sub>        ACCEPT       |<sub>                     |<sub> ( addr max -- loaded )   |<sub>                       |
+|<sub>       accept        |<sub>       ACCEPT_Z      |<sub>                     |<sub> ( addr max -- loaded )   |<sub> C-style string        |
 
     PUTCHAR(0x08)   --> deletes the last character
     PUTCHAR(8)      --> deletes the last character
@@ -1187,38 +1187,38 @@ Input:
 Output:
 
         ld   BC, 5          ; 3:10      5 value _a
-        ld  (_a), BC        ; 4:20      5 value _a 
+        ld  (_a), BC        ; 4:20      5 value _a
         push DE             ; 1:11      push((_a))
         ex   DE, HL         ; 1:4       push((_a))
-        ld   HL, (_a)       ; 3:16      push((_a)) 
-        inc  HL             ; 1:6       1+ 
+        ld   HL, (_a)       ; 3:16      push((_a))
+        inc  HL             ; 1:6       1+
         ld  (_b), HL        ; 3:16      value _b
         ex   DE, HL         ; 1:4       value _b
-        pop  DE             ; 1:10      value _b 
+        pop  DE             ; 1:10      value _b
         push DE             ; 1:11      push2((_b),(_a))
         ld   DE, (_b)       ; 4:20      push2((_b),(_a))
         push HL             ; 1:11      push2((_b),(_a))
-        ld   HL, (_a)       ; 3:16      push2((_b),(_a)) 
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
+        ld   HL, (_a)       ; 3:16      push2((_b),(_a))
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
         ld   BC, 10         ; 3:10      10 to _a
-        ld  (_a), BC        ; 4:20      10 to _a 
+        ld  (_a), BC        ; 4:20      10 to _a
         push DE             ; 1:11      push((_a))
         ex   DE, HL         ; 1:4       push((_a))
-        ld   HL, (_a)       ; 3:16      push((_a)) 
-        dec  HL             ; 1:6       1- 
+        ld   HL, (_a)       ; 3:16      push((_a))
+        dec  HL             ; 1:6       1-
         ld  (_b), HL        ; 3:16      to _b
         pop  HL             ; 1:10      to _b
-        ex   DE, HL         ; 1:4       to _b 
+        ex   DE, HL         ; 1:4       to _b
         push DE             ; 1:11      push2((_b),(_a))
         ld   DE, (_b)       ; 4:20      push2((_b),(_a))
         push HL             ; 1:11      push2((_b),(_a))
-        ld   HL, (_a)       ; 3:16      push2((_b),(_a)) 
-        call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
+        ld   HL, (_a)       ; 3:16      push2((_b),(_a))
+        call PRT_SP_U16     ; 3:17      space u.   ( u -- )
         call PRT_SP_U16     ; 3:17      space u.   ( u -- )
 
     VARIABLE_SECTION:
-    
+
     _a: dw 5
     _b: dw 0x0000
 
