@@ -322,7 +322,7 @@ dnl # ( -- )  $1 = addr
 dnl # print stringZ
 define({PUSH_TYPE_Z},{$1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
-{define({USE_STRING_Z},{})
+{define({USE_PRINT_Z},{})
     ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_z   ( -- )
     call PRINT_STRING_Z ; 3:17      $1 type_z})})dnl
 dnl
@@ -347,7 +347,7 @@ dnl # ( -- )  $1 = addr
 dnl # print inverted_msb-terminated string
 define({PUSH_TYPE_I},{ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
-{define({USE_STRING_I},{})
+{define({USE_PRINT_I},{})
     ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_i   ( -- )
     call PRINT_STRING_I ; 3:17      $1 type_i})})dnl
 dnl
@@ -444,7 +444,7 @@ dnl # ." string"
 dnl # .( string)
 dnl # ( -- )
 dnl # print null-terminated string
-define({_PRINT_Z},{define({USE_STRING_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
+define({_PRINT_Z},{define({USE_PRINT_Z},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
     ld   BC, string{}TEMP_FOUND  ; 3:10      print_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call PRINT_STRING_Z ; 3:17      print_z{}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
@@ -470,7 +470,7 @@ dnl # ." string"
 dnl # .( string)
 dnl # ( -- )
 dnl # print string ending with inverted most significant bit
-define({_PRINT_I},{define({USE_STRING_I},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
+define({_PRINT_I},{define({USE_PRINT_I},{})define({PRINT_COUNT}, incr(PRINT_COUNT)){}SEARCH_FOR_MATCHING_STRING({{$*}})
     ld   BC, string{}TEMP_FOUND  ; 3:10      print_i   Address of string{}TEMP_FOUND ending with inverted most significant bit{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT})
     call PRINT_STRING_I ; 3:17      print_i{}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
@@ -530,7 +530,6 @@ dnl # .( string)
 dnl # ( -- addr )
 dnl # store null-terminated string
 define({_STRING_Z},{dnl
-__{}define({USE_STRING_Z},{}){}dnl
 __{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
 __{}SEARCH_FOR_MATCHING_STRING({{$*}}){}dnl
 __{}string{}TEMP_FOUND  ; 3:10      string_z   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
@@ -560,7 +559,6 @@ dnl # .( string)
 dnl # ( -- addr )
 dnl # store inverted_msb-terminated string
 define({_STRING_I},{dnl
-__{}define({USE_STRING_I},{}){}dnl
 __{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
 __{}SEARCH_FOR_MATCHING_STRING({{$*}}){}dnl
 __{}string{}TEMP_FOUND  ; 3:10      string_i   Address of null-terminated string{}TEMP_FOUND{}ifelse(eval(TEMP_FOUND<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl

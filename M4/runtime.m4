@@ -1813,7 +1813,7 @@ PRINT_TYPE:             ;[10:76]    print_string
 dnl
 dnl
 dnl
-ifdef({USE_TYPE_Z},{define({USE_STRING_Z},{})
+ifdef({USE_TYPE_Z},{define({USE_PRINT_Z},{})
 ;==============================================================================
 ; Print C-style stringZ
 ; In: HL = addr stringZ
@@ -1824,7 +1824,7 @@ PRINT_TYPE_Z:           ;           print_type_z
     db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
     ; fall to PRINT_STRING_Z}){}dnl
 dnl
-ifdef({USE_STRING_Z},{
+ifdef({USE_PRINT_Z},{
 ;------------------------------------------------------------------------------
 ; Print C-style stringZ
 ; In: BC = addr
@@ -1839,7 +1839,7 @@ PRINT_STRING_Z:         ;           print_string_z
 dnl
 dnl
 dnl
-ifdef({USE_TYPE_I},{__def({USE_STRING_I})
+ifdef({USE_TYPE_I},{__def({USE_PRINT_I})
 ;==============================================================================
 ; Print string ending with inverted most significant bit
 ; In: HL = addr string_imsb
@@ -1850,7 +1850,7 @@ PRINT_TYPE_I:           ;           print_type_i
     db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
     ; fall to PRINT_STRING_I}){}dnl
 dnl
-ifdef({USE_STRING_I},{
+ifdef({USE_PRINT_I},{
 ;------------------------------------------------------------------------------
 ; Print string ending with inverted most significant bit
 ; In: BC = addr string_imsb

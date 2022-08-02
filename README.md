@@ -592,8 +592,6 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>     dup @ emit      |<sub>    DUP FETCH EMIT   |<sub>    DUP_FETCH_EMIT   |<sub>     ( addr -- addr )     |<sub>                       |
 |<sub>       space         |<sub>        SPACE        |<sub>                     |<sub>          ( -- )          |<sub>                       |
 |<sub>      'a' emit       |<sub>    PUSH_EMIT('a')   |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>                       |
-|<sub>        type         |<sub>         TYPE        |<sub>                     |<sub>   ( addr n -- )          |<sub>                       |
-|<sub>     2dup type       |<sub>                     |<sub>      _2DUP_TYPE     |<sub>   ( addr n -- addr n )   |<sub>                       |
 |<sub>     .( Hello)       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>                       |
 |<sub>     ." Hello"       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>                       |
 |<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
@@ -601,6 +599,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
 |<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
 |<sub>     s" Hello"       |<sub>  STRING({"Hello"})  |<sub>                     |<sub>          ( -- addr n )   |<sub>                       |
+|<sub>     s" Hello"       |<sub>                     |<sub> STRING_Z({"Hello"}) |<sub>          ( -- addr )     |<sub> C-style string        |
+|<sub>     s" Hello"       |<sub>                     |<sub> STRING_I({"Hello"}) |<sub>          ( -- addr )     |<sub> msb string end        |
+|<sub>        type         |<sub>         TYPE        |<sub>                     |<sub>   ( addr n -- )          |<sub>                       |
+|<sub>                     |<sub>                     |<sub>        TYPE_Z       |<sub>     ( addr -- )          |<sub> C-style string        |
+|<sub>                     |<sub>                     |<sub>        TYPE_I       |<sub>     ( addr -- )          |<sub> msb string end        |
+|<sub>     2dup type       |<sub>                     |<sub>      _2DUP_TYPE     |<sub>   ( addr n -- addr n )   |<sub>                       |
+|<sub>                     |<sub>                     |<sub>      DUP_TYPE_Z     |<sub>     ( addr -- addr )     |<sub> C-style string        |
+|<sub>                     |<sub>                     |<sub>      DUP_TYPE_I     |<sub>     ( addr -- addr )     |<sub> msb string end        |
 |<sub>                     |<sub>       CLEARKEY      |<sub>                     |<sub>          ( -- )          |<sub> clear key buff        |
 |<sub>         key         |<sub>         KEY         |<sub>                     |<sub>          ( -- key )      |<sub>                       |
 |<sub>        key?         |<sub>         KEY?        |<sub>                     |<sub>          ( -- flag )     |<sub>                       |
