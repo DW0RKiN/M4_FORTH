@@ -1384,12 +1384,29 @@ This can be used, for example, to set the dimension of an array before the proce
 
 ## External links
 
+### Forth standard
+
+https://forth-standard.org/standard/core
+
+https://forth-standard.org/standard/double
+
+### Forth compiler online (gforth v0.7.3)
+
+https://www.tutorialspoint.com/execute_forth_online.php
+
+### Z80 processor instruction set table
+
+https://clrhome.org/table/
+
+### GNU M4 macro processor
+
+https://www.gnu.org/savannah-checkouts/gnu/m4/manual/html_node/index.html#SEC_Contents
+
+### Other links
+
 http://wiki.laptop.org/go/Forth_Lessons
 
 http://astro.pas.rochester.edu/Forth/forth-words.html
 
-https://www.tutorialspoint.com/execute_forth_online.php
-
 http://www.retroprogramming.com/2012/04/itsy-forth-primitives.html
 
-https://www.gnu.org/software/m4/manual/m4-1.4.15/html_node/index.html#Top
