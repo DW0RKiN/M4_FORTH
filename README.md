@@ -1390,6 +1390,10 @@ https://forth-standard.org/standard/core
 
 https://forth-standard.org/standard/double
 
+### Forth tutorial and textbook online
+
+https://www.forth.com/starting-forth/1-forth-stacks-dictionary/
+
 ### Forth compiler online (gforth v0.7.3)
 
 https://www.tutorialspoint.com/execute_forth_online.php
