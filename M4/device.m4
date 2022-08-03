@@ -465,7 +465,7 @@ __{}__{}regexp({$*},     {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{
 __{}__{}__{}{regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}})},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
 __{}__{}{dnl
 __{}__{}__{}regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}){}errprint({
-__{}__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.})}){}dnl           # ???                      --> ??? + 0x80
+  .warning $0:($*) Last character not found. Check if you have an even number of characters "})}){}dnl           # ???                      --> ??? + 0x80
 }){}dnl
 dnl
 dnl
