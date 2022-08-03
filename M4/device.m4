@@ -434,6 +434,42 @@ __{}pushdef({__STRING_NUM_STACK},__STRING_LAST){}dnl
 dnl
 dnl
 dnl
+dnl # conversion to string
+dnl # "T","e","x","t",,"",,       --> "T","e","x","t"
+dnl # "Text",,"",,                --> "Text"
+dnl # "Text",0x0D,"",,            --> "Text",0x0D
+define({__CONVERSION_TO_STRING},{regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # conversion to string_z
+dnl # "T","e","x","t",,"",,       --> "T","e","x","t", 0x00
+dnl # "Text",,"",,                --> "Text", 0x00
+dnl # "Text",0x0D,"",,            --> "Text",0x0D, 0x00
+define({__CONVERSION_TO_STRING_Z},{regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2, 0x00}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # conversion to string_i
+dnl # "T","e","x","t",,"",,       --> "T","e","x","t" + 0x80
+dnl # "Text",,"",,                --> "Tex","t" + 0x80
+dnl # "Text",0x0D,"",,            --> "Text",0x0D + 0x80
+define({__CONVERSION_TO_STRING_I},{ifelse(dnl
+__{}__{}regexp({$*},     {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
+__{}__{}__{}{regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}})},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
+__{}__{}regexp({$*},     {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
+__{}__{}__{}{regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}})},dnl # "Hello"                  --> "Hell","o"+0x80
+__{}__{}regexp({$*},     {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
+__{}__{}__{}{regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}})},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
+__{}__{}{dnl
+__{}__{}__{}regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}){}errprint({
+__{}__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.})}){}dnl           # ???                      --> ??? + 0x80
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ." string"
 dnl # .( string)
 dnl # ( -- )
@@ -444,7 +480,8 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2}}))
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
 __{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
 __{}    ld   BC, size{}__STRING_MATCH    ; 3:10      print     Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      print     Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
@@ -464,10 +501,11 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2, 0x00}})){}dnl
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*})){}dnl
 __{}define({USE_PRINT_Z},{})
-    ld   BC, string{}__STRING_MATCH  ; 3:10      print_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
-    call PRINT_STRING_Z ; 3:17      print_z{}dnl
+__{}    ld   BC, string{}__STRING_MATCH  ; 3:10      print_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
+__{}    call PRINT_STRING_Z ; 3:17      print_z{}dnl
 })}){}dnl
 dnl
 dnl
@@ -482,19 +520,11 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{ifelse(dnl
-__{}__{}regexp({$*},                       {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
-__{}__{}regexp({$*},                       {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"                  --> "Hell","o"+0x80
-__{}__{}regexp({$*},                       {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
-__{}__{}{dnl
-__{}__{}__{}__ALLOCATE_STRING(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}))
-__{}__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.}){}dnl                                # ???                      --> ??? + 0x80
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*})){}dnl
 __{}define({USE_PRINT_I},{})
-    ld   BC, string{}__STRING_MATCH  ; 3:10      print_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
-    call PRINT_STRING_I ; 3:17      print_i{}dnl
+__{}    ld   BC, string{}__STRING_MATCH  ; 3:10      print_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
+__{}    call PRINT_STRING_I ; 3:17      print_i{}dnl
 })})dnl
 dnl
 dnl
@@ -508,7 +538,8 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2}}))
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
 __{}    push DE             ; 1:11      string    ( -- addr size )
 __{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      string    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
@@ -526,10 +557,11 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2, 0x00}}))
-    push DE             ; 1:11      string_z   ( -- addr )
-    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
-    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
+__{}    push DE             ; 1:11      string_z   ( -- addr )
+__{}    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
 dnl
 dnl
@@ -543,8 +575,9 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2, 0x00}}))
-                        ;           string_z drop   ( -- )   {}dnl
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
+__{}                        ;           string_z drop   ( -- )   {}dnl
 __{}ifelse(__STRING_LAST,__STRING_MATCH,{dnl
 __{}__{}Allocate null-terminated string{}__STRING_LAST},
 __{}{dnl
@@ -562,20 +595,11 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{ifelse(dnl
-__{}__{}regexp({$*},                       {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
-__{}__{}regexp({$*},                       {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"                  --> "Hell","o"+0x80
-__{}__{}regexp({$*},                       {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
-__{}__{}{dnl
-__{}__{}__{}__ALLOCATE_STRING(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}))
-__{}__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.}){}dnl                                # ???                      --> ??? + 0x80
-
-    push DE             ; 1:11      string_i   ( -- addr )
-    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
-    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
+__{}    push DE             ; 1:11      string_i   ( -- addr )
+__{}    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
 dnl
 dnl
@@ -588,18 +612,9 @@ eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
-{ifelse(dnl
-__{}__{}regexp({$*},                       {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
-__{}__{}regexp({$*},                       {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}}))},dnl # "Hello"                  --> "Hell","o"+0x80
-__{}__{}regexp({$*},                       {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
-__{}__{}__{}{__ALLOCATE_STRING(regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}}))},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
-__{}__{}{dnl
-__{}__{}__{}__ALLOCATE_STRING(regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}))
-__{}__{}__{}  .warning {$0}: $# Unexpected text string, last character not found.}){}dnl                                # ???                      --> ??? + 0x80
-
-                        ;           string_i drop   ( -- )   {}dnl
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
+__{}                        ;           string_i drop   ( -- )   {}dnl
 __{}ifelse(__STRING_LAST,__STRING_MATCH,{dnl
 __{}__{}Allocate string{}__STRING_LAST ending with inverted most significant bit},
 __{}{dnl
