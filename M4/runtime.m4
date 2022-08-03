@@ -1867,7 +1867,7 @@ PRINT_STRING_I:         ;           print_string_i
 dnl
 dnl
 dnl
-ifdef({STRING_NUM_STACK},{
+ifdef({__STRING_NUM_STACK},{
 
 STRING_SECTION:{}PRINT_STRING_STACK
 }){}dnl
