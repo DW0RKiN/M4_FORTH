@@ -70,13 +70,8 @@ __{}    or    L             ; 1:4       $1 or
 __{}    ld    L, A          ; 1:4       $1 or},
 __IS_NUM($1),{0},{
 __{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}                        ;[8:30]     $1 or   ( x1 -- x )  x = x1 | $1
-__{}    ld    A, high format({%-6s},$1); 2:7       $1 or
-__{}    or    H             ; 1:4       $1 or
-__{}    ld    H, A          ; 1:4       $1 or
-__{}    ld    A, low format({%-7s},$1); 2:7       $1 or
-__{}    or    L             ; 1:4       $1 or
-__{}    ld    L, A          ; 1:4       $1 or},
+__{}                        ;[?:?]      $1 or   ( x1 -- x )  x = x1 | $1
+__{}    __OR_REG16_16BIT({HL},$1)},
 {dnl
 __{}define({_TMP_INFO},{$1 or}){}dnl
 __{}__OR_REG16_16BIT({HL},$1){}dnl
@@ -133,15 +128,15 @@ __{}    ld    H, A          ; 1:4       push_bitset($1)
 __{}    pop  DE             ; 1:10      push_bitset($1)},
 __IS_NUM($1),{0},{define({_TMP_INFO},{push_bitset($1)})
 __{}  .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{} if (($1)>=0)
+__{}if (($1)>=0)
 __{} if (($1)<8){}dnl
-__{}__OR_REG8_8BIT({L},{(1<<($1))})
+__{}__OR_REG8_8BIT({L},{1<<($1)})
 __{} else
-__{} if (($1)<16){}dnl
-__{}__OR_REG8_8BIT({H},{(1<<($1-8))})
+__{}  if (($1)<16){}dnl
+__{}__OR_REG8_8BIT({H},{1<<($1-8)})
+__{}  endif
 __{} endif
-__{} endif
-__{} endif},
+__{}endif},
 {dnl
 __{}ifelse(eval(($1)<0),{1},{
 __{}__{}  .error {$0}($@): negative parameters found in macro!},
