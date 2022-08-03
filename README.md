@@ -425,111 +425,116 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
-|<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
-| :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
-|<sub>     and      |<sub>         AND         |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
-|<sub>    `3` and   |<sub>                     |<sub>    PUSH_AND(`3`)    |<sub>       ( x -- x & `3`) |<sub>                     |
-|<sub>      or      |<sub>          OR         |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
-|<sub>    `3` or    |<sub>                     |<sub>    PUSH_OR(`3`)     |<sub>       ( x -- x \| `3`)|<sub>                     |
-|<sub>     xor      |<sub>         XOR         |<sub>                     |<sub>      ( x1 -- -x1 )    |<sub>                     |
-|<sub>    `3` xor   |<sub>                     |<sub>    PUSH_XOR(`3`)    |<sub>       ( x -- x ^ `3`) |<sub>                     |
-|<sub>    invert    |<sub>        INVERT       |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
-|<sub>    within    |<sub>        WITHIN       |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
-|<sub>`4` `7` within|<sub>PUSH2(`4`,`7`) WITHIN|<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
-|<sub>     true     |<sub>         TRUE        |<sub>                     |<sub>         ( -- -1 )     |<sub> TRUE=-1
-|<sub>    false     |<sub>        FALSE        |<sub>                     |<sub>         ( -- 0 )      |<sub> FALSE=0
-|<sub>      0=      |<sub>         _0EQ        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
-|<sub>      0<      |<sub>         _0LT        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 <  0)
-|<sub>      0>=     |<sub>         _0GE        |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
-|<sub>       =      |<sub>          EQ         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
-|<sub>      <>      |<sub>          NE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
-|<sub>    swap =    |<sub>       SWAP EQ       |<sub>         EQ          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
-|<sub>    swap <>   |<sub>       SWAP NE       |<sub>         NE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
-|<sub>      <       |<sub>          LT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
-|<sub>      >=      |<sub>          GE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
-|<sub>      <=      |<sub>          LE         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
-|<sub>      >       |<sub>          GT         |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
-|<sub>    swap <    |<sub>       SWAP LT       |<sub>         GT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
-|<sub>    swap >=   |<sub>       SWAP GE       |<sub>         LE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
-|<sub>    swap <=   |<sub>       SWAP LE       |<sub>         GE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
-|<sub>    swap >    |<sub>       SWAP GT       |<sub>         LT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
-|<sub>      u<      |<sub>         ULT         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <  u1)
-|<sub>     u>=      |<sub>         UGE         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >= u1)
-|<sub>     u<=      |<sub>         ULE         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <= u1)
-|<sub>      u>      |<sub>         UGT         |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >  u1)
-|<sub>   swap u<    |<sub>       SWAP ULT      |<sub>         UGT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >  u1)
-|<sub>   swap u>=   |<sub>       SWAP UGE      |<sub>         ULE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <= u1)
-|<sub>   swap u<=   |<sub>       SWAP ULE      |<sub>         UGE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >= u1)
-|<sub>   swap u>    |<sub>       SWAP UGT      |<sub>         ULT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <  u1)
-|<sub>    rshift    |<sub>       RSHIFT        |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 >> u
-|<sub>   u rshift   |<sub>   PUSH(u) RSHIFT    |<sub>   PUSH_RSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> u
-|<sub>   1 rshift   |<sub>                     |<sub>      _1RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 1
-|<sub>     ...      |<sub>                     |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
-|<sub>  16 rshift   |<sub>                     |<sub>     _16RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 16
-|<sub>    lshift    |<sub>       LSHIFT        |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 << u
-|<sub>   u lshift   |<sub>   PUSH(u) LSHIFT    |<sub>   PUSH_LSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << u
-|<sub>   1 lshift   |<sub>                     |<sub>      _1LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 1
-|<sub>     ...      |<sub>                     |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
-|<sub>  16 lshift   |<sub>                     |<sub>     _16LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 16
+|<sub>       Original       |<sub>        M4 FORTH         |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
+| :-----------------------: | :--------------------------: | :----------------------: | :------------------------- | :----------------------- |
+|<sub>         and          |<sub>           AND           |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
+|<sub>        `3` and       |<sub>                         |<sub>    PUSH_AND(`3`)    |<sub>       ( x -- x & `3`) |<sub>                     |
+|<sub>          or          |<sub>            OR           |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
+|<sub>        `3` or        |<sub>                         |<sub>    PUSH_OR(`3`)     |<sub>       ( x -- x \| `3`)|<sub>                     |
+|<sub>         xor          |<sub>           XOR           |<sub>                     |<sub>      ( x1 -- -x1 )    |<sub>                     |
+|<sub>        `3` xor       |<sub>                         |<sub>    PUSH_XOR(`3`)    |<sub>       ( x -- x ^ `3`) |<sub>                     |
+|<sub>        invert        |<sub>          INVERT         |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
+|<sub>        within        |<sub>          WITHIN         |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
+|<sub>    `4` `7` within    |<sub>  PUSH2(`4`,`7`) WITHIN  |<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
+|<sub>         true         |<sub>           TRUE          |<sub>                     |<sub>         ( -- -1 )     |<sub> TRUE=-1
+|<sub>        false         |<sub>          FALSE          |<sub>                     |<sub>         ( -- 0 )      |<sub> FALSE=0
+|<sub>          0=          |<sub>           _0EQ          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
+|<sub>          0<          |<sub>           _0LT          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 <  0)
+|<sub>          0>=         |<sub>           _0GE          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
+|<sub>           =          |<sub>            EQ           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
+|<sub>          <>          |<sub>            NE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
+|<sub>        swap =        |<sub>         SWAP EQ         |<sub>         EQ          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
+|<sub>        swap <>       |<sub>         SWAP NE         |<sub>         NE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
+|<sub>          <           |<sub>            LT           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
+|<sub>          >=          |<sub>            GE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
+|<sub>          <=          |<sub>            LE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
+|<sub>          >           |<sub>            GT           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
+|<sub>        swap <        |<sub>         SWAP LT         |<sub>         GT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
+|<sub>        swap >=       |<sub>         SWAP GE         |<sub>         LE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
+|<sub>        swap <=       |<sub>         SWAP LE         |<sub>         GE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
+|<sub>        swap >        |<sub>         SWAP GT         |<sub>         LT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
+|<sub>          u<          |<sub>           ULT           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <  u1)
+|<sub>         u>=          |<sub>           UGE           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >= u1)
+|<sub>         u<=          |<sub>           ULE           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <= u1)
+|<sub>          u>          |<sub>           UGT           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >  u1)
+|<sub>       swap u<        |<sub>         SWAP ULT        |<sub>         UGT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >  u1)
+|<sub>       swap u>=       |<sub>         SWAP UGE        |<sub>         ULE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <= u1)
+|<sub>       swap u<=       |<sub>         SWAP ULE        |<sub>         UGE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >= u1)
+|<sub>       swap u>        |<sub>         SWAP UGT        |<sub>         ULT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <  u1)
+|<sub>        rshift        |<sub>         RSHIFT          |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 >> u
+|<sub>       u rshift       |<sub>     PUSH(u) RSHIFT      |<sub>   PUSH_RSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> u
+|<sub>       1 rshift       |<sub>                         |<sub>      _1RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 1
+|<sub>         ...          |<sub>                         |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
+|<sub>      16 rshift       |<sub>                         |<sub>     _16RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 16
+|<sub>        lshift        |<sub>         LSHIFT          |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 << u
+|<sub>       u lshift       |<sub>     PUSH(u) LSHIFT      |<sub>   PUSH_LSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << u
+|<sub>       1 lshift       |<sub>                         |<sub>      _1LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 1
+|<sub>         ...          |<sub>                         |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
+|<sub>      16 lshift       |<sub>                         |<sub>      _16LSHIFT      |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 16
+|<sub>   `1` swap lshift or |<sub> PUSH_SWAP(`1`) LSHIFT OR|<sub>        BITSET       |<sub>    ( x1 u -- x2 )     |<sub>x2=x1\|2**u
+|<sub>`9` `1` swap lshift or|<sub>PUSH2(`1`,`9`) LSHIFT OR |<sub>   PUSH_BITSET(`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
 
 #### 32bit
 
 ( d_32 -- hi_16 lo_16 )
 
-|<sub>   Original   |<sub>      M4 FORTH       |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
-| :---------------: | :----------------------: | :----------------------: | :------------------------- | :----------------------- |
-|<sub>              |<sub>       DLSHIFT       |<sub>                     |<sub>    ( d1 u -- d2 )     |<sub>unsigned d2=d1 << u  |
-|<sub>              |<sub>       DRSHIFT       |<sub>                     |<sub>    ( d1 u -- d2 )     |<sub>unsigned d2=d1 >> u  |
-|<sub>              |<sub>     ROT_DLSHIFT     |<sub>                     |<sub>    ( u d1 -- d2 )     |<sub>unsigned d2=d1 << u  |
-|<sub>              |<sub>     ROT_DRSHIFT     |<sub>                     |<sub>    ( u d1 -- d2 )     |<sub>unsigned d2=d1 >> u  |
-|<sub>              |<sub>         DAND        |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 & d1          |
-|<sub>              |<sub>     `123.` DAND     |<sub> PUSHDOT_DAND(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 & `123`       |
-|<sub>              |<sub>         DOR         |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 \| d1         |
-|<sub>              |<sub>     `123.` DOR      |<sub>  PUSHDOT_DOR(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 \| `123`      |
-|<sub>              |<sub>         DXOR        |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 ^ d1          |
-|<sub>              |<sub>     `123.` DXOR     |<sub> PUSHDOT_DXOR(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 ^ `123`       |
-|<sub>              |<sub>       DINVERT       |<sub>                     |<sub>      ( d1 -- d )      |<sub>d = ~d1              |
-|<sub>      D0=     |<sub>         D0EQ        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
-|<sub>   `0.` D=    |<sub>   PUSHDOT(`0`) DEQ  |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
-|<sub>  `0` `0` D=  |<sub>  PUSH2(`0`,`0`) DEQ |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
-|<sub>      D0<     |<sub>         D0LT        |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
-|<sub>   `0.` D<    |<sub>   PUSHDOT(`0`) DLT  |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
-|<sub>  `0` `0` D<  |<sub>  PUSH2(`0`,`0`) DLT |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
-|<sub>  `135.` D=   |<sub>  PUSHDOT(`135`) DEQ |<sub>  PUSHDOT_DEQ(`135`) |<sub>      ( d1 -- flag )   |<sub> f=(d1 == `135`)
-|<sub>      D=      |<sub>         DEQ         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
-|<sub>      D<>     |<sub>         DNE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
-|<sub>      D<      |<sub>         DLT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
-|<sub>      D>=     |<sub>         DGE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
-|<sub>      D<=     |<sub>         DLE         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <= d1)
-|<sub>      D>      |<sub>         DGT         |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >  d1)
-|<sub>   2swap D=   |<sub>     _2SWAP DEQ      |<sub>         DEQ         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
-|<sub>   2swap D<>  |<sub>     _2SWAP DNE      |<sub>         DNE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
-|<sub>   2swap D>   |<sub>     _2SWAP DGT      |<sub>         DLT         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
-|<sub>   2swap D<=  |<sub>     _2SWAP DLE      |<sub>         DGE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
-|<sub>   2swap D>=  |<sub>     _2SWAP DGE      |<sub>         DLE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <= d1)
-|<sub>   2swap D<   |<sub>     _2SWAP DLT      |<sub>         DGT         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >  d1)
-|<sub>     Du=      |<sub>         DUEQ        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 == ud1)
-|<sub>     Du<>     |<sub>         DUNE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <> ud1)
-|<sub>     Du<      |<sub>         DULT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <  ud1)
-|<sub>     Du>=     |<sub>         DUGE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
-|<sub>     Du<=     |<sub>         DULE        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <= ud1)
-|<sub>     Du>      |<sub>         DUGT        |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >  ud1)
-|<sub>  2swap Du=   |<sub>     _2SWAP DUEQ     |<sub>        DUEQ         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 == ud1)
-|<sub>  2swap Du<>  |<sub>     _2SWAP DUNE     |<sub>        DUNE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <> ud1)
-|<sub>  2swap Du>   |<sub>     _2SWAP DUGT     |<sub>        DULT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <  ud1)
-|<sub>  2swap Du<=  |<sub>     _2SWAP DULE     |<sub>        DUGE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
-|<sub>  2swap Du>=  |<sub>     _2SWAP DUGE     |<sub>        DULE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <= ud1)
-|<sub>  2swap Du<   |<sub>     _2SWAP DULT     |<sub>        DUGT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >  ud1)
-|<sub>   4dup D=    |<sub>      _4DUP DEQ      |<sub>      _4DUP_DEQ      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 == d1)    |
-|<sub>   4dup D<>   |<sub>      _4DUP DNE      |<sub>      _4DUP_DNE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <> d1)    |
-|<sub>   4dup D<    |<sub>      _4DUP DLT      |<sub>      _4DUP_DLT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <  d1)    |
-|<sub>   4dup D<=   |<sub>      _4DUP DLE      |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
-|<sub>   4dup D>    |<sub>      _4DUP DGT      |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
-|<sub>   4dup D>=   |<sub>      _4DUP DGE      |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
-|<sub>   4dup Du<   |<sub>      _4DUP DULT     |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
-|<sub>   4dup Du<=  |<sub>      _4DUP DULE     |<sub>      _4DUP_DULE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <= ud1)  |
-|<sub>   4dup Du>   |<sub>      _4DUP DUGT     |<sub>      _4DUP_DUGT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >  ud1)  |
-|<sub>   4dup Du>=  |<sub>      _4DUP DUGE     |<sub>      _4DUP_DUGE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >= ud1)  |
+|<sub>      Original      |<sub>         M4 FORTH           |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
+| :---------------------: | :-----------------------------: | :----------------------: | :------------------------- | :----------------------- |
+|<sub>                    |<sub>          DLSHIFT           |<sub>                     |<sub>    ( d1 u -- d2 )     |<sub>unsigned d2=d1 << u  |
+|<sub>                    |<sub>          DRSHIFT           |<sub>                     |<sub>    ( d1 u -- d2 )     |<sub>unsigned d2=d1 >> u  |
+|<sub>                    |<sub>        ROT_DLSHIFT         |<sub>                     |<sub>    ( u d1 -- d2 )     |<sub>unsigned d2=d1 << u  |
+|<sub>                    |<sub>        ROT_DRSHIFT         |<sub>                     |<sub>    ( u d1 -- d2 )     |<sub>unsigned d2=d1 >> u  |
+|<sub>                    |<sub>            DAND            |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 & d1          |
+|<sub>                    |<sub>        `123.` DAND         |<sub> PUSHDOT_DAND(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 & `123`       |
+|<sub>                    |<sub>            DOR             |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 \| d1         |
+|<sub>                    |<sub>        `123.` DOR          |<sub>  PUSHDOT_DOR(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 \| `123`      |
+|<sub>                    |<sub>            DXOR            |<sub>                     |<sub>   ( d2 d1 -- d )      |<sub>d = d2 ^ d1          |
+|<sub>                    |<sub>        `123.` DXOR         |<sub> PUSHDOT_DXOR(`123`) |<sub>      ( d1 -- d )      |<sub>d = d1 ^ `123`       |
+|<sub>                    |<sub>          DINVERT           |<sub>                     |<sub>      ( d1 -- d )      |<sub>d = ~d1              |
+|<sub>         D0=        |<sub>            D0EQ            |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>      `0.` D=       |<sub>      PUSHDOT(`0`) DEQ      |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>     `0` `0` D=     |<sub>     PUSH2(`0`,`0`) DEQ     |<sub>        D0EQ         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>         D0<        |<sub>            D0LT            |<sub>                     |<sub>      ( d1 -- flag )   |<sub> f=(d1 < 0)
+|<sub>      `0.` D<       |<sub>      PUSHDOT(`0`) DLT      |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>     `0` `0` D<     |<sub>     PUSH2(`0`,`0`) DLT     |<sub>        D0LT         |<sub>      ( d1 -- flag )   |<sub> f=(d1 == 0)
+|<sub>     `135.` D=      |<sub>     PUSHDOT(`135`) DEQ     |<sub>  PUSHDOT_DEQ(`135`) |<sub>      ( d1 -- flag )   |<sub> f=(d1 == `135`)
+|<sub>         D=         |<sub>            DEQ             |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
+|<sub>         D<>        |<sub>            DNE             |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
+|<sub>         D<         |<sub>            DLT             |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
+|<sub>         D>=        |<sub>            DGE             |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
+|<sub>         D<=        |<sub>            DLE             |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <= d1)
+|<sub>         D>         |<sub>            DGT             |<sub>                     |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >  d1)
+|<sub>      2swap D=      |<sub>        _2SWAP DEQ          |<sub>         DEQ         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 == d1)
+|<sub>      2swap D<>     |<sub>        _2SWAP DNE          |<sub>         DNE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <> d1)
+|<sub>      2swap D>      |<sub>        _2SWAP DGT          |<sub>         DLT         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <  d1)
+|<sub>      2swap D<=     |<sub>        _2SWAP DLE          |<sub>         DGE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >= d1)
+|<sub>      2swap D>=     |<sub>        _2SWAP DGE          |<sub>         DLE         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 <= d1)
+|<sub>      2swap D<      |<sub>        _2SWAP DLT          |<sub>         DGT         |<sub>   ( d2 d1 -- flag )   |<sub> f=(d2 >  d1)
+|<sub>        Du=         |<sub>            DUEQ            |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 == ud1)
+|<sub>        Du<>        |<sub>            DUNE            |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <> ud1)
+|<sub>        Du<         |<sub>            DULT            |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <  ud1)
+|<sub>        Du>=        |<sub>            DUGE            |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
+|<sub>        Du<=        |<sub>            DULE            |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <= ud1)
+|<sub>        Du>         |<sub>            DUGT            |<sub>                     |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >  ud1)
+|<sub>     2swap Du=      |<sub>        _2SWAP DUEQ         |<sub>        DUEQ         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 == ud1)
+|<sub>     2swap Du<>     |<sub>        _2SWAP DUNE         |<sub>        DUNE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <> ud1)
+|<sub>     2swap Du>      |<sub>        _2SWAP DUGT         |<sub>        DULT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <  ud1)
+|<sub>     2swap Du<=     |<sub>        _2SWAP DULE         |<sub>        DUGE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >= ud1)
+|<sub>     2swap Du>=     |<sub>        _2SWAP DUGE         |<sub>        DULE         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 <= ud1)
+|<sub>     2swap Du<      |<sub>        _2SWAP DULT         |<sub>        DUGT         |<sub> ( ud2 ud1 -- flag )   |<sub> f=(ud2 >  ud1)
+|<sub>      4dup D=       |<sub>         _4DUP DEQ          |<sub>      _4DUP_DEQ      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 == d1)    |
+|<sub>      4dup D<>      |<sub>         _4DUP DNE          |<sub>      _4DUP_DNE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <> d1)    |
+|<sub>      4dup D<       |<sub>         _4DUP DLT          |<sub>      _4DUP_DLT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <  d1)    |
+|<sub>      4dup D<=      |<sub>         _4DUP DLE          |<sub>      _4DUP_DLE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 <= d1)    |
+|<sub>      4dup D>       |<sub>         _4DUP DGT          |<sub>      _4DUP_DGT      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >  d1)    |
+|<sub>      4dup D>=      |<sub>         _4DUP DGE          |<sub>      _4DUP_DGE      |<sub>  (d2 d1 -- flag )     |<sub> f=(d2 >= d1)    |
+|<sub>      4dup Du<      |<sub>         _4DUP DULT         |<sub>      _4DUP_DULT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <  ud1)  |
+|<sub>      4dup Du<=     |<sub>         _4DUP DULE         |<sub>      _4DUP_DULE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 <= ud1)  |
+|<sub>      4dup Du>      |<sub>         _4DUP DUGT         |<sub>      _4DUP_DUGT     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >  ud1)  |
+|<sub>      4dup Du>=     |<sub>         _4DUP DUGE         |<sub>      _4DUP_DUGE     |<sub>(ud2 ud1 -- ud1 ud2 f )|<sub> f=(ud2 >= ud1)  |
+|<sub>`1.` rot Dlshift Dor|<sub>PUSHDOT(`1`) ROT_DLSHIFT DOR|<sub>        BITSET       |<sub>    ( d1 u -- d2 )     |<sub>d2=d1\|2**u
+|<sub>`1.` `9` Dlshift Dor|<sub>            ...             |<sub>   PUSH_BITSET(`9`)  |<sub>      ( d1 -- d2 )     |<sub>d2=d1\|2**`9`
+
 
 ![Example of how to check the word D0EQ in the terminal using the bash script check_word.sh](D0EQ_check.png)
 
