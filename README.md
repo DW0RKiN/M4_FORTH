@@ -425,54 +425,54 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
-|<sub>       Original       |<sub>        M4 FORTH         |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
-| :-----------------------: | :--------------------------: | :----------------------: | :------------------------- | :----------------------- |
-|<sub>         and          |<sub>           AND           |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
-|<sub>        `3` and       |<sub>                         |<sub>    PUSH_AND(`3`)    |<sub>       ( x -- x & `3`) |<sub>                     |
-|<sub>          or          |<sub>            OR           |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
-|<sub>        `3` or        |<sub>                         |<sub>    PUSH_OR(`3`)     |<sub>       ( x -- x \| `3`)|<sub>                     |
-|<sub>         xor          |<sub>           XOR           |<sub>                     |<sub>      ( x1 -- -x1 )    |<sub>                     |
-|<sub>        `3` xor       |<sub>                         |<sub>    PUSH_XOR(`3`)    |<sub>       ( x -- x ^ `3`) |<sub>                     |
-|<sub>        invert        |<sub>          INVERT         |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
-|<sub>        within        |<sub>          WITHIN         |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
-|<sub>    `4` `7` within    |<sub>  PUSH2(`4`,`7`) WITHIN  |<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
-|<sub>         true         |<sub>           TRUE          |<sub>                     |<sub>         ( -- -1 )     |<sub> TRUE=-1
-|<sub>        false         |<sub>          FALSE          |<sub>                     |<sub>         ( -- 0 )      |<sub> FALSE=0
-|<sub>          0=          |<sub>           _0EQ          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
-|<sub>          0<          |<sub>           _0LT          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 <  0)
-|<sub>          0>=         |<sub>           _0GE          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
-|<sub>           =          |<sub>            EQ           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
-|<sub>          <>          |<sub>            NE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
-|<sub>        swap =        |<sub>         SWAP EQ         |<sub>         EQ          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
-|<sub>        swap <>       |<sub>         SWAP NE         |<sub>         NE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
-|<sub>          <           |<sub>            LT           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
-|<sub>          >=          |<sub>            GE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
-|<sub>          <=          |<sub>            LE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
-|<sub>          >           |<sub>            GT           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
-|<sub>        swap <        |<sub>         SWAP LT         |<sub>         GT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
-|<sub>        swap >=       |<sub>         SWAP GE         |<sub>         LE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
-|<sub>        swap <=       |<sub>         SWAP LE         |<sub>         GE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
-|<sub>        swap >        |<sub>         SWAP GT         |<sub>         LT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
-|<sub>          u<          |<sub>           ULT           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <  u1)
-|<sub>         u>=          |<sub>           UGE           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >= u1)
-|<sub>         u<=          |<sub>           ULE           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <= u1)
-|<sub>          u>          |<sub>           UGT           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >  u1)
-|<sub>       swap u<        |<sub>         SWAP ULT        |<sub>         UGT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >  u1)
-|<sub>       swap u>=       |<sub>         SWAP UGE        |<sub>         ULE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <= u1)
-|<sub>       swap u<=       |<sub>         SWAP ULE        |<sub>         UGE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >= u1)
-|<sub>       swap u>        |<sub>         SWAP UGT        |<sub>         ULT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <  u1)
-|<sub>        rshift        |<sub>         RSHIFT          |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 >> u
-|<sub>       u rshift       |<sub>     PUSH(u) RSHIFT      |<sub>   PUSH_RSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> u
-|<sub>       1 rshift       |<sub>                         |<sub>      _1RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 1
-|<sub>         ...          |<sub>                         |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
-|<sub>      16 rshift       |<sub>                         |<sub>     _16RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 16
-|<sub>        lshift        |<sub>         LSHIFT          |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 << u
-|<sub>       u lshift       |<sub>     PUSH(u) LSHIFT      |<sub>   PUSH_LSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << u
-|<sub>       1 lshift       |<sub>                         |<sub>      _1LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 1
-|<sub>         ...          |<sub>                         |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
-|<sub>      16 lshift       |<sub>                         |<sub>      _16LSHIFT      |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 16
-|<sub>   `1` swap lshift or |<sub> PUSH_SWAP(`1`) LSHIFT OR|<sub>        BITSET       |<sub>    ( x1 u -- x2 )     |<sub>x2=x1\|2**u
-|<sub>`9` `1` swap lshift or|<sub>PUSH2(`1`,`9`) LSHIFT OR |<sub>   PUSH_BITSET(`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
+|<sub>     Original     |<sub>        M4 FORTH         |<sub>    Optimization     |<sub>  Data stack           |<sub> Comment             |
+| :-------------------: | :--------------------------: | :----------------------: | :------------------------- | :----------------------- |
+|<sub>       and        |<sub>           AND           |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
+|<sub>      `3` and     |<sub>                         |<sub>    PUSH_AND(`3`)    |<sub>       ( x -- x & `3`) |<sub>                     |
+|<sub>        or        |<sub>            OR           |<sub>                     |<sub>   ( x2 x1 -- x )      |<sub>                     |
+|<sub>      `3` or      |<sub>                         |<sub>    PUSH_OR(`3`)     |<sub>       ( x -- x \| `3`)|<sub>                     |
+|<sub>       xor        |<sub>           XOR           |<sub>                     |<sub>      ( x1 -- -x1 )    |<sub>                     |
+|<sub>      `3` xor     |<sub>                         |<sub>    PUSH_XOR(`3`)    |<sub>       ( x -- x ^ `3`) |<sub>                     |
+|<sub>      invert      |<sub>          INVERT         |<sub>                     |<sub>      ( x1 -- ~x1 )    |<sub>
+|<sub>      within      |<sub>          WITHIN         |<sub>                     |<sub>   ( c b a -- flag )   |<sub>(a-b) (c-b) U<
+|<sub>  `4` `7` within  |<sub>  PUSH2(`4`,`7`) WITHIN  |<sub>PUSH2_WITHIN(`4`,`7`)|<sub>   ( a -- flag )       |<sub>4..6
+|<sub>       true       |<sub>           TRUE          |<sub>                     |<sub>         ( -- -1 )     |<sub> TRUE=-1
+|<sub>      false       |<sub>          FALSE          |<sub>                     |<sub>         ( -- 0 )      |<sub> FALSE=0
+|<sub>        0=        |<sub>           _0EQ          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 == 0)
+|<sub>        0<        |<sub>           _0LT          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 <  0)
+|<sub>        0>=       |<sub>           _0GE          |<sub>                     |<sub>      ( x1 -- f )      |<sub> f=(x1 >= 0)
+|<sub>         =        |<sub>            EQ           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
+|<sub>        <>        |<sub>            NE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
+|<sub>      swap =      |<sub>         SWAP EQ         |<sub>         EQ          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 == x1)
+|<sub>      swap <>     |<sub>         SWAP NE         |<sub>         NE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <> x1)
+|<sub>        <         |<sub>            LT           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
+|<sub>        >=        |<sub>            GE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
+|<sub>        <=        |<sub>            LE           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
+|<sub>        >         |<sub>            GT           |<sub>                     |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
+|<sub>      swap <      |<sub>         SWAP LT         |<sub>         GT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >  x1)
+|<sub>      swap >=     |<sub>         SWAP GE         |<sub>         LE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <= x1)
+|<sub>      swap <=     |<sub>         SWAP LE         |<sub>         GE          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 >= x1)
+|<sub>      swap >      |<sub>         SWAP GT         |<sub>         LT          |<sub>   ( x2 x1 -- flag )   |<sub> f=(x2 <  x1)
+|<sub>        u<        |<sub>           ULT           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <  u1)
+|<sub>       u>=        |<sub>           UGE           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >= u1)
+|<sub>       u<=        |<sub>           ULE           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 <= u1)
+|<sub>        u>        |<sub>           UGT           |<sub>                     |<sub>   ( u2 u1 -- flag )   |<sub> f=(u2 >  u1)
+|<sub>     swap u<      |<sub>         SWAP ULT        |<sub>         UGT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >  u1)
+|<sub>     swap u>=     |<sub>         SWAP UGE        |<sub>         ULE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <= u1)
+|<sub>     swap u<=     |<sub>         SWAP ULE        |<sub>         UGE         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 >= u1)
+|<sub>     swap u>      |<sub>         SWAP UGT        |<sub>         ULT         |<sub>   ( x2 x1 -- flag )   |<sub> f=(u2 <  u1)
+|<sub>      rshift      |<sub>         RSHIFT          |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 >> u
+|<sub>     u rshift     |<sub>     PUSH(u) RSHIFT      |<sub>   PUSH_RSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> u
+|<sub>     1 rshift     |<sub>                         |<sub>      _1RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 1
+|<sub>       ...        |<sub>                         |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
+|<sub>    16 rshift     |<sub>                         |<sub>     _16RSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 >> 16
+|<sub>      lshift      |<sub>         LSHIFT          |<sub>                     |<sub>    ( x1 u -- x2 )     |<sub>unsigned x2=x1 << u
+|<sub>     u lshift     |<sub>     PUSH(u) LSHIFT      |<sub>   PUSH_LSHIFT(u)    |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << u
+|<sub>     1 lshift     |<sub>                         |<sub>      _1LSHIFT       |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 1
+|<sub>       ...        |<sub>                         |<sub>         ...         |<sub>      ( x1 -- x2 )     |<sub>...
+|<sub>    16 lshift     |<sub>                         |<sub>      _16LSHIFT      |<sub>      ( x1 -- x2 )     |<sub>unsigned x2=x1 << 16
+|<sub>`1` swap lshift or|<sub> PUSH_SWAP(`1`) LSHIFT OR|<sub>        BITSET       |<sub>    ( x1 u -- x2 )     |<sub>x2=x1\|2**u
+|<sub> `1` `9` lshift or|<sub>PUSH2(`1`,`9`) LSHIFT OR |<sub>   PUSH_BITSET(`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
 
 #### 32bit
 
