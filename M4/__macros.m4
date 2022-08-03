@@ -205,29 +205,72 @@ define({__OR_REG8_8BIT},{dnl
 dnl # Input
 dnl #   $1 name reg
 dnl #   $2 8bit value
-__{}ifelse(__HEX_L($2),{0x00},{},
-__{}__HEX_L($2),{0xFF},{
-__{}__{}    ld    $1, 0xFF       ; 2:7       _TMP_INFO},
-__{}__HEX_L($2),{0x01},{
-__{}__{}    set   0, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x02},{
-__{}__{}    set   1, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x04},{
-__{}__{}    set   2, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x08},{
-__{}__{}    set   3, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x10},{
-__{}__{}    set   4, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x20},{
-__{}__{}    set   5, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x40},{
-__{}__{}    set   6, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x80},{
-__{}__{}    set   7, $1          ; 2:8       _TMP_INFO},
-__{}{
-__{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
-__{}__{}    or    $1             ; 1:4       _TMP_INFO
-__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})}){}dnl
+__{}ifelse(__IS_NUM($2),{0},{
+__{}__{}  if (($2) = 0xFF)
+__{}__{}__{}    ld    $1, 0xFF       ; 2:7       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x01)
+__{}__{}__{}    set   0, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x02)
+__{}__{}__{}    set   1, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x04)
+__{}__{}__{}    set   2, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x08)
+__{}__{}__{}    set   3, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x10)
+__{}__{}__{}    set   4, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x20)
+__{}__{}__{}    set   5, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x40)
+__{}__{}__{}    set   6, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if (($2) = 0x80)
+__{}__{}__{}    set   7, $1          ; 2:8       _TMP_INFO
+__{}__{}  else
+__{}__{}  if ((($2) > 0x00) && (($2) <= 0xFF))
+__{}__{}__{}    ld    A, format({%-11s},$2); 2:7       _TMP_INFO
+__{}__{}__{}    or    $1             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif
+__{}__{}  endif},
+{dnl
+__{}__{}ifelse(__HEX_L($2),{0x00},{},
+__{}__{}__HEX_L($2),{0xFF},{
+__{}__{}__{}    ld    $1, 0xFF       ; 2:7       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x01},{
+__{}__{}__{}    set   0, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x02},{
+__{}__{}__{}    set   1, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x04},{
+__{}__{}__{}    set   2, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x08},{
+__{}__{}__{}    set   3, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x10},{
+__{}__{}__{}    set   4, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x20},{
+__{}__{}__{}    set   5, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x40},{
+__{}__{}__{}    set   6, $1          ; 2:8       _TMP_INFO},
+__{}__{}__HEX_L($2),{0x80},{
+__{}__{}__{}    set   7, $1          ; 2:8       _TMP_INFO},
+__{}__{}{
+__{}__{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
+__{}__{}__{}    or    $1             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})})}){}dnl
 dnl
 dnl
 dnl
@@ -235,12 +278,20 @@ define({__OR_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
-__{}ifelse(__HEX_HL($2),0xFFFF,{
-__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO},
-__{}{dnl
-__{}__{}__OR_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
-__{}__{}__OR_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
-})}){}dnl
+__{}ifelse(__IS_NUM($2),{0},{
+__{}__{}  if (($2) = 0xFFFF)
+__{}__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO
+__{}__{}  else{}dnl
+__{}__{}__OR_REG8_8BIT(substr($1,1,1),$2 & 0xFF){}dnl
+__{}__{}__OR_REG8_8BIT(substr($1,0,1),$2 >> 8)
+__{}__{}  endif},
+{dnl
+__{}__{}ifelse(__HEX_HL($2),0xFFFF,{
+__{}__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO},
+__{}__{}{dnl
+__{}__{}__{}__OR_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
+__{}__{}__{}__OR_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
+__{}})})}){}dnl
 dnl
 dnl
 dnl

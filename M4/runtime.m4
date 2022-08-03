@@ -503,6 +503,70 @@ BIN16_DEC_CHAR:         ;           bin16_dec
 dnl
 dnl
 dnl
+ifdef({USE_BITSET16},{
+;==============================================================================
+; ( x1 u -- ? x )  x = x1 | 2**u
+; set u bit
+;  Input: HL, DE
+; Output: HL = DE | ( 1<<HL )
+; Pollutes: AF, B, DE, HL
+BITSET16:               ;[21:89/30] bitset16   ( x1 u -- ? x )  x = x1 | 2**u
+    ld    A, 0xF0       ; 2:7       bitset16
+    and   L             ; 1:4       bitset16
+    or    H             ; 1:4       bitset16
+    ex   DE, HL         ; 1:4       bitset16
+    ret  nz             ; 1:5/11    bitset16   out of range 0..15
+    ld    A, E          ; 1:4       bitset16   A = 0000 rnnn
+    rlca                ; 1:4       bitset16   A = 000r nnn0
+    rlca                ; 1:4       bitset16   A = 00rn nn00
+    add   A, 0xE0       ; 2:7       bitset16   A = ...n nn00 carry = r
+    ccf                 ; 1:4       bitset16   A = ...n nn00 carry = i = 1-r
+    adc   A, A          ; 1:4       bitset16   A = ..nn n00i
+    or   0xC4           ; 2:7       bitset16   A = 11nn n101 = set n,L   or   A = 11nn n100 = set n,H
+    ld  ($+4), A        ; 3:13      bitset16
+    set   0, L          ; 2:8       bitset16
+    ret                 ; 1:10      bitset16}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_BITSET32},{__def({USE_BC_BITSET32})
+;==============================================================================
+; ( d1 u -- d )  d = d1 | 2**u
+; set u bit
+;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
+; Output: DEHL = d1 | (1 << u)
+; Pollutes: AF, BC, DE, HL
+BITSET32:              ;[29:143/67] bitset32   ( d1 u -- d )  d = d1 | 2**u
+    ld    C, L          ; 1:4       bitset32
+    ld    B, H          ; 1:4       bitset32   BC = u
+    pop  HL             ; 1:10      bitset32   ret
+    ex  (SP),HL         ; 1:19      bitset32
+    ex   DE, HL         ; 1:4       bitset32   DEHL = d1
+    ; fall to BC_BITSET32}){}dnl
+ifdef({USE_BC_BITSET32},{
+BC_BITSET32:           ;[24:102/26] bc_bitset32   ( d1 -- d )  d = d1 | 2**BC
+    ld    A, 0xE0       ; 2:7       bc_bitset32
+    and   C             ; 1:4       bc_bitset32
+    or    B             ; 1:4       bc_bitset32
+    ret  nz             ; 1:5/11    bc_bitset32   out of range 0..31
+    ld    A, C          ; 1:4       bc_bitset32   A = 000r rnnn
+    rlca                ; 1:4       bc_bitset32   2x
+    rlca                ; 1:4       bc_bitset32   4x
+    rlca                ; 1:4       bc_bitset32   8x
+    ld    C, A          ; 1:4       bc_bitset32   C = rrnn n000, nnn = 0..7, rr=(L:0,H:1,E:2,D:3) --> 5-rr=(L:5,H:4,E:3,D:2)
+    rlca                ; 1:4       bc_bitset32
+    rlca                ; 1:4       bc_bitset32
+    and  0x03           ; 1:4       bc_bitset32
+    ld    B, A          ; 1:4       bc_bitset32   B = 0000 00rr
+    ld    A, C          ; 1:4       bc_bitset32   A = rrnn n000
+    or   0xC5           ; 2:7       bc_bitset32   A = 11nn n101     = set n, L
+    sub   B             ; 1:4       bc_bitset32   A = 11nn n101 - B = set n, DEHL
+    ld  ($+4), A        ; 3:13      bc_bitset32
+    set   0, L          ; 2:8       bc_bitset32
+    ret                 ; 1:10      bc_bitset32}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_DLSHIFT},{__def({USE_ROT_DLSHIFT})
 ;==============================================================================
 ; ( d1 u -- d )  d = d1<<u

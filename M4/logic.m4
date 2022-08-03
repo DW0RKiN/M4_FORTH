@@ -83,6 +83,77 @@ __{}__OR_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
 dnl
+dnl
+dnl # ( x1 u -- x )  x = x1 | 2**u
+define({BITSET},{ifelse(eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{ifelse(_TYP_SINGLE,{fast},{
+__{}                       ;[22:91/41]  bitset   ( x1 u -- x )  x = x1 | 2**u   fast version
+__{}    ld    A, 0xF0       ; 2:7       bitset
+__{}    and   L             ; 1:4       bitset
+__{}    or    H             ; 1:4       bitset
+__{}    ex   DE, HL         ; 1:4       bitset
+__{}    jr   nz, $+16       ; 2:7/12    bitset   out of range 0..15
+__{}    ld    A, E          ; 1:4       bitset   A = 0000 rnnn
+__{}    rlca                ; 1:4       bitset   A = 000r nnn0
+__{}    rlca                ; 1:4       bitset   A = 00rn nn00
+__{}    add   A, 0xE0       ; 2:7       bitset   A = ???n nn00 carry = r
+__{}    ccf                 ; 1:4       bitset   A = ???n nn00 carry = i = 1-r
+__{}    adc   A, A          ; 1:4       bitset   A = ??nn n00i
+__{}    or   0xC4           ; 2:7       bitset   A = 11nn n101 = set n,L   or   A = 11nn n100 = set n,H
+__{}    ld  ($+4), A        ; 3:13      bitset
+__{}    set   0, L          ; 2:8       bitset
+__{}    pop  DE             ; 1:10      bitset},
+{__def({USE_BITSET16})
+__{}    call BITSET16       ; 3:17      bitset   ( x1 u -- x )  x = x1 | 2**u   default version
+__{}    pop  DE             ; 1:10      bitset})})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- x|2**n )
+dnl # x = x | 2**n
+define({PUSH_BITSET},{ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{__def({USE_LSHIFT})
+__{}                        ;[19:109]   push_bitset($1)   ( x1 -- x )  x = x1 | 2**$1
+__{}    push DE             ; 1:11      push_bitset($1)
+__{}    push HL             ; 1:11      push_bitset($1)
+__{}    ld   HL, 0x0001     ; 3:10      push_bitset($1)
+__{}    ld   HL, format({%-11s},$1); 3:16      push_bitset($1)
+__{}    call DE_LSHIFT      ; 3:17      push_bitset($1)   ( x1 u -- ? x2 )  x2 = x1<<u
+__{}    pop  DE             ; 1:10      push_bitset($1)
+__{}    ld    A, E          ; 1:4       push_bitset($1)   ( x2 x1 -- x )  x = x2 | x1
+__{}    or    L             ; 1:4       push_bitset($1)
+__{}    ld    L, A          ; 1:4       push_bitset($1)
+__{}    ld    A, D          ; 1:4       push_bitset($1)
+__{}    or    H             ; 1:4       push_bitset($1)
+__{}    ld    H, A          ; 1:4       push_bitset($1)
+__{}    pop  DE             ; 1:10      push_bitset($1)},
+__IS_NUM($1),{0},{define({_TMP_INFO},{push_bitset($1)})
+__{}  .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
+__{} if (($1)>=0)
+__{} if (($1)<8){}dnl
+__{}__OR_REG8_8BIT({L},{(1<<($1))})
+__{} else
+__{} if (($1)<16){}dnl
+__{}__OR_REG8_8BIT({H},{(1<<($1-8))})
+__{} endif
+__{} endif
+__{} endif},
+{dnl
+__{}ifelse(eval(($1)<0),{1},{
+__{}__{}  .error {$0}($@): negative parameters found in macro!},
+__{}eval(($1)>15),{1},{
+__{}__{}  .warning {$0}($@): Out of range zero to 15th bit.},
+__{}{define({_TMP_INFO},{push_bitset($1)})
+__{}__{}ifelse(dnl
+__{}__{}eval(($1)< 8),{1},{__OR_REG8_8BIT({L},eval(1<<($1)))},
+__{}__{}eval(($1)<16),{1},{__OR_REG8_8BIT({H},eval(1<<($1-8)))})}){}dnl
+})}){}dnl
+dnl
+dnl
 dnl # ( x1 x2 -- x )
 dnl # x = x1 ^ x2
 define({XOR},{
@@ -1403,6 +1474,99 @@ __{}__{}__OR_REG16_16BIT({HL},$1){}dnl
 __{}__{}__OR_REG16_16BIT({DE},__HEX_DE($1)){}dnl
 __{}}){}dnl
 })dnl
+dnl
+dnl
+dnl
+dnl # ( d1 u -- d )  d == d1 | 2**u
+define({DBITSET},{ifelse(eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{ifelse(_TYP_DOUBLE,{fast},{
+__{}                       ;[26:108/45] dbitset   ( d1 u -- d )  d = d1 | 2**u   fast version
+__{}    ld    A, 0xE0       ; 2:7       dbitset
+__{}    and   L             ; 1:4       dbitset
+__{}    or    H             ; 1:4       dbitset
+__{}    ld    A, L          ; 1:4       dbitset   A = 000r rnnn
+__{}    pop  HL             ; 1:10      dbitset
+__{}    ex   DE, HL         ; 1:4       dbitset
+__{}    jr   nz, $+19       ; 2:7/12    dbitset   out of range 0..31
+__{}    rlca                ; 1:4       dbitset   2x
+__{}    rlca                ; 1:4       dbitset   4x
+__{}    rlca                ; 1:4       dbitset   8x
+__{}    ld    C, A          ; 1:4       dbitset   C = rrnn n000, nnn = 0..7, rr=(L:0,H:1,E:2,D:3) --> 5-rr=(L:5,H:4,E:3,D:2)
+__{}    rlca                ; 1:4       dbitset
+__{}    rlca                ; 1:4       dbitset
+__{}    and  0x03           ; 1:4       dbitset
+__{}    ld    B, A          ; 1:4       dbitset   B = 0000 00rr
+__{}    ld    A, C          ; 1:4       dbitset   A = rrnn n000
+__{}    or   0xC5           ; 2:7       dbitset   A = 11nn n101     = set n, L
+__{}    sub   B             ; 1:4       dbitset   A = 11nn n101 - B = set n, DEHL
+__{}    ld  ($+4), A        ; 3:13      dbitset
+__{}    set   0, L          ; 2:8       dbitset},
+{__def({USE_BITSET32})
+__{}    call BITSET32       ; 3:17      dbitset   ( d1 u -- d )  d = d1 | 2**u   default version})})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( d -- d|2**n )
+dnl # d = d | 2**n
+define({PUSH_DBITSET},{ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),{1},{__def({USE_ROT_DLSHIFT})
+__{}                        ;[28:145]   push_dbitset($1)   ( d1 -- d )  d = d1 | 2**$1
+__{}    push DE             ; 1:11      push_dbitset($1)
+__{}    push HL             ; 1:11      push_dbitset($1)
+__{}    ld   HL, 0x0001     ; 3:10      push_dbitset($1)
+__{}    ld    E, H          ; 1:4       push_dbitset($1)
+__{}    ld    D, H          ; 1:4       push_dbitset($1)   DEHL = 0x00000001
+__{}    ld   BC, format({%-11s},$1); 4:20      push_dbitset($1)
+__{}    call BC_LSHIFT32    ; 3:17      push_dbitset($1)   ( d1 -- d )  d = d1<<BC
+__{}    pop  BC             ; 1:10      push_dbitset($1)
+__{}    ld    A, C          ; 1:4       push_dbitset($1)
+__{}    or    L             ; 1:4       push_dbitset($1)
+__{}    ld    L, A          ; 1:4       push_dbitset($1)
+__{}    ld    A, B          ; 1:4       push_dbitset($1)
+__{}    or    H             ; 1:4       push_dbitset($1)
+__{}    ld    H, A          ; 1:4       push_dbitset($1)
+__{}    pop  BC             ; 1:10      push_dbitset($1)
+__{}    ld    A, C          ; 1:4       push_dbitset($1)
+__{}    or    E             ; 1:4       push_dbitset($1)
+__{}    ld    E, A          ; 1:4       push_dbitset($1)
+__{}    ld    A, B          ; 1:4       push_dbitset($1)
+__{}    or    D             ; 1:4       push_dbitset($1)
+__{}    ld    D, A          ; 1:4       push_dbitset($1)},
+__IS_NUM($1),{0},{define({_TMP_INFO},{push_dbitset($1)})
+__{}  .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
+__{} if (($1)>=0)
+__{} if (($1)<8){}dnl
+__{}__OR_REG8_8BIT({L},{(1<<($1))})
+__{} else
+__{} if (($1)<16){}dnl
+__{}__OR_REG8_8BIT({H},{(1<<($1-8))})
+__{} else
+__{} if (($1)<24){}dnl
+__{}__OR_REG8_8BIT({E},{(1<<($1-16))})
+__{} else
+__{} if (($1)<32){}dnl
+__{}__OR_REG8_8BIT({D},{(1<<($1-24))})
+__{} endif
+__{} endif
+__{} endif
+__{} endif
+__{} endif},
+{dnl
+__{}ifelse(eval(($1)<0),{1},{
+__{}__{}  .error {$0}($@): negative parameters found in macro!},
+__{}eval(($1)>31),{1},{
+__{}__{}  .warning {$0}($@): Out of range zero to 31th bit.},
+__{}{define({_TMP_INFO},{push_dbitset($1)})
+__{}__{}ifelse(dnl
+__{}__{}eval(($1)< 8),{1},{__OR_REG8_8BIT({L},eval(1<<($1)))},
+__{}__{}eval(($1)<16),{1},{__OR_REG8_8BIT({H},eval(1<<($1-8)))},
+__{}__{}eval(($1)<24),{1},{__OR_REG8_8BIT({E},eval(1<<($1-16)))},
+__{}__{}eval(($1)<32),{1},{__OR_REG8_8BIT({D},eval(1<<($1-24)))})}){}dnl
+})}){}dnl
 dnl
 dnl
 dnl # ( d1 d2 -- d )
