@@ -395,9 +395,12 @@ dnl
 dnl
 dnl
 define({PRINT_STRING_STACK},{ifdef({STRING_NUM_STACK},{
-__{}string{}STRING_NUM_STACK:
-__{}db STRING_STACK
-__{}size{}STRING_NUM_STACK EQU $ - string{}STRING_NUM_STACK{}dnl
+__{}ifelse(substr(STRING_STACK,0,3),{db },{
+__{}__{}string{}STRING_NUM_STACK:
+__{}__{}STRING_STACK
+__{}__{}size{}STRING_NUM_STACK EQU $ - string{}STRING_NUM_STACK},
+__{}{
+__{}__{}STRING_STACK}){}dnl
 __{}popdef({STRING_NUM_STACK}){}popdef({STRING_STACK}){}PRINT_STRING_STACK})})dnl
 dnl
 dnl
@@ -421,9 +424,14 @@ dnl
 dnl # allocate string
 define({__ALLOCATE_STRING},{dnl
 __{}define({PRINT_COUNT}, incr(PRINT_COUNT)){}dnl
-__{}SEARCH_FOR_MATCHING_STRING({{$*}}){}dnl
+__{}SEARCH_FOR_MATCHING_STRING({{db $*}}){}dnl
 __{}ifelse(TEMP_FOUND,PRINT_COUNT,{dnl
-__{}__{}pushdef({STRING_STACK},{{$*}}){}pushdef({STRING_NUM_STACK},PRINT_COUNT)}){}dnl
+__{}__{}pushdef({STRING_STACK},{{db $*}})},
+__{}{dnl
+__{}__{}pushdef({STRING_STACK},{dnl
+__{}__{}__{}string}PRINT_COUNT{ EQU string}TEMP_FOUND{
+__{}__{}__{}size}PRINT_COUNT{ EQU size}TEMP_FOUND)}){}dnl
+__{}pushdef({STRING_NUM_STACK},PRINT_COUNT){}dnl
 __{}TEMP_FOUND})dnl
 dnl
 dnl
@@ -448,8 +456,8 @@ __{}    pop  DE             ; 1:10      print{}dnl
 dnl
 dnl
 dnl
-dnl # ." string\z"
-dnl # .( string\z)
+dnl # ." string\x00"
+dnl # .( string\x00)
 dnl # ( -- )
 dnl # print null-terminated string
 define({PRINT_Z},{ifelse($#,0,{
@@ -465,8 +473,8 @@ __{}  .error {$0}(): An empty parameter was received!},
 dnl
 dnl
 dnl
-dnl # ." string"
-dnl # .( string)
+dnl # ." strin\xE7"
+dnl # .( strin\xE7)
 dnl # ( -- )
 dnl # print string ending with inverted most significant bit
 define({PRINT_I},{ifelse($#,0,{
@@ -510,7 +518,7 @@ __{}    ld   HL, size{}STRING_NUM    ; 3:10      string    Length of string{}STR
 dnl
 dnl
 dnl
-dnl # s" string\0" drop
+dnl # s" string\x00" drop
 dnl # ( -- addr )
 dnl # store null-terminated string
 define({STRING_Z},{ifelse($#,0,{
@@ -521,13 +529,13 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 __{}  .error {$0}(): An empty parameter was received!},
 {define({STRING_Z_NUM},__ALLOCATE_STRING(regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2, 0x00}})))
     push DE             ; 1:11      string_z   ( -- addr )
-    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})   
+    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
     ld   HL, format({%-11s},string{}STRING_Z_NUM); 3:10      string_z   Address of null-terminated string{}STRING_Z_NUM{}ifelse(eval(STRING_Z_NUM<PRINT_COUNT),1,{ == string{}PRINT_COUNT}){}dnl
 })})dnl
 dnl
 dnl
 dnl
-dnl # s" string\0" 2drop
+dnl # s" string\x00" 2drop
 dnl # ( -- )
 dnl # store null-terminated string
 define({STRING_Z_DROP},{ifelse($#,0,{
