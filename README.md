@@ -594,13 +594,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>      'a' emit       |<sub>    PUSH_EMIT('a')   |<sub>     PUTCHAR('a')    |<sub>          ( -- )          |<sub>                       |
 |<sub>     .( Hello)       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>                       |
 |<sub>     ." Hello"       |<sub>   PRINT({"Hello"})  |<sub>                     |<sub>          ( -- )          |<sub>                       |
-|<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
-|<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
-|<sub>     .( Hello)       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
-|<sub>     ." Hello"       |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
+|<sub>                     |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
+|<sub>                     |<sub>                     |<sub>  PRINT_Z({"Hello"}) |<sub>          ( -- )          |<sub> C-style string        |
+|<sub>                     |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
+|<sub>                     |<sub>                     |<sub>  PRINT_I({"Hello"}) |<sub>          ( -- )          |<sub> msb string end        |
 |<sub>     s" Hello"       |<sub>  STRING({"Hello"})  |<sub>                     |<sub>          ( -- addr n )   |<sub>                       |
-|<sub>     s" Hello"       |<sub>                     |<sub> STRING_Z({"Hello"}) |<sub>          ( -- addr )     |<sub> C-style string        |
-|<sub>     s" Hello"       |<sub>                     |<sub> STRING_I({"Hello"}) |<sub>          ( -- addr )     |<sub> msb string end        |
+|<sub> s" Hello\x00" drop  |<sub>                     |<sub> STRING_Z({"Hello"}) |<sub>          ( -- addr )     |<sub> C-style string        |
+|<sub>  s" Hell\xEF" drop  |<sub>                     |<sub> STRING_I({"Hello"}) |<sub>          ( -- addr )     |<sub> msb string end        |
 |<sub>        type         |<sub>         TYPE        |<sub>                     |<sub>   ( addr n -- )          |<sub>                       |
 |<sub>                     |<sub>                     |<sub>        TYPE_Z       |<sub>     ( addr -- )          |<sub> C-style string        |
 |<sub>                     |<sub>                     |<sub>        TYPE_I       |<sub>     ( addr -- )          |<sub> msb string end        |
