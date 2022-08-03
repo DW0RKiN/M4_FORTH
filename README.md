@@ -606,6 +606,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>        type         |<sub>         TYPE        |<sub>                        |<sub>   ( addr n -- )          |<sub>                       |
 |<sub>                     |<sub>                     |<sub>          TYPE_Z        |<sub>     ( addr -- )          |<sub> C-style string        |
 |<sub>                     |<sub>                     |<sub>          TYPE_I        |<sub>     ( addr -- )          |<sub> msb string end        |
+|<sub>                     |<sub>                     |<sub>   PUSH_TYPE_Z(`addr`)  |<sub>          ( -- )          |<sub> C-style string        |
+|<sub>                     |<sub>                     |<sub>   PUSH_TYPE_I(`addr`)  |<sub>          ( -- )          |<sub> msb string end        |
 |<sub>     2dup type       |<sub>                     |<sub>        _2DUP_TYPE      |<sub>   ( addr n -- addr n )   |<sub>                       |
 |<sub>                     |<sub>                     |<sub>        DUP_TYPE_Z      |<sub>     ( addr -- addr )     |<sub> C-style string        |
 |<sub>                     |<sub>                     |<sub>        DUP_TYPE_I      |<sub>     ( addr -- addr )     |<sub> msb string end        |
