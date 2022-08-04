@@ -1,0 +1,252 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.8.0 #10562 (Linux)
+                              4 ;--------------------------------------------------------
+                              5 	.module Pangram
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _PRINT_INT
+                             13 	.globl _pangram
+                             14 ;--------------------------------------------------------
+                             15 ; special function registers
+                             16 ;--------------------------------------------------------
+                             17 ;--------------------------------------------------------
+                             18 ; ram data
+                             19 ;--------------------------------------------------------
+                             20 	.area _DATA
+                             21 ;--------------------------------------------------------
+                             22 ; ram data
+                             23 ;--------------------------------------------------------
+                             24 	.area _INITIALIZED
+                             25 ;--------------------------------------------------------
+                             26 ; absolute external ram data
+                             27 ;--------------------------------------------------------
+                             28 	.area _DABS (ABS)
+                             29 ;--------------------------------------------------------
+                             30 ; global & static initialisations
+                             31 ;--------------------------------------------------------
+                             32 	.area _HOME
+                             33 	.area _GSINIT
+                             34 	.area _GSFINAL
+                             35 	.area _GSINIT
+                             36 ;--------------------------------------------------------
+                             37 ; Home
+                             38 ;--------------------------------------------------------
+                             39 	.area _HOME
+                             40 	.area _HOME
+                             41 ;--------------------------------------------------------
+                             42 ; code
+                             43 ;--------------------------------------------------------
+                             44 	.area _CODE
+                             45 ;Pangram.c:3: int pangram(const char * str)
+                             46 ;	---------------------------------
+                             47 ; Function pangram
+                             48 ; ---------------------------------
+   0000                      49 _pangram::
+   0000 DD E5         [15]   50 	push	ix
+   0002 DD 21 00 00   [14]   51 	ld	ix,#0
+   0006 DD 39         [15]   52 	add	ix,sp
+   0008 21 F4 FF      [10]   53 	ld	hl, #-12
+   000B 39            [11]   54 	add	hl, sp
+   000C F9            [ 6]   55 	ld	sp, hl
+                             56 ;Pangram.c:5: str--;
+   000D DD 6E 04      [19]   57 	ld	l, 4 (ix)
+   0010 DD 66 05      [19]   58 	ld	h, 5 (ix)
+   0013 2B            [ 6]   59 	dec	hl
+   0014 DD 75 04      [19]   60 	ld	4 (ix), l
+   0017 DD 74 05      [19]   61 	ld	5 (ix), h
+                             62 ;Pangram.c:7: unsigned long int alphabet = 0;
+   001A AF            [ 4]   63 	xor	a, a
+   001B DD 77 FC      [19]   64 	ld	-4 (ix), a
+   001E DD 77 FD      [19]   65 	ld	-3 (ix), a
+   0021 DD 77 FE      [19]   66 	ld	-2 (ix), a
+   0024 DD 77 FF      [19]   67 	ld	-1 (ix), a
+                             68 ;Pangram.c:9: while (c = *++str) {
+   0027 DD 7E 04      [19]   69 	ld	a, 4 (ix)
+   002A DD 77 F9      [19]   70 	ld	-7 (ix), a
+   002D DD 7E 05      [19]   71 	ld	a, 5 (ix)
+   0030 DD 77 FA      [19]   72 	ld	-6 (ix), a
+   0033                      73 00103$:
+   0033 DD 34 F9      [23]   74 	inc	-7 (ix)
+   0036 20 03         [12]   75 	jr	NZ,00124$
+   0038 DD 34 FA      [23]   76 	inc	-6 (ix)
+   003B                      77 00124$:
+   003B DD 6E F9      [19]   78 	ld	l, -7 (ix)
+   003E DD 66 FA      [19]   79 	ld	h, -6 (ix)
+   0041 7E            [ 7]   80 	ld	a, (hl)
+   0042 DD 77 FB      [19]   81 	ld	-5 (ix), a
+   0045 DD 77 F8      [19]   82 	ld	-8 (ix), a
+   0048 DD 7E FB      [19]   83 	ld	a, -5 (ix)
+   004B B7            [ 4]   84 	or	a, a
+   004C 28 5D         [12]   85 	jr	Z,00105$
+                             86 ;Pangram.c:10: c |= 32; // uppercase
+   004E DD 4E F8      [19]   87 	ld	c, -8 (ix)
+   0051 CB E9         [ 8]   88 	set	5, c
+   0053 79            [ 4]   89 	ld	a, c
+                             90 ;Pangram.c:11: c -= 'a';
+   0054 C6 9F         [ 7]   91 	add	a, #0x9f
+                             92 ;Pangram.c:12: if ( c<26 ) alphabet |= (long unsigned int) 1 << c;      
+   0056 DD 77 F8      [19]   93 	ld	-8 (ix), a
+   0059 D6 1A         [ 7]   94 	sub	a, #0x1a
+   005B 30 D6         [12]   95 	jr	NC,00103$
+   005D DD 46 F8      [19]   96 	ld	b, -8 (ix)
+   0060 DD 36 F4 01   [19]   97 	ld	-12 (ix), #0x01
+   0064 DD 36 F5 00   [19]   98 	ld	-11 (ix), #0x00
+   0068 DD 36 F6 00   [19]   99 	ld	-10 (ix), #0x00
+   006C DD 36 F7 00   [19]  100 	ld	-9 (ix), #0x00
+   0070 04            [ 4]  101 	inc	b
+   0071 18 10         [12]  102 	jr	00126$
+   0073                     103 00125$:
+   0073 DD CB F4 26   [23]  104 	sla	-12 (ix)
+   0077 DD CB F5 16   [23]  105 	rl	-11 (ix)
+   007B DD CB F6 16   [23]  106 	rl	-10 (ix)
+   007F DD CB F7 16   [23]  107 	rl	-9 (ix)
+   0083                     108 00126$:
+   0083 10 EE         [13]  109 	djnz	00125$
+   0085 DD 7E FC      [19]  110 	ld	a, -4 (ix)
+   0088 DD B6 F4      [19]  111 	or	a, -12 (ix)
+   008B DD 77 FC      [19]  112 	ld	-4 (ix), a
+   008E DD 7E FD      [19]  113 	ld	a, -3 (ix)
+   0091 DD B6 F5      [19]  114 	or	a, -11 (ix)
+   0094 DD 77 FD      [19]  115 	ld	-3 (ix), a
+   0097 DD 7E FE      [19]  116 	ld	a, -2 (ix)
+   009A DD B6 F6      [19]  117 	or	a, -10 (ix)
+   009D DD 77 FE      [19]  118 	ld	-2 (ix), a
+   00A0 DD 7E FF      [19]  119 	ld	a, -1 (ix)
+   00A3 DD B6 F7      [19]  120 	or	a, -9 (ix)
+   00A6 DD 77 FF      [19]  121 	ld	-1 (ix), a
+   00A9 18 88         [12]  122 	jr	00103$
+   00AB                     123 00105$:
+                            124 ;Pangram.c:15: return alphabet==0x3FFFFFF;
+   00AB DD 7E FC      [19]  125 	ld	a, -4 (ix)
+   00AE 3C            [ 4]  126 	inc	a
+   00AF 20 16         [12]  127 	jr	NZ,00127$
+   00B1 DD 7E FD      [19]  128 	ld	a, -3 (ix)
+   00B4 3C            [ 4]  129 	inc	a
+   00B5 20 10         [12]  130 	jr	NZ,00127$
+   00B7 DD 7E FE      [19]  131 	ld	a, -2 (ix)
+   00BA 3C            [ 4]  132 	inc	a
+   00BB 20 0A         [12]  133 	jr	NZ,00127$
+   00BD DD 7E FF      [19]  134 	ld	a, -1 (ix)
+   00C0 D6 03         [ 7]  135 	sub	a, #0x03
+   00C2 20 03         [12]  136 	jr	NZ, 00127$
+   00C4 3E 01         [ 7]  137 	ld	a, #0x01
+   00C6 20                  138 	.db	#0x20
+   00C7                     139 00127$:
+   00C7 AF            [ 4]  140 	xor	a, a
+   00C8                     141 00128$:
+   00C8 6F            [ 4]  142 	ld	l, a
+   00C9 26 00         [ 7]  143 	ld	h, #0x00
+                            144 ;Pangram.c:16: }
+   00CB DD F9         [10]  145 	ld	sp, ix
+   00CD DD E1         [14]  146 	pop	ix
+   00CF C9            [10]  147 	ret
+                            148 ;Pangram.c:18: void PRINT_INT(int num) __naked
+                            149 ;	---------------------------------
+                            150 ; Function PRINT_INT
+                            151 ; ---------------------------------
+   00D0                     152 _PRINT_INT::
+                            153 ;Pangram.c:71: __endasm;
+   00D0 F1            [10]  154 	pop	af ; 1:10 ret
+   00D1 E1            [10]  155 	pop	hl ; 1:10 num
+   00D2 E5            [11]  156 	push	hl ; 1:11 num
+   00D3 F5            [11]  157 	push	af ; 1:10 ret
+                            158 ;==============================================================================
+                            159 ;	Input: HL
+                            160 ;	Output: Print signed decimal number in HL
+                            161 ;	Pollutes: AF, BC, HL <- DE, DE <- (SP)
+   00D4 7C            [ 4]  162 	ld	a, h ; 1:4 prt_s16
+   00D5 87            [ 4]  163 	add	a, a ; 1:4 prt_s16
+   00D6 30 09         [12]  164 	jr	nc, 00001$ ; 2:7/12 prt_s16
+   00D8 3E 2D         [ 7]  165 	ld	a, #0x2D ; 2:7 prt_s16 putchar Pollutes: AF, DE', BC'
+   00DA D7            [11]  166 	rst	0x10 ; 1:11 prt_s16 putchar('-') with ZX 48K ROM
+   00DB AF            [ 4]  167 	xor	a, a ; 1:4 prt_s16 neg
+   00DC 95            [ 4]  168 	sub	a, l ; 1:4 prt_s16 neg
+   00DD 6F            [ 4]  169 	ld	l, a ; 1:4 prt_s16 neg
+   00DE 9C            [ 4]  170 	sbc	a, h ; 1:4 prt_s16 neg
+   00DF 95            [ 4]  171 	sub	a, l ; 1:4 prt_s16 neg
+   00E0 67            [ 4]  172 	ld	h, a ; 1:4 prt_s16 neg
+                            173 ;------------------------------------------------------------------------------
+                            174 ;	Input: HL
+                            175 ;	Output: Print unsigned decimal number in HL
+                            176 ;	Pollutes: AF, BC, HL <- DE, DE <- (SP)
+   00E1                     177 	00001$:
+   00E1 AF            [ 4]  178 	xor	a, a ; 1:4 prt_u16 HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
+   00E2 01 F0 D8      [10]  179 	ld	bc, #0xD8F0 ; 3:10 prt_u16 -10000
+   00E5 CDrFAr00      [17]  180 	call	00002$ ; 3:17 prt_u16
+   00E8 01 18 FC      [10]  181 	ld	bc, #0xFC18 ; 3:10 prt_u16 -1000
+   00EB CDrFAr00      [17]  182 	call	00002$ ; 3:17 prt_u16
+   00EE 01 9C FF      [10]  183 	ld	bc, #0xFF9C ; 3:10 prt_u16 -100
+   00F1 CDrFAr00      [17]  184 	call	00002$ ; 3:17 prt_u16
+   00F4 0E F6         [ 7]  185 	ld	c, #0xF6 ; 2:7 prt_u16 -10
+   00F6 CDrFAr00      [17]  186 	call	00002$ ; 3:17 prt_u16
+   00F9 48            [ 4]  187 	ld	c, b ; 1:4 prt_u16
+                            188 ;------------------------------------------------------------------------------
+                            189 ;	Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
+                            190 ;	Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
+                            191 ;	Pollutes: AF, HL
+   00FA                     192 	00002$:
+   00FA 3C            [ 4]  193 	inc	a ; 1:4 bin16_dec
+   00FB 09            [11]  194 	add	hl, bc ; 1:11 bin16_dec
+   00FC 38 FC         [12]  195 	jr	c, 00002$ ; 2:7/12 bin16_dec
+   00FE ED 42         [15]  196 	sbc	hl, bc ; 2:15 bin16_dec
+   0100 3D            [ 4]  197 	dec	a ; 1:4 bin16_dec
+   0101 C8            [11]  198 	ret	z ; 1:5/11 bin16_dec does not print leading zeros
+   0102                     199 	00003$:
+   0102 F6 30         [ 7]  200 	or	a, #0x30 ; 2:7 bin16_dec 1..9 --> '1'..'9', unchanged '0'..'9'
+   0104 D7            [11]  201 	rst	0x10 ; 1:11 bin16_dec putchar with ZX 48K ROM in, this will print char in A
+   0105 3E 30         [ 7]  202 	ld	a, #0x30 ; 2:7 bin16_dec reset A to '0'
+   0107 C9            [10]  203 	ret	; 1:10 bin16_dec
+                            204 ;Pangram.c:72: }
+                            205 ;Pangram.c:74: int main()
+                            206 ;	---------------------------------
+                            207 ; Function main
+                            208 ; ---------------------------------
+   0108                     209 _main::
+                            210 ;Pangram.c:76: char *str = "The five boxing wizards jump quickly.";
+   0108 01r2Cr01      [10]  211 	ld	bc, #___str_0+0
+                            212 ;Pangram.c:78: for (i = 10000; i > 0; i--) 
+   010B 11 10 27      [10]  213 	ld	de, #0x2710
+   010E                     214 00102$:
+                            215 ;Pangram.c:79: pangram(str);
+   010E C5            [11]  216 	push	bc
+   010F D5            [11]  217 	push	de
+   0110 C5            [11]  218 	push	bc
+   0111 CDr00r00      [17]  219 	call	_pangram
+   0114 F1            [10]  220 	pop	af
+   0115 D1            [10]  221 	pop	de
+   0116 C1            [10]  222 	pop	bc
+                            223 ;Pangram.c:78: for (i = 10000; i > 0; i--) 
+   0117 EB            [ 4]  224 	ex	de,hl
+   0118 2B            [ 6]  225 	dec	hl
+   0119 5D            [ 4]  226 	ld	e, l
+   011A 7C            [ 4]  227 	ld	a,h
+   011B 57            [ 4]  228 	ld	d,a
+   011C B5            [ 4]  229 	or	a, l
+   011D 20 EF         [12]  230 	jr	NZ,00102$
+                            231 ;Pangram.c:81: PRINT_INT(pangram(str));
+   011F C5            [11]  232 	push	bc
+   0120 CDr00r00      [17]  233 	call	_pangram
+   0123 E3            [19]  234 	ex	(sp),hl
+   0124 CDrD0r00      [17]  235 	call	_PRINT_INT
+   0127 F1            [10]  236 	pop	af
+                            237 ;Pangram.c:82: return 0;
+   0128 21 00 00      [10]  238 	ld	hl, #0x0000
+                            239 ;Pangram.c:83: }
+   012B C9            [10]  240 	ret
+   012C                     241 ___str_0:
+   012C 54 68 65 20 66 69   242 	.ascii "The five boxing wizards jump quickly."
+        76 65 20 62 6F 78
+        69 6E 67 20 77 69
+        7A 61 72 64 73 20
+        6A 75 6D 70 20 71
+        75 69 63 6B 6C 79
+        2E
+   0151 00                  243 	.db 0x00
+                            244 	.area _CODE
+                            245 	.area _INITIALIZER
+                            246 	.area _CABS (ABS)

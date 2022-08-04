@@ -1,0 +1,24 @@
+include(`../M4/FIRST.M4')dnl 
+ORG 0x8000
+INIT(60000)
+STRING_Z({"The five boxing wizards jump quickly."})
+define({_TYP_DOUBLE},{fast})
+PUSH_FOR(9999)
+   DUP
+   CALL(_pangram_)
+   DROP
+NEXT
+CALL(_pangram_) SPACE_DOT CR  ;# -1
+STOP
+COLON(_pangram_,( addr -- ? )) 
+  _1SUB
+  PUSHDOT(0) 
+  BEGIN
+    ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH
+    PUSH_OR(32) PUSH_SUB('a')
+    DUP_PUSH2_WITHIN_IF(0,26)
+      DBITSET
+dnl #  _2OVER_NIP_CFETCH EMIT SPACE_2DUP_HEX_UDDOT CR
+    ELSE DROP THEN
+  REPEAT
+  PUSHDOT_DEQ(0x3FFFFFF) NIP SEMICOLON

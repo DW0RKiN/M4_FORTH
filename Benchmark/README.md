@@ -306,3 +306,41 @@ Maybe I'm doing the measurements through POKE in BASIC and that has some small c
 |[PUSH3_FILL(0x4000,6912,255)                                                                                                                                                                                     ](./fillin_v15.asm)  |   42  | 0.07s  |
 |[push HL<br />ld   HL, 0xFFFF<br />ld    B, 216<br />di<br />ld  ($+7+16+3),SP<br />ld   SP, 0x5B00<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />djnz $-16<br />ld   SP, 0x0000<br />ei<br />pop  HL](./fillin_v16.asm)  |   58  | 0.01s  |
 
+### Pangram Benchmark
+
+    : pangram? ( addr len -- ? )
+      0 -rot bounds do
+        i c@ 32 or [char] a -
+        dup 0 26 within if
+          1 swap lshift or
+        else drop then
+      loop
+      1 26 lshift 1- = ;
+     
+    s" The five boxing wizards jump quickly." pangram? .   \ -1
+
+10000x + 1x with print output
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_rosettacode.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_rosettacode.asm
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset.asm
+
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset_inline.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset_inline.asm
+
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.c
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.asm
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.lst
+
+
+|       Name        |              System              |         Forth / C         |           Benchmark         | Time (sec/round) | Scale |
+| :---------------: | :------------------------------: | :-----------------------: | :-------------------------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH                  | Pangram do loop             | 52.04s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH                  | Pangram begin bitset repeat | 32.26s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH _TYP_DOUBLE:fast | Pangram begin bitset repeat | 27.58s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | sdcc 3.8.0 #10562 (Linux) | Pangram                     | 2m 51.61s
+
