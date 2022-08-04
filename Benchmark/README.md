@@ -386,7 +386,28 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.lst
 
 This is really scary if you look at what kind of code it is. That would be worth writing a whole article about.
 It's hard just figuring out how to compile it and I had to help with the asm function to print the number anyway. 
+Because printf("%i\n") reboots the ZX Spectrum.
+
 It took me a while to figure out how to write it without mistakes. Because it requires a different notation than pasmo.
+It requires a destination registry, where pasmo only wants the source registry, because there is no other option to confuse it with. 
+Maybe it's a consequence that it's not only targeted at the Z80, but also at other processors or more modern variants that can also do other instructions.
+
+    xor   a, a          ; 1:4       prt_s16   neg
+    sub   a, l          ; 1:4       prt_s16   neg
+
+It didn't take decimal numbers or 'a' characters, just this format and it reported a completely different error.
+
+    ld   bc, #0xD8F0    ; 3:10      prt_u16   -10000
+    or    a, #0x30      ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
+
+But he doesn't mind this.
+
+    rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
+    
+Labels must only have this numeric format.
+
+    jr   nc, 00001$     ; 2:7/12    prt_s16
+
 
 
 |       Name        |              System              |         Forth / C         |           Benchmark         | Time (sec/round) | Scale |
