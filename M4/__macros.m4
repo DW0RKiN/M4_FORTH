@@ -180,7 +180,20 @@ define({__XOR_REG8_8BIT},{dnl
 dnl # Input
 dnl #   $1 name reg
 dnl #   $2 8bit value
-__{}ifelse(__HEX_L($2),{0x00},{},
+ifelse(__IS_NUM($2),{0},{
+__{}   if (($2) = 0x00)
+__{}   else
+__{}    if (($2) = 0xFF)
+__{}      ld    A, $1          ; 1:4       _TMP_INFO
+__{}      cpl                 ; 1:4       _TMP_INFO
+__{}      ld    $1, A          ; 1:4       _TMP_INFO   ($1 xor 0xFF) = invert $1
+__{}    else
+__{}      ld    A,format({%-12s},$2); 2:7       _TMP_INFO
+__{}      xor   $1             ; 1:4       _TMP_INFO
+__{}      ld    $1, A          ; 1:4       _TMP_INFO
+__{}    endif
+__{}   endif},
+__{}{ifelse(__HEX_L($2),{0x00},{},
 __{}__HEX_L($2),{0xFF},{
 __{}__{}    ld    A, $1          ; 1:4       _TMP_INFO
 __{}__{}    cpl                 ; 1:4       _TMP_INFO
@@ -188,7 +201,7 @@ __{}__{}    ld    $1, A          ; 1:4       _TMP_INFO   ($1 xor 0xFF) = invert 
 __{}{
 __{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
 __{}__{}    xor   $1             ; 1:4       _TMP_INFO
-__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})}){}dnl
+__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})})}){}dnl
 dnl
 dnl
 dnl
@@ -196,81 +209,86 @@ define({__XOR_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
+ifelse(__IS_NUM($2),{0},{
+__{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot optimize the code.
+__{}__XOR_REG8_8BIT(substr($1,1,1),0xFF & ($2)){}dnl
+__{}__XOR_REG8_8BIT(substr($1,0,1),+($2) >> 8)},
+{dnl
 __{}__XOR_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
 __{}__XOR_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
-}){}dnl
+})}){}dnl
 dnl
 dnl
 define({__OR_REG8_8BIT},{dnl
 dnl # Input
 dnl #   $1 name reg
 dnl #   $2 8bit value
-__{}ifelse(__IS_NUM($2),{0},{
-__{}__{}   if (($2) = 0xFF)
-__{}__{}     ld    $1, 0xFF       ; 2:7       _TMP_INFO
-__{}__{}   else
-__{}__{}    if (($2) = 0x01)
-__{}__{}      set   0, $1          ; 2:8       _TMP_INFO
-__{}__{}    else
-__{}__{}     if (($2) = 0x02)
-__{}__{}       set   1, $1          ; 2:8       _TMP_INFO
-__{}__{}     else
-__{}__{}      if (($2) = 0x04)
-__{}__{}        set   2, $1          ; 2:8       _TMP_INFO
-__{}__{}      else
-__{}__{}       if (($2) = 0x08)
-__{}__{}         set   3, $1          ; 2:8       _TMP_INFO
-__{}__{}       else
-__{}__{}        if (($2) = 0x10)
-__{}__{}          set   4, $1          ; 2:8       _TMP_INFO
-__{}__{}        else
-__{}__{}         if (($2) = 0x20)
-__{}__{}           set   5, $1          ; 2:8       _TMP_INFO
-__{}__{}         else
-__{}__{}          if (($2) = 0x40)
-__{}__{}            set   6, $1          ; 2:8       _TMP_INFO
-__{}__{}          else
-__{}__{}           if (($2) = 0x80)
-__{}__{}             set   7, $1          ; 2:8       _TMP_INFO
-__{}__{}           else
-__{}__{}            if ((($2) > 0x00) && (($2) <= 0xFF))
-__{}__{}              ld    A,format({%-12s},$2); 2:7       _TMP_INFO
-__{}__{}              or    $1             ; 1:4       _TMP_INFO
-__{}__{}              ld    $1, A          ; 1:4       _TMP_INFO
-__{}__{}            endif
-__{}__{}           endif
-__{}__{}          endif
-__{}__{}         endif
-__{}__{}        endif
-__{}__{}       endif
-__{}__{}      endif
-__{}__{}     endif
-__{}__{}    endif
-__{}__{}   endif},
+ifelse(__IS_NUM($2),{0},{
+__{}   if (($2) = 0xFF)
+__{}     ld    $1, 0xFF       ; 2:7       _TMP_INFO
+__{}   else
+__{}    if (($2) = 0x01)
+__{}      set   0, $1          ; 2:8       _TMP_INFO
+__{}    else
+__{}     if (($2) = 0x02)
+__{}       set   1, $1          ; 2:8       _TMP_INFO
+__{}     else
+__{}      if (($2) = 0x04)
+__{}        set   2, $1          ; 2:8       _TMP_INFO
+__{}      else
+__{}       if (($2) = 0x08)
+__{}         set   3, $1          ; 2:8       _TMP_INFO
+__{}       else
+__{}        if (($2) = 0x10)
+__{}          set   4, $1          ; 2:8       _TMP_INFO
+__{}        else
+__{}         if (($2) = 0x20)
+__{}           set   5, $1          ; 2:8       _TMP_INFO
+__{}         else
+__{}          if (($2) = 0x40)
+__{}            set   6, $1          ; 2:8       _TMP_INFO
+__{}          else
+__{}           if (($2) = 0x80)
+__{}             set   7, $1          ; 2:8       _TMP_INFO
+__{}           else
+__{}            if ((($2) > 0x00) && (($2) <= 0xFF))
+__{}              ld    A,format({%-12s},$2); 2:7       _TMP_INFO
+__{}              or    $1             ; 1:4       _TMP_INFO
+__{}              ld    $1, A          ; 1:4       _TMP_INFO
+__{}            endif
+__{}           endif
+__{}          endif
+__{}         endif
+__{}        endif
+__{}       endif
+__{}      endif
+__{}     endif
+__{}    endif
+__{}   endif},
 {dnl
-__{}__{}ifelse(__HEX_L($2),{0x00},{},
-__{}__{}__HEX_L($2),{0xFF},{
-__{}__{}__{}    ld    $1, 0xFF       ; 2:7       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x01},{
-__{}__{}__{}    set   0, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x02},{
-__{}__{}__{}    set   1, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x04},{
-__{}__{}__{}    set   2, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x08},{
-__{}__{}__{}    set   3, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x10},{
-__{}__{}__{}    set   4, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x20},{
-__{}__{}__{}    set   5, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x40},{
-__{}__{}__{}    set   6, $1          ; 2:8       _TMP_INFO},
-__{}__{}__HEX_L($2),{0x80},{
-__{}__{}__{}    set   7, $1          ; 2:8       _TMP_INFO},
-__{}__{}{
-__{}__{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
-__{}__{}__{}    or    $1             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})})}){}dnl
+__{}ifelse(__HEX_L($2),{0x00},{},
+__{}__HEX_L($2),{0xFF},{
+__{}__{}    ld    $1, 0xFF       ; 2:7       _TMP_INFO},
+__{}__HEX_L($2),{0x01},{
+__{}__{}    set   0, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x02},{
+__{}__{}    set   1, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x04},{
+__{}__{}    set   2, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x08},{
+__{}__{}    set   3, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x10},{
+__{}__{}    set   4, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x20},{
+__{}__{}    set   5, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x40},{
+__{}__{}    set   6, $1          ; 2:8       _TMP_INFO},
+__{}__HEX_L($2),{0x80},{
+__{}__{}    set   7, $1          ; 2:8       _TMP_INFO},
+__{}{
+__{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
+__{}__{}    or    $1             ; 1:4       _TMP_INFO
+__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})})}){}dnl
 dnl
 dnl
 dnl
@@ -278,20 +296,21 @@ define({__OR_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
-__{}ifelse(__IS_NUM($2),{0},{
-__{}__{}  if (($2) = 0xFFFF)
-__{}__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO
-__{}__{}  else{}dnl
-__{}__{}__OR_REG8_8BIT(substr($1,1,1),0xFF & ($2)){}dnl
-__{}__{}__OR_REG8_8BIT(substr($1,0,1),+($2) >> 8)
-__{}__{}  endif},
+ifelse(__IS_NUM($2),{0},{
+__{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot optimize the code.
+__{}  if (($2) = 0xFFFF)
+__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO
+__{}  else{}dnl
+__{}__OR_REG8_8BIT(substr($1,1,1),0xFF & ($2)){}dnl
+__{}__OR_REG8_8BIT(substr($1,0,1),+($2) >> 8)
+__{}  endif},
 {dnl
-__{}__{}ifelse(__HEX_HL($2),0xFFFF,{
-__{}__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO},
-__{}__{}{dnl
-__{}__{}__{}__OR_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
-__{}__{}__{}__OR_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
-__{}})})}){}dnl
+__{}ifelse(__HEX_HL($2),0xFFFF,{
+__{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO},
+__{}{dnl
+__{}__{}__OR_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
+__{}__{}__OR_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
+})})}){}dnl
 dnl
 dnl
 dnl
@@ -299,29 +318,72 @@ define({__AND_REG8_8BIT},{dnl
 dnl # Input
 dnl #   $1 name reg
 dnl #   $2 8bit value
+ifelse(__IS_NUM($2),{0},{
+__{}   if (($2) = 0x00)
+__{}     ld    $1, 0x00       ; 2:7       _TMP_INFO
+__{}   else
+__{}    if (($2) = 0xFE)
+__{}      res   0, $1          ; 2:8       _TMP_INFO
+__{}    else
+__{}     if (($2) = 0xFD)
+__{}       res   1, $1          ; 2:8       _TMP_INFO
+__{}     else
+__{}      if (($2) = 0xFB)
+__{}        res   2, $1          ; 2:8       _TMP_INFO
+__{}      else
+__{}       if (($2) = 0xF7)
+__{}         res   3, $1          ; 2:8       _TMP_INFO
+__{}       else
+__{}        if (($2) = 0xEF)
+__{}          res   4, $1          ; 2:8       _TMP_INFO
+__{}        else
+__{}         if (($2) = 0xDF)
+__{}           res   5, $1          ; 2:8       _TMP_INFO
+__{}         else
+__{}          if (($2) = 0xBF)
+__{}            res   6, $1          ; 2:8       _TMP_INFO
+__{}          else
+__{}           if (($2) = 0x7F)
+__{}             res   7, $1          ; 2:8       _TMP_INFO
+__{}           else
+__{}            if ((($2) > 0x00) && (($2) <= 0xFF))
+__{}              ld    A,format({%-12s},$2); 2:7       _TMP_INFO
+__{}              and   $1             ; 1:4       _TMP_INFO
+__{}              ld    $1, A          ; 1:4       _TMP_INFO
+__{}            endif
+__{}           endif
+__{}          endif
+__{}         endif
+__{}        endif
+__{}       endif
+__{}      endif
+__{}     endif
+__{}    endif
+__{}   endif},
+{dnl
 __{}ifelse(__HEX_L($2),{0xFF},{},
 __{}__HEX_L($2),{0x00},{
 __{}__{}    ld    $1, 0x00       ; 2:7       _TMP_INFO},
-__{}__HEX_L($2),{0x01},{
+__{}__HEX_L($2),{0xFE},{
 __{}__{}    res   0, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x02},{
+__{}__HEX_L($2),{0xFD},{
 __{}__{}    res   1, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x04},{
+__{}__HEX_L($2),{0xFB},{
 __{}__{}    res   2, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x08},{
+__{}__HEX_L($2),{0xF7},{
 __{}__{}    res   3, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x10},{
+__{}__HEX_L($2),{0xEF},{
 __{}__{}    res   4, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x20},{
+__{}__HEX_L($2),{0xDF},{
 __{}__{}    res   5, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x40},{
+__{}__HEX_L($2),{0xBF},{
 __{}__{}    res   6, $1          ; 2:8       _TMP_INFO},
-__{}__HEX_L($2),{0x80},{
+__{}__HEX_L($2),{0x7F},{
 __{}__{}    res   7, $1          ; 2:8       _TMP_INFO},
 __{}{
 __{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
 __{}__{}    and   $1             ; 1:4       _TMP_INFO
-__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})}){}dnl
+__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO})})}){}dnl
 dnl
 dnl
 dnl
@@ -329,12 +391,21 @@ define({__AND_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
+ifelse(__IS_NUM($2),{0},{
+__{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot optimize the code.
+__{}  if (($2) = 0x0000)
+__{}    ld   $1, 0x0000     ; 3:10      _TMP_INFO
+__{}  else{}dnl
+__{}__AND_REG8_8BIT(substr($1,1,1),0xFF & ($2)){}dnl
+__{}__AND_REG8_8BIT(substr($1,0,1),+($2) >> 8)
+__{}  endif},
+{dnl
 __{}ifelse(__HEX_HL($2),{0x0000},{
 __{}    ld   $1, 0x0000     ; 3:10      _TMP_INFO},
 __{}{dnl
 __{}__{}__AND_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
 __{}__{}__AND_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
-})}){}dnl
+})})}){}dnl
 dnl
 dnl
 dnl

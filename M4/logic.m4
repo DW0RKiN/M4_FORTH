@@ -27,15 +27,6 @@ __{}    ld    H, A          ; 1:4       $1 and
 __{}    ld    A, format({%-11s},$1); 3:13      $1 and
 __{}    and   L             ; 1:4       $1 and
 __{}    ld    L, A          ; 1:4       $1 and},
-__IS_NUM($1),{0},{
-__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}                        ;[8:30]     $1 and   ( x1 -- x )  x = x1 & $1
-__{}    ld    A, high format({%-6s},$1); 2:7       $1 and
-__{}    and   H             ; 1:4       $1 and
-__{}    ld    H, A          ; 1:4       $1 and
-__{}    ld    A, low format({%-7s},$1); 2:7       $1 and
-__{}    and   L             ; 1:4       $1 and
-__{}    ld    L, A          ; 1:4       $1 and},
 {dnl
 __{}define({_TMP_INFO},{$1 and}){}dnl
 __{}__AND_REG16_16BIT({HL},$1){}dnl
@@ -68,10 +59,6 @@ __{}    ld    H, A          ; 1:4       $1 or
 __{}    ld    A, format({%-11s},$1); 3:13      $1 or
 __{}    or    L             ; 1:4       $1 or
 __{}    ld    L, A          ; 1:4       $1 or},
-__IS_NUM($1),{0},{
-__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}                        ;[?:?]      $1 or   ( x1 -- x )  x = x1 | $1
-__{}    __OR_REG16_16BIT({HL},$1)},
 {dnl
 __{}define({_TMP_INFO},{$1 or}){}dnl
 __{}__OR_REG16_16BIT({HL},$1){}dnl
@@ -173,15 +160,6 @@ __{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 xor
 __{}    xor   H             ; 1:4       $1 xor
 __{}    ld    H, A          ; 1:4       $1 xor
 __{}    ld    A, format({%-11s},$1); 3:13      $1 xor
-__{}    xor   L             ; 1:4       $1 xor
-__{}    ld    L, A          ; 1:4       $1 xor},
-__IS_NUM($1),{0},{
-__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}                        ;[8:30]     $1 xor   ( x1 -- x )  x = x1 ^ $1
-__{}    ld    A, high format({%-6s},$1); 2:7       $1 xor
-__{}    xor   H             ; 1:4       $1 xor
-__{}    ld    H, A          ; 1:4       $1 xor
-__{}    ld    A, low format({%-7s},$1); 2:7       $1 xor
 __{}    xor   L             ; 1:4       $1 xor
 __{}    ld    L, A          ; 1:4       $1 xor},
 {dnl
