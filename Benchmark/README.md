@@ -321,20 +321,72 @@ Maybe I'm doing the measurements through POKE in BASIC and that has some small c
 
 10000x + 1x with print output
 
+#### Forth from Rosettacode
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_rosettacode.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_rosettacode.asm
+
+But this code from rosettacode has one trick. The cell is assumed to be 32 bits.
+When rewriting into double cells, we get into a non-standard area. There is no word for double OR - DOR. There is no word for a double logical left shift - DLSHIFT.
+
+    COLON(_pangram_,( addr len -- ? )) 
+      PUSHDOT_2SWAP(0) OVER_ADD SWAP DO
+        I CFETCH PUSH_OR(32) PUSH_SUB('a')
+        DUP_PUSH2_WITHIN_IF(0,26)
+          PUSHDOT(1) ROT_DLSHIFT DOR
+        ELSE DROP THEN
+      LOOP
+      PUSHDOT_DEQ(0x3FFFFFF) SEMICOLON
+
+#### Double BITSET version
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset.asm
 
+Since `1. ROT DLSHIFT DOR` is actually just a bit setting, I wrote an optimized `DSETBIT` word for it.
 
+And replaced the DO LOOP loop with the more efficient `BEGIN WHILE REPEAT`. 
+
+That crazy combination of words just says that it should increase the pointer by one and load the character, if it is zero then jump out of the loop, otherwise save a copy of the character in TOS.
+
+`ROT...NROT` temporarily moves NNOS (third cell) to TOS. Similar to repeated `SWAP`, but between 16-bit and 32-bit.
+_2OVER_NIP creates a copy of NNOS (third cell) to TOS. Similar to `OVER`, but between 16-bit and 32-bit.
+It seems that there are no standard words for this.
+
+The less the data stack moves up and down between words, the faster and more efficient the program is. 
+Most compound words use this. It's easy to check this in the console using the check_word.sh script.
+
+    COLON(_pangram_,( addr -- ? )) 
+      _1SUB
+      PUSHDOT(0) 
+      BEGIN
+        ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH
+        PUSH_OR(32) PUSH_SUB('a')
+        DUP_PUSH2_WITHIN_IF(0,26)
+          DBITSET
+    dnl #  _2OVER_NIP_CFETCH EMIT SPACE_2DUP_HEX_UDDOT CR
+        ELSE DROP THEN
+      REPEAT
+      PUSHDOT_DEQ(0x3FFFFFF) NIP SEMICOLON
+
+#### Double BITSET inline version
+      
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset_inline.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset_inline.asm
 
+I only defined at the beginning define({_TYP_DOUBLE},{fast})
+
+In this case, it changed the DBITSET function to inline, so it shortened it because it was only called from one place.
+
+#### C version
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.c
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.lst
+
+This is really scary if you look at what kind of code it is. That would be worth writing a whole article about.
+It's hard just figuring out how to compile it and I had to help with the asm function to print the number anyway. 
+It took me a while to figure out how to write it without mistakes. Because it requires a different notation than pasmo.
 
 
 |       Name        |              System              |         Forth / C         |           Benchmark         | Time (sec/round) | Scale |

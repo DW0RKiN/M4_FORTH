@@ -11,6 +11,27 @@ ORG 0x8000
     ex   DE, HL         ; 1:4       string_z   "The five boxing wizards jump quickly."
     ld   HL, string101  ; 3:10      string_z   Address of null-terminated string101
 
+    ld   BC, 9999       ; 3:10      9999 for 101
+for101:                 ;           9999 for 101
+    ld  (idx101),BC     ; 4:20      9999 for 101 save index
+   
+    push DE             ; 1:11      dup
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup ( a -- a a )
+   
+    call _pangram_      ; 3:17      call ( -- )
+   
+    ex   DE, HL         ; 1:4       drop
+    pop  DE             ; 1:10      drop ( a -- )
+
+idx101 EQU $+1          ;           next 101
+    ld   BC, 0x0000     ; 3:10      next 101 idx always points to a 16-bit index
+    ld    A, B          ; 1:4       next 101
+    or    C             ; 1:4       next 101
+    dec  BC             ; 1:6       next 101 index--, zero flag unaffected
+    jp   nz, for101     ; 3:10      next 101
+next101:                ;           next 101
+
     call _pangram_      ; 3:17      call ( -- ) 
     call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
@@ -62,43 +83,7 @@ begin101:               ;           begin 101
     sbc   A, high 26    ; 2:7       dup 0 26 within if   carry: HL - (26 - (0))
     jp   nc, else101    ; 3:10      dup 0 26 within if
       
-    push DE             ; 1:11      pushdot(1)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(1)
-    ld   HL, 0x0001     ; 3:10      pushdot(1)
-    ld    E, H          ; 1:4       pushdot(1)   E = H = 0x00
-    ld    D, E          ; 1:4       pushdot(1)   D = E = 0x00 
-    pop  BC             ; 1:10      rot D<<   ( d1 -- d )  d = d1 << BC
-    call BC_LSHIFT32    ; 3:17      rot D<< 
-    pop  BC             ; 1:10      dor   ( d2 d1 -- d )  d = d2 | d1
-    ld    A, C          ; 1:4       dor
-    or    L             ; 1:4       dor
-    ld    L, A          ; 1:4       dor
-    ld    A, B          ; 1:4       dor
-    or    H             ; 1:4       dor
-    ld    H, A          ; 1:4       dor
-    pop  BC             ; 1:10      dor
-    ld    A, C          ; 1:4       dor
-    or    E             ; 1:4       dor
-    ld    E, A          ; 1:4       dor
-    ld    A, B          ; 1:4       dor
-    or    D             ; 1:4       dor
-    ld    D, A          ; 1:4       dor
-      
-                        ;[8:54]     2over nip C@ ( addr d -- addr d char )
-    pop  BC             ; 1:10      2over nip C@
-    push BC             ; 1:11      2over nip C@
-    push DE             ; 1:11      2over nip C@
-    ex   DE, HL         ; 1:4       2over nip C@
-    ld    A,(BC)        ; 1:7       2over nip C@
-    ld    L, A          ; 1:4       2over nip C@
-    ld    H, 0x00       ; 2:7       2over nip C@ 
-    ld    A, L          ; 1:4       emit    Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      emit    with 48K ROM in, this will print char in A
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- ) 
-    call PRT_SP_HEX_U32 ; 3:17      space 2dup hex ud.   ( ud -- ud ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+    call BITSET32       ; 3:17      dbitset   ( d1 u -- d )  d = d1 | 2**u   default version
     
     jp   endif101       ; 3:10      else
 else101: 
@@ -127,57 +112,6 @@ _pangram__end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
 
-;==============================================================================
-;    Input: 32-bit unsigned number in DEHL
-;   Output: Print space and Hex DEHL
-; Pollutes: A
-PRT_SP_HEX_U32:         ;           prt_sp_hex_u32
-    ld    A, ' '        ; 2:7       prt_sp_hex_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_hex_u32   putchar(reg A) with ZX 48K ROM
-    ; fall to prt_hex_u32
-;------------------------------------------------------------------------------
-;    Input: 32-bit unsigned number in DEHL
-;   Output: Print Hex DEHL
-; Pollutes: A
-PRT_HEX_U32:            ;           prt_hex_u32
-    ld    A, D          ; 1:4       prt_hex_u32
-    call PRT_HEX_A      ; 3:17      prt_hex_u32
-    ld    A, E          ; 1:4       prt_hex_u32
-    call PRT_HEX_A      ; 3:17      prt_hex_u32
-    ; fall to prt_hex_u16
-;------------------------------------------------------------------------------
-;   Input: 16-bit unsigned number in HL
-;   Output: Print Hex HL
-; Pollutes: A
-PRT_HEX_U16:            ;           prt_hex_u16
-    ld    A, H          ;  1:4      prt_hex_u16
-    call PRT_HEX_A      ;  3:17     prt_hex_u16
-    ld    A, L          ;  1:4      prt_hex_u16
-    ; fall to prt_hex_a
-;------------------------------------------------------------------------------
-;    Input: A
-;   Output: 00 .. FF
-; Pollutes: A
-PRT_HEX_A:              ;           prt_hex_a
-    push AF             ; 1:11      prt_hex_a
-    rra                 ; 1:4       prt_hex_a
-    rra                 ; 1:4       prt_hex_a
-    rra                 ; 1:4       prt_hex_a
-    rra                 ; 1:4       prt_hex_a
-    call PRT_HEX_NIBBLE ; 3:17      prt_hex_a
-    pop  AF             ; 1:10      prt_hex_a
-    ; fall to prt_hex_nibble
-;------------------------------------------------------------------------------
-;    Input: A = number, DE = adr
-;   Output: (A & $0F) => '0'..'9','A'..'F'
-; Pollutes: A
-PRT_HEX_NIBBLE:         ;           prt_hex_nibble
-    or      $F0         ; 2:7       prt_hex_nibble   reset H flag
-    daa                 ; 1:4       prt_hex_nibble   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
-    add   A, $A0        ; 2:7       prt_hex_nibble   $F0..$F9, $100..$105
-    adc   A, $40        ; 2:7       prt_hex_nibble   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst   0x10          ; 1:11      prt_hex_nibble   putchar(reg A) with ZX 48K ROM
-    ret                 ; 1:10
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL
@@ -238,38 +172,39 @@ BIN16_DEC_CHAR:         ;           bin16_dec
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
     ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
-;-------------------------------------------------------------------------------
-; ( d1 -- d )  d = d1<<BC
-; shifts d1 left BC places
-;  Input: BC=u, DEHL=d1, (SP)=ret
-; Output: DEHL <<=  BC
+;==============================================================================
+; ( d1 u -- d )  d = d1 | 2**u
+; set u bit
+;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
+; Output: DEHL = d1 | (1 << u)
 ; Pollutes: AF, BC, DE, HL
-BC_LSHIFT32:            ;[34:]      lshift32
-    ld    A, 0xE0       ; 2:7       lshift32
-    and   C             ; 1:4       lshift32
-    or    B             ; 1:4       lshift32
-    jr   nz, LSHIFT32_Z ; 2:7/12    lshift32   overflow
-    ld    A, C          ; 1:4       lshift32
-    and  0x07           ; 1:4       lshift32   A = u & 0x07
-    jr    z, $+10       ; 2:7/12    lshift32
-    ld    B, A          ; 1:4       lshift32
-    add  HL, HL         ; 1:11      lshift32
-    rl    E             ; 2:8       lshift32
-    rl    D             ; 2:8       lshift32   DEHL = DEHL << 1
-    djnz $-5            ; 2:8/13    lshift32
-    xor   C             ; 1:4       lshift32   A = u & 0xF8
-    ret   z             ; 1:5/11    lshift32
-    sub  0x08           ; 2:7       lshift32
-    ld    D, E          ; 1:4       lshift32
-    ld    E, H          ; 1:4       lshift32
-    ld    H, L          ; 1:4       lshift32
-    ld    L, B          ; 1:4       lshift32   DEHL = DEHL << 8
-    jr   $-7            ; 2:12      lshift32
-LSHIFT32_Z:             ;           lshift32
-    ld   DE, 0x0000     ; 3:10      lshift32
-    ld    H, D          ; 1:4       lshift32
-    ld    L, E          ; 1:4       lshift32   DEHL = 0
-    ret                 ; 1:10      lshift32
+BITSET32:              ;[29:143/67] bitset32   ( d1 u -- d )  d = d1 | 2**u
+    ld    C, L          ; 1:4       bitset32
+    ld    B, H          ; 1:4       bitset32   BC = u
+    pop  HL             ; 1:10      bitset32   ret
+    ex  (SP),HL         ; 1:19      bitset32
+    ex   DE, HL         ; 1:4       bitset32   DEHL = d1
+    ; fall to BC_BITSET32
+BC_BITSET32:           ;[24:102/26] bc_bitset32   ( d1 -- d )  d = d1 | 2**BC
+    ld    A, 0xE0       ; 2:7       bc_bitset32
+    and   C             ; 1:4       bc_bitset32
+    or    B             ; 1:4       bc_bitset32
+    ret  nz             ; 1:5/11    bc_bitset32   out of range 0..31
+    ld    A, C          ; 1:4       bc_bitset32   A = 000r rnnn
+    rlca                ; 1:4       bc_bitset32   2x
+    rlca                ; 1:4       bc_bitset32   4x
+    rlca                ; 1:4       bc_bitset32   8x
+    ld    C, A          ; 1:4       bc_bitset32   C = rrnn n000, nnn = 0..7, rr=(L:0,H:1,E:2,D:3) --> 5-rr=(L:5,H:4,E:3,D:2)
+    rlca                ; 1:4       bc_bitset32
+    rlca                ; 1:4       bc_bitset32
+    and  0x03           ; 1:4       bc_bitset32
+    ld    B, A          ; 1:4       bc_bitset32   B = 0000 00rr
+    ld    A, C          ; 1:4       bc_bitset32   A = rrnn n000
+    or   0xC5           ; 2:7       bc_bitset32   A = 11nn n101     = set n, L
+    sub   B             ; 1:4       bc_bitset32   A = 11nn n101 - B = set n, DEHL
+    ld  ($+4), A        ; 3:13      bc_bitset32
+    set   0, L          ; 2:8       bc_bitset32
+    ret                 ; 1:10      bc_bitset32
 
 STRING_SECTION:
 string101:
