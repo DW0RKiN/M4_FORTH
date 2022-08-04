@@ -349,12 +349,18 @@ And replaced the DO LOOP loop with the more efficient `BEGIN WHILE REPEAT`.
 
 That crazy combination of words just says that it should increase the pointer by one and load the character, if it is zero then jump out of the loop, otherwise save a copy of the character in TOS.
 
-`ROT...NROT` temporarily moves NNOS (third cell) to TOS. Similar to repeated `SWAP`, but between 16-bit and 32-bit.
-_2OVER_NIP creates a copy of NNOS (third cell) to TOS. Similar to `OVER`, but between 16-bit and 32-bit.
-It seems that there are no standard words for this.
+The `ROT` moves the third cell to the TOS. So it's a `SWAP` between a 16-bit and a 32-bit number.
+
+`NROT` moves TOS to third position. So it's a `SWAP` between a 16-bit and a 32-bit number.
+
+`ROT ... NROT` temporarily moves NNOS (third cell) to TOS. Similar to repeated `SWAP`, but between 16-bit and 32-bit.
+
+`_2OVER_NIP` creates a copy of NNOS (third cell) to TOS. Similar to `OVER`, but between 16-bit and 32-bit. It seems that there are no standard word for this.
 
 The less the data stack moves up and down between words, the faster and more efficient the program is. 
-Most compound words use this. It's easy to check this in the console using the check_word.sh script.
+Most compound words use this. 
+Like for example `SWAP_1ADD_SWAP` does not need to move the stack internally.
+It's easy to check this in the console using the check_word.sh script.
 
     COLON(_pangram_,( addr -- ? )) 
       _1SUB
