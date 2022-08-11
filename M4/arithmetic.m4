@@ -214,6 +214,7 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
+dnl
 dnl # "dup +"
 dnl # ( x1 -- x2 )
 dnl # x2 = x1 + x1
@@ -1121,7 +1122,7 @@ __{}define({__INFO},{m+}){}dnl
     ld    A, H          ; 1:4       M+
     add   A, A          ; 1:4       M+
     sbc   A, A          ; 1:4       M+
-    ld    C, A          ; 1:4       M+   CC = hi16(x) 
+    ld    C, A          ; 1:4       M+   CC = hi16(x)
     add  HL, DE         ; 1:11      M+   lo16(d)+x
     pop  DE             ; 1:10      M+
     adc   A, E          ; 1:4       M+

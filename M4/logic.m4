@@ -301,6 +301,31 @@ __{}    sbc  HL, HL         ; 2:15      _TMP_INFO   HL = 0x0000 or 0xffff}){}dnl
 dnl
 dnl
 dnl
+dnl # ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
+dnl # $1 <= a < $2
+define({DUP_PUSH2_WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_WITHIN},{dup $1 $2 within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH2_WITHIN},{dnl
+__{}define({__INFO},{dup $1 $2 within}){}dnl
+ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameters!},
+__{}$#,{1},{
+__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+{define({_TMP_INFO},{__INFO}){}define({PUSH2_WITHIN_CODE},__WITHIN($1,$2))
+__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(34+__WITHIN_C)])__COMPILE_INFO   ( x -- x flag )  flag=($1<=x<$2)
+    push DE             ; 1:11      __INFO
+    ld    D, H          ; 1:4       __INFO
+    ld    E, L          ; 1:4       __INFO{}dnl
+__{}PUSH2_WITHIN_CODE
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) )
 dnl # c2 <= c3 < c1
 define({LO_WITHIN},{dnl

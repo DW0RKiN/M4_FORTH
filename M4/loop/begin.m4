@@ -74,11 +74,11 @@ dnl
 dnl
 dnl # ( -- )
 define({ZF_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZF_UNTIL},{zf_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZF_UNTIL},{zf until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZF_UNTIL},{dnl
-__{}define({__INFO},{zf_until}){}dnl
+__{}define({__INFO},{zf until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -88,11 +88,11 @@ dnl
 dnl
 dnl # ( flag -- )
 define({_0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_0EQ_UNTIL},{0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_0EQ_UNTIL},{0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0EQ_UNTIL},{dnl
-__{}define({__INFO},{0eq_until}){}dnl
+__{}define({__INFO},{0eq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -107,11 +107,11 @@ dnl
 dnl # ( n -- )
 dnl # $1 $2 within until
 define({PUSH2_WITHIN_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN_UNTIL},{push2_within_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN_UNTIL},{$1 $2 within until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_WITHIN_UNTIL},{dnl
-__{}define({__INFO},{push2_within_until}){}dnl
+__{}define({__INFO},{$1 $2 within until}){}dnl
 ifelse(dnl
 BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
@@ -134,11 +134,11 @@ dnl
 dnl
 dnl # ( flag -- flag )
 define({DUP_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_UNTIL},{dup_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_UNTIL},{dup until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_UNTIL},{dnl
-__{}define({__INFO},{dup_until}){}dnl
+__{}define({__INFO},{dup until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -150,11 +150,11 @@ dnl
 dnl
 dnl # ( b a -- b a )
 define({_2DUP_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_EQ_UNTIL},{2dup_eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_EQ_UNTIL},{2dup_eq until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_EQ_UNTIL},{dnl
-__{}define({__INFO},{2dup_eq_until}){}dnl
+__{}define({__INFO},{2dup_eq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -170,11 +170,11 @@ dnl
 dnl
 dnl # ( x -- x )
 define({DUP_0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_0EQ_UNTIL},{dup_0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_0EQ_UNTIL},{dup 0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_0EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_0eq_until}){}dnl
+__{}define({__INFO},{dup_0eq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -187,11 +187,11 @@ dnl
 dnl # ( n -- n )
 dnl # dup const = until
 define({DUP_PUSH_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_UNTIL},{dup_push_eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_UNTIL},{dup_push_eq until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_eq_until}){}dnl
+__{}define({__INFO},{dup_push_eq until}){}dnl
 ifelse(dnl
 BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
@@ -210,11 +210,11 @@ dnl
 dnl
 dnl # ( n -- n )
 define({DUP_PUSH_HI_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HI_EQ_UNTIL},{dup_push_hi_eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HI_EQ_UNTIL},{dup_push_hi_eq until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_HI_EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_hi_eq_until}){}dnl
+__{}define({__INFO},{dup_push_hi_eq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
 __{}$1,{},{
@@ -248,11 +248,11 @@ dnl
 dnl
 dnl # ( n -- n )
 define({DUP_PUSH_LO_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LO_EQ_UNTIL},{dup_push_lo_eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LO_EQ_UNTIL},{dup_push_lo_eq until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_LO_EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_lo_eq_until}){}dnl
+__{}define({__INFO},{dup_push_lo_eq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
 __{}$1,{},{
@@ -287,11 +287,11 @@ dnl
 dnl # ( x -- x )
 dnl # dup $1 $2 within until
 define({DUP_PUSH2_WITHIN_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_WITHIN_UNTIL},{dup_push2_within_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_WITHIN_UNTIL},{dup $1 $2 within until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH2_WITHIN_UNTIL},{dnl
-__{}define({__INFO},{dup_push2_within_until}){}dnl
+__{}define({__INFO},{dup $1 $2 within until}){}dnl
 ifelse(dnl
 BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
@@ -312,11 +312,11 @@ dnl
 dnl
 dnl # ( addr -- addr )
 define({DUP_CFETCH_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_UNTIL},{dup_cfetch_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_UNTIL},{dup_cfetch until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH_UNTIL},{dnl
-__{}define({__INFO},{dup_cfetch_until}){}dnl
+__{}define({__INFO},{dup_cfetch until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -328,11 +328,11 @@ dnl
 dnl
 dnl # ( addr -- addr )
 define({DUP_CFETCH_0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_0EQ_UNTIL},{dup_cfetch_0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_0EQ_UNTIL},{dup_cfetch 0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH_0EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_cfetch_0eq_until}){}dnl
+__{}define({__INFO},{dup_cfetch 0= until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -344,11 +344,11 @@ dnl
 dnl
 dnl # ( flag x -- flag x )
 define({OVER_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_UNTIL},{over_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_UNTIL},{over until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_UNTIL},{dnl
-__{}define({__INFO},{over_until}){}dnl
+__{}define({__INFO},{over until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -360,11 +360,11 @@ dnl
 dnl
 dnl # ( x2 x1 -- x2 x1 )
 define({OVER_0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_0EQ_UNTIL},{over_0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_0EQ_UNTIL},{over 0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_0EQ_UNTIL},{dnl
-__{}define({__INFO},{over_0eq_until}){}dnl
+__{}define({__INFO},{over 0= until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -376,11 +376,11 @@ dnl
 dnl
 dnl # ( addr x -- addr x )
 define({OVER_CFETCH_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_UNTIL},{over_cfetch_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_UNTIL},{over cfetch until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_CFETCH_UNTIL},{dnl
-__{}define({__INFO},{over_cfetch_until}){}dnl
+__{}define({__INFO},{over cfetch until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -392,11 +392,11 @@ dnl
 dnl
 dnl # ( addr x -- addr x )
 define({OVER_CFETCH_0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_0EQ_UNTIL},{over_cfetch_0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_0EQ_UNTIL},{over cfetch 0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_CFETCH_0EQ_UNTIL},{dnl
-__{}define({__INFO},{over_cfetch_0eq_until}){}dnl
+__{}define({__INFO},{over cfetch 0= until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -408,11 +408,11 @@ dnl
 dnl
 dnl # ( flag d -- flag d )
 define({_2OVER_NIP_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_UNTIL},{2over_nip_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_UNTIL},{2over nip until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_UNTIL},{dnl
-__{}define({__INFO},{2over_nip_until}){}dnl
+__{}define({__INFO},{2over nip until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -426,11 +426,11 @@ dnl
 dnl
 dnl # ( x d -- x d )
 define({_2OVER_NIP_0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_0EQ_UNTIL},{2over_nip_0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_0EQ_UNTIL},{2over nip 0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_0EQ_UNTIL},{dnl
-__{}define({__INFO},{2over_nip_0eq_until}){}dnl
+__{}define({__INFO},{2over nip 0= until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -445,11 +445,11 @@ dnl
 dnl # 2over nip c@ 0 c= until
 dnl # ( addr d -- addr d )
 define({_2OVER_NIP_CFETCH_0CEQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_UNTIL},{2over_nip_cfetch_0ceq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_UNTIL},{2over nip cfetch_0ceq until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH_0CEQ_UNTIL},{dnl
-__{}define({__INFO},{2over_nip_cfetch_0ceq_until}){}dnl
+__{}define({__INFO},{2over nip cfetch_0ceq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
 eval($#>1),{1},{
@@ -533,11 +533,11 @@ dnl
 dnl
 dnl # ( addr -- addr )
 define({DUP_CFETCH_0EQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_0EQ_WHILE},{dup_cfetch_0eq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_0EQ_WHILE},{dup_cfetch 0=_while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH_0EQ_WHILE},{dnl
-__{}define({__INFO},{dup_cfetch_0eq_while}){}dnl
+__{}define({__INFO},{dup_cfetch 0=_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -548,11 +548,11 @@ dnl
 dnl
 dnl # ( addr x -- addr x )
 define({OVER_CFETCH_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_WHILE},{over_cfetch_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_WHILE},{over cfetch_while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_CFETCH_WHILE},{dnl
-__{}define({__INFO},{over_cfetch_while}){}dnl
+__{}define({__INFO},{over cfetch_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -563,11 +563,11 @@ dnl
 dnl
 dnl # ( addr x -- addr x )
 define({OVER_CFETCH_0EQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_0EQ_WHILE},{over_cfetch_0eq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_0EQ_WHILE},{over cfetch 0=_while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_CFETCH_0EQ_WHILE},{dnl
-__{}define({__INFO},{over_cfetch_0eq_while}){}dnl
+__{}define({__INFO},{over cfetch 0=_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
@@ -579,11 +579,11 @@ dnl
 dnl # 2over nip c@ 0 c= while
 dnl # ( addr d -- addr d )
 define({_2OVER_NIP_CFETCH_0CEQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_WHILE},{2over_nip_cfetch_0ceq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_WHILE},{2over nip cfetch 0c= while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH_0CEQ_WHILE},{dnl
-__{}define({__INFO},{2over_nip_cfetch_0ceq_while}){}dnl
+__{}define({__INFO},{2over nip cfetch 0c= while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
 eval($#>1),{1},{
@@ -600,11 +600,11 @@ dnl
 dnl # rot 1+ -rot 2over nip c@ 0 c<> while
 dnl # ( addr d -- addr++ d )
 define({ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE},{rot_1add_nrot_2over_nip_cfetch_0cne_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE},{rot_1add_nrot_2over nip cfetch 0c<>while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE},{dnl
-__{}define({__INFO},{rot_1add_nrot_2over_nip_cfetch_0cne_while}){}dnl
+__{}define({__INFO},{rot_1add_nrot_2over nip cfetch 0c<>while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
 eval($#>1),{1},{
@@ -622,11 +622,11 @@ dnl
 dnl # rot 1+ -rot 2over nip c@ 0 c<> while 2over nip c@
 dnl # ( addr d -- addr++ d )
 define({ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH},{rot_1add_nrot_2over_nip_cfetch_0cne_while_2over_nip_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH},{rot_1add_nrot_2over nip cfetch 0c<>while_2over nip cfetch},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH},{dnl
-__{}define({__INFO},{rot_1add_nrot_2over_nip_cfetch_0cne_while_2over_nip_cfetch}){}dnl
+__{}define({__INFO},{rot_1add_nrot_2over nip cfetch 0c<>while_2over nip cfetch}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
 eval($#>1),{1},{
@@ -650,11 +650,11 @@ dnl
 dnl # ( n -- )
 dnl # $1 $2 within while
 define({PUSH2_WITHIN_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN_WHILE},{push2_within_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN_WHILE},{$1 $2 within_while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_WITHIN_WHILE},{dnl
-__{}define({__INFO},{push2_within_while}){}dnl
+__{}define({__INFO},{$1 $2 within_while}){}dnl
 ifelse(dnl
 BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
@@ -678,11 +678,11 @@ dnl
 dnl # ( n -- n )
 dnl # $1 $2 within while
 define({DUP_PUSH2_WITHIN_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_WITHIN_WHILE},{dup_push2_within_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_WITHIN_WHILE},{dup $1 $2 within_while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH2_WITHIN_WHILE},{dnl
-__{}define({__INFO},{dup_push2_within_while}){}dnl
+__{}define({__INFO},{dup $1 $2 within_while}){}dnl
 ifelse(dnl
 BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0} for non-existent {BEGIN}},
@@ -2315,11 +2315,11 @@ dnl
 dnl
 dnl # ( d -- d )
 define({_2DUP_D0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_UNTIL},{2dup_d0eq_until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_UNTIL},{2dup_d0eq until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_D0EQ_UNTIL},{dnl
-__{}define({__INFO},{2dup_d0eq_until}){}dnl
+__{}define({__INFO},{2dup_d0eq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {

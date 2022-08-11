@@ -915,22 +915,34 @@ __{}  .error {$0}($@): Missing parameter!},
 eval($#!=2),{1},{
 __{}  .error {$0}($@): The wrong number of parameters in macro!},
 {
-__{}    push DE             ; 1:11      push2($1,$2)
-__{}    push HL             ; 1:11      push2($1,$2){}dnl
-__{}define({_TMP_INFO},{push2($1,$2)}){}dnl # HL first check
+__{}define({_TMP_INFO},{__INFO}){}dnl # HL first check
+__{}define({__TMP_HL_CLOCKS},22){}dnl
+__{}define({__TMP_HL_BYTES},2){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
-__{}define({PUSH2_HL},__CLOCKS_16BIT){}dnl
+__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
 __{}__LD_REG16({HL},$2){}dnl
-__{}define({PUSH2_HL},eval(PUSH2_HL+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
 __{}dnl
+__{}define({__TMP_DE_CLOCKS},22){}dnl
+__{}define({__TMP_DE_BYTES},2){}dnl
 __{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
-__{}define({PUSH2_DE},__CLOCKS_16BIT){}dnl
+__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
 __{}__LD_REG16({DE},$1){}dnl
-__{}define({PUSH2_DE},eval(PUSH2_DE+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
 __{}dnl
-__{}ifelse(eval(PUSH2_DE<=PUSH2_HL),{1},{dnl # DE first
+__{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
+__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __COMPILE_INFO
+__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
+__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
 __{}{dnl # HL first
+__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __COMPILE_INFO
+__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
+__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
 })}){}dnl
 dnl
@@ -1050,6 +1062,40 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ex   DE, HL         ; 1:4       dup $1
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1}){}dnl
 dnl
+dnl
+dnl
+dnl # dup 50 100
+dnl # ( a -- a a 50 100 )
+define({DUP_PUSH2},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2},{dup $1 $2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH2},{dnl
+__{}define({__INFO},{dup $1 $2}){}dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{
+__{}    push DE             ; 1:11      __INFO   ( x -- x x $1 $2 )
+__{}    push HL             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}define({_TMP_INFO},{__INFO}){}dnl # HL first check
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}define({PUSH2_HL},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}define({PUSH2_HL},eval(PUSH2_HL+__CLOCKS_16BIT)){}dnl
+__{}dnl
+__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
+__{}define({PUSH2_DE},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16({DE},$1){}dnl
+__{}define({PUSH2_DE},eval(PUSH2_DE+__CLOCKS_16BIT)){}dnl
+__{}dnl
+__{}ifelse(eval(PUSH2_DE<=PUSH2_HL),{1},{dnl # DE first
+__{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
+__{}{dnl # HL first
+__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
+})}){}dnl
 dnl
 dnl
 dnl # ( -- d )

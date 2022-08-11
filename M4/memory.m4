@@ -2,9 +2,9 @@ dnl ## Memory
 dnl
 dnl
 dnl
-define({ALL_VARIABLE},{})dnl
-define({LAST_HERE_NAME},{VARIABLE_SECTION})dnl
-define({LAST_HERE_ADD},{0})dnl
+define({ALL_VARIABLE},{}){}dnl
+define({LAST_HERE_NAME},{VARIABLE_SECTION}){}dnl
+define({LAST_HERE_ADD},{0}){}dnl
 dnl
 dnl
 define({CONSTANT},{dnl
@@ -20,7 +20,7 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}format({%-20s},$1) EQU $2{}dnl
-__{}define({$1},{$2})})dnl
+__{}define({$1},{$2})}){}dnl
 dnl
 dnl
 dnl
@@ -388,6 +388,18 @@ __{}define({__INFO},{here}){}dnl
     push DE             ; 1:11      here
     ex   DE, HL         ; 1:4       here
     ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      here}){}dnl
+dnl
+dnl
+dnl
+dnl # allot     --> reserve TOS bytes
+define({ALLOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ALLOT},{allot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ALLOT},{dnl
+__{}define({__INFO},{allot})
+__{}  .error __INFO{($@): Sorry, but ALLOT only supports constant allocation size, such as "PUSH(8) ALLOT"}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -875,7 +887,7 @@ define({__ASM_TOKEN_CFETCH},{dnl
 __{}define({__INFO},{cfetch}){}dnl
 
     ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
-    ld    H, 0x00       ; 2:7       C@ cfetch})dnl
+    ld    H, 0x00       ; 2:7       C@ cfetch}){}dnl
 dnl
 dnl
 dnl # dup C@
@@ -892,7 +904,7 @@ __{}define({__INFO},{dup_cfetch}){}dnl
     push DE             ; 1:11      dup C@ dup_cfetch
     ld    E,(HL)        ; 1:7       dup C@ dup_cfetch
     ld    D, 0x00       ; 2:7       dup C@ dup_cfetch
-    ex   DE, HL         ; 1:4       dup C@ dup_cfetch})dnl
+    ex   DE, HL         ; 1:4       dup C@ dup_cfetch}){}dnl
 dnl
 dnl
 dnl # 2over nip C@
@@ -911,7 +923,7 @@ __{}define({__INFO},{2over_nip_cfetch}){}dnl
     ex   DE, HL         ; 1:4       2over nip C@
     ld    A,(BC)        ; 1:7       2over nip C@
     ld    L, A          ; 1:4       2over nip C@
-    ld    H, 0x00       ; 2:7       2over nip C@})dnl
+    ld    H, 0x00       ; 2:7       2over nip C@}){}dnl
 dnl
 dnl
 dnl # dup C@ swap
@@ -927,7 +939,7 @@ __{}define({__INFO},{dup_cfetch_swap}){}dnl
                         ;[4:25]     dup C@ swap dup_cfetch_swap ( addr -- char addr )
     push DE             ; 1:11      dup C@ swap dup_cfetch_swap
     ld    E,(HL)        ; 1:7       dup C@ swap dup_cfetch_swap
-    ld    D, 0x00       ; 2:7       dup C@ swap dup_cfetch_swap})dnl
+    ld    D, 0x00       ; 2:7       dup C@ swap dup_cfetch_swap}){}dnl
 dnl
 dnl
 dnl # C@ swap C@
@@ -945,7 +957,7 @@ __{}define({__INFO},{cfetch_swap_cfetch}){}dnl
     ld    H, 0x00       ; 2:7       @C swap @C cfetch_swap_cfetch
     ex   DE, HL         ; 1:4       @C swap @C cfetch_swap_cfetch
     ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
-    ld    H, D          ; 1:4       @C swap @C cfetch_swap_cfetch})dnl
+    ld    H, D          ; 1:4       @C swap @C cfetch_swap_cfetch}){}dnl
 dnl
 dnl
 dnl # C@ swap C@ swap
@@ -963,7 +975,7 @@ __{}define({__INFO},{cfetch_swap_cfetch_swap}){}dnl
     ld    H, 0x00       ; 2:7       @C swap @C swap cfetch_swap_cfetch_swap
     ld    A, (DE)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
     ld    E, A          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap
-    ld    D, H          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap})dnl
+    ld    D, H          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap}){}dnl
 dnl
 dnl
 dnl # over C@ over C@
@@ -983,7 +995,7 @@ __{}define({__INFO},{over_cfetch_over_cfetch}){}dnl
     ld    H, 0x00       ; 2:7       over @C over @C over_cfetch_over_cfetch
     ld    A, (DE)       ; 1:7       over @C over @C over_cfetch_over_cfetch
     ld    E, A          ; 1:4       over @C over @C over_cfetch_over_cfetch
-    ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch})dnl
+    ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch}){}dnl
 dnl
 dnl
 dnl
@@ -1003,7 +1015,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 @  push_cfetch($1)
     ex   DE, HL         ; 1:4       $1 @  push_cfetch($1)
     ld   HL,format({%-12s},($1)); 3:16      $1 @  push_cfetch($1)
-    ld    H, 0x00       ; 2:7       $1 @  push_cfetch($1)})dnl
+    ld    H, 0x00       ; 2:7       $1 @  push_cfetch($1)}){}dnl
 dnl
 dnl
 dnl
@@ -1072,7 +1084,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld    L, A          ; 1:4       $1 @ +  push_cfetch_add($1)
     adc   A, H          ; 1:4       $1 @ +  push_cfetch_add($1)
     sub   L             ; 1:4       $1 @ +  push_cfetch_add($1)
-    ld    H, A          ; 1:4       $1 @ +  push_cfetch_add($1)})dnl
+    ld    H, A          ; 1:4       $1 @ +  push_cfetch_add($1)}){}dnl
 dnl
 dnl
 dnl
@@ -1096,7 +1108,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld    L, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
     sbc   A, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
     adc   A, H          ; 1:4       $1 @ -  push_cfetch_sub($1)
-    ld    H, A          ; 1:4       $1 @ -  push_cfetch_sub($1)})dnl
+    ld    H, A          ; 1:4       $1 @ -  push_cfetch_sub($1)}){}dnl
 dnl
 dnl
 dnl
@@ -1112,7 +1124,7 @@ __{}define({__INFO},{cstore}){}dnl
 
     ld  (HL),E          ; 1:7       C! cstore   ( char addr -- )
     pop  HL             ; 1:10      C! cstore
-    pop  DE             ; 1:10      C! cstore})dnl
+    pop  DE             ; 1:10      C! cstore}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -1151,7 +1163,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 swap C! push_swap_cstore($1)   ( addr -- )
     ld  (HL),A          ; 1:7       $1 swap C! push_swap_cstore($1)
     ex   DE, HL         ; 1:4       $1 swap C! push_swap_cstore($1)
-    pop  DE             ; 1:10      $1 swap C! push_swap_cstore($1)})dnl
+    pop  DE             ; 1:10      $1 swap C! push_swap_cstore($1)}){}dnl
 dnl
 dnl
 dnl # ( addr+$2) = $1
@@ -1238,7 +1250,7 @@ __{}    ld    B, A          ; 1:4       $1 over $2 add C! push_over_push_add_cst
 __{}    ifelse(__IS_MEM_REF($1),{1},{ld    A, format({%-11s},$1); 3:13},eval($1),0,{xor   A             ; 1:4 },{ld    A, low format({%-7s},$1); 2:7 })      $1 over $2 add C! push_over_push_add_cstore($1,$2)
 __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cstore($1,$2)})})},
 __{}{
-__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+__{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -1255,7 +1267,7 @@ __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld    A, L          ; 1:4       dup $1 C! dup push($1) cstore
-    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup push($1) cstore})dnl
+    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup push($1) cstore}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -1276,7 +1288,7 @@ __{}$#,{2},{
     ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore
     ld   format({%-15s},($2){,} A); 3:13      dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore},
 __{}{
-__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+__{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -1300,7 +1312,7 @@ __{}$#,{3},{
     ld   format({%-15s},($2){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
     ld   format({%-15s},($3){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore},
 __{}{
-__{}__{}.error {$0}($@): $# parameters found in macro!})})dnl
+__{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
@@ -1320,7 +1332,7 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      push2_cstore($1,$2)
-    ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)})dnl
+    ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)}){}dnl
 dnl
 dnl
 dnl
@@ -1337,7 +1349,7 @@ __{}define({__INFO},{tuck_cstore}){}dnl
 
                         ;[2:17]     tuck c!  tuck_cstore   ( char addr -- addr )
     ld  (HL),E          ; 1:7       tuck c!  tuck_cstore
-    pop  DE             ; 1:10      tuck c!  tuck_cstore})dnl
+    pop  DE             ; 1:10      tuck c!  tuck_cstore}){}dnl
 dnl
 dnl
 dnl # tuck c! 1+
@@ -1353,7 +1365,7 @@ __{}define({__INFO},{tuck_cstore_1add}){}dnl
                         ;[3:23]     tuck c! +1  tuck_cstore_1add   ( x addr -- addr+2 )
     ld  (HL),E          ; 1:7       tuck c! +1  tuck_cstore_1add
     inc  HL             ; 1:6       tuck c! +1  tuck_cstore_1add
-    pop  DE             ; 1:10      tuck c! +1  tuck_cstore_1add})dnl
+    pop  DE             ; 1:10      tuck c! +1  tuck_cstore_1add}){}dnl
 dnl
 dnl
 dnl # over swap c!
@@ -1369,7 +1381,7 @@ __{}define({__INFO},{over_swap_cstore}){}dnl
                         ;[3:21]     over swap c!  over_swap_cstore   ( char addr -- char )
     ld  (HL),E          ; 1:7       over swap c!  over_swap_cstore
     ex   DE, HL         ; 1:4       over swap c!  over_swap_cstore
-    pop  DE             ; 1:10      over swap c!  over_swap_cstore})dnl
+    pop  DE             ; 1:10      over swap c!  over_swap_cstore}){}dnl
 dnl
 dnl
 dnl # 2dup c!
@@ -1383,7 +1395,7 @@ define({__ASM_TOKEN_2DUP_CSTORE},{dnl
 __{}define({__INFO},{2dup_cstore}){}dnl
 
                         ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
-    ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore})dnl
+    ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore}){}dnl
 dnl
 dnl
 dnl # 2dup c! 1+
@@ -1398,7 +1410,7 @@ __{}define({__INFO},{2dup_cstore_1add}){}dnl
 
                         ;[2:13]     2dup c! 1+  _2dup_cstore_1add   ( char addr -- char addr+1 )
     ld  (HL),E          ; 1:7       2dup c! 1+  _2dup_cstore_1add
-    inc  HL             ; 1:6       2dup c! 1+  _2dup_cstore_1add})dnl
+    inc  HL             ; 1:6       2dup c! 1+  _2dup_cstore_1add}){}dnl
 dnl
 dnl
 dnl # number over c!
@@ -1417,7 +1429,7 @@ eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {
 __{}                        ;[2:10]     $1 over c!  push_over_cstore($1)   ( addr -- addr )   (addr)=$1
-__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over c!  push_over_cstore($1)})})dnl
+__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over c!  push_over_cstore($1)})}){}dnl
 dnl
 dnl
 dnl # over number swap c!
@@ -1439,7 +1451,7 @@ __{}    xor   A             ; 1:4       over $1 swap c!  over_push_swap_cstore($
 __{}{dnl
 __{}                        ;[3:14]     over $1 swap c!  over_push_swap_cstore($1)   ( addr x -- addr x )
 __{}    ld    A,low format({%-8s},$1); 2:7       over $1 swap c!  over_push_swap_cstore($1)})
-    ld  (DE),A          ; 1:7       over $1 swap c!  over_push_swap_cstore($1)})dnl
+    ld  (DE),A          ; 1:7       over $1 swap c!  over_push_swap_cstore($1)}){}dnl
 dnl
 dnl
 dnl
@@ -1459,7 +1471,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
                         ;[3:16]     $1 over c! 1+  push_over_cstore_1add($1)   ( addr -- addr+1 )
     ld  (HL),low format({%-7s},$1); 2:10      $1 over c! 1+  push_over_cstore_1add($1)
-    inc  HL             ; 1:6       $1 over c! 1+  push_over_cstore_1add($1)})dnl
+    inc  HL             ; 1:6       $1 over c! 1+  push_over_cstore_1add($1)}){}dnl
 dnl
 dnl
 define({DUP_PUSH_SWAP_CSTORE_1ADD},{dnl
@@ -1489,7 +1501,7 @@ __{}define({__INFO},{cmove}){}dnl
     jr    z, $+4        ; 2:7/12    cmove
     ldir                ; 2:u*21/16 cmove
     pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove})dnl
+    pop  DE             ; 1:10      cmove}){}dnl
 dnl
 dnl
 dnl # u cmove
@@ -1573,7 +1585,7 @@ __{}define({__INFO},{cmovegt}){}dnl
     jr    z, $+4        ; 2:7/12    cmove>
     lddr                ; 2:u*21/16 cmove>   addr--
     pop  HL             ; 1:10      cmove>
-    pop  DE             ; 1:10      cmove>})dnl
+    pop  DE             ; 1:10      cmove>}){}dnl
 dnl
 dnl
 dnl
@@ -1619,7 +1631,7 @@ __{}    djnz $-2            ; 2:13/8    fill
 __{}    dec   D             ; 1:4       fill
 __{}    jr   nz, $-5        ; 2:7/12    fill
 __{}    pop  HL             ; 1:10      fill
-__{}    pop  DE             ; 1:10      fill})})dnl
+__{}    pop  DE             ; 1:10      fill})}){}dnl
 dnl
 dnl
 dnl
@@ -1666,7 +1678,7 @@ __{}    djnz $-2            ; 2:13/8    $1 fill
 __{}    dec   H             ; 1:4       $1 fill
 __{}    jr   nz, $-5        ; 2:7/12    $1 fill
 __{}    pop  HL             ; 1:10      $1 fill
-__{}    pop  DE             ; 1:10      $1 fill})})dnl
+__{}    pop  DE             ; 1:10      $1 fill})}){}dnl
 dnl
 dnl
 dnl
@@ -1779,7 +1791,7 @@ __{}    ld    E, L          ; 1:4       $1 $2 fill
 __{}    inc  DE             ; 1:6       $1 $2 fill DE = to
 __{}    ldir                ; 2:u*21/16 $1 $2 fill
 __{}    pop  HL             ; 1:10      $1 $2 fill
-__{}    pop  DE             ; 1:10      $1 $2 fill})})dnl
+__{}    pop  DE             ; 1:10      $1 $2 fill})}){}dnl
 dnl
 dnl
 dnl
@@ -1899,38 +1911,38 @@ __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    djnz $-4            ; 2:13/8    $1 $2 $3 fill
 __{}ifelse(eval(($2) & 0x01),{1},{dnl
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}})dnl
+__{}}){}dnl
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
 eval(($2) <= 4*256+3),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/4) & 0x1FF))dnl
 __{}ifelse(eval(($2) % 4),{0},{dnl
-__{}__{}define({_TEMP_SIZE},{18})dnl
-__{}__{}define({_TEMP_CLOCK},{0})dnl
+__{}__{}define({_TEMP_SIZE},{18}){}dnl
+__{}__{}define({_TEMP_CLOCK},{0}){}dnl
 __{}__{}define({_TEMP_PLUS},{})},
 __{}eval(($2) % 4),{1},{dnl
-__{}__{}define({_TEMP_SIZE},{19})dnl
-__{}__{}define({_TEMP_CLOCK},{7})dnl
+__{}__{}define({_TEMP_SIZE},{19}){}dnl
+__{}__{}define({_TEMP_CLOCK},{7}){}dnl
 __{}__{}define({_TEMP_PLUS},{
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill})},
 __{}eval(($2) % 4),{2},{dnl
-__{}__{}define({_TEMP_SIZE},{21})dnl
+__{}__{}define({_TEMP_SIZE},{21}){}dnl
 __{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
-__{}__{}__{}define({_TEMP_CLOCK},{20})dnl
+__{}__{}__{}define({_TEMP_CLOCK},{20}){}dnl
 __{}__{}__{}define({_TEMP_PLUS},{
 __{}__{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill
 __{}__{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill})},
 __{}__{}{dnl
-__{}__{}__{}define({_TEMP_CLOCK},{18})dnl
+__{}__{}__{}define({_TEMP_CLOCK},{18}){}dnl
 __{}__{}__{}define({_TEMP_PLUS},{
 __{}__{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill
 __{}__{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill})})},
 __{}{dnl
-__{}__{}define({_TEMP_SIZE},{23})dnl
-__{}__{}define({_TEMP_CLOCK},{29})dnl
-__{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))})dnl
-__{}__{}ifelse(eval(($1+4*_TEMP_B+2) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))})dnl
+__{}__{}define({_TEMP_SIZE},{23}){}dnl
+__{}__{}define({_TEMP_CLOCK},{29}){}dnl
+__{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
+__{}__{}ifelse(eval(($1+4*_TEMP_B+2) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
 __{}__{}define({_TEMP_PLUS},{
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
@@ -1972,7 +1984,7 @@ __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
 eval((($2) % 4) == 0),{1},{dnl
 __{}define({_TEMP_B},eval((($2)/4) & 0xFF))dnl
 __{}define({_TEMP_C},eval(((($2)/4) & 0xFF00)/256))dnl
-__{}ifelse(eval(_TEMP_B>0),{1},{define({_TEMP_C},eval(_TEMP_C+1))})dnl
+__{}ifelse(eval(_TEMP_B>0),{1},{define({_TEMP_C},eval(_TEMP_C+1))}){}dnl
 __{}                       ;[24:format({%-8s},eval(48+46*($2)/4+13*(_TEMP_B+(_TEMP_C-1)*256)+9*_TEMP_C)])$1 $2 $3 fill {$0}(addr,u,char)   variant {J}: u = 4*n bytes
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
@@ -2012,7 +2024,7 @@ __{}    ld   BC, format({%-11s},$2-1); 3:10      $1 $2 $3 fill
 __{}    ld  (HL),format({%-11s},$3); 2:10      $1 $2 $3 fill
 __{}    ldir                ; 2:u*21/16 $1 $2 $3 fill
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill
-__{}    pop  DE             ; 1:10      $1 $2 $3 fill})})dnl
+__{}    pop  DE             ; 1:10      $1 $2 $3 fill})}){}dnl
 dnl
 dnl
 dnl # -------------------------------------------------------------------------------------
@@ -2033,7 +2045,7 @@ __{}define({__INFO},{fetch}){}dnl
     ld    A, (HL)       ; 1:7       @ fetch   ( addr -- x )
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
-    ld    L, A          ; 1:4       @ fetch})dnl
+    ld    L, A          ; 1:4       @ fetch}){}dnl
 dnl
 dnl
 dnl # dup @
@@ -2052,7 +2064,7 @@ __{}define({__INFO},{dup_fetch}){}dnl
     inc  HL             ; 1:6       dup @ dup_fetch
     ld    D, (HL)       ; 1:7       dup @ dup_fetch
     dec  HL             ; 1:6       dup @ dup_fetch
-    ex   DE, HL         ; 1:4       dup @ dup_fetch})dnl
+    ex   DE, HL         ; 1:4       dup @ dup_fetch}){}dnl
 dnl
 dnl
 dnl # dup @ swap
@@ -2070,7 +2082,7 @@ __{}define({__INFO},{dup_fetch_swap}){}dnl
     ld    E, (HL)       ; 1:7       dup @ swap dup_fetch_swap
     inc  HL             ; 1:6       dup @ swap dup_fetch_swap
     ld    D, (HL)       ; 1:7       dup @ swap dup_fetch_swap
-    dec  HL             ; 1:6       dup @ swap dup_fetch_swap})dnl
+    dec  HL             ; 1:6       dup @ swap dup_fetch_swap}){}dnl
 dnl
 dnl
 dnl # addr @
@@ -2088,7 +2100,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 @ push($1) fetch
     ex   DE, HL         ; 1:4       $1 @ push($1) fetch
-    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch})dnl
+    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch}){}dnl
 dnl
 dnl
 dnl
@@ -2107,7 +2119,7 @@ __{}define({__INFO},{store}){}dnl
     inc  HL             ; 1:6       !  store
     ld  (HL),D          ; 1:7       !  store
     pop  HL             ; 1:10      !  store
-    pop  DE             ; 1:10      !  store})dnl
+    pop  DE             ; 1:10      !  store}){}dnl
 dnl
 dnl
 dnl
@@ -2139,7 +2151,7 @@ __{}    pop  DE             ; 1:10      $1 !  push_store($1)},
 __{}                        ;[5:30]     $1 !  push_store($1)   ( x -- )  addr=$1
 __{}    ld   format({%-15s},($1){,} HL); 3:16      $1 !  push_store($1)
 __{}    ex   DE, HL         ; 1:4       $1 !  push_store($1)
-__{}    pop  DE             ; 1:10      $1 !  push_store($1)})})dnl
+__{}    pop  DE             ; 1:10      $1 !  push_store($1)})}){}dnl
 dnl
 dnl
 dnl
@@ -2192,7 +2204,7 @@ __{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)},
 {
 __{}                        ;[5:30]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 $2 !  push2_store($1,$2)
-__{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)})})dnl
+__{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)})}){}dnl
 dnl
 dnl
 dnl
@@ -2211,7 +2223,7 @@ __{}define({__INFO},{tuck_store}){}dnl
     inc  HL             ; 1:6       tuck ! tuck_store
     ld  (HL),D          ; 1:7       tuck ! tuck_store
     dec  HL             ; 1:6       tuck ! tuck_store
-    pop  DE             ; 1:10      tuck ! tuck_store})dnl
+    pop  DE             ; 1:10      tuck ! tuck_store}){}dnl
 dnl
 dnl
 dnl # tuck ! 2+
@@ -2229,7 +2241,7 @@ __{}define({__INFO},{tuck_store_2add}){}dnl
     inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
     ld  (HL),D          ; 1:7       tuck ! +2 tuck_store_2add
     inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
-    pop  DE             ; 1:10      tuck ! +2 tuck_store_2add})dnl
+    pop  DE             ; 1:10      tuck ! +2 tuck_store_2add}){}dnl
 dnl
 dnl
 dnl # over swap !
@@ -2247,7 +2259,7 @@ __{}define({__INFO},{over_swap_store}){}dnl
     inc  HL             ; 1:6       over swap ! over_swap_store
     ld  (HL),D          ; 1:7       over swap ! over_swap_store
     ex   DE, HL         ; 1:4       over swap ! over_swap_store
-    pop  DE             ; 1:10      over swap ! over_swap_store})dnl
+    pop  DE             ; 1:10      over swap ! over_swap_store}){}dnl
 dnl
 dnl
 dnl # 2dup !
@@ -2264,7 +2276,7 @@ __{}define({__INFO},{2dup_store}){}dnl
     ld  (HL),E          ; 1:7       2dup ! _2dup_store
     inc  HL             ; 1:6       2dup ! _2dup_store
     ld  (HL),D          ; 1:7       2dup ! _2dup_store
-    dec  HL             ; 1:6       2dup ! _2dup_store})dnl
+    dec  HL             ; 1:6       2dup ! _2dup_store}){}dnl
 dnl
 dnl
 dnl # 2dup ! 2+
@@ -2281,7 +2293,7 @@ __{}define({__INFO},{2dup_store_2add}){}dnl
     ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_2add
     inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add
     ld  (HL),D          ; 1:7       2dup ! 2+ _2dup_store_2add
-    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add})dnl
+    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add}){}dnl
 dnl
 dnl
 dnl
@@ -2303,7 +2315,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld  (HL),low format({%-7s},$1); 2:10      $1 over ! push_over_store($1)
     inc  HL             ; 1:6       $1 over ! push_over_store($1)
     ld  (HL),high format({%-6s},$1); 2:10      $1 over ! push_over_store($1)
-    dec  HL             ; 1:6       $1 over ! push_over_store($1)})dnl
+    dec  HL             ; 1:6       $1 over ! push_over_store($1)}){}dnl
 dnl
 dnl
 define({DUP_PUSH_SWAP_STORE},{dnl
@@ -2334,7 +2346,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld  (HL),low format({%-7s},$1); 2:10      $1 over ! 2+ push_over_store_2add($1)
     inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)
     ld  (HL),high format({%-6s},$1); 2:10      $1 over ! 2+ push_over_store_2add($1)
-    inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)})dnl
+    inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)}){}dnl
 dnl
 dnl
 define({DUP_PUSH_SWAP_STORE_2ADD},{dnl
@@ -2364,7 +2376,7 @@ __{}define({__INFO},{move}){}dnl
     jr    z, $+4        ; 2:7/12    move
     ldir                ; 2:u*42/32 move   addr++
     pop  HL             ; 1:10      move
-    pop  DE             ; 1:10      move})dnl
+    pop  DE             ; 1:10      move}){}dnl
 dnl
 dnl
 dnl # u move
@@ -2564,7 +2576,7 @@ __{}define({__INFO},{movegt}){}dnl
     jr    z, $+4        ; 2:7/12    move>
     lddr                ; 2:u*42/32 move>   addr--
     pop  HL             ; 1:10      move>
-    pop  DE             ; 1:10      move>})dnl
+    pop  DE             ; 1:10      move>}){}dnl
 dnl
 dnl
 dnl
@@ -2586,7 +2598,7 @@ __{}define({__INFO},{addstore}){}dnl
     adc   A,(HL)        ; 1:7       +! addstore
     ld  (HL),A          ; 1:7       +! addstore
     pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore})dnl
+    pop  DE             ; 1:10      +! addstore}){}dnl
 dnl
 dnl
 dnl # num addr +!
@@ -2657,7 +2669,7 @@ eval((($1) & 0xffff) == 0xfffd),1,{dnl
     inc  BC             ; 1:6       push2_addstore($1,$2)
     ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
     adc   A, __HEX_H($1)       ; 2:7       push2_addstore($1,$2)   hi($1)
-    ld  (BC),A          ; 1:7       push2_addstore($1,$2)})})dnl
+    ld  (BC),A          ; 1:7       push2_addstore($1,$2)})}){}dnl
 dnl
 dnl
 dnl # -------------------------------------------------------------------------------------
@@ -2685,7 +2697,7 @@ __{}define({__INFO},{2fetch}){}dnl
     inc  HL             ; 1:6       2@ _2fetch
     ld    H, (HL)       ; 1:7       2@ _2fetch
     ld    L, A          ; 1:4       2@ _2fetch
-    ex   DE, HL         ; 1:4       2@ _2fetch ( adr -- lo hi )})dnl
+    ex   DE, HL         ; 1:4       2@ _2fetch ( adr -- lo hi )}){}dnl
 dnl
 dnl
 dnl
@@ -2709,7 +2721,7 @@ __{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2@ push_2fetch($1) hi}dnl
 __{},{dnl
 __{}    ld   DE,format({%-12s},(eval(2+$1))); 4:20      $1 2@ push_2fetch($1) hi})
-    ld   HL,format({%-12s},($1)); 3:16      $1 2@ push_2fetch($1) lo})dnl
+    ld   HL,format({%-12s},($1)); 3:16      $1 2@ push_2fetch($1) lo}){}dnl
 dnl
 dnl
 dnl
@@ -2733,7 +2745,7 @@ __{}define({__INFO},{2store}){}dnl
     inc  HL             ; 1:6       2!  _2store
     ld  (HL),D          ; 1:7       2!  _2store
     pop  HL             ; 1:10      2!  _2store
-    pop  DE             ; 1:10      2!  _2store})dnl
+    pop  DE             ; 1:10      2!  _2store}){}dnl
 dnl
 dnl
 dnl
@@ -2772,7 +2784,7 @@ __{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2!  push_2store($1)   hi},{dnl
 __{}    ld   (__HEX_HL($1+2)), DE   ; 4:20      $1 2!  push_2store($1)   hi})
 __{}    pop  HL             ; 1:10      $1 2!  push_2store($1)
-__{}    pop  DE             ; 1:10      $1 2!  push_2store($1)})})dnl
+__{}    pop  DE             ; 1:10      $1 2!  push_2store($1)})}){}dnl
 dnl
 dnl
 dnl # hi lo addr 2!
@@ -2829,7 +2841,7 @@ __{}__{}__{}    ld   (__HEX_HL($2+2)), HL   ; 3:16      $1 $2 2!  push2_2store($
 __{}__{}__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2!  push2_2store($1,$2)
 __{}__{}__{}    ld   (__HEX_HL($2)), HL   ; 3:16      $1 $2 2!  push2_2store($1,$2)   lo})})
 __{}    pop  HL             ; 1:10      $1 $2 2!  push2_2store($1,$2)
-__{}    ex   DE, HL         ; 1:4       $1 $2 2!  push2_2store($1,$2)})})dnl
+__{}    ex   DE, HL         ; 1:4       $1 $2 2!  push2_2store($1,$2)})}){}dnl
 dnl
 dnl
 dnl
@@ -2895,7 +2907,7 @@ __{}    ld  format({%-16s},{(1+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store
 __{}__{}    ld    A, __HEX_E($1)       ; 2:7       $1. $2 2!  pushdot_push_2store($1,$2)   E})
 __{}    ld  format({%-16s},{(2+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   E{}ifelse(__HEX_D($1),__HEX_E($1),,{
 __{}__{}    ld    A, __HEX_D($1)       ; 2:7       $1. $2 2!  pushdot_push_2store($1,$2)   D})
-__{}    ld  format({%-16s},{(3+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   D})})dnl
+__{}    ld  format({%-16s},{(3+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store($1,$2)   D})}){}dnl
 dnl
 dnl
 dnl
@@ -2912,7 +2924,7 @@ __{}define({__INFO},{fast_copy_16_bytes_init}){}dnl
     push HL             ; 1:11      save tos
     exx                 ; 1:4
     push HL             ; 1:11      save ras
-    ld   format({%-15s},($1){,}SP); 4:20      save orig SP})dnl
+    ld   format({%-15s},($1){,}SP); 4:20      save orig SP}){}dnl
 dnl
 define({FAST_COPY_16_BYTES_STOP},{dnl
 __{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES_STOP},{fast_copy_16_bytes_stop},$@){}dnl
@@ -2927,7 +2939,7 @@ __{}define({__INFO},{fast_copy_16_bytes_stop}){}dnl
     exx                 ; 1:4
     pop  HL             ; 1:10      load tos
     pop  HL             ; 1:10      load nos
-    ei                  ; 1:4})dnl
+    ei                  ; 1:4}){}dnl
 dnl
 dnl
 dnl
@@ -2960,7 +2972,7 @@ __{}define({__INFO},{fast_copy_16_bytes}){}dnl
     push HL             ; 1:11
     push DE             ; 1:11
     push BC             ; 1:11
-    push AF             ; 1:11})dnl
+    push AF             ; 1:11}){}dnl
 dnl
 dnl
 dnl

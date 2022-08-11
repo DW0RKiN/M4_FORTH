@@ -22,10 +22,10 @@ include(M4PATH{}stack.m4)dnl
 include(M4PATH{}array.m4)dnl
 include(M4PATH{}zx48float.m4)dnl
 dnl
-define({__},{})dnl
+define({__},{}){}dnl
 dnl
 define({last_action},{dnl
-__{}__COMPILE()dnl
+__{}__COMPILE{}dnl
 __{}include(M4PATH{}float_runtime.m4)dnl
 __{}include(M4PATH{}graphic_runtime.m4)dnl
 __{}include(M4PATH{}zx48float_runtime.m4)dnl
