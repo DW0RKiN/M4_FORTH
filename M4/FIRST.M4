@@ -25,6 +25,7 @@ dnl
 define({__},{})dnl
 dnl
 define({last_action},{dnl
+__{}__COMPILE()dnl
 __{}include(M4PATH{}float_runtime.m4)dnl
 __{}include(M4PATH{}graphic_runtime.m4)dnl
 __{}include(M4PATH{}zx48float_runtime.m4)dnl

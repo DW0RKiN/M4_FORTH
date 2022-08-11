@@ -1,9 +1,8 @@
 dnl ## non-recursive xdo(stop,index) xi i xloop
-define({__},{})dnl
 dnl
 dnl
 dnl
-define({_LOOP_ANALYSIS_RECURSE},{dnl
+define({_LOOP_ANALYSIS_RECURSE}, {dnl
 __{}ifelse(eval((($1)!=($2))),{1},{dnl
 __{}__{}define({_TEMP_X},eval(1+_TEMP_X)){}dnl
 __{}__{}ifelse(eval((($1)^($2)) & 0x00FF), {0}, {define({_TEMP_LO_FALSE_POSITIVE},eval(1+_TEMP_LO_FALSE_POSITIVE))}){}dnl
@@ -13,7 +12,7 @@ __{}}){}dnl
 })dnl
 dnl
 dnl
-define({_LOOP_ANALYSIS},{dnl
+define({_LOOP_ANALYSIS}, {dnl
 __{}ifelse(eval(($1)<0),{1},{dnl
 __{}__{}define({_TEMP_REAL_STOP},{eval((INDEX_STACK+($1)*(1+((0x10000+INDEX_STACK-(STOP_STACK)) & 0xffff)/(-($1)))) & 0xffff)})},
 __{}{dnl
@@ -25,12 +24,18 @@ __{}_LOOP_ANALYSIS_RECURSE(eval((0x10000+(INDEX_STACK)+($1)) & 0xFFFF),_TEMP_REA
 })dnl
 dnl
 dnl
-dnl ---------- xdo(stop,index) ... xloop ------------
-dnl Napevno zadavana optimalizovana konstantni smycka, jejiz rozsah je znam uz v dobe kompilace a kterou nelze programove menit
-dnl ( -- )
-dnl xdo(stop,index) ... xloop
-dnl xdo(stop,index) ... addxloop(step)
-define({XDO},{
+dnl # ---------- xdo(stop,index) ... xloop ------------
+dnl # Napevno zadavana optimalizovana konstantni smycka, jejiz rozsah je znam uz v dobe kompilace a kterou nelze programove menit
+dnl # ( -- )
+dnl # xdo(stop,index) ... xloop
+dnl # xdo(stop,index) ... addxloop(step)
+define({XDO},{dnl
+__{}__ADD_TOKEN({__TOKEN_XDO},{xdo},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XDO},{dnl
+__{}define({__INFO},{xdo}){}dnl
+
 __{}pushdef({STOP_STACK}, $1){}dnl
 __{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
@@ -45,8 +50,14 @@ __{}    ld  format({%-16s},(idx{}LOOP_STACK){,}BC); 4:20      xdo($1,$2) LOOP_ST
 __{}xdo{}LOOP_STACK:                 ;           xdo($1,$2) LOOP_STACK})dnl
 dnl
 dnl
-dnl do i
-define({XDO_XI},{
+dnl # do i
+define({XDO_XI},{dnl
+__{}__ADD_TOKEN({__TOKEN_XDO_XI},{xdo_xi},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XDO_XI},{dnl
+__{}define({__INFO},{xdo_xi}){}dnl
+
 __{}pushdef({STOP_STACK}, $1){}dnl
 __{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
@@ -65,8 +76,14 @@ __{}    ld    H, B          ; 1:4       xdo_xi($1,$2) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_xi($1,$2) LOOP_STACK})dnl
 dnl
 dnl
-dnl do drop i
-define({XDO_DROP_XI},{
+dnl # do drop i
+define({XDO_DROP_XI},{dnl
+__{}__ADD_TOKEN({__TOKEN_XDO_DROP_XI},{xdo_drop_xi},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XDO_DROP_XI},{dnl
+__{}define({__INFO},{xdo_drop_xi}){}dnl
+
 __{}pushdef({STOP_STACK}, $1){}dnl
 __{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
@@ -83,8 +100,14 @@ __{}    ld    H, B          ; 1:4       xdo_drop_xi($1,$2) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_drop_xi($1,$2) LOOP_STACK})dnl
 dnl
 dnl
-dnl do n i
-define({XDO_PUSH_XI},{
+dnl # do n i
+define({XDO_PUSH_XI},{dnl
+__{}__ADD_TOKEN({__TOKEN_XDO_PUSH_XI},{xdo_push_xi},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XDO_PUSH_XI},{dnl
+__{}define({__INFO},{xdo_push_xi}){}dnl
+
 __{}pushdef({STOP_STACK}, $1){}dnl
 __{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
@@ -104,10 +127,16 @@ __{}    ld    H, B          ; 1:4       xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_push_xi($1,$2,$3) LOOP_STACK})dnl
 dnl
 dnl
-dnl ( -- )
-dnl xdo(stop,index) ... xloop
-dnl xdo(stop,index) ... addxloop(step)
-define({QUESTIONXDO},{
+dnl # ( -- )
+dnl # xdo(stop,index) ... xloop
+dnl # xdo(stop,index) ... addxloop(step)
+define({QUESTIONXDO},{dnl
+__{}__ADD_TOKEN({__TOKEN_QUESTIONXDO},{questionxdo},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_QUESTIONXDO},{dnl
+__{}define({__INFO},{questionxdo}){}dnl
+
 __{}pushdef({STOP_STACK}, $1){}dnl
 __{}pushdef({INDEX_STACK}, $2){}dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
@@ -127,8 +156,14 @@ __{}xdo{}LOOP_STACK:                 ;           ?xdo($1,$2) LOOP_STACK})dnl
 dnl
 dnl
 dnl
-dnl ( -- )
-define({XLOOP},{_LOOP_ANALYSIS(1){}ifelse(_TEMP_X,{1},{
+dnl # ( -- )
+define({XLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_XLOOP},{xloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XLOOP},{dnl
+__{}define({__INFO},{xloop}){}dnl
+_LOOP_ANALYSIS(1){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           xloop LOOP_STACK   variant +1.null: positive step and no repeat},
 eval((0<=(INDEX_STACK)) && ((INDEX_STACK)<(STOP_STACK)) && ((STOP_STACK)==256)),{1},{
 __{}                        ;[10:38]    xloop LOOP_STACK   variant +1.A: 0 <= index < stop == 256, run _TEMP_X{}x
@@ -231,8 +266,14 @@ __{}popdef({STOP_STACK}){}dnl
 __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
-dnl ( -- )
-define({SUB1_ADDXLOOP},{_LOOP_ANALYSIS(-1){}ifelse(_TEMP_X,{1},{
+dnl # ( -- )
+define({SUB1_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SUB1_ADDXLOOP},{sub1_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SUB1_ADDXLOOP},{dnl
+__{}define({__INFO},{sub1_addxloop}){}dnl
+_LOOP_ANALYSIS(-1){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           -1 +xloop LOOP_STACK   variant -1.null: positive step and no repeat},
 eval(STOP_STACK),{0},{
 __{}                        ;[9:54/34]  -1 +xloop LOOP_STACK   variant -1.A: step -1 and stop 0, run _TEMP_X{}x
@@ -325,9 +366,15 @@ __{}popdef({STOP_STACK}){}dnl
 __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
-dnl 2 +loop
-dnl ( -- )
-define({_ADD2_ADDXLOOP},{_LOOP_ANALYSIS(2){}ifelse(_TEMP_X,{1},{
+dnl # 2 +loop
+dnl # ( -- )
+define({_ADD2_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ADD2_ADDXLOOP},{add2_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ADD2_ADDXLOOP},{dnl
+__{}define({__INFO},{add2_addxloop}){}dnl
+_LOOP_ANALYSIS(2){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           2 +xloop LOOP_STACK   variant +2.null: positive step and no repeat},
 eval(_TEMP_REAL_STOP),{0},{
 __{}                        ;[10:58/38] 2 +xloop LOOP_STACK   variant +2.A: step 2 and real_stop is zero, run _TEMP_X{}x
@@ -415,9 +462,15 @@ __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
 dnl
-dnl -2 +loop
-dnl ( -- )
-define({_SUB2_ADDXLOOP},{_LOOP_ANALYSIS(-2){}ifelse(_TEMP_X,{1},{
+dnl # -2 +loop
+dnl # ( -- )
+define({_SUB2_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SUB2_ADDXLOOP},{sub2_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SUB2_ADDXLOOP},{dnl
+__{}define({__INFO},{sub2_addxloop}){}dnl
+_LOOP_ANALYSIS(-2){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           -2 +xloop LOOP_STACK   variant -2.null: positive step and no repeat},
 eval((_TEMP_REAL_STOP+2) & 0xFFFF),{0},{
 __{}                        ;[10:58/38] -2 +xloop LOOP_STACK   variant -2.A: step -2 and real_stop is -2, run _TEMP_X{}x
@@ -538,10 +591,16 @@ __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
 dnl
-dnl stop index do ... +step +loop
-dnl ( -- )
-dnl xdo(stop,index) ... push_addxloop(+step)
-define({POSITIVE_ADDXLOOP},{_LOOP_ANALYSIS($1){}ifelse(_TEMP_X,{1},{
+dnl # stop index do ... +step +loop
+dnl # ( -- )
+dnl # xdo(stop,index) ... push_addxloop(+step)
+define({POSITIVE_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_POSITIVE_ADDXLOOP},{positive_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_POSITIVE_ADDXLOOP},{dnl
+__{}define({__INFO},{positive_addxloop}){}dnl
+_LOOP_ANALYSIS($1){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           $1 +xloop LOOP_STACK   variant +X.null: positive step and no repeat},
 eval((0 <= INDEX_STACK) && (INDEX_STACK < STOP_STACK) && (STOP_STACK < 256)),{1},{
 __{}                        ;[13:48]    $1 +xloop LOOP_STACK   variant +X.A: positive step and 0 <= index < stop < 256, run _TEMP_X{}x
@@ -694,10 +753,16 @@ __{}popdef({INDEX_STACK})}){}dnl
 dnl
 dnl
 dnl
-dnl stop index do ... -step +loop
-dnl ( -- )
-dnl xdo(stop,index) ... push_addxloop(-step)
-define({NEGATIVE_ADDXLOOP},{_LOOP_ANALYSIS($1){}ifelse(_TEMP_X,{1},{
+dnl # stop index do ... -step +loop
+dnl # ( -- )
+dnl # xdo(stop,index) ... push_addxloop(-step)
+define({NEGATIVE_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_NEGATIVE_ADDXLOOP},{negative_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NEGATIVE_ADDXLOOP},{dnl
+__{}define({__INFO},{negative_addxloop}){}dnl
+_LOOP_ANALYSIS($1){}ifelse(_TEMP_X,{1},{
 __{}idx{}LOOP_STACK EQU xdo{}LOOP_STACK{}save-2 ;           $1 +xloop LOOP_STACK   variant -X.null: positive step and no repeat},
 eval(($1==-3) && (STOP_STACK==0)),{1},{
 __{}                        ;[11:66/46] $1 +xloop LOOP_STACK   variant -X.A: step -3 and stop 0, run _TEMP_X{}x
@@ -783,10 +848,16 @@ __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
 dnl
-dnl stop index do ... step +loop
-dnl ( -- )
-dnl xdo(stop,index) ... push_addxloop(step)
+dnl # stop index do ... step +loop
+dnl # ( -- )
+dnl # xdo(stop,index) ... push_addxloop(step)
 define({X_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_X_ADDXLOOP},{x_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_X_ADDXLOOP},{dnl
+__{}define({__INFO},{x_addxloop}){}dnl
+dnl
 __{}                        ;[24:119]   $1 +xloop LOOP_STACK   variant: INDEX_STACK.. $1 ..STOP_STACK
 __{}    push HL             ; 1:11      $1 +xloop LOOP_STACK
 __{}idx{}LOOP_STACK EQU $+1          ;           $1 +xloop LOOP_STACK
@@ -824,33 +895,46 @@ __{}popdef({INDEX_STACK}){}dnl
 dnl
 dnl
 dnl
-dnl step +loop
-dnl ( -- )
-define({PUSH_ADDXLOOP},{ifelse($1,{},{
+dnl # step +loop
+dnl # ( -- )
+define({PUSH_ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ADDXLOOP},{push_addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ADDXLOOP},{dnl
+__{}define({__INFO},{push_addxloop}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!
 __{}},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!
 __{}})dnl
-__{}ifelse(__IS_NUM($1),{0},{X_ADDXLOOP($1)},{dnl
+__{}ifelse(__IS_NUM($1),{0},{__ASM_TOKEN_X_ADDXLOOP($1)},{dnl
 __{}__{}ifelse(eval($1),{1},{
-__{}__{}__{}                        ;           push_addxloop($1) --> xloop LOOP_STACK{}XLOOP{}},
+__{}__{}__{}                        ;           push_addxloop($1) --> xloop LOOP_STACK{}dnl
+__{}__{}__{}__ASM_TOKEN_XLOOP{}},
 __{}__{}eval($1),{-1},{dnl
-__{}__{}__{}SUB1_ADDXLOOP{}},
+__{}__{}__{}__ASM_TOKEN_SUB1_ADDXLOOP{}},
 __{}__{}eval($1),{2},{dnl
-__{}__{}__{}_ADD2_ADDXLOOP{}},
+__{}__{}__{}__ASM_TOKEN_ADD2_ADDXLOOP{}},
 __{}__{}eval(((($1) & 0xFFFF)+2) & 0xFFFF),{0},{dnl
-__{}__{}__{}_SUB2_ADDXLOOP{}},
+__{}__{}__{}__ASM_TOKEN_SUB2_ADDXLOOP{}},
 __{}__{}eval($1>0),{1},{dnl
-__{}__{}__{}POSITIVE_ADDXLOOP($1)},
+__{}__{}__{}__ASM_TOKEN_POSITIVE_ADDXLOOP($1)},
 __{}__{}{dnl
-__{}__{}__{}NEGATIVE_ADDXLOOP($1)}){}dnl
+__{}__{}__{}__ASM_TOKEN_NEGATIVE_ADDXLOOP($1)}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-define({ADDXLOOP},{ifelse({fast},{slow},{
+define({ADDXLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ADDXLOOP},{addxloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ADDXLOOP},{dnl
+__{}define({__INFO},{addxloop}){}dnl
+ifelse({fast},{slow},{
 __{}    ld    B, H          ; 1:4       +xloop LOOP_STACK
 __{}    ld    C, L          ; 1:4       +xloop LOOP_STACK   BC = step
 __{}idx{}LOOP_STACK EQU $+1          ;           +xloop LOOP_STACK
@@ -919,24 +1003,42 @@ __{}popdef({STOP_STACK}){}dnl
 __{}popdef({INDEX_STACK})})dnl
 dnl
 dnl
-dnl ( -- i )
-dnl hodnota indexu vnitrni smycky
-define({XI},{
+dnl # ( -- i )
+dnl # hodnota indexu vnitrni smycky
+define({XI},{dnl
+__{}__ADD_TOKEN({__TOKEN_XI},{xi},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XI},{dnl
+__{}define({__INFO},{xi}){}dnl
+
     push DE             ; 1:11      {index}(LOOP_STACK) xi
     ex   DE, HL         ; 1:4       {index}(LOOP_STACK) xi
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      {index}(LOOP_STACK) xi   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
-dnl drop i
-dnl ( n -- i )
-dnl Overwrites TOS with loop index "i".
-define({DROP_XI},{
+dnl # drop i
+dnl # ( n -- i )
+dnl # Overwrites TOS with loop index "i".
+define({DROP_XI},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_XI},{drop_xi},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_XI},{dnl
+__{}define({__INFO},{drop_xi}){}dnl
+
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      drop {index}(LOOP_STACK) drop_xi   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
-dnl ( -- n i )
-dnl vlozeni hodnoty a indexu vnitrni smycky
-define({PUSH_XI},{ifelse($1,{},{
+dnl # ( -- n i )
+dnl # vlozeni hodnoty a indexu vnitrni smycky
+define({PUSH_XI},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_XI},{push_xi},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_XI},{dnl
+__{}define({__INFO},{push_xi}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -946,10 +1048,16 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      $1 {index}(LOOP_STACK) push_xi($1)   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
-dnl n i !
-dnl ( -- )
-dnl vlozeni hodnoty a indexu vnitrni smycky a zavolani store
-define({PUSH_XI_STORE},{ifelse($1,{},{
+dnl # n i !
+dnl # ( -- )
+dnl # vlozeni hodnoty a indexu vnitrni smycky a zavolani store
+define({PUSH_XI_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_XI_STORE},{push_xi_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_XI_STORE},{dnl
+__{}define({__INFO},{push_xi_store}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -971,10 +1079,16 @@ __{}    ld  (BC),A          ; 1:7       $1 {index}(LOOP_STACK) ! push_xi_store($
 }){}dnl
 dnl
 dnl
-dnl char i !
-dnl ( -- )
-dnl store 8-bit char at addr i
-define({PUSH_XI_CSTORE},{ifelse($1,{},{
+dnl # char i !
+dnl # ( -- )
+dnl # store 8-bit char at addr i
+define({PUSH_XI_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_XI_CSTORE},{push_xi_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_XI_CSTORE},{dnl
+__{}define({__INFO},{push_xi_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -991,37 +1105,61 @@ __{}    ld  (BC),A          ; 1:7       $1 {index}(LOOP_STACK) C! push_xi_cstore
 dnl
 dnl
 dnl
-dnl ( -- j )
-dnl hodnota indexu druhe vnitrni smycky
-define({XJ},{pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
+dnl # ( -- j )
+dnl # hodnota indexu druhe vnitrni smycky
+define({XJ},{dnl
+__{}__ADD_TOKEN({__TOKEN_XJ},{xj},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XJ},{dnl
+__{}define({__INFO},{xj}){}dnl
+pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
     push DE             ; 1:11      {index}(LOOP_STACK) xj
     ex   DE, HL         ; 1:4       {index}(LOOP_STACK) xj
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      {index}(LOOP_STACK) xj   idx always points to a 16-bit index{}dnl
 __{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK})}){}dnl
 dnl
 dnl
-dnl drop j
-dnl ( n -- j )
-dnl Overwrites TOS with loop index "j".
-define({DROP_XJ},{pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
+dnl # drop j
+dnl # ( n -- j )
+dnl # Overwrites TOS with loop index "j".
+define({DROP_XJ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_XJ},{drop_xj},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_XJ},{dnl
+__{}define({__INFO},{drop_xj}){}dnl
+pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      drop {index}(LOOP_STACK) drop_xj   idx always points to a 16-bit index{}dnl
 __{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK})}){}dnl
 dnl
 dnl
 dnl
-dnl ( -- k )
-dnl hodnota indexu treti vnitrni smycky
-define({XK},{pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
+dnl # ( -- k )
+dnl # hodnota indexu treti vnitrni smycky
+define({XK},{dnl
+__{}__ADD_TOKEN({__TOKEN_XK},{xk},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XK},{dnl
+__{}define({__INFO},{xk}){}dnl
+pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
     push DE             ; 1:11      {index}(LOOP_STACK) xk
     ex   DE, HL         ; 1:4       {index}(LOOP_STACK) xk
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      {index}(LOOP_STACK) xk   idx always points to a 16-bit index{}dnl
 __{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK}){}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK})}){}dnl
 dnl
 dnl
-dnl drop i
-dnl ( n -- i )
-dnl Overwrites TOS with loop index "k".
-define({DROP_XK},{pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
+dnl # drop i
+dnl # ( n -- i )
+dnl # Overwrites TOS with loop index "k".
+define({DROP_XK},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_XK},{drop_xk},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_XK},{dnl
+__{}define({__INFO},{drop_xk}){}dnl
+pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK}){}pushdef({TEMP_STACK},LOOP_STACK){}popdef({LOOP_STACK})
     ld   HL, (idx{}LOOP_STACK)   ; 3:16      drop {index}(LOOP_STACK) drop_xk   idx always points to a 16-bit index{}dnl
 __{}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK}){}pushdef({LOOP_STACK},TEMP_STACK){}popdef({TEMP_STACK})}){}dnl
 dnl

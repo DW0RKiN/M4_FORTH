@@ -1,33 +1,44 @@
 dnl ## recursive sdo si sloop
-define({__},{})dnl
 dnl
 dnl
-dnl ---------  sdo ... sloop  -----------
-dnl 5 0 sdo . sloop --> 0 1 2 3 4
-dnl ( stop index -- stop index )
-define({SDO}, {ifelse($#,{0},,{
+dnl # ---------  sdo ... sloop  -----------
+dnl # 5 0 sdo . sloop --> 0 1 2 3 4
+dnl # ( stop index -- stop index )
+define({SDO},{dnl
+__{}__ADD_TOKEN({__TOKEN_SDO},{sdo},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SDO},{dnl
+__{}define({__INFO},{sdo}){}dnl
+ifelse($#,{0},,{
 .error Unexpected parameter: sdo($@) --> push($@) sdo ?})
 dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
-__{}    jp   sleave{}LOOP_STACK      ; 3:10      sleave LOOP_STACK})dnl
+__{}    jp   sleave{}LOOP_STACK      ; 3:10      sleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}    pop  HL             ; 1:10      unsloop LOOP_STACK index out
 __{}    pop  DE             ; 1:10      unsloop LOOP_STACK stop  out})
-sdo{}LOOP_STACK:                 ;           sdo LOOP_STACK ( stop index -- stop index )})dnl
+sdo{}LOOP_STACK:                 ;           sdo LOOP_STACK ( stop index -- stop index )}){}dnl
 dnl
 dnl
-dnl ---------  ?sdo ... sloop  -----------
-dnl 5 0 sdo . sloop --> 0 1 2 3 4
-dnl ( stop index -- stop index )
-define({QUESTIONSDO}, {ifelse($#,{0},,{
+dnl # ---------  ?sdo ... sloop  -----------
+dnl # 5 0 sdo . sloop --> 0 1 2 3 4
+dnl # ( stop index -- stop index )
+define({QUESTIONSDO},{dnl
+__{}__ADD_TOKEN({__TOKEN_QUESTIONSDO},{questionsdo},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_QUESTIONSDO},{dnl
+__{}define({__INFO},{questionsdo}){}dnl
+ifelse($#,{0},,{
 .error Unexpected parameter: sdo($@) --> push($@) sdo ?})
 dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
-__{}    jp   sleave{}LOOP_STACK      ; 3:10      sleave LOOP_STACK})dnl
+__{}    jp   sleave{}LOOP_STACK      ; 3:10      sleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}    pop  HL             ; 1:10      unsloop LOOP_STACK index out
 __{}    pop  DE             ; 1:10      unsloop LOOP_STACK stop  out})
@@ -36,26 +47,44 @@ __{}    pop  DE             ; 1:10      unsloop LOOP_STACK stop  out})
     sbc  HL, DE         ; 2:15      ?sdo LOOP_STACK
     pop  HL             ; 1:10      ?sdo LOOP_STACK
     jp    z, sleave{}LOOP_STACK  ; 3:10      ?sdo LOOP_STACK
-sdo{}LOOP_STACK:                 ;           ?sdo LOOP_STACK ( stop index -- stop index )})dnl
+sdo{}LOOP_STACK:                 ;           ?sdo LOOP_STACK ( stop index -- stop index )}){}dnl
 dnl
 dnl
-dnl ( i -- i i )
-dnl To same co DUP
-dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
-define({SI}, {
-    DUP})dnl
+dnl # ( i -- i i )
+dnl # To same co DUP
+dnl # dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
+define({SI},{dnl
+__{}__ADD_TOKEN({__TOKEN_SI},{si},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SI},{dnl
+__{}define({__INFO},{si}){}dnl
+
+    DUP}){}dnl
 dnl
 dnl
-dnl ( j s i -- j s i j )
-dnl 2 pick
-dnl dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
-define({SJ}, {
-    PUSH_PICK(2)})dnl
+dnl # ( j s i -- j s i j )
+dnl # 2 pick
+dnl # dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
+define({SJ},{dnl
+__{}__ADD_TOKEN({__TOKEN_SJ},{sj},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SJ},{dnl
+__{}define({__INFO},{sj}){}dnl
+
+    PUSH_PICK(2)}){}dnl
 dnl
 dnl
 dnl
-dnl ( stop index -- stop index++ )
-define({SLOOP},{
+dnl # ( stop index -- stop index++ )
+define({SLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SLOOP},{sloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SLOOP},{dnl
+__{}define({__INFO},{sloop}){}dnl
+
     inc  HL             ; 1:6       sloop LOOP_STACK index++
     ld    A, E          ; 1:4       sloop LOOP_STACK
     xor   L             ; 1:4       sloop LOOP_STACK lo index - stop
@@ -67,12 +96,18 @@ sleave{}LOOP_STACK:              ;           sloop LOOP_STACK{}dnl
 __{}UNLOOP_STACK
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
-__{}popdef({LOOP_STACK})})dnl
+__{}popdef({LOOP_STACK})}){}dnl
 dnl
 dnl
 dnl
-dnl ( stop index -- stop index++ )
-define({SUB1_ADDSLOOP},{
+dnl # ( stop index -- stop index++ )
+define({SUB1_ADDSLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SUB1_ADDSLOOP},{sub1_addsloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SUB1_ADDSLOOP},{dnl
+__{}define({__INFO},{sub1_addsloop}){}dnl
+
     ld    A, L          ; 1:4       -1 +sloop LOOP_STACK
     xor   E             ; 1:4       -1 +sloop LOOP_STACK lo index - stop
     ld    A, H          ; 1:4       -1 +sloop LOOP_STACK
@@ -84,12 +119,18 @@ sleave{}LOOP_STACK:              ;           -1 +sloop LOOP_STACK{}dnl
 __{}UNLOOP_STACK
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
-__{}popdef({LOOP_STACK})})dnl
+__{}popdef({LOOP_STACK})}){}dnl
 dnl
 dnl
-dnl +loop
-dnl ( stop index step -- stop index+step )
-define({ADDSLOOP},{ifelse({slow},{slow},{
+dnl # +loop
+dnl # ( stop index step -- stop index+step )
+define({ADDSLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ADDSLOOP},{addsloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ADDSLOOP},{dnl
+__{}define({__INFO},{addsloop}){}dnl
+ifelse({slow},{slow},{
 __{}    pop  BC             ; 1:10      +sloop LOOP_STACK BC = stop
 __{}    ex   DE, HL         ; 1:4       +sloop LOOP_STACK
 __{}    or    A             ; 1:4       +sloop LOOP_STACK
@@ -98,7 +139,7 @@ __{}    ld    A, H          ; 1:4       +sloop LOOP_STACK
 __{}    add  HL, DE         ; 1:11      +sloop LOOP_STACK HL = index-stop+step
 __{}    xor   H             ; 1:4       +sloop LOOP_STACK sign flag!
 __{}    add  HL, BC         ; 1:11      +sloop LOOP_STACK HL = index+step, sign flag unaffected},{
-dnl                           9:63
+dnl #                           9:63
 __{}    pop  BC             ; 1:10      +sloop LOOP_STACK BC = stop
 __{}    add  HL, DE         ; 1:11      +sloop LOOP_STACK index+step
 __{}    ld    A, E          ; 1:4       +sloop LOOP_STACK
@@ -111,7 +152,7 @@ __{}    sub   C             ; 1:4       +sloop LOOP_STACK
 __{}    ld    A, H          ; 1:4       +sloop LOOP_STACK
 __{}    sbc   A, B          ; 1:4       +sloop LOOP_STACK
 __{}    xor   E             ; 1:4       +sloop LOOP_STACK})
-dnl                          12:61
+dnl #                          12:61
     ld    D, B          ; 1:4       +sloop LOOP_STACK
     ld    E, C          ; 1:4       +sloop LOOP_STACK
     jp    p, sdo{}LOOP_STACK     ; 3:10      +sloop LOOP_STACK
@@ -120,12 +161,18 @@ __{}UNLOOP_STACK
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
-dnl 2 +loop
-dnl ( stop index -- stop index+step )
-define({_2_ADDSLOOP},{ifelse({fast},{fast},{
+dnl # 2 +loop
+dnl # ( stop index -- stop index+step )
+define({_2_ADDSLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_2_ADDSLOOP},{2_addsloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2_ADDSLOOP},{dnl
+__{}define({__INFO},{2_addsloop}){}dnl
+ifelse({fast},{fast},{
 __{}    inc  HL             ; 1:6       2 +sloop LOOP_STACK
 __{}    inc  HL             ; 1:6       2 +sloop LOOP_STACK HL = index+2
 __{}    ld    A, L          ; 1:4       2 +sloop LOOP_STACK
@@ -136,7 +183,7 @@ __{}    jp   nz, sdo{}LOOP_STACK     ; 3:10      2 +sloop LOOP_STACK
 __{}    ld    A, H          ; 1:4       2 +sloop LOOP_STACK
 __{}    sbc   A, D          ; 1:4       2 +sloop LOOP_STACK
 __{}    jp   nz, sdo{}LOOP_STACK     ; 3:10      2 +sloop LOOP_STACK},{
-dnl                          14:38/56
+dnl #                          14:38/56
 __{}    or    A             ; 1:4       2 +sloop LOOP_STACK
 __{}    sbc  HL, DE         ; 2:15      2 +sloop LOOP_STACK HL = index-stop
 __{}    ld    A, H          ; 1:4       2 +sloop LOOP_STACK
@@ -145,18 +192,24 @@ __{}    inc  HL             ; 1:6       2 +sloop LOOP_STACK HL = index+2-stop
 __{}    xor   H             ; 1:4       2 +sloop LOOP_STACK sign flag!
 __{}    add  HL, DE         ; 1:11      2 +sloop LOOP_STACK HL = index+step, sign flag unaffected
 __{}    jp    p, sdo{}LOOP_STACK     ; 3:10      2 +sloop LOOP_STACK})
-dnl                          11:60
+dnl #                          11:60
 sleave{}LOOP_STACK:              ;           2 +sloop LOOP_STACK{}dnl
 __{}UNLOOP_STACK
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
-dnl step +loop
-dnl ( stop index -- stop index+step )
-define({PUSHX_ADDSLOOP},{
+dnl # step +loop
+dnl # ( stop index -- stop index+step )
+define({PUSHX_ADDSLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHX_ADDSLOOP},{pushx_addsloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHX_ADDSLOOP},{dnl
+__{}define({__INFO},{pushx_addsloop}){}dnl
+
     ld   BC, format({%-11s},eval($1)); 3:10      push_addsloop($1) LOOP_STACK BC = step
     or    A             ; 1:4       push_addsloop($1) LOOP_STACK
     sbc  HL, DE         ; 2:15      push_addsloop($1) LOOP_STACK HL = index-stop
@@ -170,20 +223,26 @@ __{}UNLOOP_STACK
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
-dnl step +loop
-dnl ( -- )
-define({PUSH_ADDSLOOP},{ifelse(eval($1),{1},{
+dnl # step +loop
+dnl # ( -- )
+define({PUSH_ADDSLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ADDSLOOP},{push_addsloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ADDSLOOP},{dnl
+__{}define({__INFO},{push_addsloop}){}dnl
+ifelse(eval($1),{1},{
                         ;           push_addsloop($1) LOOP_STACK{}SLOOP},
 eval($1),{-1},{
                         ;           push_addsloop($1) LOOP_STACK{}SUB1_ADDSLOOP},
 eval($1),{2},{
                         ;           push_addsloop($1) LOOP_STACK{}_2_ADDSLOOP},
 {$#},{1},{PUSHX_ADDSLOOP($1)},{
-.error push_addsloop without parameter!})})dnl
+.error push_addsloop without parameter!})}){}dnl
 dnl
 dnl
 dnl

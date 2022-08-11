@@ -1,4 +1,5 @@
-define({__},{})dnl
+dnl ## Memory
+dnl
 dnl
 dnl
 define({ALL_VARIABLE},{})dnl
@@ -6,7 +7,13 @@ define({LAST_HERE_NAME},{VARIABLE_SECTION})dnl
 define({LAST_HERE_ADD},{0})dnl
 dnl
 dnl
-define({CONSTANT},{ifelse($1,{},{
+define({CONSTANT},{dnl
+__{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CONSTANT},{dnl
+__{}define({__INFO},{constant}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -18,7 +25,13 @@ dnl
 dnl
 dnl
 dnl # VALUE(name)    --> (name) = TOS
-define({VALUE},{ifelse($1,{},{
+define({VALUE},{dnl
+__{}__ADD_TOKEN({__TOKEN_VALUE},{value},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_VALUE},{dnl
+__{}define({__INFO},{value}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -38,7 +51,13 @@ __{}    pop  DE             ; 1:10      value {$1}})}){}dnl
 dnl
 dnl
 dnl
-define({PUSH_VALUE},{ifelse($2,{},{
+define({PUSH_VALUE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_VALUE},{push_value},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_VALUE},{dnl
+__{}define({__INFO},{push_value}){}dnl
+ifelse($2,{},{
 dnl # PUSH_VALUE(100,name)    --> (name) = 100
 dnl # PUSH_VALUE(0x2211,name) --> (name) = 0x2211
 __{}  .error {$0}(): Missing  parameter with variable name!},
@@ -64,7 +83,13 @@ dnl
 dnl
 dnl
 dnl # DVALUE(name)    --> (name) = TOS,NOS
-define({DVALUE},{ifelse($1,{},{
+define({DVALUE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DVALUE},{dvalue},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DVALUE},{dnl
+__{}define({__INFO},{dvalue}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -87,7 +112,13 @@ __{}    pop  DE             ; 1:10      dvalue {$1}})}){}dnl
 dnl
 dnl
 dnl
-define({PUSHDOT_DVALUE},{ifelse($2,{},{
+define({PUSHDOT_DVALUE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DVALUE},{pushdot_dvalue},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_DVALUE},{dnl
+__{}define({__INFO},{pushdot_dvalue}){}dnl
+ifelse($2,{},{
 dnl # PUSHDOT_DVALUE(100000,name)     --> (name) = 100000
 dnl # PUSHDOT_DVALUE(0x44332211,name) --> (name) = 0x2211,0x4433
 __{}  .error {$0}(): Missing  parameter with variable name!},
@@ -129,7 +160,13 @@ __{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1 dvalue {$2}   hi})})}
 dnl
 dnl
 dnl
-define({TO},{ifelse({$1},{},{
+define({TO},{dnl
+__{}__ADD_TOKEN({__TOKEN_TO},{to},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TO},{dnl
+__{}define({__INFO},{to}){}dnl
+ifelse({$1},{},{
 dnl # TO(name)    --> (name) = TOS
 dnl # TO(name)    --> (name) = TOS,NOS
 __{}  .error {$0}(): Missing  parameter with variable name!},
@@ -150,7 +187,13 @@ __{}  .error {$0}($@): The variable with this name not exist!})}){}dnl
 dnl
 dnl
 dnl
-define({PUSH_TO},{ifelse({$2},{},{
+define({PUSH_TO},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TO},{push_to},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TO},{dnl
+__{}define({__INFO},{push_to}){}dnl
+ifelse({$2},{},{
 dnl # PUSH_TO(200,name)    --> (name) = 200
 dnl # PUSH_TO(0x4422,name) --> (name) = 0x4422
 __{}  .error {$0}(): Missing  parameter with variable name!},
@@ -172,7 +215,13 @@ __{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}{}dnl
 dnl
 dnl
 dnl
-define({PUSHDOT_TO},{ifelse({$2},{},{
+define({PUSHDOT_TO},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_TO},{pushdot_to},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_TO},{dnl
+__{}define({__INFO},{pushdot_to}){}dnl
+ifelse({$2},{},{
 dnl # PUSHDOT_TO(200,name)        --> (name) = 200
 dnl # PUSHDOT_TO(0x44221100,name) --> (name) = 0x1100,0x4422
 __{}  .error {$0}(): Missing  parameter with variable name!},
@@ -201,7 +250,13 @@ dnl
 dnl # CVARIABLE(name)        --> (name) = 0
 dnl # CVARIABLE(name,100)    --> (name) = 100
 dnl # CVARIABLE(name,0x88)   --> (name) = 0x88
-define({CVARIABLE},{ifelse($1,{},{
+define({CVARIABLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CVARIABLE},{cvariable},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CVARIABLE},{dnl
+__{}define({__INFO},{cvariable}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -229,7 +284,13 @@ dnl
 dnl # VARIABLE(name)        --> (name) = 0
 dnl # VARIABLE(name,100)    --> (name) = 100
 dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
-define({VARIABLE},{ifelse($1,{},{
+define({VARIABLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_VARIABLE},{dnl
+__{}define({__INFO},{variable}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -256,7 +317,13 @@ dnl
 dnl # _DVARIABLE(name)             --> (name) = 0
 dnl # _DVARIABLE(name,100)         --> (name) = 100
 dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
-define({DVARIABLE},{ifelse($1,{},{
+define({DVARIABLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DVARIABLE},{dvariable},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DVARIABLE},{dnl
+__{}define({__INFO},{dvariable}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter with variable name!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -288,7 +355,13 @@ dnl
 dnl
 dnl
 dnl # CREATE(name)         --> make data space pointer
-define({CREATE},{ifelse($1,{},{
+define({CREATE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CREATE},{create},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CREATE},{dnl
+__{}define({__INFO},{create}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -305,7 +378,13 @@ dnl
 dnl
 dnl
 dnl # HERE
-define({HERE},{
+define({HERE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HERE},{here},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HERE},{dnl
+__{}define({__INFO},{here}){}dnl
+
     push DE             ; 1:11      here
     ex   DE, HL         ; 1:4       here
     ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      here}){}dnl
@@ -313,7 +392,13 @@ dnl
 dnl
 dnl
 dnl # PUSH_ALLOT(8)      --> reserve 8 bytes
-define({PUSH_ALLOT},{ifelse($1,{},{
+define({PUSH_ALLOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ALLOT},{push_allot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ALLOT},{dnl
+__{}define({__INFO},{push_allot}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -343,7 +428,13 @@ dnl
 dnl
 dnl
 dnl # COMMA      --> reserve one word = TOS
-define({COMMA},{ifelse(eval($#>1),{1},{
+define({COMMA},{dnl
+__{}__ADD_TOKEN({__TOKEN_COMMA},{comma},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_COMMA},{dnl
+__{}define({__INFO},{comma}){}dnl
+ifelse(eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {
 __{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      ,
@@ -356,7 +447,13 @@ dnl
 dnl
 dnl
 dnl # PUSH_COMMA(8)      --> reserve one word = 8
-define({PUSH_COMMA},{ifelse($1,{},{
+define({PUSH_COMMA},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_COMMA},{push_comma},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_COMMA},{dnl
+__{}define({__INFO},{push_comma}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing value parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -370,6 +467,12 @@ dnl
 dnl
 dnl
 define({PUSHS_COMMA_REC},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA_REC},{pushs_comma_rec},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS_COMMA_REC},{dnl
+__{}define({__INFO},{pushs_comma_rec}){}dnl
+dnl
 __{}ifelse({debug},{},{
 __{}rec:$@
 __{}BC            >PUSHS_COMMA_BC<
@@ -409,7 +512,13 @@ __{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(__SORT_OFFSET$2,{0},{},+_
 __{}ifelse(eval($#>2),{1},{PUSHS_COMMA_REC(shift($@))})}){}dnl
 dnl
 dnl
-define({PUSHS_COMMA_SORTED},{ifelse({debug},{},{
+define({PUSHS_COMMA_SORTED},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA_SORTED},{pushs_comma_sorted},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS_COMMA_SORTED},{dnl
+__{}define({__INFO},{pushs_comma_sorted}){}dnl
+ifelse({debug},{},{
 sorted:$@
 now val     = __SORT_VAL$1
 now offset  = __SORT_OFFSET$1
@@ -427,7 +536,13 @@ __{}                        ;format({%-11s},[PUSHS_COMMA_B:PUSHS_COMMA_C])_TMP_M
 dnl
 dnl
 dnl
-define({PUSHS_COMMA_ANALYSIS},{ifelse(dnl
+define({PUSHS_COMMA_ANALYSIS},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA_ANALYSIS},{pushs_comma_analysis},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS_COMMA_ANALYSIS},{dnl
+__{}define({__INFO},{pushs_comma_analysis}){}dnl
+ifelse(dnl
 __{}__IS_NUM($1),{0},{define({PUSHS_COMMA_ANALYSIS_LAST},$2)},
 __{}__IS_NUM($2),{0},{define({PUSHS_COMMA_ANALYSIS_LAST},$2)},
 __{}{dnl
@@ -462,7 +577,13 @@ dnl
 dnl
 dnl
 dnl # PUSH_COMMA(1,2,3,4,5,6,7,8,9,10)      --> reserve 10 words
-define({PUSHS_COMMA},{ifelse($1,{},{
+define({PUSHS_COMMA},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA},{pushs_comma},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS_COMMA},{dnl
+__{}define({__INFO},{pushs_comma}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing value parameter!},
 eval($#),{1},{PUSH_COMMA($1)},
 eval($#),{2},{
@@ -715,7 +836,13 @@ dnl
 dnl
 dnl
 dnl # BUFFER(name,8)      --> Reserve 8 bytes
-define({BUFFER},{ifelse($1,{},{
+define({BUFFER},{dnl
+__{}__ADD_TOKEN({__TOKEN_BUFFER},{buffer},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_BUFFER},{dnl
+__{}define({__INFO},{buffer}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -740,7 +867,13 @@ dnl
 dnl # C@
 dnl # ( addr -- char )
 dnl # fetch 8-bit char from addr
-define({CFETCH},{
+define({CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH},{cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH},{dnl
+__{}define({__INFO},{cfetch}){}dnl
+
     ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
     ld    H, 0x00       ; 2:7       C@ cfetch})dnl
 dnl
@@ -748,7 +881,13 @@ dnl
 dnl # dup C@
 dnl # ( addr -- addr char )
 dnl # save addr and fetch 8-bit number from addr
-define({DUP_CFETCH},{
+define({DUP_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH},{dup_cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_CFETCH},{dnl
+__{}define({__INFO},{dup_cfetch}){}dnl
+
                         ;[5:29]     dup C@ dup_cfetch ( addr -- addr char )
     push DE             ; 1:11      dup C@ dup_cfetch
     ld    E,(HL)        ; 1:7       dup C@ dup_cfetch
@@ -758,7 +897,13 @@ dnl
 dnl
 dnl # 2over nip C@
 dnl # ( addr d -- addr d char )
-define({_2OVER_NIP_CFETCH},{
+define({_2OVER_NIP_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH},{2over_nip_cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2OVER_NIP_CFETCH},{dnl
+__{}define({__INFO},{2over_nip_cfetch}){}dnl
+
                         ;[8:54]     2over nip C@ ( addr d -- addr d char )
     pop  BC             ; 1:10      2over nip C@
     push BC             ; 1:11      2over nip C@
@@ -772,7 +917,13 @@ dnl
 dnl # dup C@ swap
 dnl # ( addr -- char addr )
 dnl # save addr and fetch 8-bit number from addr and swap
-define({DUP_CFETCH_SWAP},{
+define({DUP_CFETCH_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_SWAP},{dup_cfetch_swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_CFETCH_SWAP},{dnl
+__{}define({__INFO},{dup_cfetch_swap}){}dnl
+
                         ;[4:25]     dup C@ swap dup_cfetch_swap ( addr -- char addr )
     push DE             ; 1:11      dup C@ swap dup_cfetch_swap
     ld    E,(HL)        ; 1:7       dup C@ swap dup_cfetch_swap
@@ -782,7 +933,13 @@ dnl
 dnl # C@ swap C@
 dnl # ( addr2 addr1 -- char1 char2 )
 dnl # double fetch 8-bit number and swap
-define({CFETCH_SWAP_CFETCH},{
+define({CFETCH_SWAP_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH},{cfetch_swap_cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH_SWAP_CFETCH},{dnl
+__{}define({__INFO},{cfetch_swap_cfetch}){}dnl
+
                         ;[6:29]     @C swap @C cfetch_swap_cfetch ( addr2 addr1 -- char1 char2 )
     ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
     ld    H, 0x00       ; 2:7       @C swap @C cfetch_swap_cfetch
@@ -794,7 +951,13 @@ dnl
 dnl # C@ swap C@ swap
 dnl # ( addr2 addr1 -- char1 char2 )
 dnl # double fetch 8-bit number
-define({CFETCH_SWAP_CFETCH_SWAP},{
+define({CFETCH_SWAP_CFETCH_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH_SWAP},{cfetch_swap_cfetch_swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH_SWAP_CFETCH_SWAP},{dnl
+__{}define({__INFO},{cfetch_swap_cfetch_swap}){}dnl
+
                         ;[6:29]     @C swap @C swap cfetch_swap_cfetch_swap ( addr2 addr1 -- char2 char1 )
     ld    L, (HL)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
     ld    H, 0x00       ; 2:7       @C swap @C swap cfetch_swap_cfetch_swap
@@ -806,7 +969,13 @@ dnl
 dnl # over C@ over C@
 dnl # ( addr2 addr1 -- addr2 addr1 char2 char1 )
 dnl # double fetch 8-bit number with save address
-define({OVER_CFETCH_OVER_CFETCH},{
+define({OVER_CFETCH_OVER_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH},{over_cfetch_over_cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_CFETCH_OVER_CFETCH},{dnl
+__{}define({__INFO},{over_cfetch_over_cfetch}){}dnl
+
                         ;[8:51]     over @C over @C over_cfetch_over_cfetch ( addr2 addr1 -- addr2 addr1 char2 char1 )
     push DE             ; 1:11      over @C over @C over_cfetch_over_cfetch
     push HL             ; 1:11      over @C over @C over_cfetch_over_cfetch
@@ -821,7 +990,13 @@ dnl
 dnl # addr C@
 dnl # ( -- x )
 dnl # push_cfetch(addr), load 8-bit char from addr
-define({PUSH_CFETCH},{ifelse($1,{},{
+define({PUSH_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH},{push_cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CFETCH},{dnl
+__{}define({__INFO},{push_cfetch}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -835,7 +1010,13 @@ dnl
 dnl # addr C@ x
 dnl # ( -- (addr) x )
 dnl # push_cfetch_push(addr,x), load 8-bit char from addr and push x
-define({PUSH_CFETCH_PUSH},{ifelse($1,{},{
+define({PUSH_CFETCH_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_PUSH},{push_cfetch_push},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CFETCH_PUSH},{dnl
+__{}define({__INFO},{push_cfetch_push}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address and second parameter!},
 __{}$#,{1},{
 __{}__{}.error {$0}():  The second parameter is missing!},
@@ -853,7 +1034,13 @@ dnl
 dnl # addr C@ x
 dnl # ( -- (addr) x )
 dnl # push2_cfetch(x,addr), push x and load 8-bit char from addr
-define({PUSH2_CFETCH},{ifelse($1,{},{
+define({PUSH2_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_CFETCH},{push2_cfetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_CFETCH},{dnl
+__{}define({__INFO},{push2_cfetch}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address and second parameter!},
 __{}$#,{1},{
 __{}__{}.error {$0}():  The second parameter is missing!},
@@ -870,7 +1057,13 @@ dnl
 dnl # addr C@ +
 dnl # ( x -- x+(addr) )
 dnl # push_cfetch(addr), add 8-bit char from addr
-define({PUSH_CFETCH_ADD},{ifelse($1,{},{
+define({PUSH_CFETCH_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_ADD},{push_cfetch_add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CFETCH_ADD},{dnl
+__{}define({__INFO},{push_cfetch_add}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -886,7 +1079,13 @@ dnl
 dnl # addr C@ -
 dnl # ( x -- x-(addr) )
 dnl # push_cfetch(addr), sub 8-bit char from addr
-define({PUSH_CFETCH_SUB},{ifelse($1,{},{
+define({PUSH_CFETCH_SUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_SUB},{push_cfetch_sub},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CFETCH_SUB},{dnl
+__{}define({__INFO},{push_cfetch_sub}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -904,7 +1103,13 @@ dnl
 dnl # C!
 dnl # ( char addr -- )
 dnl # store 8-bit char at addr
-define({CSTORE},{
+define({CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CSTORE},{cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CSTORE},{dnl
+__{}define({__INFO},{cstore}){}dnl
+
     ld  (HL),E          ; 1:7       C! cstore   ( char addr -- )
     pop  HL             ; 1:10      C! cstore
     pop  DE             ; 1:10      C! cstore})dnl
@@ -913,7 +1118,13 @@ dnl
 dnl # addr C!
 dnl # ( char -- )
 dnl # store(addr) store 8-bit char at addr
-define({PUSH_CSTORE},{ifelse($1,{},{
+define({PUSH_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CSTORE},{push_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CSTORE},{dnl
+__{}define({__INFO},{push_cstore}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -927,7 +1138,13 @@ dnl
 dnl # addr swap n C!
 dnl # ( addr -- )
 dnl # store(addr) store 8-bit char at addr
-define({PUSH_SWAP_CSTORE},{ifelse($1,{},{
+define({PUSH_SWAP_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_SWAP_CSTORE},{push_swap_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_SWAP_CSTORE},{dnl
+__{}define({__INFO},{push_swap_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -940,7 +1157,13 @@ dnl
 dnl # ( addr+$2) = $1
 dnl # ( addr -- addr )
 dnl # store(addr+$1) store 8-bit char at addr
-define({PUSH_OVER_PUSH_ADD_CSTORE},{ifelse($1,{},{
+define({PUSH_OVER_PUSH_ADD_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_PUSH_ADD_CSTORE},{push_over_push_add_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_PUSH_ADD_CSTORE},{dnl
+__{}define({__INFO},{push_over_push_add_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
@@ -1021,7 +1244,13 @@ dnl
 dnl # addr C!
 dnl # ( char -- char )
 dnl # store(addr) store 8-bit char at addr
-define({DUP_PUSH_CSTORE},{ifelse($1,{},{
+define({DUP_PUSH_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE},{dup_push_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CSTORE},{dnl
+__{}define({__INFO},{dup_push_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1032,7 +1261,13 @@ dnl
 dnl # addr C!
 dnl # ( char -- char )
 dnl # store(addr) store 8-bit char at addr
-define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{ifelse($1,{},{
+define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup_push_cstore_dup_push_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
+__{}define({__INFO},{dup_push_cstore_dup_push_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
@@ -1047,7 +1282,13 @@ dnl
 dnl # addr C!
 dnl # ( char -- char )
 dnl # store(addr) store 8-bit char at addr
-define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{ifelse($1,{},{
+define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup_push_cstore_dup_push_cstore_dup_push_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
+__{}define({__INFO},{dup_push_cstore_dup_push_cstore_dup_push_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
@@ -1066,7 +1307,13 @@ dnl
 dnl # char addr C!
 dnl # ( -- )
 dnl # store(addr) store 8-bit number at addr
-define({PUSH2_CSTORE},{ifelse($1,{},{
+define({PUSH2_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_CSTORE},{push2_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_CSTORE},{dnl
+__{}define({__INFO},{push2_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -1081,7 +1328,13 @@ dnl
 dnl # tuck C!
 dnl # ( char addr -- addr )
 dnl # store 8-bit number at addr with save addr
-define({TUCK_CSTORE},{
+define({TUCK_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TUCK_CSTORE},{tuck_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TUCK_CSTORE},{dnl
+__{}define({__INFO},{tuck_cstore}){}dnl
+
                         ;[2:17]     tuck c!  tuck_cstore   ( char addr -- addr )
     ld  (HL),E          ; 1:7       tuck c!  tuck_cstore
     pop  DE             ; 1:10      tuck c!  tuck_cstore})dnl
@@ -1090,7 +1343,13 @@ dnl
 dnl # tuck c! 1+
 dnl # ( char addr -- addr+1 )
 dnl # store 8-bit number at addr and increment
-define({TUCK_CSTORE_1ADD},{
+define({TUCK_CSTORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_TUCK_CSTORE_1ADD},{tuck_cstore_1add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TUCK_CSTORE_1ADD},{dnl
+__{}define({__INFO},{tuck_cstore_1add}){}dnl
+
                         ;[3:23]     tuck c! +1  tuck_cstore_1add   ( x addr -- addr+2 )
     ld  (HL),E          ; 1:7       tuck c! +1  tuck_cstore_1add
     inc  HL             ; 1:6       tuck c! +1  tuck_cstore_1add
@@ -1100,7 +1359,13 @@ dnl
 dnl # over swap c!
 dnl # ( char addr -- char )
 dnl # store 8-bit number at addr with save char
-define({OVER_SWAP_CSTORE},{
+define({OVER_SWAP_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CSTORE},{over_swap_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_CSTORE},{dnl
+__{}define({__INFO},{over_swap_cstore}){}dnl
+
                         ;[3:21]     over swap c!  over_swap_cstore   ( char addr -- char )
     ld  (HL),E          ; 1:7       over swap c!  over_swap_cstore
     ex   DE, HL         ; 1:4       over swap c!  over_swap_cstore
@@ -1110,7 +1375,13 @@ dnl
 dnl # 2dup c!
 dnl # ( char addr -- char addr )
 dnl # store 8-bit number at addr with save all
-define({_2DUP_CSTORE},{
+define({_2DUP_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{2dup_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CSTORE},{dnl
+__{}define({__INFO},{2dup_cstore}){}dnl
+
                         ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
     ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore})dnl
 dnl
@@ -1118,7 +1389,13 @@ dnl
 dnl # 2dup c! 1+
 dnl # ( char addr -- char addr+1 )
 dnl # store 8-bit number at addr with save all and increment
-define({_2DUP_CSTORE_1ADD},{
+define({_2DUP_CSTORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE_1ADD},{2dup_cstore_1add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CSTORE_1ADD},{dnl
+__{}define({__INFO},{2dup_cstore_1add}){}dnl
+
                         ;[2:13]     2dup c! 1+  _2dup_cstore_1add   ( char addr -- char addr+1 )
     ld  (HL),E          ; 1:7       2dup c! 1+  _2dup_cstore_1add
     inc  HL             ; 1:6       2dup c! 1+  _2dup_cstore_1add})dnl
@@ -1127,7 +1404,13 @@ dnl
 dnl # number over c!
 dnl # ( addr -- addr )
 dnl # store 8-bit number at addr with save addr
-define({PUSH_OVER_CSTORE},{ifelse(
+define({PUSH_OVER_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_CSTORE},{push_over_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_CSTORE},{dnl
+__{}define({__INFO},{push_over_cstore}){}dnl
+ifelse(
 $1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
@@ -1140,7 +1423,13 @@ dnl
 dnl # over number swap c!
 dnl # ( addr x -- addr x )
 dnl # store 8-bit number at addr with save addr
-define({OVER_PUSH_SWAP_CSTORE},{ifelse($1,{},{
+define({OVER_PUSH_SWAP_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PUSH_SWAP_CSTORE},{over_push_swap_cstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_PUSH_SWAP_CSTORE},{dnl
+__{}define({__INFO},{over_push_swap_cstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1158,7 +1447,13 @@ dnl # dup number swap c! 1+
 dnl # push over c! 1+
 dnl # ( addr -- addr+1 )
 dnl # store 8-bit number at addr with save addr and increment
-define({PUSH_OVER_CSTORE_1ADD},{ifelse($1,{},{
+define({PUSH_OVER_CSTORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_CSTORE_1ADD},{push_over_cstore_1add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_CSTORE_1ADD},{dnl
+__{}define({__INFO},{push_over_cstore_1add}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1167,13 +1462,25 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     inc  HL             ; 1:6       $1 over c! 1+  push_over_cstore_1add($1)})dnl
 dnl
 dnl
-define({DUP_PUSH_SWAP_CSTORE_1ADD},{PUSH_OVER_CSTORE_1ADD($1)}){}dnl
+define({DUP_PUSH_SWAP_CSTORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP_CSTORE_1ADD},{dup_push_swap_cstore_1add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_SWAP_CSTORE_1ADD},{dnl
+__{}define({__INFO},{dup_push_swap_cstore_1add}){}dnl
+PUSH_OVER_CSTORE_1ADD($1)}){}dnl
 dnl
 dnl
 dnl # cmove
 dnl # ( from_addr to_addr u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
-define({CMOVE},{
+define({CMOVE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CMOVE},{cmove},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CMOVE},{dnl
+__{}define({__INFO},{cmove}){}dnl
+
     ld    A, H          ; 1:4       cmove   ( from_addr to_addr u_chars -- )
     or    L             ; 1:4       cmove
     ld    B, H          ; 1:4       cmove
@@ -1188,7 +1495,13 @@ dnl
 dnl # u cmove
 dnl # ( from_addr to_addr -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
-define({PUSH_CMOVE},{ifelse($1,{},{
+define({PUSH_CMOVE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CMOVE},{push_cmove},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CMOVE},{dnl
+__{}define({__INFO},{push_cmove}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1245,7 +1558,13 @@ dnl
 dnl # cmove>
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
-define({CMOVEGT},{
+define({CMOVEGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_CMOVEGT},{cmovegt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CMOVEGT},{dnl
+__{}define({__INFO},{cmovegt}){}dnl
+
     ld    A, H          ; 1:4       cmove>   ( from_addr to_addr u_chars -- )
     or    L             ; 1:4       cmove>
     ld    B, H          ; 1:4       cmove>
@@ -1261,7 +1580,13 @@ dnl
 dnl # addr u char fill
 dnl # ( addr u char -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({FILL},{ifelse({fast},{fast},{
+define({FILL},{dnl
+__{}__ADD_TOKEN({__TOKEN_FILL},{fill},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FILL},{dnl
+__{}define({__INFO},{fill}){}dnl
+ifelse({fast},{fast},{
 __{}    ld    A, D          ; 1:4       fill
 __{}    or    E             ; 1:4       fill
 __{}    ld    A, L          ; 1:4       fill
@@ -1301,7 +1626,13 @@ dnl
 dnl # addr u char fill
 dnl # ( addr u -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({PUSH_FILL},{ifelse($1,{},{
+define({PUSH_FILL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FILL},{push_fill},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FILL},{dnl
+__{}define({__INFO},{push_fill}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1342,7 +1673,13 @@ dnl
 dnl # addr u char fill
 dnl # ( addr -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({PUSH2_FILL},{ifelse($1,{},{
+define({PUSH2_FILL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_FILL},{push2_fill},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_FILL},{dnl
+__{}define({__INFO},{push2_fill}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -1449,7 +1786,13 @@ dnl
 dnl # addr u char fill
 dnl # ( -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
-define({PUSH3_FILL},{ifelse($1,{},{
+define({PUSH3_FILL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3_FILL},{push3_fill},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH3_FILL},{dnl
+__{}define({__INFO},{push3_fill}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -1680,7 +2023,13 @@ dnl
 dnl # @
 dnl # ( addr -- x )
 dnl # fetch 16-bit number from addr
-define({FETCH},{
+define({FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_FETCH},{fetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FETCH},{dnl
+__{}define({__INFO},{fetch}){}dnl
+
     ld    A, (HL)       ; 1:7       @ fetch   ( addr -- x )
     inc  HL             ; 1:6       @ fetch
     ld    H, (HL)       ; 1:7       @ fetch
@@ -1690,7 +2039,13 @@ dnl
 dnl # dup @
 dnl # ( addr -- addr x )
 dnl # save addr and fetch 16-bit number from addr
-define({DUP_FETCH},{
+define({DUP_FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_FETCH},{dup_fetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_FETCH},{dnl
+__{}define({__INFO},{dup_fetch}){}dnl
+
                         ;[6:41]     dup @ dup_fetch ( addr -- addr x )
     push DE             ; 1:11      dup @ dup_fetch
     ld    E, (HL)       ; 1:7       dup @ dup_fetch
@@ -1703,7 +2058,13 @@ dnl
 dnl # dup @ swap
 dnl # ( addr -- x addr )
 dnl # save addr and fetch 16-bit number from addr and swap
-define({DUP_FETCH_SWAP},{
+define({DUP_FETCH_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_FETCH_SWAP},{dup_fetch_swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_FETCH_SWAP},{dnl
+__{}define({__INFO},{dup_fetch_swap}){}dnl
+
                         ;[5:37]     dup @ swap dup_fetch_swap ( addr -- x addr )
     push DE             ; 1:11      dup @ swap dup_fetch_swap
     ld    E, (HL)       ; 1:7       dup @ swap dup_fetch_swap
@@ -1715,7 +2076,13 @@ dnl
 dnl # addr @
 dnl # ( -- x )
 dnl # push_fetch(addr), load 16-bit number from addr
-define({PUSH_FETCH},{ifelse($1,{},{
+define({PUSH_FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH},{push_fetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH},{dnl
+__{}define({__INFO},{push_fetch}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1728,7 +2095,13 @@ dnl
 dnl # !
 dnl # ( x addr -- )
 dnl # store 16-bit number at addr
-define({STORE},{
+define({STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_STORE},{store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_STORE},{dnl
+__{}define({__INFO},{store}){}dnl
+
                         ;[5:40]     !  store   ( x addr -- )
     ld  (HL),E          ; 1:7       !  store
     inc  HL             ; 1:6       !  store
@@ -1741,7 +2114,13 @@ dnl
 dnl # addr !
 dnl # ( x -- )
 dnl # store(addr) store 16-bit number at addr
-define({PUSH_STORE},{ifelse(dnl
+define({PUSH_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_STORE},{push_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_STORE},{dnl
+__{}define({__INFO},{push_store}){}dnl
+ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -1767,7 +2146,13 @@ dnl
 dnl # x addr !
 dnl # ( -- )
 dnl # store(addr) store 16-bit number at addr
-define({PUSH2_STORE},{ifelse(dnl
+define({PUSH2_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_STORE},{push2_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_STORE},{dnl
+__{}define({__INFO},{push2_store}){}dnl
+ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing parameters!},
 $#,{1},{
@@ -1814,7 +2199,13 @@ dnl
 dnl # tuck !
 dnl # ( x addr -- addr )
 dnl # store 16-bit number at addr
-define({TUCK_STORE},{
+define({TUCK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TUCK_STORE},{tuck_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TUCK_STORE},{dnl
+__{}define({__INFO},{tuck_store}){}dnl
+
                         ;[5:36]     tuck ! tuck_store   ( x addr -- addr )
     ld  (HL),E          ; 1:7       tuck ! tuck_store
     inc  HL             ; 1:6       tuck ! tuck_store
@@ -1826,7 +2217,13 @@ dnl
 dnl # tuck ! 2+
 dnl # ( x addr -- addr+2 )
 dnl # store 16-bit number at addr
-define({TUCK_STORE_2ADD},{
+define({TUCK_STORE_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_TUCK_STORE_2ADD},{tuck_store_2add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TUCK_STORE_2ADD},{dnl
+__{}define({__INFO},{tuck_store_2add}){}dnl
+
                         ;[5:36]     tuck ! +2 tuck_store_2add   ( x addr -- addr+2 )
     ld  (HL),E          ; 1:7       tuck ! +2 tuck_store_2add
     inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
@@ -1838,7 +2235,13 @@ dnl
 dnl # over swap !
 dnl # ( x addr -- x )
 dnl # store 16-bit number at addr
-define({OVER_SWAP_STORE},{
+define({OVER_SWAP_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_STORE},{over_swap_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_STORE},{dnl
+__{}define({__INFO},{over_swap_store}){}dnl
+
                         ;[5:34]     over swap ! over_swap_store   ( x addr -- x )
     ld  (HL),E          ; 1:7       over swap ! over_swap_store
     inc  HL             ; 1:6       over swap ! over_swap_store
@@ -1850,7 +2253,13 @@ dnl
 dnl # 2dup !
 dnl # ( x addr -- x addr )
 dnl # store 16-bit number at addr
-define({_2DUP_STORE},{
+define({_2DUP_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE},{2dup_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_STORE},{dnl
+__{}define({__INFO},{2dup_store}){}dnl
+
                         ;[4:26]     2dup ! _2dup_store   ( x addr -- x addr )
     ld  (HL),E          ; 1:7       2dup ! _2dup_store
     inc  HL             ; 1:6       2dup ! _2dup_store
@@ -1861,7 +2270,13 @@ dnl
 dnl # 2dup ! 2+
 dnl # ( x addr -- x addr+2 )
 dnl # store 16-bit number at addr
-define({_2DUP_STORE_2ADD},{
+define({_2DUP_STORE_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_2ADD},{2dup_store_2add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_STORE_2ADD},{dnl
+__{}define({__INFO},{2dup_store_2add}){}dnl
+
                         ;[4:26]     2dup ! 2+ _2dup_store_2add   ( x addr -- x addr+2 )
     ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_2add
     inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add
@@ -1874,7 +2289,13 @@ dnl # number over !
 dnl # dup number swap !
 dnl # ( addr -- addr )
 dnl # store 16-bit number at addr
-define({PUSH_OVER_STORE},{ifelse($1,{},{
+define({PUSH_OVER_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE},{push_over_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_STORE},{dnl
+__{}define({__INFO},{push_over_store}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1885,7 +2306,13 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     dec  HL             ; 1:6       $1 over ! push_over_store($1)})dnl
 dnl
 dnl
-define({DUP_PUSH_SWAP_STORE},{PUSH_OVER_STORE($1)}){}dnl
+define({DUP_PUSH_SWAP_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP_STORE},{dup_push_swap_store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_SWAP_STORE},{dnl
+__{}define({__INFO},{dup_push_swap_store}){}dnl
+PUSH_OVER_STORE($1)}){}dnl
 dnl
 dnl
 dnl
@@ -1893,7 +2320,13 @@ dnl # number over ! 2+
 dnl # dup number swap ! 2+
 dnl # ( addr -- addr+2 )
 dnl # store 16-bit number at addr
-define({PUSH_OVER_STORE_2ADD},{ifelse($1,{},{
+define({PUSH_OVER_STORE_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE_2ADD},{push_over_store_2add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_STORE_2ADD},{dnl
+__{}define({__INFO},{push_over_store_2add}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -1904,13 +2337,25 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)})dnl
 dnl
 dnl
-define({DUP_PUSH_SWAP_STORE_2ADD},{PUSH_OVER_STORE_2ADD($1)}){}dnl
+define({DUP_PUSH_SWAP_STORE_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP_STORE_2ADD},{dup_push_swap_store_2add},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_SWAP_STORE_2ADD},{dnl
+__{}define({__INFO},{dup_push_swap_store_2add}){}dnl
+PUSH_OVER_STORE_2ADD($1)}){}dnl
 dnl
 dnl
 dnl # move
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
-define({MOVE},{
+define({MOVE},{dnl
+__{}__ADD_TOKEN({__TOKEN_MOVE},{move},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_MOVE},{dnl
+__{}define({__INFO},{move}){}dnl
+
     or    A             ; 1:4       move   ( from_addr to_addr u_words -- )
     adc  HL, HL         ; 1:11      move
     ld    B, H          ; 1:4       move
@@ -1925,7 +2370,13 @@ dnl
 dnl # u move
 dnl # ( from_addr to_addr -- )
 dnl # If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
-define({PUSH_MOVE},{ifelse($1,{},{
+define({PUSH_MOVE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_MOVE},{push_move},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_MOVE},{dnl
+__{}define({__INFO},{push_move}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1974,7 +2425,13 @@ dnl
 dnl # u move
 dnl # ( from_addr to_addr -- )
 dnl # If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
-define({PUSH3_MOVE},{ifelse(eval($#<3),{1},{
+define({PUSH3_MOVE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3_MOVE},{push3_move},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH3_MOVE},{dnl
+__{}define({__INFO},{push3_move}){}dnl
+ifelse(eval($#<3),{1},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>3),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -2092,7 +2549,13 @@ dnl
 dnl # move>
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
-define({MOVEGT},{
+define({MOVEGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_MOVEGT},{movegt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_MOVEGT},{dnl
+__{}define({__INFO},{movegt}){}dnl
+
     or    A             ; 1:4       move>
     adc  HL, HL         ; 1:11      move>
     ld    B, H          ; 1:4       move>
@@ -2108,7 +2571,13 @@ dnl
 dnl # +!
 dnl # ( num addr -- )
 dnl # Adds num to the 16-bit number stored at addr.
-define({ADDSTORE},{
+define({ADDSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ADDSTORE},{addstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ADDSTORE},{dnl
+__{}define({__INFO},{addstore}){}dnl
+
     ld    A, E          ; 1:4       +! addstore
     add   A,(HL)        ; 1:7       +! addstore
     ld  (HL),A          ; 1:7       +! addstore
@@ -2123,7 +2592,13 @@ dnl
 dnl # num addr +!
 dnl # ( -- )
 dnl # Adds num to the 16-bit number stored at addr.
-define({PUSH2_ADDSTORE},{ifelse($1,{},{
+define({PUSH2_ADDSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_ADDSTORE},{push2_addstore},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_ADDSTORE},{dnl
+__{}define({__INFO},{push2_addstore}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -2193,7 +2668,13 @@ dnl
 dnl # 2@
 dnl # ( addr -- hi lo )
 dnl # fetch 32-bit number from addr
-define({_2FETCH},{
+define({_2FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_2FETCH},{2fetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2FETCH},{dnl
+__{}define({__INFO},{2fetch}){}dnl
+
                         ;[10:65]    2@ _2fetch
     push DE             ; 1:11      2@ _2fetch
     ld    E, (HL)       ; 1:7       2@ _2fetch
@@ -2212,7 +2693,13 @@ dnl
 dnl # addr 2@
 dnl # ( -- hi lo )
 dnl # push_2fetch(addr), load 32-bit number from addr
-define({PUSH_2FETCH},{ifelse($1,{},{
+define({PUSH_2FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_2FETCH},{push_2fetch},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_2FETCH},{dnl
+__{}define({__INFO},{push_2fetch}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -2229,7 +2716,13 @@ dnl
 dnl # 2!
 dnl # ( hi lo addr -- )
 dnl # store 32-bit number at addr
-define({_2STORE},{
+define({_2STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2STORE},{2store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2STORE},{dnl
+__{}define({__INFO},{2store}){}dnl
+
                         ;[10:76]    2!  _2store   ( hi lo addr -- )
     ld  (HL),E          ; 1:7       2!  _2store
     inc  HL             ; 1:6       2!  _2store
@@ -2247,7 +2740,13 @@ dnl
 dnl # addr 2!
 dnl # ( hi lo -- )
 dnl # store(addr) store 32-bit number at addr
-define({PUSH_2STORE},{ifelse(dnl
+define({PUSH_2STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_2STORE},{push_2store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_2STORE},{dnl
+__{}define({__INFO},{push_2store}){}dnl
+ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -2279,7 +2778,13 @@ dnl
 dnl # hi lo addr 2!
 dnl # ( hi -- ) lo=$1 addr=$2
 dnl # store(addr) store 32-bit number at addr
-define({PUSH2_2STORE},{ifelse(dnl
+define({PUSH2_2STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_2STORE},{push2_2store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_2STORE},{dnl
+__{}define({__INFO},{push2_2store}){}dnl
+ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing parameters!},
 $#,{1},{
@@ -2333,7 +2838,13 @@ dnl
 dnl # d addr 2!
 dnl # ( -- )
 dnl # store 32-bit number at addr
-define({PUSHDOT_PUSH_2STORE},{ifelse($1,{},{
+define({PUSHDOT_PUSH_2STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_PUSH_2STORE},{pushdot_push_2store},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_PUSH_2STORE},{dnl
+__{}define({__INFO},{pushdot_push_2store}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing parameters!},
 $#,{1},{
 __{}  .error {$0}($@): The second parameter is missing!},
@@ -2388,7 +2899,13 @@ __{}    ld  format({%-16s},{(3+$2),A}); 3:13      $1. $2 2!  pushdot_push_2store
 dnl
 dnl
 dnl
-define({FAST_COPY_16_BYTES_INIT},{
+define({FAST_COPY_16_BYTES_INIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES_INIT},{fast_copy_16_bytes_init},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FAST_COPY_16_BYTES_INIT},{dnl
+__{}define({__INFO},{fast_copy_16_bytes_init}){}dnl
+
                         ;[9:58]
     di                  ; 1:4
     push DE             ; 1:11      save nos
@@ -2397,7 +2914,13 @@ define({FAST_COPY_16_BYTES_INIT},{
     push HL             ; 1:11      save ras
     ld   format({%-15s},($1){,}SP); 4:20      save orig SP})dnl
 dnl
-define({FAST_COPY_16_BYTES_STOP},{
+define({FAST_COPY_16_BYTES_STOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES_STOP},{fast_copy_16_bytes_stop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FAST_COPY_16_BYTES_STOP},{dnl
+__{}define({__INFO},{fast_copy_16_bytes_stop}){}dnl
+
                         ;[9:58]
     ld   SP, format({%-11s},($1)); 4:20      load orig SP
     pop  HL             ; 1:10      load ras
@@ -2408,7 +2931,13 @@ define({FAST_COPY_16_BYTES_STOP},{
 dnl
 dnl
 dnl
-define({FAST_COPY_16_BYTES},{
+define({FAST_COPY_16_BYTES},{dnl
+__{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES},{fast_copy_16_bytes},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FAST_COPY_16_BYTES},{dnl
+__{}define({__INFO},{fast_copy_16_bytes}){}dnl
+
                         ;[26:204]
     ld   SP, format({%-11s},$1); 3:10      from
     pop  AF             ; 1:10

@@ -1,11 +1,16 @@
 dnl ## recursive rdo rloop
-define({__},{})dnl
 dnl
 dnl
-dnl ---------  rdo ... rloop  -----------
-dnl 5 0 rdo ri . rloop --> 0 1 2 3 4
-dnl ( stop index -- ) r:( -- stop index )
+dnl # ---------  rdo ... rloop  -----------
+dnl # 5 0 rdo ri . rloop --> 0 1 2 3 4
+dnl # ( stop index -- ) r:( -- stop index )
 define({RDO},{dnl
+__{}__ADD_TOKEN({__TOKEN_RDO},{rdo},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RDO},{dnl
+__{}define({__INFO},{rdo}){}dnl
+dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
@@ -13,7 +18,7 @@ __{}    exx                 ; 1:4       rleave LOOP_STACK
 __{}    inc  L              ; 1:4       rleave LOOP_STACK
 __{}    inc  HL             ; 1:6       rleave LOOP_STACK
 __{}    inc  L              ; 1:4       rleave LOOP_STACK
-__{}    jp   leave{}LOOP_STACK       ;           rleave LOOP_STACK})dnl
+__{}    jp   leave{}LOOP_STACK       ;           rleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}    exx                 ; 1:4       unrloop LOOP_STACK
 __{}    inc  L              ; 1:4       unrloop LOOP_STACK
@@ -37,14 +42,20 @@ __{}    exx                 ; 1:4       unrloop LOOP_STACK})
     exx                 ; 1:4       rdo LOOP_STACK
     pop  HL             ; 1:10      rdo LOOP_STACK
     pop  DE             ; 1:10      rdo LOOP_STACK ( stop index -- ) R: ( -- stop index )
-do{}LOOP_STACK:                  ;           rdo LOOP_STACK})dnl
+do{}LOOP_STACK:                  ;           rdo LOOP_STACK}){}dnl
 dnl
 dnl
-dnl ---------  ?rdo ... rloop  -----------
-dnl 5 0 ?do i . loop --> 0 1 2 3 4
-dnl 5 5 ?do i . loop -->
-dnl ( stop index -- ) r:( -- stop index )
+dnl # ---------  ?rdo ... rloop  -----------
+dnl # 5 0 ?do i . loop --> 0 1 2 3 4
+dnl # 5 5 ?do i . loop -->
+dnl # ( stop index -- ) r:( -- stop index )
 define({QUESTIONRDO},{dnl
+__{}__ADD_TOKEN({__TOKEN_QUESTIONRDO},{questionrdo},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_QUESTIONRDO},{dnl
+__{}define({__INFO},{questionrdo}){}dnl
+dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{
@@ -52,7 +63,7 @@ __{}    exx                 ; 1:4       rleave LOOP_STACK
 __{}    inc  L              ; 1:4       rleave LOOP_STACK
 __{}    inc  HL             ; 1:6       rleave LOOP_STACK
 __{}    inc  L              ; 1:4       rleave LOOP_STACK
-__{}    jp   leave{}LOOP_STACK       ;           rleave LOOP_STACK})dnl
+__{}    jp   leave{}LOOP_STACK       ;           rleave LOOP_STACK}){}dnl
 __{}pushdef({UNLOOP_STACK},{
 __{}    exx                 ; 1:4       unrloop LOOP_STACK
 __{}    inc  L              ; 1:4       unrloop LOOP_STACK
@@ -83,13 +94,19 @@ __{}    exx                 ; 1:4       unrloop LOOP_STACK})
     exx                 ; 1:4       ?rdo LOOP_STACK
     pop  HL             ; 1:10      ?rdo LOOP_STACK
     pop  DE             ; 1:10      ?rdo LOOP_STACK ( stop index -- ) R: ( -- stop index )
-do{}LOOP_STACK:                  ;           ?rdo LOOP_STACK})dnl
+do{}LOOP_STACK:                  ;           ?rdo LOOP_STACK}){}dnl
 dnl
 dnl
 dnl
-dnl ( -- i )
-dnl hodnota indexu vnitrni smycky
-define({RI},{
+dnl # ( -- i )
+dnl # hodnota indexu vnitrni smycky
+define({RI},{dnl
+__{}__ADD_TOKEN({__TOKEN_RI},{ri},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RI},{dnl
+__{}define({__INFO},{ri}){}dnl
+
     exx                 ; 1:4       index ri LOOP_STACK
     ld    E,(HL)        ; 1:7       index ri LOOP_STACK
     inc   L             ; 1:4       index ri LOOP_STACK
@@ -98,12 +115,18 @@ define({RI},{
     dec   L             ; 1:4       index ri LOOP_STACK
     exx                 ; 1:4       index ri LOOP_STACK
     ex   DE, HL         ; 1:4       index ri LOOP_STACK
-    ex  (SP),HL         ; 1:19      index ri LOOP_STACK})dnl
+    ex  (SP),HL         ; 1:19      index ri LOOP_STACK}){}dnl
 dnl
 dnl
-dnl ( -- j )
-dnl hodnota indexu druhe vnitrni smycky
-define({RJ},{
+dnl # ( -- j )
+dnl # hodnota indexu druhe vnitrni smycky
+define({RJ},{dnl
+__{}__ADD_TOKEN({__TOKEN_RJ},{rj},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RJ},{dnl
+__{}define({__INFO},{rj}){}dnl
+
     exx                 ; 1:4       index rj LOOP_STACK
     ld   DE, 0x0004     ; 3:10      index rj LOOP_STACK
     ex   DE, HL         ; 1:4       index rj LOOP_STACK
@@ -115,11 +138,17 @@ define({RJ},{
     push BC             ; 1:11      index rj LOOP_STACK
     exx                 ; 1:4       index rj LOOP_STACK
     ex   DE, HL         ; 1:4       index rj LOOP_STACK
-    ex  (SP),HL         ; 1:19      index rj LOOP_STACK})dnl
+    ex  (SP),HL         ; 1:19      index rj LOOP_STACK}){}dnl
 dnl
 dnl
-dnl ( -- )
-define({RLOOP},{
+dnl # ( -- )
+define({RLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_RLOOP},{rloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RLOOP},{dnl
+__{}define({__INFO},{rloop}){}dnl
+
     exx                 ; 1:4       rloop LOOP_STACK
     ld    E,(HL)        ; 1:7       rloop LOOP_STACK
     inc   L             ; 1:4       rloop LOOP_STACK
@@ -143,16 +172,22 @@ define({RLOOP},{
 leave{}LOOP_STACK:               ;           rloop LOOP_STACK
     inc  HL             ; 1:6       rloop LOOP_STACK
     exx                 ; 1:4       rloop LOOP_STACK
-dnl                     ;26:92/113/86
+dnl #                     ;26:92/113/86
 exit{}LOOP_STACK:                ;           rloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
-__{}popdef({LOOP_STACK})})dnl
+__{}popdef({LOOP_STACK})}){}dnl
 dnl
 dnl
 dnl
-dnl ( -- )
-define({SUB1_ADDRLOOP},{
+dnl # ( -- )
+define({SUB1_ADDRLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SUB1_ADDRLOOP},{sub1_addrloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SUB1_ADDRLOOP},{dnl
+__{}define({__INFO},{sub1_addrloop}){}dnl
+
     exx                 ; 1:4       -1 +rloop LOOP_STACK
     ld    E,(HL)        ; 1:7       -1 +rloop LOOP_STACK
     inc   L             ; 1:4       -1 +rloop LOOP_STACK
@@ -179,12 +214,18 @@ leave{}LOOP_STACK:               ;           -1 +rloop LOOP_STACK
 exit{}LOOP_STACK EQU ${}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
-__{}popdef({LOOP_STACK})})dnl
+__{}popdef({LOOP_STACK})}){}dnl
 dnl
 dnl
-dnl +loop
-dnl ( step -- )
-define({ADDRLOOP},{
+dnl # +loop
+dnl # ( step -- )
+define({ADDRLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ADDRLOOP},{addrloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ADDRLOOP},{dnl
+__{}define({__INFO},{addrloop}){}dnl
+
     ex  (SP),HL         ; 1:19      +rloop LOOP_STACK
     ex   DE, HL         ; 1:4       +rloop LOOP_STACK
     exx                 ; 1:4       +rloop LOOP_STACK{}ifelse({fast},{slow},{
@@ -215,7 +256,7 @@ __{}    jp    m, leave{}LOOP_STACK   ; 3:10      +rloop LOOP_STACK
 __{}    dec   L             ; 1:4       +rloop LOOP_STACK
 __{}    dec  HL             ; 1:6       +rloop LOOP_STACK
 __{}    dec   L             ; 1:4       +rloop LOOP_STACK},{
-dnl                          29:142
+dnl #                          29:142
 __{}    ld    E,(HL)        ; 1:7       +rloop LOOP_STACK
 __{}    inc   L             ; 1:4       +rloop LOOP_STACK
 __{}    ld    D,(HL)        ; 1:7       +rloop LOOP_STACK DE = index
@@ -239,7 +280,7 @@ __{}    dec  HL             ; 1:6       +rloop LOOP_STACK
 __{}    ld  (HL),D          ; 1:7       +rloop LOOP_STACK
 __{}    dec   L             ; 1:4       +rloop LOOP_STACK
 __{}    ld  (HL),E          ; 1:7       +rloop LOOP_STACK{}dnl
-dnl                          26:166
+dnl #                          26:166
 })
     exx                 ; 1:4       +rloop LOOP_STACK
     jp    p, do{}LOOP_STACK      ; 3:10      +rloop LOOP_STACK ( step -- ) R:( stop index -- stop index+step )
@@ -250,13 +291,19 @@ exit{}LOOP_STACK:                ;           +rloop LOOP_STACK
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
-dnl 2 +loop
-dnl ( -- )
-define({_2_ADDRLOOP},{
+dnl # 2 +loop
+dnl # ( -- )
+define({_2_ADDRLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_2_ADDRLOOP},{2_addrloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2_ADDRLOOP},{dnl
+__{}define({__INFO},{2_addrloop}){}dnl
+
     exx                 ; 1:4       2 +rloop LOOP_STACK
     ld    E,(HL)        ; 1:7       2 +rloop LOOP_STACK
     inc   L             ; 1:4       2 +rloop LOOP_STACK
@@ -287,12 +334,18 @@ exit{}LOOP_STACK:                ;           2 +rloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
-dnl step +loop
-dnl ( -- )
-define({X_ADDRLOOP},{
+dnl # step +loop
+dnl # ( -- )
+define({X_ADDRLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_X_ADDRLOOP},{x_addrloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_X_ADDRLOOP},{dnl
+__{}define({__INFO},{x_addrloop}){}dnl
+
     exx                 ; 1:4       $1 +rloop LOOP_STACK
     ld   BC, format({%-11s},$1); 3:10      $1 +rloop LOOP_STACK BC = step
     ld    E,(HL)        ; 1:7       $1 +rloop LOOP_STACK
@@ -323,7 +376,7 @@ define({X_ADDRLOOP},{
     dec   L             ; 1:4       $1 +rloop LOOP_STACK
     exx                 ; 1:4       $1 +rloop LOOP_STACK
     jp    p, do{}LOOP_STACK      ; 3:10      $1 +rloop LOOP_STACK ( -- ) R:( stop index -- stop index+$1 )
-dnl                        :160
+dnl #                        :160
 leave{}LOOP_STACK:               ;           $1 +rloop LOOP_STACK
     inc  HL             ; 1:6       $1 +rloop LOOP_STACK
     exx                 ; 1:4       $1 +rloop LOOP_STACK ( -- ) R:( stop index -- )
@@ -331,20 +384,26 @@ exit{}LOOP_STACK:                ;           $1 +rloop LOOP_STACK{}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
-dnl step +loop
-dnl ( -- )
-define({PUSH_ADDRLOOP},{ifelse(eval($1),{1},{
+dnl # step +loop
+dnl # ( -- )
+define({PUSH_ADDRLOOP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ADDRLOOP},{push_addrloop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ADDRLOOP},{dnl
+__{}define({__INFO},{push_addrloop}){}dnl
+ifelse(eval($1),{1},{
                         ;           $1 +rloop LOOP_STACK{}RLOOP},
 eval($1),{-1},{
                         ;           $1 +rloop LOOP_STACK{}SUB1_ADDRLOOP},
 eval($1),{2},{
                         ;           $1 +rloop LOOP_STACK{}_2_ADDRLOOP},
 {$#},{1},{X_ADDRLOOP($1)},{
-.error push_addrloop without parameter!})})dnl
+.error push_addrloop without parameter!})}){}dnl
 dnl
 dnl
 dnl

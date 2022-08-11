@@ -1,362 +1,4 @@
 dnl ## Device
-define({__},{})dnl
-dnl
-dnl
-dnl # . bs
-dnl # ( x -- )
-dnl # prints a 16-bit number with no spaces
-define({DOT},{__def({USE_PRT_S16})
-    call PRT_S16        ; 3:17      .   ( s -- )})dnl
-dnl
-dnl
-dnl # dup . bs
-dnl # ( x -- x )
-dnl # prints without deletion a 16-bit number without spaces
-define({DUP_DOT},{
-    push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
-__{}DOT
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
-dnl
-dnl
-dnl # u. bs
-dnl # ( u -- )
-dnl # prints a 16-bit unsigned number with no spaces
-define({UDOT},{__def({USE_PRT_U16})
-    call PRT_U16        ; 3:17      u.   ( u -- )})dnl
-dnl
-dnl
-dnl # dup u. bs
-dnl # ( u -- u )
-dnl # prints without deletion a 16-bit unsigned number without spaces
-define({DUP_UDOT},{
-    push HL             ; 1:11      dup u.   x3 x1 x2 x1{}dnl
-__{}UDOT
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1})dnl
-dnl
-dnl
-dnl # space . bs
-dnl # ( x -- )
-dnl # prints a space and a 16-bit number
-define({SPACE_DOT},{__def({USE_PRT_SP_S16})
-    call PRT_SP_S16     ; 3:17      space .   ( s -- )})dnl
-dnl
-dnl
-dnl # dup space . bs
-dnl # ( x -- x )
-dnl # prints a space and without deletion a 16-bit number
-define({DUP_SPACE_DOT},{
-    push HL             ; 1:11      dup space .   x3 x1 x2 x1{}dnl
-__{}SPACE_DOT
-    ex   DE, HL         ; 1:4       dup space .   x3 x2 x1})dnl
-dnl
-define({SPACE_DUP_DOT},{DUP_SPACE_DOT}){}dnl
-dnl
-dnl
-dnl # space u. bs
-dnl # ( u -- )
-dnl # prints a space and a 16-bit number
-define({SPACE_UDOT},{__def({USE_PRT_SP_U16})
-    call PRT_SP_U16     ; 3:17      space u.   ( u -- )})dnl
-dnl
-dnl
-dnl # space dup u. bs
-dnl # ( u -- u )
-dnl # print space and non-destructively number
-define({DUP_SPACE_UDOT},{
-    push HL             ; 1:11      dup space u.   x3 x1 x2 x1{}dnl
-__{}SPACE_UDOT
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1})dnl
-dnl
-define({SPACE_DUP_UDOT},{DUP_SPACE_UDOT}){}dnl
-dnl
-dnl
-dnl # hex u. bs
-dnl # ( u -- )
-dnl # prints a 16-bit unsigned hex number with no spaces
-define({HEX_UDOT},{__def({USE_PRT_HEX_U16})
-    call PRT_HEX_U16    ; 3:17      hex u.   ( u -- )
-    pop  HL             ; 1:10      hex u.
-    pop  DE             ; 1:10      hex u.})dnl
-dnl
-dnl
-dnl # dup hex u. bs
-dnl # ( u -- u )
-dnl # prints without deletion a 16-bit unsigned hex number with no spaces
-define({DUP_HEX_UDOT},{__def({USE_PRT_HEX_U16})
-    call PRT_HEX_U16    ; 3:17      dup hex u.   ( u -- u )})dnl
-dnl
-define({HEX_DUP_UDOT},{DUP_HEX_UDOT}){}dnl
-dnl
-dnl
-dnl # space hex u. bs
-dnl # ( u -- )
-dnl # prints a space and a 16-bit unsigned hex number
-define({SPACE_HEX_UDOT},{__def({USE_PRT_SP_HEX_U16})
-    call PRT_SP_HEX_U16 ; 3:17      space hex u.   ( u -- )
-    pop  HL             ; 1:10      space hex u.
-    pop  DE             ; 1:10      space hex u.})dnl
-dnl
-define({HEX_SPACE_UDOT},{SPACE_HEX_UDOT}){}dnl
-dnl
-dnl # space dup hex u. bs
-dnl # ( u -- u )
-dnl # prints a space and without deletion a 16-bit unsigned hex number
-define({SPACE_DUP_HEX_UDOT},{__def({USE_PRT_SP_HEX_U16})
-    call PRT_SP_HEX_U16 ; 3:17      space dup hex u.   ( u -- u )})dnl
-dnl
-define({SPACE_HEX_DUP_UDOT},{SPACE_DUP_HEX_UDOT}){}dnl
-define({DUP_SPACE_HEX_UDOT},{SPACE_DUP_HEX_UDOT}){}dnl
-define({DUP_HEX_SPACE_UDOT},{SPACE_DUP_HEX_UDOT}){}dnl
-define({HEX_SPACE_DUP_UDOT},{SPACE_DUP_HEX_UDOT}){}dnl
-define({HEX_DUP_SPACE_UDOT},{SPACE_DUP_HEX_UDOT}){}dnl
-dnl
-dnl # -------vvv zx rom routines vvv---------
-dnl
-dnl
-dnl # u.
-dnl # ( u -- )
-dnl # print spaces and unsigned 16-bit number
-define({SPACE_UDOTZXROM},{__def({USE_ZXPRT_SP_U16})
-    call ZXPRT_SP_U16   ; 3:17      space u.zxrom   ( u -- )})dnl
-dnl
-dnl # u.
-dnl # ( u -- )
-dnl # print unsigned 16-bit number
-define({UDOTZXROM},{__def({USE_ZXPRT_U16})
-    call ZXPRT_U16      ; 3:17      u.zxrom   ( u -- )})dnl
-dnl
-dnl
-dnl # dup u.
-dnl # ( u -- u )
-dnl # dup and print space and unsigned 16-bit number
-define({DUP_SPACE_UDOTZXROM},{__def({USE_DUP_ZXPRT_SP_U16})
-    call DUP_ZXPRT_SP_U16; 3:17      dup space u.zxrom   ( u -- u )})dnl
-dnl
-dnl
-dnl # dup u.
-dnl # ( u -- u )
-dnl # dup and print unsigned 16-bit number
-define({DUP_UDOTZXROM},{__def({USE_DUP_ZXPRT_U16})
-    call DUP_ZXPRT_U16  ; 3:17      dup u.zxrom   ( u -- u )})dnl
-dnl
-dnl
-dnl # .
-dnl # ( x -- )
-dnl # print space and 16-bit number
-define({SPACE_DOTZXROM},{__def({USE_ZXPRT_SP_S16})
-    call ZXPRT_SP_S16   ; 3:17      space .zxrom   ( x -- )})dnl
-dnl
-dnl # .
-dnl # ( x -- )
-dnl # print 16-bit number
-define({DOTZXROM},{__def({USE_ZXPRT_S16})
-    call ZXPRT_S16      ; 3:17      .zxrom   ( x -- )})dnl
-dnl
-dnl # -------^^^ zx rom routines ^^^---------
-dnl
-dnl # -------------- 32-bit number --------------
-dnl
-dnl
-dnl # d. bs
-dnl # ( d -- )
-dnl # prints a 32-bit number with no spaces
-define({DDOT},{__def({USE_PRT_S32})
-    call PRT_S32        ; 3:17      d.   ( d -- )})dnl
-dnl
-dnl # space d. bs
-dnl # ( d -- )
-dnl # prints a space and a 32-bit number
-define({SPACE_DDOT},{__def({USE_PRT_SP_S32})
-    call PRT_SP_S32     ; 3:17      space d.   ( d -- )})dnl
-dnl
-dnl
-dnl # ud. bs
-dnl # ( ud -- )
-dnl # prints a 32-bit unsigned number with no spaces
-define({UDDOT},{__def({USE_PRT_U32})
-    call PRT_U32        ; 3:17      ud.   ( ud -- )})dnl
-dnl
-dnl
-dnl # space ud. bs
-dnl # ( ud -- )
-dnl # prints a space and a 32-bit unsigned number
-define({SPACE_UDDOT},{__def({USE_PRT_SP_U32})
-    call PRT_SP_U32     ; 3:17      space ud.   ( ud -- )})dnl
-dnl
-dnl
-dnl # hex ud.
-dnl # ( ud -- )
-dnl # prints a 32-bit unsigned hex number with no spaces
-define({HEX_UDDOT},{__def({USE_PRT_HEX_U32})
-    call PRT_HEX_U32    ; 3:17      hex ud.   ( ud -- )
-    pop  HL             ; 1:10      hex ud.
-    pop  DE             ; 1:10      hex ud.})dnl
-dnl
-dnl
-dnl # 2dup hex ud.
-dnl # ( ud -- ud )
-dnl # prints without deletion a 32-bit unsigned hex number with no spaces
-define({_2DUP_HEX_UDDOT},{__def({USE_PRT_HEX_U32})
-    call PRT_HEX_U32    ; 3:17      2dup hex ud.   ( ud -- ud )})dnl
-dnl
-define({HEX_2DUP_UDDOT},{_2DUP_HEX_UDDOT}){}dnl
-dnl
-dnl
-dnl # space hex ud. bs
-dnl # ( ud -- )
-dnl # prints space and a 32-bit unsigned hex number
-define({SPACE_HEX_UDDOT},{__def({USE_PRT_SP_HEX_U32})
-    call PRT_SP_HEX_U32 ; 3:17      space hex ud.   ( ud -- )
-    pop  HL             ; 1:10      space hex ud.
-    pop  DE             ; 1:10      space hex ud.})dnl
-dnl
-define({HEX_SPACE_UDDOT},{SPACE_HEX_UDDOT}){}dnl
-dnl
-dnl
-dnl # space 2dup hex ud. bs
-dnl # ( ud -- ud )
-dnl # prints space and without deletion a 32-bit unsigned hex number
-define({SPACE_2DUP_HEX_UDDOT},{__def({USE_PRT_SP_HEX_U32})
-    call PRT_SP_HEX_U32 ; 3:17      space 2dup hex ud.   ( ud -- ud )})dnl
-dnl
-define({SPACE_HEX_2DUP_UDDOT},{SPACE_2DUP_HEX_UDDOT}){}dnl
-define({HEX_SPACE_2DUP_UDDOT},{SPACE_2DUP_HEX_UDDOT}){}dnl
-define({HEX_2DUP_SPACE_UDDOT},{SPACE_2DUP_HEX_UDDOT}){}dnl
-define({_2DUP_HEX_SPACE_UDDOT},{SPACE_2DUP_HEX_UDDOT}){}dnl
-define({_2DUP_SPACE_HEX_UDDOT},{SPACE_2DUP_HEX_UDDOT}){}dnl
-dnl
-dnl # -------------------------------------------
-dnl
-dnl # .S
-dnl # ( x3 x2 x1 -- x3 x2 x1 )
-dnl # print 3 stack number
-define({DOTS},{
-    ex  (SP), HL        ; 1:19      .S  ( x1 x2 x3 )
-    push HL             ; 1:11      .S  ( x1 x3 x2 x3 )
-__{}DOT
-    push HL             ; 1:11      .S  ( x1 x2 x3 x2 )
-__{}SPACE_DOT
-    ex  (SP), HL        ; 1:19      .S  ( x3 x2 x1 )
-__{}DUP_SPACE_DOT})dnl
-dnl
-dnl
-dnl # ( -- )
-dnl # new line
-define({CR},{
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with {48K ROM} in, this will print char in A})dnl
-dnl
-dnl
-dnl # ( 'a' -- )
-dnl # print char 'a'
-define({EMIT},{
-    ld    A, L          ; 1:4       emit    Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      emit    with {48K ROM} in, this will print char in A{}dnl
-__{}DROP})dnl
-dnl
-dnl
-dnl # ( 'a' -- 'a' )
-dnl # print char 'a'
-define({DUP_EMIT},{
-    ld    A, L          ; 1:4       dup emit    Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      dup emit    with {48K ROM} in, this will print char in A})dnl
-dnl
-dnl
-dnl # ( addr -- addr )
-dnl # print char from address
-define({DUP_FETCH_EMIT},{
-    ld    A,(HL)        ; 1:7       dup @ emit    Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      dup @ emit    with {48K ROM} in, this will print char in A})dnl
-dnl
-dnl
-dnl # ( -- )
-dnl # print space
-define({SPACE},{
-    ld    A, 0x20       ; 2:7       space   Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      space   with {48K ROM} in, this will print space})dnl
-dnl
-dnl
-dnl # ( -- )
-dnl # .( char )
-define({PUTCHAR},{ifelse($2,{},,{
-.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
-    ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with {ZX 48K ROM}})dnl
-dnl
-dnl
-dnl # ( -- )
-dnl # .( char )
-define({PUSH_EMIT},{ifelse($2,{},,{
-.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
-    ld    A, format({%-11s},{{$1}})  ; 2:7       $1 emit  push_emit($1)   Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      $1 emit  push_emit($1)   putchar(reg A) with {ZX 48K ROM}})dnl
-dnl
-dnl
-dnl # ( addr n -- )
-dnl # print n chars from addr
-define({TYPE},{
-__{}define({USE_TYPE},{})dnl
-    call PRINT_TYPE     ; 3:17      type   ( addr n -- )})dnl
-dnl
-dnl
-dnl # ( addr n -- addr n )
-dnl # non-destructively print string
-define({_2DUP_TYPE},{
-    push DE             ; 1:11      2dup type   ( addr n -- addr n )
-    ld    B, H          ; 1:4       2dup type
-    ld    C, L          ; 1:4       2dup type   BC = length of string to print
-    call 0x203C         ; 3:17      2dup type   Use {ZX 48K ROM} for print string
-    pop  DE             ; 1:10      2dup type})dnl
-dnl
-dnl
-dnl # ( addr -- )
-dnl # print stringZ
-define({TYPE_Z},{
-__{}define({USE_TYPE_Z},{})dnl
-    call PRINT_TYPE_Z   ; 3:17      type_z   ( addr -- )
-    ex   DE, HL         ; 1:4       type_z
-    pop  DE             ; 1:10      type_z})dnl
-dnl
-dnl
-dnl # ( -- )  $1 = addr
-dnl # print stringZ
-define({PUSH_TYPE_Z},{ifelse($1,{},{
-__{}__{}    .error {$0}(): Missing parameter!},
-{define({USE_PRINT_Z},{})
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_z   ( -- )
-    call PRINT_STRING_Z ; 3:17      $1 type_z})})dnl
-dnl
-dnl
-dnl # ( addr -- addr )
-dnl # non-destructively print stringZ
-define({DUP_TYPE_Z},{
-__{}define({USE_TYPE_Z},{})dnl
-    call PRINT_TYPE_Z   ; 3:17      dup type_z   ( addr -- addr )})dnl
-dnl
-dnl
-dnl # ( addr -- )
-dnl # print inverted_msb-terminated string
-define({TYPE_I},{
-__{}define({USE_TYPE_I},{})dnl
-    call PRINT_TYPE_I   ; 3:17      type_i   ( addr -- )
-    ex   DE, HL         ; 1:4       type_i
-    pop  DE             ; 1:10      type_i})dnl
-dnl
-dnl
-dnl # ( -- )  $1 = addr
-dnl # print inverted_msb-terminated string
-define({PUSH_TYPE_I},{ifelse($1,{},{
-__{}  .error {$0}(): Missing parameter!},
-{define({USE_PRINT_I},{})
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_i   ( -- )
-    call PRINT_STRING_I ; 3:17      $1 type_i})})dnl
-dnl
-dnl
-dnl # ( addr -- addr )
-dnl # non-destructively print inverted_msb-terminated string
-define({DUP_TYPE_I},{
-__{}define({USE_TYPE_I},{})dnl
-    call PRINT_TYPE_I   ; 3:17      dup type_i   ( addr -- addr )})dnl
 dnl
 dnl
 dnl
@@ -470,11 +112,725 @@ __{}__{}__{}regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}){}errprint({
 dnl
 dnl
 dnl
+dnl # -------------------------------------------
+dnl
+dnl # . bs
+dnl # ( x -- )
+dnl # prints a 16-bit number with no spaces
+define({DOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DOT},{dot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DOT},{dnl
+__{}define({__INFO},{dot}){}dnl
+__def({USE_PRT_S16})
+    call PRT_S16        ; 3:17      .   ( s -- )})dnl
+dnl
+dnl
+dnl # dup . bs
+dnl # ( x -- x )
+dnl # prints without deletion a 16-bit number without spaces
+define({DUP_DOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_DOT},{dup_dot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_DOT},{dnl
+__{}define({__INFO},{dup_dot}){}dnl
+
+    push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
+__{}DOT
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
+dnl
+dnl
+dnl # u. bs
+dnl # ( u -- )
+dnl # prints a 16-bit unsigned number with no spaces
+define({UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_UDOT},{udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UDOT},{dnl
+__{}define({__INFO},{udot}){}dnl
+__def({USE_PRT_U16})
+    call PRT_U16        ; 3:17      u.   ( u -- )})dnl
+dnl
+dnl
+dnl # dup u. bs
+dnl # ( u -- u )
+dnl # prints without deletion a 16-bit unsigned number without spaces
+define({DUP_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_UDOT},{dup_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_UDOT},{dnl
+__{}define({__INFO},{dup_udot}){}dnl
+
+    push HL             ; 1:11      dup u.   x3 x1 x2 x1{}dnl
+__{}UDOT
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1})dnl
+dnl
+dnl
+dnl # space . bs
+dnl # ( x -- )
+dnl # prints a space and a 16-bit number
+define({SPACE_DOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_DOT},{space_dot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_DOT},{dnl
+__{}define({__INFO},{space_dot}){}dnl
+__def({USE_PRT_SP_S16})
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )})dnl
+dnl
+dnl
+dnl # dup space . bs
+dnl # ( x -- x )
+dnl # prints a space and without deletion a 16-bit number
+define({DUP_SPACE_DOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_SPACE_DOT},{dup_space_dot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_SPACE_DOT},{dnl
+__{}define({__INFO},{dup_space_dot}){}dnl
+
+    push HL             ; 1:11      dup space .   x3 x1 x2 x1{}dnl
+__{}SPACE_DOT
+    ex   DE, HL         ; 1:4       dup space .   x3 x2 x1})dnl
+dnl
+define({SPACE_DUP_DOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_DUP_DOT},{space_dup_dot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_DUP_DOT},{dnl
+__{}define({__INFO},{space_dup_dot}){}dnl
+DUP_SPACE_DOT}){}dnl
+dnl
+dnl
+dnl # space u. bs
+dnl # ( u -- )
+dnl # prints a space and a 16-bit number
+define({SPACE_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_UDOT},{space_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_UDOT},{dnl
+__{}define({__INFO},{space_udot}){}dnl
+__def({USE_PRT_SP_U16})
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )})dnl
+dnl
+dnl
+dnl # space dup u. bs
+dnl # ( u -- u )
+dnl # print space and non-destructively number
+define({DUP_SPACE_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_SPACE_UDOT},{dup_space_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_SPACE_UDOT},{dnl
+__{}define({__INFO},{dup_space_udot}){}dnl
+
+    push HL             ; 1:11      dup space u.   x3 x1 x2 x1{}dnl
+__{}SPACE_UDOT
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1})dnl
+dnl
+define({SPACE_DUP_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_DUP_UDOT},{space_dup_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_DUP_UDOT},{dnl
+__{}define({__INFO},{space_dup_udot}){}dnl
+DUP_SPACE_UDOT}){}dnl
+dnl
+dnl
+dnl # hex u. bs
+dnl # ( u -- )
+dnl # prints a 16-bit unsigned hex number with no spaces
+define({HEX_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_UDOT},{hex_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_UDOT},{dnl
+__{}define({__INFO},{hex_udot}){}dnl
+__def({USE_PRT_HEX_U16})
+    call PRT_HEX_U16    ; 3:17      hex u.   ( u -- )
+    pop  HL             ; 1:10      hex u.
+    pop  DE             ; 1:10      hex u.})dnl
+dnl
+dnl
+dnl # dup hex u. bs
+dnl # ( u -- u )
+dnl # prints without deletion a 16-bit unsigned hex number with no spaces
+define({DUP_HEX_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_HEX_UDOT},{dup_hex_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_HEX_UDOT},{dnl
+__{}define({__INFO},{dup_hex_udot}){}dnl
+__def({USE_PRT_HEX_U16})
+    call PRT_HEX_U16    ; 3:17      dup hex u.   ( u -- u )})dnl
+dnl
+define({HEX_DUP_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_DUP_UDOT},{hex_dup_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_DUP_UDOT},{dnl
+__{}define({__INFO},{hex_dup_udot}){}dnl
+DUP_HEX_UDOT}){}dnl
+dnl
+dnl
+dnl # space hex u. bs
+dnl # ( u -- )
+dnl # prints a space and a 16-bit unsigned hex number
+define({SPACE_HEX_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_HEX_UDOT},{space_hex_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_HEX_UDOT},{dnl
+__{}define({__INFO},{space_hex_udot}){}dnl
+__def({USE_PRT_SP_HEX_U16})
+    call PRT_SP_HEX_U16 ; 3:17      space hex u.   ( u -- )
+    pop  HL             ; 1:10      space hex u.
+    pop  DE             ; 1:10      space hex u.})dnl
+dnl
+define({HEX_SPACE_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_SPACE_UDOT},{hex_space_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_SPACE_UDOT},{dnl
+__{}define({__INFO},{hex_space_udot}){}dnl
+SPACE_HEX_UDOT}){}dnl
+dnl
+dnl # space dup hex u. bs
+dnl # ( u -- u )
+dnl # prints a space and without deletion a 16-bit unsigned hex number
+define({SPACE_DUP_HEX_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_DUP_HEX_UDOT},{space_dup_hex_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_DUP_HEX_UDOT},{dnl
+__{}define({__INFO},{space_dup_hex_udot}){}dnl
+__def({USE_PRT_SP_HEX_U16})
+    call PRT_SP_HEX_U16 ; 3:17      space dup hex u.   ( u -- u )})dnl
+dnl
+define({SPACE_HEX_DUP_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_HEX_DUP_UDOT},{space_hex_dup_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_HEX_DUP_UDOT},{dnl
+__{}define({__INFO},{space_hex_dup_udot}){}dnl
+SPACE_DUP_HEX_UDOT}){}dnl
+define({DUP_SPACE_HEX_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_SPACE_HEX_UDOT},{dup_space_hex_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_SPACE_HEX_UDOT},{dnl
+__{}define({__INFO},{dup_space_hex_udot}){}dnl
+SPACE_DUP_HEX_UDOT}){}dnl
+define({DUP_HEX_SPACE_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_HEX_SPACE_UDOT},{dup_hex_space_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_HEX_SPACE_UDOT},{dnl
+__{}define({__INFO},{dup_hex_space_udot}){}dnl
+SPACE_DUP_HEX_UDOT}){}dnl
+define({HEX_SPACE_DUP_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_SPACE_DUP_UDOT},{hex_space_dup_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_SPACE_DUP_UDOT},{dnl
+__{}define({__INFO},{hex_space_dup_udot}){}dnl
+SPACE_DUP_HEX_UDOT}){}dnl
+define({HEX_DUP_SPACE_UDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_DUP_SPACE_UDOT},{hex_dup_space_udot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_DUP_SPACE_UDOT},{dnl
+__{}define({__INFO},{hex_dup_space_udot}){}dnl
+SPACE_DUP_HEX_UDOT}){}dnl
+dnl
+dnl # -------vvv zx rom routines vvv---------
+dnl
+dnl
+dnl # u.
+dnl # ( u -- )
+dnl # print spaces and unsigned 16-bit number
+define({SPACE_UDOTZXROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_UDOTZXROM},{space_udotzxrom},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_UDOTZXROM},{dnl
+__{}define({__INFO},{space_udotzxrom}){}dnl
+__def({USE_ZXPRT_SP_U16})
+    call ZXPRT_SP_U16   ; 3:17      space u.zxrom   ( u -- )})dnl
+dnl
+dnl # u.
+dnl # ( u -- )
+dnl # print unsigned 16-bit number
+define({UDOTZXROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_UDOTZXROM},{udotzxrom},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UDOTZXROM},{dnl
+__{}define({__INFO},{udotzxrom}){}dnl
+__def({USE_ZXPRT_U16})
+    call ZXPRT_U16      ; 3:17      u.zxrom   ( u -- )})dnl
+dnl
+dnl
+dnl # dup u.
+dnl # ( u -- u )
+dnl # dup and print space and unsigned 16-bit number
+define({DUP_SPACE_UDOTZXROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_SPACE_UDOTZXROM},{dup_space_udotzxrom},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_SPACE_UDOTZXROM},{dnl
+__{}define({__INFO},{dup_space_udotzxrom}){}dnl
+__def({USE_DUP_ZXPRT_SP_U16})
+    call DUP_ZXPRT_SP_U16; 3:17      dup space u.zxrom   ( u -- u )})dnl
+dnl
+dnl
+dnl # dup u.
+dnl # ( u -- u )
+dnl # dup and print unsigned 16-bit number
+define({DUP_UDOTZXROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_UDOTZXROM},{dup_udotzxrom},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_UDOTZXROM},{dnl
+__{}define({__INFO},{dup_udotzxrom}){}dnl
+__def({USE_DUP_ZXPRT_U16})
+    call DUP_ZXPRT_U16  ; 3:17      dup u.zxrom   ( u -- u )})dnl
+dnl
+dnl
+dnl # .
+dnl # ( x -- )
+dnl # print space and 16-bit number
+define({SPACE_DOTZXROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_DOTZXROM},{space_dotzxrom},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_DOTZXROM},{dnl
+__{}define({__INFO},{space_dotzxrom}){}dnl
+__def({USE_ZXPRT_SP_S16})
+    call ZXPRT_SP_S16   ; 3:17      space .zxrom   ( x -- )})dnl
+dnl
+dnl # .
+dnl # ( x -- )
+dnl # print 16-bit number
+define({DOTZXROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_DOTZXROM},{dotzxrom},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DOTZXROM},{dnl
+__{}define({__INFO},{dotzxrom}){}dnl
+__def({USE_ZXPRT_S16})
+    call ZXPRT_S16      ; 3:17      .zxrom   ( x -- )})dnl
+dnl
+dnl # -------^^^ zx rom routines ^^^---------
+dnl
+dnl # -------------- 32-bit number --------------
+dnl
+dnl
+dnl # d. bs
+dnl # ( d -- )
+dnl # prints a 32-bit number with no spaces
+define({DDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DDOT},{ddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DDOT},{dnl
+__{}define({__INFO},{ddot}){}dnl
+__def({USE_PRT_S32})
+    call PRT_S32        ; 3:17      d.   ( d -- )})dnl
+dnl
+dnl # space d. bs
+dnl # ( d -- )
+dnl # prints a space and a 32-bit number
+define({SPACE_DDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_DDOT},{space_ddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_DDOT},{dnl
+__{}define({__INFO},{space_ddot}){}dnl
+__def({USE_PRT_SP_S32})
+    call PRT_SP_S32     ; 3:17      space d.   ( d -- )})dnl
+dnl
+dnl
+dnl # ud. bs
+dnl # ( ud -- )
+dnl # prints a 32-bit unsigned number with no spaces
+define({UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_UDDOT},{uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UDDOT},{dnl
+__{}define({__INFO},{uddot}){}dnl
+__def({USE_PRT_U32})
+    call PRT_U32        ; 3:17      ud.   ( ud -- )})dnl
+dnl
+dnl
+dnl # space ud. bs
+dnl # ( ud -- )
+dnl # prints a space and a 32-bit unsigned number
+define({SPACE_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_UDDOT},{space_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_UDDOT},{dnl
+__{}define({__INFO},{space_uddot}){}dnl
+__def({USE_PRT_SP_U32})
+    call PRT_SP_U32     ; 3:17      space ud.   ( ud -- )})dnl
+dnl
+dnl
+dnl # hex ud.
+dnl # ( ud -- )
+dnl # prints a 32-bit unsigned hex number with no spaces
+define({HEX_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_UDDOT},{hex_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_UDDOT},{dnl
+__{}define({__INFO},{hex_uddot}){}dnl
+__def({USE_PRT_HEX_U32})
+    call PRT_HEX_U32    ; 3:17      hex ud.   ( ud -- )
+    pop  HL             ; 1:10      hex ud.
+    pop  DE             ; 1:10      hex ud.})dnl
+dnl
+dnl
+dnl # 2dup hex ud.
+dnl # ( ud -- ud )
+dnl # prints without deletion a 32-bit unsigned hex number with no spaces
+define({_2DUP_HEX_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HEX_UDDOT},{2dup_hex_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HEX_UDDOT},{dnl
+__{}define({__INFO},{2dup_hex_uddot}){}dnl
+__def({USE_PRT_HEX_U32})
+    call PRT_HEX_U32    ; 3:17      2dup hex ud.   ( ud -- ud )})dnl
+dnl
+define({HEX_2DUP_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_2DUP_UDDOT},{hex_2dup_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_2DUP_UDDOT},{dnl
+__{}define({__INFO},{hex_2dup_uddot}){}dnl
+_2DUP_HEX_UDDOT}){}dnl
+dnl
+dnl
+dnl # space hex ud. bs
+dnl # ( ud -- )
+dnl # prints space and a 32-bit unsigned hex number
+define({SPACE_HEX_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_HEX_UDDOT},{space_hex_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_HEX_UDDOT},{dnl
+__{}define({__INFO},{space_hex_uddot}){}dnl
+__def({USE_PRT_SP_HEX_U32})
+    call PRT_SP_HEX_U32 ; 3:17      space hex ud.   ( ud -- )
+    pop  HL             ; 1:10      space hex ud.
+    pop  DE             ; 1:10      space hex ud.})dnl
+dnl
+define({HEX_SPACE_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_SPACE_UDDOT},{hex_space_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_SPACE_UDDOT},{dnl
+__{}define({__INFO},{hex_space_uddot}){}dnl
+SPACE_HEX_UDDOT}){}dnl
+dnl
+dnl
+dnl # space 2dup hex ud. bs
+dnl # ( ud -- ud )
+dnl # prints space and without deletion a 32-bit unsigned hex number
+define({SPACE_2DUP_HEX_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_2DUP_HEX_UDDOT},{space_2dup_hex_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_2DUP_HEX_UDDOT},{dnl
+__{}define({__INFO},{space_2dup_hex_uddot}){}dnl
+__def({USE_PRT_SP_HEX_U32})
+    call PRT_SP_HEX_U32 ; 3:17      space 2dup hex ud.   ( ud -- ud )})dnl
+dnl
+define({SPACE_HEX_2DUP_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE_HEX_2DUP_UDDOT},{space_hex_2dup_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE_HEX_2DUP_UDDOT},{dnl
+__{}define({__INFO},{space_hex_2dup_uddot}){}dnl
+SPACE_2DUP_HEX_UDDOT}){}dnl
+define({HEX_SPACE_2DUP_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_SPACE_2DUP_UDDOT},{hex_space_2dup_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_SPACE_2DUP_UDDOT},{dnl
+__{}define({__INFO},{hex_space_2dup_uddot}){}dnl
+SPACE_2DUP_HEX_UDDOT}){}dnl
+define({HEX_2DUP_SPACE_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_2DUP_SPACE_UDDOT},{hex_2dup_space_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_2DUP_SPACE_UDDOT},{dnl
+__{}define({__INFO},{hex_2dup_space_uddot}){}dnl
+SPACE_2DUP_HEX_UDDOT}){}dnl
+define({_2DUP_HEX_SPACE_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HEX_SPACE_UDDOT},{2dup_hex_space_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HEX_SPACE_UDDOT},{dnl
+__{}define({__INFO},{2dup_hex_space_uddot}){}dnl
+SPACE_2DUP_HEX_UDDOT}){}dnl
+define({_2DUP_SPACE_HEX_UDDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_SPACE_HEX_UDDOT},{2dup_space_hex_uddot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_SPACE_HEX_UDDOT},{dnl
+__{}define({__INFO},{2dup_space_hex_uddot}){}dnl
+SPACE_2DUP_HEX_UDDOT}){}dnl
+dnl
+dnl # -------------------------------------------
+dnl
+dnl # .S
+dnl # ( x3 x2 x1 -- x3 x2 x1 )
+dnl # print 3 stack number
+define({DOTS},{dnl
+__{}__ADD_TOKEN({__TOKEN_DOTS},{dots},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DOTS},{dnl
+__{}define({__INFO},{dots}){}dnl
+
+    ex  (SP), HL        ; 1:19      .S  ( x1 x2 x3 )
+    push HL             ; 1:11      .S  ( x1 x3 x2 x3 )
+__{}DOT
+    push HL             ; 1:11      .S  ( x1 x2 x3 x2 )
+__{}SPACE_DOT
+    ex  (SP), HL        ; 1:19      .S  ( x3 x2 x1 )
+__{}DUP_SPACE_DOT})dnl
+dnl
+dnl
+dnl # ( -- )
+dnl # new line
+define({CR},{dnl
+__{}__ADD_TOKEN({__TOKEN_CR},{cr},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CR},{dnl
+__{}define({__INFO},{cr}){}dnl
+
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      cr      with {48K ROM} in, this will print char in A})dnl
+dnl
+dnl
+dnl # ( 'a' -- )
+dnl # print char 'a'
+define({EMIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_EMIT},{emit},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_EMIT},{dnl
+__{}define({__INFO},{emit}){}dnl
+
+    ld    A, L          ; 1:4       emit    Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      emit    with {48K ROM} in, this will print char in A{}dnl
+__{}DROP})dnl
+dnl
+dnl
+dnl # ( 'a' -- 'a' )
+dnl # print char 'a'
+define({DUP_EMIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_EMIT},{dup_emit},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_EMIT},{dnl
+__{}define({__INFO},{dup_emit}){}dnl
+
+    ld    A, L          ; 1:4       dup emit    Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      dup emit    with {48K ROM} in, this will print char in A})dnl
+dnl
+dnl
+dnl # ( addr -- addr )
+dnl # print char from address
+define({DUP_FETCH_EMIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_FETCH_EMIT},{dup_fetch_emit},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_FETCH_EMIT},{dnl
+__{}define({__INFO},{dup_fetch_emit}){}dnl
+
+    ld    A,(HL)        ; 1:7       dup @ emit    Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      dup @ emit    with {48K ROM} in, this will print char in A})dnl
+dnl
+dnl
+dnl # ( -- )
+dnl # print space
+define({SPACE},{dnl
+__{}__ADD_TOKEN({__TOKEN_SPACE},{space},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SPACE},{dnl
+__{}define({__INFO},{space}){}dnl
+
+    ld    A, 0x20       ; 2:7       space   Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      space   with {48K ROM} in, this will print space})dnl
+dnl
+dnl
+dnl # ( -- )
+dnl # .( char )
+define({PUTCHAR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUTCHAR},{dnl
+__{}define({__INFO},{putchar}){}dnl
+ifelse($2,{},,{
+.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
+    ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      putchar(reg A) with {ZX 48K ROM}})dnl
+dnl
+dnl
+dnl # ( -- )
+dnl # .( char )
+define({PUSH_EMIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EMIT},{push_emit},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_EMIT},{dnl
+__{}define({__INFO},{push_emit}){}dnl
+ifelse($2,{},,{
+.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
+    ld    A, format({%-11s},{{$1}})  ; 2:7       $1 emit  push_emit($1)   Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      $1 emit  push_emit($1)   putchar(reg A) with {ZX 48K ROM}})dnl
+dnl
+dnl
+dnl # ( addr n -- )
+dnl # print n chars from addr
+define({TYPE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TYPE},{type},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TYPE},{dnl
+__{}define({__INFO},{type}){}dnl
+
+__{}define({USE_TYPE},{})dnl
+    call PRINT_TYPE     ; 3:17      type   ( addr n -- )})dnl
+dnl
+dnl
+dnl # ( addr n -- addr n )
+dnl # non-destructively print string
+define({_2DUP_TYPE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_TYPE},{2dup_type},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_TYPE},{dnl
+__{}define({__INFO},{2dup_type}){}dnl
+
+    push DE             ; 1:11      2dup type   ( addr n -- addr n )
+    ld    B, H          ; 1:4       2dup type
+    ld    C, L          ; 1:4       2dup type   BC = length of string to print
+    call 0x203C         ; 3:17      2dup type   Use {ZX 48K ROM} for print string
+    pop  DE             ; 1:10      2dup type})dnl
+dnl
+dnl
+dnl # ( addr -- )
+dnl # print stringZ
+define({TYPE_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_TYPE_Z},{type_z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TYPE_Z},{dnl
+__{}define({__INFO},{type_z}){}dnl
+
+__{}define({USE_TYPE_Z},{})dnl
+    call PRINT_TYPE_Z   ; 3:17      type_z   ( addr -- )
+    ex   DE, HL         ; 1:4       type_z
+    pop  DE             ; 1:10      type_z})dnl
+dnl
+dnl
+dnl # ( -- )  $1 = addr
+dnl # print stringZ
+define({PUSH_TYPE_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_Z},{push_type_z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TYPE_Z},{dnl
+__{}define({__INFO},{push_type_z}){}dnl
+ifelse($1,{},{
+__{}__{}    .error {$0}(): Missing parameter!},
+{define({USE_PRINT_Z},{})
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_z   ( -- )
+    call PRINT_STRING_Z ; 3:17      $1 type_z})})dnl
+dnl
+dnl
+dnl # ( addr -- addr )
+dnl # non-destructively print stringZ
+define({DUP_TYPE_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_TYPE_Z},{dup_type_z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_TYPE_Z},{dnl
+__{}define({__INFO},{dup_type_z}){}dnl
+
+__{}define({USE_TYPE_Z},{})dnl
+    call PRINT_TYPE_Z   ; 3:17      dup type_z   ( addr -- addr )})dnl
+dnl
+dnl
+dnl # ( addr -- )
+dnl # print inverted_msb-terminated string
+define({TYPE_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_TYPE_I},{type_i},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TYPE_I},{dnl
+__{}define({__INFO},{type_i}){}dnl
+
+__{}define({USE_TYPE_I},{})dnl
+    call PRINT_TYPE_I   ; 3:17      type_i   ( addr -- )
+    ex   DE, HL         ; 1:4       type_i
+    pop  DE             ; 1:10      type_i})dnl
+dnl
+dnl
+dnl # ( -- )  $1 = addr
+dnl # print inverted_msb-terminated string
+define({PUSH_TYPE_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_I},{push_type_i},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TYPE_I},{dnl
+__{}define({__INFO},{push_type_i}){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+{define({USE_PRINT_I},{})
+    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_i   ( -- )
+    call PRINT_STRING_I ; 3:17      $1 type_i})})dnl
+dnl
+dnl
+dnl # ( addr -- addr )
+dnl # non-destructively print inverted_msb-terminated string
+define({DUP_TYPE_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_TYPE_I},{dup_type_i},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_TYPE_I},{dnl
+__{}define({__INFO},{dup_type_i}){}dnl
+
+__{}define({USE_TYPE_I},{})dnl
+    call PRINT_TYPE_I   ; 3:17      dup type_i   ( addr -- addr )})dnl
+dnl
+dnl
+dnl
 dnl # ." string"
 dnl # .( string)
 dnl # ( -- )
 dnl # print string
-define({PRINT},{ifelse($#,0,{
+define({PRINT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT},{print},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRINT},{dnl
+__{}define({__INFO},{print}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -495,7 +851,13 @@ dnl # ." string\x00"
 dnl # .( string\x00)
 dnl # ( -- )
 dnl # print null-terminated string
-define({PRINT_Z},{ifelse($#,0,{
+define({PRINT_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT_Z},{print_z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRINT_Z},{dnl
+__{}define({__INFO},{print_z}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -514,7 +876,13 @@ dnl # ." strin\xE7"
 dnl # .( strin\xE7)
 dnl # ( -- )
 dnl # print string ending with inverted most significant bit
-define({PRINT_I},{ifelse($#,0,{
+define({PRINT_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT_I},{print_i},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRINT_I},{dnl
+__{}define({__INFO},{print_i}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -532,7 +900,13 @@ dnl
 dnl # s" string"
 dnl # ( -- addr n )
 dnl # addr = address string, n = lenght(string)
-define({STRING},{ifelse($#,0,{
+define({STRING},{dnl
+__{}__ADD_TOKEN({__TOKEN_STRING},{string},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_STRING},{dnl
+__{}define({__INFO},{string}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -551,7 +925,13 @@ dnl
 dnl # s" string\x00" drop
 dnl # ( -- addr )
 dnl # store null-terminated string
-define({STRING_Z},{ifelse($#,0,{
+define({STRING_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_Z},{string_z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_STRING_Z},{dnl
+__{}define({__INFO},{string_z}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -569,7 +949,13 @@ dnl
 dnl # s" string\x00" 2drop
 dnl # ( -- )
 dnl # store null-terminated string
-define({STRING_Z_DROP},{ifelse($#,0,{
+define({STRING_Z_DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_Z_DROP},{string_z_drop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_STRING_Z_DROP},{dnl
+__{}define({__INFO},{string_z_drop}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -589,7 +975,13 @@ dnl
 dnl # s" strin\xE7" drop
 dnl # ( -- addr )
 dnl # store inverted_msb-terminated string
-define({STRING_I},{ifelse($#,0,{
+define({STRING_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_I},{string_i},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_STRING_I},{dnl
+__{}define({__INFO},{string_i}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -606,7 +998,13 @@ dnl
 dnl # s" strin\xE7" 2drop
 dnl # ( -- )
 dnl # store inverted_msb-terminated string
-define({STRING_I_DROP},{ifelse($#,0,{
+define({STRING_I_DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_I_DROP},{string_i_drop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_STRING_I_DROP},{dnl
+__{}define({__INFO},{string_i_drop}){}dnl
+ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
 __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
@@ -625,21 +1023,39 @@ dnl
 dnl
 dnl # ( -- )
 dnl # Clear key buff
-define({CLEARKEY},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
+define({CLEARKEY},{dnl
+__{}__ADD_TOKEN({__TOKEN_CLEARKEY},{clearkey},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CLEARKEY},{dnl
+__{}define({__INFO},{clearkey}){}dnl
+ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
     call CLEARBUFF      ; 3:17      clearkey})dnl
 dnl
 dnl
 dnl
 dnl # ( -- key )
 dnl # readchar
-define({KEY},{ifdef({USE_KEY},,define({USE_KEY},{}))
+define({KEY},{dnl
+__{}__ADD_TOKEN({__TOKEN_KEY},{key},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_KEY},{dnl
+__{}define({__INFO},{key}){}dnl
+ifdef({USE_KEY},,define({USE_KEY},{}))
     call READKEY        ; 3:17      key})dnl
 dnl
 dnl
 dnl
 dnl # ( -- flag )
 dnl # key?
-define({KEYQUESTION},{
+define({KEYQUESTION},{dnl
+__{}__ADD_TOKEN({__TOKEN_KEYQUESTION},{keyquestion},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_KEYQUESTION},{dnl
+__{}define({__INFO},{keyquestion}){}dnl
+
     ex   DE, HL         ; 1:4       key?
     push HL             ; 1:11      key?
     ld    A,(0x5C08)    ; 3:13      key?   read new value of {LAST K}
@@ -650,13 +1066,25 @@ dnl
 dnl
 dnl # ( addr umax -- uloaded )
 dnl # readstring
-define({ACCEPT},{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{}))
+define({ACCEPT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ACCEPT},{accept},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ACCEPT},{dnl
+__{}define({__INFO},{accept}){}dnl
+ifdef({USE_ACCEPT},,define({USE_ACCEPT},{}))
     call READSTRING     ; 3:17      accept})dnl
 dnl
 dnl
 dnl # ( addr umax -- uloaded )
 dnl # readstring
-define({ACCEPT_Z},{ifdef({USE_ACCEPT},,define({USE_ACCEPT},{})){}ifdef({USE_ACCEPT_Z},,define({USE_ACCEPT_Z},{}))
+define({ACCEPT_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ACCEPT_Z},{accept_z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ACCEPT_Z},{dnl
+__{}define({__INFO},{accept_z}){}dnl
+ifdef({USE_ACCEPT},,define({USE_ACCEPT},{})){}ifdef({USE_ACCEPT_Z},,define({USE_ACCEPT_Z},{}))
     call READSTRING     ; 3:17      accept_z})dnl
 dnl
 dnl

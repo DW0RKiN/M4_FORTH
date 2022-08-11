@@ -70,6 +70,12 @@ dnl # xchg --> 0
 define({__IS_INSTRUCTION},{eval(1+regexp(translit({$1},{ABCDEFGHIJKLMNOPQRSTUVWXYZ},{abcdefghijklmnopqrstuvwxyz}),{^\(ad[cd]\|and\|bit\|call\|ccf\|cp[dil]?\|cpdr\|cpir\|daa\|dec\|di\|djnz\|ei\|ex[x]?\|halt\|im\|in[cdi]?\|indr\|inir\|j[pr]\|ld[di]?\|lddr\|ldir\|neg\|nop\|or\|otdr\|otir\|out[di]?\|pop\|push\|res\|ret[in]?\|rl[acd]?\|rlca\|rr[acd]?\|rrca\|rst\|sbc\|scf\|set\|sla\|sr[al]\|sub\|xor\)$}))}){}dnl
 dnl
 dnl
+define({__SAVE_EVAL},{ifelse(dnl
+__{}eval($#>1),{1},{NO_ONE_NUMBERS},
+__{}__IS_NUM($1),{1},{eval($1)},
+__{}{NO_NUMBER})}){}dnl
+dnl
+dnl
 define({__SORT_SET},{define({$1[$2]},{$3})}){}dnl
 define({__SORT_GET},{defn({$1[$2]})}){}dnl
 dnl
@@ -158,6 +164,271 @@ __if_tmp,{0},{dnl
 __{}__{}$3},
 __{}{dnl
 __{}__{}$2})}){}dnl
+dnl
+dnl
+dnl
+dnl # join(sep, args) - join each non-empty ARG into a single
+dnl # string, with each element separated by SEP
+define({join},
+    {{$# $0 $1 $2
+    }ifelse({$#}, {2}, {{$2}},
+        {ifelse({$2}, {}, {}, {{$2}_})$0({$1}, shift(shift($@)))})}){}dnl
+dnl
+define({_join},
+    {ifelse({$#$2}, {2}, {},
+        {ifelse({$2}, {}, {}, {{$1$2}})$0({$1}, shift(shift($@)))})}){}dnl
+dnl
+dnl # joinall(sep, args) - join each ARG, including empty ones,
+dnl # into a single string, with each element separated by SEP
+define({joinall}, {{$2}_$0({$1}, shift($@))}){}dnl
+dnl
+define({_joinall},
+    {ifelse({$#}, {2}, {}, {{$1$3}$0({$1}, shift(shift($@)))})}){}dnl
+dnl
+dnl
+dnl
+dnl
+define({__PARAM_X},{ifelse(eval($1>1),{1},{$0(eval($1-1),shift(shift($@)))},{$2})}){}dnl
+dnl
+define({__SET_TOKEN},{dnl
+__{}define({__TOKEN[}__TOKEN_COUNT{].NAME},{$1}){}dnl
+__{}define({__TOKEN[}__TOKEN_COUNT{].INFO},{$2}){}dnl
+__{}define({__TOKEN[}__TOKEN_COUNT{].PARAM},(shift(shift($@))))}){}dnl
+dnl
+define({__SHOW_TOKEN},{
+__{} name: defn({__TOKEN[$1].NAME})
+__{} info: defn({__TOKEN[$1].INFO})
+__{}param: defn({__TOKEN[$1].PARAM})
+__{}array1: regexp(defn({__TOKEN[$1].PARAM}),{^(\([^,]*\)[,)]},{\1})
+__{}array2: regexp(defn({__TOKEN[$1].PARAM}),{^([^,]*,\([^,]*\)[,)]},{\1})
+__{}array3: regexp(defn({__TOKEN[$1].PARAM}),{^([^,]*,[^,]*,\([^,]*\)[,)]},{\1})
+__{}array: __GET_TOKEN_ARRAY($1)}){}dnl
+dnl
+define({__GET_TOKEN_NAME},  {defn({__TOKEN[$1].NAME})}){}dnl   # __TOKEN_PUSH2
+define({__GET_TOKEN_INFO},  {defn({__TOKEN[$1].INFO})}){}dnl   # {1 2}
+define({__GET_TOKEN_PARAM}, {defn({__TOKEN[$1].PARAM})}){}dnl  # (1,2)
+define({__UNPACK_ALL},{$@}){}dnl
+define({__UNPACK_1},{$1}){}dnl
+define({__UNPACK_2},{$2}){}dnl
+define({__UNPACK_3},{$3}){}dnl
+define({__UNPACK_PARAM},{__UNPACK_ALL$1}){}dnl
+define({__GET_TOKEN_ARRAY},{__UNPACK_PARAM(defn({__TOKEN[$1].PARAM}))}){}dnl # 1,2
+define({__GET_TOKEN_ARRAY_1},{regexp(defn({__TOKEN[$1].PARAM}),{^(\([^,]*\)[,)]},{\1})}){}dnl
+define({__GET_TOKEN_ARRAY_2},{regexp(defn({__TOKEN[$1].PARAM}),{^([^,]*,\([^,]*\)[,)]},{\1})}){}dnl
+define({__GET_TOKEN_ARRAY_3},{regexp(defn({__TOKEN[$1].PARAM}),{^([^,]*,[^,]*,\([^,]*\)[,)]},{\1})}){}dnl
+dnl
+define({__FIRST_TOKEN_NAME}, {defn({__TOKEN[1].NAME})}){}dnl
+define({__FIRST_TOKEN_INFO}, {defn({__TOKEN[1].INFO})}){}dnl
+define({__FIRST_TOKEN_PARAM},{defn({__TOKEN[1].PARAM})}){}dnl
+dnl
+define({__LAST_TOKEN_NAME}, {defn({__TOKEN[}__TOKEN_COUNT{].NAME})}){}dnl
+define({__LAST_TOKEN_INFO}, {defn({__TOKEN[}__TOKEN_COUNT{].INFO})}){}dnl
+define({__LAST_TOKEN_PARAM},{defn({__TOKEN[}__TOKEN_COUNT{].PARAM})}){}dnl
+define({__LAST_TOKEN_ARRAY},{__UNPACK_PARAM(defn({__TOKEN[}__TOKEN_COUNT{].PARAM}))}){}dnl
+define({__LAST_TOKEN_ARRAY_1},{regexp(defn({__TOKEN[}__TOKEN_COUNT{].PARAM}),{^(\([^,]*\)[,)]},{\1})}){}dnl
+define({__LAST_TOKEN_ARRAY_2},{regexp(defn({__TOKEN[}__TOKEN_COUNT{].PARAM}),{^([^,]*,\([^,]*\)[,)]},{\1})}){}dnl
+define({__LAST_TOKEN_ARRAY_3},{regexp(defn({__TOKEN[}__TOKEN_COUNT{].PARAM}),{^([^,]*,[^,]*,\([^,]*\)[,)]},{\1})}){}dnl
+dnl
+define({__DELETE_LAST_TOKEN},{dln
+__{}undefine({__TOKEN[}__TOKEN_COUNT{].NAME}){}dnl
+__{}undefine({__TOKEN[}__TOKEN_COUNT{].INFO}){}dnl
+__{}undefine({__TOKEN[}__TOKEN_COUNT{].PARAM}){}dnl
+__{}ifelse(__TOKEN_COUNT,1,{undefine({__TOKEN_COUNT})},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT-1))})})dnl
+dnl
+dnl
+define({__ADD_TOKEN},
+    {ifdef({__TOKEN_COUNT},
+        {ifelse(__LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_2DROP},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-2-__TOKEN_ADD},{__SET_TOKEN({__TOKEN_2ADD},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-2-__TOKEN_SUB},{__SET_TOKEN({__TOKEN_2SUB},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_ADD},{__SET_TOKEN({__TOKEN_PUSH_ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_SUB},{__SET_TOKEN({__TOKEN_PUSH_SUB},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+               
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY_2{,}__LAST_TOKEN_ARRAY_1)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_ADD},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1+__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_SUB},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1-__LAST_TOKEN_ARRAY_2))},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_EQ},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1=__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_NE},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1!=__LAST_TOKEN_ARRAY_2))},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_UEQ},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1=__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_UNE},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1!=__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_ULT},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1<__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_UGT},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1>__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_ULE},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1<=__LAST_TOKEN_ARRAY_2))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH2-__TOKEN_UGE},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1>=__LAST_TOKEN_ARRAY_2))},
+                
+                __LAST_TOKEN_NAME-$1-__IS_NUM(__LAST_TOKEN_ARRAY_1)-__IS_NUM(__LAST_TOKEN_ARRAY_2),{__TOKEN_PUSH2-__TOKEN_LT-1-1},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,__HEX_HL(-(__LAST_TOKEN_ARRAY_1<__LAST_TOKEN_ARRAY_2)))},
+                __LAST_TOKEN_NAME-$1-__IS_NUM(__LAST_TOKEN_ARRAY_1)-__IS_NUM(__LAST_TOKEN_ARRAY_2),{__TOKEN_PUSH2-__TOKEN_GT-1-1},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,__HEX_HL(-(__LAST_TOKEN_ARRAY_1>__LAST_TOKEN_ARRAY_2)))},
+                __LAST_TOKEN_NAME-$1-__IS_NUM(__LAST_TOKEN_ARRAY_1)-__IS_NUM(__LAST_TOKEN_ARRAY_2),{__TOKEN_PUSH2-__TOKEN_LE-1-1},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,__HEX_HL(-(__LAST_TOKEN_ARRAY_1<=__LAST_TOKEN_ARRAY_2)))},
+                __LAST_TOKEN_NAME-$1-__IS_NUM(__LAST_TOKEN_ARRAY_1)-__IS_NUM(__LAST_TOKEN_ARRAY_2),{__TOKEN_PUSH2-__TOKEN_GE-1-1},{__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ }$2,__HEX_HL(-(__LAST_TOKEN_ARRAY_1>=__LAST_TOKEN_ARRAY_2)))},
+                                                                                
+                
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_ADD},{__SET_TOKEN({__TOKEN_PUSH_ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_SUB},{__SET_TOKEN({__TOKEN_PUSH_SUB},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+               
+
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-0-__TOKEN_CMOVE},{__DELETE_LAST_TOKEN},
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-0-__TOKEN_MOVE},{__DELETE_LAST_TOKEN},
+                
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-0-__TOKEN_PICK},{__SET_TOKEN({__TOKEN_DUP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-1-__TOKEN_PICK},{__SET_TOKEN({__TOKEN_OVER},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-2-__TOKEN_PICK},{__SET_TOKEN({__TOKEN_2_PICK},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSH-3-__TOKEN_PICK},{__SET_TOKEN({__TOKEN_3_PICK},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_PICK},{__SET_TOKEN({__TOKEN_PUSH_PICK},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_OVER-__TOKEN_OVER},{__SET_TOKEN({__TOKEN_2DUP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_ALLOT},{__SET_TOKEN({__TOKEN_PUSH_ALLOT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_COMMA},{__SET_TOKEN({__TOKEN_PUSH_COMMA},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_LSHIFT},{__SET_TOKEN({__TOKEN_PUSH_LSHIFT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_RSHIFT},{__SET_TOKEN({__TOKEN_PUSH_RSHIFT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_PUSH_SWAP},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH_COMMA-__TOKEN_PUSHS_COMMA}, {__SET_TOKEN({__TOKEN_PUSHS_COMMA},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHS_COMMA-__TOKEN_PUSHS_COMMA},{__SET_TOKEN({__TOKEN_PUSHS_COMMA},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_DUP},{__SET_TOKEN({__TOKEN_DUP_DUP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_EMIT},{__SET_TOKEN({__TOKEN_DUP_EMIT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_TO_R},{__SET_TOKEN({__TOKEN_DUP_TO_R},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_FETCH},{__SET_TOKEN({__TOKEN_DUP_FETCH},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP_FETCH-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_DUP_FETCH_SWAP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_CFETCH},{__SET_TOKEN({__TOKEN_DUP_CFETCH},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP_CFETCH-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_DUP_CFETCH_SWAP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_DUP_PUSH},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP_PUSH-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_PUSH_OVER},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_NROT-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_NROT_SWAP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_NROT-__TOKEN_NIP},{__SET_TOKEN({__TOKEN_NROT_NIP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_NROT-__TOKEN_2SWAP},{__SET_TOKEN({__TOKEN_NROT_2SWAP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_ROT-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_ROT_DROP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_ROT-__TOKEN_ROT},{__SET_TOKEN({__TOKEN_NROT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_ROT_DROP-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_NROT_NIP},__LAST_TOKEN_INFO{ }$2)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_IF},{__SET_TOKEN({__TOKEN_SWAP_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DUP_IF},__LAST_TOKEN_INFO{ }$2)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_SWAP_PUSH},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_NIP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_EQ},{__SET_TOKEN({__TOKEN_EQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_NE},{__SET_TOKEN({__TOKEN_NE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_LT},{__SET_TOKEN({__TOKEN_GT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_GT},{__SET_TOKEN({__TOKEN_LT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_LE},{__SET_TOKEN({__TOKEN_GE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_GE},{__SET_TOKEN({__TOKEN_LE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_UEQ},{__SET_TOKEN({__TOKEN_EQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_UNE},{__SET_TOKEN({__TOKEN_NE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_ULT},{__SET_TOKEN({__TOKEN_UGT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_UGT},{__SET_TOKEN({__TOKEN_ULT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_ULE},{__SET_TOKEN({__TOKEN_UGE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_UGE},{__SET_TOKEN({__TOKEN_ULE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_OVER},{__SET_TOKEN({__TOKEN_TUCK},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_2DROP},{__SET_TOKEN({__TOKEN_2NIP},__LAST_TOKEN_INFO{ }$2)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_TUCK-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_TUCK_STORE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2DUP-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_2DUP_STORE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_TUCK_STORE-__TOKEN_2ADD},{__SET_TOKEN({__TOKEN_TUCK_STORE_2ADD},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2DUP_STORE-__TOKEN_2ADD},{__SET_TOKEN({__TOKEN_2DUP_STORE_2ADD},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_OVER-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_OVER_SWAP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_OVER_SWAP_STORE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2OVER-__TOKEN_2OVER},{__SET_TOKEN({__TOKEN_4DUP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2OVER-__TOKEN_NIP},{__SET_TOKEN({__TOKEN_2OVER_NIP},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2OVER-__TOKEN_3_PICK},{__SET_TOKEN({__TOKEN_2OVER},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_3_PICK-__TOKEN_3_PICK},{__SET_TOKEN({__TOKEN_2OVER},__LAST_TOKEN_INFO{ }$2)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2DUP-__TOKEN_DADD},{__SET_TOKEN({__TOKEN_2DUP_DADD},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2OVER-__TOKEN_DADD},{__SET_TOKEN({__TOKEN_2OVER_DADD},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DSUB},{__SET_TOKEN({__TOKEN_2SWAP_DSUB},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2OVER-__TOKEN_DSUB},{__SET_TOKEN({__TOKEN_2OVER_DSUB},__LAST_TOKEN_INFO{ }$2)},
+                
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DADD},{__SET_TOKEN({__TOKEN_PUSHDOT_DADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DSUB},{__SET_TOKEN({__TOKEN_PUSHDOT_DSUB},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DMAX},{__SET_TOKEN({__TOKEN_PUSHDOT_DMAX},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DMIN},{__SET_TOKEN({__TOKEN_PUSHDOT_DMIN},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSHDOT-0-__TOKEN_DEQ},{__SET_TOKEN({__TOKEN_D0EQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-__SAVE_EVAL(__LAST_TOKEN_ARRAY)-$1,{__TOKEN_PUSHDOT-0-__TOKEN_DLT},{__SET_TOKEN({__TOKEN_D0LT},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DEQ},{__SET_TOKEN({__TOKEN_DEQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DNE},{__SET_TOKEN({__TOKEN_DNE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DLT},{__SET_TOKEN({__TOKEN_DGT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DGT},{__SET_TOKEN({__TOKEN_DLT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DLE},{__SET_TOKEN({__TOKEN_DGE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DGE},{__SET_TOKEN({__TOKEN_DLE},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DUEQ},{__SET_TOKEN({__TOKEN_DUEQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DUNE},{__SET_TOKEN({__TOKEN_DUNE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DULT},{__SET_TOKEN({__TOKEN_DUGT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DUGT},{__SET_TOKEN({__TOKEN_DULT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DULE},{__SET_TOKEN({__TOKEN_DUGE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DUGE},{__SET_TOKEN({__TOKEN_DULE},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DEQ},{__SET_TOKEN({__TOKEN_PUSHDOT_DEQ},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DNE},{__SET_TOKEN({__TOKEN_PUSHDOT_DNE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DLT},{__SET_TOKEN({__TOKEN_PUSHDOT_DLT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DGT},{__SET_TOKEN({__TOKEN_PUSHDOT_DGT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DLE},{__SET_TOKEN({__TOKEN_PUSHDOT_DLE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_PUSHDOT-__TOKEN_DGE},{__SET_TOKEN({__TOKEN_PUSHDOT_DGE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DEQ},{__SET_TOKEN({__TOKEN_4DUP_DEQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DNE},{__SET_TOKEN({__TOKEN_4DUP_DNE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DLT},{__SET_TOKEN({__TOKEN_4DUP_DLT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DGT},{__SET_TOKEN({__TOKEN_4DUP_DGT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DLE},{__SET_TOKEN({__TOKEN_4DUP_DLE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DGE},{__SET_TOKEN({__TOKEN_4DUP_DGE},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DUEQ},{__SET_TOKEN({__TOKEN_4DUP_DEQ},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DUNE},{__SET_TOKEN({__TOKEN_4DUP_DNE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DULT},{__SET_TOKEN({__TOKEN_4DUP_DULT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DUGT},{__SET_TOKEN({__TOKEN_4DUP_DUGT},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DULE},{__SET_TOKEN({__TOKEN_4DUP_DULE},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_4DUP-__TOKEN_DUGE},{__SET_TOKEN({__TOKEN_4DUP_DUGE},__LAST_TOKEN_INFO{ }$2)},
+         
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DEQ-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DEQ_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DNE-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DNE_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DLT-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DGL_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DGT-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DGT_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DLE-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DLE_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DGE-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DGE_IF},__LAST_TOKEN_INFO{ }$2)},
+
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUEQ-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DEQ_IF,__LAST_TOKEN_INFO{ }$2})},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUNE-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DNE_IF,__LAST_TOKEN_INFO{ }$2})},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DULT-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DUGL_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUGT-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DUGT_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DULE-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DULE_IF},__LAST_TOKEN_INFO{ }$2)},
+                __LAST_TOKEN_NAME-$1,{__TOKEN_DUGE-__TOKEN_IF},{__SET_TOKEN({__TOKEN_DUGE_IF},__LAST_TOKEN_INFO{ }$2)},
+                                         {define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($@)})},
+        {define({__TOKEN_COUNT},1){}__SET_TOKEN($@)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl #    sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\s\+_2SWAP\sSWAP\(\s\|$\)#\1STACK_BCAD\2#gi' |
+dnl #    sed 's#^\([^;{]*\s\|^\)OVER\s\+_2OVER\s\+DROP\(\s\|$\)#\1STACK_CBABC\2#gi' |
+dnl #    sed 's#^\([^;{]*\s\|^\)_2OVER\s\+NIP\s\+_2OVER\s\+NIP\s\+SWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
+dnl #    sed 's#^\([^;{]*\s\|^\)OVER\s\+3\s\+PICK\(\s\|$\)#\1STACK_CBABC\2#gi' |
+dnl #    sed 's#^\([^;{]*\s\|^\)2\s\+PICK\s\+2\s\+PICK\s\+SWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
+dnl
+dnl
+dnl
+define({__A},{$1$2}){}dnl
+dnl
+define({__COMPILE_REC},{ifelse(eval(__TOKEN_COUNT>__TOKEN_I),{1},{dnl
+__{}define({__TOKEN_I},eval(__TOKEN_I+1))dnl
+__{}define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))dnl
+__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1){}__GET_TOKEN_PARAM(__TOKEN_I)){}dnl
+__{}$0{}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+define({__COMPILE},{ifdef({__TOKEN_COUNT},{dnl
+__{}define({__TOKEN_I},0)dnl
+__{}$0_REC{}dnl
+})}){}dnl
+dnl
 dnl
 dnl
 dnl
@@ -2652,5 +2923,97 @@ __{}__{}__{}    sbc   A{,} __HEX_H($2-($1))       ; 2:7       _TMP_INFO   carry:
 __{}}){}dnl
 })})dnl
 dnl
+dnl
+dnl
+dnl
+define({PRINT_NIBBLE},{ifelse(eval(TEMP_BIN),{0},{define({TEMP_BIN_OUT},{_0000}TEMP_BIN_OUT)},{dnl
+__{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}define({TEMP_BIN_OUT},eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}define({TEMP_BIN_OUT},{_}eval(TEMP_BIN & 1)TEMP_BIN_OUT){}dnl
+__{}define({TEMP_BIN},eval(TEMP_BIN/2)){}dnl
+__{}ifelse(eval(TEMP_BIN),{0},,{PRINT_NIBBLE}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+define({PRINT_BINARY},{dnl
+__{}define({TEMP_BIN},eval(($1) & 0xffff)){}dnl
+__{}define({TEMP_BIN_OUT},{}){}dnl
+__{}PRINT_NIBBLE{}dnl
+__{}b{}TEMP_BIN_OUT{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({SUM_1BITS},{define({TEMP},eval((($1) & 0x5555) + (($1) & 0xAAAA)/2)){}dnl
+__{}define({TEMP},eval((TEMP & 0x3333) + (TEMP & 0xCCCC)/4)){}dnl
+__{}define({TEMP},eval((TEMP & 0x0F0F) + (TEMP & 0xF0F0)/16)){}dnl
+__{}eval((TEMP & 0x00FF) + (TEMP & 0xFF00)/256)}){}dnl
+dnl
+dnl
+dnl
+define({SUM_0BITS},{define({INV_BITS},eval(($1) | (($1) >> 1)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 2)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 4)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 8)))dnl
+__{}define({INV_BITS},eval(INV_BITS | (INV_BITS >> 16)))dnl
+__{}define({INV_BITS},eval(INV_BITS-($1)))dnl
+__{}SUM_1BITS(eval(INV_BITS))}){}dnl
+dnl
+dnl
+dnl
+define({_ADD_OUTPUT},{dnl
+__{}ifdef({_OUTPUT},{define({_OUTPUT},_OUTPUT{}$1)},{define({_OUTPUT},$1)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({_PUSH_OUTPUT},{dnl
+__{}ifdef({_OUTPUT},{define({_OUTPUT},$1{}_OUTPUT)},{define({_OUTPUT},$1)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({HI_BIT_LOOP},{ifelse(eval(($1)>0),{1},{dnl
+__{}define({HI_BIT_TEMP},eval(HI_BIT_TEMP|($1)))dnl
+__{}HI_BIT_LOOP(eval(($1)/2))dnl
+})}){}dnl
+dnl
+dnl
+dnl
+define({HI_BIT},{dnl
+__{}define({HI_BIT_TEMP},{0}){}dnl
+__{}HI_BIT_LOOP(eval($1))dnl
+__{}eval((HI_BIT_TEMP+1)/2)dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({_ADD_COST},{dnl
+__{}ifdef({_COST},{define({_COST},eval(_COST+($1)))},{define({_COST},eval($1))}){}dnl
+dnl # (eval(_COST&255):eval(_COST/256))dnl
+}){}dnl
+dnl
+dnl
+define({PUSH_MUL_INFO_MINUS},{dnl
+__{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]}){}dnl
+                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   $3 = HL * (PRINT_BINARY($4) - PRINT_BINARY($5)){}dnl
+}){}dnl
+dnl
+dnl
+define({PUSH_MUL_INFO_PLUS},{dnl
+__{}define({XMUL_INFO_TEMP},{[eval($1 & 0xff):eval($1/256)]}){}dnl
+                        ;format({%-9s},XMUL_INFO_TEMP)  $2 *   $3 = HL * (PRINT_BINARY($2)){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({PUSH_MUL_CHECK_FIRST_IS_BETTER},{dnl
+__{}eval((($1 & 0xff) < ($2 & 0xff)) || ((($1 & 0xff) == ($2 & 0xff)) && ($1 < $2))){}dnl
+__{}}){}dnl
 dnl
 dnl

@@ -1,5 +1,4 @@
 dnl ## n Case n1 Of .. EndOf n2 Of .. EndOf default EndCase
-define({__},{})dnl
 dnl
 dnl
 dnl --------- case of endof endcase ------------
@@ -19,6 +18,7 @@ dnl
 dnl
 define({CASE_COUNT},100)dnl
 define({LASTOF_STACK},100000)dnl
+define({_OF_INFO},{$1 eval(OF_STACK % 1000) from $2{}case CASE_STACK})dnl
 dnl
 dnl
 dnl # Non standard CASE: ( n -- n )
@@ -38,17 +38,26 @@ dnl #       default-code
 dnl #   DROP
 dnl # ENDCASE ( n -- )
 dnl
-define({CASE},{define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
+define({CASE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CASE},{case},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CASE},{dnl
+__{}define({__INFO},{case}){}dnl
+define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
 ;   v---v---v case CASE_STACK v---v---v
                         ;           case CASE_STACK{}dnl
 })dnl
 dnl
 dnl
-define({_OF_INFO},{$1 eval(OF_STACK % 1000) from $2{}case CASE_STACK})dnl
-dnl
-dnl
 dnl ( b a -- b a )
-define({OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
+define({OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_OF},{of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OF},{dnl
+__{}define({__INFO},{of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
 .error 'of': Unexpected parameter $@, 'of' uses a parameter eval(OF_STACK % 1000) from the stack!})
                         ;[8:44]     _OF_INFO(of)
     xor   A             ; 1:4       _OF_INFO(of)
@@ -60,7 +69,13 @@ define({OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTO
 dnl
 dnl
 dnl ( b a -- b a )
-define({ZERO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
+define({ZERO_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZERO_OF},{zero_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZERO_OF},{dnl
+__{}define({__INFO},{zero_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
 .error 'of': Unexpected parameter $@, 'of' uses a parameter eval(OF_STACK % 1000) from the stack!})
                         ;[5:18]     _OF_INFO(zero_of)   version: zero check
     ld    A, H          ; 1:4       _OF_INFO(zero_of)
@@ -70,7 +85,13 @@ define({ZERO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, 
 dnl
 dnl
 dnl ( a -- a )
-define({PUSH_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({PUSH_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OF},{push_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OF},{dnl
+__{}define({__INFO},{push_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -120,7 +141,13 @@ dnl
 dnl
 dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl $1 <= a < $2
-define({WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({WITHIN_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_WITHIN_OF},{within_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_WITHIN_OF},{dnl
+__{}define({__INFO},{within_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}  .error {$0}(): Missing parameters!},
 $#,{1},{
 __{}.error {$0}($@): The second parameter is missing!},
@@ -133,17 +160,35 @@ __{}    jp   nc, endof{}OF_STACK; 3:10      _TMP_INFO}){}dnl
 }){}dnl
 dnl
 dnl
-define({ENDOF},{
+define({ENDOF},{dnl
+__{}__ADD_TOKEN({__TOKEN_ENDOF},{endof},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ENDOF},{dnl
+__{}define({__INFO},{endof}){}dnl
+
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(endof)
 endof{}OF_STACK:            ;           _OF_INFO(endof){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({DECLINING_ENDOF},{
+define({DECLINING_ENDOF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DECLINING_ENDOF},{declining_endof},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DECLINING_ENDOF},{dnl
+__{}define({__INFO},{declining_endof}){}dnl
+
 ;   --vvv-- falling down --vvv--    _OF_INFO(declining_endof)
 endof{}OF_STACK:            ;           _OF_INFO(declining_endof){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({ENDCASE},{popdef({LASTOF_STACK})define({OF_COUNT}, LASTOF_STACK)
+define({ENDCASE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ENDCASE},{endcase},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ENDCASE},{dnl
+__{}define({__INFO},{endcase}){}dnl
+popdef({LASTOF_STACK})define({OF_COUNT}, LASTOF_STACK)
 endcase{}CASE_STACK:             ;           endcase CASE_STACK
 ;   ^---^---^ endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
 dnl
@@ -165,13 +210,25 @@ dnl #       default-code
 dnl #   DROP
 dnl # LO_ENDCASE
 dnl
-define({LO_CASE},{define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
+define({LO_CASE},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_CASE},{lo_case},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_CASE},{dnl
+__{}define({__INFO},{lo_case}){}dnl
+define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
 ;   v---v---v lo_case CASE_STACK v---v---v
     ld    A, L          ; 1:4       lo_case CASE_STACK{}dnl
 })dnl
 dnl
 dnl
-define({LO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({LO_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_OF},{lo_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_OF},{dnl
+__{}define({__INFO},{lo_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -194,7 +251,13 @@ dnl
 dnl
 dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl $1 <= a < $2
-define({LO_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({LO_WITHIN_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_WITHIN_OF},{lo_within_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_WITHIN_OF},{dnl
+__{}define({__INFO},{lo_within_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -247,17 +310,35 @@ __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)})})dnl
 dnl
 dnl
-define({LO_ENDOF},{
+define({LO_ENDOF},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_ENDOF},{lo_endof},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_ENDOF},{dnl
+__{}define({__INFO},{lo_endof}){}dnl
+
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(lo_endof,lo_)
 endof{}OF_STACK:            ;           _OF_INFO(lo_endof,lo_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({LO_DECLINING_ENDOF},{
+define({LO_DECLINING_ENDOF},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_DECLINING_ENDOF},{lo_declining_endof},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_DECLINING_ENDOF},{dnl
+__{}define({__INFO},{lo_declining_endof}){}dnl
+
 ;   --vvv-- falling down --vvv--    _OF_INFO(lo_declining_endof,lo_)
 endof{}OF_STACK:            ;           _OF_INFO(lo_declining_endof,lo_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({LO_ENDCASE},{popdef({LASTOF_STACK})
+define({LO_ENDCASE},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_ENDCASE},{lo_endcase},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_ENDCASE},{dnl
+__{}define({__INFO},{lo_endcase}){}dnl
+popdef({LASTOF_STACK})
 endcase{}CASE_STACK:             ;           lo_endcase CASE_STACK
 ;   ^---^---^ lo_endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
 dnl
@@ -280,13 +361,25 @@ dnl #       default-code
 dnl #   DROP
 dnl # HI_ENDCASE ( n -- )
 dnl
-define({HI_CASE},{define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
+define({HI_CASE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HI_CASE},{hi_case},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HI_CASE},{dnl
+__{}define({__INFO},{hi_case}){}dnl
+define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
 ;   v---v---v hi_case CASE_STACK v---v---v
     ld    A, H          ; 1:4       hi_case CASE_STACK{}dnl
 })dnl
 dnl
 dnl
-define({HI_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({HI_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_HI_OF},{hi_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HI_OF},{dnl
+__{}define({__INFO},{hi_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -309,7 +402,13 @@ dnl
 dnl
 dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl $1 <= a < $2
-define({HI_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({HI_WITHIN_OF},{dnl
+__{}__ADD_TOKEN({__TOKEN_HI_WITHIN_OF},{hi_within_of},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HI_WITHIN_OF},{dnl
+__{}define({__INFO},{hi_within_of}){}dnl
+define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -362,17 +461,35 @@ __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)})})dnl
 dnl
 dnl
-define({HI_ENDOF},{
+define({HI_ENDOF},{dnl
+__{}__ADD_TOKEN({__TOKEN_HI_ENDOF},{hi_endof},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HI_ENDOF},{dnl
+__{}define({__INFO},{hi_endof}){}dnl
+
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(hi_endof,hi_)
 endof{}OF_STACK:            ;           _OF_INFO(hi_endof,hi_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({HI_DECLINING_ENDOF},{
+define({HI_DECLINING_ENDOF},{dnl
+__{}__ADD_TOKEN({__TOKEN_HI_DECLINING_ENDOF},{hi_declining_endof},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HI_DECLINING_ENDOF},{dnl
+__{}define({__INFO},{hi_declining_endof}){}dnl
+
 ;   --vvv-- falling down --vvv--    _OF_INFO(hi_declining_endof,hi_)
 endof{}OF_STACK:            ;           _OF_INFO(hi_declining_endof,hi_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({HI_ENDCASE},{popdef({LASTOF_STACK})
+define({HI_ENDCASE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HI_ENDCASE},{hi_endcase},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HI_ENDCASE},{dnl
+__{}define({__INFO},{hi_endcase}){}dnl
+popdef({LASTOF_STACK})
 endcase{}CASE_STACK:             ;           hi_endcase CASE_STACK
 ;   ^---^---^ hi_endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
 dnl

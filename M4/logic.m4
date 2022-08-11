@@ -1,21 +1,33 @@
 dnl ## Logic
-define({__},{})dnl
+dnl
 dnl
 dnl # ( x1 x2 -- x )
 dnl # x = x1 & x2
-define({AND},{
+define({AND},{dnl
+__{}__ADD_TOKEN({__TOKEN_AND},{and},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_AND},{dnl
+__{}define({__INFO},{and}){}dnl
+
     ld    A, E          ; 1:4       and   ( x2 x1 -- x )  x = x2 & x1
     and   L             ; 1:4       and
     ld    L, A          ; 1:4       and
     ld    A, D          ; 1:4       and
     and   H             ; 1:4       and
     ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and})dnl
+    pop  DE             ; 1:10      and}){}dnl
 dnl
 dnl
 dnl # ( x -- x&n )
 dnl # x = x & n
-define({PUSH_AND},{ifelse($1,{},{
+define({PUSH_AND},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_AND},{$1 and},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_AND},{dnl
+__{}define({__INFO},{push_and}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -35,19 +47,31 @@ dnl
 dnl
 dnl # ( x1 x2 -- x )
 dnl # x = x1 | x2
-define({OR},{
+define({OR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OR},{or},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OR},{dnl
+__{}define({__INFO},{or}){}dnl
+
     ld    A, E          ; 1:4       or   ( x2 x1 -- x )  x = x2 | x1
     or    L             ; 1:4       or
     ld    L, A          ; 1:4       or
     ld    A, D          ; 1:4       or
     or    H             ; 1:4       or
     ld    H, A          ; 1:4       or
-    pop  DE             ; 1:10      or})dnl
+    pop  DE             ; 1:10      or}){}dnl
 dnl
 dnl
 dnl # ( x -- x|n )
 dnl # x = x | n
-define({PUSH_OR},{ifelse($1,{},{
+define({PUSH_OR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OR},{$1 or},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OR},{dnl
+__{}define({__INFO},{push_or}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -67,7 +91,13 @@ dnl
 dnl
 dnl
 dnl # ( x1 u -- x )  x = x1 | 2**u
-define({BITSET},{ifelse(eval($#>1),{1},{
+define({BITSET},{dnl
+__{}__ADD_TOKEN({__TOKEN_BITSET},{bitset},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_BITSET},{dnl
+__{}define({__INFO},{bitset}){}dnl
+ifelse(eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {ifelse(_TYP_SINGLE,{fast},{
 __{}                       ;[22:91/41]  bitset   ( x1 u -- x )  x = x1 | 2**u   fast version
@@ -94,7 +124,13 @@ dnl
 dnl
 dnl # ( x -- x|2**n )
 dnl # x = x | 2**n
-define({PUSH_BITSET},{ifelse($1,{},{
+define({PUSH_BITSET},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_BITSET},{$1 bitset},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_BITSET},{dnl
+__{}define({__INFO},{push_bitset}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -138,19 +174,31 @@ dnl
 dnl
 dnl # ( x1 x2 -- x )
 dnl # x = x1 ^ x2
-define({XOR},{
+define({XOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_XOR},{xor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XOR},{dnl
+__{}define({__INFO},{xor}){}dnl
+
     ld    A, E          ; 1:4       xor   ( x2 x1 -- x )  x = x2 ^ x1
     xor   L             ; 1:4       xor
     ld    L, A          ; 1:4       xor
     ld    A, D          ; 1:4       xor
     xor   H             ; 1:4       xor
     ld    H, A          ; 1:4       xor
-    pop  DE             ; 1:10      xor})dnl
+    pop  DE             ; 1:10      xor}){}dnl
 dnl
 dnl
 dnl # ( x -- x^n )
 dnl # x = x ^ n
-define({PUSH_XOR},{ifelse($1,{},{
+define({PUSH_XOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_XOR},{$1 xor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_XOR},{dnl
+__{}define({__INFO},{push_xor}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -172,18 +220,30 @@ dnl # ( x1 -- x )
 dnl # x = ~x1
 dnl # -1   -> false
 dnl # false-> true
-define({INVERT},{
+define({INVERT},{dnl
+__{}__ADD_TOKEN({__TOKEN_INVERT},{invert},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_INVERT},{dnl
+__{}define({__INFO},{invert}){}dnl
+
     ld    A, L          ; 1:4       invert
     cpl                 ; 1:4       invert
     ld    L, A          ; 1:4       invert
     ld    A, H          ; 1:4       invert
     cpl                 ; 1:4       invert
-    ld    H, A          ; 1:4       invert})dnl
+    ld    H, A          ; 1:4       invert}){}dnl
 dnl
 dnl
 dnl # ( a b c -- ((a-b) (c-b) U<) )
 dnl # b <= a < c
-define({WITHIN},{ifelse(TYP_WITHIN,{fast},{
+define({WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_WITHIN},{within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_WITHIN},{dnl
+__{}define({__INFO},{within}){}dnl
+ifelse(TYP_WITHIN,{fast},{
                         ;[18:91]    within ( a b c -- flag=(b<=a<c) )   # fast version can be changed with "define({TYP_WITHIN},{name})", name=fast
     ld    A, L          ; 1:4       within
     sub   E             ; 1:4       within
@@ -216,12 +276,18 @@ define({WITHIN},{ifelse(TYP_WITHIN,{fast},{
     or    A             ; 1:4       within
     sbc  HL, BC         ; 2:15      within (a-b) - (c-b) < 0
     sbc  HL, HL         ; 2:15      within
-    pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )})})dnl
+    pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )})}){}dnl
 dnl
 dnl
 dnl # ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl # $1 <= a < $2
-define({PUSH2_WITHIN},{ifelse($1,{},{
+define({PUSH2_WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN},{$1 $2 within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_WITHIN},{dnl
+__{}define({__INFO},{push2_within}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -237,7 +303,13 @@ dnl
 dnl
 dnl # ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) )
 dnl # c2 <= c3 < c1
-define({LO_WITHIN},{
+define({LO_WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_LO_WITHIN},{lo_within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LO_WITHIN},{dnl
+__{}define({__INFO},{lo_within}){}dnl
+
                         ;[10:59]    lo_within   ( c3 c2 c1 -- flag=(c2<=c3<c1) )
     ld    A, L          ; 1:4       lo_within
     sub   E             ; 1:4       lo_within
@@ -248,12 +320,18 @@ define({LO_WITHIN},{
     sub   C             ; 1:4       lo_within   (c3-c2)-(c1-c2)
     sbc  HL, HL         ; 2:15      lo_within   HL = 0x0000 or 0xffff
     pop  DE             ; 1:10      lo_within   ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) ){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl # ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl # $1 <= a < $2
-define({PUSH2_LO_WITHIN},{ifelse($1,{},{
+define({PUSH2_LO_WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_LO_WITHIN},{$1 $2 lo_within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_LO_WITHIN},{dnl
+__{}define({__INFO},{push2_lo_within}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
@@ -321,24 +399,36 @@ __{}__{}__{}__{}                        ;[7:33]     push2_lo_within($1,$2)   ( a
 __{}__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
 __{}__{}__{}__{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)   A = a-($1)})})
 __{}    sub  low format({%-11s},($2)-($1)); 2:7       push2_lo_within($1,$2)   carry: a-($1) - (($2)-($1))
-__{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff})})dnl
+__{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff})}){}dnl
 dnl
 dnl
 dnl # -------------------------------------
 dnl
 dnl # ( -- x )
 dnl # x = 0xFFFF
-define({TRUE},{
+define({TRUE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TRUE},{true},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TRUE},{dnl
+__{}define({__INFO},{true}){}dnl
+
     push DE             ; 1:11      true
     ex   DE, HL         ; 1:4       true
-    ld   HL, 0xffff     ; 3:10      true})dnl
+    ld   HL, 0xffff     ; 3:10      true}){}dnl
 dnl
 dnl # ( -- x )
 dnl # x = 0
-define({FALSE},{
+define({FALSE},{dnl
+__{}__ADD_TOKEN({__TOKEN_FALSE},{false},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FALSE},{dnl
+__{}define({__INFO},{false}){}dnl
+
     push DE             ; 1:11      false
     ex   DE, HL         ; 1:4       false
-    ld   HL, 0x0000     ; 3:10      false})dnl
+    ld   HL, 0x0000     ; 3:10      false}){}dnl
 dnl
 dnl # -------------------------------------
 dnl
@@ -346,12 +436,18 @@ dnl # 0=
 dnl # ( x1 -- flag )
 dnl # if ( x1 ) flag = 0; else flag = 0xFFFF;
 dnl # 0 if 16-bit number not equal to zero, -1 if equal
-define({_0EQ},{
+define({_0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_0EQ},{0eq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0EQ},{dnl
+__{}define({__INFO},{0eq}){}dnl
+
                         ;[5:29]     0=
     ld    A, H          ; 1:4       0=
     dec  HL             ; 1:6       0=
     sub   H             ; 1:4       0=
-    sbc  HL, HL         ; 2:15      0=})dnl
+    sbc  HL, HL         ; 2:15      0=}){}dnl
 dnl
 dnl
 dnl
@@ -361,7 +457,13 @@ dnl
 dnl # =
 dnl # ( x1 x2 -- flag )
 dnl # equal ( x1 == x2 )
-define({EQ},{
+define({EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_EQ},{eq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_EQ},{dnl
+__{}define({__INFO},{eq}){}dnl
+
                         ;[9:48/49]  =
     xor   A             ; 1:4       =   A = 0x00
     sbc  HL, DE         ; 2:15      =
@@ -369,12 +471,18 @@ define({EQ},{
     dec   A             ; 1:4       =   A = 0xFF
     ld    L, A          ; 1:4       =
     ld    H, A          ; 1:4       =   HL= flag
-    pop  DE             ; 1:10      =})dnl
+    pop  DE             ; 1:10      =}){}dnl
 dnl
 dnl
 dnl # ( x -- x|n )
 dnl # x = x | n
-define({PUSH_EQ},{ifelse($1,{},{
+define({PUSH_EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ},{push_eq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_EQ},{dnl
+__{}define({__INFO},{push_eq}){}dnl
+ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
@@ -504,13 +612,19 @@ __{}__{}    xor   H             ; 1:4       $1 =
 __{}__{}    sub  0x01           ; 2:7       $1 =
 __{}__{}    sbc  HL, HL         ; 2:15      $1 =}){}dnl
 __{}}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
 define({DUP_PUSH_EQ},{dnl
-__{}define({_TMP_INFO},{dup $1 =})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL})dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ},{dup_push_eq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_EQ},{dnl
+__{}define({__INFO},{dup_push_eq}){}dnl
+dnl
+__{}define({_TMP_INFO},{dup $1 =}){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -552,82 +666,130 @@ dnl
 dnl # C=
 dnl # ( c1 c2 -- flag )
 dnl # equal ( lo c1 == lo c2 )
-define({CEQ},{
+define({CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_CEQ},{ceq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CEQ},{dnl
+__{}define({__INFO},{ceq}){}dnl
+
                         ;[7:40]     C=   ( c1 c2 -- flag )
     ld    A, L          ; 1:4       C=
     xor   E             ; 1:4       C=   ignores higher bytes
     sub  0x01           ; 2:7       C=
     sbc  HL, HL         ; 2:15      C=
-    pop  DE             ; 1:10      C=})dnl
+    pop  DE             ; 1:10      C=}){}dnl
 dnl
 dnl
 dnl
 dnl # 0 C=
 dnl # ( c1 -- flag )  flag = lo c1 == 0
-define({_0CEQ},{
+define({_0CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_0CEQ},{0ceq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0CEQ},{dnl
+__{}define({__INFO},{0ceq}){}dnl
+
                         ;[5:26]     0 C=   ( c1 -- flag )  flag = lo(c1) == 0
     ld    A, L          ; 1:4       0 C=   ignores higher bytes
     sub  0x01           ; 2:7       0 C=
-    sbc  HL, HL         ; 2:15      0 C=})dnl
+    sbc  HL, HL         ; 2:15      0 C=}){}dnl
 dnl
 dnl
 dnl # C@ 0 C=
 dnl # ( addr -- flag )  flag = byte from (addr) == 0
-define({CFETCH_0CEQ},{
+define({CFETCH_0CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_0CEQ},{cfetch_0ceq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH_0CEQ},{dnl
+__{}define({__INFO},{cfetch_0ceq}){}dnl
+
                         ;[5:29]     C@ 0 C=   ( addr -- flag )  flag = byte from (addr) == 0
     ld    A,(HL)        ; 1:7       C@ 0 C=
     sub  0x01           ; 2:7       C@ 0 C=
-    sbc  HL, HL         ; 2:15      C@ 0 C=})dnl
+    sbc  HL, HL         ; 2:15      C@ 0 C=}){}dnl
 dnl
 dnl
 dnl # 0 C<>
 dnl # ( c1 -- flag )  flag = lo c1 <> 0
-define({_0CNE},{
+define({_0CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0CNE},{0cne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0CNE},{dnl
+__{}define({__INFO},{0cne}){}dnl
+
                         ;[5:26]     0 C<>   ( c1 -- flag )  flag = lo(c1) <> 0
     ld    A, L          ; 1:4       0 C<>   ignores higher bytes
     add   A, 0xFF       ; 2:7       0 C<>
-    sbc  HL, HL         ; 2:15      0 C<>})dnl
+    sbc  HL, HL         ; 2:15      0 C<>}){}dnl
 dnl
 dnl
 dnl # C@ 0 C<>
 dnl # ( addr -- flag )  flag = byte from (addr) <> 0
-define({CFETCH_0CNE},{
+define({CFETCH_0CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_0CNE},{cfetch_0cne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH_0CNE},{dnl
+__{}define({__INFO},{cfetch_0cne}){}dnl
+
                         ;[5:29]     C@ 0 C<>   ( addr -- flag )  flag = byte from (addr) <> 0
     ld    A,(HL)        ; 1:7       C@ 0 C<>
     add   A, 0xFF       ; 2:7       C@ 0 C<>
-    sbc  HL, HL         ; 2:15      C@ 0 C<>})dnl
+    sbc  HL, HL         ; 2:15      C@ 0 C<>}){}dnl
 dnl
 dnl
 dnl # over C@ over C@ C=
 dnl # ( addr2 addr1 -- addr2 addr1 flag )
 dnl # flag = char2 == char1
 dnl # 8-bit compares the contents of two addresses.
-define({OVER_CFETCH_OVER_CFETCH_CEQ},{
+define({OVER_CFETCH_OVER_CFETCH_CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH_CEQ},{over_cfetch_over_cfetch_ceq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_CFETCH_OVER_CFETCH_CEQ},{dnl
+__{}define({__INFO},{over_cfetch_over_cfetch_ceq}){}dnl
+
                         ;[8:51]     over @C over @C C= over_cfetch_over_cfetch_ceq ( addr2 addr1 -- addr2 addr1 flag(char2==char1) )
     push DE             ; 1:11      over @C over @C C= over_cfetch_over_cfetch_ceq
     ex   DE, HL         ; 1:4       over @C over @C C= over_cfetch_over_cfetch_ceq
     ld    A, (DE)       ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
     xor (HL)            ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
     sub  0x01           ; 2:7       over @C over @C C= over_cfetch_over_cfetch_ceq
-    sbc  HL, HL         ; 2:15      over @C over @C C= over_cfetch_over_cfetch_ceq})dnl
+    sbc  HL, HL         ; 2:15      over @C over @C C= over_cfetch_over_cfetch_ceq}){}dnl
 dnl
 dnl
 dnl
 dnl # <>
 dnl # ( x1 x2 -- flag )
 dnl # not equal ( x1 <> x2 )
-define({NE},{
+define({NE},{dnl
+__{}__ADD_TOKEN({__TOKEN_NE},{ne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NE},{dnl
+__{}define({__INFO},{ne}){}dnl
+
     or    A             ; 1:4       <>
     sbc  HL, DE         ; 2:15      <>
     jr    z, $+5        ; 2:7/12    <>
     ld   HL, 0xFFFF     ; 3:10      <>
-    pop  DE             ; 1:10      <>})dnl
+    pop  DE             ; 1:10      <>}){}dnl
 dnl
 dnl
 dnl
 define({DUP_PUSH_NE},{dnl
-__{}define({_TMP_INFO},{dup $1 <>})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) <> HL})dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE},{dup_push_ne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_NE},{dnl
+__{}define({__INFO},{dup_push_ne}){}dnl
+dnl
+__{}define({_TMP_INFO},{dup $1 <>}){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) <> HL}){}dnl
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -665,7 +827,13 @@ dnl
 dnl # <
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
-define({LT},{
+define({LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_LT},{lt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LT},{dnl
+__{}define({__INFO},{lt}){}dnl
+
                        ;[12:54]     <   ( x2 x1 -- flag x2<x1 )
     ld    A, E          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
@@ -678,12 +846,18 @@ define({LT},{
     sbc   A, A          ; 1:4       <   0x00 or 0xff
     ld    H, A          ; 1:4       <
     ld    L, A          ; 1:4       <
-    pop  DE             ; 1:10      <})dnl
+    pop  DE             ; 1:10      <}){}dnl
 dnl
 dnl
 dnl # 0<
 dnl # ( x1 -- flag )
-define({_0LT},{ifelse(TYP_0LT,{small},{
+define({_0LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_0LT},{0lt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0LT},{dnl
+__{}define({__INFO},{0lt}){}dnl
+ifelse(TYP_0LT,{small},{
                         ;[4:23]     0<  ( x -- flag x<0 )
     rl    H             ; 2:8       0<
     sbc  HL, HL         ; 2:15      0<}
@@ -692,14 +866,20 @@ define({_0LT},{ifelse(TYP_0LT,{small},{
     rl    H             ; 2:8       0<
     sbc   A, A          ; 1:4       0<
     ld    L, A          ; 1:4       0<
-    ld    H, A          ; 1:4       0<})})dnl
+    ld    H, A          ; 1:4       0<})}){}dnl
 dnl
 dnl
 dnl # <=
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
 dnl # signed ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
-define({LE},{ifelse(TYP_LE,{old},{
+define({LE},{dnl
+__{}__ADD_TOKEN({__TOKEN_LE},{le},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LE},{dnl
+__{}define({__INFO},{le}){}dnl
+ifelse(TYP_LE,{old},{
                        ;[15:63,62]  <=
     ld    A, H          ; 1:4       <=
     xor   D             ; 1:4       <=
@@ -723,13 +903,19 @@ define({LE},{ifelse(TYP_LE,{old},{
     sbc   A, A          ; 1:4       <=   0x00 or 0xff
     ld    H, A          ; 1:4       <=
     ld    L, A          ; 1:4       <=
-    pop  DE             ; 1:10      <=})})dnl
+    pop  DE             ; 1:10      <=})}){}dnl
 dnl
 dnl
 dnl # >
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
-define({GT},{
+define({GT},{dnl
+__{}__ADD_TOKEN({__TOKEN_GT},{gt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_GT},{dnl
+__{}define({__INFO},{gt}){}dnl
+
                        ;[12:54]     >   ( x2 x1 -- flag x2>x1 )
     ld    A, L          ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
@@ -742,14 +928,20 @@ define({GT},{
     sbc   A, A          ; 1:4       >   0x00 or 0xff
     ld    H, A          ; 1:4       >
     ld    L, A          ; 1:4       >
-    pop  DE             ; 1:10      >})dnl
+    pop  DE             ; 1:10      >}){}dnl
 dnl
 dnl
 dnl # >=
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 dnl # signed ( x2 >= x1 ) --> ( x2 - x1 >= 0 ) --> no carry is true
-define({GE},{ifelse(TYP_GE,{old},{
+define({GE},{dnl
+__{}__ADD_TOKEN({__TOKEN_GE},{ge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_GE},{dnl
+__{}define({__INFO},{ge}){}dnl
+ifelse(TYP_GE,{old},{
                        ;[15:63,62]  >=
     ld    A, H          ; 1:4       >=
     xor   D             ; 1:4       >=
@@ -773,139 +965,229 @@ define({GE},{ifelse(TYP_GE,{old},{
     sbc   A, A          ; 1:4       >=   0x00 or 0xff
     ld    H, A          ; 1:4       >=
     ld    L, A          ; 1:4       >=
-    pop  DE             ; 1:10      >=})})dnl
+    pop  DE             ; 1:10      >=})}){}dnl
 dnl
 dnl
 dnl # 0>=
 dnl # ( x1 -- flag )
-define({_0GE},{
+define({_0GE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0GE},{0ge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0GE},{dnl
+__{}define({__INFO},{0ge}){}dnl
+
     ld    A, H          ; 1:4       0>=
     sub   0x80          ; 2:7       0>=
     sbc  HL, HL         ; 2:15      0>=
-    pop  DE             ; 1:10      0>=})dnl
+    pop  DE             ; 1:10      0>=}){}dnl
 dnl
 dnl # ------------ unsigned ---------------
 dnl
 dnl # ( x1 x2 -- x )
 dnl # equal ( x1 == x2 )
-define({UEQ},{EQ})dnl
+define({UEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_UEQ},{ueq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UEQ},{dnl
+__{}define({__INFO},{ueq}){}dnl
+EQ}){}dnl
 dnl
 dnl # ( x1 x2 -- x )
 dnl # not equal ( x1 <> x2 )
-define({UNE},{NE})dnl
+define({UNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_UNE},{une},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UNE},{dnl
+__{}define({__INFO},{une}){}dnl
+NE}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
-define({ULT},{
+define({ULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ULT},{ult},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ULT},{dnl
+__{}define({__INFO},{ult}){}dnl
+
                         ;[7:41]     u<
     ld    A, E          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       u<   DE<HL --> DE-HL<0 --> carry if true
     sbc  HL, HL         ; 2:15      u<
-    pop  DE             ; 1:10      u<})dnl
+    pop  DE             ; 1:10      u<}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
 dnl # unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
-define({ULE},{
+define({ULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ULE},{ule},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ULE},{dnl
+__{}define({__INFO},{ule}){}dnl
+
     scf                 ; 1:4       u<=
     ex   DE, HL         ; 1:4       u<=
     sbc  HL, DE         ; 2:15      u<=
     sbc  HL, HL         ; 2:15      u<=
-    pop  DE             ; 1:10      u<=})dnl
+    pop  DE             ; 1:10      u<=}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
-define({UGT},{
+define({UGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_UGT},{ugt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UGT},{dnl
+__{}define({__INFO},{ugt}){}dnl
+
     or    A             ; 1:4       u>
     sbc  HL, DE         ; 2:15      u>
     sbc  HL, HL         ; 2:15      u>
-    pop  DE             ; 1:10      u>})dnl
+    pop  DE             ; 1:10      u>}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
-define({UGE},{
+define({UGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_UGE},{uge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UGE},{dnl
+__{}define({__INFO},{uge}){}dnl
+
     scf                 ; 1:4       u>=
     sbc  HL, DE         ; 2:15      u>=
     sbc  HL, HL         ; 2:15      u>=
-    pop  DE             ; 1:10      u>=})dnl
+    pop  DE             ; 1:10      u>=}){}dnl
 dnl
 dnl # ------------- single shifts ----------------
 dnl
 dnl # ( x u -- x)
 dnl # shifts x left u places
-define({LSHIFT},{ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
+define({LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_LSHIFT},{lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LSHIFT},{dnl
+__{}define({__INFO},{lshift}){}dnl
+ifdef({USE_LSHIFT},,define({USE_LSHIFT},{}))
     call DE_LSHIFT      ; 3:17      <<   ( x1 u -- x1<<u )
-    pop  DE             ; 1:10      <<})dnl
+    pop  DE             ; 1:10      <<}){}dnl
 dnl
 dnl
 dnl # ( x u -- x)
 dnl # shifts x right u places
-define({RSHIFT},{ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
+define({RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_RSHIFT},{rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RSHIFT},{dnl
+__{}define({__INFO},{rshift}){}dnl
+ifdef({USE_RSHIFT},,define({USE_RSHIFT},{}))
     call DE_RSHIFT      ; 3:17      >>   ( x1 u -- x1>>u )
-    pop  DE             ; 1:10      >>})dnl
+    pop  DE             ; 1:10      >>}){}dnl
 dnl
 dnl
 dnl # 1 <<
 dnl # x 1 lshift
 dnl # ( x -- x)
 dnl # shifts x left 1 place
-define({_1LSHIFT},{
-    add  HL, HL         ; 1:11      1 lshift   ( u -- u<<1 )})dnl
+define({_1LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_1LSHIFT},{1lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1LSHIFT},{dnl
+__{}define({__INFO},{1lshift}){}dnl
+
+    add  HL, HL         ; 1:11      1 lshift   ( u -- u<<1 )}){}dnl
 dnl
 dnl
 dnl # 2 <<
 dnl # x 2 lshift
 dnl # ( x -- x)
 dnl # shifts x left 2 places
-define({_2LSHIFT},{
+define({_2LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2LSHIFT},{2lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2LSHIFT},{dnl
+__{}define({__INFO},{2lshift}){}dnl
+
     add  HL, HL         ; 1:11      2 lshift   ( u -- u<<2 )
-    add  HL, HL         ; 1:11      2 lshift})dnl
+    add  HL, HL         ; 1:11      2 lshift}){}dnl
 dnl
 dnl
 dnl # 3 <<
 dnl # x 3 lshift
 dnl # ( x -- x)
 dnl # shifts x left 3 places
-define({_3LSHIFT},{
+define({_3LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_3LSHIFT},{3lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3LSHIFT},{dnl
+__{}define({__INFO},{3lshift}){}dnl
+
     add  HL, HL         ; 1:11      3 lshift   ( u -- u<<3 )
     add  HL, HL         ; 1:11      3 lshift
-    add  HL, HL         ; 1:11      3 lshift})dnl
+    add  HL, HL         ; 1:11      3 lshift}){}dnl
 dnl
 dnl
 dnl # 4 <<
 dnl # x 4 lshift
 dnl # ( x -- x)
 dnl # shifts x left 4 places
-define({_4LSHIFT},{
+define({_4LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4LSHIFT},{4lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4LSHIFT},{dnl
+__{}define({__INFO},{4lshift}){}dnl
+
     add  HL, HL         ; 1:11      4 lshift   ( u -- u<<4 )
     add  HL, HL         ; 1:11      4 lshift
     add  HL, HL         ; 1:11      4 lshift
-    add  HL, HL         ; 1:11      4 lshift})dnl
+    add  HL, HL         ; 1:11      4 lshift}){}dnl
 dnl
 dnl
 dnl # 5 <<
 dnl # x 5 lshift
 dnl # ( x -- x)
 dnl # shifts x left 5 places
-define({_5LSHIFT},{
+define({_5LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_5LSHIFT},{5lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_5LSHIFT},{dnl
+__{}define({__INFO},{5lshift}){}dnl
+
     add  HL, HL         ; 1:11      5 lshift   ( u -- u<<5 )
     add  HL, HL         ; 1:11      5 lshift
     add  HL, HL         ; 1:11      5 lshift
     add  HL, HL         ; 1:11      5 lshift
-    add  HL, HL         ; 1:11      5 lshift})dnl
+    add  HL, HL         ; 1:11      5 lshift}){}dnl
 dnl
 dnl
 dnl # 6 <<
 dnl # x 6 lshift
 dnl # ( x -- x)
 dnl # shifts x left 6 places
-define({_6LSHIFT},{
+define({_6LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_6LSHIFT},{6lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_6LSHIFT},{dnl
+__{}define({__INFO},{6lshift}){}dnl
+
                        ;[12:47]     6 lshift   ( u -- u<<6 )
     ld    A, H          ; 1:4       6 lshift
     and   0x03          ; 2:7       6 lshift   .... ..98   7654 3210
@@ -915,125 +1197,185 @@ define({_6LSHIFT},{
     rr    L             ; 2:8       6 lshift   0... ....   9876 5432 1
     rra                 ; 1:4       6 lshift   10.. .... . 9876 5432
     ld    H, L          ; 1:4       6 lshift
-    ld    L, A          ; 1:4       6 lshift})dnl
+    ld    L, A          ; 1:4       6 lshift}){}dnl
 dnl
 dnl
 dnl # 7 <<
 dnl # x 7 lshift
 dnl # ( x -- x)
 dnl # shifts x left 7 places
-define({_7LSHIFT},{
+define({_7LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_7LSHIFT},{7lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_7LSHIFT},{dnl
+__{}define({__INFO},{7lshift}){}dnl
+
     xor   A             ; 1:4       7 lshift   ( u -- u<<7 )
     srl   H             ; 2:8       7 lshift
     rr    L             ; 2:8       7 lshift
     ld    H, L          ; 1:4       7 lshift
     rra                 ; 1:4       7 lshift
-    ld    L, A          ; 1:4       7 lshift})dnl
+    ld    L, A          ; 1:4       7 lshift}){}dnl
 dnl
 dnl
 dnl # 8 <<
 dnl # x 8 lshift
 dnl # ( x -- x)
 dnl # shifts x left 8 places
-define({_8LSHIFT},{
+define({_8LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_8LSHIFT},{8lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_8LSHIFT},{dnl
+__{}define({__INFO},{8lshift}){}dnl
+
     ld    H, L          ; 1:4       8 lshift   ( u -- u<<8 )
-    ld    L, 0x00       ; 2:7       8 lshift})dnl
+    ld    L, 0x00       ; 2:7       8 lshift}){}dnl
 dnl
 dnl
 dnl # 9 <<
 dnl # x 9 lshift
 dnl # ( x -- x)
 dnl # shifts x left 9 places
-define({_9LSHIFT},{
+define({_9LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_9LSHIFT},{9lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_9LSHIFT},{dnl
+__{}define({__INFO},{9lshift}){}dnl
+
     sla   L             ; 2:8       9 lshift   ( u -- u<<9 )
     ld    H, L          ; 1:4       9 lshift
-    ld    L, 0x00       ; 2:7       9 lshift})dnl
+    ld    L, 0x00       ; 2:7       9 lshift}){}dnl
 dnl
 dnl
 dnl # 10 <<
 dnl # x 10 lshift
 dnl # ( x -- x)
 dnl # shifts x left 10 places
-define({_10LSHIFT},{
+define({_10LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_10LSHIFT},{10lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_10LSHIFT},{dnl
+__{}define({__INFO},{10lshift}){}dnl
+
     ld    A, L          ; 1:4       10 lshift   ( u -- u<<10 )
     add   A, A          ; 1:4       10 lshift
     add   A, A          ; 1:4       10 lshift
     ld    H, A          ; 1:4       10 lshift
-    ld    L, 0x00       ; 2:7       10 lshift})dnl
+    ld    L, 0x00       ; 2:7       10 lshift}){}dnl
 dnl
 dnl
 dnl # 11 <<
 dnl # x 11 lshift
 dnl # ( x -- x)
 dnl # shifts x left 11 places
-define({_11LSHIFT},{
+define({_11LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_11LSHIFT},{11lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_11LSHIFT},{dnl
+__{}define({__INFO},{11lshift}){}dnl
+
     ld    A, L          ; 1:4       11 lshift   ( u -- u<<11 )
     add   A, A          ; 1:4       11 lshift
     add   A, A          ; 1:4       11 lshift
     add   A, A          ; 1:4       11 lshift
     ld    H, A          ; 1:4       11 lshift
-    ld    L, 0x00       ; 2:7       11 lshift})dnl
+    ld    L, 0x00       ; 2:7       11 lshift}){}dnl
 dnl
 dnl
 dnl # 12 <<
 dnl # x 12 lshift
 dnl # ( x -- x)
 dnl # shifts x left 12 places
-define({_12LSHIFT},{
+define({_12LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_12LSHIFT},{12lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_12LSHIFT},{dnl
+__{}define({__INFO},{12lshift}){}dnl
+
     ld    A, L          ; 1:4       12 lshift   ( u -- u<<12 )
     add   A, A          ; 1:4       12 lshift
     add   A, A          ; 1:4       12 lshift
     add   A, A          ; 1:4       12 lshift
     add   A, A          ; 1:4       12 lshift
     ld    H, A          ; 1:4       12 lshift
-    ld    L, 0x00       ; 2:7       12 lshift})dnl
+    ld    L, 0x00       ; 2:7       12 lshift}){}dnl
 dnl
 dnl
 dnl # 13 <<
 dnl # x 13 lshift
 dnl # ( x -- x)
 dnl # shifts x left 13 places
-define({_13LSHIFT},{
+define({_13LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_13LSHIFT},{13lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_13LSHIFT},{dnl
+__{}define({__INFO},{13lshift}){}dnl
+
     ld    A, L          ; 1:4       13 lshift   ( u -- u<<13 )
     rrca                ; 1:4       13 lshift
     rrca                ; 1:4       13 lshift
     rrca                ; 1:4       13 lshift
     and  0xE0           ; 2:7       13 lshift
     ld    H, A          ; 1:4       13 lshift
-    ld    L, 0x00       ; 2:7       13 lshift})dnl
+    ld    L, 0x00       ; 2:7       13 lshift}){}dnl
 dnl
 dnl
 dnl # 14 <<
 dnl # x 14 lshift
 dnl # ( x -- x)
 dnl # shifts x left 14 places
-define({_14LSHIFT},{
+define({_14LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_14LSHIFT},{14lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_14LSHIFT},{dnl
+__{}define({__INFO},{14lshift}){}dnl
+
     ld    A, L          ; 1:4       14 lshift   ( u -- u<<14 )
     rrca                ; 1:4       14 lshift
     rrca                ; 1:4       14 lshift
     and  0xC0           ; 2:7       14 lshift
     ld    H, A          ; 1:4       14 lshift
-    ld    L, 0x00       ; 2:7       14 lshift})dnl
+    ld    L, 0x00       ; 2:7       14 lshift}){}dnl
 dnl
 dnl
 dnl # 15 <<
 dnl # x 15 lshift
 dnl # ( x -- x)
 dnl # shifts x left 15 places
-define({_15LSHIFT},{
+define({_15LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_15LSHIFT},{15lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_15LSHIFT},{dnl
+__{}define({__INFO},{15lshift}){}dnl
+
     xor   A             ; 1:4       15 lshift   ( u -- u<<15 )
     rr    L             ; 2:8       15 lshift
     ld    L, A          ; 1:4       15 lshift
     rra                 ; 1:4       15 lshift
-    ld    H, A          ; 1:4       15 lshift})dnl
+    ld    H, A          ; 1:4       15 lshift}){}dnl
 dnl
 dnl
 dnl # 16 <<
 dnl # x 16 lshift
 dnl # ( x -- x)
 dnl # shifts x left 16 places
-define({_16LSHIFT},{
-    ld   HL, 0x0000     ; 3:10      16 lshift   ( u -- u<<16 )})dnl
+define({_16LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_16LSHIFT},{16lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16LSHIFT},{dnl
+__{}define({__INFO},{16lshift}){}dnl
+
+    ld   HL, 0x0000     ; 3:10      16 lshift   ( u -- u<<16 )}){}dnl
 dnl
 dnl
 dnl
@@ -1041,27 +1383,45 @@ dnl # 1 >>
 dnl # x 1 rshift
 dnl # ( u -- u )
 dnl # shifts u right 1 place
-define({_1RSHIFT},{
+define({_1RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_1RSHIFT},{1rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1RSHIFT},{dnl
+__{}define({__INFO},{1rshift}){}dnl
+
     srl   H             ; 2:8       1 rshift   ( u -- u>>1 )
-    rr    L             ; 2:8       1 rshift})dnl
+    rr    L             ; 2:8       1 rshift}){}dnl
 dnl
 dnl
 dnl # 2 >>
 dnl # x 2 rshift
 dnl # ( u -- u )
 dnl # shifts u right 2 places
-define({_2RSHIFT},{
+define({_2RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2RSHIFT},{2rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2RSHIFT},{dnl
+__{}define({__INFO},{2rshift}){}dnl
+
     srl   H             ; 2:8       2 rshift   ( u -- u>>2 )
     rr    L             ; 2:8       2 rshift
     srl   H             ; 2:8       2 rshift
-    rr    L             ; 2:8       2 rshift})dnl
+    rr    L             ; 2:8       2 rshift}){}dnl
 dnl
 dnl
 dnl # 3 >>
 dnl # x 3 rshift
 dnl # ( u -- u )
 dnl # shifts u right 3 places
-define({_3RSHIFT},{
+define({_3RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_3RSHIFT},{3rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3RSHIFT},{dnl
+__{}define({__INFO},{3rshift}){}dnl
+
     ld    A, L          ; 1:4       3 rshift   ( u -- u>>3 )
     srl   H             ; 2:8       3 rshift
     rra                 ; 1:4       3 rshift
@@ -1069,14 +1429,20 @@ define({_3RSHIFT},{
     rra                 ; 1:4       3 rshift
     srl   H             ; 2:8       3 rshift
     rra                 ; 1:4       3 rshift
-    ld    L, A          ; 1:4       3 rshift})dnl
+    ld    L, A          ; 1:4       3 rshift}){}dnl
 dnl
 dnl
 dnl # 4 >>
 dnl # x 4 rshift
 dnl # ( u -- u )
 dnl # shifts u right 4 places
-define({_4RSHIFT},{
+define({_4RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4RSHIFT},{4rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4RSHIFT},{dnl
+__{}define({__INFO},{4rshift}){}dnl
+
     ld    A, L          ; 1:4       4 rshift   ( u -- u>>4 )
     srl   H             ; 2:8       4 rshift
     rra                 ; 1:4       4 rshift
@@ -1086,7 +1452,7 @@ define({_4RSHIFT},{
     rra                 ; 1:4       4 rshift
     srl   H             ; 2:8       4 rshift
     rra                 ; 1:4       4 rshift
-    ld    L, A          ; 1:4       4 rshift})dnl
+    ld    L, A          ; 1:4       4 rshift}){}dnl
 dnl
 dnl
 dnl
@@ -1094,7 +1460,13 @@ dnl # 5 >>
 dnl # u 5 rshift
 dnl # ( u -- u )
 dnl # shifts u right 5 places
-define({_5RSHIFT},{
+define({_5RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_5RSHIFT},{5rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_5RSHIFT},{dnl
+__{}define({__INFO},{5rshift}){}dnl
+
     xor   A             ; 1:4       5 rshift   ( u -- u>>5 )
     add  HL, HL         ; 1:11      5 rshift
     adc   A, A          ; 1:4       5 rshift
@@ -1103,7 +1475,7 @@ define({_5RSHIFT},{
     add  HL, HL         ; 1:11      5 rshift
     adc   A, A          ; 1:4       5 rshift
     ld    L, H          ; 1:4       5 rshift
-    ld    H, A          ; 1:4       5 rshift})dnl
+    ld    H, A          ; 1:4       5 rshift}){}dnl
 dnl
 dnl
 dnl
@@ -1111,14 +1483,20 @@ dnl # 6 >>
 dnl # u 6 rshift
 dnl # ( u -- u )
 dnl # shifts u right 6 places
-define({_6RSHIFT},{
+define({_6RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_6RSHIFT},{6rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_6RSHIFT},{dnl
+__{}define({__INFO},{6rshift}){}dnl
+
     xor   A             ; 1:4       6 rshift   ( u -- u>>6 )
     add  HL, HL         ; 1:11      6 rshift
     adc   A, A          ; 1:4       6 rshift
     add  HL, HL         ; 1:11      6 rshift
     adc   A, A          ; 1:4       6 rshift
     ld    L, H          ; 1:4       6 rshift
-    ld    H, A          ; 1:4       6 rshift})dnl
+    ld    H, A          ; 1:4       6 rshift}){}dnl
 dnl
 dnl
 dnl
@@ -1126,63 +1504,99 @@ dnl # 7 >>
 dnl # u 7 rshift
 dnl # ( u -- u )
 dnl # shifts u right 7 places
-define({_7RSHIFT},{
+define({_7RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_7RSHIFT},{7rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_7RSHIFT},{dnl
+__{}define({__INFO},{7rshift}){}dnl
+
     xor   A             ; 1:4       7 rshift   ( u -- u>>7 )
     add  HL, HL         ; 1:11      7 rshift
     adc   A, A          ; 1:4       7 rshift
     ld    L, H          ; 1:4       7 rshift
-    ld    H, A          ; 1:4       7 rshift})dnl
+    ld    H, A          ; 1:4       7 rshift}){}dnl
 dnl
 dnl
 dnl # 8 >>
 dnl # u 8 rshift
 dnl # ( u -- u )
 dnl # shifts u right 8 places
-define({_8RSHIFT},{
+define({_8RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_8RSHIFT},{8rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_8RSHIFT},{dnl
+__{}define({__INFO},{8rshift}){}dnl
+
     ld    L, H          ; 1:4       8 rshift   ( u -- u>>8 )
-    ld    H, 0x00       ; 2:7       8 rshift})dnl
+    ld    H, 0x00       ; 2:7       8 rshift}){}dnl
 dnl
 dnl
 dnl # 9 >>
 dnl # u 9 rshift
 dnl # ( u -- u )
 dnl # shifts u right 9 places
-define({_9RSHIFT},{
+define({_9RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_9RSHIFT},{9rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_9RSHIFT},{dnl
+__{}define({__INFO},{9rshift}){}dnl
+
     srl   H             ; 2:8       9 rshift   ( u -- u>>9 )
     ld    L, H          ; 1:4       9 rshift
-    ld    H, 0x00       ; 2:7       9 rshift})dnl
+    ld    H, 0x00       ; 2:7       9 rshift}){}dnl
 dnl
 dnl
 dnl # 10 >>
 dnl # u 10 rshift
 dnl # ( u -- u )
 dnl # shifts u right 10 places
-define({_10RSHIFT},{
+define({_10RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_10RSHIFT},{10rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_10RSHIFT},{dnl
+__{}define({__INFO},{10rshift}){}dnl
+
     srl   H             ; 2:8       10 rshift   ( u -- u>>10 )
     srl   H             ; 2:8       10 rshift
     ld    L, H          ; 1:4       10 rshift
-    ld    H, 0x00       ; 2:7       10 rshift})dnl
+    ld    H, 0x00       ; 2:7       10 rshift}){}dnl
 dnl
 dnl
 dnl # 11 >>
 dnl # u 11 rshift
 dnl # ( u -- u )
 dnl # shifts u right 11 places
-define({_11RSHIFT},{
+define({_11RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_11RSHIFT},{11rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_11RSHIFT},{dnl
+__{}define({__INFO},{11rshift}){}dnl
+
     ld    A, H          ; 1:4       11 rshift   ( u -- u>>11 )
     and  0xF8           ; 2:7       11 rshift
     rrca                ; 1:4       11 rshift
     rrca                ; 1:4       11 rshift
     rrca                ; 1:4       11 rshift
     ld    L, A          ; 1:4       11 rshift
-    ld    H, 0x00       ; 2:7       11 rshift})dnl
+    ld    H, 0x00       ; 2:7       11 rshift}){}dnl
 dnl
 dnl
 dnl # 12 >>
 dnl # u 12 rshift
 dnl # ( u -- u )
 dnl # shifts u right 12 places
-define({_12RSHIFT},{
+define({_12RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_12RSHIFT},{12rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_12RSHIFT},{dnl
+__{}define({__INFO},{12rshift}){}dnl
+
     ld    A, H          ; 1:4       12 rshift   ( u -- u>>12 )
     and  0xF0           ; 2:7       12 rshift
     rrca                ; 1:4       12 rshift
@@ -1190,60 +1604,90 @@ define({_12RSHIFT},{
     rrca                ; 1:4       12 rshift
     rrca                ; 1:4       12 rshift
     ld    L, A          ; 1:4       12 rshift
-    ld    H, 0x00       ; 2:7       12 rshift})dnl
+    ld    H, 0x00       ; 2:7       12 rshift}){}dnl
 dnl
 dnl
 dnl # 13 >>
 dnl # u 13 rshift
 dnl # ( u -- u )
 dnl # shifts u right 13 places
-define({_13RSHIFT},{
+define({_13RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_13RSHIFT},{13rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_13RSHIFT},{dnl
+__{}define({__INFO},{13rshift}){}dnl
+
     ld    A, H          ; 1:4       13 rshift   ( u -- u>>13 )
     and  0xE0           ; 2:7       13 rshift
     rlca                ; 1:4       13 rshift
     rlca                ; 1:4       13 rshift
     rlca                ; 1:4       13 rshift
     ld    L, A          ; 1:4       13 rshift
-    ld    H, 0x00       ; 2:7       13 rshift})dnl
+    ld    H, 0x00       ; 2:7       13 rshift}){}dnl
 dnl
 dnl
 dnl # 14 >>
 dnl # u 14 rshift
 dnl # ( u -- u )
 dnl # shifts u right 14 places
-define({_14RSHIFT},{
+define({_14RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_14RSHIFT},{14rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_14RSHIFT},{dnl
+__{}define({__INFO},{14rshift}){}dnl
+
     ld    A, H          ; 1:4       14 rshift   ( u -- u>>14 )
     and  0xC0           ; 2:7       14 rshift
     rlca                ; 1:4       14 rshift
     rlca                ; 1:4       14 rshift
     ld    L, A          ; 1:4       14 rshift
-    ld    H, 0x00       ; 2:7       14 rshift})dnl
+    ld    H, 0x00       ; 2:7       14 rshift}){}dnl
 dnl
 dnl
 dnl # 15 >>
 dnl # u 15 rshift
 dnl # ( u -- u )
 dnl # shifts u right 15 places
-define({_15RSHIFT},{
+define({_15RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_15RSHIFT},{15rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_15RSHIFT},{dnl
+__{}define({__INFO},{15rshift}){}dnl
+
     xor   A             ; 1:4       15 rshift   ( u -- u>>15 )
     rl    H             ; 2:8       15 rshift
     ld    H, A          ; 1:4       15 rshift
     adc   A, A          ; 1:4       15 rshift
-    ld    L, A          ; 1:4       15 rshift})dnl
+    ld    L, A          ; 1:4       15 rshift}){}dnl
 dnl
 dnl
 dnl # 16 >>
 dnl # u 16 rshift
 dnl # ( u -- u )
 dnl # shifts u right 16 places
-define({_16RSHIFT},{
-    ld   HL, 0x0000     ; 3:10      16 rshift   ( u -- u>>16 )})dnl
+define({_16RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_16RSHIFT},{16rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16RSHIFT},{dnl
+__{}define({__INFO},{16rshift}){}dnl
+
+    ld   HL, 0x0000     ; 3:10      16 rshift   ( u -- u>>16 )}){}dnl
 dnl
 dnl
 dnl
 dnl # ( u -- u )
 dnl # shifs u right $1 places
-define({PUSH_RSHIFT},{ifelse($1,{},{
+define({PUSH_RSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_RSHIFT},{push_rshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_RSHIFT},{dnl
+__{}define({__INFO},{push_rshift}){}dnl
+ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{
@@ -1280,7 +1724,13 @@ dnl
 dnl
 dnl # ( u -- u )
 dnl # shifs u left $1 places
-define({PUSH_LSHIFT},{ifelse($1,{},{
+define({PUSH_LSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LSHIFT},{push_lshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_LSHIFT},{dnl
+__{}define({__INFO},{push_lshift}){}dnl
+ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing address parameter!},
 __{}$#,{1},{dnl
 __{}__{}ifelse(__IS_MEM_REF($1),{1},{
@@ -1323,37 +1773,67 @@ dnl
 dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
-define({DLSHIFT},{__def({USE_DLSHIFT})
-    call LSHIFT32       ; 3:17      D<<   ( d1 u -- d )  d = d1 << u})dnl
+define({DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLSHIFT},{dlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLSHIFT},{dnl
+__{}define({__INFO},{dlshift}){}dnl
+__def({USE_DLSHIFT})
+    call LSHIFT32       ; 3:17      D<<   ( d1 u -- d )  d = d1 << u}){}dnl
 dnl
 dnl
 dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
-define({ROT_DLSHIFT},{__def({USE_ROT_DLSHIFT})
+define({ROT_DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_DLSHIFT},{rot_dlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROT_DLSHIFT},{dnl
+__{}define({__INFO},{rot_dlshift}){}dnl
+__def({USE_ROT_DLSHIFT})
     pop  BC             ; 1:10      rot D<<   ( d1 -- d )  d = d1 << BC
-    call BC_LSHIFT32    ; 3:17      rot D<<})dnl
+    call BC_LSHIFT32    ; 3:17      rot D<<}){}dnl
 dnl
 dnl
 dnl
 dnl # ( d1 u -- d )  d = d1 >> u
 dnl # shifts d1 right u places
-define({DRSHIFT},{__def({USE_DRSHIFT})
-    call RSHIFT32       ; 3:17      D>>   ( d1 u -- d )  d = d1 >> u})dnl
+define({DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DRSHIFT},{drshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DRSHIFT},{dnl
+__{}define({__INFO},{drshift}){}dnl
+__def({USE_DRSHIFT})
+    call RSHIFT32       ; 3:17      D>>   ( d1 u -- d )  d = d1 >> u}){}dnl
 dnl
 dnl
 dnl
 dnl # ( d1 u -- d )  d = d1 >> u
 dnl # shifts d1 right u places
-define({ROT_DRSHIFT},{__def({USE_ROT_DRSHIFT})
+define({ROT_DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_DRSHIFT},{rot_drshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROT_DRSHIFT},{dnl
+__{}define({__INFO},{rot_drshift}){}dnl
+__def({USE_ROT_DRSHIFT})
     pop  BC             ; 1:10      rot D>>   ( d1 -- d )  d = d1 >> BC
-    call BC_RSHIFT32    ; 3:17      rot D>>})dnl
+    call BC_RSHIFT32    ; 3:17      rot D>>}){}dnl
 dnl
 dnl
 dnl
 dnl # ( d1 d2 -- d )
 dnl # d = d1 & d2
-define({DAND},{
+define({DAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_DAND},{dand},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DAND},{dnl
+__{}define({__INFO},{dand}){}dnl
+
     pop  BC             ; 1:10      dand   ( d2 d1 -- d )  d = d2 & d1
     ld    A, C          ; 1:4       dand
     and   L             ; 1:4       dand
@@ -1367,12 +1847,18 @@ define({DAND},{
     ld    E, A          ; 1:4       dand
     ld    A, B          ; 1:4       dand
     and   D             ; 1:4       dand
-    ld    D, A          ; 1:4       dand})dnl
+    ld    D, A          ; 1:4       dand}){}dnl
 dnl
 dnl
 dnl # ( d1 -- d )
 dnl # d = d1 & n
-define({PUSHDOT_DAND},{ifelse($1,{},{
+define({PUSHDOT_DAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DAND},{pushdot_dand},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_DAND},{dnl
+__{}define({__INFO},{pushdot_dand}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1397,12 +1883,18 @@ __{}__{}define({_TMP_INFO},{$1. dand}){}dnl
 __{}__{}__AND_REG16_16BIT({HL},$1){}dnl
 __{}__{}__AND_REG16_16BIT({DE},__HEX_DE($1)){}dnl
 __{}}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl # ( d1 d2 -- d )
 dnl # d = d1 | d2
-define({DOR},{
+define({DOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_DOR},{dor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DOR},{dnl
+__{}define({__INFO},{dor}){}dnl
+
     pop  BC             ; 1:10      dor   ( d2 d1 -- d )  d = d2 | d1
     ld    A, C          ; 1:4       dor
     or    L             ; 1:4       dor
@@ -1416,12 +1908,18 @@ define({DOR},{
     ld    E, A          ; 1:4       dor
     ld    A, B          ; 1:4       dor
     or    D             ; 1:4       dor
-    ld    D, A          ; 1:4       dor})dnl
+    ld    D, A          ; 1:4       dor}){}dnl
 dnl
 dnl
 dnl # ( d1 -- d )
 dnl # d = d1 | n
-define({PUSHDOT_DOR},{ifelse($1,{},{
+define({PUSHDOT_DOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DOR},{pushdot_dor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_DOR},{dnl
+__{}define({__INFO},{pushdot_dor}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1446,12 +1944,18 @@ __{}__{}define({_TMP_INFO},{$1. dor}){}dnl
 __{}__{}__OR_REG16_16BIT({HL},$1){}dnl
 __{}__{}__OR_REG16_16BIT({DE},__HEX_DE($1)){}dnl
 __{}}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl
 dnl # ( d1 u -- d )  d == d1 | 2**u
-define({DBITSET},{ifelse(eval($#>1),{1},{
+define({DBITSET},{dnl
+__{}__ADD_TOKEN({__TOKEN_DBITSET},{dbitset},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DBITSET},{dnl
+__{}define({__INFO},{dbitset}){}dnl
+ifelse(eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {ifelse(_TYP_DOUBLE,{fast},{
 __{}                       ;[26:108/45] dbitset   ( d1 u -- d )  d = d1 | 2**u   fast version
@@ -1482,7 +1986,13 @@ dnl
 dnl
 dnl # ( d -- d|2**n )
 dnl # d = d | 2**n
-define({PUSH_DBITSET},{ifelse($1,{},{
+define({PUSH_DBITSET},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_DBITSET},{push_dbitset},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_DBITSET},{dnl
+__{}define({__INFO},{push_dbitset}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1544,7 +2054,13 @@ dnl
 dnl
 dnl # ( d1 d2 -- d )
 dnl # d = d1 ^ d2
-define({DXOR},{
+define({DXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_DXOR},{dxor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DXOR},{dnl
+__{}define({__INFO},{dxor}){}dnl
+
     pop  BC             ; 1:10      dxor   ( d2 d1 -- d )  d = d2 ^ d1
     ld    A, C          ; 1:4       dxor
     xor    L            ; 1:4       dxor
@@ -1558,12 +2074,18 @@ define({DXOR},{
     ld    E, A          ; 1:4       dxor
     ld    A, B          ; 1:4       dxor
     xor    D            ; 1:4       dxor
-    ld    D, A          ; 1:4       dxor})dnl
+    ld    D, A          ; 1:4       dxor}){}dnl
 dnl
 dnl
 dnl # ( d1 -- d )
 dnl # d = d1 ^ n
-define({PUSHDOT_DXOR},{ifelse($1,{},{
+define({PUSHDOT_DXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DXOR},{pushdot_dxor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_DXOR},{dnl
+__{}define({__INFO},{pushdot_dxor}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1588,12 +2110,18 @@ __{}__{}define({_TMP_INFO},{$1. dxor}){}dnl
 __{}__{}__XOR_REG16_16BIT({HL},$1){}dnl
 __{}__{}__XOR_REG16_16BIT({DE},__HEX_DE($1)){}dnl
 __{}}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 dnl # ( d1 -- d )
 dnl # d = ~d1
-define({DINVERT},{
+define({DINVERT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DINVERT},{dinvert},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DINVERT},{dnl
+__{}define({__INFO},{dinvert}){}dnl
+
     ld    A, L          ; 1:4       dinvert   ( d1 -- d )  d = ~d1
     cpl                 ; 1:4       dinvert
     ld    L, A          ; 1:4       dinvert
@@ -1605,14 +2133,20 @@ define({DINVERT},{
     ld    E, A          ; 1:4       dinvert
     ld    A, D          ; 1:4       dinvert
     cpl                 ; 1:4       dinvert
-    ld    D, A          ; 1:4       dinvert})dnl
+    ld    D, A          ; 1:4       dinvert}){}dnl
 dnl
 dnl
 dnl # D0=
 dnl # ( d -- f )
 dnl # if ( x1x2 ) flag = 0; else flag = 0xFFFF;
 dnl # 0 if 32-bit number not equal to zero, -1 if equal
-define({D0EQ},{ifelse(TYP_D0EQ,{small},{
+define({D0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_D0EQ},{d0eq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_D0EQ},{dnl
+__{}define({__INFO},{d0eq}){}dnl
+ifelse(TYP_D0EQ,{small},{
                         ;[8:54]     D0=   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
     add  HL, DE         ; 1:11      D0=   carry: 0    1
     sbc   A, A          ; 1:4       D0=          0x00 0xff
@@ -1629,12 +2163,18 @@ define({D0EQ},{ifelse(TYP_D0EQ,{small},{
     or    L             ; 1:4       D0=
     sub   0x01          ; 2:7       D0=
     sbc  HL, HL         ; 2:15      D0=   set flag D == 0
-    pop   DE            ; 1:10      D0=})})dnl
+    pop   DE            ; 1:10      D0=})}){}dnl
 dnl
 dnl
 dnl # D0<
 dnl # ( d -- flag )
-define({D0LT},{ifelse(TYP_D0LT,{small},{
+define({D0LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_D0LT},{d0lt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_D0LT},{dnl
+__{}define({__INFO},{d0lt}){}dnl
+ifelse(TYP_D0LT,{small},{
                         ;[5:34]     D0<   ( hi lo -- flag D<0 )
     rl    D             ; 2:8       D0<
     pop  DE             ; 1:11      D0<
@@ -1645,13 +2185,19 @@ define({D0LT},{ifelse(TYP_D0LT,{small},{
     pop  DE             ; 1:11      D0<
     sbc   A, A          ; 1:4       D0<
     ld    L, A          ; 1:4       D0<
-    ld    H, A          ; 1:4       D0<   set flag D < 0})})dnl
+    ld    H, A          ; 1:4       D0<   set flag D < 0})}){}dnl
 dnl
 dnl
 dnl # D=
 dnl # ( d2 d1 -- flag )
 dnl # equal ( d1 == d2 )
-define({DEQ},{
+define({DEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DEQ},{deq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DEQ},{dnl
+__{}define({__INFO},{deq}){}dnl
+
                        ;[15:90/69,91]D=  ( d2 d1 -- flag )
     pop  BC             ; 1:10      D=   BC = lo_2
     xor   A             ; 1:4       D=    A = 0x00
@@ -1663,14 +2209,20 @@ define({DEQ},{
     dec   A             ; 1:4       D=    A = 0xFF
     ld    L, A          ; 1:4       D=
     ld    H, A          ; 1:4       D=   HL = flag d2==d1
-    pop  DE             ; 1:10      D=})dnl
+    pop  DE             ; 1:10      D=}){}dnl
 dnl
 dnl
 dnl
 dnl # $1 D=
 dnl # ( d1 -- flag )
 dnl # equal ( d1 == $1 )
-define({PUSHDOT_DEQ},{ifelse($1,{},{
+define({PUSHDOT_DEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DEQ},{pushdot_deq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHDOT_DEQ},{dnl
+__{}define({__INFO},{pushdot_deq}){}dnl
+ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
@@ -1718,13 +2270,25 @@ dnl
 dnl # Du=
 dnl # ( ud2 ud1 -- flag )
 dnl # equal ( ud1 == ud2 )
-define({DUEQ},{DEQ})dnl
+define({DUEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUEQ},{dueq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUEQ},{dnl
+__{}define({__INFO},{dueq}){}dnl
+DEQ}){}dnl
 dnl
 dnl
 dnl # D<>
 dnl # ( d2 d1 -- flag )
 dnl # not equal ( d1 != d2 )
-define({DNE},{
+define({DNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DNE},{dne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DNE},{dnl
+__{}define({__INFO},{dne}){}dnl
+
                        ;[15:71,88/83]D<>  ( d2 d1 -- flag )
     pop  BC             ; 1:10      D<>   n h2    . h1 l1  BC= lo(d2) = l2
     xor   A             ; 1:4       D<>   n h2    . h1 l1  A = 0x00
@@ -1734,19 +2298,31 @@ define({DNE},{
     sbc  HL, DE         ; 2:15      D<>   n       . h1 h2  HL = h2 - h1
     jr    z, $+5        ; 2:7/12    D<>   n       . h1 h2
     ld   HL, 0xFFFF     ; 3:10      D<>   n       . h1 ff  HL = true
-    pop  DE             ; 1:10      D<>           . n  ff})dnl
+    pop  DE             ; 1:10      D<>           . n  ff}){}dnl
 dnl
 dnl
 dnl # Du<>
 dnl # ( ud2 ud1 -- flag )
 dnl # not equal ( ud1 != ud2 )
-define({DUNE},{DNE})dnl
+define({DUNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUNE},{dune},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUNE},{dnl
+__{}define({__INFO},{dune}){}dnl
+DNE}){}dnl
 dnl
 dnl
 dnl # D<
 dnl # ( d2 d1 -- flag )
 dnl # signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
-define({DLT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({DLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLT},{dlt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLT},{dnl
+__{}define({__INFO},{dlt}){}dnl
+ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                         ;[8:62]     D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<   l2
     pop  AF             ; 1:10      D<   h2
@@ -1770,14 +2346,20 @@ define({DLT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FC
     xor   D             ; 1:4       D<
     add   A, A          ; 1:4       D<                                   --> carry if true
     sbc  HL, HL         ; 2:15      D<   set flag d2<d1
-    pop  DE             ; 1:10      D<})})dnl
+    pop  DE             ; 1:10      D<})}){}dnl
 dnl
 dnl
 dnl # Du<
 dnl # 2swap Du>
 dnl # ( ud2 ud1 -- flag d2<d1 )
 dnl # unsigned ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
-define({DULT},{
+define({DULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DULT},{dult},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DULT},{dnl
+__{}define({__INFO},{dult}){}dnl
+
                         ;[11:76]    Du<   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du<   lo(ud2)
     ld    A, C          ; 1:4       Du<   BC<HL --> BC-HL<0 --> carry if true
@@ -1787,14 +2369,20 @@ define({DULT},{
     pop  HL             ; 1:10      Du<   hi(ud2)
     sbc  HL, DE         ; 2:15      Du<   HL<DE --> HL-DE<0 --> carry if true
     sbc  HL, HL         ; 2:15      Du<   set flag ud2<ud1
-    pop  DE             ; 1:10      Du<})dnl
+    pop  DE             ; 1:10      Du<}){}dnl
 dnl
 dnl
 dnl # D>=
 dnl # 2swap D<=
 dnl # ( d2 d1 -- flag )
 dnl # (d2 >= d1)  -->  (d2 + 1 > d1) -->  (0 > d1 - d2 - 1) -->  carry if true
-define({DGE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
+define({DGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DGE},{dge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DGE},{dnl
+__{}define({__INFO},{dge}){}dnl
+ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
                         ;[9:66]     D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>=   l2
     pop  AF             ; 1:10      D>=   h2
@@ -1817,14 +2405,20 @@ define({DGE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FC
     xor   D             ; 1:4       D>=
     add   A, A          ; 1:4       D>=                                    --> carry if true
     sbc  HL, HL         ; 2:15      D>=   set flag d2>=d1
-    pop  DE             ; 1:10      D>=})})dnl
+    pop  DE             ; 1:10      D>=})}){}dnl
 dnl
 dnl
 dnl # Du>=
 dnl # 2swap Du<=
 dnl # ( ud2 ud1 -- flag )
 dnl # (ud2 >= ud1)  -->  (ud2 + 1 > ud1) -->  (0 > ud1 - ud2 - 1) -->  carry if true
-define({DUGE},{
+define({DUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUGE},{duge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUGE},{dnl
+__{}define({__INFO},{duge}){}dnl
+
                         ;[12:80]    Du>=   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du>=   lo(ud2)
     scf                 ; 1:4       Du>=
@@ -1835,13 +2429,19 @@ define({DUGE},{
     ld    A, D          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
     sbc   A, H          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
     sbc  HL, HL         ; 2:15      Du>=   set flag ud2>=ud1
-    pop  DE             ; 1:10      Du>=})dnl
+    pop  DE             ; 1:10      Du>=}){}dnl
 dnl
 dnl
 dnl # D<=
 dnl # 2swap D>=
 dnl # ( d2 d1 -- f )
-define({DLE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({DLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLE},{dle},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLE},{dnl
+__{}define({__INFO},{dle}){}dnl
+ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                         ;[9:66]     D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<=   l2
     pop  AF             ; 1:10      D<=   h2
@@ -1867,14 +2467,20 @@ define({DLE},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FC
     add   A, A          ; 1:4       D<=                                      --> no carry if true
     ccf                 ; 1:4       D<=                                      --> carry    if true
     sbc  HL, HL         ; 2:15      D<=   set flag d2<d1
-    pop  DE             ; 1:10      D<=})})dnl
+    pop  DE             ; 1:10      D<=})}){}dnl
 dnl
 dnl
 dnl # Du<=
 dnl # 2swap Du>=
 dnl # ( ud2 ud1 -- flag )
 dnl # (ud2 <= ud1)  -->  (ud2 < ud1 + 1) -->  (ud2 - ud1 - 1 < 0) -->  carry if true
-define({DULE},{
+define({DULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DULE},{dule},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DULE},{dnl
+__{}define({__INFO},{dule}){}dnl
+
                         ;[12:80]    Du<=   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du<=   lo(ud2)
     scf                 ; 1:4       Du<=
@@ -1885,13 +2491,19 @@ define({DULE},{
     pop  HL             ; 1:10      Du<=   hi(ud2)
     sbc  HL, DE         ; 2:15      Du<=   HL<=DE --> HL<DE+1 --> HL-DE-1<0 --> carry if true
     sbc  HL, HL         ; 2:15      Du<=   set flag ud2<=ud1
-    pop  DE             ; 1:10      Du<=})dnl
+    pop  DE             ; 1:10      Du<=}){}dnl
 dnl
 dnl
 dnl # D>
 dnl # 2swap D<
 dnl # ( d2 d1 -- flag )
-define({DGT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
+define({DGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DGT},{dgt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DGT},{dnl
+__{}define({__INFO},{dgt}){}dnl
+ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                         ;[8:62]     D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>   l2
     pop  AF             ; 1:10      D>   h2
@@ -1915,13 +2527,19 @@ define({DGT},{ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FC
     xor   D             ; 1:4       D>
     add   A, A          ; 1:4       D>                     --> carry if true
     sbc  HL, HL         ; 2:15      D>   set flag d2>d1
-    pop  DE             ; 1:10      D>})})dnl
+    pop  DE             ; 1:10      D>})}){}dnl
 dnl
 dnl
 dnl # Du>
 dnl # 2swap Du<
 dnl # ( ud2 ud1 -- flag )
-define({DUGT},{
+define({DUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUGT},{dugt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUGT},{dnl
+__{}define({__INFO},{dugt}){}dnl
+
                         ;[13:77]    Du>   ( ud2 ud1 -- flag )
     pop  BC             ; 1:10      Du>   lo(ud2)
     ld    A, L          ; 1:4       Du>   BC>HL --> 0>HL-BC --> carry if true
@@ -1934,13 +2552,19 @@ define({DUGT},{
     ld    A, D          ; 1:4       Du>   BC>DE --> 0>DE-BC --> carry if true
     sbc   A, B          ; 1:4       Du>   BC>DE --> 0>DE-BC --> carry if true
     sbc  HL, HL         ; 2:15      Du>   set flag ud2>ud1
-    pop  DE             ; 1:10      Du>})dnl
+    pop  DE             ; 1:10      Du>}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup D=
 dnl # ( d d -- d d f )
-define({_4DUP_DEQ},{
+define({_4DUP_DEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DEQ},{4dup_deq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DEQ},{dnl
+__{}define({__INFO},{4dup_deq}){}dnl
+
                        ;[20:138/-21,+1] 4dup D=   ( d2 d1 -- d2 d1 flag )
     pop  AF             ; 1:10      4dup D=   h2          . h1 l1  AF= lo(d2) = l2
     pop  BC             ; 1:10      4dup D=               . h1 l1  BC= hi(d2) = h2
@@ -1957,20 +2581,32 @@ define({_4DUP_DEQ},{
     jr   nz, $+3        ; 2:7/12    4dup D=   h2 l2 h1    . l1 --
     dec   A             ; 1:4       4dup D=   h2 l2 h1    . l1 --  A = 0xFF
     ld    L, A          ; 1:4       4dup D=   h2 l2 h1    . l1 -f
-    ld    H, A          ; 1:4       4dup D=   h2 l2 h1    . l1 ff  HL= flag d2==d1})dnl
+    ld    H, A          ; 1:4       4dup D=   h2 l2 h1    . l1 ff  HL= flag d2==d1}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup Du=
 dnl # ( ud2 ud1 -- ud2 ud1 flag )
 dnl # equal ( ud1 == ud2 )
-define({_4DUP_DUEQ},{_4DUP_DEQ})dnl
+define({_4DUP_DUEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUEQ},{4dup_dueq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUEQ},{dnl
+__{}define({__INFO},{4dup_dueq}){}dnl
+_4DUP_DEQ}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup D<>
 dnl # ( d d -- d d f )
-define({_4DUP_DNE},{ifelse(_TYP_DOUBLE,{fast},{
+define({_4DUP_DNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DNE},{4dup_dne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DNE},{dnl
+__{}define({__INFO},{4dup_dne}){}dnl
+ifelse(_TYP_DOUBLE,{fast},{
             ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D<>   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<>   h2       . h1 l1  A = lo(l2)
@@ -2008,20 +2644,32 @@ define({_4DUP_DNE},{ifelse(_TYP_DOUBLE,{fast},{
     jr   nz, $+6        ; 2:7/12    4dup D<>   h2 l2 h1    . l1 l2
     sbc  HL, DE         ; 2:15      4dup D<>   h2 l2 h1    . l1 --  lo(d2)-lo(d1)
     jr    z, $+5        ; 2:7/12    4dup D<>   h2 l2 h1    . l1 --
-    ld   HL, 0xFFFF     ; 3:10      4dup D<>   h2 l2 h1    . l1 ff  HL= flag d2<>d1})})dnl
+    ld   HL, 0xFFFF     ; 3:10      4dup D<>   h2 l2 h1    . l1 ff  HL= flag d2<>d1})}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup Du<>
 dnl # ( ud2 ud1 -- ud2 ud1 flag )
 dnl # not equal ( ud1 <> ud2 )
-define({_4DUP_DUNE},{_4DUP_DNE})dnl
+define({_4DUP_DUNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUNE},{4dup_dune},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUNE},{dnl
+__{}define({__INFO},{4dup_dune}){}dnl
+_4DUP_DNE}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup D<
 dnl # ( d d -- d d f )
-define({_4DUP_DLT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
+define({_4DUP_DLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DLT},{4dup_dlt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DLT},{dnl
+__{}define({__INFO},{4dup_dlt}){}dnl
+ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
                         ;[7:201]    4dup D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D<   carry if true
     push DE             ; 1:11      4dup D<
@@ -2047,13 +2695,19 @@ define({_4DUP_DLT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{ye
     push BC             ; 1:11      4dup D<
     push DE             ; 1:11      4dup D<
     ex   DE, HL         ; 1:4       4dup D<
-    sbc  HL, HL         ; 2:15      4dup D<   set flag d2<d1})})dnl
+    sbc  HL, HL         ; 2:15      4dup D<   set flag d2<d1})}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup Du<
 dnl # ( ud ud -- ud ud f )
-define({_4DUP_DULT},{
+define({_4DUP_DULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DULT},{4dup_dult},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DULT},{dnl
+__{}define({__INFO},{4dup_dult}){}dnl
+
                        ;[16:121]    4dup Du<   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du<   lo_2
     ld    A, C          ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -2069,13 +2723,19 @@ define({_4DUP_DULT},{
     push BC             ; 1:11      4dup Du<
     push DE             ; 1:11      4dup Du<
     ex   DE, HL         ; 1:4       4dup Du<
-    sbc  HL, HL         ; 2:15      4dup Du<   set flag ud2<ud1})dnl
+    sbc  HL, HL         ; 2:15      4dup Du<   set flag ud2<ud1}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup D>=
 dnl # ( d d -- d d f )
-define({_4DUP_DGE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
+define({_4DUP_DGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DGE},{4dup_dge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DGE},{dnl
+__{}define({__INFO},{4dup_dge}){}dnl
+ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
                         ;[8:51]     4dup D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D>=   D< carry if true --> D>= carry if false
     ccf                 ; 1:4       4dup D>=   invert carry
@@ -2109,7 +2769,13 @@ dnl
 dnl
 dnl # 4dup Du>=
 dnl # ( ud ud -- ud ud f )
-define({_4DUP_DUGE},{
+define({_4DUP_DUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUGE},{4dup_duge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUGE},{dnl
+__{}define({__INFO},{4dup_duge}){}dnl
+
                        ;[17:125]    4dup Du>=   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du>=   lo_2
     ld    A, C          ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
@@ -2126,13 +2792,19 @@ define({_4DUP_DUGE},{
     push BC             ; 1:11      4dup Du>=
     push DE             ; 1:11      4dup Du>=
     ex   DE, HL         ; 1:4       4dup Du>=
-    sbc  HL, HL         ; 2:15      4dup Du>=   set flag ud2>=ud1})dnl
+    sbc  HL, HL         ; 2:15      4dup Du>=   set flag ud2>=ud1}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup D<=
 dnl # ( d d -- d d f )
-define({_4DUP_DLE},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
+define({_4DUP_DLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DLE},{4dup_dle},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DLE},{dnl
+__{}define({__INFO},{4dup_dle}){}dnl
+ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
                         ;[8:51]     4dup D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D<=   D> carry if true --> D<= carry if false
     ccf                 ; 1:4       4dup D<=   invert carry
@@ -2166,7 +2838,13 @@ dnl
 dnl
 dnl # 4dup Du<=
 dnl # ( ud ud -- ud ud f )
-define({_4DUP_DULE},{
+define({_4DUP_DULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DULE},{4dup_dule},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DULE},{dnl
+__{}define({__INFO},{4dup_dule}){}dnl
+
                        ;[17:125]    4dup Du<=   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du<=   lo_2
     ld    A, L          ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -2189,7 +2867,13 @@ dnl
 dnl
 dnl # 4dup D>
 dnl # ( d d -- d d f )
-define({_4DUP_DGT},{ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
+define({_4DUP_DGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DGT},{4dup_dgt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DGT},{dnl
+__{}define({__INFO},{4dup_dgt}){}dnl
+ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
                         ;[7:201]    4dup D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D>   carry if true
     push DE             ; 1:11      4dup D>
@@ -2221,7 +2905,13 @@ dnl
 dnl
 dnl # 4dup Du>
 dnl # ( ud ud -- ud ud f )
-define({_4DUP_DUGT},{
+define({_4DUP_DUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUGT},{4dup_dugt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUGT},{dnl
+__{}define({__INFO},{4dup_dugt}){}dnl
+
                        ;[16:121]    4dup Du>   ( ud2 ud1 -- ud2 ud1 flag )
     pop  BC             ; 1:10      4dup Du>   lo_2
     ld    A, L          ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -2244,8 +2934,14 @@ dnl
 dnl # 2dup D. D=
 dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DEQ},{dnl
-__{}define({_TMP_INFO},{2dup $1 D=})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) == DEHL})dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DEQ},{2dup_pushdot_deq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DEQ},{dnl
+__{}define({__INFO},{2dup_pushdot_deq}){}dnl
+dnl
+__{}define({_TMP_INFO},{2dup $1 D=}){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) == DEHL}){}dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2313,8 +3009,14 @@ dnl
 dnl # 2dup D. D<>
 dnl # ( d -- d f )
 define({_2DUP_PUSHDOT_DNE},{dnl
-__{}define({_TMP_INFO},{2dup $1 D<>})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) <> DEHL})dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DNE},{2dup_pushdot_dne},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DNE},{dnl
+__{}define({__INFO},{2dup_pushdot_dne}){}dnl
+dnl
+__{}define({_TMP_INFO},{2dup $1 D<>}){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 flag )   __HEX_DEHL($1) <> DEHL}){}dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2366,7 +3068,13 @@ dnl
 dnl
 dnl # 2dup D. D>
 dnl # ( d -- d f )
-define({_2DUP_PUSHDOT_DGT},{ifelse($1,{},{
+define({_2DUP_PUSHDOT_DGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DGT},{2dup_pushdot_dgt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DGT},{dnl
+__{}define({__INFO},{2dup_pushdot_dgt}){}dnl
+ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[24:116]   2dup $1 D>    ( d1 -- d1 flag )
@@ -2413,7 +3121,13 @@ dnl
 dnl
 dnl # 2dup D. D<=
 dnl # ( d -- d f )
-define({_2DUP_PUSHDOT_DLE},{ifelse($1,{},{
+define({_2DUP_PUSHDOT_DLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DLE},{2dup_pushdot_dle},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DLE},{dnl
+__{}define({__INFO},{2dup_pushdot_dle}){}dnl
+ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[25:119]   2dup $1 D<=    ( d1 -- d1 flag )
@@ -2461,7 +3175,13 @@ dnl
 dnl
 dnl # 2dup D. D<
 dnl # ( d -- d f )
-define({_2DUP_PUSHDOT_DLT},{ifelse($1,{},{
+define({_2DUP_PUSHDOT_DLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DLT},{2dup_pushdot_dlt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DLT},{dnl
+__{}define({__INFO},{2dup_pushdot_dlt}){}dnl
+ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[24:118]   2dup $1 D<    ( d1 -- d1 flag )
@@ -2509,7 +3229,13 @@ dnl
 dnl
 dnl # 2dup D. D>=
 dnl # ( d -- d f )
-define({_2DUP_PUSHDOT_DGE},{ifelse($1,{},{
+define({_2DUP_PUSHDOT_DGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DGE},{2dup_pushdot_dge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DGE},{dnl
+__{}define({__INFO},{2dup_pushdot_dge}){}dnl
+ifelse($1,{},{
     .error {$0}(): Missing parameter!},
 $#,{1},{ifelse(__IS_MEM_REF($1),{1},{
 __{}                        ;[25:121]   2dup $1 D>=    ( d1 -- d1 flag )

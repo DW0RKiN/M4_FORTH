@@ -1,25 +1,43 @@
 define({IF_COUNT},100)dnl
-define({__},{})dnl
 dnl
 dnl
-define({IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+dnl
+define({IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_IF},{if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_IF},{dnl
+__{}define({__INFO},{if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
     ex   DE, HL         ; 1:4       if
     pop  DE             ; 1:10      if
-    jp    z, else{}IF_COUNT    ; 3:10      if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      if}){}dnl
 dnl
 dnl
 dnl
-define({ELSE},{ifelse(ELSE_STACK,{ELSE_STACK},{
+define({ELSE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ELSE},{else},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ELSE},{dnl
+__{}define({__INFO},{else}){}dnl
+ifelse(ELSE_STACK,{ELSE_STACK},{
     .error {ELSE without IF!
     M4 FORTH does not support the BEGIN WHILE WHILE UNTIL ELSE THEN construction. But it supports the identical design BEGIN IF WHILE UNTIL ELSE THEN.}})
     jp   endif{}THEN_STACK       ; 3:10      else
 else{}ELSE_STACK:popdef({ELSE_STACK}){}dnl
-})dnl
+}){}dnl
 dnl
 dnl
 define({THEN},{dnl
+__{}__ADD_TOKEN({__TOKEN_THEN},{then},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_THEN},{dnl
+__{}define({__INFO},{then}){}dnl
+dnl
 __{}ifelse(ELSE_STACK, THEN_STACK,{
 __{}__{}else{}ELSE_STACK  EQU $          ;           = endif{}popdef({ELSE_STACK})}){}dnl
 __{}ifelse(THEN_STACK,{THEN_STACK},{
@@ -31,29 +49,53 @@ dnl
 dnl
 dnl ( x1 -- x1 )
 dnl dup if
-define({DUP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DUP_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_IF},{dup_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_IF},{dnl
+__{}define({__INFO},{dup_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup if
     or    L             ; 1:4       dup if
-    jp    z, else{}IF_COUNT    ; 3:10      dup if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      dup if}){}dnl
 dnl
 dnl
 dnl over if
-define({OVER_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({OVER_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_IF},{over_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_IF},{dnl
+__{}define({__INFO},{over_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, D          ; 1:4       over if
     or    E             ; 1:4       over if
-    jp    z, else{}IF_COUNT    ; 3:10      over if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      over if}){}dnl
 dnl
 dnl
-define({SWAP_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({SWAP_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_IF},{swap_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SWAP_IF},{dnl
+__{}define({__INFO},{swap_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, D          ; 1:4       swap if
     or    E             ; 1:4       swap if
     pop  DE             ; 1:10      swap if
-    jp    z, else{}IF_COUNT    ; 3:10      swap if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      swap if}){}dnl
 dnl
 dnl
 dnl # ( x -- )
 dnl # $1 $2 within if
 define({PUSH2_WITHIN_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN_IF},{push2_within_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_WITHIN_IF},{dnl
+__{}define({__INFO},{push2_within_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -64,7 +106,7 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
-__{}__{}__{}define({_TMP_INFO},{$1 $2 within if})dnl
+__{}__{}__{}define({_TMP_INFO},{$1 $2 within if}){}dnl
 __{}__{}__{}define({PUSH2_WITHIN_IF_CODE},__WITHIN($1,$2))
 __{}__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WITHIN_C)])_TMP_INFO   ( {TOS} -- )  true=($1<={TOS}<$2){}dnl
 __{}__{}PUSH2_WITHIN_IF_CODE
@@ -75,6 +117,12 @@ dnl
 dnl
 dnl # dup $1 $2 within if
 define({DUP_PUSH2_WITHIN_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_WITHIN_IF},{dup_push2_within_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH2_WITHIN_IF},{dnl
+__{}define({__INFO},{dup_push2_within_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -85,7 +133,7 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
-__{}__{}__{}define({_TMP_INFO},{dup $1 $2 within if})dnl
+__{}__{}__{}define({_TMP_INFO},{dup $1 $2 within if}){}dnl
 __{}__{}__{}define({DUP_PUSH2_WITHIN_IF_CODE},__SAVE_HL_WITHIN($1,$2))
 __{}__{}                        ;format({%-11s},[eval(3+__SAVE_HL_WITHIN_B):eval(10+__SAVE_HL_WITHIN_C)])_TMP_INFO   ( x -- x )  true=($1<=x<$2){}dnl
 __{}__{}DUP_PUSH2_WITHIN_IF_CODE
@@ -95,6 +143,12 @@ dnl
 dnl
 dnl # 2over nip c@ 0 c= if
 define({_2OVER_NIP_CFETCH_0CEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},{2over_nip_cfetch_0ceq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},{dnl
+__{}define({__INFO},{2over_nip_cfetch_0ceq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -112,6 +166,12 @@ dnl
 dnl
 dnl # 2over nip c@ 0 c<> if
 define({_2OVER_NIP_CFETCH_0CNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},{2over_nip_cfetch_0cne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2OVER_NIP_CFETCH_0CNE_IF},{dnl
+__{}define({__INFO},{2over_nip_cfetch_0cne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -129,62 +189,104 @@ dnl
 dnl
 dnl 0= if
 dnl ( x1 -- )
-define({_0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_0EQ_IF},{0eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0EQ_IF},{dnl
+__{}define({__INFO},{0eq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       0= if
     or    L             ; 1:4       0= if
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
-    jp   nz, else{}IF_COUNT    ; 3:10      0= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      0= if}){}dnl
 dnl
 dnl
 dnl ( x1 -- x1 )
 dnl dup 0= if
-define({DUP_0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DUP_0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_0EQ_IF},{dup_0eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_0EQ_IF},{dnl
+__{}define({__INFO},{dup_0eq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup 0= if
     or    L             ; 1:4       dup 0= if
-    jp   nz, else{}IF_COUNT    ; 3:10      dup 0= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      dup 0= if}){}dnl
 dnl
 dnl
 dnl 0< if
 dnl ( x1 -- )
-define({_0LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_0LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_0LT_IF},{0lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0LT_IF},{dnl
+__{}define({__INFO},{0lt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, H          ; 2:8       0< if
     ex   DE, HL         ; 1:4       0< if
     pop  DE             ; 1:10      0< if
-    jp    z, else{}IF_COUNT    ; 3:10      0< if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      0< if}){}dnl
 dnl
 dnl
 dnl ( x1 -- x1 )
 dnl dup 0< if
-define({DUP_0LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DUP_0LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_0LT_IF},{dup_0lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_0LT_IF},{dnl
+__{}define({__INFO},{dup_0lt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, H          ; 2:8       dup 0< if
-    jp    z, else{}IF_COUNT    ; 3:10      dup 0< if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      dup 0< if}){}dnl
 dnl
 dnl
 dnl 0>= if
 dnl ( x1 -- )
-define({_0GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_0GE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_0GE_IF},{0ge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0GE_IF},{dnl
+__{}define({__INFO},{0ge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, H          ; 2:8       0>= if
     ex   DE, HL         ; 1:4       0>= if
     pop  DE             ; 1:10      0>= if
-    jp   nz, else{}IF_COUNT    ; 3:10      0>= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      0>= if}){}dnl
 dnl
 dnl
 dnl ( x1 -- x1 )
 dnl dup 0>= if
-define({DUP_0GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DUP_0GE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_0GE_IF},{dup_0ge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_0GE_IF},{dnl
+__{}define({__INFO},{dup_0ge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, H          ; 2:8       dup 0>= if
-    jp   nz, else{}IF_COUNT    ; 3:10      dup 0>= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      dup 0>= if}){}dnl
 dnl
 dnl
 dnl ( x1 x2 -- x1 x2 )
 dnl 2dup D0= if
-define({_2DUP_D0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_D0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_IF},{2dup_d0eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0EQ_IF},{dnl
+__{}define({__INFO},{2dup_d0eq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       2dup D0= if
     or    L             ; 1:4       2dup D0= if
     or    D             ; 1:4       2dup D0= if
     or    E             ; 1:4       2dup D0= if
-    jp   nz, else{}IF_COUNT    ; 3:10      2dup D0= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      2dup D0= if}){}dnl
 dnl
 dnl
 dnl -------- signed ---------
@@ -193,6 +295,12 @@ dnl
 dnl
 dnl # dup const = if
 define({DUP_PUSH_EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_IF},{dup_push_eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_EQ_IF},{dnl
+__{}define({__INFO},{dup_push_eq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -201,8 +309,8 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
-__{}__{}define({_TMP_INFO},{dup $1 = if})dnl
-__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL})dnl
+__{}__{}define({_TMP_INFO},{dup $1 = if}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,else{}IF_COUNT,0)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
@@ -211,6 +319,12 @@ dnl
 dnl
 dnl # dup const <> if
 define({DUP_PUSH_NE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_IF},{dup_push_ne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_NE_IF},{dnl
+__{}define({__INFO},{dup_push_ne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -219,8 +333,8 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
-__{}__{}define({_TMP_INFO},{dup $1 <> if})dnl
-__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL})dnl
+__{}__{}define({_TMP_INFO},{dup $1 <> if}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      _TMP_INFO})}){}dnl
@@ -229,6 +343,12 @@ dnl
 dnl
 dnl dup const < if
 define({DUP_PUSH_LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LT_IF},{dup_push_lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_LT_IF},{dnl
+__{}define({__INFO},{dup_push_lt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -265,12 +385,18 @@ __{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 -->
 __{}__{}    sub   low format({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})})dnl
+__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})}){}dnl
 dnl
 dnl
 dnl
 dnl dup const >= if
 define({DUP_PUSH_GE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GE_IF},{dup_push_ge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_GE_IF},{dnl
+__{}define({__INFO},{dup_push_ge_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -307,11 +433,17 @@ __{}__{}    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 
 __{}__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})})dnl
+__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})}){}dnl
 dnl
 dnl
 dnl dup const <= if
 define({DUP_PUSH_LE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LE_IF},{dup_push_le_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_LE_IF},{dnl
+__{}define({__INFO},{dup_push_le_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -348,11 +480,17 @@ __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low
 __{}__{}    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})})dnl
+__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})}){}dnl
 dnl
 dnl
 dnl dup const > if
 define({DUP_PUSH_GT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GT_IF},{dup_push_gt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_GT_IF},{dnl
+__{}define({__INFO},{dup_push_gt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -389,12 +527,18 @@ __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low
 __{}__{}    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})})dnl
+__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})}){}dnl
 dnl
 dnl -------- unsigned ---------
 dnl
 dnl dup unum u= if
 define({DUP_PUSH_UEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UEQ_IF},{dup_push_ueq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UEQ_IF},{dnl
+__{}define({__INFO},{dup_push_ueq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -526,11 +670,17 @@ __{}__{}    xor   L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if})})dnl
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if})}){}dnl
 dnl
 dnl
 dnl dup unum u<> if
 define({DUP_PUSH_UNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UNE_IF},{dup_push_une_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UNE_IF},{dnl
+__{}define({__INFO},{dup_push_une_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -646,11 +796,17 @@ __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if})})dnl
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if})}){}dnl
 dnl
 dnl
 dnl dup 123 u< if
 define({DUP_PUSH_ULT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULT_IF},{dup_push_ult_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_ULT_IF},{dnl
+__{}define({__INFO},{dup_push_ult_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -670,11 +826,17 @@ __{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> ca
 __{}    sub   low format({%-10s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if})})dnl
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if})}){}dnl
 dnl
 dnl
 dnl dup 123 u>= if
 define({DUP_PUSH_UGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UGE_IF},{dup_push_uge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UGE_IF},{dnl
+__{}define({__INFO},{dup_push_uge_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -694,11 +856,17 @@ __{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 -->
 __{}    sub   low format({%-10s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if})})dnl
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if})}){}dnl
 dnl
 dnl
 dnl dup 123 u<= if
 define({DUP_PUSH_ULE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULE_IF},{dup_push_ule_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_ULE_IF},{dnl
+__{}define({__INFO},{dup_push_ule_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -710,11 +878,17 @@ __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low for
 __{}    sub   L             ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u<= if})dnl
+__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u<= if}){}dnl
 dnl
 dnl
 dnl dup 123 u> if
 define({DUP_PUSH_UGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UGT_IF},{dup_push_ugt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UGT_IF},{dnl
+__{}define({__INFO},{dup_push_ugt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -726,86 +900,140 @@ __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low for
 __{}    sub   L             ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u> if})dnl
+__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u> if}){}dnl
 dnl
 dnl
 dnl
 dnl ------ 2dup ucond if ---------
 dnl
-define({_2DUP_UEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_UEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_UEQ_IF},{2dup_ueq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_UEQ_IF},{dnl
+__{}define({__INFO},{2dup_ueq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup u= if
     sub   L             ; 1:4       2dup u= if
     jp   nz, else{}IF_COUNT    ; 3:10      2dup u= if
     ld    A, D          ; 1:4       2dup u= if
     sub   H             ; 1:4       2dup u= if
-    jp   nz, else{}IF_COUNT    ; 3:10      2dup u= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      2dup u= if}){}dnl
 dnl
 dnl
-define({_2DUP_UNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_UNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_UNE_IF},{2dup_une_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_UNE_IF},{dnl
+__{}define({__INFO},{2dup_une_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup u<> if
     sub   L             ; 1:4       2dup u<> if
     jr   nz, $+7        ; 2:7/12    2dup u<> if
     ld    A, D          ; 1:4       2dup u<> if
     sbc   A, H          ; 1:4       2dup u<> if
-    jp    z, else{}IF_COUNT    ; 3:10      2dup u<> if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      2dup u<> if}){}dnl
 dnl
 dnl
-define({_2DUP_ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_ULT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_ULT_IF},{2dup_ult_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_ULT_IF},{dnl
+__{}define({__INFO},{2dup_ult_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
-    jp   nc, else{}IF_COUNT    ; 3:10      2dup u< if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      2dup u< if}){}dnl
 dnl
 dnl
-define({_2DUP_UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_UGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_UGE_IF},{2dup_uge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_UGE_IF},{dnl
+__{}define({__INFO},{2dup_uge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
-    jp    c, else{}IF_COUNT    ; 3:10      2dup u>= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      2dup u>= if}){}dnl
 dnl
 dnl
-define({_2DUP_ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_ULE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_ULE_IF},{2dup_ule_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_ULE_IF},{dnl
+__{}define({__INFO},{2dup_ule_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sub   E             ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     ld    A, H          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sbc   A, D          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
-    jp    c, else{}IF_COUNT    ; 3:10      2dup u<= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      2dup u<= if}){}dnl
 dnl
 dnl
-define({_2DUP_UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_UGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_UGT_IF},{2dup_ugt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_UGT_IF},{dnl
+__{}define({__INFO},{2dup_ugt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     ld    A, H          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     sbc   A, D          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
-    jp   nc, else{}IF_COUNT    ; 3:10      2dup u> if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      2dup u> if}){}dnl
 dnl
 dnl
 dnl ------ 2dup scond if ---------
 dnl
 dnl 2dup = if
-define({_2DUP_EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_EQ_IF},{2dup_eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_EQ_IF},{dnl
+__{}define({__INFO},{2dup_eq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup = if
     sub   L             ; 1:4       2dup = if
     jp   nz, else{}IF_COUNT    ; 3:10      2dup = if
     ld    A, D          ; 1:4       2dup = if
     sub   H             ; 1:4       2dup = if
-    jp   nz, else{}IF_COUNT    ; 3:10      2dup = if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      2dup = if}){}dnl
 dnl
 dnl
 dnl 2dup <> if
-define({_2DUP_NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_NE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_NE_IF},{2dup_ne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_NE_IF},{dnl
+__{}define({__INFO},{2dup_ne_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup <> if
     sub   L             ; 1:4       2dup <> if
     jr   nz, $+7        ; 2:7/12    2dup <> if
     ld    A, D          ; 1:4       2dup <> if
     sub   H             ; 1:4       2dup <> if
-    jp    z, else{}IF_COUNT    ; 3:10      2dup <> if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      2dup <> if}){}dnl
 dnl
 dnl
 dnl 2dup < if
-define({_2DUP_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_LT_IF},{2dup_lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_LT_IF},{dnl
+__{}define({__INFO},{2dup_lt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
@@ -813,11 +1041,17 @@ define({_2DUP_LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF
     rra                 ; 1:4       2dup < if
     xor   D             ; 1:4       2dup < if
     xor   H             ; 1:4       2dup < if
-    jp    p, else{}IF_COUNT    ; 3:10      2dup < if})dnl
+    jp    p, else{}IF_COUNT    ; 3:10      2dup < if}){}dnl
 dnl
 dnl
 dnl 2dup >= if
-define({_2DUP_GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_GE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_GE_IF},{2dup_ge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_GE_IF},{dnl
+__{}define({__INFO},{2dup_ge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       2dup >= if    DE>=HL --> DE-HL>=0 --> not carry if true
@@ -825,11 +1059,17 @@ define({_2DUP_GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF
     rra                 ; 1:4       2dup >= if
     xor   D             ; 1:4       2dup >= if
     xor   H             ; 1:4       2dup >= if
-    jp    m, else{}IF_COUNT    ; 3:10      2dup >= if})dnl
+    jp    m, else{}IF_COUNT    ; 3:10      2dup >= if}){}dnl
 dnl
 dnl
 dnl 2dup <= if
-define({_2DUP_LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_LE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_LE_IF},{2dup_le_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_LE_IF},{dnl
+__{}define({__INFO},{2dup_le_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
     sub   E             ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
     ld    A, H          ; 1:4       2dup <= if    DE<=HL --> HL-DE>=0 --> not carry if true
@@ -837,11 +1077,17 @@ define({_2DUP_LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF
     rra                 ; 1:4       2dup <= if
     xor   D             ; 1:4       2dup <= if
     xor   H             ; 1:4       2dup <= if
-    jp    m, else{}IF_COUNT    ; 3:10      2dup <= if})dnl
+    jp    m, else{}IF_COUNT    ; 3:10      2dup <= if}){}dnl
 dnl
 dnl
 dnl 2dup > if
-define({_2DUP_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({_2DUP_GT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_GT_IF},{2dup_gt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_GT_IF},{dnl
+__{}define({__INFO},{2dup_gt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
     sub   E             ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       2dup > if    DE>HL --> HL-DE<0 --> carry if true
@@ -849,89 +1095,143 @@ define({_2DUP_GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF
     rra                 ; 1:4       2dup > if
     xor   D             ; 1:4       2dup > if
     xor   H             ; 1:4       2dup > if
-    jp    p, else{}IF_COUNT    ; 3:10      2dup > if})dnl
+    jp    p, else{}IF_COUNT    ; 3:10      2dup > if}){}dnl
 dnl
 dnl
 dnl ------ ucond if ---------
 dnl
-define({UEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({UEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_UEQ_IF},{ueq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UEQ_IF},{dnl
+__{}define({__INFO},{ueq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     or    A             ; 1:4       u= if
     sbc  HL, DE         ; 2:15      u= if
     pop  HL             ; 1:10      u= if
     pop  DE             ; 1:10      u= if
-    jp   nz, else{}IF_COUNT    ; 3:10      u= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      u= if}){}dnl
 dnl
 dnl
-define({UNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({UNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_UNE_IF},{une_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UNE_IF},{dnl
+__{}define({__INFO},{une_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     or    A             ; 1:4       u<> if
     sbc  HL, DE         ; 2:15      u<> if
     pop  HL             ; 1:10      u<> if
     pop  DE             ; 1:10      u<> if
-    jp    z, else{}IF_COUNT    ; 3:10      u<> if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      u<> if}){}dnl
 dnl
 dnl
-define({ULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({ULT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_ULT_IF},{ult_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ULT_IF},{dnl
+__{}define({__INFO},{ult_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
     pop  HL             ; 1:10      u< if
     pop  DE             ; 1:10      u< if
-    jp   nc, else{}IF_COUNT    ; 3:10      u< if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      u< if}){}dnl
 dnl
 dnl
-define({UGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({UGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_UGE_IF},{uge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UGE_IF},{dnl
+__{}define({__INFO},{uge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= if
     pop  DE             ; 1:10      u>= if
-    jp    c, else{}IF_COUNT    ; 3:10      u>= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      u>= if}){}dnl
 dnl
 dnl
-define({ULE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({ULE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_ULE_IF},{ule_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ULE_IF},{dnl
+__{}define({__INFO},{ule_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sub   E             ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     ld    A, H          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sbc   A, D          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     pop  HL             ; 1:10      u<= if
     pop  DE             ; 1:10      u<= if
-    jp    c, else{}IF_COUNT    ; 3:10      u<= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      u<= if}){}dnl
 dnl
 dnl
-define({UGT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({UGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_UGT_IF},{ugt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UGT_IF},{dnl
+__{}define({__INFO},{ugt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
     ld    A, H          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
     sbc   A, D          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
     pop  HL             ; 1:10      u> if
     pop  DE             ; 1:10      u> if
-    jp   nc, else{}IF_COUNT    ; 3:10      u> if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      u> if}){}dnl
 dnl
 dnl
 dnl ------ scond if ---------
 dnl
 dnl = if
-define({EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_EQ_IF},{eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_EQ_IF},{dnl
+__{}define({__INFO},{eq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     or    A             ; 1:4       = if
     sbc  HL, DE         ; 2:15      = if
     pop  HL             ; 1:10      = if
     pop  DE             ; 1:10      = if
-    jp   nz, else{}IF_COUNT    ; 3:10      = if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      = if}){}dnl
 dnl
 dnl
 dnl <> if
-define({NE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({NE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_NE_IF},{ne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NE_IF},{dnl
+__{}define({__INFO},{ne_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     or    A             ; 1:4       <> if
     sbc  HL, DE         ; 2:15      <> if
     pop  HL             ; 1:10      <> if
     pop  DE             ; 1:10      <> if
-    jp    z, else{}IF_COUNT    ; 3:10      <> if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      <> if}){}dnl
 dnl
 dnl
 dnl < if
-define({LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_LT_IF},{lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LT_IF},{dnl
+__{}define({__INFO},{lt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
     sub   L             ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       < if    DE<HL --> DE-HL<0 --> carry if true
@@ -941,11 +1241,17 @@ define({LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
     xor   D             ; 1:4       < if
     pop  HL             ; 1:10      < if
     pop  DE             ; 1:10      < if
-    jp    p, else{}IF_COUNT    ; 3:10      < if})dnl
+    jp    p, else{}IF_COUNT    ; 3:10      < if}){}dnl
 dnl
 dnl
 dnl >= if
-define({GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({GE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_GE_IF},{ge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_GE_IF},{dnl
+__{}define({__INFO},{ge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sub   L             ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       >= if    DE>=HL --> DE-HL>=0 --> not carry if true
@@ -955,11 +1261,17 @@ define({GE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
     xor   D             ; 1:4       >= if
     pop  HL             ; 1:10      >= if
     pop  DE             ; 1:10      >= if
-    jp    m, else{}IF_COUNT    ; 3:10      >= if})dnl
+    jp    m, else{}IF_COUNT    ; 3:10      >= if}){}dnl
 dnl
 dnl
 dnl <= if
-define({LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({LE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_LE_IF},{le_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LE_IF},{dnl
+__{}define({__INFO},{le_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sub   E             ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
     ld    A, H          ; 1:4       <= if    DE<=HL --> 0<=HL-DE --> not carry if true
@@ -969,11 +1281,17 @@ define({LE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
     xor   D             ; 1:4       <= if
     pop  HL             ; 1:10      <= if
     pop  DE             ; 1:10      <= if
-    jp    m, else{}IF_COUNT    ; 3:10      <= if})dnl
+    jp    m, else{}IF_COUNT    ; 3:10      <= if}){}dnl
 dnl
 dnl
 dnl > if
-define({GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({GT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_GT_IF},{gt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_GT_IF},{dnl
+__{}define({__INFO},{gt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, L          ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
     sub   E             ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
     ld    A, H          ; 1:4       > if    DE>HL --> 0>HL-DE --> carry if true
@@ -983,13 +1301,19 @@ define({GT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT
     xor   D             ; 1:4       > if
     pop  HL             ; 1:10      > if
     pop  DE             ; 1:10      > if
-    jp    p, else{}IF_COUNT    ; 3:10      > if})dnl
+    jp    p, else{}IF_COUNT    ; 3:10      > if}){}dnl
 dnl
 dnl
 dnl ------ push scond if ---------
 dnl
 dnl num = if
 define({PUSH_EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ_IF},{push_eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_EQ_IF},{dnl
+__{}define({__INFO},{push_eq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1129,11 +1453,17 @@ __{}__{}    or    A             ; 1:4       $1 = if
 __{}__{}    sbc  HL, BC         ; 2:15      $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if})})dnl
+__{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if})}){}dnl
 dnl
 dnl
 dnl num <> if
 define({PUSH_NE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NE_IF},{push_ne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_NE_IF},{dnl
+__{}define({__INFO},{push_ne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1295,7 +1625,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}    xor  high format({%-10s},$1); 2:7       $1 <> if
-__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})})dnl
+__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})}){}dnl
 dnl
 dnl
 dnl
@@ -1306,6 +1636,12 @@ dnl
 dnl
 dnl dup char = if
 define({DUP_PUSH_CEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ_IF},{dup_push_ceq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CEQ_IF},{dnl
+__{}define({__INFO},{dup_push_ceq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1316,12 +1652,18 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      dup $1 = if
 __{}    xor   L             ; 1:4       dup $1 = if
 __{}    or    H             ; 1:4       dup $1 = if
-__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if})dnl
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if}){}dnl
 dnl
 dnl
 dnl
 dnl dup char <> if
 define({DUP_PUSH_CNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CNE_IF},{dup_push_cne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CNE_IF},{dnl
+__{}define({__INFO},{dup_push_cne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1332,7 +1674,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      dup $1 <> if
 __{}    xor   L             ; 1:4       dup $1 <> if
 __{}    or    H             ; 1:4       dup $1 <> if
-__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if})dnl
+__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if}){}dnl
 dnl
 dnl
 dnl ---------------------------------------------------------------------------
@@ -1343,14 +1685,20 @@ dnl
 dnl 0. D= if
 dnl D0= if
 dnl ( d -- )
-define({D0EQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({D0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_D0EQ_IF},{d0eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_D0EQ_IF},{dnl
+__{}define({__INFO},{d0eq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       D0= if   ( d -- )
     or    L             ; 1:4       D0= if
     or    D             ; 1:4       D0= if
     or    E             ; 1:4       D0= if
     pop  HL             ; 1:10      D0= if
     pop  DE             ; 1:10      D0= if
-    jp   nz, else{}IF_COUNT    ; 3:10      D0= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      D0= if}){}dnl
 dnl
 dnl
 dnl
@@ -1358,11 +1706,17 @@ dnl
 dnl 0. D<  if
 dnl D0< if
 dnl ( d -- )
-define({D0LT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({D0LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_D0LT_IF},{d0lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_D0LT_IF},{dnl
+__{}define({__INFO},{d0lt_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       D0< if   ( d -- )
     pop  HL             ; 1:10      D0< if
     pop  DE             ; 1:10      D0< if
-    jp    z, else{}IF_COUNT    ; 3:10      D0< if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      D0< if}){}dnl
 dnl
 dnl
 dnl
@@ -1373,7 +1727,13 @@ dnl
 dnl
 dnl D= if
 dnl ( d d -- )
-define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DEQ_IF},{deq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DEQ_IF},{dnl
+__{}define({__INFO},{deq_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
                        ;[14:91]     D= if   ( d2 d1 -- )
     pop  BC             ; 1:10      D= if   lo_2
     or    A             ; 1:4       D= if
@@ -1383,13 +1743,19 @@ define({DEQ_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     sbc  HL, DE         ; 2:15      D= if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
     pop  HL             ; 1:10      D= if
     pop  DE             ; 1:10      D= if
-    jp   nz, else{}IF_COUNT    ; 3:10      D= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      D= if}){}dnl
 dnl
 dnl
 dnl
 dnl D<> if
 dnl ( d d -- )
-define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DNE_IF},{dne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DNE_IF},{dnl
+__{}define({__INFO},{dne_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
                        ;[14:91]     D<> if   ( d2 d1 -- )
     pop  BC             ; 1:10      D<> if   lo_2
     or    A             ; 1:4       D<> if
@@ -1399,13 +1765,19 @@ define({DNE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUN
     sbc  HL, DE         ; 2:15      D<> if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
     pop  HL             ; 1:10      D<> if
     pop  DE             ; 1:10      D<> if
-    jp    z, else{}IF_COUNT    ; 3:10      D<> if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      D<> if}){}dnl
 dnl
 dnl
 dnl
 dnl D< if
 dnl ( d d -- )
 define({DLT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLT_IF},{dlt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLT_IF},{dnl
+__{}define({__INFO},{dlt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1441,6 +1813,12 @@ dnl
 dnl D>= if
 dnl ( d d -- )
 define({DGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DGE_IF},{dge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DGE_IF},{dnl
+__{}define({__INFO},{dge_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1476,6 +1854,12 @@ dnl
 dnl D<= if
 dnl ( d d -- )
 define({DLE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLE_IF},{dle_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLE_IF},{dnl
+__{}define({__INFO},{dle_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1527,6 +1911,12 @@ dnl
 dnl D> if
 dnl ( d d -- )
 define({DGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DGT_IF},{dgt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DGT_IF},{dnl
+__{}define({__INFO},{dgt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1581,19 +1971,37 @@ dnl
 dnl
 dnl Du= if
 dnl ( ud ud -- )
-define({DUEQ_IF},{DEQ_IF}){}dnl
+define({DUEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUEQ_IF},{dueq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUEQ_IF},{dnl
+__{}define({__INFO},{dueq_if}){}dnl
+DEQ_IF}){}dnl
 dnl
 dnl
 dnl
 dnl Du<> if
 dnl ( ud ud -- )
-define({DUNE_IF},{DNE_IF}){}dnl
+define({DUNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUNE_IF},{dune_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUNE_IF},{dnl
+__{}define({__INFO},{dune_if}){}dnl
+DNE_IF}){}dnl
 dnl
 dnl
 dnl
 dnl Du< if
 dnl ( ud ud -- )
-define({DULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DULT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DULT_IF},{dult_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DULT_IF},{dnl
+__{}define({__INFO},{dult_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
                        ;[13:81]     Du< if   ( ud2 ud1 -- )
     pop  BC             ; 1:10      Du< if   lo_2
     ld    A, C          ; 1:4       Du< if   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -1604,13 +2012,19 @@ define({DULT_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     sbc  HL, DE         ; 2:15      Du< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     pop  HL             ; 1:10      Du< if
     pop  DE             ; 1:10      Du< if
-    jp   nc, else{}IF_COUNT    ; 3:10      Du< if})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      Du< if}){}dnl
 dnl
 dnl
 dnl
 dnl Du>= if
 dnl ( ud ud -- )
-define({DUGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
+define({DUGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUGE_IF},{duge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUGE_IF},{dnl
+__{}define({__INFO},{duge_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
                        ;[13:81]     Du>= if   ( ud2 ud1 -- )
     pop  BC             ; 1:10      Du>= if   lo_2
     ld    A, C          ; 1:4       Du>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
@@ -1621,13 +2035,19 @@ define({DUGE_IF},{define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COU
     sbc  HL, DE         ; 2:15      Du>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     pop  HL             ; 1:10      Du>= if
     pop  DE             ; 1:10      Du>= if
-    jp    c, else{}IF_COUNT    ; 3:10      Du>= if})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      Du>= if}){}dnl
 dnl
 dnl
 dnl
 dnl Du<= if
 dnl ( ud ud -- )
 define({DULE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DULE_IF},{dule_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DULE_IF},{dnl
+__{}define({__INFO},{dule_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1656,13 +2076,19 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     sbc  HL, BC         ; 2:15      Du<= if   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     pop  HL             ; 1:10      Du<= if
     pop  DE             ; 1:10      Du<= if
-    jp    c, else{}IF_COUNT    ; 3:10      Du<= if})})dnl
+    jp    c, else{}IF_COUNT    ; 3:10      Du<= if})}){}dnl
 dnl
 dnl
 dnl
 dnl Du> if
 dnl ( ud ud -- )
 define({DUGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUGT_IF},{dugt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUGT_IF},{dnl
+__{}define({__INFO},{dugt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1691,7 +2117,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     sbc  HL, BC         ; 2:15      Du> if   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> carry if true
     pop  HL             ; 1:10      Du> if
     pop  DE             ; 1:10      Du> if
-    jp   nc, else{}IF_COUNT    ; 3:10      Du> if})})dnl
+    jp   nc, else{}IF_COUNT    ; 3:10      Du> if})}){}dnl
 dnl
 dnl
 dnl
@@ -1700,6 +2126,12 @@ dnl
 dnl
 dnl 4dup D= if
 define({_4DUP_DEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DEQ_IF},{4dup_deq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DEQ_IF},{dnl
+__{}define({__INFO},{4dup_deq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1723,11 +2155,17 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     add  HL, DE         ; 1:11      4dup D= if   l1    . h1 h2  cp h2-h1
     ex  (SP),HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= if   h2 l2 . h1 l1
-    jp   nz, else{}IF_COUNT    ; 3:10      4dup D= if   h2 l2 . h1 l1})})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      4dup D= if   h2 l2 . h1 l1})}){}dnl
 dnl
 dnl
 dnl 4dup D<> if
 define({_4DUP_DNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DNE_IF},{4dup_dne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DNE_IF},{dnl
+__{}define({__INFO},{4dup_dne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1795,6 +2233,12 @@ dnl
 dnl
 dnl 4dup D< if
 define({_4DUP_DLT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DLT_IF},{4dup_dlt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DLT_IF},{dnl
+__{}define({__INFO},{4dup_dlt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1815,6 +2259,12 @@ dnl
 dnl
 dnl 4dup D>= if
 define({_4DUP_DGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DGE_IF},{4dup_dge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DGE_IF},{dnl
+__{}define({__INFO},{4dup_dge_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1835,6 +2285,12 @@ dnl
 dnl
 dnl 4dup D<= if
 define({_4DUP_DLE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DLE_IF},{4dup_dle_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DLE_IF},{dnl
+__{}define({__INFO},{4dup_dle_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1855,6 +2311,12 @@ dnl
 dnl
 dnl 4dup D> if
 define({_4DUP_DGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DGT_IF},{4dup_dgt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DGT_IF},{dnl
+__{}define({__INFO},{4dup_dgt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1879,16 +2341,34 @@ dnl ----- 4dup unsigned_32_bit_cond if ( ud2 ud1 -- ud2 ud1 ) -----
 dnl
 dnl
 dnl 4dup Du= if
-define({_4DUP_DUEQ_IF},{_4DUP_DEQ_IF}){}dnl
+define({_4DUP_DUEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUEQ_IF},{4dup_dueq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUEQ_IF},{dnl
+__{}define({__INFO},{4dup_dueq_if}){}dnl
+_4DUP_DEQ_IF}){}dnl
 dnl
 dnl
 dnl 4dup Du<> if
-define({_4DUP_DUNE_IF},{_4DUP_DNE_IF}){}dnl
+define({_4DUP_DUNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUNE_IF},{4dup_dune_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUNE_IF},{dnl
+__{}define({__INFO},{4dup_dune_if}){}dnl
+_4DUP_DNE_IF}){}dnl
 dnl
 dnl
 dnl
 dnl 4dup Du< if
-define({_4DUP_DULT_IF},{define({IF_COUNT}, incr(IF_COUNT)){}dnl
+define({_4DUP_DULT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DULT_IF},{4dup_dult_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DULT_IF},{dnl
+__{}define({__INFO},{4dup_dult_if}){}dnl
+define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
@@ -1919,6 +2399,12 @@ dnl
 dnl
 dnl 4dup Du>= if
 define({_4DUP_DUGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUGE_IF},{4dup_duge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUGE_IF},{dnl
+__{}define({__INFO},{4dup_duge_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1950,6 +2436,12 @@ dnl
 dnl
 dnl 4dup Du<= if
 define({_4DUP_DULE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DULE_IF},{4dup_dule_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DULE_IF},{dnl
+__{}define({__INFO},{4dup_dule_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -1981,6 +2473,12 @@ dnl
 dnl
 dnl 4dup Du> if
 define({_4DUP_DUGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DUGT_IF},{4dup_dugt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4DUP_DUGT_IF},{dnl
+__{}define({__INFO},{4dup_dugt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -2021,6 +2519,12 @@ dnl 2dup 0. D= if
 dnl 2dup D0= if
 dnl ( d -- d )
 define({_2DUP_D0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_IF},{2dup_d0eq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0EQ_IF},{dnl
+__{}define({__INFO},{2dup_d0eq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
@@ -2037,6 +2541,12 @@ dnl 2dup 0. D<> if
 dnl 2dup D0<> if
 dnl ( d -- d )
 define({_2DUP_D0NE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0NE_IF},{2dup_d0ne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0NE_IF},{dnl
+__{}define({__INFO},{2dup_d0ne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
@@ -2053,11 +2563,17 @@ dnl 2dup 0. D< if
 dnl 2dup D0< if
 dnl ( d -- d )
 define({_2DUP_D0LT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0LT_IF},{2dup_d0lt_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0LT_IF},{dnl
+__{}define({__INFO},{2dup_d0lt_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       2dup D0< if
-    jp    z, else{}IF_COUNT    ; 3:10      2dup D0< if})dnl
+    jp    z, else{}IF_COUNT    ; 3:10      2dup D0< if}){}dnl
 dnl
 dnl
 dnl
@@ -2066,11 +2582,17 @@ dnl 2dup 0. D>= if
 dnl 2dup D0>= if
 dnl ( d -- d )
 define({_2DUP_D0GE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0GE_IF},{2dup_d0ge_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0GE_IF},{dnl
+__{}define({__INFO},{2dup_d0ge_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       2dup D0>= if
-    jp   nz, else{}IF_COUNT    ; 3:10      2dup D0>= if})dnl
+    jp   nz, else{}IF_COUNT    ; 3:10      2dup D0>= if}){}dnl
 dnl
 dnl
 dnl
@@ -2078,11 +2600,17 @@ dnl
 dnl 2dup D. D= if
 dnl ( d -- d )
 define({_2DUP_PUSHDOT_DEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DEQ_IF},{2dup_pushdot_deq_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DEQ_IF},{dnl
+__{}define({__INFO},{2dup_pushdot_deq_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
-__{}define({_TMP_INFO},{2dup $1 D= if})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) == DEHL})dnl
+__{}define({_TMP_INFO},{2dup $1 D= if}){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) == DEHL}){}dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -2121,11 +2649,17 @@ dnl
 dnl 2dup D. D<> if
 dnl ( d -- d )
 define({_2DUP_PUSHDOT_DNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DNE_IF},{2dup_pushdot_dne_if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DNE_IF},{dnl
+__{}define({__INFO},{2dup_pushdot_dne_if}){}dnl
+dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
-__{}define({_TMP_INFO},{2dup $1 D<> if})dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) <> DEHL})dnl
+__{}define({_TMP_INFO},{2dup $1 D<> if}){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) <> DEHL}){}dnl
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
