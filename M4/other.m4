@@ -140,3 +140,13 @@ define({USE_TESTING},{})
 dnl
 dnl
 dnl
+dnl # ( -- ? )
+dnl # inline asm
+define({__ASM},{dnl
+__{}__ADD_TOKEN({__TOKEN_ASM},{__asm},$@)}){}dnl
+dnl
+define({__ASM_TOKEN_ASM},{
+$@}){}dnl
+dnl
+dnl
+dnl

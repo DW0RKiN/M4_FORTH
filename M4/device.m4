@@ -838,7 +838,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
-__{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{{$*}})
 __{}    ld   BC, size{}__STRING_MATCH    ; 3:10      print     Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      print     Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
@@ -915,7 +915,7 @@ __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
 __{}    push DE             ; 1:11      string    ( -- addr size )
-__{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{{$*}})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      string    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   HL, size{}__STRING_MATCH    ; 3:10      string    Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
@@ -940,7 +940,7 @@ __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
 __{}    push DE             ; 1:11      string_z   ( -- addr )
-__{}    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{{$*}})
 __{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
 dnl
@@ -990,7 +990,7 @@ __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
 __{}    push DE             ; 1:11      string_i   ( -- addr )
-__{}    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*},{substr({$*},0,57)...})
+__{}    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{{$*}})
 __{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
 dnl
