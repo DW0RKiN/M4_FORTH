@@ -39,11 +39,6 @@ dnl # 0g      --> 0
 dnl # 0xa     --> 1
 dnl # 5       --> 1
 dnl # 25*3    --> 1
-
-
-yeap
-})
-define({xxxxxxx},{
 __{}ifelse(dnl
 __{}eval($#!=1),{1},{0},
 __{}{$1},{},{0},
@@ -53,8 +48,6 @@ __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading
 __{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
 __{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x
 __{}{dnl
-
-nah
 __{}__{}eval( __IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1}) ){}dnl
 })}){}dnl
 dnl
