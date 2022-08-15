@@ -825,7 +825,7 @@ dnl # .( string)
 dnl # ( -- )
 dnl # print string
 define({PRINT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRINT},{print},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT},{print},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PRINT},{dnl
@@ -837,8 +837,8 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
-__{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{{$*}})
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
+__{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   BC, size{}__STRING_MATCH    ; 3:10      print     Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      print     Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
@@ -852,7 +852,7 @@ dnl # .( string\x00)
 dnl # ( -- )
 dnl # print null-terminated string
 define({PRINT_Z},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRINT_Z},{print_z},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT_Z},{print_z},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PRINT_Z},{dnl
@@ -864,8 +864,8 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*})){}dnl
-__{}define({USE_PRINT_Z},{})
+__{}define({USE_PRINT_Z},{}){}dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z($*))
 __{}    ld   BC, string{}__STRING_MATCH  ; 3:10      print_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call PRINT_STRING_Z ; 3:17      print_z{}dnl
 })}){}dnl
@@ -877,7 +877,7 @@ dnl # .( strin\xE7)
 dnl # ( -- )
 dnl # print string ending with inverted most significant bit
 define({PRINT_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRINT_I},{print_i},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT_I},{print_i},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PRINT_I},{dnl
@@ -889,7 +889,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*})){}dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I($*)){}dnl
 __{}define({USE_PRINT_I},{})
 __{}    ld   BC, string{}__STRING_MATCH  ; 3:10      print_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call PRINT_STRING_I ; 3:17      print_i{}dnl
@@ -901,7 +901,7 @@ dnl # s" string"
 dnl # ( -- addr n )
 dnl # addr = address string, n = lenght(string)
 define({STRING},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING},{string},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING},{string},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING},{dnl
@@ -913,9 +913,9 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
 __{}    push DE             ; 1:11      string    ( -- addr size )
-__{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{{$*}})
+__{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      string    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   HL, size{}__STRING_MATCH    ; 3:10      string    Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
@@ -926,7 +926,7 @@ dnl # s" string\x00" drop
 dnl # ( -- addr )
 dnl # store null-terminated string
 define({STRING_Z},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_Z},{string_z},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_Z},{string_z},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_Z},{dnl
@@ -938,9 +938,9 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z($*))
 __{}    push DE             ; 1:11      string_z   ( -- addr )
-__{}    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{{$*}})
+__{}    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
 dnl
@@ -950,7 +950,7 @@ dnl # s" string\x00" 2drop
 dnl # ( -- )
 dnl # store null-terminated string
 define({STRING_Z_DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_Z_DROP},{string_z_drop},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_Z_DROP},{string_z_drop},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_Z_DROP},{dnl
@@ -962,7 +962,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z($*))
 __{}                        ;           string_z drop   ( -- )   {}dnl
 __{}ifelse(__STRING_LAST,__STRING_MATCH,{dnl
 __{}__{}Allocate null-terminated string{}__STRING_LAST},
@@ -976,7 +976,7 @@ dnl # s" strin\xE7" drop
 dnl # ( -- addr )
 dnl # store inverted_msb-terminated string
 define({STRING_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_I},{string_i},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_I},{string_i},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_I},{dnl
@@ -988,9 +988,9 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I($*))
 __{}    push DE             ; 1:11      string_i   ( -- addr )
-__{}    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{{$*}})
+__{}    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
 })})dnl
 dnl
@@ -999,7 +999,7 @@ dnl # s" strin\xE7" 2drop
 dnl # ( -- )
 dnl # store inverted_msb-terminated string
 define({STRING_I_DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_I_DROP},{string_i_drop},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_I_DROP},{string_i_drop},{{$@}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_I_DROP},{dnl
@@ -1011,7 +1011,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I($*))
 __{}                        ;           string_i drop   ( -- )   {}dnl
 __{}ifelse(__STRING_LAST,__STRING_MATCH,{dnl
 __{}__{}Allocate string{}__STRING_LAST ending with inverted most significant bit},
