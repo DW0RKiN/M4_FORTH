@@ -40,7 +40,7 @@ __{}    ld    A, format({%-11s},$1); 3:13      $1 and
 __{}    and   L             ; 1:4       $1 and
 __{}    ld    L, A          ; 1:4       $1 and},
 {dnl
-__{}define({_TMP_INFO},{$1 and}){}dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
 __{}__AND_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl

@@ -961,9 +961,9 @@ __{}  .error {$0}($@): Missing parameter!},
 eval($#!=3),{1},{
 __{}  .error {$0}($@): The wrong number of parameters in macro!},
 {
-__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}dnl
-__{}define({_TMP_INFO},$1{ }$2{ }$3{  push3(}$1{,}$2{,}$3{)}){}dnl
+__{}    push DE             ; 1:11      __COMPILE_INFO   ( -- $1 $2 $3 )
+__{}    push HL             ; 1:11      __COMPILE_INFO{}dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
 __{}__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
 __{}define({PUSH3_P1},__PRICE_16BIT){}dnl
 __{}__LD_REG16({HL},$3,{HL},$1){}dnl
@@ -994,19 +994,19 @@ __{}dnl # PUSH3_P1 PUSH3_P2 PUSH3_P3 PUSH3_P4 --> PUSH3_X
 __{}dnl ---- case PUSH3_X ----
 __{}ifelse(dnl
 __{}PUSH3_X,1,{__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16({HL},$3,{HL},$1)
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3){}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push HL             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
 __{}PUSH3_X,2,{__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16({DE},$2,{DE},$1)
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3){}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push DE             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
 __{}PUSH3_X,3,{__LD_REG16({DE},$2,{DE},$1,{HL},$3)
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push DE             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    ld   HL, format({%-11s},$3); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT},
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push DE             ; 1:11      __COMPILE_INFO
+__{}__{}    ld   HL, format({%-11s},$3); 3:10      __COMPILE_INFO{}__CODE_16BIT},
 __{}{__LD_REG16({HL},$3,{HL},$1,{DE},$2)
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    push HL             ; 1:11      $1 $2 $3  push3($1,$2,$3)
-__{}__{}    ld   DE, format({%-11s},$2); 3:10      $1 $2 $3  push3($1,$2,$3){}__CODE_16BIT}){}dnl
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push HL             ; 1:11      __COMPILE_INFO
+__{}__{}    ld   DE, format({%-11s},$2); 3:10      __COMPILE_INFO{}__CODE_16BIT}){}dnl
 })}){}dnl
 dnl
 dnl
