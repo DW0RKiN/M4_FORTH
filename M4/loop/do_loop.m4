@@ -334,12 +334,14 @@ dnl
 dnl # ( -- j )
 dnl # hodnota indexu vnejsi smycky
 define({J},{dnl
+ifelse($#,{0},{dnl
 __{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_J},{j_}LOOP_STACK,LOOP_STACK){}dnl
 __{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
-}){}dnl
+__{}__{}popdef({__TEMP})},
+__{}{
+__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_J},{dnl
 __{}define({__INFO},__COMPILE_INFO)
