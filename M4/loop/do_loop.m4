@@ -47,7 +47,8 @@ ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
 __{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl__{}__ADD_TOKEN({__TOKEN_DO_I8},{do},LOOP_COUNT)},
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
+__{}__ADD_TOKEN({__TOKEN_DO_I8},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
@@ -247,6 +248,62 @@ __{}define({__INFO},{?do_{}$1})
     jp    z, exit{}$1    ; 3:10      __INFO
 do{}$1:                  ;           __INFO}){}dnl
 dnl
+dnl
+define({TEST_IDEA_DO_I_LOOP},{
+                        ;[12:60]    do_101 i_101
+    ld    A, E          ; 1:4       do_101 i_101
+    ld  (stp_lo101), A  ; 3:13      do_101 i_101   lo stop
+    ld    A, D          ; 1:4       do_101 i_101
+    ld  (stp_hi101), A  ; 3:13      do_101 i_101   hi stop
+    pop  DE             ; 1:10      do_101 i_101
+do101:                  ;           do_101 i_101
+    ld  (idx101), HL    ; 3:16      do_101 i_101   save index
+
+                     ;[20:52/73/87] loop_101
+    push DE             ; 1:11      loop_101   ( -- i )
+    ex   DE, HL         ; 1:4       loop_101
+idx101 EQU $+1          ;           loop_101
+    ld   HL, 0x0000     ; 3:10      loop_101   idx always points to a 16-bit index
+    inc  HL             ; 1:6       loop_101   index++
+    ld    A, L          ; 1:4       loop_101   lo new index
+stp_lo101 EQU $+1       ;           loop_101
+    xor  0x00           ; 2:7       loop_101   lo stop
+    jp   nz, do101      ; 3:10      loop_101
+    ld    A, H          ; 1:4       loop_101   hi new index
+stp_hi101 EQU $+1       ;           loop_101
+    xor  0x00           ; 2:7       loop_101   hi stop
+    jp   nz, do101      ; 3:10      loop_101
+    ex   DE, HL         ; 1:4       loop_101
+    pop  DE             ; 1:10      loop_101
+leave101:               ;           loop_101
+exit101:                ;           loop_101
+                       ;[32:147]}){}dnl
+dnl
+dnl
+define({TEST_IDEA_SMALL_DO_I_LOOP},{
+                        ;[8:46]     do_101 i_101
+    ld  (stp101), DE    ; 4:20      do_101 i_101   stop
+    pop  DE             ; 1:10      do_101 i_101
+do101:                  ;           do_101 i_101
+    ld  (idx101), HL    ; 3:16      do_101 i_101   save index
+
+                        ;[18:81/95] loop_101
+    push DE             ; 1:11      loop_101   ( -- i )
+    ex   DE, HL         ; 1:4       loop_101
+idx101 EQU $+1          ;           loop_101
+    ld   HL, 0x0000     ; 3:10      loop_101   idx always points to a 16-bit index
+    inc  HL             ; 1:6       loop_101   index++
+stp101 EQU $+1          ;           loop_101
+    ld   BC, 0x0000     ; 3:10      loop_101   stop
+    or    A             ; 1:4       loop_101   lo stop
+    sbc  HL, BC         ; 2:15      loop_101
+    add  HL, BC         ; 1:11      loop_101
+    jp   nz, do101      ; 3:10      loop_101
+    ex   DE, HL         ; 1:4       loop_101
+    pop  DE             ; 1:10      loop_101
+leave101:               ;           loop_101
+exit101:                ;           loop_101
+                       ;[26:141]}){}dnl
 dnl
 dnl
 dnl # ( -- i )
