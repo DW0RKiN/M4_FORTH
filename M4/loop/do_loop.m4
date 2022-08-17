@@ -9,6 +9,8 @@ define({DO},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_DO},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -23,8 +25,10 @@ dnl # ( stop index -- ) r:( -- )
 define({QUESTIONDO},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
-__{}pushdef({LOOP_STACK}, LOOP_COUNT)},
-__{}__ADD_TOKEN({__TOKEN_QUESTIONDO},{questiondo},LOOP_COUNT){}dnl
+__{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
+__{}__ADD_TOKEN({__TOKEN_QUESTIONDO},{questiondo},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
@@ -42,16 +46,13 @@ define({DO_I8},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}__ADD_TOKEN({__TOKEN_DO_I8},{do},LOOP_COUNT)},
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl__{}__ADD_TOKEN({__TOKEN_DO_I8},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_DO_I8},{dnl
-__{}define({__INFO},{do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     ld    A, E          ; 1:4       __INFO
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
@@ -70,16 +71,14 @@ define({QDO_I8},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_QDO_I8},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_QDO_I8},{dnl
-__{}define({__INFO},{?do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{?do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO
@@ -101,16 +100,14 @@ define({DO_D8},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_DO_D8},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_DO_D8},{dnl
-__{}define({__INFO},{do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     dec  DE             ; 1:6       __INFO
     ld    A, E          ; 1:4       __INFO
@@ -130,16 +127,14 @@ define({QDO_D8},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_QDO_D8},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_QDO_D8},{dnl
-__{}define({__INFO},{?do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{?do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO
@@ -162,16 +157,14 @@ define({DO_I16},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_DO_I16},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_DO_I16},{dnl
-__{}define({__INFO},{do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     ld  (stp{}$1), DE    ; 4:20      __INFO
     pop  DE             ; 1:10      __INFO
@@ -187,16 +180,14 @@ define({QDO_I16},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_QDO_I16},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_QDO_I16},{dnl
-__{}define({__INFO},{do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{do_{}$1})
     ld  (stp{}$1), DE    ; 4:20      __INFO   ( stop index -- )
     dec  HL             ; 1:6       __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO   index
@@ -214,16 +205,14 @@ define({DO_D16},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_DO_D16},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_DO_D16},{dnl
-__{}define({__INFO},{do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     dec  DE             ; 1:6       __INFO   stop-1
     ld  (stp{}$1), DE    ; 4:20      __INFO
@@ -240,16 +229,14 @@ define({QDO_D16},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
+__{}pushdef({LEAVE_STACK},{jp   leave{}LOOP_STACK       ;           leave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{{{                    }};           unloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_QDO_D16},{do},LOOP_COUNT)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_QDO_D16},{dnl
-__{}define({__INFO},{?do_{}$1}){}dnl
-__{}pushdef({LEAVE_STACK},{
-__{}    jp   leave{}$1       ;           leave $1}){}dnl
-__{}pushdef({UNLOOP_STACK},{
-__{}                        ;           unloop $1})
+__{}define({__INFO},{?do_{}$1})
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO
@@ -263,68 +250,109 @@ dnl
 dnl
 dnl
 dnl # ( -- i )
-dnl # hodnota indexu vnitrni smycky
+dnl # hodnota indexu aktualni smycky
 define({I},{dnl
-__{}__ADD_TOKEN({__TOKEN_I},{i},LOOP_STACK){}dnl
+__{}__ADD_TOKEN({__TOKEN_I},{i_}LOOP_STACK,LOOP_STACK){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_I},{dnl
-__{}define({__INFO},{i_{}$1}){}dnl
-
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- i )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl # ( x -- i )
+dnl # hodnota indexu aktualni smycky
+define({DROP_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_I},{drop i_}LOOP_STACK,LOOP_STACK){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_I},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- i )  idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- j )
+dnl # hodnota indexu vnejsi smycky
+define({J},{dnl
+__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}popdef({LOOP_STACK}){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_J},{j_}LOOP_STACK,LOOP_STACK){}dnl
+__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
+__{}__{}popdef({__TEMP}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_J},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- j )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- j )
+dnl # hodnota indexu vnejsi smycky
+define({DROP_J},{dnl
+__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}popdef({LOOP_STACK}){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_DROP_J},{drop j_}LOOP_STACK,LOOP_STACK){}dnl
+__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
+__{}__{}popdef({__TEMP}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_J},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- j )  idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl # ( -- k )
+dnl # hodnota indexu druhe vnejsi smycky
+define({K},{dnl
+__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}popdef({LOOP_STACK}){}dnl
+__{}__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}__{}popdef({LOOP_STACK}){}dnl
+__{}__{}__{}__ADD_TOKEN({__TOKEN_K},{k_}LOOP_STACK,LOOP_STACK){}dnl
+__{}__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
+__{}__{}__{}popdef({__TEMP}){}dnl
+__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
+__{}__{}popdef({__TEMP}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_K},{dnl
+__{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
-dnl # ( -- j )
-dnl # hodnota indexu druhe vnitrni smycky
-define({J},{dnl
-__{}__ADD_TOKEN({__TOKEN_J},{j},
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}LOOP_STACK{}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP})){}dnl
-}){}dnl
 dnl
-define({__ASM_TOKEN_J},{dnl
-__{}define({__INFO},{j_{}$1}){}dnl
-
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ;{}dnl
-__{} 3:16      __INFO   idx always points to a 16-bit index}){}dnl
-dnl
-dnl
-dnl # ( -- k )
-dnl # hodnota indexu treti vnitrni smycky
-define({K},{dnl
-__{}__ADD_TOKEN({__TOKEN_K},{k},
+dnl # ( x -- k )
+dnl # hodnota indexu druhe vnejsi smycky
+define({DROP_K},{dnl
 __{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
 __{}__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
 __{}__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}__{}LOOP_STACK{}dnl
+__{}__{}__{}__ADD_TOKEN({__TOKEN_DROP_K},{drop k_}LOOP_STACK,LOOP_STACK){}dnl
 __{}__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
 __{}__{}__{}popdef({__TEMP}){}dnl
 __{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP})){}dnl
+__{}__{}popdef({__TEMP}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_K},{dnl
-__{}define({__INFO},{k_{}$1}){}dnl
-
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ;{}dnl
-__{} 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+define({__ASM_TOKEN_DROP_K},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- k )  idx always points to a 16-bit index}){}dnl
 dnl
 dnl
 dnl # ( -- )
 dnl # 5 0 do i .     loop --> 0 1 2 3 4
 dnl # 5 0 do i . +1 +loop --> 0 1 2 3 4
 define({LOOP_I8},{dnl
-__{}__ADD_TOKEN({__TOKEN_LOOP_I8},{loop},LOOP_STACK){}dnl
+__{}__ADD_TOKEN({__TOKEN_LOOP_I8},{loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -333,7 +361,7 @@ dnl
 define({__ASM_TOKEN_LOOP_I8},{dnl
 __{}define({__INFO},{loop_{}$1}){}dnl
 
-idx{}$1 EQU $+1          ;[20:78/57] __COMPILE_INFO{}_{}$1
+idx{}$1 EQU $+1          ;[20:78/57] __COMPILE_INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     inc  BC             ; 1:6       __INFO   index++
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
@@ -353,7 +381,7 @@ dnl
 dnl # ( -- )
 dnl # 0 5 do i . -1 +loop --> 5 4 3 2 1 0
 define({LOOP_D8},{dnl
-__{}__ADD_TOKEN({__TOKEN_LOOP_D8},{-1 +loop},LOOP_STACK){}dnl
+__{}__ADD_TOKEN({__TOKEN_LOOP_D8},{-1 +loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -362,7 +390,7 @@ dnl
 define({__ASM_TOKEN_LOOP_D8},{dnl
 __{}define({__INFO},{-1 +loop_{}$1}){}dnl
 
-idx{}$1 EQU $+1          ;[20:78/57] __COMPILE_INFO{}_{}$1
+idx{}$1 EQU $+1          ;[20:78/57] __COMPILE_INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     dec  BC             ; 1:6       __INFO   index--
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
@@ -382,7 +410,7 @@ dnl # ( -- )
 dnl # 5 0 do i .     loop --> 0 1 2 3 4
 dnl # 5 0 do i . +1 +loop --> 0 1 2 3 4
 define({LOOP_I16},{dnl
-__{}__ADD_TOKEN({__TOKEN_LOOP_I16},{loop},LOOP_STACK){}dnl
+__{}__ADD_TOKEN({__TOKEN_LOOP_I16},{loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
@@ -391,7 +419,7 @@ dnl
 define({__ASM_TOKEN_LOOP_I16},{dnl
 __{}define({__INFO},{loop_{}$1}){}dnl
 
-loop{}$1:                ;[18:92]    __COMPILE_INFO{}_{}$1
+loop{}$1:                ;[18:92]    __COMPILE_INFO
     push HL             ; 1:11      __INFO
 idx{}$1 EQU $+1          ;           __INFO
     ld   HL, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
@@ -412,16 +440,15 @@ dnl
 dnl # ( -- )
 dnl # 0 5 do i . -1 +loop --> 5 4 3 2 1 0
 define({LOOP_D16},{dnl
-__{}__ADD_TOKEN({__TOKEN_LOOP_D16},{loop},LOOP_STACK){}dnl
+__{}__ADD_TOKEN({__TOKEN_LOOP_D16},{loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LOOP_D16},{dnl
-__{}define({__INFO},{-1 +loop_{}$1}){}dnl
-
-loop{}$1:                ;[18:92]    __COMPILE_INFO{}_{}$1
+__{}define({__INFO},{-1 +loop_{}$1})
+loop{}$1:                ;[18:92]    __COMPILE_INFO
     push HL             ; 1:11      __INFO
 idx{}$1 EQU $+1          ;           __INFO
     ld   HL, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
@@ -443,16 +470,15 @@ dnl # ( -- )
 dnl # 5 2 do i .     loop --> 2 3 4
 dnl # 5 2 do i . +1 +loop --> 2 3 4
 define({LOOP},{dnl
-__{}__ADD_TOKEN({__TOKEN_LOOP},{loop},LOOP_STACK){}dnl
+__{}__ADD_TOKEN({__TOKEN_LOOP},{loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LEAVE_STACK}){}dnl
 __{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LOOP},{dnl
-__{}define({__INFO},{loop_{}$1}){}dnl
-
-idx{}$1 EQU $+1          ;[20:78/61] __COMPILE_INFO{}_{}$1
+__{}define({__INFO},{loop_{}$1})
+idx{}$1 EQU $+1          ;[20:78/61] __COMPILE_INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     ld    A, C          ; 1:4       __INFO
 stp_lo{}$1 EQU $+1       ;           __INFO
