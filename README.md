@@ -1,3 +1,6 @@
+⚠️WARNING⚠️Right now the loops are being rewritten to a tokenized version, so they are broken.
+⚠️WARNING⚠️If you want a working version, download something from the history that does not contain "__ASM_TOKEN"
+
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
 A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup number condition if`.
