@@ -8,17 +8,17 @@ define({RDO},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{exx                 ; 1:4       rleave LOOP_STACK
-__{}    inc  L              ; 1:4       rleave LOOP_STACK
-__{}    inc  HL             ; 1:6       rleave LOOP_STACK
-__{}    inc  L              ; 1:4       rleave LOOP_STACK
-__{}    jp   leave{}LOOP_STACK       ;           rleave LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{exx                 ; 1:4       unrloop LOOP_STACK
-__{}    inc  L              ; 1:4       unrloop LOOP_STACK
-__{}    inc  HL             ; 1:6       unrloop LOOP_STACK
-__{}    inc  L              ; 1:4       unrloop LOOP_STACK
-__{}    inc  HL             ; 1:6       unrloop LOOP_STACK
-__{}    exx                 ; 1:4       unrloop LOOP_STACK}){}dnl
+__{}pushdef({LEAVE_STACK},{exx                 ; 1:4       rleave_{}LOOP_STACK
+__{}    inc  L              ; 1:4       rleave_{}LOOP_STACK
+__{}    inc  HL             ; 1:6       rleave_{}LOOP_STACK
+__{}    inc  L              ; 1:4       rleave_{}LOOP_STACK
+__{}    jp   leave{}LOOP_STACK       ;           rleave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{exx                 ; 1:4       unrloop_{}LOOP_STACK
+__{}    inc  L              ; 1:4       unrloop_{}LOOP_STACK
+__{}    inc  HL             ; 1:6       unrloop_{}LOOP_STACK
+__{}    inc  L              ; 1:4       unrloop_{}LOOP_STACK
+__{}    inc  HL             ; 1:6       unrloop_{}LOOP_STACK
+__{}    exx                 ; 1:4       unrloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_RDO},{rdo_}LOOP_STACK,LOOP_STACK)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -52,17 +52,17 @@ define({QUESTIONRDO},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{exx                 ; 1:4       rleave LOOP_STACK
-__{}    inc  L              ; 1:4       rleave LOOP_STACK
-__{}    inc  HL             ; 1:6       rleave LOOP_STACK
-__{}    inc  L              ; 1:4       rleave LOOP_STACK
-__{}    jp   leave{}LOOP_STACK       ;           rleave LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{exx                 ; 1:4       unrloop LOOP_STACK
-__{}    inc  L              ; 1:4       unrloop LOOP_STACK
-__{}    inc  HL             ; 1:6       unrloop LOOP_STACK
-__{}    inc  L              ; 1:4       unrloop LOOP_STACK
-__{}    inc  HL             ; 1:6       unrloop LOOP_STACK
-__{}    exx                 ; 1:4       unrloop LOOP_STACK}){}dnl
+__{}pushdef({LEAVE_STACK},{exx                 ; 1:4       rleave_{}LOOP_STACK
+__{}    inc  L              ; 1:4       rleave_{}LOOP_STACK
+__{}    inc  HL             ; 1:6       rleave_{}LOOP_STACK
+__{}    inc  L              ; 1:4       rleave_{}LOOP_STACK
+__{}    jp   leave{}LOOP_STACK       ;           rleave_{}LOOP_STACK}){}dnl
+__{}pushdef({UNLOOP_STACK},{exx                 ; 1:4       unrloop_{}LOOP_STACK
+__{}    inc  L              ; 1:4       unrloop_{}LOOP_STACK
+__{}    inc  HL             ; 1:6       unrloop_{}LOOP_STACK
+__{}    inc  L              ; 1:4       unrloop_{}LOOP_STACK
+__{}    inc  HL             ; 1:6       unrloop_{}LOOP_STACK
+__{}    exx                 ; 1:4       unrloop_{}LOOP_STACK}){}dnl
 __{}__ADD_TOKEN({__TOKEN_QRDO},{?rdo_}LOOP_STACK,LOOP_STACK)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -131,7 +131,6 @@ __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_RJ},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-
     exx                 ; 1:4       __INFO
     ld   DE, 0x0004     ; 3:10      __INFO
     ex   DE, HL         ; 1:4       __INFO
