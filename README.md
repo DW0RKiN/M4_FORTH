@@ -4,7 +4,7 @@
 
 The tokens will be more fun because you will have more information about what will happen and what happened.
 
-Furthermore, combining words into combos, including tokens, does not need to be done when translating from Forth to FORTH M4 using a script.
+Furthermore, combining words into combos takes place over tokens and does not need to be done when translating from Forth to FORTH M4 using a script.
 
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
