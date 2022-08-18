@@ -4,6 +4,8 @@
 
 The tokens will be more fun because you will have more information about what will happen and what happened.
 
+Furthermore, combining words into combos, including tokens, does not need to be done when translating from Forth to FORTH M4 using a script.
+
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
 A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup number condition if`.
