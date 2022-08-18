@@ -168,6 +168,40 @@ __{}__{}$2})}){}dnl
 dnl
 dnl
 dnl
+define({__SET_LOOP_TYPE},{dnl
+__{}define({__LOOP[$1].TYPE},{$2})}){}dnl
+dnl
+define({__SET_LOOP_END},{dnl
+__{}define({__LOOP[$1].END},{$2})}){}dnl
+dnl
+define({__SET_LOOP_BEGIN},{dnl
+__{}define({__LOOP[$1].BEGIN},{$2})}){}dnl
+dnl
+define({__SET_LOOP_STEP},{dnl
+__{}define({__LOOP[$1].STEP},{$2})}){}dnl
+dnl
+define({__SET_LOOP},{dnl
+__{}define({__LOOP[$1].TYPE},{$2}){}dnl # M,R,S = memory, recursive, stack
+__{}define({__LOOP[$1].END},{$3}){}dnl
+__{}define({__LOOP[$1].BEGIN},{$4}){}dnl
+__{}define({__LOOP[$1].STEP},{$5}){}dnl
+}){}dnl
+dnl
+define({__SHOW_LOOP},{
+__{};   id: $1
+__{}; type: defn({__LOOP[$1].TYPE})   # M,R,S = memory, recursive, stack
+__{};  end: defn({__LOOP[$1].END})
+__{};begin: defn({__LOOP[$1].BEGIN})
+__{}; step: defn({__LOOP[$1].STEP}){}dnl
+}){}dnl
+dnl
+define({__GET_LOOP_TYPE},  {defn({__LOOP[$1].TYPE})}){}dnl   # M,R,S = memory, recursive, stack
+define({__GET_LOOP_END},   {defn({__LOOP[$1].END})}){}dnl    #
+define({__GET_LOOP_BEGIN}, {defn({__LOOP[$1].BEGIN})}){}dnl  #
+define({__GET_LOOP_STEP},  {defn({__LOOP[$1].STEP})}){}dnl   #
+dnl
+dnl
+dnl
 define({__PARAM_X},{ifelse(eval($1>1),{1},{$0(eval($1-1),shift(shift($@)))},{$2})}){}dnl
 dnl
 define({__SET_TOKEN_NAME},{dnl
@@ -181,13 +215,13 @@ dnl #__{}define({__TOKEN[}__TOKEN_COUNT{].PARAM},(changequote({⸨},{⸩}){⸨�
 dnl #__{}define({__TOKEN[}__TOKEN_COUNT{].PARAM},{changequote({⸨},{⸩})({shift(shift($@))})changequote(⸨{⸩,⸨}⸩)})}){}dnl
 dnl
 define({__SHOW_TOKEN},{
-__{} name: defn({__TOKEN[$1].NAME})
-__{} info: defn({__TOKEN[$1].INFO})
-__{}param: defn({__TOKEN[$1].PARAM})
-__{}array1: >__GET_TOKEN_ARRAY_1($1)<
-__{}array2: >__GET_TOKEN_ARRAY_2($1)<
-__{}array3: >__GET_TOKEN_ARRAY_3($1)<
-__{}array: __GET_TOKEN_ARRAY($1){}dnl
+__{}; name: defn({__TOKEN[$1].NAME})
+__{}; info: defn({__TOKEN[$1].INFO})
+__{};param: defn({__TOKEN[$1].PARAM})
+__{};array1: >__GET_TOKEN_ARRAY_1($1)<
+__{};array2: >__GET_TOKEN_ARRAY_2($1)<
+__{};array3: >__GET_TOKEN_ARRAY_3($1)<
+__{};array: __GET_TOKEN_ARRAY($1){}dnl
 }){}dnl
 dnl
 dnl # Fail with multiline...
@@ -383,15 +417,10 @@ dnl # PUSH
 __{}__{}__{}__LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_CMOVE,             {__SET_TOKEN({__TOKEN_2DROP},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_MOVE,              {__SET_TOKEN({__TOKEN_2DROP},__LAST_TOKEN_INFO{ }$2)},
 
-            __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=1-__TOKEN_ADDLOOP,           {__SET_DO(1,$3){}__SET_TOKEN({__TOKEN_LOOP_I8},__LAST_TOKEN_INFO{ }$2,$3)},
-            __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=1-__TOKEN_ADDRLOOP,          {__SET_TOKEN({__TOKEN_RLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
-            __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=2-__TOKEN_ADDRLOOP,          {__SET_TOKEN({__TOKEN_2_ADDRLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
-            __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=-1-__TOKEN_ADDRLOOP,         {__SET_TOKEN({__TOKEN_SUB1_ADDRLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
-            __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=65535-__TOKEN_ADDRLOOP,      {__SET_TOKEN({__TOKEN_SUB1_ADDRLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
-            __LAST_TOKEN_NAME-$1,                      __TOKEN_PUSH-__TOKEN_ADDRLOOP,            {__SET_TOKEN({__TOKEN_PUSH_ADDRLOOP},__LAST_TOKEN_INFO{ }$2,$3,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_ADDLOOP},           {__SET_LOOP_STEP(LOOP_STACK,__LAST_TOKEN_ARRAY){}__SET_TOKEN({__TOKEN_PUSH_ADDLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
 
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_FOR},               {__SET_TOKEN({__TOKEN_PUSH_FOR},__LAST_TOKEN_INFO{ }$2,$3,__LAST_TOKEN_ARRAY)},
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_QFOR},              {__SET_TOKEN({__TOKEN_PUSH_QFOR},__LAST_TOKEN_INFO{ }$2,$3,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_FOR},               {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_1){}__SET_TOKEN({__TOKEN_PUSH_FOR},__LAST_TOKEN_INFO{ }$2,$3)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_QFOR},              {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_1){}__SET_TOKEN({__TOKEN_PUSH_QFOR},__LAST_TOKEN_INFO{ }$2,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FOR-__TOKEN_I},             {__SET_TOKEN({__TOKEN_PUSH_FOR_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_QFOR-__TOKEN_I},            {__SET_TOKEN({__TOKEN_PUSH_QFOR_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
@@ -490,6 +519,17 @@ __{}__{}__{}__LAST_TOKEN_NAME-$1-__LAST_TOKEN_IS_NUM_1_2,{__TOKEN_PUSH2-__TOKEN_
 
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_FILL},        {__SET_TOKEN({__TOKEN_PUSH2_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_DO},          {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_DO},__LAST_TOKEN_INFO{ }$2,$3)},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($@)})},
+
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_QDO},          {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($@)})},
+
+
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_SWAP},        {__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY_2{,}__LAST_TOKEN_ARRAY_1)},
             __LAST_TOKEN_NAME-$1-__LAST_TOKEN_IS_NUM_1_2,{__TOKEN_PUSH2-__TOKEN_WITHIN-1},    {ifelse(eval(__LAST_TOKEN_ARRAY_1),eval(__LAST_TOKEN_ARRAY_2),
                 {__SET_TOKEN({__TOKEN_DROP_PUSH},   __LAST_TOKEN_INFO{ }$2,0)},
@@ -557,6 +597,18 @@ __{}__{}__{}__LAST_TOKEN_NAME-$1-__LAST_TOKEN_IS_NUM_2_3,  {__TOKEN_PUSH3-__TOKE
             __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_SUB},       {__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY_1,+(__LAST_TOKEN_ARRAY_2)-(__LAST_TOKEN_ARRAY_3))},
             __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_MUL},       {__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY_1,+(__LAST_TOKEN_ARRAY_2)*(__LAST_TOKEN_ARRAY_3))},
             __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_DIV},       {__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY_1,+(__LAST_TOKEN_ARRAY_2)/(__LAST_TOKEN_ARRAY_3))},
+
+            __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_DO},        {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($@)})},
+
+            __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_QDO},       {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($@)})},
 
             __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_FILL},      {__SET_TOKEN({__TOKEN_PUSH3_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
@@ -635,11 +687,8 @@ dnl # Y...
 dnl # Z...
             {dnl
 __{}__{}__{}__{}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}dnl
-__{}__{}__{}__{}ifelse($1,{__TOKEN_LOOP},{dnl
-__{}__{}__{}__{}__{}__SET_DO(1,$3){}dnl
-__{}__{}__{}__{}__{}__SET_TOKEN(__TOKEN_LOOP_I8,shift($@))},
-__{}__{}__{}__{}{dnl
-__{}__{}__{}__{}__{}__SET_TOKEN($@)}){}dnl
+__{}__{}__{}__{}ifelse($1,{__TOKEN_LOOP},{__SET_LOOP_STEP(LOOP_STACK,1)}){}dnl
+__{}__{}__{}__{}__SET_TOKEN($@){}dnl
 __{}__{}__{}})},
         {define({__TOKEN_COUNT},1){}__SET_TOKEN($@)}){}dnl
 }){}dnl

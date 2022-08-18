@@ -80,33 +80,12 @@ for{}$1:                 ;           __INFO}){}dnl
 dnl
 dnl
 dnl
+dnl # ( -- i )
+dnl # RXI from rxdo_rxloop.m4
 dnl # ( -- j )
-dnl # hodnota indexu prvni vnejsi smycky
-define({RJ_FOR},{dnl
-ifelse($#,{0},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_RJ_FOR},{rj-for_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP})},
-__{}{
-__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
-dnl
-define({__ASM_TOKEN_RJ_FOR},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    exx                 ; 1:4       __INFO
-    ld    E, L          ; 1:4       __INFO
-    ld    D, H          ; 1:4       __INFO
-    inc   L             ; 1:4       __INFO
-    inc  HL             ; 1:6       __INFO
-    ld    C,(HL)        ; 1:7       __INFO
-    inc   L             ; 1:4       __INFO
-    ld    B,(HL)        ; 1:7       __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    push BC             ; 1:11      __INFO
-    exx                 ; 1:4       __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO}){}dnl
+dnl # RXJ from rxdo_rxloop.m4
+dnl # ( -- j )
+dnl # RXK from rxdo_rxloop.m4
 dnl
 dnl
 dnl

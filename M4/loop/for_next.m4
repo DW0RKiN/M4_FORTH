@@ -8,8 +8,7 @@ define({FOR},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_FOR},{for_}LOOP_STACK,LOOP_STACK)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -33,8 +32,7 @@ define({FOR_I},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_FOR_I},{for_}LOOP_STACK{ i_}LOOP_STACK,LOOP_STACK)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -59,17 +57,22 @@ __{}  .error {$0}($@): Missing parameter!},
 $#,{1},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,$1,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_FOR},{$1 for_}LOOP_STACK,LOOP_STACK,$1)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FOR},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{4:20},{3:10})      __INFO   ( -- )
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1)) && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
+    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+for{}$1:                 ;           __INFO
+    ld  (idx{}$1),A      ; 3:13      __INFO   save index},
+{
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- )
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),BC     ; 4:20      __INFO   save index}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -81,21 +84,29 @@ __{}  .error {$0}($@): Missing parameter!},
 $#,{1},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_FOR_I},{$1 for_}LOOP_STACK{ i_}LOOP_STACK,LOOP_STACK,$1)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FOR_I},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{4:20},{3:10})      __INFO   ( -- i )
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
+    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+for{}$1:                 ;           __INFO
+    ld  (idx{}$1),A      ; 3:13      __INFO   save index
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    H, 0x00       ; 2:7       __INFO   copy index},
+{
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- i )
 for{}$1:                 ;           __INFO
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     ld    H, B          ; 1:4       __INFO   copy index
-    ld  (idx{}$1),HL     ; 3:16      __INFO   save index
+    ld  (idx{}$1),HL     ; 3:16      __INFO   save index}){}dnl
 }){}dnl
 dnl
 dnl
@@ -145,8 +156,7 @@ define({QUESTIONFOR},{dnl
 ifelse($#,{0},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           ?for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           ?for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_QFOR},{?for_}LOOP_STACK,LOOP_STACK)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -174,27 +184,31 @@ __{}  .error {$0}($@): Missing parameter!},
 $#,{1},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,$1,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_QFOR},{$1 ?for_}LOOP_STACK,LOOP_STACK,$1)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_QFOR},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(__SAVE_EVAL(($2+1) & 0xFFFF),0,{
+__{}define({__INFO},__COMPILE_INFO)
+
+__{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
     jp    next{}$1       ; 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO},
-__{}__IS_MEM_REF($2),{1},{
-    ld   BC, format({%-11s},$2); 4:20      __INFO   ( -- )
+__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
     jp    z, next{}$1    ; 3:10      __INFO
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),BC     ; 4:20      __INFO   save index},
+__{}__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
+    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+for{}$1:                 ;           __INFO
+    ld  (idx{}$1),A      ; 3:13      __INFO   save index},
 {
-    ld   BC, format({%-11s},$2); 3:10      __INFO   ( -- )
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),BC     ; 4:20      __INFO   save index})}){}dnl
 dnl
@@ -208,37 +222,44 @@ __{}  .error {$0}($@): Missing parameter!},
 $#,{1},{dnl
 __{}define({LOOP_COUNT}, incr(LOOP_COUNT)){}dnl
 __{}pushdef({LOOP_STACK}, LOOP_COUNT){}dnl
-__{}pushdef({LEAVE_STACK},{jp   next{}LOOP_STACK        ;           for-leave_{}LOOP_STACK}){}dnl
-__{}pushdef({UNLOOP_STACK},{{{                    }};           for-unloop_{}LOOP_STACK}){}dnl
+__{}__SET_LOOP(LOOP_COUNT,{M},0,$1,-1){}dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_QFOR_I},{$1 ?for_}LOOP_STACK{ i_}LOOP_STACK,LOOP_STACK,$1)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_QFOR_I},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-__{}ifelse(__SAVE_EVAL(($2+1) & 0xFFFF),0,{
+__{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
     jp    next{}$1       ; 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO},
-__{}__IS_MEM_REF($2),{1},{
-    ld   BC, format({%-11s},$2); 4:20      __INFO   ( -- )
+__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
     jp    z, next{}$1    ; 3:10      __INFO
 for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
-    ld    H, B          ; 1:4       __INFO   copy index},
-{
-    ld   BC, format({%-11s},$2); 3:10      __INFO   ( -- )
+    ld    H, B          ; 1:4       __INFO   copy index
+    ld  (idx{}$1),HL     ; 3:16      __INFO   save index},
+__{}__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
+    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
 for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index
+    ld  (idx{}$1),A      ; 3:13      __INFO   save index
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    H, 0x00       ; 2:7       __INFO   copy index},
+{
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )
+for{}$1:                 ;           __INFO
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
-    ld    H, B          ; 1:4       __INFO   copy index})}){}dnl
+    ld    H, B          ; 1:4       __INFO   copy index
+    ld  (idx{}$1),HL     ; 3:16      __INFO   save index})}){}dnl
 dnl
 dnl
 dnl
@@ -246,21 +267,27 @@ dnl # ( index -- index-1 )
 define({NEXT},{dnl
 ifelse($#,{0},{dnl
 __{}__ADD_TOKEN({__TOKEN_NEXT},{next_}LOOP_STACK,LOOP_STACK){}dnl
-__{}popdef({LEAVE_STACK}){}dnl
-__{}popdef({UNLOOP_STACK}){}dnl
 __{}popdef({LOOP_STACK})},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_NEXT},{dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
+idx{}$1 EQU $+1          ;           __INFO
+    ld    A, 0x00       ; 2:7       __INFO   idx always points to a 16-bit index
+    nop                 ; 1:4       __INFO
+    sub   A, 0x01       ; 2:7       __INFO   index--
+    jp   nc, for{}$1     ; 3:10      __INFO
+leave{}$1:               ;           __INFO},
+{
 idx{}$1 EQU $+1          ;           __INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     ld    A, B          ; 1:4       __INFO
     or    C             ; 1:4       __INFO
     dec  BC             ; 1:6       __INFO   index--, zero flag unaffected
     jp   nz, for{}$1     ; 3:10      __INFO
-next{}$1:                ;           __INFO{}dnl
+leave{}$1:               ;           __INFO}){}dnl
 }){}dnl
 dnl
 dnl

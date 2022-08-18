@@ -1,5 +1,8 @@
 ⚠️WARNING⚠️Right now the loops are being rewritten to a tokenized version, so they are broken.
+
 ⚠️WARNING⚠️If you want a working version, download something from the history that does not contain "__ASM_TOKEN"
+
+The tokens will be more fun because you will have more information about what will happen and what happened.
 
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 

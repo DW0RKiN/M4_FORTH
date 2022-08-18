@@ -54,26 +54,26 @@ dnl # ( i -- i i )
 dnl # To same co DUP
 dnl # dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
 define({SI},{dnl
-__{}__ADD_TOKEN({__TOKEN_SI},{si},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SI},{i_}LOOP_STACK,LOOP_STACK){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SI},{dnl
-__{}define({__INFO},{si}){}dnl
-
-    DUP}){}dnl
+__{}define({__INFO},__COMPILE_INFO{}(s))
+__{}                        ;           __INFO   ( i -- i i ){}dnl
+__{}__ASM_TOKEN_DUP}){}dnl
 dnl
 dnl
 dnl # ( j s i -- j s i j )
 dnl # 2 pick
 dnl # dalsi indexy nejsou definovany, protoze neni jiste jak to na zasobniku vypada. Pokud je tam hned dalsi smycka tak J lezi na (SP), K lezi na (SP+4)
 define({SJ},{dnl
-__{}__ADD_TOKEN({__TOKEN_SJ},{sj},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SJ},{j_}LOOP_STACK,LOOP_STACK){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SJ},{dnl
-__{}define({__INFO},{sj}){}dnl
-
-    PUSH_PICK(2)}){}dnl
+__{}define({__INFO},__COMPILE_INFO{}(s))
+__{}                        ;           __INFO   ( j s i -- j s i j ){}dnl
+__{}__ASM_TOKEN_2_PICK}){}dnl
 dnl
 dnl
 dnl
