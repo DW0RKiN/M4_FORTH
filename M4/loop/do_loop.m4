@@ -191,106 +191,7 @@ leave101:               ;           loop_101
 exit101:                ;           loop_101
                        ;[26:141]}){}dnl
 dnl
-dnl
-dnl # ( -- i )
-dnl # hodnota indexu aktualni smycky
-define({I},{dnl
-__{}__ADD_TOKEN({__TOKEN_I},{i_}LOOP_STACK,LOOP_STACK){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_I},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(m))
-    push DE             ; 1:11      __INFO   ( -- i )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
-dnl
-dnl
-dnl # ( x -- i )
-dnl # hodnota indexu aktualni smycky
-define({DROP_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_DROP_I},{drop i_}LOOP_STACK,LOOP_STACK){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DROP_I},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(m))
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- i )  idx always points to a 16-bit index}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- j )
-dnl # hodnota indexu vnejsi smycky
-define({J},{dnl
-ifelse($#,{0},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_J},{j_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP})},
-__{}{
-__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
-dnl
-define({__ASM_TOKEN_J},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(m))
-    push DE             ; 1:11      __INFO   ( -- j )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
-dnl
-dnl
-dnl
-dnl # ( x -- j )
-dnl # hodnota indexu vnejsi smycky
-define({DROP_J},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_DROP_J},{drop j_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DROP_J},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(m))
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- j )  idx always points to a 16-bit index}){}dnl
-dnl
-dnl
-dnl # ( -- k )
-dnl # hodnota indexu druhe vnejsi smycky
-define({K},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_K},{k_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}__{}popdef({__TEMP}){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_K},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(m))
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
-dnl
-dnl
-dnl
-dnl # ( x -- k )
-dnl # hodnota indexu druhe vnejsi smycky
-define({DROP_K},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
-__{}__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_DROP_K},{drop k_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}__{}popdef({__TEMP}){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DROP_K},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(m))
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- k )  idx always points to a 16-bit index}){}dnl
+dnl # --------------------------------------------------------------------
 dnl
 dnl
 dnl # ( -- )
@@ -298,7 +199,7 @@ dnl # 5 0 do i .     loop --> 0 1 2 3 4
 dnl # 5 0 do i . +1 +loop --> 0 1 2 3 4
 define({__ASM_TOKEN_MLOOP_I8},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(m))
-idx{}$1 EQU $+1          ;[20:78/57] __COMPILE_INFO
+idx{}$1 EQU $+1          ;[20:78/57] __INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     inc  BC             ; 1:6       __INFO   index++
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
@@ -312,7 +213,6 @@ stp_hi{}$1 EQU $+1       ;           __INFO
     jp   nz, do{}$1      ; 3:10      __INFO
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO}){}dnl
-dnl
 dnl
 dnl
 dnl # ( -- )

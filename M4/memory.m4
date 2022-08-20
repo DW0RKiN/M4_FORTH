@@ -1320,19 +1320,37 @@ dnl # char addr C!
 dnl # ( -- )
 dnl # store(addr) store 8-bit number at addr
 define({PUSH2_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_CSTORE},{push2_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_CSTORE},{$1 $2 c!},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH2_CSTORE},{dnl
-__{}define({__INFO},{push2_cstore}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameters!},
-__{}$#,{1},{
-__{}__{}.error {$0}($@): The second parameter is missing!},
-__{}$#,{2},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      push2_cstore($1,$2)
-    ld   format({%-15s},($2){,} A); 3:13      push2_cstore($1,$2)}){}dnl
+define({__ASM_TOKEN_PUSH2_CSTORE},{ifelse($1,{},{
+__{}  .error {$0}(): Missing parameters!},
+$#,{1},{
+__{}  .error {$0}($@): The second parameter (address) is missing!},
+eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}                        ;[8:40]     __INFO   ( -- )  val=$1, addr=$2
+__{}    ld    A, format({%-11s},$1); 3:13      __INFO
+__{}    ld   BC, format({%-11s},$2); 4:20      __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__IS_MEM_REF($1),{1},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}    ld    A, format({%-11s},$1); 3:13      __INFO
+__{}    ld   format({%-15s},($2){,} A); 3:13      __INFO},
+__IS_MEM_REF($2),{1},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE1},__LD_R_NUM(__INFO{   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
+__{}                        ;format({%-10s},[eval(5+__BYTES):eval(27+__CLOCKS)]) __INFO   ( -- )  val=$1, addr=$2{}dnl
+__{}__CODE1
+__{}    ld   BC, format({%-11s},$2); 4:20      __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE1},__LD_R_NUM(__INFO{   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
+__{}__CODE1
+__{}    ld   format({%-15s},($2){,} A); 3:13      __INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -2189,6 +2207,20 @@ __{}__{}__{}    ld  (HL),format({%-11s}, low $1); 2:10      $1 $2 !  push2_store
 __{}__{}__{}    inc  HL             ; 1:6       $1 $2 !  push2_store($1,$2)
 __{}__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      $1 $2 !  push2_store($1,$2)
 __{}__{}__{}    pop  HL             ; 1:11      $1 $2 !  push2_store($1,$2)},
+__{}__{}__{}__IS_NUM($1),{1},{
+__{}__{}__{}__{}define({__CODE1},__LD_R_NUM({$1 $2 !  push2_store($1,$2)   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
+__{}__{}__{}__{}define({__TMP_C},eval(40+__CLOCKS)){}dnl
+__{}__{}__{}__{}define({__TMP_B},eval(7+__BYTES)){}dnl
+__{}__{}__{}__{}define({__CODE2},__LD_R_NUM({$1 $2 !  push2_store($1,$2)   hi($1) = __HEX_H($1)},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
+__{}__{}__{}__{}define({__TMP_C},eval(__TMP_C+__CLOCKS)){}dnl
+__{}__{}__{}__{}define({__TMP_B},eval(__TMP_B+__BYTES)){}dnl
+__{}__{}__{}                        ;format({%-10s},[__TMP_B:__TMP_C]) $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      $1 $2 !  push2_store($1,$2){}dnl
+__{}__{}__{}__CODE1
+__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)
+__{}__{}__{}    inc  BC             ; 1:6       $1 $2 !  push2_store($1,$2){}dnl
+__{}__{}__{}__CODE2
+__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)},
 __{}__{}__{}{
 __{}__{}__{}                        ;[11:54]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
 __{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      $1 $2 !  push2_store($1,$2)
@@ -2202,7 +2234,7 @@ __{}                        ;[8:40]     $1 $2 !  push2_store($1,$2)   ( -- )  va
 __{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 !  push2_store($1,$2)
 __{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)},
 {
-__{}                        ;[5:30]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
+__{}                        ;[7:30]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
 __{}    ld   BC, format({%-11s},$1); 3:10      $1 $2 !  push2_store($1,$2)
 __{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)})}){}dnl
 dnl
