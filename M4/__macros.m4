@@ -479,6 +479,9 @@ __{}__{}__{}__LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_CM
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_MAX},               {__SET_TOKEN({__TOKEN_PUSH_MAX},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_MIN},               {__SET_TOKEN({__TOKEN_PUSH_MIN},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_N_TO_R},            {__SET_TOKEN({__TOKEN_PUSH_N_TO_R},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_N_TO_R-__TOKEN_RDROP},      {__SET_TOKEN({__TOKEN_PUSH_N_TO_R_RDROP},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_OF},                {__SET_TOKEN({__TOKEN_PUSH_OF},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME{}(__LAST_TOKEN_VALUE)-$1,{__TOKEN_PUSH(0)-__TOKEN_PICK},           {__SET_TOKEN({__TOKEN_DUP},__LAST_TOKEN_INFO{ }$2)},

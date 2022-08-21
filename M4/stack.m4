@@ -1378,6 +1378,364 @@ __{}define({__INFO},{dup_to_r}){}dnl
     exx                 ; 1:4       dup_to_r}){}dnl
 dnl
 dnl
+dnl # n>r
+dnl # ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+dnl # Move u cells from the data stack to the return stack.
+define({N_TO_R},{dnl
+__{}__ADD_TOKEN({__TOKEN_N_TO_R},{n>r}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_N_TO_R},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+
+                      ;[21:82+u*47] n>r   ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu u )
+    push DE             ; 1:11      n>r
+    ld    A, L          ; 1:4       n>r   u = 0..255
+    exx                 ; 1:4       n>r
+    or    A             ; 1:4       n>r
+    ld    B, A          ; 1:4       n>r
+    jr    z, $+9        ; 2:12      n>r
+    pop  DE             ; 1:10      n>r
+    dec  HL             ; 1:6       n>r
+    ld  (HL),D          ; 1:7       n>r
+    dec   L             ; 1:4       n>r
+    ld  (HL),E          ; 1:7       n>r
+    djnz $-5            ; 2:8/13    n>r
+    dec  HL             ; 1:6       n>r
+    ld  (HL),B          ; 1:7       n>r   = 0
+    dec   L             ; 1:4       n>r
+    ld  (HL),A          ; 1:7       n>r   = lo(u)
+    exx                 ; 1:4       n>r
+    pop  HL             ; 1:10      n>r
+    pop  DE             ; 1:10      n>r}){}dnl
+dnl
+dnl
+dnl
+dnl # n>r rdrop
+dnl # ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+dnl # Move u cells from the data stack to the return stack.
+define({N_TO_R_RDROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_N_TO_R},{n>r rdrop}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_N_TO_R_RDROP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+
+                      ;[17:53+u*47] __INFO   ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+    ld    A, L          ; 1:4       __INFO   u = 0..255
+    push DE             ; 1:11      __INFO
+    or    A             ; 1:4       __INFO
+    jr    z, $+12       ; 2:7/12    __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-5            ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # n>r
+dnl # ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+dnl # Move u cells from the data stack to the return stack.
+define({PUSH_N_TO_R},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_N_TO_R},{$1 n>r},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_N_TO_R},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+                      ;[24:97+u*47] __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu $1 )  u = $1
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 3:13      __INFO   0..255
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    or    A             ; 1:4       __INFO
+    jr    z, $+9        ; 2:7/12    __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-5            ; 2:8/13    __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO   hi(u) = 0
+    dec   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO   lo(u)
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+__IS_NUM($1),{0},{
+                      ;[23:91+u*47] __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu $1 )  u = $1
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, low format({%-7s},$1); 2:7       __INFO   0..255
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    or    A             ; 1:4       __INFO
+    jr    z, $+9        ; 2:7/12    __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-5            ; 2:8/13    __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO   hi(u) = 0
+    dec   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO   lo(u)
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+{dnl
+__{}ifelse(eval($1),0,{
+                       ;[7:36]      __INFO   ( -- ) ( R: -- 0 )
+    exx                 ; 1:4       __INFO
+    xor   A             ; 1:4       __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    exx                 ; 1:4       __INFO},
+__{}eval($1),1,{
+                       ;[15:95]     __INFO   ( x -- ) ( R: -- x 1 )
+    ex  (SP), HL        ; 1:19      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),0x00       ; 2:10      __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),0x01       ; 2:10      __INFO
+    exx                 ; 1:4       __INFO},
+__{}eval($1),2,{
+                      ;[21:146]     __INFO   ( x2 x1 -- ) ( R: -- x1 x2 2 )
+    ex   (SP),HL        ; 1:19      __INFO
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   DE = x2 = origin nos
+    pop  BC             ; 1:10      __INFO   DE = x1 = origin tos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),C          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),0x00       ; 2:10      __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),0x02       ; 2:10      __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO},
+__{}eval($1),3,{
+                      ;[27:182]     __INFO   ( x3 x2 x1 -- ) ( R: -- x1 x2 x3 3 )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   origin tos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO   origin nos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO   origin nnos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),0x00       ; 2:10      __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),0x03       ; 2:10      __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+__{}{
+                       ;format({%-11s},[eval(25+2*(($1) & 1)+(__HEX_H($1) & 1)):eval(79+81*(($1+1)/2)-22*(($1) & 1)+3*(__HEX_H($1) & 1))]) __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu $1 )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, format({%-11s},eval(($1+1)/2)); 2:7       __INFO   B = ($1+1)/2{}dnl
+__{}ifelse(__HEX_H(($1+1)/2),{0x00},,{
+__{}__{}  .error {$0}($@): eval(($1+1)/2) is greater 255!}){}dnl
+__{}ifelse(eval(($1)&1),1,{
+__{}__{}    jr   $+7            ; 2:12      __INFO}){}dnl
+
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-10           ; 2:8/13    __INFO
+    dec  HL             ; 1:6       __INFO
+__{}ifelse(__HEX_H($1),{0x00},{dnl
+    ld  (HL), B         ; 1:7       __INFO   hi($1)},
+__{}{dnl
+    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   hi($1)})
+    dec   L             ; 1:4       __INFO
+    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   lo($1)
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO})}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # n>r rdrop
+dnl # ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+dnl # Move u cells from the data stack to the return stack.
+define({PUSH_N_TO_R_RDROP},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_N_TO_R_RDROP},{$1 n>r rdrop},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_N_TO_R_RDROP},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+                      ;[20:73+u*47] __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu )   u=$1
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 3:13      __INFO   0..255
+    or    A             ; 1:4       __INFO
+    jr    z, $+12       ; 2:7/12    __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-5            ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+__IS_NUM($1),{0},{
+                      ;[19:67+u*47] __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 2:7       __INFO   0..255
+    or    A             ; 1:4       __INFO
+    jr    z, $+12       ; 2:7/12    __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-5            ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+{dnl
+__{}ifelse(eval($1),0,{},
+__{}eval($1),1,{__ASM_TOKEN_TO_R},
+__{}eval($1),2,{
+                      ;[15:116]     __INFO   ( x2 x1 -- ) ( R: -- x1 x2 )
+    ex   (SP),HL        ; 1:19      __INFO
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   DE = x2 = origin nos
+    pop  BC             ; 1:10      __INFO   DE = x1 = origin tos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),C          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO},
+__{}eval($1),3,{
+                      ;[21:152]     __INFO   ( x3 x2 x1 -- ) ( R: -- x1 x2 x3 )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   origin tos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO   origin nos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO   origin nnos
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+__{}{
+                       ;format({%-11s},[eval(20+2*(($1) & 1)):eval(52+81*(($1+1)/2)-22*(($1) & 1))]) __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, format({%-11s},eval(($1+1)/2)); 2:7       __INFO   B = ($1+1)/2{}dnl
+__{}ifelse(eval(($1)&1),1,{
+__{}    jr   $+7            ; 2:12      __INFO})
+    pop  DE             ; 1:10      __INFO   DE
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO   DE
+    dec  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    djnz $-10           ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO})}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # r>
 dnl # ( -- x ) ( R: x -- )
 dnl # Move x from the return stack to the data stack.
@@ -1400,15 +1758,300 @@ __{}define({__INFO},{r_from}){}dnl
     ex  (SP), HL        ; 1:19      r_from b . a i}){}dnl
 dnl
 dnl
+dnl
+dnl # nr>
+dnl # ( -- xu .. x2 x1 u ) ( R: x1 x2 .. xu u -- )
+dnl # Move u cells from the data stack to the return stack.
+define({NR_FROM},{dnl
+__{}__ADD_TOKEN({__TOKEN_NR_FROM},{nr>}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NR_FROM},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+
+                      ;[22:74+u*48] nr>   ( -- xu .. x2 x1 u ) ( R: x1 x2 .. xu u -- )
+    push DE             ; 1:11      nr>
+    push HL             ; 1:11      nr>
+    exx                 ; 1:4       nr>
+    ld    A,(HL)        ; 1:7       nr>
+    inc   L             ; 1:4       nr>
+    inc  HL             ; 1:6       nr>
+    or    A             ; 1:4       nr>   u = 0..255
+    jr    z, $+10       ; 2:7/12    nr>
+    ld    B, A          ; 1:4       nr>
+    ld    E,(HL)        ; 1:7       nr>
+    inc   L             ; 1:4       nr>
+    ld    D,(HL)        ; 1:7       nr>
+    inc  HL             ; 1:6       nr>
+    push DE             ; 1:11      nr>
+    djnz $-5            ; 2:8/13    nr>
+    exx                 ; 1:4       nr>
+    ld    L, A          ; 1:4       nr>
+    ld    H, 0x00       ; 2:7       nr>
+    pop  DE             ; 1:10      nr>}){}dnl
+dnl
+dnl
+dnl
+dnl # rdrop u >r nr> drop
+dnl # ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+dnl # Move u cells from the data stack to the return stack.
+define({PUSH_UR_FROM},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_UR_FROM},{rdrop $1 >r nr> drop},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UR_FROM},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+                      ;[20:73+u*48] __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu )   u=$1
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 3:13      __INFO   0..255
+    or    A             ; 1:4       __INFO
+    jr   $+12           ; 2:7/12    __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   DE
+    djnz $-5            ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+__IS_NUM($1),{0},{
+                      ;[19:67+u*48] __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 2:7       __INFO   0..255
+    or    A             ; 1:4       __INFO
+    jr   $+12           ; 2:7/12    __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   DE
+    djnz $-5            ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+{dnl
+__{}ifelse(eval($1),0,{},
+__{}eval($1),1,{__ASM_TOKEN_R_FROM},
+__{}eval($1),2,{
+                      ;[15:118]     __INFO   ( -- x2 x1 ) ( R: x1 x2 -- )
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    C,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO   BC = x1
+    push DE             ; 1:11      __INFO   DE = x2
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    ex  (SP),HL         ; 1:19      __INFO},
+__{}eval($1),3,{
+                      ;[21:155]     __INFO   ( x3 x2 x1 -- ) ( R: -- x1 x2 x3 )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   new nnos
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   new nos
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   new tos
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
+__{}{
+                       ;format({%-11s},[eval(20+2*(($1) & 1)):eval(52+83*(($1+1)/2)-22*(($1) & 1))]) __INFO   ( xu .. x2 x1 -- ) ( R: -- x1 x2 .. xu )  u = $1
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ld    B, format({%-11s},eval(($1+1)/2)); 2:7       __INFO   B = ($1+1)/2{}dnl
+__{}ifelse(eval(($1)&1),1,{
+__{}    jr   $+7            ; 2:12      __INFO})
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   DE
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    push DE             ; 1:11      __INFO   DE
+    djnz $-10           ; 2:8/13    __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO})}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl
+dnl
+dnl # rpick
+dnl # ( u -- xu ) ( R: -- xu .. x2 x0 )
+dnl # copy u-cell from the return stack to the data stack
+define({RPICK},{dnl
+ifelse(eval($#>0),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_RPICK},{rpick})}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RPICK},{dnl
+ifelse(eval($#>0),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[10:73]     __INFO   ( u -- xu ) ( R: xu .. x1 x0 -- xu .. x1 x0 )
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    pop  BC             ; 1:10      __INFO   ras
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, BC         ; 1:11      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # num rpick
+dnl # ( xu .. x2 x1 u -- ) ( R: -- x1 x2 .. xu )
+dnl # Move u cells from the data stack to the return stack.
+define({PUSH_RPICK},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_RPICK},{$1 rpick},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_RPICK},{dnl
+ifelse(eval($#<1),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+                       ;[15:106]    __INFO   ( -- x_{}$1 ) ( R: x_{}$1 .. x1 x0 -- x_{}$1 .. x1 x0 )
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, format({%-11s},$1); 3:16      __INFO
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, DE         ; 1:11      __INFO
+    ld    C,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    push BC             ; 1:11      __INFO   BC = x_{}$1
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO},
+__IS_NUM($1),{0},{
+                       ;[14:89]     __INFO   ( -- x_{}$1 ) ( R: x_{}$1 .. x1 x0 -- x_{}$1 .. x1 x0 )
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, format({%-11s},2*($1)); 3:10      __INFO
+    add  HL, DE         ; 1:11      __INFO
+    ld    C,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    push BC             ; 1:11      __INFO   BC = x_{}$1
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO},
+{dnl
+__{}ifelse(eval($1),0,{__ASM_TOKEN_R_FETCH},
+__{}eval($1),1,{
+                       ;[11:74]     __INFO   ( -- x1 ) ( R: x1 x0 -- x1 x0 )
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO
+    inc   L             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO},
+__{}eval($1),2,{
+                       ;[13:84]     __INFO   ( -- x2 ) ( R: x2 x1 x0 -- x2 x1 x0 )
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO
+    inc   L             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    inc   L             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO},
+__{}{
+                       ;[13:85]     __INFO   ( -- x{}$1 ) ( R: x{}$1 .. x1 x0 -- x{}$1 .. x1 x0 )
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO
+    ld   BC, __HEX_HL(2*($1))     ; 3:10      __INFO   2*($1)
+    add  HL, BC         ; 1:11      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO})}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # r@
 dnl # ( -- x ) ( R: x -- x )
 dnl # Copy x from the return stack to the data stack.
 define({R_FETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_R_FETCH},{r_fetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_R_FETCH},{r@}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_R_FETCH},{dnl
-__{}define({__INFO},{r_fetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 dnl #                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
 dnl #    exx                 ; 1:4       r_fetch   .
@@ -1420,16 +2063,16 @@ dnl #    ld    A,(HL)        ; 1:7       r_fetch
 dnl #    inc   L             ; 1:4       r_fetch
 dnl #    ld    H,(HL)        ; 1:7       r_fetch
 dnl #    ld    L, A          ; 1:4       r_fetch b . a i
-                        ;[9:64]     r_fetch ( b a -- b a i ) ( R: i -- i )
-    exx                 ; 1:4       r_fetch
-    ld    E,(HL)        ; 1:7       r_fetch
-    inc   L             ; 1:4       r_fetch
-    ld    D,(HL)        ; 1:7       r_fetch
-    dec   L             ; 1:4       r_fetch
-    push DE             ; 1:11      r_fetch
-    exx                 ; 1:4       r_fetch
-    ex   DE, HL         ; 1:4       r_fetch
-    ex  (SP), HL        ; 1:19      r_fetch}){}dnl
+                        ;[9:64]     __INFO   ( -- i ) ( R: i -- i )
+    exx                 ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ex  (SP), HL        ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl # rdrop

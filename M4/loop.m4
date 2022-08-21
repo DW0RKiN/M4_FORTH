@@ -298,8 +298,8 @@ __{}__ADD_TOKEN({__TOKEN_I},{i_}LOOP_STACK,LOOP_STACK){}dnl
 dnl
 define({__ASM_TOKEN_I},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{i})},
-__{}__GET_LOOP_TYPE($1),{R},{},
-__{}__GET_LOOP_TYPE($1),{S},{},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_INDEX2R($1,{i})},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_INDEX2S($1,{i})},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -312,6 +312,24 @@ __{}define({__INFO},__COMPILE_INFO{}(m))
     push DE             ; 1:11      __INFO   ( -- $2 )
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id loop
+dnl #   $2 i,j,k
+define({__ASM_INDEX2R},{dnl
+__{}define({__INFO},__COMPILE_INFO{}(r))
+                        ;           __INFO   ( -- $2 ){}dnl
+__{}__ASM_TOKEN_PUSH_RPICK(0)}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id loop
+dnl #   $2 i,j,k
+define({__ASM_INDEX2S},{dnl
+__{}define({__INFO},__COMPILE_INFO{}(s))
+                        ;           __INFO   ( -- $2 ){}dnl
+__{}__ASM_TOKEN_PUSH_PICK(0)}){}dnl
 dnl
 dnl
 dnl
