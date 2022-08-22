@@ -1292,10 +1292,10 @@ __{}    ex   DE, HL         ; 1:4       $1 pick
 __{}    pop  DE             ; 1:10      $1 pick},
 {dnl
 __{}ifelse(dnl
-__{}eval($1),{0},{DUP},
-__{}eval($1),{1},{OVER},
-__{}eval($1),{2},{_2_PICK},
-__{}eval($1),{3},{_3_PICK},
+__{}eval($1),{0},{__ASM_TOKEN_DUP},
+__{}eval($1),{1},{__ASM_TOKEN_OVER},
+__{}eval($1),{2},{__ASM_TOKEN_2_PICK},
+__{}eval($1),{3},{__ASM_TOKEN_3_PICK},
 __{}{
 __{}__{}                       ;[10:60]     $1 pick
 __{}__{}    push DE             ; 1:11      $1 pick
