@@ -256,23 +256,37 @@ dnl # 5 0 do i .     loop --> 0 1 2 3 4
 dnl # 5 0 do i . +1 +loop --> 0 1 2 3 4
 define({__ASM_TOKEN_MLOOP_I8},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
+ifelse(__GET_LOOP_END($1),{},{dnl
 idx{}$1 EQU $+1          ;[20:78/57] __INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     inc  BC             ; 1:6       __INFO   index++
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
     ld    A, C          ; 1:4       __INFO   lo new index
 stp_lo{}$1 EQU $+1       ;           __INFO
-__{}ifelse(__GET_LOOP_END($1),{},{dnl
-__{}    xor  0x00           ; 2:7       __INFO   lo stop},
-{dnl
-__{}    xor  format({%-15s},low __GET_LOOP_END($1)); 2:7       __INFO   lo stop})
+    xor  0x00           ; 2:7       __INFO   lo stop
     jp   nz, do{}$1      ; 3:10      __INFO
     ld    A, B          ; 1:4       __INFO   hi new index
 stp_hi{}$1 EQU $+1       ;           __INFO
-__{}ifelse(__GET_LOOP_END($1),{},{dnl
-__{}    xor  0x00           ; 2:7       __INFO   hi stop},
-__{}{dnl
-__{}    xor  format({%-15s},high __GET_LOOP_END($1)); 2:7       __INFO   hi stop})
+    xor  0x00           ; 2:7       __INFO   hi stop},
+{dnl
+define({_TMP_INFO},__INFO){}dnl
+define({_TMP_STACK_INFO},__INFO{   }( index -- )   stop=__GET_LOOP_END($1)){}dnl
+__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),3,10,do{}$1,0){}dnl
+define({__TEMP},_TMP_J1+4*_TMP_BEST_B+46){}dnl
+__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,8,36,0,0){}dnl
+ifelse(eval(__TEMP<=_TMP_J1+4*_TMP_BEST_B),{1},{
+__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),3,10,do{}$1,0){}dnl
+idx{}$1 EQU $+1          ;[8:36]     __INFO
+    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+    inc  BC             ; 1:6       __INFO   index++
+    ld  (idx{}$1), BC    ; 4:20      __INFO   save index
+__{}_TMP_BEST_CODE},
+{
+idx{}$1 EQU $+1          ;[3:10]     __INFO
+    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}_TMP_BEST_CODE
+    inc  BC             ; 1:6       __INFO   index++
+    ld  (idx{}$1), BC    ; 4:20      __INFO   save index})})
     jp   nz, do{}$1      ; 3:10      __INFO
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO}){}dnl
@@ -282,23 +296,37 @@ dnl # ( -- )
 dnl # 0 5 do i . -1 +loop --> 5 4 3 2 1 0
 define({__ASM_TOKEN_SUB1_ADDMLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
+ifelse(__GET_LOOP_END($1),{},{dnl
 idx{}$1 EQU $+1          ;[20:78/57] __INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     dec  BC             ; 1:6       __INFO   index--
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
     ld    A, C          ; 1:4       __INFO   lo new index
 stp_lo{}$1 EQU $+1       ;           __INFO
-__{}ifelse(__GET_LOOP_END($1),{},{dnl
-__{}    xor  0xFF           ; 2:7       __INFO   lo stop-1},
-{dnl
-__{}    xor  format({%-15s},low __GET_LOOP_END($1)-1); 2:7       __INFO   lo stop-1})
+    xor  0xFF           ; 2:7       __INFO   lo stop-1
     jp   nz, do{}$1      ; 3:10      __INFO
     ld    A, B          ; 1:4       __INFO   hi new index
 stp_hi{}$1 EQU $+1       ;           __INFO
-__{}ifelse(__GET_LOOP_END($1),{},{dnl
-__{}    xor  0xFF           ; 2:7       __INFO   hi stop-1},
-__{}{dnl
-__{}    xor  format({%-15s},high __GET_LOOP_END($1)-1); 2:7       __INFO   hi stop-1})
+    xor  0xFF           ; 2:7       __INFO   hi stop-1},
+{dnl
+define({_TMP_INFO},__INFO){}dnl
+define({_TMP_STACK_INFO},__INFO{   }( index -- )   stop=__GET_LOOP_END($1)){}dnl
+__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
+define({__TEMP},_TMP_J1+4*_TMP_BEST_B+46){}dnl
+__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,36,0,0){}dnl
+ifelse(eval(__TEMP<=_TMP_J1+4*_TMP_BEST_B),{1},{
+__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
+idx{}$1 EQU $+1          ;[8:36]     __INFO
+    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+    dec  BC             ; 1:6       __INFO   index--
+    ld  (idx{}$1), BC    ; 4:20      __INFO   save index
+__{}_TMP_BEST_CODE},
+{
+idx{}$1 EQU $+1          ;[3:10]     __INFO
+    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}_TMP_BEST_CODE
+    dec  BC             ; 1:6       __INFO   index--
+    ld  (idx{}$1), BC    ; 4:20      __INFO   save index})})
     jp   nz, do{}$1      ; 3:10      __INFO
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO}){}dnl

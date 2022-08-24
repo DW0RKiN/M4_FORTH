@@ -24,10 +24,15 @@ __{}  .error {$0}($@): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}define({__INFO},__COMPILE_INFO{}(s))
+__{}define({__INFO},__COMPILE_INFO{}(s)){}dnl
+__{}ifelse(__SAVE_EVAL(__GET_LOOP_END($1)),{0},
+{
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO},
+{
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO
-    add  HL, DE         ; 1:11      __INFO
+    add  HL, DE         ; 1:11      __INFO})
     jp    z, leave{}$1   ; 3:10      __INFO
 do{}$1:                  ;           __INFO   ( stop index -- stop index )}){}dnl
 }){}dnl
