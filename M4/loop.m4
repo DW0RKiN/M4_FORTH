@@ -89,7 +89,11 @@ dnl #__SHOW_LOOP($1){}dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{dnl
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_MDO_I8($1)},
+__{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:1},{dnl
+__{}__{}__{}__ASM_TOKEN_MDO_I8($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_MDO_D8($1)},
+__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_MDO_D8($1)},
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 dnl #__{}__{}__{}__ASM_TOKEN_FOR($1)},
@@ -110,13 +114,13 @@ __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SFOR($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1)){}dnl
+__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))){}dnl
 __{}__{}__{}__ASM_TOKEN_SFOR($1)},
 __{}__{}__GET_LOOP_END($1),{0},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1)){}dnl
+__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))){}dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1)){}dnl
+__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))){}dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1)){}dnl
@@ -145,7 +149,11 @@ dnl #__SHOW_LOOP($1){}dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{dnl
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_QMDO_I8($1)},
+__{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:1},{dnl
+__{}__{}__{}__ASM_TOKEN_QMDO_I8($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_QMDO_I8($1)},
+__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QMDO_D8($1)},
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 dnl #__{}__{}__{}__ASM_TOKEN_QFOR($1)},
@@ -166,13 +174,13 @@ __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1)){}dnl
+__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))){}dnl
 __{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
 __{}__{}__GET_LOOP_END($1),{0},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1)){}dnl
+__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))){}dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1)){}dnl
+__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))){}dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1)){}dnl
@@ -200,7 +208,11 @@ __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_MLOOP_I8($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDLOOP($1)},
+__{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:},{dnl
+__{}__{}__{}__ASM_TOKEN_ADDLOOP($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_PUSH_ADDLOOP($1)},
+__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDLOOP($1)},
 __{}__{}__GET_LOOP_STEP($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_XLOOP($1)},
@@ -224,7 +236,7 @@ __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SNEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
+__{}__{}__GET_LOOP_STEP($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_SLOOP($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDSLOOP($1)},
@@ -252,6 +264,8 @@ define({__ASM_TOKEN_PUSH_ADDLOOP},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{dnl
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_MLOOP_I8($1)},
+__{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:1},{dnl
+__{}__{}__{}__ASM_TOKEN_MLOOP_I8($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:2},{dnl
 __{}__{}__{}__ASM_TOKEN_2_ADDMLOOP($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:-1},{dnl
@@ -260,7 +274,11 @@ dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 dnl #__{}__{}__{}__ASM_TOKEN_NEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDMLOOP($1)},
+__{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:},{dnl
+__{}__{}__{}__ASM_TOKEN_ADDMLOOP($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_PUSH_ADDMLOOP($1)},
+__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDMLOOP($1)},
 __{}__{}__GET_LOOP_STEP($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_XLOOP($1)},
@@ -332,13 +350,19 @@ dnl
 define({__ASM_TOKEN_ADDLOOP},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{M:},{dnl
 __{}__{}__ASM_TOKEN_ADDMLOOP($1)},
+__{}__GET_LOOP_TYPE($1):__GET_LOOP_BEGIN($1),{M:},{dnl
+__{}__{}__ASM_TOKEN_ADDMLOOP($1)},
 __{}__GET_LOOP_TYPE($1),{M},{dnl
 __{}__{}__ASM_TOKEN_ADDXLOOP($1)},
-__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{R:},{dnl
+__{}__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{R:},{dnl
+__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
+__{}__GET_LOOP_TYPE($1):__GET_LOOP_BEGIN($1),{R:},{dnl
 __{}__{}__ASM_TOKEN_ADDRLOOP($1)},
 __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}__ASM_TOKEN_ADDRLOOP($1)},
-__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{S:},{dnl
+__{}__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{S:},{dnl
+__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
+__{}__GET_LOOP_TYPE($1):__GET_LOOP_BEGIN($1),{S:},{dnl
 __{}__{}__ASM_TOKEN_ADDSLOOP($1)},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
 __{}__{}__ASM_TOKEN_ADDSLOOP($1)},
