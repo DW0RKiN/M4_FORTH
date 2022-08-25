@@ -136,7 +136,7 @@ define({__ASM_TOKEN_PUSH_XRADDLOOP},{dnl
 ifelse($#,{0},{
 __{}  .error {$0}($@): Missing parameter!},
 $#,{1},{dnl
-__{}ifelse(__SAVE_EVAL(__GET_LOOP_STEP($1)),{1},{__ASM_TOKEN__XRLOOP($1)},
+__{}ifelse(__SAVE_EVAL(__GET_LOOP_STEP($1)),{1},{__ASM_TOKEN_XRLOOP($1)},
 __{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{-1},{__ASM_TOKEN_SUB1_XRADDLOOP($1)},
 __{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{2},{__ASM_TOKEN_2_XRADDLOOP($1)},
 __{}{define({__INFO},__COMPILE_INFO{}(xr))

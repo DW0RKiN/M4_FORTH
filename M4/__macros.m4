@@ -2466,7 +2466,7 @@ dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
 dnl #   _TMP_BEST_B       bytes
 dnl #   _TMP_BEST_C       clocks
 dnl #   _TMP_BEST_CODE    asm code
-dnl #   zero flag if const == DEHL
+dnl #   zero flag if const == HL
 dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
 define({__EQ_MAKE_BEST_CODE},{ifelse(__IS_MEM_REF($1),{1},{dnl
