@@ -890,7 +890,7 @@ __{}    xor   H             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
 __{}    jp    p, xdo{}$1     ; 3:10      __INFO
-                        ;24:114},
+                       ;[24:114]},
 __{}{fast},{small},{
 __{}    push DE             ; 1:11      __INFO
 __{}idx{}$1 EQU $+1          ;           __INFO
@@ -906,7 +906,7 @@ __{}    xor   H             ; 1:4       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO
 __{}    jp    p, xdo{}$1     ; 3:10      __INFO
-                        ;21:122},
+                       ;[21:122]},
 __{}{
 __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = index
@@ -925,7 +925,7 @@ __{}    xor   H             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
 __{}    jp    p, xdo{}$1     ; 3:10      __INFO
-                        ;26:113})
+                       ;[26:113]})
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO{}dnl
 }){}dnl

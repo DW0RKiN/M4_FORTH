@@ -84,7 +84,7 @@ __{}ifelse(__GET_LOOP_END($1),{},{dnl
 do{}$1:                  ;           __INFO},
 __{}__GET_LOOP_BEGIN($1),{},{
 define({_TMP_INFO},__INFO){}dnl
-define({_TMP_STACK_INFO},__INFO{   }( index -- ) ( R: -- index )){}dnl
+define({_TMP_STACK_INFO},__INFO{   }( index -- ) ( R: -- index )  stop=__GET_LOOP_END($1)){}dnl
 __EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),16,31,7,34){}dnl
 __{}_TMP_BEST_CODE
     jr   nz, $+7        ; 2:7/12    __INFO

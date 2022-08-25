@@ -255,8 +255,8 @@ dnl # ( -- )
 dnl # 5 0 do i .     loop --> 0 1 2 3 4
 dnl # 5 0 do i . +1 +loop --> 0 1 2 3 4
 define({__ASM_TOKEN_MLOOP_I8},{dnl
-__{}define({__INFO},__COMPILE_INFO{(m)})
-ifelse(__GET_LOOP_END($1),{},{dnl
+__{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+ifelse(__GET_LOOP_END($1),{},{
 idx{}$1 EQU $+1          ;[20:78/57] __INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     inc  BC             ; 1:6       __INFO   index++

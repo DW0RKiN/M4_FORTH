@@ -101,13 +101,17 @@ dnl # __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 dnl # __{}__{}__{}__ASM_TOKEN_PUSH_FOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XDO($1)})},
+
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
-__{}__{}ifelse(__GET_LOOP_STEP($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_RDO($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_RFOR($1)},
+__{}__{}__GET_LOOP_STEP($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_RDO($1)},
+__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_RDO($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XRDO($1)})},
+
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)},
@@ -207,7 +211,7 @@ __{}popdef({LOOP_STACK}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LOOP},{dnl
-__{}ifelse(__GET_LOOP_TYPE($1),{M},{dnl
+__{}ifelse(__GET_LOOP_TYPE($1),{M},{dnl # ------- memory (no recursive) allocation -------
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 __{}__{}__{}__ASM_TOKEN_NEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
@@ -217,16 +221,16 @@ __{}__{}__{}__ASM_TOKEN_ADDLOOP($1)},
 __{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDLOOP($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH_ADDLOOP($1)},
+__{}__{}__{}__ASM_TOKEN_PUSH_ADDMLOOP($1)},
 __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH_ADDLOOP($1)},
+__{}__{}__{}__ASM_TOKEN_PUSH_ADDMLOOP($1)},
 __{}__{}__GET_LOOP_STEP($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_XLOOP($1)},
 __{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDXLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDXLOOP($1)})},
-__{}__GET_LOOP_TYPE($1),{R},{dnl
+__{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 __{}__{}__{}__ASM_TOKEN_RNEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
@@ -241,7 +245,8 @@ __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDRLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_XRADDLOOP($1)})},
-__{}__GET_LOOP_TYPE($1),{S},{dnl
+
+__{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SNEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
@@ -395,8 +400,8 @@ __{}__ADD_TOKEN({__TOKEN_I},{i_}LOOP_STACK,LOOP_STACK){}dnl
 dnl
 define({__ASM_TOKEN_I},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{i})},
-__{}__GET_LOOP_TYPE($1),{R},{__ASM_INDEX2R($1,{i})},
-__{}__GET_LOOP_TYPE($1),{S},{__ASM_INDEX2S($1,{i})},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_INDEX2R($1,{i},0)},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_INDEX2S($1,{i},0)},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -414,19 +419,25 @@ dnl
 dnl # Input:
 dnl #   $1 id loop
 dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
 define({__ASM_INDEX2R},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(r))
-                        ;           __INFO   ( -- $2 ){}dnl
-__{}__ASM_TOKEN_PUSH_RPICK(0)}){}dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{}(r))
+                        ;           __COMPILE_INFO   ( -- $2 ){}dnl
+__{}__ASM_TOKEN_PUSH_RPICK($3)}){}dnl
 dnl
 dnl
 dnl # Input:
 dnl #   $1 id loop
 dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
 define({__ASM_INDEX2S},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(s))
-                        ;           __INFO   ( -- $2 ){}dnl
-__{}__ASM_TOKEN_PUSH_PICK(0)}){}dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{}(s))
+                        ;           __COMPILE_INFO   ( -- $2 ){}dnl
+__{}__ASM_TOKEN_PUSH_PICK($3)}){}dnl
 dnl
 dnl
 dnl
@@ -588,24 +599,33 @@ dnl
 dnl # -----------------------------------------------------------------------
 dnl
 dnl
+define({__INFO_INDEX},{
+r: __TMP_R
+s: __TMP_S}){}dnl
+dnl
 dnl # ( -- j )
 dnl # hodnota indexu vnejsi smycky
 define({J},{dnl
-ifelse($#,{0},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}ifelse($#,{0},{dnl
+__{}__{}define({__ID_1},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_J},{j_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP})},
+__{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
+__{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_J},{j_}__ID_0,__ID_0,__ID_1)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_J},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{j})},
-__{}__GET_LOOP_TYPE($1),{R},{},
-__{}__GET_LOOP_TYPE($1),{S},{},
+__{}__GET_LOOP_TYPE($1),{R},{dnl
+__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2),{},{2},{1}),0)){}dnl
+__{}__{}__ASM_INDEX2R($1,{j},__TMP_R)},
+__{}__GET_LOOP_TYPE($1),{S},{dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},{2},{1}),0)){}dnl
+__{}__{}__ASM_INDEX2S($1,{j},__TMP_S)},
 __{}{
-__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
+__{}  .error {$0}($@): Unexpected type parameter!}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -694,24 +714,29 @@ dnl
 dnl # ( -- k )
 dnl # hodnota indexu druhe vnejsi smycky
 define({K},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}define({__ID_2},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}__{}define({__ID_1},LOOP_STACK){}dnl
 __{}__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_K},{k_}LOOP_STACK,LOOP_STACK){}dnl
-__{}__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}__{}popdef({__TEMP}){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
+__{}__{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
+__{}__{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
+__{}__{}pushdef({LOOP_STACK},__ID_2){}dnl
+__{}__ADD_TOKEN({__TOKEN_K},{k_}__ID_0,__ID_0,__ID_1,__ID_2){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_K},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{k})},
-__{}__GET_LOOP_TYPE($1),{R},{},
-__{}__GET_LOOP_TYPE($1),{S},{},
+__{}__GET_LOOP_TYPE($1),{R},{dnl
+__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
+__{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
+__{}__{}__ASM_INDEX2R($1,{k},__TMP_R)},
+__{}__GET_LOOP_TYPE($1),{S},{dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
+__{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
+__{}__{}__ASM_INDEX2S($1,{k},__TMP_S)},
 __{}{
-__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
-dnl
+__{}  .error {$0}($@): Unexpected type parameter!}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( x -- k )
