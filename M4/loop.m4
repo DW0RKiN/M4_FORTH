@@ -102,12 +102,10 @@ dnl # __{}__{}__{}__ASM_TOKEN_PUSH_FOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XDO($1)})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1),{},{dnl
+__{}__{}ifelse(__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_RDO($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_RFOR($1)},
-__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_RDO($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XRDO($1)})},
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
@@ -167,12 +165,10 @@ dnl # __{}__{}__{}__ASM_TOKEN_PUSH_QFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_QXDO($1)})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1),{},{dnl
+__{}__{}ifelse(__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QRDO($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_QRFOR($1)},
-__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_QRDO($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XRQDO($1)})},
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------

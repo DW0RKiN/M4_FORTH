@@ -29,12 +29,22 @@ __{}ifelse(__GET_LOOP_END($1),{},{
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
 do{}$1:                  ;           __INFO},
-{
+__{}__GET_LOOP_BEGIN($1),{},{
                         ;[9:65]     __INFO   ( index -- ) ( R: -- index )
     ex  (SP), HL        ; 1:19      __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   DE = index
+    dec  HL             ; 1:6       __INFO
+do{}$1:                  ;           __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    exx                 ; 1:4       __INFO},
+{
+                        ;[9:42]     __INFO   ( -- ) ( R: -- index )
+    exx                 ; 1:4       __INFO
+    ld   DE, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   DE = index
     dec  HL             ; 1:6       __INFO
 do{}$1:                  ;           __INFO
     ld  (HL),D          ; 1:7       __INFO
@@ -72,9 +82,41 @@ __{}ifelse(__GET_LOOP_END($1),{},{dnl
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO   ( stop index -- ) R: ( -- stop index )
 do{}$1:                  ;           __INFO},
-{
+__{}__GET_LOOP_BEGIN($1),{},{
+define({_TMP_INFO},__INFO){}dnl
+define({_TMP_STACK_INFO},__INFO{   }( index -- ) ( R: -- index )){}dnl
+__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),16,31,7,34){}dnl
+__{}_TMP_BEST_CODE
+    jr   nz, $+7        ; 2:7/12    __INFO
+    pop  HL             ; 1:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    jp   exit{}$1        ; 3:10      __INFO
+    ex  (SP), HL        ; 1:19      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   DE = index
+    dec  HL             ; 1:6       __INFO
 do{}$1:                  ;           __INFO
-    exx                 ; 1:4       __INFO})}){}dnl
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    exx                 ; 1:4       __INFO},
+__IS_NUM(__GET_LOOP_BEGIN($1)):__HEX_HL(__GET_LOOP_BEGIN($1)),1:__HEX_HL(__GET_LOOP_END($1)),{
+                        ;[5:18]     __INFO   ( -- ) ( R: -- index )
+    jp   exit{}$1        ; 3:10      __INFO
+do{}$1:                  ;           __INFO
+    dec   L             ; 1:4       __INFO
+    exx                 ; 1:4       __INFO},
+{
+                        ;[9:42]     __INFO   ( -- ) ( R: -- index )
+    exx                 ; 1:4       __INFO
+    ld   DE, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   DE = index
+    dec  HL             ; 1:6       __INFO
+do{}$1:                  ;           __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    exx                 ; 1:4       __INFO}))}){}dnl
 dnl
 dnl
 dnl
