@@ -557,252 +557,24 @@ __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    ld  (HL),E          ; 1:7       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO   ( step -- ) R:( stop index -- stop index+step )},
-__{}__IS_NUM(__GET_LOOP_END($1)),0,{
-__{}dnl #                      ;[25:144+22=166]
-__{}__{}                       ;[25:144]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    ld   BC, format({%-11s},-(__GET_LOOP_END($1))); 3:10      __INFO   BC = -stop
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= -stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC =  step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_END($1)); 3:10      __INFO   BC =  stop
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)),0,{
-__{}dnl #                      ;[17:102+22=124]
-__{}__{}                       ;[17:102]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)),256,{
-__{}dnl #                      ;[19:110+22=132]
-__{}__{}                       ;[19:110]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    dec  H              ; 1:4       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    inc  H              ; 1:4       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)-256),0,{
-__{}dnl #                      ;[19:110+22=132]
-__{}__{}                       ;[19:110]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    inc  H              ; 1:4       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    dec  H              ; 1:4       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)),1,{
-__{}dnl #                      ;[19:114+22=136]
-__{}__{}                       ;[19:114]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    dec  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)+1),0,{
-__{}dnl #                      ;[19:114+22=136]
-__{}__{}                       ;[19:114]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    inc  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)),255,{
-__{}dnl #                      ;[21:122+22=144]
-__{}__{}                       ;[21:122]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    dec  H              ; 1:4       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    inc  H              ; 1:4       __INFO
-__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)+255),0,{
-__{}dnl #                      ;[21:122+22=144]
-__{}__{}                       ;[21:122]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    inc  H              ; 1:4       __INFO
-__{}__{}    dec  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    dec  H              ; 1:4       __INFO
-__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)),257,{
-__{}dnl #                      ;[21:122+22=144]
-__{}__{}                       ;[21:122]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    dec  HL             ; 1:6       __INFO
-__{}__{}    dec  H              ; 1:4       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    inc  H              ; 1:4       __INFO
-__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)+257),0,{
-__{}dnl #                      ;[21:122+22=144]
-__{}__{}                       ;[21:122]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    inc  H              ; 1:4       __INFO
-__{}__{}    inc  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    dec  H              ; 1:4       __INFO
-__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)),2,{
-__{}dnl #                      ;[21:126+22=148]
-__{}__{}                       ;[21:126]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    dec  HL             ; 1:6       __INFO
-__{}__{}    dec  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__SAVE_EVAL(__GET_LOOP_END($1)+2),0,{
-__{}dnl #                      ;[21:126+22=148]
-__{}__{}                       ;[21:126]    __INFO
-__{}__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    inc  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    pop  BC             ; 1:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    dec  HL             ; 1:6       __INFO
-__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
 __{}{
-__{}dnl #                      ;[25:144+22=166]
-__{}__{}                       ;[25:144]    __INFO
+__{}dnl #                      ;[25:121+22=143]
+__{}__{}__ADD_HL_CONST(-(__GET_LOOP_END(}$1{)),{BC = -stop = -(__GET_LOOP_END(}$1{))},{HL+= -stop = index-stop}){}dnl
+__{}__{}                       ;[eval(17+2*__BYTES):eval(102+2*__CLOCKS)]    __INFO
 __{}__{}    ex  (SP),HL         ; 1:19      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    ld   BC, __HEX_HL(-(__GET_LOOP_END($1)))     ; 3:10      __INFO   BC = -stop = -(__GET_LOOP_END($1))
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= -stop = index-stop
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
+__{}__{}__CODE
 __{}__{}    pop  BC             ; 1:10      __INFO   BC =  step
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    ld   BC, __HEX_HL(__GET_LOOP_END($1))     ; 3:10      __INFO   BC =  stop = __GET_LOOP_END($1)
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  stop = index+step
+__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit{}dnl
+__{}__{}__ADD_HL_CONST(__GET_LOOP_END(}$1{),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
+__{}__{}__CODE
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
 __{}leave{}$1:               ;           __INFO
@@ -852,20 +624,20 @@ __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO   ( -- ) R:( stop index -- stop index+__GET_LOOP_STEP($1) )},
 __{}{
 __{}dnl #                      ;[25:121+22=143]
-__{}__{}                       ;[25:121]    __INFO
+__{}__{}__ADD_HL_CONST(-(__GET_LOOP_END(}$1{)),{BC = -stop = -(__GET_LOOP_END(}$1{))},{HL+= -stop = index-stop}){}dnl
+__{}__{}                       ;[eval(17+2*__BYTES):eval(79+2*__CLOCKS)]    __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.
-__{}__{}    ld   BC, __HEX_HL(-(__GET_LOOP_END($1)))     ; 3:10      __INFO   BC = -stop = -(__GET_LOOP_END($1))
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= -stop = index-stop
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
+__{}__{}__CODE
 __{}__{}    ld   BC, __HEX_HL(__GET_LOOP_STEP($1))     ; 3:10      __INFO   BC =  step = __GET_LOOP_STEP($1)
 __{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, DE         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}    ld   BC, __HEX_HL(__GET_LOOP_END($1))     ; 3:10      __INFO   BC =  stop = __GET_LOOP_END($1)
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  stop = index+step
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
+__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit{}dnl
+__{}__{}__ADD_HL_CONST(__GET_LOOP_END(}$1{),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
+__{}__{}__CODE
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
 __{}leave{}$1:               ;           __INFO
