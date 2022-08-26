@@ -68,7 +68,7 @@ __{}__{}                                 ;           unloop_{}$1}){}dnl
 __{}    ld   BC, format({%-11s},$2); 3:10      xdo_xi($1,$2) LOOP_STACK
 __{}do{}$1{}save:              ;           xdo_xi($1,$2) LOOP_STACK
 __{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      xdo_xi($1,$2) LOOP_STACK
-__{}xdo{}$1:                 ;           xdo_xi($1,$2) LOOP_STACK
+__{}do{}$1:                  ;           xdo_xi($1,$2) LOOP_STACK
 __{}    push DE             ; 1:11      xdo_xi($1,$2) LOOP_STACK
 __{}    ex   DE, HL         ; 1:4       xdo_xi($1,$2) LOOP_STACK
 __{}    ld    H, B          ; 1:4       xdo_xi($1,$2) LOOP_STACK
@@ -94,7 +94,7 @@ __{}__{}                                 ;           unloop_{}$1}){}dnl
 __{}    ld   BC, format({%-11s},$2); 3:10      xdo_drop_xi($1,$2) LOOP_STACK
 __{}do{}$1{}save:              ;           xdo_drop_xi($1,$2) LOOP_STACK
 __{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      xdo_drop_xi($1,$2) LOOP_STACK
-__{}xdo{}$1:                 ;           xdo_drop_xi($1,$2) LOOP_STACK
+__{}do{}$1:                  ;           xdo_drop_xi($1,$2) LOOP_STACK
 __{}    ld    H, B          ; 1:4       xdo_drop_xi($1,$2) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_drop_xi($1,$2) LOOP_STACK})dnl
 dnl
@@ -118,7 +118,7 @@ __{}__{}                                 ;           unloop_{}$1}){}dnl
 __{}    ld   BC, format({%-11s},$2); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}do{}$1{}save:              ;           xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      xdo_push_xi($1,$2,$3) LOOP_STACK
-__{}xdo{}$1:                 ;           xdo_push_xi($1,$2,$3) LOOP_STACK
+__{}do{}$1:                  ;           xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push DE             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push HL             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    ld   DE, format({%-11s},$3); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK
@@ -559,7 +559,7 @@ __{}    nop                 ; 1:4       __INFO   Contains a zero value because i
 __{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   A = index+step
 __{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
 __{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, xdo{}$1     ; 3:10      __INFO},
+__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 eval((0xC600 <= (__GET_LOOP_BEGIN($1) & 0xFFFF)) && ((__GET_LOOP_BEGIN($1) & 0xFFFF) < (__GET_LOOP_END($1) & 0xFFFF)) && ((__GET_LOOP_END($1) & 0xFFFF) < 0xC700)),{1},{
 __{}                        ;[12:44]    __INFO   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run _TEMP_X{}x
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
@@ -567,7 +567,7 @@ __{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_L
 __{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   First byte contains a 0xC6 value because idx always points to a 16-bit index.
 __{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
 __{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, xdo{}$1     ; 3:10      __INFO},
+__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 eval(__GET_LOOP_STEP($1) & 0xFF),{0},{
 __{}                        ;[14:51]    __INFO   variant +X.C: positive step = n*256, run _TEMP_X{}x
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
@@ -576,7 +576,7 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    add   A, __HEX_H(__GET_LOOP_STEP($1))       ; 2:7       __INFO   hi(step)
 __{}    ld  (idx{}$1+1),A    ; 3:13      __INFO   save index
 __{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}    jp   nz, xdo{}$1     ; 3:10      __INFO},
+__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 eval((__GET_LOOP_END($1)==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0)),{1},{
 __{}                        ;[14:55/49] __INFO   variant +X.D: positive step 3..255 and stop 0, run _TEMP_X{}x
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
@@ -817,9 +817,9 @@ __{}    ld    H, A          ; 1:4       __INFO   HL = (stop-1)-(index+step)
 __{}    add  HL, BC         ; 1:11      __INFO   HL = (stop-1)-index
 __{}    pop  HL             ; 1:10      __INFO
 __{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jp   nc, xdo{}$1     ; 3:10      __INFO   positive step
+__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step
 __{}  else
-__{}    jp    c, xdo{}$1     ; 3:10      __INFO   negative step
+__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step
 __{}  endif
 __{}leave{}$1:               ;           __INFO
 __{}exit{}$1:                ;           __INFO{}dnl
@@ -829,10 +829,6 @@ dnl
 dnl
 dnl # step +loop
 dnl # ( -- )
-define({PUSH_ADDXLOOP},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_ADDXLOOP},{push_addxloop},$@){}dnl
-}){}dnl
-dnl
 define({__ASM_TOKEN_PUSH_ADDXLOOP},{dnl
 __{}define({__INFO},{push_addxloop}){}dnl
 ifelse($1,{},{
@@ -860,10 +856,6 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({ADDXLOOP},{dnl
-__{}__ADD_TOKEN({__TOKEN_ADDXLOOP},{addxloop},$@){}dnl
-}){}dnl
-dnl
 define({__ASM_TOKEN_ADDXLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(xm))
 ifelse({fast},{slow},{
@@ -889,7 +881,7 @@ __{}    add  HL, BC         ; 1:11      __INFO   HL = stop-index
 __{}    xor   H             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, xdo{}$1     ; 3:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO
                        ;[24:114]},
 __{}{fast},{small},{
 __{}    push DE             ; 1:11      __INFO
@@ -905,7 +897,7 @@ __{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop
 __{}    xor   H             ; 1:4       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, xdo{}$1     ; 3:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO
                        ;[21:122]},
 __{}{
 __{}idx{}$1 EQU $+1          ;           __INFO
@@ -924,7 +916,7 @@ __{}    sbc   A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   A = 
 __{}    xor   H             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, xdo{}$1     ; 3:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO
                        ;[26:113]})
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO{}dnl
