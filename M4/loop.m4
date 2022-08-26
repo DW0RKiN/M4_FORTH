@@ -50,6 +50,9 @@ __{}__{}                        ;           unloop_{}$1(m)},
 __{}__GET_LOOP_TYPE($1)-__SAVE_EVAL(__GET_LOOP_END($1)),{S-0},{
 __{}__{}    ex   DE, HL         ; 1:4       unloop_{}$1(s)   ( i -- )
 __{}__{}    pop  DE             ; 1:10      unloop_{}$1(s)},
+__{}__GET_LOOP_TYPE($1)-__SAVE_EVAL(__GET_LOOP_END($1)),{S-1},{
+__{}__{}    ex   DE, HL         ; 1:4       unloop_{}$1(s)   ( i -- )
+__{}__{}    pop  DE             ; 1:10      unloop_{}$1(s)},
 __{}__GET_LOOP_TYPE($1),{S},{
 __{}__{}    pop  HL             ; 1:10      unloop_{}$1(s)   ( stop_i i -- )
 __{}__{}    pop  DE             ; 1:10      unloop_{}$1(s)},
@@ -118,20 +121,16 @@ __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SFOR($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}){}dnl
 __{}__{}__{}__ASM_TOKEN_SFOR($1)},
 __{}__{}__GET_LOOP_END($1),{0},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}){}dnl
+__{}__{}__{}__ASM_TOKEN_SDO($1)},
+__{}__{}__GET_LOOP_END($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}){}dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_END($1),{},,{__ASM_TOKEN_PUSH_SWAP(__GET_LOOP_END($1))}){}dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)},
 __{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1)){}dnl
-dnl #__{}__{}__{}__SET_LOOP_END($1,{}){}dnl
 __{}__{}__{}__ASM_TOKEN_SDO($1)})},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
@@ -181,20 +180,17 @@ __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 __{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}){}dnl
 __{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
 __{}__{}__GET_LOOP_END($1),{0},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}){}dnl
+__{}__{}__{}__ASM_TOKEN_QSDO($1)},
+__{}__{}__GET_LOOP_END($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}){}dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}ifelse(__GET_LOOP_END($1),{},,{__ASM_TOKEN_PUSH_SWAP(__GET_LOOP_END($1))}){}dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)},
 __{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1)){}dnl
-dnl #__{}__{}__{}__SET_LOOP_END($1,{}){}dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)})},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
@@ -249,14 +245,12 @@ __{}__{}__{}__ASM_TOKEN_PUSH_XRADDLOOP($1)})},
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SNEXT($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
+__{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
 __{}__{}__GET_LOOP_STEP($1),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_SLOOP($1)},
-__{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH_ADDSLOOP($1)},
 __{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_X_ADDSLOOP($1)})},
+__{}__{}__{}__ASM_TOKEN_PUSH_ADDSLOOP($1)})},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -335,20 +329,14 @@ __{}__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_XRADDLOOP($1)})},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}ifelse(__GET_LOOP_STEP($1),{1},{dnl
-__{}__{}__{}__ASM_TOKEN_SLOOP($1)},
-__{}__{}__GET_LOOP_STEP($1),{2},{dnl
-__{}__{}__{}__ASM_TOKEN_2_ADDSLOOP($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:-1},{dnl
-__{}__{}__{}__ASM_TOKEN_SUB1_ADDSLOOP($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
+__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SNEXT($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
+__{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
-__{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_PUSH_ADDSLOOP($1)},
+__{}__{}__GET_LOOP_STEP($1),{1},{dnl
+__{}__{}__{}__ASM_TOKEN_SLOOP($1)},
 __{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_X_ADDSLOOP($1)})},
+__{}__{}__{}__ASM_TOKEN_PUSH_ADDSLOOP($1)})},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter! __SHOW_LOOP($1)})}){}dnl
 dnl
