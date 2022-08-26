@@ -699,7 +699,9 @@ __{}__{}__{}__LAST_TOKEN_NAME-$1,{__TOKEN_ROT-__TOKEN_DROP},{__SET_TOKEN({__TOKE
             __LAST_TOKEN_NAME-$1,{__TOKEN_ROT_DROP-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_NROT_NIP},__LAST_TOKEN_INFO{ }$2)},
 
 dnl # S...
-__{}__{}__{}__LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_IF},{__SET_TOKEN({__TOKEN_SWAP_IF},__LAST_TOKEN_INFO{ }$2)},
+__{}__{}__{}__LAST_TOKEN_NAME-$1,{__TOKEN_SPACE-__TOKEN_DOT},{__SET_TOKEN({__TOKEN_SPACE_DOT},__LAST_TOKEN_INFO{ }$2)},
+
+            __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_IF},{__SET_TOKEN({__TOKEN_SWAP_IF},__LAST_TOKEN_INFO{ }$2)},
 
             __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_SWAP_PUSH},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
             __LAST_TOKEN_NAME-$1,{__TOKEN_SWAP-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_NIP},__LAST_TOKEN_INFO{ }$2)},
@@ -1525,7 +1527,7 @@ __{}__{}__{}define({__CLOCKS},10){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__PRICE},eval(__CLOCKS+4*__BYTES))},
 
-__{}__{}__HEX_HL($1),{0x00FF},{dnl # 257
+__{}__{}__HEX_HL($1),{0x0101},{dnl # 257
 __{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    inc  H              ; 1:4       __INFO
 __{}__{}__{}__{}    inc  HL             ; 1:6       __INFO   $3}){}dnl
@@ -1533,7 +1535,7 @@ __{}__{}__{}define({__CLOCKS},10){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__PRICE},eval(__CLOCKS+4*__BYTES))},
 
-__{}__{}__HEX_HL($1),{0xFF01},{dnl # -257
+__{}__{}__HEX_HL($1),{0xFEFF},{dnl # -257
 __{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    dec  H              ; 1:4       __INFO
 __{}__{}__{}__{}    dec  HL             ; 1:6       __INFO   $3}){}dnl
