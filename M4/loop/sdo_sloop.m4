@@ -156,7 +156,7 @@ __{}ifelse(__SAVE_EVAL(__GET_LOOP_END($1)),{0},
     jp    p, do{}$1      ; 3:10      __INFO},
 __SAVE_EVAL(__GET_LOOP_END($1)),{1},
 {
-    inc  HL             ; 1:6       __INFO   
+    inc  HL             ; 1:6       __INFO
     ld    A, L          ; 1:4       __INFO
     and 0xFE            ; 2:7       __INFO
     or    H             ; 1:4       __INFO   0 or 1 --> zero flag
