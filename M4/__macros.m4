@@ -423,6 +423,13 @@ __{}__{}__{}__LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_CM
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_ADDLOOP},           {__SET_LOOP_STEP(LOOP_STACK,__LAST_TOKEN_ARRAY){}__SET_TOKEN({__TOKEN_PUSH_ADDLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
 
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_EMIT},              {__SET_TOKEN({__TOKEN_PUSH_EMIT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_FETCH},             {__SET_TOKEN({__TOKEN_PUSH_FETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH-__TOKEN_1ADD},        {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_1ADD-__TOKEN_PUSH},   {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_1ADD_PUSH-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_FOR},               {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_1){}__SET_TOKEN({__TOKEN_PUSH_FOR},__LAST_TOKEN_INFO{ }$2,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_QFOR},              {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_1){}__SET_TOKEN({__TOKEN_PUSH_QFOR},__LAST_TOKEN_INFO{ }$2,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FOR-__TOKEN_I},             {__SET_TOKEN({__TOKEN_PUSH_FOR_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},

@@ -2122,6 +2122,85 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 dnl
+dnl # addr @ 1+
+dnl # ( -- x )
+define({PUSH_FETCH_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_1ADD},{$1 @ 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_1ADD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO
+    inc  HL             ; 1:6       __INFO})}){}dnl
+dnl
+dnl
+dnl
+dnl # addr @ 1+ number
+dnl # ( -- x2 x1 )  x2 = (addr)+1
+define({PUSH_FETCH_1ADD_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},{$1 @ 1+ $2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_1ADD_PUSH},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+$2,{},{
+__{}  .error {$0}(): Missing second parameter!},
+__{}eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld   DE,format({%-12s},($1)); 4:20      __INFO
+    inc  DE             ; 1:6       __INFO
+    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      __INFO{}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # addr1 @ 1+ addr2 !
+dnl # ( -- )
+define({PUSH_FETCH_1ADD_PUSH_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},{$1 @ 1+ $2 !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+$2,{},{
+__{}  .error {$0}(): Missing second parameter!},
+__{}eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(_TYP_SINGLE,{fast},{
+                       ;[12:59/40]  __INFO
+    ld   BC,format({%-12s},$1); 3:10      __INFO
+    ld    A,(BC)        ; 1:7       __INFO
+    inc   A             ; 1:4       __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    jr   nz, $+6        ; 2:7/12    __INFO
+    inc  BC             ; 1:6       __INFO
+    ld    A,(BC)        ; 1:7       __INFO
+    inc   A             ; 1:4       __INFO
+    ld  (BC),A          ; 1:7       __INFO},
+{
+                       ;[ 9:46]     __INFO
+    ld   BC,format({%-12s},($1)); 4:20      __INFO
+    inc  BC             ; 1:6       __INFO
+    ld  format({%-16s},($1){,} BC); 4:20      __INFO}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # !
 dnl # ( x addr -- )
 dnl # store 16-bit number at addr

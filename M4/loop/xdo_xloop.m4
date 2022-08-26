@@ -841,17 +841,17 @@ __{}},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!
 __{}})dnl
-__{}ifelse(__IS_NUM($1),{0},{__ASM_TOKEN_X_ADDXLOOP($1)},{dnl
-__{}__{}ifelse(eval($1),{1},{
-__{}__{}__{}                        ;           push_addxloop($1) --> xloop LOOP_STACK{}dnl
+__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),{0},{__ASM_TOKEN_X_ADDXLOOP($1)},{dnl
+__{}__{}ifelse(eval(__GET_LOOP_STEP($1)),{1},{
+__{}__{}__{}                        ;           push_addxloop(__GET_LOOP_STEP($1)) --> xloop LOOP_STACK{}dnl
 __{}__{}__{}__ASM_TOKEN_XLOOP{}},
-__{}__{}eval($1),{-1},{dnl
+__{}__{}eval(__GET_LOOP_STEP($1)),{-1},{dnl
 __{}__{}__{}__ASM_TOKEN_SUB1_ADDXLOOP{}},
-__{}__{}eval($1),{2},{dnl
+__{}__{}eval(__GET_LOOP_STEP($1)),{2},{dnl
 __{}__{}__{}__ASM_TOKEN_ADD2_ADDXLOOP{}},
-__{}__{}eval(((($1) & 0xFFFF)+2) & 0xFFFF),{0},{dnl
+__{}__{}eval((((__GET_LOOP_STEP($1)) & 0xFFFF)+2) & 0xFFFF),{0},{dnl
 __{}__{}__{}__ASM_TOKEN_SUB2_ADDXLOOP{}},
-__{}__{}eval($1>0),{1},{dnl
+__{}__{}eval(__GET_LOOP_STEP($1)>0),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_POSITIVE_ADDXLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_NEGATIVE_ADDXLOOP($1)}){}dnl
