@@ -41,15 +41,11 @@ eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 {dnl
 __{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
-__{}ifelse(__IS_NUM(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_END($1)),1:__SAVE_EVAL(__GET_LOOP_BEGIN($1)),{
-__{}__{}    jp   exit{}$1        ; 3:10      __COMPILE_INFO
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
-__{}__IS_NUM(__GET_LOOP_END($1)):__IS_NUM(__GET_LOOP_BEGIN($1)):__SAVE_EVAL(__GET_LOOP_END($1)),{1:1:0},{dnl
-__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
-__{}__IS_NUM(__GET_LOOP_END($1)):__IS_NUM(__GET_LOOP_BEGIN($1)):__SAVE_EVAL(__GET_LOOP_END($1)),{1:1:1},{dnl
-__{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}ifelse(__IS_NUM(__GET_LOOP_END($1)):__IS_NUM(__GET_LOOP_BEGIN($1)),{1:1},{
+__{}__{}ifelse(eval(__GET_LOOP_END($1)),eval(__GET_LOOP_BEGIN($1)),{
+__{}__{}    jp   exit{}$1        ; 3:10      __COMPILE_INFO   ( stop index -- )
+__{}__{}do{}$1:                  ;           __COMPILE_INFO},
+__{}__{}{__ASM_TOKEN_SDO($1)})},
 __SAVE_EVAL(__GET_LOOP_END($1)),0,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
 __{}__{}    ld    A, H          ; 1:4       __COMPILE_INFO
@@ -83,19 +79,16 @@ __{}__{}    sbc  HL, DE         ; 2:15      __COMPILE_INFO
 __{}__{}    add  HL, DE         ; 1:11      __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
-__{}__IS_NUM(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_END($1)),1:__SAVE_EVAL(__GET_LOOP_BEGIN($1)),{
-__{}__{}    jp   exit{}$1        ; 3:10      __COMPILE_INFO
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
-__{}__IS_NUM(__GET_LOOP_END($1)):__IS_NUM(__GET_LOOP_BEGIN($1)),{1:1},{dnl
-__{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1))
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
+__{}__{}__GET_LOOP_END($1),__GET_LOOP_BEGIN($1),{
+__{}__{}    jp   exit{}$1        ; 3:10      __COMPILE_INFO   ( stop index -- )
+__{}__{}do{}$1:                  ;           __COMPILE_INFO},
 __{}{dnl
 __{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1))
 __{}__{}    or    A             ; 1:4       __COMPILE_INFO
 __{}__{}    sbc  HL, DE         ; 2:15      __COMPILE_INFO
 __{}__{}    add  HL, DE         ; 1:11      __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )}){}dnl
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( -- stop index )}){}dnl
 })}){}dnl
 dnl
 dnl
