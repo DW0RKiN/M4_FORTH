@@ -8,20 +8,20 @@ __{}__ADD_TOKEN({__TOKEN_SWAP},{swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP},{dnl
-__{}define({__INFO},{swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
-    ex   DE, HL         ; 1:4       swap ( b a -- a b )}){}dnl
+    ex   DE, HL         ; 1:4       __INFO   ( b a -- a b )}){}dnl
 dnl
 dnl
 dnl # ( b a -- a b a )
 define({SWAP_OVER},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP_OVER},{swap_over},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_OVER},{swap over},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_OVER},{dnl
-__{}define({__INFO},{swap_over}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
-    push HL             ; 1:11      swap_over ( b a -- a b a )}){}dnl
+    push HL             ; 1:11      __INFO   ( b a -- a b a )}){}dnl
 dnl
 dnl
 dnl # swap 3
@@ -31,13 +31,13 @@ __{}__ADD_TOKEN({__TOKEN_SWAP_PUSH},{swap $1},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_PUSH},{dnl
-__{}define({__INFO},{swap $1}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-    push HL             ; 1:11      swap $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      swap $1 ( b a -- a b $1 )}){}dnl
+    push HL             ; 1:11      __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO   ( b a -- a b $1 )}){}dnl
 dnl
 dnl
 dnl # 3 swap
@@ -47,43 +47,46 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_SWAP},{$1 swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_SWAP},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      __INFO
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO ( a -- $1 a )}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+__{}    push DE             ; 1:11      __INFO
+__{}    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO ( a -- $1 a )}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # swap drop 3 swap
 dnl # ( b a -- 3 a )
 define({SWAP_DROP_PUSH_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP_DROP_PUSH_SWAP},{swap_drop_push_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_DROP_PUSH_SWAP},{swap drop $1 swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_DROP_PUSH_SWAP},{dnl
-__{}define({__INFO},{swap_drop_push_swap}){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      swap drop $1 swap ( b a -- $1 a )}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+__{}    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO   ( b a -- $1 a )}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # nip 3 swap
 dnl # ( b a -- 3 a )
 define({NIP_PUSH_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_NIP_PUSH_SWAP},{nip_push_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NIP_PUSH_SWAP},{nip $1 swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_NIP_PUSH_SWAP},{dnl
-__{}define({__INFO},{nip_push_swap}){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      nip $1 swap ( b a -- $1 a )}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+__{}    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO   ( b a -- $1 a )}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( d c b a -- b a d c )
@@ -95,22 +98,22 @@ dnl
 define({__ASM_TOKEN_2SWAP},{dnl
 __{}define({__INFO},{2swap}){}dnl
 ifelse(TYP_2SWAP,{fast},{
-                        ;[7:56]     2swap ( d c b a -- b a d c ) # fast version can be changed with "define({TYP_2SWAP},{name})", name=default
-    ex   DE, HL         ; 1:4       2swap d c . a b
-    pop  BC             ; 1:10      2swap d   . a b     BC = c
-    ex  (SP), HL        ; 1:19      2swap b   . a d
-    ex   DE, HL         ; 1:4       2swap b   . d a
-    push HL             ; 1:11      2swap b a . d a
-    ld    L, C          ; 1:4       2swap
-    ld    H, B          ; 1:4       2swap b a . d c},
+                        ;[7:56]     __INFO   ( d c b a -- b a d c ) # fast version can be changed with "define({TYP_2SWAP},{name})", name=default
+    ex   DE, HL         ; 1:4       __INFO   d c . a b
+    pop  BC             ; 1:10      __INFO   d   . a b     BC = c
+    ex  (SP), HL        ; 1:19      __INFO   b   . a d
+    ex   DE, HL         ; 1:4       __INFO   b   . d a
+    push HL             ; 1:11      __INFO   b a . d a
+    ld    L, C          ; 1:4       __INFO
+    ld    H, B          ; 1:4       __INFO   b a . d c},
 {
-                        ;[6:67]     2swap ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
-    ex  (SP),HL         ; 1:19      2swap d a . b c
-    ex   DE, HL         ; 1:4       2swap d a . c b
-    pop  AF             ; 1:10      2swap d   . c b     AF = a
-    ex  (SP),HL         ; 1:19      2swap b   . c d
-    ex   DE, HL         ; 1:4       2swap b   . d c
-    push AF             ; 1:11      2swap b a . d c})}){}dnl
+                        ;[6:67]     __INFO   ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+    ex  (SP),HL         ; 1:19      __INFO   d a . b c
+    ex   DE, HL         ; 1:4       __INFO   d a . c b
+    pop  AF             ; 1:10      __INFO   d   . c b     AF = a
+    ex  (SP),HL         ; 1:19      __INFO   b   . c d
+    ex   DE, HL         ; 1:4       __INFO   b   . d c
+    push AF             ; 1:11      __INFO   b a . d c})}){}dnl
 dnl
 dnl
 dnl # ( a -- a a )
@@ -120,11 +123,10 @@ __{}__ADD_TOKEN({__TOKEN_DUP},{dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP},{dnl
-__{}define({__INFO},{dup}){}dnl
-
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO
+    ld    D, H          ; 1:4       __INFO
+    ld    E, L          ; 1:4       __INFO   ( a -- a a )}){}dnl
 dnl
 dnl
 dnl # ( a -- a a a )
@@ -134,30 +136,28 @@ __{}__ADD_TOKEN({__TOKEN_DUP_DUP},{dup_dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_DUP},{dnl
-__{}define({__INFO},{dup_dup}){}dnl
-
-    push DE             ; 1:11      dup dup ( a -- a a a )
-    push HL             ; 1:11      dup dup
-    ld    D, H          ; 1:4       dup dup
-    ld    E, L          ; 1:4       dup dup}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( a -- a a a )
+    push HL             ; 1:11      __INFO
+    ld    D, H          ; 1:4       __INFO
+    ld    E, L          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ?dup
 dnl # ( a -- a a ) or ( 0 -- 0 )
 dnl # vytvori kopii vrcholu zasobniku pokud je nenulovy
 define({QUESTIONDUP},{dnl
-__{}__ADD_TOKEN({__TOKEN_QUESTIONDUP},{questiondup},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_QUESTIONDUP},{?dup},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_QUESTIONDUP},{dnl
-__{}define({__INFO},{questiondup}){}dnl
-
-    ld    A, H          ; 1:4       ?dup
-    or    L             ; 1:4       ?dup
-    jr    z, $+5        ; 2:7/12    ?dup
-    push DE             ; 1:11      ?dup
-    ld    D, H          ; 1:4       ?dup
-    ld    E, L          ; 1:4       ?dup ( a -- 0 | a a )}){}dnl
+define({__ASM_TOKEN_QDUP},{dnl
+__{}define({__INFO},__COMPILE_INFO
+    ld    A, H          ; 1:4       __INFO   ( a -- 0 | a a )
+    or    L             ; 1:4       __INFO
+    jr    z, $+5        ; 2:7/12    __INFO   ( 0 -- 0 )
+    push DE             ; 1:11      __INFO   ( a -- a a )
+    ld    D, H          ; 1:4       __INFO
+    ld    E, L          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # 2dup
@@ -168,10 +168,9 @@ __{}__ADD_TOKEN({__TOKEN_2DUP},{2dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP},{dnl
-__{}define({__INFO},{2dup}){}dnl
-
-    push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup  ( b a -- b a b a )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO   ( b a -- b a b a )}){}dnl
 dnl
 dnl
 dnl # 3dup
@@ -476,11 +475,11 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
 dnl
 dnl
 define({DUP_PUSH_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP},{dup_push_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP},{dup $1 swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_SWAP},{dnl
-__{}define({__INFO},{dup_push_swap}){}dnl
+__{}define({__INFO},{dup $1 swap}){}dnl
 PUSH_OVER($1)}){}dnl
 dnl
 dnl
@@ -1265,7 +1264,7 @@ dnl
 define({__ASM_TOKEN_PUSH_PICK},{dnl
 __{}define({__INFO},{$1 pick}){}dnl
 ifelse($#,{0},{
-__{}  .error _push_pick(): Parameter is missing!},
+__{}  .error push_pick(): Parameter is missing!},
 __IS_MEM_REF($1),{1},{
 __{}    push DE             ; 1:11      $1 pick
 __{}    push HL             ; 1:11      $1 pick
