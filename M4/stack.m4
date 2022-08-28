@@ -1,6 +1,133 @@
 dnl ## Stack manipulation
 dnl
 dnl
+dnl
+dnl # ( -- a )
+dnl # push(a) ulozi na zasobnik nasledujici polozku
+define({PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
+dnl
+dnl
+dnl # ( -- b a)
+dnl # push2(b,a) ulozi na zasobnik nasledujici polozky
+define({PUSH2},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2},{$1 $2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl # HL first check
+__{}define({__TMP_HL_CLOCKS},22){}dnl
+__{}define({__TMP_HL_BYTES},2){}dnl
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
+__{}dnl
+__{}define({__TMP_DE_CLOCKS},22){}dnl
+__{}define({__TMP_DE_BYTES},2){}dnl
+__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
+__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
+__{}__LD_REG16({DE},$1){}dnl
+__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
+__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
+__{}dnl
+__{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
+__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __COMPILE_INFO
+__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
+__{}{dnl # HL first
+__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __COMPILE_INFO
+__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- c b a)
+dnl # push3(c,b,a) ulozi na zasobnik nasledujici polozky
+define({PUSH3},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3},{$1 $2 $3},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH3},{dnl
+__{}define({__INFO},{$1 $2 $3}){}dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=3),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{
+__{}    push DE             ; 1:11      __COMPILE_INFO   ( -- $1 $2 $3 )
+__{}    push HL             ; 1:11      __COMPILE_INFO{}dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
+__{}define({PUSH3_P1},__PRICE_16BIT){}dnl
+__{}__LD_REG16({HL},$3,{HL},$1){}dnl
+__{}define({PUSH3_P1},eval(PUSH3_P1+__PRICE_16BIT)){}dnl
+__{}define({PUSH3_P},PUSH3_P1){}dnl
+__{}define({PUSH3_X},1){}dnl
+__{}dnl
+__{}__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
+__{}define({PUSH3_P2},__PRICE_16BIT){}dnl
+__{}__LD_REG16({DE},$2,{DE},$1){}dnl
+__{}define({PUSH3_P2},eval(PUSH3_P2+__PRICE_16BIT)){}dnl
+__{}ifelse(eval(PUSH3_P>PUSH3_P2),{1},{dnl
+__{}__{}define({PUSH3_P},PUSH3_P2){}dnl
+__{}__{}define({PUSH3_X},2)}){}dnl
+__{}dnl
+__{}__LD_REG16({DE},$2,{DE},$1,{HL},$3){}dnl
+__{}__{}define({PUSH3_P3},eval(22+__PRICE_16BIT)){}dnl
+__{}ifelse(eval(PUSH3_P>22+__PRICE_16BIT),{1},{dnl
+__{}__{}define({PUSH3_P},PUSH3_P3){}dnl
+__{}__{}define({PUSH3_X},3)}){}dnl
+__{}dnl
+__{}__LD_REG16({HL},$3,{HL},$1,{DE},$2){}dnl
+__{}__{}define({PUSH3_P4},eval(22+__PRICE_16BIT)){}dnl
+__{}ifelse(eval(PUSH3_P>PUSH3_P4),{1},{dnl
+__{}__{}define({PUSH3_P},PUSH3_P4){}dnl
+__{}__{}define({PUSH3_X},4)}){}dnl
+__{}dnl # PUSH3_P1 PUSH3_P2 PUSH3_P3 PUSH3_P4 --> PUSH3_X
+__{}dnl ---- case PUSH3_X ----
+__{}ifelse(dnl
+__{}PUSH3_X,1,{__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16({HL},$3,{HL},$1)
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push HL             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}PUSH3_X,2,{__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16({DE},$2,{DE},$1)
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push DE             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}PUSH3_X,3,{__LD_REG16({DE},$2,{DE},$1,{HL},$3)
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push DE             ; 1:11      __COMPILE_INFO
+__{}__{}    ld   HL, format({%-11s},$3); 3:10      __COMPILE_INFO{}__CODE_16BIT},
+__{}{__LD_REG16({HL},$3,{HL},$1,{DE},$2)
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
+__{}__{}    push HL             ; 1:11      __COMPILE_INFO
+__{}__{}    ld   DE, format({%-11s},$2); 3:10      __COMPILE_INFO{}__CODE_16BIT}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # ( b a -- a b )
 dnl # prohodi vrchol zasobniku s druhou polozkou
 define({SWAP},{dnl
@@ -181,14 +308,13 @@ __{}__ADD_TOKEN({__TOKEN_3DUP},{3dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_3DUP},{dnl
-__{}define({__INFO},{3dup}){}dnl
-
-                        ;[5:54]     3dup   ( c b a -- c b a c b a )
-    pop  AF             ; 1:10      3dup   . . . . b a
-    push AF             ; 1:11      3dup   c . . . b a
-    push DE             ; 1:11      3dup   c b . . b a
-    push HL             ; 1:11      3dup   c b a . b a
-    push AF             ; 1:11      3dup   c b a c b a}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:54]     __INFO   ( c b a -- c b a c b a )
+    pop  AF             ; 1:10      __INFO   . . . . b a
+    push AF             ; 1:11      __INFO   c . . . b a
+    push DE             ; 1:11      __INFO   c b . . b a
+    push HL             ; 1:11      __INFO   c b a . b a
+    push AF             ; 1:11      __INFO   c b a c b a}){}dnl
 dnl
 dnl
 dnl # 4dup
@@ -201,17 +327,16 @@ __{}__ADD_TOKEN({__TOKEN_4DUP},{4dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP},{dnl
-__{}define({__INFO},{4dup}){}dnl
-
-                        ;[8:86]     4dup   ( d c b a -- d c b a d c b a )
-    pop  BC             ; 1:10      4dup
-    pop  AF             ; 1:10      4dup
-    push AF             ; 1:11      4dup
-    push BC             ; 1:11      4dup
-    push DE             ; 1:11      4dup
-    push HL             ; 1:11      4dup
-    push AF             ; 1:11      4dup
-    push BC             ; 1:11      4dup}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:86]     __INFO   ( d c b a -- d c b a d c b a )
+    pop  BC             ; 1:10      __INFO
+    pop  AF             ; 1:10      __INFO
+    push AF             ; 1:11      __INFO
+    push BC             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    push AF             ; 1:11      __INFO
+    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # 4dup drop
@@ -219,34 +344,34 @@ dnl # 3 pick 3 pick 3 pick
 dnl # 2over 2over drop
 dnl # ( d c b a  --  d c b a d c b )
 define({_4DUP_DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DROP},{4dup_drop},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DROP},{4dup drop},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DROP},{dnl
-__{}define({__INFO},{4dup_drop}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(_TYP_SINGLE,{small},{
-                        ;[9:98]     4dup drop   ( d c b a -- d c b a d c b )
-    ex  (SP),HL         ; 1:19      4dup drop   HL = c
-    pop  AF             ; 1:10      4dup drop   AF = a
-    pop  BC             ; 1:10      4dup drop   BC = d
-    push BC             ; 1:11      4dup drop
-    push HL             ; 1:11      4dup drop
-    push DE             ; 1:11      4dup drop
-    push AF             ; 1:11      4dup drop
-    push BC             ; 1:11      4dup drop
-    ex   DE, HL         ; 1:4       4dup drop},
+                        ;[9:98]     __INFO   ( d c b a -- d c b a d c b )
+    ex  (SP),HL         ; 1:19      __INFO   HL = c
+    pop  AF             ; 1:10      __INFO   AF = a
+    pop  BC             ; 1:10      __INFO   BC = d
+    push BC             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    push AF             ; 1:11      __INFO
+    push BC             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO},
 {
-                       ;[10:87]     4dup drop   ( d c b a -- d c b a d c b )
-    ex   DE, HL         ; 1:4       4dup drop
-    pop  BC             ; 1:10      4dup drop   BC = c
-    pop  AF             ; 1:10      4dup drop   AF = d
-    push AF             ; 1:11      4dup drop
-    push BC             ; 1:11      4dup drop
-    push HL             ; 1:11      4dup drop
-    push DE             ; 1:11      4dup drop
-    push AF             ; 1:11      4dup drop
-    ld    L, C          ; 1:4       4dup drop
-    ld    H, B          ; 1:4       4dup drop})}){}dnl
+                       ;[10:87]     __INFO   ( d c b a -- d c b a d c b )
+    ex   DE, HL         ; 1:4       __INFO
+    pop  BC             ; 1:10      __INFO   BC = c
+    pop  AF             ; 1:10      __INFO   AF = d
+    push AF             ; 1:11      __INFO
+    push BC             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    push AF             ; 1:11      __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    H, B          ; 1:4       __INFO})}){}dnl
 dnl
 dnl
 dnl # 5dup
@@ -258,24 +383,23 @@ __{}__ADD_TOKEN({__TOKEN_5DUP},{5dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_5DUP},{dnl
-__{}define({__INFO},{5dup}){}dnl
-
-                       ;[15:134]    5dup   ( e d c b a -- e d c b a e d c b a )
-    pop  BC             ; 1:10      5dup   e d . . . . . . b a
-    pop  AF             ; 1:10      5dup   e . . . . . . . b a
-    ex   AF, AF'        ; 1:4       5dup
-    pop  AF             ; 1:10      5dup   . . . . . . . . b a
-    push AF             ; 1:11      5dup   e . . . . . . . b a
-    ex   AF, AF'        ; 1:4       5dup
-    push AF             ; 1:11      5dup   e d . . . . . . b a
-    push BC             ; 1:11      5dup   e d c . . . . . b a
-    push DE             ; 1:11      5dup   e d c b . . . . b a
-    push HL             ; 1:11      5dup   e d c b a . . . b a
-    ex   AF, AF'        ; 1:4       5dup
-    push AF             ; 1:11      5dup   e d c b a e . . b a
-    ex   AF, AF'        ; 1:4       5dup
-    push AF             ; 1:11      5dup   e d c b a e d . b a
-    push BC             ; 1:11      5dup   e d c b a e d c b a}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[15:134]    __INFO   ( e d c b a -- e d c b a e d c b a )
+    pop  BC             ; 1:10      __INFO   e d . . . . . . b a
+    pop  AF             ; 1:10      __INFO   e . . . . . . . b a
+    ex   AF, AF'        ; 1:4       __INFO
+    pop  AF             ; 1:10      __INFO   . . . . . . . . b a
+    push AF             ; 1:11      __INFO   e . . . . . . . b a
+    ex   AF, AF'        ; 1:4       __INFO
+    push AF             ; 1:11      __INFO   e d . . . . . . b a
+    push BC             ; 1:11      __INFO   e d c . . . . . b a
+    push DE             ; 1:11      __INFO   e d c b . . . . b a
+    push HL             ; 1:11      __INFO   e d c b a . . . b a
+    ex   AF, AF'        ; 1:4       __INFO
+    push AF             ; 1:11      __INFO   e d c b a e . . b a
+    ex   AF, AF'        ; 1:4       __INFO
+    push AF             ; 1:11      __INFO   e d c b a e d . b a
+    push BC             ; 1:11      __INFO   e d c b a e d c b a}){}dnl
 dnl
 dnl
 dnl # 6dup
@@ -287,39 +411,39 @@ __{}__ADD_TOKEN({__TOKEN_6DUP},{6dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_6DUP},{dnl
-__{}define({__INFO},{6dup}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(_TYP_SINGLE,{small},{
-                       ;[14:440]    6dup   ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
-    ld    B, 0x06       ; 2:7       6dup   6x "5 pick"
-    push DE             ; 1:11      6dup
-    ex   DE, HL         ; 1:4       6dup
-    ld   HL, 0x0008     ; 3:10      6dup
-    add  HL, SP         ; 1:11      6dup
-    ld    A,(HL)        ; 1:7       6dup
-    inc  HL             ; 1:6       6dup
-    ld    H,(HL)        ; 1:7       6dup
-    ld    L, A          ; 1:4       6dup
-    djnz $-10           ; 2:8/13    6dup},
+                       ;[14:440]    __INFO   ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
+    ld    B, 0x06       ; 2:7       __INFO   6x "5 pick"
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, 0x0008     ; 3:10      __INFO
+    add  HL, SP         ; 1:11      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    djnz $-10           ; 2:8/13    __INFO},
 {
-                       ;[18:166]    6dup   ( e d c b a -- e d c b a e d c b a )
-    pop  BC             ; 1:10      6dup   f e d . . . . . . . b a
-    exx                 ; 1:4       6dup
-    pop  AF             ; 1:10      6dup   f e . . . . . . . . - -
-    pop  BC             ; 1:10      6dup   f . . . . . . . . . - -
-    pop  DE             ; 1:10      6dup   . . . . . . . . . . - -
-    push DE             ; 1:11      6dup   f . . . . . . . . . - -
-    push BC             ; 1:11      6dup   f e . . . . . . . . - -
-    push AF             ; 1:11      6dup   f e d . . . . . . . - -
-    exx                 ; 1:4       6dup
-    push BC             ; 1:11      6dup   f e d c . . . . . . b a
-    push DE             ; 1:11      6dup   f e d c b . . . . . b a
-    push HL             ; 1:11      6dup   f e d c b a . . . . b a
-    exx                 ; 1:4       6dup
-    push DE             ; 1:11      6dup   f e d c b a f . . . - -
-    push BC             ; 1:11      6dup   f e d c b a f e . . - -
-    push AF             ; 1:11      6dup   f e d c b a f e d . - -
-    exx                 ; 1:4       6dup
-    push BC             ; 1:11      6dup   f e d c b a f e d c b a})}){}dnl
+                       ;[18:166]    __INFO   ( e d c b a -- e d c b a e d c b a )
+    pop  BC             ; 1:10      __INFO   f e d . . . . . . . b a
+    exx                 ; 1:4       __INFO
+    pop  AF             ; 1:10      __INFO   f e . . . . . . . . - -
+    pop  BC             ; 1:10      __INFO   f . . . . . . . . . - -
+    pop  DE             ; 1:10      __INFO   . . . . . . . . . . - -
+    push DE             ; 1:11      __INFO   f . . . . . . . . . - -
+    push BC             ; 1:11      __INFO   f e . . . . . . . . - -
+    push AF             ; 1:11      __INFO   f e d . . . . . . . - -
+    exx                 ; 1:4       __INFO
+    push BC             ; 1:11      __INFO   f e d c . . . . . . b a
+    push DE             ; 1:11      __INFO   f e d c b . . . . . b a
+    push HL             ; 1:11      __INFO   f e d c b a . . . . b a
+    exx                 ; 1:4       __INFO
+    push DE             ; 1:11      __INFO   f e d c b a f . . . - -
+    push BC             ; 1:11      __INFO   f e d c b a f e . . - -
+    push AF             ; 1:11      __INFO   f e d c b a f e d . - -
+    exx                 ; 1:4       __INFO
+    push BC             ; 1:11      __INFO   f e d c b a f e d c b a})}){}dnl
 dnl
 dnl
 dnl # ( a -- )
@@ -329,22 +453,57 @@ __{}__ADD_TOKEN({__TOKEN_DROP},{drop},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DROP},{dnl
-__{}define({__INFO},{drop}){}dnl
-
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   ( a -- )}){}dnl
 dnl
 dnl
 dnl # ( b a -- b b )
 define({DROP_DUP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DROP_DUP},{drop_dup},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_DUP},{drop dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DROP_DUP},{dnl
-__{}define({__INFO},{drop_dup}){}dnl
-
-    ld   H, D           ; 1:4       drop_dup   ( b a -- b b )
-    ld   L, E           ; 1:4       drop_dup}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld   H, D           ; 1:4       __INFO   ( b a -- b b )
+    ld   L, E           ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # drop 50
+dnl # ( a -- 50 )
+dnl # zmeni hodnotu top
+define({DROP_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_PUSH},{drop $1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_PUSH},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop $1}){}dnl
+})
+dnl
+dnl
+dnl
+dnl # 2drop 50
+dnl # ( a -- 50 )
+dnl # zmeni hodnotu top
+define({_2DROP_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP_PUSH},{2drop $1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DROP_PUSH},{dnl
+__{}define({__INFO},{2drop $1}){}dnl
+ifelse($1,{},{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+    pop  DE             ; 1:10      2drop $1
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop $1}){}dnl
+dnl
 dnl
 dnl
 dnl # 2drop
@@ -882,164 +1041,6 @@ __{}define({__INFO},{n2rot}){}dnl
     ld    H, B          ; 1:4       n2rot   b a f e   . d -
     ld    L, C          ; 1:4       n2rot   b a f e   . d c}){}dnl
 dnl
-dnl
-dnl # ( -- a )
-dnl # push(a) ulozi na zasobnik nasledujici polozku
-define({PUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
-dnl
-dnl
-dnl # ( -- b a)
-dnl # push2(b,a) ulozi na zasobnik nasledujici polozky
-define({PUSH2},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2},{$1 $2},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH2},{dnl
-ifelse(eval($#<2),{1},{
-__{}  .error {$0}($@): Missing parameter!},
-eval($#!=2),{1},{
-__{}  .error {$0}($@): The wrong number of parameters in macro!},
-{
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl # HL first check
-__{}define({__TMP_HL_CLOCKS},22){}dnl
-__{}define({__TMP_HL_BYTES},2){}dnl
-__{}__LD_REG16({DE},$1,{HL},$2){}dnl
-__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
-__{}__LD_REG16({HL},$2){}dnl
-__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
-__{}dnl
-__{}define({__TMP_DE_CLOCKS},22){}dnl
-__{}define({__TMP_DE_BYTES},2){}dnl
-__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
-__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
-__{}__LD_REG16({DE},$1){}dnl
-__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
-__{}dnl
-__{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
-__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __COMPILE_INFO
-__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
-__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
-__{}{dnl # HL first
-__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __COMPILE_INFO
-__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
-__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
-})}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- c b a)
-dnl # push3(c,b,a) ulozi na zasobnik nasledujici polozky
-define({PUSH3},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH3},{$1 $2 $3},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH3},{dnl
-__{}define({__INFO},{$1 $2 $3}){}dnl
-ifelse(eval($#<2),{1},{
-__{}  .error {$0}($@): Missing parameter!},
-eval($#!=3),{1},{
-__{}  .error {$0}($@): The wrong number of parameters in macro!},
-{
-__{}    push DE             ; 1:11      __COMPILE_INFO   ( -- $1 $2 $3 )
-__{}    push HL             ; 1:11      __COMPILE_INFO{}dnl
-__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
-__{}__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
-__{}define({PUSH3_P1},__PRICE_16BIT){}dnl
-__{}__LD_REG16({HL},$3,{HL},$1){}dnl
-__{}define({PUSH3_P1},eval(PUSH3_P1+__PRICE_16BIT)){}dnl
-__{}define({PUSH3_P},PUSH3_P1){}dnl
-__{}define({PUSH3_X},1){}dnl
-__{}dnl
-__{}__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}dnl
-__{}define({PUSH3_P2},__PRICE_16BIT){}dnl
-__{}__LD_REG16({DE},$2,{DE},$1){}dnl
-__{}define({PUSH3_P2},eval(PUSH3_P2+__PRICE_16BIT)){}dnl
-__{}ifelse(eval(PUSH3_P>PUSH3_P2),{1},{dnl
-__{}__{}define({PUSH3_P},PUSH3_P2){}dnl
-__{}__{}define({PUSH3_X},2)}){}dnl
-__{}dnl
-__{}__LD_REG16({DE},$2,{DE},$1,{HL},$3){}dnl
-__{}__{}define({PUSH3_P3},eval(22+__PRICE_16BIT)){}dnl
-__{}ifelse(eval(PUSH3_P>22+__PRICE_16BIT),{1},{dnl
-__{}__{}define({PUSH3_P},PUSH3_P3){}dnl
-__{}__{}define({PUSH3_X},3)}){}dnl
-__{}dnl
-__{}__LD_REG16({HL},$3,{HL},$1,{DE},$2){}dnl
-__{}__{}define({PUSH3_P4},eval(22+__PRICE_16BIT)){}dnl
-__{}ifelse(eval(PUSH3_P>PUSH3_P4),{1},{dnl
-__{}__{}define({PUSH3_P},PUSH3_P4){}dnl
-__{}__{}define({PUSH3_X},4)}){}dnl
-__{}dnl # PUSH3_P1 PUSH3_P2 PUSH3_P3 PUSH3_P4 --> PUSH3_X
-__{}dnl ---- case PUSH3_X ----
-__{}ifelse(dnl
-__{}PUSH3_X,1,{__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16({HL},$3,{HL},$1)
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push HL             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
-__{}PUSH3_X,2,{__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16({DE},$2,{DE},$1)
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push DE             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
-__{}PUSH3_X,3,{__LD_REG16({DE},$2,{DE},$1,{HL},$3)
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push DE             ; 1:11      __COMPILE_INFO
-__{}__{}    ld   HL, format({%-11s},$3); 3:10      __COMPILE_INFO{}__CODE_16BIT},
-__{}{__LD_REG16({HL},$3,{HL},$1,{DE},$2)
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push HL             ; 1:11      __COMPILE_INFO
-__{}__{}    ld   DE, format({%-11s},$2); 3:10      __COMPILE_INFO{}__CODE_16BIT}){}dnl
-})}){}dnl
-dnl
-dnl
-dnl
-dnl # drop 50
-dnl # ( a -- 50 )
-dnl # zmeni hodnotu top
-define({DROP_PUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_DROP_PUSH},{drop $1},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DROP_PUSH},{dnl
-__{}define({__INFO},{drop $1}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop $1}){}dnl
-dnl
-dnl
-dnl # 2drop 50
-dnl # ( a -- 50 )
-dnl # zmeni hodnotu top
-define({_2DROP_PUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DROP_PUSH},{2drop $1},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DROP_PUSH},{dnl
-__{}define({__INFO},{2drop $1}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    pop  DE             ; 1:10      2drop $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop $1}){}dnl
 dnl
 dnl
 dnl # dup 50
