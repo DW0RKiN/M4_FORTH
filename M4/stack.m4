@@ -483,8 +483,46 @@ __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected type parameter!},
 {define({__INFO},__COMPILE_INFO)
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      drop $1}){}dnl
-})
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # drop dup 50
+dnl # ( x2 x1 -- x2 x2 50 )
+define({DROP_DUP_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_DUP_PUSH},{drop dup $1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_DUP_PUSH},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( x2 x1 -- x2 x2 $1 )
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # drop 50 over
+dnl # ( a -- 50 )
+dnl # zmeni hodnotu top
+define({DROP_PUSH_OVER},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_PUSH_OVER},{drop $1 over},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_PUSH_OVER},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1228,7 +1266,7 @@ __{}__{}    push AF             ; 1:11      3 pick
 __{}__{}    push DE             ; 1:11      3 pick
 __{}__{}    ex   DE, HL         ; 1:4       3 pick
 __{}__{}    ld    H, B          ; 1:4       3 pick
-__{}__{}    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )}){}dnl,
+__{}__{}    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )}){}dnl
 dnl
 dnl
 dnl # ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
