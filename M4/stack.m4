@@ -274,11 +274,11 @@ dnl # ?dup
 dnl # ( a -- a a ) or ( 0 -- 0 )
 dnl # vytvori kopii vrcholu zasobniku pokud je nenulovy
 define({QUESTIONDUP},{dnl
-__{}__ADD_TOKEN({__TOKEN_QUESTIONDUP},{?dup},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_QDUP},{?dup},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_QDUP},{dnl
-__{}define({__INFO},__COMPILE_INFO
+__{}define({__INFO},__COMPILE_INFO)
     ld    A, H          ; 1:4       __INFO   ( a -- 0 | a a )
     or    L             ; 1:4       __INFO
     jr    z, $+5        ; 2:7/12    __INFO   ( 0 -- 0 )
@@ -534,13 +534,14 @@ __{}__ADD_TOKEN({__TOKEN_2DROP_PUSH},{2drop $1},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DROP_PUSH},{dnl
-__{}define({__INFO},{2drop $1}){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    pop  DE             ; 1:10      2drop $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      2drop $1}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected type parameter!},
+{define({__INFO},__COMPILE_INFO)
+    pop  DE             ; 1:10      __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -552,25 +553,24 @@ __{}__ADD_TOKEN({__TOKEN_2DROP},{2drop},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DROP},{dnl
-__{}define({__INFO},{2drop}){}dnl
-
-    pop  HL             ; 1:10      2drop
-    pop  DE             ; 1:10      2drop ( b a -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO   ( b a -- )}){}dnl
 dnl
 dnl
-dnl # drop 2drop
+dnl # drop drop drop
+dnl # 2drop drop
 dnl # ( c b a -- )
 dnl # odstrani 3x vrchol zasobniku
-define({DROP_2DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DROP_2DROP},{drop_2drop},$@){}dnl
+define({_3DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_3DROP},{2drop drop},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DROP_2DROP},{dnl
-__{}define({__INFO},{drop_2drop}){}dnl
-
-    pop  HL             ; 1:10      drop 2drop ( c b a -- )
-    pop  HL             ; 1:10      drop 2drop
-    pop  DE             ; 1:10      drop 2drop}){}dnl
+define({__ASM_TOKEN_3DROP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  HL             ; 1:10      __INFO   ( c b a -- )
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( b a -- a )
@@ -581,9 +581,8 @@ __{}__ADD_TOKEN({__TOKEN_NIP},{nip},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_NIP},{dnl
-__{}define({__INFO},{nip}){}dnl
-
-    pop  DE             ; 1:10      nip ( b a -- a )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  DE             ; 1:10      __INFO   ( b a -- a )}){}dnl
 dnl
 dnl
 dnl # ( d c b a – b a )
