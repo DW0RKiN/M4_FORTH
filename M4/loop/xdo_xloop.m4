@@ -548,8 +548,9 @@ dnl # stop index do ... +step +loop
 dnl # ( -- )
 dnl # xdo(stop,index) ... push_addxloop(+step)
 define({__ASM_TOKEN_POSITIVE_ADDXLOOP},{dnl
-__{}define({__INFO},{positive_addxloop}){}dnl
-__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}ifelse(_TEMP_X,{1},{
+__{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
+__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
+ifelse(_TEMP_X,{1},{
 __{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant +X.null: positive step and no repeat},
 eval((0 <= __GET_LOOP_BEGIN($1)) && (__GET_LOOP_BEGIN($1) < __GET_LOOP_END($1)) && (__GET_LOOP_END($1) < 256)),{1},{
 __{}                        ;[13:48]    __INFO   variant +X.A: positive step and 0 <= index < stop < 256, run _TEMP_X{}x
@@ -702,8 +703,9 @@ dnl # stop index do ... -step +loop
 dnl # ( -- )
 dnl # xdo(stop,index) ... push_addxloop(-step)
 define({__ASM_TOKEN_NEGATIVE_ADDXLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}ifelse(_TEMP_X,{1},{
+__{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
+__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
+ifelse(_TEMP_X,{1},{
 __{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant -X.null: positive step and no repeat},
 eval(($1==-3) && (__GET_LOOP_END($1)==0)),{1},{
 __{}                        ;[11:66/46] __INFO   variant -X.A: step -3 and stop 0, run _TEMP_X{}x
@@ -788,13 +790,8 @@ dnl
 dnl # stop index do ... step +loop
 dnl # ( -- )
 dnl # xdo(stop,index) ... push_addxloop(step)
-define({X_ADDXLOOP},{dnl
-__{}__ADD_TOKEN({__TOKEN_X_ADDXLOOP},{x_addxloop},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_X_ADDXLOOP},{dnl
-__{}define({__INFO},{x_addxloop}){}dnl
-dnl
+define({__ASM_TOKEN_NO_NUM_ADDXLOOP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
 __{}                        ;[24:119]   __INFO   variant: __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1)
 __{}    push HL             ; 1:11      __INFO
 __{}idx{}$1 EQU $+1          ;           __INFO
@@ -816,7 +813,7 @@ __{}    sbc   A, H          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO   HL = (stop-1)-(index+step)
 __{}    add  HL, BC         ; 1:11      __INFO   HL = (stop-1)-index
 __{}    pop  HL             ; 1:10      __INFO
-__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}  if ((__GET_LOOP_STEP($1))>=0x8000 || (__GET_LOOP_STEP($1))<0)=0
 __{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step
 __{}  else
 __{}    jp    c, do{}$1      ; 3:10      __INFO   negative step
@@ -837,16 +834,14 @@ __{}},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!
 __{}})dnl
-__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),{0},{__ASM_TOKEN_X_ADDXLOOP($1)},{dnl
-__{}__{}ifelse(eval(__GET_LOOP_STEP($1)),{1},{
-__{}__{}__{}                        ;           push_addxloop(__GET_LOOP_STEP($1)) --> xloop LOOP_STACK{}dnl
-__{}__{}__{}__ASM_TOKEN_XLOOP{}},
-__{}__{}eval(__GET_LOOP_STEP($1)),{-1},{dnl
-__{}__{}__{}__ASM_TOKEN_SUB1_ADDXLOOP{}},
-__{}__{}eval(__GET_LOOP_STEP($1)),{2},{dnl
-__{}__{}__{}__ASM_TOKEN_ADD2_ADDXLOOP{}},
-__{}__{}eval((((__GET_LOOP_STEP($1)) & 0xFFFF)+2) & 0xFFFF),{0},{dnl
-__{}__{}__{}__ASM_TOKEN_SUB2_ADDXLOOP{}},
+__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),{0},{dnl
+__{}__{}__ASM_TOKEN_NO_NUM_ADDXLOOP($1)},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0x0001,{__ASM_TOKEN_XLOOP($1)},
+__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0xFFFF,{__ASM_TOKEN_SUB1_ADDXLOOP($1)},
+__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0x0002,{__ASM_TOKEN_ADD2_ADDXLOOP($1)},
+__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0xFFFE,{__ASM_TOKEN_SUB2_ADDXLOOP($1)},
 __{}__{}eval(__GET_LOOP_STEP($1)>0),{1},{dnl
 __{}__{}__{}__ASM_TOKEN_POSITIVE_ADDXLOOP($1)},
 __{}__{}{dnl
