@@ -1023,13 +1023,14 @@ And the last variant is only valid for M4 FORTH
 
 Multiple WHILE is possible in M4 FORTH because they are independent of each other and apply to the last current BEGIN .. UNTIL/REPEAT/AGAIN loop.
 
-    PUSH2(5,0)  DO        I DOT PUTCHAR({','})          LOOP       --> " 0, 1, 2, 3, 4,"
-                XDO(5,0)  I DOT PUTCHAR({','})         XLOOP       --> " 0, 1, 2, 3, 4,"
-                XDO(5,0)  I DOT PUTCHAR({','}) PUSH_ADDXLOOP(2)    --> " 0, 2, 4,"
-    PUSH2(5,0) SDO       SI DOT PUTCHAR({','})         SLOOP       --> " 0, 1, 2, 3, 4,"
-    PUSH(5)   SFOR       SI DOT PUTCHAR({','})         SNEXT       --> " 5, 4, 3, 2, 1, 0,"
-    PUSH(5)    FOR        I DOT PUTCHAR({','})          NEXT       --> " 5, 4, 3, 2, 1, 0,"
-          PUSH_FOR(5)     I DOT PUTCHAR({','})          NEXT       --> " 5, 4, 3, 2, 1, 0,"
+    PUSH2(5,0)  DO        I DOT PUTCHAR({','})            LOOP       --> " 0, 1, 2, 3, 4,"
+                DO(,5,0)  I DOT PUTCHAR({','})            LOOP       --> " 0, 1, 2, 3, 4,"
+                DO(,5,0)  I DOT PUTCHAR({','})    PUSH_ADDLOOP(2)    --> " 0, 2, 4,"
+                DO(,5,0)  I DOT PUTCHAR({','}) PUSH(2) ADDLOOP       --> " 0, 2, 4,"
+    PUSH2(5,0)  DO(S)     I DOT PUTCHAR({','})            LOOP       --> " 0, 1, 2, 3, 4,"
+    PUSH(5)    FOR(S)     I DOT PUTCHAR({','})            NEXT       --> " 5, 4, 3, 2, 1, 0,"
+    PUSH(5)    FOR        I DOT PUTCHAR({','})            NEXT       --> " 5, 4, 3, 2, 1, 0,"
+          PUSH_FOR(5)     I DOT PUTCHAR({','})            NEXT       --> " 5, 4, 3, 2, 1, 0,"
 
 
     PUSH(5) BEGIN DUP_DOT            DUP_WHILE _1SUB PUTCHAR({','}) REPEAT DROP CR ;--> " 5, 4, 3, 2, 1, 0"
@@ -1068,20 +1069,20 @@ The variables are stored in the return address stack.
 | :------------------: | :---------------: | :------------------------: | :------------------------------ | :------------------------- |
 |<sub>     unloop      |<sub>    UNLOOP    |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )              |
 |<sub>      leave      |<sub>    LEAVE     |<sub>                       |<sub>         ( ? -- )           |<sub> ( ? -- )              |
-|<sub>        i        |<sub>              |<sub>          RI           |<sub>           ( -- i )         |<sub> ( i -- i )            |
-|<sub>        j        |<sub>              |<sub>          RJ           |<sub>           ( -- j )         |<sub> ( j i -- j i )        |
-|<sub>        k        |<sub>              |<sub>          RK           |<sub>           ( -- k )         |<sub> ( k j i -- k j i )    |
-|<sub>       do        |<sub>      RDO     |<sub>                       |<sub>( stop index -- )           |<sub> ( -- stop index )     |
-|<sub>      ?do        |<sub>  QUESTIONRDO |<sub>                       |<sub>( stop index -- )           |<sub> ( -- stop index )     |
-|<sub>      loop       |<sub>     RLOOP    |<sub>                       |<sub>           ( -- )           |<sub> ( s i -- s i+1 )      |
-|<sub>     +loop       |<sub>   ADDRLOOP   |<sub>                       |<sub>      ( step -- )           |<sub> ( s i -- s i+step )   |
-|<sub>   `3` +loop     |<sub>              |<sub>  PUSH_ADDRLOOP(`3`)   |<sub>           ( -- )           |<sub> ( s i -- s i+`3` )    |
-|<sub>      for        |<sub>     RFOR     |<sub>                       |<sub>     ( index -- )           |<sub> ( -- index )          |
-|<sub>      next       |<sub>     RNEXT    |<sub>                       |<sub>           ( -- )           |<sub> ( -- index-1)         |
-|<sub>   `5` `1` do    |<sub>              |<sub>     RXDO(`5`,`1`)     |<sub>           ( -- )           |<sub> ( -- `5` `1` )        |
-|<sub>   `5` `1` ?do   |<sub>              |<sub> QUESTIONRXDO(`5`,`1`) |<sub>           ( -- )           |<sub> ( -- `5` `1` )        |
-|<sub>                 |<sub>              |<sub>         RLOOP         |<sub>           ( -- )           |<sub> ( index -- index+1 )  |
-|<sub>   `2` +loop     |<sub>              |<sub>  PUSH_ADDXRLOOP(`2`)  |<sub>           ( -- )           |<sub> ( index -- index+`2` )|
+|<sub>        i        |<sub>              |<sub>           I           |<sub>           ( -- i )         |<sub> ( i -- i )            |
+|<sub>        j        |<sub>              |<sub>           J           |<sub>           ( -- j )         |<sub> ( j i -- j i )        |
+|<sub>        k        |<sub>              |<sub>           K           |<sub>           ( -- k )         |<sub> ( k j i -- k j i )    |
+|<sub>       do        |<sub>     DO(R)    |<sub>                       |<sub>( stop index -- )           |<sub> ( -- stop index )     |
+|<sub>      ?do        |<sub>QUESTIONDO(R) |<sub>                       |<sub>( stop index -- )           |<sub> ( -- stop index )     |
+|<sub>      loop       |<sub>      LOOP    |<sub>                       |<sub>           ( -- )           |<sub> ( s i -- s i+1 )      |
+|<sub>     +loop       |<sub>   ADDLOOP    |<sub>                       |<sub>      ( step -- )           |<sub> ( s i -- s i+step )   |
+|<sub>   `3` +loop     |<sub>              |<sub>   PUSH_ADDLOOP(`3`)   |<sub>           ( -- )           |<sub> ( s i -- s i+`3` )    |
+|<sub>      for        |<sub>    FOR(R)    |<sub>                       |<sub>     ( index -- )           |<sub> ( -- index )          |
+|<sub>      next       |<sub>     NEXT     |<sub>                       |<sub>           ( -- )           |<sub> ( -- index-1)         |
+|<sub>   `5` `1` do    |<sub>              |<sub>     DO(R,`5`,`1`)     |<sub>           ( -- )           |<sub> ( -- `5` `1` )        |
+|<sub>   `5` `1` ?do   |<sub>              |<sub>QUESTIONXDO(R,`5`,`1`) |<sub>           ( -- )           |<sub> ( -- `5` `1` )        |
+|<sub>                 |<sub>              |<sub>          LOOP         |<sub>           ( -- )           |<sub> ( index -- index+1 )  |
+|<sub>   `2` +loop     |<sub>              |<sub>   PUSH_ADDLOOP(`2`)   |<sub>           ( -- )           |<sub> ( index -- index+`2` )|
 
 The variables are stored in the data stack.
 
@@ -1089,14 +1090,14 @@ The variables are stored in the data stack.
 | :--------------------------: | :------------------------: | :--------------------------------: | :------------------------------ | :---------------- |
 |<sub>          unloop         |<sub>         UNLOOP        |<sub>                               |<sub>         ( ? -- )           |<sub> ( ? -- )     |
 |<sub>          leave          |<sub>         LEAVE         |<sub>                               |<sub>         ( ? -- )           |<sub> ( ? -- )     |
-|<sub>            i            |<sub>                       |<sub>               SI              |<sub>         ( i -- i i )       |<sub> ( -- )       |
-|<sub>           do            |<sub>                       |<sub>              SDO              |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
-|<sub>           ?do           |<sub>                       |<sub>          QUESTIONSDO          |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
-|<sub>          loop           |<sub>                       |<sub>             SLOOP             |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
-|<sub>          +loop          |<sub>                       |<sub>            ADDSLOOP           |<sub>( end i step -- end i+step )|<sub> ( -- )       |
-|<sub>        `4` +loop        |<sub>                       |<sub>       PUSH_ADDSLOOP(`4`)      |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
-|<sub>           for           |<sub>                       |<sub>              SFOR             |<sub>     ( index -- index )     |<sub> ( -- )       |
-|<sub>          next           |<sub>                       |<sub>             SNEXT             |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
+|<sub>            i            |<sub>                       |<sub>               I               |<sub>         ( i -- i i )       |<sub> ( -- )       |
+|<sub>           do            |<sub>                       |<sub>             DO(S)             |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
+|<sub>           ?do           |<sub>                       |<sub>        QUESTIONDO(S)          |<sub>    ( stop i -- stop i )    |<sub> ( -- )       |
+|<sub>          loop           |<sub>                       |<sub>              LOOP             |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
+|<sub>          +loop          |<sub>                       |<sub>             ADDLOOP           |<sub>( end i step -- end i+step )|<sub> ( -- )       |
+|<sub>        `4` +loop        |<sub>                       |<sub>        PUSH_ADDLOOP(`4`)      |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
+|<sub>           for           |<sub>                       |<sub>              FOR              |<sub>     ( index -- index )     |<sub> ( -- )       |
+|<sub>          next           |<sub>                       |<sub>             NEXT              |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
 |<sub>          begin          |<sub>         BEGIN         |<sub>                               |<sub>           ( -- )           |<sub>              |
 |<sub>                         |<sub>         BREAK         |<sub>                               |<sub>           ( -- )           |<sub>              |
 |<sub>         while           |<sub>         WHILE         |<sub>                               |<sub>      ( flag -- )           |<sub>              |
