@@ -408,7 +408,7 @@ dnl
 define({__ASM_TOKEN_DROP_I},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_DROP_INDEX2M($1,{i})},
 __{}__GET_LOOP_TYPE($1),{R},{__ASM_DROP_INDEX2R($1,{i},0)},
-__{}__GET_LOOP_TYPE($1),{S},{},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_DROP_INDEX2S($1,{i},0)},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -430,6 +430,17 @@ dnl #      2,3,4 = k
 define({__ASM_DROP_INDEX2R},{dnl
 __{}define({__COMPILE_INFO},__COMPILE_INFO{(r)}){}dnl
 __{}__ASM_TOKEN_DROP_PUSH_RPICK($3)}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id loop
+dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_DROP_INDEX2S},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
+__{}__ASM_TOKEN_DROP_PUSH_PICK($3)}){}dnl
 dnl
 dnl
 dnl
@@ -614,7 +625,9 @@ __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_DROP_INDEX2M($1,{j})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2),{},{2},{1}),0)){}dnl
 __{}__{}__ASM_DROP_INDEX2R($1,{j},__TMP_R)},
-__{}__GET_LOOP_TYPE($1),{S},{},
+__{}__GET_LOOP_TYPE($1),{S},{dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},{2},{1}),0)){}dnl
+__{}__{}__ASM_DROP_INDEX2S($1,{j},__TMP_S)},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -730,7 +743,10 @@ __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
 __{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
 __{}__{}__ASM_DROP_INDEX2R($1,{k},__TMP_R)},
-__{}__GET_LOOP_TYPE($1),{S},{},
+__{}__GET_LOOP_TYPE($1),{S},{dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
+__{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
+__{}__{}__ASM_DROP_INDEX2S($1,{k},__TMP_S)},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
