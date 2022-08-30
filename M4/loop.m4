@@ -532,7 +532,7 @@ __{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # char i !
+dnl # char i c!
 dnl # ( -- )
 dnl # store 8-bit char at addr i
 define({PUSH_I_CSTORE},{dnl
