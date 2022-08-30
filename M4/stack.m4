@@ -488,6 +488,18 @@ __{}  .error {$0}($@): Unexpected type parameter!},
 dnl
 dnl
 dnl
+dnl # ( c b a -- c b c )
+define({DROP_OVER},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_OVER},{drop over},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_OVER},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  HL             ; 1:10      __INFO   ( c b a -- c b c )
+    push HL             ; 1:11      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # drop dup 50
 dnl # ( x2 x1 -- x2 x2 50 )
 define({DROP_DUP_PUSH},{dnl
@@ -1300,7 +1312,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_PICK},{$1 pick},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_PICK},{dnl
-__{}define({__INFO},{$1 pick}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($#,{0},{
 __{}  .error push_pick(): Parameter is missing!},
 __IS_MEM_REF($1),{1},{
@@ -1342,6 +1354,101 @@ __{}__{}    ld    A,(HL)        ; 1:7       $1 pick
 __{}__{}    inc  HL             ; 1:6       $1 pick
 __{}__{}    ld    H,(HL)        ; 1:7       $1 pick
 __{}__{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})}){}dnl
+dnl
+dnl
+dnl
+dnl # drop 2 pick ( d c b a -- d c b d )
+define({DROP_2_PICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_2_PICK},{drop 2 pick},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_2_PICK},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                        ;[4:42]     __INFO
+__{}__{}    pop  BC             ; 1:10      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    push BC             ; 1:11      __INFO   ( d c b a -- d c b d )}){}dnl
+dnl
+dnl
+dnl
+dnl # drop 3 pick ( e d c b a -- e d c b e )
+define({DROP_3_PICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_3_PICK},{drop 3 pick},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_3_PICK},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(_TYP_SINGLE,{small},{
+__{}__{}                        ;[6:63]     __INFO   small version
+__{}__{}    pop  AF             ; 1:10      __INFO
+__{}__{}    pop  BC             ; 1:10      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    push AF             ; 1:11      __INFO   ( e d c b a -- e d c b e )},
+__{}{
+__{}__{}                        ;[8:45]     __INFO   default version
+__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
+__{}__{}    add  HL, SP         ; 1:11      __INFO
+__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO  ( e d c b a -- e d c b e )})}){}dnl
+dnl
+dnl
+dnl
+dnl # drop 0 pick ( b a 0 -- b b )
+dnl # drop 1 pick ( c b a 1 -- c b c )
+dnl # drop 2 pick ( d c b a 2 -- d c b d )
+dnl # drop 3 pick ( e d c b a 3 -- e d c b e )
+dnl # drop 4 pick ( f e d c b a 4 -- f e d c b f )
+dnl # drop u pick ( ...x2 x1 x0 x u -- ...x2 x1 x0 xu )
+dnl # Remove tos, copy the xu to the top of the stack.
+define({DROP_PUSH_PICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_PUSH_PICK},{drop $1 pick},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_PUSH_PICK},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($#,{0},{
+__{}  .error push_pick(): Parameter is missing!},
+__IS_MEM_REF($1),{1},{
+__{}    push DE             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    add  HL, HL         ; 1:11      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__IS_NUM($1),{0},{
+__{}  ; warning The condition >>>$1<<< cannot be evaluated
+__{}    push DE             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},$1); 3:10      __INFO
+__{}    add  HL, HL         ; 1:11      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+{dnl
+__{}ifelse(dnl
+__{}eval($1),{0},{__ASM_TOKEN_DROP_DUP},
+__{}eval($1),{1},{__ASM_TOKEN_DROP_OVER},
+__{}eval($1),{2},{__ASM_TOKEN_DROP_2_PICK},
+__{}eval($1),{3},{__ASM_TOKEN_DROP_3_PICK},
+__{}{
+__{}__{}                        ;[8:45]     __INFO
+__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
+__{}__{}    add  HL, SP         ; 1:11      __INFO
+__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO ( ...x2 x1 x0 x -- ...x2 x1 x0 x$1 )})})}){}dnl
+dnl
 dnl
 dnl
 dnl # depth
