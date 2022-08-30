@@ -138,7 +138,7 @@ define({__ASM_TOKEN_DUP_DOT},{dnl
 __{}define({__INFO},{dup .}){}dnl
 
     push HL             ; 1:11      dup .   x3 x1 x2 x1{}dnl
-__{}DOT
+__{}__ASM_TOKEN_DOT
     ex   DE, HL         ; 1:4       dup .   x3 x2 x1})dnl
 dnl
 dnl
@@ -166,7 +166,7 @@ define({__ASM_TOKEN_DUP_UDOT},{dnl
 __{}define({__INFO},{dup u.}){}dnl
 
     push HL             ; 1:11      dup u.   x3 x1 x2 x1{}dnl
-__{}UDOT
+__{}__ASM_TOKEN_UDOT
     ex   DE, HL         ; 1:4       dup u.   x3 x2 x1})dnl
 dnl
 dnl
@@ -194,7 +194,7 @@ define({__ASM_TOKEN_DUP_SPACE_DOT},{dnl
 __{}define({__INFO},{dup space .}){}dnl
 
     push HL             ; 1:11      dup space .   x3 x1 x2 x1{}dnl
-__{}SPACE_DOT
+__{}__ASM_TOKEN_SPACE_DOT
     ex   DE, HL         ; 1:4       dup space .   x3 x2 x1})dnl
 dnl
 define({SPACE_DUP_DOT},{dnl
@@ -203,7 +203,7 @@ __{}__ADD_TOKEN({__TOKEN_SPACE_DUP_DOT},{space dup .},$@){}dnl
 dnl
 define({__ASM_TOKEN_SPACE_DUP_DOT},{dnl
 __{}define({__INFO},{space dup .}){}dnl
-DUP_SPACE_DOT}){}dnl
+__{}__ASM_TOKEN_DUP_SPACE_DOT}){}dnl
 dnl
 dnl
 dnl # space u. bs
@@ -230,7 +230,7 @@ define({__ASM_TOKEN_DUP_SPACE_UDOT},{dnl
 __{}define({__INFO},{dup space u.}){}dnl
 
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1{}dnl
-__{}SPACE_UDOT
+__{}__ASM_TOKEN_SPACE_UDOT
     ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1})dnl
 dnl
 define({SPACE_DUP_UDOT},{dnl
@@ -239,7 +239,7 @@ __{}__ADD_TOKEN({__TOKEN_SPACE_DUP_UDOT},{space dup u.},$@){}dnl
 dnl
 define({__ASM_TOKEN_SPACE_DUP_UDOT},{dnl
 __{}define({__INFO},{space dup u.}){}dnl
-DUP_SPACE_UDOT}){}dnl
+__{}__ASM_TOKEN_DUP_SPACE_UDOT}){}dnl
 dnl
 dnl
 dnl # hex u. bs
@@ -275,7 +275,7 @@ __{}__ADD_TOKEN({__TOKEN_HEX_DUP_UDOT},{hex dup u.},$@){}dnl
 dnl
 define({__ASM_TOKEN_HEX_DUP_UDOT},{dnl
 __{}define({__INFO},{hex dup u.}){}dnl
-DUP_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_DUP_HEX_UDOT}){}dnl
 dnl
 dnl
 dnl # space hex u. bs
@@ -298,7 +298,7 @@ __{}__ADD_TOKEN({__TOKEN_HEX_SPACE_UDOT},{hex space u.},$@){}dnl
 dnl
 define({__ASM_TOKEN_HEX_SPACE_UDOT},{dnl
 __{}define({__INFO},{hex space u.}){}dnl
-SPACE_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_HEX_UDOT}){}dnl
 dnl
 dnl # space dup hex u. bs
 dnl # ( u -- u )
@@ -318,35 +318,35 @@ __{}__ADD_TOKEN({__TOKEN_SPACE_HEX_DUP_UDOT},{space hex dup u.},$@){}dnl
 dnl
 define({__ASM_TOKEN_SPACE_HEX_DUP_UDOT},{dnl
 __{}define({__INFO},{space hex dup u.}){}dnl
-SPACE_DUP_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_DUP_HEX_UDOT}){}dnl
 define({DUP_SPACE_HEX_UDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_SPACE_HEX_UDOT},{dup space hex u.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_SPACE_HEX_UDOT},{dnl
 __{}define({__INFO},{dup space hex u.}){}dnl
-SPACE_DUP_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_DUP_HEX_UDOT}){}dnl
 define({DUP_HEX_SPACE_UDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_HEX_SPACE_UDOT},{dup hex space u.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_HEX_SPACE_UDOT},{dnl
 __{}define({__INFO},{dup hex space u.}){}dnl
-SPACE_DUP_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_DUP_HEX_UDOT}){}dnl
 define({HEX_SPACE_DUP_UDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_HEX_SPACE_DUP_UDOT},{hex space dup u.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HEX_SPACE_DUP_UDOT},{dnl
 __{}define({__INFO},{hex space dup u.}){}dnl
-SPACE_DUP_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_DUP_HEX_UDOT}){}dnl
 define({HEX_DUP_SPACE_UDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_HEX_DUP_SPACE_UDOT},{hex dup space u.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HEX_DUP_SPACE_UDOT},{dnl
 __{}define({__INFO},{hex dup space u.}){}dnl
-SPACE_DUP_HEX_UDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_DUP_HEX_UDOT}){}dnl
 dnl
 dnl # -------vvv zx rom routines vvv---------
 dnl
@@ -515,7 +515,7 @@ __{}__ADD_TOKEN({__TOKEN_HEX_2DUP_UDDOT},{hex 2dup ud.},$@){}dnl
 dnl
 define({__ASM_TOKEN_HEX_2DUP_UDDOT},{dnl
 __{}define({__INFO},{hex 2dup ud.}){}dnl
-_2DUP_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_2DUP_HEX_UDDOT}){}dnl
 dnl
 dnl
 dnl # space hex ud. bs
@@ -538,7 +538,7 @@ __{}__ADD_TOKEN({__TOKEN_HEX_SPACE_UDDOT},{hex space ud.},$@){}dnl
 dnl
 define({__ASM_TOKEN_HEX_SPACE_UDDOT},{dnl
 __{}define({__INFO},{hex space ud.}){}dnl
-SPACE_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_HEX_UDDOT}){}dnl
 dnl
 dnl
 dnl # space 2dup hex ud. bs
@@ -559,35 +559,35 @@ __{}__ADD_TOKEN({__TOKEN_SPACE_HEX_2DUP_UDDOT},{space hex 2dup ud.},$@){}dnl
 dnl
 define({__ASM_TOKEN_SPACE_HEX_2DUP_UDDOT},{dnl
 __{}define({__INFO},{space hex 2dup ud.}){}dnl
-SPACE_2DUP_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_2DUP_HEX_UDDOT}){}dnl
 define({HEX_SPACE_2DUP_UDDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_HEX_SPACE_2DUP_UDDOT},{hex space 2dup ud.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HEX_SPACE_2DUP_UDDOT},{dnl
 __{}define({__INFO},{hex space 2dup ud.}){}dnl
-SPACE_2DUP_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_2DUP_HEX_UDDOT}){}dnl
 define({HEX_2DUP_SPACE_UDDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_HEX_2DUP_SPACE_UDDOT},{hex 2dup space ud.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HEX_2DUP_SPACE_UDDOT},{dnl
 __{}define({__INFO},{hex 2dup space ud.}){}dnl
-SPACE_2DUP_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_2DUP_HEX_UDDOT}){}dnl
 define({_2DUP_HEX_SPACE_UDDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_HEX_SPACE_UDDOT},{2dup hex space ud.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_HEX_SPACE_UDDOT},{dnl
 __{}define({__INFO},{2dup hex space ud.}){}dnl
-SPACE_2DUP_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_2DUP_HEX_UDDOT}){}dnl
 define({_2DUP_SPACE_HEX_UDDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_SPACE_HEX_UDDOT},{2dup space hex ud.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_SPACE_HEX_UDDOT},{dnl
 __{}define({__INFO},{2dup space hex ud.}){}dnl
-SPACE_2DUP_HEX_UDDOT}){}dnl
+__{}__ASM_TOKEN_SPACE_2DUP_HEX_UDDOT}){}dnl
 dnl
 dnl # -------------------------------------------
 dnl
@@ -603,11 +603,11 @@ __{}define({__INFO},{.s}){}dnl
 
     ex  (SP), HL        ; 1:19      .S  ( x1 x2 x3 )
     push HL             ; 1:11      .S  ( x1 x3 x2 x3 )
-__{}DOT
+__{}__ASM_TOKEN_DOT
     push HL             ; 1:11      .S  ( x1 x2 x3 x2 )
-__{}SPACE_DOT
+__{}__ASM_TOKEN_SPACE_DOT
     ex  (SP), HL        ; 1:19      .S  ( x3 x2 x1 )
-__{}DUP_SPACE_DOT})dnl
+__{}__ASM_TOKEN_DUP_SPACE_DOT})dnl
 dnl
 dnl
 dnl # ( -- )
