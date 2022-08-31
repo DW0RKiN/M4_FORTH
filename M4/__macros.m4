@@ -454,6 +454,12 @@ __{}__{}__{}__LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_CM
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_I},                 {__SET_TOKEN({__TOKEN_PUSH_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_J},                 {__SET_TOKEN({__TOKEN_PUSH_J},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_K},                 {__SET_TOKEN({__TOKEN_PUSH_K},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_I-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_I_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_J-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_J_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_K-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_K_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_I_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_I},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
+            __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_J_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_J},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_3){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
+            __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_K_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_K},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_3,__LAST_TOKEN_ARRAY_4){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_I-__TOKEN_STORE},           {__SET_TOKEN({__TOKEN_PUSH_I_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_J-__TOKEN_STORE},           {__SET_TOKEN({__TOKEN_PUSH_J_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
@@ -584,6 +590,12 @@ __{}__{}__{}__LAST_TOKEN_NAME-$1-__LAST_TOKEN_IS_NUM_1_2,{__TOKEN_PUSH2-__TOKEN_
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_SUB},         {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1)-(__LAST_TOKEN_ARRAY_2))},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_MUL},         {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1)*(__LAST_TOKEN_ARRAY_2))},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_DIV},         {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,+(__LAST_TOKEN_ARRAY_1)/(__LAST_TOKEN_ARRAY_2))},
+
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_ADDLOOP},
+                {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}dnl
+__{}__{}__{}__{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,shift(shift($@)))},
 
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_FILL},        {__SET_TOKEN({__TOKEN_PUSH2_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
