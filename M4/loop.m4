@@ -451,7 +451,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_I},{$1 i_}LOOP_STACK,$1,LOOP_STACK){}dnl
 }){}dnl
 define({__ASM_TOKEN_PUSH_I},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M($1,$2,{i})},
-__{}__GET_LOOP_TYPE($2),{R},{},
+__{}__GET_LOOP_TYPE($2),{R},{__ASM_PUSH_INDEX2R($1,$2,{i},0)},
 __{}__GET_LOOP_TYPE($2),{S},{},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
@@ -472,6 +472,18 @@ __{}{define({__INFO},__COMPILE_INFO)
     ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO
     ld   HL, (idx{}$2)   ; 3:16      __INFO   idx always points to a 16-bit index})}){}dnl
 dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 number
+dnl #   $2 id loop
+dnl #   $3 i,j,k
+dnl #   $4 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_PUSH_INDEX2R},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(r)}){}dnl
+__{}__ASM_TOKEN_PUSH2_RPICK($1,$4)}){}dnl
 dnl
 dnl
 dnl # x i !
@@ -636,16 +648,22 @@ dnl
 dnl # ( -- x j )
 dnl # vlozeni hodnoty a indexu vnitrni smycky
 define({PUSH_J},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}ifelse($#,{0},{
+__{}  .error {$0}($@): Missing parameter!}
+__{}$#,{1},{dnl
+__{}__{}define({__ID_1},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSH_J},{$1 j_}LOOP_STACK,$1,LOOP_STACK){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
-}){}dnl
+__{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
+__{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH_J},{$1 j_}__ID_0,$1,__ID_0,__ID_1)},
+__{}{
+__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_J},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M($1,$2,{j})},
-__{}__GET_LOOP_TYPE($2),{R},{},
+__{}__GET_LOOP_TYPE($2),{R},{dnl
+__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0)){}dnl
+__{}__{}__ASM_PUSH_INDEX2R($1,$2,{j},__TMP_R)},
 __{}__GET_LOOP_TYPE($2),{S},{},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
@@ -755,20 +773,22 @@ dnl
 dnl # ( -- x k )
 dnl # vlozeni hodnoty a indexu druhe vnejsi smycky
 define({PUSH_K},{dnl
-__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}define({__ID_2},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}pushdef({__TEMP},LOOP_STACK){}dnl
+__{}__{}__{}define({__ID_1},LOOP_STACK){}dnl
 __{}__{}__{}popdef({LOOP_STACK}){}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH_K},{$1 k_}LOOP_STACK,$1,LOOP_STACK){}dnl
-__{}__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}__{}popdef({__TEMP}){}dnl
-__{}__{}pushdef({LOOP_STACK},__TEMP){}dnl
-__{}__{}popdef({__TEMP}){}dnl
+__{}__{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
+__{}__{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
+__{}__{}pushdef({LOOP_STACK},__ID_2){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_K},{$1 k_}__ID_0,$1,__ID_0,__ID_1,__ID_2){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_K},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M($1,$2,{k})},
-__{}__GET_LOOP_TYPE($2),{R},{},
+__{}__GET_LOOP_TYPE($2),{R},{dnl
+__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0)){}dnl
+__{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($4),{R},ifelse(__GET_LOOP_END($4),{},2,1),0))){}dnl
+__{}__{}__ASM_PUSH_INDEX2R($1,$2,{k},__TMP_R)},
 __{}__GET_LOOP_TYPE($2),{S},{},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl

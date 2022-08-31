@@ -2273,6 +2273,105 @@ __{}{
 dnl
 dnl
 dnl
+dnl # x u rpick
+dnl # ( -- x xu ) ( R: -- xu .. x2 x0 )
+dnl # put x and u-cell from the return stack
+define({PUSH2_RPICK},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_RPICK},{$1 $2 rpick},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_RPICK},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($2),{1},{
+                       ;[18:ifelse(__IS_MEM_REF($1),1,127,121)]    __INFO   ( -- $1 x_{}$2 ) ( R: x_{}$2 .. x1 x0 -- x_{}$2 .. x1 x0 )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO   ras
+    ld   HL, format({%-11s},$2); 3:16      __INFO
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, DE         ; 1:11      __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO   DE = x_{}$2
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO},
+__IS_NUM($2),{0},{
+                       ;[16:ifelse(__IS_MEM_REF($1),1,108,102)]    __INFO   ( -- $1 x_{}$2 ) ( R: x_{}$2 .. x1 x0 -- x_{}$2 .. x1 x0 )
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO   ras
+    ld   BC, format({%-11s},2*($2)); 3:10      __INFO   $2+$2
+    add  HL, BC         ; 1:11      __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO   DE = x_{}$2
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO},
+{dnl
+__{}ifelse(eval($2),0,{__ASM_TOKEN_PUSH_R_FETCH($1)},
+__{}eval($2),1,{
+                       ;[14:ifelse(__IS_MEM_REF($1),1,97,91)]     __INFO   ( -- $1 x1 ) ( R: x1 x0 -- x1 x0 )
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO   ras
+    inc   L             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO},
+__{}eval($2),2,{
+                       ;[16:ifelse(__IS_MEM_REF($1),1,107,101)]    __INFO   ( -- $1 x2 ) ( R: x2 x1 x0 -- x2 x1 x0 )
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO   ras
+    inc   L             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    inc   L             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO},
+__{}{
+                       ;[16:ifelse(__IS_MEM_REF($1),1,108,102)]    __INFO   ( -- $1 x{}$2 ) ( R: x{}$2 .. x1 x0 -- x{}$2 .. x1 x0 )
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO   ras
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO   ras
+    ld   BC, __HEX_HL(2*($2))     ; 3:10      __INFO   $2+$2
+    add  HL, BC         ; 1:11      __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO})}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # r@
 dnl # ( -- x ) ( R: x -- x )
 dnl # Copy x from the return stack to the data stack.
@@ -2334,6 +2433,29 @@ dnl #    ld    L, A          ; 1:4       r_fetch   . b i
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # x r@
+dnl # ( -- x x1 ) ( R: x1 -- x1 )
+dnl # put x and top from the return stack
+define({PUSH_R_FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_R_FETCH},{$1 r@},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_R_FETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[12:ifelse(__IS_MEM_REF($1),1,{87},{81})]    __INFO   ( -- $1 x1 ) ( R: x1 -- x1 )
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO   HL = r.a.s.
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # rdrop

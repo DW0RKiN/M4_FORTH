@@ -452,8 +452,8 @@ __{}__{}__{}__LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_CM
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_QFOR-__TOKEN_I},            {__SET_TOKEN({__TOKEN_PUSH_QFOR_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_I},                 {__SET_TOKEN({__TOKEN_PUSH_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_J},                 {__SET_TOKEN({__TOKEN_PUSH_J},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_K},                 {__SET_TOKEN({__TOKEN_PUSH_K},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_J},                 {__SET_TOKEN({__TOKEN_PUSH_J},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_K},                 {__SET_TOKEN({__TOKEN_PUSH_K},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_I-__TOKEN_STORE},           {__SET_TOKEN({__TOKEN_PUSH_I_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_J-__TOKEN_STORE},           {__SET_TOKEN({__TOKEN_PUSH_J_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
@@ -534,8 +534,10 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{define({_
             __LAST_TOKEN_NAME{}(__LAST_TOKEN_VALUE)-$1,{__TOKEN_PUSH(3)-__TOKEN_PICK},           {__SET_TOKEN({__TOKEN_3_PICK},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_PICK},              {__SET_TOKEN({__TOKEN_PUSH_PICK},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_CSTORE},              {__SET_TOKEN({__TOKEN_PUSH_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_STORE},              {__SET_TOKEN({__TOKEN_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_R_FETCH},           {__SET_TOKEN({__TOKEN_PUSH_R_FETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_CSTORE},            {__SET_TOKEN({__TOKEN_PUSH_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_STORE},             {__SET_TOKEN({__TOKEN_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_ALLOT},             {__SET_TOKEN({__TOKEN_PUSH_ALLOT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_COMMA},             {__SET_TOKEN({__TOKEN_PUSH_COMMA},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
@@ -625,8 +627,9 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{define({_
 
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_PUSH},        {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
 
-            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_CSTORE},       {__SET_TOKEN({__TOKEN_PUSH2_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_CSTORE},      {__SET_TOKEN({__TOKEN_PUSH2_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_STORE},       {__SET_TOKEN({__TOKEN_PUSH2_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_RPICK},       {__SET_TOKEN({__TOKEN_PUSH2_RPICK},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 dnl # PUSH3
 __{}__{}__{}__LAST_TOKEN_NAME-$1,{__TOKEN_PUSH3-__TOKEN_FILL},{__SET_TOKEN({__TOKEN_PUSH3_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
