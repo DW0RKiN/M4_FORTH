@@ -2411,7 +2411,7 @@ dnl # dup number swap !
 dnl # ( addr -- addr )
 dnl # store 16-bit number at addr
 define({PUSH_OVER_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE},{$1 over store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE},{$1 over !},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_OVER_STORE},{dnl
@@ -2425,6 +2425,24 @@ __{}  .error {$0}($@): Unexpected parameters!},
     inc  HL             ; 1:6       __INFO
     ld  (HL),high format({%-6s},$1); 2:10      __INFO
     dec  HL             ; 1:6       __INFO})}){}dnl
+dnl
+dnl
+dnl
+dnl # char over c!
+dnl # dup char swap c!
+dnl # ( addr -- addr )
+dnl # store 16-bit number at addr
+define({PUSH_OVER_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_CSTORE},{$1 over c!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_CSTORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameters!},
+{define({__INFO},__COMPILE_INFO)
+    ld  (HL),low format({%-7s},$1); 2:10      __INFO   ( addr -- addr )})}){}dnl
 dnl
 dnl
 define({DUP_PUSH_SWAP_STORE},{dnl

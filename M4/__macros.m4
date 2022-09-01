@@ -498,6 +498,7 @@ __{}__{}__{}__LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   __TOKEN_PUSH=0-__TOKEN_CM
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_OVER},              {__SET_TOKEN({__TOKEN_PUSH_OVER},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_OVER-__TOKEN_STORE},        {__SET_TOKEN({__TOKEN_PUSH_OVER_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_OVER-__TOKEN_CSTORE},        {__SET_TOKEN({__TOKEN_PUSH_OVER_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_PUSH},              {__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
 
