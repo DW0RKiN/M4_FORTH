@@ -2571,6 +2571,56 @@ __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # x r@ !
+dnl # ( -- ) ( R: x1 -- x1 )
+define({PUSH_R_FETCH_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_R_FETCH_STORE},{$1 r@ !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_R_FETCH_STORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+                        ;[15:76]    __INFO   ( -- ) ( R: x1 -- x1 )
+    exx                 ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld    A, format({%-11s},$1); 3:13      __INFO
+    ld  (DE),A          ; 1:7       __INFO   lo
+    inc  DE             ; 1:6       __INFO
+    ld    A, format({%-11s},(1+$1)); 3:13      __INFO
+    ld  (DE),A          ; 1:7       __INFO   hi
+    exx                 ; 1:4       __INFO},
+__IS_NUM($1),1,{
+                        ;[13:64]    __INFO   ( -- ) ( R: x1 -- x1 )
+    exx                 ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   lo
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   hi
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO},
+{
+                        ;[13:64]    __INFO   ( -- ) ( R: x1 -- x1 )
+    exx                 ; 1:4       __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld  (HL),format({%-11s},low $1); 2:10      __INFO   lo
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),format({%-11s},high $1); 2:10      __INFO   hi
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO})}){}dnl
+dnl
+dnl
 dnl # rdrop
 dnl # r:( a -- )
 dnl # odstrani vrchol zasobniku navratovych adres

@@ -552,8 +552,8 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_I_STORE},{$1 i_}LOOP_STACK{ !},$1,LOOP_STACK){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_I_STORE},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M_STORE($1,$2,{i})},
-__{}__GET_LOOP_TYPE($2),{R},{},
-__{}__GET_LOOP_TYPE($2),{S},{},
+__{}__GET_LOOP_TYPE($2),{R},{__ASM_PUSH_INDEX2R_STORE($1,$2,{i})},
+__{}__GET_LOOP_TYPE($2),{S},{__ASM_PUSH_INDEX2S_STORE($1,$2,{i})},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -598,6 +598,32 @@ __{}__{}__CODE2
 __{}__{}    inc  BC             ; 1:6       __INFO
 __{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 number
+dnl #   $2 id loop
+dnl #   $3 i,j,k
+dnl #   $4 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_PUSH_INDEX2R_STORE},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(r)}){}dnl
+__{}__ASM_TOKEN_PUSH_R_FETCH_STORE($1)}){}dnl
+dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 number
+dnl #   $2 id loop
+dnl #   $3 i,j,k
+dnl #   $4 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_PUSH_INDEX2S_STORE},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
+__{}__ASM_TOKEN_PUSH_OVER_STORE($1)}){}dnl
 dnl
 dnl
 dnl
