@@ -545,6 +545,7 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{define({_
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_R_FETCH},           {__SET_TOKEN({__TOKEN_PUSH_R_FETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_R_FETCH-__TOKEN_STORE},     {__SET_TOKEN({__TOKEN_PUSH_R_FETCH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_R_FETCH-__TOKEN_CSTORE},     {__SET_TOKEN({__TOKEN_PUSH_R_FETCH_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_CSTORE},            {__SET_TOKEN({__TOKEN_PUSH_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_STORE},             {__SET_TOKEN({__TOKEN_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},

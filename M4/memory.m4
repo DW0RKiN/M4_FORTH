@@ -1116,15 +1116,14 @@ dnl # C!
 dnl # ( char addr -- )
 dnl # store 8-bit char at addr
 define({CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CSTORE},{cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CSTORE},{c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CSTORE},{dnl
-__{}define({__INFO},{cstore}){}dnl
-
-    ld  (HL),E          ; 1:7       C! cstore   ( char addr -- )
-    pop  HL             ; 1:10      C! cstore
-    pop  DE             ; 1:10      C! cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld  (HL),E          ; 1:7       __INFO   ( char addr -- )
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -2205,18 +2204,17 @@ dnl # !
 dnl # ( x addr -- )
 dnl # store 16-bit number at addr
 define({STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_STORE},{store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_STORE},{!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STORE},{dnl
-__{}define({__INFO},{store}){}dnl
-
-                        ;[5:40]     !  store   ( x addr -- )
-    ld  (HL),E          ; 1:7       !  store
-    inc  HL             ; 1:6       !  store
-    ld  (HL),D          ; 1:7       !  store
-    pop  HL             ; 1:10      !  store
-    pop  DE             ; 1:10      !  store}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:40]     __INFO   ( x addr -- )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
