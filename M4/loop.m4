@@ -551,7 +551,7 @@ dnl #   $3 i,j,k
 dnl #   $4 0 = i
 dnl #      1,2 = j
 dnl #      2,3,4 = k
-define({__ASM_PUSH_INDEX2R},{dnl
+define({__ASM_PUSH_INDEX2S},{dnl
 __{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
 __{}__ASM_TOKEN_PUSH_OVER($1)}){}dnl
 dnl
