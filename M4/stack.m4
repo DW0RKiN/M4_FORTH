@@ -76,7 +76,16 @@ dnl
 dnl # ( -- c b a)
 dnl # push3(c,b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH3},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH3},{$1 $2 $3},$@){}dnl
+ifelse($1,{},{
+__{}  .error {$0}($@): Missing parameters!},
+$2,{},{
+__{}  .error {$0}($@): Missing second parameter!},
+$3,{},{
+__{}  .error {$0}($@): Missing third parameter!},
+eval($#>3),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3},{$1 $2 $3},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH3},{dnl
