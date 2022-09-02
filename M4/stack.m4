@@ -656,13 +656,12 @@ dnl
 dnl
 dnl # ( b a -- b b a )
 define({OVER_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_SWAP},{over_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP},{over swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_SWAP},{dnl
-__{}define({__INFO},{over_swap}){}dnl
-
-    push DE             ; 1:11      over_swap ( b a -- b b a )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( b a -- b b a )}){}dnl
 dnl
 dnl
 dnl # 3 over
@@ -672,14 +671,15 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_OVER},{$1 over},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_OVER},{dnl
-__{}define({__INFO},{$1 over}){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 over
-    push HL             ; 1:11      $1 over
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 over ( a -- a $1 a )}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( a -- a $1 a )
+    push HL             ; 1:11      __INFO
+    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 define({DUP_PUSH_SWAP},{dnl
