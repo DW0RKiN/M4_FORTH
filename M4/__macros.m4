@@ -1077,6 +1077,10 @@ dnl #  $4 Source registry name
 dnl #  $5 Source registry value
 __{}define({__CLOCKS},10000000){}dnl
 __{}__LD4($2,$3,$4,$5){}dnl
+__{}__LD4($2,$3,$6,$7){}dnl
+__{}__LD4($2,$3,$8,$9){}dnl
+__{}__LD4($2,$3,$10,$11){}dnl
+__{}__LD4($2,$3,$12,$13){}dnl
 __{}define({_TMP_INFO},$1){}dnl
 __{}define({__CODE},__CODE){}dnl
 __{}__CODE{}dnl
