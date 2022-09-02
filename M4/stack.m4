@@ -9,20 +9,28 @@ __{}__ADD_TOKEN({__TOKEN_PUSH},{$1},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro! Maybe you want to use {PUSH2}($1,$2)?})
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH2}($1,$2)?},
+{define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( -- b a)
 dnl # push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2},{$1 $2},$@){}dnl
+ifelse($1,{},{
+__{}  .error {$0}($@): Missing parameters!},
+$2,{},{
+__{}  .error {$0}($@): Missing second parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH2}($1,$2)?},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2},{$1 $2},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2},{dnl
