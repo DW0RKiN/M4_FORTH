@@ -1512,16 +1512,16 @@ __{}ifelse(dnl
 __{}eval($1),{0},{__ASM_TOKEN_PUSH_OVER($2)},
 __{}eval($1),{1},{__ASM_TOKEN_OVER_PUSH_SWAP($2)},
 __{}eval($1),{2},{
-__{}__{}                        ;[9:61]     __INFO   ( x2 x1 x0 -- x2 x1 x0 $2 x2 )
+__{}__{}                       ;ifelse(__IS_MEM_REF($2),1,[10:71],[ 9:61])     __INFO   ( x2 x1 x0 -- x2 x1 x0 $2 x2 )
 __{}__{}    pop  BC             ; 1:10      __INFO
 __{}__{}    push BC             ; 1:11      __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld    L, C          ; 1:4       __INFO
 __{}__{}    ld    H, B          ; 1:4       __INFO
-__{}__{}    ld   DE, __HEX_HL($2)     ; 3:10      __INFO},
+__{}__{}    ld   DE, format({%-11s},$2); ifelse(__IS_MEM_REF($2),1,4:20,3:10)      __INFO},
 __{}eval($1),{3},{
-__{}__{}                       ;[11:82]     __INFO   ( x3 x2 x1 x0 -- x3 x2 x1 x0 $2 x3 )
+__{}__{}                       ;ifelse(__IS_MEM_REF($2),1,[12:92],[11:82])     __INFO   ( x3 x2 x1 x0 -- x3 x2 x1 x0 $2 x3 )
 __{}__{}    pop  AF             ; 1:10      __INFO
 __{}__{}    pop  BC             ; 1:10      __INFO
 __{}__{}    push BC             ; 1:11      __INFO
@@ -1530,9 +1530,9 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld    L, C          ; 1:4       __INFO
 __{}__{}    ld    H, B          ; 1:4       __INFO
-__{}__{}    ld   DE, __HEX_HL($2)     ; 3:10      __INFO},
+__{}__{}    ld   DE, format({%-11s},$2); ifelse(__IS_MEM_REF($2),1,4:20,3:10)      __INFO},
 __{}{
-__{}__{}                       ;[13:77]     __INFO  ( x$1 .. x1 x0 -- x$1 .. x1 x0 $2 x$1 )
+__{}__{}                       ;ifelse(__IS_MEM_REF($2),1,[13:83],[13:77])     __INFO   ( x$1 .. x1 x0 -- x$1 .. x1 x0 $2 x$1 )
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1))     ; 3:10      __INFO
@@ -1540,7 +1540,7 @@ __{}__{}    add  HL, SP         ; 1:11      __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO
-__{}__{}    ld   HL, __HEX_HL($2)     ; 3:10      __INFO
+__{}__{}    ld   HL, format({%-11s},$2); 3:ifelse(__IS_MEM_REF($2),1,16,10)      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO})})}){}dnl
 dnl
 dnl
