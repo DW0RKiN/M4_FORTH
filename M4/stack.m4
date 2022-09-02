@@ -688,7 +688,7 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP},{dup $1 swap},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_SWAP},{dnl
 __{}define({__INFO},{dup $1 swap}){}dnl
-PUSH_OVER($1)}){}dnl
+__ASM_TOKEN_PUSH_OVER($1)}){}dnl
 dnl
 dnl
 dnl # over 3
