@@ -2477,18 +2477,19 @@ eval($#>1),{2},{
 __{}  .error {$0}($@): Unexpected parameter!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE},__LD_R_NUM(__INFO{   lo},{A},$1)){}dnl
 __{}ifelse(__IS_MEM_REF($2),{1},{
-                       ;[15:86]     __INFO   ( -- ) ( R: x_{}$2 .. x1 x0 -- x_{}$2 .. x1 x0 )
+                       ;[eval(13+__BYTES):eval(79+__CLOCKS)]     __INFO   ( -- ) ( R: x_{}$2 .. x1 x0 -- x_{}$2 .. x1 x0 )
     exx                 ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ld   HL, format({%-11s},$2); 3:16      __INFO
+    ld   HL,format({%-12s},$2); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    C,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
-    ld    L, A          ; 1:4       __INFO
-    ld  (HL),format({%-11s},low $1); 2:10      __INFO
+    ld    B,(HL)        ; 1:7       __INFO{}dnl
+__{}__CODE
+    ld  (BC),A          ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 __IS_NUM($2),{0},{
@@ -2507,30 +2508,30 @@ __IS_NUM($2),{0},{
 {dnl
 __{}ifelse(eval($2),0,{__ASM_TOKEN_PUSH_R_FETCH_CSTORE($1)},
 __{}eval($2),1,{
-                       ;[13:62]     __INFO   ( -- ) ( R: x1 x0 -- x1 x0 )
+                       ;[eval(11+__BYTES):eval(55+__CLOCKS)]     __INFO   ( -- ) ( R: x1 x0 -- x1 x0 )
     exx                 ; 1:4       __INFO
     ld    E, L          ; 1:4       __INFO
-    ld    D, H          ; 1:4       __INFO
+    ld    D, H          ; 1:4       __INFO    
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    C,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
-    ld    L, A          ; 1:4       __INFO
-    ld  (HL),format({%-11s},low $1); 2:10      __INFO
+    ld    B,(HL)        ; 1:7       __INFO{}dnl
+__{}__CODE
+    ld  (BC),A          ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 __{}{
-                       ;[14:69]     __INFO   ( -- ) ( R: x{}$2 .. x1 x0 -- x{}$2 .. x1 x0 )
+                       ;[eval(12+__BYTES):eval(62+__CLOCKS)]     __INFO   ( -- ) ( R: x{}$2 .. x1 x0 -- x{}$2 .. x1 x0 )
     exx                 ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, __HEX_HL(2*($2))     ; 3:10      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    C,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
-    ld    L, A          ; 1:4       __INFO
-    ld  (HL),format({%-11s},low $1); 2:10      __INFO
+    ld    B,(HL)        ; 1:7       __INFO{}dnl
+__{}__CODE
+    ld  (BC),A          ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO})}){}dnl
 })}){}dnl
@@ -2806,27 +2807,25 @@ __{}ifelse(__IS_MEM_REF($1),1,{
     ld    A, format({%-11s},$1); 3:13      __INFO
     ld  (DE),A          ; 1:7       __INFO   lo
     exx                 ; 1:4       __INFO},
-__IS_NUM($1),1,{
-                        ;[10:48]    __INFO   ( -- ) ( R: x1 -- x1 )
+__IS_NUM($1),1,{define({__CODE},__LD_R_NUM(__INFO{   lo},{A},$1))
+                        ;[eval(7+__BYTES):eval(37+__CLOCKS)]     __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
     ld    E,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    D,(HL)        ; 1:7       __INFO
-    dec   L             ; 1:4       __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   lo
-    ex   DE, HL         ; 1:4       __INFO
+    dec   L             ; 1:4       __INFO{}dnl
+__{}__CODE
+    ld  (DE),A          ; 1:7       __INFO
     exx                 ; 1:4       __INFO},
 {
-                        ;[10:48]    __INFO   ( -- ) ( R: x1 -- x1 )
+                        ;[9:44]     __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
     ld    E,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    D,(HL)        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld  (HL),format({%-11s},low $1); 2:10      __INFO   lo
-    ex   DE, HL         ; 1:4       __INFO
+    ld    A,format({%-12s},low $1); 2:7       __INFO   lo
+    ld  (DE),A          ; 1:7       __INFO
     exx                 ; 1:4       __INFO})}){}dnl
 dnl
 dnl

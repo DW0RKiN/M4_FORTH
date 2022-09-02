@@ -1111,7 +1111,7 @@ __{}__{}eval(__CLOCKS>7),{1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    $1{{,}} $2       ; 2:7       {_TMP_INFO}})})},
+__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       {_TMP_INFO}})})},
 __{}$4,{},{dnl # no source value
 __{}__{}ifelse($1:__HEX_L($2):eval(__CLOCKS>4),{A:0x00:1},{dnl
 __{}__{}__{}define({__CLOCKS},4){}dnl
@@ -1122,7 +1122,7 @@ __{}__{}eval(__CLOCKS>7),{1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    $1{{,}} $2       ; 2:7       {_TMP_INFO}})})},
+__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       {_TMP_INFO}})})},
 __{}$1,$3,{dnl # Identical register
 __{}__{}ifelse($4,{},{dnl # empty value because 0xFF==__HEX_L({}-1) or 0x01==__HEX_L({}+1)
 __{}__{}__{}ifelse($1:__HEX_L($2):eval(__CLOCKS>4),{A:0x00:1},{dnl
@@ -1134,7 +1134,7 @@ __{}__{}__{}eval(__CLOCKS>7 && len($1)>0 && len($2)>0),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} $2       ; 2:7       {_TMP_INFO}})})},
+__{}__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       {_TMP_INFO}})})},
 __{}__{}$2,$4,{dnl # match found
 __{}__{}__{}define({__CLOCKS},0){}dnl
 __{}__{}__{}define({__BYTES},0){}dnl
@@ -1162,7 +1162,7 @@ __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} $2       ; 2:7       {_TMP_INFO}})})})},
+__{}__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       {_TMP_INFO}})})})},
 __{}{dnl # different register
 __{}__{}ifelse($2,$4,{dnl # match found
 __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
@@ -1180,7 +1180,7 @@ __{}__{}__{}eval(__CLOCKS>7),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} $2       ; 2:7       {_TMP_INFO}})})}){}dnl
+__{}__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       {_TMP_INFO}})})}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
