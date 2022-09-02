@@ -1453,22 +1453,29 @@ dnl # over number swap c!
 dnl # ( addr x -- addr x )
 dnl # store 8-bit number at addr with save addr
 define({OVER_PUSH_SWAP_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_PUSH_SWAP_CSTORE},{over_push_swap_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PUSH_SWAP_CSTORE},{over $1 swap c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_PUSH_SWAP_CSTORE},{dnl
-__{}define({__INFO},{over_push_swap_cstore}){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(eval($1),0,{dnl
-__{}                        ;[2:11]     over $1 swap c!  over_push_swap_cstore($1)   ( addr x -- addr x )
-__{}    xor   A             ; 1:4       over $1 swap c!  over_push_swap_cstore($1)},
-__{}{dnl
-__{}                        ;[3:14]     over $1 swap c!  over_push_swap_cstore($1)   ( addr x -- addr x )
-__{}    ld    A,low format({%-8s},$1); 2:7       over $1 swap c!  over_push_swap_cstore($1)})
-    ld  (DE),A          ; 1:7       over $1 swap c!  over_push_swap_cstore($1)}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameters!},
+__IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
+                        ;[4:20]     __INFO   ( addr x1 -- addr x1 )  store $1 to addr
+    ld    A, format({%-11s},$1); 3:13      __INFO   lo
+    ld  (DE),A          ; 1:7       __INFO},
+__IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
+                        ;[3:14]     __INFO   ( addr x1 -- addr x1 )  store $1 to addr
+    ld    A, format({%-11s},low $1); 2:7       __INFO
+    ld  (DE),A          ; 1:7       __INFO},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($1))){}dnl
+                        ;[eval(1+__BYTES):eval(7+__CLOCKS)]     __INFO   ( addr x1 -- addr x1 )  store $1 to addr{}dnl
+__{}__CODE
+    ld  (DE),A          ; 1:7       __INFO{}dnl
+})}){}dnl
 dnl
 dnl
 dnl
@@ -2353,6 +2360,163 @@ __{}define({__INFO},{tuck_store_2add}){}dnl
     pop  DE             ; 1:10      tuck ! +2 tuck_store_2add}){}dnl
 dnl
 dnl
+dnl
+dnl # over number swap !
+dnl # number 2 pick !
+dnl # ( addr x -- addr x )
+dnl # store 16-bit number at addr
+define({OVER_PUSH_SWAP_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PUSH_SWAP_STORE},{over $1 swap !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_PUSH_SWAP_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameters!},
+__IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
+                        ;[10:52]    __INFO   ( addr -- addr )
+    ld    A, format({%-11s},$1); 3:13      __INFO   lo
+    ld  (DE),A          ; 1:7       __INFO
+    ld    A, format({%-11s},(1+$1)); 3:13      __INFO   hi
+    inc  DE             ; 1:6       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    dec  DE             ; 1:6       __INFO},
+__IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
+                        ;[8:40]     __INFO   ( addr -- addr )
+    ld    A, format({%-11s},low $1); 2:7       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    ld    A, format({%-11s},high $1); 2:7       __INFO
+    inc  DE             ; 1:6       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    dec  DE             ; 1:6       __INFO},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE1},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($1))){}dnl
+__{}define({__B},eval(4+__BYTES)){}dnl
+__{}define({__C},eval(26+__CLOCKS)){}dnl
+__{}define({__CODE2},__LD_R_NUM(__INFO{   hi},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
+__{}define({__B},eval(__B+__BYTES)){}dnl
+__{}define({__C},eval(__C+__CLOCKS)){}dnl
+                        ;[__B:__C]     __INFO   ( addr x1 -- addr x1 )  store $1 to addr{}dnl
+__{}__CODE1
+    ld  (DE),A          ; 1:7       __INFO{}dnl
+__{}__CODE2
+    inc  DE             ; 1:6       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    dec  DE             ; 1:6       __INFO
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2 pick number swap !
+dnl # number 3 pick !
+dnl # 2over nip number swap !
+dnl # ( addr x2 x1 -- addr x2 x1 )
+dnl # store 16-bit number at addr
+define({PUSH_3_PICK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_3_PICK_STORE},{$1 3 pick !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_3_PICK_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameters!},
+__IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
+                        ;[11:67]    __INFO   ( addr x2 x1 -- addr x2 x1 )  store $1 to addr
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 3:13      __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    ld    A, format({%-11s},(1+$1)); 3:13      __INFO
+    inc  BC             ; 1:6       __INFO
+    ld  (BC),A          ; 1:7       __INFO},
+__IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
+                        ;[9:55]     __INFO   ( addr x2 x1 -- addr x2 x1 )  store $1 to addr
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    ld    A, format({%-11s},low $1); 2:7       __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    ld    A, format({%-11s},high $1); 2:7       __INFO
+    inc  BC             ; 1:6       __INFO
+    ld  (BC),A          ; 1:7       __INFO},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE1},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($1))){}dnl
+__{}define({__B},eval(5+__BYTES)){}dnl
+__{}define({__C},eval(41+__CLOCKS)){}dnl
+__{}define({__CODE2},__LD_R_NUM(__INFO{   hi},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
+__{}define({__B},eval(__B+__BYTES)){}dnl
+__{}define({__C},eval(__C+__CLOCKS)){}dnl
+                        ;[__B:__C]     __INFO   ( addr x2 x1 -- addr x2 x1 )  store $1 to addr
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO{}dnl
+__{}__CODE1
+    ld  (BC),A          ; 1:7       __INFO{}dnl
+__{}__CODE2
+    inc  BC             ; 1:6       __INFO
+    ld  (BC),A          ; 1:7       __INFO})}){}dnl
+dnl
+dnl
+dnl
+dnl # 3 pick number swap !
+dnl # number 4 pick !
+dnl # 2over drop number swap !
+dnl # ( addr x3 x2 x1 -- addr x3 x2 x1 )
+dnl # store 16-bit number at addr
+define({PUSH_4_PICK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_4_PICK_STORE},{$1 4 pick !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_4_PICK_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameters!},
+__IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
+                        ;[13:88]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+    pop  AF             ; 1:10      __INFO
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    push AF             ; 1:11      __INFO
+    ld    A, format({%-11s},$1); 3:13      __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    ld    A, format({%-11s},(1+$1)); 3:13      __INFO
+    inc  BC             ; 1:6       __INFO
+    ld  (BC),A          ; 1:7       __INFO},
+__IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
+                        ;[11:76]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+    pop  AF             ; 1:10      __INFO
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    push AF             ; 1:11      __INFO
+    ld    A, format({%-11s},low $1); 2:7       __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    ld    A, format({%-11s},high $1); 2:7       __INFO
+    inc  BC             ; 1:6       __INFO
+    ld  (BC),A          ; 1:7       __INFO},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__CODE1},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($1))){}dnl
+__{}define({__B},eval(7+__BYTES)){}dnl
+__{}define({__C},eval(62+__CLOCKS)){}dnl
+__{}define({__CODE2},__LD_R_NUM(__INFO{   hi},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
+__{}define({__B},eval(__B+__BYTES)){}dnl
+__{}define({__C},eval(__C+__CLOCKS)){}dnl
+                        ;[__B:__C]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+    pop  AF             ; 1:10      __INFO
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    push AF             ; 1:11      __INFO{}dnl
+__{}__CODE1
+    ld  (BC),A          ; 1:7       __INFO{}dnl
+__{}__CODE2
+    inc  BC             ; 1:6       __INFO
+    ld  (BC),A          ; 1:7       __INFO})}){}dnl
+dnl
+dnl
+dnl
 dnl # over swap !
 dnl # ( x addr -- x )
 dnl # store 16-bit number at addr
@@ -2419,6 +2583,13 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameters!},
+__IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
+                        ;[8:46]     __INFO   ( addr -- addr )
+    ld   BC,format({%-12s},$1); 4:20      __INFO
+    ld  (HL),C          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO},
 {define({__INFO},__COMPILE_INFO)
                         ;[6:32]     __INFO   ( addr -- addr )
     ld  (HL),low format({%-7s},$1); 2:10      __INFO
@@ -2441,6 +2612,10 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameters!},
+__IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
+                        ;[4:20]     __INFO   ( addr -- addr )
+    ld    A,format({%-12s},$1); 3:13      __INFO
+    ld  (HL),A          ; 1:7       __INFO},
 {define({__INFO},__COMPILE_INFO)
     ld  (HL),low format({%-7s},$1); 2:10      __INFO   ( addr -- addr )})}){}dnl
 dnl

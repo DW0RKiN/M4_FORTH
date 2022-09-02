@@ -1157,6 +1157,18 @@ __{}__{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    xor   A             ; 1:4       {_TMP_INFO}})})},
+__{}__{}$1:__HEX_L($2),A:__HEX_L($4+$4),{dnl
+__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}define({__CODE},{
+__{}__{}__{}__{}    add   A{{,}} A          ; 1:4       {_TMP_INFO}})})},
+__{}__{}$1:__HEX_L($2),A:__HEX_L(__HEX_L(($4)<<7)+(__HEX_L($4)>>1)),{dnl
+__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}define({__CODE},{
+__{}__{}__{}__{}    rrca                ; 1:4       {_TMP_INFO}})})},
 __{}__{}{dnl # no match found
 __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl

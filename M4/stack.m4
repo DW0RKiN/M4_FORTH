@@ -1330,8 +1330,7 @@ __IS_NUM($1),{0},{
 __{}  ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      $1 pick
 __{}    push HL             ; 1:11      $1 pick
-__{}    ld   HL, format({%-11s},$1); 3:10      $1 pick
-__{}    add  HL, HL         ; 1:11      $1 pick
+__{}    ld   HL, format({%-11s},2*($1)); 3:10      $1 pick
 __{}    add  HL, SP         ; 1:11      $1 pick
 __{}    ld    E,(HL)        ; 1:7       $1 pick
 __{}    inc  HL             ; 1:6       $1 pick
@@ -1448,6 +1447,106 @@ __{}__{}    ld    A,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld    H,(HL)        ; 1:7       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO ( ...x2 x1 x0 x -- ...x2 x1 x0 x$1 )})})}){}dnl
+dnl
+dnl
+dnl
+dnl # x u pick !
+dnl # ( -- ) (R: xu .. x1 x0 -- xu .. x1 x0 )
+dnl # Store x to address xu
+define({PUSH_PICK_PUSH_SWAP_STORE},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_PICK_PUSH_SWAP_STORE},{$1 pick $2 swap !},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PICK_PUSH_SWAP_STORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($#,{0},{
+__{}  .error push_pick(): Parameter is missing!},
+__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    add  HL, HL         ; 1:11      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld  (HL),E          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),D          ; 1:7       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__IS_MEM_REF($1),{1},{
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    add  HL, HL         ; 1:11      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld  (HL),format({%-11s},low $2); 2:10      __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),format({%-11s},high $2); 2:10      __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__IS_NUM($1):__IS_MEM_REF($2),{0:1},{
+__{}  ; warning The condition >>>$1<<< cannot be evaluated
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},2*($1)); 3:10      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld  (HL),E          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),D          ; 1:7       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__IS_NUM($1),{0},{
+__{}  ; warning The condition >>>$1<<< cannot be evaluated
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},2*($1)); 3:10      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld  (HL),format({%-11s},low $2); 2:10      __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),format({%-11s},high $2); 2:10      __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+{dnl
+__{}ifelse(dnl
+__{}eval($1),{0},{__ASM_TOKEN_PUSH_OVER_STORE($2)},
+__{}eval($1),{1},{__ASM_TOKEN_OVER_PUSH_SWAP_STORE($2)},
+__{}eval($1),{2},{__ASM_TOKEN_PUSH_3_PICK_STORE($2)},
+__{}eval($1),{3},{__ASM_TOKEN_PUSH_4_PICK_STORE($2)},
+__{}{
+__{}__{}                       ;[15:92]     __INFO   ( -- ) ( R: x$1 .. x1 x0 -- x$1 .. x1 x0 )
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
+__{}__{}    add  HL, SP         ; 1:11      __INFO
+__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    ld  (HL),format({%-11s},low $2); 2:10      __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),format({%-11s},high $2); 2:10      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO})})}){}dnl
 dnl
 dnl
 dnl
