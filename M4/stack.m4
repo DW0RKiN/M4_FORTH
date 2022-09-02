@@ -28,7 +28,7 @@ __{}  .error {$0}($@): Missing parameters!},
 $2,{},{
 __{}  .error {$0}($@): Missing second parameter!},
 eval($#>2),{1},{
-__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH2}($1,$2)?},
+__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH3}($1,$2,$3)?},
 {dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH2},{$1 $2},$@)}){}dnl
 }){}dnl
