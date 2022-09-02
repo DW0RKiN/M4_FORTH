@@ -2511,7 +2511,7 @@ __{}eval($2),1,{
                        ;[eval(11+__BYTES):eval(55+__CLOCKS)]     __INFO   ( -- ) ( R: x1 x0 -- x1 x0 )
     exx                 ; 1:4       __INFO
     ld    E, L          ; 1:4       __INFO
-    ld    D, H          ; 1:4       __INFO    
+    ld    D, H          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
     ld    C,(HL)        ; 1:7       __INFO
