@@ -665,10 +665,9 @@ __{}__ADD_TOKEN({__TOKEN_OVER},{over},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER},{dnl
-__{}define({__INFO},{over}){}dnl
-
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( b a -- b a b )
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( b a -- b b a )
@@ -1138,15 +1137,16 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH},{dup $1},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH},{dnl
-__{}define({__INFO},{dup $1}){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      dup $1
-    push HL             ; 1:11      dup $1
-    ex   DE, HL         ; 1:4       dup $1
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1}){}dnl
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+{define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1266,19 +1266,18 @@ dnl
 dnl
 dnl # 2 pick ( c b a -- c b a c )
 define({_2_PICK},{dnl
-__{}__ADD_TOKEN({__TOKEN_2_PICK},{2_pick},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2_PICK},{2 pick},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2_PICK},{dnl
-__{}define({__INFO},{2_pick}){}dnl
-
-__{}__{}                       ;[ 6:44]     2 pick
-__{}__{}    pop  BC             ; 1:10      2 pick
-__{}__{}    push BC             ; 1:11      2 pick
-__{}__{}    push DE             ; 1:11      2 pick
-__{}__{}    ex   DE, HL         ; 1:4       2 pick
-__{}__{}    ld    H, B          ; 1:4       2 pick
-__{}__{}    ld    L, C          ; 1:4       2 pick ( c b a -- c b a c )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                       ;[ 6:44]     __INFO   ( c b a -- c b a c )
+__{}__{}    pop  BC             ; 1:10      __INFO
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    H, B          ; 1:4       __INFO
+__{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # 2 pick ( c b a -- c b a c b )
@@ -1301,21 +1300,20 @@ dnl
 dnl
 dnl # 3 pick ( d c b a -- d c b a d )
 define({_3_PICK},{dnl
-__{}__ADD_TOKEN({__TOKEN_3_PICK},{3_pick},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_3_PICK},{3 pick},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_3_PICK},{dnl
-__{}define({__INFO},{3_pick}){}dnl
-
-__{}__{}                       ;[ 8:65]     3 pick
-__{}__{}    pop  AF             ; 1:10      3 pick
-__{}__{}    pop  BC             ; 1:10      3 pick
-__{}__{}    push BC             ; 1:11      3 pick
-__{}__{}    push AF             ; 1:11      3 pick
-__{}__{}    push DE             ; 1:11      3 pick
-__{}__{}    ex   DE, HL         ; 1:4       3 pick
-__{}__{}    ld    H, B          ; 1:4       3 pick
-__{}__{}    ld    L, C          ; 1:4       3 pick ( d c b a -- d c b a d )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                       ;[ 8:65]     __INFO   ( d c b a -- d c b a d )
+__{}__{}    pop  AF             ; 1:10      __INFO
+__{}__{}    pop  BC             ; 1:10      __INFO
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    push AF             ; 1:11      __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    H, B          ; 1:4       __INFO
+__{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
@@ -1354,27 +1352,27 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($#,{0},{
 __{}  .error push_pick(): Parameter is missing!},
 __IS_MEM_REF($1),{1},{
-__{}    push DE             ; 1:11      $1 pick
-__{}    push HL             ; 1:11      $1 pick
-__{}    ld   HL, format({%-11s},$1); 3:16      $1 pick
-__{}    add  HL, HL         ; 1:11      $1 pick
-__{}    add  HL, SP         ; 1:11      $1 pick
-__{}    ld    E,(HL)        ; 1:7       $1 pick
-__{}    inc  HL             ; 1:6       $1 pick
-__{}    ld    D,(HL)        ; 1:7       $1 pick
-__{}    ex   DE, HL         ; 1:4       $1 pick
-__{}    pop  DE             ; 1:10      $1 pick},
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    add  HL, HL         ; 1:11      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
 __{}  ; warning The condition >>>$1<<< cannot be evaluated
-__{}    push DE             ; 1:11      $1 pick
-__{}    push HL             ; 1:11      $1 pick
-__{}    ld   HL, format({%-11s},2*($1)); 3:10      $1 pick
-__{}    add  HL, SP         ; 1:11      $1 pick
-__{}    ld    E,(HL)        ; 1:7       $1 pick
-__{}    inc  HL             ; 1:6       $1 pick
-__{}    ld    D,(HL)        ; 1:7       $1 pick
-__{}    ex   DE, HL         ; 1:4       $1 pick
-__{}    pop  DE             ; 1:10      $1 pick},
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},2*($1)); 3:10      __INFO
+__{}    add  HL, SP         ; 1:11      __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 {dnl
 __{}ifelse(dnl
 __{}eval($1),{0},{__ASM_TOKEN_DUP},
@@ -1382,15 +1380,15 @@ __{}eval($1),{1},{__ASM_TOKEN_OVER},
 __{}eval($1),{2},{__ASM_TOKEN_2_PICK},
 __{}eval($1),{3},{__ASM_TOKEN_3_PICK},
 __{}{
-__{}__{}                       ;[10:60]     $1 pick
-__{}__{}    push DE             ; 1:11      $1 pick
-__{}__{}    ex   DE, HL         ; 1:4       $1 pick
-__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      $1 pick
-__{}__{}    add  HL, SP         ; 1:11      $1 pick
-__{}__{}    ld    A,(HL)        ; 1:7       $1 pick
-__{}__{}    inc  HL             ; 1:6       $1 pick
-__{}__{}    ld    H,(HL)        ; 1:7       $1 pick
-__{}__{}    ld    L, A          ; 1:4       $1 pick ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})}){}dnl
+__{}__{}                       ;[10:60]     __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
+__{}__{}    add  HL, SP         ; 1:11      __INFO
+__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})}){}dnl
 dnl
 dnl
 dnl
