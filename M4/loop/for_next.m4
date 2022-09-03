@@ -284,7 +284,9 @@ ifelse($#,{0},{dnl
 __{}ifelse(dnl
 __{}__{}__GET_LOOP_TYPE(LOOP_STACK),{M},{__ADD_TOKEN({__TOKEN_NEXT},{next_}LOOP_STACK,LOOP_STACK)},
 __{}__{}__GET_LOOP_TYPE(LOOP_STACK),{R},{__ADD_TOKEN({__TOKEN_RNEXT},{next_}LOOP_STACK,LOOP_STACK)},
-__{}__{}__GET_LOOP_TYPE(LOOP_STACK),{S},{__ADD_TOKEN({__TOKEN_SNEXT},{next_}LOOP_STACK,LOOP_STACK)}){}dnl
+__{}__{}__GET_LOOP_TYPE(LOOP_STACK),{S},{__ADD_TOKEN({__TOKEN_SNEXT},{next_}LOOP_STACK,LOOP_STACK)},
+__{}__{}{
+__{}__{}__{}  .error __{}  .error {$0}($@): Unexpected loop type parameter! __SHOW_LOOP(LOOP_STACK)}){}dnl
 __{}popdef({LOOP_STACK})},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
@@ -292,11 +294,11 @@ dnl
 define({__ASM_TOKEN_NEXT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)),1,{dnl
-__{}__{}ifelse(eval((__GET_LOOP_BEGIN($1)>=0) && (__GET_LOOP_BEGIN($1)<256)),{1:1},{
+__{}__{}ifelse(eval((__GET_LOOP_BEGIN($1)>=0) && (__GET_LOOP_BEGIN($1)<256)),{1},{
 __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld    A, 0x00       ; 2:7       __INFO   idx always points to a 16-bit index
 __{}    nop                 ; 1:4       __INFO
-__{}    sub   A, 0x01       ; 2:7       __INFO   index--
+__{}    sub  0x01           ; 2:7       __INFO   index--
 __{}    jp   nc, for{}$1     ; 3:10      __INFO
 __{}leave{}$1:               ;           __INFO},
 __{}{
