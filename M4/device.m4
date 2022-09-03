@@ -679,29 +679,36 @@ dnl
 dnl # ( -- )
 dnl # .( char )
 define({PUTCHAR},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{$@}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUTCHAR},{dnl
-__{}define({__INFO},{putchar}){}dnl
-ifelse($2,{},,{
-.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
-    ld    A, format({%-11s},{{$1}})  ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with {ZX 48K ROM}})dnl
+ifelse({$1},{},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{','}})},
+{define({__INFO},__COMPILE_INFO)
+    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( -- )
 dnl # .( char )
 define({PUSH_EMIT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_EMIT},{push_emit},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EMIT},{{$1} emit},{$@}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_EMIT},{dnl
-__{}define({__INFO},{push_emit}){}dnl
-ifelse($2,{},,{
-.error More parameters found in macro putchar, if you want to print a comma you have to write putchar({{,}})})
-    ld    A, format({%-11s},{{$1}})  ; 2:7       $1 emit  push_emit($1)   Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      $1 emit  push_emit($1)   putchar(reg A) with {ZX 48K ROM}})dnl
+ifelse({$1},{},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write push({{','}}) emit},
+{define({__INFO},__COMPILE_INFO)
+    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # ( addr n -- )

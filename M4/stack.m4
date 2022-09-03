@@ -3348,3 +3348,17 @@ __{}define({__INFO},{2rswap}){}dnl
 dnl
 dnl
 dnl
+dnl # ( -- r.a.s. )
+define({RAS},{dnl
+__{}__ADD_TOKEN({__TOKEN_RAS},{ras},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RAS},{
+    ex   DE, HL         ; 1:4       ras   ( -- return_address_stack )
+    exx                 ; 1:4       ras
+    push HL             ; 1:11      ras
+    exx                 ; 1:4       ras
+    ex  (SP),HL         ; 1:19      ras}){}dnl
+dnl
+dnl
+dnl

@@ -825,16 +825,6 @@ __{}define({__SWAP2DEF_TMP},$1)define({$1},$2)define({$2},__SWAP2DEF_TMP)}){}dnl
 dnl
 dnl
 dnl
-define({__RAS},{
-    ex   DE, HL         ; 1:4       __ras   ( -- return_address_stack )
-    push HL             ; 1:11      __ras
-    exx                 ; 1:4       __ras
-    push HL             ; 1:11      __ras
-    exx                 ; 1:4       __ras
-    pop  HL             ; 1:10      __ras}){}dnl
-dnl
-dnl
-dnl
 define({__XOR_REG8_8BIT},{dnl
 dnl # Input
 dnl #   $1 name reg
