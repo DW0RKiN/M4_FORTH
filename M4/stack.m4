@@ -268,9 +268,9 @@ __{}__ADD_TOKEN({__TOKEN_DUP},{dup},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO   ( a -- a a )
     ld    D, H          ; 1:4       __INFO
-    ld    E, L          ; 1:4       __INFO   ( a -- a a )}){}dnl
+    ld    E, L          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( a -- a a a )

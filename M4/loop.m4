@@ -324,26 +324,21 @@ dnl
 dnl
 dnl
 define({__ASM_TOKEN_ADDLOOP},{dnl
+ifelse(__GET_LOOP_STEP($1),{},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{M:},{dnl
 __{}__{}__ASM_TOKEN_ADDMLOOP($1)},
 __{}__GET_LOOP_TYPE($1):__GET_LOOP_BEGIN($1),{M:},{dnl
 __{}__{}__ASM_TOKEN_ADDMLOOP($1)},
 __{}__GET_LOOP_TYPE($1),{M},{dnl
 __{}__{}__ASM_TOKEN_ADDXLOOP($1)},
-__{}__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{R:},{dnl
-__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
-__{}__GET_LOOP_TYPE($1):__GET_LOOP_BEGIN($1),{R:},{dnl
-__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
 __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}__ASM_TOKEN_ADDRLOOP($1)},
-__{}__GET_LOOP_TYPE($1):__GET_LOOP_END($1),{S:},{dnl
-__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
-__{}__GET_LOOP_TYPE($1):__GET_LOOP_BEGIN($1),{S:},{dnl
-__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
 __{}__{}__ASM_TOKEN_ADDSLOOP($1)},
 __{}{
-__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
+__{}  .error {$0}($@): Unexpected type parameter!})},
+{__ASM_TOKEN_PUSH_ADDLOOP($1)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # --------------------------------------------------------------------------

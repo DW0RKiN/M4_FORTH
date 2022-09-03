@@ -670,10 +670,23 @@ __{}__ADD_TOKEN({__TOKEN_SPACE},{space},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SPACE},{dnl
-__{}define({__INFO},{space}){}dnl
-
-    ld    A, 0x20       ; 2:7       space   Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      space   with {48K ROM} in, this will print space})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, 0x20       ; 2:7       __INFO   Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      __INFO   with {48K ROM} in, this will print space})dnl
+dnl
+dnl
+dnl # dup space
+dnl # ( x -- x x )
+dnl # duplicate tos and prints a space
+define({DUP_SPACE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_SPACE},{dup space},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_SPACE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_DUP{}dnl
+__{}__ASM_TOKEN_SPACE}){}dnl
+dnl
 dnl
 dnl
 dnl # ( -- )

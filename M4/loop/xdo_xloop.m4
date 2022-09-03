@@ -635,7 +635,7 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    adc   A, high format({%-6s},__GET_LOOP_STEP($1)); 2:7       __INFO
 __{}    ld    B, A          ; 1:4       __INFO
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((__HEX_H($1)==0) && (21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
+eval((__HEX_H(__GET_LOOP_STEP($1))==0) && (21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
 __{}                        ;[21:74/75] __INFO   variant +X.{I}: positive step 3..255, hi(real_stop) has fewer duplicate,run _TEMP_X{}x
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
@@ -707,7 +707,7 @@ __{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
 __LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
 ifelse(_TEMP_X,{1},{
 __{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant -X.null: positive step and no repeat},
-eval(($1==-3) && (__GET_LOOP_END($1)==0)),{1},{
+eval((__GET_LOOP_STEP($1)==-3) && (__GET_LOOP_END($1)==0)),{1},{
 __{}                        ;[11:66/46] __INFO   variant -X.A: step -3 and stop 0, run _TEMP_X{}x
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
