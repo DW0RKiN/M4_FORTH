@@ -483,20 +483,19 @@ dnl # =
 dnl # ( x1 x2 -- flag )
 dnl # equal ( x1 == x2 )
 define({EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_EQ},{eq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_EQ},{=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_EQ},{dnl
-__{}define({__INFO},{eq}){}dnl
-
-                        ;[9:48/49]  =
-    xor   A             ; 1:4       =   A = 0x00
-    sbc  HL, DE         ; 2:15      =
-    jr   nz, $+3        ; 2:7/12    =
-    dec   A             ; 1:4       =   A = 0xFF
-    ld    L, A          ; 1:4       =
-    ld    H, A          ; 1:4       =   HL= flag
-    pop  DE             ; 1:10      =}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[9:48/49]  __INFO
+    xor   A             ; 1:4       __INFO   A = 0x00
+    sbc  HL, DE         ; 2:15      __INFO
+    jr   nz, $+3        ; 2:7/12    __INFO
+    dec   A             ; 1:4       __INFO   A = 0xFF
+    ld    L, A          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO   HL= flag
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x -- x|n )
@@ -792,17 +791,16 @@ dnl # <>
 dnl # ( x1 x2 -- flag )
 dnl # not equal ( x1 <> x2 )
 define({NE},{dnl
-__{}__ADD_TOKEN({__TOKEN_NE},{ne},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NE},{<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_NE},{dnl
-__{}define({__INFO},{ne}){}dnl
-
-    or    A             ; 1:4       <>
-    sbc  HL, DE         ; 2:15      <>
-    jr    z, $+5        ; 2:7/12    <>
-    ld   HL, 0xFFFF     ; 3:10      <>
-    pop  DE             ; 1:10      <>}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO
+    jr    z, $+5        ; 2:7/12    __INFO
+    ld   HL, 0xFFFF     ; 3:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -853,25 +851,24 @@ dnl # <
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define({LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_LT},{lt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_LT},{<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LT},{dnl
-__{}define({__INFO},{lt}){}dnl
-
-                       ;[12:54]     <   ( x2 x1 -- flag x2<x1 )
-    ld    A, E          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       <   DE<HL --> DE-HL<0 --> carry if true
-    rra                 ; 1:4       <   carry --> sign
-    xor   H             ; 1:4       <
-    xor   D             ; 1:4       <
-    add   A, A          ; 1:4       <   sign --> carry
-    sbc   A, A          ; 1:4       <   0x00 or 0xff
-    ld    H, A          ; 1:4       <
-    ld    L, A          ; 1:4       <
-    pop  DE             ; 1:10      <}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[12:54]     __INFO   ( x2 x1 -- flag x2<x1 )
+    ld    A, E          ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+    rra                 ; 1:4       __INFO   carry --> sign
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO   sign --> carry
+    sbc   A, A          ; 1:4       __INFO   0x00 or 0xff
+    ld    H, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # 0<
@@ -899,61 +896,60 @@ dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
 dnl # signed ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
 define({LE},{dnl
-__{}__ADD_TOKEN({__TOKEN_LE},{le},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_LE},{<=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LE},{dnl
-__{}define({__INFO},{le}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_LE,{old},{
-                       ;[15:63,62]  <=
-    ld    A, H          ; 1:4       <=
-    xor   D             ; 1:4       <=
-    jp    p, $+7        ; 3:10      <=
-    rl    D             ; 2:8       <=  sign x2 = flag
-    jr   $+5            ; 2:12      <=
-    sbc  HL, DE         ; 2:15      <=  x2<=x1 --> 0<=x2-x1 --> no carry is true
-    ccf                 ; 1:4       <=
-    sbc  HL, HL         ; 2:15      <=
-    pop  DE             ; 1:10      <=},
+                       ;[15:63,62]  __INFO
+    ld    A, H          ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    jp    p, $+7        ; 3:10      __INFO
+    rl    D             ; 2:8       __INFO  sign x2 = flag
+    jr   $+5            ; 2:12      __INFO
+    sbc  HL, DE         ; 2:15      __INFO  x2<=x1 --> 0<=x2-x1 --> no carry is true
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO},
 {
-                       ;[13:57]     <=   ( x2 x1 -- flag x2<=x1 )
-    ld    A, L          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
-    sub   E             ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
-    ld    A, H          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
-    sbc   A, D          ; 1:4       <=   DE<=HL --> 0<=HL-DE --> no carry if true
-    rra                 ; 1:4       <=   carry --> sign
-    xor   H             ; 1:4       <=
-    xor   D             ; 1:4       <=
-    sub  0x80           ; 2:7       <=   sign --> invert carry
-    sbc   A, A          ; 1:4       <=   0x00 or 0xff
-    ld    H, A          ; 1:4       <=
-    ld    L, A          ; 1:4       <=
-    pop  DE             ; 1:10      <=})}){}dnl
+                       ;[13:57]     __INFO   ( x2 x1 -- flag x2<=x1 )
+    ld    A, L          ; 1:4       __INFO   DE<=HL --> 0<=HL-DE --> no carry if true
+    sub   E             ; 1:4       __INFO   DE<=HL --> 0<=HL-DE --> no carry if true
+    ld    A, H          ; 1:4       __INFO   DE<=HL --> 0<=HL-DE --> no carry if true
+    sbc   A, D          ; 1:4       __INFO   DE<=HL --> 0<=HL-DE --> no carry if true
+    rra                 ; 1:4       __INFO   carry --> sign
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    sub  0x80           ; 2:7       __INFO   sign --> invert carry
+    sbc   A, A          ; 1:4       __INFO   0x00 or 0xff
+    ld    H, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
 dnl
 dnl # >
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define({GT},{dnl
-__{}__ADD_TOKEN({__TOKEN_GT},{gt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_GT},{>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_GT},{dnl
-__{}define({__INFO},{gt}){}dnl
-
-                       ;[12:54]     >   ( x2 x1 -- flag x2>x1 )
-    ld    A, L          ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
-    sub   E             ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
-    ld    A, H          ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
-    sbc   A, D          ; 1:4       >   DE>HL --> 0>HL-DE --> carry if true
-    rra                 ; 1:4       >   carry --> sign
-    xor   H             ; 1:4       >
-    xor   D             ; 1:4       >
-    add   A, A          ; 1:4       >   sign --> carry
-    sbc   A, A          ; 1:4       >   0x00 or 0xff
-    ld    H, A          ; 1:4       >
-    ld    L, A          ; 1:4       >
-    pop  DE             ; 1:10      >}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[12:54]     __INFO   ( x2 x1 -- flag x2>x1 )
+    ld    A, L          ; 1:4       __INFO   DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       __INFO   DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       __INFO   DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       __INFO   DE>HL --> 0>HL-DE --> carry if true
+    rra                 ; 1:4       __INFO   carry --> sign
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO   sign --> carry
+    sbc   A, A          ; 1:4       __INFO   0x00 or 0xff
+    ld    H, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # >=
@@ -961,36 +957,36 @@ dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 dnl # signed ( x2 >= x1 ) --> ( x2 - x1 >= 0 ) --> no carry is true
 define({GE},{dnl
-__{}__ADD_TOKEN({__TOKEN_GE},{ge},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_GE},{>=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_GE},{dnl
-__{}define({__INFO},{ge}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_GE,{old},{
-                       ;[15:63,62]  >=
-    ld    A, H          ; 1:4       >=
-    xor   D             ; 1:4       >=
-    jp    p, $+7        ; 3:10      >=
-    rl    H             ; 2:8       >= sign x1 = flag
-    jr   $+5            ; 2:12      >=
-    scf                 ; 1:4       >=
-    sbc  HL, DE         ; 2:15      >=
-    sbc  HL, HL         ; 2:15      >=
-    pop  DE             ; 1:10      >=},
+                       ;[15:63,62]  __INFO
+    ld    A, H          ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    jp    p, $+7        ; 3:10      __INFO
+    rl    H             ; 2:8       __INFO sign x1 = flag
+    jr   $+5            ; 2:12      __INFO
+    scf                 ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO},
 {
-                       ;[13:57]     >=   ( x2 x1 -- flag x2>=x1 )
-    ld    A, E          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
-    sub   L             ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
-    ld    A, D          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
-    sbc   A, H          ; 1:4       >=   DE>=HL --> DE-HL>=0 --> no carry if true
-    rra                 ; 1:4       >=   carry --> sign
-    xor   H             ; 1:4       >=
-    xor   D             ; 1:4       >=
-    sub  0x80           ; 2:7       >=   sign --> invert carry
-    sbc   A, A          ; 1:4       >=   0x00 or 0xff
-    ld    H, A          ; 1:4       >=
-    ld    L, A          ; 1:4       >=
-    pop  DE             ; 1:10      >=})}){}dnl
+                       ;[13:57]     __INFO   ( x2 x1 -- flag x2>=x1 )
+    ld    A, E          ; 1:4       __INFO   DE>=HL --> DE-HL>=0 --> no carry if true
+    sub   L             ; 1:4       __INFO   DE>=HL --> DE-HL>=0 --> no carry if true
+    ld    A, D          ; 1:4       __INFO   DE>=HL --> DE-HL>=0 --> no carry if true
+    sbc   A, H          ; 1:4       __INFO   DE>=HL --> DE-HL>=0 --> no carry if true
+    rra                 ; 1:4       __INFO   carry --> sign
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    sub  0x80           ; 2:7       __INFO   sign --> invert carry
+    sbc   A, A          ; 1:4       __INFO   0x00 or 0xff
+    ld    H, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
 dnl
 dnl # 0>=
@@ -1093,6 +1089,89 @@ __{}define({__INFO},{uge}){}dnl
     sbc  HL, DE         ; 2:15      u>=
     sbc  HL, HL         ; 2:15      u>=
     pop  DE             ; 1:10      u>=}){}dnl
+dnl
+dnl
+dnl # ------------ 2dup condition -----------------
+dnl
+dnl
+dnl
+dnl # 2dup =
+dnl # ( x1 x2 -- x1 x2 flag )
+define({_2DUP_EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_EQ},{2dup =},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_2DUP{}dnl
+__{}__ASM_TOKEN_EQ}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup <>
+dnl # ( x1 x2 -- x1 x2 flag )
+define({_2DUP_NE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_EQ},{2dup <>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_NE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_2DUP{}dnl
+__{}__ASM_TOKEN_NE}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup <
+dnl # ( x1 x2 -- x1 x2 flag )
+define({_2DUP_LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_LT},{2dup <},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_LT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_2DUP{}dnl
+__{}__ASM_TOKEN_LT}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup >
+dnl # ( x1 x2 -- x1 x2 flag )
+define({_2DUP_GT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_GT},{2dup >},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_GT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_2DUP{}dnl
+__{}__ASM_TOKEN_GT}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup <=
+dnl # ( x1 x2 -- x1 x2 flag )
+define({_2DUP_LE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_LE},{2dup <=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_LE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_2DUP{}dnl
+__{}__ASM_TOKEN_LE}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup >=
+dnl # ( x1 x2 -- x1 x2 flag )
+define({_2DUP_GE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_GE},{2dup >=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_GE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_2DUP{}dnl
+__{}__ASM_TOKEN_GE}){}dnl
+dnl
+dnl
 dnl
 dnl # ------------- single shifts ----------------
 dnl
