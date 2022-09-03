@@ -439,6 +439,66 @@ __{}__ASM_TOKEN_DROP_PUSH_PICK($3)}){}dnl
 dnl
 dnl
 dnl
+dnl # dup i
+dnl # ( x -- x x i )
+define({DUP_I},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_I},{dup i_}LOOP_STACK,LOOP_STACK){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_I},{dnl
+__{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_DUP_INDEX2M($1,{i})},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_DUP_INDEX2R($1,{i},0)},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_DUP_INDEX2S($1,{i},0)},
+__{}{
+__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id loop
+dnl #   $2 i,j,k
+define({__ASM_DUP_INDEX2M},{dnl
+__{}define({__INFO},__COMPILE_INFO{(m)})
+    push DE             ; 1:11      __INFO   ( x -- x x $2 )
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id loop
+dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_DUP_INDEX2R},{dnl
+__{}define({__INFO},__COMPILE_INFO{(r)})
+    exx                 ; 1:4       __INFO   ( x -- x x $2 )
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ex  (SP), HL        ; 1:19      __INFO
+    push DE             ; 1:11      __INFO}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id loop
+dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_DUP_INDEX2S},{dnl
+__{}define({__INFO},__COMPILE_INFO{(s)})
+    push DE             ; 1:11      __INFO   ( x -- x x $2 )
+    push HL             ; 1:11      __INFO
+    ld    E, L          ; 1:4       __INFO
+    ld    D, H          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( -- i x )
 dnl # vlozeni indexu vnitrni smycky a hodnoty
 define({I_PUSH},{dnl
