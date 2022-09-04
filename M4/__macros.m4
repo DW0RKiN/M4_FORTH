@@ -2983,6 +2983,56 @@ __{}__{}__{}define({_TMP_BEST_CODE},__EQ_CODE)})})})}){}dnl
 dnl
 dnl
 dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #   $1 = _TMP_INFO = info
+dnl #   $2 = _TMP_STACK_INFO = stack info
+dnl #   $3 = HL or DE or BC
+dnl #   $4 = 16 bit number
+dnl #   $5 = +-bytes no jump
+dnl #   $6 = +-clocks no jump
+dnl #   $7 = +-bytes jump
+dnl #   $8 = +-clocks jump
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+dnl #   _TMP_BEST_CODE    asm code
+dnl #   zero flag if const == HL
+dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
+dnl
+define({__MAKE_BEST_CODE_R16_CP},{dnl
+__{}dnl ---------------------------------
+__{}define({_TMP_INFO},$1){}dnl
+__{}define({_TMP_STACK_INFO},$2){}dnl
+__{}ifelse($7,{},{define({_TMP_B0},0)},{define({_TMP_B0},$7)}){}dnl
+__{}ifelse($8,{},{define({_TMP_J0},0)},{define({_TMP_J0},$8)}){}dnl
+__{}define({__R1},substr($3,0,1)){}dnl
+__{}define({__R2},substr($3,1,1)){}dnl
+__{}define({__N1},eval(($4) & 0xFF)){}dnl
+__{}define({__N2},eval((($4)>>8) & 0xFF)){}dnl
+__{}ifelse(__N1,{0},{dnl
+__{}__{}__SWAP2DEF({__N1},{__N2}){}dnl
+__{}__{}__SWAP2DEF({__R1},{__R2})}){}dnl
+__{}__EQ_MAKE_CODE($4,$5,$6,$7,$8){}dnl
+__{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
+__{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
+__{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
+__{}define({_TMP_BEST_CODE},__EQ_CODE){}dnl
+__{}ifelse(eval(__N2>0),{1},{dnl
+__{}__SWAP2DEF({__N1},{__N2}){}dnl
+__{}__SWAP2DEF({__R1},{__R2}){}dnl
+__{}__EQ_MAKE_CODE($4,$5,$6,$7,$8){}dnl
+__{}__{}ifelse(ifelse(_TYP_SINGLE,{small},{eval((_TMP_BEST_B>__EQ_BYTES) || ((_TMP_BEST_B==__EQ_BYTES) && (_TMP_BEST_P>__EQ_PRICE)))},{eval(_TMP_BEST_P>__EQ_PRICE)}),{1},{dnl
+__{}__{}__{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
+__{}__{}__{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
+__{}__{}__{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
+__{}__{}__{}define({_TMP_BEST_CODE},__EQ_CODE)})})}){}dnl
+dnl
+dnl
+dnl
+dnl
 define({__TEST},{dnl
 __{}define({_TMP_R4},{D})define({_TMP_N4},eval((($1)>>24) & 0xFF)){}dnl
 __{}define({_TMP_R3},{E})define({_TMP_N3},eval((($1)>>16) & 0xFF)){}dnl

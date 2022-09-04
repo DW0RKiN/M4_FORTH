@@ -9,26 +9,26 @@ dnl # 5 0 do i . loop --> 0 1 2 3 4
 dnl # 5 5 do i . loop --> 5 6 7 ... -2 -1 0 1 2 3 4
 dnl # ( stop index -- ) r:( -- )
 define({__ASM_TOKEN_MDO_I8},{dnl
-__{}define({__INFO},__COMPILE_INFO{(m)})
-__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{dnl
-    ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
+__{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
+    ld  (idx{}$1), HL    ; 3:16      __INFO   index  ( stop index -- )
     ld    A, E          ; 1:4       __INFO
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
     ld    A, D          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
     pop  DE             ; 1:10      __INFO
     pop  HL             ; 1:10      __INFO},
+__GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)),{:0},{
+    ld  (idx{}$1), HL    ; 3:16      __INFO   index  ( __GET_LOOP_END($1) index -- )
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO},
 __GET_LOOP_END($1),{},{dnl
     ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
     ld    A, H          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
     ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); 3:ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,16,10)      __INFO
-    ld  (idx{}$1), HL    ; 3:16      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO},
-__GET_LOOP_BEGIN($1),{},{dnl
-    ld  (idx{}$1), HL    ; 3:16      __INFO   ( __GET_LOOP_END($1) index -- )
+    ld  (idx{}$1), HL    ; 3:16      __INFO   index
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
 {
@@ -41,9 +41,9 @@ dnl # 5 0 do i . loop --> 0 1 2 3 4
 dnl # 5 5 do i . loop --> 5 6 7 ... -2 -1 0 1 2 3 4
 dnl # ( stop index -- ) r:( -- stop index )
 define({__ASM_TOKEN_QMDO_I8},{dnl
-__{}define({__INFO},__COMPILE_INFO{(m)})
-__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{dnl
-    ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
+__{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
+    ld  (idx{}$1), HL    ; 3:16      __INFO   index  ( stop index -- )
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO
     ld    A, E          ; 1:4       __INFO
@@ -51,9 +51,25 @@ __{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{dnl
     ld    A, D          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
     pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO},
+    pop  DE             ; 1:10      __INFO
+    jp    z, exit{}$1    ; 3:10      __INFO},
+__GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_STEP($1)),{:0:1},{
+    ld    C, L          ; 1:4       __INFO
+    ld    B, H          ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    jp   qdo{}$1         ; 3:10      __INFO},
+__GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)),{:0},{
+define({_TMP_INFO},__INFO){}dnl
+define({_TMP_STACK_INFO},__INFO{   }( __GET_LOOP_END($1) index -- )){}dnl
+__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,40){}dnl
+__{}_TMP_BEST_CODE
+    ld  (idx{}$1), HL    ; 3:16      __INFO
+    pop  HL             ; 1:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    jp    z, exit{}$1    ; 3:10      __INFO},
 __GET_LOOP_END($1),{},{dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{dnl
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
 __{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}    ld    A, H          ; 1:4       __INFO
@@ -61,7 +77,8 @@ __{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO
 __{}    ld  (idx{}$1), BC    ; 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO},
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    jp    z, exit{}$1    ; 3:10      __INFO},
 __{}__IS_NUM(__GET_LOOP_BEGIN($1)),0,{
 __{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
@@ -70,8 +87,9 @@ __{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO
 __{}    ld  (idx{}$1), BC    ; 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO},
-__{}{ifelse(__HEX_HL(__GET_LOOP_BEGIN($1)),0x0000,{dnl
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    jp    z, exit{}$1    ; 3:10      __INFO},
+__{}{ifelse(__HEX_HL(__GET_LOOP_BEGIN($1)),0x0000,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
@@ -79,7 +97,7 @@ __{}__{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1)),0xFFFF,{dnl
+__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1)),0xFFFF,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
@@ -88,7 +106,7 @@ __{}__{}    and   L             ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
 __{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1)),0x0101,{dnl
+__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1)),0x0101,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
@@ -98,7 +116,7 @@ __{}__{}    dec   A             ; 1:4       __INFO
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
-__{}__{}__HEX_H(__GET_LOOP_BEGIN($1)),0x00,{dnl
+__{}__{}__HEX_H(__GET_LOOP_BEGIN($1)),0x00,{
 __{}__{}    ld    A, H          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}__{}    ld    A, L          ; 1:4       __INFO
@@ -112,7 +130,7 @@ __{}__{}__{}    xor  format({%-15s},low __GET_LOOP_BEGIN($1)); 2:7       __INFO}
 __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
-__{}__{}__HEX_L(__GET_LOOP_BEGIN($1)),0x00,{dnl
+__{}__{}__HEX_L(__GET_LOOP_BEGIN($1)),0x00,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
@@ -126,7 +144,7 @@ __{}__{}__{}    xor  format({%-15s},high __GET_LOOP_BEGIN($1)); 2:7       __INFO
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
-__{}__{}{dnl
+__{}__{}{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
@@ -136,18 +154,10 @@ __{}__{}    ld  (idx{}$1), BC    ; 4:20      __INFO
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO})})
 __{}    pop  HL             ; 1:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO},
-__GET_LOOP_BEGIN($1),{},{dnl
-define({_TMP_INFO},__INFO){}dnl
-define({_TMP_STACK_INFO},__INFO{   }( __GET_LOOP_END($1) index -- )){}dnl
-__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,40){}dnl
-__{}_TMP_BEST_CODE
-    ld  (idx{}$1), HL    ; 3:16      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO},
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    jp    z, exit{}$1    ; 3:10      __INFO},
 {
 __{}  .error {$0}($@): Unexpected combination of loop parameters. __SHOW_LOOP($1)})
-    jp    z, exit{}$1    ; 3:10      __INFO
 do{}$1:                  ;           __INFO}){}dnl
 dnl
 dnl
@@ -453,20 +463,19 @@ stp_lo{}$1 EQU $+1       ;           __INFO
 stp_hi{}$1 EQU $+1       ;           __INFO
     xor  0x00           ; 2:7       __INFO   hi stop},
 {dnl
-define({_TMP_INFO},__INFO){}dnl
-define({_TMP_STACK_INFO},__INFO{   }( index -- )   stop=__GET_LOOP_END($1)){}dnl
-__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),3,10,do{}$1,0){}dnl
+__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1),3,10,do{}$1,0){}dnl
 define({__TEMP},_TMP_J1+4*_TMP_BEST_B+46){}dnl
-__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,8,36,0,0){}dnl
+__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,8,36,0,0){}dnl
 ifelse(eval(__TEMP<=_TMP_J1+4*_TMP_BEST_B),{1},{
-__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),3,10,do{}$1,0){}dnl
-idx{}$1 EQU $+1          ;[8:36]     __INFO
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1),3,10,do{}$1,0){}dnl
+idx{}$1 EQU $+1         ;[eval(8+_TMP_BEST_B):eval(36+_TMP_BEST_C)]     __INFO   ( __GET_LOOP_END($1) index -- )
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     inc  BC             ; 1:6       __INFO   index++
+qdo{}$1:                 ;           __INFO
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
 __{}_TMP_BEST_CODE},
 {
-idx{}$1 EQU $+1          ;[3:10]     __INFO
+idx{}$1 EQU $+1         ;[eval(3+_TMP_BEST_B):eval(10+_TMP_BEST_C)]     __INFO   ( __GET_LOOP_END($1) index -- )
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
 __{}_TMP_BEST_CODE
     inc  BC             ; 1:6       __INFO   index++
@@ -479,8 +488,8 @@ dnl
 dnl # ( -- )
 dnl # 0 5 do i . -1 +loop --> 5 4 3 2 1 0
 define({__ASM_TOKEN_SUB1_ADDMLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{(m)})
-ifelse(__GET_LOOP_END($1),{},{dnl
+__{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+ifelse(__GET_LOOP_END($1),{},{
 idx{}$1 EQU $+1          ;[20:78/57] __INFO
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
     dec  BC             ; 1:6       __INFO   index--
@@ -493,23 +502,21 @@ stp_lo{}$1 EQU $+1       ;           __INFO
 stp_hi{}$1 EQU $+1       ;           __INFO
     xor  0xFF           ; 2:7       __INFO   hi stop-1},
 {dnl
-define({_TMP_INFO},__INFO){}dnl
-define({_TMP_STACK_INFO},__INFO{   }( index -- )   stop=__GET_LOOP_END($1)){}dnl
-__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
+__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
 define({__TEMP},_TMP_J1+4*_TMP_BEST_B+46){}dnl
-__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,36,0,0){}dnl
+__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1),8,36,0,0){}dnl
 ifelse(eval(__TEMP<=_TMP_J1+4*_TMP_BEST_B),{1},{
-__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
-idx{}$1 EQU $+1          ;[8:36]     __INFO
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
+idx{}$1 EQU $+1         ;[eval(8+_TMP_BEST_B):eval(36+_TMP_BEST_C)]     __INFO   ( __GET_LOOP_END($1) index -- )
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
-    dec  BC             ; 1:6       __INFO   index--
+    dec  BC             ; 1:6       __INFO   index++
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index
 __{}_TMP_BEST_CODE},
 {
-idx{}$1 EQU $+1          ;[3:10]     __INFO
+idx{}$1 EQU $+1         ;[eval(3+_TMP_BEST_B):eval(10+_TMP_BEST_C)]     __INFO   ( __GET_LOOP_END($1) index -- )
     ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
 __{}_TMP_BEST_CODE
-    dec  BC             ; 1:6       __INFO   index--
+    dec  BC             ; 1:6       __INFO   index++
     ld  (idx{}$1), BC    ; 4:20      __INFO   save index})})
     jp   nz, do{}$1      ; 3:10      __INFO
 leave{}$1:               ;           __INFO
