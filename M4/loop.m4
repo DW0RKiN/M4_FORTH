@@ -148,7 +148,7 @@ __{}__{}__{}__ASM_TOKEN_QMDO_I8($1)},
 __{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_QMDO_I8($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
-__{}__{}__{}__ASM_TOKEN_QMDO_I8($1)},
+__{}__{}__{}__ASM_TOKEN_QMDO_D8($1)},
 __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QMDO_D8($1)},
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
