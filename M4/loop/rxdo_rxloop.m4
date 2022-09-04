@@ -10,12 +10,18 @@ dnl # rxdo(R,stop,index) ... push_addloop(step)
 dnl
 dnl
 define({__ASM_TOKEN_XRDO},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(xr))
+__{}define({__INFO},__COMPILE_INFO{(xr)})
     exx                 ; 1:4       __INFO
     dec  HL             ; 1:6       __INFO
+ifelse(__SAVE_EVAL(__GET_LOOP_BEGIN($1)),0,{dnl
+    xor   A             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO},
+{dnl
     ld  (HL),high format({%-6s},__GET_LOOP_BEGIN($1)); 2:10      __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),low format({%-7s},__GET_LOOP_BEGIN($1)); 2:10      __INFO
+    ld  (HL),low format({%-7s},__GET_LOOP_BEGIN($1)); 2:10      __INFO})
     exx                 ; 1:4       __INFO R:( -- __GET_LOOP_BEGIN($1) )
 do{}$1:                  ;           __INFO}){}dnl
 dnl

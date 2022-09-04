@@ -544,7 +544,7 @@ dnl #      1,2 = j
 dnl #      2,3,4 = k
 define({__ASM_INDEX2R_PUSH},{dnl
 __{}define({__COMPILE_INFO},__COMPILE_INFO{(r)}){}dnl
-__{}__ASM_TOKEN_PUSH_RPICK_PUSH($1,$4)}){}dnl
+__{}__ASM_TOKEN_PUSH_RPICK_PUSH($2,$4)}){}dnl
 dnl
 dnl
 dnl
