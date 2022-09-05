@@ -353,7 +353,7 @@ dnl
 dnl
 dnl # -1 +loop(r)
 define({__ASM_TOKEN_SUB1_ADDRLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(r)){}dnl
+__{}define({__INFO},__COMPILE_INFO{(r)}){}dnl
 __{}ifelse(__GET_LOOP_END($1),{},{
     exx                 ; 1:4       __INFO
     ld    E,(HL)        ; 1:7       __INFO

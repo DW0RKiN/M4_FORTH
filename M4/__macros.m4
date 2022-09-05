@@ -3036,8 +3036,8 @@ __{}define({_TMP_INFO},$1){}dnl
 __{}define({_TMP_STACK_INFO},$2){}dnl
 __{}ifelse($7,{},{define({_TMP_B0},0)},{define({_TMP_B0},$7)}){}dnl
 __{}ifelse($8,{},{define({_TMP_J0},0)},{define({_TMP_J0},$8)}){}dnl
-__{}define({__R1},substr($3,0,1)){}dnl
-__{}define({__R2},substr($3,1,1)){}dnl
+__{}define({__R1},substr($3,1,1)){}dnl E C L
+__{}define({__R2},substr($3,0,1)){}dnl D B H
 __{}define({__N1},eval(($4) & 0xFF)){}dnl
 __{}define({__N2},eval((($4)>>8) & 0xFF)){}dnl
 __{}ifelse(__N1,{0},{dnl

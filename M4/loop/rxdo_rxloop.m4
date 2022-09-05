@@ -50,24 +50,30 @@ dnl
 dnl
 dnl # ( -- )
 define({__ASM_TOKEN_XRLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(xr))
-    exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
-    inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
-    inc  DE             ; 1:6       __INFO   index++
-    ld    A, low format({%-7s},__GET_LOOP_END($1)); 2:7       __INFO   lo stop
-    xor   E             ; 1:4       __INFO
-__{}ifelse(__SAVE_EVAL(__GET_LOOP_END($1)<256),{1},{dnl
-__{}__{}    or    D             ; 1:4       __INFO},
-__{}{dnl
-__{}__{}    jr   nz, $+7        ; 2:7/12    __INFO
-__{}__{}    ld    A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi stop
-__{}__{}    xor   D             ; 1:4       __INFO})
-    jr    z, leave{}$1   ; 2:7/12    __INFO   exit
+__{}define({__INFO},__COMPILE_INFO{}(xr)){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl
+__{}define({__P1},_TMP_BEST_P){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)+1,3,13,2,-7){}dnl
+__{}define({__P2},_TMP_BEST_P){}dnl
+__{}ifelse(eval(__P1>__P2),1,{
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}_TMP_BEST_CODE
+__{}    jr    z, leave{}$1   ; 2:7/12    __INFO   exit},
+__{}{__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7)
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}_TMP_BEST_CODE
+__{}    jr    z, leave{}$1   ; 2:7/12    __INFO   exit
+__{}    inc  DE             ; 1:6       __INFO   index++})
     ld  (HL), D         ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL), E         ; 1:6       __INFO
+    ld  (HL), E         ; 1:7       __INFO
     exx                 ; 1:4       __INFO
     jp   do{}$1          ; 3:10      __INFO
 leave{}$1:               ;           __INFO
@@ -78,24 +84,30 @@ dnl
 dnl
 dnl # ( -- )
 define({__ASM_TOKEN_SUB1_XRADDLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(xr))
-    exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
-    inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
-    ld    A, low format({%-7s},__GET_LOOP_END($1)); 2:7       __INFO   lo stop
-    xor   E             ; 1:4       __INFO
-__{}ifelse(__SAVE_EVAL(__GET_LOOP_END($1)<256),{1},{dnl
-__{}__{}    or    D             ; 1:4       __INFO},
-__{}{dnl
-__{}__{}    jr   nz, $+7        ; 2:7/12    __INFO
-__{}__{}    ld    A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi stop
-__{}__{}    xor   D             ; 1:4       __INFO})
-    jr    z, leave{}$1   ; 2:7/12    __INFO   exit
-    dec  DE             ; 1:6       __INFO   index--
+__{}define({__INFO},__COMPILE_INFO{}(xr)){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl
+__{}define({__P1},_TMP_BEST_P){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7){}dnl
+__{}define({__P2},_TMP_BEST_P){}dnl
+__{}ifelse(eval(__P1>__P2),1,{
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    dec  DE             ; 1:6       __INFO   index--
+__{}__{}_TMP_BEST_CODE
+__{}    jr    z, leave{}$1   ; 2:7/12    __INFO   exit},
+__{}{__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7)
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}_TMP_BEST_CODE
+__{}    jr    z, leave{}$1   ; 2:7/12    __INFO   exit
+__{}    dec  DE             ; 1:6       __INFO   index--})
     ld  (HL), D         ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL), E         ; 1:6       __INFO
+    ld  (HL), E         ; 1:7       __INFO
     exx                 ; 1:4       __INFO
     jp   do{}$1          ; 3:10      __INFO
 leave{}$1:               ;           __INFO
