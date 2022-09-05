@@ -82,6 +82,7 @@ do{}$1:                  ;           __INFO},
 __{}__GET_LOOP_BEGIN($1),{},{
                         ;[9:65]     __INFO   ( __GET_LOOP_END($1) index -- ) ( R: -- index )
     ex  (SP), HL        ; 1:19      __INFO
+    ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   DE = index
     dec  HL             ; 1:6       __INFO
@@ -89,8 +90,7 @@ do{}$1:                  ;           __INFO
     ld  (HL),D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ld  (HL),E          ; 1:7       __INFO
-    exx                 ; 1:4       __INFO
-    ex   DE, HL         ; 1:4       __INFO},
+    exx                 ; 1:4       __INFO},
 {
                         ;[9:42]     __INFO   ( __GET_LOOP_BEGIN($1) __GET_LOOP_END($1) -- ) ( R: -- index )
     exx                 ; 1:4       __INFO

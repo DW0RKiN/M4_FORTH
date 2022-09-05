@@ -106,22 +106,25 @@ __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XDO($1)})},
 
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
-__{}__{}__{}__ASM_TOKEN_RFOR($1)},
-__{}__{}__GET_LOOP_STEP($1),{},{dnl
+__{}__{}ifelse(__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_RDO($1)},
 __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_RDO($1)},
 __{}__{}__GET_LOOP_END($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_RDO($1)},
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_RFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XRDO($1)})},
 
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
-__{}__{}__{}__ASM_TOKEN_SFOR($1)},
-__{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_SDO($1)})},
+dnl #__{}__{}ifelse(dnl
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_SFOR($1)},
+dnl #__{}__{}{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_SDO($1)}){}dnl
+__{}__{}__ASM_TOKEN_SDO($1){}dnl
+__{}},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -164,15 +167,14 @@ __{}__{}__GET_LOOP_END($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QRDO($1)},
 __{}__{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QRDO($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
-__{}__{}__{}__ASM_TOKEN_QRFOR($1)},
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_QRFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_XRQDO($1)})},
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
-__{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
-__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
+__{}__{}ifelse(dnl
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_QSDO($1)})},
 __{}{
@@ -210,8 +212,9 @@ __{}__{}__{}__ASM_TOKEN_ADDXLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDXLOOP($1)})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}__ASM_TOKEN_RNEXT($1)},
+__{}__{}ifelse(dnl
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_RNEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
@@ -226,8 +229,9 @@ __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_XRADDLOOP($1)})},
 
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
-__{}__{}__{}__ASM_TOKEN_SNEXT($1)},
+__{}__{}ifelse(dnl
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_SNEXT($1)},
 __{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
 __{}__{}{dnl
@@ -275,8 +279,9 @@ __{}__{}__{}__ASM_TOKEN_ADDXLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDXLOOP($1)})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0::-1},{dnl
-__{}__{}__{}__ASM_TOKEN_RNEXT($1)},
+__{}__{}ifelse(dnl
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_RNEXT($1)},
 __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_RLOOP($1)},
 __{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:1},{dnl
@@ -302,8 +307,9 @@ __{}__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_XRADDLOOP($1)})},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
-__{}__{}__{}__ASM_TOKEN_SNEXT($1)},
+__{}__{}ifelse(dnl
+dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_SNEXT($1)},
 __{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDSLOOP($1)},
 __{}__{}__GET_LOOP_STEP($1),{1},{dnl

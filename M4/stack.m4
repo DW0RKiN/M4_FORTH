@@ -44,28 +44,28 @@ __{}define({_TMP_INFO},__INFO){}dnl # HL first check
 __{}define({__TMP_HL_CLOCKS},22){}dnl
 __{}define({__TMP_HL_BYTES},2){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
-__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
+__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
 __{}__LD_REG16({HL},$2){}dnl
-__{}define({__TMP_HL_CLOCKS},eval(__TMP_HL_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_HL_BYTES}, eval(__TMP_HL_BYTES +__BYTES_16BIT)){}dnl
+__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
 __{}dnl
 __{}define({__TMP_DE_CLOCKS},22){}dnl
 __{}define({__TMP_DE_BYTES},2){}dnl
 __{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
-__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
+__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
 __{}__LD_REG16({DE},$1){}dnl
-__{}define({__TMP_DE_CLOCKS},eval(__TMP_DE_CLOCKS+__CLOCKS_16BIT)){}dnl
-__{}define({__TMP_DE_BYTES}, eval(__TMP_DE_BYTES +__BYTES_16BIT)){}dnl
+__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
 __{}dnl
 __{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
-__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __COMPILE_INFO
+__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __INFO
 __{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
 __{}{dnl # HL first
-__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __COMPILE_INFO
+__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __INFO
 __{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
@@ -89,19 +89,19 @@ __{}__ADD_TOKEN({__TOKEN_PUSH3},{$1 $2 $3},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH3},{dnl
-__{}define({__INFO},{$1 $2 $3}){}dnl
-ifelse(eval($#<2),{1},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<3),{1},{
 __{}  .error {$0}($@): Missing parameter!},
-eval($#!=3),{1},{
-__{}  .error {$0}($@): The wrong number of parameters in macro!},
+eval($#>3),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
 {
-__{}    push DE             ; 1:11      __COMPILE_INFO   ( -- $1 $2 $3 )
-__{}    push HL             ; 1:11      __COMPILE_INFO{}dnl
-__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}dnl
 __{}define({PUSH3_P1},__PRICE_16BIT){}dnl
 __{}__LD_REG16({HL},$3,{HL},$1){}dnl
-__{}define({PUSH3_P1},eval(PUSH3_P1+__PRICE_16BIT)){}dnl
+__{}__add({PUSH3_P1},__PRICE_16BIT){}dnl
 __{}define({PUSH3_P},PUSH3_P1){}dnl
 __{}define({PUSH3_X},1){}dnl
 __{}dnl
@@ -125,22 +125,215 @@ __{}ifelse(eval(PUSH3_P>PUSH3_P4),{1},{dnl
 __{}__{}define({PUSH3_P},PUSH3_P4){}dnl
 __{}__{}define({PUSH3_X},4)}){}dnl
 __{}dnl # PUSH3_P1 PUSH3_P2 PUSH3_P3 PUSH3_P4 --> PUSH3_X
-__{}dnl ---- case PUSH3_X ----
+__{}dnl # ---- case PUSH3_X ----
 __{}ifelse(dnl
 __{}PUSH3_X,1,{__LD_REG16_BEFORE_AFTER({DE},$2,{HL},$1,{HL},$3){}__LD_REG16({HL},$3,{HL},$1)
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push HL             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
 __{}PUSH3_X,2,{__LD_REG16_BEFORE_AFTER({HL},$3,{DE},$1,{DE},$2){}__LD_REG16({DE},$2,{DE},$1)
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push DE             ; 1:11      __COMPILE_INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      __INFO
+__{}__{}    push DE             ; 1:11      __INFO{}__CODE_BEFORE_16BIT{}__CODE_16BIT{}__CODE_AFTER_16BIT},
 __{}PUSH3_X,3,{__LD_REG16({DE},$2,{DE},$1,{HL},$3)
-__{}__{}    ld   DE, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push DE             ; 1:11      __COMPILE_INFO
-__{}__{}    ld   HL, format({%-11s},$3); 3:10      __COMPILE_INFO{}__CODE_16BIT},
+__{}__{}    ld   DE, format({%-11s},$1); 3:10      __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},$3); 3:10      __INFO{}__CODE_16BIT},
 __{}{__LD_REG16({HL},$3,{HL},$1,{DE},$2)
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      __COMPILE_INFO
-__{}__{}    push HL             ; 1:11      __COMPILE_INFO
-__{}__{}    ld   DE, format({%-11s},$2); 3:10      __COMPILE_INFO{}__CODE_16BIT}){}dnl
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   DE, format({%-11s},$2); 3:10      __INFO{}__CODE_16BIT}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- d c b a)
+dnl # push4(d,c,b,a) ulozi na zasobnik nasledujici polozky
+define({PUSH4},{dnl
+ifelse($1,{},{
+__{}  .error {$0}($@): Missing parameters!},
+$2,{},{
+__{}  .error {$0}($@): Missing second parameter!},
+$3,{},{
+__{}  .error {$0}($@): Missing third parameter!},
+$4,{},{
+__{}  .error {$0}($@): Missing fourth parameter!},
+eval($#>4),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH4},{$1 $2 $3 $4},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH4},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<4),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>4),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+dnl # 
+dnl #       de hl       de hl       de hl       de hl
+dnl # $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 
+dnl # hl hl hl hl                                        0 fail
+dnl # 
+dnl # hl hl    hl       de                               1 befaft 3x!
+dnl #    hl       hl       hl       de                   1 befaft 3x!
+dnl # 
+dnl # hl hl de hl                                        2 befaft
+dnl #    hl       hl    de hl                            2 befaft
+dnl # 
+dnl # hl       hl    de             de                   3 befaft
+dnl #    hl    hl de                de                   3 befaft
+dnl # 
+dnl # hl    de       hl    hl                            4
+dnl #    hl de    hl       hl                            4
+dnl # 
+dnl # hl de    hl       de                               5
+dnl #    hl       de       hl       de                   5
+dnl # 
+dnl # hl de de hl                                        6 befaft
+dnl #    hl       de    de hl                            6 befaft
+dnl # 
+dnl #          hl de de de                               7
+dnl #          hl    de       de    de                   7
+dnl #          
+dnl #       de    hl hl    hl                            8
+dnl #       de       hl       hl       hl                8
+dnl #       
+dnl # de hl    hl       de                               9 befaft
+dnl #    de       hl       hl       de                   9 befaft
+dnl # 
+dnl # de hl de hl                                        A
+dnl #    de       hl    de hl                            A
+dnl # 
+dnl # de       hl    de de                               B
+dnl #    de    hl de    de                               B
+dnl # 
+dnl # de    de       hl    hl                            C befaft
+dnl #    de de    hl       hl                            C befaft
+dnl # 
+dnl # de de    hl       de                               D befaft
+dnl #    de       de       hl       de                   D befaft
+dnl # 
+dnl # de de de hl                                        E befaft 3x!
+dnl #    de       de    de hl                            E befaft 3x!
+dnl # 
+dnl # de de de de                                        F fail
+dnl # $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 
+dnl #       de hl       de hl       de hl       de hl
+dnl #
+__{}__PUSH2_P($1,$2){}dnl
+__{}define({__P1},eval(__TMP_CLOCKS+4*__TMP_BYTES)){}dnl
+__{}define({__P2},__P1){}dnl
+dnl
+__{}__LD_REG16({DE},$3,{DE},$1,{HL},$2){}dnl
+__{}__add({__P1},__PRICE_16BIT){}dnl
+__{}__LD_REG16({HL},$4,{DE},$3,{HL},$2){}dnl
+__{}__add({__P1},__PRICE_16BIT){}dnl
+__{}define({__TYPE},1){}define({__P},__P1){}dnl
+dnl
+__{}__LD_REG16({HL},$4,{DE},$1,{HL},$2){}dnl
+__{}__add({__P2},__PRICE_16BIT){}dnl
+__{}__LD_REG16({DE},$3,{DE},$1,{HL},$4){}dnl
+__{}__add({__P2},__PRICE_16BIT){}dnl
+__{}ifelse(eval(__P2<__P),1,{define({__TYPE},2){}define({__P},__P2)}){}dnl
+dnl
+__{}__PUSH2_P($2,$1){}dnl
+__{}define({__P3},eval(__TMP_CLOCKS+4*__TMP_BYTES)){}dnl
+__{}define({__P4},__P3){}dnl
+dnl
+__{}__LD_REG16({DE},$3,{DE},$2,{HL},$1){}dnl
+__{}__add({__P3},__PRICE_16BIT){}dnl
+__{}__LD_REG16({HL},$4,{DE},$3,{HL},$1){}dnl
+__{}__add({__P3},__PRICE_16BIT){}dnl
+__{}ifelse(eval(__P3<__P),1,{define({__TYPE},3){}define({__P},__P3)}){}dnl
+dnl
+__{}__LD_REG16({HL},$4,{DE},$2,{HL},$1){}dnl
+__{}__add({__P4},__PRICE_16BIT){}dnl
+__{}__LD_REG16({DE},$3,{DE},$2,{HL},$4){}dnl
+__{}__add({__P4},__PRICE_16BIT){}dnl
+__{}ifelse(eval(__P4<__P),1,{define({__TYPE},4){}define({__P},__P4)}){}dnl
+dnl
+__{}ifelse(__TYPE,1,{
+    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
+    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSH2_P($1,$2){}__TMP_CODE
+    push DE             ; 1:11      __INFO 
+    push HL             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({DE},$3,{DE},$1,{HL},$2){}dnl
+__{}__CODE_16BIT{}dnl
+__{}__LD_REG16({HL},$4,{DE},$3,{HL},$2){}dnl
+__{}__CODE_16BIT{}dnl
+__{}},
+__{}__TYPE,2,{
+    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
+    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSH2_P($1,$2){}__TMP_CODE
+    push DE             ; 1:11      __INFO 
+    push HL             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({HL},$4,{DE},$1,{HL},$2){}dnl
+__{}__CODE_16BIT{}dnl
+__{}__LD_REG16({DE},$3,{DE},$1,{HL},$4){}dnl
+__{}__CODE_16BIT{}dnl
+__{}},
+__{}__TYPE,3,{
+    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
+    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSH2_P($2,$1){}__TMP_CODE
+    push HL             ; 1:11      __INFO 
+    push DE             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({DE},$3,{DE},$2,{HL},$1){}dnl
+__{}__CODE_16BIT{}dnl
+__{}__LD_REG16({HL},$4,{DE},$3,{HL},$1){}dnl
+__{}__CODE_16BIT{}dnl
+__{}},
+__{}__TYPE,4,{
+    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
+    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSH2_P($2,$1){}__TMP_CODE
+    push HL             ; 1:11      __INFO 
+    push DE             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({HL},$4,{DE},$2,{HL},$1){}dnl
+__{}__CODE_16BIT{}dnl
+__{}__LD_REG16({DE},$3,{DE},$2,{HL},$4){}dnl
+__{}__CODE_16BIT{}dnl
+__{}}){}dnl
+})}){}dnl
+dnl
+dnl
+define({__PUSH2_P},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{dnl
+__{}define({_TMP_INFO},__INFO){}dnl # HL first check
+__{}define({__TMP_HL_CLOCKS},22){}dnl
+__{}define({__TMP_HL_BYTES},2){}dnl
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
+__{}dnl
+__{}define({__TMP_DE_CLOCKS},22){}dnl
+__{}define({__TMP_DE_BYTES},2){}dnl
+__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
+__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
+__{}__LD_REG16({DE},$1){}dnl
+__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
+__{}dnl
+__{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
+__{}__{}define({__TMP_CLOCKS},__TMP_DE_CLOCKS){}dnl
+__{}__{}define({__TMP_BYTES},__TMP_DE_BYTES){}dnl
+__{}__{}define({__TMP_CODE},{__LD_REG16({DE},}$1{){}__CODE_16BIT{}__LD_REG16({HL},}$2{,{DE},}$1{){}__CODE_16BIT}){}dnl
+__{}},
+__{}{dnl # HL first
+__{}__{}define({__TMP_CLOCKS},__TMP_HL_CLOCKS){}dnl
+__{}__{}define({__TMP_BYTES},__TMP_HL_BYTES){}dnl
+__{}__{}define({__TMP_CODE},{__LD_REG16({HL},}$2{){}__CODE_16BIT{}__LD_REG16({DE},}$1{,{HL},}$2{){}__CODE_16BIT}){}dnl
+__{}}){}dnl
 })}){}dnl
 dnl
 dnl
