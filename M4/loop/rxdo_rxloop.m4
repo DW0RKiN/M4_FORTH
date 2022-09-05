@@ -11,7 +11,7 @@ dnl
 dnl
 define({__ASM_TOKEN_XRDO},{dnl
 __{}define({__INFO},__COMPILE_INFO{(xr)})
-    exx                 ; 1:4       __INFO
+    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
     dec  HL             ; 1:6       __INFO
 ifelse(__SAVE_EVAL(__GET_LOOP_BEGIN($1)),0,{dnl
     xor   A             ; 1:4       __INFO
@@ -22,7 +22,7 @@ ifelse(__SAVE_EVAL(__GET_LOOP_BEGIN($1)),0,{dnl
     ld  (HL),high format({%-6s},__GET_LOOP_BEGIN($1)); 2:10      __INFO
     dec   L             ; 1:4       __INFO
     ld  (HL),low format({%-7s},__GET_LOOP_BEGIN($1)); 2:10      __INFO})
-    exx                 ; 1:4       __INFO R:( -- __GET_LOOP_BEGIN($1) )
+    exx                 ; 1:4       __INFO
 do{}$1:                  ;           __INFO}){}dnl
 dnl
 dnl
@@ -51,9 +51,9 @@ dnl
 dnl # ( -- )
 define({__ASM_TOKEN_XRLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(xr)){}dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7){}dnl  # before index++ (except stop)
 __{}define({__P1},_TMP_BEST_P){}dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)+1,3,13,2,-7){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl    # after index++  (except stop)
 __{}define({__P2},_TMP_BEST_P){}dnl
 __{}ifelse(eval(__P1>__P2),1,{
 __{}    exx                 ; 1:4       __INFO
@@ -63,7 +63,7 @@ __{}    ld    D,(HL)        ; 1:7       __INFO
 __{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}_TMP_BEST_CODE
 __{}    jr    z, leave{}$1   ; 2:7/12    __INFO   exit},
-__{}{__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7)
+__{}{__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7)
 __{}    exx                 ; 1:4       __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
@@ -85,9 +85,9 @@ dnl
 dnl # ( -- )
 define({__ASM_TOKEN_SUB1_XRADDLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(xr)){}dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl    # before index-- (including stop)
 __{}define({__P1},_TMP_BEST_P){}dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7){}dnl  # after index--  (including stop)
 __{}define({__P2},_TMP_BEST_P){}dnl
 __{}ifelse(eval(__P1>__P2),1,{
 __{}    exx                 ; 1:4       __INFO
