@@ -1513,8 +1513,9 @@ __{}    ld   HL, format({%-11s},$2); 3:ifelse(__IS_MEM_REF($2),1,16,10)      __I
 __{}    ex   DE, HL         ; 1:4       __INFO},
 __IS_NUM($1),{0},{
 __{}  ; warning The condition >>>$1<<< cannot be evaluated
-__{}                       ;ifelse(__IS_MEM_REF($2),1,[12:72],[12:66])     __INFO   ( x$1 .. x1 x0 -- x$1 .. x1 x0 $2 x$1 )
+__{}                       ;ifelse(__IS_MEM_REF($2),1,[13:83],[13:77])     __INFO   ( x$1 .. x1 x0 -- x$1 .. x1 x0 $2 x$1 )
 __{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, format({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO

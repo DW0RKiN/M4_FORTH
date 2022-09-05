@@ -22,7 +22,7 @@ __GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)),{:0},{
     ld  (idx{}$1), HL    ; 3:16      __INFO   index  ( __GET_LOOP_END($1) index -- )
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
-__GET_LOOP_END($1),{},{dnl
+__GET_LOOP_END($1),{},{
     ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
     ld    A, H          ; 1:4       __INFO
@@ -212,7 +212,7 @@ ifelse(__GET_LOOP_BEGIN($1):__GET_LOOP_END($1),{:},{
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop-1
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO},
-__GET_LOOP_BEGIN($1),{},{dnl
+__GET_LOOP_BEGIN($1),{},{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({_TMP_STACK_INFO},__INFO{   }( __GET_LOOP_END($1) index -- )){}dnl
 __{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,40){}dnl
