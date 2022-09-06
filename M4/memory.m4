@@ -1126,24 +1126,45 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl # dup addr C!
+dnl # ( char -- char )
+dnl # store 8-bit char lo(tos) at addr
+define({DUP_PUSH_CSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE},{dup $1 c!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CSTORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})})}){}dnl
+dnl
+dnl
 dnl # addr C!
 dnl # ( char -- )
 dnl # store(addr) store 8-bit char at addr
 define({PUSH_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CSTORE},{push_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CSTORE},{$1 c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CSTORE},{dnl
-__{}define({__INFO},{push_cstore}){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-{
-__{}    ld    A, L          ; 1:4       $1 C! push($1) cstore
-__{}    ld   format({%-15s},($1){,} A); 3:13      $1 C! push($1) cstore
-__{}    ex   DE, HL         ; 1:4       $1 C! push($1) cstore
-__{}    pop  DE             ; 1:10      $1 C! push($1) cstore})}){}dnl
+{define({__INFO},__COMPILE_INFO)
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
 dnl
 dnl # addr swap n C!
@@ -1251,22 +1272,6 @@ __{}    ld  (BC),A          ; 1:7       $1 over $2 add C! push_over_push_add_cst
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
-dnl
-dnl # addr C!
-dnl # ( char -- char )
-dnl # store(addr) store 8-bit char at addr
-define({DUP_PUSH_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE},{dup_push_cstore},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DUP_PUSH_CSTORE},{dnl
-__{}define({__INFO},{dup_push_cstore}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld    A, L          ; 1:4       dup $1 C! dup push($1) cstore
-    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup push($1) cstore}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -2222,6 +2227,32 @@ __{}define({__INFO},__COMPILE_INFO)
     ld  (HL),D          ; 1:7       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl
+dnl # dup addr !
+dnl # ( x -- x )
+dnl # store 16-bit tos at addr
+define({DUP_PUSH_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_STORE},{dup $1 !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    inc  BC             ; 1:6       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}    ld   format({%-15s},($1){,} HL); 3:16      __INFO})})}){}dnl
 dnl
 dnl
 dnl
