@@ -213,7 +213,11 @@ __{}_TMP_BEST_CODE})
     dec   L             ; 1:4       __INFO
     ld  (HL),E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO
-    jp   do{}$1          ; 3:10      __INFO   ( -- ) R:( index -- index+__GET_LOOP_STEP($1) )})},
+    jp   do{}$1          ; 3:10      __INFO   ( -- ) R:( index -- index+__GET_LOOP_STEP($1) )})
+leave{}$1:               ;           __INFO
+    inc  HL             ; 1:6       __INFO
+    exx                 ; 1:4       __INFO   ( -- ) R:( index -- )
+exit{}$1:                ;           __INFO},
 __{}{dnl
 __{}define({__INFO},__COMPILE_INFO{}(xr))
     exx                 ; 1:4       __INFO
@@ -236,12 +240,11 @@ __{}    jr    c, leave{}$1-1 ; 2:7/12    __INFO   +step})
     ld  (HL),E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO
     jp   do{}$1          ; 3:10      __INFO   ( -- ) R:( index -- index+__GET_LOOP_STEP($1) )
-    pop  HL             ; 1:10      __INFO})
-dnl #                        :154
+    pop  HL             ; 1:10      __INFO
 leave{}$1:               ;           __INFO
     inc  HL             ; 1:6       __INFO
     exx                 ; 1:4       __INFO   ( -- ) R:( index -- )
-exit{}$1:                ;           __INFO})}){}dnl
+exit{}$1:                ;           __INFO})})}){}dnl
 dnl
 dnl
 dnl
