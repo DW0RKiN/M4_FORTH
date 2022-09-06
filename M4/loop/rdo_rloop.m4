@@ -675,6 +675,27 @@ __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO   ( -- ) R:( stop index -- stop index+__GET_LOOP_STEP($1) )},
+__{}__IS_NUM(__GET_LOOP_STEP($1)),0,{
+__{}__{}__ADD_HL_CONST(-(__GET_LOOP_END(}$1{)),{BC = -stop = -(__GET_LOOP_END(}$1{))},{HL+= -stop = index-stop}){}dnl
+__{}__{}                       ;[eval(17+2*__BYTES):eval(79+2*__CLOCKS)]    __INFO
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
+__{}__{}__CODE
+__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC =  step = __GET_LOOP_STEP($1)
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO{}dnl
+__{}__{}__ADD_HL_CONST(__GET_LOOP_END(}$1{),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
+__{}__{}__CODE
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    or   A              ; 1:4       __INFO
+__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
+__{}__{}    jp    z, do{}$1      ; 3:10      __INFO
+__{}__{}  else
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}  endif},
 __{}{
 __{}dnl #                      ;[25:121+22=143]
 __{}__{}__ADD_HL_CONST(-(__GET_LOOP_END(}$1{)),{BC = -stop = -(__GET_LOOP_END(}$1{))},{HL+= -stop = index-stop}){}dnl
@@ -686,13 +707,23 @@ __{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
 __{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
 __{}__{}__CODE
 __{}__{}    ld   BC, __HEX_HL(__GET_LOOP_STEP($1))     ; 3:10      __INFO   BC =  step = __GET_LOOP_STEP($1)
-__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit{}dnl
+__{}__{}    sbc   A, A          ; 1:4       __INFO{}dnl
 __{}__{}__ADD_HL_CONST(__GET_LOOP_END(}$1{),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
 __{}__{}__CODE
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
+__{}__{}    or   A              ; 1:4       __INFO
+__{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{dnl
+__{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{dnl
+__{}__{}__{}    jp    z, do{}$1      ; 3:10      __INFO},
+__{}__{}__{}{dnl
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO})},
+__{}__{}{dnl
+__{}__{}__{}if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
+__{}__{}__{}    jp    z, do{}$1      ; 3:10      __INFO
+__{}__{}__{}else
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}__{}endif})})
 __{}leave{}$1:               ;           __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    exx                 ; 1:4       __INFO   ( -- ) R:( stop index -- )
