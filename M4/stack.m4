@@ -169,55 +169,55 @@ __{}  .error {$0}($@): Missing parameter!},
 eval($#>4),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-dnl # 
+dnl #
 dnl #       de hl       de hl       de hl       de hl
-dnl # $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 
+dnl # $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4
 dnl # hl hl hl hl                                        0 fail
-dnl # 
+dnl #
 dnl # hl hl    hl       de                               1 befaft 3x!
 dnl #    hl       hl       hl       de                   1 befaft 3x!
-dnl # 
+dnl #
 dnl # hl hl de hl                                        2 befaft
 dnl #    hl       hl    de hl                            2 befaft
-dnl # 
+dnl #
 dnl # hl       hl    de             de                   3 befaft
 dnl #    hl    hl de                de                   3 befaft
-dnl # 
+dnl #
 dnl # hl    de       hl    hl                            4
 dnl #    hl de    hl       hl                            4
-dnl # 
+dnl #
 dnl # hl de    hl       de                               5
 dnl #    hl       de       hl       de                   5
-dnl # 
+dnl #
 dnl # hl de de hl                                        6 befaft
 dnl #    hl       de    de hl                            6 befaft
-dnl # 
+dnl #
 dnl #          hl de de de                               7
 dnl #          hl    de       de    de                   7
-dnl #          
+dnl #
 dnl #       de    hl hl    hl                            8
 dnl #       de       hl       hl       hl                8
-dnl #       
+dnl #
 dnl # de hl    hl       de                               9 befaft
 dnl #    de       hl       hl       de                   9 befaft
-dnl # 
+dnl #
 dnl # de hl de hl                                        A
 dnl #    de       hl    de hl                            A
-dnl # 
+dnl #
 dnl # de       hl    de de                               B
 dnl #    de    hl de    de                               B
-dnl # 
+dnl #
 dnl # de    de       hl    hl                            C befaft
 dnl #    de de    hl       hl                            C befaft
-dnl # 
+dnl #
 dnl # de de    hl       de                               D befaft
 dnl #    de       de       hl       de                   D befaft
-dnl # 
+dnl #
 dnl # de de de hl                                        E befaft 3x!
 dnl #    de       de    de hl                            E befaft 3x!
-dnl # 
+dnl #
 dnl # de de de de                                        F fail
-dnl # $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 
+dnl # $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4 $1 $2 $3 $4
 dnl #       de hl       de hl       de hl       de hl
 dnl #
 __{}__PUSH2_P($1,$2){}dnl
@@ -256,7 +256,7 @@ __{}ifelse(__TYPE,1,{
     push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
     push HL             ; 1:11      __INFO{}dnl
 __{}__PUSH2_P($1,$2){}__TMP_CODE
-    push DE             ; 1:11      __INFO 
+    push DE             ; 1:11      __INFO
     push HL             ; 1:11      __INFO{}dnl
 __{}__LD_REG16({DE},$3,{DE},$1,{HL},$2){}dnl
 __{}__CODE_16BIT{}dnl
@@ -267,7 +267,7 @@ __{}__TYPE,2,{
     push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
     push HL             ; 1:11      __INFO{}dnl
 __{}__PUSH2_P($1,$2){}__TMP_CODE
-    push DE             ; 1:11      __INFO 
+    push DE             ; 1:11      __INFO
     push HL             ; 1:11      __INFO{}dnl
 __{}__LD_REG16({HL},$4,{DE},$1,{HL},$2){}dnl
 __{}__CODE_16BIT{}dnl
@@ -278,7 +278,7 @@ __{}__TYPE,3,{
     push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
     push HL             ; 1:11      __INFO{}dnl
 __{}__PUSH2_P($2,$1){}__TMP_CODE
-    push HL             ; 1:11      __INFO 
+    push HL             ; 1:11      __INFO
     push DE             ; 1:11      __INFO{}dnl
 __{}__LD_REG16({DE},$3,{DE},$2,{HL},$1){}dnl
 __{}__CODE_16BIT{}dnl
@@ -289,7 +289,7 @@ __{}__TYPE,4,{
     push DE             ; 1:11      __INFO   ( -- $1 $2 $3 $4 )
     push HL             ; 1:11      __INFO{}dnl
 __{}__PUSH2_P($2,$1){}__TMP_CODE
-    push HL             ; 1:11      __INFO 
+    push HL             ; 1:11      __INFO
     push DE             ; 1:11      __INFO{}dnl
 __{}__LD_REG16({HL},$4,{DE},$2,{HL},$1){}dnl
 __{}__CODE_16BIT{}dnl
