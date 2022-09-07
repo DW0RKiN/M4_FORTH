@@ -564,7 +564,7 @@ stp{}$1 EQU $+1          ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    ld   BC, 0xFFFF     ; 3:10      __INFO   stop-1},
 {dnl
-__{}    ld   BC, format({%-11s},__GET_LOOP_END($1)-1); 3:10      __INFO   stop-1})
+__{}    ld   BC, format({%-11s},0xFFFF+(__GET_LOOP_END($1))); 3:10      __INFO   stop-1})
     or    A             ; 1:4       __INFO
     sbc  HL, BC         ; 2:15      __INFO   index - stop
     pop  HL             ; 1:10      __INFO
@@ -592,7 +592,7 @@ stp_lo{}$1 EQU $+1       ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    sub  0xFF           ; 2:7       __INFO   lo index - stop-1},
 __{}{dnl
-__{}    sub  format({%-15s},low __GET_LOOP_END($1)-1); 2:7       __INFO   lo index - stop-1})
+__{}    sub  format({%-15s},low 0xFFFF+(__GET_LOOP_END($1))); 2:7       __INFO   lo index - stop-1})
     rra                 ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   and 0xFE with save carry
     ld    A, B          ; 1:4       __INFO
@@ -603,7 +603,7 @@ stp_hi{}$1 EQU $+1       ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    sbc   A, 0xFF       ; 2:7       __INFO   hi index - stop-1},
 __{}{dnl
-__{}    sbc   A, format({%-11s},high __GET_LOOP_END($1)-1); 2:7       __INFO   hi index - stop-1})
+__{}    sbc   A, format({%-11s},high 0xFFFF+(__GET_LOOP_END($1))); 2:7       __INFO   hi index - stop-1})
     jp   nz, do{}$1      ; 3:10      __INFO
 dnl #                         ;23:71/92/92
 leave{}$1:               ;           __INFO
@@ -662,14 +662,14 @@ stp_lo{}$1 EQU $+1       ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    ld    A, 0xFF       ; 2:7       __INFO   lo stop-1},
 __{}{dnl
-__{}    ld    A, format({%-11s},low __GET_LOOP_END($1)-1); 2:7       __INFO   lo stop-1})
+__{}    ld    A, format({%-11s},low 0xFFFF+(__GET_LOOP_END($1))); 2:7       __INFO   lo stop-1})
     sub   L             ; 1:4       __INFO
     ld    L, A          ; 1:4       __INFO
 stp_hi{}$1 EQU $+1       ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    ld    A, 0xFF       ; 2:7       __INFO   hi stop-1},
 __{}{dnl
-__{}    ld    A, format({%-11s},high __GET_LOOP_END($1)-1); 2:7       __INFO   hi stop-1})
+__{}    ld    A, format({%-11s},high 0xFFFF+(__GET_LOOP_END($1))); 2:7       __INFO   hi stop-1})
     sbc   A, H          ; 1:4       __INFO
     ld    H, A          ; 1:4       __INFO HL = stop-(index+step)
     add  HL, BC         ; 1:11      __INFO HL = stop-index
