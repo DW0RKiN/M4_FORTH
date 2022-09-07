@@ -628,20 +628,20 @@ stp_lo{}$1 EQU $+1       ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    ld    A, 0xFF       ; 2:7       __INFO   lo stop-1},
 __{}{dnl
-__{}    ld    A, format({%-11s},low __GET_LOOP_END($1)-1); 2:7       __INFO   lo stop-1})
+__{}    ld    A, format({%-11s},low 0xFFFF+(__GET_LOOP_END($1))); 2:7       __INFO   lo stop-1})
     sub   L             ; 1:4       __INFO
     ld    L, A          ; 1:4       __INFO
 stp_hi{}$1 EQU $+1       ;           __INFO
 __{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}    ld    A, 0xFF       ; 2:7       __INFO   hi stop-1},
 __{}{dnl
-__{}    ld    A, format({%-11s},high __GET_LOOP_END($1)-1); 2:7       __INFO   hi stop-1})
+__{}    ld    A, format({%-11s},high 0xFFFF+(__GET_LOOP_END($1))); 2:7       __INFO   hi stop-1})
     sbc   A, H          ; 1:4       __INFO
     ld    H, A          ; 1:4       __INFO HL = stop-(index+step)
     add  HL, BC         ; 1:11      __INFO HL = stop-index
     xor   H             ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
-    jp    p, do{}$1      ; 3:10      __INFO negative step
+    jp    p, do{}$1      ; 3:10      __INFO
 dnl #                     ;??:???
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO{}dnl

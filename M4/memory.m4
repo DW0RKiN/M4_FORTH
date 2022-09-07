@@ -880,7 +880,7 @@ dnl # C@
 dnl # ( addr -- char )
 dnl # fetch 8-bit char from addr
 define({CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH},{cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH},{c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH},{dnl
@@ -894,7 +894,7 @@ dnl # dup C@
 dnl # ( addr -- addr char )
 dnl # save addr and fetch 8-bit number from addr
 define({DUP_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH},{dup_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH},{dup c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH},{dnl
@@ -910,7 +910,7 @@ dnl
 dnl # 2over nip C@
 dnl # ( addr d -- addr d char )
 define({_2OVER_NIP_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH},{2over_nip_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH},{2over nip c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH},{dnl
@@ -930,7 +930,7 @@ dnl # dup C@ swap
 dnl # ( addr -- char addr )
 dnl # save addr and fetch 8-bit number from addr and swap
 define({DUP_CFETCH_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_SWAP},{dup_cfetch_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_SWAP},{dup c@ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH_SWAP},{dnl
@@ -946,7 +946,7 @@ dnl # C@ swap C@
 dnl # ( addr2 addr1 -- char1 char2 )
 dnl # double fetch 8-bit number and swap
 define({CFETCH_SWAP_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH},{cfetch_swap_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH},{c@ swap c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH_SWAP_CFETCH},{dnl
@@ -964,7 +964,7 @@ dnl # C@ swap C@ swap
 dnl # ( addr2 addr1 -- char1 char2 )
 dnl # double fetch 8-bit number
 define({CFETCH_SWAP_CFETCH_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH_SWAP},{cfetch_swap_cfetch_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH_SWAP},{c@ swap c@ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH_SWAP_CFETCH_SWAP},{dnl
@@ -982,7 +982,7 @@ dnl # over C@ over C@
 dnl # ( addr2 addr1 -- addr2 addr1 char2 char1 )
 dnl # double fetch 8-bit number with save address
 define({OVER_CFETCH_OVER_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH},{over_cfetch_over_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH},{over c@ over c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_CFETCH_OVER_CFETCH},{dnl
@@ -1003,7 +1003,7 @@ dnl # addr C@
 dnl # ( -- x )
 dnl # push_cfetch(addr), load 8-bit char from addr
 define({PUSH_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH},{push_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH},{$1 c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH},{dnl
@@ -1023,7 +1023,7 @@ dnl # addr C@ x
 dnl # ( -- (addr) x )
 dnl # push_cfetch_push(addr,x), load 8-bit char from addr and push x
 define({PUSH_CFETCH_PUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_PUSH},{push_cfetch_push},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_PUSH},{$1 c@ $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_PUSH},{dnl
@@ -1047,7 +1047,7 @@ dnl # addr C@ x
 dnl # ( -- (addr) x )
 dnl # push2_cfetch(x,addr), push x and load 8-bit char from addr
 define({PUSH2_CFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_CFETCH},{push2_cfetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_CFETCH},{$1 $2 c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_CFETCH},{dnl
@@ -1070,7 +1070,7 @@ dnl # addr C@ +
 dnl # ( x -- x+(addr) )
 dnl # push_cfetch(addr), add 8-bit char from addr
 define({PUSH_CFETCH_ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_ADD},{push_cfetch_add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_ADD},{$1 c@ add},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_ADD},{dnl
@@ -1092,7 +1092,7 @@ dnl # addr C@ -
 dnl # ( x -- x-(addr) )
 dnl # push_cfetch(addr), sub 8-bit char from addr
 define({PUSH_CFETCH_SUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_SUB},{push_cfetch_sub},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_SUB},{$1 c@ sub},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_SUB},{dnl
@@ -2065,7 +2065,7 @@ dnl # @
 dnl # ( addr -- x )
 dnl # fetch 16-bit number from addr
 define({FETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_FETCH},{fetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_FETCH},{@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FETCH},{dnl
@@ -2081,7 +2081,7 @@ dnl # dup @
 dnl # ( addr -- addr x )
 dnl # save addr and fetch 16-bit number from addr
 define({DUP_FETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_FETCH},{dup_fetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_FETCH},{dup @},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_FETCH},{dnl
@@ -2100,7 +2100,7 @@ dnl # dup @ swap
 dnl # ( addr -- x addr )
 dnl # save addr and fetch 16-bit number from addr and swap
 define({DUP_FETCH_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_FETCH_SWAP},{dup_fetch_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_FETCH_SWAP},{dup @ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_FETCH_SWAP},{dnl
@@ -2118,7 +2118,7 @@ dnl # addr @
 dnl # ( -- x )
 dnl # push_fetch(addr), load 16-bit number from addr
 define({PUSH_FETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH},{push_fetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH},{$1 @},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FETCH},{dnl
@@ -3118,7 +3118,7 @@ dnl # 2@
 dnl # ( addr -- hi lo )
 dnl # fetch 32-bit number from addr
 define({_2FETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_2FETCH},{2fetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2FETCH},{2@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2FETCH},{dnl
@@ -3143,7 +3143,7 @@ dnl # addr 2@
 dnl # ( -- hi lo )
 dnl # push_2fetch(addr), load 32-bit number from addr
 define({PUSH_2FETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_2FETCH},{push_2fetch},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_2FETCH},{$1 2@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_2FETCH},{dnl

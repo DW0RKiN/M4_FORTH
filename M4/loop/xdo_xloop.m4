@@ -675,7 +675,7 @@ __{}    ld    B, A          ; 1:4       __INFO
 __{}    ld    A, C          ; 1:4       __INFO
 __{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((__HEX_H($1)==0) && (21*_TEMP_HI_FALSE_POSITIVE>4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
+eval((__HEX_H(__GET_LOOP_STEP($1))==0) && (21*_TEMP_HI_FALSE_POSITIVE>4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
 __{}                        ;[22:78/79] __INFO   variant +X.L: positive step 3..255, lo(real_stop) has fewer duplicate, run _TEMP_X{}x
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
@@ -692,7 +692,7 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first},
 {
-   .error +xloop: This variant should never happen... index: __GET_LOOP_BEGIN($1), stop:__GET_LOOP_END($1), step: $1})
+   .error +xloop: This variant should never happen... index: __GET_LOOP_BEGIN($1), stop:__GET_LOOP_END($1), step: __GET_LOOP_STEP($1)})
 __{}leave{}$1:               ;           __INFO
 __{}exit{}$1:                ;           __INFO{}dnl
 }){}dnl
