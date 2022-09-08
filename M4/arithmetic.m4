@@ -39,7 +39,7 @@ __{}    ld   BC, format({%-11s},$1); 4:20      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},
 __IS_NUM($1),{0},{
 __{}    ; warning M4 does not know the numerical value of >>>$1<<<
-__{}    ld   BC, format({%-11s},$1); 3:10      $1 +
+__{}    ld   BC, __FORM({%-11s},$1); 3:10      $1 +
 __{}    add  HL, BC         ; 1:11      $1 +},
 {ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
@@ -112,12 +112,12 @@ __{}__IS_MEM_REF($1),{1},{
 __{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
 __{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} +
-__{}__{}    ld   BC, format({%-11s},$2); 3:10      {$1} {$2} +
+__{}__{}    ld   BC, __FORM({%-11s},$2); 3:10      {$1} {$2} +
 __{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +},
 __{}{
 __{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      {$1} {$2} +
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      {$1} {$2} +
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      {$1} {$2} +
 __{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +})},
 {dnl
@@ -125,7 +125,7 @@ __{}__{}ifelse(__IS_NUM($1+$2),{0},{
 __{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
 __{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   HL, format({%-11s},$1+$2); 3:10      {$1} {$2} +},
+__{}__{}    ld   HL, __FORM({%-11s},$1+$2); 3:10      {$1} {$2} +},
 __{}{
 __{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
@@ -136,80 +136,85 @@ dnl
 dnl # dup 5 +
 dnl # ( x -- x x+n )
 define({DUP_PUSH_ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ADD},{dup_push +},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ADD},{dup $1 +},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_ADD},{dnl
-__{}define({__INFO},{dup $1 +}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(__IS_MEM_REF($1),{1},{
+__{}    push DE             ; 1:11      __INFO   ( x -- x x+$1 )
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    add  HL, DE         ; 1:11      __INFO},
 ifelse(__IS_NUM($1),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+$1 )
-__{}    ex   DE, HL         ; 1:4       dup $1 +
-__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      dup $1 +
-__{}    add  HL, DE         ; 1:11      dup $1 +},
+__{}    push DE             ; 1:11      __INFO   ( x -- x x+$1 )
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   HL, __FORM({%-11s},$1); 3:10      __INFO
+__{}    add  HL, DE         ; 1:11      __INFO},
 {
-__{}    push DE             ; 1:11      dup $1 +   ( x -- x x+{}__HEX_HL($1) ){}ifelse(dnl
+__{}    push DE             ; 1:11      __INFO   ( x -- x x+{}__HEX_HL($1) ){}ifelse(dnl
 __{}eval((($1)+3*256) & 0xffff),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    dec   H             ; 1:4       dup $1 +
-__{}__{}    dec   H             ; 1:4       dup $1 +
-__{}__{}    dec   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO},
 __{}eval((($1)+2*256) & 0xffff),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    dec   H             ; 1:4       dup $1 +
-__{}__{}    dec   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO},
 __{}eval((($1)+1*256) & 0xffff),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    dec   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO},
 __{}eval((($1)+    2) & 0xffff),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    dec  HL             ; 1:6       dup $1 +
-__{}__{}    dec  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO},
 __{}eval((($1)+    1) & 0xffff),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    dec  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO},
 __{}eval(($1) & 0xFFFF),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO},
 __{}eval(($1)-1),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    inc  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO},
 __{}eval(($1)-2),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    inc  HL             ; 1:6       dup $1 +
-__{}__{}    inc  HL             ; 1:6       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO},
 __{}eval(($1)-1*256),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    inc   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO},
 __{}eval(($1)-2*256),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    inc   H             ; 1:4       dup $1 +
-__{}__{}    inc   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO},
 __{}eval(($1)-3*256),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    inc   H             ; 1:4       dup $1 +
-__{}__{}    inc   H             ; 1:4       dup $1 +
-__{}__{}    inc   H             ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO},
 __{}eval((($1)) & 0xFF),{0},{
-__{}__{}    ld    D, H          ; 1:4       dup $1 +
-__{}__{}    ld    E, L          ; 1:4       dup $1 +
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       dup $1 +
-__{}__{}    add   A, H          ; 1:4       dup $1 +
-__{}__{}    ld    H, A          ; 1:4       dup $1 +},
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
+__{}__{}    add   A, H          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO},
 __{}{
-__{}__{}    ex   DE, HL         ; 1:4       dup $1 +
-__{}__{}    ld   HL, __HEX_HL($1)     ; 3:10      dup $1 +
-__{}__{}    add  HL, DE         ; 1:11      dup $1 +}){}dnl
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __HEX_HL($1)     ; 3:10      __INFO
+__{}__{}    add  HL, DE         ; 1:11      __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -355,7 +360,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH2_SUB},{$1 $2 -},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_SUB},{dnl
-__{}define({__INFO},{$1 $2 -}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
 dnl # ( -- x )
 dnl # x = $1 - $2
@@ -363,36 +368,36 @@ dnl # CONSTANT(_a,7) CONSTANT(_b,5) PUSH2_SUB({_a},{_b}) -->  ld   HL, 0x0002   
 dnl # CONSTANT(_a,7) CONSTANT(_b,5) PUSH2_SUB(_a,_b)     -->  ld   HL, 0x0002     ; 3:10      5 7 -
 eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{dnl
 __{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
-__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
-__{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} -
-__{}__{}    ld   BC,format({%-12s},$2); 4:20      {$1} {$2} -
-__{}__{}    or    A             ; 1:4       {$1} {$2} -
-__{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO},
 __{}__IS_MEM_REF($1),{1},{
-__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
-__{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} -
-__{}__{}    ld   BC, format({%-11s},$2); 3:10      {$1} {$2} -
-__{}__{}    or    A             ; 1:4       {$1} {$2} -
-__{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
+__{}__{}    ld   BC, __FORM({%-11s},$2); 3:10      __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO},
 __{}{
-__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
-__{}__{}    ld   HL, format({%-11s},$1); 3:10      {$1} {$2} -
-__{}__{}    ld   BC,format({%-12s},$2); 4:20      {$1} {$2} -
-__{}__{}    or    A             ; 1:4       {$1} {$2} -
-__{}__{}    sbc  HL, BC         ; 2:15      {$1} {$2} -})},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __FORM({%-11s},$1); 3:10      __INFO
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO})},
 {dnl
 __{}__{}ifelse(__IS_NUM($1+$2),{0},{
 __{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
-__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
-__{}__{}    ld   HL, format({%-11s},$1-($2)); 3:10      {$1} {$2} -},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __FORM({%-11s},$1-($2)); 3:10      __INFO},
 __{}{
-__{}__{}    push DE             ; 1:11      {$1} {$2} -   ( -- x )   x = $1-($2)
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} -
-__{}__{}    ld   HL, __HEX_HL($1-($2))     ; 3:10      {$1} {$2} -})})}){}dnl
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __HEX_HL($1-($2))     ; 3:10      __INFO})})}){}dnl
 dnl
 dnl
 dnl
@@ -435,41 +440,42 @@ dnl
 dnl # ( 5 3 -- 5 )
 dnl # ( -5 -3 -- -3 )
 define({PUSH_MAX},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_MAX},{$1_max},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_MAX},{$1 max},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_MAX},{dnl
-__{}define({__INFO},{$1_max}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(__IS_MEM_REF($1),{1},{
-    ld   BC, format({%-11s},$1); 4:20      $1 max
-    ld    A, L          ; 1:4       $1 max    HL<$1 --> HL-$1<0 --> carry if $1 is max
-    sub   C             ; 1:4       $1 max    HL<$1 --> HL-$1<0 --> carry if $1 is max
-    ld    A, H          ; 1:4       $1 max    HL<$1 --> HL-$1<0 --> carry if $1 is max
-    sbc   A, B          ; 1:4       $1 max    HL<$1 --> HL-$1<0 --> carry if $1 is max
-    rra                 ; 1:4       $1 max
-    xor   H             ; 1:4       $1 max
-    xor   B             ; 1:4       $1 max
-    jp    p, $+5        ; 3:10      $1 max
-    ld    H, B          ; 1:4       $1 max
-    ld    L, C          ; 1:4       $1 max    16:62 (58+66)/2},{
-    ld    A, low format({%-7s},$1); 2:7       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
-    sub   L             ; 1:4       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
-    ld    A, high format({%-6s},$1); 2:7       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
-    sbc   A, H          ; 1:4       $1 max    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
-    rra                 ; 1:4       $1 max
-    xor   H             ; 1:4       $1 max
+    ld   BC, format({%-11s},$1); 4:20      __INFO
+    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
+    sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
+    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
+    sbc   A, B          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
+    rra                 ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
+    xor   B             ; 1:4       __INFO
+    jp    p, $+5        ; 3:10      __INFO
+    ld    H, B          ; 1:4       __INFO
+    ld    L, C          ; 1:4       __INFO    16:62 (58+66)/2},
+{
+    ld    A, low __FORM({%-7s},$1); 2:7       __INFO    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
+    sub   L             ; 1:4       __INFO    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
+    ld    A, high __FORM({%-6s},$1); 2:7       __INFO    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
+    sbc   A, H          ; 1:4       __INFO    $1>HL --> $1-HL>0 --> not carry if $1 is max or equal
+    rra                 ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
 ifelse(__IS_NUM($1),{0},{dnl
 __{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}    jp    m, $+6        ; 3:10      $1 max    positive constant $1
+__{}    jp    m, $+6        ; 3:10      __INFO    positive constant $1
 __{}  else
-__{}    jp    p, $+6        ; 3:10      $1 max    negative constant $1
+__{}    jp    p, $+6        ; 3:10      __INFO    negative constant $1
 __{}  endif},
 {dnl
 __{}ifelse(eval(($1) & 0x8000),0,{dnl
-__{}    jp    m, $+6        ; 3:10      $1 max    positive constant $1},
+__{}    jp    m, $+6        ; 3:10      __INFO    positive constant $1},
 __{}{dnl
-__{}    jp    p, $+6        ; 3:10      $1 max    negative constant $1})})
-    ld   HL, format({%-11s},$1); 3:10      $1 max    14:45 (40+50)/2})}){}dnl
+__{}    jp    p, $+6        ; 3:10      __INFO    negative constant $1})})
+    ld   HL, __FORM({%-11s},$1); 3:10      __INFO    14:45 (40+50)/2})}){}dnl
 dnl
 dnl
 dnl # ( 5 3 -- 3 )
@@ -496,43 +502,43 @@ dnl
 dnl # ( 5 3 -- 3 )
 dnl # ( -5 -3 -- -5 )
 define({PUSH_MIN},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_MIN},{$1_min},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_MIN},{$1 min},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_MIN},{dnl
-__{}define({__INFO},{$1_min}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(__IS_MEM_REF($1),{1},{
-                        ;[16:~62]   $1 min
-    ld   BC, format({%-11s},$1); 4:20      $1 min
-    ld    A, C          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    sub   L             ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    ld    A, B          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    sbc   A, H          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    rra                 ; 1:4       $1 min
-    xor   H             ; 1:4       $1 min
-    xor   B             ; 1:4       $1 min
-    jp    p, $+5        ; 3:10      $1 min
-    ld    H, B          ; 1:4       $1 min
-    ld    L, C          ; 1:4       $1 min}
+                        ;[16:~62]   __INFO
+    ld   BC, format({%-11s},$1); 4:20      __INFO
+    ld    A, C          ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    sub   L             ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    ld    A, B          ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    sbc   A, H          ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    rra                 ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
+    xor   B             ; 1:4       __INFO
+    jp    p, $+5        ; 3:10      __INFO
+    ld    H, B          ; 1:4       __INFO
+    ld    L, C          ; 1:4       __INFO}
 ,{
-                        ;[14:~45]   $1 min
-    ld    A, low format({%-7s},$1); 2:7       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    sub   L             ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    ld    A, high format({%-6s},$1); 2:7       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    sbc   A, H          ; 1:4       $1 min    $1<HL --> $1-HL<0 --> carry if $1 is min
-    rra                 ; 1:4       $1 min
-    xor   H             ; 1:4       $1 min{}dnl
+                        ;[14:~45]   __INFO
+    ld    A, low __FORM({%-7s},$1); 2:7       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    sub   L             ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    ld    A, high __FORM({%-6s},$1); 2:7       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    sbc   A, H          ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
+    rra                 ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO{}dnl
 __{}ifelse(__IS_NUM($1),{0},{
 __{}__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1
+__{}__{}    jp    p, $+6        ; 3:10      __INFO    positive constant $1
 __{}__{}  else
-__{}__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1
+__{}__{}    jp    m, $+6        ; 3:10      __INFO    negative constant $1
 __{}__{}  endif}
 __{},eval(($1) & 0x8000),0,{
-__{}__{}    jp    p, $+6        ; 3:10      $1 min    positive constant $1}dnl
+__{}__{}    jp    p, $+6        ; 3:10      __INFO    positive constant $1}dnl
 __{},{
-__{}__{}    jp    m, $+6        ; 3:10      $1 min    negative constant $1})
-    ld   HL, format({%-11s},$1); 3:10      $1 min}){}dnl
+__{}__{}    jp    m, $+6        ; 3:10      __INFO    negative constant $1})
+    ld   HL, __FORM({%-11s},$1); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -543,14 +549,13 @@ __{}__ADD_TOKEN({__TOKEN_NEGATE},{negate},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_NEGATE},{dnl
-__{}define({__INFO},{negate}){}dnl
-
-    xor   A             ; 1:4       negate
-    sub   L             ; 1:4       negate
-    ld    L, A          ; 1:4       negate
-    sbc   A, H          ; 1:4       negate
-    sub   L             ; 1:4       negate
-    ld    H, A          ; 1:4       negate}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    xor   A             ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    sbc   A, H          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
@@ -1038,7 +1043,7 @@ __{}    add   A, L          ; 1:4      $1 C+
 __{}    ld    L, A          ; 1:4      $1 C+},
 __IS_NUM($1),{0},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld    A, format({%-11s},$1); 2:7      $1 C+
+__{}    ld    A, __FORM({%-11s},$1); 2:7      $1 C+
 __{}    add   A, L          ; 1:4      $1 C+
 __{}    ld    L, A          ; 1:4      $1 C+},
 {dnl
@@ -1398,15 +1403,15 @@ __{}__{}    add  HL, BC         ; 1:11      $1 D+
 __{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
 __{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
 __{}__{}eval((($1) & 0xFFFF0000) - 0xFFFF0000),{0},{dnl
-__{}__{}    ld   BC, format({%-11s},eval(($1) & 0xFFFF)); 3:10      $1 D+   ( d -- d{}$1 )
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 D+   ( d -- d{}$1 )
 __{}__{}    add  HL, BC         ; 1:11      $1 D+
 __{}__{}    jr    c, $+3        ; 2:7/12    $1 D+
 __{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
 __{}__{}{dnl
-__{}__{}    ld   BC, format({%-11s},eval(($1) & 0xFFFF)); 3:10      $1 D+
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 D+
 __{}__{}    add  HL, BC         ; 1:11      $1 D+
 __{}__{}    ex   DE, HL         ; 1:4       $1 D+
-__{}__{}    ld   BC, format({%-11s},eval((($1) & 0xFFFF0000)/65536)); 3:10      $1 D+
+__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1 D+
 __{}__{}    adc  HL, BC         ; 2:15      $1 D+
 __{}__{}    ex   DE, HL         ; 1:4       $1 D+}){}dnl
 })}){}dnl

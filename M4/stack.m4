@@ -16,8 +16,11 @@ __{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH2}($1,$2
 {define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      __INFO}){}dnl
-}){}dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO},
+__{}{dnl
+__{}    ld   HL, __FORM({%-11s},$1); 3:10      __INFO}){}dnl
+})}){}dnl
 dnl
 dnl
 dnl # ( -- b a)

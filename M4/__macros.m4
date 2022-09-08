@@ -80,6 +80,49 @@ __{}{NO_NUMBER})}){}dnl
 dnl
 dnl
 dnl
+dnl
+dnl # Fix Pasmo problem with math expression starting with a negative value.
+dnl # )+(0+  -->  +
+dnl # )+(0-  -->  -
+define({__FORM_REC3},{ifelse(regexp($1,{)\+(0[\+-]}),-1,$1,{dnl
+__{}__FORM_REC3(regexp($1,{\(^.*\))\+(0\([\+-]\)\(.*\)$},{\1\2\3}))}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Fix Pasmo problem with math expression starting with a negative value.
+dnl # (-  -->  (0-
+define({__FORM_REC2},{ifelse(regexp($1,{(-}),-1,__FORM_REC3($1),{dnl
+__{}__FORM_REC2(regexp($1,{\(^.*\)(-\(.*\)$},{\1(0-\2}))}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Fix Pasmo problem with math expression starting with a negative value.
+dnl # ++  -->  +
+dnl # +-  -->  -
+dnl # -+  -->  -
+dnl # --  -->  +
+define({__FORM_REC},{ifelse(regexp($1,{[\+-][\+-]}),-1,__FORM_REC2($1),{ifelse(dnl
+__{}eval(regexp($1,{\+\+})>-1),1,{__FORM_REC(regexp($1,{\(^.*\)\+\+\(.*\)$},{\1\+\2}))},
+__{}eval(regexp($1,{\+-})>-1), 1,{__FORM_REC(regexp($1,{\(^.*\)\+-\(.*\)$}, {\1-\2}))},
+__{}eval(regexp($1,{-\+})>-1), 1,{__FORM_REC(regexp($1,{\(^.*\)-\+\(.*\)$}, {\1-\2}))},
+__{}eval(regexp($1,{--})>-1),  1,{__FORM_REC(regexp($1,{\(^.*\)--\(.*\)$},  {\1\+\2}))},
+__{}{  .error $0})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Fix Pasmo problem with math expression starting with a negative value.
+dnl # ld A,-4-4 --> ld A,0 !!!???
+define({__FORM},{ifelse(dnl
+__{}substr($2,0,1),{-},{format($1,0{}__FORM_REC($2))},
+__{}substr($2,0,1),{(},{format($1,+{}__FORM_REC($2))},
+__{}{format($1,__FORM_REC($2))}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({__add},{define({$1},eval(}$1{+}$2{))}){}dnl
 dnl
 dnl
