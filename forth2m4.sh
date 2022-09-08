@@ -398,6 +398,7 @@ do
     sed 's#^\([^;{]*\s\|^\)[Dd]rop\(\s\|$\)#\1DROP\2#g' |
     sed 's#^\([^;{]*\s\|^\)2DROP\(\s\|$\)#\1_2DROP\2#gi' |
     sed 's#^\([^;{]*\s\|^\)drop\s\+drop\(\s\|$\)#\1_2DROP\2#gi' |
+        sed 's#^\([^;{]*\s\|^\)_2DROP\s\+drop\(\s\|$\)#\1_3DROP\2#gi' |
 
     sed 's#^\([^;{]*\s\|^\)[Nn]ip\(\s\|$\)#\1NIP\2#g' |
     sed 's#^\([^;{]*\s\|^\)swap\s\+drop\(\s\|$\)#\1NIP\2#gi' |
@@ -638,7 +639,7 @@ do
     sed 's#^\([^;{]*\s\|^\)[Bb]ye\(\s\|$\)#\1BYE\2#g' |
     sed 's#^\([^;{]*\s\|^\)[Ff]ill\(\s\|$\)#\1FILL\2#g' |
 
-    sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\s\+_2SWAP\sSWAP\(\s\|$\)#\1STACK_BCAD\2#gi' |
+    sed 's#^\([^;{]*\s\|^\)NROT\s\+SWAP\s\+_2SWAP\s\+SWAP\(\s\|$\)#\1STACK_BCAD\2#gi' |
     sed 's#^\([^;{]*\s\|^\)OVER\s\+_2OVER\s\+DROP\(\s\|$\)#\1STACK_CBABC\2#gi' |
     sed 's#^\([^;{]*\s\|^\)_2OVER\s\+NIP\s\+_2OVER\s\+NIP\s\+SWAP\(\s\|$\)#\1STACK_CBABC\2#gi' |
     sed 's#^\([^;{]*\s\|^\)OVER\s\+3\s\+PICK\(\s\|$\)#\1STACK_CBABC\2#gi' |
@@ -1051,16 +1052,16 @@ do
 
 # opravit ?do!!! questiondo !!!
 # nefunguje pokud lezi "do" a "loop" na jinych radcich, a nejde to snadno spravit pres tr '\n' '\f' protoze pak zase nefunguje ^ a to se mlati s komentari a retezci...
-    #           5  1 do ...         loop    -->      xdo(5,1) ...         xloop
-    # SWAP_PUSH(5) 1 do ...         loop    --> swap xdo(5,1) ...         xloop
-    #           5  1 do ... push_addloop(2) -->      xdo(5,1) ... push_addxloop(2)
-    # SWAP_PUSH(5) 1 do ... push_addloop(2) --> swap xdo(5,1) ... push_addxloop(2)
+    #           5  1 do ...         loop    -->      do(5,1) ...         loop
+    # SWAP_PUSH(5) 1 do ...         loop    --> swap do(5,1) ...         loop
+    #           5  1 do ... push_addloop(2) -->      do(5,1) ... push_addloop(2)
+    # SWAP_PUSH(5) 1 do ... push_addloop(2) --> swap do(5,1) ... push_addloop(2)
     while :
     do
         cat $TMPFILE |
         sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+ADDLOOP\(\s\|\n\|$\)#\1PUSH_ADDLOOP(\2)\3#g' |
-        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\|\s\+\)LOOP\(\s\|$\)#\1XD_____00_____(\2,\3)\4XL_____00__________00_____P\5#g' |
-        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\|\s\+\)PUSH_ADDLOOP(#\1XD_____00_____(\2,\3)\4PUSH_ADDXL_____00__________00_____P(#g' > $TMPFILE2
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\|\s\+\)LOOP\(\s\|$\)#\1D_____00_____(,\2,\3)\4L_____00__________00_____P\5#g' |
+        sed -e '1h;2,$H;$!d;g' -e 's#\(\n[^;{]*\s\|\n\|^[\s]*\)\([-+]*[0-9]\+\)\s\+\([-+]*[0-9]\+\)\s\+DO\(\s\+[^oO]*\s\+\|\s\+\)PUSH_ADDLOOP(#\1D_____00_____(,\2,\3)\4PUSH_ADDL_____00__________00_____P(#g' > $TMPFILE2
         diff $TMPFILE $TMPFILE2 > /dev/null 2>&1
         error=$?
         cat $TMPFILE2 > $TMPFILE
