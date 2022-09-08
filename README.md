@@ -1060,6 +1060,10 @@ Multiple WHILE is possible in M4 FORTH because they are independent of each othe
 
     BEGIN ... flag WHILE ... flag WHILE ... BREAK ... REPEAT|AGAIN|flag UNTIL
 
+The RAS and data stack variant, if it knows the immutable END value, does not store it in the (ras/data) stack, but in the (+)LOOP code. So then I only save the index.
+
+Words like I J K find out for yourself what type of loops and accordingly find where and at what depth they find the index.
+
 #### Non-recursive
 The variables are stored in the function memory.
 
