@@ -1074,14 +1074,8 @@ The variables are stored in the function memory.
 |<sub>      ?do        |<sub>  QUESTIONDO  |<sub>                       |<sub>( stop index -- )           |<sub> ( -- ) non-recursive  |
 |<sub>      loop       |<sub>     LOOP     |<sub>                       |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 |<sub>     +loop       |<sub>    ADDLOOP   |<sub>                       |<sub>      ( step -- )           |<sub> ( -- ) non-recursive  |
-|<sub>   `3` +loop     |<sub>              |<sub>    PUSH_ADDLOOP(`3`)  |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 |<sub>      for        |<sub>     FOR      |<sub>                       |<sub>     ( index -- )           |<sub> ( -- ) non-recursive  |
-|<sub>     `7` for     |<sub>              |<sub>      PUSH_FOR(`7`)    |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 |<sub>      next       |<sub>     NEXT     |<sub>                       |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
-|<sub>   `5` `1` do    |<sub>              |<sub>      XDO(`5`,`1`)     |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
-|<sub>   `5` `1` ?do   |<sub>              |<sub>  QUESTIONXDO(`5`,`1`) |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
-|<sub>                 |<sub>              |<sub>         XLOOP         |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
-|<sub>   `2` +loop     |<sub>              |<sub>   PUSH_ADDXLOOP(`2`)  |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 
 #### Recursive
 The variables are stored in the return address stack.
@@ -1094,16 +1088,15 @@ The variables are stored in the return address stack.
 |<sub>        j        |<sub>              |<sub>           J           |<sub>           ( -- j )         |<sub> ( j i -- j i )        |
 |<sub>        k        |<sub>              |<sub>           K           |<sub>           ( -- k )         |<sub> ( k j i -- k j i )    |
 |<sub>       do        |<sub>     DO(R)    |<sub>                       |<sub>( stop index -- )           |<sub> ( -- stop index )     |
+|<sub>   `5` `1` do    |<sub>              |<sub>     DO(R,`5`,`1`)     |<sub>           ( -- )           |<sub> ( -- `1` )            |
+|<sub>   `5` swap do   |<sub>              |<sub>     DO(R,`5`,`1`)     |<sub>           ( -- )           |<sub> ( -- index )          |
 |<sub>      ?do        |<sub>QUESTIONDO(R) |<sub>                       |<sub>( stop index -- )           |<sub> ( -- stop index )     |
+|<sub>   `5` `1` ?do   |<sub>              |<sub>QUESTIONXDO(R,`5`,`1`) |<sub>           ( -- )           |<sub> ( -- `1` )            |
+|<sub>  `5` swap ?do   |<sub>              |<sub>QUESTIONXDO(R,`5`,`1`) |<sub>           ( -- )           |<sub> ( -- index )          |
 |<sub>      loop       |<sub>      LOOP    |<sub>                       |<sub>           ( -- )           |<sub> ( s i -- s i+1 )      |
 |<sub>     +loop       |<sub>   ADDLOOP    |<sub>                       |<sub>      ( step -- )           |<sub> ( s i -- s i+step )   |
-|<sub>   `3` +loop     |<sub>              |<sub>   PUSH_ADDLOOP(`3`)   |<sub>           ( -- )           |<sub> ( s i -- s i+`3` )    |
 |<sub>      for        |<sub>    FOR(R)    |<sub>                       |<sub>     ( index -- )           |<sub> ( -- index )          |
 |<sub>      next       |<sub>     NEXT     |<sub>                       |<sub>           ( -- )           |<sub> ( -- index-1)         |
-|<sub>   `5` `1` do    |<sub>              |<sub>     DO(R,`5`,`1`)     |<sub>           ( -- )           |<sub> ( -- `5` `1` )        |
-|<sub>   `5` `1` ?do   |<sub>              |<sub>QUESTIONXDO(R,`5`,`1`) |<sub>           ( -- )           |<sub> ( -- `5` `1` )        |
-|<sub>                 |<sub>              |<sub>          LOOP         |<sub>           ( -- )           |<sub> ( index -- index+1 )  |
-|<sub>   `2` +loop     |<sub>              |<sub>   PUSH_ADDLOOP(`2`)   |<sub>           ( -- )           |<sub> ( index -- index+`2` )|
 
 The variables are stored in the data stack.
 
@@ -1117,8 +1110,11 @@ The variables are stored in the data stack.
 |<sub>          loop           |<sub>                       |<sub>              LOOP             |<sub>    ( stop i -- stop i+1)   |<sub> ( -- )       |
 |<sub>          +loop          |<sub>                       |<sub>             ADDLOOP           |<sub>( end i step -- end i+step )|<sub> ( -- )       |
 |<sub>        `4` +loop        |<sub>                       |<sub>        PUSH_ADDLOOP(`4`)      |<sub>     ( end i -- end i+`4` ) |<sub> ( -- )       |
-|<sub>           for           |<sub>                       |<sub>              FOR              |<sub>     ( index -- index )     |<sub> ( -- )       |
+|<sub>           for           |<sub>                       |<sub>             FOR(S)            |<sub>     ( index -- index )     |<sub> ( -- )       |
 |<sub>          next           |<sub>                       |<sub>             NEXT              |<sub>     ( index -- index-1 )   |<sub> ( -- )       |
+
+|<sub>         Original        |<sub>        M4 FORTH       |<sub>         Optimization          |<sub>  Data stack                |<sub>  R. a. stack |
+| :--------------------------: | :------------------------: | :--------------------------------: | :------------------------------ | :---------------- |
 |<sub>          begin          |<sub>         BEGIN         |<sub>                               |<sub>           ( -- )           |<sub>              |
 |<sub>                         |<sub>         BREAK         |<sub>                               |<sub>           ( -- )           |<sub>              |
 |<sub>         while           |<sub>         WHILE         |<sub>                               |<sub>      ( flag -- )           |<sub>              |
