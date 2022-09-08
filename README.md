@@ -1,10 +1,4 @@
-⚠️WARNING⚠️Right now the loops are being rewritten to a tokenized version, so they are broken.
-
-⚠️WARNING⚠️If you want a working version, download something from the history that does not contain "__ASM_TOKEN"
-
-The tokens will be more fun because you will have more information about what will happen and what happened.
-
-Furthermore, combining words into combos takes place over tokens and does not need to be done when translating from Forth to FORTH M4 using a script.
+⚠️WARNING⚠️Right now the loops are being rewritten to a tokenized version.
 
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
@@ -1023,19 +1017,46 @@ And the last variant is only valid for M4 FORTH
 
 Multiple WHILE is possible in M4 FORTH because they are independent of each other and apply to the last current BEGIN .. UNTIL/REPEAT/AGAIN loop.
 
-    PUSH2(5,0)  DO        I DOT PUTCHAR({','})            LOOP       --> " 0, 1, 2, 3, 4,"
-                DO(,5,0)  I DOT PUTCHAR({','})            LOOP       --> " 0, 1, 2, 3, 4,"
-                DO(,5,0)  I DOT PUTCHAR({','})    PUSH_ADDLOOP(2)    --> " 0, 2, 4,"
-                DO(,5,0)  I DOT PUTCHAR({','}) PUSH(2) ADDLOOP       --> " 0, 2, 4,"
-    PUSH2(5,0)  DO(S)     I DOT PUTCHAR({','})            LOOP       --> " 0, 1, 2, 3, 4,"
-    PUSH(5)    FOR(S)     I DOT PUTCHAR({','})            NEXT       --> " 5, 4, 3, 2, 1, 0,"
-    PUSH(5)    FOR        I DOT PUTCHAR({','})            NEXT       --> " 5, 4, 3, 2, 1, 0,"
-          PUSH_FOR(5)     I DOT PUTCHAR({','})            NEXT       --> " 5, 4, 3, 2, 1, 0,"
+    ; memory
+    PUSH(5) PUSH(0)  DO    I SPACE DOT             LOOP --> " 0 1 2 3 4"
+    PUSH(5) PUSH(0)  DO    I SPACE DOT PUSH(2)  ADDLOOP --> " 0 2 4"
+    PUSH(0) PUSH(4)  DO    I SPACE DOT PUSH(-2) ADDLOOP --> " 4 2 0"
+    PUSH(0) PUSH(5)  DO    I SPACE DOT PUSH(-1) ADDLOOP --> " 5 4 3 2 1 0"
+    PUSH(5)         FOR    I SPACE DOT             NEXT --> " 5 4 3 2 1 0"
+    ; memory
+    PUSH(5) PUSH(0)  DO(M) I SPACE DOT             LOOP --> " 0 1 2 3 4"
+    PUSH(5) PUSH(0)  DO(M) I SPACE DOT PUSH(2)  ADDLOOP --> " 0 2 4"
+    PUSH(0) PUSH(4)  DO(M) I SPACE DOT PUSH(-2) ADDLOOP --> " 4 2 0"
+    PUSH(0) PUSH(5)  DO(M) I SPACE DOT PUSH(-1) ADDLOOP --> " 5 4 3 2 1 0"
+    PUSH(5)         FOR(M) I SPACE DOT             NEXT --> " 5 4 3 2 1 0"
+    ; recursive r.a.s.
+    PUSH(5) PUSH(0)  DO(R) I SPACE DOT             LOOP --> " 0 1 2 3 4"
+    PUSH(5) PUSH(0)  DO(R) I SPACE DOT PUSH(2)  ADDLOOP --> " 0 2 4"
+    PUSH(0) PUSH(4)  DO(R) I SPACE DOT PUSH(-2) ADDLOOP --> " 4 2 0"
+    PUSH(0) PUSH(5)  DO(R) I SPACE DOT PUSH(-1) ADDLOOP --> " 5 4 3 2 1 0"
+    PUSH(5)         FOR(R) I SPACE DOT             NEXT --> " 5 4 3 2 1 0"
+    ; recursive data stack
+    PUSH(5) PUSH(0)  DO(S) I SPACE DOT             LOOP --> " 0 1 2 3 4"
+    PUSH(5) PUSH(0)  DO(S) I SPACE DOT PUSH(2)  ADDLOOP --> " 0 2 4"
+    PUSH(0) PUSH(4)  DO(S) I SPACE DOT PUSH(-2) ADDLOOP --> " 4 2 0"
+    PUSH(0) PUSH(5)  DO(S) I SPACE DOT PUSH(-1) ADDLOOP --> " 5 4 3 2 1 0"
+    PUSH(5)         FOR(S) I SPACE DOT             NEXT --> " 5 4 3 2 1 0"
 
+    DO(type,end,begin,step)
+    
+    PUSH(5)     PUSH(0)      DO                 -->             DO(,5,0)
+    PUSH(5) ... PUSH(0)      DO                 --> PUSH(5) ... DO(,,0)
+    PUSH(0) ... PUSH(5) SWAP DO                 --> PUSH(0) ... DO(,5)
+    PUSH(5)     PUSH(0)      DO PUSH(2) ADDLOOP -->             DO(,5,0,2) ADDLOOP
 
-    PUSH(5) BEGIN DUP_DOT            DUP_WHILE _1SUB PUTCHAR({','}) REPEAT DROP CR ;--> " 5, 4, 3, 2, 1, 0"
-    PUSH(0) BEGIN DUP_DOT DUP PUSH(4) LT WHILE _1ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 1, 2, 3, 4"
-    PUSH(0) BEGIN DUP_DOT DUP PUSH(4) LT WHILE _2ADD PUTCHAR({','}) REPEAT DROP CR ;--> " 0, 2, 4"
+    PUSH(5)     PUSH(0)      DO(R)                 -->             DO(R,5,0)
+    PUSH(5) ... PUSH(0)      DO(R)                 --> PUSH(5) ... DO(R,,0)
+    PUSH(0) ... PUSH(5) SWAP DO(R)                 --> PUSH(0) ... DO(R,5)
+    PUSH(5)     PUSH(0)      DO(R) PUSH(2) ADDLOOP -->             DO(R,5,0,2) ADDLOOP
+
+    PUSH(5) BEGIN DUP DOT            DUP WHILE _1SUB SPACE REPEAT DROP CR --> "5 4 3 2 1 0"
+    PUSH(0) BEGIN DUP DOT DUP PUSH(4) LT WHILE _1ADD SPACE REPEAT DROP CR --> "0 1 2 3 4"
+    PUSH(0) BEGIN DUP DOT DUP PUSH(4) LT WHILE _2ADD SPACE REPEAT DROP CR --> "0 2 4"
 
     BEGIN ... flag WHILE ... flag WHILE ... BREAK ... REPEAT|AGAIN|flag UNTIL
 
