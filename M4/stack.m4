@@ -1384,7 +1384,7 @@ dnl # ( -- d )
 dnl # PUSHDOT(number32bit) ulozi na zasobnik 32 bitove cislo
 dnl # 255. --> ( -- 0x0000 0x00FF )
 define({PUSHDOT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT},{pushdot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT},{$1.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHDOT},{dnl

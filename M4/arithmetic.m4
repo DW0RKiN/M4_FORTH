@@ -1260,160 +1260,172 @@ dnl
 dnl # ( d -- d+n )
 dnl # d = d + n
 define({PUSHDOT_DADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DADD},{$1._d+},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DADD},{$1. d+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHDOT_DADD},{dnl
-__{}define({__INFO},{$1._d+}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 D+
-__{}    add  HL, BC         ; 1:11      $1 D+
-__{}    ex   DE, HL         ; 1:4       $1 D+
-__{}    ld   BC,format({%-12s},($1+2)); 4:20      $1 D+
-__{}    adc  HL, BC         ; 2:15      $1 D+
-__{}    ex   DE, HL         ; 1:4       $1 D+},
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
 __IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): The condition $1 cannot be evaluated},
 {ifelse(dnl
 __{}__{}eval(($1)+3*256*256*256),{0},{dnl
-__{}__{}    dec   D             ; 1:4       $1 D+   ( d -- d-3*2^24 )
-__{}__{}    dec   D             ; 1:4       $1 D+
-__{}__{}    dec   D             ; 1:4       $1 D+},
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-3*2^24 )
+__{}__{}    dec   D             ; 1:4       __INFO
+__{}__{}    dec   D             ; 1:4       __INFO},
 __{}__{}eval(($1)+2*256*256*256),{0},{dnl
-__{}__{}    dec   D             ; 1:4       $1 D+   ( d -- d-2^25 )
-__{}__{}    dec   D             ; 1:4       $1 D+},
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-2^25 )
+__{}__{}    dec   D             ; 1:4       __INFO},
 __{}__{}eval(($1)+1*256*256*256),{0},{dnl
-__{}__{}    dec   D             ; 1:4       $1 D+   ( d -- d-2^24 )},
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-2^24 )},
 __{}__{}eval(($1)+5*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D+   ( d -- d-5*2^16 )
-__{}__{}    dec  DE             ; 1:6       $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-5*2^16 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+4*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D+   ( d -- d-2^18 )
-__{}__{}    dec  DE             ; 1:6       $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^18 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+3*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D+   ( d -- d-3*2^16 )
-__{}__{}    dec  DE             ; 1:6       $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-3*2^16 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+2*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D+   ( d -- d-2^17 )
-__{}__{}    dec  DE             ; 1:6       $1 D+},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^17 )
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+1*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D+   ( d -- d-2^16 )},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^16 )},
 __{}__{}eval(($1)+2*256),{0},{dnl
-__{}__{}    ld    A, H          ; 1:4       $1 D+   ( d -- d-2^9 )
-__{}__{}    dec   H             ; 1:4       $1 D+
-__{}__{}    dec   H             ; 1:4       $1 D+
-__{}__{}    sub   H             ; 1:4       $1 D+
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-2^9 )
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    sub   H             ; 1:4       __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(($1)+1*256),{0},{dnl
-__{}__{}    ld    A, H          ; 1:4       $1 D+   ( d -- d-2^8 )
-__{}__{}    dec   H             ; 1:4       $1 D+
-__{}__{}    sub   H             ; 1:4       $1 D+
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-2^8 )
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    sub   H             ; 1:4       __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(((($1) & 0xFFFF0000) == 0xFFFF0000) && ((($1) & 0xFF) == 0)),{1},{dnl
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 D+   ( d -- d+$1 )
-__{}__{}    add   A, H          ; 1:4       $1 D+
-__{}__{}    ld    H, A          ; 1:4       $1 D+
-__{}__{}    jr    c, $+3        ; 2:7/12    $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   ( d -- d+$1 )
+__{}__{}    add   A, H          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(($1)+2),{0},{dnl
-__{}__{}    ld    A, H          ; 1:4       $1 D+   ( d -- d-2 )
-__{}__{}    dec  HL             ; 1:6       $1 D+   lo--
-__{}__{}    dec  HL             ; 1:6       $1 D+   lo--
-__{}__{}    sub   H             ; 1:4       $1 D+   lo(d)-lo(d-2)
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-2 )
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    sub   H             ; 1:4       __INFO   lo(d)-lo(d-2)
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(($1)+1),{0},{dnl
-__{}__{}    ld    A, L          ; 1:4       $1 D+   ( d -- d-1 )
-__{}__{}    or    H             ; 1:4       $1 D+
-__{}__{}    dec  HL             ; 1:6       $1 D+   lo--
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}    ld    A, L          ; 1:4       __INFO   ( d -- d-1 )
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval($1),{0},{snl
-__{}__{}                        ;           $1 D+   ( d -- d+0 )},
+__{}__{}                        ;           __INFO   ( d -- d+0 )},
 __{}__{}eval(($1)-1),{0},{dnl
-__{}__{}    inc  HL             ; 1:6       $1 D+   lo++
-__{}__{}    ld    A, L          ; 1:4       $1 D+
-__{}__{}    or    H             ; 1:4       $1 D+
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
+__{}__{}    inc  HL             ; 1:6       __INFO   lo++
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
 __{}__{}eval(($1)-256),{0},{dnl
-__{}__{}    inc   H             ; 1:4       $1 D+   ( d -- d+256 )
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
+__{}__{}    inc   H             ; 1:4       __INFO   ( d -- d+256 )
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
 __{}__{}eval(($1) & 0xFFFF00FF),{0},{dnl
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 D+   ( d -- d+$1 )
-__{}__{}    add   A, H          ; 1:4       $1 D+
-__{}__{}    ld    H, A          ; 1:4       $1 D+
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   ( d -- d+$1 )
+__{}__{}    add   A, H          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
 __{}__{}eval(($1)-1*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D+   ( d -- d+2^16 )},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^16 )},
 __{}__{}eval(($1)-2*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D+   ( d -- d+2^17 )
-__{}__{}    inc  DE             ; 1:6       $1 D+},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^17 )
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-3*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D+   ( d -- d+3*2^16 )
-__{}__{}    inc  DE             ; 1:6       $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+3*2^16 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-4*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D+   ( d -- d+2^18 )
-__{}__{}    inc  DE             ; 1:6       $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^18 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-5*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D+   ( d -- d+5*2^16 )
-__{}__{}    inc  DE             ; 1:6       $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+5*2^16 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-1*256*256*256),{0},{dnl
-__{}__{}    inc   D             ; 1:4       $1 D+   ( d -- d+2^24 )},
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+2^24 )},
 __{}__{}eval(($1)-2*256*256*256),{0},{dnl
-__{}__{}    inc   D             ; 1:4       $1 D+   ( d -- d+2^25 )
-__{}__{}    inc   D             ; 1:4       $1 D+},
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+2^25 )
+__{}__{}    inc   D             ; 1:4       __INFO},
 __{}__{}eval(($1)-3*256*256*256),{0},{dnl
-__{}__{}    inc   D             ; 1:4       $1 D+   ( d -- d+3*2^24 )
-__{}__{}    inc   D             ; 1:4       $1 D+
-__{}__{}    inc   D             ; 1:4       $1 D+},
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+3*2^24 )
+__{}__{}    inc   D             ; 1:4       __INFO
+__{}__{}    inc   D             ; 1:4       __INFO},
 __{}__{}eval(($1) & 0xFFFFFF),{0},{dnl
-__{}__{}    ld    A, __HEX_D($1)       ; 2:7       $1 D+   ( d -- d+$1 )
-__{}__{}    add   A, D          ; 1:4       $1 D+
-__{}__{}    ld    D, A          ; 1:4       $1 D+},
+__{}__{}    ld    A, __HEX_D($1)       ; 2:7       __INFO   ( d -- d+$1 )
+__{}__{}    add   A, D          ; 1:4       __INFO
+__{}__{}    ld    D, A          ; 1:4       __INFO},
 __{}__{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1 D+
-__{}__{}    ex   DE, HL         ; 1:4       $1 D+
-__{}__{}    add  HL, BC         ; 1:11      $1 D+
-__{}__{}    ex   DE, HL         ; 1:4       $1 D+},
-__{}__{}eval(($1) & 0xFFFF0000),{0},{dnl
-__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 D+   ( d -- d+$1 )
-__{}__{}    add  HL, BC         ; 1:11      $1 D+
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D+
-__{}__{}    inc  DE             ; 1:6       $1 D+   hi++},
-__{}__{}eval((($1) & 0xFFFF0000) - 0xFFFF0000),{0},{dnl
-__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 D+   ( d -- d{}$1 )
-__{}__{}    add  HL, BC         ; 1:11      $1 D+
-__{}__{}    jr    c, $+3        ; 2:7/12    $1 D+
-__{}__{}    dec  DE             ; 1:6       $1 D+   hi--},
+__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__{}__HEX_DE($1),{0x0000},{dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   ( d -- d+$1 )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__{}__HEX_DE($1),{0x0001},{dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   ( d -- d+$1 )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__{}__HEX_DE($1),{0xFFFF},{dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   ( d -- d{}$1 )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}__{}__HEX_DE($1),{0xFFFE},{dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   ( d -- d{}$1 )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}{dnl
-__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 D+
-__{}__{}    add  HL, BC         ; 1:11      $1 D+
-__{}__{}    ex   DE, HL         ; 1:4       $1 D+
-__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1 D+
-__{}__{}    adc  HL, BC         ; 2:15      $1 D+
-__{}__{}    ex   DE, HL         ; 1:4       $1 D+}){}dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      __INFO
+__{}__{}    adc  HL, BC         ; 2:15      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
@@ -1556,148 +1568,148 @@ dnl
 dnl # ( d -- d-n )
 dnl # d = d - n
 define({PUSHDOT_DSUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DSUB},{$1._d-},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DSUB},{$1. d-},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHDOT_DSUB},{dnl
-__{}define({__INFO},{$1._d-}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 D-
-__{}    or    A, A          ; 1:4       $1 D-
-__{}    sbc  HL, BC         ; 2:15      $1 D-
-__{}    ex   DE, HL         ; 1:4       $1 D-
-__{}    ld   BC,format({%-12s},($1+2)); 4:20      $1 D-
-__{}    sbc  HL, BC         ; 2:15      $1 D-
-__{}    ex   DE, HL         ; 1:4       $1 D-},
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    or    A, A          ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
 __IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): The condition $1 cannot be evaluated},
 {ifelse(dnl
 __{}__{}eval(($1)+3*256*256*256),{0},{dnl
-__{}__{}    inc   D             ; 1:4       $1 D-   ( d -- d+3*2^24 )
-__{}__{}    inc   D             ; 1:4       $1 D-
-__{}__{}    inc   D             ; 1:4       $1 D-},
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+3*2^24 )
+__{}__{}    inc   D             ; 1:4       __INFO
+__{}__{}    inc   D             ; 1:4       __INFO},
 __{}__{}eval(($1)+2*256*256*256),{0},{dnl
-__{}__{}    inc   D             ; 1:4       $1 D-   ( d -- d+2^25 )
-__{}__{}    inc   D             ; 1:4       $1 D-},
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+2^25 )
+__{}__{}    inc   D             ; 1:4       __INFO},
 __{}__{}eval(($1)+1*256*256*256),{0},{dnl
-__{}__{}    inc   D             ; 1:4       $1 D-   ( d -- d+2^24 )},
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+2^24 )},
 __{}__{}eval(($1)+5*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D-   ( d -- d+5*2^16 )
-__{}__{}    inc  DE             ; 1:6       $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+5*2^16 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+4*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D-   ( d -- d+2^18 )
-__{}__{}    inc  DE             ; 1:6       $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^18 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+3*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D-   ( d -- d+3*2^16 )
-__{}__{}    inc  DE             ; 1:6       $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+3*2^16 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+2*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D-   ( d -- d+2^17 )
-__{}__{}    inc  DE             ; 1:6       $1 D-},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^17 )
+__{}__{}    inc  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)+1*256*256),{0},{dnl
-__{}__{}    inc  DE             ; 1:6       $1 D-   ( d -- d+2^16 )},
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^16 )},
 __{}__{}eval(($1)+256),{0},{dnl
-__{}__{}    inc   H             ; 1:4       $1 D-   ( d -- d+2^8 )
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-   hi++},
+__{}__{}    inc   H             ; 1:4       __INFO   ( d -- d+2^8 )
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
 __{}__{}eval(($1)+1),{0},{dnl
-__{}__{}    inc  HL             ; 1:6       $1 D-   ( d -- d+1 )
-__{}__{}    ld    A, L          ; 1:4       $1 D-
-__{}__{}    or    H             ; 1:4       $1 D-
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-   hi++},
+__{}__{}    inc  HL             ; 1:6       __INFO   ( d -- d+1 )
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
 __{}__{}eval($1),{0},{snl
-__{}__{}                        ;           $1 D-   ( d -- d+0 )},
+__{}__{}                        ;           __INFO   ( d -- d+0 )},
 __{}__{}eval(($1)-1),{0},{dnl
-__{}__{}    ld    A, L          ; 1:4       $1 D-   ( d -- d-1 )
-__{}__{}    or    H             ; 1:4       $1 D-
-__{}__{}    dec  HL             ; 1:6       $1 D-   lo--
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}    ld    A, L          ; 1:4       __INFO   ( d -- d-1 )
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(($1)-2),{0},{dnl
-__{}__{}    ld    A, H          ; 1:4       $1 D-   ( d -- d-2 )
-__{}__{}    dec  HL             ; 1:6       $1 D-   lo--
-__{}__{}    dec  HL             ; 1:6       $1 D-   lo--
-__{}__{}    sub   H             ; 1:4       $1 D-   lo(d)-lo(d-2)
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-2 )
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    sub   H             ; 1:4       __INFO   lo(d)-lo(d-2)
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(($1)-256),{0},{dnl
-__{}__{}    inc   H             ; 1:4       $1 D-   ( d -- d-2^8 )
-__{}__{}    dec   H             ; 1:4       $1 D-
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-   hi--
-__{}__{}    dec   H             ; 1:4       $1 D-},
+__{}__{}    inc   H             ; 1:4       __INFO   ( d -- d-2^8 )
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--
+__{}__{}    dec   H             ; 1:4       __INFO},
 __{}__{}eval(($1) & 0xFFFF00FF),{0},{dnl
-__{}__{}    ld    A, H          ; 1:4       $1 D-   ( d -- d-$1 )
-__{}__{}    sub  __HEX_H($1)           ; 2:7       $1 D-
-__{}__{}    ld    H, A          ; 1:4       $1 D-
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-$1 )
+__{}__{}    sub  __HEX_H($1)           ; 2:7       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}eval(($1)-1*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D-   ( d -- d-2^16 )},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^16 )},
 __{}__{}eval(($1)-2*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D-   ( d -- d-2^17 )
-__{}__{}    dec  DE             ; 1:6       $1 D-},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^17 )
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-3*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D-   ( d -- d-3*2^16 )
-__{}__{}    dec  DE             ; 1:6       $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-3*2^16 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-4*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D-   ( d -- d-2^18 )
-__{}__{}    dec  DE             ; 1:6       $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^18 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-5*256*256),{0},{dnl
-__{}__{}    dec  DE             ; 1:6       $1 D-   ( d -- d-5*2^16 )
-__{}__{}    dec  DE             ; 1:6       $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-},
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-5*2^16 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
 __{}__{}eval(($1)-1*256*256*256),{0},{dnl
-__{}__{}    dec   D             ; 1:4       $1 D-   ( d -- d-2^24 )},
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-2^24 )},
 __{}__{}eval(($1)-2*256*256*256),{0},{dnl
-__{}__{}    dec   D             ; 1:4       $1 D-   ( d -- d-2^25 )
-__{}__{}    dec   D             ; 1:4       $1 D-},
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-2^25 )
+__{}__{}    dec   D             ; 1:4       __INFO},
 __{}__{}eval(($1)-3*256*256*256),{0},{dnl
-__{}__{}    dec   D             ; 1:4       $1 D-   ( d -- d-3*2^24 )
-__{}__{}    dec   D             ; 1:4       $1 D-
-__{}__{}    dec   D             ; 1:4       $1 D-},
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-3*2^24 )
+__{}__{}    dec   D             ; 1:4       __INFO
+__{}__{}    dec   D             ; 1:4       __INFO},
 __{}__{}eval(($1) & 0xFFFFFF),{0},{dnl
-__{}__{}    ld    A, D          ; 1:4       $1 D-   ( d -- d-($1) )
-__{}__{}    sub  __HEX_D($1)           ; 2:7       $1 D-   ( d -- d-($1) )
-__{}__{}    ld    D, A          ; 1:4       $1 D-},
+__{}__{}    ld    A, D          ; 1:4       __INFO   ( d -- d-($1) )
+__{}__{}    sub  __HEX_D($1)           ; 2:7       __INFO   ( d -- d-($1) )
+__{}__{}    ld    D, A          ; 1:4       __INFO},
 __{}__{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}    ld   BC, __HEX_DE(-($1))     ; 3:10      $1 D-   ( d -- d-($1) )
-__{}__{}    ex   DE, HL         ; 1:4       $1 D-
-__{}__{}    add  HL, BC         ; 1:11      $1 D-
-__{}__{}    ex   DE, HL         ; 1:4       $1 D-},
+__{}__{}    ld   BC, __HEX_DE(-($1))     ; 3:10      __INFO   ( d -- d-($1) )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
 __{}__{}eval(-($1) & 0xFFFF0000),{0},{dnl
-__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      $1 D-   ( d -- d-($1) )
-__{}__{}    add  HL, BC         ; 1:11      $1 D-
-__{}__{}    jr   nc, $+3        ; 2:7/12    $1 D-
-__{}__{}    inc  DE             ; 1:6       $1 D-   hi++},
+__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      __INFO   ( d -- d-($1) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
 __{}__{}eval((-($1) & 0xFFFF0000) - 0xFFFF0000),{0},{dnl
-__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      $1 D-   ( d -- d-($1) )
-__{}__{}    add  HL, BC         ; 1:11      $1 D-
-__{}__{}    jr    c, $+3        ; 2:7/12    $1 D-
-__{}__{}    dec  DE             ; 1:6       $1 D-   hi--},
+__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      __INFO   ( d -- d-($1) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
 __{}__{}{dnl
-__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      $1 D-
-__{}__{}    add  HL, BC         ; 1:11      $1 D-
-__{}__{}    ex   DE, HL         ; 1:4       $1 D-
-__{}__{}    ld   BC, __HEX_DE(-($1))     ; 3:10      $1 D-
-__{}__{}    adc  HL, BC         ; 2:15      $1 D-
-__{}__{}    ex   DE, HL         ; 1:4       $1 D-}){}dnl
+__{}__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   BC, __HEX_DE(-($1))     ; 3:10      __INFO
+__{}__{}    adc  HL, BC         ; 2:15      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
