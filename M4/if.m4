@@ -1448,7 +1448,7 @@ __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}{dnl
 __{}__{}                        ;[11:53]    $1 = if   variant: default
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 = if
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      $1 = if
 __{}__{}    or    A             ; 1:4       $1 = if
 __{}__{}    sbc  HL, BC         ; 2:15      $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if

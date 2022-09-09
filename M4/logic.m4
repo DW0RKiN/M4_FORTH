@@ -333,18 +333,121 @@ __{}__ADD_TOKEN({__TOKEN_LO_WITHIN},{lo_within},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LO_WITHIN},{dnl
-__{}define({__INFO},{lo_within}){}dnl
-
-                        ;[10:59]    lo_within   ( c3 c2 c1 -- flag=(c2<=c3<c1) )
-    ld    A, L          ; 1:4       lo_within
-    sub   E             ; 1:4       lo_within
-    ld    C, A          ; 1:4       lo_within   C = c1-c2
-    pop  HL             ; 1:10      lo_within   L = c3
-    ld    A, L          ; 1:4       lo_within
-    sub   E             ; 1:4       lo_within   c3-c2
-    sub   C             ; 1:4       lo_within   (c3-c2)-(c1-c2)
-    sbc  HL, HL         ; 2:15      lo_within   HL = 0x0000 or 0xffff
-    pop  DE             ; 1:10      lo_within   ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) ){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[10:59]    __INFO   ( c3 c2 c1 -- flag=(c2<=c3<c1) )
+    ld    A, L          ; 1:4       __INFO
+    sub   E             ; 1:4       __INFO
+    ld    C, A          ; 1:4       __INFO   C = c1-c2
+    pop  HL             ; 1:10      __INFO   L = c3
+    ld    A, L          ; 1:4       __INFO
+    sub   E             ; 1:4       __INFO   c3-c2
+    sub   C             ; 1:4       __INFO   (c3-c2)-(c1-c2)
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff
+    pop  DE             ; 1:10      __INFO   ( c3 c2 c1 -- ((c3-c2) (c1-c2) U<) ){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x3 x2 -- ((x3-x2) (x1-x2) U<) )
+dnl # x2 <= x3 < $1
+define({PUSH_WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_WITHIN},{$1 within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_WITHIN},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+                        ;[18:110]   __INFO   ( x3 x2 $1 -- flag=(x2<=x3<$1) )
+    ld    C, L          ; 1:4       __INFO
+    ld    B, H          ; 1:4       __INFO   BC = x2
+    ld   HL, format({%-11s},$1); 3:16      __INFO   lo
+    or    A             ; 1:4       __INFO
+    sbc  HL, BC         ; 2:15      __INFO   $1-x2
+    ex   DE, HL         ; 1:4       __INFO
+    or    A             ; 1:4       __INFO
+    sbc  HL, BC         ; 2:15      __INFO   x3-x2
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   (x3-x2)-($1-x2)
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
+__IS_MEM_REF($1),1,{
+                        ;[18:110]   __INFO   ( x3 x2 $1 -- flag=(x2<=x3<$1) )
+    xor   A             ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO
+    ld    C, A          ; 1:4       __INFO
+    sbc   A, H          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO
+    ld    B, A          ; 1:4       __INFO   BC =-x2
+    ld   HL, format({%-11s},$1); 3:16      __INFO   lo
+    add  HL, BC         ; 1:11      __INFO   $1-x2
+    ex   DE, HL         ; 1:4       __INFO
+    add  HL, BC         ; 1:11      __INFO   x3-x2
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   (x3-x2)-($1-x2)
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
+__IS_MEM_REF($1),1,{
+                        ;[20:109]   __INFO   ( x3 x2 $1 -- flag=(x2<=x3<$1) )
+    ex   DE, HL         ; 1:4       __INFO
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   x3-x2
+    ld    A, format({%-11s},$1); 3:13      __INFO   lo
+    sub   E             ; 1:4       __INFO
+    ld    E, A          ; 1:4       __INFO
+    ld    A, format({%-11s},(1+$1)); 3:13      __INFO   hi
+    sbc   A, D          ; 1:4       __INFO
+    ld    D, A          ; 1:4       __INFO   $1-x2
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   (x3-x2)-($1-x2)
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
+{  
+                        ;[18:97]    __INFO   ( x3 x2 $1 -- flag=(x2<=x3<$1) )
+    ex   DE, HL         ; 1:4       __INFO
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   x3-x2
+    ld    A, low __FORM({%-7s},$1); 2:7       __INFO
+    sub   E             ; 1:4       __INFO
+    ld    E, A          ; 1:4       __INFO
+    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
+    sbc   A, D          ; 1:4       __INFO
+    ld    D, A          ; 1:4       __INFO   $1-x2
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   (x3-x2)-($1-x2)
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( c3 c2 -- ((c3-c2) ($1-c2) U<) )
+dnl # c2 <= c3 < $1
+define({PUSH_LO_WITHIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LO_WITHIN},{$1 lo_within},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_LO_WITHIN},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+                        ;[11:58]    __INFO   ( c3 c2 $1 -- flag=(c2<=c3<$1) )
+    ld    A,format({%-12s},$1); 3:13      __INFO
+    sub   L             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO   $1-c2
+    ld    A, E          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO   c3-c2
+    sub   H             ; 1:4       __INFO   (c3-c2)-($1-c2)
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
+{
+                        ;[10:52]    __INFO   ( c3 c2 $1 -- flag=(c2<=c3<$1) )
+    ld    A, low __FORM({%-7s},$1); 2:7       __INFO
+    sub   L             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO   $1-c2
+    ld    A, E          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO   c3-c2
+    sub   H             ; 1:4       __INFO   (c3-c2)-($1-c2)
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff}){}dnl
 }){}dnl
 dnl
 dnl
@@ -355,76 +458,81 @@ __{}__ADD_TOKEN({__TOKEN_PUSH2_LO_WITHIN},{$1 $2 lo_within},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_LO_WITHIN},{dnl
-__{}define({__INFO},{push2_lo_within}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameters!},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameters!},
 __{}$#,{1},{
-__{}__{}.error {$0}($@): The second parameter is missing!},
-__{}$#,{2},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{14:65},{13:59})]    push2_lo_within($1,$2)   ( a $1 $2 -- flag=($1<=a<$2) )
-__{}    ld    A, format({%-11s},$1); 3:13      push2_lo_within($1,$2)
-__{}    ld    C, A          ; 1:4       push2_lo_within($1,$2)   C = $1
-__{}    ld    A, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:13},{2:7 })      push2_lo_within($1,$2)
-__{}    sub   C             ; 1:4       push2_lo_within($1,$2)
-__{}    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = ($2)-[$1]
-__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}    sub   C             ; 1:4       push2_lo_within($1,$2)   A = a -($1)
-__{}    sub   B             ; 1:4       push2_lo_within($1,$2)   A = (a -($1)) - ([$2]-($1))
-__{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff}dnl
-__{},__IS_MEM_REF($2),{1},{dnl
-__{}__{}ifelse(eval($1),{0},{dnl
-__{}__{}__{}                        ;[8:40]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      push2_lo_within($1,$2)
-__{}__{}__{}    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = $2 - {{$1}}
-__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)},
-__{}__{}__{}eval($1),{1},{dnl
-__{}__{}__{}                        ;[10:48]    push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      push2_lo_within($1,$2)
-__{}__{}__{}    dec   A             ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = $2 - {{$1}}
-__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}    dec   A             ; 1:4       push2_lo_within($1,$2)   A = a - {{$1}}},
-__{}__{}__{}eval($1),{-1},{dnl
-__{}__{}__{}                        ;[10:48]    push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      push2_lo_within($1,$2)
-__{}__{}__{}    inc   A             ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = $2 - {{$1}}
-__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}    inc   A             ; 1:4       push2_lo_within($1,$2)   A = a - {{$1}}},
-__{}__{}__{}{dnl
-__{}__{}__{}                        ;[12:54]    push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      push2_lo_within($1,$2)
-__{}__{}__{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)
-__{}__{}__{}    ld    B, A          ; 1:4       push2_lo_within($1,$2)   B = $2 - {{$1}}
-__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)   A = a - {{$1}}})
-__{}    sub   B             ; 1:4       push2_lo_within($1,$2)   A = (a - {{$1}}) - ($2 - {{$1}})
-__{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff}dnl
-__{},{dnl
-__{}__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}                        ;[7:33]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)   A = a-($1)},
+__{}__{}  .error {$0}($@): The second parameter is missing!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{14:65},{13:59})]    __INFO   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO   C = $1
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      __INFO
+__{}__{}    sub   C             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO   B = ($2)-[$1]
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    sub   C             ; 1:4       __INFO   A = a -($1)
+__{}__{}    sub   B             ; 1:4       __INFO   A = (a -($1)) - ([$2]-($1))
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
+__{}__IS_MEM_REF($2),{1},{dnl
+__{}__{}ifelse(eval($1),{0},{
+__{}__{}__{}                        ;[8:40]     __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO   B = $2 - {{$1}}
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO},
+__{}__{}eval($1),{1},{
+__{}__{}__{}                        ;[10:48]    __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO   B = $2 - {{$1}}
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}    dec   A             ; 1:4       __INFO   A = a - {{$1}}},
+__{}__{}__HEX_HL($1),{0xFFFF},{
+__{}__{}__{}                        ;[10:48]    __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO   B = $2 - {{$1}}
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}    inc   A             ; 1:4       __INFO   A = a - {{$1}}},
+__{}__{}{
+__{}__{}__{}                        ;[12:54]    __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}__{}    sub   __FORM({%-14s},$1); 2:7       __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO   B = $2 - {{$1}}
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}    sub   __FORM({%-14s},$1); 2:7       __INFO   A = a - {{$1}}})
+__{}__{}    sub   B             ; 1:4       __INFO   A = (a - {{$1}}) - ($2 - {{$1}})
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
+__{}{dnl
+__{}__{}ifelse(__IS_NUM($1),{0},{
+__{}__{}__{}                        ;[7:33]     __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}    sub   __FORM({%-14s},$1); 2:7       __INFO   A = a-($1)},
 __{}__{}{dnl
-__{}__{}__{}ifelse(eval($1),{0},{dnl
-__{}__{}__{}__{}                        ;[5:26]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)},
-__{}__{}__{}eval($1),{1},{dnl
-__{}__{}__{}__{}                        ;[6:30]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}__{}    dec   A             ; 1:4       push2_lo_within($1,$2)   A = a-($1)},
-__{}__{}__{}eval($1),{-1},{dnl
-__{}__{}__{}__{}                        ;[6:30]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}__{}    inc   A             ; 1:4       push2_lo_within($1,$2)   A = a-($1)},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}                        ;[7:33]     push2_lo_within($1,$2)   ( a -- flag=($1<=a<$2) )
-__{}__{}__{}__{}    ld    A, L          ; 1:4       push2_lo_within($1,$2)
-__{}__{}__{}__{}    sub   format({%-14s},$1); 2:7       push2_lo_within($1,$2)   A = a-($1)})})
-__{}    sub  low format({%-11s},($2)-($1)); 2:7       push2_lo_within($1,$2)   carry: a-($1) - (($2)-($1))
-__{}    sbc  HL, HL         ; 2:15      push2_lo_within($1,$2)   HL = 0x0000 or 0xffff})}){}dnl
+__{}__{}__{}ifelse(eval($1),{0},{
+__{}__{}__{}__{}                        ;[5:26]     __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO},
+__{}__{}__{}eval($1),{1},{
+__{}__{}__{}__{}                        ;[6:30]     __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}    dec   A             ; 1:4       __INFO   A = a-($1)},
+__{}__{}__{}__HEX_HL($1),{0xFFFF},{
+__{}__{}__{}__{}                        ;[6:30]     __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}    inc   A             ; 1:4       __INFO   A = a-($1)},
+__{}__{}__{}{
+__{}__{}__{}__{}                        ;[7:33]     __INFO   ( a -- flag=($1<=a<$2) )
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}    sub   __HEX_L($1)          ; 2:7       __INFO   A = a-($1)}){}dnl
+__{}__{}}){}dnl
+__{}__{}__{}ifelse(__IS_NUM($1):__IS_NUM($2),{1:1},{
+__{}__{}__{}    sub  __HEX_L($2-($1))           ; 2:7       __INFO   carry: a-($1) - (($2)-($1))},
+__{}__{}{
+__{}__{}__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       __INFO   carry: a-($1) - (($2)-($1))})
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # -------------------------------------

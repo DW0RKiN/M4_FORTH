@@ -1109,3 +1109,31 @@ ifdef({USE_ACCEPT},,define({USE_ACCEPT},{})){}ifdef({USE_ACCEPT_Z},,define({USE_
 dnl
 dnl
 dnl
+dnl # ZX Spectrum set border color
+define({ZX_BORDER},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZX_BORDER},{zx_border},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZX_BORDER},{
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO   ( color -- )
+    out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht
+    pop  HL             ; 1:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl # ZX Spectrum ROM routine clear srceen
+define({ZX_CLS},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZX_CLS},{zx_cls},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZX_CLS},{
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- )
+    push HL             ; 1:11      __INFO
+    call 0x0DAF         ; 3:17      __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
