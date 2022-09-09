@@ -382,9 +382,9 @@ __{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    negative HL < pos
 __{}__{}__{}{dnl
 __{}__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if    positive HL < negative constant ---> false})
 __{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    sub   low format({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 < if})}){}dnl
 dnl
 dnl
@@ -430,9 +430,9 @@ __{}__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if    negative 
 __{}__{}__{}{dnl
 __{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    positive HL >= negative constant ---> true})
 __{}__{}    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 >= if})}){}dnl
 dnl
 dnl
@@ -476,9 +476,9 @@ __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
 __{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    negative HL <= positive constant ---> true},
 __{}__{}__{}{dnl
 __{}__{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
-__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __FORM({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 <= if})}){}dnl
 dnl
@@ -523,9 +523,9 @@ __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
 __{}__{}__{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 > if    negative HL > positive constant ---> false},
 __{}__{}__{}{dnl
 __{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    positive HL > negative constant ---> true})
-__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __FORM({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
+__{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 > if})}){}dnl
 dnl
@@ -582,7 +582,7 @@ __{}__{}                        ;[11:18/39] dup $1 u= if   variant: lo($1) = 255
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u= if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
@@ -590,7 +590,7 @@ __{}__{}                        ;[11:18/39] dup $1 u= if   variant: hi($1) = 255
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u= if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}eval(($1) ^ 256),{0},{dnl
@@ -601,7 +601,7 @@ __{}__{}    or    L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u= if   variant: lo($1) = zero
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u= if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
 __{}__{}    or    L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
@@ -613,7 +613,7 @@ __{}__{}    or    H             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u= if   variant: hi($1) = zero
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u= if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
 __{}__{}    or    H             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
@@ -645,7 +645,7 @@ __{}__{}                       ;[10:18/35]  dup $1 u= if   variant: hi($1) = lo(
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    cp    L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
-__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 u= if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[11:18/39]  dup $1 u= if   variant: hi($1) = 1
@@ -653,7 +653,7 @@ __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
-__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 u= if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[11:18/39]  dup $1 u= if   variant: lo($1) = 1
@@ -661,14 +661,14 @@ __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
-__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 u= if
+__{}__{}    xor  high __FORM({%-10s},$1); 2:7       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if},
 __{}{dnl
 __{}__{}                       ;[12:21/42]  dup $1 u= if   variant: default
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u= if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u= if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 u= if})}){}dnl
 dnl
@@ -724,7 +724,7 @@ __{}__{}                        ;[10:20/36] dup $1 u<> if   variant: lo($1) = 25
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
 __{}__{}    inc   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
@@ -732,7 +732,7 @@ __{}__{}                        ;[10:20/36] dup $1 u<> if   variant: hi($1) = 25
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    inc   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}eval(($1) ^ 256),{0},{dnl
@@ -743,7 +743,7 @@ __{}__{}    or    L             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u<> if   variant: lo($1) = zero
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    or    L             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
@@ -755,7 +755,7 @@ __{}__{}    or    H             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u<> if   variant: hi($1) = zero
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    or    H             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
@@ -771,7 +771,7 @@ __{}__{}                        ;[9:20/32]  dup $1 u<> if   variant: hi($1) = lo
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    cp    L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    dup $1 u<> if
-__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 u<> if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[10:20/36]  dup $1 u<> if   variant: hi($1) = 1
@@ -779,7 +779,7 @@ __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    dec   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
-__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 u<> if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[10:20/36]  dup $1 u<> if   variant: lo($1) = 1
@@ -787,14 +787,14 @@ __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
 __{}__{}    dec   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
-__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 u<> if
+__{}__{}    xor  high __FORM({%-10s},$1); 2:7       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if},
 __{}{dnl
 __{}__{}                        ;[11:23/39] dup $1 u<> if   variant: default
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 u<> if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 u<> if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 u<> if})}){}dnl
 dnl
@@ -823,9 +823,9 @@ __{}    sbc   A, B          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> ca
 __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if},
 __{}{dnl
 __{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u< if})}){}dnl
 dnl
 dnl
@@ -853,9 +853,9 @@ __{}    sbc   A, B          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 -->
 __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if},
 __{}{dnl
 __{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
+__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u>= if})}){}dnl
 dnl
 dnl
@@ -874,9 +874,9 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __FORM({%-7s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sub   L             ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    jp    c, else{}IF_COUNT    ; 3:10      dup $1 u<= if}){}dnl
 dnl
@@ -896,9 +896,9 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low format({%-7s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __FORM({%-7s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sub   L             ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high format({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
+__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    jp   nc, else{}IF_COUNT    ; 3:10      dup $1 u> if}){}dnl
 dnl
@@ -1362,7 +1362,7 @@ __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[10:43] $1 = if   variant: lo($1) = 255
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 = if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
 __{}__{}    xor   H             ; 1:4       $1 = if
 __{}__{}    inc   L             ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
@@ -1371,7 +1371,7 @@ __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}                        ;[10:43] $1 = if   variant: hi($1) = 255
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 = if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
 __{}__{}    xor   L             ; 1:4       $1 = if
 __{}__{}    inc   H             ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
@@ -1388,7 +1388,7 @@ __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[9:39]     $1 = if   variant: lo($1) = zero
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 = if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
 __{}__{}    xor   H             ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
@@ -1404,7 +1404,7 @@ __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[9:39]     $1 = if   variant: hi($1) = zero
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 = if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 = if
 __{}__{}    xor   L             ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
@@ -1426,13 +1426,13 @@ __{}__{}    cp    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if
-__{}__{}    xor  low format({%-11s},$1); 2:7       $1 = if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 = if
 __{}__{}    jp   nz, else{}IF_COUNT    ; 3:10      $1 = if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[10:43]     $1 = if   variant: hi($1) = 1
 __{}__{}    dec   H             ; 1:4       $1 = if
 __{}__{}    ld    A, L          ; 1:4       $1 = if
-__{}__{}    xor  low format({%-11s},$1); 2:7       $1 = if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
@@ -1441,7 +1441,7 @@ __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[10:43]     $1 = if   variant: lo($1) = 1
 __{}__{}    dec   L             ; 1:4       $1 = if
 __{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    xor  high format({%-10s},$1); 2:7       $1 = if
+__{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
@@ -1527,7 +1527,7 @@ __{}__{}__{}    ld    A, H          ; 1:4       $1 <> if
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
-__{}__{}__{}    xor  high format({%-10s},$1); 2:7       $1 <> if
+__{}__{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 <> if
 __{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}ifelse(_TYP_SINGLE,{small},{dnl
@@ -1546,7 +1546,7 @@ __{}__{}__{}    ld    A, L          ; 1:4       $1 <> if
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
-__{}__{}__{}    xor  low format({%-10s},$1); 2:7       $1 <> if
+__{}__{}__{}    xor  low __FORM({%-10s},$1); 2:7       $1 <> if
 __{}__{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})},
 __{}eval(($1) ^ 256),{0},{dnl
 __{}__{}                        ;[8:36]     $1 <> if   variant: 0x0100 = 256
@@ -1558,7 +1558,7 @@ __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[9:39]     $1 <> if   variant: lo($1) = zero
-__{}__{}    ld    A, high format({%-6s},$1); 2:7       $1 <> if
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 <> if
 __{}__{}    xor   H             ; 1:4       $1 <> if
 __{}__{}    or    L             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
@@ -1574,7 +1574,7 @@ __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[9:39]     $1 <> if   variant: hi($1) = zero
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 <> if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 <> if
 __{}__{}    xor   L             ; 1:4       $1 <> if
 __{}__{}    or    H             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
@@ -1596,7 +1596,7 @@ __{}__{}    cp    L             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
-__{}__{}    xor   low format({%-10s},$1); 2:7       $1 <> if
+__{}__{}    xor   low __FORM({%-10s},$1); 2:7       $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[11:34/46]  $1 <> if   variant: hi($1) = 1
@@ -1605,7 +1605,7 @@ __{}__{}    ld    A, L          ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
-__{}__{}    xor  low format({%-11s},$1); 2:7       $1 <> if
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[11:34/46]  $1 <> if   variant: lo($1) = 1
@@ -1614,17 +1614,17 @@ __{}__{}    ld    A, H          ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
-__{}__{}    xor  high format({%-10s},$1); 2:7       $1 <> if
+__{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if},
 __{}{dnl
 __{}__{}                        ;[13:41/53] $1 <> if   variant: default
-__{}__{}    ld    A, low format({%-7s},$1); 2:7       $1 <> if
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 <> if
 __{}__{}    xor   L             ; 1:4       $1 <> if
 __{}__{}    ld    A, H          ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
-__{}__{}    xor  high format({%-10s},$1); 2:7       $1 <> if
+__{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 <> if
 __{}__{}    jp    z, else{}IF_COUNT    ; 3:10      $1 <> if})}){}dnl
 dnl
 dnl
@@ -1636,45 +1636,97 @@ dnl
 dnl
 dnl dup char = if
 define({DUP_PUSH_CEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ_IF},{dup_push_ceq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ_IF},{dup $1 c= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_CEQ_IF},{dnl
-__{}define({__INFO},{dup_push_ceq_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      dup $1 = if
-__{}    xor   L             ; 1:4       dup $1 = if
-__{}    or    H             ; 1:4       dup $1 = if
-__{}    jp   nz, else{}IF_COUNT    ; 3:10      dup $1 = if}){}dnl
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- char )
+__{}    xor   L             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}    ld    A, __FORM({%-11s},$1); 2:7       __INFO   ( char -- char )
+__{}    xor   L             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__SAVE_EVAL($1),0,{
+__{}    ld    A, L          ; 1:4       __INFO   ( char -- char )
+__{}    or    H             ; 1:4       __INFO
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__SAVE_EVAL($1),1,{
+__{}    ld    A, L          ; 1:4       __INFO   ( char -- char )
+__{}    dec   A             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__SAVE_EVAL($1),255,{
+__{}    ld    A, L          ; 1:4       __INFO   ( char -- char )
+__{}    inc   A             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      __INFO},
+__{}{
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( char -- char )
+__{}    xor   L             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp   nz, else{}IF_COUNT    ; 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 dnl dup char <> if
 define({DUP_PUSH_CNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CNE_IF},{dup_push_cne_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CNE_IF},{dup $1 c<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_CNE_IF},{dnl
-__{}define({__INFO},{dup_push_cne_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}    ld    A, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:13},{2:7 })      dup $1 <> if
-__{}    xor   L             ; 1:4       dup $1 <> if
-__{}    or    H             ; 1:4       dup $1 <> if
-__{}    jp    z, else{}IF_COUNT    ; 3:10      dup $1 <> if}){}dnl
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- char )
+__{}    xor   L             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp    z, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}    ld    A, __FORM({%-11s},$1); 2:7       __INFO   ( char -- char )
+__{}    xor   L             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp    z, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__SAVE_EVAL($1),0,{
+__{}    ld    A, L          ; 1:4       __INFO   ( char -- char )
+__{}    or    H             ; 1:4       __INFO
+__{}    jp    z, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__SAVE_EVAL($1),1,{
+__{}    ld    A, L          ; 1:4       __INFO   ( char -- char )
+__{}    dec   A             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp    z, else{}IF_COUNT    ; 3:10      __INFO},
+__{}__SAVE_EVAL($1),255,{
+__{}    ld    A, L          ; 1:4       __INFO   ( char -- char )
+__{}    inc   A             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp    z, else{}IF_COUNT    ; 3:10      __INFO},
+__{}{
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( char -- char )
+__{}    xor   L             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jp    z, else{}IF_COUNT    ; 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl ---------------------------------------------------------------------------

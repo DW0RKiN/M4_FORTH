@@ -687,22 +687,92 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
+define({DUP_PUSH_CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ},{dup $1 c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
+__{}ifelse($1,{},{dnl
+__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                       ;[10:54]     _TMP_INFO   ( char -- char f )   L == (addr)
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,format({%-12s},$1); 3:13      _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__IS_NUM($1),{0},{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L = $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{0},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 0
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{255},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 255
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{1},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{254},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 254
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L == $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # C=
 dnl # ( c1 c2 -- flag )
 dnl # equal ( lo c1 == lo c2 )
 define({CEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_CEQ},{ceq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CEQ},{c=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CEQ},{dnl
-__{}define({__INFO},{ceq}){}dnl
-
-                        ;[7:40]     C=   ( c1 c2 -- flag )
-    ld    A, L          ; 1:4       C=
-    xor   E             ; 1:4       C=   ignores higher bytes
-    sub  0x01           ; 2:7       C=
-    sbc  HL, HL         ; 2:15      C=
-    pop  DE             ; 1:10      C=}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:40]     __INFO   ( c1 c2 -- flag )
+    ld    A, L          ; 1:4       __INFO
+    xor   E             ; 1:4       __INFO   ignores higher bytes
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -734,6 +804,23 @@ __{}define({__INFO},{cfetch_0ceq}){}dnl
     ld    A,(HL)        ; 1:7       C@ 0 C=
     sub  0x01           ; 2:7       C@ 0 C=
     sbc  HL, HL         ; 2:15      C@ 0 C=}){}dnl
+dnl
+dnl
+dnl # C<>
+dnl # ( c1 c2 -- flag )
+dnl # not equal ( lo c1 == lo c2 )
+define({CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CNE},{c<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:40]     __INFO   ( c1 c2 -- flag )
+    ld    A, L          ; 1:4       __INFO
+    xor   E             ; 1:4       __INFO   ignores higher bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # 0 C<>
