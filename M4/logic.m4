@@ -401,7 +401,7 @@ __IS_MEM_REF($1),1,{
     sbc  HL, DE         ; 2:15      __INFO   (x3-x2)-($1-x2)
     pop  DE             ; 1:10      __INFO
     sbc  HL, HL         ; 2:15      __INFO   HL = 0x0000 or 0xffff},
-{  
+{
                         ;[18:97]    __INFO   ( x3 x2 $1 -- flag=(x2<=x3<$1) )
     ex   DE, HL         ; 1:4       __INFO
     or    A             ; 1:4       __INFO
@@ -630,7 +630,7 @@ __{}__{}    ld    H, A          ; 1:4       $1 =   HL= flag},
 __{}__IS_NUM($1),{0},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
 __{}__{}                        ;[11:48/49] $1 =
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 =
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      $1 =
 __{}__{}    xor   A             ; 1:4       $1 =   A = 0x00
 __{}__{}    sbc  HL, BC         ; 2:15      $1 =
 __{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
@@ -783,7 +783,7 @@ __{}__{}__{}{
 __{}__{}__{}__{}                        ;[13:63/64]{}_TMP_STACK_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      _TMP_INFO
+__{}__{}__{}__{}    ld   HL, __FORM({%-11s},$1); 3:10      _TMP_INFO
 __{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
@@ -1032,7 +1032,7 @@ __{}__{}__{}{
 __{}__{}__{}__{}                        ;[13:61/56]{}_TMP_STACK_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}__{}__{}    ld   HL, format({%-11s},$1); 3:10      _TMP_INFO
+__{}__{}__{}__{}    ld   HL, __FORM({%-11s},$1); 3:10      _TMP_INFO
 __{}__{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
