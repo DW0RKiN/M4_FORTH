@@ -710,6 +710,9 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{define({_
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_COMMA-__TOKEN_PUSHS_COMMA}, {__SET_TOKEN({__TOKEN_PUSHS_COMMA},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSHS_COMMA-__TOKEN_PUSHS_COMMA},{__SET_TOKEN({__TOKEN_PUSHS_COMMA},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
 
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_TYPE_I},            {__SET_TOKEN({__TOKEN_PUSH_TYPE_I},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_TYPE_Z},            {__SET_TOKEN({__TOKEN_PUSH_TYPE_Z},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
             __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME:$1,{__TOKEN_I_PUSH:__TOKEN_PUSH:__TOKEN_WITHIN},{dnl
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2_WITHIN},__BEFORELAST_TOKEN_ARRAY_2{ }__LAST_TOKEN_INFO{ }$2,__BEFORELAST_TOKEN_ARRAY_2,__LAST_TOKEN_ARRAY){}dnl
 __{}__{}__{}__{}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_I,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1)},

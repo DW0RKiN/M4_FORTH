@@ -771,16 +771,16 @@ dnl
 dnl # ( -- )  $1 = addr
 dnl # print stringZ
 define({PUSH_TYPE_Z},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_Z},{push_type_z},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_Z},{$1 type_z},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TYPE_Z},{dnl
-__{}define({__INFO},{push_type_z}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 {define({USE_PRINT_Z},{})
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_z   ( -- )
-    call PRINT_STRING_Z ; 3:17      $1 type_z})})dnl
+    ld   BC, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 4:20},{__FORM({%-11s},$1); 3:10})      __INFO   ( -- )
+    call PRINT_STRING_Z ; 3:17      __INFO})})dnl
 dnl
 dnl
 dnl # ( addr -- addr )
@@ -814,16 +814,16 @@ dnl
 dnl # ( -- )  $1 = addr
 dnl # print inverted_msb-terminated string
 define({PUSH_TYPE_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_I},{push_type_i},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_I},{$1 type_i},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TYPE_I},{dnl
-__{}define({__INFO},{push_type_i}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 {define({USE_PRINT_I},{})
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 type_i   ( -- )
-    call PRINT_STRING_I ; 3:17      $1 type_i})})dnl
+    ld   BC, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 4:20},{__FORM({%-11s},$1); 3:10})      __INFO   ( -- )
+    call PRINT_STRING_I ; 3:17      __INFO})})dnl
 dnl
 dnl
 dnl # ( addr -- addr )
