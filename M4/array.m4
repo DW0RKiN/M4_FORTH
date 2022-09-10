@@ -9,7 +9,7 @@ dnl
 define({__ASM_TOKEN_ARRAY_SET},{dnl
 __{}define({__INFO},{array_set}){}dnl
 
-    ld   IX, format({%-11s},$1); 4:14      array_set   ( -- )}){}dnl
+    ld   IX, __FORM({%-11s},$1); 4:14      array_set   ( -- )}){}dnl
 dnl
 dnl
 define({ARRAY_INC},{dnl
@@ -45,14 +45,18 @@ __{}define({__INFO},{array_add}){}dnl
 dnl
 dnl
 define({PUSH_ARRAY_ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_ARRAY_ADD},{push_array_add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ARRAY_ADD},{$1 array add},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_ARRAY_ADD},{dnl
-__{}define({__INFO},{push_array_add}){}dnl
-
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push_array_add($1)   ( -- )
-    add  IX, BC         ; 2:15      push_array_add($1)}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+    ld   BC, format({%-11s},$1); 4:20      __INFO   ( -- )
+    add  IX, BC         ; 2:15      __INFO},
+__{}{
+    ld   BC, __FORM({%-11s},$1); 3:10      __INFO   ( -- )
+    add  IX, BC         ; 2:15      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

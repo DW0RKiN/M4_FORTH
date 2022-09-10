@@ -113,12 +113,12 @@ __{}                        ;[10:36/30] _OF_INFO(push_of($1))   version: hi($1) 
 __{}    ld    A, L          ; 1:4       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jr   nz, $+5        ; 2:7/12    _OF_INFO(push_of($1))
-__{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, low __FORM({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval(($1)>>8),{0},{dnl
 __{}                        ;[7:25]     _OF_INFO(push_of($1))   version: hi($1) = 0
-__{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, low __FORM({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
 __{}    or    H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
@@ -130,10 +130,10 @@ __{}    or    L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}{dnl
 __{}                        ;[11:39/33] _OF_INFO(push_of($1))   version: default
-__{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, low __FORM({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jr   nz, $+5        ; 2:7/12    _OF_INFO(push_of($1))
-__{}    ld    A, high format({%-6s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, high __FORM({%-6s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))}){}dnl
 })dnl
@@ -244,7 +244,7 @@ __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)},
 __{}__{}{dnl
 __{}__{}__{}                        ;[5:17]     _OF_INFO(lo_of($1),lo_){}ifelse(eval((($1)>>8) == 0),{0},{
 __{}__{}__{}    .warning {$0}($@): Value $1 is greater than 255.})
-__{}__{}__{}    cp   low format({%-11s},$1); 2:7       _OF_INFO(lo_of($1),lo_)
+__{}__{}__{}    cp   low __FORM({%-11s},$1); 2:7       _OF_INFO(lo_of($1),lo_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)})}){}dnl
 })dnl
 dnl
@@ -267,7 +267,7 @@ __{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}                        ;[ifelse(__IS_MEM_REF($2),{1},{15:69},{14:63})]    _OF_INFO(lo_within_of($1),lo_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   C = $1
-__{}    ld    A, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:13},{2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
+__{}    ld    A, ifelse(__IS_MEM_REF($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - $1
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
@@ -277,7 +277,7 @@ __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}__IS_MEM_REF($2),{1},{dnl
 __{}                        ;[13:59]    _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    ld    C, format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
+__{}    ld    C, __FORM({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - ($1)
@@ -288,24 +288,24 @@ __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:17]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    cp   low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{1},{dnl
 __{}                        ;[7:25]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
 __{}    dec   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{-1},{dnl
 __{}                        ;[7:25]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
 __{}    inc   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}{dnl
 __{}                        ;[8:28]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low __FORM({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
+__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)})})dnl
 dnl
@@ -395,7 +395,7 @@ __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(hi_of($1),hi_)},
 __{}__{}{dnl
 __{}__{}__{}                        ;[5:17]     _OF_INFO(hi_of($1),hi_){}ifelse(eval((($1)>>8) == 0),{0},{
 __{}__{}__{}    .warning {$0}($@): Value $1 is greater than 255.})
-__{}__{}__{}    cp   low format({%-11s},$1); 2:7       _OF_INFO(hi_of($1),hi_)
+__{}__{}__{}    cp   low __FORM({%-11s},$1); 2:7       _OF_INFO(hi_of($1),hi_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(hi_of($1),hi_)})}){}dnl
 })dnl
 dnl
@@ -418,7 +418,7 @@ __{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}                        ;[ifelse(__IS_MEM_REF($2),{1},{15:69},{14:63})]    _OF_INFO(hi_within_of($1),hi_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   C = $1
-__{}    ld    A, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:13},{2:7 })      _OF_INFO(hi_within_of($1),hi_within_)
+__{}    ld    A, ifelse(__IS_MEM_REF($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = ($2)-[$1]
 __{}    ld    A, L          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
@@ -428,7 +428,7 @@ __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}__IS_MEM_REF($2),{1},{dnl
 __{}                        ;[13:59]    _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    ld    C, format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
+__{}    ld    C, __FORM({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = $2 - ($1)
@@ -439,24 +439,24 @@ __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:17]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    cp   low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{1},{dnl
 __{}                        ;[7:25]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
 __{}    dec   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - ($1)
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{-1},{dnl
 __{}                        ;[7:25]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
 __{}    inc   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - ($1)
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}{
 __{}                        ;[8:28]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
-__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
+__{}    sub  low __FORM({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
+__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)})})dnl
 dnl
