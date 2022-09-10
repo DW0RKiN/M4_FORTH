@@ -374,15 +374,9 @@ __{}__{}__EVAL_S16_TMP){}dnl
 }){}dnl
 dnl
 dnl
-dnl # Search "DO_number" and swap "DO_I8_number"
-dnl # $1 start index
-dnl # $2 number
-define({__SET_DO},{dnl
-__{}ifelse(eval($1<__TOKEN_COUNT),{1},{dnl
-__{}__{}ifelse(__GET_TOKEN_NAME($1)-__GET_TOKEN_PARAM($1),{__TOKEN_DO-($2)},
-__{}__{}__{}{__SET_TOKEN_NAME($1,{__TOKEN_DO_I8})},
-__{}__{}{__SET_DO(eval($1+1),$2)})})}){}dnl
 dnl
+define({__INC_TOKEN_COUNT},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1))}){}dnl
+dnl define({__INC_TOKEN_COUNT},ifdef({__TOKEN_COUNT},{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1))},{define({__TOKEN_COUNT},1)})){}dnl
 dnl
 dnl
 define({__ADD_TOKEN},
@@ -597,7 +591,7 @@ push,,,
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_I-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_I_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
             __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_J-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_J_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
             __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_K-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_K_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_I_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_I},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_I_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_I},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
             __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_J_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_J},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_3){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
             __LAST_TOKEN_NAME-$1,               dodelat{__TOKEN_K_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_K},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_3,__LAST_TOKEN_ARRAY_4){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_I_PUSH-__TOKEN_DO},              {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_2){}__SET_TOKEN({__TOKEN_I},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1){}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN(__TOKEN_DO,__GET_LOOP_BEGIN($3){ }$2,$3)},
@@ -720,6 +714,8 @@ __{}__{}__{}__{}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_I,__BEFORELAST_TOKEN
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2_LO_WITHIN},__BEFORELAST_TOKEN_ARRAY_2{ }__LAST_TOKEN_INFO{ }$2,__BEFORELAST_TOKEN_ARRAY_2,__LAST_TOKEN_ARRAY){}dnl
 __{}__{}__{}__{}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_I,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1)},
 
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_VALUE},             {__SET_TOKEN({__TOKEN_PUSH_VALUE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
+
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_WITHIN},            {__SET_TOKEN({__TOKEN_PUSH_WITHIN},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_LO_WITHIN},         {__SET_TOKEN({__TOKEN_PUSH_LO_WITHIN},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 dnl # PUSH2
@@ -814,6 +810,8 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{define({_
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_RPICK},       {__SET_TOKEN({__TOKEN_PUSH2_RPICK},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2_RPICK-__TOKEN_STORE}, {__SET_TOKEN({__TOKEN_PUSH2_RPICK_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2_RPICK-__TOKEN_CSTORE},{__SET_TOKEN({__TOKEN_PUSH2_RPICK_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_VALUE},       {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_VALUE},__BEFORELAST_TOKEN_ARRAY_2{ }$2,__BEFORELAST_TOKEN_ARRAY_2,shift(shift($@))){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_PUSH,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1)},
 dnl # PUSH3
 push3,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH3-__TOKEN_FILL},{__SET_TOKEN({__TOKEN_PUSH3_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
@@ -912,6 +910,7 @@ __{}__{}__{}{define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}__SET_TOKEN($@)})},
 
             __LAST_TOKEN_NAME-$1,                         {__TOKEN_PUSH3-__TOKEN_PUSH},       {__SET_TOKEN({__TOKEN_PUSH4},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,shift(shift($@)))},
 
+            __LAST_TOKEN_NAME-$1,                         {__TOKEN_PUSH3-__TOKEN_VALUE},      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_VALUE},__BEFORELAST_TOKEN_ARRAY_2{ }$2,__BEFORELAST_TOKEN_ARRAY_3,shift(shift($@))){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_PUSH2,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1,__BEFORELAST_TOKEN_ARRAY_2)},
 dnl # PUSH4
 push4,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH4-__TOKEN_FILL},{__SET_TOKEN({__TOKEN_PUSH4_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
@@ -1019,6 +1018,8 @@ __{}__{}__{}define({__PAR2},__LAST_TOKEN_ARRAY_4){}dnl
 __{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
 __{}__{}__{}define({__TOKEN_COUNT},eval(__TOKEN_COUNT+1)){}dnl
 __{}__{}__{}__SET_TOKEN({__TOKEN_PUSH3},__PAR1{ }__PAR2{ }$2,__PAR1,__PAR2,shift(shift($@)))},
+
+            __LAST_TOKEN_NAME-$1,                         {__TOKEN_PUSH4-__TOKEN_VALUE},      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_VALUE},__BEFORELAST_TOKEN_ARRAY_4{ }$2,__BEFORELAST_TOKEN_ARRAY_4,shift(shift($@))){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_PUSH3,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1,__BEFORELAST_TOKEN_ARRAY_2,__BEFORELAST_TOKEN_ARRAY_3)},
 
 dnl # PUSHDOT
 pushdot,,,
