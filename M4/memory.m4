@@ -84,11 +84,11 @@ dnl
 dnl
 dnl # DVALUE(name)    --> (name) = TOS,NOS
 define({DVALUE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DVALUE},{dvalue},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DVALUE},{dvalue {$1}},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DVALUE},{dnl
-__{}define({__INFO},{dvalue}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>1),{1},{
@@ -105,19 +105,19 @@ __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}format({%-24s},{$1:});
 __{}__{}__{}    dw 0x0000
 __{}__{}__{}    dw 0x0000})
-__{}    ld  format({%-16s},{($1), HL}); 3:16      dvalue {$1}   lo
-__{}    ld  format({%-16s},{($1+2), DE}); 4:20      dvalue {$1}   hi
-__{}    pop  HL             ; 1:10      dvalue {$1}
-__{}    pop  DE             ; 1:10      dvalue {$1}})}){}dnl
+__{}    ld  format({%-16s},{($1), HL}); 3:16      __INFO   lo
+__{}    ld  format({%-16s},{($1+2), DE}); 4:20      __INFO   hi
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
 dnl
 dnl
 define({PUSHDOT_DVALUE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DVALUE},{pushdot_dvalue},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DVALUE},{$1. dvalue {$2}},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHDOT_DVALUE},{dnl
-__{}define({__INFO},{pushdot_dvalue}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($2,{},{
 dnl # PUSHDOT_DVALUE(100000,name)     --> (name) = 100000
 dnl # PUSHDOT_DVALUE(0x44332211,name) --> (name) = 0x2211,0x4433
@@ -140,10 +140,10 @@ __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}format({%-24s},{$2:});
 __{}__{}__{}    dw 0x0000
 __{}__{}__{}    dw 0x0000})
-__{}__{}    ld   BC,format({%-12s},{$1}); 4:20      $1 dvalue {$2}   lo
-__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 dvalue {$2}   lo
-__{}__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      $1 dvalue {$2}   hi
-__{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1 dvalue {$2}   hi},
+__{}__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   lo
+__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      __INFO   lo
+__{}__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      __INFO   hi
+__{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      __INFO   hi},
 __{}__IS_NUM($1),{0},{
 __{}__{}  .warning {$0}($@): M4 does not know $1 parameter value!},
 __{}{dnl
@@ -153,10 +153,10 @@ __{}__{} = ifelse(substr($1,0,2),{0x},eval($1),__HEX_DEHL($1)){}dnl
 __{}__{} = db __HEX_L($1) __HEX_H($1) __HEX_E($1) __HEX_D($1)
 __{}__{}__{}    dw __HEX_HL($1)
 __{}__{}__{}    dw __HEX_DE($1)})
-__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      $1 dvalue {$2}   lo
-__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 dvalue {$2}   lo
-__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      $1 dvalue {$2}   hi
-__{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      $1 dvalue {$2}   hi})})}){}dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   lo
+__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      __INFO   lo
+__{}__{}    ld   BC, __HEX_DE($1)     ; 3:10      __INFO   hi
+__{}__{}    ld  format({%-16s},{($2+2), BC}); 4:20      __INFO   hi})})}){}dnl
 dnl
 dnl
 dnl
