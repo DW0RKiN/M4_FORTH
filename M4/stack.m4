@@ -2432,7 +2432,7 @@ __{}{
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
     ld    B, format({%-11s},eval(($1+1)/2)); 2:7       __INFO   B = ($1+1)/2{}dnl
-__{}ifelse(__HEX_H(($1+1)/2),{0x00},,{
+__{}ifelse(__HEX_H(+($1+1)/2),{0x00},,{
 __{}__{}  .error {$0}($@): eval(($1+1)/2) is greater 255!}){}dnl
 __{}ifelse(eval(($1)&1),1,{
 __{}__{}    jr   $+7            ; 2:12      __INFO}){}dnl
