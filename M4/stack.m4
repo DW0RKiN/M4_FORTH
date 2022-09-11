@@ -63,13 +63,13 @@ __{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
 __{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
 __{}dnl
 __{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
-__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __INFO
-__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
+__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __INFO   ( -- $1 $2 )
+__{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
 __{}{dnl # HL first
-__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __INFO
-__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 )
+__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __INFO   ( -- $1 $2 )
+__{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
 })}){}dnl
