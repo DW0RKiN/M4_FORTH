@@ -1541,59 +1541,139 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_CMOVE},{push_cmove},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CMOVE},{dnl
-__{}define({__INFO},{push_cmove}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {ifelse(__IS_MEM_REF($1),{1},{
-__{}__{}                       ;[13:54+21*u]$1 cmove   ( from_addr to_addr -- )
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 cmove   BC = u_chars
-__{}__{}    ld    A, B          ; 1:4       $1 cmove
-__{}__{}    or    C             ; 1:4       $1 cmove
-__{}__{}    jr    z, $+5        ; 2:7/12    $1 cmove
-__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
-__{}__{}    ldir                ; 2:u*21/16 $1 cmove   addr++
-__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}                       ;[13:54+21*u]__INFO   ( from_addr to_addr -- )
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   BC = u_chars
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    or    C             ; 1:4       __INFO
+__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}    ldir                ; 2:u*21/16 __INFO   addr++
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__IS_NUM($1),{0},{
-__{}    .error  {$0}(): Bad parameter!},
+__{}    .warning  {$0}($@): M4 does not know $1 parameter value!
+__{}__{}                       ;[12:44+21*u]__INFO   ( from_addr to_addr -- )
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO   BC = u_chars
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    or    C             ; 1:4       __INFO
+__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}    ldir                ; 2:u*21/16 __INFO   addr++
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}{dnl
 __{}__{}ifelse(eval(($1)<1),{1},{
-__{}__{}__{}                        ;[2:20]     $1 cmove   ( from_addr to_addr -- )   u = 0 or negative
-__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}__{}                        ;[2:20]     __INFO   ( from_addr to_addr -- )   u = 0 or negative
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}eval($1),{1},{
-__{}__{}__{}                        ;[5:40]     $1 cmove   ( from_addr to_addr -- )   u = 1 char
-__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldi                 ; 2:16      $1 cmove   1x
-__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}__{}                        ;[5:40]     __INFO   ( from_addr to_addr -- )   u = 1 char
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      __INFO   1x
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}eval($1),{2},{
-__{}__{}__{}                        ;[7:56]     $1 cmove   ( from_addr to_addr -- )   u = 2 chars
-__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldi                 ; 2:16      $1 cmove   1x
-__{}__{}__{}    ldi                 ; 2:16      $1 cmove   2x
-__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}__{}                        ;[7:56]     __INFO   ( from_addr to_addr -- )   u = 2 chars
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      __INFO   1x
+__{}__{}__{}    ldi                 ; 2:16      __INFO   2x
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}eval($1),{3},{
-__{}__{}__{}                        ;[8:72]     $1 cmove   ( from_addr to_addr -- )   u = 3 chars
-__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldi                 ; 2:16      $1 cmove   1x
-__{}__{}__{}    ldi                 ; 2:16      $1 cmove   2x
-__{}__{}__{}    ldi                 ; 2:16      $1 cmove   3x
-__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove},
+__{}__{}__{}                        ;[8:72]     __INFO   ( from_addr to_addr -- )   u = 3 chars
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      __INFO   1x
+__{}__{}__{}    ldi                 ; 2:16      __INFO   2x
+__{}__{}__{}    ldi                 ; 2:16      __INFO   3x
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}{
-__{}__{}__{}                        ;format({%-11s},[8:eval(29+21*($1))])$1 cmove   ( from_addr to_addr -- )   u = $1 chars
+__{}__{}__{}                        ;format({%-11s},[8:eval(29+21*($1))])__INFO   ( from_addr to_addr -- )   u = $1 chars
 __{}__{}__{}ifelse(eval(($1)>65535),{1},{dnl
 __{}__{}__{}    .warning  {$0}($@): Trying to copy data bigger 64k!
 __{}__{}__{}}){}dnl
-__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      $1 cmove   BC = __HEX_HL($1)
-__{}__{}__{}    ex   DE, HL         ; 1:4       $1 cmove   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldir                ; 2:u*21/16 $1 cmove
-__{}__{}__{}    pop  HL             ; 1:10      $1 cmove
-__{}__{}__{}    pop  DE             ; 1:10      $1 cmove})})})}){}dnl
+__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO   BC = __HEX_HL($1)
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO})})})}){}dnl
+dnl
+dnl
+dnl
+dnl
+dnl # u3 u2 u1 cmove
+dnl # ( from_addr to_addr u -- )
+dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
+define({PUSH3_CMOVE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3_CMOVE},{$1 $2 $3 cmove},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH3_CMOVE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($#,0,{
+__{}  .error .error {$0}($@): Missing from_address parameter!},
+$#,1,{
+__{}  .error .error {$0}($@): Missing to_address parameter!},
+$#,2,{
+__{}  .error .error {$0}($@): Missing u_times parameter!},
+eval($#>3),1,{
+__{}  .error .error {$0}($@): Unexpected parameter!},
+__SAVE_EVAL($3),0,{},
+__SAVE_EVAL($3),1,{dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   ( $1 $2 $3 -- )
+__{}    ld    A,(BC)        ; 1:7       __INFO},
+__{}{
+__{}    ld    A,format({%-12s},{($1)}); 3:13      __INFO   ( $1 $2 $3 -- )})
+__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}    ld   BC,format({%-12s},{$2}); 4:20      __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{dnl
+__{}    ld  format({%-16s},{($2),A}); 3:13      __INFO})},
+__SAVE_EVAL($3),2,{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}    push HL             ; 1:11      __INFO   ( $1 $2 $3 -- )
+__{}    mov  HL,format({%-12s},{$1}); 3:16      __INFO   from_addr
+__{}    mov   C,(HL)        ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    mov   B,(HL)        ; 1:7       __INFO},
+__IS_MEM_REF($2),{1},{
+__{}    push HL             ; 1:11      __INFO   ( $1 $2 $3 -- )
+__{}    ld   BC,format({%-12s},{($1)}); 4:20      __INFO},
+__{}{
+__{}    ld   BC,format({%-12s},{($1)}); 4:20      __INFO   ( $1 $2 $3 -- )}){}dnl
+__{}ifelse(__IS_MEM_REF($2),{1},{
+__{}    mov  HL,format({%-12s},{$2}); 3:16      __INFO   to_addr
+__{}    mov (HL),C          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    mov (HL),B          ; 1:7       __INFO
+__{}    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1),{1},{
+__{}    ld  format({%-16s},{($2),BC}); 4:20      __INFO
+__{}    pop  HL             ; 1:10      __INFO)},
+__{}{
+__{}    ld  format({%-16s},{($2),BC}); 4:20      __INFO})},
+{
+    push DE             ; 1:11      __INFO   ( $1 $2 $3 -- )
+    push HL             ; 1:11      __INFO{}dnl
+__{}define({_TMP_INFO},__INFO{   from_addr}){}__LD_REG16({HL},$1){}__CODE_16BIT{}dnl
+__{}define({_TMP_INFO},__INFO{   to_addr}){}__LD_REG16({DE},$2,{HL},$1){}__CODE_16BIT{}dnl
+__{}define({_TMP_INFO},__INFO{   u_times}){}__LD_REG16({BC},$3,{HL},$1,{DE},$2){}__CODE_16BIT{}dnl
+__{}ifelse(__IS_NUM($3),0,{
+    ld    A, C          ; 1:4       __INFO
+    or    B             ; 1:4       __INFO
+    jr    z, $+4        ; 2:7/12    __INFO})
+    ldir                ; 2:u*21/16 __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # cmove>
@@ -2926,13 +3006,13 @@ __{}__{}eval((($3)==1) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==2)),{1},{
 __{}__{}__{}                        ;[14:93]    $1 $2 $3 move   ( -- ) from: $1, to: $2, u: $3 words
 __{}__{}__{}    push HL             ; 1:11      $1 $2 $3 move
 __{}__{}__{}    mov  HL,format({%-12s},$1); 3:16      $1 $2 $3 move   from_addr
-__{}__{}__{}    mov   C,(HL)        ; 1:7       $1 $2 $3 move   from_addr
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move   from_addr
-__{}__{}__{}    mov   B,(HL)        ; 1:7       $1 $2 $3 move   from_addr
+__{}__{}__{}    mov   C,(HL)        ; 1:7       $1 $2 $3 move
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move
+__{}__{}__{}    mov   B,(HL)        ; 1:7       $1 $2 $3 move
 __{}__{}__{}    mov  HL,format({%-12s},$2); 3:16      $1 $2 $3 move   to_addr
-__{}__{}__{}    mov (HL),C          ; 1:7       $1 $2 $3 move   to_addr
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move   to_addr
-__{}__{}__{}    mov (HL),B          ; 1:7       $1 $2 $3 move   to_addr
+__{}__{}__{}    mov (HL),C          ; 1:7       $1 $2 $3 move
+__{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 move
+__{}__{}__{}    mov (HL),B          ; 1:7       $1 $2 $3 move
 __{}__{}__{}    pop  HL             ; 1:10      $1 $2 $3 move},
 __{}__{}eval((($3)==1) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==0)),{1},{
 __{}__{}__{}                        ;[8:40]     $1 $2 $3 move   ( -- ) from: $1, to: $2, u: $3 words
