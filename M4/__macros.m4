@@ -55,7 +55,7 @@ __{}eval($#!=1),{1},{0},
 __{}{$1},{},{0},
 __{}{$1},(),{0},
 __{}eval( regexp({$1},{()}) != -1 ),{1},{0},dnl #
-__{}eval( regexp({$1},{['",yzYZ_g-wG-W]}) != -1 ),{1},{0},dnl # Any letter and underscore _ except a,b,c,d,e,f,x
+__{}eval( regexp({$1},{[?'",yzYZ_g-wG-W]}) != -1 ),{1},{0},dnl # Any letter and underscore _ except a,b,c,d,e,f,x
 __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
 __{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
 __{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x
@@ -65,7 +65,7 @@ __{}__{}eval( __IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1}) ){}dnl
 dnl
 dnl
 dnl
-define({__ABS},{dnl
+define({__16BIT_TO_ABS},{dnl
 dnl # abc       --> (((~(abc))>>15)&1)*(abc)+(((abc)>>15)&1)*(-(abc))
 dnl # abc+5     --> (((~(abc+5))>>15)&1)*(abc+5)+(((abc+5)>>15)&1)*(-(abc+5))
 dnl # (123)     --> .error abs(pointer)
@@ -89,7 +89,7 @@ __{}{eval(($1)&0xFFFF)})}){}dnl
 dnl
 dnl
 dnl
-define({__TO_SIGN},{dnl
+define({__16BIT_TO_SIGN},{dnl
 dnl # abc       --> abc
 dnl # abc+5     --> abc+5
 dnl # (123)     --> .error abs(pointer)
@@ -102,12 +102,13 @@ dnl # 6-5       --> 1
 dnl # -25*4     --> -100
 dnl # 0xFFFE    --> -2
 dnl # 65535     --> -1
+dnl # 0x8000    --> -32768
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1),1,{
   .error abs(pointer)},
 __{}__IS_NUM($1),0,{$1},
 __{}{dnl
-__{}ifelse(eval((($1)&0xFFFF)>0x8000),1,{eval((($1)&0xFFFF)-0x10000)},
+__{}ifelse(eval((($1)&0xFFFF)>0x7FFF),1,{eval((($1)&0xFFFF)-0x10000)},
 __{}{eval(($1)&0xFFFF)})}){}dnl
 }){}dnl
 dnl
@@ -174,8 +175,8 @@ dnl
 dnl # Fix Pasmo problem with math expression starting with a negative value.
 dnl # ld A,-4-4 --> ld A,0 !!!???
 define({__FORM},{ifelse(dnl
-__{}substr($2,0,1),{-},{format($1,0{}__FORM_REC($2))},
-__{}substr($2,0,1),{(},{format($1,+{}__FORM_REC($2))},
+__{}regexp({$2},{^-}),0,{format($1,0{}__FORM_REC($2))},
+__{}regexp({$2},{^(}),0,{format($1,+{}__FORM_REC($2))},
 __{}{format($1,__FORM_REC($2))}){}dnl
 }){}dnl
 dnl
@@ -510,7 +511,7 @@ __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B),{u*:1:0},{$3},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A),{u*:1:0},{$2},
 __{}__{}$1,{u*},{(__TEMP_A&0xFFFF)*(__TEMP_B&0xFFFF)},
 __{}__{}$1,{um*},{+(($2)&0xFFFF)*(($3)&0xFFFF)},
-__{}__{}$1,{sm*},{+(($2<<16)>>16)*(($3<<16)>>16)},
+__{}__{}$1,{sm*},{+((($2)<<16)>>16)*((($3)<<16)>>16)},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {/:0:0},{0},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {/:1:0},{$2},
@@ -521,12 +522,12 @@ __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u/:1:0},{$2},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u/:-1:0},{-($2)},
 __{}__{}$1,{u/},{(__TEMP_A&0xFFFF)/(__TEMP_B&0xFFFF)},
 __{}__{}$1,{um/},{+(($2)&-1)/(($3)&0xFFFF)},
-__{}__{}$1,{sm/},{+($2)/(($3<<16)>>16)},
+__{}__{}$1,{sm/},{+($2)/((($3)<<16)>>16)},
 
 __{}__{}$1, {%},{(__TEMP_A<<16)mod(__TEMP_B<<16)},
 __{}__{}$1,{u%},{(__TEMP_A&0xFFFF)/(__TEMP_B&0xFFFF)},
 __{}__{}$1,{um%},{+(($2)&-1)%(($3)&0xFFFF)},
-__{}__{}$1,{sm%},{+($2)%(($3<<16)>>16)},
+__{}__{}$1,{sm%},{+($2)%((($3)<<16)>>16)},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {+:0:0},{$3},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {+:0:0},{$2},
@@ -543,6 +544,10 @@ __{}__{}$1,{u+},{(__TEMP_A&0xFFFF)+(__TEMP_B&0xFFFF)},
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u-:0:0},{-abs($3)},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u-:0:0},{abs($2)},
 __{}__{}$1,{u-},{(__TEMP_A&0xFFFF)-(__TEMP_B&0xFFFF)},
+
+__{}__{}$1,{<?},{+((($2)<<16)<?(($3)<<16))>>16},
+__{}__{}$1,{>?},{+((($2)<<16)>?(($3)<<16))>>16},
+
 __{}{
 __{}__{}  .error __eval_s16 $1 $2 $3}){}dnl
 }){}dnl
@@ -589,10 +594,10 @@ __{}__{}$1, {*},{__TEMP_A*__TEMP_B},
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {/:0:0},{0},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {/:1:0},{$2},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {/:-1:0},{-($2)},
-__{}__{}$1:__SAVE_EVAL($2>=0),{/:1},{+((~($3))>>15)*__ABS($2)/($3)-(($3)>>15)*__ABS($2)/(-($3))},
-__{}__{}$1:__SAVE_EVAL($2<0), {/:1},{+(($3)>>15)*__ABS($2)/(-($3))-((~($3))>>15)*__ABS($2)/($3)},
-__{}__{}$1:__SAVE_EVAL($3>=0),{/:1},{+((($2)>>15) xor 1)*($2)/__ABS($3)-(($2)>>15)*(-($2))/__ABS($3)},
-__{}__{}$1:__SAVE_EVAL($3<0), {/:1},{+(($2)>>15)*(-($2))/__ABS($3)-((~($2))>>15)*($2)/__ABS($3)},
+__{}__{}$1:__SAVE_EVAL($2>=0),{/:1},{+((~($3))>>15)*__16BIT_TO_ABS($2)/($3)-(($3)>>15)*__16BIT_TO_ABS($2)/(-($3))},
+__{}__{}$1:__SAVE_EVAL($2<0), {/:1},{+(($3)>>15)*__16BIT_TO_ABS($2)/(-($3))-((~($3))>>15)*__16BIT_TO_ABS($2)/($3)},
+__{}__{}$1:__SAVE_EVAL($3>=0),{/:1},{+((($2)>>15) xor 1)*($2)/__16BIT_TO_ABS($3)-(($2)>>15)*(-($2))/__16BIT_TO_ABS($3)},
+__{}__{}$1:__SAVE_EVAL($3<0), {/:1},{+(($2)>>15)*(-($2))/__16BIT_TO_ABS($3)-((~($2))>>15)*($2)/__16BIT_TO_ABS($3)},
 __{}__{}$1, {/},{dnl
 __{}__{}__{}+(((($2)|($3))>>15) xor 1)*($2)/($3)dnl
 __{}__{}__{}-(((~($2))&($3))>>15)*($2)/(-($3))dnl
@@ -626,6 +631,15 @@ __{}__{}$1,{u+},{abs(__TEMP_A)+abs(__TEMP_B)},
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u-:0:0},{-abs($3)},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u-:0:0},{abs($2)},
 __{}__{}$1,{u-},{abs(__TEMP_A)-abs(__TEMP_B)},
+
+__{}__{}$1:__IS_NUM(__TEMP_A),{<?:1},{__HEX_HL($2+0x8000)<=($3+0x8000)?($2):($3)},
+__{}__{}$1:__IS_NUM(__TEMP_B),{<?:1},{__HEX_HL($3+0x8000)>=($2+0x8000)?($2):($3)},
+__{}__{}$1,{<?},{+(($2+0x8000)<=($3+0x8000))?($2):($3)},
+
+__{}__{}$1:__IS_NUM(__TEMP_A),{>?:1},{__HEX_HL($2+0x8000)>=($3+0x8000)?($2):($3)},
+__{}__{}$1:__IS_NUM(__TEMP_B),{>?:1},{__HEX_HL($3+0x8000)<=($2+0x8000)?($2):($3)},
+__{}__{}$1,{>?},{+(($2+0x8000)>=($3+0x8000))?($2):($3)},
+
 __{}{
 __{}__{}  .error __eval_s16 $1 $2 $3}){}dnl
 }){}dnl
@@ -635,64 +649,60 @@ dnl
 dnl # Input: operation num_1 num_2
 dnl # Output: eval((num1) operation (num2))
 define({__EVAL_OP_NUM_NUM},{dnl
-__{}define({__TEMP_A},{__HEX_HL($2)}){}dnl
-__{}define({__TEMP_B},{__HEX_HL($3)}){}dnl
-__{}ifelse(substr($1,0,1),{u},,{dnl
-__{}__{}ifelse(__HEX_HL($2 & 0x8000),{0x8000},{define({__TEMP_A},eval(__TEMP_A-0x10000))}){}dnl
-__{}__{}ifelse(__HEX_HL($3 & 0x8000),{0x8000},{define({__TEMP_B},eval(__TEMP_B-0x10000))}){}dnl
-__{}}){}dnl
 __{}ifelse(dnl
-__{}__{}$1,  {&},   {define({__TEMP_C},eval(__HEX_HL($2) & __HEX_HL($3)))},
-__{}__{}$1,  {|},   {define({__TEMP_C},eval(__HEX_HL($2) | __HEX_HL($3)))},
-__{}__{}$1,  {^},   {define({__TEMP_C},eval(__HEX_HL($2) ^ __HEX_HL($3)))},
+__{}__{}$1,  {&},   {define({__TEMP},eval(       __HEX_HL($2) &        __HEX_HL($3)))},
+__{}__{}$1,  {|},   {define({__TEMP},eval(       __HEX_HL($2) |        __HEX_HL($3)))},
+__{}__{}$1,  {^},   {define({__TEMP},eval(       __HEX_HL($2) ^        __HEX_HL($3)))},
 
-__{}__{}$1,  {*},   {define({__TEMP_C},eval(__TEMP_A * __TEMP_B))},
-__{}__{}$1, {u*},   {define({__TEMP_C},eval(__TEMP_A * __TEMP_B))},
-__{}__{}$1, {m*},   {define({__TEMP_C},eval(__TEMP_A * __TEMP_B))},
-__{}__{}$1,{um*},   {define({__TEMP_C},eval(__TEMP_A * __TEMP_B))},
+__{}__{}$1,  {*},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) * __16BIT_TO_SIGN($3))},
+__{}__{}$1, {u*},   {define({__TEMP},eval(       __HEX_HL($2) *        __HEX_HL($3)))},
+__{}__{}$1, {m*},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) * __16BIT_TO_SIGN($3)))},
+__{}__{}$1,{um*},   {define({__TEMP},eval(       __HEX_HL($2) *        __HEX_HL($3)))},
 
-__{}__{}$1,  {/},   {define({__TEMP_C},eval(__TEMP_A      / __TEMP_B))},
-__{}__{}$1, {u/},   {define({__TEMP_C},eval(__HEX_HL($2)  /__HEX_HL($3)))},
-__{}__{}$1,{um/},   {define({__TEMP_C},eval(__HEX_DEHL($2)/__HEX_HL($3)))},
-__{}__{}$1,{sm/},   {define({__TEMP_C},eval(($2)          / ($3)))},
-__{}__{}$1,{fm/},   {define({__TEMP_C},eval(($2)          / ($3))){}dnl
+__{}__{}$1,  {/},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) / __16BIT_TO_SIGN($3)))},
+__{}__{}$1, {u/},   {define({__TEMP},eval(       __HEX_HL($2) /        __HEX_HL($3)))},
+__{}__{}$1,{um/},   {define({__TEMP},eval(     __HEX_DEHL($2) /        __HEX_HL($3)))},
+__{}__{}$1,{sm/},   {define({__TEMP},eval(               ($2) /                ($3)))},
+__{}__{}$1,{fm/},   {define({__TEMP},eval(               ($2) /                ($3))){}dnl
 __{}__{}__{}__{}__{}__{}define({__REM},eval(($2)%($3))){}dnl
 __{}__{}__{}__{}__{}__{}ifelse(__REM,0,{},
 __{}__{}__{}__{}__{}__{}eval((__REM ^ ($3)) & 0x8000),{0},{},
-__{}__{}__{}__{}__{}__{}{define({__TEMP_C},eval(__TEMP_C-1))})},
+__{}__{}__{}__{}__{}__{}{define({__TEMP},eval(__TEMP-1))})},
 
-__{}__{}$1,  {%},   {define({__TEMP_C},eval(__TEMP_A      % __TEMP_B))},
-__{}__{}$1, {u%},   {define({__TEMP_C},eval(__HEX_HL($2)  % __HEX_HL($3)))},
-__{}__{}$1,{um%},   {define({__TEMP_C},eval(__HEX_DEHL($2)%__HEX_HL($3)))},
-__{}__{}$1,{sm%},   {define({__TEMP_C},eval(($2)          % ($3)))},
-__{}__{}$1,{fm%},   {define({__TEMP_C},eval(($2)          % ($3))){}dnl
-__{}__{}__{}__{}__{}__{}ifelse(__TEMP_C,0,{},
-__{}__{}__{}__{}__{}__{}eval((__TEMP_C ^ ($3)) & 0x8000),{0},{},
-__{}__{}__{}__{}__{}__{}{define({__TEMP_C},eval($3+__TEMP_C))})},
+__{}__{}$1,  {%},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) % __16BIT_TO_SIGN($3)))},
+__{}__{}$1, {u%},   {define({__TEMP},eval(       __HEX_HL($2) %        __HEX_HL($3)))},
+__{}__{}$1,{um%},   {define({__TEMP},eval(     __HEX_DEHL($2) %        __HEX_HL($3)))},
+__{}__{}$1,{sm%},   {define({__TEMP},eval(               ($2) %                ($3)))},
+__{}__{}$1,{fm%},   {define({__TEMP},eval(               ($2) %                ($3))){}dnl
+__{}__{}__{}__{}__{}__{}ifelse(__TEMP,0,{},
+__{}__{}__{}__{}__{}__{}eval((__TEMP ^ ($3)) & 0x8000),{0},{},
+__{}__{}__{}__{}__{}__{}{define({__TEMP},eval($3+__TEMP))})},
 
-__{}__{}$1,  {+},   {define({__TEMP_C},eval(__TEMP_A     + __TEMP_B))},
-__{}__{}$1, {u+},   {define({__TEMP_C},eval(__HEX_HL($2) + __HEX_HL($3)))},
+__{}__{}$1,  {+},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) + __16BIT_TO_SIGN($3)))},
+__{}__{}$1, {u+},   {define({__TEMP},eval(       __HEX_HL($2) +        __HEX_HL($3)))},
 
-__{}__{}$1,  {-},   {define({__TEMP_C},eval(__TEMP_A     - __TEMP_B))},
-__{}__{}$1, {u-},   {define({__TEMP_C},eval(__HEX_HL($2) - __HEX_HL($3)))},
+__{}__{}$1,  {-},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) - __16BIT_TO_SIGN($3)))},
+__{}__{}$1, {u-},   {define({__TEMP},eval(       __HEX_HL($2) -        __HEX_HL($3)))},
+
+__{}__{}$1, {<?},   {define({__TEMP},ifelse(eval(__16BIT_TO_SIGN($2)<=__16BIT_TO_SIGN($3)),{1},__16BIT_TO_SIGN($2),__16BIT_TO_SIGN($3)))},
+__{}__{}$1, {>?},   {define({__TEMP},ifelse(eval(__16BIT_TO_SIGN($2)>=__16BIT_TO_SIGN($3)),{1},__16BIT_TO_SIGN($2),__16BIT_TO_SIGN($3)))},
+
 __{}{
 __{}__{}  .error __eval_s16 $1 $2 $3}){}dnl
 ifelse(1,1,{errprint({
 $0($@)
-  __TEMP_A:>}__TEMP_A{<
-  __TEMP_B:>}__TEMP_B{<
-  __TEMP_C:>}__TEMP_C{<
+  __TEMP:>}__TEMP{<
 })}){}dnl
 __{}ifelse(dnl
-__{}__{}$1,{um*},__HEX_DEHL(__TEMP_C),
-__{}__{}$1,{m*},__TEMP_C,
-__{}__{}substr($1,0,1),{u},__TEMP_C,
-__{}__{}__TO_SIGN(__TEMP_C)){}dnl
+__{}__{}$1,{um*},__HEX_DEHL(__TEMP),
+__{}__{}$1,{m*},__TEMP,
+__{}__{}substr($1,0,1),{u},__TEMP,
+__{}__{}__16BIT_TO_SIGN(__TEMP)){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-define({__LINKER},{sjasmplus}){}dnl
+dnl # define({__LINKER},{sjasmplus}){}dnl
 dnl
 dnl
 dnl
@@ -933,6 +943,14 @@ o...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_PUSH-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_OVER_PUSH_SWAP},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_OVER_SWAP_STORE},__LAST_TOKEN_INFO{ }$2)},
 
+dnl # PUSHDOT
+push,,,
+            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSHDOT:__TOKEN_PUSH,       {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__HEX_DE(__LAST_TOKEN_ARRAY_1),__HEX_HL(__LAST_TOKEN_ARRAY_1),$3)},
+            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH:__TOKEN_PUSHDOT,       {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
+            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH2:__TOKEN_PUSHDOT,      {__SET_TOKEN({__TOKEN_PUSH4},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
+            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH3:__TOKEN_PUSHDOT,      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_3{ }$2,__BEFORELAST_TOKEN_ARRAY_3,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH2},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
+            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH4:__TOKEN_PUSHDOT,      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_4{ }$2,__BEFORELAST_TOKEN_ARRAY_4,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH3},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
+
 dnl # PUSH
 push,,,
             __LAST_TOKEN_NAME=__LAST_TOKEN_EVAL_REVERSE_1:$1,__TOKEN_PUSH=0:__TOKEN_CMOVE,       {__SET_TOKEN({__TOKEN_2DROP},__LAST_TOKEN_INFO{ }$2)},
@@ -1038,6 +1056,7 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{__INC_TOK
             __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   {__TOKEN_PUSH=32768-__TOKEN_MAX},         {__DELETE_LAST_TOKEN},
             __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   {__TOKEN_PUSH=32768-__TOKEN_MIN},         {__SET_TOKEN({__TOKEN_DROP_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME=__LAST_TOKEN_VALUE-$1,   {__TOKEN_PUSH=32767-__TOKEN_MIN},         {__DELETE_LAST_TOKEN},
+
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_MAX},               {__SET_TOKEN({__TOKEN_PUSH_MAX},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_MIN},               {__SET_TOKEN({__TOKEN_PUSH_MIN},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
@@ -1139,8 +1158,8 @@ push2,,,
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH2:__TOKEN_MMUL:0,   {__SET_TOKEN({__TOKEN_PUSHDOT},__LAST_TOKEN_INFO{ }$2,__EVAL_S16(m*,__LAST_TOKEN_ARRAY))},
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH2:__TOKEN_UMMUL:0,  {__SET_TOKEN({__TOKEN_PUSHDOT},__LAST_TOKEN_INFO{ }$2,__EVAL_S16(um*,__LAST_TOKEN_ARRAY))},
 
-            __LAST_TOKEN_NAME-$1-__LAST_TOKEN_IS_NUM_1_2,{__TOKEN_PUSH2-__TOKEN_MAX-1},          {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,ifelse(eval(__LAST_TOKEN_ARRAY_1>=__LAST_TOKEN_ARRAY_2),{1},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2))},
-            __LAST_TOKEN_NAME-$1-__LAST_TOKEN_IS_NUM_1_2,{__TOKEN_PUSH2-__TOKEN_MIN-1},          {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,ifelse(eval(__LAST_TOKEN_ARRAY_1<=__LAST_TOKEN_ARRAY_2),{1},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,{__TOKEN_PUSH2:__TOKEN_MAX:0},  {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(>?,__LAST_TOKEN_ARRAY))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,{__TOKEN_PUSH2:__TOKEN_MIN:0},  {__SET_TOKEN({__TOKEN_PUSH}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(<?,__LAST_TOKEN_ARRAY))},
 
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_ADDLOOP},
                 {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}dnl
