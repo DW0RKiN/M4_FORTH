@@ -1126,8 +1126,8 @@ __{}define({__INFO},{m+}){}dnl
                         ;[11:57]    M+   ( d x -- d2 )  d2 = d + x
     ld    A, H          ; 1:4       M+
     add   A, A          ; 1:4       M+
-    sbc   A, A          ; 1:4       M+
-    ld    C, A          ; 1:4       M+   CC = hi16(x)
+    sbc   A, A          ; 1:4       M+   0xFF or 0x00
+    ld    C, A          ; 1:4       M+   d2 = d + CCHL
     add  HL, DE         ; 1:11      M+   lo16(d)+x
     pop  DE             ; 1:10      M+
     adc   A, E          ; 1:4       M+

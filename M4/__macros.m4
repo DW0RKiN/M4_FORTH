@@ -584,6 +584,34 @@ __{}__{}  .error __eval_s16 $1 $2 $3}){}dnl
 }){}dnl
 dnl
 dnl
+ifelse(1,0,{
+define({__TEMP_A},65535){}dnl
+define({__TEMP_B},65535){}dnl
+; AAaa*BBbb = ((0x100*AA)+aa)*((0x100*BB)+bb) = 0x10000*AA*BB + 0x100*AA*bb + 0x100*aa*BB + aa*bb
+ld bc,__TEMP_A
+ld bc,__TEMP_B
+ld ix,+((high __TEMP_A)*(high __TEMP_B))
+ld ix,+((low __TEMP_A)*(__TEMP_B>>15*0xFF00+__TEMP_B>>8))>>15*0xFF00 + ((low __TEMP_A)*(__TEMP_B>>15*0xFF00+__TEMP_B>>8))>>8
+ld ix,+((low __TEMP_B)*(__TEMP_A>>15*0xFF00+__TEMP_A>>8))>>15*0xFF00 + ((low __TEMP_B)*(__TEMP_A>>15*0xFF00+__TEMP_A>>8))>>8
+ld de,+((high __TEMP_A)*(high __TEMP_B))+((low __TEMP_A)*(__TEMP_B>>15*0xFF00+__TEMP_B>>8))>>15*0xFF00 + ((low __TEMP_A)*(__TEMP_B>>15*0xFF00+__TEMP_B>>8))>>8+((low __TEMP_B)*(__TEMP_A>>15*0xFF00+__TEMP_A>>8))>>15*0xFF00 + ((low __TEMP_B)*(__TEMP_A>>15*0xFF00+__TEMP_A>>8))>>8
+ld bc,+(low((low __TEMP_A)*(high __TEMP_B)))
+ld bc,+(low((high __TEMP_A)*(low __TEMP_B)))
+ld bc,+(low __TEMP_A)*(low __TEMP_B)>>8
+ld ix,+((low((low __TEMP_A)*(high __TEMP_B)))+(low((high __TEMP_A)*(low __TEMP_B)))+(low __TEMP_A)*(low __TEMP_B)>>8)>>8
+ld de,+((high __TEMP_A)*(high __TEMP_B))+((low __TEMP_A)*(__TEMP_B>>15*0xFF00+__TEMP_B>>8))>>15*0xFF00 + ((low __TEMP_A)*(__TEMP_B>>15*0xFF00+__TEMP_B>>8))>>8+((low __TEMP_B)*(__TEMP_A>>15*0xFF00+__TEMP_A>>8))>>15*0xFF00 + ((low __TEMP_B)*(__TEMP_A>>15*0xFF00+__TEMP_A>>8))>>8+((low((low __TEMP_A)*(high __TEMP_B)))+(low((high __TEMP_A)*(low __TEMP_B)))+(low __TEMP_A)*(low __TEMP_B)>>8)>>8
+ld hl,+__TEMP_A*__TEMP_B
+if 0
+endif
+ld bc,+(__TEMP_A>>8)*(__TEMP_B>>8)
+ld de,+(low __TEMP_A)*(__TEMP_B>>8)>>8
+ld de,+(low __TEMP_B)*(__TEMP_A>>8)>>8
+ld hl,+((low((low __TEMP_A)*(__TEMP_B>>8)))+(low((__TEMP_A>>8)*(low __TEMP_B)))+(low __TEMP_A)*(low __TEMP_B)>>8)>>8
+ld bc,+(__TEMP_A>>8)*(__TEMP_B>>8)+(low __TEMP_A)*(__TEMP_B>>8)>>8+(low __TEMP_B)*(__TEMP_A>>8)>>8+((low((low __TEMP_A)*(__TEMP_B>>8)))+(low((__TEMP_A>>8)*(low __TEMP_B)))+(low __TEMP_A)*(low __TEMP_B)>>8)>>8
+if 0
+endif
+ld hl,+(__TEMP_A>>8)*(__TEMP_B>>8)+(low __TEMP_A)*(__TEMP_B>>8)>>8+(low __TEMP_B)*(__TEMP_A>>8)>>8+((low((low __TEMP_A)*(__TEMP_B>>8)))+(low((__TEMP_A>>8)*(low __TEMP_B)))+(low __TEMP_A)*(low __TEMP_B)>>8)>>8-((__TEMP_A)>>15)*(__TEMP_B)-((__TEMP_B)>>15)*(__TEMP_A)
+
+}){}dnl
 dnl
 dnl # Input:
 dnl #   operation num_1 xxx
@@ -591,16 +619,15 @@ dnl #   operation xxx   num_2
 dnl # Output:
 dnl #   eval((num1) operation (num2))
 define({__EVAL_OP_NUM_XXX_PASMO},{dnl
-__{}define({__TEMP_A},{__HEX_HL($2)}){}dnl
-__{}define({__TEMP_B},{__HEX_HL($3)}){}dnl
-__{}ifelse(substr($1,0,1),{u},,{dnl
-__{}__{}ifelse(__HEX_HL($2 & 0x8000),{0x8000},{define({__TEMP_A},eval(__TEMP_A-0x10000))}){}dnl
-__{}__{}ifelse(__HEX_HL($3 & 0x8000),{0x8000},{define({__TEMP_B},eval(__TEMP_B-0x10000))}){}dnl
-__{}}){}dnl
-__{}ifelse(__TEMP_A,{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval($2)})}){}dnl
-__{}ifelse(__TEMP_B,{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval($3)})}){}dnl
+__{}ifelse(__HEX_HL($2),{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval(($2)&0xFFFF)})}){}dnl
+__{}ifelse(__HEX_HL($3),{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval(($3)&0xFFFF)})}){}dnl
+__{}ifelse(__HEX_HL($2),{},{define({__TEMP_LO_A},{(low($2))})},{define({__TEMP_LO_A},{eval(($2)&0xFF)})}){}dnl
+__{}ifelse(__HEX_HL($3),{},{define({__TEMP_LO_B},{(low($3))})},{define({__TEMP_LO_B},{eval(($3)&0xFF)})}){}dnl
+__{}ifelse(__HEX_HL($2),{},{define({__TEMP_HI_A},{(($2)>>8)})},{define({__TEMP_HI_A},{eval((($2)>>8)&0xFF)})}){}dnl
+__{}ifelse(__HEX_HL($3),{},{define({__TEMP_HI_B},{(($3)>>8)})},{define({__TEMP_HI_B},{eval((($3)>>8)&0xFF)})}){}dnl
+__{}ifelse(__HEX_HL($2),{},{define({__TEMP_SIGN_A},{(($2)>>15)})},{define({__TEMP_SIGN_A},{eval((($2)>>15)&0x01)})}){}dnl
+__{}ifelse(__HEX_HL($3),{},{define({__TEMP_SIGN_B},{(($3)>>15)})},{define({__TEMP_SIGN_B},{eval((($3)>>15)&0x01)})}){}dnl
 __{}ifelse(dnl
-
 __{}__{}$1:__IS_NUM($2),  {=:1}, {__HEX_HL($2+0x8000)= (($3)+0x8000)},
 __{}__{}$1:__IS_NUM($2), {<>:1}, {__HEX_HL($2+0x8000)!=(($3)+0x8000)},
 __{}__{}$1:__IS_NUM($2),  {<:1}, {__HEX_HL($2+0x8000)< (($3)+0x8000)},
@@ -657,13 +684,13 @@ __{}__{}$1:__TEMP_A, {*:0},{0},
 __{}__{}$1:__TEMP_B, {*:0},{0},
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {*:1:0},{$3},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {*:1:0},{$2},
-__{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {*:-1:0},{-($3)},
-__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {*:-1:0},{-($2)},
+__{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {*:65535:0},{-($3)},
+__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {*:65535:0},{-($2)},
 __{}__{}$1, {*},{__TEMP_A*__TEMP_B},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {/:0:0},{0},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {/:1:0},{$2},
-__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {/:-1:0},{-($2)},
+__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {/:65535:0},{-($2)},
 __{}__{}$1:__SAVE_EVAL($2>=0),{/:1},{+((~($3))>>15)*__16BIT_TO_ABS($2)/($3)-(($3)>>15)*__16BIT_TO_ABS($2)/(-($3))},
 __{}__{}$1:__SAVE_EVAL($2<0), {/:1},{+(($3)>>15)*__16BIT_TO_ABS($2)/(-($3))-((~($3))>>15)*__16BIT_TO_ABS($2)/($3)},
 __{}__{}$1:__SAVE_EVAL($3>=0),{/:1},{+((($2)>>15) xor 1)*($2)/__16BIT_TO_ABS($3)-(($2)>>15)*(-($2))/__16BIT_TO_ABS($3)},
@@ -687,8 +714,83 @@ __{}__{}$1,  {-},{__TEMP_A-__TEMP_B},
 __{}__{}$1:__TEMP_A, {u*:0},{0},
 __{}__{}$1:__TEMP_B, {u*:0},{0},
 __{}__{}$1, {u*},{__TEMP_A*__TEMP_B},
-__{}__{}$1, {m*},{(__TEMP_SA*__TEMP_SB)>>16,(__TEMP_SA*__TEMP_SB)&0xFFFF},
-__{}__{}$1,{um*},{+((high __TEMP_A)*(high __TEMP_B))+((low __TEMP_A)*(high __TEMP_B))>>8+((high __TEMP_A)*(low __TEMP_B))>>8+((low((low __TEMP_A)*(high __TEMP_B)))+(low((high __TEMP_A)*(low __TEMP_B)))+(low __TEMP_A)*(low __TEMP_B)>>8)>>8,+(__TEMP_A)*(__TEMP_B)},
+__{}__{}$1, {m*},{ifelse(dnl
+__{}__{}__{}__TEMP_HI_A,0,0,
+__{}__{}__{}__TEMP_HI_B,0,0,
+__{}__{}__{}__TEMP_HI_A,1,+__TEMP_HI_B,
+__{}__{}__{}__TEMP_HI_B,1,+__TEMP_HI_A,
+__{}__{}__{}+__TEMP_HI_A*__TEMP_HI_B){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_LO_A,0,{},
+__{}__{}__{}__TEMP_HI_B,0,{},
+__{}__{}__{}__TEMP_LO_A,1,{},
+__{}__{}__{}__TEMP_HI_B,1,{},
+__{}__{}__{}+__TEMP_LO_A*__TEMP_HI_B>>8){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_HI_A,0,{},
+__{}__{}__{}__TEMP_LO_B,0,{},
+__{}__{}__{}__TEMP_HI_A,1,{},
+__{}__{}__{}__TEMP_LO_B,1,{},
+__{}__{}__{}+__TEMP_HI_A*__TEMP_LO_B>>8){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_LO_A,0,{},
+__{}__{}__{}__TEMP_LO_B,0,{},
+__{}__{}__{}__TEMP_HI_A:__TEMP_HI_B,0:0,{},
+__{}__{}__{}__TEMP_A,1,{},
+__{}__{}__{}__TEMP_B,1,{},
+__{}__{}__{}__TEMP_HI_A,0,+((low(__TEMP_LO_A*__TEMP_HI_B))+__TEMP_LO_A*__TEMP_LO_B>>8)>>8,
+__{}__{}__{}__TEMP_HI_B,0,+((low(__TEMP_HI_A*__TEMP_LO_B))+__TEMP_LO_A*__TEMP_LO_B>>8)>>8,
+__{}__{}__{}+((low(__TEMP_LO_A*__TEMP_HI_B))+(low(__TEMP_HI_A*__TEMP_LO_B))+__TEMP_LO_A*__TEMP_LO_B>>8)>>8){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_SIGN_A,0,{},
+__{}__{}__{}__TEMP_SIGN_A,1,-__TEMP_B,
+__{}__{}__{}-__TEMP_SIGN_A*__TEMP_B){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_SIGN_B,0,{},
+__{}__{}__{}__TEMP_SIGN_B,1,-__TEMP_A,
+__{}__{}__{}-__TEMP_SIGN_B*__TEMP_A){}dnl
+__{}__{}__{},dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_A,0,0,
+__{}__{}__{}__TEMP_B,0,0,
+__{}__{}__{}__TEMP_A,1,+__TEMP_B,
+__{}__{}__{}__TEMP_B,1,+__TEMP_A,
+__{}__{}__{}+__TEMP_A*__TEMP_B)},
+
+__{}__{}$1,{um*},{ifelse(dnl
+__{}__{}__{}__TEMP_HI_A,0,0,
+__{}__{}__{}__TEMP_HI_B,0,0,
+__{}__{}__{}__TEMP_HI_A,1,+__TEMP_HI_B,
+__{}__{}__{}__TEMP_HI_B,1,+__TEMP_HI_A,
+__{}__{}__{}+__TEMP_HI_A*__TEMP_HI_B){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_LO_A,0,{},
+__{}__{}__{}__TEMP_HI_B,0,{},
+__{}__{}__{}__TEMP_LO_A,1,{},
+__{}__{}__{}__TEMP_HI_B,1,{},
+__{}__{}__{}+__TEMP_LO_A*__TEMP_HI_B>>8){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_HI_A,0,{},
+__{}__{}__{}__TEMP_LO_B,0,{},
+__{}__{}__{}__TEMP_HI_A,1,{},
+__{}__{}__{}__TEMP_LO_B,1,{},
+__{}__{}__{}+__TEMP_HI_A*__TEMP_LO_B>>8){}dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_LO_A,0,{},
+__{}__{}__{}__TEMP_LO_B,0,{},
+__{}__{}__{}__TEMP_HI_A:__TEMP_HI_B,0:0,{},
+__{}__{}__{}__TEMP_A,1,{},
+__{}__{}__{}__TEMP_B,1,{},
+__{}__{}__{}__TEMP_HI_A,0,+((low(__TEMP_LO_A*__TEMP_HI_B))+__TEMP_LO_A*__TEMP_LO_B>>8)>>8,
+__{}__{}__{}__TEMP_HI_B,0,+((low(__TEMP_HI_A*__TEMP_LO_B))+__TEMP_LO_A*__TEMP_LO_B>>8)>>8,
+__{}__{}__{}+((low(__TEMP_LO_A*__TEMP_HI_B))+(low(__TEMP_HI_A*__TEMP_LO_B))+__TEMP_LO_A*__TEMP_LO_B>>8)>>8){}dnl
+__{}__{}__{},dnl
+__{}__{}__{}ifelse(dnl
+__{}__{}__{}__TEMP_A,0,0,
+__{}__{}__{}__TEMP_B,0,0,
+__{}__{}__{}__TEMP_A,1,+__TEMP_B,
+__{}__{}__{}__TEMP_B,1,+__TEMP_A,
+__{}__{}__{}+__TEMP_A*__TEMP_B)},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u/:0:0},{0},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u/:1:0},{$2},
@@ -800,7 +902,7 @@ __{}ifelse(substr($1,0,1),{u},,{dnl
 __{}__{}ifelse(__HEX_HL($2 & 0x8000),{0x8000},{define({__TEMP_A},{eval(__HEX_HL($2)-0x10000)})}){}dnl
 __{}__{}ifelse(__HEX_HL($3 & 0x8000),{0x8000},{define({__TEMP_B},{eval(__HEX_HL($3)-0x10000)})}){}dnl
 __{}}){}dnl
-ifelse(1,1,{errprint({
+ifelse(1,0,{errprint({
 $0($*)
   __TEMP_A:>}__TEMP_A{<
   __TEMP_B:>}__TEMP_B{<
