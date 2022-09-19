@@ -89,6 +89,31 @@ __{}{eval(($1)&0xFFFF)})}){}dnl
 dnl
 dnl
 dnl
+define({__32BIT_TO_SIGN},{dnl
+dnl # abc       --> abc
+dnl # abc+5     --> abc+5
+dnl # (123)     --> .error abs(pointer)
+dnl # (1)+(2)   --> fail --> .error abs(pointer)
+dnl # +(123)    --> 123
+dnl # +(10-50)  --> -40
+dnl # -1        --> -1
+dnl # 5-6       --> -1
+dnl # 6-5       --> 1
+dnl # -25*4     --> -100
+dnl # 0xFFFE    --> -2
+dnl # 65535     --> -1
+dnl # 0x8000    --> -32768
+__{}ifelse(dnl
+__{}__IS_MEM_REF($1),1,{
+  .error __32bit_to_sign(pointer)},
+__{}__IS_NUM($1),0,{$1},
+__{}{dnl
+__{}ifelse(eval((($1)>>31)&1),1,{eval(__HEX_DEHL($1)-0x100000000)},
+__{}{eval($1)})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({__16BIT_TO_SIGN},{dnl
 dnl # abc       --> abc
 dnl # abc+5     --> abc+5
@@ -105,7 +130,7 @@ dnl # 65535     --> -1
 dnl # 0x8000    --> -32768
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1),1,{
-  .error abs(pointer)},
+  .error __16bit_to_sign(pointer)},
 __{}__IS_NUM($1),0,{$1},
 __{}{dnl
 __{}ifelse(eval((($1)&0xFFFF)>0x7FFF),1,{eval((($1)&0xFFFF)-0x10000)},
@@ -454,6 +479,7 @@ define({__LAST_TOKEN_IS_PTR_REVERSE_1},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_1)}){}
 define({__LAST_TOKEN_IS_PTR_REVERSE_2},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_2)}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_3},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_3)}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_2_1},{eval(__IS_MEM_REF(__LAST_TOKEN_REVERSE_2)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_1))}){}dnl
+define({__LAST_TOKEN_IS_PTR_REVERSE_3_2_1},{eval(__IS_MEM_REF(__LAST_TOKEN_REVERSE_3)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_2)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_1))}){}dnl
 dnl
 define({__LAST_TOKEN_IS_NUM_REVERSE_1},{__IS_NUM(__LAST_TOKEN_REVERSE_1)}){}dnl
 define({__LAST_TOKEN_IS_NUM_REVERSE_2},{__IS_NUM(__LAST_TOKEN_REVERSE_2)}){}dnl
@@ -483,7 +509,8 @@ __{}ifelse(__IS_NUM($2),0,{define({__TEMP_SA},{((($2)<<16)>>16)})},{define({__TE
 __{}ifelse(__IS_NUM($3),0,{define({__TEMP_SB},{((($3)<<16)>>16)})},{define({__TEMP_SB},{__16BIT_TO_SIGN($3)})}){}dnl
 __{}ifelse(__IS_NUM($2),0,{define({__TEMP_UA},{(($2)&0xFFFF)})},   {define({__TEMP_UA},{__HEX_HL($2)})}){}dnl
 __{}ifelse(__IS_NUM($3),0,{define({__TEMP_UB},{(($3)&0xFFFF)})},   {define({__TEMP_UB},{__HEX_HL($3)})}){}dnl
-ifelse(1,1,{errprint({
+__{}ifelse(__HEX_HL($2),{},{define({__TEMP_HL_A},{(low($2))})},{define({__TEMP_HL_A},{eval(($2)&0xFFFF)})}){}dnl
+ifelse(1,0,{errprint({
 $2 $1 $3
 }__TEMP_A{ $1 }__TEMP_B{
 })}){}dnl
@@ -562,7 +589,9 @@ __{}__{}$1,{sm%},{+($2)%((($3)<<16)>>16)},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {+:0:0},{$3},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {+:0:0},{$2},
-__{}__{}$1, {+},{__TEMP_A+__TEMP_B},
+__{}__{}$1,  {+},{__TEMP_A+__TEMP_B},
+__{}__{}$1,{mh+},{(__TEMP_A+__TEMP_SB)>>16},
+__{}__{}$1,{ml+},{__TEMP_HL_A+__TEMP_SB},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {-:0:0},{-($3)},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {-:0:0},{$2},
@@ -802,6 +831,9 @@ __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u+:0:0},{abs($3)},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u+:0:0},{abs($2)},
 __{}__{}$1, {u+},{abs(__TEMP_A)+abs(__TEMP_B)},
 
+__{}__{}$1,{mh+},{__HEX_DE($2)+__TEMP_SIGN_B*0xFFFF+(__TEMP_HI_A+__TEMP_HI_B+(__TEMP_LO_A+__TEMP_LO_B)>>8)>>8},
+__{}__{}$1,{ml+},{__TEMP_A+__TEMP_B},
+
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u-:0:0},{-abs($3)},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u-:0:0},{abs($2)},
 __{}__{}$1, {u-},{abs(__TEMP_A)-abs(__TEMP_B)},
@@ -869,6 +901,8 @@ __{}__{}__{}__{}__{}__{}{define({__TEMP},eval($3+__TEMP))})},
 
 __{}__{}$1,  {+},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) + __16BIT_TO_SIGN($3)))},
 __{}__{}$1, {u+},   {define({__TEMP},eval(       __HEX_HL($2) +        __HEX_HL($3)))},
+__{}__{}$1, {mh+},  {define({__TEMP},__HEX_DE(__32BIT_TO_SIGN($2) + __16BIT_TO_SIGN($3)))},
+__{}__{}$1, {ml+},  {define({__TEMP},eval(       __HEX_HL($2) + __16BIT_TO_SIGN($3)))},
 
 __{}__{}$1,  {-},   {define({__TEMP},eval(__16BIT_TO_SIGN($2) - __16BIT_TO_SIGN($3)))},
 __{}__{}$1, {u-},   {define({__TEMP},eval(       __HEX_HL($2) -        __HEX_HL($3)))},
@@ -878,7 +912,7 @@ __{}__{}$1, {>?},   {define({__TEMP},ifelse(eval(__16BIT_TO_SIGN($2)>=__16BIT_TO
 
 __{}{
 __{}__{}  .error {$0} $1 $2 $3}){}dnl
-ifelse(1,1,{errprint({
+ifelse(1,0,{errprint({
 $0($@)
   __TEMP:>}__TEMP{<
 })}){}dnl
@@ -909,6 +943,7 @@ $0($*)
 })}){}dnl
 __{}ifelse(__IS_NUM($2):__IS_NUM($3),{1:1},{dnl
 __{}__{}ifelse(dnl
+__{}__{}__{}$1,    {m+},{__EVAL_OP_NUM_NUM(mh+,$2,$3),__EVAL_OP_NUM_NUM(ml+,$2,$3)},
 __{}__{}__{}$1,  {/mod},{__EVAL_OP_NUM_NUM(  %,$2,$3),__EVAL_OP_NUM_NUM(  /,$2,$3)},
 __{}__{}__{}$1, {u/mod},{__EVAL_OP_NUM_NUM( u%,$2,$3),__EVAL_OP_NUM_NUM( u/,$2,$3)},
 __{}__{}__{}$1,{um/mod},{__EVAL_OP_NUM_NUM(um%,$2,$3),__EVAL_OP_NUM_NUM(um/,$2,$3)},
@@ -919,6 +954,7 @@ __{}},
 __{}__LINKER,{sjasmplus},
 __{}{dnl
 __{}__{}ifelse(dnl
+__{}__{}__{}$1,    {m+},{__EVAL_OP_NUM_XXX_SJASMPLUS(mh+,$2,$3),__EVAL_OP_NUM_XXX_SJASMPLUS(ml+,$2,$3)},
 __{}__{}__{}$1,  {/mod},{__EVAL_OP_NUM_XXX_SJASMPLUS(  %,$2,$3),__EVAL_OP_NUM_XXX_SJASMPLUS(  /,$2,$3)},
 __{}__{}__{}$1, {u/mod},{__EVAL_OP_NUM_XXX_SJASMPLUS( u%,$2,$3),__EVAL_OP_NUM_XXX_SJASMPLUS( u/,$2,$3)},
 __{}__{}__{}$1,{um/mod},{__EVAL_OP_NUM_XXX_SJASMPLUS(um%,$2,$3),__EVAL_OP_NUM_XXX_SJASMPLUS(um/,$2,$3)},
@@ -928,6 +964,7 @@ __{}__{}__{}            {__EVAL_OP_NUM_XXX_SJASMPLUS( $1,$2,$3)}){}dnl
 __{}},
 __{}{dnl
 __{}__{}ifelse(dnl
+__{}__{}__{}$1,    {m+},{__EVAL_OP_NUM_XXX_PASMO(mh+,$2,$3),__EVAL_OP_NUM_XXX_PASMO(ml+,$2,$3)},
 __{}__{}__{}$1,  {/mod},{__EVAL_OP_NUM_XXX_PASMO(  %,$2,$3),__EVAL_OP_NUM_XXX_PASMO(  /,$2,$3)},
 __{}__{}__{}$1, {u/mod},{__EVAL_OP_NUM_XXX_PASMO( u%,$2,$3),__EVAL_OP_NUM_XXX_PASMO( u/,$2,$3)},
 __{}__{}__{}$1,{um/mod},{__EVAL_OP_NUM_XXX_PASMO(um%,$2,$3),__EVAL_OP_NUM_XXX_PASMO(um/,$2,$3)},
@@ -1134,11 +1171,11 @@ o...,,,
 
 dnl # PUSHDOT
 push,,,
-            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSHDOT:__TOKEN_PUSH,       {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__HEX_DE(__LAST_TOKEN_ARRAY_1),__HEX_HL(__LAST_TOKEN_ARRAY_1),$3)},
-            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH:__TOKEN_PUSHDOT,       {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
-            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH2:__TOKEN_PUSHDOT,      {__SET_TOKEN({__TOKEN_PUSH4},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
-            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH3:__TOKEN_PUSHDOT,      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_3{ }$2,__BEFORELAST_TOKEN_ARRAY_3,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH2},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
-            __LAST_TOKEN_NAME:$1,                            __TOKEN_PUSH4:__TOKEN_PUSHDOT,      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_4{ }$2,__BEFORELAST_TOKEN_ARRAY_4,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH3},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
+            __LAST_TOKEN_NAME:$1:__IS_NUM(__LAST_TOKEN_ARRAY), __TOKEN_PUSHDOT:__TOKEN_PUSH:1,  {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__HEX_DE(__LAST_TOKEN_ARRAY_1),__HEX_HL(__LAST_TOKEN_ARRAY_1),$3)},
+            __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH:__TOKEN_PUSHDOT:1,  {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
+            __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH2:__TOKEN_PUSHDOT:1, {__SET_TOKEN({__TOKEN_PUSH4},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
+            __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH3:__TOKEN_PUSHDOT:1, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_3{ }$2,__BEFORELAST_TOKEN_ARRAY_3,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH2},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
+            __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH4:__TOKEN_PUSHDOT:1, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_4{ }$2,__BEFORELAST_TOKEN_ARRAY_4,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH3},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
 
 dnl # PUSH
 push,,,
@@ -1417,9 +1454,11 @@ dnl # PUSH3
 push3,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH3-__TOKEN_FILL},{__SET_TOKEN({__TOKEN_PUSH3_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
-            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH3:__TOKEN_UMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(um/mod,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
-            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH3:__TOKEN_SMDIVREM:0,{__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(sm/rem,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
-            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH3:__TOKEN_FMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(fm/mod,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH3:__TOKEN_UMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(um/mod,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH3:__TOKEN_SMDIVREM:0,{__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(sm/rem,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH3:__TOKEN_FMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(fm/mod,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
+
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH3:__TOKEN_MADD:0,    {__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__EVAL_S16(    m+,(__HEX_HL(__LAST_TOKEN_ARRAY_1)<<16)+__HEX_HL(__LAST_TOKEN_ARRAY_2),__LAST_TOKEN_ARRAY_3))},
 
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH3:__TOKEN_AND:0,    {__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(&,__LAST_TOKEN_LAST_2_PAR))},
             __LAST_TOKEN_NAME=__LAST_TOKEN_EVAL_REVERSE_1:$1,    __TOKEN_PUSH3=-1:__TOKEN_AND,   {__SET_TOKEN({__TOKEN_PUSH2}, __LAST_TOKEN_INFO{ }$2,__DROP_1_PAR(__LAST_TOKEN_ARRAY))},
@@ -1546,9 +1585,11 @@ dnl # PUSH4
 push4,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_PUSH4-__TOKEN_FILL},{__SET_TOKEN({__TOKEN_PUSH4_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
-            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH4:__TOKEN_UMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(um/mod,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
-            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH4:__TOKEN_SMDIVREM:0,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(sm/rem,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
-            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH4:__TOKEN_FMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(fm/mod,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH4:__TOKEN_UMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(um/mod,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH4:__TOKEN_SMDIVREM:0,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(sm/rem,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH4:__TOKEN_FMDIVMOD:0,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(fm/mod,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
+
+            __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH4:__TOKEN_MADD:0,    {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(    m+,(__HEX_HL(__LAST_TOKEN_REVERSE_3)<<16)+__HEX_HL(__LAST_TOKEN_REVERSE_2),__LAST_TOKEN_REVERSE_1))},
 
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH4:__TOKEN_AND:0,    {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(&,__LAST_TOKEN_LAST_2_PAR))},
             __LAST_TOKEN_NAME=__LAST_TOKEN_EVAL_REVERSE_1:$1,    __TOKEN_PUSH4=-1:__TOKEN_AND,   {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_1_PAR(__LAST_TOKEN_ARRAY))},

@@ -1458,13 +1458,18 @@ $1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_NUM($1),{0},{
-__{}  .error {$0}($@): M4 does not know $1 parameter value!},
 __IS_MEM_REF($1),{1},{
 __{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
 __{}    push HL             ; 1:11      pushdot($1)
 __{}    ld   DE,format({%-12s},($1+2)); 4:20      pushdot($1)   hi word
 __{}    ld   HL, format({%-11s},$1); 3:16      pushdot($1)   lo word},
+__IS_NUM($1):__LINKER,{0:sjasmplus},{
+__{}    push DE             ; 1:11      pushdot($1)   ( -- hi lo )
+__{}    push HL             ; 1:11      pushdot($1)
+__{}    ld   DE,format({%-12s},{($1)>>16}); 3:10      pushdot($1)   hi word
+__{}    ld   HL,format({%-12s},{($1)&65535}); 3:10      pushdot($1)   lo word},
+__IS_NUM($1),{0},{
+__{}  .error {$0}($@): M4 does not know $1 parameter value!},
 {
 __{}define({__DE},__HEX_DE($1)){}dnl
 __{}define({__HL},__HEX_HL($1)){}dnl
