@@ -68,8 +68,8 @@ dnl
 define({__16BIT_TO_ABS},{dnl
 dnl # abc       --> (((~(abc))>>15)&1)*(abc)+(((abc)>>15)&1)*(-(abc))
 dnl # abc+5     --> (((~(abc+5))>>15)&1)*(abc+5)+(((abc+5)>>15)&1)*(-(abc+5))
-dnl # (123)     --> .error abs(pointer)
-dnl # (1)+(2)   --> fail --> .error abs(pointer)
+dnl # (123)     --> .error __16bit_to_abs(pointer)
+dnl # (1)+(2)   --> fail --> .error __16bit_to_abs(pointer)
 dnl # +(123)    --> 123
 dnl # +(10-50)  --> 40
 dnl # -1        --> 1
@@ -80,7 +80,8 @@ dnl # 0xFFFE    --> 2
 dnl # 65535     --> 1
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1),1,{
-  .error abs(pointer)},
+  .error __16bit_to_abs(pointer)},
+__{}__IS_NUM($1):__LINKER,0:sjasmplus,{(abs(($1)<<16)>>16)},
 __{}__IS_NUM($1),0,{(((~($1))>>15)&1)*($1)+((($1)>>15)&1)*(-($1))},
 __{}{dnl
 __{}ifelse(eval((($1)&0xFFFF)>0x8000),1,{eval(0x10000-(($1)&0xFFFF))},
@@ -92,8 +93,8 @@ dnl
 define({__32BIT_TO_SIGN},{dnl
 dnl # abc       --> abc
 dnl # abc+5     --> abc+5
-dnl # (123)     --> .error abs(pointer)
-dnl # (1)+(2)   --> fail --> .error abs(pointer)
+dnl # (123)     --> .error __32bit_to_sign(pointer)
+dnl # (1)+(2)   --> fail --> .error __32bit_to_sign(pointer)
 dnl # +(123)    --> 123
 dnl # +(10-50)  --> -40
 dnl # -1        --> -1
@@ -117,8 +118,8 @@ dnl
 define({__16BIT_TO_SIGN},{dnl
 dnl # abc       --> abc
 dnl # abc+5     --> abc+5
-dnl # (123)     --> .error abs(pointer)
-dnl # (1)+(2)   --> fail --> .error abs(pointer)
+dnl # (123)     --> .error __16bit_to_sign(pointer)
+dnl # (1)+(2)   --> fail --> .error __16bit_to_sign(pointer)
 dnl # +(123)    --> 123
 dnl # +(10-50)  --> -40
 dnl # -1        --> -1
@@ -131,6 +132,7 @@ dnl # 0x8000    --> -32768
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1),1,{
   .error __16bit_to_sign(pointer)},
+__{}__IS_NUM($1):__LINKER,0:sjasmplus,{((($1)<<16)>>16)},
 __{}__IS_NUM($1),0,{$1},
 __{}{dnl
 __{}ifelse(eval((($1)&0xFFFF)>0x7FFF),1,{eval((($1)&0xFFFF)-0x10000)},
@@ -649,6 +651,22 @@ ld hl,+(__TEMP_A>>8)*(__TEMP_B>>8)+(low __TEMP_A)*(__TEMP_B>>8)>>8+(low __TEMP_B
 }){}dnl
 dnl
 dnl
+dnl
+dnl # Pasmo: Tabulka operátorů podle pořadí priority, operátory na stejném řádku mají stejnou prioritu:
+dnl #
+dnl # ## (see note)
+dnl # $, NUL, DEFINED
+dnl # *, /, MOD, %, SHL, SHR, <<, >>
+dnl # +, - (binary)
+dnl # EQ, NE, LT, LE, GT, GE, =, !=, <, >, <=, >=
+dnl # NOT, ~, !, +, - (unary)
+dnl # AND, &
+dnl # OR, |, XOR
+dnl # &&
+dnl # ||
+dnl # HIGH, LOW
+dnl # ?
+dnl
 dnl # Input:
 dnl #    operation num_1 num_2
 dnl #    operation num_1 num_2 num_3
@@ -666,6 +684,9 @@ __{}ifelse(__HEX_HL($3),{},{define({__TEMP_HI_B},{(($3)>>8)})},{define({__TEMP_H
 __{}ifelse(__HEX_HL($2),{},{define({__TEMP_SIGN_A},{(($2)>>15)})},{define({__TEMP_SIGN_A},{eval((($2)>>15)&0x01)})}){}dnl
 __{}ifelse(__HEX_HL($3),{},{define({__TEMP_SIGN_B},{(($3)>>15)})},{define({__TEMP_SIGN_B},{eval((($3)>>15)&0x01)})}){}dnl
 __{}ifelse(__HEX_HL($4),{},{define({__TEMP_SIGN_C},{(($4)>>15)})},{define({__TEMP_SIGN_C},{eval((($4)>>15)&0x01)})}){}dnl
+ifelse(1,1,errprint({
+__eval_op_num_xxx_pasmo($@)
+})){}dnl
 __{}ifelse(dnl
 __{}__{}$1:__IS_NUM($2),  {=:1}, {__HEX_HL($2+0x8000)= (($3)+0x8000)},
 __{}__{}$1:__IS_NUM($2), {<>:1}, {__HEX_HL($2+0x8000)!=(($3)+0x8000)},
@@ -834,18 +855,40 @@ __{}__{}__{}+__TEMP_A*__TEMP_B)},
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u/:0:0},{0},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u/:1:0},{$2},
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u/:-1:0},{-($2)},
-__{}__{}$1, {u/},{+($2)/($3)},
-__{}__{}$1, {u%},{abs(__TEMP_A) mod __TEMP_B},
+__{}__{}$1, {u/},{__TEMP_A/__TEMP_B},
+__{}__{}$1, {u%},{__TEMP_A mod __TEMP_B},
 
-__{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u+:0:0},{abs($3)},
-__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u+:0:0},{abs($2)},
-__{}__{}$1, {u+},{abs(__TEMP_A)+abs(__TEMP_B)},
+__{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{um/:0},{__TEMP_A/__TEMP_B},
+
+__{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFF0),{um/:0},{dnl
+__{}__{}__{}+(__TEMP_C<<12+__TEMP_A>>4)/__TEMP_B<<4+dnl
+__{}__{}__{}((__TEMP_C<<12+__TEMP_A>>4)mod __TEMP_B<<4+(15& __TEMP_A))/__TEMP_B},
+
+__{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFF00),{um/:0},{dnl
+__{}__{}__{}+(__TEMP_C<<8+__TEMP_A>>8)/__TEMP_B<<8+dnl
+__{}__{}__{}((__TEMP_C<<8+__TEMP_A>>8)mod __TEMP_B<<4+__TEMP_A<<8>>12)/__TEMP_B<<4+dnl
+__{}__{}__{}(((__TEMP_C<<8+__TEMP_A>>8)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))/__TEMP_B},
+
+__{}__{}$1,{um/},{dnl
+__{}__{}__{}+(__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)/__TEMP_B<<12+dnl
+__{}__{}__{}((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)/__TEMP_B<<8+dnl
+__{}__{}__{}(((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)/__TEMP_B<<4+dnl
+__{}__{}__{}((((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))/__TEMP_B},
+
+__{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{um%:0},{__TEMP_A mod __TEMP_B},
+__{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFF0),{um%:0},{+(((__TEMP_C<<12+__TEMP_A>>4))mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
+__{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFF00),{um%:0},{+(((__TEMP_C<<8+__TEMP_A>>8)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
+__{}__{}$1,{um%},{+((((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
+
+__{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u+:0:0},__TEMP_B,
+__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u+:0:0},__TEMP_A,
+__{}__{}$1, {u+},__TEMP_A+__TEMP_B,
 
 __{}__{}$1, {m+},{__TEMP_C+__TEMP_SIGN_B*0xFFFF+(__TEMP_HI_A+__TEMP_HI_B+(__TEMP_LO_A+__TEMP_LO_B)>>8)>>8},
 
-__{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u-:0:0},{-abs($3)},
-__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u-:0:0},{abs($2)},
-__{}__{}$1, {u-},{abs(__TEMP_A)-abs(__TEMP_B)},
+__{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u-:0:0},-__TEMP_B,
+__{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u-:0:0},__TEMP_A,
+__{}__{}$1, {u-},__TEMP_A-__TEMP_B,
 
 __{}__{}$1:__IS_NUM(__TEMP_A),{<?:1},{__HEX_HL($2+0x8000)<=($3+0x8000)?($2):($3)},
 __{}__{}$1:__IS_NUM(__TEMP_B),{<?:1},{__HEX_HL($3+0x8000)>=($2+0x8000)?($2):($3)},
@@ -950,7 +993,7 @@ dnl #    eval(            (num_1) operation (num_2)),eval(            (num_1) op
 dnl #    eval(((num_1)<<16+num_2) operation (num_3))
 dnl #    eval(((num_1)<<16+num_2) operation (num_3)),eval(((num_1)<<16+num_2) operation (num_3))
 define({__EVAL_S16},{dnl
-ifelse(1,0,{errprint(dnl
+ifelse(1,1,{errprint(dnl
 __{}define({__TEMP_A},{__HEX_HL($2)}){}dnl
 __{}define({__TEMP_B},{__HEX_HL($3)}){}dnl
 __{}define({__TEMP_C},{__HEX_HL($3)}){}dnl
@@ -959,9 +1002,10 @@ __{}ifelse(__TEMP_B,,define({__TEMP_B},{($3)})){}dnl
 __{}ifelse(__TEMP_C,,define({__TEMP_C},{($4)})){}dnl
 {
 $0($*)
-  __TEMP_A:>}__TEMP_A{<
-  __TEMP_B:>}__TEMP_B{<
-  __TEMP_C:>}__TEMP_C{<
+  IS_NUM __TEMP_A: }__IS_NUM($2){ >}__TEMP_A{<
+  IS_NUM __TEMP_B: }__IS_NUM($3){ >}__TEMP_B{<
+  IS_NUM __TEMP_C: }ifelse($#,4,__IS_NUM($4),1){ >} __TEMP_C{<
+  __LINKER:>}__LINKER{<
 })}){}dnl
 __{}ifelse(__IS_NUM($2):__IS_NUM($3){:}ifelse($#,4,__IS_NUM($4),1),{1:1:1},{dnl
 __{}__{}ifelse(dnl
@@ -1061,6 +1105,10 @@ _2,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DUGT},{__SET_TOKEN({__TOKEN_DULT},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DULE},{__SET_TOKEN({__TOKEN_DUGE},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_2SWAP-__TOKEN_DUGE},{__SET_TOKEN({__TOKEN_DULE},__LAST_TOKEN_INFO{ }$2)},
+
+            __LAST_TOKEN_NAME:$1,  __TOKEN_PUSH2:__TOKEN_2DUP, {__SET_TOKEN({__TOKEN_PUSH4},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME:$1,  __TOKEN_PUSH3:__TOKEN_2DUP, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_3{ }$2,__BEFORELAST_TOKEN_ARRAY_3,__BEFORELAST_TOKEN_ARRAY_2,__BEFORELAST_TOKEN_ARRAY_3){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH2},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
+            __LAST_TOKEN_NAME:$1,  __TOKEN_PUSH4:__TOKEN_2DUP, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_4{ }$2,__BEFORELAST_TOKEN_ARRAY_4,__BEFORELAST_TOKEN_ARRAY_3,__BEFORELAST_TOKEN_ARRAY_4){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH3},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
 
 dnl # _3..
 _3,,,
@@ -1198,6 +1246,7 @@ push,,,
             __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH2:__TOKEN_PUSHDOT:1, {__SET_TOKEN({__TOKEN_PUSH4},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__HEX_DE($3),__HEX_HL($3))},
             __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH3:__TOKEN_PUSHDOT:1, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_3{ }$2,__BEFORELAST_TOKEN_ARRAY_3,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH2},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
             __LAST_TOKEN_NAME:$1:__IS_NUM($3),                 __TOKEN_PUSH4:__TOKEN_PUSHDOT:1, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3},__BEFORELAST_TOKEN_ARRAY_4{ }$2,__BEFORELAST_TOKEN_ARRAY_4,__HEX_DE($3),__HEX_HL($3)){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),{__TOKEN_PUSH3},__BEFORELAST_TOKEN_INFO{ drop},__DROP_1_PAR(__BEFORELAST_TOKEN_ARRAY))},
+            $1:__IS_NUM($3),                                   __TOKEN_PUSHDOT:1,               {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2},$2,__HEX_DE($3),__HEX_HL($3))},
 
 dnl # PUSH
 push,,,
@@ -1803,12 +1852,19 @@ dnl # X...
 dnl # Y...
 dnl # Z...
 z,,,
-            {dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}dnl
-__{}__{}__{}__{}ifelse($1,{__TOKEN_LOOP},{__SET_LOOP_STEP(LOOP_STACK,1)}){}dnl
-__{}__{}__{}__{}__SET_TOKEN($@){}dnl
-__{}__{}__{}})},
-        {define({__TOKEN_COUNT},1){}__SET_TOKEN($@)}){}dnl
+        {dnl
+__{}__{}__{}__INC_TOKEN_COUNT{}dnl
+__{}__{}__{}ifelse($1,__TOKEN_LOOP,{__SET_LOOP_STEP(LOOP_STACK,1)}){}dnl
+__{}__{}__{}__SET_TOKEN($@){}dnl
+__{}__{}})},
+__{}{dnl
+__{}__{}define({__TOKEN_COUNT},1){}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}$1:__IS_NUM($3),  __TOKEN_PUSHDOT:1,    {__SET_TOKEN({__TOKEN_PUSH2},$2,__HEX_DE($3),__HEX_HL($3))},
+__{}__{}{dnl
+__{}__{}__{}__SET_TOKEN($@){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
