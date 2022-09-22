@@ -887,6 +887,12 @@ __{}__{}__{}((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>
 __{}__{}__{}(((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)/__TEMP_B<<4+dnl
 __{}__{}__{}((((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))/__TEMP_B},
 
+__{}__{}$1,{fm/},{dnl
+__{}__{}__{}+(((__TEMP_C|($3))>>15) xor 1)*($2)/($3)dnl   # + +
+__{}__{}__{}-(((~__TEMP_C)&($3))>>15)*(($2)/(-($3))-((($2)mod($3))!=0))dnl     # + -
+__{}__{}__{}-((__TEMP_C&(~($3)))>>15)*((-($2))/($3)-((($2)mod($3))!=0))dnl     # - +
+__{}__{}__{}+((__TEMP_C&($3))>>15)*(-($2))/(-($3))},
+
 __{}__{}$1, {%},{dnl
 __{}__{}__{}+(((($2)|($3))>>15) xor 1)*($2)mod($3)dnl   # + +
 __{}__{}__{}+(((~($2))&($3))>>15)*($2)mod(-($3))dnl     # + -
@@ -913,6 +919,12 @@ __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{um%:0},{+__TEMP_A mod __TEMP_B},
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFF0),{um%:0},{+(((__TEMP_C<<12+__TEMP_A>>4))mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFF00),{um%:0},{+(((__TEMP_C<<8+__TEMP_A>>8)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
 __{}__{}$1,{um%},{+((((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
+
+__{}__{}$1,{fm%},{dnl
+__{}__{}__{}+(((__TEMP_C|($3))>>15) xor 1)*($2)mod($3)dnl   # + +
+__{}__{}__{}+(((~__TEMP_C)&($3))>>15)*((($2)mod(-($3))!=0)&(__TEMP_B+($2)mod(-($3))))dnl     # + -
+__{}__{}__{}+((__TEMP_C&(~($3)))>>15)*((((-($2))mod($3))!=0)&(__TEMP_B-(-($2))mod($3)))dnl     # - +
+__{}__{}__{}-((__TEMP_C&($3))>>15)*(-($2))mod(-($3))},
 
 __{}__{}$1:__TEMP_A:__IS_NUM(__TEMP_B), {u+:0:0},__TEMP_B,
 __{}__{}$1:__TEMP_B:__IS_NUM(__TEMP_A), {u+:0:0},__TEMP_A,
@@ -1072,7 +1084,7 @@ __{}__{}__{}$1,{sm/rem},{__EVAL_OP_NUM_XXX_PASMO(sm%,$3,$4,$2),__EVAL_OP_NUM_XXX
   .warning: Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 16bit/16bit without checking the range): "}$2<<16+$3 $4 sm/rem{"
 })},
 __{}__{}__{}$1,{fm/mod},{__EVAL_OP_NUM_XXX_PASMO(fm%,$3,$4,$2),__EVAL_OP_NUM_XXX_PASMO(fm/,$3,$4,$2)errprint({
-  .warning: Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 28bit/12bit without checking the range): "}$2<<16+$3 $4 fm/mod{"
+  .warning: Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 16bit/16bit without checking the range): "}$2<<16+$3 $4 fm/mod{"
 })},
 __{}__{}__{}$1,  {/mod},{__EVAL_OP_NUM_XXX_PASMO(  %,   $2,$3),__EVAL_OP_NUM_XXX_PASMO(  /,   $2,$3)},
 __{}__{}__{}$1, {u/mod},{__EVAL_OP_NUM_XXX_PASMO( u%,   $2,$3),__EVAL_OP_NUM_XXX_PASMO( u/,   $2,$3)},
