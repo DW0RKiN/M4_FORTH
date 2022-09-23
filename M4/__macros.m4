@@ -66,8 +66,8 @@ dnl
 dnl
 dnl
 define({__16BIT_TO_ABS},{dnl
-dnl # abc       --> (((~(abc))>>15)&1)*(abc)+(((abc)>>15)&1)*(-(abc))
-dnl # abc+5     --> (((~(abc+5))>>15)&1)*(abc+5)+(((abc+5)>>15)&1)*(-(abc+5))
+dnl # abc       --> (((abc)>>15)?-(abc):abc)
+dnl # abc+5     --> (((abc+5)>>15)?-(abc+5):abc+5)
 dnl # (123)     --> .error __16bit_to_abs(pointer)
 dnl # (1)+(2)   --> fail --> .error __16bit_to_abs(pointer)
 dnl # +(123)    --> 123
@@ -82,10 +82,49 @@ __{}ifelse(dnl
 __{}__IS_MEM_REF($1),1,{
   .error __16bit_to_abs(pointer)},
 __{}__IS_NUM($1):__LINKER,0:sjasmplus,{(abs(($1)<<16)>>16)},
-__{}__IS_NUM($1),0,{(((~($1))>>15)&1)*($1)+((($1)>>15)&1)*(-($1))},
+__{}__IS_NUM($1),0,{((($1)>>15)?-($1):$1)},
+__{}__IS_NUM($1),0,{(((~($1))>>15)*($1)-(($1)>>15)*($1))},
 __{}{dnl
 __{}ifelse(eval((($1)&0xFFFF)>0x8000),1,{eval(0x10000-(($1)&0xFFFF))},
 __{}{eval(($1)&0xFFFF)})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__32BIT_HI_TO_ABS},{dnl
+__{}ifelse(dnl
+__{}eval(__IS_MEM_REF($1)|__IS_MEM_REF($2)),1,{
+  .error __32bit_hi_to_abs(pointer)},
+__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{abs(($1&0xFFFF)<<16+($2&0xFFFF))>>>16},
+__{}__IS_NUM($1):__IS_NUM($2),{0:0},{((($1)>>15)?(~($1)-(($2)=0)):$1)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:1},{((($1)>>15)?(~($1)+eval(($2)==0)):$1)},
+__{}__IS_NUM($1):__IS_NUM($2),{1:0},{dnl
+__{}__{}ifelse(eval(($1)&32768),32768,
+__{}__{}{(eval(__HEX_HL(~($1)))-(($2)=0))},
+__{}__{}{eval($1)})},
+__{}{dnl # FFFF 0000 -> 0000 FFFF + 1
+__{}__{}ifelse(eval(__HEX_HL($1)>0x8000),1,
+__{}__{}{eval(__HEX_HL(__HEX_HL(~($1))+(__HEX_HL($2)==0x0000)))},
+__{}__{}{eval(__HEX_HL($1))}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__32BIT_LO_TO_ABS},{dnl
+__{}ifelse(dnl
+__{}eval(__IS_MEM_REF($1)|__IS_MEM_REF($2)),1,{
+  .error __32bit_lo_to_abs(pointer)},
+__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{(abs(($1&0xFFFF)<<16+($2&0xFFFF))&0xFFFF)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:0},{((($1)>>15)?-($2):$2)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:1},{((($1)>>15)? eval(__HEX_HL(-($2))):eval(__HEX_HL($2)))},
+__{}__IS_NUM($1):__IS_NUM($2),{1:0},{dnl
+__{}__{}ifelse(eval(($1)&32768),32768,(-($2)),($2))},
+__{}{dnl
+__{}__{}ifelse(eval(__HEX_HL($1)>0x8000),1,
+__{}__{}{eval(__HEX_HL(-($2)))},
+__{}__{}{eval(__HEX_HL($2))}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
