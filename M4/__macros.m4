@@ -78,48 +78,85 @@ dnl # 6-5       --> 1
 dnl # -25*4     --> 100
 dnl # 0xFFFE    --> 2
 dnl # 65535     --> 1
+__{}ifelse(__IS_NUM($1),1,{define({__TEMP},eval(__HEX_HL($1)))},{define({__TEMP},{($1)})}){}dnl
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1),1,{
   .error __16bit_to_abs(pointer)},
-__{}__IS_NUM($1):__LINKER,0:sjasmplus,{(abs(($1)<<16)>>16)},
-__{}__IS_NUM($1),0,{((($1)>>15)?-($1):$1)},
-__{}__IS_NUM($1),0,{(((~($1))>>15)*($1)-(($1)>>15)*($1))},
+__{}__IS_NUM($1):__LINKER,0:sjasmplus,{(abs(__TEMP<<16)>>16)},
+__{}__IS_NUM($1),0,{((__TEMP>>15)?-__TEMP:$1)},
 __{}{dnl
-__{}ifelse(eval((($1)&0xFFFF)>0x8000),1,{eval(0x10000-(($1)&0xFFFF))},
-__{}{eval(($1)&0xFFFF)})}){}dnl
+__{}ifelse(eval((__TEMP&0xFFFF)>0x8000),1,{eval(0x10000-(__TEMP&0xFFFF))},
+__{}{eval(__TEMP&0xFFFF)})}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-define({__32BIT_HI_TO_ABS},{dnl
+dnl # input: hi16,lo16
+dnl #    warning! if the input is not a number, it must be in brackets!
+dnl # output: (abs(hi16*65536+lo16)>>16)
+define({__ABS32BIT_SHR_16},{dnl
+__{}ifelse(__IS_NUM($1),1,{define({__TEMP_HI},eval(__HEX_HL($1)))},{define({__TEMP_HI},{($1)})}){}dnl
+__{}ifelse(__IS_NUM($2),1,{define({__TEMP_LO},eval(__HEX_HL($2)))},{define({__TEMP_LO},{($2)})}){}dnl
 __{}ifelse(dnl
 __{}eval(__IS_MEM_REF($1)|__IS_MEM_REF($2)),1,{
-  .error __32bit_hi_to_abs(pointer)},
-__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{abs(($1&0xFFFF)<<16+($2&0xFFFF))>>>16},
-__{}__IS_NUM($1):__IS_NUM($2),{0:0},{((($1)>>15)?(~($1)-(($2)=0)):$1)},
-__{}__IS_NUM($1):__IS_NUM($2),{0:1},{((($1)>>15)?(~($1)+eval(($2)==0)):$1)},
+   .error __abs32bit_shr_16(pointer)},
+__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{(abs((__TEMP_HI<<16)+(__TEMP_LO&0xFFFF))>>>16)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:0},{(__TEMP_HI>>15?~(__TEMP_HI+(__TEMP_LO=0)):$1)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:1},{(__TEMP_HI>>15?~__TEMP_HI{}ifelse(eval($2),0,-1):$1)},
 __{}__IS_NUM($1):__IS_NUM($2),{1:0},{dnl
 __{}__{}ifelse(eval(($1)&32768),32768,
-__{}__{}{(eval(__HEX_HL(~($1)))-(($2)=0))},
+__{}__{}{(eval(__HEX_HL(~($1)))-(__TEMP_LO=0))},
 __{}__{}{eval($1)})},
 __{}{dnl # FFFF 0000 -> 0000 FFFF + 1
 __{}__{}ifelse(eval(__HEX_HL($1)>0x8000),1,
-__{}__{}{eval(__HEX_HL(__HEX_HL(~($1))+(__HEX_HL($2)==0x0000)))},
+__{}__{}{eval(__HEX_DE(-__HEX_HL($1)*65536-__HEX_HL($2)))},
 __{}__{}{eval(__HEX_HL($1))}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-define({__32BIT_LO_TO_ABS},{dnl
+dnl # input: hi16,lo16
+dnl #    hi16 = 0x000?
+dnl #    hi16 = 0xFFF?
+dnl #    warning! if the input is not a number, it must be in brackets!
+dnl # output: (abs(hi16*65536+lo16)>>4)
+define({__ABS20BIT_SHR_4},{dnl
+__{}ifelse(__IS_NUM($1),1,{define({__TEMP_HI},eval(__HEX_HL($1)))},{define({__TEMP_HI},{($1)})}){}dnl
+__{}ifelse(__IS_NUM($2),1,{define({__TEMP_LO},eval(__HEX_HL($2)))},{define({__TEMP_LO},{($2)})}){}dnl
 __{}ifelse(dnl
 __{}eval(__IS_MEM_REF($1)|__IS_MEM_REF($2)),1,{
-  .error __32bit_lo_to_abs(pointer)},
-__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{(abs(($1&0xFFFF)<<16+($2&0xFFFF))&0xFFFF)},
-__{}__IS_NUM($1):__IS_NUM($2),{0:0},{((($1)>>15)?-($2):$2)},
-__{}__IS_NUM($1):__IS_NUM($2),{0:1},{((($1)>>15)? eval(__HEX_HL(-($2))):eval(__HEX_HL($2)))},
+  .error __abs20bit_shr_4(pointer)},
+__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{(abs((__TEMP_HI<<16)+(__TEMP_LO&0xFFFF))>>>4)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:0},{(__TEMP_HI>>15?~(__TEMP_HI<<12+__TEMP_LO>>4+((15& __TEMP_LO)=0)):__TEMP_HI<<12+__TEMP_LO>>4)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:1},{(__TEMP_HI>>15?~(__TEMP_HI<<12+eval((($2)&0xFFFF)>>4)ifelse(eval(($2)&15),0,-1)):__TEMP_HI<<12+eval((($2)&0xFFFF)>>4))},
 __{}__IS_NUM($1):__IS_NUM($2),{1:0},{dnl
-__{}__{}ifelse(eval(($1)&32768),32768,(-($2)),($2))},
+__{}__{}ifelse(eval(($1)&32768),32768,
+__{}__{}{(~(__HEX_HL((($1)&15)<<12)+__TEMP_LO>>4+((15& __TEMP_LO)=0)))},
+__{}__{}{(__HEX_HL((($1)&15)<<12)+__TEMP_LO>>4)})},
+__{}{dnl # FFFF 0000 -> 0000 FFFF + 1
+__{}__{}ifelse(eval(__HEX_HL($1)>0x8000),1,
+__{}__{}{eval(__HEX_HL((-(__HEX_HL($1)*65536+__HEX_HL($2)))>>4))},
+__{}__{}{eval(((($1)&15)<<12)+(__HEX_HL($2)>>4))}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # input: hi16,lo16
+dnl #    warning! if the input is not a number, it must be in brackets!
+dnl # output: (abs(hi16*65536+lo16)&0xFFFF)
+define({__ABS32BIT_AND_0xFFFF},{dnl
+__{}ifelse(__IS_NUM($1),1,{define({__TEMP_HI},eval(__HEX_HL($1)))},{define({__TEMP_HI},{($1)})}){}dnl
+__{}ifelse(__IS_NUM($2),1,{define({__TEMP_LO},eval(__HEX_HL($2)))},{define({__TEMP_LO},{($2)})}){}dnl
+__{}ifelse(dnl
+__{}eval(__IS_MEM_REF($1)|__IS_MEM_REF($2)),1,{
+  .error __abs32bit_and_0xffff(pointer)},
+__{}eval(__IS_NUM($1)&__IS_NUM($2)):__LINKER,0:sjasmplus,{(abs((__TEMP_HI<<16)+(__TEMP_LO&0xFFFF))&0xFFFF)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:0},{(__TEMP_HI>>15?-__TEMP_LO:$2)},
+__{}__IS_NUM($1):__IS_NUM($2),{0:1},{(__TEMP_HI>>15? eval(__HEX_HL(-($2))):eval(__HEX_HL($2)))},
+__{}__IS_NUM($1):__IS_NUM($2),{1:0},{dnl
+__{}__{}ifelse(eval(($1)&32768),32768,(-__TEMP_LO),$2)},
 __{}{dnl
 __{}__{}ifelse(eval(__HEX_HL($1)>0x8000),1,
 __{}__{}{eval(__HEX_HL(-($2)))},
@@ -898,6 +935,13 @@ __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{sm/:65535},{dnl
 __{}__{}__{}+(($3)>>15)*(-($2))/(-($3))dnl     # - -
 __{}__{}__{}-((~($3))>>15)*(-($2))/($3)},
 
+__{}__{}$1,{sm/},{dnl
+__{}__{}__{}+(((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)/__16BIT_TO_ABS($3)<<12+dnl
+__{}__{}__{}((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<4>>12)/__16BIT_TO_ABS($3)<<8+dnl
+__{}__{}__{}(((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<4>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<8>>12)/__16BIT_TO_ABS($3)<<4+dnl
+__{}__{}__{}((((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<4>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<8>>12)mod __16BIT_TO_ABS($3)<<4+(15& __ABS32BIT_AND_0xFFFF($4,$2)))/__16BIT_TO_ABS($3)dnl
+__{}__{}__{})xor((__TEMP_C xor __TEMP_B)>>15*(-1)))+((__TEMP_C xor __TEMP_B)>>15)},
+
 __{}__{}$1, {sm/},{dnl
 __{}__{}__{}+(((__TEMP_C|($3))>>15) xor 1)*($2)/($3)dnl   # + +
 __{}__{}__{}-(((~__TEMP_C)&($3))>>15)*($2)/(-($3))dnl     # + -
@@ -948,11 +992,8 @@ __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{sm%:65535},{dnl
 __{}__{}__{}0-((~($3))>>15)*(-($2))mod($3)dnl     # - +
 __{}__{}__{}-(($3)>>15)*(-($2))mod(-($3))},
 
-__{}__{}$1, {sm%},{dnl
-__{}__{}__{}+(((__TEMP_C|($3))>>15) xor 1)*($2)mod($3)dnl   # + +
-__{}__{}__{}+(((~__TEMP_C)&($3))>>15)*($2)mod(-($3))dnl     # + -
-__{}__{}__{}-((__TEMP_C&(~($3)))>>15)*(-($2))mod($3)dnl     # - +
-__{}__{}__{}-((__TEMP_C&($3))>>15)*(-($2))mod(-($3))},
+__{}__{}$1,{sm%},{+((((((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<4>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<8>>12)mod __16BIT_TO_ABS($3)<<4+(15& __ABS32BIT_AND_0xFFFF($4,$2)))mod __16BIT_TO_ABS($3)dnl
+__{}__{}__{})xor(__TEMP_C>>15*(-1)))+(__TEMP_C>>15)},
 
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{um%:0},{+__TEMP_A mod __TEMP_B},
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFF0),{um%:0},{+(((__TEMP_C<<12+__TEMP_A>>4))mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
