@@ -1006,7 +1006,8 @@ __{}__{}__{})xor(__TEMP_C>>15*(-1)))+(__TEMP_C>>15)},
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{um%:0},{+__TEMP_A mod __TEMP_B},
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFF0),{um%:0},{+(((__TEMP_C<<12+__TEMP_A>>4))mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFF00),{um%:0},{+(((__TEMP_C<<8+__TEMP_A>>8)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
-__{}__{}$1,{um%},{+((((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
+__{}__{}$1,{um%},{+(((((__TEMP_C mod __TEMP_B<<4)mod __TEMP_B<<4)mod __TEMP_B<<4)mod __TEMP_B<<4)mod __TEMP_B+__TEMP_A mod __TEMP_B)mod __TEMP_B},
+__{}__{}$1,{um%-longer_version},{+((((__TEMP_C mod __TEMP_B<<4+__TEMP_A>>12)mod __TEMP_B<<4+__TEMP_A<<4>>12)mod __TEMP_B<<4+__TEMP_A<<8>>12)mod __TEMP_B<<4+(15& __TEMP_A))mod __TEMP_B},
 
 __{}__{}$1,{fm%},{dnl
 __{}__{}__{}+(((__TEMP_C|($3))>>15) xor 1)*($2)mod($3)dnl   # + +
