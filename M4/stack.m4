@@ -1689,7 +1689,7 @@ __{}__{}    push BC             ; 1:11      __INFO
 __{}__{}    push AF             ; 1:11      __INFO   ( e d c b a -- e d c b e )},
 __{}{
 __{}__{}                        ;[8:45]     __INFO   default version
-__{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
+__{}__{}    ld   HL, __HEX_HL(2*3-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
 __{}__{}    ld    A,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO

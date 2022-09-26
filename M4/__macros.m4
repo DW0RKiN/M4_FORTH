@@ -1261,6 +1261,8 @@ _2,,,
 dnl # _3..
 _3,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_3_PICK-__TOKEN_3_PICK},{__SET_TOKEN({__TOKEN_2OVER},__LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_3DUP-__TOKEN_ROT},{__SET_TOKEN({__TOKEN_3DUP_ROT},__LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_3DUP-__TOKEN_NROT},{__SET_TOKEN({__TOKEN_3DUP_NROT},__LAST_TOKEN_INFO{ }$2)},
 
 dnl # _4..
 _4,,,
