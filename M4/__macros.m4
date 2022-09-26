@@ -1000,7 +1000,12 @@ __{}__{}$1:__SAVE_EVAL(((__TEMP_B&0xF000)!=0x0000)&&(((__TEMP_B>>15)&1)==0)), {s
 __{}__{}__{}+((~__TEMP_C)>>15)*($2)mod eval(__HEX_HL($3))dnl                               # + +
 __{}__{}__{}-(__TEMP_C>>15)*(-($2))mod eval(__HEX_HL($3))},
 
-__{}__{}$1,{sm%},{+((((((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<4>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<8>>12)mod __16BIT_TO_ABS($3)<<4+(15& __ABS32BIT_AND_0xFFFF($4,$2)))mod __16BIT_TO_ABS($3)dnl
+__{}__{}$1:__IS_NUM(__TEMP_C):__IS_NUM(__TEMP_A),
+                                      {sm%:1:1},{+((((((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+eval(__ABS32BIT_AND_0xFFFF($4,$2)>>12))mod __16BIT_TO_ABS($3)<<4+eval((__ABS32BIT_AND_0xFFFF($4,$2)>>8)&15))mod __16BIT_TO_ABS($3)<<4+eval((__ABS32BIT_AND_0xFFFF($4,$2)>>4)&15))mod __16BIT_TO_ABS($3)<<4+eval(__ABS32BIT_AND_0xFFFF($4,$2)&15))mod __16BIT_TO_ABS($3){}dnl
+__{}__{}__{})xor(__TEMP_C>>15*(-1)))+(__TEMP_C>>15)},
+__{}__{}$1,                               {sm%},{+(((((((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4)mod __16BIT_TO_ABS($3)<<4)mod __16BIT_TO_ABS($3)<<4)mod __16BIT_TO_ABS($3)<<4)mod __16BIT_TO_ABS($3)+__ABS32BIT_AND_0xFFFF($4,$2) mod __16BIT_TO_ABS($3))mod __16BIT_TO_ABS($3){}dnl
+__{}__{}__{})xor(__TEMP_C>>15*(-1)))+(__TEMP_C>>15)},
+__{}__{}$1,                {sm%-longer_version},{+((((((__ABS32BIT_SHR_16($4,$2) mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<4>>12)mod __16BIT_TO_ABS($3)<<4+__ABS32BIT_AND_0xFFFF($4,$2)<<8>>12)mod __16BIT_TO_ABS($3)<<4+(15& __ABS32BIT_AND_0xFFFF($4,$2)))mod __16BIT_TO_ABS($3)dnl
 __{}__{}__{})xor(__TEMP_C>>15*(-1)))+(__TEMP_C>>15)},
 
 __{}__{}$1:__SAVE_EVAL(__TEMP_C&0xFFFF),{um%:0},{+__TEMP_A mod __TEMP_B},
