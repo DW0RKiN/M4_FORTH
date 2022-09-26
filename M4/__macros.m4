@@ -1512,6 +1512,7 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{__INC_TOK
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_N_TO_R},            {__SET_TOKEN({__TOKEN_PUSH_N_TO_R},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_N_TO_R-__TOKEN_RDROP},      {__SET_TOKEN({__TOKEN_PUSH_N_TO_R_RDROP},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_RPICK},             {__SET_TOKEN({__TOKEN_PUSH_RPICK},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_RPICK-__TOKEN_PUSH},        {__SET_TOKEN({__TOKEN_PUSH_RPICK_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_OF},                {__SET_TOKEN({__TOKEN_PUSH_OF},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
@@ -1971,6 +1972,7 @@ r...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_ROT-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_ROT_DROP},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_ROT-__TOKEN_ROT},{__SET_TOKEN({__TOKEN_NROT},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_ROT_DROP-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_NROT_NIP},__LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_R_FETCH-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_R_FETCH_PUSH},__LAST_TOKEN_INFO{ }$2,$3)},
 
 dnl # S...
 s...,,,
