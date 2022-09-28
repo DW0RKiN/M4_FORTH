@@ -59,7 +59,50 @@ And because the whole program is an M4 macro, I could immediately create the wor
         and  0x1F           ; 2:7       right
         xor   L             ; 1:4       right
         ld    L, A          ; 1:4       right})dnl
+        
+Correction: I have now tokenized the compiler, so creating the macro itself is not enough, because it will not be tokenized and will only generate instructions before the program itself. 
+So the word __TOKEN_ + NAME token must be created first and the original macro is renamed to __ASM_TOKEN_ + NAME, it will be called by the token at the very end, once the rules for tokens are finished and the code itself starts to be generated.
+
+    ;# dup 1- 0x1F and swap 0xFFE0 and + 
+    define({LEFT},{dnl
+    __{}__ADD_TOKEN({__TOKEN_LEFT},{<--},$@){}dnl
+    }){}dnl
+    dnl
+    define({__ASM_TOKEN_LEFT},{dnl
+    __{}define({__INFO},__COMPILE_INFO)
+        ld    A, L          ; 1:4       __INFO
+        dec   A             ; 1:4       __INFO
+        xor   L             ; 1:4       __INFO
+        and  0x1F           ; 2:7       __INFO
+        xor   L             ; 1:4       __INFO
+        ld    L, A          ; 1:4       __INFO})dnl
     
+    ;# dup 1+ 0x1F and swap 0xFFE0 and + 
+    define({RIGHT},{dnl
+    __{}__ADD_TOKEN({__TOKEN_RIGHT},{-->},$@){}dnl
+    }){}dnl
+    dnl
+    define({__ASM_TOKEN_RIGHT},{dnl
+    __{}define({__INFO},__COMPILE_INFO)
+        ld    A, L          ; 1:4       __INFO
+        inc   A             ; 1:4       __INFO
+        xor   L             ; 1:4       __INFO
+        and  0x1F           ; 2:7       __INFO
+        xor   L             ; 1:4       __INFO
+        ld    L, A          ; 1:4       __INFO})dnl
+    
+    define({SWAP_CURSOR},{dnl
+    __{}__ADD_TOKEN({__TOKEN_SWAP_CURSOR},{swap_cursor},$@){}dnl
+    }){}dnl
+    dnl
+    define({__ASM_TOKEN_SWAP_CURSOR},{dnl
+    __{}define({__INFO},__COMPILE_INFO)
+        ld   BC, format({%-11s},_cursor); 3:10      __INFO
+        ld    A,(BC)        ; 1:7       __INFO
+        xor  0x09           ; 2:7       __INFO
+        ld  (BC),A          ; 1:7       __INFO})dnl
+
+
 So the part that counts living neighbors looks like this:
 
     SCOLON(sum_neighbors,( addr -- sum ))

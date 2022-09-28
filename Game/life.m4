@@ -15,67 +15,73 @@ CONSTANT(_screen,0x5800)
 CONSTANT(_cursor,0x5990)
 CONSTANT(_stop,0x5B00)
 CONSTANT(last_key,0x5C08)
+CREATE(buff)
 
 ; kurzor doleva, pozadi doprava
 SCOLON(_left,( -- ))
-    PUSH2(_stop,_screen) SDO
-        SI SI PUSH_ADD(buff-_screen+1) PUSH_CMOVE(_w-1)
-        SI PUSH_ADD(_w-1) CFETCH OVER PUSH_ADD(buff-_screen) CSTORE
-    PUSH_ADDSLOOP(_w)
+    PUSH2(_stop,_screen) DO(S)
+        I I PUSH(buff-_screen+1) ADD PUSH(_w-1) CMOVE
+        I PUSH(_w-1) ADD CFETCH OVER PUSH(buff-_screen) ADD CSTORE
+    PUSH(_w) ADDLOOP
 SSEMICOLON
 
 SCOLON(_right,( -- ))
-    PUSH2(_stop,_screen) SDO
-        SI _1ADD OVER PUSH_ADD(buff-_screen) PUSH_CMOVE(_w-1)
-        SI CFETCH OVER PUSH_ADD(buff-_screen+_w-1) CSTORE
-    PUSH_ADDSLOOP(_w)
+    PUSH2(_stop,_screen) DO(S)
+        I _1ADD OVER PUSH(buff-_screen) ADD PUSH(_w-1) CMOVE
+        I CFETCH OVER PUSH(buff-_screen+_w-1) ADD CSTORE
+    PUSH(_w) ADDLOOP
 SSEMICOLON
 
 SCOLON(_down,( -- ))
-    PUSH2(_screen+_w, buff       ) PUSH_CMOVE(_wh-_w)
-    PUSH2(_screen   , buff+_wh-_w) PUSH_CMOVE(_w    )
+    PUSH2(_screen+_w, buff       ) PUSH(_wh-_w) CMOVE
+    PUSH2(_screen   , buff+_wh-_w) PUSH(_w    ) CMOVE
 SSEMICOLON
 
 SCOLON(_up,( -- ))
-    PUSH2(_screen , buff+_w) PUSH_CMOVE(_wh-_w)
-    PUSH2(_stop-_w, buff   ) PUSH_CMOVE(_w    )
+    PUSH2(_screen , buff+_w) PUSH(_wh-_w) CMOVE
+    PUSH2(_stop-_w, buff   ) PUSH(_w    ) CMOVE
 SSEMICOLON
 
 SCOLON(_copy,( -- ))
-    PUSH2(buff, _screen) PUSH_CMOVE(_wh)
+    PUSH2(buff, _screen) PUSH(_wh) CMOVE
 SSEMICOLON
 
 define({SWAP_CURSOR},{
+__{}__ADD_TOKEN({__TOKEN_SWAP_CURSOR},{swap cursor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SWAP_CURSOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
     ld   BC, format({%-11s},_cursor); 3:10      swap_cursor
     ld    A,(BC)        ; 1:7       swap_cursor
     xor  0x09           ; 2:7       swap_cursor
     ld  (BC),A          ; 1:7       swap_cursor})dnl
     
 SCOLON(_readkey,( -- ))
-    PUSH_CFETCH(last_key)
+    PUSH(last_key) CFETCH
     IF BEGIN
         SWAP_CURSOR
         BEGIN
-            PUSH_CFETCH(last_key)
+            PUSH(last_key) CFETCH
         UNTIL
         PUSH_CFETCH(last_key) 
         PUSH2_CSTORE(0,last_key)
         SWAP_CURSOR    
-        DUP_PUSH_CEQ_IF('q') DROP_PUSH(0) SCALL(_up  )  THEN
-        DUP_PUSH_CEQ_IF('a') DROP_PUSH(0) SCALL(_down)  THEN
-        DUP_PUSH_CEQ_IF('p') DROP_PUSH(0) SCALL(_right) THEN
-        DUP_PUSH_CEQ_IF('o') DROP_PUSH(0) SCALL(_left)  THEN
-        DUP_PUSH_CEQ_IF('r') DROP_PUSH(0) SCALL(_random_all) THEN
-        DUP_PUSH_CEQ_IF('i') DROP_PUSH(0) SCALL(_invert_all) THEN
-        DUP_PUSH_CEQ_IF('c') DROP_PUSH(0) PUSH3_FILL(buff,_wh, 0) THEN
-        DUP_PUSH_CEQ_IF('f') DROP_PUSH(0) PUSH3_FILL(buff,_wh, 1) THEN
+        DUP_PUSH_CEQ_IF('q') DROP PUSH(0) SCALL(_up  )  THEN
+        DUP_PUSH_CEQ_IF('a') DROP PUSH(0) SCALL(_down)  THEN
+        DUP_PUSH_CEQ_IF('p') DROP PUSH(0) SCALL(_right) THEN
+        DUP_PUSH_CEQ_IF('o') DROP PUSH(0) SCALL(_left)  THEN
+        DUP_PUSH_CEQ_IF('r') DROP PUSH(0) SCALL(_random_all) THEN
+        DUP_PUSH_CEQ_IF('i') DROP PUSH(0) SCALL(_invert_all) THEN
+        DUP_PUSH_CEQ_IF('c') DROP PUSH(0) PUSH3(buff,_wh, 0) FILL THEN
+        DUP_PUSH_CEQ_IF('f') DROP PUSH(0) PUSH3(buff,_wh, 1) FILL THEN
         DUP_PUSH_CEQ_IF('s') 
-            DROP_PUSH(0)
-            PUSH_CFETCH(buff+400) 
-            PUSH_XOR(1) 
-            PUSH_CSTORE(buff+400) 
+            DROP PUSH(0)
+            PUSH(buff+400) CFETCH 
+            PUSH(1) XOR 
+            PUSH(buff+400) CSTORE 
         THEN
-        DUP_PUSH_CEQ_IF('e')
+        DUP PUSH('e') CEQ IF
             STOP
         THEN
         SCALL(_copy)
@@ -84,46 +90,51 @@ SCOLON(_readkey,( -- ))
 SSEMICOLON
 
 SCOLON(_random_all,( -- ))
-    PUSH2(buff+_wh,buff) SDO RND PUSH_AND(1) OVER CSTORE SLOOP
+    PUSH2(buff+_wh,buff) DO(S) RND PUSH(1) AND OVER CSTORE LOOP
 SSEMICOLON
 
 SCOLON(_invert_all,( -- ))
-    PUSH2(buff+_wh,buff) SDO SI CFETCH PUSH_XOR(1) OVER CSTORE SLOOP
+    PUSH2(buff+_wh,buff) DO(S) I CFETCH PUSH(1) XOR OVER CSTORE LOOP
 SSEMICOLON
 
 
 SCOLON(_init,( -- ))
     PRINT({0x16, 0, 0})
-    PUSH(_w*8) SFOR PUTCHAR('O') SNEXT
-    PUSH2(0x4000, 0x4800) PUSH_CMOVE(8*256)
-    PUSH2(0x4800, 0x5000) PUSH_CMOVE(8*256)
+    PUSH(_w*8) FOR PUTCHAR('O') NEXT
+    PUSH2(0x4000, 0x4800) PUSH(8*256) CMOVE
+    PUSH2(0x4800, 0x5000) PUSH(8*256) CMOVE
     PUSH2_CSTORE(0,last_key) 
     SCALL(_random_all)
 SSEMICOLON
 
 SCOLON(_generation,( -- ))
-    PUSH(_wh-1) SFOR 
-        SI PUSH_ADD(_screen)
+    PUSH(_wh-1) FOR(S) 
+        I PUSH(_screen) ADD
         SCALL(_alive) 
-        OVER PUSH_ADD(buff) CSTORE
-    SNEXT
+        OVER PUSH(buff) ADD CSTORE
+    NEXT
 SSEMICOLON
 
 SCOLON(_alive,( addr -- alive ))
     DUP
     CFETCH _0EQ_IF
         SCALL(sum_neighbors)
-        PUSH_EQ_IF(3) PUSH(1) SEXIT THEN
+        PUSH(3) EQ IF PUSH(1) SEXIT THEN
     ELSE
         SCALL(sum_neighbors) 
-        PUSH_OR(0x01) 
-        PUSH_EQ_IF(3) PUSH(1) SEXIT THEN
+        PUSH(0x01) OR 
+        PUSH(3) EQ IF PUSH(1) SEXIT THEN
     THEN
     PUSH(0)
 SSEMICOLON
 
-; dup 1- 0x1F and swap 0xFFE0 and + 
-define({LEFT},{
+;# dup 1- 0x1F and swap 0xFFE0 and + 
+define({LEFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_LEFT},{<--},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LEFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
     ld    A, L          ; 1:4       left
     dec   A             ; 1:4       left
     xor   L             ; 1:4       left
@@ -131,8 +142,13 @@ define({LEFT},{
     xor   L             ; 1:4       left
     ld    L, A          ; 1:4       left})dnl
 
-; dup 1+ 0x1F and swap 0xFFE0 and + 
-define({RIGHT},{
+;# dup 1+ 0x1F and swap 0xFFE0 and + 
+define({RIGHT},{dnl
+__{}__ADD_TOKEN({__TOKEN_RIGHT},{-->},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_RIGHT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
     ld    A, L          ; 1:4       right
     inc   A             ; 1:4       right
     xor   L             ; 1:4       right
@@ -146,18 +162,18 @@ SCOLON(sum_neighbors,( addr -- sum ))
     ; [+1]
     SWAP RIGHT
     ; [+33]
-    DUP PUSH_ADD(_w)
-    DUP_PUSH_UGE_IF(_stop)
-        PUSH_ADD(-_wh)
+    DUP PUSH(_w) ADD
+    DUP PUSH(_stop) UGE IF
+        PUSH(-_wh) ADD
     THEN
     ; [+32]
     DUP  LEFT
     ; [+31]
     DUP  LEFT
     ; [-33]
-    DUP PUSH_ADD(-2*_w)
-    DUP_PUSH_ULT_IF(_screen)
-        PUSH_ADD(_wh)
+    DUP PUSH(-2*_w) ADD
+    DUP PUSH(_screen) ULT IF
+        PUSH(_wh) ADD
     THEN
     ; [-32]
     DUP  RIGHT
@@ -173,10 +189,6 @@ SCOLON(sum_neighbors,( addr -- sum ))
     SWAP FETCH ADD
     SWAP FETCH ADD
     ; 16 bit --> 8 bit
-    PUSH_AND(0xFF)
+    PUSH(0xFF) AND
 SSEMICOLON
 
-;# I need to have label buff at the end.
-include({../M4/LAST.M4})dnl
-
-buff:
