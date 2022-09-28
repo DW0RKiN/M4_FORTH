@@ -356,8 +356,18 @@ dnl
 dnl
 dnl # CREATE(name)         --> make data space pointer
 define({CREATE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CREATE},{create},$@){}dnl
-}){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing name parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+{dnl
+format({%-21s},$1){}EQU __adr_{}$1
+__{}__ADD_TOKEN({__TOKEN_CREATE},{create},__adr_{}$1){}dnl
+})}){}dnl
 dnl
 define({__ASM_TOKEN_CREATE},{dnl
 __{}define({__INFO},{create}){}dnl
@@ -1908,11 +1918,11 @@ dnl # addr u char fill
 dnl # ( -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH3_FILL},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH3_FILL},{push3_fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3_FILL},{$1 $2 $3 fill},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH3_FILL},{dnl
-__{}define({__INFO},{push3_fill}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
@@ -1921,9 +1931,9 @@ __{}$#,{2},{
 __{}__{}.error {$0}($@): The third parameter is missing!},
 __{}$#,{3},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(eval($2),{0},{dnl
+ifelse(__SAVE_EVAL($2),{0},{dnl
 __{}                        ;           $1 $2 $3 fill {$0}(addr,u,char)   variant null: 0 byte},
-eval($2),{1},{dnl
+__SAVE_EVAL($2),{1},{dnl
 __{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[6:26]     $1 $2 $3 fill {$0}(addr,u,char)   variant A.1: 1 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill},
@@ -1931,7 +1941,7 @@ __{}__{}{dnl
 __{}__{}                        ;[5:20]     $1 $2 $3 fill {$0}(addr,u,char)   variant A.2: 1 byte
 __{}__{}    ld    A, format({%-11s},$3); 2:7       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill},
-eval($2),{2},{dnl
+__SAVE_EVAL($2),{2},{dnl
 __{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[9:39]     $1 $2 $3 fill {$0}(addr,u,char)   variant B.1: 2 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
@@ -1941,7 +1951,7 @@ __{}__{}{
 __{}__{}                        ;[7:30]     $1 $2 $3 fill {$0}(addr,u,char)   variant B.2: 2 byte
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill})},
-eval($2),{3},{dnl
+__SAVE_EVAL($2),{3},{dnl
 __{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[12:52]    $1 $2 $3 fill {$0}(addr,u,char)   variant C.1: 3 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill},
@@ -1951,7 +1961,7 @@ __{}__{}    ld    A, format({%-11s},$3); 2:7       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} A); 3:13      $1 $2 $3 fill},
-eval($2),{4},{dnl
+__SAVE_EVAL($2),{4},{dnl
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[13:61]    $1 $2 $3 fill {$0}(addr,u,char)   variant D.1: 4 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
@@ -1962,7 +1972,7 @@ __{}__{}                        ;[11:50]    $1 $2 $3 fill {$0}(addr,u,char)   va
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill},
-eval($2),{5},{dnl
+__SAVE_EVAL($2),{5},{dnl
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[16:74]    $1 $2 $3 fill {$0}(addr,u,char)   variant E.1: 5 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
@@ -1975,7 +1985,7 @@ __{}__{}    ld    A, B          ; 1:4       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(4+$1){,} A); 3:13      $1 $2 $3 fill},
-eval($2),{6},{dnl
+__SAVE_EVAL($2),{6},{dnl
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[17:81]    $1 $2 $3 fill {$0}(addr,u,char)   variant F.1: 6 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
@@ -1987,7 +1997,7 @@ __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      $1 $2 $3 fill},
-eval(((($1) & 0xFF00) == (($1 + $2) & 0xFF00)) && (($2) % 3 == 0)),{1},{dnl
+__SAVE_EVAL(+((($1) & 0xFF00) == (($1 + $2) & 0xFF00)) && (($2) % 3 == 0)),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/3) & 0x1FF))dnl
 __{}                        ;[16:format({%-7s},eval(36+46*_TEMP_B)])$1 $2 $3 fill {$0}(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
 __{}    push HL             ; 1:11      $1 $2 $3 fill
@@ -2001,19 +2011,19 @@ __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}    inc   L             ; 1:4       $1 $2 $3 fill
 __{}    djnz $-6            ; 2:13/8    $1 $2 $3 fill
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
-eval(($2) <= 2*256+1),{1},{dnl
+__SAVE_EVAL(+($2) <= 2*256+1),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
 __{}                        ;[eval(14+(($2) & 0x01)):format({%-7s},eval(36+37*_TEMP_B+7*(($2) & 0x01))])$1 $2 $3 fill {$0}(addr,u,char)   variant H: 2..513 byte
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},eval((256*_TEMP_B) & 0xFFFF)+$3); 3:10      $1 $2 $3 fill   B = _TEMP_B{}x, C = $3
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+1) & 0x01),{0},{dnl
+__{}ifelse(__SAVE_EVAL(+($1+1) & 0x01),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+2) & 0x01),{0},{dnl
+__{}ifelse(__SAVE_EVAL(+($1+2) & 0x01),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
@@ -2022,7 +2032,7 @@ __{}ifelse(eval(($2) & 0x01),{1},{dnl
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
 __{}}){}dnl
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
-eval(($2) <= 4*256+3),{1},{dnl
+__SAVE_EVAL(+($2) <= 4*256+3),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/4) & 0x1FF))dnl
 __{}ifelse(eval(($2) % 4),{0},{dnl
 __{}__{}define({_TEMP_SIZE},{18}){}dnl
@@ -2035,7 +2045,7 @@ __{}__{}define({_TEMP_PLUS},{
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill})},
 __{}eval(($2) % 4),{2},{dnl
 __{}__{}define({_TEMP_SIZE},{21}){}dnl
-__{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
+__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
 __{}__{}__{}define({_TEMP_CLOCK},{20}){}dnl
 __{}__{}__{}define({_TEMP_PLUS},{
 __{}__{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
@@ -2050,16 +2060,16 @@ __{}__{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill})})},
 __{}{dnl
 __{}__{}define({_TEMP_SIZE},{23}){}dnl
 __{}__{}define({_TEMP_CLOCK},{29}){}dnl
-__{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
-__{}__{}ifelse(eval(($1+4*_TEMP_B+2) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
+__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+1) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
+__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+2) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
 __{}__{}define({_TEMP_PLUS},{
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}__{}ifelse(eval(($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
+__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
 __{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}__{}{dnl
 __{}__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}__{}ifelse(eval(($1+4*_TEMP_B+2) & 0xFF),{0},{dnl
+__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+2) & 0xFF),{0},{dnl
 __{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}__{}{dnl
 __{}__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
@@ -2069,28 +2079,52 @@ __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},eval((256*_TEMP_B) & 0xFFFF)+$3); 3:10      $1 $2 $3 fill   B = _TEMP_B{}x, C = $3
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+1) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+1)
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+1) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+2) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+2)
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+2) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+3) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+3)
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+3) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+0) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+0)
+__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+0) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    djnz $-8            ; 2:13/8    $1 $2 $3 fill{}_TEMP_PLUS
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
-eval((($2) % 4) == 0),{1},{dnl
+__SAVE_EVAL(+(($2) % 4) == 0),{1},{dnl
 __{}define({_TEMP_B},eval((($2)/4) & 0xFF))dnl
 __{}define({_TEMP_C},eval(((($2)/4) & 0xFF00)/256))dnl
 __{}ifelse(eval(_TEMP_B>0),{1},{define({_TEMP_C},eval(_TEMP_C+1))}){}dnl
@@ -2100,22 +2134,22 @@ __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},256*_TEMP_B+_TEMP_C); 3:10      $1 $2 $3 fill   $2{}x = (C-1)*4*256 + 4*B
 __{}    ld    A, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:13},{2:7 })      $1 $2 $3 fill   A = char
 __{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+1) & 0x03),{0},{dnl
+__{}ifelse(__SAVE_EVAL(+($1+1) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+2) & 0x03),{0},{dnl
+__{}ifelse(__SAVE_EVAL(+($1+2) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+3) & 0x03),{0},{dnl
+__{}ifelse(__SAVE_EVAL(+($1+3) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}    ld  (HL),A          ; 1:7       $1 $2 $3 fill
-__{}ifelse(eval(($1+0) & 0x03),{0},{dnl
+__{}ifelse(__SAVE_EVAL(+($1+0) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})

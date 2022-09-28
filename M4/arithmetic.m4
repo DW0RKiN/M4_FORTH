@@ -146,7 +146,7 @@ __{}    push DE             ; 1:11      __INFO   ( x -- x x+$1 )
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld   HL, format({%-11s},$1); 3:16      __INFO
 __{}    add  HL, DE         ; 1:11      __INFO},
-ifelse(__IS_NUM($1),{0},{
+__IS_NUM($1),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      __INFO   ( x -- x x+$1 )
 __{}    ex   DE, HL         ; 1:4       __INFO

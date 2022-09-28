@@ -54,6 +54,7 @@ __{}ifelse(dnl
 __{}eval($#!=1),{1},{0},
 __{}{$1},{},{0},
 __{}{$1},(),{0},
+__{}eval( regexp({$1},{[0-9]}) == -1 ),{1},{0},dnl # ( -- )
 __{}eval( regexp({$1},{()}) != -1 ),{1},{0},dnl #
 __{}eval( regexp({$1},{[?'",yzYZ_g-wG-W]}) != -1 ),{1},{0},dnl # Any letter and underscore _ except a,b,c,d,e,f,x
 __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
@@ -1324,7 +1325,7 @@ dnl # D...
 d...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_2DROP},__LAST_TOKEN_INFO{ }$2)},
 
-            __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_PUSH},         {__SET_TOKEN({__TOKEN_DROP_PUSH},__LAST_TOKEN_INFO{ }$2,$3)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_PUSH},         {__SET_TOKEN({__TOKEN_DROP_PUSH},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP_PUSH-__TOKEN_OVER},    {__SET_TOKEN({__TOKEN_DROP_PUSH_OVER},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP_PUSH-__TOKEN_RPICK},   {__SET_TOKEN({__TOKEN_DROP_PUSH_RPICK},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP_PUSH-__TOKEN_PICK},    {__SET_TOKEN({__TOKEN_DROP_PUSH_PICK},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
