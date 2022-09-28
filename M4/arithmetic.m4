@@ -217,12 +217,16 @@ __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc   H             ; 1:4       __INFO
 __{}__{}    inc   H             ; 1:4       __INFO
 __{}__{}    inc   H             ; 1:4       __INFO},
-__{}eval((($1)) & 0xFF),{0},{
-__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}eval((($1)) & 0xFF):_TYP_SINGLE,{0:fast},{
+__{}__{}    ld    D, H          ; 1:4       __INFO   fast version
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
 __{}__{}    add   A, H          ; 1:4       __INFO
 __{}__{}    ld    H, A          ; 1:4       __INFO},
+__{}eval((($1)) & 0xFF),{0},{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   default version
+__{}__{}    ld   HL, __HEX_HL($1)     ; 3:10      __INFO
+__{}__{}    add  HL, DE         ; 1:11      __INFO},
 __{}{
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   HL, __HEX_HL($1)     ; 3:10      __INFO

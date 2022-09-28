@@ -365,8 +365,8 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
-format({%-21s},$1){}EQU __adr_{}$1
-__{}__ADD_TOKEN({__TOKEN_CREATE},{create},__adr_{}$1){}dnl
+format({%-21s},$1){}EQU __create_{}$1
+__{}__ADD_TOKEN({__TOKEN_CREATE},{create},__create_{}$1){}dnl
 })}){}dnl
 dnl
 define({__ASM_TOKEN_CREATE},{dnl

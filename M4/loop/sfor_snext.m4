@@ -55,8 +55,8 @@ __{}popdef({LOOP_STACK}){}dnl
 dnl
 define({__ASM_TOKEN_SNEXT},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(s))
-    ld   A, H           ; 1:4       __INFO
-    or   L              ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
     dec  HL             ; 1:6       __INFO   index--
     jp  nz, for{}$1      ; 3:10      __INFO
 leave{}$1:               ;           __INFO{}dnl
