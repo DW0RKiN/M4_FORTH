@@ -1055,7 +1055,6 @@ dnl #    eval(            (num_1) operation (num_2))
 dnl #    eval(((num_3)<<16+num_1) operation (num_2))
 define({__EVAL_OP_NUM_NUM},{dnl
 __{}ifelse(dnl
-
 __{}__{}$1,  {=}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) = __16BIT_TO_SIGN($3)))},
 __{}__{}$1, {<>}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) !=__16BIT_TO_SIGN($3)))},
 __{}__{}$1,  {<}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) < __16BIT_TO_SIGN($3)))},
@@ -1074,7 +1073,7 @@ __{}__{}$1,  {&}, {define({__TEMP},eval(       __HEX_HL($2) &        __HEX_HL($3
 __{}__{}$1,  {|}, {define({__TEMP},eval(       __HEX_HL($2) |        __HEX_HL($3)))},
 __{}__{}$1,  {^}, {define({__TEMP},eval(       __HEX_HL($2) ^        __HEX_HL($3)))},
 
-__{}__{}$1,  {*}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) * __16BIT_TO_SIGN($3))},
+__{}__{}$1,  {*}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) * __16BIT_TO_SIGN($3)))},
 __{}__{}$1, {u*}, {define({__TEMP},eval(       __HEX_HL($2) *        __HEX_HL($3)))},
 __{}__{}$1, {m*}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) * __16BIT_TO_SIGN($3)))},
 __{}__{}$1,{um*}, {define({__TEMP},eval(       __HEX_HL($2) *        __HEX_HL($3)))},
@@ -1112,7 +1111,7 @@ __{}{
 __{}__{}  .error {$0} $1 $2 $3}){}dnl
 ifelse(1,0,{errprint({
 $0($@)
-  __TEMP:>}__TEMP{<
+__TEMP:>}__TEMP{<
 })}){}dnl
 __{}ifelse(dnl
 __{}__{}$1,{um*},{__HEX_DE(__TEMP),__HEX_HL(__TEMP)},
@@ -1136,13 +1135,13 @@ dnl #    eval(            (num_1) operation (num_2)),eval(            (num_1) op
 dnl #    eval(((num_1)<<16+num_2) operation (num_3))
 dnl #    eval(((num_1)<<16+num_2) operation (num_3)),eval(((num_1)<<16+num_2) operation (num_3))
 define({__EVAL_S16},{dnl
-ifelse(1,1,{errprint(dnl
+ifelse(1,0,{errprint(dnl
 __{}define({__TEMP_A},{__HEX_HL($2)}){}dnl
 __{}define({__TEMP_B},{__HEX_HL($3)}){}dnl
-__{}define({__TEMP_C},{__HEX_HL($3)}){}dnl
-__{}ifelse(__TEMP_A,,define({__TEMP_A},{($2)})){}dnl
-__{}ifelse(__TEMP_B,,define({__TEMP_B},{($3)})){}dnl
-__{}ifelse(__TEMP_C,,define({__TEMP_C},{($4)})){}dnl
+__{}define({__TEMP_C},{__HEX_HL($4)}){}dnl
+__{}ifelse(__TEMP_A,,{define({__TEMP_A},{($2)})}){}dnl
+__{}ifelse(__TEMP_B,,{define({__TEMP_B},{($3)})}){}dnl
+__{}ifelse(__TEMP_C,,{define({__TEMP_C},{($4)})}){}dnl
 {
 $0($*)
   IS_NUM __TEMP_A: }__IS_NUM($2){ >}__TEMP_A{<
@@ -1378,6 +1377,8 @@ d...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_DULE-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_DULE_IF},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DUGE-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_DUGE_IF},__LAST_TOKEN_INFO{ }$2)},
 
+            __LAST_TOKEN_NAME=__GET_LOOP_TYPE(LOOP_STACK):$1,__TOKEN_I=S:__TOKEN_DUP,  {__SET_TOKEN({__TOKEN_DUP_DUP},__LAST_TOKEN_INFO{ }$2)},
+
 dnl # E...
 dnl # F...
 f...,,,
@@ -1443,6 +1444,8 @@ push,,,
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH-__TOKEN_1ADD},        {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_1ADD-__TOKEN_PUSH},   {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_1ADD_PUSH-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_CFETCH},            {__SET_TOKEN({__TOKEN_PUSH_CFETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_FOR},               {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_1){}__SET_TOKEN({__TOKEN_PUSH_FOR},__LAST_TOKEN_INFO{ }$2,$3)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH-__TOKEN_QFOR},              {__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_1){}__SET_TOKEN({__TOKEN_PUSH_QFOR},__LAST_TOKEN_INFO{ }$2,$3)},
@@ -1697,6 +1700,16 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{__INC_TOK
 
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_VALUE},          {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_VALUE},__BEFORELAST_TOKEN_ARRAY_2{ }$2,__BEFORELAST_TOKEN_ARRAY_2,shift(shift($@))){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_PUSH,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1)},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_DVALUE},         {__SET_TOKEN({__TOKEN_PUSHDOT_DVALUE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY_1*65536+__LAST_TOKEN_ARRAY_2,shift(shift($@))){}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_PUSH,__BEFORELAST_TOKEN_INFO{ drop},__BEFORELAST_TOKEN_ARRAY_1)},
+
+
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_FETCH},          {__SET_TOKEN({__TOKEN_PUSH2_FETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+            __LAST_TOKEN_NAME-$1,                 dodelat{__TOKEN_PUSH2_FETCH-__TOKEN_1ADD},     {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                 dodelat{__TOKEN_PUSH2_FETCH_1ADD-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,                 dodelat{__TOKEN_PUSH2_FETCH_1ADD_PUSH-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_CFETCH},         {__SET_TOKEN({__TOKEN_PUSH2_CFETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
 
 dnl # PUSH3
 push3,,,

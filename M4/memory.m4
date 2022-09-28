@@ -364,8 +364,8 @@ __IS_REG($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-{dnl
-format({%-21s},$1){}EQU __create_{}$1
+{
+format({%-21s},$1){}EQU __create_{}$1{}dnl
 __{}__ADD_TOKEN({__TOKEN_CREATE},{create},__create_{}$1){}dnl
 })}){}dnl
 dnl
@@ -1056,23 +1056,34 @@ dnl
 dnl # addr C@ x
 dnl # ( -- (addr) x )
 dnl # push2_cfetch(x,addr), push x and load 8-bit char from addr
+dnl # n addr C@
+dnl # ( -- n x )
 define({PUSH2_CFETCH},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH2_CFETCH},{$1 $2 c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_CFETCH},{dnl
-__{}define({__INFO},{push2_cfetch}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address and second parameter!},
-__{}$#,{1},{
-__{}__{}.error {$0}():  The second parameter is missing!},
-__{}$#,{2},{
-    push DE             ; 1:11      $1 $2 @  push2_cfetch($1,$2)
-    push HL             ; 1:11      $1 $2 @  push2_cfetch($1,$2)
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 $2 @  push2_cfetch($1,$2)
-    ld   HL,format({%-12s},($2)); 3:16      $1 $2 @  push2_cfetch($1,$2)
-    ld    H, 0x00       ; 2:7       $1 $2 @  push2_cfetch($1,$2)},
-__{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($#,0,{
+__{}  .error {$0}(): Missing first and address parameter!},
+__{}$#,1,{
+__{}  .error {$0}($@): Missing address parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($2),1,{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld   DE,format({%-12s},$1); ifelse(__IS_MEM_REF($1),1,{4:20},{3:10})      __INFO
+    ld   HL,format({%-12s},$2); 3:16      __INFO
+    ld    L,(HL)        ; 1:7       __INFO
+    ld    H, 0x00       ; 2:7       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld   DE,format({%-12s},$1); ifelse(__IS_MEM_REF($1),1,{4:20},{3:10})      __INFO
+    ld   HL,format({%-12s},{($2)}); 3:16      __INFO
+    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2244,6 +2255,38 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})
     push DE             ; 1:11      $1 @ push($1) fetch
     ex   DE, HL         ; 1:4       $1 @ push($1) fetch
     ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch}){}dnl
+dnl
+dnl
+dnl
+dnl # b addr @
+dnl # ( -- b a )
+define({PUSH2_FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_FETCH},{$1 $2 @},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_FETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($#,0,{
+__{}  .error {$0}(): Missing first and address parameter!},
+__{}$#,1,{
+__{}  .error {$0}($@): Missing address parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($2),1,{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld   HL,format({%-12s},$2); 3:16      __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),1,{3:16},{3:10})      __INFO
+    ex   DE, HL         ; 1:4       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld   DE,format({%-12s},$1); ifelse(__IS_MEM_REF($1),1,{4:20},{3:10})      __INFO
+    ld   HL,format({%-12s},{($2)}); 3:16      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
