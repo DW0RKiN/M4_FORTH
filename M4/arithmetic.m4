@@ -777,6 +777,31 @@ __{}define({__INFO},{swap_2sub_swap}){}dnl
     dec  DE             ; 1:6       swap 2- swap}){}dnl
 dnl
 dnl
+dnl # "rot +"
+dnl # ( x3 x2 x1 -- x2 x1+x3 )
+define({ROT_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_ADD},{rot +},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROT_ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x2 x1+x3 )
+    add  HL, BC         ; 1:11      __INFO}){}dnl
+dnl
+dnl
+dnl # "rot -"
+dnl # ( x3 x2 x1 -- x2 x1-x3 )
+define({ROT_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_SUB},{rot -},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROT_SUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x2 x1-x3 )
+    or    A             ; 1:4       __INFO
+    sbc  HL, BC         ; 2:15      __INFO}){}dnl
+dnl
+dnl
 dnl # "rot 1+ nrot"
 dnl # ( x3 x2 x1 -- x3+1 x2 x1 )
 define({ROT_1ADD_NROT},{dnl
@@ -791,6 +816,23 @@ __{}define({__INFO},{rot_1add_nrot}){}dnl
     push BC             ; 1:11      rot 1+ nrot}){}dnl
 dnl
 dnl
+dnl # "rot 1+ nrot 2over nip"
+dnl # ( x3 x2 x1 -- x3+1 x2 x1 x3+1 )
+define({ROT_1ADD_NROT_2OVER_NIP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP},{rot 1+ -rot 2over nip},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROT_1ADD_NROT_2OVER_NIP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3+1 x2 x1 x3+1 )
+    inc  BC             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    H, B          ; 1:4       __INFO}){}dnl
+dnl
+dnl
 dnl # "rot 1- nrot"
 dnl # ( x3 x2 x1 -- x3-1 x2 x1 )
 define({ROT_1SUB_NROT},{dnl
@@ -803,6 +845,23 @@ __{}define({__INFO},{rot_1sub_nrot}){}dnl
     pop  BC             ; 1:10      rot 1- nrot   ( x3 x2 x1 -- x3-1 x2 x1 )
     dec  BC             ; 1:6       rot 1- nrot
     push BC             ; 1:11      rot 1- nrot}){}dnl
+dnl
+dnl
+dnl # "rot 1- nrot 2over nip"
+dnl # ( x3 x2 x1 -- x3-1 x2 x1 x3-1 )
+define({ROT_1SUB_NROT_2OVER_NIP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_1SUB_NROT_2OVER_NIP},{rot 1- -rot 2over nip},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROT_1SUB_NROT_2OVER_NIP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3-1 x2 x1 x3-1 )
+    dec  BC             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    H, B          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # "rot 2+ nrot"
