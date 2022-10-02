@@ -2436,29 +2436,29 @@ dnl # ( d -- f )
 dnl # if ( x1x2 ) flag = 0; else flag = 0xFFFF;
 dnl # 0 if 32-bit number not equal to zero, -1 if equal
 define({D0EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_D0EQ},{d0eq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_D0EQ},{d0=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_D0EQ},{dnl
-__{}define({__INFO},{d0eq}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_D0EQ,{small},{
-                        ;[8:54]     D0=   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
-    add  HL, DE         ; 1:11      D0=   carry: 0    1
-    sbc   A, A          ; 1:4       D0=          0x00 0xff
-    or    H             ; 1:4       D0=          H    0xff
-    dec  HL             ; 1:6       D0=
-    sub   H             ; 1:4       D0=   carry: 1|0  0
-    sbc  HL, HL         ; 2:15      D0=   set flag D == 0
-    pop   DE            ; 1:10      D0=},
+                        ;[8:54]     __INFO   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
+    add  HL, DE         ; 1:11      __INFO   carry: 0    1
+    sbc   A, A          ; 1:4       __INFO          0x00 0xff
+    or    H             ; 1:4       __INFO          H    0xff
+    dec  HL             ; 1:6       __INFO
+    sub   H             ; 1:4       __INFO   carry: 1|0  0
+    sbc  HL, HL         ; 2:15      __INFO   set flag D == 0
+    pop   DE            ; 1:10      __INFO},
 {
-                        ;[9:48]     D0=   ( hi lo -- flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
-    ld    A, D          ; 1:4       D0=
-    or    E             ; 1:4       D0=
-    or    H             ; 1:4       D0=
-    or    L             ; 1:4       D0=
-    sub   0x01          ; 2:7       D0=
-    sbc  HL, HL         ; 2:15      D0=   set flag D == 0
-    pop   DE            ; 1:10      D0=})}){}dnl
+                        ;[9:48]     __INFO   ( hi lo -- flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
+    ld    A, D          ; 1:4       __INFO
+    or    E             ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    sub   0x01          ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag D == 0
+    pop   DE            ; 1:10      __INFO})}){}dnl
 dnl
 dnl
 dnl # D0<
@@ -2487,12 +2487,11 @@ dnl # D=
 dnl # ( d2 d1 -- flag )
 dnl # equal ( d1 == d2 )
 define({DEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_DEQ},{deq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DEQ},{d=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DEQ},{dnl
-__{}define({__INFO},{deq}){}dnl
-
+__{}define({__INFO},__COMPILE_INFO)
                        ;[15:90/69,91]D=  ( d2 d1 -- flag )
     pop  BC             ; 1:10      D=   BC = lo_2
     xor   A             ; 1:4       D=    A = 0x00
@@ -2512,11 +2511,11 @@ dnl # $1 D=
 dnl # ( d1 -- flag )
 dnl # equal ( d1 == $1 )
 define({PUSHDOT_DEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DEQ},{pushdot_deq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_DEQ},{$1. d=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHDOT_DEQ},{dnl
-__{}define({__INFO},{pushdot_deq}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
@@ -2536,7 +2535,7 @@ __{}    ld    H, A          ; 1:4       $1. D=   HL = flag
 __{}    pop  DE             ; 1:10      $1. D=},
 __IS_NUM($1),{0},{
 __{}  .error {$0}($@): M4 does not know $1 parameter value!},
-{ifelse(eval($1),0,{D0EQ},
+{ifelse(eval($1),0,{__ASM_TOKEN_D0EQ},
 __{}__{}{define({_TMP_INFO},{$1. D=}){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_DE($1),{HL},0,{BC},__HEX_HL($1)){}
 __{}__{}__DEQ_MAKE_BEST_CODE($1,6,29,0,0){}dnl
 __{}__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
@@ -2617,7 +2616,7 @@ __{}    ld    H, A          ; 1:4       __INFO   HL = flag
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
 __{}  .error {$0}($@): M4 does not know $1 parameter value!},
-{ifelse(eval($1),0,{D0EQ},
+{ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0EQ},
 __{}__{}{define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
 __{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
 __{}__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)

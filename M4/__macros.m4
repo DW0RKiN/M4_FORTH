@@ -1055,7 +1055,7 @@ dnl #    eval(            (num_1) operation (num_2))
 dnl #    eval(((num_3)<<16+num_1) operation (num_2))
 define({__EVAL_OP_NUM_NUM},{dnl
 __{}ifelse(dnl
-__{}__{}$1,  {=}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) = __16BIT_TO_SIGN($3)))},
+__{}__{}$1,  {=}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) ==__16BIT_TO_SIGN($3)))},
 __{}__{}$1, {<>}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) !=__16BIT_TO_SIGN($3)))},
 __{}__{}$1,  {<}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) < __16BIT_TO_SIGN($3)))},
 __{}__{}$1, {<=}, {define({__TEMP},eval(__16BIT_TO_SIGN($2) <=__16BIT_TO_SIGN($3)))},
