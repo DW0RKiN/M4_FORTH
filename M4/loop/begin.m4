@@ -632,7 +632,7 @@ __{}  .error {$0} for non-existent {BEGIN}},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {define({_TMP_INFO},{rot 1+ -rot 2over nip c@ 0 c<> while BEGIN_STACK 2over nip c@})
-__{}                        ;[7:42]     _TMP_INFO   ( addr d -- addr++ d )
+__{}                       ;[13:74]     _TMP_INFO   ( addr d -- addr++ d )
 __{}    pop  BC             ; 1:10      _TMP_INFO
 __{}    inc  BC             ; 1:6       _TMP_INFO   BC = addr++
 __{}    push BC             ; 1:11      _TMP_INFO
