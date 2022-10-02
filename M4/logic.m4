@@ -2751,22 +2751,21 @@ dnl # D<>
 dnl # ( d2 d1 -- flag )
 dnl # not equal ( d1 != d2 )
 define({DNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DNE},{dne},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DNE},{d<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DNE},{dnl
-__{}define({__INFO},{dne}){}dnl
-
-                       ;[15:71,88/83]D<>  ( d2 d1 -- flag )
-    pop  BC             ; 1:10      D<>   n h2    . h1 l1  BC= lo(d2) = l2
-    xor   A             ; 1:4       D<>   n h2    . h1 l1  A = 0x00
-    sbc  HL, BC         ; 2:15      D<>   n h2    . h1 --  HL= l1 - l2
-    pop  HL             ; 1:10      D<>   n       . h1 h2  HL= hi(d2) = h2
-    jr   nz, $+6        ; 2:7/12    D<>   n       . h1 h2
-    sbc  HL, DE         ; 2:15      D<>   n       . h1 h2  HL = h2 - h1
-    jr    z, $+5        ; 2:7/12    D<>   n       . h1 h2
-    ld   HL, 0xFFFF     ; 3:10      D<>   n       . h1 ff  HL = true
-    pop  DE             ; 1:10      D<>           . n  ff}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[15:71,88/83]__INFO  ( d2 d1 -- flag )
+    pop  BC             ; 1:10      __INFO   n h2    . h1 l1  BC= lo(d2) = l2
+    xor   A             ; 1:4       __INFO   n h2    . h1 l1  A = 0x00
+    sbc  HL, BC         ; 2:15      __INFO   n h2    . h1 --  HL= l1 - l2
+    pop  HL             ; 1:10      __INFO   n       . h1 h2  HL= hi(d2) = h2
+    jr   nz, $+6        ; 2:7/12    __INFO   n       . h1 h2
+    sbc  HL, DE         ; 2:15      __INFO   n       . h1 h2  HL = h2 - h1
+    jr    z, $+5        ; 2:7/12    __INFO   n       . h1 h2
+    ld   HL, 0xFFFF     ; 3:10      __INFO   n       . h1 ff  HL = true
+    pop  DE             ; 1:10      __INFO           . n  ff}){}dnl
 dnl
 dnl
 dnl # Du<>
