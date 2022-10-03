@@ -1529,6 +1529,35 @@ __{}    push BC             ; 1:11      pushdot_2swap($1){}dnl
 })}){}dnl
 dnl
 dnl
+dnl
+dnl # ( d_old -- d_new d_old )
+dnl # PUSH2_2SWAP(number32bit) ulozi za nejvyssi 32 bitove cislo na zasobnik 32 bitove cislo
+dnl # 255. --> ( 0x1122 0x3344 -- 0x0000 0x00FF 0x1122 0x3344 )
+define({PUSH2_2SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_2SWAP},{$1 $2 2swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_2SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(dnl
+eval($#<2),1,{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{
+__{}define({__DE},{ifelse(__IS_NUM($1),1,{__HEX_HL($1)},{$1})}){}dnl
+__{}define({__HL},{ifelse(__IS_NUM($2),1,{__HEX_HL($2)},{$2})}){}dnl
+__{}define({_TMP_INFO},{__INFO   hi word}){}dnl
+__{}__LD_REG16({BC},__DE){}dnl
+__{}__CODE_16BIT
+__{}    push BC             ; 1:11      __INFO{}dnl
+__{}define({_TMP_INFO},{__INFO   lo word}){}dnl
+__{}__LD_REG16({BC},__HL,{BC},__DE){}dnl
+__{}__CODE_16BIT
+__{}    push BC             ; 1:11      __INFO{}dnl
+})}){}dnl
+dnl
+dnl
 dnl # 2 pick ( c b a -- c b a c )
 define({_2_PICK},{dnl
 __{}__ADD_TOKEN({__TOKEN_2_PICK},{2 pick},$@){}dnl

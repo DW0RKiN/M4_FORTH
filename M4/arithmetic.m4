@@ -1332,6 +1332,38 @@ __{}define({__INFO},{d+}){}dnl
     ex   DE, HL         ; 1:4       D+}){}dnl
 dnl
 dnl
+dnl # ( pd2 pd1 -- pd2 pd1 )
+dnl # [pd1] += [pd2]
+define({PDADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDADD},{pd+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] += [pd2] with align 4
+    add  (HL)           ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    ld     C, L         ; 1:4       __INFO
+    ld     B, E         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    ld     L, C         ; 1:4       __INFO
+    ld     E, B         ; 1:4       __INFO}){}dnl
+dnl
+dnl
 dnl # ( d -- d+n )
 dnl # d = d + n
 define({PUSHDOT_DADD},{dnl
@@ -1598,6 +1630,38 @@ ifelse(TYP_DSUB,{small},{
     ld    A, B          ; 1:4       D-
     sbc   A, D          ; 1:4       D-   hi2-hi1
     ld    D, A          ; 1:4       D-})}){}dnl
+dnl
+dnl
+dnl # ( pd2 pd1 -- pd2 pd1 )
+dnl # [pd1] -= [pd2]
+define({PDSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDSUB},{pd-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] -= [pd2] with align 4
+    sub  (HL)           ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    ld     C, L         ; 1:4       __INFO
+    ld     B, E         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld   (HL), A        ; 1:7       __INFO
+    ld     L, C         ; 1:4       __INFO
+    ld     E, B         ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # 2swap D-
@@ -1971,6 +2035,28 @@ __{}define({__INFO},{d1+}){}dnl
     or    H             ; 1:4       D1+
     jr   nz, $+3        ; 2:7/12    D1+
     inc  DE             ; 1:6       D1+   hi word}){}dnl
+dnl
+dnl
+dnl # "2dup 2@ d1+ 2!" but with pointer
+dnl # ( pd -- pd )  [pd] += 1
+define({PD1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PD1ADD},{pd1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PD1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc  (HL)           ; 1:11      __INFO   ( pd -- pd )  [pd] += 1 with align 4
+    jr     z, $+14      ; 2:7/12    __INFO
+    ld     C, L         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    inc  (HL)           ; 1:11      __INFO
+    jr     z, $+8       ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    inc  (HL)           ; 1:11      __INFO
+    jr     z, $+4       ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    inc  (HL)           ; 1:11      __INFO
+    ld     L, C         ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # "D1-"
