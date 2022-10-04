@@ -434,18 +434,17 @@ __{}__ADD_TOKEN({__TOKEN_MAX},{max},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MAX},{dnl
-__{}define({__INFO},{max}){}dnl
-
-    ld    A, E          ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
-    sub   L             ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
-    ld    A, D          ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
-    sbc   A, H          ; 1:4       max    DE<HL --> DE-HL<0 --> carry if HL is max
-    rra                 ; 1:4       max
-    xor   H             ; 1:4       max
-    xor   D             ; 1:4       max
-    jp    m, $+4        ; 3:10      max
-    ex   DE, HL         ; 1:4       max
-    pop  DE             ; 1:10      max}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if HL is max
+    sub   L             ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if HL is max
+    ld    A, D          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if HL is max
+    sbc   A, H          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if HL is max
+    rra                 ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    jp    m, $+4        ; 3:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( 5 3 -- 5 )
@@ -496,18 +495,17 @@ __{}__ADD_TOKEN({__TOKEN_MIN},{min},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MIN},{dnl
-__{}define({__INFO},{min}){}dnl
-
-    ld    A, E          ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
-    sub   L             ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
-    ld    A, D          ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
-    sbc   A, H          ; 1:4       min    DE>=HL --> DE-HL>=0 --> not carry if HL is min
-    rra                 ; 1:4       min
-    xor   H             ; 1:4       min
-    xor   D             ; 1:4       min
-    jp    p, $+4        ; 3:10      min
-    ex   DE, HL         ; 1:4       min
-    pop  DE             ; 1:10      min}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    sub   L             ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    ld    A, D          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    sbc   A, H          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if HL is min
+    rra                 ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    jp    p, $+4        ; 3:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( 5 3 -- 3 )
@@ -576,11 +574,10 @@ __{}__ADD_TOKEN({__TOKEN_MUL},{*},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MUL},{dnl
-__{}define({__INFO},{*}){}dnl
-
-ifdef({USE_MUL},,define({USE_MUL},{}))dnl
-    call MULTIPLY       ; 3:17      *
-    pop  DE             ; 1:10      *}){}dnl
+__{}__def({USE_MUL},{}))dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call MULTIPLY       ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
@@ -590,11 +587,10 @@ __{}__ADD_TOKEN({__TOKEN_DIV},{/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DIV},{dnl
-__{}define({__INFO},{/}){}dnl
-
-ifdef({USE_DIV},,define({USE_DIV},{}))dnl
-    call DIVIDE         ; 3:17      /
-    pop  DE             ; 1:10      /}){}dnl
+__{}__def({USE_DIV},,define({USE_DIV},{}))dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call DIVIDE         ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
