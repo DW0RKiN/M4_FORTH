@@ -574,7 +574,7 @@ __{}__ADD_TOKEN({__TOKEN_MUL},{*},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MUL},{dnl
-__{}__def({USE_MUL},{}))dnl
+__{}__def({USE_MUL},{})dnl
 __{}define({__INFO},__COMPILE_INFO)
     call MULTIPLY       ; 3:17      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
@@ -587,7 +587,7 @@ __{}__ADD_TOKEN({__TOKEN_DIV},{/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DIV},{dnl
-__{}__def({USE_DIV},,define({USE_DIV},{}))dnl
+__{}__def({USE_DIV},{})dnl
 __{}define({__INFO},__COMPILE_INFO)
     call DIVIDE         ; 3:17      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
@@ -600,12 +600,11 @@ __{}__ADD_TOKEN({__TOKEN_MOD},{mod},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MOD},{dnl
-__{}define({__INFO},{mod}){}dnl
-
-ifdef({USE_DIV},,define({USE_DIV},{}))dnl
-    call DIVIDE         ; 3:17      mod
-    ex   DE, HL         ; 1:4       mod
-    pop  DE             ; 1:10      mod}){}dnl
+__def({USE_DIV},{})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call DIVIDE         ; 3:17      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- r q )
