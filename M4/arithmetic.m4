@@ -2075,6 +2075,95 @@ __{}define({__INFO},{d1-}){}dnl
     dec  DE             ; 1:6       D1-   hi word}){}dnl
 dnl
 dnl
+dnl # "2dup 2@ d1- 2!" but with pointer
+dnl # ( pd -- pd )  [pd] -= 1
+define({PD1SUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_PD1SUB},{pd1-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PD1SUB},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(1,1,{
+                ;[19:34,71,100,110] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
+    xor    A            ; 1:4       __INFO
+    or     A,(HL)       ; 1:7       __INFO
+    jr    nz, $+16      ; 2:7/12    __INFO
+    ld     C, L         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    or   (HL)           ; 1:7       __INFO
+    jr    nz, $+9       ; 2:7/12    __INFO
+    dec  (HL)           ; 1:11      __INFO
+    inc    L            ; 1:4       __INFO
+    or   (HL)           ; 1:7       __INFO
+    jr    nz, $+4       ; 2:7/12    __INFO
+    dec  (HL)           ; 1:11      __INFO
+    inc    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    ld     L, C         ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO},
+1,0,{
+                ;[20:34,67,100,114] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
+    xor    A            ; 1:4       __INFO
+    or     A,(HL)       ; 1:7       __INFO
+    jr    nz, $+17      ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    or   (HL)           ; 1:7       __INFO
+    jr    nz, $+11      ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    or   (HL)           ; 1:7       __INFO
+    jr    nz, $+5       ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    dec    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    dec    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    dec    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO},
+1,0,{
+                ;[21:34,75,108,118] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
+    dec  (HL)           ; 1:11      __INFO
+    ld     A,(HL)       ; 1:7       __INFO
+    inc    A            ; 1:4       __INFO
+    jr    nz, $+18      ; 2:7/12    __INFO
+    ld     C, L         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    ld     A,(HL)       ; 1:7       __INFO
+    inc    A            ; 1:4       __INFO
+    jr     z, $+10      ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    ld     A,(HL)       ; 1:7       __INFO
+    inc    A            ; 1:4       __INFO
+    jr     z, $+4       ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    ld     L, C         ; 1:4       __INFO},
+{
+               ;[23:37,74,103,113] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
+    ld     B, 0x01      ; 2:7       __INFO
+    ld     A,(HL)       ; 1:7       __INFO
+    sub    A, B         ; 1:4       __INFO
+    ld   (HL),A         ; 1:7       __INFO
+    jr    nc, $+18      ; 2:7/12    __INFO
+    ld     C, L         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    ld     A,(HL)       ; 1:7       __INFO
+    sub    A, B         ; 1:4       __INFO
+    ld   (HL),A         ; 1:7       __INFO
+    jr     z, $+10      ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    ld     A,(HL)       ; 1:7       __INFO
+    sub    A, B         ; 1:4       __INFO
+    ld   (HL),A         ; 1:7       __INFO
+    jr     z, $+4       ; 2:7/12    __INFO
+    inc    L            ; 1:4       __INFO
+    dec  (HL)           ; 1:11      __INFO
+    ld     L, C         ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # "D2+"
 dnl # ( d -- d+2 )
 define({D2ADD},{dnl
