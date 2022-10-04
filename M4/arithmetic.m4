@@ -267,12 +267,11 @@ __{}__ADD_TOKEN({__TOKEN_SUB},{-},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SUB},{dnl
-__{}define({__INFO},{-}){}dnl
-
-    ex   DE, HL         ; 1:4       -
-    or    A             ; 1:4       -
-    sbc  HL, DE         ; 2:15      -
-    pop  DE             ; 1:10      -}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ex   DE, HL         ; 1:4       __INFO
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # swap -
@@ -283,11 +282,10 @@ __{}__ADD_TOKEN({__TOKEN_SWAP_SUB},{swap -},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_SUB},{dnl
-__{}define({__INFO},{swap -}){}dnl
-
-    or    A             ; 1:4       swap -
-    sbc  HL, DE         ; 2:15      swap -
-    pop  DE             ; 1:10      swap -}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # over -
@@ -297,10 +295,9 @@ __{}__ADD_TOKEN({__TOKEN_OVER_SUB},{over -},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_SUB},{dnl
-__{}define({__INFO},{over -}){}dnl
-
-    or    A             ; 1:4       over -
-    sbc  HL, DE         ; 2:15      over -}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x -- x-n )
@@ -310,63 +307,63 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_SUB},{$1 -},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_SUB},{dnl
-__{}define({__INFO},{$1 -}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
 __IS_MEM_REF($1),{1},{
 __{}    ; warning >>>$1<<< is a pointer to memory
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 -
-__{}    or    A             ; 1:4       $1 -
-__{}    sbc  HL, BC         ; 2:15      $1 -},
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO},
 __IS_NUM($1),{0},{
 __{}    ; warning M4 does not know the numerical value of >>>$1<<<
-__{}    ld   BC, format({%-11s},-($1)); 3:10      $1 -
-__{}    add  HL, BC         ; 1:11      $1 -},
+__{}    ld   BC, format({%-11s},-($1)); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO},
 {ifelse(
 __{}eval((($1)+3*256) & 0xffff),{0},{
-__{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    inc  H              ; 1:4       $1 -
-__{}    inc  H              ; 1:4       $1 -},
+__{}    inc  H              ; 1:4       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    inc  H              ; 1:4       __INFO
+__{}    inc  H              ; 1:4       __INFO},
 __{}eval((($1)+2*256) & 0xffff),{0},{
-__{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    inc  H              ; 1:4       $1 -},
+__{}    inc  H              ; 1:4       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    inc  H              ; 1:4       __INFO},
 __{}eval((($1)+1*256) & 0xffff),{0},{
-__{}    inc  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )},
+__{}    inc  H              ; 1:4       __INFO   ( x -- x-__HEX_HL($1) )},
 __{}eval((($1)+    3) & 0xffff),{0},{
-__{}    inc  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    inc  HL             ; 1:6       $1 -
-__{}    inc  HL             ; 1:6       $1 -},
+__{}    inc  HL             ; 1:6       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    inc  HL             ; 1:6       __INFO
+__{}    inc  HL             ; 1:6       __INFO},
 __{}eval((($1)+    2) & 0xffff),{0},{
-__{}    inc  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    inc  HL             ; 1:6       $1 -},
+__{}    inc  HL             ; 1:6       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    inc  HL             ; 1:6       __INFO},
 __{}eval((($1)+    1) & 0xffff),{0},{
-__{}    inc  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )},
+__{}    inc  HL             ; 1:6       __INFO   ( x -- x-__HEX_HL($1) )},
 __{}eval((-($1)) & 0xFFFF),{0},{
-__{}                        ;           $1 -   ( x -- x-__HEX_HL($1) )},
+__{}                        ;           __INFO   ( x -- x-__HEX_HL($1) )},
 __{}eval(($1)-1),{0},{
-__{}    dec  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )},
+__{}    dec  HL             ; 1:6       __INFO   ( x -- x-__HEX_HL($1) )},
 __{}eval(($1)-2),{0},{
-__{}    dec  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    dec  HL             ; 1:6       $1 -},
+__{}    dec  HL             ; 1:6       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    dec  HL             ; 1:6       __INFO},
 __{}eval(($1)-3),{0},{
-__{}    dec  HL             ; 1:6       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    dec  HL             ; 1:6       $1 -
-__{}    dec  HL             ; 1:6       $1 -},
+__{}    dec  HL             ; 1:6       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    dec  HL             ; 1:6       __INFO
+__{}    dec  HL             ; 1:6       __INFO},
 __{}eval(($1)-1*256),{0},{
-__{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )},
+__{}    dec  H              ; 1:4       __INFO   ( x -- x-__HEX_HL($1) )},
 __{}eval(($1)-2*256),{0},{
-__{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    dec  H              ; 1:4       $1 -},
+__{}    dec  H              ; 1:4       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    dec  H              ; 1:4       __INFO},
 __{}eval(($1)-3*256),{0},{
-__{}    dec  H              ; 1:4       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    dec  H              ; 1:4       $1 -
-__{}    dec  H              ; 1:4       $1 -},
+__{}    dec  H              ; 1:4       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    dec  H              ; 1:4       __INFO
+__{}    dec  H              ; 1:4       __INFO},
 __{}eval((-($1)) & 0xFF),{0},{
-__{}    ld    A, __HEX_H(-($1))       ; 2:7       $1 -   ( x -- x-__HEX_HL($1) )
-__{}    add   A, H          ; 1:4       $1 -
-__{}    ld    H, A          ; 1:4       $1 -},
+__{}    ld    A, __HEX_H(-($1))       ; 2:7       __INFO   ( x -- x-__HEX_HL($1) )
+__{}    add   A, H          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO},
 __{}{
-__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      $1 -   ( x -- x-__HEX_HL($1) )
-__{}    add  HL, BC         ; 1:11      $1 -})})}){}dnl
+__{}    ld   BC, __HEX_HL(-($1))     ; 3:10      __INFO   ( x -- x-__HEX_HL($1) )
+__{}    add  HL, BC         ; 1:11      __INFO})})}){}dnl
 dnl
 dnl
 dnl
