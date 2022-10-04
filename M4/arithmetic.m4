@@ -18,10 +18,9 @@ __{}__ADD_TOKEN({__TOKEN_ADD},{+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ADD},{dnl
-__{}define({__INFO},{+}){}dnl
-
-    add  HL, DE         ; 1:11      +
-    pop  DE             ; 1:10      +}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, DE         ; 1:11      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x -- x+n )
@@ -115,33 +114,33 @@ dnl # CONSTANT(_a,5) CONSTANT(_b,7) PUSH2_ADD({_a},{_b}) -->  ld   HL, 0x000C   
 dnl # CONSTANT(_a,5) CONSTANT(_b,7) PUSH2_ADD(_a,_b)     -->  ld   HL, 0x000C     ; 3:10      5 7 +
 eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{dnl
 __{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
-__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   BC,format({%-12s},$1); 4:20      {$1} {$2} +
-__{}__{}    ld   HL,format({%-12s},$2); 3:16      {$1} {$2} +
-__{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO},
 __{}__IS_MEM_REF($1),{1},{
-__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   HL,format({%-12s},$1); 3:16      {$1} {$2} +
-__{}__{}    ld   BC, __FORM({%-11s},$2); 3:10      {$1} {$2} +
-__{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
+__{}__{}    ld   BC, __FORM({%-11s},$2); 3:10      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO},
 __{}{
-__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      {$1} {$2} +
-__{}__{}    ld   HL,format({%-12s},$2); 3:16      {$1} {$2} +
-__{}__{}    add  HL, BC         ; 1:11      {$1} {$2} +})},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO})},
 {dnl
 __{}__{}ifelse(__IS_NUM($1+$2),{0},{
 __{}__{}    ; warning The condition >>>$1+$2<<< cannot be evaluated
-__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   HL, __FORM({%-11s},$1+$2); 3:10      {$1} {$2} +},
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __FORM({%-11s},$1+$2); 3:10      __INFO},
 __{}{
-__{}__{}    push DE             ; 1:11      {$1} {$2} +   ( -- x )   x = $1+$2
-__{}__{}    ex   DE, HL         ; 1:4       {$1} {$2} +
-__{}__{}    ld   HL, __HEX_HL($1+$2)     ; 3:10      {$1} {$2} +})})}){}dnl
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, __HEX_HL($1+$2)     ; 3:10      __INFO})})}){}dnl
 dnl
 dnl
 dnl
