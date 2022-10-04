@@ -420,12 +420,11 @@ __{}__ADD_TOKEN({__TOKEN_ABS},{abs},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ABS},{dnl
-__{}define({__INFO},{abs}){}dnl
-
-    ld    A, H          ; 1:4       abs
-    add   A, A          ; 1:4       abs
-    jr   nc, $+8        ; 2:7/12    abs
-    NEGATE}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    jr   nc, $+8        ; 2:7/12    __INFO{}dnl
+    __ASM_TOKEN_NEGATE}){}dnl
 dnl
 dnl
 dnl # ( 5 3 -- 5 )
