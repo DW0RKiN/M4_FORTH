@@ -691,10 +691,9 @@ __{}__ADD_TOKEN({__TOKEN_2ADD},{2+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2ADD},{dnl
-__{}define({__INFO},{2+}){}dnl
-
-    inc  HL             ; 1:6       2+
-    inc  HL             ; 1:6       2+}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc  HL             ; 1:6       __INFO
+    inc  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "2-"
@@ -705,60 +704,55 @@ __{}__ADD_TOKEN({__TOKEN_2SUB},{2-},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2SUB},{dnl
-__{}define({__INFO},{2-}){}dnl
-
-    dec  HL             ; 1:6       2-
-    dec  HL             ; 1:6       2-}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec  HL             ; 1:6       __INFO
+    dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "swap 1+ swap"
 dnl # ( x2 x1 -- x2+1 x1 )
 define({SWAP_1ADD_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP_1ADD_SWAP},{swap_1add_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_1ADD_SWAP},{swap 1+ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_1ADD_SWAP},{dnl
-__{}define({__INFO},{swap_1add_swap}){}dnl
-
-    inc  DE             ; 1:6       swap 1+ swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc  DE             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "swap 1- swap"
 dnl # ( x2 x1 -- x2-1 x1 )
 define({SWAP_1SUB_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP_1SUB_SWAP},{swap_1sub_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_1SUB_SWAP},{swap 1- swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_1SUB_SWAP},{dnl
-__{}define({__INFO},{swap_1sub_swap}){}dnl
-
-    dec  DE             ; 1:6       swap 1- swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec  DE             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "swap 2+ swap"
 dnl # ( x2 x1 -- x2+2 x1 )
 define({SWAP_2ADD_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP_2ADD_SWAP},{swap_2add_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_2ADD_SWAP},{swap 2+ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_2ADD_SWAP},{dnl
-__{}define({__INFO},{swap_2add_swap}){}dnl
-
-    inc  DE             ; 1:6       swap 2+ swap
-    inc  DE             ; 1:6       swap 2+ swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc  DE             ; 1:6       __INFO
+    inc  DE             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "swap 2- swap"
 dnl # ( x2 x1 -- x2-2 x1 )
 define({SWAP_2SUB_SWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP_2SUB_SWAP},{swap_2sub_swap},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_2SUB_SWAP},{swap 2- swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP_2SUB_SWAP},{dnl
-__{}define({__INFO},{swap_2sub_swap}){}dnl
-
-    dec  DE             ; 1:6       swap 2- swap
-    dec  DE             ; 1:6       swap 2- swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec  DE             ; 1:6       __INFO
+    dec  DE             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "rot +"
@@ -789,15 +783,14 @@ dnl
 dnl # "rot 1+ nrot"
 dnl # ( x3 x2 x1 -- x3+1 x2 x1 )
 define({ROT_1ADD_NROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT},{rot_1add_nrot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_1ADD_NROT},{rot 1+ nrot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_1ADD_NROT},{dnl
-__{}define({__INFO},{rot_1add_nrot}){}dnl
-
-    pop  BC             ; 1:10      rot 1+ nrot   ( x3 x2 x1 -- x3+1 x2 x1 )
-    inc  BC             ; 1:6       rot 1+ nrot
-    push BC             ; 1:11      rot 1+ nrot}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3+1 x2 x1 )
+    inc  BC             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # "rot 1+ nrot 2over nip"
