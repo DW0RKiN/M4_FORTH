@@ -818,7 +818,6 @@ __{}__ADD_TOKEN({__TOKEN_ROT_1SUB_NROT},{rot 1- nrot},$@){}dnl
 dnl
 define({__ASM_TOKEN_ROT_1SUB_NROT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-
     pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3-1 x2 x1 )
     dec  BC             ; 1:6       __INFO
     push BC             ; 1:11      __INFO}){}dnl
