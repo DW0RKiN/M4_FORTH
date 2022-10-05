@@ -813,15 +813,15 @@ dnl
 dnl # "rot 1- nrot"
 dnl # ( x3 x2 x1 -- x3-1 x2 x1 )
 define({ROT_1SUB_NROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_1SUB_NROT},{rot_1sub_nrot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_1SUB_NROT},{rot 1- nrot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_1SUB_NROT},{dnl
-__{}define({__INFO},{rot_1sub_nrot}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
 
-    pop  BC             ; 1:10      rot 1- nrot   ( x3 x2 x1 -- x3-1 x2 x1 )
-    dec  BC             ; 1:6       rot 1- nrot
-    push BC             ; 1:11      rot 1- nrot}){}dnl
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3-1 x2 x1 )
+    dec  BC             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # "rot 1- nrot 2over nip"
@@ -844,31 +844,29 @@ dnl
 dnl # "rot 2+ nrot"
 dnl # ( x3 x2 x1 -- x3+2 x2 x1 )
 define({ROT_2ADD_NROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_2ADD_NROT},{rot_2add_nrot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_2ADD_NROT},{rot 2+ nrot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_2ADD_NROT},{dnl
-__{}define({__INFO},{rot_2add_nrot}){}dnl
-
-    pop  BC             ; 1:10      rot 2+ nrot   ( x3 x2 x1 -- x3+2 x2 x1 )
-    inc  BC             ; 1:6       rot 2+ nrot
-    inc  BC             ; 1:6       rot 2+ nrot
-    push BC             ; 1:11      rot 2+ nrot}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3+2 x2 x1 )
+    inc  BC             ; 1:6       __INFO
+    inc  BC             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # "rot 2- nrot"
 dnl # ( x3 x2 x1 -- x3-2 x2 x1 )
 define({ROT_2SUB_NROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_2SUB_NROT},{rot_2sub_nrot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_2SUB_NROT},{rot 2- nrot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_2SUB_NROT},{dnl
-__{}define({__INFO},{rot_2sub_nrot}){}dnl
-
-    pop  BC             ; 1:10      rot 2- nrot   ( x3 x2 x1 -- x3-2 x2 x1 )
-    dec  BC             ; 1:6       rot 2- nrot
-    dec  BC             ; 1:6       rot 2- nrot
-    push BC             ; 1:11      rot 2- nrot}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop  BC             ; 1:10      __INFO   ( x3 x2 x1 -- x3-2 x2 x1 )
+    dec  BC             ; 1:6       __INFO
+    dec  BC             ; 1:6       __INFO
+    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # "2*"
@@ -879,9 +877,8 @@ __{}__ADD_TOKEN({__TOKEN_2MUL},{2*},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2MUL},{dnl
-__{}define({__INFO},{2*}){}dnl
-
-    add  HL, HL         ; 1:11      2*}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # "2/"
@@ -892,10 +889,9 @@ __{}__ADD_TOKEN({__TOKEN_2DIV},{2/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DIV},{dnl
-__{}define({__INFO},{2/}){}dnl
-
-    sra   H             ; 2:8       2/   with sign
-    rr    L             ; 2:8       2/}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    sra   H             ; 2:8       __INFO   with sign
+    rr    L             ; 2:8       __INFO}){}dnl
 dnl
 dnl
 dnl # "256 *"
@@ -906,10 +902,9 @@ __{}__ADD_TOKEN({__TOKEN_256MUL},{256*},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_256MUL},{dnl
-__{}define({__INFO},{256*}){}dnl
-
-    ld    H, L          ; 1:4       256*
-    ld    L, 0x00       ; 2:7       256*}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    H, L          ; 1:4       __INFO
+    ld    L, 0x00       ; 2:7       __INFO}){}dnl
 dnl
 dnl
 dnl # "256 /"
@@ -920,12 +915,11 @@ __{}__ADD_TOKEN({__TOKEN_256DIV},{256/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_256DIV},{dnl
-__{}define({__INFO},{256/}){}dnl
-
-    ld    L, H          ; 1:4       256/   with sign
-    rl    H             ; 2:8       256/
-    sbc   A, A          ; 1:4       256/
-    ld    H, A          ; 1:4       256/}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    L, H          ; 1:4       __INFO   with sign
+    rl    H             ; 2:8       __INFO
+    sbc   A, A          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
