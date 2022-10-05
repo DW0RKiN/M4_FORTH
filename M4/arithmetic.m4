@@ -600,7 +600,7 @@ __{}__ADD_TOKEN({__TOKEN_MOD},{mod},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MOD},{dnl
-__def({USE_DIV},{})dnl
+__{}__def({USE_DIV},{})dnl
 __{}define({__INFO},__COMPILE_INFO)
     call DIVIDE         ; 3:17      __INFO
     ex   DE, HL         ; 1:4       __INFO
@@ -614,10 +614,9 @@ __{}__ADD_TOKEN({__TOKEN_DIVMOD},{/mod},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DIVMOD},{dnl
-__{}define({__INFO},{/mod}){}dnl
-
-ifdef({USE_DIV},,define({USE_DIV},{}))dnl
-    call DIVIDE         ; 3:17      /mod}){}dnl
+__{}__def({USE_DIV},{})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call DIVIDE         ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
@@ -627,11 +626,10 @@ __{}__ADD_TOKEN({__TOKEN_UDIV},{u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UDIV},{dnl
-__{}define({__INFO},{u/}){}dnl
-
-ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
-    call UDIVIDE        ; 3:17      u/
-    pop  DE             ; 1:10      u/}){}dnl
+__{}__def({USE_UDIV},{}))dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call UDIVIDE        ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -642,12 +640,11 @@ __{}__ADD_TOKEN({__TOKEN_UMOD},{umod},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UMOD},{dnl
-__{}define({__INFO},{umod}){}dnl
-
-ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
-    call UDIVIDE        ; 3:17      umod
-    ex   DE, HL         ; 1:4       umod
-    pop  DE             ; 1:10      umod}){}dnl
+__{}__def({USE_UDIV},{})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call UDIVIDE        ; 3:17      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- r q )
@@ -657,10 +654,9 @@ __{}__ADD_TOKEN({__TOKEN_UDIVMOD},{u/mod},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UDIVMOD},{dnl
-__{}define({__INFO},{u/mod}){}dnl
-
-ifdef({USE_UDIV},,define({USE_UDIV},{}))dnl
-    call UDIVIDE        ; 3:17      u/mod}){}dnl
+__{}__def({USE_UDIV},{})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call UDIVIDE        ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # "1+"
@@ -671,9 +667,8 @@ __{}__ADD_TOKEN({__TOKEN_1ADD},{1+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_1ADD},{dnl
-__{}define({__INFO},{1+}){}dnl
-
-    inc  HL             ; 1:6       1+}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "1-"
@@ -684,9 +679,8 @@ __{}__ADD_TOKEN({__TOKEN_1SUB},{1-},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_1SUB},{dnl
-__{}define({__INFO},{1-}){}dnl
-
-    dec  HL             ; 1:6       1-}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # "2+"
