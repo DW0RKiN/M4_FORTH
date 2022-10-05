@@ -973,12 +973,11 @@ __{}__ADD_TOKEN({__TOKEN_CADD},{c+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CADD},{dnl
-__{}define({__INFO},{c+}){}dnl
-
-    ld    A, E          ; 1:4       C+   ( c2 c1 -- c2+c1 )
-    add   A, L          ; 1:4       C+   ( c2 c1 -- c2+c1 )
-    ld    L, A          ; 1:4       C+   ( c2 c1 -- c2+c1 )
-    pop  DE             ; 1:10      C+}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( c2 c1 -- c2+c1 )
+    add   A, L          ; 1:4       __INFO   ( c2 c1 -- c2+c1 )
+    ld    L, A          ; 1:4       __INFO   ( c2 c1 -- c2+c1 )
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -986,17 +985,17 @@ dnl # 0x8000 C@ C+
 dnl # ( c1 -- c1+(adr) )
 dnl # c = c2 + c1
 define({PUSH_CFETCH_CADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_CADD},{$1_cfetch c+},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_CADD},{$1 c@ c+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_CADD},{dnl
-__{}define({__INFO},{$1_cfetch c+}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},{
-    ld    A, format({%-11s},{($1)}); 3:13      $1 C@ C+   ( c -- c+($1) )
-    add   A, L          ; 1:4       $1 C@ C+
-    ld    L, A          ; 1:4       $1 C@ C+},
+    ld    A, format({%-11s},{($1)}); 3:13      __INFO   ( c -- c+($1) )
+    add   A, L          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
@@ -1006,17 +1005,17 @@ dnl # C@ 0x8000 C@ C+
 dnl # ( c -- (c)+(adr) )
 dnl # c = c2 + c1
 define({CFETCH_PUSH_CFETCH_CADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH_PUSH_CFETCH_CADD},{cfetch $1_cfetch c+},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_PUSH_CFETCH_CADD},{c@ $1 c@ c+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH_PUSH_CFETCH_CADD},{dnl
-__{}define({__INFO},{cfetch $1_cfetch c+}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},{
-    ld    A,format({%-12s},{($1)}); 3:13      C@ $1 C@ C+   ( c -- (c)+($1) )
-    add   A,(HL)        ; 1:7       C@ $1 C@ C+
-    ld    L, A          ; 1:4       C@ $1 C@ C+},
+    ld    A,format({%-12s},{($1)}); 3:13      __INFO   ( c -- (c)+($1) )
+    add   A,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
