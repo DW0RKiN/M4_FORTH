@@ -1024,22 +1024,22 @@ dnl
 dnl # 0x8000 C@ C+ 0x4000 C!
 dnl # ( c -- )
 define({PUSH_CFETCH_CADD_PUSH_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_CADD_PUSH_CSTORE},{$1_cfetch c+ $2_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_CADD_PUSH_CSTORE},{$1 c@ c+ $2 c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_CADD_PUSH_CSTORE},{dnl
-__{}define({__INFO},{$1_cfetch c+ $2_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
 __{}$#,{2},{
-                        ;[9:47]     $1 C@ C+ $2 C!   ( c --  )
-    ld    A,format({%-12s},{($1)}); 3:13      $1 C@ C+ $2 C!
-    add   A, L          ; 1:4       $1 C@ C+ $2 C!
-    ld  format({%-16s},{($2), A}); 3:13      $1 C@ C+ $2 C!   [$2] = [$1] + low TOS
-    ex   DE, HL         ; 1:4       $1 C@ C+ $2 C!
-    pop  DE             ; 1:10      $1 C@ C+ $2 C!},
+                        ;[9:47]     __INFO   ( c --  )
+    ld    A,format({%-12s},{($1)}); 3:13      __INFO
+    add   A, L          ; 1:4       __INFO
+    ld  format({%-16s},{($2), A}); 3:13      __INFO   [$2] = [$1] + low TOS
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
@@ -1048,22 +1048,22 @@ dnl
 dnl # C@ 0x8000 C@ C+ 0x4000 C!
 dnl # ( c -- )
 define({CFETCH_PUSH_CFETCH_CADD_PUSH_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH_PUSH_CFETCH_CADD_PUSH_CSTORE},{cfetch $1_cfetch c+_push_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_PUSH_CFETCH_CADD_PUSH_CSTORE},{c@ $1 c@ c+ $2 c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH_PUSH_CFETCH_CADD_PUSH_CSTORE},{dnl
-__{}define({__INFO},{cfetch_push_cfetch c+_push_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing two address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
 __{}$#,{2},{
-                        ;[9:47]     C@ $1 C@ C+ $2 C!   ( c --  )
-    ld    A,format({%-12s},{($1)}); 3:13      C@ $1 C@ C+ $2 C!
-    add   A,(HL)        ; 1:7       C@ $1 C@ C+ $2 C!
-    ld  format({%-16s},{($2), A}); 3:13      C@ $1 C@ C+ $2 C!   [$2] = [$1] + [TOS]
-    ex   DE, HL         ; 1:4       C@ $1 C@ C+ $2 C!
-    pop  DE             ; 1:10      C@ $1 C@ C+ $2 C!},
+                        ;[9:47]     __INFO   ( c --  )
+    ld    A,format({%-12s},{($1)}); 3:13      __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  format({%-16s},{($2), A}); 3:13      __INFO   [$2] = [$1] + [TOS]
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
@@ -1075,48 +1075,48 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_CADD},{$1 c+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CADD},{dnl
-__{}define({__INFO},{$1 c+}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld    A, format({%-11s},$1); 3:13     $1 C+
-__{}    add   A, L          ; 1:4      $1 C+
-__{}    ld    L, A          ; 1:4      $1 C+},
+__{}    ld    A, format({%-11s},$1); 3:13     __INFO
+__{}    add   A, L          ; 1:4      __INFO
+__{}    ld    L, A          ; 1:4      __INFO},
 __IS_NUM($1),{0},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld    A, __FORM({%-11s},$1); 2:7      $1 C+
-__{}    add   A, L          ; 1:4      $1 C+
-__{}    ld    L, A          ; 1:4      $1 C+},
+__{}    ld    A, __FORM({%-11s},$1); 2:7      __INFO
+__{}    add   A, L          ; 1:4      __INFO
+__{}    ld    L, A          ; 1:4      __INFO},
 {dnl
 __{}ifelse(eval(($1)+3),{0},{dnl
-__{}__{}    dec   L             ; 1:4       $1 C+   ( c -- c-2 )
-__{}__{}    dec   L             ; 1:4       $1 C+
-__{}__{}    dec   L             ; 1:4       $1 C+},
+__{}__{}    dec   L             ; 1:4       __INFO   ( c -- c-2 )
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO},
 __{}eval(($1)+2),{0},{dnl
-__{}__{}    dec   L             ; 1:4       $1 C+   ( c -- c-2 )
-__{}__{}    dec   L             ; 1:4       $1 C+},
+__{}__{}    dec   L             ; 1:4       __INFO   ( c -- c-2 )
+__{}__{}    dec   L             ; 1:4       __INFO},
 __{}__{}eval(($1)+1),{0},{dnl
-__{}__{}    dec   L             ; 1:4       $1 C+   ( c -- c-1 )},
+__{}__{}    dec   L             ; 1:4       __INFO   ( c -- c-1 )},
 __{}__{}eval($1),{0},{snl
-__{}__{}                        ;           $1 C+   ( c -- c+0 )},
+__{}__{}                        ;           __INFO   ( c -- c+0 )},
 __{}__{}eval(($1)-1),{0},{dnl
-__{}__{}    inc   L             ; 1:4       $1 C+   ( c -- c+1 )},
+__{}__{}    inc   L             ; 1:4       __INFO   ( c -- c+1 )},
 __{}__{}eval(($1)-2),{0},{dnl
-__{}__{}    inc   L             ; 1:4       $1 C+   ( c -- c+1 )
-__{}__{}    inc   L             ; 1:4       $1 C+},
+__{}__{}    inc   L             ; 1:4       __INFO   ( c -- c+1 )
+__{}__{}    inc   L             ; 1:4       __INFO},
 __{}__{}eval(($1)-3),{0},{dnl
-__{}__{}    inc   L             ; 1:4       $1 C+   ( c -- c+1 )
-__{}__{}    inc   L             ; 1:4       $1 C+
-__{}__{}    inc   L             ; 1:4       $1 C+},
+__{}__{}    inc   L             ; 1:4       __INFO   ( c -- c+1 )
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO},
 __{}__{}{ifelse(eval((((($1) | 255) + 1) > 256) || (($1 + 256) < 128)),{1},{dnl
 __{}__{}__{}    ; warning {$0}($@): Parameter $1 exceeds one byte limit!
 __{}__{}__{}}){}dnl
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 C+   ( d -- d+$1 )
-__{}__{}    add   A, L          ; 1:4       $1 C+
-__{}__{}    ld    L, A          ; 1:4       $1 C+}){}dnl
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( d -- d+$1 )
+__{}__{}    add   A, L          ; 1:4       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
