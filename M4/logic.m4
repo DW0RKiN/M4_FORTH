@@ -3146,7 +3146,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ex    DE, HL        ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sub  (HL)           ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
+    ld     C, E         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
     inc    E            ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
@@ -3162,7 +3162,7 @@ __{}define({__INFO},__COMPILE_INFO)
     sbc   A,(HL)        ; 1:7       __INFO
     rra                 ; 1:4       __INFO   not sign if true
     xor  (HL)           ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
+    ld     E, C         ; 1:4       __INFO
     xor    B            ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   not carry if true
     ccf                 ; 1:4       __INFO
@@ -3241,7 +3241,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ex    DE, HL        ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sub  (HL)           ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
+    ld     C, E         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
     inc    E            ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
@@ -3257,7 +3257,7 @@ __{}define({__INFO},__COMPILE_INFO)
     sbc   A,(HL)        ; 1:7       __INFO
     rra                 ; 1:4       __INFO   sign if true
     xor  (HL)           ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
+    ld     E, C         ; 1:4       __INFO
     xor    B            ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   carry if true
     sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]>[pd1]}){}dnl
