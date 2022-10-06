@@ -3441,63 +3441,106 @@ dnl
 dnl
 dnl
 dnl
-dnl # d addr 2!
+dnl # hi lo addr 2!
 dnl # ( -- )
 dnl # store 32-bit number at addr
-define({PUSHDOT_PUSH_2STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT_PUSH_2STORE},{$1. $2 2store},$@){}dnl
+define({PUSH3_2STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH3_2STORE},{$1 $2 $3 2store},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSHDOT_PUSH_2STORE},{dnl
+define({__ASM_TOKEN_PUSH3_2STORE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing parameters!},
-$#,{1},{
-__{}  .error {$0}($@): The second parameter is missing!},
-eval($#>2),{1},{
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameters!},
+eval($#<3),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>3),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
+__IS_MEM_REF($3):__IS_NUM($1):__IS_NUM($2),{1:1:1},{dnl
+__{}ifelse(__HEX_H($2):__HEX_L($1):__HEX_H($1),__HEX_L($2):__HEX_L($2):__HEX_L($2),{
+__{}__{}    ld   BC,format({%-12s},{$3}); 4:20      __INFO   addr{}dnl
+__{}__{}__LD_R_NUM(__INFO,{A},__HEX_L($2))
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   lo
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   lo
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   hi
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   hi},
+__{}__HEX_L($1):__HEX_H($1),__HEX_H($2):__HEX_H($2),{
+__{}__{}    ld   BC,format({%-12s},{$3}); 4:20      __INFO   addr{}dnl
+__{}__{}__LD_R_NUM(__INFO,{A},__HEX_L($2))
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   lo{}dnl
+__{}__{}__LD_R_NUM(__INFO,{A},__HEX_H($2),{A},__HEX_L($2))
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   lo
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   hi
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO   hi},
+__{}__HEX_HL($1),__HEX_HL($2),{
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},{$3}); 3:16      __INFO   addr
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO   lo
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),B          ; 1:7       __INFO   lo
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO   hi
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),B          ; 1:7       __INFO   hi
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}{
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},{$3}); 3:16      __INFO   addr
+__{}__{}    ld  (HL),__HEX_L($2)       ; 2:10      __INFO   lo
+__{}__{}    inc  HL             ; 1:6       __INFO   lo
+__{}__{}    ld  (HL),__HEX_H($2)       ; 2:10      __INFO   lo
+__{}__{}    inc  HL             ; 1:6       __INFO   lo
+__{}__{}    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   hi
+__{}__{}    inc  HL             ; 1:6       __INFO   hi
+__{}__{}    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   hi
+__{}__{}    pop  HL             ; 1:10      __INFO})},
+__IS_MEM_REF($3),{1},{
 __{}    push HL             ; 1:11      __INFO
-__{}    ld   HL,format({%-12s},{$2}); 3:16      __INFO   addr
-__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   lo
-__{}    ld  (HL),C          ; 1:7       __INFO   lo
+__{}    ld   HL,format({%-12s},{$3}); 3:16      __INFO   addr
+__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}__{}    ld   BC,format({%-12s},{$2}); 4:20      __INFO   lo
+__{}__{}    ld  (HL),C          ; 1:7       __INFO   lo
+__{}__{}    inc  HL             ; 1:6       __INFO   lo
+__{}__{}    ld  (HL),B          ; 1:7       __INFO   lo},
+__{}{dnl
+__{}__{}    ld  (HL),__HEX_L($2)       ; 2:10      __INFO   lo
+__{}__{}    inc  HL             ; 1:6       __INFO   lo
+__{}__{}    ld  (HL),__HEX_H($2)       ; 2:10      __INFO   lo})
 __{}    inc  HL             ; 1:6       __INFO   lo
-__{}    ld  (HL),B          ; 1:7       __INFO   lo
-__{}    inc  HL             ; 1:6       __INFO   lo
-__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      __INFO   hi
-__{}    ld  (HL),C          ; 1:7       __INFO   hi
-__{}    inc  HL             ; 1:6       __INFO   hi
-__{}    ld  (HL),B          ; 1:7       __INFO   hi
+__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   hi
+__{}__{}    ld  (HL),C          ; 1:7       __INFO   hi
+__{}__{}    inc  HL             ; 1:6       __INFO   hi
+__{}__{}    ld  (HL),B          ; 1:7       __INFO   hi},
+__{}{dnl
+__{}__{}    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   hi
+__{}__{}    inc  HL             ; 1:6       __INFO   hi
+__{}__{}    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   hi})
 __{}    pop  HL             ; 1:10      __INFO},
-eval(__IS_MEM_REF($1)),{1},{
-__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   lo
-__{}    ld    A, C          ; 1:4       __INFO   lo
-__{}    ld  format({%-16s},{($2),A}); 3:13      __INFO   lo
-__{}    ld    A, B          ; 1:4       __INFO   lo
-__{}    ld  format({%-16s},{(1+$2),A}); 3:13      __INFO   lo
-__{}    ld   BC,format({%-12s},{(2+$1)}); 4:20      __INFO   hi
-__{}    ld    A, C          ; 1:4       __INFO   hi
-__{}    ld  format({%-16s},{(2+$2),A}); 3:13      __INFO   hi
-__{}    ld    A, B          ; 1:4       __INFO   hi
-__{}    ld  format({%-16s},{(3+$2),A}); 3:13      __INFO   hi},
-__IS_NUM($1),{0},{
-__{}  .error {$0}($@): M4 cannot calculate {$1}},
-eval(__IS_MEM_REF($2)),{1},{
-__{}    push HL             ; 1:11      __INFO
-__{}    ld   HL,format({%-12s},{$2}); 3:16      __INFO   addr
-__{}    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   lo
-__{}    inc  HL             ; 1:6       __INFO   lo
-__{}    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   lo
-__{}    inc  HL             ; 1:6       __INFO   lo
-__{}    ld  (HL),__HEX_E($1)       ; 2:10      __INFO   hi
-__{}    inc  HL             ; 1:6       __INFO   hi
-__{}    ld  (HL),__HEX_D($1)       ; 2:10      __INFO   hi
-__{}    pop  HL             ; 1:10      __INFO},
+__IS_MEM_REF($1):__IS_MEM_REF($2),{0:0},
+__{}{
+__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   lo
+__{}    ld  (__HEX_HL($3)),BC     ; 4:20      __INFO   lo{}dnl
+__{}define({_TMP_INFO},__INFO   hi){}__LD_REG16({BC},__HEX_HL($1),{BC},__HEX_HL($2)){}__CODE_16BIT
+__{}    ld  (__HEX_HL($3+2)),BC     ; 4:20      __INFO   hi},
 {
-__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   lo
-__{}    ld  (__HEX_HL($2)),BC     ; 4:20      __INFO   lo{}dnl
-__{}define({_TMP_INFO},__INFO   hi){}__LD_REG16({BC},__HEX_DE($1),{BC},__HEX_HL($1)){}__CODE_16BIT
-__{}    ld  (__HEX_HL($2+2)),BC     ; 4:20      __INFO   hi}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}__{}    ld   BC,format({%-12s},{$2}); 4:20      __INFO   lo},
+__{}{dnl
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   lo})
+__{}    ld  (__HEX_HL($3)),BC     ; 4:20      __INFO   lo
+__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   hi},
+__{}{dnl
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   hi})
+__{}    ld  (__HEX_HL($3+2)),BC     ; 4:20      __INFO   hi}){}dnl
 }){}dnl
 dnl
 dnl
