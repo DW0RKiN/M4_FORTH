@@ -2247,27 +2247,27 @@ dnl
 define({__ASM_TOKEN_PDOR},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] |= [pd2] with align 4
-    or   (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
-    ld     B, E         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    ld    B, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    or   (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    or   (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    or   (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
-    ld     E, B         ; 1:4       __INFO}){}dnl
+    or  (HL)            ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    E, B          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( d1 -- d )
@@ -2622,6 +2622,39 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      D=}){}dnl
 dnl
 dnl
+dnl # ( pd2 pd1 -- pd2 pd1 flag )
+dnl # equal ( [pd1] == [pd2] )
+define({PDEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDEQ},{pd=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd1] != [pd2] with align 4
+    ld    A,(DE)        ; 1:7       __INFO
+    xor (HL)            ; 1:7       __INFO
+    jr   nz, $+22       ; 2:7/12    __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    xor (HL)            ; 1:7       __INFO
+    jr   nz, $+14       ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    xor (HL)            ; 1:7       __INFO
+    jr   nz, $+8        ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    xor (HL)            ; 1:7       __INFO
+    sub 0x01            ; 2:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
 dnl
 dnl # $1 D=
 dnl # ( d1 -- flag )
@@ -2872,27 +2905,26 @@ __{}__ADD_TOKEN({__TOKEN_PDNE},{pd<>},$@){}dnl
 dnl
 define({__ASM_TOKEN_PDNE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    push  DE            ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd1] != [pd2] with align 4
-    ld     C, L         ; 1:4       __INFO
+    push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd1] != [pd2] with align 4
+    ld    C, L          ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    xor   (HL)          ; 1:7       __INFO
-    jr    nz, $+20      ; 2:7/12    __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
+    jr   nz, $+18       ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    xor   (HL)          ; 1:7       __INFO
-    jr    nz, $+14      ; 2:7/12    __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
+    jr   nz, $+12       ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    xor   (HL)          ; 1:7       __INFO
-    jr    nz, $+8       ; 2:7/12    __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
+    jr   nz, $+6        ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    xor   (HL)          ; 1:7       __INFO
-    jr     z, $+3       ; 2:7/12    __INFO
-    scf                 ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
+    add   A, 0xFF       ; 2:7       __INFO   carry if not zero
     ld     L, C         ; 1:4       __INFO
     ex    DE, HL        ; 1:4       __INFO
     sbc   HL, HL        ; 2:15      __INFO}){}dnl
