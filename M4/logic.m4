@@ -3069,7 +3069,7 @@ __{}define({__INFO},__COMPILE_INFO)
     xor  (HL)           ; 1:7       __INFO
     add   A, A          ; 1:4       __INFO   not carry if true
     ccf                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]<[pd1]}){}dnl
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]>=[pd1]}){}dnl
 dnl
 dnl
 dnl # Du>=
@@ -3134,6 +3134,41 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  DE             ; 1:10      D<=})}){}dnl
 dnl
 dnl
+dnl # ( pd2 pd1 -- pd2 pd1 flag )
+dnl # signed ( [pd2] <= [pd1] ) --> ( 0 <= [pd1] - [pd2] ) --> not carry is true
+define({PDLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDLE},{pdle},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDLE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] <= [pd1]  with align 4
+    ex    DE, HL        ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sub  (HL)           ; 1:7       __INFO
+    ld     C, L         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    ld    B, A          ; 1:4       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    rra                 ; 1:4       __INFO   not sign if true
+    xor  (HL)           ; 1:7       __INFO
+    ld     L, C         ; 1:4       __INFO
+    xor    B            ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO   not carry if true
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]<=[pd1]}){}dnl
+dnl
+dnl
 dnl # Du<=
 dnl # 2swap Du>=
 dnl # ( ud2 ud1 -- flag )
@@ -3175,7 +3210,7 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  DE             ; 1:10      D>
     sbc  HL, HL         ; 2:15      D>   set flag d2>d1},
 {
-                        ;[17:93]    D>   ( d2 d1 -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[17:93]    D>   ( d2 d1 -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D>   lo(ud2)
     ld    A, L          ; 1:4       D>   BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       D>   BC>HL --> 0>HL-BC --> carry if true
@@ -3192,6 +3227,40 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     add   A, A          ; 1:4       D>                     --> carry if true
     sbc  HL, HL         ; 2:15      D>   set flag d2>d1
     pop  DE             ; 1:10      D>})}){}dnl
+dnl
+dnl
+dnl # ( pd2 pd1 -- pd2 pd1 flag )
+dnl # signed ( [pd2] > [pd1] ) --> ( 0 > [pd1] - [pd2] ) --> carry is true
+define({PDGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDGT},{pdgt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] > [pd1]  with align 4
+    ex    DE, HL        ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sub  (HL)           ; 1:7       __INFO
+    ld     C, L         ; 1:4       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc    L            ; 1:4       __INFO
+    inc    E            ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    ld    B, A          ; 1:4       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    rra                 ; 1:4       __INFO   sign if true
+    xor  (HL)           ; 1:7       __INFO
+    ld     L, C         ; 1:4       __INFO
+    xor    B            ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO   carry if true
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]>[pd1]}){}dnl
 dnl
 dnl
 dnl # Du>
