@@ -1717,6 +1717,10 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{__INC_TOK
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_DUP},            {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__LAST_TOKEN_REVERSE_1)},
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_OVER},           {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__LAST_TOKEN_REVERSE_2)},
 
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_2OVER},          {__SET_TOKEN({__TOKEN_PUSH2_2OVER},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2_2OVER-__TOKEN_NIP},      {__SET_TOKEN({__TOKEN_PUSH2_2OVER_NIP},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                       {__TOKEN_PUSH2_2OVER_NIP-__TOKEN_2STORE},{__SET_TOKEN({__TOKEN_PUSH2_2OVER_NIP_2STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_PUSH},           {__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
 
             __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_CSTORE},         {__SET_TOKEN({__TOKEN_PUSH2_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},

@@ -75,6 +75,63 @@ __{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_1
 })}){}dnl
 dnl
 dnl
+dnl # ( b a -- b a $1 $2 b a)
+define({PUSH2_2OVER},{dnl
+ifelse($1,{},{
+__{}  .error {$0}($@): Missing parameters!},
+$2,{},{
+__{}  .error {$0}($@): Missing second parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_2OVER},{$1 $2},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_2OVER},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}    push DE             ; 1:11      __INFO   ( b a -- b a $1 $2 b a )
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({BC},$1){}__CODE_16BIT
+__{}    push BC             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({BC},$2,{BC},$1){}__CODE_16BIT
+__{}    push BC             ; 1:11      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( a -- a $1 $2 a)
+define({PUSH2_2OVER_NIP},{dnl
+ifelse($1,{},{
+__{}  .error {$0}($@): Missing parameters!},
+$2,{},{
+__{}  .error {$0}($@): Missing second parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_2OVER_NIP},{$1 $2},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_2OVER_NIP},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}    push DE             ; 1:11      __INFO   ( a -- a $1 $2 a )
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({DE},$1){}__CODE_16BIT
+__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__LD_REG16({DE},$2,{DE},$1){}__CODE_16BIT{}dnl
+})}){}dnl
+dnl
+dnl
 dnl
 dnl # ( -- c b a)
 dnl # push3(c,b,a) ulozi na zasobnik nasledujici polozky
