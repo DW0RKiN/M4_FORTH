@@ -2988,25 +2988,25 @@ define({__ASM_TOKEN_PDLT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] < [pd1]  with align 4
     ld    A,(DE)        ; 1:7       __INFO
-    sub  (HL)           ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
     rra                 ; 1:4       __INFO   sign if true
-    xor  (HL)           ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
-    ex    DE, HL        ; 1:4       __INFO
-    xor  (HL)           ; 1:7       __INFO
+    xor (HL)            ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
     add   A, A          ; 1:4       __INFO   carry if true
     sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]<[pd1]}){}dnl
 dnl
@@ -3080,25 +3080,25 @@ define({__ASM_TOKEN_PDGE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] >= [pd1]  with align 4
     ld    A,(DE)        ; 1:7       __INFO
-    sub  (HL)           ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
     rra                 ; 1:4       __INFO   not sign if true
-    xor  (HL)           ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
-    ex    DE, HL        ; 1:4       __INFO
-    xor  (HL)           ; 1:7       __INFO
+    xor (HL)            ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
     add   A, A          ; 1:4       __INFO   not carry if true
     ccf                 ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]>=[pd1]}){}dnl
@@ -3175,27 +3175,27 @@ dnl
 define({__ASM_TOKEN_PDLE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] <= [pd1]  with align 4
-    ex    DE, HL        ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    sub  (HL)           ; 1:7       __INFO
-    ld     C, E         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     ld    B, A          ; 1:4       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
     rra                 ; 1:4       __INFO   not sign if true
-    xor  (HL)           ; 1:7       __INFO
-    ld     E, C         ; 1:4       __INFO
-    xor    B            ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
+    ld    E, C          ; 1:4       __INFO
+    xor   B             ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   not carry if true
     ccf                 ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]<=[pd1]}){}dnl
@@ -3270,27 +3270,27 @@ dnl
 define({__ASM_TOKEN_PDGT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] > [pd1]  with align 4
-    ex    DE, HL        ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
-    sub  (HL)           ; 1:7       __INFO
-    ld     C, E         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     ld    B, A          ; 1:4       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
     rra                 ; 1:4       __INFO   sign if true
-    xor  (HL)           ; 1:7       __INFO
-    ld     E, C         ; 1:4       __INFO
-    xor    B            ; 1:4       __INFO
+    xor (HL)            ; 1:7       __INFO
+    ld    E, C          ; 1:4       __INFO
+    xor   B             ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   carry if true
     sbc  HL, HL         ; 2:15      __INFO   set flag [pd2]>[pd1]}){}dnl
 dnl
