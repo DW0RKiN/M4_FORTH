@@ -2557,6 +2557,29 @@ ifelse(TYP_D0EQ,{small},{
     pop   DE            ; 1:10      __INFO})}){}dnl
 dnl
 dnl
+dnl # ( pd1 -- pd1 flag )
+dnl # equal ( [pd1] == 0 )
+define({PD0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PD0EQ},{pd0=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PD0EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd1 -- pd1 flag )  flag == [pd1] == 0  with align 4
+    ld    A,(HL)        ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    sub 0x01            ; 2:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
 dnl # D0<>
 dnl # ( d -- f )
 dnl # if ( x1x2 ) flag = 0; else flag = 0xFFFF;
@@ -2575,6 +2598,29 @@ __{}define({__INFO},__COMPILE_INFO)
     add   A, 0xFF       ; 2:7       __INFO
     sbc  HL, HL         ; 2:15      __INFO   set flag D <> 0
     pop   DE            ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( pd1 -- pd1 flag )
+dnl # not equal ( [pd1] <> 0 )
+define({PD0NE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PD0NE},{pd0<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PD0NE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd1 -- pd1 flag )  flag == [pd1] <> 0  with align 4
+    ld    A,(HL)        ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    add   A, 0xFF       ; 2:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl # D0<
