@@ -1393,14 +1393,14 @@ d...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_DGT-__TOKEN_IF},            {__SET_TOKEN({__TOKEN_DGT_IF},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DLE-__TOKEN_IF},            {__SET_TOKEN({__TOKEN_DLE_IF},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DGE-__TOKEN_IF},            {__SET_TOKEN({__TOKEN_DGE_IF},__LAST_TOKEN_INFO{ }$2)},
-            
+
             __LAST_TOKEN_NAME-$1,{__TOKEN_DEQ-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DEQ_WHILE},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DNE-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DNE_WHILE},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DLT-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DLT_WHILE},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DGT-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DGT_WHILE},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DLE-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DLE_WHILE},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DGE-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DGE_WHILE},__LAST_TOKEN_INFO{ }$2)},
-            
+
             __LAST_TOKEN_NAME-$1,{__TOKEN_DUEQ-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_DEQ_IF},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DUNE-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_DNE_IF},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DULT-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_DULT_IF},__LAST_TOKEN_INFO{ }$2)},
