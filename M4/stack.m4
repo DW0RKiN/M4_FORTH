@@ -23,6 +23,54 @@ __{}    ld   HL, __FORM({%-11s},{$1}); 3:10      __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
+dnl # ( x x -- b a)
+dnl # push2(b,a) premaze zasobnik nasledujicima polozkama
+define({_2DROP_PUSH2},{dnl
+ifelse($1,{},{
+__{}  .error {$0}($@): Missing parameters!},
+$2,{},{
+__{}  .error {$0}($@): Missing second parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP_PUSH2},{$1 $2},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DROP_PUSH2},{dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#!=2),{1},{
+__{}  .error {$0}($@): The wrong number of parameters in macro!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl # HL first check
+__{}define({__TMP_HL_CLOCKS},0){}dnl
+__{}define({__TMP_HL_BYTES},0){}dnl
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
+__{}dnl
+__{}define({__TMP_DE_CLOCKS},0){}dnl
+__{}define({__TMP_DE_BYTES},0){}dnl
+__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
+__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
+__{}__LD_REG16({DE},$1){}dnl
+__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
+__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
+__{}dnl
+__{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
+__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __INFO   ( -- $1 $2 ){}dnl
+__{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
+__{}{dnl # HL first
+__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __INFO   ( -- $1 $2 ){}dnl
+__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
+})}){}dnl
+dnl
+dnl
 dnl # ( -- b a)
 dnl # push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{dnl

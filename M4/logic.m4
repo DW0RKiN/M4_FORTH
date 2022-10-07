@@ -2580,6 +2580,27 @@ __{}define({__INFO},__COMPILE_INFO)
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
+dnl # ( pd2 pd1 -- pd2 pd1 flag )
+dnl # equal ( [pd2] == 0 )
+define({OVER_PD0EQ_NIP},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PD0EQ_NIP},{over pd0= nip},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_PD0EQ_NIP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] == 0  with align 4
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    sub 0x01            ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
 dnl # D0<>
 dnl # ( d -- f )
 dnl # if ( x1x2 ) flag = 0; else flag = 0xFFFF;
@@ -2620,6 +2641,27 @@ __{}define({__INFO},__COMPILE_INFO)
     add   A, 0xFF       ; 2:7       __INFO
     ld    L, C          ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl # ( pd2 pd1 -- pd2 pd1 flag )
+dnl # not equal ( [pd2] <> 0 )
+define({OVER_PD0NE_NIP},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PD0NE_NIP},{over pd0<> nip},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_PD0NE_NIP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pd2 pd1 -- pd2 pd1 flag )  flag == [pd2] <> 0  with align 4
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    add   A, 0xFF       ; 2:7       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl

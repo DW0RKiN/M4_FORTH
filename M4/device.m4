@@ -634,7 +634,7 @@ __{}define({__INFO},{emit}){}dnl
 
     ld    A, L          ; 1:4       emit    Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      emit    with {48K ROM} in, this will print char in A{}dnl
-__{}DROP})dnl
+__{}__ASM_TOKEN_DROP})dnl
 dnl
 dnl
 dnl # ( 'a' -- 'a' )
