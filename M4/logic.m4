@@ -2557,6 +2557,37 @@ ifelse(TYP_D0EQ,{small},{
     pop   DE            ; 1:10      __INFO})}){}dnl
 dnl
 dnl
+dnl # 2dup d0=
+dnl # ( d -- d f )
+define({_2DUP_D0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ},{2dup d0=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(TYP_D0EQ,{small},{
+                        ;[9:59]     __INFO   ( d -- d flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO 
+    add  HL, DE         ; 1:11      __INFO   carry: 0    1
+    sbc   A, A          ; 1:4       __INFO          0x00 0xff
+    or    H             ; 1:4       __INFO          H    0xff
+    dec  HL             ; 1:6       __INFO
+    sub   H             ; 1:4       __INFO   carry: 1|0  0
+    sbc  HL, HL         ; 2:15      __INFO   set flag D == 0},
+{
+                       ;[10:53]     __INFO   ( d -- d flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO 
+    ld    A, D          ; 1:4       __INFO
+    or    E             ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    sub   0x01          ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag D == 0}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( pd1 -- pd1 flag )
 dnl # equal ( [pd1] == 0 )
 define({PD0EQ},{dnl
@@ -2619,6 +2650,25 @@ __{}define({__INFO},__COMPILE_INFO)
     add   A, 0xFF       ; 2:7       __INFO
     sbc  HL, HL         ; 2:15      __INFO   set flag D <> 0
     pop   DE            ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # 2dup d0<>
+dnl # ( d -- d f )
+define({_2DUP_D0NE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0NE},{2dup d0<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_D0NE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[10:53]     __INFO   ( d -- d flag )
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    or    E             ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag D <> 0}){}dnl
 dnl
 dnl
 dnl # ( pd1 -- pd1 flag )

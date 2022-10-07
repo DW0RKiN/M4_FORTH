@@ -1572,7 +1572,7 @@ dnl
 define({__ASM_TOKEN_DSUB},{dnl
 __{}define({__INFO},{d-}){}dnl
 ifelse(TYP_DSUB,{small},{
-                       ;[12:74]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+                       ;[12:74]     D-   ( hi2 lo2 hi1 lo1 -- d2-d1 )
     ld    B, D          ; 1:4       D-
     ld    C, E          ; 1:4       D-
     ex   DE, HL         ; 1:4       D-   DE = lo1
@@ -1584,7 +1584,7 @@ ifelse(TYP_DSUB,{small},{
     sbc  HL, BC         ; 2:15      D-   hi2-hi1
     ex   DE, HL         ; 1:4       D-}
 ,{
-                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- h2-h1-carry lo2-lo1 )
+                       ;[14:68]     D-   ( hi2 lo2 hi1 lo1 -- d2-d1 )
     pop  BC             ; 1:10      D-   BC = lo2
     ld    A, C          ; 1:4       D-
     sub   L             ; 1:4       D-   lo2-lo1
@@ -1709,7 +1709,7 @@ dnl
 define({__ASM_TOKEN_2SWAP_DSUB},{dnl
 __{}define({__INFO},{2swap_d-}){}dnl
 
-                        ;[9:62]     2swap D-   ( hi2 lo2 hi1 lo1 -- hi1-hi2-carry lo1-lo2 )
+                        ;[9:62]     2swap D-   ( hi2 lo2 hi1 lo1 -- d1-d2 )
     or    A             ; 1:4       2swap D-
     pop  BC             ; 1:10      2swap D-   lo2
     sbc  HL, BC         ; 2:15      2swap D-
@@ -1728,7 +1728,7 @@ dnl
 define({__ASM_TOKEN_2OVER_DSUB},{dnl
 __{}define({__INFO},{2over_d-}){}dnl
 
-                        ;[11:101]   2over D-   ( hi2 lo2 hi1 lo1 -- hi2 lo2 hi1-hi2-carry lo2-lo1 )
+                        ;[11:101]   2over D-   ( hi2 lo2 hi1 lo1 -- d2 d1-d2 )
     pop  BC             ; 1:10      2over D-   lo2
     or    A             ; 1:4       2over D-
     sbc  HL, BC         ; 2:15      2over D-
