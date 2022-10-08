@@ -2240,19 +2240,40 @@ dnl # 2dup 0. D= while
 dnl # 2dup D0= while
 dnl # ( d -- d )
 define({_2DUP_D0EQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_WHILE},{2dup_d0eq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_WHILE},{2dup d0= while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_D0EQ_WHILE},{dnl
-__{}define({__INFO},{2dup_d0eq_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-{
-    ld    A, H          ; 1:4       2dup D0= while BEGIN_STACK  ( d -- d )
-    or    L             ; 1:4       2dup D0= while BEGIN_STACK
-    or    D             ; 1:4       2dup D0= while BEGIN_STACK
-    or    E             ; 1:4       2dup D0= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      2dup D0= while BEGIN_STACK})}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+__{}{__{}define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO BEGIN_STACK  ( d -- d )
+    or    L             ; 1:4       __INFO BEGIN_STACK
+    or    D             ; 1:4       __INFO BEGIN_STACK
+    or    E             ; 1:4       __INFO BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd -- pd )
+define({PD0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PD0EQ_WHILE},{pd0eq while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PD0EQ_WHILE},{dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+__{}{define({__INFO},__COMPILE_INFO)
+    ld    A,(HL)        ; 1:7       __INFO BEGIN_STACK  ( pd -- pd )
+    ld    C, L          ; 1:4       __INFO BEGIN_STACK
+    inc   L             ; 1:4       __INFO BEGIN_STACK
+    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    inc   L             ; 1:4       __INFO BEGIN_STACK
+    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    inc   L             ; 1:4       __INFO BEGIN_STACK
+    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    ld    L, C          ; 1:4       __INFO BEGIN_STACK
+    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
@@ -2261,19 +2282,40 @@ dnl # 2dup 0. D<> while
 dnl # 2dup D0<> while
 dnl # ( d -- d )
 define({_2DUP_D0NE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_D0NE_WHILE},{2dup_d0ne_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0NE_WHILE},{2dup d0<> while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_D0NE_WHILE},{dnl
-__{}define({__INFO},{2dup_d0ne_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-{
-    ld    A, H          ; 1:4       2dup D0<> while BEGIN_STACK  ( d -- d )
-    or    L             ; 1:4       2dup D0<> while BEGIN_STACK
-    or    D             ; 1:4       2dup D0<> while BEGIN_STACK
-    or    E             ; 1:4       2dup D0<> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      2dup D0<> while BEGIN_STACK})}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+__{}{define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO BEGIN_STACK  ( d -- d )
+    or    L             ; 1:4       __INFO BEGIN_STACK
+    or    D             ; 1:4       __INFO BEGIN_STACK
+    or    E             ; 1:4       __INFO BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd -- pd )
+define({PD0NE_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PD0NE_WHILE},{pd0ne while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PD0NE_WHILE},{dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0} for non-existent {BEGIN}},
+__{}{define({__INFO},__COMPILE_INFO)
+    ld    A,(HL)        ; 1:7       __INFO BEGIN_STACK  ( pd -- pd )
+    ld    C, L          ; 1:4       __INFO BEGIN_STACK
+    inc   L             ; 1:4       __INFO BEGIN_STACK
+    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    inc   L             ; 1:4       __INFO BEGIN_STACK
+    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    inc   L             ; 1:4       __INFO BEGIN_STACK
+    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    ld    L, C          ; 1:4       __INFO BEGIN_STACK
+    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl

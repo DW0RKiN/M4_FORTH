@@ -3172,6 +3172,35 @@ __{}define({__INFO},{dult}){}dnl
     pop  DE             ; 1:10      Du<}){}dnl
 dnl
 dnl
+dnl # ( pud2 pud1 -- pud2 pud1 flag )
+dnl # unsigned ( [pud2] u< [pud1] ) --> ( [pud2] - [pud1] u< 0 ) --> carry is true
+define({PDULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDULT},{pdult},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDULT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pud2 pud1 -- pud2 pud1 flag )  flag == [pud2] u< [pud1]  with align 4
+    ld    A,(DE)        ; 1:7       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pud2]u<[pud1]}){}dnl
+dnl
+dnl
 dnl # D>=
 dnl # 2swap D<=
 dnl # ( d2 d1 -- flag )
@@ -3264,6 +3293,36 @@ __{}define({__INFO},{duge}){}dnl
     sbc   A, H          ; 1:4       Du>=   HL>=DE --> HL+1>DE --> 0>DE-HL-1 --> carry if true
     sbc  HL, HL         ; 2:15      Du>=   set flag ud2>=ud1
     pop  DE             ; 1:10      Du>=}){}dnl
+dnl
+dnl
+dnl # ( pud2 pud1 -- pud2 pud1 flag )
+dnl # unsigned ( [pud2] u>= [pud1] ) --> ( [pud2] - [pud1] u>= 0 ) --> not carry is true
+define({PDUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDUGE},{pduge},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDUGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pud2 pud1 -- pud2 pud1 flag )  flag == [pud2] >= [pud1]  with align 4
+    ld    A,(DE)        ; 1:7       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pud2]u>=[pud1]}){}dnl
 dnl
 dnl
 dnl # D<=
@@ -3363,6 +3422,36 @@ __{}define({__INFO},{dule}){}dnl
     pop  DE             ; 1:10      Du<=}){}dnl
 dnl
 dnl
+dnl # ( pud2 pud1 -- pud2 pud1 flag )
+dnl # unsigned ( [pud2] u<= [pud1] ) --> ( 0 <= [pud1] - [pud2] ) --> not carry is true
+define({PDULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDULE},{pdule},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDULE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pud2 pud1 -- pud2 pud1 flag )  flag == [pud2] u<= [pud1]  with align 4
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld    E, C          ; 1:4       __INFO
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pud2]u<=[pud1]}){}dnl
+dnl
+dnl
 dnl # D>
 dnl # 2swap D<
 dnl # ( d2 d1 -- flag )
@@ -3456,6 +3545,35 @@ __{}define({__INFO},{dugt}){}dnl
     sbc   A, B          ; 1:4       Du>   BC>DE --> 0>DE-BC --> carry if true
     sbc  HL, HL         ; 2:15      Du>   set flag ud2>ud1
     pop  DE             ; 1:10      Du>}){}dnl
+dnl
+dnl
+dnl # ( pud2 pud1 -- pud2 pud1 flag )
+dnl # unsigned ( [pud2] u> [pud1] ) --> ( 0 > [pud1] - [pud2] ) --> carry is true
+define({PDUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDUGT},{pdugt},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDUGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( pud2 pud1 -- pud2 pud1 flag )  flag == [pud2] u> [pud1]  with align 4
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld    C, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
+    ld    A,(DE)        ; 1:7       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld    E, C          ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag [pud2]u>[pud1]}){}dnl
 dnl
 dnl
 dnl
