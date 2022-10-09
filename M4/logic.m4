@@ -2527,6 +2527,33 @@ __{}define({__INFO},{dinvert}){}dnl
     ld    D, A          ; 1:4       dinvert}){}dnl
 dnl
 dnl
+dnl # ( pd -- pd )
+dnl # [pd] = ~[pd]
+define({PDINVERT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDINVERT},{pdinvert},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDINVERT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A,(HL)        ; 1:7       __INFO   ( pd -- pd )  [pd] = ~[pd]  with align 4
+    cpl                 ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    cpl                 ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    cpl                 ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    cpl                 ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO}){}dnl
+dnl
+dnl
 dnl # D0=
 dnl # ( d -- f )
 dnl # if ( x1x2 ) flag = 0; else flag = 0xFFFF;
