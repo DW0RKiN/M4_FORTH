@@ -2207,10 +2207,8 @@ __{}__ADD_TOKEN({__TOKEN_16_DLSHIFT},{16 dlshift},$@){}dnl
 dnl
 define({__ASM_TOKEN_16_DLSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    D, H          ; 1:4       __INFO  ( d1 16 -- d )  d = d1 << 16
-    ld    E, L          ; 1:4       __INFO
-    ld    H, 0x00       ; 2:7       __INFO
-    ld    L, H          ; 1:4       __INFO}){}dnl
+    ex   DE, HL         ; 1:4       __INFO  ( d1 16 -- d )  d = d1 << 16
+    ld   HL, 0x0000     ; 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -2245,9 +2243,8 @@ dnl
 define({__ASM_TOKEN_24_DLSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    D, L          ; 1:4       __INFO  ( d1 24 -- d )  d = d1 << 24
-    ld    E, 0x00       ; 2:7       __INFO
-    ld    H, E          ; 1:4       __INFO
-    ld    L, E          ; 1:4       __INFO}){}dnl
+    ld   HL, 0x0000     ; 3:10      __INFO
+    ld    E, L          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -2487,10 +2484,8 @@ __{}__ADD_TOKEN({__TOKEN_16_DRSHIFT},{16 drshift},$@){}dnl
 dnl
 define({__ASM_TOKEN_16_DRSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    L, E          ; 1:4       __INFO  ( d1 16 -- d )  d = d1 >> 16
-    ld    H, D          ; 1:4       __INFO
-    ld    E, 0x00       ; 2:7       __INFO
-    ld    D, E          ; 1:4       __INFO}){}dnl
+    ld   DE, HL         ; 1:4       __INFO  ( d1 16 -- d )  d = d1 >> 16
+    ld   DE, 0x0000     ; 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -2527,9 +2522,8 @@ dnl
 define({__ASM_TOKEN_24_DRSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    L, D          ; 1:4       __INFO  ( d1 24 -- d )  d = d1 >> 24
-    ld    H, 0x00       ; 2:7       __INFO
-    ld    E, H          ; 1:4       __INFO
-    ld    D, H          ; 1:4       __INFO}){}dnl
+    ld   DE, 0x0000     ; 3:10      __INFO
+    ld    H, D          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
