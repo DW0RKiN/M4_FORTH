@@ -2081,11 +2081,11 @@ dnl
 dnl
 dnl # ( d1 4 -- d )  d = d1 << 4
 dnl # shifts d1 left 4 bits
-define({DLSHIFT_4},{dnl
-__{}__ADD_TOKEN({__TOKEN_DLSHIFT_4},{dlshift 4},$@){}dnl
+define({_4_DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4_DLSHIFT},{4 dlshift},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DLSHIFT_4},{dnl
+define({__ASM_TOKEN_4_DLSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A, E          ; 1:4       __INFO  ( d1 4 -- d )  d = d1 << 4
     add  HL, HL         ; 1:11      __INFO
@@ -2106,11 +2106,11 @@ dnl
 dnl
 dnl # ( pd -- pd )  [pd] <<= 4
 dnl # shifts [pd] left 4 bits
-define({PDLSHIFT_4},{dnl
-__{}__ADD_TOKEN({__TOKEN_PDLSHIFT_4},{pdlshift 4},$@){}dnl
+define({_4_PDLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4_PDLSHIFT},{4 pdlshift},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PDLSHIFT_4},{dnl
+define({__ASM_TOKEN_4_PDLSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     xor   A             ; 1:4       __INFO  ( pd -- pd )  [pd] <<= 4  with align 4
     rld                 ; 2:18      __INFO  A(HL)=0xA021-->0xA210
@@ -2154,11 +2154,11 @@ dnl
 dnl
 dnl # ( d1 4 -- d )  d = d1 << 4
 dnl # shifts d1 left 4 bits
-define({DRSHIFT_4},{dnl
-__{}__ADD_TOKEN({__TOKEN_DRSHIFT_4},{drshift 4},$@){}dnl
+define({_4_DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4_DRSHIFT},{4 drshift},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DRSHIFT_4},{dnl
+define({__ASM_TOKEN_4_DRSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(1,1,{
                        ;[25:128]    __INFO  ( d1 4 -- d )  d = d1 >> 4
@@ -2235,11 +2235,11 @@ dnl
 dnl
 dnl # ( pd -- pd )  [pd] >>= 4
 dnl # shifts [pd] right 4 bits
-define({PDRSHIFT_4},{dnl
-__{}__ADD_TOKEN({__TOKEN_PDRSHIFT_4},{pdrshift 4},$@){}dnl
+define({_4_PDRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_4_PDRSHIFT},{4 pdrshift},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PDRSHIFT_4},{dnl
+define({__ASM_TOKEN_4_PDRSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     inc   L             ; 1:4       __INFO  ( pd -- pd )  [pd] >>= 4  with align 4
     inc   L             ; 1:4       __INFO
