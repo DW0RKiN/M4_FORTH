@@ -1310,27 +1310,27 @@ dnl
 define({__ASM_TOKEN_PDADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] += [pd2] with align 4
-    add  (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
-    ld     B, E         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    add (HL)            ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    ld    B, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     adc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     adc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     adc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
-    ld     E, B         ; 1:4       __INFO}){}dnl
+    ld  (HL),A          ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    E, B          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( d -- d+n )
@@ -1610,27 +1610,27 @@ dnl
 define({__ASM_TOKEN_PDSUB},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] = [pd2] - [pd1]  with align 4
-    sub  (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
-    ld     B, E         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld  (HL), A         ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    ld    B, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    ld  (HL), A         ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    ld  (HL), A         ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
-    ld     E, B         ; 1:4       __INFO}){}dnl
+    ld  (HL), A         ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    E, B          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( pd2 pd1 -- pd2 pd1 )
@@ -1643,27 +1643,27 @@ define({__ASM_TOKEN_PDSUB_NEGATE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] = -[pd2]  with align 4
     ld    A,(DE)        ; 1:7       __INFO
-    sub  (HL)           ; 1:7       __INFO
-    ld   (DE), A        ; 1:7       __INFO
-    ld     C, L         ; 1:4       __INFO
-    ld     B, E         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    ld    B, E          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    ld   (DE), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    ld   (DE), A        ; 1:7       __INFO
-    inc    L            ; 1:4       __INFO
-    inc    E            ; 1:4       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   E             ; 1:4       __INFO
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
-    ld   (DE), A        ; 1:7       __INFO
-    ld     L, C         ; 1:4       __INFO
-    ld     E, B         ; 1:4       __INFO
+    ld  (DE),A          ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO
+    ld    E, B          ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -2055,6 +2055,33 @@ __{}define({__INFO},{dnegate}){}dnl
 define({USE_DNEGATE},{})
                         ;[3:79]     dnegate   ( hi lo -- -hi -lo )
     call NEGATE_32      ; 3:17      dnegate}){}dnl
+dnl
+dnl
+dnl # ( pd -- pd )
+define({PDNEGATE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDNEGATE},{pdnegate},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDNEGATE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    xor   A             ; 1:4       __INFO   ( pd -- pd )  [pd] = -[pd]  with align 4
+    ld    B, A          ; 1:4       __INFO
+    sub (HL)            ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    A, B          ; 1:4       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    A, B          ; 1:4       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    A, B          ; 1:4       __INFO
+    sbc   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # "D1+"
