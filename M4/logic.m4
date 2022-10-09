@@ -2079,6 +2079,42 @@ __def({USE_DLSHIFT})
 dnl
 dnl
 dnl
+dnl # ( d1 1 -- d )  d = d1 << 1
+dnl # shifts d1 left 1 bits
+define({_1_DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_1_DLSHIFT},{1 dlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1_DLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO  ( d1 1 -- d )  d = d1 << 1
+    rl    E             ; 2:8       __INFO
+    rl    D             ; 2:8       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd -- pd )  [pd] <<= 1
+dnl # shifts [pd] left 1 bits
+define({_1_PDLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_1_PDLSHIFT},{1 pdlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1_PDLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    C, L          ; 1:4       __INFO  ( pd -- pd )  [pd] <<= 1  with align 4
+    ld    A,(HL)        ; 1:7       __INFO
+    add   A, A          ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    rl  (HL)            ; 2:15      __INFO
+    inc   L             ; 1:4       __INFO
+    rl  (HL)            ; 2:15      __INFO
+    inc   L             ; 1:4       __INFO
+    rl  (HL)            ; 2:15      __INFO
+    ld    L, C          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 4 -- d )  d = d1 << 4
 dnl # shifts d1 left 4 bits
 define({_4_DLSHIFT},{dnl
@@ -2099,7 +2135,7 @@ __{}define({__INFO},__COMPILE_INFO)
     rl    D             ; 2:8       __INFO
     add  HL, HL         ; 1:11      __INFO
     adc   A, A          ; 1:4       __INFO
-    rl    D             ; 2:8       __INFO   
+    rl    D             ; 2:8       __INFO
     ld    E, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -2152,8 +2188,45 @@ __def({USE_DRSHIFT})
 dnl
 dnl
 dnl
+dnl # ( d1 1 -- d )  d = d1 >> 1
+dnl # shifts d1 right 1 bits
+define({_1_DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_1_DRSHIFT},{1 drshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1_DRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    srl   D             ; 2:8       __INFO  ( d1 1 -- d )  d = d1 >> 1
+    rr    E             ; 2:8       __INFO
+    rr    H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd -- pd )  [pd] >>= 1
+dnl # shifts [pd] right 1 bits
+define({_1_PDRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_1_PDRSHIFT},{1 pdrshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1_PDRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   L             ; 1:4       __INFO  ( pd -- pd )  [pd] >>= 1  with align 4
+    inc   L             ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    xor   A             ; 1:4       __INFO
+    rr  (HL)            ; 2:15      __INFO
+    dec   L             ; 1:4       __INFO
+    rr  (HL)            ; 2:15      __INFO
+    dec   L             ; 1:4       __INFO
+    rr  (HL)            ; 2:15      __INFO
+    dec   L             ; 1:4       __INFO
+    rr  (HL)            ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 4 -- d )  d = d1 << 4
-dnl # shifts d1 left 4 bits
+dnl # shifts d1 right 4 bits
 define({_4_DRSHIFT},{dnl
 __{}__ADD_TOKEN({__TOKEN_4_DRSHIFT},{4 drshift},$@){}dnl
 }){}dnl
