@@ -2079,6 +2079,52 @@ __def({USE_DLSHIFT})
 dnl
 dnl
 dnl
+dnl # ( d1 4 -- d )  d = d1 << 4
+dnl # shifts d1 left 4 bits
+define({DLSHIFT_4},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLSHIFT_4},{dlshift 4},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLSHIFT_4},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO  ( d1 4 -- d )  d = d1 << 4
+    add  HL, HL         ; 1:11      __INFO
+    adc   A, A          ; 1:4       __INFO
+    rl    D             ; 2:8       __INFO
+    add  HL, HL         ; 1:11      __INFO
+    adc   A, A          ; 1:4       __INFO
+    rl    D             ; 2:8       __INFO
+    add  HL, HL         ; 1:11      __INFO
+    adc   A, A          ; 1:4       __INFO
+    rl    D             ; 2:8       __INFO
+    add  HL, HL         ; 1:11      __INFO
+    adc   A, A          ; 1:4       __INFO
+    rl    D             ; 2:8       __INFO   
+    ld    E, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd -- pd )  [pd] <<= 4
+dnl # shifts [pd] left 4 bits
+define({PDLSHIFT_4},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDLSHIFT_4},{pdlshift 4},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDLSHIFT_4},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    xor   A             ; 1:4       __INFO  ( pd -- pd )  [pd] <<= 4  with align 4
+    rld                 ; 2:18      __INFO  A(HL)=0xA021-->0xA210
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    rld                 ; 2:18      __INFO  A(HL)=0xA243-->0xA432
+    inc   L             ; 1:4       __INFO
+    rld                 ; 2:18      __INFO  A(HL)=0xA465-->0xA654
+    inc   L             ; 1:4       __INFO
+    rld                 ; 2:18      __INFO  A(HL)=0xA687-->0xA876
+    ld    L, C          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
 define({ROT_DLSHIFT},{dnl
@@ -2103,6 +2149,63 @@ define({__ASM_TOKEN_DRSHIFT},{dnl
 __{}define({__INFO},{drshift}){}dnl
 __def({USE_DRSHIFT})
     call RSHIFT32       ; 3:17      D>>   ( d1 u -- d )  d = d1 >> u}){}dnl
+dnl
+dnl
+dnl
+dnl # ( d1 4 -- d )  d = d1 << 4
+dnl # shifts d1 left 4 bits
+define({DRSHIFT_4},{dnl
+__{}__ADD_TOKEN({__TOKEN_DRSHIFT_4},{drshift 4},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DRSHIFT_4},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO  ( d1 4 -- d )  d = d1 >> 4
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    ld    L, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    xor   A             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  008765->0876.50
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  008765->0876.50
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  008765->0876.50
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  008765->0876.50
+    adc   A, A          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    E, D          ; 1:4       __INFO
+    ld    D, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd -- pd )  [pd] >>= 4
+dnl # shifts [pd] right 4 bits
+define({PDRSHIFT_4},{dnl
+__{}__ADD_TOKEN({__TOKEN_PDRSHIFT_4},{pdrshift 4},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDRSHIFT_4},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   L             ; 1:4       __INFO  ( pd -- pd )  [pd] >>= 4  with align 4
+    inc   L             ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    xor   A             ; 1:4       __INFO
+    rrd                 ; 2:18      __INFO  A(HL)=0xA087-->0xA708
+    dec   L             ; 1:4       __INFO
+    rrd                 ; 2:18      __INFO  A(HL)=0xA765-->0xA576
+    dec   L             ; 1:4       __INFO
+    rrd                 ; 2:18      __INFO  A(HL)=0xA543-->0xA354
+    dec   L             ; 1:4       __INFO
+    rrd                 ; 2:18      __INFO  A(HL)=0xA321-->0xA132}){}dnl
 dnl
 dnl
 dnl
