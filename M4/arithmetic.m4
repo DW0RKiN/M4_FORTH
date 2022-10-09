@@ -2146,24 +2146,42 @@ __{}__ADD_TOKEN({__TOKEN_PD1SUB},{pd1-},$@){}dnl
 dnl
 define({__ASM_TOKEN_PD1SUB},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(1,1,{
+ifelse(1,0,{
                 ;[19:34,71,100,110] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
-    xor    A            ; 1:4       __INFO
-    or     A,(HL)       ; 1:7       __INFO
-    jr    nz, $+16      ; 2:7/12    __INFO
-    ld     C, L         ; 1:4       __INFO
-    inc    L            ; 1:4       __INFO
-    or   (HL)           ; 1:7       __INFO
-    jr    nz, $+9       ; 2:7/12    __INFO
-    dec  (HL)           ; 1:11      __INFO
-    inc    L            ; 1:4       __INFO
-    or   (HL)           ; 1:7       __INFO
-    jr    nz, $+4       ; 2:7/12    __INFO
-    dec  (HL)           ; 1:11      __INFO
-    inc    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
-    ld     L, C         ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO},
+    xor   A             ; 1:4       __INFO
+    or    A,(HL)        ; 1:7       __INFO
+    jr   nz, $+16       ; 2:7/12    __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    jr   nz, $+9        ; 2:7/12    __INFO
+    dec (HL)            ; 1:11      __INFO
+    inc   L             ; 1:4       __INFO
+    or  (HL)            ; 1:7       __INFO
+    jr   nz, $+4        ; 2:7/12    __INFO
+    dec (HL)            ; 1:11      __INFO
+    inc   L             ; 1:4       __INFO
+    dec (HL)            ; 1:11      __INFO
+    ld    L, C          ; 1:4       __INFO
+    dec (HL)            ; 1:11      __INFO},
+1,1,{
+                 ;[20:33,66,91,101] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
+    ld    A, 0xFF       ; 2:7       __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    jr    c, $+16       ; 2:7/12    __INFO
+    ld    C, L          ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    jr    c, $+9        ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    jr    c, $+4        ; 2:7/12    __INFO
+    inc   L             ; 1:4       __INFO
+    dec (HL)            ; 1:11      __INFO
+    ld    L, C          ; 1:4       __INFO},
 1,0,{
                 ;[20:34,67,100,114] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
     xor    A            ; 1:4       __INFO
