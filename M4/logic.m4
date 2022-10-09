@@ -2159,8 +2159,53 @@ __{}__ADD_TOKEN({__TOKEN_DRSHIFT_4},{drshift 4},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DRSHIFT_4},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld    A, E          ; 1:4       __INFO  ( d1 4 -- d )  d = d1 >> 4
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(1,0,{
+                       ;[25:128]    __INFO  ( d1 4 -- d )  d = d1 >> 4
+    ld    A, E          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO  654321->5432.10
+    adc   A, A          ; 1:4       __INFO
+    ld    L, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    ld    A, E          ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765->0876
+    rra                 ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765->0876
+    rra                 ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765->0876
+    rra                 ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765->0876
+    rra                 ; 1:4       __INFO
+    ld    E, A          ; 1:4       __INFO},
+1,1,{
+                       ;[30:120]    __INFO  ( d1 4 -- d )  d = d1 >> 4
+    ld    A, E          ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  87654321->08765432
+    rra                 ; 1:4       __INFO
+    rr    H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO
+    srl   D             ; 2:8       __INFO  87654321->08765432
+    rra                 ; 1:4       __INFO
+    rr    H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO
+    srl   D             ; 2:8       __INFO  87654321->08765432
+    rra                 ; 1:4       __INFO
+    rr    H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO
+    srl   D             ; 2:8       __INFO  87654321->08765432
+    rra                 ; 1:4       __INFO
+    rr    H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO
+    ld    E, A          ; 1:4       __INFO},
+{
+                       ;[24:152]    __INFO  ( d1 4 -- d )  d = d1 >> 4
+    ld    A, E          ; 1:4       __INFO
     add  HL, HL         ; 1:11      __INFO  654321->5432.10
     adc   A, A          ; 1:4       __INFO
     add  HL, HL         ; 1:11      __INFO  654321->5432.10
@@ -2184,6 +2229,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO
     ld    E, D          ; 1:4       __INFO
     ld    D, A          ; 1:4       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
