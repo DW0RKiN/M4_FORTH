@@ -2160,7 +2160,7 @@ __{}__ADD_TOKEN({__TOKEN_DRSHIFT_4},{drshift 4},$@){}dnl
 dnl
 define({__ASM_TOKEN_DRSHIFT_4},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,0,{
+__{}ifelse(1,1,{
                        ;[25:128]    __INFO  ( d1 4 -- d )  d = d1 >> 4
     ld    A, E          ; 1:4       __INFO
     add  HL, HL         ; 1:11      __INFO  654321->5432.10
