@@ -2199,6 +2199,43 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # ( d1 16 -- d )  d = d1 << 16
+dnl # shifts d1 left 16 bits
+define({_16_DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_16_DLSHIFT},{16 dlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16_DLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    D, H          ; 1:4       __INFO  ( d1 16 -- d )  d = d1 << 16
+    ld    E, L          ; 1:4       __INFO
+    ld    H, 0x00       ; 2:7       __INFO
+    ld    L, H          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd 16 -- pd )  [pd] <<= 16
+dnl # shifts [pd] left 16 bits
+define({_16_PDLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_16_PDLSHIFT},{16 pdlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16_PDLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    C, L          ; 1:4       __INFO  ( pd 16 -- pd )  [pd] <<= 16  with align 4
+    ld    A,(HL)        ; 1:7       __INFO
+    ld  (HL),0x00       ; 2:10      __INFO
+    inc   L             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    ld  (HL),0x00       ; 2:10      __INFO
+    inc   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    ld    L, C          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
 define({ROT_DLSHIFT},{dnl
@@ -2402,6 +2439,45 @@ __{}define({__INFO},__COMPILE_INFO)
     ld  (HL),B          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ld  (HL),A          ; 1:7       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( d1 16 -- d )  d = d1 >> 16
+dnl # shifts d1 right 16 bits
+define({_16_DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_16_DRSHIFT},{16 drshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16_DRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    L, E          ; 1:4       __INFO  ( d1 16 -- d )  d = d1 >> 16
+    ld    H, D          ; 1:4       __INFO
+    ld    E, 0x00       ; 2:7       __INFO
+    ld    D, E          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd 16 -- pd )  [pd] >>= 16
+dnl # shifts [pd] right 16 bits
+define({_16_PDRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_16_PDRSHIFT},{16 pdrshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16_PDRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   L             ; 1:4       __INFO  ( pd 16 -- pd )  [pd] >>= 16  with align 4
+    inc   L             ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    xor   A             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld    C,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),C          ; 1:7       __INFO}){}dnl
 dnl
 dnl
 dnl
