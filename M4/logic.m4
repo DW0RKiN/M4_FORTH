@@ -2322,6 +2322,48 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # ( d1 28 -- d )  d = d1 << 28
+dnl # shifts d1 left 28 bits
+define({_28_DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_28_DLSHIFT},{28 dlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_28_DLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO  ( d1 28 -- d )  d = d1 << 28
+    add   A, A          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    ld    D, A          ; 1:4       __INFO
+    ld   HL, 0x0000     ; 3:10      __INFO
+    ld    E, L          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd 28 -- pd )  [pd] <<= 28
+dnl # shifts [pd] left 28 bits
+define({_28_PDLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_28_PDLSHIFT},{28 pdlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_28_PDLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    C, L          ; 1:4       __INFO  ( pd 28 -- pd )  [pd] <<= 28  with align 4
+    xor   A             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    rld                 ; 2:18      __INFO  A(HL)=0xA021-->0xA210
+    ld    L, C          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
 define({ROT_DLSHIFT},{dnl
