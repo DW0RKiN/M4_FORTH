@@ -2707,6 +2707,55 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # ( d1 20 -- d )  d = d1 >> 20
+dnl # shifts d1 right 20 bits
+define({_20_DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_20_DRSHIFT},{20 drshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_20_DRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO  ( d1 20 -- d )  d = d1 >> 20
+    srl   D             ; 2:8       __INFO  8765....->0876....
+    rra                 ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765....->0876....
+    rra                 ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765....->0876....
+    rra                 ; 1:4       __INFO
+    srl   D             ; 2:8       __INFO  8765....->0876....
+    rra                 ; 1:4       __INFO
+    ld    E, A          ; 1:4       __INFO
+    ld   DE, HL         ; 1:4       __INFO
+    ld   DE, 0x0000     ; 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( pd 20 -- pd )  [pd] >>= 20
+dnl # shifts [pd] right 20 bits
+define({_20_PDRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_20_PDRSHIFT},{20 pdrshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_20_PDRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   L             ; 1:4       __INFO  ( pd 20 -- pd )  [pd] >>= 20  with align 4
+    inc   L             ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    xor   A             ; 1:4       __INFO
+    ld    B,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld    C,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    rrd                 ; 2:18      __INFO  A(HL)=0xA087-->0xA708
+    dec   L             ; 1:4       __INFO
+    ld  (HL),C          ; 1:7       __INFO
+    rrd                 ; 2:18      __INFO  A(HL)=0xA765-->0xA576}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 24 -- d )  d = d1 >> 24
 dnl # shifts d1 right 24 bits
 define({_24_DRSHIFT},{dnl
