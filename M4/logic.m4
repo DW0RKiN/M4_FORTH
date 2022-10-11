@@ -2678,7 +2678,7 @@ __{}__ADD_TOKEN({__TOKEN_16_DRSHIFT},{16 drshift},$@){}dnl
 dnl
 define({__ASM_TOKEN_16_DRSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld   DE, HL         ; 1:4       __INFO  ( d1 16 -- d )  d = d1 >> 16
+    ex   DE, HL         ; 1:4       __INFO  ( d1 16 -- d )  d = d1 >> 16
     ld   DE, 0x0000     ; 3:10      __INFO}){}dnl
 dnl
 dnl
@@ -2725,7 +2725,7 @@ __{}define({__INFO},__COMPILE_INFO)
     srl   D             ; 2:8       __INFO  8765....->0876....
     rra                 ; 1:4       __INFO
     ld    E, A          ; 1:4       __INFO
-    ld   DE, HL         ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
     ld   DE, 0x0000     ; 3:10      __INFO}){}dnl
 dnl
 dnl
