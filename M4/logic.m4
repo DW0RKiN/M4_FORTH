@@ -2102,9 +2102,7 @@ dnl
 define({__ASM_TOKEN_1_PDLSHIFT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    C, L          ; 1:4       __INFO  ( pd 1 -- pd )  [pd] <<= 1  with align 4
-    ld    A,(HL)        ; 1:7       __INFO
-    add   A, A          ; 1:4       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    sla (HL)            ; 2:15      __INFO  Thnx Busy!
     inc   L             ; 1:4       __INFO
     rl  (HL)            ; 2:15      __INFO
     inc   L             ; 1:4       __INFO
@@ -2460,8 +2458,7 @@ __{}define({__INFO},__COMPILE_INFO)
     inc   L             ; 1:4       __INFO  ( pd 1 -- pd )  [pd] >>= 1  with align 4
     inc   L             ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
-    xor   A             ; 1:4       __INFO
-    rr  (HL)            ; 2:15      __INFO
+    srl (HL)            ; 2:15      __INFO  Thnx Busy!
     dec   L             ; 1:4       __INFO
     rr  (HL)            ; 2:15      __INFO
     dec   L             ; 1:4       __INFO
