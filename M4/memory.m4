@@ -455,7 +455,7 @@ __{}__{}__{}}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           $1 allot   
 __{}__{}__{}popdef({LAST_HERE_NAME}){}dnl
 __{}__{}__{}define({PUSH_ALLOT_TEMP},eval($1+LAST_HERE_ADD)){}dnl
 __{}__{}__{}popdef({LAST_HERE_ADD}){}dnl
-__{}__{}__{}PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
+__{}__{}__{}__ASM_TOKEN_PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
 __{}{dnl
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
 __{}__{}ifelse(eval(($1)>0),{1},{define({ALL_VARIABLE},ALL_VARIABLE{
