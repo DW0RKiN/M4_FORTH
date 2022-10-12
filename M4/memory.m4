@@ -93,9 +93,9 @@ __{}  .error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}define({__DVALUE_}$1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}; Align to 4-byte page boundary. Any use of ERASE that goes beyond this address may not work from now on.
+__{}__{}__{}; Align to 4-byte page boundary. Any use of ALLOT with a negative value that exceeds this address results in undefined behavior.
 __{}__{}__{}DEFS    (($ + 3) / 4) * 4 - $})
-__{}; Align to 4-byte page boundary. Any use of ERASE that goes beyond this address may not work from now on.})}){}dnl
+__{}; Align to 4-byte page boundary. Any use of ALLOT with a negative value that exceeds this address results in undefined behavior.})}){}dnl
 dnl
 dnl
 dnl # DVALUE(name)    --> (name) = TOS,NOS
