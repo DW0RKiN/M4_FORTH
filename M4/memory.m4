@@ -104,7 +104,7 @@ __{}  .error {$0}($@): Parameter is pointer!},
 {dnl
 __{}define({__DVALUE_}$1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}; Align to $1-byte page boundary. 
+__{}__{}__{}; Align to $1-byte page boundary.
 __{}__{}__{}; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
 __{}__{}__{}DEFS    (($ + $1 - 1) / ($1)) * ($1) - $})
 __{}                        ;           __INFO})}){}dnl
