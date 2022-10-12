@@ -104,8 +104,48 @@ __{}  .error {$0}($@): Parameter is pointer!},
 {dnl
 __{}define({__DVALUE_}$1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}; Align to $1-byte page boundary. Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+__{}__{}__{}; Align to $1-byte page boundary. 
+__{}__{}__{}; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
 __{}__{}__{}DEFS    (($ + $1 - 1) / ($1)) * ($1) - $})
+__{}                        ;           __INFO})}){}dnl
+dnl
+dnl
+dnl
+define({NO_SEGMENT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1>255),{1},{
+__{}  .error {$0}($@): The parameter is greater than 255!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_NO_SEGMENT},{no_segment($1)},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NO_SEGMENT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1>255),{1},{
+__{}  .error {$0}($@): The parameter is greater than 255!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__DVALUE_}$1)dnl
+__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}; The padding will fill if the following X bytes overflow the 256 byte segment.
+__{}__{}__{}; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+__{}__{}__{}if  ((($ + $1 - 1) / 256) != ($/256))
+__{}__{}__{}  DEFS    (($/256)+1)*256 - $
+__{}__{}__{}endif})
 __{}                        ;           __INFO})}){}dnl
 dnl
 dnl
