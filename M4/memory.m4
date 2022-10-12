@@ -82,20 +82,31 @@ __{}    ld  format({%-16s},{($2), BC}); 4:20      $1 value {$2}})}){}dnl
 dnl
 dnl
 dnl
-define({ALIGN4},{dnl
-__{}__ADD_TOKEN({__TOKEN_ALIGN4},{align4},$@){}dnl
+define({ALIGN},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_ALIGN},{align($1)},$@)}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ALIGN4},{dnl
+define({__ASM_TOKEN_ALIGN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(eval($#>0),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
 {dnl
 __{}define({__DVALUE_}$1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}; Align to 4-byte page boundary. Any use of Allot with a negative value exceeding this address will result in undefined behavior.
-__{}__{}__{}DEFS    (($ + 3) / 4) * 4 - $})
-__{}                        ;           align4})}){}dnl
+__{}__{}__{}; Align to $1-byte page boundary. Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+__{}__{}__{}DEFS    (($ + $1 - 1) / ($1)) * ($1) - $})
+__{}                        ;           __INFO})}){}dnl
 dnl
 dnl
 dnl # DVALUE(name)    --> (name) = TOS,NOS
