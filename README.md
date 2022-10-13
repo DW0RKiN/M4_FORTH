@@ -1211,7 +1211,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- d )        |<sub> _B: dw lo(d), hi(d)      |
 |<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_TO(_B)        |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000    |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000    |
-|<sub>                      |<sub>            ALIGN(`4`)            |<sub>                             |<sub>          ( -- )          |<sub> Set address to divisibility `4` |
+|<sub>                      |<sub>            ALIGN(`4`)            |<sub>                             |<sub>          ( -- )          |<sub> Set next address to divisibility `4` |
 |<sub>                      |<sub>         NO_SEGMENT(`16`)         |<sub>                             |<sub>          ( -- )          |<sub> The next `16` bytes do not change the upper 8-bits of the address |
 
 
