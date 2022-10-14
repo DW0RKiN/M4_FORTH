@@ -3042,7 +3042,7 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
@@ -3053,12 +3053,12 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
@@ -3073,40 +3073,36 @@ __{}    ld    B, E          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    E, B          ; 1:4       __INFO},
 __{}eval($1),256,{
-__{}    or    A             ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] |= [p{}eval(8*($1))_2] with align $1
-__{}    ld    B, L          ; 1:4       __INFO   = 0
+__{}    ld    B, L          ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] |= [p{}eval(8*($1))_2] with align $1
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO},
 __{}{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] |= [p{}eval(8*($1))_2] with align $1
-__{}    or  (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] |= [p{}eval(8*($1))_2] with align $1
 __{}    push DE             ; 1:11      __INFO
-__{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    or    A,(HL)        ; 1:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
