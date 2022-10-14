@@ -118,8 +118,8 @@ eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 __IS_MEM_REF($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
-__SAVE_EVAL($1>255),{1},{
-__{}  .error {$0}($@): The parameter is greater than 255!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
@@ -134,8 +134,8 @@ eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 __IS_MEM_REF($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
-__SAVE_EVAL($1>255),{1},{
-__{}  .error {$0}($@): The parameter is greater than 255!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
