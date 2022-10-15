@@ -3099,11 +3099,11 @@ __{}{
 __{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] |= [p{}eval(8*($1))_2] with align $1
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    or  (HL)            ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
