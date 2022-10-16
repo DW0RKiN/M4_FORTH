@@ -2678,6 +2678,126 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # ( p1 -- p1 )
+dnl # [p1] = -[p1]
+define({PNEGATE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PNEGATE},{pnegate{}eval(($1)*8)},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PNEGATE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}eval($1),2,{
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A,0x00        ; 2:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO},
+__{}eval($1),3,{
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    ld    B, A          ; 1:4       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO},
+__{}eval($1),4,{
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    ld    B, A          ; 1:4       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    L, C          ; 1:4       __INFO},
+__{}eval($1),5,{
+__{}                       ;format({%-11s},[14:eval(28+38*$1)]) __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    xor   A             ; 1:4       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
+__{}    ld    A, 0x00       ; 2:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    djnz $-5            ; 2:8/13    __INFO
+__{}    ld    L, C          ; 1:4       __INFO},
+__{}eval($1),256,{
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    ld    B, A          ; 1:4       __INFO
+__{}    ld    C, A          ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    djnz $-4            ; 2:8/13    __INFO},
+__{}{
+__{}                       ;format({%-11s},[14:eval(44+35*$1)]) __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
+__{}    xor   A             ; 1:4       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   BC, __HEX_HL(__HEX_L($1-1)*256)     ; 3:10      __INFO
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    djnz $-4            ; 2:8/13    __INFO
+__{}    pop  HL             ; 1:10      __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # "D1+"
 dnl # ( d -- d+1 )
 define({D1ADD},{dnl
