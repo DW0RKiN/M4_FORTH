@@ -2836,6 +2836,89 @@ __{}define({__INFO},__COMPILE_INFO)
     ld     L, C         ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # ( p1 -- p1 )
+dnl # [p1] += 1
+define({P1ADD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_P1ADD},{p1add{}eval(($1)*8)},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_P1ADD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1},
+__{}eval($1),2,{
+__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    dec   L             ; 1:4       __INFO},
+__{}eval($1),3,{
+__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    jr    nz, $+10      ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO},
+__{}eval($1),4,{
+__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    jr   nz, $+14       ; 2:7/12    __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    jr   nz, $+8        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    ld    L, C          ; 1:4       __INFO},
+__{}eval($1),256,{
+__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-4        ; 2:7/12    __INFO
+__{}    ld    L, 0x00       ; 2:7       __INFO},
+__{}{
+__{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    inc (HL)            ; 1:11      __INFO
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    djnz $-4            ; 2:8/13    __INFO
+__{}    ld    L, C          ; 1:4       __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # "D1-"
 dnl # ( d -- d-1 )
 define({D1SUB},{dnl
