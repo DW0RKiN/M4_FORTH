@@ -2823,14 +2823,14 @@ dnl
 define({__ASM_TOKEN_PD1ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     inc  (HL)           ; 1:11      __INFO   ( pd -- pd )  [pd] += 1 with align 4
-    jr     z, $+14      ; 2:7/12    __INFO
+    jr    nz, $+14      ; 2:7/12    __INFO
     ld     C, L         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
     inc  (HL)           ; 1:11      __INFO
-    jr     z, $+8       ; 2:7/12    __INFO
+    jr    nz, $+8       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
     inc  (HL)           ; 1:11      __INFO
-    jr     z, $+4       ; 2:7/12    __INFO
+    jr    nz, $+4       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
     inc  (HL)           ; 1:11      __INFO
     ld     L, C         ; 1:4       __INFO}){}dnl
