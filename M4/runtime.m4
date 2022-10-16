@@ -184,7 +184,7 @@ PRT_SP_HEX_U16:         ;           prt_sp_hex_u16
     ld    A, ' '        ; 2:7       prt_sp_hex_u16   putchar Pollutes: AF, DE', BC'
     rst   0x10          ; 1:11      prt_sp_hex_u16   putchar(reg A) with {ZX 48K ROM}
     ; fall to prt_hex_u16}){}dnl
-ifdef({USE_PRT_HEX_U16},{
+ifdef({USE_PRT_HEX_U16},{__def({USE_PRT_HEX_A})
 ;------------------------------------------------------------------------------
 ;   Input: 16-bit unsigned number in HL
 ;   Output: Print Hex HL
@@ -193,7 +193,8 @@ PRT_HEX_U16:            ;           prt_hex_u16
     ld    A, H          ;  1:4      prt_hex_u16
     call PRT_HEX_A      ;  3:17     prt_hex_u16
     ld    A, L          ;  1:4      prt_hex_u16
-    ; fall to prt_hex_a
+    ; fall to prt_hex_a}){}dnl
+ifdef({USE_PRT_HEX_A},{
 ;------------------------------------------------------------------------------
 ;    Input: A
 ;   Output: 00 .. FF

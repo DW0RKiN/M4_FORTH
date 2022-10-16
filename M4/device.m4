@@ -107,12 +107,122 @@ __{}__{}regexp({$*},     {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{
 __{}__{}__{}{regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}})},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
 __{}__{}{dnl
 __{}__{}__{}regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}){}errprint({
-  .warning $0:($*) Last character not found. Check if you have an even number of characters "})}){}dnl           # ???                      --> ??? + 0x80
+  .warning {$0}:($*) Last character not found. Check if you have an even number of characters "})}){}dnl           # ???                      --> ??? + 0x80
 }){}dnl
 dnl
 dnl
 dnl
 dnl # -------------------------------------------
+dnl
+dnl # . bs
+dnl # ( x -- )
+dnl # prints a 16-bit number with no spaces
+define({HEX},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX},{hex},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+  .error {$0}:($*) The word {HEX} must only be used in combination with (U)(D){DOT}!"}){}dnl
+dnl
+dnl
+dnl # pu. bs
+dnl # ( p -- p )
+dnl # prints a $1*8-bit number with no spaces
+define({PUDOT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUDOT},{pu.},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUDOT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+  .error {$0}:($*) The word {HEX} must only be used in combination with (U)(D){DOT}!"}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # hex pu. bs
+dnl # ( p -- p )
+dnl # prints a $1*8-bit number with no spaces
+define({HEX_PUDOT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_HEX_PUDOT},{hex pu.},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEX_PUDOT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__def({USE_PRT_HEX_A}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    ld    A,(HL)        ; 1:7       __INFO   ( p -- p )  with align $1
+__{}    call PRT_HEX_A      ; 3:17      __INFO},
+eval($1),2,{
+__{}    inc   L             ; 1:4       __INFO   ( p -- p )  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    call PRT_HEX_A      ; 3:17      __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    call PRT_HEX_A      ; 3:17      __INFO},
+__{}{
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   ( p -- p )  with align $1
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    add   A, L          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    call PRT_HEX_A      ; 3:17      __INFO
+__{}    djnz $-5            ; 2:8/13    __INFO})}){}dnl
+}){}dnl
+dnl
 dnl
 dnl # . bs
 dnl # ( x -- )
