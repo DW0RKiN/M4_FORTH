@@ -2942,7 +2942,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(1,0,{
                 ;[19:34,71,100,110] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
     xor   A             ; 1:4       __INFO
-    or    A,(HL)        ; 1:7       __INFO
+    or  (HL)            ; 1:7       __INFO
     jr   nz, $+16       ; 2:7/12    __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO

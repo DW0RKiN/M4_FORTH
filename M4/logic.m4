@@ -2113,6 +2113,83 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # ( p1 -- p1 )
+dnl # [p1] <<= 1
+define({_1_PLSHIFT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_1_PLSHIFT},{1 plshift{}eval(($1)*8)},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1_PLSHIFT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    sla (HL)            ; 2:15      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] <<= 1  with align $1},
+__{}eval($1),2,{
+__{}    sla (HL)            ; 2:15      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] <<= 1  with align $1
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    dec   L             ; 1:4       __INFO},
+__{}eval($1),3,{
+__{}    sla (HL)            ; 2:15      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] <<= 1  with align $1
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO},
+__{}eval($1),4,{
+__{}    sla (HL)            ; 2:15      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] <<= 1  with align $1
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    ld    L, C          ; 1:4       __INFO},
+__{}eval($1),256,{
+__{}    or    A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] <<= 1  with align $1
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-3        ; 2:7/12    __INFO
+__{}    ld    L, 0x00       ; 2:7       __INFO},
+__{}{
+__{}    sla (HL)            ; 2:15      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] <<= 1  with align $1
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    djnz $-3            ; 2:8/13    __INFO
+__{}    ld    L, C          ; 1:4       __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( d1 4 -- d )  d = d1 << 4
 dnl # shifts d1 left 4 bits
 define({_4_DLSHIFT},{dnl
