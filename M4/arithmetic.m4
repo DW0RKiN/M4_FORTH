@@ -3145,3 +3145,116 @@ __{}    ex   DE, HL         ; 1:4       __INFO})}){}dnl
 dnl
 dnl
 dnl
+dnl # ( p3 p2 p1 -- p3 p2 p1 )
+dnl # [p1] += [p2]
+define({PUMUL},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUMUL},{pu*{}eval(($1)*8)},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUMUL},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    pop  BC             ; 1:10      __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] u* [p{}eval(8*($1))_3] with align $1
+__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}    push BC             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    ld    H, A          ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    B, 0x08       ; 2:7       __INFO
+__{}    xor   A             ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO
+__{}    rl    L             ; 2:8       __INFO
+__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}    add   A, H          ; 1:4       __INFO
+__{}    djnz $-6            ; 2:8/13    __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}{
+__{}    ex  (SP),HL         ; 1:19      __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] u* [p{}eval(8*($1))_3] with align $1
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    add   A, L          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ex  (SP),HL         ; 1:19      __INFO   p3 += $1
+__{}    xor   A             ; 1:4       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    djnz $-2            ; 2:8/13    __INFO   [p1] = 0
+__{}    ld    L, C          ; 1:4       __INFO
+
+__{}    ld    C, __HEX_L($1)       ; 2:7       __INFO
+
+__{}    ld    B, 0x08       ; 2:7       __INFO
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    sla (HL)            ; 2:15      __INFO
+__{}    push BC             ; 1:11      __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    djnz $-3            ; 2:8/13    __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    pop  BC             ; 1:10      __INFO
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    rlc (HL)            ; 2:15      __INFO
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    jr   nc, $+20       ; 2:7/12    __INFO
+
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    add   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    push BC             ; 1:11      __INFO
+__{}    push DE             ; 1:11      __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    adc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    djnz $-5            ; 2:8/13    __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    pop  BC             ; 1:10      __INFO
+
+__{}    djnz $-37           ; 2:8/13    __INFO
+
+__{}    dec   C             ; 1:4       __INFO
+__{}    jr   nz, $-45       ; 2:7/12    __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
