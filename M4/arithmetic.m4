@@ -3197,28 +3197,26 @@ __{}    djnz $-6            ; 2:8/13    __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO},
 __{}eval($1),2,{
-__{}    ex  (SP),HL         ; 1:19      __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] u* [p{}eval(8*($1))_3] with align $1
-__{}    inc   L             ; 1:4       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO   p3 += $1
-__{}    xor   A             ; 1:4       __INFO
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] u* [p{}eval(8*($1))_3] with align $1
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
-__{}    ld    C, __HEX_L($1)       ; 2:7       __INFO
+__{}    pop  BC             ; 1:10      __INFO
+__{}    push BC             ; 1:11      __INFO
+__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}    push AF             ; 1:11      __INFO
+__{}    inc   C             ; 1:4       __INFO
+__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}    ld   BC, 0xF102     ; 3:10      __INFO   ld C,1 && pop af
 __{}    ld    B, 0x08       ; 2:7       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    dec   L             ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
 __{}    sla (HL)            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    rl  (HL)            ; 2:15      __INFO
 __{}    dec   L             ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    rlc (HL)            ; 2:15      __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    jr   nc, $+12       ; 2:7/12    __INFO
+__{}    add   A, A          ; 1:4       __INFO
+__{}    jr   nc, $+14       ; 2:7/12    __INFO
+__{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    add   A,(HL)        ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
@@ -3227,11 +3225,12 @@ __{}    inc   E             ; 1:4       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    adc   A,(HL)        ; 1:7       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
-__{}    djnz $-22           ; 2:8/13    __INFO
+__{}    djnz $-21           ; 2:8/13    __INFO
 __{}    dec   C             ; 1:4       __INFO
-__{}    jr   nz, $-30       ; 2:7/12    __INFO},
+__{}    jr   nz, $-27       ; 2:7/12    __INFO},
 __{}{
 __{}    ex  (SP),HL         ; 1:19      __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] u* [p{}eval(8*($1))_3] with align $1
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
