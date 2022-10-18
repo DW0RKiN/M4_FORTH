@@ -626,7 +626,7 @@ __{}__ADD_TOKEN({__TOKEN_UDIV},{u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UDIV},{dnl
-__{}__def({USE_UDIV},{}))dnl
+__{}__def({USE_UDIV},{}){}dnl
 __{}define({__INFO},__COMPILE_INFO)
     call UDIVIDE        ; 3:17      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl

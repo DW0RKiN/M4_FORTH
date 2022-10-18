@@ -1105,7 +1105,7 @@ include(M4PATH{}divmul/mul.m4){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_DIV},{ifdef({USE_UDIV},,define({USE_UDIV},{}))
+ifdef({USE_DIV},{__def({USE_UDIV})
 ;==============================================================================
 include(M4PATH{}divmul/div.m4){}dnl
 }){}dnl
