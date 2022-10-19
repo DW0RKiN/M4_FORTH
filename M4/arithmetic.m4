@@ -3241,7 +3241,7 @@ __{}    ex  (SP),HL         ; 1:19      __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    ld    A,(HL)        ; 1:7       __INFO
 __{}    ex  (SP),HL         ; 1:19      __INFO{}dnl
-__{}ifelse({TYP_PUMUL},{fast},{
+__{}ifelse(TYP_PUMUL,{fast},{
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    jr   nz, $+12       ; 2:7/12    __INFO
 __{}__{}    ld    B,(HL)        ; 1:7       __INFO
@@ -3270,7 +3270,7 @@ __{}    jr   nz, $-5        ; 2:7/12    __INFO
 __{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    djnz $-19           ; 2:8/13    __INFO
 __{}    dec   C             ; 1:4       __INFO
-__{}ifelse({TYP_PUMUL},{fast},{dnl
+__{}ifelse(TYP_PUMUL,{fast},{dnl
 __{}__{}    jr   nz, $-41       ; 2:7/12    __INFO},
 __{}{dnl
 __{}__{}    jr   nz, $-28       ; 2:7/12    __INFO})},
