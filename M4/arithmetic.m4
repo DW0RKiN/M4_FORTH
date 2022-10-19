@@ -3236,7 +3236,7 @@ __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*(
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    jr   nz, $-2        ; 2:7/12    __INFO   [p1] = 0
-__{}    ld    C, __HEX_L($1)       ; 2:7       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
 __{}    ex  (SP),HL         ; 1:19      __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    ld    A,(HL)        ; 1:7       __INFO
