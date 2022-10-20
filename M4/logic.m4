@@ -5501,7 +5501,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_PEQ},{p=},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PEQ},{p=},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PEQ},{dnl
@@ -5606,7 +5606,7 @@ __{}    djnz $-6            ; 2:8/13    __INFO
 __{}    scf                 ; 1:4       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+__{}    sbc  HL, HL         ; 2:15      __INFO})}){}dnl
 }){}dnl
 dnl
 dnl
