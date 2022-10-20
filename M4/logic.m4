@@ -5869,6 +5869,133 @@ __{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u<
 dnl
 dnl
 dnl
+dnl # ( pu2 pu1 -- pu2 pu1 flag )
+dnl # unsigned ( [pu2] u> [pu1] ) --> ( 0 u> [pu1] - [pu2] ) --> carry is true
+define({PUGT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUGT},{p{}eval(8*($1))ugt},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUGT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u> [pu{}eval(8*($1))_1]  with align 4
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u>[pu{}eval(8*($1))_1]},
+__{}eval($1),2,{
+__{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u> [pu{}eval(8*($1))_1]  with align 4
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u>[pu{}eval(8*($1))_1]},
+__{}eval($1),3,{
+__{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u> [pu{}eval(8*($1))_1]  with align 4
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u>[pu{}eval(8*($1))_1]},
+__{}eval($1),4,{
+__{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u> [pu{}eval(8*($1))_1]  with align 4
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u>[pu{}eval(8*($1))_1]},
+__{}eval($1),256,{
+__{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u> [pu{}eval(8*($1))_1]  with align 4
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}ifelse(TYP_P,{small},{dnl
+__{}__{}    or    A             ; 1:4       __INFO},
+__{}{dnl
+__{}__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}__{}    sub (HL)            ; 1:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    inc   E             ; 1:4       __INFO})
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    jr   nz, $-4        ; 2:7/12    __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u>[pu{}eval(8*($1))_1]},
+__{}{
+__{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u> [pu{}eval(8*($1))_1]  with align 4
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}ifelse(TYP_P,{small},{dnl
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO},
+__{}{dnl
+__{}__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}__{}    sub (HL)            ; 1:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    inc   E             ; 1:4       __INFO
+__{}__{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO})
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    djnz $-4            ; 2:8/13    __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag [pu{}eval(8*($1))_2]u>[pu{}eval(8*($1))_1]})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl
 dnl
