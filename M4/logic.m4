@@ -5501,7 +5501,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_PEQ},{p=},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PEQ},{p{}eval(8*($1))=},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PEQ},{dnl
