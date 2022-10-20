@@ -5523,6 +5523,7 @@ __{}ifelse(eval($1),1,{
 __{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == [p{}eval(8*($1))_2]  with align $1
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    xor (HL)            ; 1:7       __INFO
+__{}    sub 0x01            ; 2:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}eval($1),2,{
