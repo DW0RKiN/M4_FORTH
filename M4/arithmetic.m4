@@ -3161,7 +3161,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_PUMUL},{pu{}eval(($1)*8)*},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUMUL},{p{}eval(($1)*8)u*},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUMUL},{dnl
