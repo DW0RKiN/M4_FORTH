@@ -5518,7 +5518,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
 __{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == [p{}eval(8*($1))_2]  with align $1
 __{}    ld    A,(DE)        ; 1:7       __INFO
@@ -5648,7 +5648,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
 __{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] != [p{}eval(8*($1))_2]  with align $1
 __{}    ld    A,(DE)        ; 1:7       __INFO
@@ -5775,7 +5775,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
 __{}    push DE             ; 1:11      __INFO   ( pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 -- pu{}eval(8*($1))_2 pu{}eval(8*($1))_1 flag )  flag == [pu{}eval(8*($1))_2] u< [pu{}eval(8*($1))_1]  with align 4
 __{}    ld    A,(DE)        ; 1:7       __INFO
