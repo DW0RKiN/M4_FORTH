@@ -363,7 +363,7 @@ define({__ASM_TOKEN_HEX_UDOT},{dnl
 __{}define({__INFO},{hex u.}){}dnl
 __def({USE_PRT_HEX_U16})
     call PRT_HEX_U16    ; 3:17      hex u.   ( u -- )
-    pop  HL             ; 1:10      hex u.
+    ex   DE, HL         ; 1:4       hex u.
     pop  DE             ; 1:10      hex u.})dnl
 dnl
 dnl
