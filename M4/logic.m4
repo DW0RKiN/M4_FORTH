@@ -2997,7 +2997,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_PAND},{pand{}eval(($1)*8)},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PAND},{p{}eval(($1)*8)and},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PAND},{dnl
@@ -3203,7 +3203,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_POR},{por{}eval(($1)*8)},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_POR},{p{}eval(($1)*8)or},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_POR},{dnl
@@ -3316,7 +3316,7 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_PXOR},{pxor{}eval(($1)*8)},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PXOR},{p{}eval(($1)*8)xor},$@)}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PXOR},{dnl
