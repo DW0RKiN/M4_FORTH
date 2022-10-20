@@ -3146,7 +3146,7 @@ dnl
 dnl
 dnl
 dnl # ( p3 p2 p1 -- p3 p2 p1 )
-dnl # [p1] += [p2]
+dnl # [p1] = [p3] u* [p2]
 define({PUMUL},{dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
