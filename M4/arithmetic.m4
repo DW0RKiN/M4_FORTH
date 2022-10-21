@@ -3328,3 +3328,67 @@ __{}    jr   nz, $-45       ; 2:7/12    __INFO})}){}dnl
 dnl
 dnl
 dnl
+dnl # ( p2 p1 -- p2 p1 )
+dnl # [p1] = [p2] / [p1]
+dnl # [p2] = [p2] mod [p1]
+define({PUDIVMOD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_PUDIVMOD},{p{}eval(($1)*8)u/mod},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUDIVMOD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_mod p{}eval(8*($1))_2 p{}eval(8*($1))_div )  p{}eval(8*($1))_div = p{}eval(8*($1))_2 / p{}eval(8*($1))_1  with align $1
+__{}    ld   BC, 0x0000     ; 2:7       __INFO
+__{}    inc   B             ; 1:4       __INFO
+__{}    sla (HL)            ; 2:15      __INFO
+__{}    jr    c, $+8        ; 2:7/12    __INFO
+__{}    jr    z, $+19       ; 2:7/12    __INFO   exit with div 0
+__{}    cp  (HL)            ; 1:7       __INFO
+__{}    jr   nc, $-8        ; 2:7/12    __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    rr  (HL)            ; 2:15      __INFO
+__{}    sla   C             ; 2:8       __INFO   result *= 2
+__{}    cp  (HL)            ; 1:7       __INFO
+__{}    jr    c, $+4        ; 2:7/12    __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    inc   C             ; 1:4       __INFO   result += 1
+__{}    djnz $-10           ; 2:8/13    __INFO
+__{}    ld  (HL),C          ; 1:7       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO},
+__{}eval($1),2,{
+__{}    jr   nz, $-27       ; 2:7/12    __INFO},
+__{}eval($1),256,{
+__{}    jr   nz, $-28       ; 2:7/12    __INFO},
+__{}{
+__{}    jr   nz, $-45       ; 2:7/12    __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
