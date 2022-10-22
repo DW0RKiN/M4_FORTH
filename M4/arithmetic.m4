@@ -3497,11 +3497,9 @@ __{}    ld    B, C          ; 1:4       __INFO   counter
 __{}    ld    C, L          ; 1:4       __INFO
 
 _l_o_o_p_
-__{}    ld    L, C          ; 1:4       __INFO
-
 __{}    push  BC            ; 1:11      __INFO
+__{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}
 __{}    dec   L             ; 1:4       __INFO
 __{}    rr  (HL)            ; 2:15      __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 >>= 1
@@ -3511,7 +3509,6 @@ __{}    ex  (SP),HL         ; 1:19      __INFO
 __{}    push  BC            ; 1:11      __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}
 __{}    rl  (HL)            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   result *= 2
@@ -3523,7 +3520,6 @@ __{}    push  BC            ; 1:11      __INFO
 __{}    push  DE            ; 1:11      __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    sbc   A,(HL)        ; 1:7       __INFO
 __{}    ld  (DE),A          ; 1:7       __INFO
@@ -3531,7 +3527,6 @@ __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
 __{}    ld    L, C          ; 1:4       __INFO
-
 __{}    pop  DE             ; 1:10      __INFO
 __{}    pop  BC             ; 1:10      __INFO
 
@@ -3548,15 +3543,13 @@ __{}    push  DE            ; 1:11      __INFO
 __{}    or    A             ; 1:4       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    adc   A,(HL)        ; 1:7       __INFO
 __{}    ld  (DE),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
+__{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod += p{}eval(8*($1))_3
 __{}    ld    L, C          ; 1:4       __INFO
-
 __{}    pop  DE             ; 1:10      __INFO
 __{}    pop  BC             ; 1:10      __INFO
 
