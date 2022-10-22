@@ -3364,7 +3364,8 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_mod p{}eval(8*($1))_2 p{}eval(8*($1))_div )  p{}eval(8*($1))_div = p{}eval(8*($1))_2 / p{}eval(8*($1))_1  with align $1
+__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_res -- p{}eval(8*($1))_3 p{}eval(8*($1))_mod p{}eval(8*($1))_res )  p{}eval(8*($1))_2 u/mod p{}eval(8*($1))_3  with align $1
+__{}    ex  (SP),HL         ; 1:19      __INFO
 __{}    ld   BC, 0x0000     ; 2:7       __INFO
 __{}    inc   B             ; 1:4       __INFO
 __{}    sla (HL)            ; 2:15      __INFO
@@ -3380,10 +3381,79 @@ __{}    jr    c, $+4        ; 2:7/12    __INFO
 __{}    sub (HL)            ; 1:7       __INFO
 __{}    inc   C             ; 1:4       __INFO   result += 1
 __{}    djnz $-10           ; 2:8/13    __INFO
+__{}    ex  (SP),HL         ; 1:19      __INFO
 __{}    ld  (HL),C          ; 1:7       __INFO
 __{}    ld  (DE),A          ; 1:7       __INFO},
 __{}eval($1),2,{
-__{}    jr   nz, $-27       ; 2:7/12    __INFO},
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_res -- p{}eval(8*($1))_3 p{}eval(8*($1))_mod p{}eval(8*($1))_res )  p{}eval(8*($1))_2 u/mod p{}eval(8*($1))_3  with align $1
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO   p{}eval(8*($1))_res = 0
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    ld    B, A          ; 1:4       __INFO
+
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO   p{}eval(8*($1))_3 == 0?
+__{}    jr    z, $+57       ; 2:7/12    __INFO   exit with div 0
+
+__{}    inc   B             ; 1:4       __INFO
+__{}    sla (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    dec   L             ; 1:4       __INFO   p{}eval(8*($1))_3 *= 2
+__{}    jr   nc, $-7        ; 2:7/12    __INFO
+
+__{}    inc   L             ; 1:4       __INFO
+__{}    rr  (HL)            ; 2:15      __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    rr  (HL)            ; 2:15      __INFO
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    sla (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    rl  (HL)            ; 2:15      __INFO   result *= 2
+__{}    dec   L             ; 1:4       __INFO
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sub (HL)            ; 1:7       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   E             ; 1:4       __INFO
+
+__{}    jr    c, $+9        ; 2:7/12    __INFO
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    inc (HL)            ; 1:11      __INFO   result += 1
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    djnz $-29           ; 2:8/13    __INFO
+__{}    jr   $+15           ; 2:7/12    __INFO
+
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    add   A,(HL)        ; 1:7       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    adc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   E             ; 1:4       __INFO
+
+__{}    or    A             ; 1:4       __INFO
+
+__{}    djnz $-44           ; 2:8/13    __INFO
+
+__{}    ex  (SP),HL         ; 1:19      __INFO},
 __{}eval($1),256,{
 __{}    jr   nz, $-28       ; 2:7/12    __INFO},
 __{}{
