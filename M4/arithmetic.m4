@@ -3455,9 +3455,71 @@ __{}    djnz $-44           ; 2:8/13    __INFO
 
 __{}    ex  (SP),HL         ; 1:19      __INFO},
 __{}eval($1),256,{
-__{}    jr   nz, $-28       ; 2:7/12    __INFO},
-__{}{
 
+__{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_res -- p{}eval(8*($1))_3 p{}eval(8*($1))_mod p{}eval(8*($1))_res )  p{}eval(8*($1))_2 u/mod p{}eval(8*($1))_3  with align $1
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-2        ; 2:7/12    __INFO   p{}eval(8*($1))_res = 0
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-2        ; 2:7/12    __INFO   p{}eval(8*($1))_3 == 0?
+
+__{}    or    A             ; 1:4       __INFO
+__{}    jr    z, _e_x_i_t_       ; 2:7/12    __INFO   exit with div 0
+
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, L          ; 1:4       __INFO   shift_counter = 0
+__{}
+__{}    inc  BC             ; 1:6       __INFO   shift_counter++
+__{}
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-3        ; 2:7/12    __INFO   p{}eval(8*($1))_3 *= 2
+__{}
+__{}    jr   nc, $-6        ; 2:7/12    __INFO   p{}eval(8*($1))_3 overflow?
+
+_l_o_o_p_
+__{}    dec   L             ; 1:4       __INFO
+__{}    rr  (HL)            ; 2:15      __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    jr   nz, $-3        ; 2:7/12    __INFO   p{}eval(8*($1))_3 >>= 1
+__{}    rr  (HL)            ; 2:15      __INFO
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    rl  (HL)            ; 2:15      __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-3        ; 2:7/12    __INFO   result *= 2
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    jr   nz, $-4        ; 2:7/12    __INFO   p{}eval(8*($1))_mod>p{}eval(8*($1))_3?
+
+__{}    jr    c, $+12       ; 2:7/12    __INFO
+
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    jr   nz, $-5        ; 2:7/12    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3?
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    inc (HL)            ; 1:11      __INFO   result += 1
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    dec  BC             ; 1:6       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    or    C             ; 1:4       __INFO
+__{}    jr   nz, _l_o_o_p_  ; 2:7/12    __INFO
+_e_x_i_t_
+__{}    ex  (SP),HL         ; 1:19      __INFO},
+__{}eval($1<=(256/8)),1,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_res -- p{}eval(8*($1))_3 p{}eval(8*($1))_mod p{}eval(8*($1))_res )  p{}eval(8*($1))_2 u/mod p{}eval(8*($1))_3  with align $1
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
