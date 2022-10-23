@@ -3523,31 +3523,27 @@ __{}eval($1<=(256/8)),1,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_res -- p{}eval(8*($1))_3 p{}eval(8*($1))_mod p{}eval(8*($1))_res )  p{}eval(8*($1))_2 u/mod p{}eval(8*($1))_3  with align $1
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO   p{}eval(8*($1))_res = 0
-__{}    djnz $-2     ; 2:8/13    __INFO
+__{}    djnz $-2            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 
 __{}    ex  (SP),HL         ; 1:19      __INFO
 
 __{}    ld    C, L          ; 1:4       __INFO
-__{}    dec   L             ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}
 __{}    inc   L             ; 1:4       __INFO
 __{}    or  (HL)            ; 1:7       __INFO
-__{}    djnz $-2            ; 2:8/13    __INFO   p{}eval(8*($1))_3 == 0?
-__{}    ld    L, C          ; 1:4       __INFO
+__{}    djnz $-2            ; 2:8/13    __INFO   (p{}eval(8*($1))_3 == 0)?
 
-__{}    jr    z, _e_x_i_t_       ; 2:7/12    __INFO   exit with div 0
+__{}    or    A             ; 1:4       __INFO
+__{}    jr    z, _e_x_i_t_  ; 2:7/12    __INFO   exit with div 0
 
-__{}    ld    C, B          ; 1:4       __INFO   shift_counter = 0
-__{}    ld    A, L          ; 1:4       __INFO
+__{}    xor   A             ; 1:4       __INFO   shift_counter = 0
 __{}
-__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    inc   C             ; 1:4       __INFO   shift_counter++
+__{}    inc   A             ; 1:4       __INFO   shift_counter++
 __{}
 __{}    rl  (HL)            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
@@ -3555,13 +3551,11 @@ __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 *= 2
 __{}
 __{}    jr   nc, $-9        ; 2:7/12    __INFO   p{}eval(8*($1))_3 overflow?
 
-__{}    ld    B, C          ; 1:4       __INFO   counter
-__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, A          ; 1:4       __INFO   counter
 
 _l_o_o_p_
 __{}    push  BC            ; 1:11      __INFO
-__{}    ld    L, C          ; 1:4       __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   L = orig L + $1
 __{}    dec   L             ; 1:4       __INFO
 __{}    rr  (HL)            ; 2:15      __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 >>= 1
@@ -3580,7 +3574,24 @@ __{}    ex  (SP),HL         ; 1:19      __INFO
 
 __{}    push  BC            ; 1:11      __INFO
 __{}    push  DE            ; 1:11      __INFO
-__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    djnz $-4            ; 2:8/13    __INFO   (p{}eval(8*($1))_mod < p{}eval(8*($1))_3)?
+__{}    pop  DE             ; 1:10      __INFO
+__{}    pop  BC             ; 1:10      __INFO
+
+__{}    jr    c, $+19       ; 2:7/12    __INFO
+
+__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    inc (HL)            ; 1:11      __INFO   result += 1
+__{}    ex  (SP),HL         ; 1:19      __INFO
+
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    push  BC            ; 1:11      __INFO
+__{}    push  DE            ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    sbc   A,(HL)        ; 1:7       __INFO
@@ -3588,36 +3599,14 @@ __{}    ld  (DE),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
-__{}    ld    L, C          ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    pop  BC             ; 1:10      __INFO
-
-__{}    jr    c, $+9        ; 2:7/12    __INFO
-
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    inc (HL)            ; 1:11      __INFO   result += 1
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    djnz _l_o_o_p_           ; 2:8/13    __INFO
-__{}    jr   _e_x_i_t_           ; 2:7/12    __INFO
-
-__{}    push  BC            ; 1:11      __INFO
-__{}    push  DE            ; 1:11      __INFO
-__{}    or    A             ; 1:4       __INFO
-__{}    ld    C, L          ; 1:4       __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod += p{}eval(8*($1))_3
-__{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
 __{}    pop  BC             ; 1:10      __INFO
 
 __{}    or    A             ; 1:4       __INFO
 __{}    djnz _l_o_o_p_           ; 2:8/13    __INFO
+
 _e_x_i_t_
+__{}    ld    L, C          ; 1:4       __INFO
 __{}    ex  (SP),HL         ; 1:19      __INFO},
 __{}{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1))_3 p{}eval(8*($1))_2 p{}eval(8*($1))_res -- p{}eval(8*($1))_3 p{}eval(8*($1))_mod p{}eval(8*($1))_res )  p{}eval(8*($1))_2 u/mod p{}eval(8*($1))_3  with align $1
@@ -3659,16 +3648,8 @@ __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 *= 2
 __{}
 __{}    jr   nc, $-11       ; 2:7/12    __INFO   p{}eval(8*($1))_3 overflow?
 
-__{}    ex   AF, AF'        ; 1:4       __INFO
-__{}    ld    A, L          ; 1:4       __INFO   L + $1
-__{}    ex   AF, AF'        ; 1:4       __INFO
-
 _l_o_o_p_
-__{}    ex   AF, AF'        ; 1:4       __INFO
-__{}    ld    L, A          ; 1:4       __INFO   L + $1
-__{}    ex   AF, AF'        ; 1:4       __INFO
-
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   L = orig L + $1
 __{}    dec   L             ; 1:4       __INFO
 __{}    rr  (HL)            ; 2:15      __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 >>= 1
@@ -3690,7 +3671,6 @@ __{}    sbc   A,(HL)        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO   (p{}eval(8*($1))_mod < p{}eval(8*($1))_3)?
-__{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
 
 __{}    jr    c, $+17       ; 2:7/12    __INFO
@@ -3700,6 +3680,7 @@ __{}    inc (HL)            ; 1:11      __INFO   result += 1
 __{}    ex  (SP),HL         ; 1:19      __INFO
 
 __{}    push  DE            ; 1:11      __INFO
+__{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}    ld    A,(DE)        ; 1:7       __INFO
 __{}    sbc   A,(HL)        ; 1:7       __INFO
@@ -3707,7 +3688,6 @@ __{}    ld  (DE),A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
-__{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
 
 __{}    exx                 ; 1:4       __INFO
@@ -3716,6 +3696,7 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    or    C             ; 1:4       __INFO
 __{}    exx                 ; 1:4       __INFO
 __{}    jr   nz, _l_o_o_p_  ; 2:7/12    __INFO
+__{}    ld    L, C          ; 1:4       __INFO
 
 _e_x_i_t_
 __{}    ex  (SP),HL         ; 1:19      __INFO})}){}dnl
