@@ -282,20 +282,23 @@ __{}    ld    C, A          ; 1:4       pudm   C = x bytes
 __{}    xor   A             ; 1:4       pudm
 __{}    exx                 ; 1:4       pudm
 __{}    ld    B, A          ; 1:4       pudm
-__{}    ld    C, A          ; 1:4       pudm   shift_counter = 0
+__{}    ld    C, A          ; 1:4       pudm   BC' = shift_counter = 0
 __{}    exx                 ; 1:4       pudm
 
 __{}    ld    B, C          ; 1:4       pudm
 __{}    ld  (HL),A          ; 1:7       pudm
 __{}    inc   L             ; 1:4       pudm   px_res = 0
 __{}    djnz $-2            ; 2:8/13    pudm
+__{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    A, L          ; 1:4       pudm
 __{}    sub   C             ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
 
 __{}    ex  (SP),HL         ; 1:19      pudm
 
-__{}    xor   A             ; 1:4       pudm
+__{}    ld    A, L          ; 1:4       pudm   A' = original value L
+__{}    ex   AF, AF'        ; 1:4       pudm
+
 __{}    ld    B, C          ; 1:4       pudm
 __{}    or  (HL)            ; 1:7       pudm
 __{}    inc   L             ; 1:4       pudm
@@ -304,10 +307,9 @@ __{}    djnz $-2            ; 2:8/13    pudm   px_3 == 0?
 __{}    or    A             ; 1:4       pudm
 __{}    jr    z, _e_x_i_t_  ; 2:7/12    pudm   exit with div 0
 
-__{}    ld    A, L          ; 1:4       pudm
-__{}    sub   C             ; 1:4       pudm
+__{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
-__{}    or    A             ; 1:4       pudm
+__{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    B, C          ; 1:4       pudm
 __{}    exx                 ; 1:4       pudm
 __{}    inc   BC            ; 1:6       pudm   shift_counter++
@@ -317,7 +319,7 @@ __{}    rl  (HL)            ; 2:15      pudm
 __{}    inc   L             ; 1:4       pudm
 __{}    djnz $-3            ; 2:8/13    pudm   px_3 *= 2
 __{}
-__{}    jr   nc, $-13       ; 2:7/12    pudm   px_3 overflow?
+__{}    jr   nc, $-12       ; 2:7/12    pudm   px_3 overflow?
 
 _l_o_o_p_
 __{}    ld    B, C          ; 1:4       pudm   L = orig L + $1
@@ -343,17 +345,16 @@ __{}    inc   E             ; 1:4       pudm
 __{}    djnz $-4            ; 2:8/13    pudm   (px_mod < px_3)?
 __{}    pop  DE             ; 1:10      pudm
 
-__{}    jr    c, $+19       ; 2:7/12    pudm
+__{}    jr    c, $+18       ; 2:7/12    pudm
 
 __{}    ex  (SP),HL         ; 1:19      pudm
 __{}    inc (HL)            ; 1:11      pudm   result += 1
 __{}    ex  (SP),HL         ; 1:19      pudm
 
 __{}    push DE             ; 1:11      pudm
-__{}    ld    A, L          ; 1:4       pudm
-__{}    sub   C             ; 1:4       pudm
+__{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
-__{}    or    A             ; 1:4       pudm
+__{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    B, C          ; 1:4       pudm
 __{}    ld    A,(DE)        ; 1:7       pudm
 __{}    sbc   A,(HL)        ; 1:7       pudm
@@ -371,8 +372,7 @@ __{}    exx                 ; 1:4       pudm
 __{}    jr   nz, _l_o_o_p_  ; 2:7/12    pudm
 
 _e_x_i_t_
-__{}    ld    A, L          ; 1:4       pudm
-__{}    sub   C             ; 1:4       pudm
+__{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
 __{}    ex  (SP),HL         ; 1:19      pudm
 __{}    pop  BC             ; 1:10      pudm
