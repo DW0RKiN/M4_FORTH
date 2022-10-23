@@ -1098,6 +1098,16 @@ dnl
 dnl
 dnl
 dnl
+dnl
+dnl
+dnl
+ifdef({USE_PUDIVMOD},{
+;==============================================================================
+include(M4PATH{}divmul/pudivmod.m4){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_MUL},{
 ;==============================================================================
 include(M4PATH{}divmul/mul.m4){}dnl
