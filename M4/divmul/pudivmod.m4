@@ -319,7 +319,7 @@ __{}    inc   L             ; 1:4       pudm
 __{}    djnz $-2            ; 2:8/13    pudm   px_3 == 0?
 
 __{}    or    A             ; 1:4       pudm
-__{}    jr    z, _e_x_i_t_  ; 2:7/12    pudm   exit with div 0
+__{}    jr    z, PUDM_EXIT  ; 2:7/12    pudm   exit with div 0
 
 __{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
@@ -335,7 +335,7 @@ __{}    djnz $-3            ; 2:8/13    pudm   px_3 *= 2
 __{}
 __{}    jr   nc, $-12       ; 2:7/12    pudm   px_3 overflow?
 
-_l_o_o_p_
+__{}    PUDM_LOOP:          ;           pudm
 __{}    ld    B, C          ; 1:4       pudm   L = orig L + $1
 __{}    dec   L             ; 1:4       pudm
 __{}    rr  (HL)            ; 2:15      pudm
@@ -383,9 +383,9 @@ __{}    dec  BC             ; 1:6       pudm
 __{}    ld    A, B          ; 1:4       pudm
 __{}    or    C             ; 1:4       pudm
 __{}    exx                 ; 1:4       pudm
-__{}    jr   nz, _l_o_o_p_  ; 2:7/12    pudm
+__{}    jr   nz, PUDM_LOOP  ; 2:7/12    pudm
 
-_e_x_i_t_
+__{}PUDM_EXIT:              ;           pudm
 __{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
 __{}    ex  (SP),HL         ; 1:19      pudm
