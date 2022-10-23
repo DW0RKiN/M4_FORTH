@@ -182,6 +182,7 @@ __{}    ret                 ; 1:10      p2048udm},
 eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{
 ; Divide 8..256-bit unsigned value from pointer
 ; In: [BC], [DE], [HL]
+;     A = sizeof(number) in bytes
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
 __{}P256UDM:                ;           p256udm
 __{}    push BC             ; 1:11      p256udm
