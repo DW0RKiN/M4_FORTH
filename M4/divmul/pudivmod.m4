@@ -41,7 +41,7 @@ __{}    xor   A             ; 1:4       p16udm
 __{}    ld  (HL),A          ; 1:7       p16udm
 __{}    inc   L             ; 1:4       p16udm
 __{}    ld  (HL),A          ; 1:7       p16udm
-__{}    dec   L             ; 1:4       p16udm   p{}eval(8*($1))_res = 0
+__{}    dec   L             ; 1:4       p16udm   p16_res = 0
 __{}    ex  (SP),HL         ; 1:19      p16udm
 
 __{}    ld    B, A          ; 1:4       p16udm
@@ -49,14 +49,14 @@ __{}    ld    B, A          ; 1:4       p16udm
 __{}    inc   L             ; 1:4       p16udm
 __{}    or  (HL)            ; 1:7       p16udm
 __{}    dec   L             ; 1:4       p16udm
-__{}    or  (HL)            ; 1:7       p16udm   p{}eval(8*($1))_3 == 0?
+__{}    or  (HL)            ; 1:7       p16udm   p16_3 == 0?
 __{}    jr    z, $+57       ; 2:7/12    p16udm   exit with div 0
 
 __{}    inc   B             ; 1:4       p16udm
 __{}    sla (HL)            ; 2:15      p16udm
 __{}    inc   L             ; 1:4       p16udm
 __{}    rl  (HL)            ; 2:15      p16udm
-__{}    dec   L             ; 1:4       p16udm   p{}eval(8*($1))_3 *= 2
+__{}    dec   L             ; 1:4       p16udm   p16_3 *= 2
 __{}    jr   nc, $-7        ; 2:7/12    p16udm
 
 __{}    inc   L             ; 1:4       p16udm
@@ -183,93 +183,93 @@ eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{
 ; Divide 8..256-bit unsigned value from pointer
 ; In: [BC], [DE], [HL]
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
-__{}P256UDM:                            __INFO
-__{}    push BC             ; 1:11      __INFO
-__{}    xor   A             ; 1:4       __INFO
-__{}    ld    C, L          ; 1:4       __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    inc   L             ; 1:4       __INFO   p{}eval(8*($1))_res = 0
-__{}    djnz $-2            ; 2:8/13    __INFO
-__{}    ld    L, C          ; 1:4       __INFO
+__{}P256UDM:                            p256udm
+__{}    push BC             ; 1:11      p256udm
+__{}    xor   A             ; 1:4       p256udm
+__{}    ld    C, L          ; 1:4       p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    ld  (HL),A          ; 1:7       p256udm
+__{}    inc   L             ; 1:4       p256udm   p256_res = 0
+__{}    djnz $-2            ; 2:8/13    p256udm
+__{}    ld    L, C          ; 1:4       p256udm
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  (SP),HL         ; 1:19      p256udm
 
-__{}    ld    C, L          ; 1:4       __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    or  (HL)            ; 1:7       __INFO
-__{}    djnz $-2            ; 2:8/13    __INFO   (p{}eval(8*($1))_3 == 0)?
+__{}    ld    C, L          ; 1:4       p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    inc   L             ; 1:4       p256udm
+__{}    or  (HL)            ; 1:7       p256udm
+__{}    djnz $-2            ; 2:8/13    p256udm   (p256_3 == 0)?
 
-__{}    or    A             ; 1:4       __INFO
-__{}    jr    z, _e_x_i_t_  ; 2:7/12    __INFO   exit with div 0
+__{}    or    A             ; 1:4       p256udm
+__{}    jr    z, _e_x_i_t_  ; 2:7/12    p256udm   exit with div 0
 
-__{}    xor   A             ; 1:4       __INFO   shift_counter = 0
+__{}    xor   A             ; 1:4       p256udm   shift_counter = 0
 __{}
-__{}    ld    L, C          ; 1:4       __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    inc   A             ; 1:4       __INFO   shift_counter++
+__{}    ld    L, C          ; 1:4       p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    inc   A             ; 1:4       p256udm   shift_counter++
 __{}
-__{}    rl  (HL)            ; 2:15      __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 *= 2
+__{}    rl  (HL)            ; 2:15      p256udm
+__{}    inc   L             ; 1:4       p256udm
+__{}    djnz $-3            ; 2:8/13    p256udm   p256_3 *= 2
 __{}
-__{}    jr   nc, $-9        ; 2:7/12    __INFO   p{}eval(8*($1))_3 overflow?
+__{}    jr   nc, $-9        ; 2:7/12    p256udm   p256_3 overflow?
 
 _l_o_o_p_
-__{}    push  BC            ; 1:11      __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   L = orig L + $1
-__{}    dec   L             ; 1:4       __INFO
-__{}    rr  (HL)            ; 2:15      __INFO
-__{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 >>= 1
-__{}    pop  BC             ; 1:10      __INFO
+__{}    push  BC            ; 1:11      p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm   L = orig L + $1
+__{}    dec   L             ; 1:4       p256udm
+__{}    rr  (HL)            ; 2:15      p256udm
+__{}    djnz $-3            ; 2:8/13    p256udm   p256_3 >>= 1
+__{}    pop  BC             ; 1:10      p256udm
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    ld    C, L          ; 1:4       __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    rl  (HL)            ; 2:15      __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    djnz $-3            ; 2:8/13    __INFO   result *= 2
-__{}    ld    L, C          ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    ld    C, L          ; 1:4       p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    rl  (HL)            ; 2:15      p256udm
+__{}    inc   L             ; 1:4       p256udm
+__{}    djnz $-3            ; 2:8/13    p256udm   result *= 2
+__{}    ld    L, C          ; 1:4       p256udm
+__{}    ex  (SP),HL         ; 1:19      p256udm
 
-__{}    ex   AF, AF'        ; 1:4       __INFO
-__{}    or    A             ; 1:4       __INFO
-__{}    push DE             ; 1:11      __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    djnz $-4            ; 2:8/13    __INFO   (p{}eval(8*($1))_mod < p{}eval(8*($1))_3)?
-__{}    pop  DE             ; 1:10      __INFO
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    or    A             ; 1:4       p256udm
+__{}    push DE             ; 1:11      p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    ld    A,(DE)        ; 1:7       p256udm
+__{}    sbc   A,(HL)        ; 1:7       p256udm
+__{}    inc   L             ; 1:4       p256udm
+__{}    inc   E             ; 1:4       p256udm
+__{}    djnz $-4            ; 2:8/13    p256udm   (p256_mod < p256_3)?
+__{}    pop  DE             ; 1:10      p256udm
 
-__{}    jr    c, $+17       ; 2:7/12    __INFO
+__{}    jr    c, $+17       ; 2:7/12    p256udm
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    inc (HL)            ; 1:11      __INFO   result += 1
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    inc (HL)            ; 1:11      p256udm   result += 1
+__{}    ex  (SP),HL         ; 1:19      p256udm
 
-__{}    ld    L, C          ; 1:4       __INFO
-__{}    push  DE            ; 1:11      __INFO
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
-__{}    pop  DE             ; 1:10      __INFO
+__{}    ld    L, C          ; 1:4       p256udm
+__{}    push  DE            ; 1:11      p256udm
+__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    ld    A,(DE)        ; 1:7       p256udm
+__{}    sbc   A,(HL)        ; 1:7       p256udm
+__{}    ld  (DE),A          ; 1:7       p256udm
+__{}    inc   L             ; 1:4       p256udm
+__{}    inc   E             ; 1:4       p256udm
+__{}    djnz $-5            ; 2:8/13    p256udm   p256_mod -= p256_3
+__{}    pop  DE             ; 1:10      p256udm
 
-__{}    ex   AF, AF'        ; 1:4       __INFO
-__{}    dec   A             ; 1:4       __INFO
-__{}    jr   nz, _l_o_o_p_  ; 2:7/12    __INFO
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    dec   A             ; 1:4       p256udm
+__{}    jr   nz, _l_o_o_p_  ; 2:7/12    p256udm
 
 _e_x_i_t_
-__{}    ld    L, C          ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    pop  BC             ; 1:10      __INFO
-__{}    ret                 ; 1:10      __INFO},
+__{}    ld    L, C          ; 1:4       p256udm
+__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    pop  BC             ; 1:10      p256udm
+__{}    ret                 ; 1:10      p256udm},
 {
 ; Divide 8..2048-bit unsigned value from pointer
 ; In: [BC], [DE], [HL]
