@@ -183,7 +183,7 @@ eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{
 ; Divide 8..256-bit unsigned value from pointer
 ; In: [BC], [DE], [HL]
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
-__{}P256UDM:                            p256udm
+__{}P256UDM:                ;           p256udm
 __{}    push BC             ; 1:11      p256udm
 __{}    ld    C, A          ; 1:4       p256udm   C = x bytes
 
@@ -271,10 +271,10 @@ __{}    inc   E             ; 1:4       p256udm
 __{}    djnz $-5            ; 2:8/13    p256udm   px_mod -= px_3
 __{}    pop  DE             ; 1:10      p256udm
 
+__{}    or    A             ; 1:4       p256udm
 __{}    exx                 ; 1:4       p256udm
 __{}    dec   B             ; 1:4       p256udm
 __{}    exx                 ; 1:4       p256udm
-__{}    or    A             ; 1:4       p256udm
 __{}    jr   nz, _l_o_o_p_  ; 2:7/12    p256udm
 
 _e_x_i_t_
