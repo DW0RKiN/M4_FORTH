@@ -213,7 +213,7 @@ __{}    inc   L             ; 1:4       p256udm
 __{}    djnz $-2            ; 2:8/13    p256udm   px_3 == 0?
 
 __{}    or    A             ; 1:4       p256udm
-__{}    jr    z, _e_x_i_t_  ; 2:7/12    p256udm   exit with div 0
+__{}    jr    z, P256UDM_E  ; 2:7/12    p256udm   exit with div 0
 
 __{}    ex   AF, AF'        ; 1:4       p256udm
 __{}    ld    L, A          ; 1:4       p256udm   return to original value
@@ -229,7 +229,7 @@ __{}    djnz $-3            ; 2:8/13    p256udm   px_3 *= 2
 __{}
 __{}    jr   nc, $-12       ; 2:7/12    p256udm   px_3 overflow?
 
-_l_o_o_p_
+__{}P256UDM_L:              ;           p256udm
 __{}    ld    B, C          ; 1:4       p256udm   L = orig L + $1
 __{}    dec   L             ; 1:4       p256udm
 __{}    rr  (HL)            ; 2:15      p256udm
@@ -253,7 +253,7 @@ __{}    inc   E             ; 1:4       p256udm
 __{}    djnz $-4            ; 2:8/13    p256udm   (px_mod < px_3)?
 __{}    pop  DE             ; 1:10      p256udm
 
-__{}    jr    c, $+18       ; 2:7/12    p256udm
+__{}    jr    c, P256UDM_N  ; 2:7/12    p256udm
 
 __{}    ex  (SP),HL         ; 1:19      p256udm
 __{}    inc (HL)            ; 1:11      p256udm   result += 1
@@ -271,14 +271,14 @@ __{}    inc   L             ; 1:4       p256udm
 __{}    inc   E             ; 1:4       p256udm
 __{}    djnz $-5            ; 2:8/13    p256udm   px_mod -= px_3
 __{}    pop  DE             ; 1:10      p256udm
-
+__{}P256UDM_N:              ;           p256udm
 __{}    or    A             ; 1:4       p256udm
 __{}    exx                 ; 1:4       p256udm
 __{}    dec   B             ; 1:4       p256udm
 __{}    exx                 ; 1:4       p256udm
-__{}    jr   nz, _l_o_o_p_  ; 2:7/12    p256udm
+__{}    jr   nz, P256UDM_L  ; 2:7/12    p256udm
 
-_e_x_i_t_
+__{}P256UDM_E:              ;           p256udm
 __{}    ex   AF, AF'        ; 1:4       p256udm
 __{}    ld    L, A          ; 1:4       p256udm   return to original value
 __{}    ex  (SP),HL         ; 1:19      p256udm
@@ -335,7 +335,7 @@ __{}    djnz $-3            ; 2:8/13    pudm   px_3 *= 2
 __{}
 __{}    jr   nc, $-12       ; 2:7/12    pudm   px_3 overflow?
 
-__{}    PUDM_LOOP:          ;           pudm
+__{}PUDM_LOOP:              ;           pudm
 __{}    ld    B, C          ; 1:4       pudm   L = orig L + $1
 __{}    dec   L             ; 1:4       pudm
 __{}    rr  (HL)            ; 2:15      pudm
@@ -359,7 +359,7 @@ __{}    inc   E             ; 1:4       pudm
 __{}    djnz $-4            ; 2:8/13    pudm   (px_mod < px_3)?
 __{}    pop  DE             ; 1:10      pudm
 
-__{}    jr    c, $+18       ; 2:7/12    pudm
+__{}    jr    c, PUDM_NEXT  ; 2:7/12    pudm
 
 __{}    ex  (SP),HL         ; 1:19      pudm
 __{}    inc (HL)            ; 1:11      pudm   result += 1
@@ -377,7 +377,7 @@ __{}    inc   L             ; 1:4       pudm
 __{}    inc   E             ; 1:4       pudm
 __{}    djnz $-5            ; 2:8/13    pudm   px_mod -= px_3
 __{}    pop  DE             ; 1:10      pudm
-
+__{}PUDM_NEXT:              ;           pudm
 __{}    exx                 ; 1:4       pudm
 __{}    dec  BC             ; 1:6       pudm
 __{}    ld    A, B          ; 1:4       pudm
