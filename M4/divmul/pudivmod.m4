@@ -185,88 +185,101 @@ eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
 __{}P256UDM:                            p256udm
 __{}    push BC             ; 1:11      p256udm
+__{}    ld    C, A          ; 1:4       p256udm   C = x bytes
+
 __{}    xor   A             ; 1:4       p256udm
-__{}    ld    C, L          ; 1:4       p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    exx                 ; 1:4       p256udm
+__{}    ld    B, A          ; 1:4       p256udm   B' = shift_counter = 0
+__{}    exx                 ; 1:4       p256udm
+
+__{}    ld    B, C          ; 1:4       p256udm
 __{}    ld  (HL),A          ; 1:7       p256udm
-__{}    inc   L             ; 1:4       p256udm   p256_res = 0
+__{}    inc   L             ; 1:4       p256udm   px_res = 0
 __{}    djnz $-2            ; 2:8/13    p256udm
-__{}    ld    L, C          ; 1:4       p256udm
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    ld    A, L          ; 1:4       p256udm
+__{}    sub   C             ; 1:4       p256udm
+__{}    ld    L, A          ; 1:4       p256udm   return to original value
 
 __{}    ex  (SP),HL         ; 1:19      p256udm
 
-__{}    ld    C, L          ; 1:4       p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
-__{}    inc   L             ; 1:4       p256udm
+__{}    ld    A, L          ; 1:4       p256udm   A' = original value L
+__{}    ex   AF, AF'        ; 1:4       p256udm
+
+__{}    ld    B, C          ; 1:4       p256udm
 __{}    or  (HL)            ; 1:7       p256udm
-__{}    djnz $-2            ; 2:8/13    p256udm   (p256_3 == 0)?
+__{}    inc   L             ; 1:4       p256udm
+__{}    djnz $-2            ; 2:8/13    p256udm   px_3 == 0?
 
 __{}    or    A             ; 1:4       p256udm
 __{}    jr    z, _e_x_i_t_  ; 2:7/12    p256udm   exit with div 0
 
-__{}    xor   A             ; 1:4       p256udm   shift_counter = 0
-__{}
-__{}    ld    L, C          ; 1:4       p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
-__{}    inc   A             ; 1:4       p256udm   shift_counter++
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    ld    L, A          ; 1:4       p256udm   return to original value
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    ld    B, C          ; 1:4       p256udm
+__{}    exx                 ; 1:4       p256udm
+__{}    inc   B             ; 1:4       p256udm   shift_counter++
+__{}    exx                 ; 1:4       p256udm
 __{}
 __{}    rl  (HL)            ; 2:15      p256udm
 __{}    inc   L             ; 1:4       p256udm
-__{}    djnz $-3            ; 2:8/13    p256udm   p256_3 *= 2
+__{}    djnz $-3            ; 2:8/13    p256udm   px_3 *= 2
 __{}
-__{}    jr   nc, $-9        ; 2:7/12    p256udm   p256_3 overflow?
+__{}    jr   nc, $-12       ; 2:7/12    p256udm   px_3 overflow?
 
 _l_o_o_p_
-__{}    push  BC            ; 1:11      p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm   L = orig L + $1
+__{}    ld    B, C          ; 1:4       p256udm   L = orig L + $1
 __{}    dec   L             ; 1:4       p256udm
 __{}    rr  (HL)            ; 2:15      p256udm
-__{}    djnz $-3            ; 2:8/13    p256udm   p256_3 >>= 1
-__{}    pop  BC             ; 1:10      p256udm
+__{}    djnz $-3            ; 2:8/13    p256udm   px_3 >>= 1
 
 __{}    ex  (SP),HL         ; 1:19      p256udm
-__{}    ld    C, L          ; 1:4       p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    ld    A, L          ; 1:4       p256udm
+__{}    ld    B, C          ; 1:4       p256udm
 __{}    rl  (HL)            ; 2:15      p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    djnz $-3            ; 2:8/13    p256udm   result *= 2
-__{}    ld    L, C          ; 1:4       p256udm
+__{}    ld    L, A          ; 1:4       p256udm   return to original value
 __{}    ex  (SP),HL         ; 1:19      p256udm
 
-__{}    ex   AF, AF'        ; 1:4       p256udm
-__{}    or    A             ; 1:4       p256udm
-__{}    push DE             ; 1:11      p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    push  DE            ; 1:11      p256udm
+__{}    ld    B, C          ; 1:4       p256udm
 __{}    ld    A,(DE)        ; 1:7       p256udm
 __{}    sbc   A,(HL)        ; 1:7       p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    inc   E             ; 1:4       p256udm
-__{}    djnz $-4            ; 2:8/13    p256udm   (p256_mod < p256_3)?
+__{}    djnz $-4            ; 2:8/13    p256udm   (px_mod < px_3)?
 __{}    pop  DE             ; 1:10      p256udm
 
-__{}    jr    c, $+17       ; 2:7/12    p256udm
+__{}    jr    c, $+18       ; 2:7/12    p256udm
 
 __{}    ex  (SP),HL         ; 1:19      p256udm
 __{}    inc (HL)            ; 1:11      p256udm   result += 1
 __{}    ex  (SP),HL         ; 1:19      p256udm
 
-__{}    ld    L, C          ; 1:4       p256udm
-__{}    push  DE            ; 1:11      p256udm
-__{}    ld    B, __HEX_L($1)       ; 2:7       p256udm
+__{}    push DE             ; 1:11      p256udm
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    ld    L, A          ; 1:4       p256udm   return to original value
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    ld    B, C          ; 1:4       p256udm
 __{}    ld    A,(DE)        ; 1:7       p256udm
 __{}    sbc   A,(HL)        ; 1:7       p256udm
 __{}    ld  (DE),A          ; 1:7       p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    inc   E             ; 1:4       p256udm
-__{}    djnz $-5            ; 2:8/13    p256udm   p256_mod -= p256_3
+__{}    djnz $-5            ; 2:8/13    p256udm   px_mod -= px_3
 __{}    pop  DE             ; 1:10      p256udm
 
-__{}    ex   AF, AF'        ; 1:4       p256udm
-__{}    dec   A             ; 1:4       p256udm
+__{}    exx                 ; 1:4       p256udm
+__{}    dec   B             ; 1:4       p256udm
+__{}    exx                 ; 1:4       p256udm
+__{}    or    A             ; 1:4       p256udm
 __{}    jr   nz, _l_o_o_p_  ; 2:7/12    p256udm
 
 _e_x_i_t_
-__{}    ld    L, C          ; 1:4       p256udm
+__{}    ex   AF, AF'        ; 1:4       p256udm
+__{}    ld    L, A          ; 1:4       p256udm   return to original value
 __{}    ex  (SP),HL         ; 1:19      p256udm
 __{}    pop  BC             ; 1:10      p256udm
 __{}    ret                 ; 1:10      p256udm},
