@@ -3299,9 +3299,6 @@ __{}PUDM_MIN:PUDM_MAX,2:2,{dnl
 __{}__{}    call P16DM          ; 3:17      __INFO},
 __{}PUDM_MIN:PUDM_MAX,256:256,{dnl
 __{}__{}    call P2048DM        ; 3:17      __INFO},
-__{}eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
-__{}__{}    call P256DM         ; 3:17      __INFO},
 __{}{dnl
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
 __{}__{}    call PDM            ; 3:17      __INFO})

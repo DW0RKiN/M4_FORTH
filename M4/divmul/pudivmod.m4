@@ -33,16 +33,7 @@ __{}PUDM_MIN:PUDM_MAX,256:256,{dnl
 P2048DM:
 
 __{}__{}    call P2048DM        ; 3:17      __INFO},
-__{}eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
-; Divide 8..256-bit signed values from pointer
-; In: [BC], [DE], [HL]
-;     A = sizeof(number) in bytes
-; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
-P256DM:
-
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
-__{}__{}    call P256DM         ; 3:17      __INFO},
-__{}{
+{
 ; Divide 8..2048-bit signed values from pointer
 ; In: [BC], [DE], [HL]
 ;     A = sizeof(number) in bytes
@@ -80,7 +71,10 @@ PDM:                    ;           pdm
     ld    A, E          ; 1:4       pdm   A = sizeof(number) in bytes
     exx                 ; 1:4       pdm   abs([DE])
                         ;           pdm
-    call PUDM           ; 3:17      pdm
+ifelse(eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
+__{}    call P256UDM        ; 3:17      pdm},
+{dnl
+__{}    call PUDM           ; 3:17      pdm})
                         ;           pdm
     push DE             ; 1:11      pdm
     exx                 ; 1:4       pdm
