@@ -28,11 +28,67 @@ __{}__{}    call P16DM          ; 3:17      __INFO},
 __{}PUDM_MIN:PUDM_MAX,256:256,{dnl
 ; Divide 2048-bit signed values from pointer
 ; In: [BC], [DE], [HL]
-;     A = sizeof(number) in bytes
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
-P2048DM:
-
-__{}__{}    call P2048DM        ; 3:17      __INFO},
+P2048DM:                ;           p2048dm
+    push BC             ; 1:11      p2048dm
+    exx                 ; 1:4       p2048dm
+    ex  (SP),HL         ; 1:19      p2048dm   save R.A.S. && [HL'] = divisor
+    dec   L             ; 1:4       p2048dm
+    xor   A             ; 1:4       p2048dm
+    or  (HL)            ; 1:7       p2048dm
+    ld    D, A          ; 1:4       p2048dm   divisor sign
+    call  m, PDM_NEG1   ; 3:17      p2048dm
+    exx                 ; 1:4       p2048dm   abs([BC])
+                        ;           p2048dm
+    push DE             ; 1:11      p2048dm
+    exx                 ; 1:4       p2048dm
+    pop  HL             ; 1:10      p2048dm   [HL'] = dividend
+    dec   L             ; 1:4       p2048dm
+    ld    A,(HL)        ; 1:7       p2048dm
+    xor   D             ; 1:4       p2048dm
+    push AF             ; 1:11      p2048dm   the sign of the result
+    xor   D             ; 1:4       p2048dm
+    push AF             ; 1:11      p2048dm   remainder sign
+    call  m, PDM_NEG1   ; 3:17      p2048dm
+    exx                 ; 1:4       p2048dm   abs([DE])
+                        ;           p2048dm
+    call P2048UDM       ; 3:17      p2048dm
+                        ;           p2048dm
+    push DE             ; 1:11      p2048dm
+    exx                 ; 1:4       p2048dm
+    pop  HL             ; 1:10      p2048dm   [HL'] = remainder
+    pop  AF             ; 1:10      p2048dm   remainder sign
+    call  m, PDM_NEG2   ; 3:17      p2048dm
+    exx                 ; 1:4       p2048dm
+                        ;           p2048dm
+    pop  AF             ; 1:10      p2048dm   the sign of the result
+    jp    p, $+10       ; 3:10      p2048dm
+    push HL             ; 1:11      p2048dm
+    exx                 ; 1:4       p2048dm
+    pop  HL             ; 1:10      p2048dm   [HL'] = result
+    call PDM_NEG2       ; 3:17      p2048dm
+    exx                 ; 1:4       p2048dm
+                        ;           p2048dm
+    push BC             ; 1:11      p2048dm
+    exx                 ; 1:4       p2048dm
+    pop  HL             ; 1:10      p2048dm   [HL'] = divisor
+    xor   A             ; 1:4       p2048dm
+    or    D             ; 1:4       p2048dm   divisor sign
+    call  m, PDM_NEG2   ; 3:17      p2048dm
+    pop  HL             ; 1:10      p2048dm   load R.A.S.
+    exx                 ; 1:4       p2048dm
+                        ;           p2048dm
+    ret                 ; 1:10      p2048dm
+PDM_NEG1:               ;           p2048dm_neg
+    inc   L             ; 1:4       p2048dm_neg   = 0
+PDM_NEG2:               ;           p2048dm_neg
+    ld    C, L          ; 1:4       p2048dm_neg   = 0
+    ld    A, C          ; 1:4       p2048dm_neg
+    sbc   A,(HL)        ; 1:7       p2048dm_neg
+    ld  (HL),A          ; 1:7       p2048dm_neg
+    inc   L             ; 1:4       p2048dm_neg
+    jr   nz, $-4        ; 2:7/12    p2048dm_neg
+    ret                 ; 1:10      p2048dm_neg},
 {
 ; Divide 8..2048-bit signed values from pointer
 ; In: [BC], [DE], [HL]
