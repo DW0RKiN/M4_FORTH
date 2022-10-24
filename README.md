@@ -339,16 +339,16 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack                  |<sub>  Comment                   |
 | :-------------: | :---------------: | :-------------------------------- | :------------------------------ |
-|<sub>            |<sub>    PADD(b)   |<sub>   ( p2 p1 -- p2 p1 )         | [p1] =[p2] + [p1]
-|<sub>            |<sub>    PADC(b)   |<sub>   ( p2 p1 -- p2 p1 )         |
-|<sub>            |<sub>    PSUB(b)   |<sub>   ( p2 p1 -- p2 p1 )         |
-|<sub>            |<sub>    PSBC(b)   |<sub>   ( p2 p1 -- p2 p1 )         |
-|<sub>            |<sub>PSUB_NEGATE(b)|<sub>   ( p2 p1 -- p2 p1 )         |
-|<sub>            |<sub>  PNEGATE(b)  |<sub>      ( p1 -- p1 )            |
-|<sub>            |<sub>   P1ADD(b)   |<sub>      ( p1 -- p1 )            |
-|<sub>            |<sub>   PUMUL(b)   |<sub>( p3 p2 p1 -- p3 p2 p1 )      |
-|<sub>            |<sub> PUDIVMOD(b)  |<sub>( pu3 pu2 pu1 -- pu3 pu2 pu1 )|
-|<sub>            |<sub>  PDIVMOD(b)  |<sub>( p3 p2 p1 -- p3 p2 p1 )      |
+|<sub>            |<sub>    PADD(b)   |<sub>   ( p2 p1 -- p2 p1 )         |<sub> [p1] =[p2] + [p1]
+|<sub>            |<sub>    PADC(b)   |<sub>   ( p2 p1 -- p2 p1 )         |<sub> [p1] =[p2] + [p1] + carry
+|<sub>            |<sub>    PSUB(b)   |<sub>   ( p2 p1 -- p2 p1 )         |<sub> [p1] =[p2] - [p1]
+|<sub>            |<sub>    PSBC(b)   |<sub>   ( p2 p1 -- p2 p1 )         |<sub> [p1] =[p2] - [p1] - carry
+|<sub>            |<sub>PSUB_NEGATE(b)|<sub>   ( p2 p1 -- p2 p1 )         |<sub> [p1] =[p1] - [p2]
+|<sub>            |<sub>  PNEGATE(b)  |<sub>      ( p1 -- p1 )            |<sub> [p1] = -[p1]
+|<sub>            |<sub>   P1ADD(b)   |<sub>      ( p1 -- p1 )            |<sub> [p1] += 1
+|<sub>            |<sub>   PUMUL(b)   |<sub>( p3 p2 p1 -- p3 p2 p1 )      |<sub> [p1] = [p3] * [p2]
+|<sub>            |<sub> PUDIVMOD(b)  |<sub>( pu3 pu2 pu1 -- pu3 pu2 pu1 )|<sub> [pu1] = [pu2] / [pu3], [pu2] = [pu2] mod [pu3]
+|<sub>            |<sub>  PDIVMOD(b)  |<sub>( p3 p2 p1 -- p3 p2 p1 )      |<sub> [p1] = [p2] / [p3], [p2] = [p2] mod [p3]
 
 ### Floating-point
 
