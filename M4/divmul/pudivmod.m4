@@ -3,6 +3,113 @@ define({__},{})dnl
 dnl
 dnl
 dnl
+dnl
+dnl
+dnl
+ifdef({USE_PDIVMOD},{
+; Divide 8..2048-bit signed values from pointer
+; Divide 2048-bit unsigned value from pointer
+; In: [BC], [DE], [HL]
+;     A = sizeof(number) in bytes
+; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
+PDM:
+    push BC             ; 1:11
+    exx                 ; 1:4
+    ld    C, A          ; 1:4      C' = sizeof(number) in bytes
+    ex   DE, HL         ; 1:4      save R.A.S.
+    pop  HL             ; 1:4
+    ld    B, L          ; 1:4
+    add   A, L          ; 1:4
+    ld    L, A          ; 1:4
+    ld    A,(HL)        ; 1:7
+    or    A             ; 1:4
+    push AF             ; 1:11     divisor sign
+    ex   AF, AF'        ; 1:4
+    ld    A,(HL)        ; 1:7
+    or    A             ; 1:4
+    jp    p, $+12       ; 3:10
+    ld    L, B          ; 1:4
+    ld    B, C          ; 1:4
+    ld    A, 0x00       ; 2:7
+    sbc   A,(HL)        ; 1:7
+    ld  (HL),A          ; 1:7
+    inc   L             ; 1:4
+    djnz $-5            ; 2:8/13
+    exx                 ; 1:4      abs([BC])
+    push DE             ; 1:11
+    exx                 ; 1:4
+    pop  HL             ; 1:4
+    ld    B, L          ; 1:4
+    ld    A, C          ; 1:4
+    add   A, L          ; 1:4
+    ld    L, A          ; 1:4
+    ex   AF, AF'        ; 1:4
+    xor (HL)            ; 1:7
+    push AF             ; 1:11     the sign of the result
+    ld    A,(HL)        ; 1:7
+    add   A, A          ; 1:4
+    ld    A, L          ; 1:4      A = sizeof(number) in bytes
+    ccf                 ; 1:4
+    push AF             ; 1:11     invert carry = remainder sign
+    jr    c, $+11       ; 2:7/12
+    ld    L, B          ; 1:4
+    ld    B, C          ; 1:4
+    ld    A, 0x00       ; 2:7
+    sbc   A,(HL)        ; 1:7
+    ld  (HL),A          ; 1:7
+    inc   L             ; 1:4
+    djnz $-5            ; 2:8/13
+    ld    A, L          ; 1:4      A = sizeof(number) in bytes
+    exx                 ; 1:4      abs([DE])
+    
+    call PUDM           ; 3:17
+
+    push DE             ; 1:11
+    exx                 ; 1:4
+    pop  HL             ; 1:10     HL' = remainder
+    pop  AF             ; 1:10     invert carry = remainder sign
+    ld    C, A          ; 1:4      C' = sizeof(number) in bytes
+    jr    c, $+10       ; 2:7/12
+    ld    B, C          ; 1:4
+    ld    A, 0x00       ; 2:7
+    sbc   A,(HL)        ; 1:7
+    ld  (HL),A          ; 1:7
+    inc   L             ; 1:4
+    djnz $-5            ; 2:8/13
+    exx                 ; 1:4
+    
+    pop  AF             ; 1:10     the sign of the result
+    jp    p, $+15       ; 3:10
+    push HL             ; 1:11
+    exx                 ; 1:4
+    pop  HL             ; 1:10     HL' = result
+    ld    B, C          ; 1:4
+    ld    A, 0x00       ; 2:7
+    sbc   A,(HL)        ; 1:7
+    ld  (HL),A          ; 1:7
+    inc   L             ; 1:4
+    djnz $-5            ; 2:8/13
+    exx                 ; 1:4
+
+    push BC             ; 1:11
+    exx                 ; 1:4
+    pop  HL             ; 1:10     HL' = divisor
+    pop  AF             ; 1:10     divisor sign
+    jp    p, $+11       ; 3:10
+    ld    B, C          ; 1:4
+    ld    A, 0x00       ; 2:7
+    sbc   A,(HL)        ; 1:7
+    ld  (HL),A          ; 1:7
+    inc   L             ; 1:4
+    djnz $-5            ; 2:8/13
+    
+    ex   DE, HL         ; 1:4      back R.A.S.
+    exx                 ; 1:4
+
+    ret                 ; 1:10}){}dnl
+dnl
+dnl
+dnl
 ifelse(PUDM_MIN:PUDM_MAX,1:1,{
 ; Divide 8-bit unsigned value from pointer
 ; In: [BC], [DE], [HL]
