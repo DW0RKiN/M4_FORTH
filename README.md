@@ -336,13 +336,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
 |<sub>            |<sub>    PADD(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
 |<sub>            |<sub>    PADC(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
-|<sub>            |<sub>   PDSUB(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
-|<sub>            |<sub>   PDSBC(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>    PSUB(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>    PSBC(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
 |<sub>            |<sub>PSUB_NEGATE(b)|<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
 |<sub>            |<sub>  PNEGATE(b)  |<sub>                 |<sub>      ( p1 -- p1 )         |
 |<sub>            |<sub>   P1ADD(b)   |<sub>                 |<sub>      ( p1 -- p1 )         |
 |<sub>            |<sub>   PUMUL(b)   |<sub>                 |<sub>( p3 p2 p1 -- p3 p2 p1 )   |
-|<sub>            |<sub> PUDIVMOD(b)  |<sub>                 |<sub>( p3 p2 p1 -- p3 p2 p1 )   |
+|<sub>            |<sub> PUDIVMOD(b)  |<sub>                 |<sub>( pu3 pu2 pu1 -- pu3 pu2 pu1 ) |
 |<sub>            |<sub>  PDIVMOD(b)  |<sub>                 |<sub>( p3 p2 p1 -- p3 p2 p1 )   |
 
 ### Floating-point
