@@ -241,6 +241,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
     lo ...  low(d)= 16-bit number
     f  ... floating 16-bit number (Danagy format)
     r  ... floating 40-bit number (ZX Spectrum format)
+    p  ... pointer
+    pu ... pointer to unsigned number
+    pd ... pointer to 32-bit number
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
