@@ -47,100 +47,77 @@ __{}{
 ; In: [BC], [DE], [HL]
 ;     A = sizeof(number) in bytes
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
-PDM:                                pdm
+PDM:                    ;           pdm
     push BC             ; 1:11      pdm
     exx                 ; 1:4       pdm
-    ld    C, A          ; 1:4       pdm   C' = sizeof(number) in bytes
-    ex   DE, HL         ; 1:4       pdm   save R.A.S.
-    pop  HL             ; 1:4       pdm
-    ld    B, L          ; 1:4       pdm
+    ex  (SP),HL         ; 1:19      pdm   save R.A.S. && [HL'] = divisor
+    ld    E, A          ; 1:4       pdm   sizeof(number) in bytes
+
+    ld    B, L          ; 1:4       pdm   save offset
     add   A, L          ; 1:4       pdm
+    dec   A             ; 1:4       pdm
     ld    L, A          ; 1:4       pdm
-    ld    A,(HL)        ; 1:7       pdm
-    or    A             ; 1:4       pdm
-    push AF             ; 1:11      pdm   divisor sign
-    ex   AF, AF'        ; 1:4       pdm
-    ld    A,(HL)        ; 1:7       pdm
-    or    A             ; 1:4       pdm
-    jp    p, $+12       ; 3:10      pdm
-    ld    L, B          ; 1:4       pdm
-    ld    B, C          ; 1:4       pdm
-    ld    A, 0x00       ; 2:7       pdm
-    sbc   A,(HL)        ; 1:7       pdm
-    ld  (HL),A          ; 1:7       pdm
-    inc   L             ; 1:4       pdm
-    djnz $-5            ; 2:8/13    pdm
+    xor   A             ; 1:4       pdm
+    or  (HL)            ; 1:7       pdm
+    ld    D, A          ; 1:4       pdm   divisor sign
+    call  m, PDM_NEG1   ; 3:17      pdm
     exx                 ; 1:4       pdm   abs([BC])
+                        ;           pdm
     push DE             ; 1:11      pdm
     exx                 ; 1:4       pdm
-    pop  HL             ; 1:4       pdm
-    ld    B, L          ; 1:4       pdm
-    ld    A, C          ; 1:4       pdm
+    pop  HL             ; 1:10      pdm   [HL'] = dividend
+    ld    B, L          ; 1:4       pdm   save offset
+    ld    A, E          ; 1:4       pdm
     add   A, L          ; 1:4       pdm
+    dec   A             ; 1:4       pdm
     ld    L, A          ; 1:4       pdm
-    ex   AF, AF'        ; 1:4       pdm
-    xor (HL)            ; 1:7       pdm
-    push AF             ; 1:11      pdm   the sign of the result
     ld    A,(HL)        ; 1:7       pdm
-    add   A, A          ; 1:4       pdm
-    ld    A, L          ; 1:4       pdm   A = sizeof(number) in bytes
-    ccf                 ; 1:4       pdm
-    push AF             ; 1:11      pdm   invert carry = remainder sign
-    jr    c, $+11       ; 2:7/12    pdm
-    ld    L, B          ; 1:4       pdm
-    ld    B, C          ; 1:4       pdm
-    ld    A, 0x00       ; 2:7       pdm
-    sbc   A,(HL)        ; 1:7       pdm
-    ld  (HL),A          ; 1:7       pdm
-    inc   L             ; 1:4       pdm
-    djnz $-5            ; 2:8/13    pdm
-    ld    A, L          ; 1:4       pdm   A = sizeof(number) in bytes
+    xor   D             ; 1:4       pdm
+    push AF             ; 1:11      pdm   the sign of the result
+    xor   D             ; 1:4       pdm
+    push AF             ; 1:11      pdm   remainder sign
+    call  m, PDM_NEG1   ; 3:17      pdm
+    ld    A, E          ; 1:4       pdm   A = sizeof(number) in bytes
     exx                 ; 1:4       pdm   abs([DE])
                         ;           pdm
     call PUDM           ; 3:17      pdm
                         ;           pdm
     push DE             ; 1:11      pdm
     exx                 ; 1:4       pdm
-    pop  HL             ; 1:10      pdm   HL' = remainder
-    pop  AF             ; 1:10      pdm   invert carry = remainder sign
-    ld    C, A          ; 1:4       pdm   C' = sizeof(number) in bytes
-    jr    c, $+10       ; 2:7/12    pdm
-    ld    B, C          ; 1:4       pdm
-    ld    A, 0x00       ; 2:7       pdm
-    sbc   A,(HL)        ; 1:7       pdm
-    ld  (HL),A          ; 1:7       pdm
-    inc   L             ; 1:4       pdm
-    djnz $-5            ; 2:8/13    pdm
+    pop  HL             ; 1:10      pdm   [HL'] = remainder
+    pop  AF             ; 1:10      pdm   remainder sign
+    call  m, PDM_NEG2   ; 3:17      pdm
     exx                 ; 1:4       pdm
                         ;           pdm
     pop  AF             ; 1:10      pdm   the sign of the result
-    jp    p, $+15       ; 3:10      pdm
+    jp    p, $+10       ; 3:10      pdm
     push HL             ; 1:11      pdm
     exx                 ; 1:4       pdm
-    pop  HL             ; 1:10      pdm   HL' = result
-    ld    B, C          ; 1:4       pdm
-    ld    A, 0x00       ; 2:7       pdm
-    sbc   A,(HL)        ; 1:7       pdm
-    ld  (HL),A          ; 1:7       pdm
-    inc   L             ; 1:4       pdm
-    djnz $-5            ; 2:8/13    pdm
+    pop  HL             ; 1:10      pdm   [HL'] = result
+    call PDM_NEG2       ; 3:17      pdm
     exx                 ; 1:4       pdm
                         ;           pdm
     push BC             ; 1:11      pdm
     exx                 ; 1:4       pdm
-    pop  HL             ; 1:10      pdm   HL' = divisor
-    pop  AF             ; 1:10      pdm   divisor sign
-    jp    p, $+11       ; 3:10      pdm
-    ld    B, C          ; 1:4       pdm
-    ld    A, 0x00       ; 2:7       pdm
-    sbc   A,(HL)        ; 1:7       pdm
-    ld  (HL),A          ; 1:7       pdm
-    inc   L             ; 1:4       pdm
-    djnz $-5            ; 2:8/13    pdm
-    ex   DE, HL         ; 1:4       pdm   back R.A.S.
+    pop  HL             ; 1:10      pdm   [HL'] = divisor
+    xor   A             ; 1:4       pdm
+    or    D             ; 1:4       pdm   divisor sign
+    call  m, PDM_NEG2   ; 3:17      pdm
+    pop  HL             ; 1:10      pdm   load R.A.S.
     exx                 ; 1:4       pdm
                         ;           pdm
-    ret                 ; 1:10      pdm}){}dnl
+    ret                 ; 1:10      pdm
+PDM_NEG1:               ;           pdm_neg
+    ld    L, B          ; 1:4       pdm_neg   load offset
+PDM_NEG2:               ;           pdm_neg
+    ld    B, E          ; 1:4       pdm_neg
+    ld    C, 0x00       ; 2:7       pdm_neg
+    ld    A, C          ; 1:4       pdm_neg
+    sbc   A,(HL)        ; 1:7       pdm_neg
+    ld  (HL),A          ; 1:7       pdm_neg
+    inc   L             ; 1:4       pdm_neg
+    djnz $-4            ; 2:8/13    pdm_neg
+    ret                 ; 1:10      pdm_neg}){}dnl
 }){}dnl
 dnl
 dnl
