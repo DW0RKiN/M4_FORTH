@@ -3253,3 +3253,60 @@ __{}    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl
+dnl # ( p2 p1 -- p2 p1 )
+dnl # [p1] = [p2] / [p1]
+dnl # [p2] = [p2] mod [p1]
+define({PDIVMOD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({USE_PUDIVMOD}){}dnl
+__{}define({USE_PDIVMOD}){}dnl
+__{}ifdef({PUDM_MIN},{ifelse(eval(PUDM_MIN>$1),1,{define({PUDM_MIN},$1)})},{define({PUDM_MIN},$1)}){}dnl
+__{}ifdef({PUDM_MAX},{ifelse(eval(PUDM_MAX<$1),1,{define({PUDM_MAX},$1)})},{define({PUDM_MAX},$1)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PDIVMOD},{p{}eval(($1)*8)/mod},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDIVMOD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    pop  BC             ; 1:10      __INFO
+__{}ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
+__{}__{}    call P8DM           ; 3:17      __INFO},
+__{}PUDM_MIN:PUDM_MAX,2:2,{dnl
+__{}__{}    call P16DM          ; 3:17      __INFO},
+__{}PUDM_MIN:PUDM_MAX,256:256,{dnl
+__{}__{}    call P2048DM        ; 3:17      __INFO},
+__{}eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    call P256DM         ; 3:17      __INFO},
+__{}{dnl
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    call PDM            ; 3:17      __INFO})
+__{}    push BC             ; 1:11      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
