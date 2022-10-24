@@ -323,7 +323,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
-|<sub>2dup 2@ rot 2@ d+ 2over nip 2 store|<sub>    PDADD     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>2dup 2@ rot 2@ d+ 2over nip 2!|<sub>    PDADD     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
 |<sub>            |<sub>    PDSUB     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
 |<sub>            |<sub> PDSUB_NEGATE |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
 |<sub>            |<sub>   PDNEGATE   |<sub>                 |<sub>      ( p1 -- p1 )         |
