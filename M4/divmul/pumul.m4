@@ -141,7 +141,7 @@ __{}    djnz $-2            ; 2:8/13    pxumul   [p1] = 0
 __{}    ld    A, C          ; 1:4       pxumul
 __{}PXMUL_L1:               ;           pxumul
 __{}    ex   AF, AF'        ; 1:4       pxumul
-__{}ifelse(eval((PUMUL_MIN>8) || (ifelse(TYP_PUMUL,{small},1,0))),1,{dnl
+__{}ifelse(eval((PUMUL_MAX<=4) || (ifelse(TYP_PUMUL,{small},1,0))),1,{dnl
 __{}__{}    ex  (SP),HL         ; 1:19      pxumul
 __{}__{}    dec   L             ; 1:4       pxumul
 __{}__{}    ex  (SP),HL         ; 1:19      pxumul},
