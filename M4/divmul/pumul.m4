@@ -146,12 +146,12 @@ __{}    ex  (SP),HL         ; 1:19      pxumul
 __{}    dec   L             ; 1:4       pxumul
 __{}    ex  (SP),HL         ; 1:19      pxumul
 __{}PXMUL_L2:               ;           pxumul
-__{}    sla (HL)            ; 2:15      pxumul
 __{}    push BC             ; 1:11      pxumul
+__{}    or    A             ; 1:4       pxumul
 __{}    ld    B, C          ; 1:4       pxumul
 __{}    ld    C, L          ; 1:4       pxumul
-__{}    inc   L             ; 1:4       pxumul
 __{}    rl  (HL)            ; 2:15      pxumul
+__{}    inc   L             ; 1:4       pxumul
 __{}    djnz $-3            ; 2:8/13    pxumul
 __{}    ld    L, C          ; 1:4       pxumul
 __{}    pop  BC             ; 1:10      pxumul
@@ -159,11 +159,9 @@ __{}    ex  (SP),HL         ; 1:19      pxumul
 __{}    rlc (HL)            ; 2:15      pxumul
 __{}    ex  (SP),HL         ; 1:19      pxumul
 __{}    jr   nc, PXMUL_N    ; 2:7/12    pxumul
-__{}    ld    A,(DE)        ; 1:7       pxumul
-__{}    add   A,(HL)        ; 1:7       pxumul
-__{}    ld  (HL),A          ; 1:7       pxumul
 __{}    push BC             ; 1:11      pxumul
 __{}    push DE             ; 1:11      pxumul
+__{}    or    A             ; 1:4       pxumul
 __{}    ld    B, C          ; 1:4       pxumul
 __{}    ld    C, L          ; 1:4       pxumul
 __{}    inc   L             ; 1:4       pxumul
