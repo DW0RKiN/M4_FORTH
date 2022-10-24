@@ -321,6 +321,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 #### Pointer to 32bit number
 
+Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
+
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
 |<sub>2dup 2@ rot 2@ d+ 2over nip 2!|<sub>    PDADD     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
@@ -331,6 +333,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>            |<sub>    PD1SUB    |<sub>                 |<sub>      ( p1 -- p1 )         |
 
 #### Pointer to 1..256 bytes number
+
+Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
