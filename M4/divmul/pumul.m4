@@ -127,14 +127,14 @@ __{}PXUMUL:                 ;           pxumul
 __{}    push BC             ; 1:11      pxumul
 __{}    ld    C, A          ; 1:4       pxumul   C = x bytes
 __{}    ex  (SP),HL         ; 1:19      pxumul
-__{}    ld    B, C          ; 1:4       pxumul
 __{}    add   A, L          ; 1:4       pxumul
 __{}    ld    L, A          ; 1:4       pxumul
 __{}    ex  (SP),HL         ; 1:19      pxumul   p3 += x
-__{}    ld    A, C          ; 1:4       pxumul
-__{}    add   A, L          ; 1:4       pxumul
+__{}    ld    A, L          ; 1:4       pxumul
+__{}    add   A, C          ; 1:4       pxumul
 __{}    ld    L, A          ; 1:4       pxumul
 __{}    xor   A             ; 1:4       pxumul
+__{}    ld    B, C          ; 1:4       pxumul
 __{}    dec   L             ; 1:4       pxumul
 __{}    ld  (HL),A          ; 1:7       pxumul
 __{}    djnz $-2            ; 2:8/13    pxumul   [p1] = 0
@@ -152,11 +152,11 @@ __{}    ld    B, C          ; 1:4       pxumul
 __{}    ld    C, L          ; 1:4       pxumul
 __{}    rl  (HL)            ; 2:15      pxumul
 __{}    inc   L             ; 1:4       pxumul
-__{}    djnz $-3            ; 2:8/13    pxumul
+__{}    djnz $-3            ; 2:8/13    pxumul   result [p1] *= 2
 __{}    ld    L, C          ; 1:4       pxumul
 __{}    pop  BC             ; 1:10      pxumul
 __{}    ex  (SP),HL         ; 1:19      pxumul
-__{}    rlc (HL)            ; 2:15      pxumul
+__{}    rlc (HL)            ; 2:15      pxumul   left rotation [p3] --> carry?
 __{}    ex  (SP),HL         ; 1:19      pxumul
 __{}    jr   nc, PXMUL_N    ; 2:7/12    pxumul
 __{}    push BC             ; 1:11      pxumul
@@ -164,11 +164,11 @@ __{}    push DE             ; 1:11      pxumul
 __{}    or    A             ; 1:4       pxumul
 __{}    ld    B, C          ; 1:4       pxumul
 __{}    ld    C, L          ; 1:4       pxumul
-__{}    inc   L             ; 1:4       pxumul
-__{}    inc   E             ; 1:4       pxumul
 __{}    ld    A,(DE)        ; 1:7       pxumul
 __{}    adc   A,(HL)        ; 1:7       pxumul
 __{}    ld  (HL),A          ; 1:7       pxumul
+__{}    inc   L             ; 1:4       pxumul
+__{}    inc   E             ; 1:4       pxumul
 __{}    djnz $-5            ; 2:8/13    pxumul
 __{}    ld    L, C          ; 1:4       pxumul
 __{}    pop  DE             ; 1:10      pxumul
