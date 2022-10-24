@@ -141,10 +141,51 @@ __{}    djnz $-2            ; 2:8/13    pxumul   [p1] = 0
 __{}    ld    A, C          ; 1:4       pxumul
 __{}PXMUL_L1:               ;           pxumul
 __{}    ex   AF, AF'        ; 1:4       pxumul
+__{}ifelse(eval((PUMUL_MIN>8) || (ifelse(TYP_PUMUL,{small},1,0))),1,{dnl
+__{}__{}    ex  (SP),HL         ; 1:19      pxumul
+__{}__{}    dec   L             ; 1:4       pxumul
+__{}__{}    ex  (SP),HL         ; 1:19      pxumul},
+__{}{dnl
+__{}__{}    ex  (SP),HL         ; 1:19      pxumul
+__{}__{}    dec   L             ; 1:4       pxumul
+__{}__{}    ld    A,(HL)        ; 1:7       pxumul
+__{}__{}    ex  (SP),HL         ; 1:19      pxumul
+__{}__{}    or    A             ; 1:4       pxumul
+__{}__{}    jr   nz, PXMUL_J    ; 2:7/12    pxumul
+__{}__{}ifelse(1,0,{dnl
+__{}__{}__{}    push BC             ; 1:11      pxumul
+__{}__{}__{}    ld    B, C          ; 1:4       pxumul
+__{}__{}__{}    ld    C, L          ; 1:4       pxumul
+__{}__{}__{}    ex   AF, AF'        ; 1:4       pxumul
+__{}__{}__{}    push AF             ; 1:11      pxumul
+__{}__{}__{}    ld    A,(HL)        ; 1:7       pxumul
+__{}__{}__{}    ex   AF, AF'        ; 1:4       pxumul
+__{}__{}__{}    ld  (HL),A          ; 1:7       pxumul
+__{}__{}__{}    inc   L             ; 1:4       pxumul
+__{}__{}__{}    djnz $-4            ; 2:8/13    pxumul   [HL+1] = [HL]
+__{}__{}__{}    pop  AF             ; 1:10      pxumul
+__{}__{}__{}    ex   AF, AF'        ; 1:4       pxumul
+__{}__{}__{}    ld    L, C          ; 1:4       pxumul
+__{}__{}__{}    pop  BC             ; 1:10      pxumul},
+__{}__{}{dnl
+__{}__{}__{}    push BC             ; 1:11      pxumul
+__{}__{}__{}    push DE             ; 1:11      pxumul
+__{}__{}__{}    dec   C             ; 1:4       pxumul
+__{}__{}__{}    ld    B, 0x00       ; 2:7       pxumul
+__{}__{}__{}    ld    D, H          ; 1:4       pxumul
+__{}__{}__{}    ld    A, L          ; 1:4       pxumul
+__{}__{}__{}    add   A, C          ; 1:4       pxumul
+__{}__{}__{}    ld    E, A          ; 1:4       pxumul
+__{}__{}__{}    ld    L, E          ; 1:4       pxumul
+__{}__{}__{}    dec   L             ; 1:4       pxumul
+__{}__{}__{}    lddr                ; 2:16/21   pxumul   [DE]-- = [HL]--
+__{}__{}__{}    ex   DE, HL         ; 1:4       pxumul
+__{}__{}__{}    ld  (HL),B          ; 1:7       pxumul
+__{}__{}__{}    pop  DE             ; 1:10      pxumul
+__{}__{}__{}    pop  BC             ; 1:10      pxumul})
+__{}__{}    jr  PXMUL_N1        ; 2:12      pxumul
+__{}__{}PXMUL_J:                ;           pxumul})
 __{}    ld    B, 0x08       ; 2:7       pxumul
-__{}    ex  (SP),HL         ; 1:19      pxumul
-__{}    dec   L             ; 1:4       pxumul
-__{}    ex  (SP),HL         ; 1:19      pxumul
 __{}PXMUL_L2:               ;           pxumul
 __{}    push BC             ; 1:11      pxumul
 __{}    or    A             ; 1:4       pxumul
@@ -158,7 +199,7 @@ __{}    pop  BC             ; 1:10      pxumul
 __{}    ex  (SP),HL         ; 1:19      pxumul
 __{}    rlc (HL)            ; 2:15      pxumul   left rotation [p3] --> carry?
 __{}    ex  (SP),HL         ; 1:19      pxumul
-__{}    jr   nc, PXMUL_N    ; 2:7/12    pxumul
+__{}    jr   nc, PXMUL_N2   ; 2:7/12    pxumul
 __{}    push BC             ; 1:11      pxumul
 __{}    push DE             ; 1:11      pxumul
 __{}    or    A             ; 1:4       pxumul
@@ -173,8 +214,9 @@ __{}    djnz $-5            ; 2:8/13    pxumul
 __{}    ld    L, C          ; 1:4       pxumul
 __{}    pop  DE             ; 1:10      pxumul
 __{}    pop  BC             ; 1:10      pxumul
-__{}PXMUL_N:                ;           pxumul
+__{}PXMUL_N2:               ;           pxumul
 __{}    djnz PXMUL_L2       ; 2:8/13    pxumul
+__{}PXMUL_N1:               ;           pxumul
 __{}    ex   AF, AF'        ; 1:4       pxumul
 __{}    dec   A             ; 1:4       pxumul
 __{}    jr   nz, PXMUL_L1   ; 2:7/12    pxumul
