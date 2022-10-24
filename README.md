@@ -316,6 +316,32 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>   D256/    |<sub>   D256DIV    |<sub>                 |<sub>       ( d -- d/256 )      |
 |<sub>    d>s     |<sub>    D_TO_S    |<sub>                 |<sub>    ( 0 x1 -- x1 )         |
 
+#### Pointer to 32bit number
+
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
+| :-------------: | :---------------: | :------------------: | :----------------------------- |
+|<sub>2dup 2@ rot 2@ d+ 2over nip 2 store|<sub>    PDADD     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>    PDSUB     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub> PDSUB_NEGATE |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>   PDNEGATE   |<sub>                 |<sub>      ( p1 -- p1 )         |
+|<sub>            |<sub>    PD1ADD    |<sub>                 |<sub>      ( p1 -- p1 )         |
+|<sub>            |<sub>    PD1SUB    |<sub>                 |<sub>      ( p1 -- p1 )         |
+
+#### Pointer to 1..256 bytes number
+
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
+| :-------------: | :---------------: | :------------------: | :----------------------------- |
+|<sub>            |<sub>    PADD(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>    PADC(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>   PDSUB(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>   PDSBC(b)   |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>PSUB_NEGATE(b)|<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
+|<sub>            |<sub>  PNEGATE(b)  |<sub>                 |<sub>      ( p1 -- p1 )         |
+|<sub>            |<sub>   P1ADD(b)   |<sub>                 |<sub>      ( p1 -- p1 )         |
+|<sub>            |<sub>   PUMUL(b)   |<sub>                 |<sub>( p3 p2 p1 -- p3 p2 p1 )   |
+|<sub>            |<sub> PUDIVMOD(b)  |<sub>                 |<sub>( p3 p2 p1 -- p3 p2 p1 )   |
+|<sub>            |<sub>  PDIVMOD(b)  |<sub>                 |<sub>( p3 p2 p1 -- p3 p2 p1 )   |
+
 ### Floating-point
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/floating.m4
