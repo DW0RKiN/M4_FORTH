@@ -12,11 +12,53 @@ __{}ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
 ; In: [BC], [DE], [HL]
 ;     A = sizeof(number) in bytes
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
-P8DM:
-
-
-
-__{}__{}    call P8DM           ; 3:17      __INFO},
+P8DM:                   ;           p8dm
+    push BC             ; 1:11      p8dm
+    exx                 ; 1:4       p8dm
+    ex  (SP),HL         ; 1:19      p8dm   save R.A.S. && [HL'] = divisor
+    xor   A             ; 1:4       p8dm
+    or  (HL)            ; 1:7       p8dm
+    ld    D, A          ; 1:4       p8dm   divisor sign
+    call  m, PDM_NEG    ; 3:17      p8dm
+    exx                 ; 1:4       p8dm   abs([BC])
+                        ;           p8dm
+    push DE             ; 1:11      p8dm
+    exx                 ; 1:4       p8dm
+    pop  HL             ; 1:10      p8dm   [HL'] = dividend
+    ld    A,(HL)        ; 1:7       p8dm
+    xor   D             ; 1:4       p8dm
+    push AF             ; 1:11      p8dm   the sign of the result
+    xor   D             ; 1:4       p8dm
+    push AF             ; 1:11      p8dm   remainder sign
+    call  m, PDM_NEG    ; 3:17      p8dm
+    exx                 ; 1:4       p8dm   abs([DE])
+                        ;           p8dm
+    call P16UDM         ; 3:17      p8dm
+                        ;           p8dm
+    pop  AF             ; 1:10      p8dm   remainder sign
+    ex   DE, HL         ; 1:4       p8dm
+    call  m, PDM_NEG    ; 3:17      p8dm
+    ex   DE, HL         ; 1:4       p8dm
+                        ;           p8dm
+    pop  AF             ; 1:10      p8dm   the sign of the result
+    jp    p, $+6        ; 3:10      p8dm
+    call PDM_NEG        ; 3:17      p8dm
+                        ;           p8dm
+    push BC             ; 1:11      p8dm
+    exx                 ; 1:4       p8dm
+    pop  HL             ; 1:10      p8dm   [HL'] = divisor
+    xor   A             ; 1:4       p8dm
+    or    D             ; 1:4       p8dm   divisor sign
+    call  m, PDM_NEG    ; 3:17      p8dm
+    pop  HL             ; 1:10      p8dm   load R.A.S.
+    exx                 ; 1:4       p8dm
+                        ;           p8dm
+    ret                 ; 1:10      p8dm
+PDM_NEG:                ;           p8dm_neg
+    xor   A             ; 1:4       p8dm_neg
+    sub (HL)            ; 1:7       p8dm_neg
+    ld  (HL),A          ; 1:7       p8dm_neg
+    ret                 ; 1:10      p8dm_neg},
 __{}PUDM_MIN:PUDM_MAX,2:2,{dnl
 ; Divide 16-bit signed values from pointer
 ; In: [BC], [DE], [HL]
@@ -47,20 +89,14 @@ P16DM:                  ;           p16dm
                         ;           p16dm
     call P16UDM         ; 3:17      p16dm
                         ;           p16dm
-    push DE             ; 1:11      p16dm
-    exx                 ; 1:4       p16dm
-    pop  HL             ; 1:10      p16dm   [HL'] = remainder
     pop  AF             ; 1:10      p16dm   remainder sign
+    ex   DE, HL         ; 1:4       p16dm
     call  m, PDM_NEG2   ; 3:17      p16dm
-    exx                 ; 1:4       p16dm
+    ex   DE, HL         ; 1:4       p16dm
                         ;           p16dm
     pop  AF             ; 1:10      p16dm   the sign of the result
-    jp    p, $+10       ; 3:10      p16dm
-    push HL             ; 1:11      p16dm
-    exx                 ; 1:4       p16dm
-    pop  HL             ; 1:10      p16dm   [HL'] = result
+    jp    p, $+6        ; 3:10      p16dm
     call PDM_NEG2       ; 3:17      p16dm
-    exx                 ; 1:4       p16dm
                         ;           p16dm
     push BC             ; 1:11      p16dm
     exx                 ; 1:4       p16dm
