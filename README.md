@@ -707,7 +707,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
 | :-------------: | :---------------: | :----------------------------- | :------------------------------ |
-|<sub>            |<sub>  HEX_PDOT(b) |<sub>      ( p1 -- p1 )         |<sub> print [p1] 
+|<sub>            |<sub> HEX_PUDOT(b) |<sub>      ( p1 -- p1 )         |<sub> print [p1] 
 
     PUTCHAR(0x08)   --> deletes the last character
     PUTCHAR(8)      --> deletes the last character
