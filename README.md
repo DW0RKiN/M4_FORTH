@@ -700,6 +700,15 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>       accept        |<sub>      ACCEPT_Z       |<sub>                        |<sub> ( addr max -- loaded )   |<sub> C-style string        |
 |<sub>                     |<sub>       ZX_CLS        |<sub>                        |<sub>          ( -- )          |<sub> ZX48:clear screen     |
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
+
+#### Pointer to 1..256 bytes number
+
+Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
+
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
+| :-------------: | :---------------: | :----------------------------- | :------------------------------ |
+|<sub>            |<sub>  HEX_PDOT(b) |<sub>      ( p1 -- p1 )         |<sub> print [p1] 
+
     PUTCHAR(0x08)   --> deletes the last character
     PUTCHAR(8)      --> deletes the last character
     PUTCHAR(' ')    --> SPACE
