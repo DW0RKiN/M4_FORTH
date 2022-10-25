@@ -323,14 +323,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
-|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
-| :-------------: | :---------------: | :------------------: | :----------------------------- |
-|<sub>2dup 2@ rot 2@ d+ 2over nip 2!|<sub>    PDADD     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
-|<sub>            |<sub>    PDSUB     |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
-|<sub>            |<sub> PDSUB_NEGATE |<sub>                 |<sub>   ( p2 p1 -- p2 p1 )      |
-|<sub>            |<sub>   PDNEGATE   |<sub>                 |<sub>      ( p1 -- p1 )         |
-|<sub>            |<sub>    PD1ADD    |<sub>                 |<sub>      ( p1 -- p1 )         |
-|<sub>            |<sub>    PD1SUB    |<sub>                 |<sub>      ( p1 -- p1 )         |
+|<sub> Original                     |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
+| :-------------------------------: | :---------------: | :----------------------------- | :------------------------------ |
+|<sub>2dup 2@ rot 2@ d+ 2over nip 2!|<sub>    PDADD     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] =[p2] + [p1]
+|<sub>                              |<sub>    PDSUB     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] =[p2] - [p1]
+|<sub>                              |<sub> PDSUB_NEGATE |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] =[p1] - [p2]
+|<sub>                              |<sub>   PDNEGATE   |<sub>      ( p1 -- p1 )         |<sub> [p1] = -[p1]
+|<sub>                              |<sub>    PD1ADD    |<sub>      ( p1 -- p1 )         |<sub> [p1] += 1
+|<sub>                              |<sub>    PD1SUB    |<sub>      ( p1 -- p1 )         |<sub> [p1] -= 1
 
 #### Pointer to 1..256 bytes number
 
@@ -581,6 +581,46 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 | :---------------------: | :----------------------------: | :----------------------: | :-------------------------------------- | :----------------------- |
 |<sub>         C=         |<sub>            CEQ            |<sub>                     |<sub> ( char2 char1 -- flag )            |<sub> TRUE=-1 FALSE=0
 |<sub> over C@ over @C C= |<sub>OVER_CFETCH_OVER_CFETCH_CEQ|<sub>                     |<sub> ( addr2 addr1 -- addr2 addr1 flag )|<sub> TRUE=-1 FALSE=0
+
+
+#### Pointer to 32bit number
+
+Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
+
+|<sub> Original                       |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
+| :---------------------------------: | :---------------: | :----------------------------- | :------------------------------ |
+|<sub>2dup 2@ rot 2@ dand 2over nip 2!|<sub>    PDAND     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] &= [p2]
+|<sub>2dup 2@ rot 2@ dor 2over nip 2! |<sub>    PDOR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] |= [p2]
+|<sub>2dup 2@ rot 2@ dxor 2over nip 2!|<sub>    PDXOR     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] ^= [p2]
+|<sub>    dup dup 2@ dinvert rot 2!   |<sub>   PDINVERT   |<sub>      ( p1 -- p1 )         |<sub> [p1] ~= [p1]
+|<sub>          dup 2@ 0. d=          |<sub>    PD0EQ     |<sub>      ( p1 -- p1 f )       |<sub> f = [p1] == 0
+|<sub>          dup 2@ 0. d<>         |<sub>    PD0NE     |<sub>      ( p1 -- p1 f )       |<sub> f = [p1] <> 0
+|<sub>       2dup 2@ rot 2@ d=        |<sub>     PDEQ     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] == [p2]
+|<sub>       2dup 2@ rot 2@ d<>       |<sub>     PDNE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] != [p2]
+|<sub>       2dup 2@ rot 2@ d<        |<sub>     PDLT     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1]  < [p2]
+|<sub>       2dup 2@ rot 2@ d>        |<sub>     PDGT     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1]  > [p2]
+|<sub>       2dup 2@ rot 2@ d<=       |<sub>     PDLE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] <= [p2]
+|<sub>       2dup 2@ rot 2@ d>=       |<sub>     PDGE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] >= [p2]
+|<sub>      2dup 2@ rot 2@ du<        |<sub>    PDULT     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<  [p2]
+|<sub>      2dup 2@ rot 2@ du>        |<sub>    PDUGT     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>  [p2]
+|<sub>      2dup 2@ rot 2@ du<=       |<sub>    PDULE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
+|<sub>      2dup 2@ rot 2@ du>=       |<sub>    PDUGE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
+
+#### Pointer to 1..256 bytes number
+
+Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
+
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
+| :-------------: | :---------------: | :----------------------------- | :------------------------------ |
+|<sub>            |<sub>     PAND     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] &= [p2]
+|<sub>            |<sub>     POR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] |= [p2]
+|<sub>            |<sub>     PXOR     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] ^= [p2]
+|<sub>            |<sub>      PEQ     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] == [p2]
+|<sub>            |<sub>      PNE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] != [p2]
+|<sub>            |<sub>     PULT     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<  [p2]
+|<sub>            |<sub>     PUGT     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>  [p2]
+|<sub>            |<sub>     PULE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
+|<sub>            |<sub>     PUGE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
 
 ### Device
 
@@ -1078,7 +1118,7 @@ Multiple WHILE is possible in M4 FORTH because they are independent of each othe
     PUSH(5)         FOR(S) I SPACE DOT             NEXT --> " 5 4 3 2 1 0"
 
     DO(type,end,begin,step)
-    
+
     PUSH(5)     PUSH(0)      DO                 -->             DO(,5,0)
     PUSH(5) ... PUSH(0)      DO                 --> PUSH(5) ... DO(,,0)
     PUSH(0) ... PUSH(5) SWAP DO                 --> PUSH(0) ... DO(,5)
