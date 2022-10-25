@@ -612,15 +612,15 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
 | :-------------: | :---------------: | :----------------------------- | :------------------------------ |
-|<sub>            |<sub>     PAND     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] &= [p2]
-|<sub>            |<sub>     POR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] \|= [p2]
-|<sub>            |<sub>     PXOR     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] ^= [p2]
-|<sub>            |<sub>      PEQ     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] == [p2]
-|<sub>            |<sub>      PNE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] != [p2]
-|<sub>            |<sub>     PULT     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<  [p2]
-|<sub>            |<sub>     PUGT     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>  [p2]
-|<sub>            |<sub>     PULE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
-|<sub>            |<sub>     PUGE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
+|<sub>            |<sub>    PAND(b)   |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] &= [p2]
+|<sub>            |<sub>    POR(b)    |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] \|= [p2]
+|<sub>            |<sub>    PXOR(b)   |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] ^= [p2]
+|<sub>            |<sub>     PEQ(b)   |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] == [p2]
+|<sub>            |<sub>     PNE(b)   |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] != [p2]
+|<sub>            |<sub>    PULT(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<  [p2]
+|<sub>            |<sub>    PUGT(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>  [p2]
+|<sub>            |<sub>    PULE(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
+|<sub>            |<sub>    PUGE(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
 
 ### Device
 
