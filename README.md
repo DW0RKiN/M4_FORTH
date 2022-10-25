@@ -346,6 +346,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>            |<sub>PSUB_NEGATE(b)|<sub>   ( p2 p1 -- p2 p1 )         |<sub> [p1] =[p1] - [p2]
 |<sub>            |<sub>  PNEGATE(b)  |<sub>      ( p1 -- p1 )            |<sub> [p1] = -[p1]
 |<sub>            |<sub>   P1ADD(b)   |<sub>      ( p1 -- p1 )            |<sub> [p1] += 1
+|<sub>            |<sub>   P1SUB(b)   |<sub>      ( p1 -- p1 )            |<sub> [p1] -= 1
 |<sub>            |<sub>   PUMUL(b)   |<sub>( p3 p2 p1 -- p3 p2 p1 )      |<sub> [p1] = [p3] * [p2]
 |<sub>            |<sub> PUDIVMOD(b)  |<sub>( pu3 pu2 pu1 -- pu3 pu2 pu1 )|<sub> [pu1] = [pu2] / [pu3], [pu2] = [pu2] mod [pu3]
 |<sub>            |<sub>  PDIVMOD(b)  |<sub>( p3 p2 p1 -- p3 p2 p1 )      |<sub> [p1] = [p2] / [p3], [p2] = [p2] mod [p3]
