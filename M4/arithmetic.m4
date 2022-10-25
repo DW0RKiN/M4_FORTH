@@ -1300,7 +1300,7 @@ __{}define({__INFO},{d+}){}dnl
     adc  HL, BC         ; 2:15      D+   hi1+hi2
     ex   DE, HL         ; 1:4       D+}){}dnl
 dnl
-dnl
+dnl 2dup 2@ rot 2@ d+ 2over nip 2!
 dnl # ( pd2 pd1 -- pd2 pd1 )
 dnl # [pd1] += [pd2]
 define({PDADD},{dnl
