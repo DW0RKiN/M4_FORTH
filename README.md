@@ -590,11 +590,11 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub> Original                       |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
 | :---------------------------------: | :---------------: | :----------------------------- | :------------------------------ |
 |<sub>2dup 2@ rot 2@ dand 2over nip 2!|<sub>    PDAND     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] &= [p2]
-|<sub>2dup 2@ rot 2@ dor 2over nip 2! |<sub>    PDOR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] |= [p2]
+|<sub>2dup 2@ rot 2@ dor 2over nip 2! |<sub>    PDOR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] \|= [p2]
 |<sub>2dup 2@ rot 2@ dxor 2over nip 2!|<sub>    PDXOR     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] ^= [p2]
 |<sub>    dup dup 2@ dinvert rot 2!   |<sub>   PDINVERT   |<sub>      ( p1 -- p1 )         |<sub> [p1] ~= [p1]
 |<sub>          dup 2@ 0. d=          |<sub>    PD0EQ     |<sub>      ( p1 -- p1 f )       |<sub> f = [p1] == 0
-|<sub>          dup 2@ 0. d<>         |<sub>    PD0NE     |<sub>      ( p1 -- p1 f )       |<sub> f = [p1] <> 0
+|<sub>          dup 2@ 0. d<>         |<sub>    PD0NE     |<sub>      ( p1 -- p1 f )       |<sub> f = [p1] != 0
 |<sub>       2dup 2@ rot 2@ d=        |<sub>     PDEQ     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] == [p2]
 |<sub>       2dup 2@ rot 2@ d<>       |<sub>     PDNE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] != [p2]
 |<sub>       2dup 2@ rot 2@ d<        |<sub>     PDLT     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1]  < [p2]
@@ -613,7 +613,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
 | :-------------: | :---------------: | :----------------------------- | :------------------------------ |
 |<sub>            |<sub>     PAND     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] &= [p2]
-|<sub>            |<sub>     POR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] |= [p2]
+|<sub>            |<sub>     POR      |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] \|= [p2]
 |<sub>            |<sub>     PXOR     |<sub>   ( p2 p1 -- p2 p1 )      |<sub> [p1] ^= [p2]
 |<sub>            |<sub>      PEQ     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] == [p2]
 |<sub>            |<sub>      PNE     |<sub>   ( p2 p1 -- p2 p1 f )    |<sub> f = [p1] != [p2]
