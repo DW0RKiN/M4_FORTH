@@ -3863,6 +3863,108 @@ __{}define({__INFO},__COMPILE_INFO)
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # ( p1 -- p1 flag )
+dnl # flag = [p1] <> 0
+define({P0NE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_P0NE},{p{}eval(8*($1)) 0<>},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_P0NE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] <> 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),2,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] <> 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),3,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] <> 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),4,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] <> 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),256,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] <> 0  with align $1
+__{}    ld   DE, 0xFFFF     ; 3:10      __INFO
+__{}    xor   A             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-4        ; 2:7/12    __INFO
+__{}    inc  DE             ; 1:6       __INFO
+__{}    ld    L, 0x00       ; 2:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] <> 0  with align $1
+__{}    ld   DE, 0xFFFF     ; 3:10      __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    xor   A             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    djnz $-3            ; 2:8/13    __INFO
+__{}    inc  DE             ; 1:6       __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( pd2 pd1 -- pd2 pd1 flag )
 dnl # not equal ( [pd2] <> 0 )
 define({OVER_PD0NE_NIP},{dnl
@@ -5608,6 +5710,115 @@ __{}    scf                 ; 1:4       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( p1 -- p1 flag )
+dnl # flag = [p1] == 0
+define({P0EQ},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_P0EQ},{p{}eval(8*($1)) 0=},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_P0EQ},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($1),1,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    sub 0x01            ; 2:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),2,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    sub 0x01            ; 2:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),3,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+7        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    sub 0x01            ; 2:7       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),4,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == 0  with align $1
+__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    jr   nz, $+16       ; 2:7/12    __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+10       ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    sub 0x01            ; 2:7       __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}eval($1),256,{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == 0  with align $1
+__{}    xor   A             ; 1:4       __INFO
+__{}    ld    D, A          ; 1:4       __INFO
+__{}    ld    E, A          ; 1:4       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    jr   nz, $-4        ; 2:7/12    __INFO
+__{}    dec  DE             ; 1:6       __INFO
+__{}    ld    L, 0x00       ; 2:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}{
+__{}    push DE             ; 1:11      __INFO   ( p{}eval(8*($1))_1 -- p{}eval(8*($1))_1 flag )  flag = [p{}eval(8*($1))_1] == 0  with align $1
+__{}    xor   A             ; 1:4       __INFO
+__{}    ld    D, A          ; 1:4       __INFO
+__{}    ld    E, A          ; 1:4       __INFO
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    or  (HL)            ; 1:7       __INFO
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    djnz $-3            ; 2:8/13    __INFO
+__{}    dec  DE             ; 1:6       __INFO
+__{}    ld    L, C          ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO})}){}dnl
 }){}dnl
 dnl
 dnl
