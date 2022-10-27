@@ -504,6 +504,70 @@ BIN16_DEC_CHAR:         ;           bin16_dec
 dnl
 dnl
 dnl
+ifdef({USE_PRT_SP_PU},{__def({USE_PRT_PU})
+;==============================================================================
+; Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+; Output: Print space and unsigned decimal number in [DE]
+; Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
+PRT_SP_PU:              ;           prt_sp_pu
+    push AF             ; 1:11      prt_sp_pu
+    ld    A, ' '        ; 2:7       prt_sp_pu   putchar Pollutes: AF, DE', BC'
+    rst   0x10          ; 1:11      prt_sp_pu   putchar with {ZX 48K ROM} in, this will print char in A
+    ex   DE, HL         ; 1:4       prt_sp_pu
+    ; fall to prt_pu}){}dnl
+ifdef({USE_PRT_PU},{
+;------------------------------------------------------------------------------
+; Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+; Output: Print unsigned decimal number in [DE]
+; Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
+PRT_PU_LOOP:            ;           prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    pop  AF             ; 1:10      prt_pu
+PRT_PU:                 ;           prt_pu
+    or    A             ; 1:4       prt_pu
+    push AF             ; 1:11      prt_pu
+ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
+__{}    call P8UDM          ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,2:2,{dnl
+__{}    call P16UDM         ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,256:256,{dnl
+__{}    call P2048UDM       ; 3:17      prt_pu},
+eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
+__{}    call P256UDM        ; 3:17      prt_pu},
+{dnl
+__{}    call PUDM           ; 3:17      prt_pu})
+
+    ld    A,(DE)        ; 1:7       prt_pu
+    add   A, $30        ; 2:7       prt_pu   '0'..'9'
+    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+
+    pop  AF             ; 1:10      prt_pu
+    push AF             ; 1:11      prt_pu
+    
+    push DE             ; 1:11      prt_pu
+    ld    E, L          ; 1:4       prt_pu
+    ld    D, A          ; 2:7       prt_pu
+    scf                 ; 1:4       prt_pu
+    ld    A,(BC)        ; 1:7       prt_pu
+    sbc   A,(HL)        ; 1:7       prt_pu 10-x-1=9-x
+    inc   L             ; 1:4       prt_pu
+    jr    c, $+6        ; 2:7/12    prt_pu
+    xor   A             ; 1:4       prt_pu
+    dec   D             ; 1:4       prt_pu
+    jr   nz, $-6        ; 2:7/12    prt_pu
+    ld    L, E          ; 1:4       prt_pu
+    pop  DE             ; 1:11      prt_pu
+    jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
+
+    ld    A,(HL)        ; 1:7       prt_pu
+    add   A, $30        ; 2:7       prt_pu   '0'..'9'
+    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+
+    pop  AF             ; 1:10      prt_pu
+    ret                 ; 1:10      prt_pu}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_BITSET16},{
 ;==============================================================================
 ; ( x1 u -- ? x )  x = x1 | 2**u

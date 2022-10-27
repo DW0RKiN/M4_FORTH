@@ -143,6 +143,10 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
+__{}__def({USE_PRT_PU}){}dnl
+__{}define({USE_PUDIVMOD}){}dnl
+__{}ifdef({PUDM_MIN},{ifelse(eval(PUDM_MIN>$1),1,{define({PUDM_MIN},$1)})},{define({PUDM_MIN},$1)}){}dnl
+__{}ifdef({PUDM_MAX},{ifelse(eval(PUDM_MAX<$1),1,{define({PUDM_MAX},$1)})},{define({PUDM_MAX},$1)}){}dnl
 __{}__ADD_TOKEN({__TOKEN_PUDOT},{pu.},$@)}){}dnl
 }){}dnl
 dnl
@@ -160,8 +164,11 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-  .error {$0}:($*) The word {HEX} must only be used in combination with (U)(D){DOT}!"}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}    pop  BC             ; 1:10      __INFO
+__{}    call PRT_PU         ; 3:17      __INFO
+__{}    push BC             ; 1:11      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -178,7 +185,7 @@ __IS_MEM_REF($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
-__SAVE_EVAL($1>256),{1},{
+__SAVE_EVAL($1>256),{1},{  
 __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
