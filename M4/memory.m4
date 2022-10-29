@@ -627,7 +627,7 @@ __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}_
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL($1+1),{define({__PUSHS_COMMA_ANALYSIS_ADD16},eval(1+__PUSHS_COMMA_ANALYSIS_ADD16))}){}dnl
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL($1-1),{define({__PUSHS_COMMA_ANALYSIS_SUB16},eval(1+__PUSHS_COMMA_ANALYSIS_SUB16))}){}dnl
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H($1){_}__HEX_L(2*$1),{define({__PUSHS_COMMA_ANALYSIS_LO2MUL},eval(1+__PUSHS_COMMA_ANALYSIS_LO2MUL))}){}dnl
-__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_H(2*$1){_}__HEX_L($1),{define({__PUSHS_COMMA_ANALYSIS_HI2MUL},eval(1+__PUSHS_COMMA_ANALYSIS_HI2MUL))}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_H($2){_}__HEX_L($2),__IS_MEM_REF($1){x}__HEX_L(2*__HEX_H($1)){_}__HEX_L($1),{define({__PUSHS_COMMA_ANALYSIS_HI2MUL},eval(1+__PUSHS_COMMA_ANALYSIS_HI2MUL))}){}dnl
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL(2*$1),{define({__PUSHS_COMMA_ANALYSIS_2MUL},eval(1+__PUSHS_COMMA_ANALYSIS_2MUL))}){}dnl
 __{}__{}ifelse(__IS_MEM_REF($2){x}__HEX_HL($2),__IS_MEM_REF($1){x}__HEX_HL($1),{define({__PUSHS_COMMA_ANALYSIS_SAME},eval(1+__PUSHS_COMMA_ANALYSIS_SAME))}){}dnl
 __{}__{}define({__PUSHS_COMMA_ANALYSIS_LAST},$2){}dnl

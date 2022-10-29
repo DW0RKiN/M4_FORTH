@@ -525,9 +525,9 @@ PRT_PU:                 ;           prt_pu
     exx                 ; 1:4       prt_pu
     ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes    
     exx                 ; 1:4       prt_pu
-    xor   A             ; 1:4       prt_pu
-    push AF             ; 1:11      prt_pu   0 = end
+    or    A             ; 1:4       prt_pu
 PRT_PU_LOOP:            ;           prt_pu
+    push AF             ; 1:11      prt_pu   no carry = end
     exx                 ; 1:4       prt_pu
     ld    A, E          ; 1:4       prt_pu
     exx                 ; 1:4       prt_pu
@@ -542,9 +542,6 @@ __{}    call P256UDM        ; 3:17      prt_pu},
 {dnl
 __{}    call PUDM           ; 3:17      prt_pu})
 
-    ld    A,(DE)        ; 1:7       prt_pu
-    add   A, $30        ; 2:7       prt_pu   '0'..'9'
-    push AF             ; 1:11      prt_pu
     exx                 ; 1:4       prt_pu
     ld    B, E          ; 1:4       prt_pu   E' = sizeof(number) in bytes
     exx                 ; 1:4       prt_pu    
@@ -563,18 +560,23 @@ __{}    call PUDM           ; 3:17      prt_pu})
     
     pop  HL             ; 1:10      prt_pu
     ex   DE, HL         ; 1:4       prt_pu
+    ld    A,(HL)        ; 1:7       prt_pu    
     jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
 
+    scf                 ; 1:4       prt_pu    
+    push AF             ; 1:11      prt_pu
     ld    A,(DE)        ; 1:7       prt_pu
-    add   A, $30        ; 2:7       prt_pu   '0'..'9'
-    ex   DE, HL         ; 1:4       prt_pu
+    push AF             ; 1:11      prt_pu
     
-    ex   DE, HL         ; 1:4       prt_pu
-    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
     pop  AF             ; 1:10      prt_pu
-    jr   nz, $-3        ; 2:7/12    prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    ret  nc             ; 1:5/11    prt_pu    
+    add   A, $30        ; 2:7       prt_pu   '0'..'9'
+    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+    jr   $-6            ; 2:7/12    prt_pu
     
-    ret                 ; 1:10      prt_pu}){}dnl
+
+}){}dnl
 dnl
 dnl
 dnl
