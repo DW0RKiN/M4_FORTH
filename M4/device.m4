@@ -126,9 +126,55 @@ __{}define({__INFO},__COMPILE_INFO)
   .error {$0}:($*) The word {HEX} must only be used in combination with (U)(D){DOT}!"}){}dnl
 dnl
 dnl
-dnl # pu. bs
-dnl # ( p -- p )
+dnl
+dnl # ( p_10 p_num p_temp -- p_10 p_num p_temp )
 dnl # prints a $1*8-bit number with no spaces
+define({PDOT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__def({USE_PRT_P}){}dnl
+__{}define({USE_PUDIVMOD}){}dnl
+__{}ifdef({PUDM_MIN},{ifelse(eval(PUDM_MIN>$1),1,{define({PUDM_MIN},$1)})},{define({PUDM_MIN},$1)}){}dnl
+__{}ifdef({PUDM_MAX},{ifelse(eval(PUDM_MAX<$1),1,{define({PUDM_MAX},$1)})},{define({PUDM_MAX},$1)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PDOT},{p.},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PDOT},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}    pop  BC             ; 1:10      __INFO
+__{}    call PRT_P          ; 3:17      __INFO
+__{}    push BC             ; 1:11      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( p_10 p_num p_temp -- p_10 p_num p_temp )
+dnl # prints a $1*8-bit unsigned number with no spaces
 define({PUDOT},{dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},

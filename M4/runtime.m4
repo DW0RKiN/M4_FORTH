@@ -504,26 +504,60 @@ BIN16_DEC_CHAR:         ;           bin16_dec
 dnl
 dnl
 dnl
+ifdef({USE_PRT_P},{__def({USE_PRT_PU})
+;==============================================================================
+; Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+; Output: Print decimal (if [BC]=10) number in [DE]
+; Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
+PRT_P:                  ;           prt_p
+
+    push HL             ; 1:11      prt_p
+    push BC             ; 1:11      prt_p
+    push AF             ; 1:11      prt_p
+    ld    B, A          ; 1:4       prt_p   B = sizeof(number) in bytes
+    add   A, E          ; 1:4       prt_p
+    ld    L, A          ; 1:4       prt_p
+    dec   L             ; 1:4       prt_p
+    ld    H, D          ; 1:4       prt_p
+    ld    A,(HL)        ; 1:7       prt_p
+    add   A, A          ; 1:4       prt_p
+    jr   nc, $+14       ; 2:7/12    prt_p
+    ld    A, '-'        ; 2:7       prt_sp_pu   putchar Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      prt_sp_pu   putchar with {ZX 48K ROM} in, this will print char in A
+    ld    L, E          ; 1:4       prt_p
+    xor   A             ; 1:4       prt_p   clear carry
+    ld    C, A          ; 1:4       prt_p
+    ld    A, C          ; 1:4       prt_p
+    sbc   A,(HL)        ; 1:7       prt_p
+    ld  (HL),A          ; 1:7       prt_p
+    inc   L             ; 1:4       prt_p
+    djnz $-4            ; 2:8/13    prt_p
+    pop  AF             ; 1:10      prt_p
+    pop  BC             ; 1:10      prt_p
+    pop  HL             ; 1:10      prt_p}){}dnl
+dnl
 ifdef({USE_PRT_SP_PU},{__def({USE_PRT_PU})
 ;==============================================================================
 ; Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
-; Output: Print space and unsigned decimal number in [DE]
+; Output: Print space and unsigned decimal (if [BC]=10) number in [DE]
 ; Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
 PRT_SP_PU:              ;           prt_sp_pu
     push AF             ; 1:11      prt_sp_pu
-    ld    A, ' '        ; 2:7       prt_sp_pu   putchar Pollutes: AF, DE', BC'
+    ld    A, ' '        ; 2:7       prt_sp_pu   putchar Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      prt_sp_pu   putchar with {ZX 48K ROM} in, this will print char in A
     pop  AF             ; 1:10      prt_sp_pu
     ; fall to prt_pu}){}dnl
+dnl
 ifdef({USE_PRT_PU},{
 ;------------------------------------------------------------------------------
 ; Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
-; Output: Print unsigned decimal number in [DE]
-; Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
+; Output: Print unsigned decimal (if [BC]=10) number in [DE]
+; Pollutes: AF', BC', DE', [DE] = first number, [HL] = 0
 
 PRT_PU:                 ;           prt_pu
     exx                 ; 1:4       prt_pu
     ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes    
+PRT_PU_IN:              ;           prt_pu
     exx                 ; 1:4       prt_pu
     or    A             ; 1:4       prt_pu
 PRT_PU_LOOP:            ;           prt_pu
@@ -573,10 +607,7 @@ __{}    call PUDM           ; 3:17      prt_pu})
     ret  nc             ; 1:5/11    prt_pu    
     add   A, $30        ; 2:7       prt_pu   '0'..'9'
     rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
-    jr   $-6            ; 2:7/12    prt_pu
-    
-
-}){}dnl
+    jr   $-6            ; 2:7/12    prt_pu}){}dnl
 dnl
 dnl
 dnl
