@@ -556,7 +556,7 @@ ifdef({USE_PRT_PU},{
 
 PRT_PU:                 ;           prt_pu
     exx                 ; 1:4       prt_pu
-    ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes    
+    ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes
 PRT_PU_IN:              ;           prt_pu
     exx                 ; 1:4       prt_pu
     or    A             ; 1:4       prt_pu
@@ -578,11 +578,11 @@ __{}    call PUDM           ; 3:17      prt_pu})
 
     exx                 ; 1:4       prt_pu
     ld    B, E          ; 1:4       prt_pu   E' = sizeof(number) in bytes
-    exx                 ; 1:4       prt_pu    
+    exx                 ; 1:4       prt_pu
     push HL             ; 1:11      prt_pu
     scf                 ; 1:4       prt_pu
     ld    A,(BC)        ; 1:7       prt_pu
-    
+
     sbc   A,(HL)        ; 1:7       prt_pu 10-x-1=9-x
     inc   L             ; 1:4       prt_pu
     jr    c, $+8        ; 2:7/12    prt_pu
@@ -591,20 +591,20 @@ __{}    call PUDM           ; 3:17      prt_pu})
     dec   B             ; 1:4       prt_pu   B'--
     exx                 ; 1:4       prt_pu
     jr   nz, $-8        ; 2:7/12    prt_pu
-    
+
     pop  HL             ; 1:10      prt_pu
     ex   DE, HL         ; 1:4       prt_pu
-    ld    A,(HL)        ; 1:7       prt_pu    
+    ld    A,(HL)        ; 1:7       prt_pu
     jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
 
-    scf                 ; 1:4       prt_pu    
+    scf                 ; 1:4       prt_pu
     push AF             ; 1:11      prt_pu
     ld    A,(DE)        ; 1:7       prt_pu
     push AF             ; 1:11      prt_pu
-    
+
     pop  AF             ; 1:10      prt_pu
     ex   DE, HL         ; 1:4       prt_pu
-    ret  nc             ; 1:5/11    prt_pu    
+    ret  nc             ; 1:5/11    prt_pu
     add   A, $30        ; 2:7       prt_pu   '0'..'9'
     rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
     jr   $-6            ; 2:7/12    prt_pu}){}dnl
