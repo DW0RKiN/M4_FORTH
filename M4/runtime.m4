@@ -560,6 +560,72 @@ PRT_PU:                 ;           prt_pu
 PRT_PU_IN:              ;           prt_pu
     exx                 ; 1:4       prt_pu
     or    A             ; 1:4       prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    jr   PRT_PU_ENTR    ; 2:12      prt_pu
+PRT_PU_LOOP:            ;           prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    exx                 ; 1:4       prt_pu
+    ld    A, E          ; 1:4       prt_pu   E' = sizeof(number) in bytes
+    exx                 ; 1:4       prt_pu
+ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
+__{}    call  c, P8UDM      ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,2:2,{dnl
+__{}    call  c, P16UDM     ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,256:256,{dnl
+__{}    call  c, P2048UDM   ; 3:17      prt_pu},
+eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
+__{}    call  c, P256UDM    ; 3:17      prt_pu},
+{dnl
+__{}    call  c, PUDM       ; 3:17      prt_pu})
+
+    ld    A,(DE)        ; 1:7       prt_pu   DE = number mod [BC]
+    scf                 ; 1:4       prt_pu
+PRT_PU_ENTR:            ;           prt_pu
+    push AF             ; 1:11      prt_pu   print number if carry or end_mark
+
+    push HL             ; 1:11      prt_pu
+
+    scf                 ; 1:4       prt_pu
+    ld    A,(BC)        ; 1:7       prt_pu
+
+    exx                 ; 1:4       prt_pu
+    ld    B, E          ; 1:4       prt_pu
+    
+    exx                 ; 1:4       prt_pu
+    sbc   A,(HL)        ; 1:7       prt_pu   10-x-1=9-x
+    inc   L             ; 1:4       prt_pu
+    jr    c, $+7        ; 2:7/12    prt_pu
+    xor   A             ; 1:4       prt_pu
+    exx                 ; 1:4       prt_pu
+    djnz $-7            ; 2:8/13    prt_pu
+    exx                 ; 1:4       prt_pu
+    
+    pop  HL             ; 1:10      prt_pu
+
+    jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
+
+    ld    A,(HL)        ; 1:7       prt_pu
+    
+    ex   DE, HL         ; 1:4       prt_pu
+    add   A, $30        ; 2:7       prt_pu   '0'..'9'
+    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+    pop  AF             ; 1:10      prt_pu
+    jr    c, $-5        ; 2:7/12    prt_pu
+    ret                 ; 1:10      prt_pu
+}){}dnl
+dnl
+ifdef({USE_PRT_PU2},{
+;------------------------------------------------------------------------------
+; Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+; Output: Print unsigned decimal (if [BC]=10) number in [DE]
+; Pollutes: AF', BC', DE', [DE] = first number, [HL] = 0
+
+PRT_PU:                 ;           prt_pu
+    exx                 ; 1:4       prt_pu
+    ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes
+PRT_PU_IN:              ;           prt_pu
+    exx                 ; 1:4       prt_pu
+    or    A             ; 1:4       prt_pu
 PRT_PU_LOOP:            ;           prt_pu
     push AF             ; 1:11      prt_pu   no carry = end
     exx                 ; 1:4       prt_pu
