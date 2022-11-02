@@ -606,18 +606,21 @@ PRT_PU_ENTR:            ;           prt_pu
     jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
 
     ld    A,(HL)        ; 1:7       prt_pu
-    
-    ex   DE, HL         ; 1:4       prt_pu
+
 ifdef({USE_PRT_HEX_NIBBLE},{dnl
-    call PRT_HEX_NIBBLE ; 3:17      prt_pu},
+    ex   DE, HL         ; 1:4       prt_pu
+    call PRT_HEX_NIBBLE ; 3:17      prt_pu
+    pop  AF             ; 1:10      prt_pu
+    jr    c, $-5        ; 2:7/12    prt_pu},
 {dnl
+    ex   DE, HL         ; 1:4       prt_pu
     or      $F0         ; 2:7       prt_pu   reset H flag
     daa                 ; 1:4       prt_pu   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
     add   A, $A0        ; 2:7       prt_pu   $F0..$F9, $100..$105
     adc   A, $40        ; 2:7       prt_pu   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}})
+    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
     pop  AF             ; 1:10      prt_pu
-    jr    c, $-5        ; 2:7/12    prt_pu
+    jr    c, $-10       ; 2:7/12    prt_pu})
     ret                 ; 1:10      prt_pu
 }){}dnl
 dnl
