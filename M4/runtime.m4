@@ -194,7 +194,7 @@ PRT_HEX_U16:            ;           prt_hex_u16
     call PRT_HEX_A      ;  3:17     prt_hex_u16
     ld    A, L          ;  1:4      prt_hex_u16
     ; fall to prt_hex_a}){}dnl
-ifdef({USE_PRT_HEX_A},{
+ifdef({USE_PRT_HEX_A},{__def({USE_PRT_HEX_NIBBLE})
 ;------------------------------------------------------------------------------
 ;    Input: A
 ;   Output: 00 .. FF
@@ -207,11 +207,12 @@ PRT_HEX_A:              ;           prt_hex_a
     rra                 ; 1:4       prt_hex_a
     call PRT_HEX_NIBBLE ; 3:17      prt_hex_a
     pop  AF             ; 1:10      prt_hex_a
-    ; fall to prt_hex_nibble
+    ; fall to prt_hex_nibble}){}dnl
+ifdef({USE_PRT_HEX_NIBBLE},{
 ;------------------------------------------------------------------------------
 ;    Input: A = number, DE = adr
 ;   Output: (A & $0F) => '0'..'9','A'..'F'
-; Pollutes: A
+; Pollutes: AF, AF',BC',DE'
 PRT_HEX_NIBBLE:         ;           prt_hex_nibble
     or      $F0         ; 2:7       prt_hex_nibble   reset H flag
     daa                 ; 1:4       prt_hex_nibble   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
@@ -510,7 +511,6 @@ ifdef({USE_PRT_P},{__def({USE_PRT_PU})
 ; Output: Print decimal (if [BC]=10) number in [DE]
 ; Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
 PRT_P:                  ;           prt_p
-
     push HL             ; 1:11      prt_p
     push BC             ; 1:11      prt_p
     push AF             ; 1:11      prt_p
@@ -534,7 +534,9 @@ PRT_P:                  ;           prt_p
     djnz $-4            ; 2:8/13    prt_p
     pop  AF             ; 1:10      prt_p
     pop  BC             ; 1:10      prt_p
-    pop  HL             ; 1:10      prt_p}){}dnl
+    pop  HL             ; 1:10      prt_p{}dnl
+__{}ifdef({USE_PRT_SP_PU},{
+    jr   PRT_PU         ; 2:12      prt_p})}){}dnl
 dnl
 ifdef({USE_PRT_SP_PU},{__def({USE_PRT_PU})
 ;==============================================================================
@@ -557,7 +559,6 @@ ifdef({USE_PRT_PU},{
 PRT_PU:                 ;           prt_pu
     exx                 ; 1:4       prt_pu
     ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes
-PRT_PU_IN:              ;           prt_pu
     exx                 ; 1:4       prt_pu
     or    A             ; 1:4       prt_pu
     ex   DE, HL         ; 1:4       prt_pu
@@ -607,8 +608,14 @@ PRT_PU_ENTR:            ;           prt_pu
     ld    A,(HL)        ; 1:7       prt_pu
     
     ex   DE, HL         ; 1:4       prt_pu
-    add   A, $30        ; 2:7       prt_pu   '0'..'9'
-    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+ifdef({USE_PRT_HEX_NIBBLE},{dnl
+    call PRT_HEX_NIBBLE ; 3:17      prt_pu},
+{dnl
+    or      $F0         ; 2:7       prt_pu   reset H flag
+    daa                 ; 1:4       prt_pu   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
+    add   A, $A0        ; 2:7       prt_pu   $F0..$F9, $100..$105
+    adc   A, $40        ; 2:7       prt_pu   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
+    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}})
     pop  AF             ; 1:10      prt_pu
     jr    c, $-5        ; 2:7/12    prt_pu
     ret                 ; 1:10      prt_pu
