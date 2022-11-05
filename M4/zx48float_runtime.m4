@@ -246,7 +246,7 @@ _ZX48FDOT:
     call 0x2de3         ; 3:17      _zx48fdot   {call ZX ROM print a floating-point number routine}
     pop  HL             ; 1:10      _zx48fdot
     ld  (0x5C65),HL     ; 3:16      _zx48fdot   {save STKEND}
-    ld    A, ' '        ; 2:7       _zx48fdot   {putchar Pollutes: AF, DE', BC'}
+    ld    A, ' '        ; 2:7       _zx48fdot   {putchar Pollutes: AF, AF', DE', BC'}
     rst  0x10           ; 1:11      _zx48fdot   {putchar with ZX 48K ROM in, this will print char in A}
     pop  HL             ; 1:10      _zx48fdot
     pop  DE             ; 1:10      _zx48fdot
@@ -646,7 +646,7 @@ _ZX48FADDR:
     ex   DE, HL         ; 1:4       _zx48faddr
     ld   HL,(0x5C65)    ; 3:16      _zx48faddr   {HL= stkend}
     UDOTZXROM
-    ld    A, 0x0D       ; 2:7       _zx48faddr-cr   {Pollutes: AF, DE', BC'}
+    ld    A, 0x0D       ; 2:7       _zx48faddr-cr   {Pollutes: AF, AF', DE', BC'}
     rst  0x10           ; 1:11      _zx48faddr-cr   {with 48K ROM in, this will print char in A}
     ret                 ; 1:10      _zx48faddr
 }){}dnl
