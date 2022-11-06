@@ -943,12 +943,12 @@ dnl
 dnl
 dnl
 define({__STR10_DIV_16},{dnl
-ifelse(1,1,{errprint({
+ifelse(1,0,{errprint({
 }len($1),$1,$2{
 })}){}dnl
 __{}ifelse(eval(len($1)<9),1,{dnl
 __{}__{}define({__STR10_MOD_16},eval((__NO_LEADING_ZERO($1)+$2)%16)){}dnl
-__{}__{}eval((__NO_LEADING_ZERO($1)+$2)/16)},
+__{}__{}eval((__NO_LEADING_ZERO($1)+$2)/16,10,8)},
 __{}eval(len($1)%8),0,{dnl
 __{}__{}eval((__NO_LEADING_ZERO(substr($1,0,8))+$2)/16,10,8){}dnl
 __{}__{}__STR10_DIV_16(substr($1,8),eval(((__NO_LEADING_ZERO(substr($1,0,8))+$2)%16)*100000000))},
