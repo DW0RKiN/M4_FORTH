@@ -964,7 +964,7 @@ define({__STR10_TO_STR16_REC},{dnl
 __{}ifelse(eval(len($1)>8),1,{dnl
 __{}__{}define({__TEMP},__STR10_DIV_16(__NO_LEADING_ZERO($1),0)){}dnl
 __{}__{}define({__RES_HEX},eval(__STR10_MOD_16,16){}__RES_HEX){}dnl
-__{}__{}>__TEMP:eval(__STR10_MOD_16,16)<
+dnl __{}__{}>__TEMP:eval(__STR10_MOD_16,16)<
 __{}__{}__STR10_TO_STR16_REC(__TEMP){}dnl
 __{}},
 __{}{dnl
@@ -1042,6 +1042,143 @@ __{}__{}PHEXPUSH_COMMA_REC($1,$2){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
+dnl
+dnl
+define({DECPUSH_COMMA},{dnl
+__{}HEXPUSH_COMMA_REC(__STR10_TO_STR16($1)){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({PDECPUSH_COMMA},{dnl
+__{}PHEXPUSH_COMMA_REC($1,__STR10_TO_STR16($2)){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__ALLOC_CONST_REC},{dnl
+__{}ifelse(dnl
+__{}$1,1,{dnl
+__{}__{}ifelse(len($3),0,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x00})},
+__{}__{}len($3),1,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x0$3})},
+__{}__{}len($3),2,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x$3})},
+__{}__{}{
+__{}__{}__{}  .warning Overflow 0x{}substr($3,0,eval(len($3)-2)) from constant $2!{}dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x{}substr($3,eval(len($3)-2))})})},
+__{}$1,2,{dnl
+__{}__{}ifelse(len($3),0,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0000})},
+__{}__{}len($3),1,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x000$3})},
+__{}__{}len($3),2,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x00$3})},
+__{}__{}len($3),3,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0$3})},
+__{}__{}len($3),4,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x$3})},
+__{}__{}{
+__{}__{}__{}  .warning Overflow 0x{}substr($3,0,eval(len($3)-4)) from constant $2!{}dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x{}substr($3,eval(len($3)-4))})})},
+{dnl
+__{}__{}ifelse(len($3),0,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0000})},
+__{}__{}len($3),1,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x000$3})},
+__{}__{}len($3),2,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x00$3})},
+__{}__{}len($3),3,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0$3})},
+__{}__{}len($3),4,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x$3})},
+__{}__{}{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x{}substr($3,eval(len($3)-4))})}){}dnl
+__{}__{}__ALLOC_CONST_REC(eval($1-2),$2,substr($3,0,eval(len($3)-4))){}dnl
+__{}__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # PCONSTANT(bytes,name)        --> (name) = 0
+dnl # PCONSTANT(bytes,name,100)    --> (name) = 100
+dnl # PCONSTANT(bytes,name,0x8877665544332211) --> (name) = 0x00...008877665544332211
+define({PCONSTANT},{dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}(): Missing  parameters!},
+__{}eval($#>3),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}__IS_NUM($1),{0},{
+__{}__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__SAVE_EVAL($1),{0},{
+__{}__{}  .error {$0}($@): The parameter is 0!},
+__{}__SAVE_EVAL($1>256),{1},{
+__{}__{}  .error {$0}($@): The parameter is greater than 256!},
+__{}__SAVE_EVAL($1<0),{1},{
+__{}__{}  .error {$0}($@): The parameter is negative!},
+__{}__IS_REG($2),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$2}},
+__{}__IS_INSTRUCTION($2),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$2}},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}substr($3,0,2),{0x},{__ADD_TOKEN({__TOKEN_PCONSTANT},{pconstant},$1,$2,substr($3,2))},
+__{}__{}__{}substr($3,0,2),{0X},{__ADD_TOKEN({__TOKEN_PCONSTANT},{pconstant},$1,$2,substr($3,2))},
+__{}__{}__{}{__ADD_TOKEN({__TOKEN_PCONSTANT},{pconstant},$1,$2,__STR10_TO_STR16($3),$3)}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PCONSTANT},{dnl
+__{}__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}(): Missing  parameters!},
+__{}eval($#>4),1,{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}__IS_NUM($1),0,{
+__{}__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__SAVE_EVAL($1),0,{
+__{}__{}  .error {$0}($@): The parameter is 0!},
+__{}__SAVE_EVAL($1>256),1,{
+__{}__{}  .error {$0}($@): The parameter is greater than 256!},
+__{}__SAVE_EVAL($1<0),1,{
+__{}__{}  .error {$0}($@): The parameter is negative!},
+__{}__IS_REG($2),1,{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$2}},
+__{}__IS_INSTRUCTION($2),1,{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$2}},
+__{}{dnl
+__{}__{}pushdef({LAST_HERE_NAME},$2)dnl
+__{}__{}pushdef({LAST_HERE_ADD},$1)dnl
+__{}__{}ifelse($4,,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}$2:})},
+__{}__{}{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}}format({%-24s},{$2:}){; = }$4)}){}dnl
+__{}__{}__ALLOC_CONST_REC(eval($1),$2,$3){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
