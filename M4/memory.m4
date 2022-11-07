@@ -102,7 +102,6 @@ __{}  .error {$0}($@): Unexpected parameter!},
 __IS_MEM_REF($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 {dnl
-__{}define({__DVALUE_}$1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}; Align to $1-byte page boundary.
 __{}__{}__{}; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
@@ -139,7 +138,6 @@ __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
 {dnl
-__{}define({__DVALUE_}$1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}__{}__{}; The padding will fill if the following X bytes overflow the 256 byte segment.
 __{}__{}__{}; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
@@ -962,9 +960,10 @@ dnl
 dnl
 define({__STR10_TO_STR16_REC},{dnl
 __{}ifelse(eval(len($1)>8),1,{dnl
-__{}__{}define({__TEMP},__STR10_DIV_16(__NO_LEADING_ZERO($1),0)){}dnl
+__{}__{}define({__TEMP},__NO_LEADING_ZERO(__STR10_DIV_16(__NO_LEADING_ZERO($1),0))){}dnl
 __{}__{}define({__RES_HEX},eval(__STR10_MOD_16,16){}__RES_HEX){}dnl
-dnl __{}__{}>__TEMP:eval(__STR10_MOD_16,16)<
+ifelse(1,0,{errprint({
+}>__TEMP:eval(__STR10_MOD_16,16)<)}){}dnl
 __{}__{}__STR10_TO_STR16_REC(__TEMP){}dnl
 __{}},
 __{}{dnl
