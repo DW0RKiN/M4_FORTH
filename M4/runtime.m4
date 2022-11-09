@@ -591,7 +591,7 @@ PRT_PU_ENTR:            ;           prt_pu
 
     exx                 ; 1:4       prt_pu
     ld    B, E          ; 1:4       prt_pu
-    
+
     exx                 ; 1:4       prt_pu
     sbc   A,(HL)        ; 1:7       prt_pu   10-x-1=9-x
     inc   L             ; 1:4       prt_pu
@@ -600,7 +600,7 @@ PRT_PU_ENTR:            ;           prt_pu
     exx                 ; 1:4       prt_pu
     djnz $-7            ; 2:8/13    prt_pu
     exx                 ; 1:4       prt_pu
-    
+
     pop  HL             ; 1:10      prt_pu
 
     jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
