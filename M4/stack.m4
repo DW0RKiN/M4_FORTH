@@ -23,6 +23,102 @@ __{}    ld   HL, __FORM({%-11s},{$1}); 3:10      __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
+dnl
+define({__RESET_ADD_LD_REG16},{dnl
+__{}define({__SUM_CLOCKS_16BIT},0){}dnl
+__{}define({__SUM_BYTES_16BIT}, 0){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__ADD_LD_REG16},{dnl
+__{}__LD_REG16($1,$2,$3,$4,$5,$6){}dnl
+__{}__add({__SUM_CLOCKS_16BIT},__CLOCKS_16BIT){}dnl
+__{}__add({__SUM_BYTES_16BIT}, __BYTES_16BIT){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__PUSHS_REC},{dnl
+__{}ifelse(dnl
+__{}$#,1,{dnl
+__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT},
+__{}$#,2,{dnl
+__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},$1,{BC},__REG_BC){}__CODE_16BIT},
+__{}{dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({DE},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__REG_HL,{DE},           $1,{BC},__REG_BC){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__REG_HL,{DE},__LAST_REG_DE,{BC},__REG_BC){}dnl
+__{}__{}define({__TMP_DE_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
+__{}__{}define({__TMP_DE_BYTES}, __SUM_BYTES_16BIT){}dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({HL},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},      $1,{DE},     __REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},      $1,{DE},__LAST_REG_DE,{BC},__REG_BC){}dnl
+__{}__{}define({__TMP_HL_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
+__{}__{}define({__TMP_HL_BYTES}, __SUM_BYTES_16BIT){}dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({BC},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__REG_HL,{DE},     __REG_DE,{BC},      $1){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__REG_HL,{DE},     __REG_DE,{BC},      $1){}dnl
+__{}__{}define({__TMP_BC_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
+__{}__{}define({__TMP_BC_BYTES}, __SUM_BYTES_16BIT){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval(((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_DE_BYTES+__TMP_DE_CLOCKS))&&((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS))),1,{dnl
+__{}__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_BC},$1)
+__{}__{}__{}    push BC             ; 1:11      __INFO},
+__{}__{}eval((4*__TMP_DE_BYTES+__TMP_DE_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS)),1,{dnl
+__{}__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_DE},$1)
+__{}__{}__{}    push DE             ; 1:11      __INFO},
+__{}__{}{dnl
+__{}__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_HL},$1)
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}}){}dnl
+__{}__{}__PUSHS_REC(shift($@)){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__ADD_INFO},{dnl
+__{}define({__INFO},__INFO $1){}dnl
+__{}ifelse(eval($#>1),1,{__ADD_INFO(shift($@))}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( -- ... d c b a )
+define({PUSHS},{dnl
+__{}define({__INFO},{}){}dnl
+__{}__ADD_INFO($@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__INFO,$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS},{dnl
+ifelse(eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameters!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__LAST_REG_HL},__REVERSE_1_PAR($@)){}dnl
+__{}define({__LAST_REG_DE},__REVERSE_2_PAR($@)){}dnl
+__{}define({__REG_BC},{}){}dnl
+__{}define({__REG_DE},{}){}dnl
+__{}define({__REG_HL},{})
+__{}__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSHS_REC($@)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( x x -- b a)
 dnl # push2(b,a) premaze zasobnik nasledujicima polozkama
 define({_2DROP_PUSH2},{dnl

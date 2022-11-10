@@ -1189,6 +1189,7 @@ __{}__{}  .error {$0}($@): The variable name is identical to the registry name! 
 __{}__IS_INSTRUCTION($3),1,{
 __{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$3}},
 __{}{dnl
+__{}__{}define({__PSIZE_}$3,$1){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$3)dnl
 __{}__{}pushdef({LAST_HERE_ADD},$1)dnl
 __{}__{}ifelse($4,,{dnl
