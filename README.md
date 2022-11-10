@@ -708,6 +708,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Data stack               |<sub>  Comment                   |
 | :-------------: | :---------------: | :----------------------------- | :------------------------------ |
+|<sub>            |<sub>   PUDOT(b)   |<sub>( p3 p2 p1 -- p3 px py )   |<sub> print [p2], [py]= 0, [px]=first_number 
 |<sub>            |<sub> HEX_PUDOT(b) |<sub>      ( p1 -- p1 )         |<sub> print [p1] 
 
     PUTCHAR(0x08)   --> deletes the last character
@@ -1297,6 +1298,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000    |
 |<sub>                      |<sub>            ALIGN(`4`)            |<sub>                             |<sub>          ( -- )          |<sub> Set next address to divisibility `4` |
 |<sub>                      |<sub>         NO_SEGMENT(`16`)         |<sub>                             |<sub>          ( -- )          |<sub> The next `16` bytes do not change the upper 8-bits of the address |
+|<sub>                      |<sub>     HEXPUSH_COMMA(hex_value)     |<sub>                             |<sub>          ( -- )          |<sub> dw hex_value, ...        |
+|<sub>                      |<sub>     DECPUSH_COMMA(dec_value)     |<sub>                             |<sub>          ( -- )          |<sub> dw hex_value, ...        |
+|<sub>                      |<sub>  PHEXPUSH_COMMA(bytes,hex_value) |<sub>                             |<sub>          ( -- )          |<sub> dw hex_value, ...        |
+|<sub>                      |<sub>  PDECPUSH_COMMA(bytes,dec_value) |<sub>                             |<sub>          ( -- )          |<sub> dw hex_value, ...        |
+|<sub>                      |<sub>    PCONSTANT(bytes,value,name)   |<sub>                             |<sub>          ( -- )          |<sub> name: dw value, ...      |
+|<sub>                      |<sub>   PPUSH_VALUE(bytes,value,name)  |<sub>                             |<sub>          ( -- )          |<sub> name: dw value, ...      |
 
 
     100 CHAR+   -->  100 _1ADD
