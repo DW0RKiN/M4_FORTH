@@ -381,6 +381,10 @@ __{}__{}$2})}){}dnl
 dnl
 dnl
 dnl
+define({__DIM},{ifelse({$#},1,{ifelse({$1},{},0,1)},{$#})}){}dnl
+dnl
+dnl
+dnl
 define({__SET_LOOP_TYPE},{dnl
 __{}define({__LOOP[$1].TYPE},{$2})}){}dnl
 dnl
@@ -433,6 +437,7 @@ dnl
 define({__SHOW_TOKEN},{
 __{}; name: defn({__TOKEN[$1].NAME})
 __{}; info: defn({__TOKEN[$1].INFO})
+__{};items: __GET_TOKEN_ITEMS($1)
 __{};param: defn({__TOKEN[$1].PARAM})
 __{};array1: >__GET_TOKEN_ARRAY_1($1)<
 __{};array2: >__GET_TOKEN_ARRAY_2($1)<
@@ -453,9 +458,11 @@ define({__5},{$5}){}dnl
 define({__6},{$6}){}dnl
 define({__SPOJ},{$1$2}){}dnl
 dnl
-define({__GET_TOKEN_NAME},  {defn({__TOKEN[$1].NAME})}){}dnl   # __TOKEN_PUSH2
-define({__GET_TOKEN_INFO},  {defn({__TOKEN[$1].INFO})}){}dnl   # {1 2}
-define({__GET_TOKEN_PARAM}, {defn({__TOKEN[$1].PARAM})}){}dnl  # (1,2)
+define({__GET_TOKEN_NAME},  {defn({__TOKEN[$1].NAME})}){}dnl                 # __TOKEN_PUSH2
+define({__GET_TOKEN_INFO},  {defn({__TOKEN[$1].INFO})}){}dnl                 # {1 2}
+define({__GET_TOKEN_ITEMS}, {__DIM(__SPOJ({__ALL},defn(__TOKEN[}$1{].PARAM)))}){}dnl  # 2
+define({__GET_TOKEN_PARAM}, {defn({__TOKEN[$1].PARAM})}){}dnl                # (1,2)
+dnl
 dnl # Fail with multiline...
 define({__GET_TOKEN_ARRAY}, {regexp(defn({__TOKEN[$1].PARAM}),{^(\(.*\))$},{\1})}){}dnl
 define({__GET_TOKEN_ARRAY_1},{regexp(defn({__TOKEN[$1].PARAM}),{^(\([^,]*\)[,)]},{\1})}){}dnl
@@ -1971,6 +1978,8 @@ push4,,,
 
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_3_2_1,__TOKEN_PUSH4:__TOKEN_MADD:0,    {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_3_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(    m+,__LAST_TOKEN_REVERSE_3,__LAST_TOKEN_REVERSE_2,__LAST_TOKEN_REVERSE_1))},
 
+__LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSHS:__TOKEN_AND:0,    {__SET_TOKEN(ifelse(__GET_TOKEN_ITEMS(__TOKEN_COUNT),5,{__TOKEN_PUSH4},{__TOKEN_PUSHS}), __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(&,__LAST_TOKEN_LAST_2_PAR))},
+            
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,__TOKEN_PUSH4:__TOKEN_AND:0,    {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(&,__LAST_TOKEN_LAST_2_PAR))},
             __LAST_TOKEN_NAME=__LAST_TOKEN_EVAL_REVERSE_1:$1,    __TOKEN_PUSH4=-1:__TOKEN_AND,   {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_1_PAR(__LAST_TOKEN_ARRAY))},
             __LAST_TOKEN_NAME=__LAST_TOKEN_EVAL_REVERSE_1:$1,    __TOKEN_PUSH4=65535:__TOKEN_AND,{__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_1_PAR(__LAST_TOKEN_ARRAY))},
