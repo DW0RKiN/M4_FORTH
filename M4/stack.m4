@@ -102,8 +102,16 @@ __{}__ADD_TOKEN({__TOKEN_PUSHS},__INFO,$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHS},{dnl
-ifelse(eval($#<2),1,{
+ifelse($#,0,{
 __{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_PUSH($@)},
+$#,2,{dnl
+__{}__ASM_TOKEN_PUSH2($@)},
+$#,3,{dnl
+__{}__ASM_TOKEN_PUSH3($@)},
+$#,4,{dnl
+__{}__ASM_TOKEN_PUSH4($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
