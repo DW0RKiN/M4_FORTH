@@ -88,17 +88,14 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__ADD_INFO},{dnl
-__{}define({__INFO},__INFO $1){}dnl
-__{}ifelse(eval($#>1),1,{__ADD_INFO(shift($@))}){}dnl
+define({__REMOVE_COMMA},{dnl
+__{}$1{}ifelse(eval($#>1),1,{ $0(shift($@))}){}dnl
 }){}dnl
 dnl
 dnl
 dnl # ( -- ... d c b a )
 define({PUSHS},{dnl
-__{}define({__INFO},{}){}dnl
-__{}__ADD_INFO($@){}dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHS},__INFO,$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHS},{dnl
