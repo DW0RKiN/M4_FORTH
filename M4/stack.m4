@@ -87,12 +87,6 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
-dnl
-define({__REMOVE_COMMA},{dnl
-__{}$1{}ifelse(eval($#>1),1,{ $0(shift($@))}){}dnl
-}){}dnl
-dnl
-dnl
 dnl # ( -- ... d c b a )
 define({PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
