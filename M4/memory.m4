@@ -2324,54 +2324,54 @@ __{}__{}.error {$0}($@): The third parameter is missing!},
 __{}$#,{3},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 ifelse(__SAVE_EVAL($2),{0},{dnl
-__{}                        ;           addr=$1 u=$2 char=$3 fill   variant null: 0 byte},
+__{}                        ;           $1 $2 $3 fill   fill(addr,u,char)   variant null: 0 byte},
 __SAVE_EVAL($2),{1},{dnl
 __{}ifelse(__IS_MEM_REF($3),{1},{dnl
-__{}__{}                        ;[6:26]     addr=$1 u=$2 char=$3 fill   variant A.1: 1 byte
+__{}__{}                        ;[6:26]     $1 $2 $3 fill   fill(addr,u,char)   variant A.1: 1 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}                        ;[5:20]     addr=$1 u=$2 char=$3 fill   variant A.2: 1 byte
+__{}__{}                        ;[5:20]     $1 $2 $3 fill   fill(addr,u,char)   variant A.2: 1 byte
 __{}__{}    ld    A, format({%-11s},$3); 2:7       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill},
 __SAVE_EVAL($2),{2},{dnl
 __{}ifelse(__IS_MEM_REF($3),{1},{dnl
-__{}__{}                        ;[9:39]     addr=$1 u=$2 char=$3 fill   variant B.1: 2 byte
+__{}__{}                        ;[9:39]     $1 $2 $3 fill   fill(addr,u,char)   variant B.1: 2 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill},
 __{}__{}{
-__{}__{}                        ;[7:30]     addr=$1 u=$2 char=$3 fill   variant B.2: 2 byte
+__{}__{}                        ;[7:30]     $1 $2 $3 fill   fill(addr,u,char)   variant B.2: 2 byte
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill
 __{}__{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill})},
 __SAVE_EVAL($2),{3},{dnl
 __{}ifelse(__IS_MEM_REF($3),{1},{dnl
-__{}__{}                        ;[12:52]    addr=$1 u=$2 char=$3 fill   variant C.1: 3 byte
+__{}__{}                        ;[12:52]    $1 $2 $3 fill   fill(addr,u,char)   variant C.1: 3 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}                        ;[11:46]    addr=$1 u=$2 char=$3 fill   variant C.2: 3 byte
+__{}__{}                        ;[11:46]    $1 $2 $3 fill   fill(addr,u,char)   variant C.2: 3 byte
 __{}__{}    ld    A, format({%-11s},$3); 2:7       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(1+$1){,} A); 3:13      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} A); 3:13      $1 $2 $3 fill},
 __SAVE_EVAL($2),{4},{dnl
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
-__{}__{}                        ;[13:61]    addr=$1 u=$2 char=$3 fill   variant D.1: 4 byte
+__{}__{}                        ;[13:61]    $1 $2 $3 fill   fill(addr,u,char)   variant D.1: 4 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
 __{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}                        ;[11:50]    addr=$1 u=$2 char=$3 fill   variant D.2: 4 byte
+__{}__{}                        ;[11:50]    $1 $2 $3 fill   fill(addr,u,char)   variant D.2: 4 byte
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill},
 __SAVE_EVAL($2),{5},{dnl
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
-__{}__{}                        ;[16:74]    addr=$1 u=$2 char=$3 fill   variant E.1: 5 byte
+__{}__{}                        ;[16:74]    $1 $2 $3 fill   fill(addr,u,char)   variant E.1: 5 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
 __{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}                        ;[15:67]    addr=$1 u=$2 char=$3 fill   variant E.2: 5 byte
+__{}__{}                        ;[15:67]    $1 $2 $3 fill   fill(addr,u,char)   variant E.2: 5 byte
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill
 __{}__{}    ld    A, B          ; 1:4       $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
@@ -2379,19 +2379,19 @@ __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(4+$1){,} A); 3:13      $1 $2 $3 fill},
 __SAVE_EVAL($2),{6},{dnl
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
-__{}__{}                        ;[17:81]    addr=$1 u=$2 char=$3 fill   variant F.1: 6 byte
+__{}__{}                        ;[17:81]    $1 $2 $3 fill   fill(addr,u,char)   variant F.1: 6 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      $1 $2 $3 fill
 __{}__{}    ld    C, A          ; 1:4       $1 $2 $3 fill
 __{}__{}    ld    B, A          ; 1:4       $1 $2 $3 fill},
 __{}__{}{dnl
-__{}__{}                        ;[15:70]    addr=$1 u=$2 char=$3 fill   variant F.2: 6 byte
+__{}__{}                        ;[15:70]    $1 $2 $3 fill   fill(addr,u,char)   variant F.2: 6 byte
 __{}__{}    ld   BC, format({%-11s},257*($3)); 3:10      $1 $2 $3 fill})
 __{}    ld   format({%-15s},($1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      $1 $2 $3 fill
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      $1 $2 $3 fill},
 __SAVE_EVAL(+((($1) & 0xFF00) == (($1 + $2) & 0xFF00)) && (($2) % 3 == 0)),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/3) & 0x1FF))dnl
-__{}                        ;[16:format({%-7s},eval(36+46*_TEMP_B)])addr=$1 u=$2 char=$3 fill   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
+__{}                        ;[16:format({%-7s},eval(36+46*_TEMP_B)])$1 $2 $3 fill   fill(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},eval((256*_TEMP_B) & 0xFFFF)+$3); 3:10      $1 $2 $3 fill   B = _TEMP_B{}x, C = $3
@@ -2405,7 +2405,7 @@ __{}    djnz $-6            ; 2:13/8    $1 $2 $3 fill
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
 __SAVE_EVAL(+($2) <= 2*256+1),{1},{dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
-__{}                        ;[eval(14+(($2) & 0x01)):format({%-7s},eval(36+37*_TEMP_B+7*(($2) & 0x01))])addr=$1 u=$2 char=$3 fill   variant H: 2..513 byte
+__{}                        ;[eval(14+(($2) & 0x01)):format({%-7s},eval(36+37*_TEMP_B+7*(($2) & 0x01))])$1 $2 $3 fill   fill(addr,u,char)   variant H: 2..513 byte
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},eval((256*_TEMP_B) & 0xFFFF)+$3); 3:10      $1 $2 $3 fill   B = _TEMP_B{}x, C = $3
@@ -2466,7 +2466,7 @@ __{}__{}__{}    inc  HL             ; 1:6       $1 $2 $3 fill},
 __{}__{}{dnl
 __{}__{}__{}    inc   L             ; 1:4       $1 $2 $3 fill})
 __{}__{}    ld  (HL),C          ; 1:7       $1 $2 $3 fill})}){}dnl
-__{}                        ;[_TEMP_SIZE:format({%-7s},eval(36+59*_TEMP_B+_TEMP_CLOCK)])addr=$1 u=$2 char=$3 fill   variant {I}: 4..1027 byte
+__{}                        ;[_TEMP_SIZE:format({%-7s},eval(36+59*_TEMP_B+_TEMP_CLOCK)])$1 $2 $3 fill   fill(addr,u,char)   variant {I}: 4..1027 byte
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},eval((256*_TEMP_B) & 0xFFFF)+$3); 3:10      $1 $2 $3 fill   B = _TEMP_B{}x, C = $3
@@ -2520,7 +2520,7 @@ __SAVE_EVAL(+(($2) % 4) == 0),{1},{dnl
 __{}define({_TEMP_B},eval((($2)/4) & 0xFF))dnl
 __{}define({_TEMP_C},eval(((($2)/4) & 0xFF00)/256))dnl
 __{}ifelse(eval(_TEMP_B>0),{1},{define({_TEMP_C},eval(_TEMP_C+1))}){}dnl
-__{}                       ;[24:format({%-8s},eval(48+46*($2)/4+13*(_TEMP_B+(_TEMP_C-1)*256)+9*_TEMP_C)])addr=$1 u=$2 char=$3 fill   variant {J}: u = 4*n bytes
+__{}                       ;[24:format({%-8s},eval(48+46*($2)/4+13*(_TEMP_B+(_TEMP_C-1)*256)+9*_TEMP_C)])$1 $2 $3 fill   fill(addr,u,char)   variant {J}: u = 4*n bytes
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill   HL = addr
 __{}    ld   BC, format({%-11s},256*_TEMP_B+_TEMP_C); 3:10      $1 $2 $3 fill   $2{}x = (C-1)*4*256 + 4*B
@@ -2550,7 +2550,7 @@ __{}    dec  C              ; 1:4       $1 $2 $3 fill
 __{}    jp   nz, $-11       ; 3:10      $1 $2 $3 fill
 __{}    pop  HL             ; 1:10      $1 $2 $3 fill},
 __{}{dnl
-__{}                       ;[17:format({%-8s},eval(77+$2*21)])addr=$1 u=$2 char=$3 fill   variant {K}.default
+__{}                       ;[17:format({%-8s},eval(77+$2*21)])$1 $2 $3 fill   fill(addr,u,char)   variant {K}.default
 __{}    push DE             ; 1:11      $1 $2 $3 fill
 __{}    push HL             ; 1:11      $1 $2 $3 fill
 __{}    ld   HL, format({%-11s},$1); 3:10      $1 $2 $3 fill HL = addr from
