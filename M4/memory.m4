@@ -7,6 +7,71 @@ define({LAST_HERE_NAME},{VARIABLE_SECTION}){}dnl
 define({LAST_HERE_ADD},{0}){}dnl
 dnl
 dnl
+dnl # Input:
+dnl #   $1 ...bytes
+dnl #   $2 ...hex string with value (without $)
+dnl #   $3 ...variable/label name (only for error output)
+define({__ALLOC_CONST_REC},{dnl
+__{}ifelse(dnl
+__{}$1,1,{dnl
+__{}__{}ifelse(len($2),0,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x00})},
+__{}__{}len($2),1,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x0$2})},
+__{}__{}len($2),2,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x$2})},
+__{}__{}{
+__{}__{}__{}  .warning Overflow 0x{}substr($2,0,eval(len($2)-2)) from constant $3!{}dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    db 0x{}substr($2,eval(len($2)-2))})})},
+__{}$1,2,{dnl
+__{}__{}ifelse(len($2),0,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0000})},
+__{}__{}len($2),1,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x000$2})},
+__{}__{}len($2),2,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x00$2})},
+__{}__{}len($2),3,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0$2})},
+__{}__{}len($2),4,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x$2})},
+__{}__{}{
+__{}__{}__{}  .warning Overflow 0x{}substr($2,0,eval(len($2)-4)) from constant $3!{}dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x{}substr($2,eval(len($2)-4))})})},
+{dnl
+__{}__{}ifelse(len($2),0,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0000})},
+__{}__{}len($2),1,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x000$2})},
+__{}__{}len($2),2,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x00$2})},
+__{}__{}len($2),3,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x0$2})},
+__{}__{}len($2),4,{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x$2})},
+__{}__{}{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}    dw 0x{}substr($2,eval(len($2)-4))})}){}dnl
+__{}__{}__ALLOC_CONST_REC(eval($1-2),substr($2,0,eval(len($2)-4)),$3){}dnl
+__{}__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({CONSTANT},{dnl
 __{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant},$@){}dnl
 }){}dnl
@@ -26,7 +91,8 @@ dnl
 dnl
 dnl # VALUE(name)    --> (name) = TOS
 define({VALUE},{dnl
-__{}__ADD_TOKEN({__TOKEN_VALUE},{value},$@){}dnl
+__{}define({__PSIZE_}$1,2)dnl
+__{}__ADD_TOKEN({__TOKEN_VALUE},{value }$1,$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_VALUE},{dnl
@@ -41,18 +107,18 @@ __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
 __{}define({__PSIZE_}$1,2)dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__ASM_TOKEN_CREATE($1){}dnl
 __{}pushdef({LAST_HERE_ADD},2)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1: dw 0x0000})
-__{}    ld  format({%-16s},{($1), HL}); 3:16      value {$1}
-__{}    ex   DE, HL         ; 1:4       value {$1}
-__{}    pop  DE             ; 1:10      value {$1}})}){}dnl
+__{}__ALLOC_CONST_REC(2,,$1){}dnl
+__{}__ASM_TOKEN_TO($1){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 define({PUSH_VALUE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_VALUE},{push_value},$@){}dnl
+__{}define({__PSIZE_}$2,2)dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_VALUE},$1{ value }$2,$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_VALUE},{dnl
@@ -149,6 +215,7 @@ dnl
 dnl
 dnl # DVALUE(name)    --> (name) = TOS,NOS
 define({DVALUE},{dnl
+__{}define({__PSIZE_}$1,4)dnl
 __{}__ADD_TOKEN({__TOKEN_DVALUE},{dvalue {$1}},$@){}dnl
 }){}dnl
 dnl
@@ -164,20 +231,17 @@ __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {dnl
 __{}define({__PSIZE_}$1,4)dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__ASM_TOKEN_CREATE($1){}dnl
 __{}pushdef({LAST_HERE_ADD},4)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},{$1:});
-__{}__{}__{}    dw 0x0000
-__{}__{}__{}    dw 0x0000})
-__{}    ld  format({%-16s},{($1), HL}); 3:16      __INFO   lo
-__{}    ld  format({%-16s},{($1+2), DE}); 4:20      __INFO   hi
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+__{}__ALLOC_CONST_REC(4,,$1){}dnl
+__{}__ASM_TOKEN_TO($1){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 define({PUSHDOT_DVALUE},{dnl
+__{}define({__PSIZE_}$1,4)dnl
 __{}__ADD_TOKEN({__TOKEN_PUSHDOT_DVALUE},{$1. dvalue {$2}},$@){}dnl
 }){}dnl
 dnl
@@ -232,16 +296,16 @@ dnl
 define({__TO_REC},{dnl
 __{}ifelse(dnl
 __{}$2,2,{
-__{}__{}    pop  HL             ; 1:10      to {$1}
-__{}__{}    ld  format({%-16s},{($1+$3), HL}); 3:16      to {$1}},
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ld  format({%-16s},{($1+$3), HL}); 3:16      __INFO},
 __{}eval($2>2),1,{
-__{}__{}    pop  HL             ; 1:10      to {$1}
-__{}__{}    ld  format({%-16s},{($1+$3), HL}); 3:16      to {$1}{}dnl
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ld  format({%-16s},{($1+$3), HL}); 3:16      __INFO{}dnl
 __{}__{}__TO_REC($1,eval($2-2),eval($3+2))}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TO},{dnl
-__{}define({__INFO},{to}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse({$1},{},{
 dnl # TO(name)    --> (name) = TOS
 dnl # TO(name)    --> (name) = TOS,NOS
@@ -249,22 +313,22 @@ __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>1),1,{
 __{}  .error {$0}($@): $# parameters found in macro!},
 eval(__PSIZE_$1),2,{
-__{}    ld  format({%-16s},{($1), HL}); 3:16      to {$1}
-__{}    pop  HL             ; 1:10      to {$1}
-__{}    ex   DE, HL         ; 1:4       to {$1}},
+__{}    ld  format({%-16s},{($1), HL}); 3:16      __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
 eval(__PSIZE_$1),4,{
-__{}    ld  format({%-16s},{($1), HL}); 3:16      to {$1}   lo
-__{}    ex   DE, HL         ; 1:4       to {$1}
-__{}    ld  format({%-16s},{($1+2), HL}); 3:16      to {$1}   hi
-__{}    pop  HL             ; 1:10      to {$1}
-__{}    pop  DE             ; 1:10      to {$1}},
+__{}    ld  format({%-16s},{($1), HL}); 3:16      __INFO   lo
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld  format({%-16s},{($1+2), HL}); 3:16      __INFO   hi
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 ifdef({__PSIZE}_$1,1,0),1,{
-__{}    ld  format({%-16s},{($1), HL}); 3:16      to {$1}
-__{}    ex   DE, HL         ; 1:4       to {$1}
-__{}    ld  format({%-16s},{($1+2), HL}); 3:16      to {$1}{}dnl
+__{}    ld  format({%-16s},{($1), HL}); 3:16      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld  format({%-16s},{($1+2), HL}); 3:16      __INFO{}dnl
 __{}__TO_REC($1,eval(__PSIZE_$1-4),4)
-__{}    pop  HL             ; 1:10      to {$1}
-__{}    pop  DE             ; 1:10      to {$1}},
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 {
 __{}  .error {$0}($@): The variable with this name not exist!})}){}dnl
 dnl
@@ -334,6 +398,7 @@ dnl # CVARIABLE(name)        --> (name) = 0
 dnl # CVARIABLE(name,100)    --> (name) = 100
 dnl # CVARIABLE(name,0x88)   --> (name) = 0x88
 define({CVARIABLE},{dnl
+__{}define({__PSIZE_}$1,1)dnl
 __{}__ADD_TOKEN({__TOKEN_CVARIABLE},{cvariable},$@){}dnl
 }){}dnl
 dnl
@@ -348,12 +413,14 @@ __{}  .error {$0}($@): The variable name is identical to the registry name! Try:
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 $#,{1},{dnl
+__{}define({__PSIZE_}$1,1)dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},1)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
 __{}$1:
 __{}    db 0x00})},
 {dnl
+__{}define({__PSIZE_}$1,1)dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},1)dnl
 __{}ifelse(__IS_NUM($2),{0},{
@@ -368,6 +435,7 @@ dnl # VARIABLE(name)        --> (name) = 0
 dnl # VARIABLE(name,100)    --> (name) = 100
 dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
 define({VARIABLE},{dnl
+__{}define({__PSIZE_}$1,2)dnl
 __{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable},$@){}dnl
 }){}dnl
 dnl
@@ -403,6 +471,7 @@ dnl # _DVARIABLE(name)             --> (name) = 0
 dnl # _DVARIABLE(name,100)         --> (name) = 100
 dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
 define({DVARIABLE},{dnl
+__{}define({__PSIZE_}$1,4)dnl
 __{}__ADD_TOKEN({__TOKEN_DVARIABLE},{dvariable},$@){}dnl
 }){}dnl
 dnl
@@ -457,7 +526,7 @@ __{}__ADD_TOKEN({__TOKEN_CREATE},{create},__create_{}$1){}dnl
 })}){}dnl
 dnl
 define({__ASM_TOKEN_CREATE},{dnl
-__{}define({__INFO},{create}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
@@ -470,7 +539,9 @@ __{}  .error {$0}($@): The variable name is identical to the instruction name! T
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},0)dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1:})})}){}dnl
+__{}__{}format({%-24s},{$1:});}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1077,71 +1148,10 @@ __{}PHEXPUSH_COMMA_REC($1,__STR10_TO_STR16($2)){}dnl
 dnl
 dnl
 dnl
-define({__ALLOC_CONST_REC},{dnl
-__{}ifelse(dnl
-__{}$1,1,{dnl
-__{}__{}ifelse(len($2),0,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    db 0x00})},
-__{}__{}len($2),1,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    db 0x0$2})},
-__{}__{}len($2),2,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    db 0x$2})},
-__{}__{}{
-__{}__{}__{}  .warning Overflow 0x{}substr($2,0,eval(len($2)-2)) from constant $3!{}dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    db 0x{}substr($2,eval(len($2)-2))})})},
-__{}$1,2,{dnl
-__{}__{}ifelse(len($2),0,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x0000})},
-__{}__{}len($2),1,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x000$2})},
-__{}__{}len($2),2,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x00$2})},
-__{}__{}len($2),3,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x0$2})},
-__{}__{}len($2),4,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x$2})},
-__{}__{}{
-__{}__{}__{}  .warning Overflow 0x{}substr($2,0,eval(len($2)-4)) from constant $3!{}dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x{}substr($2,eval(len($2)-4))})})},
-{dnl
-__{}__{}ifelse(len($2),0,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x0000})},
-__{}__{}len($2),1,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x000$2})},
-__{}__{}len($2),2,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x00$2})},
-__{}__{}len($2),3,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x0$2})},
-__{}__{}len($2),4,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x$2})},
-__{}__{}{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}    dw 0x{}substr($2,eval(len($2)-4))})}){}dnl
-__{}__{}__ALLOC_CONST_REC(eval($1-2),substr($2,0,eval(len($2)-4)),$3){}dnl
-__{}__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
 dnl # PCONSTANT(bytes,100,name)    --> (name) = 100
 dnl # PCONSTANT(bytes,0x8877665544332211,name) --> (name) = 0x00...008877665544332211
 define({PCONSTANT},{dnl
-__{}ifelse(eval($#<2),1,{
+__{}ifelse(eval($#<3),1,{
 __{}__{}  .error {$0}(bytes,value,name): Missing  parameters!},
 __{}eval($#>3),{1},{
 __{}__{}  .error {$0}($@): $# parameters found in macro!},
@@ -1160,18 +1170,19 @@ __{}__{}  .error {$0}($@): The variable name is identical to the registry name! 
 __{}__IS_INSTRUCTION($3),{1},{
 __{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$3}},
 __{}{dnl
+__{}define({__PSIZE_}$3,$1)dnl
 __{}__{}NO_SEGMENT($1){}dnl
 __{}__{}ifelse(dnl
-__{}__{}__{}substr($2,0,2),{0x},{__ADD_TOKEN({__TOKEN_PCONSTANT},{pconstant},$1,substr($2,2),$3)},
-__{}__{}__{}substr($2,0,2),{0X},{__ADD_TOKEN({__TOKEN_PCONSTANT},{pconstant},$1,substr($2,2),$3)},
-__{}__{}__{}{__ADD_TOKEN({__TOKEN_PCONSTANT},{pconstant},$1,__STR10_TO_STR16($2),$3,$2)}){}dnl
+__{}__{}__{}substr($2,0,2),{0x},{__ADD_TOKEN({__TOKEN_PCONSTANT},{p}$1{constant }$2,$1,substr($2,2),$3)},
+__{}__{}__{}substr($2,0,2),{0X},{__ADD_TOKEN({__TOKEN_PCONSTANT},{p}$1{constant }$2,$1,substr($2,2),$3)},
+__{}__{}__{}{__ADD_TOKEN({__TOKEN_PCONSTANT},{p}$1{constant }$2,$1,__STR10_TO_STR16($2),$3,$2)}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PCONSTANT},{dnl
 __{}__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(eval($#<2),1,{
-__{}__{}  .error {$0}(): Missing  parameters!},
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}(bytes,hex_value,name,orig_value): Missing  parameters!},
 __{}eval($#>4),1,{
 __{}__{}  .error {$0}($@): $# parameters found in macro!},
 __{}__IS_MEM_REF($1),1,{
@@ -1204,8 +1215,66 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # PCONSTANT(bytes,100,name)    --> (name) = 100
-dnl # PCONSTANT(bytes,0x8877665544332211,name) --> (name) = 0x00...008877665544332211
+dnl # PVALUE(bytes,name)
+define({PVALUE},{dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}(bytes,name): Missing  parameters!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}__IS_NUM($1),{0},{
+__{}__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__SAVE_EVAL($1),{0},{
+__{}__{}  .error {$0}($@): The parameter is 0!},
+__{}__SAVE_EVAL($1>256),{1},{
+__{}__{}  .error {$0}($@): The parameter is greater than 256!},
+__{}__SAVE_EVAL($1<0),{1},{
+__{}__{}  .error {$0}($@): The parameter is negative!},
+__{}__IS_REG($2),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$2}},
+__{}__IS_INSTRUCTION($2),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$2}},
+__{}{dnl
+__{}__{}define({__PSIZE_}$2,$1){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PVALUE},{p}$1{value }$2,$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PVALUE},{dnl
+__{}__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}(bytes,name): Missing  parameters!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}__IS_NUM($1),{0},{
+__{}__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__{}__SAVE_EVAL($1),{0},{
+__{}__{}  .error {$0}($@): The parameter is 0!},
+__{}__SAVE_EVAL($1>256),{1},{
+__{}__{}  .error {$0}($@): The parameter is greater than 256!},
+__{}__SAVE_EVAL($1<0),{1},{
+__{}__{}  .error {$0}($@): The parameter is negative!},
+__{}__IS_REG($2),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$2}},
+__{}__IS_INSTRUCTION($2),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$2}},
+__{}{dnl
+__{}__{}define({__PSIZE_}$2,$1){}dnl
+__{}__{}__ASM_TOKEN_NO_SEGMENT($1){}dnl
+__{}__{}__ASM_TOKEN_CREATE($2){}dnl
+__{}__{}pushdef({LAST_HERE_ADD},$1)dnl
+__{}__{}__ALLOC_CONST_REC($1,,$2){}dnl
+__{}__{}__ASM_TOKEN_TO($2){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # PPUSH_VALUE(bytes,100,name)    --> (name) = 100
+dnl # PPUSH_VALUE(bytes,0x8877665544332211,name) --> (name) = 0x00...008877665544332211
 define({PPUSH_VALUE},{dnl
 __{}ifelse(eval($#<3),1,{
 __{}__{}  .error {$0}(bytes,value,name): Missing  parameters!},
@@ -1922,17 +1991,16 @@ __{}__ADD_TOKEN({__TOKEN_CMOVE},{cmove},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CMOVE},{dnl
-__{}define({__INFO},{cmove}){}dnl
-
-    ld    A, H          ; 1:4       cmove   ( from_addr to_addr u_chars -- )
-    or    L             ; 1:4       cmove
-    ld    B, H          ; 1:4       cmove
-    ld    C, L          ; 1:4       cmove BC = u_chars
-    pop  HL             ; 1:10      cmove HL = from_addr
-    jr    z, $+4        ; 2:7/12    cmove
-    ldir                ; 2:u*21/16 cmove
-    pop  HL             ; 1:10      cmove
-    pop  DE             ; 1:10      cmove}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO   ( from_addr to_addr u_chars -- )
+    or    L             ; 1:4       __INFO
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO BC = u_chars
+    pop  HL             ; 1:10      __INFO HL = from_addr
+    jr    z, $+4        ; 2:7/12    __INFO
+    ldir                ; 2:u*21/16 __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # u cmove
