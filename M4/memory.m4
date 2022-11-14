@@ -1103,7 +1103,7 @@ __{}__{}len($2),4,{dnl
 __{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA},{pushs_comma},0x{}$2)},
 __{}__{}{dnl
 __{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA},{pushs_comma},0x{}substr($2,eval(len($2)-4)))}){}dnl
-__{}__{}PHEXPUSH_COMMA_REC(eval($1-2),substr($2,0,eval(len($2)-4)))},
+__{}__{}$0(eval($1-2),substr($2,0,eval(len($2)-4)))},
 __{}$1,1,{
 __{}__{}ifelse(len($2),0,{dnl
 __{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS_COMMA},{pushs_comma},0x00)},
