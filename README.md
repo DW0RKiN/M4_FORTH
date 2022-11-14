@@ -1303,6 +1303,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>                      |<sub>  PHEXPUSH_COMMA(bytes,hex_value) |<sub>                             |<sub>          ( -- )          |<sub> dw hex_value, ...        |
 |<sub>                      |<sub>  PDECPUSH_COMMA(bytes,dec_value) |<sub>                             |<sub>          ( -- )          |<sub> dw hex_value, ...        |
 |<sub>                      |<sub>    PCONSTANT(bytes,value,name)   |<sub>                             |<sub>          ( -- )          |<sub> name: dw value, ...      |
+|<sub>                      |<sub>        PVALUE(bytes,name)        |<sub>                             |<sub>    ( bytes -- )          |<sub> name: dw value, ...      |
 |<sub>                      |<sub>   PPUSH_VALUE(bytes,value,name)  |<sub>                             |<sub>          ( -- )          |<sub> name: dw value, ...      |
 
 
