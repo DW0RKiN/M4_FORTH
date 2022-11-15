@@ -27,14 +27,124 @@ dnl
 define({__RESET_ADD_LD_REG16},{dnl
 __{}define({__SUM_CLOCKS_16BIT},0){}dnl
 __{}define({__SUM_BYTES_16BIT}, 0){}dnl
+__{}define({__SUM_PRICE_16BIT}, 0){}dnl
 }){}dnl
 dnl
 dnl
 dnl
 define({__ADD_LD_REG16},{dnl
-__{}__LD_REG16($1,$2,$3,$4,$5,$6){}dnl
+__{}__LD_REG16($1,$2,$3,$4,$5,$6,$7,$8){}dnl
 __{}__add({__SUM_CLOCKS_16BIT},__CLOCKS_16BIT){}dnl
 __{}__add({__SUM_BYTES_16BIT}, __BYTES_16BIT){}dnl
+__{}__add({__SUM_PRICE_16BIT}, __PRICE_16BIT){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__SET_BC_REC},{dnl
+__{}ifelse(dnl
+__{}__REG_BC:eval($#>2),{:1},{dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({DE},           $1,{HL},__TEST_HL,{DE},    __TEST_DE,{BC},__TEST_BC){}dnl
+__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__TEST_HL,{DE},           $1,{BC},__TEST_BC){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__TEST_HL,{DE},__LAST_REG_DE,{BC},__TEST_BC){}dnl
+__{}__{}define({__TMP_DE_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
+__{}__{}define({__TMP_DE_BYTES}, __SUM_BYTES_16BIT){}dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({HL},           $1,{HL},__TEST_HL,{DE},    __TEST_DE,{BC},__TEST_BC){}dnl
+__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},       $1,{DE},    __TEST_DE,{BC},__TEST_BC){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},       $1,{DE},__LAST_REG_DE,{BC},__TEST_BC){}dnl
+__{}__{}define({__TMP_HL_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
+__{}__{}define({__TMP_HL_BYTES}, __SUM_BYTES_16BIT){}dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({BC},           $1,{HL},__TEST_HL,{DE},    __TEST_DE,{BC},__TEST_BC){}dnl
+__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__TEST_HL,{DE},    __TEST_DE,{BC},       $1){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__TEST_HL,{DE},__LAST_REG_DE,{BC},       $1){}dnl
+__{}__{}define({__TMP_BC_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
+__{}__{}define({__TMP_BC_BYTES}, __SUM_BYTES_16BIT){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval(((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_DE_BYTES+__TMP_DE_CLOCKS))&&((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS))),1,{dnl
+__{}__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_BC},$1)},
+__{}__{}eval((4*__TMP_DE_BYTES+__TMP_DE_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS)),1,{dnl
+__{}__{}__{}define({__TEST_DE},$1){}dnl
+__{}__{}__{}$0(shift($@))},
+__{}__{}{dnl
+__{}__{}__{}define({__TEST_HL},$1){}dnl
+__{}__{}__{}$0(shift($@)){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__BRUTEFORCE_CHECK_PUSH_REC},{dnl
+__{}ifelse(dnl
+__{}eval($1>=__CHECK_PUSH_BEST),1,{},
+__{}$#,5,{dnl
+__{}__{}__LD_REG16({HL},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
+__{}__{}ifelse(eval(__CHECK_PUSH_BEST>($1+__PRICE_16BIT)),1,{define({__CHECK_PUSH_BEST},eval($1+__PRICE_16BIT))}){}dnl
+__{}},
+__{}$#,6,{dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({DE},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
+__{}__{}__ADD_LD_REG16({HL},$6,{HL},$2,{DE},$5,{BC},$4){}dnl
+__{}__{}ifelse(eval(__CHECK_PUSH_BEST>($1+__SUM_PRICE_16BIT)),1,{define({__CHECK_PUSH_BEST},eval($1+__SUM_PRICE_16BIT))}){}dnl
+__{}},
+__{}{dnl
+__{}__{}__LD_REG16({HL},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),$5,$3,$4,shift(shift(shift(shift(shift($@)))))){}dnl
+__{}__{}__LD_REG16({DE},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),$2,$5,$4,shift(shift(shift(shift(shift($@)))))){}dnl
+__{}__{}__LD_REG16({BC},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),$2,$3,$5,shift(shift(shift(shift(shift($@)))))){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__BRUTEFORCE_PUSHS_REC},{dnl
+__{}ifelse(dnl
+__{}$#,1,{dnl
+__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT},
+__{}$#,2,{dnl
+__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},      $1,{BC},__REG_BC){}__CODE_16BIT},
+__{}{dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC(__PRICE_16BIT,      $1,__REG_DE,__REG_BC,shift($@)){}dnl
+__{}__{}define({__CHECK_PUSH_HL_BEST},__CHECK_PUSH_BEST){}dnl
+__{}__{}dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC(__PRICE_16BIT,__REG_HL,      $1,__REG_BC,shift($@)){}dnl
+__{}__{}define({__CHECK_PUSH_DE_BEST},__CHECK_PUSH_BEST){}dnl
+__{}__{}dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC(__PRICE_16BIT,__REG_HL,__REG_DE,      $1,shift($@)){}dnl
+__{}__{}define({__CHECK_PUSH_BC_BEST},__CHECK_PUSH_BEST){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval((__CHECK_PUSH_BC_BEST<__CHECK_PUSH_DE_BEST)&&(__CHECK_PUSH_BC_BEST<__CHECK_PUSH_HL_BEST)),1,{dnl
+__{}__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_BC},$1)
+__{}__{}__{}    push BC             ; 1:11      __INFO},
+__{}__{}eval(__CHECK_PUSH_DE_BEST<__CHECK_PUSH_HL_BEST),1,{dnl
+__{}__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_DE},$1)
+__{}__{}__{}    push DE             ; 1:11      __INFO},
+__{}__{}{dnl
+__{}__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_HL},$1)
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}}){}dnl
+__{}__{}$0(shift($@)){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -45,7 +155,7 @@ __{}$#,1,{dnl
 __{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT},
 __{}$#,2,{dnl
 __{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT{}dnl
-__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},$1,{BC},__REG_BC){}__CODE_16BIT},
+__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},      $1,{BC},__REG_BC){}__CODE_16BIT},
 __{}{dnl
 __{}__{}__RESET_ADD_LD_REG16{}dnl
 __{}__{}__ADD_LD_REG16({DE},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
@@ -62,10 +172,15 @@ __{}__{}define({__TMP_HL_BYTES}, __SUM_BYTES_16BIT){}dnl
 __{}__{}__RESET_ADD_LD_REG16{}dnl
 __{}__{}__ADD_LD_REG16({BC},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__REG_HL,{DE},     __REG_DE,{BC},      $1){}dnl
-__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__REG_HL,{DE},     __REG_DE,{BC},      $1){}dnl
+__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__REG_HL,{DE},__LAST_REG_DE,{BC},      $1){}dnl
 __{}__{}define({__TMP_BC_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
 __{}__{}define({__TMP_BC_BYTES}, __SUM_BYTES_16BIT){}dnl
 __{}__{}dnl
+ifelse(1,0,{errprint({
+BC:}"__REG_BC"->"$1", __TMP_BC_BYTES,__TMP_BC_CLOCKS{
+DE:}"__REG_DE"->"$1"->"__LAST_REG_DE", __TMP_DE_BYTES,__TMP_DE_CLOCKS{
+HL:}"__REG_HL"->"$1"->"__LAST_REG_HL", __TMP_HL_BYTES,__TMP_HL_CLOCKS{
+})}){}dnl
 __{}__{}ifelse(eval(((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_DE_BYTES+__TMP_DE_CLOCKS))&&((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS))),1,{dnl
 __{}__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__{}__CODE_16BIT{}dnl
@@ -85,6 +200,7 @@ __{}__{}}){}dnl
 __{}__{}__PUSHS_REC(shift($@)){}dnl
 __{}}){}dnl
 }){}dnl
+dnl
 dnl
 dnl
 dnl # ( -- ... d c b a )
@@ -113,8 +229,13 @@ __{}define({__REG_DE},{}){}dnl
 __{}define({__REG_HL},{})
 __{}__{}__{}    push DE             ; 1:11      __INFO
 __{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__PUSHS_REC($@)}){}dnl
-}){}dnl
+__{}ifelse(1,1,{dnl
+__{}__{}__SET_BC_REC($@){}dnl
+__{}__{}__PUSHS_REC($@){}dnl
+__{}},{dnl
+__{}__{}__BRUTEFORCE_PUSHS_REC($@){}dnl
+__{}}){}dnl
+})}){}dnl
 dnl
 dnl
 dnl
