@@ -5,14 +5,14 @@ dnl
 dnl # ( -- a )
 dnl # push(a) ulozi na zasobnik nasledujici polozku
 define({PUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH},{dnl
 ifelse($1,{},{
 __{}  .error {$0}($@): Missing parameter!},
 eval($#>1),{1},{
-__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH2}($1,$2)?},
+__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSHS}($@)?},
 {define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
@@ -149,6 +149,96 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+define({__BRUTEFORCE_CHECK_PUSH_REC2},{dnl
+__{}ifelse(dnl
+__{}eval($1>=__CHECK_PUSH_BEST),1,{},
+__{}$#,2,{dnl
+__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}ifelse(eval(__CHECK_PUSH_BEST>($1+__PRICE_16BIT)),1,{define({__CHECK_PUSH_BEST},eval($1+__PRICE_16BIT))}){}dnl
+__{}},
+__{}$#,3,{dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16({DE},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__ADD_LD_REG16({HL},$3,{HL},__REG_HL,{DE},      $2,{BC},__REG_BC){}dnl
+__{}__{}ifelse(eval(__CHECK_PUSH_BEST>($1+__SUM_PRICE_16BIT)),1,{define({__CHECK_PUSH_BEST},eval($1+__SUM_PRICE_16BIT))}){}dnl
+__{}},
+__{}{dnl
+__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}pushdef({__REG_HL}){}dnl
+__{}__{}define({__REG_HL},$2){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),shift(shift($@))){}dnl
+__{}__{}popdef({__REG_HL}){}dnl
+__{}__{}dnl
+__{}__{}__LD_REG16({DE},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}pushdef({__REG_DE}){}dnl
+__{}__{}define({__REG_DE},$2){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),shift(shift($@))){}dnl
+__{}__{}popdef({__REG_DE}){}dnl
+__{}__{}dnl
+__{}__{}__LD_REG16({BC},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}pushdef({__REG_BC}){}dnl
+__{}__{}define({__REG_BC},$2){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),shift(shift($@))){}dnl
+__{}__{}popdef({__REG_BC}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__BRUTEFORCE_PUSHS_REC2},{dnl
+__{}ifelse(dnl
+__{}$#,1,{dnl
+__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT},
+__{}$#,2,{dnl
+__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},      $1,{BC},__REG_BC){}__CODE_16BIT},
+__{}{dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}pushdef({__REG_HL}){}dnl
+__{}__{}define({_REG_HL},$1){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC2(__PRICE_16BIT,shift($@)){}dnl
+__{}__{}popdef({__REG_HL}){}dnl
+__{}__{}define({__CHECK_PUSH_HL_BEST},__CHECK_PUSH_BEST){}dnl
+__{}__{}dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}pushdef({__REG_DE}){}dnl
+__{}__{}define({_REG_DE},$1){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC2(__PRICE_16BIT,shift($@)){}dnl
+__{}__{}popdef({__REG_DE}){}dnl
+__{}__{}define({__CHECK_PUSH_DE_BEST},__CHECK_PUSH_BEST){}dnl
+__{}__{}dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}pushdef({__REG_BC}){}dnl
+__{}__{}define({_REG_BC},$1){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC2(__PRICE_16BIT,shift($@)){}dnl
+__{}__{}popdef({__REG_BC}){}dnl
+__{}__{}define({__CHECK_PUSH_BC_BEST},__CHECK_PUSH_BEST){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval((__CHECK_PUSH_BC_BEST<__CHECK_PUSH_DE_BEST)&&(__CHECK_PUSH_BC_BEST<__CHECK_PUSH_HL_BEST)),1,{dnl
+__{}__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_BC},$1)
+__{}__{}__{}    push BC             ; 1:11      __INFO},
+__{}__{}eval(__CHECK_PUSH_DE_BEST<__CHECK_PUSH_HL_BEST),1,{dnl
+__{}__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_DE},$1)
+__{}__{}__{}    push DE             ; 1:11      __INFO},
+__{}__{}{dnl
+__{}__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}define({__REG_HL},$1)
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}}){}dnl
+__{}__{}$0(shift($@)){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({__PUSHS_REC},{dnl
 __{}ifelse(dnl
 __{}$#,1,{dnl
@@ -229,11 +319,11 @@ __{}define({__REG_DE},{}){}dnl
 __{}define({__REG_HL},{})
 __{}__{}__{}    push DE             ; 1:11      __INFO
 __{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
-__{}ifelse(1,1,{dnl
+__{}ifelse(1,0,{dnl
 __{}__{}__SET_BC_REC($@){}dnl
 __{}__{}__PUSHS_REC($@){}dnl
 __{}},{dnl
-__{}__{}__BRUTEFORCE_PUSHS_REC($@){}dnl
+__{}__{}__BRUTEFORCE_PUSHS_REC2($@){}dnl
 __{}}){}dnl
 })}){}dnl
 dnl
@@ -290,14 +380,7 @@ dnl
 dnl # ( -- b a)
 dnl # push2(b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH2},{dnl
-ifelse($1,{},{
-__{}  .error {$0}($@): Missing parameters!},
-$2,{},{
-__{}  .error {$0}($@): Missing second parameter!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSH3}($1,$2,$3)?},
-{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2},{$1 $2},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2},{dnl
@@ -400,16 +483,7 @@ dnl
 dnl # ( -- c b a)
 dnl # push3(c,b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH3},{dnl
-ifelse($1,{},{
-__{}  .error {$0}($@): Missing parameters!},
-$2,{},{
-__{}  .error {$0}($@): Missing second parameter!},
-$3,{},{
-__{}  .error {$0}($@): Missing third parameter!},
-eval($#>3),{1},{
-__{}  .error {$0}($@): Unexpected parameter!},
-{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH3},{$1 $2 $3},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH3},{dnl
@@ -472,18 +546,7 @@ dnl
 dnl # ( -- d c b a)
 dnl # push4(d,c,b,a) ulozi na zasobnik nasledujici polozky
 define({PUSH4},{dnl
-ifelse($1,{},{
-__{}  .error {$0}($@): Missing parameters!},
-$2,{},{
-__{}  .error {$0}($@): Missing second parameter!},
-$3,{},{
-__{}  .error {$0}($@): Missing third parameter!},
-$4,{},{
-__{}  .error {$0}($@): Missing fourth parameter!},
-eval($#>4),{1},{
-__{}  .error {$0}($@): Unexpected parameter!},
-{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH4},{$1 $2 $3 $4},$@)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH4},{dnl
