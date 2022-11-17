@@ -157,7 +157,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__BRUTEFORCE_PUSHS_REC4},{dnl
+define({__BRUTEFORCE_PUSHS_REC},{dnl
 __{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
 __{}ifelse($#,0,{},
 __{}$#,1,{
@@ -184,12 +184,42 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__BRUTEFORCE_PUSHS4},{dnl
+dnl # ( -- ... d c b a )
+define({PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_PUSH($@)},
+$#,2,{dnl
+__{}__ASM_TOKEN_PUSH2($@)},
+$#,3,{dnl
+__{}__ASM_TOKEN_PUSH3($@)},
+$#,4,{dnl
+__{}__ASM_TOKEN_PUSH4($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__LAST_REG_HL},__REVERSE_1_PAR($@)){}dnl
+__{}define({__LAST_REG_DE},__REVERSE_2_PAR($@)){}dnl
+__{}define({__REG_BC},{}){}dnl
+__{}define({__REG_DE},{}){}dnl
+__{}define({__REG_HL},{})
+__{}__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}ifelse(1,0,{dnl
+__{}__{}__SET_BC_REC($@){}dnl
+__{}__{}__PUSHS_REC($@){}dnl
+__{}},{dnl
+
 __{}pushdef({__REG_HL}){}dnl
 __{}pushdef({__REG_DE}){}dnl
 __{}pushdef({__REG_BC}){}dnl
 __{}define({__ORIG_PATH},{}){}dnl
-__{}__BRUTEFORCE_PUSHS_REC4($@){}dnl
+__{}__BRUTEFORCE_PUSHS_REC($@){}dnl
 __{}popdef({__REG_HL}){}dnl
 __{}popdef({__REG_DE}){}dnl
 __{}popdef({__REG_BC}){}dnl
@@ -230,41 +260,8 @@ __{}__{}__CODE_16BIT{}dnl
 __{}__{}define({__REG_BC},__FIRST_REG_BC){}dnl
 __{}}){}dnl
 __{}__PRINT_PUSH_PATH_REC(__ORIG_PATH,$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- ... d c b a )
-define({PUSHS},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSHS},{dnl
-ifelse($#,0,{
-__{}  .error {$0}($@): Missing parameters!},
-$#,1,{dnl
-__{}__ASM_TOKEN_PUSH($@)},
-$#,2,{dnl
-__{}__ASM_TOKEN_PUSH2($@)},
-$#,3,{dnl
-__{}__ASM_TOKEN_PUSH3($@)},
-$#,4,{dnl
-__{}__ASM_TOKEN_PUSH4($@)},
-{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl
-__{}define({__LAST_REG_HL},__REVERSE_1_PAR($@)){}dnl
-__{}define({__LAST_REG_DE},__REVERSE_2_PAR($@)){}dnl
-__{}define({__REG_BC},{}){}dnl
-__{}define({__REG_DE},{}){}dnl
-__{}define({__REG_HL},{})
-__{}__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
-__{}ifelse(1,0,{dnl
-__{}__{}__SET_BC_REC($@){}dnl
-__{}__{}__PUSHS_REC($@){}dnl
-__{}},{dnl
-__{}__{}__BRUTEFORCE_PUSHS4($@){}dnl
+
+
 __{}}){}dnl
 })}){}dnl
 dnl
