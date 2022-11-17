@@ -2828,6 +2828,9 @@ dnl # __CODE_16BIT
 dnl # __PRICE_16BIT = __CLOCKS_16BIT+4*__BYTES_16BIT
 __{}undefine({__COMMA}){}dnl
 ifelse(__IS_MEM_REF($2),{1},{dnl
+__{}define({__CLOCKS_16BIT},0){}dnl
+__{}define({__BYTES_16BIT},0){}dnl
+__{}define({__CODE_16BIT},{}){}dnl
 __{}ifelse(dnl # memory reference
 __{}$1:$2,$3:$4,{define({__CODE_16BIT},{})},
 __{}$1:$2,$5:$6,{define({__CODE_16BIT},{})},
@@ -2841,6 +2844,9 @@ __{}__{}define({__CLOCKS_16BIT},0){}dnl
 __{}__{}define({__BYTES_16BIT},0){}dnl
 __{}__{}define({__CODE_16BIT},{})},
 __IS_NUM($2),{0},{dnl # unknown number
+__{}define({__CLOCKS_16BIT},0){}dnl
+__{}define({__BYTES_16BIT},0){}dnl
+__{}define({__CODE_16BIT},{}){}dnl
 __{}ifelse(dnl
 __{}$1:$2,$3:$4,{define({__CODE_16BIT},{})},
 __{}$1:$2,$5:$6,{define({__CODE_16BIT},{})},

@@ -242,13 +242,15 @@ dnl
 define({__BRUTEFORCE_CHECK_PUSH_REC3},{dnl
 __{}ifelse(dnl
 __{}eval($1>=__CHECK_PUSH_BEST),1,{},
-__{}$#,3,{dnl
-__{}__{}__LD_REG16({HL},$3,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
-__{}__{}ifelse(eval(__CHECK_PUSH_BEST>($1+__PRICE_16BIT)),1,{dnl
-__{}__{}__{}define({__CHECK_PUSH_BEST},eval($1+__PRICE_16BIT)){}dnl
-__{}__{}__{}define({__CHECK_PUSH_BEST_PATH},$2){}dnl
-__{}__{}}){}dnl
-__{}},
+dnl __{}$#,3,{dnl
+dnl __{}__{}__LD_REG16({HL},$3,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
+dnl __{}__{}ifelse(eval(__CHECK_PUSH_BEST>($1+__PRICE_16BIT)),1,{dnl
+dnl __{}__{}__{}define({__CHECK_PUSH_BEST},eval($1+__PRICE_16BIT)){}dnl
+dnl __{}__{}__{}define({__CHECK_PUSH_BEST_PATH},$2){}dnl
+dnl errprint({
+dnl },__CHECK_PUSH_BEST:__CHECK_PUSH_BEST_PATH{}){}dnl
+dnl __{}__{}}){}dnl
+dnl __{}},
 __{}$#,4,{dnl
 __{}__{}__RESET_ADD_LD_REG16{}dnl
 __{}__{}__ADD_LD_REG16({DE},$3,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
