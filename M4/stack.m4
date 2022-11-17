@@ -41,7 +41,7 @@ __{}__add({__SUM_PRICE_16BIT}, __PRICE_16BIT){}dnl
 dnl
 dnl
 dnl
-define({__BRUTEFORCE_CHECK_PUSH_REC3},{dnl
+define({__BRUTEFORCE_PUSH_CHECK_REC},{dnl
 __{}ifelse(dnl
 __{}eval($1>=__CHECK_PUSH_BEST),1,{},
 dnl __{}$#,3,{dnl
@@ -157,25 +157,17 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__BRUTEFORCE_PUSHS_REC3},{dnl
-__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
-__{}__BRUTEFORCE_CHECK_PUSH_REC3(0,,$@){}dnl
-__{}__PRINT_PUSH_PATH_REC(__CHECK_PUSH_BEST_PATH,$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl
 define({__BRUTEFORCE_PUSHS_REC4},{dnl
 __{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
 __{}ifelse($#,0,{},
 __{}$#,1,{
 __{}__{}  .error {$0}($@)},
 __{}eval($#<7),1,{dnl
-__{}__{}__BRUTEFORCE_CHECK_PUSH_REC3(0,,$@){}dnl
+__{}__{}__BRUTEFORCE_PUSH_CHECK_REC(0,,$@){}dnl
 __{}__{}define({__ORIG_PATH},__ORIG_PATH{}__CHECK_PUSH_BEST_PATH){}dnl
 __{}},
 __{}{dnl
-__{}__{}__BRUTEFORCE_CHECK_PUSH_REC3(0,,$1,$2,$3,$4,__LAST_REG_DE,__LAST_REG_HL){}dnl
+__{}__{}__BRUTEFORCE_PUSH_CHECK_REC(0,,$1,$2,$3,$4,__LAST_REG_DE,__LAST_REG_HL){}dnl
 __{}__{}ifelse(substr(__CHECK_PUSH_BEST_PATH,0,1),1,{dnl
 __{}__{}__{}define({__REG_HL},$1){}dnl
 __{}__{}},
