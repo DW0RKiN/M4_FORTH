@@ -293,6 +293,7 @@ __{}__{}__LD_REG16({HL},$3,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__CODE_16BIT{}dnl
 __{}__{}define({__REG_HL},$3){}dnl
 __{}},
+__{}substr($1,0,1),{-},{},
 __{}substr($1,0,1),1,{dnl
 __{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__CODE_16BIT{}dnl
@@ -322,6 +323,25 @@ define({__BRUTEFORCE_PUSHS_REC3},{dnl
 __{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
 __{}__BRUTEFORCE_CHECK_PUSH_REC3(0,,$@){}dnl
 __{}__PRINT_PUSH_REC3(__CHECK_PUSH_BEST_PATH,$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__BRUTEFORCE_PUSHS_REC4},{dnl
+__{}ifelse($#,0,{},
+__{}$#,1,{
+__{}__{}  .error {$0}($@)},
+__{}$#,2,{__BRUTEFORCE_PUSHS_REC3($@)},
+__{}$#,3,{__BRUTEFORCE_PUSHS_REC3($@)},
+__{}$#,4,{__BRUTEFORCE_PUSHS_REC3($@)},
+__{}$#,5,{__BRUTEFORCE_PUSHS_REC3($@)},
+__{}$#,6,{__BRUTEFORCE_PUSHS_REC3($@)},
+__{}{dnl
+__{}__{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
+__{}__{}__BRUTEFORCE_CHECK_PUSH_REC3(0,,$1,$2,$3,$4,__LAST_REG_DE,__LAST_REG_HL){}dnl
+__{}__{}__PRINT_PUSH_REC3(substr(__CHECK_PUSH_BEST_PATH,0,1){-},$@){}dnl
+__{}__{}$0(shift($@)){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -410,7 +430,7 @@ __{}ifelse(1,0,{dnl
 __{}__{}__SET_BC_REC($@){}dnl
 __{}__{}__PUSHS_REC($@){}dnl
 __{}},{dnl
-__{}__{}__BRUTEFORCE_PUSHS_REC3($@){}dnl
+__{}__{}__BRUTEFORCE_PUSHS_REC4($@){}dnl
 __{}}){}dnl
 })}){}dnl
 dnl
