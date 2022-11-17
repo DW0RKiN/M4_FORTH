@@ -91,7 +91,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__PRINT_PUSH_REC3},{dnl
+define({__PRINT_PUSH_PATH_REC},{dnl
 __{}ifelse(dnl
 __{}$1,{},{dnl
 __{}__{}__LD_REG16({DE},$2,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
@@ -160,7 +160,7 @@ dnl
 define({__BRUTEFORCE_PUSHS_REC3},{dnl
 __{}define({__CHECK_PUSH_BEST},0x7FFFFFFF){}dnl
 __{}__BRUTEFORCE_CHECK_PUSH_REC3(0,,$@){}dnl
-__{}__PRINT_PUSH_REC3(__CHECK_PUSH_BEST_PATH,$@){}dnl
+__{}__PRINT_PUSH_PATH_REC(__CHECK_PUSH_BEST_PATH,$@){}dnl
 }){}dnl
 dnl
 dnl
@@ -237,61 +237,7 @@ __{}__{}__LD_REG16({BC},__FIRST_REG_BC,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC
 __{}__{}__CODE_16BIT{}dnl
 __{}__{}define({__REG_BC},__FIRST_REG_BC){}dnl
 __{}}){}dnl
-__{}__PRINT_PUSH_REC3(__ORIG_PATH,$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-define({__PUSHS_REC},{dnl
-__{}ifelse(dnl
-__{}$#,1,{dnl
-__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT},
-__{}$#,2,{dnl
-__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}__CODE_16BIT{}dnl
-__{}__{}__LD_REG16({HL},$2,{HL},__REG_HL,{DE},      $1,{BC},__REG_BC){}__CODE_16BIT},
-__{}{dnl
-__{}__{}__RESET_ADD_LD_REG16{}dnl
-__{}__{}__ADD_LD_REG16({DE},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__REG_HL,{DE},           $1,{BC},__REG_BC){}dnl
-__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__REG_HL,{DE},__LAST_REG_DE,{BC},__REG_BC){}dnl
-__{}__{}define({__TMP_DE_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
-__{}__{}define({__TMP_DE_BYTES}, __SUM_BYTES_16BIT){}dnl
-__{}__{}__RESET_ADD_LD_REG16{}dnl
-__{}__{}__ADD_LD_REG16({HL},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},      $1,{DE},     __REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},      $1,{DE},__LAST_REG_DE,{BC},__REG_BC){}dnl
-__{}__{}define({__TMP_HL_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
-__{}__{}define({__TMP_HL_BYTES}, __SUM_BYTES_16BIT){}dnl
-__{}__{}__RESET_ADD_LD_REG16{}dnl
-__{}__{}__ADD_LD_REG16({BC},           $1,{HL},__REG_HL,{DE},     __REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__ADD_LD_REG16({DE},__LAST_REG_DE,{HL},__REG_HL,{DE},     __REG_DE,{BC},      $1){}dnl
-__{}__{}__ADD_LD_REG16({HL},__LAST_REG_HL,{HL},__REG_HL,{DE},__LAST_REG_DE,{BC},      $1){}dnl
-__{}__{}define({__TMP_BC_CLOCKS},__SUM_CLOCKS_16BIT){}dnl
-__{}__{}define({__TMP_BC_BYTES}, __SUM_BYTES_16BIT){}dnl
-__{}__{}dnl
-ifelse(1,0,{errprint({
-BC:}"__REG_BC"->"$1", __TMP_BC_BYTES,__TMP_BC_CLOCKS{
-DE:}"__REG_DE"->"$1"->"__LAST_REG_DE", __TMP_DE_BYTES,__TMP_DE_CLOCKS{
-HL:}"__REG_HL"->"$1"->"__LAST_REG_HL", __TMP_HL_BYTES,__TMP_HL_CLOCKS{
-})}){}dnl
-__{}__{}ifelse(eval(((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_DE_BYTES+__TMP_DE_CLOCKS))&&((4*__TMP_BC_BYTES+__TMP_BC_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS))),1,{dnl
-__{}__{}__{}__LD_REG16({BC},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__{}__CODE_16BIT{}dnl
-__{}__{}__{}define({__REG_BC},$1)
-__{}__{}__{}    push BC             ; 1:11      __INFO},
-__{}__{}eval((4*__TMP_DE_BYTES+__TMP_DE_CLOCKS)<(4*__TMP_HL_BYTES+__TMP_HL_CLOCKS)),1,{dnl
-__{}__{}__{}__LD_REG16({DE},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__{}__CODE_16BIT{}dnl
-__{}__{}__{}define({__REG_DE},$1)
-__{}__{}__{}    push DE             ; 1:11      __INFO},
-__{}__{}{dnl
-__{}__{}__{}__LD_REG16({HL},$1,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
-__{}__{}__{}__CODE_16BIT{}dnl
-__{}__{}__{}define({__REG_HL},$1)
-__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}}){}dnl
-__{}__{}__PUSHS_REC(shift($@)){}dnl
-__{}}){}dnl
+__{}__PRINT_PUSH_PATH_REC(__ORIG_PATH,$@){}dnl
 }){}dnl
 dnl
 dnl
