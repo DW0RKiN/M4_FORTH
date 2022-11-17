@@ -1,5 +1,7 @@
 #!/bin/sh
 
+str_time=`date +%Y%m%d%H%M%S`
+
 if test "$1" = "--check" ; then
    shift
    i="; vvv\n"
@@ -119,3 +121,7 @@ END {
 }'
 
 fi
+
+end_time=`date +%Y%m%d%H%M%S`
+
+echo "$(($end_time-$str_time)) seconds"
