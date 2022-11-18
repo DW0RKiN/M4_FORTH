@@ -127,31 +127,35 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # Input
+dnl # $1 ...price
+dnl # $2 ...path (like "1121231")
+dnl # $3 ...__REG_HL
+dnl # $4 ...__REG_DE
+dnl # $5 ...__REG_BC
+dnl # $6 ...first value
 define({__PATH_COUNT},{dnl
 __{}ifelse(dnl
-__{}$1,{},{dnl
-__{}__{}__LD_REG16({DE},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
-__{}__{}define({__PATH_COUNT_PRICE},eval(__PATH_COUNT_PRICE+__PRICE_16BIT)){}dnl
-__{}__{}__LD_REG16({HL},$6,{HL},$2,{DE},$3,{BC},$4){}dnl
+__{}$2,{},{dnl
+__{}__{}__LD_REG16({DE},$6,{HL},$3,{DE},$4,{BC},$5){}dnl
+__{}__{}define({__PATH_COUNT_PRICE},eval($1+__PRICE_16BIT)){}dnl
+__{}__{}__LD_REG16({HL},$7,{HL},$3,{DE},$6,{BC},$5){}dnl
 __{}__{}define({__PATH_COUNT_PRICE},eval(__PATH_COUNT_PRICE+__PRICE_16BIT)){}dnl
 __{}},
-__{}substr($1,0,1),1,{dnl
-__{}__{}ifelse(__REG_HL,{},define({__FIRST_REG_HL},$5)){}dnl
-__{}__{}__LD_REG16({HL},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
-__{}__{}define({__PATH_COUNT_PRICE},eval(__PATH_COUNT_PRICE+__PRICE_16BIT)){}dnl
-__{}__{}$0(substr($1,1),$5,$3,$4,shift(shift(shift(shift(shift($@)))))){}dnl
+__{}substr($2,0,1),1,{dnl
+__{}__{}ifelse(__REG_HL,{},define({__FIRST_REG_HL},$6)){}dnl
+__{}__{}__LD_REG16({HL},$6,{HL},$3,{DE},$4,{BC},$5){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),substr($2,1),$6,$4,$5,shift(shift(shift(shift(shift(shift($@))))))){}dnl
 __{}},
-__{}substr($1,0,1),2,{dnl
-__{}__{}ifelse(__REG_DE,{},define({__FIRST_REG_DE},$5)){}dnl
-__{}__{}__LD_REG16({DE},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
-__{}__{}define({__PATH_COUNT_PRICE},eval(__PATH_COUNT_PRICE+__PRICE_16BIT)){}dnl
-__{}__{}$0(substr($1,1),$2,$5,$4,shift(shift(shift(shift(shift($@)))))){}dnl
+__{}substr($2,0,1),2,{dnl
+__{}__{}ifelse(__REG_DE,{},define({__FIRST_REG_DE},$6)){}dnl
+__{}__{}__LD_REG16({DE},$6,{HL},$3,{DE},$4,{BC},$5){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),substr($2,1),$3,$6,$5,shift(shift(shift(shift(shift(shift($@))))))){}dnl
 __{}},
-__{}substr($1,0,1),3,{dnl
-__{}__{}ifelse(__REG_BC,{},define({__FIRST_REG_BC},$5)){}dnl
-__{}__{}__LD_REG16({BC},$5,{HL},$2,{DE},$3,{BC},$4){}dnl
-__{}__{}define({__PATH_COUNT_PRICE},eval(__PATH_COUNT_PRICE+__PRICE_16BIT)){}dnl
-__{}__{}$0(substr($1,1),$2,$3,$5,shift(shift(shift(shift(shift($@)))))){}dnl
+__{}substr($2,0,1),3,{dnl
+__{}__{}ifelse(__REG_BC,{},define({__FIRST_REG_BC},$6)){}dnl
+__{}__{}__LD_REG16({BC},$6,{HL},$3,{DE},$4,{BC},$5){}dnl
+__{}__{}$0(eval($1+__PRICE_16BIT),substr($2,1),$3,$4,$6,shift(shift(shift(shift(shift(shift($@))))))){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -221,34 +225,28 @@ __{}popdef({__REG_BC}){}dnl
 __{}define({__FIRST_REG_HL},__REG_HL){}dnl
 __{}define({__FIRST_REG_DE},__REG_DE){}dnl
 __{}define({__FIRST_REG_BC},__REG_BC){}dnl
-__{}define({__PATH_COUNT_PRICE},0){}dnl
-__{}__PATH_COUNT(__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,$@){}dnl
+__{}__PATH_COUNT(0,__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,$@){}dnl
 __{}define({__TEMP_PRICE},__PATH_COUNT_PRICE){}dnl
 __{}dnl # HL first
-__{}define({__PATH_COUNT_PRICE},0){}dnl
-__{}__PATH_COUNT({1}__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,__FIRST_REG_HL,$@){}dnl
+__{}__PATH_COUNT(0,{1}__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,__FIRST_REG_HL,$@){}dnl
 __{}ifelse(eval(__PATH_COUNT_PRICE<__TEMP_PRICE),1,{dnl
 __{}__{}__LD_REG16({HL},__FIRST_REG_HL,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__CODE_16BIT{}dnl
 __{}__{}define({__REG_HL},__FIRST_REG_HL){}dnl
-__{}__{}define({__PATH_COUNT_PRICE},0){}dnl
-__{}__{}__PATH_COUNT(__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,$@){}dnl
+__{}__{}__PATH_COUNT(0,__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,$@){}dnl
 __{}__{}define({__TEMP_PRICE},__PATH_COUNT_PRICE){}dnl
 __{}}){}dnl
 __{}dnl # DE first
-__{}define({__PATH_COUNT_PRICE},0){}dnl
-__{}__PATH_COUNT({2}__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,__FIRST_REG_DE,$@){}dnl
+__{}__PATH_COUNT(0,{2}__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,__FIRST_REG_DE,$@){}dnl
 __{}ifelse(eval(__PATH_COUNT_PRICE<__TEMP_PRICE),1,{dnl
 __{}__{}__LD_REG16({DE},__FIRST_REG_DE,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__CODE_16BIT{}dnl
 __{}__{}define({__REG_DE},__FIRST_REG_DE){}dnl
-__{}__{}define({__PATH_COUNT_PRICE},0){}dnl
-__{}__{}__PATH_COUNT(__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,$@){}dnl
+__{}__{}__PATH_COUNT(0,__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,$@){}dnl
 __{}__{}define({__TEMP_PRICE},__PATH_COUNT_PRICE){}dnl
 __{}}){}dnl
 __{}dnl # BC first
-__{}define({__PATH_COUNT_PRICE},0){}dnl
-__{}__PATH_COUNT({3}__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,__FIRST_REG_BC,$@){}dnl
+__{}__PATH_COUNT(0,{3}__ORIG_PATH,__REG_HL,__REG_DE,__REG_BC,__FIRST_REG_BC,$@){}dnl
 __{}ifelse(eval(__PATH_COUNT_PRICE<__TEMP_PRICE),1,{dnl
 __{}__{}__LD_REG16({BC},__FIRST_REG_BC,{HL},__REG_HL,{DE},__REG_DE,{BC},__REG_BC){}dnl
 __{}__{}__CODE_16BIT{}dnl
