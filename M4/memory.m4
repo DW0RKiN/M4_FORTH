@@ -2178,10 +2178,10 @@ dnl
 define({__ASM_TOKEN_FILL},{dnl
 __{}define({__INFO},{fill}){}dnl
 ifelse({fast},{fast},{
-__{}    ld    A, D          ; 1:4       fill
+__{}    ld    A, D          ; 1:4       fill  ( addr u char -- )
 __{}    or    E             ; 1:4       fill
 __{}    ld    A, L          ; 1:4       fill
-__{}    pop  HL             ; 1:10      fill HL = from
+__{}    pop  HL             ; 1:10      fill  HL = from
 __{}    jr    z, $+15       ; 2:7/12    fill
 __{}    ld  (HL),A          ; 1:7       fill
 __{}    dec  DE             ; 1:6       fill
@@ -2192,13 +2192,13 @@ __{}    ld    C, E          ; 1:4       fill
 __{}    ld    B, D          ; 1:4       fill
 __{}    ld    E, L          ; 1:4       fill
 __{}    ld    D, H          ; 1:4       fill
-__{}    inc  DE             ; 1:6       fill DE = to
+__{}    inc  DE             ; 1:6       fill  DE = to
 __{}    ldir                ; 2:u*21/16 fill
 __{}    pop  HL             ; 1:10      fill
 __{}    pop  DE             ; 1:10      fill},
 __{}{
-__{}    ld    A, L          ; 1:4       fill A  = char
-__{}    pop  HL             ; 1:10      fill HL = addr
+__{}    ld    A, L          ; 1:4       fill  ( addr u char -- )
+__{}    pop  HL             ; 1:10      fill  HL = addr, A = char
 __{}    ld    B, E          ; 1:4       fill
 __{}    inc   D             ; 1:4       fill
 __{}    inc   E             ; 1:4       fill
@@ -2277,22 +2277,22 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(eval($1),{0},{dnl
-__{}    ex   DE, HL         ; 1:4       $1 $2 fill
+__{}    ex   DE, HL         ; 1:4       $1 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    pop  DE             ; 1:10      $1 $2 fill},
 __{}eval($1),{1},{dnl
-__{}                        ;[4:24]     1 $2 fill
+__{}                        ;[4:24]     1 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld  (HL),format({%-11s},$2); 2:10      1 $2 fill
 __{}    ex   DE, HL         ; 1:4       1 $2 fill
 __{}    pop  DE             ; 1:10      1 $2 fill},
 __{}eval($1),{2},{dnl
-__{}                        ;[7:40]     2 $2 fill
+__{}                        ;[7:40]     2 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld  (HL),format({%-11s},$2); 2:10      2 $2 fill
 __{}    inc  HL             ; 1:6       2 $2 fill
 __{}    ld  (HL),format({%-11s},$2); 2:10      2 $2 fill
 __{}    ex   DE, HL         ; 1:4       2 $2 fill
 __{}    pop  DE             ; 1:10      2 $2 fill},
 __{}eval($1),{3},{dnl
-__{}                        ;[9:54]     3 $2 fill
+__{}                        ;[9:54]     3 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld    A, format({%-11s},$2); 2:7       3 $2 fill
 __{}    ld  (HL),A          ; 1:7       3 $2 fill
 __{}    inc  HL             ; 1:6       3 $2 fill
@@ -2302,7 +2302,7 @@ __{}    ld  (HL),A          ; 1:7       3 $2 fill
 __{}    ex   DE, HL         ; 1:4       3 $2 fill
 __{}    pop  DE             ; 1:10      3 $2 fill},
 __{}eval($1),{4},{dnl
-__{}                        ;[11:67]    4 $2 fill
+__{}                        ;[11:67]    4 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld    A, format({%-11s},$2); 2:7       4 $2 fill
 __{}    ld  (HL),A          ; 1:7       4 $2 fill
 __{}    inc  HL             ; 1:6       4 $2 fill
@@ -2314,7 +2314,7 @@ __{}    ld  (HL),A          ; 1:7       4 $2 fill
 __{}    ex   DE, HL         ; 1:4       4 $2 fill
 __{}    pop  DE             ; 1:10      4 $2 fill},
 __{}eval($1),{5},{dnl
-__{}                        ;[13:80]    5 $2 fill
+__{}                        ;[13:80]    5 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld    A, format({%-11s},$2); 2:7       5 $2 fill
 __{}    ld  (HL),A          ; 1:7       5 $2 fill
 __{}    inc  HL             ; 1:6       5 $2 fill
@@ -2328,7 +2328,7 @@ __{}    ld  (HL),A          ; 1:7       5 $2 fill
 __{}    ex   DE, HL         ; 1:4       5 $2 fill
 __{}    pop  DE             ; 1:10      5 $2 fill},
 __{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{dnl
-__{}                        ;[13:eval(19+(52*$1)/3)]   $1 $2 fill
+__{}                        ;[13:eval(19+(52*$1)/3)]   $1 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld   BC, format({%-11s},eval(($1)/3){*256+$2}); 3:10      $1 $2 fill
 __{}    ld  (HL),C          ; 1:7       $1 $2 fill
 __{}    inc  HL             ; 1:6       $1 $2 fill
@@ -2340,7 +2340,7 @@ __{}    djnz $-6            ; 2:13/8    $1 $2 fill
 __{}    ex   DE, HL         ; 1:4       $1 $2 fill
 __{}    pop  DE             ; 1:10      $1 $2 fill},
 __{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{dnl
-__{}                        ;[11:eval(19+39*(($1)/2))]   $1 $2 fill
+__{}                        ;[11:eval(19+39*(($1)/2))]   $1 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      $1 $2 fill
 __{}    ld  (HL),C          ; 1:7       $1 $2 fill
 __{}    inc  HL             ; 1:6       $1 $2 fill
@@ -2350,7 +2350,7 @@ __{}    djnz $-4            ; 2:13/8    $1 $2 fill
 __{}    ex   DE, HL         ; 1:4       $1 $2 fill
 __{}    pop  DE             ; 1:10      $1 $2 fill},
 __{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{dnl
-__{}                        ;[12:eval(26+39*(($1)/2))]   $1 $2 fill
+__{}                        ;[12:eval(26+39*(($1)/2))]   $1 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      $1 $2 fill
 __{}    ld  (HL),C          ; 1:7       $1 $2 fill
 __{}    inc  HL             ; 1:6       $1 $2 fill
@@ -2361,7 +2361,7 @@ __{}    ld  (HL),C          ; 1:7       $1 $2 fill
 __{}    ex   DE, HL         ; 1:4       $1 $2 fill
 __{}    pop  DE             ; 1:10      $1 $2 fill},
 __{}{dnl
-__{}                        ;[13:eval(39+($1)*21)]   $1 $2 fill
+__{}                        ;[13:eval(39+($1)*21)]   $1 $2 fill  ( addr -- ) u=$1, char=$2
 __{}    ld  (HL),format({%-11s},$2); 2:10      $1 $2 fill
 __{}    ld   BC, format({%-11s},eval($1)-1); 3:10      $1 $2 fill
 __{}    push DE             ; 1:11      $1 $2 fill

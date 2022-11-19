@@ -41,6 +41,10 @@ __{}__add({__SUM_PRICE_16BIT}, __PRICE_16BIT){}dnl
 dnl
 dnl
 dnl
+dnl # Input
+dnl # $1 ...price
+dnl # $2 ...path (like "1121231")
+dnl # $3 ...first value
 define({__BRUTEFORCE_PUSH_CHECK_REC},{dnl
 __{}ifelse(dnl
 __{}eval($1>=__CHECK_PUSH_BEST),1,{},
@@ -137,8 +141,10 @@ dnl # $6 ...first value
 define({__PATH_COUNT},{dnl
 __{}ifelse(dnl
 __{}$2,{},{dnl
+__{}__{}ifelse(__REG_DE,{},define({__FIRST_REG_DE},$6)){}dnl
 __{}__{}__LD_REG16({DE},$6,{HL},$3,{DE},$4,{BC},$5){}dnl
 __{}__{}define({__PATH_COUNT_PRICE},eval($1+__PRICE_16BIT)){}dnl
+__{}__{}ifelse(__REG_HL,{},define({__FIRST_REG_HL},$7)){}dnl
 __{}__{}__LD_REG16({HL},$7,{HL},$3,{DE},$6,{BC},$5){}dnl
 __{}__{}define({__PATH_COUNT_PRICE},eval(__PATH_COUNT_PRICE+__PRICE_16BIT)){}dnl
 __{}},
@@ -188,22 +194,9 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ... d c b a )
-define({PUSHS},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSHS},{dnl
+define({__PUSHS_X},{dnl
 ifelse($#,0,{
 __{}  .error {$0}($@): Missing parameters!},
-$#,1,{dnl
-__{}__ASM_TOKEN_PUSH($@)},
-$#,2,{dnl
-__{}__ASM_TOKEN_PUSH2($@)},
-$#,3,{dnl
-__{}__ASM_TOKEN_PUSH3($@)},
-$#,4,{dnl
-__{}__ASM_TOKEN_PUSH4($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
@@ -211,9 +204,7 @@ __{}define({__LAST_REG_HL},__REVERSE_1_PAR($@)){}dnl
 __{}define({__LAST_REG_DE},__REVERSE_2_PAR($@)){}dnl
 __{}define({__REG_BC},{}){}dnl
 __{}define({__REG_DE},{}){}dnl
-__{}define({__REG_HL},{})
-__{}    push DE             ; 1:11      __INFO
-__{}    push HL             ; 1:11      __INFO{}dnl
+__{}define({__REG_HL},{}){}dnl
 __{}pushdef({__REG_HL}){}dnl
 __{}pushdef({__REG_DE}){}dnl
 __{}pushdef({__REG_BC}){}dnl
@@ -253,6 +244,53 @@ __{}__{}__CODE_16BIT{}dnl
 __{}__{}define({__REG_BC},__FIRST_REG_BC){}dnl
 __{}}){}dnl
 __{}__PRINT_PUSH_PATH_REC(__ORIG_PATH,$@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ... d c b a )
+define({PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_PUSH($@)},
+$#,2,{dnl
+__{}__ASM_TOKEN_PUSH2($@)},
+$#,3,{dnl
+__{}__ASM_TOKEN_PUSH3($@)},
+$#,4,{dnl
+__{}__ASM_TOKEN_PUSH4($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSHS_X($@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ... d c b a )
+define({DUP_PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSHS},dup __REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_DUP_PUSH($@)},
+$#,2,{dnl
+__{}__ASM_TOKEN_DUP_PUSH2($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__PUSHS_X($@){}dnl
 })}){}dnl
 dnl
 dnl
