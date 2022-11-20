@@ -1814,7 +1814,7 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{__INC_TOK
 dnl # PUSH3
 push3,,,
 
-            __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_DO},        {ifelse(dnl
+            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                          {__TOKEN_PUSHS:3:__TOKEN_DO},        {ifelse(dnl
 __{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
 __{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_2){}dnl
 __{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
@@ -1830,7 +1830,7 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ drop},__LAST_TOKE
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
 
-            __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH3-__TOKEN_QDO},        {ifelse(dnl
+            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                          {__TOKEN_PUSHS:3:__TOKEN_QDO},        {ifelse(dnl
 __{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
 __{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_2){}dnl
 __{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
