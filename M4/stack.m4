@@ -194,7 +194,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x -- ... x x d c b a )
+dnl # ( b a -- $1 $2 $3 ... )
 define({_2DROP_PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DROP_PUSHS},{2drop }__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
@@ -257,7 +257,25 @@ __{}__PRINT_PUSH_PATH_REC(__ORIG_PATH,$@){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ... d c b a )
+dnl # ( a -- $1 $2 $3 ... )
+define({DROP PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_PUSHS},{drop }__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_DROP_PUSH($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- $1 $2 $3 ... )
 define({PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
@@ -282,7 +300,7 @@ __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 dnl
 dnl
 dnl
-dnl # ( x -- ... x x d c b a )
+dnl # ( a -- a a $1 $2 $3 ... )
 define({DUP_PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSHS},{dup }__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
