@@ -1754,7 +1754,6 @@ dnl # PUSH2
 push2,,,
 
 __LAST_TOKEN_NAME:$1,             __TOKEN_DUP:__TOKEN_PUSHS,{__SET_TOKEN(__TOKEN_DUP_PUSHS, __LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
-            __LAST_TOKEN_NAME:$1,                                 __TOKEN_DUP:__TOKEN_PUSH2,     {__SET_TOKEN({__TOKEN_DUP_PUSH2},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
 
             __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>1):$1,                        {__TOKEN_PUSHS:1:__TOKEN_ADDLOOP},
                 {__SET_LOOP_STEP($3,__LAST_TOKEN_REVERSE_1){}dnl
