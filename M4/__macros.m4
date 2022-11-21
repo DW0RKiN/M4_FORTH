@@ -1814,35 +1814,35 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__LAST_TOKEN_INFO{ }$2,$3)},{__INC_TOK
 dnl # PUSH3
 push3,,,
 
-            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                          {__TOKEN_PUSHS:3:__TOKEN_DO},        {ifelse(dnl
+            __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                          {__TOKEN_PUSHS:1:__TOKEN_DO},        {ifelse(dnl
 __{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
-__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_2){}dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_REVERSE_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ 2drop},__DROP_2_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}__GET_LOOP_BEGIN($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ drop}, __DROP_1_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}__GET_LOOP_END($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_END($3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ drop}, __DROP_1_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
 
-            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                          {__TOKEN_PUSHS:3:__TOKEN_QDO},        {ifelse(dnl
+            __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                          {__TOKEN_PUSHS:1:__TOKEN_QDO},        {ifelse(dnl
 __{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
-__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_2){}dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1){}dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_REVERSE_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ 2drop},__DROP_2_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}__GET_LOOP_BEGIN($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ drop}, __DROP_1_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}__GET_LOOP_END($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_END($3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
+__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ drop}, __DROP_1_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
 
@@ -2007,39 +2007,6 @@ __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>1):$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,{__TOKEN_PUSH4:__TOKEN_UGT:0},  {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(u>,__LAST_TOKEN_LAST_2_PAR))},
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,{__TOKEN_PUSH4:__TOKEN_ULE:0},  {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(u<=,__LAST_TOKEN_LAST_2_PAR))},
             __LAST_TOKEN_NAME:$1:__LAST_TOKEN_IS_PTR_REVERSE_2_1,{__TOKEN_PUSH4:__TOKEN_UGE:0},  {__SET_TOKEN({__TOKEN_PUSH3}, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY),__EVAL_S16(u>=,__LAST_TOKEN_LAST_2_PAR))},
-
-            __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH4-__TOKEN_DO},        {ifelse(dnl
-__{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
-__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_4){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
-__{}__{}__{}__GET_LOOP_BEGIN($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_4){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
-__{}__{}__{}__GET_LOOP_END($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_END($3,__LAST_TOKEN_ARRAY_4){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
-__{}__{}__{}{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
-
-            __LAST_TOKEN_NAME-$1,                          {__TOKEN_PUSH4-__TOKEN_QDO},        {ifelse(dnl
-__{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
-__{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_4){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ 2drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
-__{}__{}__{}__GET_LOOP_BEGIN($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_BEGIN($3,__LAST_TOKEN_ARRAY_4){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
-__{}__{}__{}__GET_LOOP_END($3),{},{dnl
-__{}__{}__{}__{}__SET_LOOP_END($3,__LAST_TOKEN_ARRAY_4){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH3},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1,__LAST_TOKEN_ARRAY_2,__LAST_TOKEN_ARRAY_3){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
-__{}__{}__{}{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
-
 
 __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,         __TOKEN_PUSHS:1:__TOKEN_FILL,    {__SET_TOKEN({__TOKEN_PUSH_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,         __TOKEN_PUSHS:2:__TOKEN_FILL,    {__SET_TOKEN({__TOKEN_PUSH2_FILL},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
