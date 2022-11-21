@@ -318,6 +318,25 @@ __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 dnl
 dnl
 dnl
+dnl # ( b a -- a b $1 $2 $3 ... )
+define({SWAP_PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_PUSHS},{swap }__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SWAP_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_SWAP_PUSH($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push HL             ; 1:11      __INFO
+__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # ( a -- a a $1 $2 $3 ... )
 define({DUP_PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSHS},{dup }__REMOVE_COMMA($@),$@){}dnl
