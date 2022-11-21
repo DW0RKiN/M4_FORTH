@@ -340,6 +340,28 @@ __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 dnl
 dnl
 dnl
+dnl # ( b a -- b a b $1 $2 $3 ... )
+define({OVER_PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PUSHS},{over }__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_OVER_PUSH($@)},
+$#,2,{dnl
+__{}__ASM_TOKEN_OVER_PUSH2($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # ( x x -- b a)
 dnl # push2(b,a) premaze zasobnik nasledujicima polozkama
 define({_2DROP_PUSH2},{dnl
