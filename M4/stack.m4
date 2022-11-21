@@ -258,7 +258,7 @@ dnl
 dnl
 dnl
 dnl # ( a -- $1 $2 $3 ... )
-define({DROP PUSHS},{dnl
+define({DROP_PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_DROP_PUSHS},{drop }__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
@@ -270,6 +270,24 @@ __{}__ASM_TOKEN_DROP_PUSH($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO)
 __{}    push DE             ; 1:11      __INFO{}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( b a -- a $1 $2 $3 ... )
+define({NIP_PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_NIP_PUSHS},{nip }__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NIP_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_NIP_PUSH($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 })}){}dnl
 dnl
