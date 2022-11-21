@@ -1759,9 +1759,9 @@ push2,,,
 __LAST_TOKEN_NAME:$1,             __TOKEN_DUP:__TOKEN_PUSHS,{__SET_TOKEN(__TOKEN_DUP_PUSHS, __LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
             __LAST_TOKEN_NAME:$1,                                 __TOKEN_DUP:__TOKEN_PUSH2,     {__SET_TOKEN({__TOKEN_DUP_PUSH2},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
 
-            __LAST_TOKEN_NAME-$1,                        {__TOKEN_PUSH2-__TOKEN_ADDLOOP},
-                {__SET_LOOP_STEP($3,__LAST_TOKEN_ARRAY_2){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSH},__LAST_TOKEN_INFO{ drop},__LAST_TOKEN_ARRAY_1){}dnl
+            __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>1):$1,                        {__TOKEN_PUSHS:1:__TOKEN_ADDLOOP},
+                {__SET_LOOP_STEP($3,__LAST_TOKEN_REVERSE_1){}dnl
+__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ drop},__DROP_1_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}dnl
 __{}__{}__{}__{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,shift(shift($@)))},
 
