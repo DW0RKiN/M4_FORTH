@@ -194,9 +194,18 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__PUSHS_X},{dnl
+dnl # ( x -- ... x x d c b a )
+define({_2DROP_PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP_PUSHS},{2drop }__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DROP_PUSHS},{dnl
 ifelse($#,0,{
 __{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_2DROP_PUSH($@)},
+$#,2,{dnl
+__{}__ASM_TOKEN_2DROP_PUSH2($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
@@ -262,20 +271,20 @@ $#,2,{dnl
 __{}__ASM_TOKEN_PUSH2($@)},
 $#,3,{dnl
 __{}__ASM_TOKEN_PUSH3($@)},
-$#,4,{dnl
+$#,xxx4,{dnl
 __{}__ASM_TOKEN_PUSH4($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO)
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO{}dnl
-__{}__PUSHS_X($@){}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 })}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ... d c b a )
+dnl # ( x -- ... x x d c b a )
 define({DUP_PUSHS},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSHS},dup __REMOVE_COMMA($@),$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSHS},{dup }__REMOVE_COMMA($@),$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSHS},{dnl
@@ -290,7 +299,7 @@ __{}define({__INFO},__COMPILE_INFO)
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO{}dnl
-__{}__PUSHS_X($@){}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 })}){}dnl
 dnl
 dnl
