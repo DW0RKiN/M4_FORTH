@@ -1753,9 +1753,6 @@ __{}__{}__{}__{}__SET_TOKEN_X(eval(__TOKEN_COUNT-1),__TOKEN_I,__BEFORELAST_TOKEN
 dnl # PUSH2
 push2,,,
 
-
-
-
 __LAST_TOKEN_NAME:$1,             __TOKEN_DUP:__TOKEN_PUSHS,{__SET_TOKEN(__TOKEN_DUP_PUSHS, __LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
             __LAST_TOKEN_NAME:$1,                                 __TOKEN_DUP:__TOKEN_PUSH2,     {__SET_TOKEN({__TOKEN_DUP_PUSH2},__LAST_TOKEN_INFO{ }$2,shift(shift($@)))},
 
@@ -1764,10 +1761,6 @@ __LAST_TOKEN_NAME:$1,             __TOKEN_DUP:__TOKEN_PUSHS,{__SET_TOKEN(__TOKEN
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ drop},__DROP_1_PAR(__LAST_TOKEN_ARRAY)){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}dnl
 __{}__{}__{}__{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,shift(shift($@)))},
-
-
-            __LAST_TOKEN_NAME=x:$1,                         x__TOKEN_PUSH2=x:__TOKEN_CMOVE,      {__SET_TOKEN({__TOKEN_PUSH2_CMOVE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
-            __LAST_TOKEN_NAME=x:$1,                         x__TOKEN_PUSH2=x:__TOKEN_MOVE,       {__SET_TOKEN({__TOKEN_PUSH2_MOVE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                        __TOKEN_PUSHS:2:__TOKEN_DO,             {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
 __{}__{}__{}__{}__SET_LOOP_END(  $3,__LAST_TOKEN_ARRAY_1){}dnl
