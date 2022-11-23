@@ -2643,12 +2643,39 @@ __{}__ADD_TOKEN({__TOKEN_FETCH},{@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FETCH},{dnl
-__{}define({__INFO},{fetch}){}dnl
-
-    ld    A, (HL)       ; 1:7       @ fetch   ( addr -- x )
-    inc  HL             ; 1:6       @ fetch
-    ld    H, (HL)       ; 1:7       @ fetch
-    ld    L, A          ; 1:4       @ fetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, (HL)       ; 1:7       __INFO   ( addr -- x )
+    inc  HL             ; 1:6       __INFO
+    ld    H, (HL)       ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( addr -- x $1 )
+define({FETCH_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_FETCH_PUSH},{@ $1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FETCH_PUSH},{dnl
+define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+    push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = (addr)
+    ld    E, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    D, (HL)       ; 1:7       __INFO
+    ld   HL, format({%-11s},$1); 3:16      __INFO},
+{
+    push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = (addr)
+    ld    E, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    D, (HL)       ; 1:7       __INFO
+    ld   HL, __FORM({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # dup @

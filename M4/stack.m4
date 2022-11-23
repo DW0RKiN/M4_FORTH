@@ -359,6 +359,28 @@ __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 dnl
 dnl
 dnl
+dnl # ( addr -- x $1 $2 $3 ... )
+define({FETCH_PUSHS},{dnl
+__{}__ADD_TOKEN({__TOKEN_FETCH_PUSHS},{@ }__REMOVE_COMMA($@),$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FETCH_PUSHS},{dnl
+ifelse($#,0,{
+__{}  .error {$0}($@): Missing parameters!},
+$#,1,{dnl
+__{}__ASM_TOKEN_FETCH_PUSH($@)},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    push DE             ; 1:11      __INFO
+__{}    ld    E, (HL)       ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld    D, (HL)       ; 1:7       __INFO
+__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # ( b a -- b a b $1 $2 $3 ... )
 define({OVER_PUSHS},{dnl
 __{}__ADD_TOKEN({__TOKEN_OVER_PUSHS},{over }__REMOVE_COMMA($@),$@){}dnl
