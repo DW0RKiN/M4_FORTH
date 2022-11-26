@@ -4149,8 +4149,10 @@ __{}    ld    H, A          ; 1:4       __INFO   HL = flag
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
 __{}  .error {$0}($@): M4 does not know $1 parameter value!},
-{ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0EQ},
-__{}__{}{define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
+{dnl
+__{}ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0EQ},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == eval((__HEX_HL($1)<<16)+__HEX_HL($2))}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
 __{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
 __{}__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
 __{}__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
