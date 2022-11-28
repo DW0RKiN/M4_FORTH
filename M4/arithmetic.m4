@@ -1505,6 +1505,222 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
+dnl
+dnl # ( d -- d+n )
+dnl # d = d + n
+define({PUSH2_DADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DADD},{$1 $2 d+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),1,{
+__{}__{}.error {$0}($@): Missing address parameter!},
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__{}    ; warning {$0}($@): The conditions $1 and $2 cannot be evaluated
+__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_MEM_REF($1),{1},{
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, format({%-11s},$2); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_MEM_REF($2):_TYP_DOUBLE,{1:small},{
+__{}    ; warning {$0}($@): The condition $2 cannot be evaluated
+__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_MEM_REF($2),{1},{
+__{}    ; warning {$0}($@): The condition $2 cannot be evaluated
+__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ld    A, format({%-11s},low $1); 2:7       __INFO
+__{}    adc   A, E          ; 1:4       __INFO
+__{}    ld    E, A          ; 1:4       __INFO
+__{}    ld    A, format({%-11s},high $1); 2:7       __INFO
+__{}    adc   A, D          ; 1:4       __INFO
+__{}    ld    D, A          ; 1:4       __INFO},
+__IS_NUM($1):__IS_NUM($2),{0:0},{
+__{}    ; warning {$0}($@): The conditions $1 and $2 cannot be evaluated
+__{}    ld   BC, format({%-11s},$2); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_NUM($1),{0},{
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, format({%-11s},$2); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_NUM($2),{0},{
+__{}    ; warning {$0}($@): The condition $2 cannot be evaluated
+__{}    ld   BC, format({%-11s},$2); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+{dnl
+__{}ifelse(dnl
+__{}__HEX_HL($1):__HEX_HL($2),{0xFD00:0x0000},{
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-3*2^24 )
+__{}__{}    dec   D             ; 1:4       __INFO
+__{}__{}    dec   D             ; 1:4       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFE00:0x0000},{
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-2^25 )
+__{}__{}    dec   D             ; 1:4       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFF00:0x0000},{
+__{}__{}    dec   D             ; 1:4       __INFO   ( d -- d-2^24 )},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFB:0x0000},{
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-5*2^16 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFC:0x0000},{
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^18 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFD:0x0000},{
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-3*2^16 )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFE:0x0000},{
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^17 )
+__{}__{}    dec  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFF:0x0000},{
+__{}__{}    dec  DE             ; 1:6       __INFO   ( d -- d-2^16 )},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFF:0xFF00},{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-2^8 )
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    sub   H             ; 1:4       __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}__HEX_HL($1):__HEX_L($2),{0xFFFF:0x00},{
+__{}__{}    ld    A, __HEX_H($2)       ; 2:7       __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add   A, H          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFF:0xFFFE},{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( d -- d-2 )
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    sub   H             ; 1:4       __INFO   lo(d)-lo(d-2)
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}__HEX_HL($1):__HEX_HL($2),{0xFFFF:0xFFFF},{
+__{}__{}    ld    A, L          ; 1:4       __INFO   ( d -- d-1 )
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO   lo--
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0000:0x0000},{
+__{}__{}                        ;           __INFO   ( d -- d+0 )},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0000:0x0001},{
+__{}__{}    inc  HL             ; 1:6       __INFO   lo++
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0000:0x0100},{
+__{}__{}    inc   H             ; 1:4       __INFO   ( d -- d+256 )
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__HEX_HL($1):__HEX_L($2),{0x0000:0x00},{
+__{}__{}    ld    A, __HEX_H($2)       ; 2:7       __INFO   ( d -- d+__HEX_HL($2) )
+__{}__{}    add   A, H          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0001:0x0000},{
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^16 )},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0002:0x0000},{
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^17 )
+__{}__{}    inc  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0003:0x0000},{
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+3*2^16 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0004:0x0000},{
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+2^18 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0005:0x0000},{
+__{}__{}    inc  DE             ; 1:6       __INFO   ( d -- d+5*2^16 )
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0100:0x0000},{
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+2^24 )},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0200:0x0000},{
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+2^25 )
+__{}__{}    inc   D             ; 1:4       __INFO},
+__{}__HEX_HL($1):__HEX_HL($2),{0x0300:0x0000},{
+__{}__{}    inc   D             ; 1:4       __INFO   ( d -- d+3*2^24 )
+__{}__{}    inc   D             ; 1:4       __INFO
+__{}__{}    inc   D             ; 1:4       __INFO},
+__{}__HEX_L($1):__HEX_HL($2),{0x00:0x0000},{
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add   A, D          ; 1:4       __INFO
+__{}__{}    ld    D, A          ; 1:4       __INFO},
+__{}__HEX_HL($2),{0x0000},{
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__HEX_HL($1),{0x0000},{
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__HEX_HL($1),{0x0001},{
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr   nc, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++
+__{}__{}    inc  DE             ; 1:6       __INFO   hi++},
+__{}__HEX_HL($1),{0xFFFF},{
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}__HEX_HL($1),{0xFFFE},{
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    jr    c, $+3        ; 2:7/12    __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--
+__{}__{}    dec  DE             ; 1:6       __INFO   hi--},
+__{}{
+__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   ( d -- d+__HEX_DEHL(__HEX_HL($1)*65536+__HEX_HL($2)) )
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}define({_TMP_INFO},__INFO){}__LD_REG16({BC},$1,{BC},$2){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    adc  HL, BC         ; 2:15      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # "2dup D+"
 dnl # ( hi1 lo1 -- d1 d1+d1 )
 dnl # d0 = d1 + d1
@@ -1888,6 +2104,86 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   BC, __HEX_DE(-($1))     ; 3:10      __INFO
 __{}__{}    adc  HL, BC         ; 2:15      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( d -- d-n )
+dnl # d = d - n
+define({PUSH2_DSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DSUB},{$1 $2 d-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),1,{
+__{}__{}.error {$0}($@): Missing address parameter!},
+__{}eval($#>2),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__{}    ; warning {$0}($@): The conditions $1 and $2 cannot be evaluated
+__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_MEM_REF($1):__IS_NUM($2),{1:1},{
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, __HEX_HL(-($2))     ; 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_MEM_REF($1),{1},{
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, __FORM({%-11s},-($2)); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_MEM_REF($2),{1},{
+__{}    ; warning {$0}($@): The condition $2 cannot be evaluated
+__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_NUM($1):__IS_NUM($2),{0:0},{
+__{}    ; warning {$0}($@): The conditions $1 and $2 cannot be evaluated
+__{}    ld   BC, __FORM({%-11s},-($2)); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_NUM($1),{0},{
+__{}    ; warning {$0}($@): The condition $1 cannot be evaluated
+__{}    ld   BC, __HEX_HL(-($2))     ; 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, __FORM({%-11s},ifelse(eval($2),0,{-($1)},{-($1+1)})); 3:10      __INFO
+__{}    adc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+__IS_NUM($2),{0},{
+__{}    ; warning {$0}($@): The condition $2 cannot be evaluated
+__{}    ld   BC, __FORM({%-11s},-($2)); 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO},
+{dnl
+__{}__ASM_TOKEN_PUSH2_DADD(ifelse(eval($2),0,{__HEX_HL(-($1))},{__HEX_HL(-($1+1))}),__HEX_HL(-($2))){}dnl
 })}){}dnl
 dnl
 dnl
