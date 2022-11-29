@@ -3628,20 +3628,19 @@ __{}__ADD_TOKEN({__TOKEN_DINVERT},{dinvert},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DINVERT},{dnl
-__{}define({__INFO},{dinvert}){}dnl
-
-    ld    A, L          ; 1:4       dinvert   ( d1 -- d )  d = ~d1
-    cpl                 ; 1:4       dinvert
-    ld    L, A          ; 1:4       dinvert
-    ld    A, H          ; 1:4       dinvert
-    cpl                 ; 1:4       dinvert
-    ld    H, A          ; 1:4       dinvert
-    ld    A, E          ; 1:4       dinvert
-    cpl                 ; 1:4       dinvert
-    ld    E, A          ; 1:4       dinvert
-    ld    A, D          ; 1:4       dinvert
-    cpl                 ; 1:4       dinvert
-    ld    D, A          ; 1:4       dinvert}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO   ( d1 -- d )  d = ~d1
+    cpl                 ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO
+    cpl                 ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    ld    A, E          ; 1:4       __INFO
+    cpl                 ; 1:4       __INFO
+    ld    E, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    cpl                 ; 1:4       __INFO
+    ld    D, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( pd -- pd )
