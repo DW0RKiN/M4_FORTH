@@ -3992,18 +3992,18 @@ __{}__ADD_TOKEN({__TOKEN_DEQ},{d=},$@){}dnl
 dnl
 define({__ASM_TOKEN_DEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                       ;[15:90/69,91]D=  ( d2 d1 -- flag )
-    pop  BC             ; 1:10      D=   BC = lo_2
-    xor   A             ; 1:4       D=    A = 0x00
-    sbc  HL, BC         ; 2:15      D=   HL = lo_1 - lo_2
-    pop  HL             ; 1:10      D=   HL = hi_2
-    jr   nz, $+7        ; 2:7/12    D=
-    sbc  HL, DE         ; 2:15      D=   HL = hi_2 - hi_1
-    jr   nz, $+3        ; 2:7/12    D=
-    dec   A             ; 1:4       D=    A = 0xFF
-    ld    L, A          ; 1:4       D=
-    ld    H, A          ; 1:4       D=   HL = flag d2==d1
-    pop  DE             ; 1:10      D=}){}dnl
+                     ;[15:90/69,91] __INFO  ( d2 d1 -- flag )
+    pop  BC             ; 1:10      __INFO   BC = lo_2
+    xor   A             ; 1:4       __INFO    A = 0x00
+    sbc  HL, BC         ; 2:15      __INFO   HL = lo_1 - lo_2
+    pop  HL             ; 1:10      __INFO   HL = hi_2
+    jr   nz, $+7        ; 2:7/12    __INFO
+    sbc  HL, DE         ; 2:15      __INFO   HL = hi_2 - hi_1
+    jr   nz, $+3        ; 2:7/12    __INFO
+    dec   A             ; 1:4       __INFO    A = 0xFF
+    ld    L, A          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO   HL = flag d2==d1
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( pd2 pd1 -- pd2 pd1 flag )

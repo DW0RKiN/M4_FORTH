@@ -502,11 +502,17 @@ define({__SHOW_TOKEN},{
 __{}; name: defn({__TOKEN[$1].NAME})
 __{}; info: defn({__TOKEN[$1].INFO})
 __{};items: __GET_TOKEN_ITEMS($1)
-__{};param: defn({__TOKEN[$1].PARAM})
-__{};array1: >__GET_TOKEN_ARRAY_1($1)<
-__{};array2: >__GET_TOKEN_ARRAY_2($1)<
-__{};array3: >__GET_TOKEN_ARRAY_3($1)<
-__{};array: __GET_TOKEN_ARRAY($1){}dnl
+__{};param: defn({__TOKEN[$1].PARAM}){}dnl
+__{}ifelse(__GET_TOKEN_ARRAY_1($1),,,{
+;array1: >__GET_TOKEN_ARRAY_1($1)<}){}dnl
+__{}ifelse(__GET_TOKEN_ARRAY_2($1),,,{
+;array2: >__GET_TOKEN_ARRAY_2($1)<}){}dnl
+__{}ifelse(__GET_TOKEN_ARRAY_3($1),,,{
+;array3: >__GET_TOKEN_ARRAY_3($1)<}){}dnl
+__{}ifelse(__GET_TOKEN_ARRAY_4($1),,,{
+;array4: >__GET_TOKEN_ARRAY_4($1)<}){}dnl
+__{}ifelse(__GET_TOKEN_ITEMS($1),0,,{
+;array: __GET_TOKEN_ARRAY($1)}){}dnl
 }){}dnl
 dnl
 dnl # Fail with multiline...
