@@ -3964,23 +3964,23 @@ dnl
 dnl # D0<
 dnl # ( d -- flag )
 define({D0LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_D0LT},{d0lt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_D0LT},{d0<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_D0LT},{dnl
-__{}define({__INFO},{d0lt}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_D0LT,{small},{
-                        ;[5:34]     D0<   ( hi lo -- flag D<0 )
-    rl    D             ; 2:8       D0<
-    pop  DE             ; 1:11      D0<
-    sbc  HL, HL         ; 2:15      D0<}
+                        ;[5:34]     __INFO   ( hi lo -- flag D<0 )
+    rl    D             ; 2:8       __INFO
+    pop  DE             ; 1:11      __INFO
+    sbc  HL, HL         ; 2:15      __INFO}
 ,{
-                        ;[6:31]     D0<   ( hi lo -- flag D<0 )
-    rl    D             ; 2:8       D0<
-    pop  DE             ; 1:11      D0<
-    sbc   A, A          ; 1:4       D0<
-    ld    L, A          ; 1:4       D0<
-    ld    H, A          ; 1:4       D0<   set flag D < 0})}){}dnl
+                        ;[6:31]     __INFO   ( hi lo -- flag D<0 )
+    rl    D             ; 2:8       __INFO
+    pop  DE             ; 1:11      __INFO
+    sbc   A, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO   set flag D < 0})}){}dnl
 dnl
 dnl
 dnl # D=
