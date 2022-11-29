@@ -1,7 +1,5 @@
 #!/bin/sh
 
-str_time=`date +%Y%m%d%H%M%S`
-
 if test "$1" = "--check" ; then
    shift
    i="; vvv\n"
@@ -108,20 +106,27 @@ else
 
    printf "include(\`$file')${@}" | m4 | awk '
 BEGIN {
+    str_time=strftime("%Y%m%d%H%M%S");
     sum_bytes=0; 
-    sum_clock=0} 
+    sum_clock=0
+    first=1} 
 {
     match($0,/^[^;]+;([ 0-9]+):([0-9]+)/,arr);
     sum_bytes+= arr[1]; 
     sum_clock+=arr[2];
-    print $0
-} 
+    if ( first ) {
+        first=0;
+        if ( $0 ~ /^\s*$/) ;
+        else
+           print $0;
+    }
+    else
+        print $0;
+}
 END {
-    printf "                       ;[%2i:%i]\n",sum_bytes,sum_clock
+    end_time=strftime("%Y%m%d%H%M%S");
+    time=end_time-str_time;
+    printf "\033[1;30m; seconds: %-5i       ;[%2i:%i]\033[0m\n",time,sum_bytes,sum_clock
 }'
 
 fi
-
-end_time=`date +%Y%m%d%H%M%S`
-
-echo "$(($end_time-$str_time)) seconds"
