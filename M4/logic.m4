@@ -3104,6 +3104,25 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
+dnl # ( d1 -- d )
+dnl # d = d1 & n
+define({PUSH2_DAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DAND},{$1 $2 d&},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DAND},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),1,{
+__{}  .error {$0}($@): Missing address parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__{}__AND_REG16_16BIT({HL},$2){}dnl
+__{}__{}__AND_REG16_16BIT({DE},$1){}dnl
+})}){}dnl
+dnl
+dnl
 dnl # ( d1 d2 -- d )
 dnl # d = d1 | d2
 define({DOR},{dnl
@@ -3423,6 +3442,25 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
+dnl # ( d1 -- d )
+dnl # d = d1 | n
+define({PUSH2_DOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DOR},{$1 $2 d|},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DOR},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),1,{
+__{}  .error {$0}($@): Missing address parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__{}__OR_REG16_16BIT({HL},$2){}dnl
+__{}__{}__OR_REG16_16BIT({DE},$1){}dnl
+})}){}dnl
+dnl
+dnl
 dnl
 dnl # ( d1 u -- d )  d == d1 | 2**u
 define({DBITSET},{dnl
@@ -3619,6 +3657,25 @@ __{}__{}__XOR_REG16_16BIT({HL},$1){}dnl
 __{}__{}__XOR_REG16_16BIT({DE},__HEX_DE($1)){}dnl
 __{}}){}dnl
 }){}dnl
+dnl
+dnl
+dnl # ( d1 -- d )
+dnl # d = d1 ^ n
+define({PUSH2_DXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DXOR},{$1 $2 d^},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DXOR},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),1,{
+__{}  .error {$0}($@): Missing address parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__{}__XOR_REG16_16BIT({HL},$2){}dnl
+__{}__{}__XOR_REG16_16BIT({DE},$1){}dnl
+})}){}dnl
 dnl
 dnl
 dnl # ( d1 -- d )

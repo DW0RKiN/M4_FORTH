@@ -647,6 +647,7 @@ dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_1},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_1)}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_2},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_2)}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_3},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_3)}){}dnl
+define({__LAST_TOKEN_IS_PTR_REVERSE_4},{__IS_MEM_REF(__LAST_TOKEN_REVERSE_4)}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_2_1},    {eval(                                                                          __IS_MEM_REF(__LAST_TOKEN_REVERSE_2)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_1))}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_4_3},    {eval(__IS_MEM_REF(__LAST_TOKEN_REVERSE_4)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_3)                                                                          )}){}dnl
 define({__LAST_TOKEN_IS_PTR_REVERSE_3_2_1},  {eval(                                     __IS_MEM_REF(__LAST_TOKEN_REVERSE_3)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_2)|__IS_MEM_REF(__LAST_TOKEN_REVERSE_1))}){}dnl
@@ -655,6 +656,11 @@ dnl
 define({__LAST_TOKEN_IS_NUM_REVERSE_1},{__IS_NUM(__LAST_TOKEN_REVERSE_1)}){}dnl
 define({__LAST_TOKEN_IS_NUM_REVERSE_2},{__IS_NUM(__LAST_TOKEN_REVERSE_2)}){}dnl
 define({__LAST_TOKEN_IS_NUM_REVERSE_3},{__IS_NUM(__LAST_TOKEN_REVERSE_3)}){}dnl
+define({__LAST_TOKEN_IS_NUM_REVERSE_4},{__IS_NUM(__LAST_TOKEN_REVERSE_4)}){}dnl
+define({__LAST_TOKEN_IS_NUM_REVERSE_2_1},    {eval(                                                                  __IS_NUM(__LAST_TOKEN_REVERSE_2)&__IS_NUM(__LAST_TOKEN_REVERSE_1))}){}dnl
+define({__LAST_TOKEN_IS_NUM_REVERSE_4_3},    {eval(__IS_NUM(__LAST_TOKEN_REVERSE_4)&__IS_NUM(__LAST_TOKEN_REVERSE_3)                                                                  )}){}dnl
+define({__LAST_TOKEN_IS_NUM_REVERSE_3_2_1},  {eval(                                 __IS_NUM(__LAST_TOKEN_REVERSE_3)&__IS_NUM(__LAST_TOKEN_REVERSE_2)&__IS_NUM(__LAST_TOKEN_REVERSE_1))}){}dnl
+define({__LAST_TOKEN_IS_NUM_REVERSE_4_3_2_1},{eval(__IS_NUM(__LAST_TOKEN_REVERSE_4)&__IS_NUM(__LAST_TOKEN_REVERSE_3)&__IS_NUM(__LAST_TOKEN_REVERSE_2)&__IS_NUM(__LAST_TOKEN_REVERSE_1))}){}dnl
 dnl
 define({__LAST_TOKEN_IS_NUM_1_2},{ifelse(__IS_NUM(__LAST_TOKEN_ARRAY_1)-__IS_NUM(__LAST_TOKEN_ARRAY_2),{1-1},{1},{0})}){}dnl
 define({__LAST_TOKEN_IS_NUM_2_3},{ifelse(__IS_NUM(__LAST_TOKEN_ARRAY_2)-__IS_NUM(__LAST_TOKEN_ARRAY_3),{1-1},{1},{0})}){}dnl
@@ -1313,6 +1319,9 @@ debug: __eval_s32($@)}){}dnl
 __{}
 __{}ifelse(__IS_NUM($2):__IS_NUM($3):ifelse($#,3,1,__IS_NUM($4)):ifelse($#,3,1,__IS_NUM($5)),{1:1:1:1},{dnl
 __{}__{}ifelse(dnl
+__{}__{}__{}$1,   {d&},{__HEX_DE(__HEX_DEHL(__HEX_HL($2)*65536+__HEX_HL($3)) & __HEX_DEHL(__HEX_HL($4)*65536+__HEX_HL($5))),__HEX_HL(__HEX_HL($3) & __HEX_HL($5))},
+__{}__{}__{}$1,   {d|},{__HEX_DE(__HEX_DEHL(__HEX_HL($2)*65536+__HEX_HL($3)) | __HEX_DEHL(__HEX_HL($4)*65536+__HEX_HL($5))),__HEX_HL(__HEX_HL($3) | __HEX_HL($5))},
+__{}__{}__{}$1,   {d^},{__HEX_DE(__HEX_DEHL(__HEX_HL($2)*65536+__HEX_HL($3)) ^ __HEX_DEHL(__HEX_HL($4)*65536+__HEX_HL($5))),__HEX_HL(__HEX_HL($3) ^ __HEX_HL($5))},
 __{}__{}__{}$1,   {d+},{__HEX_DE((__HEX_HL($2)+__HEX_HL($4))*65536+__HEX_HL($3)+__HEX_HL($5)),__HEX_HL(__HEX_HL($3)+__HEX_HL($5))},
 __{}__{}__{}$1,   {d-},{__HEX_DE((__HEX_HL($2)-__HEX_HL($4))*65536+__HEX_HL($3)-__HEX_HL($5)),__HEX_HL(__HEX_HL($3)-__HEX_HL($5))},
 __{}__{}__{}$1, {dabs},{ifelse(__HEX_HL(0x8000 & ($2)),0x0000,{$2,$3},{__HEX_DE(-(__HEX_HL($2)*65536+__HEX_HL($3))),__HEX_HL(-__HEX_HL($3))})},
@@ -2018,6 +2027,18 @@ __{}},
 dnl # PUSHDOT
 pushdot,,,
 
+__LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_NUM_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DAND:1,      {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d&,  __LAST_TOKEN_LAST_4_PAR))},
+__LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_NUM_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DOR:1,       {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d|,  __LAST_TOKEN_LAST_4_PAR))},
+__LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_NUM_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DXOR:1,      {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d^,  __LAST_TOKEN_LAST_4_PAR))},
+__LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                                              __TOKEN_PUSHS:2:__TOKEN_DAND,        {__SET_TOKEN({__TOKEN_PUSH2_DAND},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+__LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                                              __TOKEN_PUSHS:2:__TOKEN_DOR,         {__SET_TOKEN({__TOKEN_PUSH2_DOR}, __LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+__LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                                              __TOKEN_PUSHS:2:__TOKEN_DXOR,        {__SET_TOKEN({__TOKEN_PUSH2_DXOR},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
+__LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):__LAST_TOKEN_IS_PTR_REVERSE_4_3:$1,      __TOKEN_PUSHS:1:0:__TOKEN_DADD,      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_DADD},__BEFORELAST_TOKEN_REVERSE_4{ }__BEFORELAST_TOKEN_REVERSE_3{ }$2,__BEFORELAST_TOKEN_REVERSE_4,__BEFORELAST_TOKEN_REVERSE_3){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS,__BEFORELAST_TOKEN_INFO{ 2swap 2drop},__DROP_4_PAR(__BEFORELAST_TOKEN_ARRAY){}ifelse(__BEFORELAST_TOKEN_ITEMS,4,{},{,})__BEFORELAST_TOKEN_LAST_2_PAR)},
+__LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                                      __TOKEN_PUSHS:1:__TOKEN_DADD,        {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_DADD},__BEFORELAST_TOKEN_REVERSE_2{ }__BEFORELAST_TOKEN_REVERSE_1{ }$2,__BEFORELAST_TOKEN_REVERSE_2,__BEFORELAST_TOKEN_REVERSE_1){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS,__BEFORELAST_TOKEN_INFO{ 2drop},__DROP_2_PAR(__BEFORELAST_TOKEN_ARRAY))},
+__LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                                      __TOKEN_PUSHS:1:__TOKEN_DSUB,        {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_DSUB},__BEFORELAST_TOKEN_REVERSE_2{ }__BEFORELAST_TOKEN_REVERSE_1{ }$2,__BEFORELAST_TOKEN_REVERSE_2,__BEFORELAST_TOKEN_REVERSE_1){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS,__BEFORELAST_TOKEN_INFO{ 2drop},__DROP_2_PAR(__BEFORELAST_TOKEN_ARRAY))},
+
+
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_PTR_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DEQ:0,       {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d=,  __LAST_TOKEN_LAST_4_PAR))},
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_PTR_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DNE:0,       {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d<>, __LAST_TOKEN_LAST_4_PAR))},
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_PTR_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DLT:0,       {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d<,  __LAST_TOKEN_LAST_4_PAR))},
@@ -2303,7 +2324,15 @@ define({__XOR_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
-ifelse(__IS_NUM($2),{0},{
+ifelse(dnl
+__IS_MEM_REF($2),{1},{
+__{}    ld    A,format({%-12s},$2); 3:13      _TMP_INFO
+__{}    xor   substr($1,1,1)             ; 1:4       _TMP_INFO
+__{}    ld    substr($1,1,1), A          ; 1:4       _TMP_INFO
+__{}    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO
+__{}    xor   substr($1,0,1)             ; 1:4       _TMP_INFO
+__{}    ld    substr($1,0,1), A          ; 1:4       _TMP_INFO},
+__IS_NUM($2),{0},{
 __{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot optimize the code.
 __{}__XOR_REG8_8BIT(substr($1,1,1),0xFF & ($2)){}dnl
 __{}__XOR_REG8_8BIT(substr($1,0,1),+($2) >> 8)},
@@ -2390,7 +2419,15 @@ define({__OR_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
-ifelse(__IS_NUM($2),{0},{
+ifelse(dnl
+__IS_MEM_REF($2),{1},{
+__{}    ld    A,format({%-12s},$2); 3:13      _TMP_INFO
+__{}    or    substr($1,1,1)             ; 1:4       _TMP_INFO
+__{}    ld    substr($1,1,1), A          ; 1:4       _TMP_INFO
+__{}    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO
+__{}    or    substr($1,0,1)             ; 1:4       _TMP_INFO
+__{}    ld    substr($1,0,1), A          ; 1:4       _TMP_INFO},
+__IS_NUM($2),{0},{
 __{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot optimize the code.
 __{}  if (($2) = 0xFFFF)
 __{}    ld   $1, 0xFFFF     ; 3:10      _TMP_INFO
@@ -2485,7 +2522,15 @@ define({__AND_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
-ifelse(__IS_NUM($2),{0},{
+ifelse(dnl
+__IS_MEM_REF($2),{1},{
+__{}    ld    A,format({%-12s},$2); 3:13      _TMP_INFO
+__{}    and   substr($1,1,1)             ; 1:4       _TMP_INFO
+__{}    ld    substr($1,1,1), A          ; 1:4       _TMP_INFO
+__{}    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO
+__{}    and   substr($1,0,1)             ; 1:4       _TMP_INFO
+__{}    ld    substr($1,0,1), A          ; 1:4       _TMP_INFO},
+__IS_NUM($2),{0},{
 __{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot optimize the code.
 __{}  if (($2) = 0x0000)
 __{}    ld   $1, 0x0000     ; 3:10      _TMP_INFO
