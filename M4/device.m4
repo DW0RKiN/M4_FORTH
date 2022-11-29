@@ -231,7 +231,7 @@ __IS_MEM_REF($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
-__SAVE_EVAL($1>256),{1},{  
+__SAVE_EVAL($1>256),{1},{
 __{}  .error {$0}($@): The parameter is greater than 256!},
 __SAVE_EVAL($1<0),{1},{
 __{}  .error {$0}($@): The parameter is negative!},
