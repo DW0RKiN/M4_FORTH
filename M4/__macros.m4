@@ -2550,7 +2550,22 @@ dnl #   $3 name reg
 dnl #   $4 8bit value with hex form 0xNN, $3 = $4
 dnl # Output
 dnl #   code $1 = $1 and $2
-ifelse(__IS_NUM($2),{0},{
+ifelse(dnl
+__IS_MEM_REF($2),{1},{
+__{}ifelse(dnl
+__{}$1,{C},{    ld    A,format({%-12s},$2); 3:13      _TMP_INFO},
+__{}$1,{E},{    ld    A,format({%-12s},$2); 3:13      _TMP_INFO},
+__{}$1,{L},{    ld    A,format({%-12s},$2); 3:13      _TMP_INFO},
+__{}$1,{B},{    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO},
+__{}$1,{D},{    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO},
+__{}$1,{H},{    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO})
+__{}    and   $1             ; 1:4       _TMP_INFO
+__{}    ld    $1, A          ; 1:4       _TMP_INFO},
+__{}$2,$4,{
+__{}__{}    ld    A, $3          ; 1:4       _TMP_INFO
+__{}__{}    and   $1             ; 1:4       _TMP_INFO
+__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO},
+__IS_NUM($2),{0},{
 __{}   if (($2) = 0x00)
 __{}     ld    $1, 0x00       ; 2:7       _TMP_INFO
 __{}   else
