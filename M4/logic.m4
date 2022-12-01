@@ -45,6 +45,23 @@ __{}__AND_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
 dnl
+dnl # ( b a -- b&$1 a )
+define({SWAP_PUSH_AND_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_PUSH_AND_SWAP},{swap $1 and swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SWAP_PUSH_AND_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__AND_REG16_16BIT({DE},$1){}dnl
+})}){}dnl
+dnl
+dnl
 dnl # ( x1 x2 -- x )
 dnl # x = x1 | x2
 define({OR},{dnl
@@ -86,6 +103,23 @@ __{}    ld    L, A          ; 1:4       $1 or},
 {dnl
 __{}define({_TMP_INFO},{$1 or}){}dnl
 __{}__OR_REG16_16BIT({HL},$1){}dnl
+})}){}dnl
+dnl
+dnl
+dnl # ( b a -- b|$1 a )
+define({SWAP_PUSH_OR_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_PUSH_OR_SWAP},{swap $1 or swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SWAP_PUSH_OR_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__OR_REG16_16BIT({DE},$1){}dnl
 })}){}dnl
 dnl
 dnl
@@ -213,6 +247,23 @@ __{}    ld    L, A          ; 1:4       $1 xor},
 {dnl
 __{}define({_TMP_INFO},{$1 xor}){}dnl
 __{}__XOR_REG16_16BIT({HL},$1){}dnl
+})}){}dnl
+dnl
+dnl
+dnl # ( b a -- b^$1 a )
+define({SWAP_PUSH_XOR_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP_PUSH_XOR_SWAP},{swap $1 xor swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_SWAP_PUSH_XOR_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__XOR_REG16_16BIT({DE},$1){}dnl
 })}){}dnl
 dnl
 dnl
