@@ -699,8 +699,8 @@ dnl # Output:
 dnl #    eval(            (num_1) operation (num_2))
 dnl #    eval(((num_3)<<16+num_1) operation (num_2))
 define({__EVAL_OP_NUM_XXX_SJASMPLUS},{dnl
-__{}ifelse(__IS_NUM($2),               1,{define({__TEMP_A}, {eval($2)})},           {define({__TEMP_A}, {($2)})}){}dnl
-__{}ifelse(__IS_NUM($3),               1,{define({__TEMP_B}, {eval($3)})},           {define({__TEMP_B}, {($3)})}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{define({__TEMP_A},$2)},__HEX_HL($2),{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval($2)})}){}dnl
+__{}ifelse(__IS_MEM_REF($3),1,{define({__TEMP_B},$3)},__HEX_HL($3),{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval($3)})}){}dnl
 __{}ifelse(__IS_NUM($4),               1,{define({__TEMP_C}, {eval($4)})},           {define({__TEMP_C}, {($4)})}){}dnl
 __{}ifelse(__IS_NUM($2):__IS_NUM($4),1:1,{define({__TEMP_CA},{eval((($4)<<16)+$2)})},  {define({__TEMP_CA},{(($4)<<16+$2)})}){}dnl
 __{}ifelse(__IS_NUM($4),               1,{define({__TEMP_C_SIGN},{eval((($4)>>15)&1)})}, {define({__TEMP_C_SIGN},{((($4)>>15)&1)})}){}dnl
@@ -754,7 +754,9 @@ __{}__{}$1:__HEX_HL($2),{|:0xFFFF},{0xFFFF},
 __{}__{}$1:__HEX_HL($3),{|:0xFFFF},{0xFFFF},
 __{}__{}$1, {|},{__TEMP_A|__TEMP_B},
 
-__{}__{}$1, {^},{__TEMP_A^__TEMP_B},
+__{}__{}$1:__TEMP_A, {^:0},{__TEMP_B},
+__{}__{}$1:__TEMP_B, {^:0},{__TEMP_A},
+__{}__{}$1,          {^},{__TEMP_A^__TEMP_B},
 
 __{}__{}$1:__TEMP_A, {*:0},{0},
 __{}__{}$1:__TEMP_B, {*:0},{0},
@@ -867,8 +869,8 @@ dnl # Output:
 dnl #    eval(            (num_1) operation (num_2))
 dnl #    eval(((num_3)<<16+num_1) operation (num_2))
 define({__EVAL_OP_NUM_XXX_PASMO},{dnl
-__{}ifelse(__IS_MEM_REF($2),1,{define({__TEMP_A},{$2})},__HEX_HL($2),{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval(($2)&0xFFFF)})}){}dnl
-__{}ifelse(__IS_MEM_REF($2),1,{define({__TEMP_B},{$3})},__HEX_HL($3),{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval(($3)&0xFFFF)})}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{define({__TEMP_A},$2)},__HEX_HL($2),{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval(($2)&0xFFFF)})}){}dnl
+__{}ifelse(__IS_MEM_REF($3),1,{define({__TEMP_B},$3)},__HEX_HL($3),{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval(($3)&0xFFFF)})}){}dnl
 __{}ifelse(__HEX_HL($4),{},{define({__TEMP_C},{($4)})},{define({__TEMP_C},{eval(($4)&0xFFFF)})}){}dnl
 __{}ifelse(__HEX_HL($2),{},{define({__TEMP_LO_A},{(low($2))})},{define({__TEMP_LO_A},{eval(($2)&0xFF)})}){}dnl
 __{}ifelse(__HEX_HL($3),{},{define({__TEMP_LO_B},{(low($3))})},{define({__TEMP_LO_B},{eval(($3)&0xFF)})}){}dnl
