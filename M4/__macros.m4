@@ -2049,20 +2049,6 @@ __{}},
 
 dnl # PUSHDOT
 
-errprint({
->>>>>>}__LAST_TOKEN_NAME:eval((__LAST_TOKEN_ITEMS>3) &&{}dnl
-   ifelse(__LAST_TOKEN_IS_PTR_REVERSE_4_2,0,{1}, 
-    __LAST_TOKEN_EVAL_REVERSE_4,0,{1},
-    __LAST_TOKEN_EVAL_REVERSE_2,0,{1},
-    __LAST_TOKEN_HEX_REVERSE_4,0xFFFF,{1},
-    __LAST_TOKEN_HEX_REVERSE_2,0xFFFF,{1},{0}) &&{}dnl
-   ifelse(__LAST_TOKEN_IS_PTR_REVERSE_3_1,0,{1}, 
-    __LAST_TOKEN_EVAL_REVERSE_3,0,{1},
-    __LAST_TOKEN_EVAL_REVERSE_1,0,{1},
-    __LAST_TOKEN_HEX_REVERSE_3,0xFFFF,{1},
-    __LAST_TOKEN_HEX_REVERSE_1,0xFFFF,{1},{0})):$1
-){}dnl
-
 pushdot,,,
 
 __LAST_TOKEN_NAME:eval((__LAST_TOKEN_ITEMS>3) &&{}dnl
