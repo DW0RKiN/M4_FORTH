@@ -2567,7 +2567,10 @@ __{}__{}    and   $1             ; 1:4       _TMP_INFO
 __{}__{}    ld    $1, A          ; 1:4       _TMP_INFO},
 __IS_NUM($2),{0},{
 __{}   if (($2) = 0x00)
-__{}     ld    $1, 0x00       ; 2:7       _TMP_INFO
+__{}__{}ifelse($4,0x00,{dnl
+__{}     ld    $1, $3          ; 1:4       _TMP_INFO},
+__{}__{}{dnl
+__{}     ld    $1, 0x00       ; 2:7       _TMP_INFO})
 __{}   else
 __{}    if (($2) = 0xFE)
 __{}      res   0, $1          ; 2:8       _TMP_INFO
@@ -2661,8 +2664,8 @@ __{}  .warning {$0}($@): M4 does not know the "{$2}" value and therefore cannot 
 __{}  if (($2) = 0x0000)
 __{}    ld   $1, 0x0000     ; 3:10      _TMP_INFO
 __{}  else{}dnl
-__{}__AND_REG8_8BIT(substr($1,1,1),0xFF & ($2)){}dnl
-__{}__AND_REG8_8BIT(substr($1,0,1),+($2) >> 8)
+__{}__AND_REG8_8BIT(substr($1,1,1),0xFF & ($2),$3,$4){}dnl
+__{}__AND_REG8_8BIT(substr($1,0,1),+($2) >> 8,$3,$4)
 __{}  endif},
 {dnl
 __{}ifelse(__HEX_HL($2),{0x0000},{
