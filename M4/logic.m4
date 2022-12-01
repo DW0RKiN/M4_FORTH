@@ -3168,9 +3168,12 @@ __{}  .error {$0}($@): Missing address parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {dnl
-__{}__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
-__{}__{}__AND_REG16_16BIT({HL},$2){}dnl
-__{}__{}__AND_REG16_16BIT({DE},$1){}dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
+__{}__AND_REG16_16BIT({HL},$2){}dnl
+__{}ifelse(dnl
+__{}__HEX_L($2),0x00,{__AND_REG16_16BIT({DE},$1,{L},0x00)},
+__{}__HEX_H($2),0x00,{__AND_REG16_16BIT({DE},$1,{H},0x00)},
+__{}{__AND_REG16_16BIT({DE},$1)}){}dnl
 })}){}dnl
 dnl
 dnl

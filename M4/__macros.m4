@@ -2545,7 +2545,11 @@ dnl
 define({__AND_REG8_8BIT},{dnl
 dnl # Input
 dnl #   $1 name reg
-dnl #   $2 8bit value
+dnl #   $2 8bit value with hex form 0xNN
+dnl #   $3 name reg
+dnl #   $4 8bit value with hex form 0xNN, $3 = $4
+dnl # Output
+dnl #   code $1 = $1 and $2
 ifelse(__IS_NUM($2),{0},{
 __{}   if (($2) = 0x00)
 __{}     ld    $1, 0x00       ; 2:7       _TMP_INFO
@@ -2590,6 +2594,10 @@ __{}    endif
 __{}   endif},
 {dnl
 __{}ifelse(__HEX_L($2),{0xFF},{},
+__{}$1:$2,$3:$4,{
+__{}__{}                        ;           _TMP_INFO   $1 = $2},
+__{}$2:$4,{0x00:0x00},{
+__{}__{}    ld    $1, $3          ; 1:4       _TMP_INFO},
 __{}__HEX_L($2),{0x00},{
 __{}__{}    ld    $1, 0x00       ; 2:7       _TMP_INFO},
 __{}__HEX_L($2),{0xFE},{
@@ -2608,6 +2616,10 @@ __{}__HEX_L($2),{0xBF},{
 __{}__{}    res   6, $1          ; 2:8       _TMP_INFO},
 __{}__HEX_L($2),{0x7F},{
 __{}__{}    res   7, $1          ; 2:8       _TMP_INFO},
+__{}$2,$4,{
+__{}__{}    ld    A, $3          ; 1:4       _TMP_INFO
+__{}__{}    and   $1             ; 1:4       _TMP_INFO
+__{}__{}    ld    $1, A          ; 1:4       _TMP_INFO},
 __{}{
 __{}__{}    ld    A, __HEX_L($2)       ; 2:7       _TMP_INFO
 __{}__{}    and   $1             ; 1:4       _TMP_INFO
@@ -2619,6 +2631,8 @@ define({__AND_REG16_16BIT},{dnl
 dnl # Input
 dnl #   $1 name reg pair
 dnl #   $2 16bit value
+dnl #   $3 name reg
+dnl #   $4 8bit value with hex form 0xNN, $3 = $4
 ifelse(dnl
 __IS_MEM_REF($2),{1},{
 __{}    ld    A,format({%-12s},$2); 3:13      _TMP_INFO
@@ -2639,8 +2653,8 @@ __{}  endif},
 __{}ifelse(__HEX_HL($2),{0x0000},{
 __{}    ld   $1, 0x0000     ; 3:10      _TMP_INFO},
 __{}{dnl
-__{}__{}__AND_REG8_8BIT(substr($1,1,1),__HEX_L($2)){}dnl
-__{}__{}__AND_REG8_8BIT(substr($1,0,1),__HEX_H($2)){}dnl
+__{}__{}__AND_REG8_8BIT(substr($1,1,1),__HEX_L($2),$3,$4){}dnl
+__{}__{}__AND_REG8_8BIT(substr($1,0,1),__HEX_H($2),$3,$4){}dnl
 })})}){}dnl
 dnl
 dnl
