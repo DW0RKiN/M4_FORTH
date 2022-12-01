@@ -2567,10 +2567,10 @@ __{}__{}    and   $1             ; 1:4       _TMP_INFO
 __{}__{}    ld    $1, A          ; 1:4       _TMP_INFO},
 __IS_NUM($2),{0},{
 __{}   if (($2) = 0x00)
-__{}__{}ifelse($4,0x00,{dnl
-__{}     ld    $1, $3          ; 1:4       _TMP_INFO},
-__{}__{}{dnl
-__{}     ld    $1, 0x00       ; 2:7       _TMP_INFO})
+__{}ifelse(0x00,$4,{dnl
+__{}__{}     ld    $1, $3          ; 1:4       _TMP_INFO},
+__{}{dnl
+__{}__{}     ld    $1, 0x00       ; 2:7       _TMP_INFO})
 __{}   else
 __{}    if (($2) = 0xFE)
 __{}      res   0, $1          ; 2:8       _TMP_INFO
@@ -2597,7 +2597,14 @@ __{}           if (($2) = 0x7F)
 __{}             res   7, $1          ; 2:8       _TMP_INFO
 __{}           else
 __{}            if ((($2) > 0x00) && (($2) <= 0xFF))
-__{}              ld    A,format({%-12s},$2); 2:7       _TMP_INFO
+__{}ifelse($4,,{dnl
+__{}__{}              ld    A,format({%-12s},$2); 2:7       _TMP_INFO},
+__{}{dnl
+__{}__{}             if (($2) = $4)
+__{}__{}               ld    A, $3          ; 1:4       _TMP_INFO
+__{}__{}             else
+__{}__{}               ld    A,format({%-12s},$2); 2:7       _TMP_INFO
+__{}__{}             endif})
 __{}              and   $1             ; 1:4       _TMP_INFO
 __{}              ld    $1, A          ; 1:4       _TMP_INFO
 __{}            endif
