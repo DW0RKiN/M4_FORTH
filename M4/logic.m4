@@ -87,21 +87,13 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_OR},{$1 or},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_OR},{dnl
-__{}define({__INFO},{push_or}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1),{1},{
-__{}                        ;[10:42]    $1 or   ( x1 -- x )  x = x1 | $1
-__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 or
-__{}    or    H             ; 1:4       $1 or
-__{}    ld    H, A          ; 1:4       $1 or
-__{}    ld    A, format({%-11s},$1); 3:13      $1 or
-__{}    or    L             ; 1:4       $1 or
-__{}    ld    L, A          ; 1:4       $1 or},
 {dnl
-__{}define({_TMP_INFO},{$1 or}){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
 __{}__OR_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
@@ -231,21 +223,13 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_XOR},{$1 xor},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_XOR},{dnl
-__{}define({__INFO},{push_xor}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1),{1},{
-__{}                        ;[10:42]    $1 xor   ( x1 -- x )  x = x1 ^ $1
-__{}    ld    A,format({%-12s},(1+$1)); 3:13      $1 xor
-__{}    xor   H             ; 1:4       $1 xor
-__{}    ld    H, A          ; 1:4       $1 xor
-__{}    ld    A, format({%-11s},$1); 3:13      $1 xor
-__{}    xor   L             ; 1:4       $1 xor
-__{}    ld    L, A          ; 1:4       $1 xor},
 {dnl
-__{}define({_TMP_INFO},{$1 xor}){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
 __{}__XOR_REG16_16BIT({HL},$1){}dnl
 })}){}dnl
 dnl
