@@ -892,7 +892,7 @@ __{}ifelse(__HEX_HL($3),{},{define({__TEMP_HI_B},{(($3)>>8)})},{define({__TEMP_H
 __{}ifelse(__HEX_HL($2),{},{define({__TEMP_SIGN_A},{(($2)>>15)})},{define({__TEMP_SIGN_A},{eval((($2)>>15)&0x01)})}){}dnl
 __{}ifelse(__HEX_HL($3),{},{define({__TEMP_SIGN_B},{(($3)>>15)})},{define({__TEMP_SIGN_B},{eval((($3)>>15)&0x01)})}){}dnl
 __{}ifelse(__HEX_HL($4),{},{define({__TEMP_SIGN_C},{(($4)>>15)})},{define({__TEMP_SIGN_C},{eval((($4)>>15)&0x01)})}){}dnl
-ifelse(1,1,{errprint({
+ifelse(1,0,{errprint({
 __eval_op_num_xxx_pasmo($@)
 })}){}dnl
 __{}ifelse(dnl
@@ -1894,7 +1894,7 @@ __LAST_TOKEN_NAME:eval((__LAST_TOKEN_ITEMS>1) &&{}dnl
     __LAST_TOKEN_EVAL_REVERSE_2,0,{1},
     __LAST_TOKEN_HEX_REVERSE_1,0xFFFF,{1},
     __LAST_TOKEN_HEX_REVERSE_2,0xFFFF,{1},{0})):$1, __TOKEN_PUSHS:1:__TOKEN_AND,      {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_2_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,2,,{,}){}__EVAL_S16(&,__LAST_TOKEN_LAST_2_PAR))},
-    
+
 __LAST_TOKEN_NAME:eval((__LAST_TOKEN_ITEMS>1) &&{}dnl
    ifelse(__LAST_TOKEN_IS_PTR_REVERSE_2_1,0,{1},
     __LAST_TOKEN_EVAL_REVERSE_1,0,{1},
