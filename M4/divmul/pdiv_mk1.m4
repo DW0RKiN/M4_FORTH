@@ -20,7 +20,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 3
-define({_3UDIV},{ifelse(TYPDIV,{small},{
+define({_3UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_3UDIV},{3u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3UDIV},{ifelse(TYPDIV,{small},{
                         ;[26:248]   3/   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
     ld    B, H          ; 1:4       3/
     ld    C, L          ; 1:4       3/   1     1x = base
@@ -79,7 +83,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 4
-define({_4UDIV},{
+define({_4UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_4UDIV},{4u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4UDIV},{
                         ;[8:32]     4/   Variant HL/4 = HL >> 2
     srl   H             ; 2:8       4/
     rr    L             ; 2:8       4/         HL >>= 1
@@ -91,7 +99,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 5
-define({_5UDIV},{
+define({_5UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_5UDIV},{5u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_5UDIV},{
                         ;[33:197]   5/   Variant HL/5 = (HL*257*51) >> 16 = (HL*257*b_0011_0011) >> 16
     ld    B, H          ; 1:4       5/
     ld    C, L          ; 1:4       5/   1     1x = base
@@ -127,7 +139,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 6
-define({_6UDIV},{ifelse(TYPDIV,{small},{
+define({_6UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_6UDIV},{6u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_6UDIV},{ifelse(TYPDIV,{small},{
                         ;[29:260]   6/   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
     ld    B, H          ; 1:4       6/
     ld    C, L          ; 1:4       6/   1     1x = base
@@ -190,7 +206,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 7
-define({_7UDIV},{
+define({_7UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_7UDIV},{7u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_7UDIV},{
                         ;[22:467]   7/   Variant HL/7 = HL/8 + HL/(7*8) = HL/8 + HL/64 + HL/(7*8*8) = HL/8 + HL/64 + HL/512 + HL/4096 + HL/32768 + HL/262144 + ...
                         ;           7/   = (((HL+constant)>>2) + (HL<<1) + (HL<<4) + (HL<<7) + (HL<<10) + (HL<<13)) >> 16
                         ;           7/   = (((((((( (HL+constant)>>3) + HL)>>3 + HL)>>3 + HL)>>3 + HL)>>3) + HL)>>3 + HL)>>3
@@ -213,7 +233,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 8
-define({_8UDIV},{
+define({_8UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_8UDIV},{8u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_8UDIV},{
                         ;[11:44]    8/   Variant HL/8 = HL >> 3
     ld    A, L          ; 1:4       8/
     srl   H             ; 2:8       8/
@@ -229,7 +253,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 10
-define({_10UDIV},{
+define({_10UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_10UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_10UDIV},{
                         ;[36:209]   10/   Variant HL/10 = HL*(2*65536/2*65536)/10 = HL*(2*65536/10)/(2*65536) = HL*13107/(2*65536) = HL*51*257/(2*65536)
                         ;           10/   = HL*b_0011_0011*(1+1/256) >> (1+8)
     ld    B, H          ; 1:4       10/
@@ -269,7 +297,11 @@ dnl
 dnl ( x1 -- x)
 dnl x1 = 0..2559
 dnl x = x1 u/ 10
-define({MAX2559_10UDIV},{
+define({MAX2559_10UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_MAX2559_10UDIV},{(max2259)10u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_MAX2559_10UDIV},{
                         ;[21:134]   10/   Variant HL/10 = 0..2559*25.5*257/655360 = (HL*25.5*(1+1/256)) >> 8, HL < 2560
     ld    B, H          ; 1:4       10/
     ld    C, L          ; 1:4       10/         BC = 1x
@@ -296,7 +328,11 @@ dnl
 dnl ( x1 -- x)
 dnl x1 = 0..43689
 dnl x = x1 u/ 10
-define({MAX2559_10UDIV},{
+define({MAX43689_10UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_MAX43689_10UDIV},{(max43689)10u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_MAX43689_10UDIV},{
                         ;[29:165]   10/   Variant HL/10 = 0..43689*25.5*257/655360 = (HL*25.5*(1+1/256)) >> 8, HL < 43690
     ld    B, H          ; 1:4       10/
     ld    C, L          ; 1:4       10/         BC = 1x
@@ -329,7 +365,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 15
-define({_15UDIV},{
+define({_15UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_15UDIV},{15u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_15UDIV},{
                         ;[25:146]   15/   Variant HL/15 = (HL*257*17) >> 16 = (HL*257*b_0001_0001) >> 16
     ld    B, H          ; 1:4       15/
     ld    C, L          ; 1:4       15/   1     1x = base
@@ -359,7 +399,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 16
-define({_16UDIV},{ifelse(TYPDIV,{small},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16UDIV},{ifelse(TYPDIV,{small},{
                         ;[11:72]    16/   Variant HL/16 = HL >> 4 = (HL << 4) >> 8 = (HL*16) >> 8
     xor   A             ; 1:4       16/
     add  HL, HL         ; 1:11      16/
@@ -390,7 +434,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 17
-define({_17UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_17UDIV},{
                         ;[26:150]   17/   Variant HL/17 = (HL*257*15) >> 16 = (HL*257*b_0000_1111) >> 16
     ld    B, H          ; 1:4       17/
     ld    C, L          ; 1:4       17/   1     1x = base
@@ -420,7 +468,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 255
-define({_31_DIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_31_DIV},{
                         ;[46:245.5] 31/   Variant HL/31 = (33*HL*(4+1/256)) >> (8+4)
     ld    B, H          ; 1:4       31/
     ld    C, L          ; 1:4       31/         BC = 1x
@@ -466,7 +518,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 32
-define({_32UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_32UDIV},{
                         ;[9:57]     32/   Variant HL/32 = HL >> 5 = (HL << 3) >> 8 = (HL*8) >> 8
     xor   A             ; 1:4       32/
     add  HL, HL         ; 1:11      32/
@@ -483,7 +539,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 51
-define({_51UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_51UDIV},{
                         ;[21:116]   51/   Variant HL/51 = (HL*257*5) >> 16 = (HL*257*b_0000_0101) >> 16
     ld    B, H          ; 1:4       51/
     ld    C, L          ; 1:4       51/   1     1x = base
@@ -509,7 +569,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 63
-define({_63UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_63UDIV},{
                         ;[43:235.5] 63/   Variant HL/63 = (HL*(1+4/256)*(1+16/65536)) >> (-2 + 8)
     ld    A, H          ; 1:4       63/
     sub   0x7e          ; 1:4       63/         2*63*256=32256
@@ -556,7 +620,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 64
-define({_64UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_64UDIV},{
                         ;[7:42]     64/   Variant HL/64 = HL >> 6 = (HL << 2) >> 8 = (HL*4) >> 8
     xor   A             ; 1:4       64/
     add  HL, HL         ; 1:11      64/
@@ -571,7 +639,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 85
-define({_85UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_85UDIV},{
                         ;[19:101]   85/   Variant HL/85 = (HL*257*3) >> 16 = (HL*257*b_0000_0011) >> 16
     ld    B, H          ; 1:4       85/
     ld    C, L          ; 1:4       85/   1     1x = base
@@ -595,7 +667,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 128
-define({_128UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_128UDIV},{
                         ;[5:27]     128/   Variant HL/128 = HL >> 7 = (HL << 1) >> 8 = (HL*2) >> 8
     xor   A             ; 1:4       128/
     add  HL, HL         ; 1:11      128/
@@ -608,7 +684,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 255
-define({_255UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_255UDIV},{
                         ;[13:63]    255/   Variant HL/255 = (HL*257*1) >> 16 = (HL*257*b_0000_0001) >> 16
     xor   A             ; 1:4       255/
     ld   BC, 0x0001     ; 3:10      255/         rounding down constant
@@ -626,7 +706,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 256
-define({_256UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_256UDIV},{
                         ;[3:11]     256/   Variant HL/256 = HL >> 8
     ld    L, H          ; 1:4       256/
     ld    H, 0x00       ; 2:7       256/{}dnl
@@ -636,7 +720,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 512
-define({_512UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_512UDIV},{
                         ;[5:19]     512/   Variant HL/512 = HL >> 9 = H >> 1
     ld    L, H          ; 1:4       512/
     ld    H, 0x00       ; 2:7       512/
@@ -647,7 +735,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 1024
-define({_1024UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1024UDIV},{
                         ;[7:27]     1024/   Variant HL/1024 = HL >> 10 = H >> 2
     ld    L, H          ; 1:4       1024/
     ld    H, 0x00       ; 2:7       1024/
@@ -659,7 +751,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 2048
-define({_2048UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2048UDIV},{
                         ;[9:34]     2048/   Variant HL/2048 = HL >> 11 = H >> 3
     ld    A, H          ; 1:4       2048/
     ld   HL, 0x001f     ; 3:10      2048/
@@ -674,7 +770,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 4096
-define({_4096UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4096UDIV},{
                         ;[10:38]    4096/   Variant HL/4096 = HL >> 12 = H >> 4
     ld    A, H          ; 1:4       4096/
     ld   HL, 0x000f     ; 3:10      4096/
@@ -690,7 +790,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 8192
-define({_8192UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_8192UDIV},{
                         ;[9:34]     8192/   Variant HL/8192 = HL >> 13 = H >> 5 = (H << 3) >> 8
     ld    A, H          ; 1:4       8192/
     ld   HL, 0x0007     ; 3:10      8192/
@@ -705,7 +809,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 16384
-define({_16384UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_16384UDIV},{
                         ;[8:30]     16384/   Variant HL/16384 = HL >> 14 = H >> 6 = (H << 2) >> 8
     ld    A, H          ; 1:4       16384/
     ld   HL, 0x0003     ; 3:10      16384/
@@ -719,7 +827,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 32768
-define({_32768UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_32768UDIV},{
                         ;[6:24]     32768/   Variant HL/32768 = HL >> 15 = H >> 7 = (H << 1) >> 8
     xor   A             ; 1:4       32768/
     rl    H             ; 2:8       32768/
@@ -732,7 +844,11 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 65535
-define({_65535UDIV},{
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_65535UDIV},{
                         ;[9:33]     65535/
     ld    A, H          ; 1:4       65535/
     and   L             ; 1:4       65535/
