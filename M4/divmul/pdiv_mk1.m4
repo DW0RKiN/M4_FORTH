@@ -5,10 +5,15 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 2
-define({_2UDIV},{
-                        ;[4:16]     2/   Variant HL/2 = HL >> 1
-    srl   H             ; 2:8       2/
-    rr    L             ; 2:8       2/         HL >>= 1{}dnl
+define({_2UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[4:16]     __INFO   Variant HL/2 = HL >> 1
+    srl   H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO         HL >>= 1{}dnl
 })dnl
 dnl
 dnl
