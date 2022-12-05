@@ -790,8 +790,8 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 8192
-define({_2UDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+define({_8192UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_8192UDIV},{8192u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_8192UDIV},{
@@ -809,8 +809,8 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 16384
-define({_2UDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+define({_16384UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_16384UDIV},{16384u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_16384UDIV},{
@@ -827,8 +827,8 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 32768
-define({_2UDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+define({_32768UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_32768UDIV},{32768u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_32768UDIV},{
@@ -844,8 +844,8 @@ dnl
 dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 65535
-define({_2UDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_2UDIV},{2u/},$@){}dnl
+define({_65535UDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_65535UDIV},{2u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_65535UDIV},{
