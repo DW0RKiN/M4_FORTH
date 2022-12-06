@@ -24,59 +24,61 @@ define({_3UDIV},{dnl
 __{}__ADD_TOKEN({__TOKEN_3UDIV},{3u/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_3UDIV},{ifelse(TYPDIV,{small},{
-                        ;[26:248]   3/   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
-    ld    B, H          ; 1:4       3/
-    ld    C, L          ; 1:4       3/   1     1x = base
-    ld    A, 0xf8       ; 2:7       3/         b_1111_1000
-    add  HL, HL         ; 1:11      3/   0
-    adc   A, A          ; 1:4       3/      *2 AHL = 2x --> 10x --> 42x
-    add  HL, HL         ; 1:11      3/   1
-    adc   A, A          ; 1:4       3/      *2 AHL = 4x --> 20x --> 84x
-    add  HL, BC         ; 1:11      3/
-    adc   A, 0x00       ; 2:7       3/      +1 AHL = 5x --> 21x --> 85x
-    jp    m, $-7        ; 3:10      3/
-    ld   BC, 0x0055     ; 3:10      3/         rounding down constant
-    add  HL, BC         ; 1:11      3/
-    adc   A, B          ; 1:4       3/      +0 AHL = 85x with rounding down constant
-    ld    B, A          ; 1:4       3/        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
-    ld    C, H          ; 1:4       3/         BC = "A.H"
-    add  HL, BC         ; 1:11      3/         HL = "H.L" + "A.H"
-    ld    L, H          ; 1:4       3/
-    adc   A, 0x00       ; 2:7       3/         + carry
-    ld    H, A          ; 1:4       3/         HL = HL/3 = HL*(65536/65536)/3 = HL*21845/65536 = (HL*(1+256)*85) >> 16{}dnl
-},{
-                        ;[35:212]   3/   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
-    ld    B, H          ; 1:4       3/
-    ld    C, L          ; 1:4       3/   1     1x = base
-    xor   A             ; 1:4       3/
-    add  HL, HL         ; 1:11      3/   0
-    adc   A, A          ; 1:4       3/      *2 AHL = 2x
-    add  HL, HL         ; 1:11      3/   1
-    adc   A, A          ; 1:4       3/      *2 AHL = 4x
-    add  HL, BC         ; 1:11      3/
-    adc   A, 0x00       ; 2:7       3/      +1 AHL = 5x
-    add  HL, HL         ; 1:11      3/   0
-    adc   A, A          ; 1:4       3/      *2 AHL = 10x
-    add  HL, HL         ; 1:11      3/   1
-    adc   A, A          ; 1:4       3/      *2 AHL = 20x
-    add  HL, BC         ; 1:11      3/
-    adc   A, 0x00       ; 2:7       3/      +1 AHL = 21x
-    add  HL, HL         ; 1:11      3/   0
-    adc   A, A          ; 1:4       3/      *2 AHL = 42x
-    add  HL, HL         ; 1:11      3/   1
-    adc   A, A          ; 1:4       3/      *2 AHL = 84x
-    add  HL, BC         ; 1:11      3/
-    ld   BC, 0x0055     ; 3:10      3/         rounding down constant
-    adc   A, B          ; 1:4       3/      +1 AHL = 85x
-    add  HL, BC         ; 1:11      3/
-    adc   A, B          ; 1:4       3/      +0 AHL = 85x with rounding down constant
-    ld    B, A          ; 1:4       3/        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
-    ld    C, H          ; 1:4       3/         BC = "A.H"
-    add  HL, BC         ; 1:11      3/         HL = "H.L" + "A.H"
-    ld    L, H          ; 1:4       3/
-    adc   A, 0x00       ; 2:7       3/         + carry
-    ld    H, A          ; 1:4       3/         HL = HL/3 = HL*(65536/65536)/3 = HL*21845/65536 = (HL*(1+256)*85) >> 16{}dnl
+define({__ASM_TOKEN_3UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(TYPDIV,{small},{
+                        ;[26:248]   __INFO   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   1     1x = base
+    ld    A, 0xf8       ; 2:7       __INFO         b_1111_1000
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 2x --> 10x --> 42x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 4x --> 20x --> 84x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 5x --> 21x --> 85x
+    jp    m, $-7        ; 3:10      __INFO
+    ld   BC, 0x0055     ; 3:10      __INFO         rounding down constant
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, B          ; 1:4       __INFO      +0 AHL = 85x with rounding down constant
+    ld    B, A          ; 1:4       __INFO        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
+    ld    C, H          ; 1:4       __INFO         BC = "A.H"
+    add  HL, BC         ; 1:11      __INFO         HL = "H.L" + "A.H"
+    ld    L, H          ; 1:4       __INFO
+    adc   A, 0x00       ; 2:7       __INFO         + carry
+    ld    H, A          ; 1:4       __INFO         HL = HL/3 = HL*(65536/65536)/3 = HL*21845/65536 = (HL*(1+256)*85) >> 16},
+__{}{
+                        ;[35:212]   __INFO   Variant HL/3 = (HL*257*85) >> 16 = (HL*(1+1/256)*b_0101_0101) >> 8
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   1     1x = base
+    xor   A             ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 2x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 4x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 5x
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 10x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 20x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 21x
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 42x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 84x
+    add  HL, BC         ; 1:11      __INFO
+    ld   BC, 0x0055     ; 3:10      __INFO         rounding down constant
+    adc   A, B          ; 1:4       __INFO      +1 AHL = 85x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, B          ; 1:4       __INFO      +0 AHL = 85x with rounding down constant
+    ld    B, A          ; 1:4       __INFO        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
+    ld    C, H          ; 1:4       __INFO         BC = "A.H"
+    add  HL, BC         ; 1:11      __INFO         HL = "H.L" + "A.H"
+    ld    L, H          ; 1:4       __INFO
+    adc   A, 0x00       ; 2:7       __INFO         + carry
+    ld    H, A          ; 1:4       __INFO         HL = HL/3 = HL*(65536/65536)/3 = HL*21845/65536 = (HL*(1+256)*85) >> 16{}dnl
 })})dnl
 dnl
 dnl
@@ -87,12 +89,13 @@ define({_4UDIV},{dnl
 __{}__ADD_TOKEN({__TOKEN_4UDIV},{4u/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_4UDIV},{
-                        ;[8:32]     4/   Variant HL/4 = HL >> 2
-    srl   H             ; 2:8       4/
-    rr    L             ; 2:8       4/         HL >>= 1
-    srl   H             ; 2:8       4/
-    rr    L             ; 2:8       4/         HL >>= 1{}dnl
+define({__ASM_TOKEN_4UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:32]     __INFO   Variant HL/4 = HL >> 2
+    srl   H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO         HL >>= 1
+    srl   H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO         HL >>= 1{}dnl
 })dnl
 dnl
 dnl
@@ -103,36 +106,37 @@ define({_5UDIV},{dnl
 __{}__ADD_TOKEN({__TOKEN_5UDIV},{5u/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_5UDIV},{
-                        ;[33:197]   5/   Variant HL/5 = (HL*257*51) >> 16 = (HL*257*b_0011_0011) >> 16
-    ld    B, H          ; 1:4       5/
-    ld    C, L          ; 1:4       5/   1     1x = base
-    xor   A             ; 1:4       5/
-    add  HL, HL         ; 1:11      5/   1
-    adc   A, A          ; 1:4       5/      *2 AHL = 2x
-    add  HL, BC         ; 1:11      5/
-    adc   A, 0x00       ; 2:7       5/      +1 AHL = 3x
-    add  HL, HL         ; 1:11      5/   0
-    adc   A, A          ; 1:4       5/      *2 AHL = 6x
-    add  HL, HL         ; 1:11      5/   0
-    adc   A, A          ; 1:4       5/      *2 AHL = 12x
-    add  HL, HL         ; 1:11      5/   1
-    adc   A, A          ; 1:4       5/      *2 AHL = 24x
-    add  HL, BC         ; 1:11      5/
-    adc   A, 0x00       ; 2:7       5/      +1 AHL = 25x
-    add  HL, HL         ; 1:11      5/   1
-    adc   A, A          ; 1:4       5/      *2 AHL = 50x
-    add  HL, BC         ; 1:11      5/
-    ld   BC, 0x0033     ; 3:10      5/         rounding down constant
-    adc   A, B          ; 1:4       5/      +1 AHL = 51x
-    add  HL, BC         ; 1:11      5/
-    adc   A, B          ; 1:4       5/      +0 AHL = 51x with rounding down constant
-    ld    B, A          ; 1:4       5/        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
-    ld    C, H          ; 1:4       5/         BC = "A.H"
-    add  HL, BC         ; 1:11      5/         HL = "H.L" + "A.H"
-    ld    L, H          ; 1:4       5/
-    adc   A, 0x00       ; 2:7       5/         + carry
-    ld    H, A          ; 1:4       5/         HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16{}dnl
+define({__ASM_TOKEN_5UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[33:197]   __INFO   Variant HL/5 = (HL*257*51) >> 16 = (HL*257*b_0011_0011) >> 16
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   1     1x = base
+    xor   A             ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 2x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 3x
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 6x
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 12x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 24x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 25x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 50x
+    add  HL, BC         ; 1:11      __INFO
+    ld   BC, 0x0033     ; 3:10      __INFO         rounding down constant
+    adc   A, B          ; 1:4       __INFO      +1 AHL = 51x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, B          ; 1:4       __INFO      +0 AHL = 51x with rounding down constant
+    ld    B, A          ; 1:4       __INFO        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
+    ld    C, H          ; 1:4       __INFO         BC = "A.H"
+    add  HL, BC         ; 1:11      __INFO         HL = "H.L" + "A.H"
+    ld    L, H          ; 1:4       __INFO
+    adc   A, 0x00       ; 2:7       __INFO         + carry
+    ld    H, A          ; 1:4       __INFO         HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16{}dnl
 })dnl
 dnl
 dnl
@@ -143,63 +147,65 @@ define({_6UDIV},{dnl
 __{}__ADD_TOKEN({__TOKEN_6UDIV},{6u/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_6UDIV},{ifelse(TYPDIV,{small},{
-                        ;[29:260]   6/   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
-    ld    B, H          ; 1:4       6/
-    ld    C, L          ; 1:4       6/   1     1x = base
-    ld    A, 0xf8       ; 2:7       6/         b_1111_1000
-    add  HL, HL         ; 1:11      6/   0
-    adc   A, A          ; 1:4       6/      *2 AHL = 2x --> 10x --> 42x
-    add  HL, HL         ; 1:11      6/   1
-    adc   A, A          ; 1:4       6/      *2 AHL = 4x --> 20x --> 84x
-    add  HL, BC         ; 1:11      6/
-    adc   A, 0x00       ; 2:7       6/      +1 AHL = 5x --> 21x --> 85x
-    jp    m, $-7        ; 3:10      6/
-    ld   BC, 0x0055     ; 3:10      6/         rounding down constant
-    add  HL, BC         ; 1:11      6/
-    adc   A, B          ; 1:4       6/      +0 AHL = 85x with rounding down constant
-    ld    B, A          ; 1:4       6/        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
-    ld    C, H          ; 1:4       6/         BC = "A.H"
-    add  HL, BC         ; 1:11      6/         HL = "H.L" + "A.H"
-    adc   A, 0x00       ; 2:7       6/         + carry
-    rra                 ; 1:4       6/
-    rr    H             ; 2:8       6/         AH >>= 1
-    ld    L, H          ; 1:4       6/
-    ld    H, A          ; 1:4       6/         HL = HL/6 = HL*(2*65536/2*65536)/6 = HL*21845/(2*65536) = (HL*(1+256)*85) >> (1+16){}dnl
-},{
-                        ;[38:224]   6/   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
-    ld    B, H          ; 1:4       6/
-    ld    C, L          ; 1:4       6/   1     1x = base
-    xor   A             ; 1:4       6/
-    add  HL, HL         ; 1:11      6/   0
-    adc   A, A          ; 1:4       6/      *2 AHL = 2x
-    add  HL, HL         ; 1:11      6/   1
-    adc   A, A          ; 1:4       6/      *2 AHL = 4x
-    add  HL, BC         ; 1:11      6/
-    adc   A, 0x00       ; 2:7       6/      +1 AHL = 5x
-    add  HL, HL         ; 1:11      6/   0
-    adc   A, A          ; 1:4       6/      *2 AHL = 10x
-    add  HL, HL         ; 1:11      6/   1
-    adc   A, A          ; 1:4       6/      *2 AHL = 20x
-    add  HL, BC         ; 1:11      6/
-    adc   A, 0x00       ; 2:7       6/      +1 AHL = 21x
-    add  HL, HL         ; 1:11      6/   0
-    adc   A, A          ; 1:4       6/      *2 AHL = 42x
-    add  HL, HL         ; 1:11      6/   1
-    adc   A, A          ; 1:4       6/      *2 AHL = 84x
-    add  HL, BC         ; 1:11      6/
-    ld   BC, 0x0055     ; 3:10      6/         rounding down constant
-    adc   A, B          ; 1:4       6/      +1 AHL = 85x
-    add  HL, BC         ; 1:11      6/
-    adc   A, B          ; 1:4       6/      +0 AHL = 85x with rounding down constant
-    ld    B, A          ; 1:4       6/        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
-    ld    C, H          ; 1:4       6/         BC = "A.H"
-    add  HL, BC         ; 1:11      6/         HL = "H.L" + "A.H"
-    adc   A, 0x00       ; 2:7       6/         + carry
-    rra                 ; 1:4       6/
-    rr    H             ; 2:8       6/         AH >>= 1
-    ld    L, H          ; 1:4       6/
-    ld    H, A          ; 1:4       6/         HL = HL/6 = HL*(2*65536/2*65536)/6 = HL*21845/(2*65536) = (HL*(1+256)*85) >> (1+16){}dnl
+define({__ASM_TOKEN_6UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(TYPDIV,{small},{
+                        ;[29:260]   __INFO   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   1     1x = base
+    ld    A, 0xf8       ; 2:7       __INFO         b_1111_1000
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 2x --> 10x --> 42x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 4x --> 20x --> 84x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 5x --> 21x --> 85x
+    jp    m, $-7        ; 3:10      __INFO
+    ld   BC, 0x0055     ; 3:10      __INFO         rounding down constant
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, B          ; 1:4       __INFO      +0 AHL = 85x with rounding down constant
+    ld    B, A          ; 1:4       __INFO        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
+    ld    C, H          ; 1:4       __INFO         BC = "A.H"
+    add  HL, BC         ; 1:11      __INFO         HL = "H.L" + "A.H"
+    adc   A, 0x00       ; 2:7       __INFO         + carry
+    rra                 ; 1:4       __INFO
+    rr    H             ; 2:8       __INFO         AH >>= 1
+    ld    L, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO         HL = HL/6 = HL*(2*65536/2*65536)/6 = HL*21845/(2*65536) = (HL*(1+256)*85) >> (1+16)},
+__{}{
+                        ;[38:224]   __INFO   Variant HL/6 = (HL*257*85) >> 17 = (HL*(1+1/256)*b_0101_0101) >> (1+8)
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   1     1x = base
+    xor   A             ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 2x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 4x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 5x
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 10x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 20x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, 0x00       ; 2:7       __INFO      +1 AHL = 21x
+    add  HL, HL         ; 1:11      __INFO   0
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 42x
+    add  HL, HL         ; 1:11      __INFO   1
+    adc   A, A          ; 1:4       __INFO      *2 AHL = 84x
+    add  HL, BC         ; 1:11      __INFO
+    ld   BC, 0x0055     ; 3:10      __INFO         rounding down constant
+    adc   A, B          ; 1:4       __INFO      +1 AHL = 85x
+    add  HL, BC         ; 1:11      __INFO
+    adc   A, B          ; 1:4       __INFO      +0 AHL = 85x with rounding down constant
+    ld    B, A          ; 1:4       __INFO        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
+    ld    C, H          ; 1:4       __INFO         BC = "A.H"
+    add  HL, BC         ; 1:11      __INFO         HL = "H.L" + "A.H"
+    adc   A, 0x00       ; 2:7       __INFO         + carry
+    rra                 ; 1:4       __INFO
+    rr    H             ; 2:8       __INFO         AH >>= 1
+    ld    L, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO         HL = HL/6 = HL*(2*65536/2*65536)/6 = HL*21845/(2*65536) = (HL*(1+256)*85) >> (1+16){}dnl
 })})dnl
 dnl
 dnl
@@ -210,23 +216,24 @@ define({_7UDIV},{dnl
 __{}__ADD_TOKEN({__TOKEN_7UDIV},{7u/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_7UDIV},{
-                        ;[22:467]   7/   Variant HL/7 = HL/8 + HL/(7*8) = HL/8 + HL/64 + HL/(7*8*8) = HL/8 + HL/64 + HL/512 + HL/4096 + HL/32768 + HL/262144 + ...
-                        ;           7/   = (((HL+constant)>>2) + (HL<<1) + (HL<<4) + (HL<<7) + (HL<<10) + (HL<<13)) >> 16
-                        ;           7/   = (((((((( (HL+constant)>>3) + HL)>>3 + HL)>>3 + HL)>>3 + HL)>>3) + HL)>>3 + HL)>>3
-    ld    B, H          ; 1:4       7/
-    ld    C, L          ; 1:4       7/         BC = 1x
-    ld   HL, 0x4606     ; 3:10      7/
-    ld    A, L          ; 1:4       7/
-    add  HL, BC         ; 1:11      7/
-    rr    H             ; 2:8       7/
-    rr    L             ; 2:8       7/         HL >>= 1
-    srl   H             ; 2:8       7/
-    rr    L             ; 2:8       7/         HL >>= 1
-    srl   H             ; 2:8       7/
-    rr    L             ; 2:8       7/         HL >>= 1
-    dec   A             ; 1:4       7/
-    jr   nz, $-14       ; 2:7/12    7/{}dnl
+define({__ASM_TOKEN_7UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[22:467]   __INFO   Variant HL/7 = HL/8 + HL/(7*8) = HL/8 + HL/64 + HL/(7*8*8) = HL/8 + HL/64 + HL/512 + HL/4096 + HL/32768 + HL/262144 + ...
+                        ;           __INFO   = (((HL+constant)>>2) + (HL<<1) + (HL<<4) + (HL<<7) + (HL<<10) + (HL<<13)) >> 16
+                        ;           __INFO   = (((((((( (HL+constant)>>3) + HL)>>3 + HL)>>3 + HL)>>3 + HL)>>3) + HL)>>3 + HL)>>3
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO         BC = 1x
+    ld   HL, 0x4606     ; 3:10      __INFO
+    ld    A, L          ; 1:4       __INFO
+    add  HL, BC         ; 1:11      __INFO
+    rr    H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO         HL >>= 1
+    srl   H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO         HL >>= 1
+    srl   H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO         HL >>= 1
+    dec   A             ; 1:4       __INFO
+    jr   nz, $-14       ; 2:7/12    __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -237,16 +244,17 @@ define({_8UDIV},{dnl
 __{}__ADD_TOKEN({__TOKEN_8UDIV},{8u/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_8UDIV},{
-                        ;[11:44]    8/   Variant HL/8 = HL >> 3
-    ld    A, L          ; 1:4       8/
-    srl   H             ; 2:8       8/
-    rra                 ; 1:4       8/         HA >>= 1
-    srl   H             ; 2:8       8/
-    rra                 ; 1:4       8/         HA >>= 1
-    srl   H             ; 2:8       8/
-    rra                 ; 1:4       8/         HA >>= 1
-    ld    L, A          ; 1:4       8/{}dnl
+define({__ASM_TOKEN_8UDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[11:44]    __INFO   Variant HL/8 = HL >> 3
+    ld    A, L          ; 1:4       __INFO
+    srl   H             ; 2:8       __INFO
+    rra                 ; 1:4       __INFO         HA >>= 1
+    srl   H             ; 2:8       __INFO
+    rra                 ; 1:4       __INFO         HA >>= 1
+    srl   H             ; 2:8       __INFO
+    rra                 ; 1:4       __INFO         HA >>= 1
+    ld    L, A          ; 1:4       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -254,7 +262,7 @@ dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 10
 define({_10UDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_10UDIV},{2u/},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_10UDIV},{10u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_10UDIV},{
@@ -845,7 +853,7 @@ dnl
 dnl ( x1 -- x)
 dnl x = x1 u/ 65535
 define({_65535UDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_65535UDIV},{2u/},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_65535UDIV},{65535u/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_65535UDIV},{
