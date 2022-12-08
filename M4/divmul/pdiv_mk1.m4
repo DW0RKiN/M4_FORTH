@@ -750,10 +750,10 @@ __{}__ADD_TOKEN({__TOKEN_512UDIV},{512u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_512UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:19]     512/   Variant HL/512 = HL >> 9 = H >> 1
-    ld    L, H          ; 1:4       512/
-    ld    H, 0x00       ; 2:7       512/
-    srl   L             ; 2:8       512/{}dnl
+                        ;[5:19]     __INFO   Variant HL/512 = HL >> 9 = H >> 1
+    ld    L, H          ; 1:4       __INFO
+    ld    H, 0x00       ; 2:7       __INFO
+    srl   L             ; 2:8       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -766,11 +766,11 @@ __{}__ADD_TOKEN({__TOKEN_1024UDIV},{1024u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_1024UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[7:27]     1024/   Variant HL/1024 = HL >> 10 = H >> 2
-    ld    L, H          ; 1:4       1024/
-    ld    H, 0x00       ; 2:7       1024/
-    srl   L             ; 2:8       1024/
-    srl   L             ; 2:8       1024/{}dnl
+                        ;[7:27]     __INFO   Variant HL/1024 = HL >> 10 = H >> 2
+    ld    L, H          ; 1:4       __INFO
+    ld    H, 0x00       ; 2:7       __INFO
+    srl   L             ; 2:8       __INFO
+    srl   L             ; 2:8       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -783,14 +783,14 @@ __{}__ADD_TOKEN({__TOKEN_2048UDIV},{2048u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_2048UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[9:34]     2048/   Variant HL/2048 = HL >> 11 = H >> 3
-    ld    A, H          ; 1:4       2048/
-    ld   HL, 0x001f     ; 3:10      2048/
-    rra                 ; 1:4       2048/
-    rra                 ; 1:4       2048/
-    rra                 ; 1:4       2048/
-    and   L             ; 1:4       2048/
-    ld    L, A          ; 1:4       2048/{}dnl
+                        ;[9:34]     __INFO   Variant HL/2048 = HL >> 11 = H >> 3
+    ld    A, H          ; 1:4       __INFO
+    ld   HL, 0x001f     ; 3:10      __INFO
+    rra                 ; 1:4       __INFO
+    rra                 ; 1:4       __INFO
+    rra                 ; 1:4       __INFO
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -803,15 +803,15 @@ __{}__ADD_TOKEN({__TOKEN_4096UDIV},{4096u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_4096UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[10:38]    4096/   Variant HL/4096 = HL >> 12 = H >> 4
-    ld    A, H          ; 1:4       4096/
-    ld   HL, 0x000f     ; 3:10      4096/
-    rra                 ; 1:4       4096/
-    rra                 ; 1:4       4096/
-    rra                 ; 1:4       4096/
-    rra                 ; 1:4       4096/
-    and   L             ; 1:4       4096/
-    ld    L, A          ; 1:4       4096/{}dnl
+                        ;[10:38]    __INFO   Variant HL/4096 = HL >> 12 = H >> 4
+    ld    A, H          ; 1:4       __INFO
+    ld   HL, 0x000f     ; 3:10      __INFO
+    rra                 ; 1:4       __INFO
+    rra                 ; 1:4       __INFO
+    rra                 ; 1:4       __INFO
+    rra                 ; 1:4       __INFO
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -824,14 +824,14 @@ __{}__ADD_TOKEN({__TOKEN_8192UDIV},{8192u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_8192UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[9:34]     8192/   Variant HL/8192 = HL >> 13 = H >> 5 = (H << 3) >> 8
-    ld    A, H          ; 1:4       8192/
-    ld   HL, 0x0007     ; 3:10      8192/
-    rlca                ; 1:4       8192/
-    rlca                ; 1:4       8192/
-    rlca                ; 1:4       8192/
-    and   L             ; 1:4       8192/
-    ld    L, A          ; 1:4       8192/{}dnl
+                        ;[9:34]     __INFO   Variant HL/8192 = HL >> 13 = H >> 5 = (H << 3) >> 8
+    ld    A, H          ; 1:4       __INFO
+    ld   HL, 0x0007     ; 3:10      __INFO
+    rlca                ; 1:4       __INFO
+    rlca                ; 1:4       __INFO
+    rlca                ; 1:4       __INFO
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -844,13 +844,13 @@ __{}__ADD_TOKEN({__TOKEN_16384UDIV},{16384u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_16384UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[8:30]     16384/   Variant HL/16384 = HL >> 14 = H >> 6 = (H << 2) >> 8
-    ld    A, H          ; 1:4       16384/
-    ld   HL, 0x0003     ; 3:10      16384/
-    rlca                ; 1:4       16384/
-    rlca                ; 1:4       16384/
-    and   L             ; 1:4       16384/
-    ld    L, A          ; 1:4       16384/{}dnl
+                        ;[8:30]     __INFO   Variant HL/16384 = HL >> 14 = H >> 6 = (H << 2) >> 8
+    ld    A, H          ; 1:4       __INFO
+    ld   HL, 0x0003     ; 3:10      __INFO
+    rlca                ; 1:4       __INFO
+    rlca                ; 1:4       __INFO
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -863,12 +863,12 @@ __{}__ADD_TOKEN({__TOKEN_32768UDIV},{32768u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_32768UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[6:24]     32768/   Variant HL/32768 = HL >> 15 = H >> 7 = (H << 1) >> 8
-    xor   A             ; 1:4       32768/
-    rl    H             ; 2:8       32768/
-    ld    H, A          ; 1:4       32768/
-    adc   A, A          ; 1:4       32768/
-    ld    L, A          ; 1:4       32768/{}dnl
+                        ;[6:24]     __INFO   Variant HL/32768 = HL >> 15 = H >> 7 = (H << 1) >> 8
+    xor   A             ; 1:4       __INFO
+    rl    H             ; 2:8       __INFO
+    ld    H, A          ; 1:4       __INFO
+    adc   A, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO{}dnl
 })dnl
 dnl
 dnl
@@ -881,12 +881,12 @@ __{}__ADD_TOKEN({__TOKEN_65535UDIV},{65535u/},$@){}dnl
 dnl
 define({__ASM_TOKEN_65535UDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[9:33]     65535/
-    ld    A, H          ; 1:4       65535/
-    and   L             ; 1:4       65535/
-    add   A, 0x01       ; 2:7       65535/
-    ld   HL, 0x0000     ; 3:10      65535/
-    rl    L             ; 2:8       65535/{}dnl
+                        ;[9:33]     __INFO
+    ld    A, H          ; 1:4       __INFO
+    and   L             ; 1:4       __INFO
+    add   A, 0x01       ; 2:7       __INFO
+    ld   HL, 0x0000     ; 3:10      __INFO
+    rl    L             ; 2:8       __INFO{}dnl
 })dnl
 dnl
 dnl
