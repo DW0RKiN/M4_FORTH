@@ -3124,10 +3124,11 @@ __{}define({__TMP_C},eval(__TMP_C+__CLOCKS_16BIT)){}dnl
     ld  (HL),B          ; 1:7       __INFO
     pop  HL             ; 1:10      __INFO},
 __{}__IS_MEM_REF($2):ifelse($1,$3,{1},__HEX_HL($1):len(__HEX_HL($1)),__HEX_HL($3):6,{1},{0}),{0:1},{define({_TMP_INFO},__INFO){}dnl
-                       ;[11:52]     __INFO{}__LD_REG16({BC},$1){}__CODE_16BIT
+                       ;[12:58]     __INFO{}__LD_REG16({BC},$1){}__CODE_16BIT
     ld    A,(BC)        ; 1:7       __INFO
     add   A,format({%-12s},low $2); 2:7       __INFO
     ld  (BC),A          ; 1:7       __INFO
+    inc  BC             ; 1:6       __INFO
     ld    A,(BC)        ; 1:7       __INFO
     adc   A,format({%-12s},high $2); 2:7       __INFO
     ld  (BC),A          ; 1:7       __INFO},
