@@ -2945,11 +2945,11 @@ __{}__{}__{}    ld    substr($1,0,1){,} substr($3,0,1)          ; 1:4       _TMP
 __{}$1,{HL},{dnl
 __{}__{}define({__CLOCKS_16BIT},16){}dnl
 __{}__{}define({__BYTES_16BIT},3)
-__{}__{}    ld   $1{,} format({%-11s},$2); 3:16      _TMP_INFO},
+__{}__{}    ld   $1{,}format({%-12s},$2); 3:16      _TMP_INFO},
 __{}{dnl
 __{}__{}define({__CLOCKS_16BIT},20){}dnl
 __{}__{}define({__BYTES_16BIT},4)
-__{}__{}    ld   $1{,} format({%-11s},$2); 4:20      _TMP_INFO})}){}dnl
+__{}__{}    ld   $1{,}format({%-12s},$2); 4:20      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
