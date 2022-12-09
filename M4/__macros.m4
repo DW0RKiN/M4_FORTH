@@ -1651,8 +1651,18 @@ push,,,
             __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_EMIT,              {__SET_TOKEN({__TOKEN_PUSH_EMIT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH-__TOKEN_1ADD},        {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
-            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_1ADD-__TOKEN_PUSH},   {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH-__TOKEN_2ADD},        {__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            
+            __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS=__LAST_TOKEN_EVAL_REVERSE_1:$1,
+            {__TOKEN_PUSH_FETCH:__TOKEN_PUSHS:1=1:__TOKEN_ADD},        {define({__TMP},__BEFORELAST_TOKEN_INFO{ }__LAST_TOKEN_INFO{ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD},__TMP,__LAST_TOKEN_ARRAY)},
+            __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS=__LAST_TOKEN_EVAL_REVERSE_1:$1,
+            {__TOKEN_PUSH_FETCH:__TOKEN_PUSHS:1=2:__TOKEN_ADD},        {define({__TMP},__BEFORELAST_TOKEN_INFO{ }__LAST_TOKEN_INFO{ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD},__TMP,__LAST_TOKEN_ARRAY)},
+      
+            __LAST_TOKEN_NAME:$1:$#,                   {__TOKEN_PUSH_FETCH_1ADD:__TOKEN_PUSHS:3},   {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            __LAST_TOKEN_NAME:$1:$#,                   {__TOKEN_PUSH_FETCH_2ADD:__TOKEN_PUSHS:3},   {__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,$3)},
+            
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_1ADD_PUSH-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_FETCH_2ADD_PUSH-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
             __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_CFETCH,            {__SET_TOKEN({__TOKEN_PUSH_CFETCH},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
@@ -2728,9 +2738,9 @@ dnl $2->$1 && $3=$4
 dnl # Input:
 dnl #  __CLOCKS = max!!!
 dnl #  $1 Name of the target registry
-dnl #  $2 Searched value that is needed
+dnl #  $2 Searched hex value that is needed
 dnl #  $3 Source registry name
-dnl #  $4 Source registry value
+dnl #  $4 Source hex registry value
 dnl # Output:
 dnl #  __CLOCKS
 dnl #  __BYTES
@@ -2746,7 +2756,12 @@ __{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}define({__CODE},{
 __{}__{}__{}    xor   $1             ; 1:4       {_TMP_INFO}})},
-__{}__{}eval(__CLOCKS>7),{1},{dnl
+__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
+__{}__{}__{}define({__CLOCKS},13){}dnl
+__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      {_TMP_INFO}})},
+__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
@@ -2757,7 +2772,12 @@ __{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}define({__CODE},{
 __{}__{}__{}    xor   A         ; 1:4       {_TMP_INFO}})},
-__{}__{}eval(__CLOCKS>7),{1},{dnl
+__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
+__{}__{}__{}define({__CLOCKS},13){}dnl
+__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      {_TMP_INFO}})},
+__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
@@ -2765,11 +2785,16 @@ __{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       {_TMP_INFO}})})},
 __{}$1,$3,{dnl # Identical register
 __{}__{}ifelse($4,{},{dnl # empty value because 0xFF==__HEX_L({}-1) or 0x01==__HEX_L({}+1)
 __{}__{}__{}ifelse($1:__HEX_L($2):eval(__CLOCKS>4),{A:0x00:1},{dnl
-__{}__{}__{}define({__CLOCKS},4){}dnl
-__{}__{}__{}define({__BYTES},1){}dnl
-__{}__{}__{}define({__CODE},{
-__{}__{}__{}    xor   A         ; 1:4       {_TMP_INFO}})},
-__{}__{}__{}eval(__CLOCKS>7 && len($1)>0 && len($2)>0),{1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}define({__CODE},{
+__{}__{}__{}__{}    xor   A         ; 1:4       {_TMP_INFO}})},
+__{}__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13 && len($1)>0 && len($2)>0),{A:1:1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},13){}dnl
+__{}__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}__{}define({__CODE},{
+__{}__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      {_TMP_INFO}})},
+__{}__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7 && len($1)>0 && len($2)>0),{0:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
@@ -2809,7 +2834,12 @@ __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    rrca                ; 1:4       {_TMP_INFO}})})},
 __{}__{}{dnl # no match found
-__{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
+__{}__{}__{}ifelse($1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},13){}dnl
+__{}__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}__{}define({__CODE},{
+__{}__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      {_TMP_INFO}})},
+__{}__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
@@ -2827,7 +2857,12 @@ __{}__{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    xor   A          ; 1:4       {_TMP_INFO}})},
-__{}__{}__{}eval(__CLOCKS>7),{1},{dnl
+__{}__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
+__{}__{}__{}__{}define({__CLOCKS},13){}dnl
+__{}__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}__{}define({__CODE},{
+__{}__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      {_TMP_INFO}})},
+__{}__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{

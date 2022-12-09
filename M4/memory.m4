@@ -2786,6 +2786,27 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 dnl
 dnl
+dnl # addr @ 2+
+dnl # ( -- x )
+define({PUSH_FETCH_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_2ADD},{$1 @ 2+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_2ADD},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO
+    inc  HL             ; 1:6       __INFO
+    inc  HL             ; 1:6       __INFO})}){}dnl
+dnl
+dnl
+dnl
 dnl # addr @ 1+ number
 dnl # ( -- x2 x1 )  x2 = (addr)+1
 define({PUSH_FETCH_1ADD_PUSH},{dnl
@@ -2810,6 +2831,31 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 dnl
 dnl
+dnl # addr @ 2+ number
+dnl # ( -- x2 x1 )  x2 = (addr)+2
+define({PUSH_FETCH_2ADD_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH},{$1 @ 2+ $2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_2ADD_PUSH},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+$2,{},{
+__{}  .error {$0}(): Missing second parameter!},
+__{}eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{  
+__{}define({__INFO},__COMPILE_INFO){}dnl
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld   DE,format({%-12s},($1)); 4:20      __INFO
+    inc  DE             ; 1:6       __INFO
+    inc  DE             ; 1:6       __INFO
+    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      __INFO{}dnl
+})}){}dnl
+dnl
+dnl
+dnl
 dnl # addr1 @ 1+ addr2 !
 dnl # ( -- )
 define({PUSH_FETCH_1ADD_PUSH_STORE},{dnl
@@ -2825,22 +2871,135 @@ __{}eval($#>2),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 {
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(_TYP_SINGLE,{fast},{
-                       ;[12:59/40]  __INFO
-    ld   BC,format({%-12s},$1); 3:10      __INFO
-    ld    A,(BC)        ; 1:7       __INFO
-    inc   A             ; 1:4       __INFO
-    ld  (BC),A          ; 1:7       __INFO
-    jr   nz, $+6        ; 2:7/12    __INFO
-    inc  BC             ; 1:6       __INFO
-    ld    A,(BC)        ; 1:7       __INFO
-    inc   A             ; 1:4       __INFO
-    ld  (BC),A          ; 1:7       __INFO},
+__{}ifelse(__IS_MEM_REF($1):$1,1:$2,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1){}dnl
+                       ;[ 6:eval(32+__CLOCKS_16BIT)]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    inc (HL)            ; 1:11      __INFO
+    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2),{0:1},{define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}define({__TMP_B},eval(6+__BYTES_16BIT)){}dnl
+__{}define({__TMP_C},eval(47+__CLOCKS_16BIT)){}dnl
+__{}__LD_REG16({BC},$1){}dnl
+__{}define({__TMP_B},eval(__TMP_B+__BYTES_16BIT)){}dnl
+__{}define({__TMP_C},eval(__TMP_C+__CLOCKS_16BIT)){}dnl
+                       ;[__TMP_B:__TMP_C]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    inc  BC             ; 1:6       __INFO{}__LD_REG16({HL},$2){}__CODE_16BIT
+    ld  (HL),C          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2),{1:0},{define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$1){}dnl
+__{}define({__TMP_B},eval(10+__BYTES_16BIT)){}dnl
+__{}define({__TMP_C},eval(67+__CLOCKS_16BIT)){}dnl
+                       ;[__TMP_B:__TMP_C]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  format({%-16s},($2){,}HL); 3:16      __INFO
+    pop  HL             ; 1:10      __INFO},
+
+__{}eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)>0),1,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1)
+                       ;[ 6:eval(32+__CLOCKS_16BIT)]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    inc (HL)            ; 1:11      __INFO__LD_REG16({HL},$1)
+    pop  HL             ; 1:10      __INFO},
+__{}ifelse($1,$2,{1},__HEX_HL($1):len(__HEX_HL($1)),__HEX_HL($2):6,{1},{0}),1,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1){}dnl
+                       ;[ 6:eval(32+__CLOCKS_16BIT)]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    inc (HL)            ; 1:11      __INFO
+    pop  HL             ; 1:10      __INFO},
 {
                        ;[ 9:46]     __INFO
     ld   BC,format({%-12s},($1)); 4:20      __INFO
     inc  BC             ; 1:6       __INFO
-    ld  format({%-16s},($1){,} BC); 4:20      __INFO}){}dnl
+    ld  format({%-16s},($2){,} BC); 4:20      __INFO}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # addr1 @ 2+ addr2 !
+dnl # ( -- )
+define({PUSH_FETCH_2ADD_PUSH_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},{$1 @ 2+ $2 !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+$2,{},{
+__{}  .error {$0}(): Missing second parameter!},
+__{}eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)>0),1,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1)
+},
+__{}ifelse($1,$2,{1},__HEX_HL($1):len(__HEX_HL($1)),__HEX_HL($2):6,{1},{0}),1,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1){}dnl
+                       ;[ 7:eval(43+__CLOCKS_16BIT)]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    inc (HL)            ; 1:11      __INFO
+    inc (HL)            ; 1:11      __INFO
+    pop  HL             ; 1:10      __INFO},
+__{}{
+                       ;[10:52]     __INFO
+    ld   BC,format({%-12s},($1)); 4:20      __INFO
+    inc  BC             ; 1:6       __INFO
+    inc  BC             ; 1:6       __INFO
+    ld  format({%-16s},($2){,} BC); 4:20      __INFO}){}dnl
+})}){}dnl
+dnl
+dnl
+dnl
+dnl # addr1 @ x + addr2 !
+dnl # ( -- )
+define({PUSH_FETCH_PUSH_ADD_PUSH_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_PUSH_ADD_PUSH_STORE},{$1 @ $2 + $3 !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_FETCH_PUSH_ADD_PUSH_STORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+$2,{},{
+__{}  .error {$0}(): Missing second parameter!},
+__{}eval($#>3),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)>0),1,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1)
+},
+__{}__HEX_H($2):ifelse($1,$3,{1},__HEX_HL($1):len(__HEX_HL($1)),__HEX_HL($3):6,{1},{0}),0x00:1,{define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$1)
+__{}define({__TMP_B},eval(8+__BYTES_16BIT)){}dnl
+__{}define({__TMP_C},eval(59+__CLOCKS_16BIT)){}dnl
+__{}define({__TEMP_A},__LD_REG8({A},__HEX_L($2),{H},__HEX_H($1),{L},__HEX_L($1))){}dnl
+__{}define({__TMP_B},eval(__TMP_B+__BYTES)){}dnl
+__{}define({__TMP_C},eval(__TMP_C+__CLOCKS)){}dnl
+                       ;[__TMP_B:__TMP_C]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT{}__TEMP_A
+    add   A, (HL)       ; 1:7       __INFO
+    ld  (HL), A         ; 1:7       __INFO
+    jr   nc, $+4        ; 2:7/12    __INFO
+    inc  HL             ; 1:6       __INFO
+    inc (HL)            ; 1:11      __INFO
+    pop  HL             ; 1:10      __INFO},
+__{}{define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({BC},$2,{HL},($1)){}dnl
+__{}define({__TMP_B},eval(6+__BYTES_16BIT)){}dnl
+__{}define({__TMP_C},eval(48+__CLOCKS_16BIT)){}dnl
+__{}__LD_REG16({HL},($1)){}dnl
+__{}define({__TMP_B},eval(__TMP_B+__BYTES_16BIT)){}dnl
+__{}define({__TMP_C},eval(__TMP_C+__CLOCKS_16BIT)){}dnl
+                       ;[__TMP_B:__TMP_C]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT{}__LD_REG16({BC},$2,{HL},($1)){}__CODE_16BIT
+    add  HL, BC         ; 1:11      __INFO
+    ld  format({%-16s},($3){,} HL); 3:16      __INFO
+    pop  HL             ; 1:10      __INFO}){}dnl
 })}){}dnl
 dnl
 dnl
