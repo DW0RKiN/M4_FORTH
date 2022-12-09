@@ -3033,11 +3033,27 @@ __{}eval($#>3),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 {
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse($1x,$3y,{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1){}dnl
-                       ;[ 7:eval(43+__CLOCKS_16BIT)]     __INFO
+__{}ifelse(__IS_MEM_REF($1):__IS_MEM_REF($2):$1,{1:0:$3},{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1){}dnl
+                       ;[14:85]     __INFO
     push HL             ; 1:11      __INFO{}__CODE_16BIT
-    inc (HL)            ; 1:11      __INFO
-    inc (HL)            ; 1:11      __INFO
+    ld    A,format({%-12s},low $2); 2:7       __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    A,format({%-12s},high $2); 2:7       __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):$1,{1:1:$3},{define({_TMP_INFO},__INFO){}__LD_REG16({HL},$1){}dnl
+                       ;[16:97]     __INFO
+    push HL             ; 1:11      __INFO{}__CODE_16BIT
+    ld    A,format({%-12s},$2); 3:13      __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    A,format({%-12s},($2+1)); 3:13      __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
     pop  HL             ; 1:10      __INFO},
 __{}__IS_MEM_REF($2):__IS_MEM_REF($1):__IS_MEM_REF($3),{0:0:1},{define({_TMP_INFO},__INFO){}dnl
                        ;[17:98]     __INFO
@@ -3107,21 +3123,14 @@ __{}define({__TMP_C},eval(__TMP_C+__CLOCKS_16BIT)){}dnl
     inc  HL             ; 1:6       __INFO
     ld  (HL),B          ; 1:7       __INFO
     pop  HL             ; 1:10      __INFO},
-__{}__HEX_H($2):ifelse($1,$3,{1},__HEX_HL($1):len(__HEX_HL($1)),__HEX_HL($3):6,{1},{0}),0x00:1,{define({_TMP_INFO},__INFO){}dnl
-__{}__LD_REG16({HL},$1)
-__{}define({__TMP_B},eval(8+__BYTES_16BIT)){}dnl
-__{}define({__TMP_C},eval(59+__CLOCKS_16BIT)){}dnl
-__{}define({__TEMP_A},__LD_REG8({A},__HEX_L($2),{H},__HEX_H($1),{L},__HEX_L($1))){}dnl
-__{}define({__TMP_B},eval(__TMP_B+__BYTES)){}dnl
-__{}define({__TMP_C},eval(__TMP_C+__CLOCKS)){}dnl
-                       ;[__TMP_B:__TMP_C]     __INFO
-    push HL             ; 1:11      __INFO{}__CODE_16BIT{}__TEMP_A
-    add   A, (HL)       ; 1:7       __INFO
-    ld  (HL), A         ; 1:7       __INFO
-    jr   nc, $+4        ; 2:7/12    __INFO
-    inc  HL             ; 1:6       __INFO
-    inc (HL)            ; 1:11      __INFO
-    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($2):ifelse($1,$3,{1},__HEX_HL($1):len(__HEX_HL($1)),__HEX_HL($3):6,{1},{0}),{0:1},{define({_TMP_INFO},__INFO){}dnl
+                       ;[11:52]     __INFO{}__LD_REG16({BC},$1){}__CODE_16BIT
+    ld    A,(BC)        ; 1:7       __INFO
+    add   A,format({%-12s},low $2); 2:7       __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    ld    A,(BC)        ; 1:7       __INFO
+    adc   A,format({%-12s},high $2); 2:7       __INFO
+    ld  (BC),A          ; 1:7       __INFO},
 __{}{define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$2,{HL},($1)){}dnl
 __{}define({__TMP_B},eval(6+__BYTES_16BIT)){}dnl
