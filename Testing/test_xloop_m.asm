@@ -1131,7 +1131,7 @@ ORG 0x8000
 do101save:              ;           256 251 do_101(xm)
     ld  (idx101),BC     ; 4:20      256 251 do_101(xm)
 do101:                  ;           256 251 do_101(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:38]    loop_101   variant +1.A: 0 <= index < stop == 256, run 5x
 idx101 EQU $+1          ;           loop_101   idx always points to a 16-bit index
@@ -1142,7 +1142,7 @@ idx101 EQU $+1          ;           loop_101   idx always points to a 16-bit ind
     jp   nz, do101      ; 3:10      loop_101   index-stop
 leave101:               ;           loop_101
 exit101:                ;           loop_101
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string102 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1150,7 +1150,7 @@ exit101:                ;           loop_101
 do102save:              ;           246 241 do_102(xm)
     ld  (idx102),BC     ; 4:20      246 241 do_102(xm)
 do102:                  ;           246 241 do_102(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:45]    loop_102   variant +1.B: 0 <= index < stop <= 256, run 5x
 idx102 EQU $+1          ;           loop_102   idx always points to a 16-bit index
@@ -1162,7 +1162,7 @@ idx102 EQU $+1          ;           loop_102   idx always points to a 16-bit ind
     jp   nz, do102      ; 3:10      loop_102   index-stop
 leave102:               ;           loop_102
 exit102:                ;           loop_102
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string103 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1170,7 +1170,7 @@ exit102:                ;           loop_102
 do103save:              ;           0x3D00 0x3CFB do_103(xm)
     ld  (idx103),BC     ; 4:20      0x3D00 0x3CFB do_103(xm)
 do103:                  ;           0x3D00 0x3CFB do_103(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:34]     loop_103   variant +1.C: 0x3C00 <=index < stop == 0x3D00, run 5x
 idx103 EQU $+1          ;           loop_103   idx always points to a 16-bit index
@@ -1180,7 +1180,7 @@ idx103 EQU $+1          ;           loop_103   idx always points to a 16-bit ind
     jp   nz, do103      ; 3:10      loop_103
 leave103:               ;           loop_103
 exit103:                ;           loop_103
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string104 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1188,7 +1188,7 @@ exit103:                ;           loop_103
 do104save:              ;           0x3C0A 0x3C05 do_104(xm)
     ld  (idx104),BC     ; 4:20      0x3C0A 0x3C05 do_104(xm)
 do104:                  ;           0x3C0A 0x3C05 do_104(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_104   variant +1.D: 0x3C00 <=index < stop <= 0x3D00, run 5x
 idx104 EQU $+1          ;           loop_104   idx always points to a 16-bit index
@@ -1199,7 +1199,7 @@ idx104 EQU $+1          ;           loop_104   idx always points to a 16-bit ind
     jp   nz, do104      ; 3:10      loop_104
 leave104:               ;           loop_104
 exit104:                ;           loop_104
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string105 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1207,7 +1207,7 @@ exit104:                ;           loop_104
 do105save:              ;           0x6600 0x65FB do_105(xm)
     ld  (idx105),BC     ; 4:20      0x6600 0x65FB do_105(xm)
 do105:                  ;           0x6600 0x65FB do_105(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_105   variant +1.E: 256*(1+hi(index)) == stop, run 5x
 idx105 EQU $+1          ;           loop_105   idx always points to a 16-bit index
@@ -1218,7 +1218,7 @@ idx105 EQU $+1          ;           loop_105   idx always points to a 16-bit ind
     jp   nz, do105      ; 3:10      loop_105
 leave105:               ;           loop_105
 exit105:                ;           loop_105
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string106 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1226,7 +1226,7 @@ exit105:                ;           loop_105
 do106save:              ;           0x4055 0x4050 do_106(xm)
     ld  (idx106),BC     ; 4:20      0x4055 0x4050 do_106(xm)
 do106:                  ;           0x4055 0x4050 do_106(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    loop_106   variant +1.F: hi(index) == hi(stop-1) && index < stop, run 5x
 idx106 EQU $+1          ;           loop_106   idx always points to a 16-bit index
@@ -1238,7 +1238,7 @@ idx106 EQU $+1          ;           loop_106   idx always points to a 16-bit ind
     jp   nz, do106      ; 3:10      loop_106
 leave106:               ;           loop_106
 exit106:                ;           loop_106
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string107 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1246,7 +1246,7 @@ exit106:                ;           loop_106
 do107save:              ;           0 -5 do_107(xm)
     ld  (idx107),BC     ; 4:20      0 -5 do_107(xm)
 do107:                  ;           0 -5 do_107(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  loop_107   variant +1.G: stop == 0, run 5x
 idx107 EQU $+1          ;           loop_107   idx always points to a 16-bit index
@@ -1257,7 +1257,7 @@ idx107 EQU $+1          ;           loop_107   idx always points to a 16-bit ind
     jp   nz, do107save  ; 3:10      loop_107
 leave107:               ;           loop_107
 exit107:                ;           loop_107
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string108 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1265,7 +1265,7 @@ exit107:                ;           loop_107
 do108save:              ;           2 -3 do_108(xm)
     ld  (idx108),BC     ; 4:20      2 -3 do_108(xm)
 do108:                  ;           2 -3 do_108(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] loop_108   variant +1.H: step one with lo(real_stop) exclusivity, run 5x
 idx108 EQU $+1          ;           loop_108   idx always points to a 16-bit index
@@ -1276,12 +1276,12 @@ idx108 EQU $+1          ;           loop_108   idx always points to a 16-bit ind
     jp   nz, do108save  ; 3:10      loop_108
 leave108:               ;           loop_108
 exit108:                ;           loop_108
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string109 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 0x6700 0x6318 2drop
-    push DE             ; 1:11      0 0 0x6700 0x6318 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 0x6700 0x6318 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 0x6700 0x6318 2drop
     push HL             ; 1:11      0 0 0x6700 0x6318 2drop
     ld   DE, 0x0000     ; 3:10      0 0 0x6700 0x6318 2drop
     ld    L, D          ; 1:4       0 0 0x6700 0x6318 2drop   L = D = 0x00
@@ -1306,8 +1306,8 @@ exit109:                ;           loop_109
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string110 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 300 -700 2drop
-    push DE             ; 1:11      0 0 300 -700 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 300 -700 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 300 -700 2drop
     push HL             ; 1:11      0 0 300 -700 2drop
     ld   DE, 0x0000     ; 3:10      0 0 300 -700 2drop
     ld    L, D          ; 1:4       0 0 300 -700 2drop   L = D = 0x00
@@ -1339,7 +1339,7 @@ exit110:                ;           loop_110
 do111save:              ;           0 4 do_111(xm)
     ld  (idx111),BC     ; 4:20      0 4 do_111(xm)
 do111:                  ;           0 4 do_111(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_111(xm)   variant -1.A: step -1 and stop 0, run 5x
 idx111 EQU $+1          ;           -1 +loop_111(xm)   idx always points to a 16-bit index
@@ -1350,7 +1350,7 @@ idx111 EQU $+1          ;           -1 +loop_111(xm)   idx always points to a 16
     jp   nz, do111save  ; 3:10      -1 +loop_111(xm)
 leave111:               ;           -1 +loop_111(xm)
 exit111:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1358,7 +1358,7 @@ exit111:                ;           xloop LOOP_STACK
 do112save:              ;           1 5 do_112(xm)
     ld  (idx112),BC     ; 4:20      1 5 do_112(xm)
 do112:                  ;           1 5 do_112(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_112(xm)   variant -1.B: step -1 and stop 1, run 5x
 idx112 EQU $+1          ;           -1 +loop_112(xm)   idx always points to a 16-bit index
@@ -1369,7 +1369,7 @@ idx112 EQU $+1          ;           -1 +loop_112(xm)   idx always points to a 16
     jp   nz, do112save  ; 3:10      -1 +loop_112(xm)
 leave112:               ;           -1 +loop_112(xm)
 exit112:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -1377,7 +1377,7 @@ exit112:                ;           xloop LOOP_STACK
 do113save:              ;           254 258 do_113(xm)
     ld  (idx113),BC     ; 4:20      254 258 do_113(xm)
 do113:                  ;           254 258 do_113(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] -1 +loop_113(xm)   variant -1.C: step -1 with lo(real_stop) exclusivity, run 5x
 idx113 EQU $+1          ;           -1 +loop_113(xm)   idx always points to a 16-bit index
@@ -1388,12 +1388,12 @@ idx113 EQU $+1          ;           -1 +loop_113(xm)   idx always points to a 16
     jp   nz, do113save  ; 3:10      -1 +loop_113(xm)
 leave113:               ;           -1 +loop_113(xm)
 exit113:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 256 1255 2drop
-    push DE             ; 1:11      0 0 256 1255 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 256 1255 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 256 1255 2drop
     push HL             ; 1:11      0 0 256 1255 2drop
     ld   DE, 0x0000     ; 3:10      0 0 256 1255 2drop
     ld    L, D          ; 1:4       0 0 256 1255 2drop   L = D = 0x00
@@ -1418,8 +1418,8 @@ exit114:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -1 998 2drop
-    push DE             ; 1:11      0 0 -1 998 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -1 998 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -1 998 2drop
     push HL             ; 1:11      0 0 -1 998 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -1 998 2drop
     ld    L, D          ; 1:4       0 0 -1 998 2drop   L = D = 0x00
@@ -1445,8 +1445,8 @@ exit115:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string116 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2 1001 2drop
-    push DE             ; 1:11      0 0 2 1001 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2 1001 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2 1001 2drop
     push HL             ; 1:11      0 0 2 1001 2drop
     ld   DE, 0x0000     ; 3:10      0 0 2 1001 2drop
     ld    L, D          ; 1:4       0 0 2 1001 2drop   L = D = 0x00
@@ -1472,8 +1472,8 @@ exit116:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string117 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 200 1199 2drop
-    push DE             ; 1:11      0 0 200 1199 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 200 1199 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 200 1199 2drop
     push HL             ; 1:11      0 0 200 1199 2drop
     ld   DE, 0x0000     ; 3:10      0 0 200 1199 2drop
     ld    L, D          ; 1:4       0 0 200 1199 2drop   L = D = 0x00
@@ -1499,8 +1499,8 @@ exit117:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string118 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -624 375 2drop
-    push DE             ; 1:11      0 0 -624 375 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -624 375 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -624 375 2drop
     push HL             ; 1:11      0 0 -624 375 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -624 375 2drop
     ld    L, D          ; 1:4       0 0 -624 375 2drop   L = D = 0x00
@@ -1528,8 +1528,8 @@ exit118:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string119 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -513 486 2drop
-    push DE             ; 1:11      0 0 -513 486 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -513 486 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -513 486 2drop
     push HL             ; 1:11      0 0 -513 486 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -513 486 2drop
     ld    L, D          ; 1:4       0 0 -513 486 2drop   L = D = 0x00
@@ -1561,8 +1561,8 @@ exit119:                ;           xloop LOOP_STACK
     call _pause         ; 3:17      call ( -- )
     ld   BC, string101  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string101
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     256 251
-    push DE             ; 1:11      256 251   ( -- 256 251 )
+                        ;[8:42]     256 251   ( -- 256 251 )
+    push DE             ; 1:11      256 251
     push HL             ; 1:11      256 251
     ld   DE, 0x0100     ; 3:10      256 251
     ld   HL, 0x00FB     ; 3:10      256 251
@@ -1575,7 +1575,7 @@ exit119:                ;           xloop LOOP_STACK
     pop  DE             ; 1:10      do_120(m)
     pop  HL             ; 1:10      do_120(m)
 do120:                  ;           do_120(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx120 EQU $+1          ;[20:78/57] loop_120(m)
     ld   BC, 0x0000     ; 3:10      loop_120(m)   idx always points to a 16-bit index
@@ -1591,12 +1591,12 @@ stp_hi120 EQU $+1       ;           loop_120(m)
     jp   nz, do120      ; 3:10      loop_120(m)
 leave120:               ;           loop_120(m)
 exit120:                ;           loop_120(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     246 241
-    push DE             ; 1:11      246 241   ( -- 246 241 )
+                        ;[8:42]     246 241   ( -- 246 241 )
+    push DE             ; 1:11      246 241
     push HL             ; 1:11      246 241
     ld   DE, 0x00F6     ; 3:10      246 241
     ld   HL, 0x00F1     ; 3:10      246 241
@@ -1609,7 +1609,7 @@ exit120:                ;           loop_120(m)
     pop  DE             ; 1:10      do_121(m)
     pop  HL             ; 1:10      do_121(m)
 do121:                  ;           do_121(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx121 EQU $+1          ;[20:78/57] loop_121(m)
     ld   BC, 0x0000     ; 3:10      loop_121(m)   idx always points to a 16-bit index
@@ -1625,12 +1625,12 @@ stp_hi121 EQU $+1       ;           loop_121(m)
     jp   nz, do121      ; 3:10      loop_121(m)
 leave121:               ;           loop_121(m)
 exit121:                ;           loop_121(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string122 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0x3D00 0x3CFB
-    push DE             ; 1:11      0x3D00 0x3CFB   ( -- 0x3D00 0x3CFB )
+                        ;[8:42]     0x3D00 0x3CFB   ( -- 0x3D00 0x3CFB )
+    push DE             ; 1:11      0x3D00 0x3CFB
     push HL             ; 1:11      0x3D00 0x3CFB
     ld   DE, 0x3D00     ; 3:10      0x3D00 0x3CFB
     ld   HL, 0x3CFB     ; 3:10      0x3D00 0x3CFB
@@ -1643,7 +1643,7 @@ exit121:                ;           loop_121(m)
     pop  DE             ; 1:10      do_122(m)
     pop  HL             ; 1:10      do_122(m)
 do122:                  ;           do_122(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx122 EQU $+1          ;[20:78/57] loop_122(m)
     ld   BC, 0x0000     ; 3:10      loop_122(m)   idx always points to a 16-bit index
@@ -1659,12 +1659,12 @@ stp_hi122 EQU $+1       ;           loop_122(m)
     jp   nz, do122      ; 3:10      loop_122(m)
 leave122:               ;           loop_122(m)
 exit122:                ;           loop_122(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0x3C0A 0x3C05
-    push DE             ; 1:11      0x3C0A 0x3C05   ( -- 0x3C0A 0x3C05 )
+                        ;[8:42]     0x3C0A 0x3C05   ( -- 0x3C0A 0x3C05 )
+    push DE             ; 1:11      0x3C0A 0x3C05
     push HL             ; 1:11      0x3C0A 0x3C05
     ld   DE, 0x3C0A     ; 3:10      0x3C0A 0x3C05
     ld   HL, 0x3C05     ; 3:10      0x3C0A 0x3C05
@@ -1677,7 +1677,7 @@ exit122:                ;           loop_122(m)
     pop  DE             ; 1:10      do_123(m)
     pop  HL             ; 1:10      do_123(m)
 do123:                  ;           do_123(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx123 EQU $+1          ;[20:78/57] loop_123(m)
     ld   BC, 0x0000     ; 3:10      loop_123(m)   idx always points to a 16-bit index
@@ -1693,12 +1693,12 @@ stp_hi123 EQU $+1       ;           loop_123(m)
     jp   nz, do123      ; 3:10      loop_123(m)
 leave123:               ;           loop_123(m)
 exit123:                ;           loop_123(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string124 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0x6600 0x65FB
-    push DE             ; 1:11      0x6600 0x65FB   ( -- 0x6600 0x65FB )
+                        ;[8:42]     0x6600 0x65FB   ( -- 0x6600 0x65FB )
+    push DE             ; 1:11      0x6600 0x65FB
     push HL             ; 1:11      0x6600 0x65FB
     ld   DE, 0x6600     ; 3:10      0x6600 0x65FB
     ld   HL, 0x65FB     ; 3:10      0x6600 0x65FB
@@ -1711,7 +1711,7 @@ exit123:                ;           loop_123(m)
     pop  DE             ; 1:10      do_124(m)
     pop  HL             ; 1:10      do_124(m)
 do124:                  ;           do_124(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx124 EQU $+1          ;[20:78/57] loop_124(m)
     ld   BC, 0x0000     ; 3:10      loop_124(m)   idx always points to a 16-bit index
@@ -1727,12 +1727,12 @@ stp_hi124 EQU $+1       ;           loop_124(m)
     jp   nz, do124      ; 3:10      loop_124(m)
 leave124:               ;           loop_124(m)
 exit124:                ;           loop_124(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string125 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0x4055 0x4050
-    push DE             ; 1:11      0x4055 0x4050   ( -- 0x4055 0x4050 )
+                        ;[8:42]     0x4055 0x4050   ( -- 0x4055 0x4050 )
+    push DE             ; 1:11      0x4055 0x4050
     push HL             ; 1:11      0x4055 0x4050
     ld   DE, 0x4055     ; 3:10      0x4055 0x4050
     ld   HL, 0x4050     ; 3:10      0x4055 0x4050
@@ -1745,7 +1745,7 @@ exit124:                ;           loop_124(m)
     pop  DE             ; 1:10      do_125(m)
     pop  HL             ; 1:10      do_125(m)
 do125:                  ;           do_125(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx125 EQU $+1          ;[20:78/57] loop_125(m)
     ld   BC, 0x0000     ; 3:10      loop_125(m)   idx always points to a 16-bit index
@@ -1761,12 +1761,12 @@ stp_hi125 EQU $+1       ;           loop_125(m)
     jp   nz, do125      ; 3:10      loop_125(m)
 leave125:               ;           loop_125(m)
 exit125:                ;           loop_125(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string126 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0 -5
-    push DE             ; 1:11      0 -5   ( -- 0 -5 )
+                        ;[8:42]     0 -5   ( -- 0 -5 )
+    push DE             ; 1:11      0 -5
     push HL             ; 1:11      0 -5
     ld   DE, 0x0000     ; 3:10      0 -5
     ld   HL, 0xFFFB     ; 3:10      0 -5
@@ -1779,7 +1779,7 @@ exit125:                ;           loop_125(m)
     pop  DE             ; 1:10      do_126(m)
     pop  HL             ; 1:10      do_126(m)
 do126:                  ;           do_126(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx126 EQU $+1          ;[20:78/57] loop_126(m)
     ld   BC, 0x0000     ; 3:10      loop_126(m)   idx always points to a 16-bit index
@@ -1795,12 +1795,12 @@ stp_hi126 EQU $+1       ;           loop_126(m)
     jp   nz, do126      ; 3:10      loop_126(m)
 leave126:               ;           loop_126(m)
 exit126:                ;           loop_126(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string127 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     2 -3
-    push DE             ; 1:11      2 -3   ( -- 2 -3 )
+                        ;[8:42]     2 -3   ( -- 2 -3 )
+    push DE             ; 1:11      2 -3
     push HL             ; 1:11      2 -3
     ld   DE, 0x0002     ; 3:10      2 -3
     ld   HL, 0xFFFD     ; 3:10      2 -3
@@ -1813,7 +1813,7 @@ exit126:                ;           loop_126(m)
     pop  DE             ; 1:10      do_127(m)
     pop  HL             ; 1:10      do_127(m)
 do127:                  ;           do_127(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx127 EQU $+1          ;[20:78/57] loop_127(m)
     ld   BC, 0x0000     ; 3:10      loop_127(m)   idx always points to a 16-bit index
@@ -1829,17 +1829,15 @@ stp_hi127 EQU $+1       ;           loop_127(m)
     jp   nz, do127      ; 3:10      loop_127(m)
 leave127:               ;           loop_127(m)
 exit127:                ;           loop_127(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string128 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 0x6700 0x6318   ( -- 0 0 0x6700 0x6318 )
-    push HL             ; 1:11      0 0 0x6700 0x6318
-    ld   DE, 0x0000     ; 3:10      0 0 0x6700 0x6318
-    ld    L, D          ; 1:4       0 0 0x6700 0x6318   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 0x6700 0x6318   H = L = 0x00
     push DE             ; 1:11      0 0 0x6700 0x6318
     push HL             ; 1:11      0 0 0x6700 0x6318
+    ld   DE, 0x0000     ; 3:10      0 0 0x6700 0x6318
+    push DE             ; 1:11      0 0 0x6700 0x6318
+    push DE             ; 1:11      0 0 0x6700 0x6318
     ld    D, 0x67       ; 2:7       0 0 0x6700 0x6318
     ld   HL, 0x6318     ; 3:10      0 0 0x6700 0x6318
 
@@ -1872,12 +1870,10 @@ exit128:                ;           loop_128(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string129 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 300 -700   ( -- 0 0 300 -700 )
-    push HL             ; 1:11      0 0 300 -700
-    ld   DE, 0x0000     ; 3:10      0 0 300 -700
-    ld    L, D          ; 1:4       0 0 300 -700   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 300 -700   H = L = 0x00
     push DE             ; 1:11      0 0 300 -700
+    push HL             ; 1:11      0 0 300 -700
+    ld   HL, 0x0000     ; 3:10      0 0 300 -700
+    push HL             ; 1:11      0 0 300 -700
     push HL             ; 1:11      0 0 300 -700
     ld   DE, 0x012C     ; 3:10      0 0 300 -700
     ld   HL, 0xFD44     ; 3:10      0 0 300 -700
@@ -1911,8 +1907,8 @@ exit129:                ;           loop_129(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string111  ; 3:10      print_i   Address of string130 ending with inverted most significant bit == string111
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 4
-    push DE             ; 1:11      0 4   ( -- 0 4 )
+                        ;[7:40]     0 4   ( -- 0 4 )
+    push DE             ; 1:11      0 4
     push HL             ; 1:11      0 4
     ld   HL, 0x0004     ; 3:10      0 4
     ld    E, H          ; 1:4       0 4   E = H = 0x00
@@ -1927,7 +1923,7 @@ exit129:                ;           loop_129(m)
     pop  DE             ; 1:10      do_130(m)
     pop  HL             ; 1:10      do_130(m)
 do130:                  ;           do_130(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx130 EQU $+1          ;[20:78/57] -1 +loop_130(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_130(m)   idx always points to a 16-bit index
@@ -1943,12 +1939,12 @@ stp_hi130 EQU $+1       ;           -1 +loop_130(m)
     jp   nz, do130      ; 3:10      -1 +loop_130(m)
 leave130:               ;           -1 +loop_130(m)
 exit130:                ;           -1 +loop_130(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string131 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     1 5
-    push DE             ; 1:11      1 5   ( -- 1 5 )
+                        ;[8:42]     1 5   ( -- 1 5 )
+    push DE             ; 1:11      1 5
     push HL             ; 1:11      1 5
     ld   DE, 0x0001     ; 3:10      1 5
     ld   HL, 0x0005     ; 3:10      1 5
@@ -1962,7 +1958,7 @@ exit130:                ;           -1 +loop_130(m)
     pop  DE             ; 1:10      do_131(m)
     pop  HL             ; 1:10      do_131(m)
 do131:                  ;           do_131(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx131 EQU $+1          ;[20:78/57] -1 +loop_131(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_131(m)   idx always points to a 16-bit index
@@ -1978,12 +1974,12 @@ stp_hi131 EQU $+1       ;           -1 +loop_131(m)
     jp   nz, do131      ; 3:10      -1 +loop_131(m)
 leave131:               ;           -1 +loop_131(m)
 exit131:                ;           -1 +loop_131(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string132 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     254 258
-    push DE             ; 1:11      254 258   ( -- 254 258 )
+                        ;[8:42]     254 258   ( -- 254 258 )
+    push DE             ; 1:11      254 258
     push HL             ; 1:11      254 258
     ld   DE, 0x00FE     ; 3:10      254 258
     ld   HL, 0x0102     ; 3:10      254 258
@@ -1997,7 +1993,7 @@ exit131:                ;           -1 +loop_131(m)
     pop  DE             ; 1:10      do_132(m)
     pop  HL             ; 1:10      do_132(m)
 do132:                  ;           do_132(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx132 EQU $+1          ;[20:78/57] -1 +loop_132(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_132(m)   idx always points to a 16-bit index
@@ -2013,17 +2009,15 @@ stp_hi132 EQU $+1       ;           -1 +loop_132(m)
     jp   nz, do132      ; 3:10      -1 +loop_132(m)
 leave132:               ;           -1 +loop_132(m)
 exit132:                ;           -1 +loop_132(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string133 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 256 1255   ( -- 0 0 256 1255 )
-    push HL             ; 1:11      0 0 256 1255
-    ld   DE, 0x0000     ; 3:10      0 0 256 1255
-    ld    L, D          ; 1:4       0 0 256 1255   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 256 1255   H = L = 0x00
     push DE             ; 1:11      0 0 256 1255
     push HL             ; 1:11      0 0 256 1255
+    ld   DE, 0x0000     ; 3:10      0 0 256 1255
+    push DE             ; 1:11      0 0 256 1255
+    push DE             ; 1:11      0 0 256 1255
     inc   D             ; 1:4       0 0 256 1255
     ld   HL, 0x04E7     ; 3:10      0 0 256 1255
 
@@ -2057,13 +2051,11 @@ exit133:                ;           -1 +loop_133(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string134 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1 998   ( -- 0 0 -1 998 )
-    push HL             ; 1:11      0 0 -1 998
-    ld   DE, 0x0000     ; 3:10      0 0 -1 998
-    ld    L, D          ; 1:4       0 0 -1 998   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 -1 998   H = L = 0x00
     push DE             ; 1:11      0 0 -1 998
     push HL             ; 1:11      0 0 -1 998
+    ld   DE, 0x0000     ; 3:10      0 0 -1 998
+    push DE             ; 1:11      0 0 -1 998
+    push DE             ; 1:11      0 0 -1 998
     dec  DE             ; 1:6       0 0 -1 998
     ld   HL, 0x03E6     ; 3:10      0 0 -1 998
 
@@ -2097,13 +2089,11 @@ exit134:                ;           -1 +loop_134(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string135 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2 1001   ( -- 0 0 2 1001 )
-    push HL             ; 1:11      0 0 2 1001
-    ld   DE, 0x0000     ; 3:10      0 0 2 1001
-    ld    L, D          ; 1:4       0 0 2 1001   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 2 1001   H = L = 0x00
     push DE             ; 1:11      0 0 2 1001
     push HL             ; 1:11      0 0 2 1001
+    ld   DE, 0x0000     ; 3:10      0 0 2 1001
+    push DE             ; 1:11      0 0 2 1001
+    push DE             ; 1:11      0 0 2 1001
     ld    E, 0x02       ; 2:7       0 0 2 1001
     ld   HL, 0x03E9     ; 3:10      0 0 2 1001
 
@@ -2137,13 +2127,11 @@ exit135:                ;           -1 +loop_135(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string136 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 200 1199   ( -- 0 0 200 1199 )
-    push HL             ; 1:11      0 0 200 1199
-    ld   DE, 0x0000     ; 3:10      0 0 200 1199
-    ld    L, D          ; 1:4       0 0 200 1199   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 200 1199   H = L = 0x00
     push DE             ; 1:11      0 0 200 1199
     push HL             ; 1:11      0 0 200 1199
+    ld   DE, 0x0000     ; 3:10      0 0 200 1199
+    push DE             ; 1:11      0 0 200 1199
+    push DE             ; 1:11      0 0 200 1199
     ld    E, 0xC8       ; 2:7       0 0 200 1199
     ld   HL, 0x04AF     ; 3:10      0 0 200 1199
 
@@ -2177,12 +2165,10 @@ exit136:                ;           -1 +loop_136(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string137 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -624 375   ( -- 0 0 -624 375 )
-    push HL             ; 1:11      0 0 -624 375
-    ld   DE, 0x0000     ; 3:10      0 0 -624 375
-    ld    L, D          ; 1:4       0 0 -624 375   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 -624 375   H = L = 0x00
     push DE             ; 1:11      0 0 -624 375
+    push HL             ; 1:11      0 0 -624 375
+    ld   HL, 0x0000     ; 3:10      0 0 -624 375
+    push HL             ; 1:11      0 0 -624 375
     push HL             ; 1:11      0 0 -624 375
     ld   DE, 0xFD90     ; 3:10      0 0 -624 375
     ld   HL, 0x0177     ; 3:10      0 0 -624 375
@@ -2217,12 +2203,10 @@ exit137:                ;           -1 +loop_137(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string138 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -513 486   ( -- 0 0 -513 486 )
-    push HL             ; 1:11      0 0 -513 486
-    ld   DE, 0x0000     ; 3:10      0 0 -513 486
-    ld    L, D          ; 1:4       0 0 -513 486   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 -513 486   H = L = 0x00
     push DE             ; 1:11      0 0 -513 486
+    push HL             ; 1:11      0 0 -513 486
+    ld   HL, 0x0000     ; 3:10      0 0 -513 486
+    push HL             ; 1:11      0 0 -513 486
     push HL             ; 1:11      0 0 -513 486
     ld   DE, 0xFDFF     ; 3:10      0 0 -513 486
     ld   HL, 0x01E6     ; 3:10      0 0 -513 486
@@ -2274,7 +2258,7 @@ exit138:                ;           -1 +loop_138(m)
     ex   DE, HL         ; 1:4       251 do_139(m)
     pop  DE             ; 1:10      251 do_139(m)
 do139:                  ;           251 do_139(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx139 EQU $+1          ;[20:78/57] loop_139(m)
     ld   BC, 0x0000     ; 3:10      loop_139(m)   idx always points to a 16-bit index
@@ -2290,7 +2274,7 @@ stp_hi139 EQU $+1       ;           loop_139(m)
     jp   nz, do139      ; 3:10      loop_139(m)
 leave139:               ;           loop_139(m)
 exit139:                ;           loop_139(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string140 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -2307,7 +2291,7 @@ exit139:                ;           loop_139(m)
     ex   DE, HL         ; 1:4       241 do_140(m)
     pop  DE             ; 1:10      241 do_140(m)
 do140:                  ;           241 do_140(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx140 EQU $+1          ;[20:78/57] loop_140(m)
     ld   BC, 0x0000     ; 3:10      loop_140(m)   idx always points to a 16-bit index
@@ -2323,7 +2307,7 @@ stp_hi140 EQU $+1       ;           loop_140(m)
     jp   nz, do140      ; 3:10      loop_140(m)
 leave140:               ;           loop_140(m)
 exit140:                ;           loop_140(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string141 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -2340,7 +2324,7 @@ exit140:                ;           loop_140(m)
     ex   DE, HL         ; 1:4       0x3CFB do_141(m)
     pop  DE             ; 1:10      0x3CFB do_141(m)
 do141:                  ;           0x3CFB do_141(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx141 EQU $+1          ;[20:78/57] loop_141(m)
     ld   BC, 0x0000     ; 3:10      loop_141(m)   idx always points to a 16-bit index
@@ -2356,7 +2340,7 @@ stp_hi141 EQU $+1       ;           loop_141(m)
     jp   nz, do141      ; 3:10      loop_141(m)
 leave141:               ;           loop_141(m)
 exit141:                ;           loop_141(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string142 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -2373,7 +2357,7 @@ exit141:                ;           loop_141(m)
     ex   DE, HL         ; 1:4       0x3C05 do_142(m)
     pop  DE             ; 1:10      0x3C05 do_142(m)
 do142:                  ;           0x3C05 do_142(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx142 EQU $+1          ;[20:78/57] loop_142(m)
     ld   BC, 0x0000     ; 3:10      loop_142(m)   idx always points to a 16-bit index
@@ -2389,7 +2373,7 @@ stp_hi142 EQU $+1       ;           loop_142(m)
     jp   nz, do142      ; 3:10      loop_142(m)
 leave142:               ;           loop_142(m)
 exit142:                ;           loop_142(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string143 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -2406,7 +2390,7 @@ exit142:                ;           loop_142(m)
     ex   DE, HL         ; 1:4       0x65FB do_143(m)
     pop  DE             ; 1:10      0x65FB do_143(m)
 do143:                  ;           0x65FB do_143(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx143 EQU $+1          ;[20:78/57] loop_143(m)
     ld   BC, 0x0000     ; 3:10      loop_143(m)   idx always points to a 16-bit index
@@ -2422,7 +2406,7 @@ stp_hi143 EQU $+1       ;           loop_143(m)
     jp   nz, do143      ; 3:10      loop_143(m)
 leave143:               ;           loop_143(m)
 exit143:                ;           loop_143(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string144 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -2439,7 +2423,7 @@ exit143:                ;           loop_143(m)
     ex   DE, HL         ; 1:4       0x4050 do_144(m)
     pop  DE             ; 1:10      0x4050 do_144(m)
 do144:                  ;           0x4050 do_144(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx144 EQU $+1          ;[20:78/57] loop_144(m)
     ld   BC, 0x0000     ; 3:10      loop_144(m)   idx always points to a 16-bit index
@@ -2455,7 +2439,7 @@ stp_hi144 EQU $+1       ;           loop_144(m)
     jp   nz, do144      ; 3:10      loop_144(m)
 leave144:               ;           loop_144(m)
 exit144:                ;           loop_144(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string145 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
@@ -2472,7 +2456,7 @@ exit144:                ;           loop_144(m)
     ex   DE, HL         ; 1:4       -5 do_145(m)
     pop  DE             ; 1:10      -5 do_145(m)
 do145:                  ;           -5 do_145(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx145 EQU $+1          ;[20:78/57] loop_145(m)
     ld   BC, 0x0000     ; 3:10      loop_145(m)   idx always points to a 16-bit index
@@ -2488,7 +2472,7 @@ stp_hi145 EQU $+1       ;           loop_145(m)
     jp   nz, do145      ; 3:10      loop_145(m)
 leave145:               ;           loop_145(m)
 exit145:                ;           loop_145(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string146 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
@@ -2505,7 +2489,7 @@ exit145:                ;           loop_145(m)
     ex   DE, HL         ; 1:4       -3 do_146(m)
     pop  DE             ; 1:10      -3 do_146(m)
 do146:                  ;           -3 do_146(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx146 EQU $+1          ;[20:78/57] loop_146(m)
     ld   BC, 0x0000     ; 3:10      loop_146(m)   idx always points to a 16-bit index
@@ -2521,13 +2505,13 @@ stp_hi146 EQU $+1       ;           loop_146(m)
     jp   nz, do146      ; 3:10      loop_146(m)
 leave146:               ;           loop_146(m)
 exit146:                ;           loop_146(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string147 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 0x6700   ( -- 0 0 0x6700 )
+    push DE             ; 1:11      0 0 0x6700   ( -- 0 0 0x6700 ) push3.m3
     push HL             ; 1:11      0 0 0x6700
-    ld   DE, 0          ; 3:10      0 0 0x6700
+    ld   DE, 0x0000     ; 3:10      0 0 0x6700
     push DE             ; 1:11      0 0 0x6700
     ld   HL, 0x6700     ; 3:10      0 0 0x6700
 
@@ -2561,9 +2545,9 @@ exit147:                ;           loop_147(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string148 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 300   ( -- 0 0 300 )
+    push DE             ; 1:11      0 0 300   ( -- 0 0 300 ) push3.m3
     push HL             ; 1:11      0 0 300
-    ld   DE, 0          ; 3:10      0 0 300
+    ld   DE, 0x0000     ; 3:10      0 0 300
     push DE             ; 1:11      0 0 300
     ld   HL, 0x012C     ; 3:10      0 0 300
 
@@ -2611,7 +2595,7 @@ exit148:                ;           loop_148(m)
     pop  HL             ; 1:10      4 do_149(m)
     ex   DE, HL         ; 1:4       4 do_149(m)
 do149:                  ;           4 do_149(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx149 EQU $+1          ;[20:78/57] -1 +loop_149(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_149(m)   idx always points to a 16-bit index
@@ -2627,7 +2611,7 @@ stp_hi149 EQU $+1       ;           -1 +loop_149(m)
     jp   nz, do149      ; 3:10      -1 +loop_149(m)
 leave149:               ;           -1 +loop_149(m)
 exit149:                ;           -1 +loop_149(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string150 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -2645,7 +2629,7 @@ exit149:                ;           -1 +loop_149(m)
     pop  HL             ; 1:10      5 do_150(m)
     ex   DE, HL         ; 1:4       5 do_150(m)
 do150:                  ;           5 do_150(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx150 EQU $+1          ;[20:78/57] -1 +loop_150(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_150(m)   idx always points to a 16-bit index
@@ -2661,7 +2645,7 @@ stp_hi150 EQU $+1       ;           -1 +loop_150(m)
     jp   nz, do150      ; 3:10      -1 +loop_150(m)
 leave150:               ;           -1 +loop_150(m)
 exit150:                ;           -1 +loop_150(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string151 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -2679,7 +2663,7 @@ exit150:                ;           -1 +loop_150(m)
     pop  HL             ; 1:10      258 do_151(m)
     ex   DE, HL         ; 1:4       258 do_151(m)
 do151:                  ;           258 do_151(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx151 EQU $+1          ;[20:78/57] -1 +loop_151(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_151(m)   idx always points to a 16-bit index
@@ -2695,13 +2679,13 @@ stp_hi151 EQU $+1       ;           -1 +loop_151(m)
     jp   nz, do151      ; 3:10      -1 +loop_151(m)
 leave151:               ;           -1 +loop_151(m)
 exit151:                ;           -1 +loop_151(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string152 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 256   ( -- 0 0 256 )
+    push DE             ; 1:11      0 0 256   ( -- 0 0 256 ) push3.m3
     push HL             ; 1:11      0 0 256
-    ld   DE, 0          ; 3:10      0 0 256
+    ld   DE, 0x0000     ; 3:10      0 0 256
     push DE             ; 1:11      0 0 256
     ld   HL, 0x0100     ; 3:10      0 0 256
 
@@ -2736,9 +2720,9 @@ exit152:                ;           -1 +loop_152(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string153 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1   ( -- 0 0 -1 )
+    push DE             ; 1:11      0 0 -1   ( -- 0 0 -1 ) push3.m3
     push HL             ; 1:11      0 0 -1
-    ld   DE, 0          ; 3:10      0 0 -1
+    ld   DE, 0x0000     ; 3:10      0 0 -1
     push DE             ; 1:11      0 0 -1
     ld   HL, 0xFFFF     ; 3:10      0 0 -1
 
@@ -2773,9 +2757,9 @@ exit153:                ;           -1 +loop_153(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string154 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2   ( -- 0 0 2 )
+    push DE             ; 1:11      0 0 2   ( -- 0 0 2 ) push3.m3
     push HL             ; 1:11      0 0 2
-    ld   DE, 0          ; 3:10      0 0 2
+    ld   DE, 0x0000     ; 3:10      0 0 2
     push DE             ; 1:11      0 0 2
     ld   HL, 0x0002     ; 3:10      0 0 2
 
@@ -2810,9 +2794,9 @@ exit154:                ;           -1 +loop_154(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string155 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 200   ( -- 0 0 200 )
+    push DE             ; 1:11      0 0 200   ( -- 0 0 200 ) push3.m3
     push HL             ; 1:11      0 0 200
-    ld   DE, 0          ; 3:10      0 0 200
+    ld   DE, 0x0000     ; 3:10      0 0 200
     push DE             ; 1:11      0 0 200
     ld   HL, 0x00C8     ; 3:10      0 0 200
 
@@ -2847,9 +2831,9 @@ exit155:                ;           -1 +loop_155(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string156 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -624   ( -- 0 0 -624 )
+    push DE             ; 1:11      0 0 -624   ( -- 0 0 -624 ) push3.m3
     push HL             ; 1:11      0 0 -624
-    ld   DE, 0          ; 3:10      0 0 -624
+    ld   DE, 0x0000     ; 3:10      0 0 -624
     push DE             ; 1:11      0 0 -624
     ld   HL, 0xFD90     ; 3:10      0 0 -624
 
@@ -2884,9 +2868,9 @@ exit156:                ;           -1 +loop_156(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string157 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -513   ( -- 0 0 -513 )
+    push DE             ; 1:11      0 0 -513   ( -- 0 0 -513 ) push3.m3
     push HL             ; 1:11      0 0 -513
-    ld   DE, 0          ; 3:10      0 0 -513
+    ld   DE, 0x0000     ; 3:10      0 0 -513
     push DE             ; 1:11      0 0 -513
     ld   HL, 0xFDFF     ; 3:10      0 0 -513
 
@@ -2929,7 +2913,7 @@ exit157:                ;           -1 +loop_157(m)
 do158save:              ;           251 256 swap do_158(xm)
     ld  (idx158),BC     ; 4:20      251 256 swap do_158(xm)
 do158:                  ;           251 256 swap do_158(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:38]    loop_158   variant +1.A: 0 <= index < stop == 256, run 5x
 idx158 EQU $+1          ;           loop_158   idx always points to a 16-bit index
@@ -2940,7 +2924,7 @@ idx158 EQU $+1          ;           loop_158   idx always points to a 16-bit ind
     jp   nz, do158      ; 3:10      loop_158   index-stop
 leave158:               ;           loop_158
 exit158:                ;           loop_158
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string159 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -2948,7 +2932,7 @@ exit158:                ;           loop_158
 do159save:              ;           241 246 swap do_159(xm)
     ld  (idx159),BC     ; 4:20      241 246 swap do_159(xm)
 do159:                  ;           241 246 swap do_159(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:45]    loop_159   variant +1.B: 0 <= index < stop <= 256, run 5x
 idx159 EQU $+1          ;           loop_159   idx always points to a 16-bit index
@@ -2960,7 +2944,7 @@ idx159 EQU $+1          ;           loop_159   idx always points to a 16-bit ind
     jp   nz, do159      ; 3:10      loop_159   index-stop
 leave159:               ;           loop_159
 exit159:                ;           loop_159
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string160 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -2968,7 +2952,7 @@ exit159:                ;           loop_159
 do160save:              ;           0x3CFB 0x3D00 swap do_160(xm)
     ld  (idx160),BC     ; 4:20      0x3CFB 0x3D00 swap do_160(xm)
 do160:                  ;           0x3CFB 0x3D00 swap do_160(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:34]     loop_160   variant +1.C: 0x3C00 <=index < stop == 0x3D00, run 5x
 idx160 EQU $+1          ;           loop_160   idx always points to a 16-bit index
@@ -2978,7 +2962,7 @@ idx160 EQU $+1          ;           loop_160   idx always points to a 16-bit ind
     jp   nz, do160      ; 3:10      loop_160
 leave160:               ;           loop_160
 exit160:                ;           loop_160
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string161 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -2986,7 +2970,7 @@ exit160:                ;           loop_160
 do161save:              ;           0x3C05 0x3C0A swap do_161(xm)
     ld  (idx161),BC     ; 4:20      0x3C05 0x3C0A swap do_161(xm)
 do161:                  ;           0x3C05 0x3C0A swap do_161(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_161   variant +1.D: 0x3C00 <=index < stop <= 0x3D00, run 5x
 idx161 EQU $+1          ;           loop_161   idx always points to a 16-bit index
@@ -2997,7 +2981,7 @@ idx161 EQU $+1          ;           loop_161   idx always points to a 16-bit ind
     jp   nz, do161      ; 3:10      loop_161
 leave161:               ;           loop_161
 exit161:                ;           loop_161
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string162 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -3005,7 +2989,7 @@ exit161:                ;           loop_161
 do162save:              ;           0x65FB 0x6600 swap do_162(xm)
     ld  (idx162),BC     ; 4:20      0x65FB 0x6600 swap do_162(xm)
 do162:                  ;           0x65FB 0x6600 swap do_162(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_162   variant +1.E: 256*(1+hi(index)) == stop, run 5x
 idx162 EQU $+1          ;           loop_162   idx always points to a 16-bit index
@@ -3016,7 +3000,7 @@ idx162 EQU $+1          ;           loop_162   idx always points to a 16-bit ind
     jp   nz, do162      ; 3:10      loop_162
 leave162:               ;           loop_162
 exit162:                ;           loop_162
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string163 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -3024,7 +3008,7 @@ exit162:                ;           loop_162
 do163save:              ;           0x4050 0x4055 swap do_163(xm)
     ld  (idx163),BC     ; 4:20      0x4050 0x4055 swap do_163(xm)
 do163:                  ;           0x4050 0x4055 swap do_163(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    loop_163   variant +1.F: hi(index) == hi(stop-1) && index < stop, run 5x
 idx163 EQU $+1          ;           loop_163   idx always points to a 16-bit index
@@ -3036,7 +3020,7 @@ idx163 EQU $+1          ;           loop_163   idx always points to a 16-bit ind
     jp   nz, do163      ; 3:10      loop_163
 leave163:               ;           loop_163
 exit163:                ;           loop_163
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string164 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
@@ -3044,7 +3028,7 @@ exit163:                ;           loop_163
 do164save:              ;           -5 0 swap do_164(xm)
     ld  (idx164),BC     ; 4:20      -5 0 swap do_164(xm)
 do164:                  ;           -5 0 swap do_164(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  loop_164   variant +1.G: stop == 0, run 5x
 idx164 EQU $+1          ;           loop_164   idx always points to a 16-bit index
@@ -3055,7 +3039,7 @@ idx164 EQU $+1          ;           loop_164   idx always points to a 16-bit ind
     jp   nz, do164save  ; 3:10      loop_164
 leave164:               ;           loop_164
 exit164:                ;           loop_164
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string165 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
@@ -3063,7 +3047,7 @@ exit164:                ;           loop_164
 do165save:              ;           -3 2 swap do_165(xm)
     ld  (idx165),BC     ; 4:20      -3 2 swap do_165(xm)
 do165:                  ;           -3 2 swap do_165(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] loop_165   variant +1.H: step one with lo(real_stop) exclusivity, run 5x
 idx165 EQU $+1          ;           loop_165   idx always points to a 16-bit index
@@ -3074,12 +3058,12 @@ idx165 EQU $+1          ;           loop_165   idx always points to a 16-bit ind
     jp   nz, do165save  ; 3:10      loop_165
 leave165:               ;           loop_165
 exit165:                ;           loop_165
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string166 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 0x6318 0x6700 swap 2drop
-    push DE             ; 1:11      0 0 0x6318 0x6700 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 0x6318 0x6700 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 0x6318 0x6700 swap 2drop
     push HL             ; 1:11      0 0 0x6318 0x6700 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 0x6318 0x6700 swap 2drop
     ld    L, D          ; 1:4       0 0 0x6318 0x6700 swap 2drop   L = D = 0x00
@@ -3104,8 +3088,8 @@ exit166:                ;           loop_166
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string167 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -700 300 swap 2drop
-    push DE             ; 1:11      0 0 -700 300 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -700 300 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -700 300 swap 2drop
     push HL             ; 1:11      0 0 -700 300 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -700 300 swap 2drop
     ld    L, D          ; 1:4       0 0 -700 300 swap 2drop   L = D = 0x00
@@ -3137,7 +3121,7 @@ exit167:                ;           loop_167
 do168save:              ;           4 0 swap do_168(xm)
     ld  (idx168),BC     ; 4:20      4 0 swap do_168(xm)
 do168:                  ;           4 0 swap do_168(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_168(xm)   variant -1.A: step -1 and stop 0, run 5x
 idx168 EQU $+1          ;           -1 +loop_168(xm)   idx always points to a 16-bit index
@@ -3148,7 +3132,7 @@ idx168 EQU $+1          ;           -1 +loop_168(xm)   idx always points to a 16
     jp   nz, do168save  ; 3:10      -1 +loop_168(xm)
 leave168:               ;           -1 +loop_168(xm)
 exit168:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string169 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -3156,7 +3140,7 @@ exit168:                ;           xloop LOOP_STACK
 do169save:              ;           5 1 swap do_169(xm)
     ld  (idx169),BC     ; 4:20      5 1 swap do_169(xm)
 do169:                  ;           5 1 swap do_169(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_169(xm)   variant -1.B: step -1 and stop 1, run 5x
 idx169 EQU $+1          ;           -1 +loop_169(xm)   idx always points to a 16-bit index
@@ -3167,7 +3151,7 @@ idx169 EQU $+1          ;           -1 +loop_169(xm)   idx always points to a 16
     jp   nz, do169save  ; 3:10      -1 +loop_169(xm)
 leave169:               ;           -1 +loop_169(xm)
 exit169:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string170 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -3175,7 +3159,7 @@ exit169:                ;           xloop LOOP_STACK
 do170save:              ;           258 254 swap do_170(xm)
     ld  (idx170),BC     ; 4:20      258 254 swap do_170(xm)
 do170:                  ;           258 254 swap do_170(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] -1 +loop_170(xm)   variant -1.C: step -1 with lo(real_stop) exclusivity, run 5x
 idx170 EQU $+1          ;           -1 +loop_170(xm)   idx always points to a 16-bit index
@@ -3186,12 +3170,12 @@ idx170 EQU $+1          ;           -1 +loop_170(xm)   idx always points to a 16
     jp   nz, do170save  ; 3:10      -1 +loop_170(xm)
 leave170:               ;           -1 +loop_170(xm)
 exit170:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string171 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1255 256 swap 2drop
-    push DE             ; 1:11      0 0 1255 256 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1255 256 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1255 256 swap 2drop
     push HL             ; 1:11      0 0 1255 256 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 1255 256 swap 2drop
     ld    L, D          ; 1:4       0 0 1255 256 swap 2drop   L = D = 0x00
@@ -3216,8 +3200,8 @@ exit171:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string172 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 998 -1 swap 2drop
-    push DE             ; 1:11      0 0 998 -1 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 998 -1 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 998 -1 swap 2drop
     push HL             ; 1:11      0 0 998 -1 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 998 -1 swap 2drop
     ld    L, D          ; 1:4       0 0 998 -1 swap 2drop   L = D = 0x00
@@ -3243,8 +3227,8 @@ exit172:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string173 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1001 2 swap 2drop
-    push DE             ; 1:11      0 0 1001 2 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1001 2 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1001 2 swap 2drop
     push HL             ; 1:11      0 0 1001 2 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 1001 2 swap 2drop
     ld    L, D          ; 1:4       0 0 1001 2 swap 2drop   L = D = 0x00
@@ -3270,8 +3254,8 @@ exit173:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string174 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1199 200 swap 2drop
-    push DE             ; 1:11      0 0 1199 200 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1199 200 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1199 200 swap 2drop
     push HL             ; 1:11      0 0 1199 200 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 1199 200 swap 2drop
     ld    L, D          ; 1:4       0 0 1199 200 swap 2drop   L = D = 0x00
@@ -3297,8 +3281,8 @@ exit174:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string175 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 375 -624 swap 2drop
-    push DE             ; 1:11      0 0 375 -624 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 375 -624 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 375 -624 swap 2drop
     push HL             ; 1:11      0 0 375 -624 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 375 -624 swap 2drop
     ld    L, D          ; 1:4       0 0 375 -624 swap 2drop   L = D = 0x00
@@ -3326,8 +3310,8 @@ exit175:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string176 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 486 -513 swap 2drop
-    push DE             ; 1:11      0 0 486 -513 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 486 -513 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 486 -513 swap 2drop
     push HL             ; 1:11      0 0 486 -513 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 486 -513 swap 2drop
     ld    L, D          ; 1:4       0 0 486 -513 swap 2drop   L = D = 0x00
@@ -3367,7 +3351,7 @@ exit176:                ;           xloop LOOP_STACK
     ex   DE, HL         ; 1:4       256 swap do_177(m)
     pop  DE             ; 1:10      256 swap do_177(m)
 do177:                  ;           256 swap do_177(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx177 EQU $+1         ;[14:58]     loop_177(m)   ( 256 index -- )
     ld   BC, 0x0000     ; 3:10      loop_177(m)   idx always points to a 16-bit index
@@ -3381,7 +3365,7 @@ qdo177:                 ;           loop_177(m)
     jp   nz, do177      ; 3:10      loop_177(m)
 leave177:               ;           loop_177(m)
 exit177:                ;           loop_177(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string178 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -3393,7 +3377,7 @@ exit177:                ;           loop_177(m)
     ex   DE, HL         ; 1:4       246 swap do_178(m)
     pop  DE             ; 1:10      246 swap do_178(m)
 do178:                  ;           246 swap do_178(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx178 EQU $+1         ;[15:61]     loop_178(m)   ( 246 index -- )
     ld   BC, 0x0000     ; 3:10      loop_178(m)   idx always points to a 16-bit index
@@ -3407,7 +3391,7 @@ qdo178:                 ;           loop_178(m)
     jp   nz, do178      ; 3:10      loop_178(m)
 leave178:               ;           loop_178(m)
 exit178:                ;           loop_178(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string179 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -3419,7 +3403,7 @@ exit178:                ;           loop_178(m)
     ex   DE, HL         ; 1:4       0x3D00 swap do_179(m)
     pop  DE             ; 1:10      0x3D00 swap do_179(m)
 do179:                  ;           0x3D00 swap do_179(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx179 EQU $+1         ;[15:61]     loop_179(m)   ( 0x3D00 index -- )
     ld   BC, 0x0000     ; 3:10      loop_179(m)   idx always points to a 16-bit index
@@ -3433,7 +3417,7 @@ qdo179:                 ;           loop_179(m)
     jp   nz, do179      ; 3:10      loop_179(m)
 leave179:               ;           loop_179(m)
 exit179:                ;           loop_179(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string180 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -3445,7 +3429,7 @@ exit179:                ;           loop_179(m)
     ex   DE, HL         ; 1:4       0x3C0A swap do_180(m)
     pop  DE             ; 1:10      0x3C0A swap do_180(m)
 do180:                  ;           0x3C0A swap do_180(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx180 EQU $+1         ;[20:73]     loop_180(m)   ( 0x3C0A index -- )
     ld   BC, 0x0000     ; 3:10      loop_180(m)   idx always points to a 16-bit index
@@ -3461,7 +3445,7 @@ qdo180:                 ;           loop_180(m)
     jp   nz, do180      ; 3:10      loop_180(m)
 leave180:               ;           loop_180(m)
 exit180:                ;           loop_180(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string181 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -3473,7 +3457,7 @@ exit180:                ;           loop_180(m)
     ex   DE, HL         ; 1:4       0x6600 swap do_181(m)
     pop  DE             ; 1:10      0x6600 swap do_181(m)
 do181:                  ;           0x6600 swap do_181(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx181 EQU $+1         ;[15:61]     loop_181(m)   ( 0x6600 index -- )
     ld   BC, 0x0000     ; 3:10      loop_181(m)   idx always points to a 16-bit index
@@ -3487,7 +3471,7 @@ qdo181:                 ;           loop_181(m)
     jp   nz, do181      ; 3:10      loop_181(m)
 leave181:               ;           loop_181(m)
 exit181:                ;           loop_181(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string182 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -3499,7 +3483,7 @@ exit181:                ;           loop_181(m)
     ex   DE, HL         ; 1:4       0x4055 swap do_182(m)
     pop  DE             ; 1:10      0x4055 swap do_182(m)
 do182:                  ;           0x4055 swap do_182(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx182 EQU $+1         ;[20:73]     loop_182(m)   ( 0x4055 index -- )
     ld   BC, 0x0000     ; 3:10      loop_182(m)   idx always points to a 16-bit index
@@ -3515,19 +3499,19 @@ qdo182:                 ;           loop_182(m)
     jp   nz, do182      ; 3:10      loop_182(m)
 leave182:               ;           loop_182(m)
 exit182:                ;           loop_182(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string183 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -5
     ex   DE, HL         ; 1:4       -5
-    ld   HL, -5         ; 3:10      -5
+    ld   HL, 0-5        ; 3:10      -5
 
     ld  (idx183), HL    ; 3:16      0 swap do_183(m)   index  ( 0 index -- )
     ex   DE, HL         ; 1:4       0 swap do_183(m)
     pop  DE             ; 1:10      0 swap do_183(m)
 do183:                  ;           0 swap do_183(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx183 EQU $+1         ;[13:54]     loop_183(m)   ( 0 index -- )
     ld   BC, 0x0000     ; 3:10      loop_183(m)   idx always points to a 16-bit index
@@ -3540,19 +3524,19 @@ qdo183:                 ;           loop_183(m)
     jp   nz, do183      ; 3:10      loop_183(m)
 leave183:               ;           loop_183(m)
 exit183:                ;           loop_183(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string184 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -3
     ex   DE, HL         ; 1:4       -3
-    ld   HL, -3         ; 3:10      -3
+    ld   HL, 0-3        ; 3:10      -3
 
     ld  (idx184), HL    ; 3:16      2 swap do_184(m)   index  ( 2 index -- )
     ex   DE, HL         ; 1:4       2 swap do_184(m)
     pop  DE             ; 1:10      2 swap do_184(m)
 do184:                  ;           2 swap do_184(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx184 EQU $+1         ;[14:58]     loop_184(m)   ( 2 index -- )
     ld   BC, 0x0000     ; 3:10      loop_184(m)   idx always points to a 16-bit index
@@ -3565,13 +3549,13 @@ idx184 EQU $+1         ;[14:58]     loop_184(m)   ( 2 index -- )
     jp   nz, do184      ; 3:10      loop_184(m)
 leave184:               ;           loop_184(m)
 exit184:                ;           loop_184(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string185 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 0x6318   ( -- 0 0 0x6318 )
+    push DE             ; 1:11      0 0 0x6318   ( -- 0 0 0x6318 ) push3.m3
     push HL             ; 1:11      0 0 0x6318
-    ld   DE, 0          ; 3:10      0 0 0x6318
+    ld   DE, 0x0000     ; 3:10      0 0 0x6318
     push DE             ; 1:11      0 0 0x6318
     ld   HL, 0x6318     ; 3:10      0 0 0x6318
 
@@ -3598,9 +3582,9 @@ exit185:                ;           loop_185(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string186 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -700   ( -- 0 0 -700 )
+    push DE             ; 1:11      0 0 -700   ( -- 0 0 -700 ) push3.m3
     push HL             ; 1:11      0 0 -700
-    ld   DE, 0          ; 3:10      0 0 -700
+    ld   DE, 0x0000     ; 3:10      0 0 -700
     push DE             ; 1:11      0 0 -700
     ld   HL, 0xFD44     ; 3:10      0 0 -700
 
@@ -3637,7 +3621,7 @@ exit186:                ;           loop_186(m)
     pop  HL             ; 1:10      0 swap do_187(m)
     ex   DE, HL         ; 1:4       0 swap do_187(m)
 do187:                  ;           0 swap do_187(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx187 EQU $+1         ;[13:54]     -1 +loop_187(m)   ( 0 index -- )
     ld   BC, 0x0000     ; 3:10      -1 +loop_187(m)   idx always points to a 16-bit index
@@ -3649,7 +3633,7 @@ idx187 EQU $+1         ;[13:54]     -1 +loop_187(m)   ( 0 index -- )
     jp   nz, do187      ; 3:10      -1 +loop_187(m)
 leave187:               ;           -1 +loop_187(m)
 exit187:                ;           -1 +loop_187(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string188 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -3661,7 +3645,7 @@ exit187:                ;           -1 +loop_187(m)
     pop  HL             ; 1:10      1 swap do_188(m)
     ex   DE, HL         ; 1:4       1 swap do_188(m)
 do188:                  ;           1 swap do_188(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx188 EQU $+1         ;[13:54]     -1 +loop_188(m)   ( 1 index -- )
     ld   BC, 0x0000     ; 3:10      -1 +loop_188(m)   idx always points to a 16-bit index
@@ -3673,7 +3657,7 @@ idx188 EQU $+1         ;[13:54]     -1 +loop_188(m)   ( 1 index -- )
     jp   nz, do188      ; 3:10      -1 +loop_188(m)
 leave188:               ;           -1 +loop_188(m)
 exit188:                ;           -1 +loop_188(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string189 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -3685,7 +3669,7 @@ exit188:                ;           -1 +loop_188(m)
     pop  HL             ; 1:10      254 swap do_189(m)
     ex   DE, HL         ; 1:4       254 swap do_189(m)
 do189:                  ;           254 swap do_189(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx189 EQU $+1         ;[15:61]     -1 +loop_189(m)   ( 254 index -- )
     ld   BC, 0x0000     ; 3:10      -1 +loop_189(m)   idx always points to a 16-bit index
@@ -3698,13 +3682,13 @@ idx189 EQU $+1         ;[15:61]     -1 +loop_189(m)   ( 254 index -- )
     jp   nz, do189      ; 3:10      -1 +loop_189(m)
 leave189:               ;           -1 +loop_189(m)
 exit189:                ;           -1 +loop_189(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string190 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1255   ( -- 0 0 1255 )
+    push DE             ; 1:11      0 0 1255   ( -- 0 0 1255 ) push3.m3
     push HL             ; 1:11      0 0 1255
-    ld   DE, 0          ; 3:10      0 0 1255
+    ld   DE, 0x0000     ; 3:10      0 0 1255
     push DE             ; 1:11      0 0 1255
     ld   HL, 0x04E7     ; 3:10      0 0 1255
 
@@ -3730,9 +3714,9 @@ exit190:                ;           -1 +loop_190(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string191 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 998   ( -- 0 0 998 )
+    push DE             ; 1:11      0 0 998   ( -- 0 0 998 ) push3.m3
     push HL             ; 1:11      0 0 998
-    ld   DE, 0          ; 3:10      0 0 998
+    ld   DE, 0x0000     ; 3:10      0 0 998
     push DE             ; 1:11      0 0 998
     ld   HL, 0x03E6     ; 3:10      0 0 998
 
@@ -3758,9 +3742,9 @@ exit191:                ;           -1 +loop_191(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string192 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1001   ( -- 0 0 1001 )
+    push DE             ; 1:11      0 0 1001   ( -- 0 0 1001 ) push3.m3
     push HL             ; 1:11      0 0 1001
-    ld   DE, 0          ; 3:10      0 0 1001
+    ld   DE, 0x0000     ; 3:10      0 0 1001
     push DE             ; 1:11      0 0 1001
     ld   HL, 0x03E9     ; 3:10      0 0 1001
 
@@ -3786,9 +3770,9 @@ exit192:                ;           -1 +loop_192(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string193 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1199   ( -- 0 0 1199 )
+    push DE             ; 1:11      0 0 1199   ( -- 0 0 1199 ) push3.m3
     push HL             ; 1:11      0 0 1199
-    ld   DE, 0          ; 3:10      0 0 1199
+    ld   DE, 0x0000     ; 3:10      0 0 1199
     push DE             ; 1:11      0 0 1199
     ld   HL, 0x04AF     ; 3:10      0 0 1199
 
@@ -3814,9 +3798,9 @@ exit193:                ;           -1 +loop_193(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string194 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 375   ( -- 0 0 375 )
+    push DE             ; 1:11      0 0 375   ( -- 0 0 375 ) push3.m3
     push HL             ; 1:11      0 0 375
-    ld   DE, 0          ; 3:10      0 0 375
+    ld   DE, 0x0000     ; 3:10      0 0 375
     push DE             ; 1:11      0 0 375
     ld   HL, 0x0177     ; 3:10      0 0 375
 
@@ -3844,9 +3828,9 @@ exit194:                ;           -1 +loop_194(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string195 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 486   ( -- 0 0 486 )
+    push DE             ; 1:11      0 0 486   ( -- 0 0 486 ) push3.m3
     push HL             ; 1:11      0 0 486
-    ld   DE, 0          ; 3:10      0 0 486
+    ld   DE, 0x0000     ; 3:10      0 0 486
     push DE             ; 1:11      0 0 486
     ld   HL, 0x01E6     ; 3:10      0 0 486
 
@@ -3889,7 +3873,7 @@ exit195:                ;           -1 +loop_195(m)
     ex   DE, HL         ; 1:4       do_196(m)
     pop  DE             ; 1:10      do_196(m)
 do196:                  ;           do_196(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx196 EQU $+1          ;[20:78/57] loop_196(m)
     ld   BC, 0x0000     ; 3:10      loop_196(m)   idx always points to a 16-bit index
@@ -3905,7 +3889,7 @@ stp_hi196 EQU $+1       ;           loop_196(m)
     jp   nz, do196      ; 3:10      loop_196(m)
 leave196:               ;           loop_196(m)
 exit196:                ;           loop_196(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string197 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -3921,7 +3905,7 @@ exit196:                ;           loop_196(m)
     ex   DE, HL         ; 1:4       do_197(m)
     pop  DE             ; 1:10      do_197(m)
 do197:                  ;           do_197(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx197 EQU $+1          ;[20:78/57] loop_197(m)
     ld   BC, 0x0000     ; 3:10      loop_197(m)   idx always points to a 16-bit index
@@ -3937,7 +3921,7 @@ stp_hi197 EQU $+1       ;           loop_197(m)
     jp   nz, do197      ; 3:10      loop_197(m)
 leave197:               ;           loop_197(m)
 exit197:                ;           loop_197(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string198 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -3953,7 +3937,7 @@ exit197:                ;           loop_197(m)
     ex   DE, HL         ; 1:4       do_198(m)
     pop  DE             ; 1:10      do_198(m)
 do198:                  ;           do_198(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx198 EQU $+1          ;[20:78/57] loop_198(m)
     ld   BC, 0x0000     ; 3:10      loop_198(m)   idx always points to a 16-bit index
@@ -3969,7 +3953,7 @@ stp_hi198 EQU $+1       ;           loop_198(m)
     jp   nz, do198      ; 3:10      loop_198(m)
 leave198:               ;           loop_198(m)
 exit198:                ;           loop_198(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string199 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -3985,7 +3969,7 @@ exit198:                ;           loop_198(m)
     ex   DE, HL         ; 1:4       do_199(m)
     pop  DE             ; 1:10      do_199(m)
 do199:                  ;           do_199(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx199 EQU $+1          ;[20:78/57] loop_199(m)
     ld   BC, 0x0000     ; 3:10      loop_199(m)   idx always points to a 16-bit index
@@ -4001,7 +3985,7 @@ stp_hi199 EQU $+1       ;           loop_199(m)
     jp   nz, do199      ; 3:10      loop_199(m)
 leave199:               ;           loop_199(m)
 exit199:                ;           loop_199(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string200 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -4017,7 +4001,7 @@ exit199:                ;           loop_199(m)
     ex   DE, HL         ; 1:4       do_200(m)
     pop  DE             ; 1:10      do_200(m)
 do200:                  ;           do_200(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx200 EQU $+1          ;[20:78/57] loop_200(m)
     ld   BC, 0x0000     ; 3:10      loop_200(m)   idx always points to a 16-bit index
@@ -4033,7 +4017,7 @@ stp_hi200 EQU $+1       ;           loop_200(m)
     jp   nz, do200      ; 3:10      loop_200(m)
 leave200:               ;           loop_200(m)
 exit200:                ;           loop_200(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string201 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -4049,7 +4033,7 @@ exit200:                ;           loop_200(m)
     ex   DE, HL         ; 1:4       do_201(m)
     pop  DE             ; 1:10      do_201(m)
 do201:                  ;           do_201(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx201 EQU $+1          ;[20:78/57] loop_201(m)
     ld   BC, 0x0000     ; 3:10      loop_201(m)   idx always points to a 16-bit index
@@ -4065,7 +4049,7 @@ stp_hi201 EQU $+1       ;           loop_201(m)
     jp   nz, do201      ; 3:10      loop_201(m)
 leave201:               ;           loop_201(m)
 exit201:                ;           loop_201(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string202 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
@@ -4081,7 +4065,7 @@ exit201:                ;           loop_201(m)
     ex   DE, HL         ; 1:4       do_202(m)
     pop  DE             ; 1:10      do_202(m)
 do202:                  ;           do_202(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx202 EQU $+1          ;[20:78/57] loop_202(m)
     ld   BC, 0x0000     ; 3:10      loop_202(m)   idx always points to a 16-bit index
@@ -4097,7 +4081,7 @@ stp_hi202 EQU $+1       ;           loop_202(m)
     jp   nz, do202      ; 3:10      loop_202(m)
 leave202:               ;           loop_202(m)
 exit202:                ;           loop_202(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string203 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
@@ -4113,7 +4097,7 @@ exit202:                ;           loop_202(m)
     ex   DE, HL         ; 1:4       do_203(m)
     pop  DE             ; 1:10      do_203(m)
 do203:                  ;           do_203(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx203 EQU $+1          ;[20:78/57] loop_203(m)
     ld   BC, 0x0000     ; 3:10      loop_203(m)   idx always points to a 16-bit index
@@ -4129,12 +4113,12 @@ stp_hi203 EQU $+1       ;           loop_203(m)
     jp   nz, do203      ; 3:10      loop_203(m)
 leave203:               ;           loop_203(m)
 exit203:                ;           loop_203(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string204 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 0x6700 drop
-    push DE             ; 1:11      0 0 0x6700 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 0x6700 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 0x6700 drop
     push HL             ; 1:11      0 0 0x6700 drop
     ld   DE, 0x0000     ; 3:10      0 0 0x6700 drop
     ld    L, D          ; 1:4       0 0 0x6700 drop   L = D = 0x00
@@ -4159,8 +4143,8 @@ exit204:                ;           loop_204
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string205 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 300 drop
-    push DE             ; 1:11      0 0 300 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 300 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 300 drop
     push HL             ; 1:11      0 0 300 drop
     ld   DE, 0x0000     ; 3:10      0 0 300 drop
     ld    L, D          ; 1:4       0 0 300 drop   L = D = 0x00
@@ -4201,7 +4185,7 @@ exit205:                ;           loop_205
     pop  HL             ; 1:10      do_206(m)
     ex   DE, HL         ; 1:4       do_206(m)
 do206:                  ;           do_206(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx206 EQU $+1          ;[20:78/57] -1 +loop_206(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_206(m)   idx always points to a 16-bit index
@@ -4217,7 +4201,7 @@ stp_hi206 EQU $+1       ;           -1 +loop_206(m)
     jp   nz, do206      ; 3:10      -1 +loop_206(m)
 leave206:               ;           -1 +loop_206(m)
 exit206:                ;           -1 +loop_206(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string207 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -4234,7 +4218,7 @@ exit206:                ;           -1 +loop_206(m)
     pop  HL             ; 1:10      do_207(m)
     ex   DE, HL         ; 1:4       do_207(m)
 do207:                  ;           do_207(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx207 EQU $+1          ;[20:78/57] -1 +loop_207(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_207(m)   idx always points to a 16-bit index
@@ -4250,7 +4234,7 @@ stp_hi207 EQU $+1       ;           -1 +loop_207(m)
     jp   nz, do207      ; 3:10      -1 +loop_207(m)
 leave207:               ;           -1 +loop_207(m)
 exit207:                ;           -1 +loop_207(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string208 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -4267,7 +4251,7 @@ exit207:                ;           -1 +loop_207(m)
     pop  HL             ; 1:10      do_208(m)
     ex   DE, HL         ; 1:4       do_208(m)
 do208:                  ;           do_208(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx208 EQU $+1          ;[20:78/57] -1 +loop_208(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_208(m)   idx always points to a 16-bit index
@@ -4283,12 +4267,12 @@ stp_hi208 EQU $+1       ;           -1 +loop_208(m)
     jp   nz, do208      ; 3:10      -1 +loop_208(m)
 leave208:               ;           -1 +loop_208(m)
 exit208:                ;           -1 +loop_208(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string209 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 256 drop
-    push DE             ; 1:11      0 0 256 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 256 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 256 drop
     push HL             ; 1:11      0 0 256 drop
     ld   DE, 0x0000     ; 3:10      0 0 256 drop
     ld    L, D          ; 1:4       0 0 256 drop   L = D = 0x00
@@ -4313,8 +4297,8 @@ exit209:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string210 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -1 drop
-    push DE             ; 1:11      0 0 -1 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -1 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -1 drop
     push HL             ; 1:11      0 0 -1 drop
     ld   DE, 0x0000     ; 3:10      0 0 -1 drop
     ld    L, D          ; 1:4       0 0 -1 drop   L = D = 0x00
@@ -4340,8 +4324,8 @@ exit210:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string211 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2 drop
-    push DE             ; 1:11      0 0 2 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2 drop
     push HL             ; 1:11      0 0 2 drop
     ld   DE, 0x0000     ; 3:10      0 0 2 drop
     ld    L, D          ; 1:4       0 0 2 drop   L = D = 0x00
@@ -4367,8 +4351,8 @@ exit211:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string212 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 200 drop
-    push DE             ; 1:11      0 0 200 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 200 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 200 drop
     push HL             ; 1:11      0 0 200 drop
     ld   DE, 0x0000     ; 3:10      0 0 200 drop
     ld    L, D          ; 1:4       0 0 200 drop   L = D = 0x00
@@ -4394,8 +4378,8 @@ exit212:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string213 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -624 drop
-    push DE             ; 1:11      0 0 -624 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -624 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -624 drop
     push HL             ; 1:11      0 0 -624 drop
     ld   DE, 0x0000     ; 3:10      0 0 -624 drop
     ld    L, D          ; 1:4       0 0 -624 drop   L = D = 0x00
@@ -4423,8 +4407,8 @@ exit213:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string214 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -513 drop
-    push DE             ; 1:11      0 0 -513 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -513 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -513 drop
     push HL             ; 1:11      0 0 -513 drop
     ld   DE, 0x0000     ; 3:10      0 0 -513 drop
     ld    L, D          ; 1:4       0 0 -513 drop   L = D = 0x00
@@ -4469,7 +4453,7 @@ exit214:                ;           xloop LOOP_STACK
     ex   DE, HL         ; 1:4       do_215(m)
     pop  DE             ; 1:10      do_215(m)
 do215:                  ;           do_215(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx215 EQU $+1          ;[20:78/57] loop_215(m)
     ld   BC, 0x0000     ; 3:10      loop_215(m)   idx always points to a 16-bit index
@@ -4485,7 +4469,7 @@ stp_hi215 EQU $+1       ;           loop_215(m)
     jp   nz, do215      ; 3:10      loop_215(m)
 leave215:               ;           loop_215(m)
 exit215:                ;           loop_215(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string216 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -4502,7 +4486,7 @@ exit215:                ;           loop_215(m)
     ex   DE, HL         ; 1:4       do_216(m)
     pop  DE             ; 1:10      do_216(m)
 do216:                  ;           do_216(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx216 EQU $+1          ;[20:78/57] loop_216(m)
     ld   BC, 0x0000     ; 3:10      loop_216(m)   idx always points to a 16-bit index
@@ -4518,7 +4502,7 @@ stp_hi216 EQU $+1       ;           loop_216(m)
     jp   nz, do216      ; 3:10      loop_216(m)
 leave216:               ;           loop_216(m)
 exit216:                ;           loop_216(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string217 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -4535,7 +4519,7 @@ exit216:                ;           loop_216(m)
     ex   DE, HL         ; 1:4       do_217(m)
     pop  DE             ; 1:10      do_217(m)
 do217:                  ;           do_217(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx217 EQU $+1          ;[20:78/57] loop_217(m)
     ld   BC, 0x0000     ; 3:10      loop_217(m)   idx always points to a 16-bit index
@@ -4551,7 +4535,7 @@ stp_hi217 EQU $+1       ;           loop_217(m)
     jp   nz, do217      ; 3:10      loop_217(m)
 leave217:               ;           loop_217(m)
 exit217:                ;           loop_217(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string218 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -4568,7 +4552,7 @@ exit217:                ;           loop_217(m)
     ex   DE, HL         ; 1:4       do_218(m)
     pop  DE             ; 1:10      do_218(m)
 do218:                  ;           do_218(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx218 EQU $+1          ;[20:78/57] loop_218(m)
     ld   BC, 0x0000     ; 3:10      loop_218(m)   idx always points to a 16-bit index
@@ -4584,7 +4568,7 @@ stp_hi218 EQU $+1       ;           loop_218(m)
     jp   nz, do218      ; 3:10      loop_218(m)
 leave218:               ;           loop_218(m)
 exit218:                ;           loop_218(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string219 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -4601,7 +4585,7 @@ exit218:                ;           loop_218(m)
     ex   DE, HL         ; 1:4       do_219(m)
     pop  DE             ; 1:10      do_219(m)
 do219:                  ;           do_219(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx219 EQU $+1          ;[20:78/57] loop_219(m)
     ld   BC, 0x0000     ; 3:10      loop_219(m)   idx always points to a 16-bit index
@@ -4617,7 +4601,7 @@ stp_hi219 EQU $+1       ;           loop_219(m)
     jp   nz, do219      ; 3:10      loop_219(m)
 leave219:               ;           loop_219(m)
 exit219:                ;           loop_219(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string220 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -4634,7 +4618,7 @@ exit219:                ;           loop_219(m)
     ex   DE, HL         ; 1:4       do_220(m)
     pop  DE             ; 1:10      do_220(m)
 do220:                  ;           do_220(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx220 EQU $+1          ;[20:78/57] loop_220(m)
     ld   BC, 0x0000     ; 3:10      loop_220(m)   idx always points to a 16-bit index
@@ -4650,7 +4634,7 @@ stp_hi220 EQU $+1       ;           loop_220(m)
     jp   nz, do220      ; 3:10      loop_220(m)
 leave220:               ;           loop_220(m)
 exit220:                ;           loop_220(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string221 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
@@ -4667,7 +4651,7 @@ exit220:                ;           loop_220(m)
     ex   DE, HL         ; 1:4       do_221(m)
     pop  DE             ; 1:10      do_221(m)
 do221:                  ;           do_221(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx221 EQU $+1          ;[20:78/57] loop_221(m)
     ld   BC, 0x0000     ; 3:10      loop_221(m)   idx always points to a 16-bit index
@@ -4683,7 +4667,7 @@ stp_hi221 EQU $+1       ;           loop_221(m)
     jp   nz, do221      ; 3:10      loop_221(m)
 leave221:               ;           loop_221(m)
 exit221:                ;           loop_221(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string222 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
@@ -4700,7 +4684,7 @@ exit221:                ;           loop_221(m)
     ex   DE, HL         ; 1:4       do_222(m)
     pop  DE             ; 1:10      do_222(m)
 do222:                  ;           do_222(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx222 EQU $+1          ;[20:78/57] loop_222(m)
     ld   BC, 0x0000     ; 3:10      loop_222(m)   idx always points to a 16-bit index
@@ -4716,13 +4700,13 @@ stp_hi222 EQU $+1       ;           loop_222(m)
     jp   nz, do222      ; 3:10      loop_222(m)
 leave222:               ;           loop_222(m)
 exit222:                ;           loop_222(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string223 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 0x6700   ( -- 0 0 0x6700 )
+    push DE             ; 1:11      0 0 0x6700   ( -- 0 0 0x6700 ) push3.m3
     push HL             ; 1:11      0 0 0x6700
-    ld   DE, 0          ; 3:10      0 0 0x6700
+    ld   DE, 0x0000     ; 3:10      0 0 0x6700
     push DE             ; 1:11      0 0 0x6700
     ld   HL, 0x6700     ; 3:10      0 0 0x6700
 
@@ -4756,9 +4740,9 @@ exit223:                ;           loop_223(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string224 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 300   ( -- 0 0 300 )
+    push DE             ; 1:11      0 0 300   ( -- 0 0 300 ) push3.m3
     push HL             ; 1:11      0 0 300
-    ld   DE, 0          ; 3:10      0 0 300
+    ld   DE, 0x0000     ; 3:10      0 0 300
     push DE             ; 1:11      0 0 300
     ld   HL, 0x012C     ; 3:10      0 0 300
 
@@ -4806,7 +4790,7 @@ exit224:                ;           loop_224(m)
     pop  HL             ; 1:10      do_225(m)
     ex   DE, HL         ; 1:4       do_225(m)
 do225:                  ;           do_225(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx225 EQU $+1          ;[20:78/57] -1 +loop_225(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_225(m)   idx always points to a 16-bit index
@@ -4822,7 +4806,7 @@ stp_hi225 EQU $+1       ;           -1 +loop_225(m)
     jp   nz, do225      ; 3:10      -1 +loop_225(m)
 leave225:               ;           -1 +loop_225(m)
 exit225:                ;           -1 +loop_225(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string226 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -4840,7 +4824,7 @@ exit225:                ;           -1 +loop_225(m)
     pop  HL             ; 1:10      do_226(m)
     ex   DE, HL         ; 1:4       do_226(m)
 do226:                  ;           do_226(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx226 EQU $+1          ;[20:78/57] -1 +loop_226(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_226(m)   idx always points to a 16-bit index
@@ -4856,7 +4840,7 @@ stp_hi226 EQU $+1       ;           -1 +loop_226(m)
     jp   nz, do226      ; 3:10      -1 +loop_226(m)
 leave226:               ;           -1 +loop_226(m)
 exit226:                ;           -1 +loop_226(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string227 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -4874,7 +4858,7 @@ exit226:                ;           -1 +loop_226(m)
     pop  HL             ; 1:10      do_227(m)
     ex   DE, HL         ; 1:4       do_227(m)
 do227:                  ;           do_227(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx227 EQU $+1          ;[20:78/57] -1 +loop_227(m)
     ld   BC, 0x0000     ; 3:10      -1 +loop_227(m)   idx always points to a 16-bit index
@@ -4890,13 +4874,13 @@ stp_hi227 EQU $+1       ;           -1 +loop_227(m)
     jp   nz, do227      ; 3:10      -1 +loop_227(m)
 leave227:               ;           -1 +loop_227(m)
 exit227:                ;           -1 +loop_227(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string228 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 256   ( -- 0 0 256 )
+    push DE             ; 1:11      0 0 256   ( -- 0 0 256 ) push3.m3
     push HL             ; 1:11      0 0 256
-    ld   DE, 0          ; 3:10      0 0 256
+    ld   DE, 0x0000     ; 3:10      0 0 256
     push DE             ; 1:11      0 0 256
     ld   HL, 0x0100     ; 3:10      0 0 256
 
@@ -4931,9 +4915,9 @@ exit228:                ;           -1 +loop_228(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string229 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1   ( -- 0 0 -1 )
+    push DE             ; 1:11      0 0 -1   ( -- 0 0 -1 ) push3.m3
     push HL             ; 1:11      0 0 -1
-    ld   DE, 0          ; 3:10      0 0 -1
+    ld   DE, 0x0000     ; 3:10      0 0 -1
     push DE             ; 1:11      0 0 -1
     ld   HL, 0xFFFF     ; 3:10      0 0 -1
 
@@ -4968,9 +4952,9 @@ exit229:                ;           -1 +loop_229(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string230 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2   ( -- 0 0 2 )
+    push DE             ; 1:11      0 0 2   ( -- 0 0 2 ) push3.m3
     push HL             ; 1:11      0 0 2
-    ld   DE, 0          ; 3:10      0 0 2
+    ld   DE, 0x0000     ; 3:10      0 0 2
     push DE             ; 1:11      0 0 2
     ld   HL, 0x0002     ; 3:10      0 0 2
 
@@ -5005,9 +4989,9 @@ exit230:                ;           -1 +loop_230(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string231 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 200   ( -- 0 0 200 )
+    push DE             ; 1:11      0 0 200   ( -- 0 0 200 ) push3.m3
     push HL             ; 1:11      0 0 200
-    ld   DE, 0          ; 3:10      0 0 200
+    ld   DE, 0x0000     ; 3:10      0 0 200
     push DE             ; 1:11      0 0 200
     ld   HL, 0x00C8     ; 3:10      0 0 200
 
@@ -5042,9 +5026,9 @@ exit231:                ;           -1 +loop_231(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string232 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -624   ( -- 0 0 -624 )
+    push DE             ; 1:11      0 0 -624   ( -- 0 0 -624 ) push3.m3
     push HL             ; 1:11      0 0 -624
-    ld   DE, 0          ; 3:10      0 0 -624
+    ld   DE, 0x0000     ; 3:10      0 0 -624
     push DE             ; 1:11      0 0 -624
     ld   HL, 0xFD90     ; 3:10      0 0 -624
 
@@ -5079,9 +5063,9 @@ exit232:                ;           -1 +loop_232(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string233 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -513   ( -- 0 0 -513 )
+    push DE             ; 1:11      0 0 -513   ( -- 0 0 -513 ) push3.m3
     push HL             ; 1:11      0 0 -513
-    ld   DE, 0          ; 3:10      0 0 -513
+    ld   DE, 0x0000     ; 3:10      0 0 -513
     push DE             ; 1:11      0 0 -513
     ld   HL, 0xFDFF     ; 3:10      0 0 -513
 
@@ -5124,7 +5108,7 @@ exit233:                ;           -1 +loop_233(m)
 do234save:              ;           251 do_234(xm)
     ld  (idx234),BC     ; 4:20      251 do_234(xm)
 do234:                  ;           251 do_234(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:38]    loop_234   variant +1.A: 0 <= index < stop == 256, run 5x
 idx234 EQU $+1          ;           loop_234   idx always points to a 16-bit index
@@ -5135,7 +5119,7 @@ idx234 EQU $+1          ;           loop_234   idx always points to a 16-bit ind
     jp   nz, do234      ; 3:10      loop_234   index-stop
 leave234:               ;           loop_234
 exit234:                ;           loop_234
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string235 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -5143,7 +5127,7 @@ exit234:                ;           loop_234
 do235save:              ;           241 do_235(xm)
     ld  (idx235),BC     ; 4:20      241 do_235(xm)
 do235:                  ;           241 do_235(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:45]    loop_235   variant +1.B: 0 <= index < stop <= 256, run 5x
 idx235 EQU $+1          ;           loop_235   idx always points to a 16-bit index
@@ -5155,7 +5139,7 @@ idx235 EQU $+1          ;           loop_235   idx always points to a 16-bit ind
     jp   nz, do235      ; 3:10      loop_235   index-stop
 leave235:               ;           loop_235
 exit235:                ;           loop_235
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string236 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -5163,7 +5147,7 @@ exit235:                ;           loop_235
 do236save:              ;           0x3CFB do_236(xm)
     ld  (idx236),BC     ; 4:20      0x3CFB do_236(xm)
 do236:                  ;           0x3CFB do_236(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:34]     loop_236   variant +1.C: 0x3C00 <=index < stop == 0x3D00, run 5x
 idx236 EQU $+1          ;           loop_236   idx always points to a 16-bit index
@@ -5173,7 +5157,7 @@ idx236 EQU $+1          ;           loop_236   idx always points to a 16-bit ind
     jp   nz, do236      ; 3:10      loop_236
 leave236:               ;           loop_236
 exit236:                ;           loop_236
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string237 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -5181,7 +5165,7 @@ exit236:                ;           loop_236
 do237save:              ;           0x3C05 do_237(xm)
     ld  (idx237),BC     ; 4:20      0x3C05 do_237(xm)
 do237:                  ;           0x3C05 do_237(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_237   variant +1.D: 0x3C00 <=index < stop <= 0x3D00, run 5x
 idx237 EQU $+1          ;           loop_237   idx always points to a 16-bit index
@@ -5192,7 +5176,7 @@ idx237 EQU $+1          ;           loop_237   idx always points to a 16-bit ind
     jp   nz, do237      ; 3:10      loop_237
 leave237:               ;           loop_237
 exit237:                ;           loop_237
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string238 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -5200,7 +5184,7 @@ exit237:                ;           loop_237
 do238save:              ;           0x65FB do_238(xm)
     ld  (idx238),BC     ; 4:20      0x65FB do_238(xm)
 do238:                  ;           0x65FB do_238(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_238   variant +1.E: 256*(1+hi(index)) == stop, run 5x
 idx238 EQU $+1          ;           loop_238   idx always points to a 16-bit index
@@ -5211,7 +5195,7 @@ idx238 EQU $+1          ;           loop_238   idx always points to a 16-bit ind
     jp   nz, do238      ; 3:10      loop_238
 leave238:               ;           loop_238
 exit238:                ;           loop_238
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string239 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -5219,7 +5203,7 @@ exit238:                ;           loop_238
 do239save:              ;           0x4050 do_239(xm)
     ld  (idx239),BC     ; 4:20      0x4050 do_239(xm)
 do239:                  ;           0x4050 do_239(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    loop_239   variant +1.F: hi(index) == hi(stop-1) && index < stop, run 5x
 idx239 EQU $+1          ;           loop_239   idx always points to a 16-bit index
@@ -5231,7 +5215,7 @@ idx239 EQU $+1          ;           loop_239   idx always points to a 16-bit ind
     jp   nz, do239      ; 3:10      loop_239
 leave239:               ;           loop_239
 exit239:                ;           loop_239
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string240 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
@@ -5239,7 +5223,7 @@ exit239:                ;           loop_239
 do240save:              ;           -5 do_240(xm)
     ld  (idx240),BC     ; 4:20      -5 do_240(xm)
 do240:                  ;           -5 do_240(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  loop_240   variant +1.G: stop == 0, run 5x
 idx240 EQU $+1          ;           loop_240   idx always points to a 16-bit index
@@ -5250,7 +5234,7 @@ idx240 EQU $+1          ;           loop_240   idx always points to a 16-bit ind
     jp   nz, do240save  ; 3:10      loop_240
 leave240:               ;           loop_240
 exit240:                ;           loop_240
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string241 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
@@ -5258,7 +5242,7 @@ exit240:                ;           loop_240
 do241save:              ;           -3 do_241(xm)
     ld  (idx241),BC     ; 4:20      -3 do_241(xm)
 do241:                  ;           -3 do_241(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] loop_241   variant +1.H: step one with lo(real_stop) exclusivity, run 5x
 idx241 EQU $+1          ;           loop_241   idx always points to a 16-bit index
@@ -5269,12 +5253,12 @@ idx241 EQU $+1          ;           loop_241   idx always points to a 16-bit ind
     jp   nz, do241save  ; 3:10      loop_241
 leave241:               ;           loop_241
 exit241:                ;           loop_241
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string242 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 0x6318 drop
-    push DE             ; 1:11      0 0 0x6318 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 0x6318 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 0x6318 drop
     push HL             ; 1:11      0 0 0x6318 drop
     ld   DE, 0x0000     ; 3:10      0 0 0x6318 drop
     ld    L, D          ; 1:4       0 0 0x6318 drop   L = D = 0x00
@@ -5299,8 +5283,8 @@ exit242:                ;           loop_242
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string243 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -700 drop
-    push DE             ; 1:11      0 0 -700 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -700 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -700 drop
     push HL             ; 1:11      0 0 -700 drop
     ld   DE, 0x0000     ; 3:10      0 0 -700 drop
     ld    L, D          ; 1:4       0 0 -700 drop   L = D = 0x00
@@ -5332,7 +5316,7 @@ exit243:                ;           loop_243
 do244save:              ;           4 do_244(xm)
     ld  (idx244),BC     ; 4:20      4 do_244(xm)
 do244:                  ;           4 do_244(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_244(xm)   variant -1.A: step -1 and stop 0, run 5x
 idx244 EQU $+1          ;           -1 +loop_244(xm)   idx always points to a 16-bit index
@@ -5343,7 +5327,7 @@ idx244 EQU $+1          ;           -1 +loop_244(xm)   idx always points to a 16
     jp   nz, do244save  ; 3:10      -1 +loop_244(xm)
 leave244:               ;           -1 +loop_244(xm)
 exit244:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string245 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -5351,7 +5335,7 @@ exit244:                ;           xloop LOOP_STACK
 do245save:              ;           5 do_245(xm)
     ld  (idx245),BC     ; 4:20      5 do_245(xm)
 do245:                  ;           5 do_245(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_245(xm)   variant -1.B: step -1 and stop 1, run 5x
 idx245 EQU $+1          ;           -1 +loop_245(xm)   idx always points to a 16-bit index
@@ -5362,7 +5346,7 @@ idx245 EQU $+1          ;           -1 +loop_245(xm)   idx always points to a 16
     jp   nz, do245save  ; 3:10      -1 +loop_245(xm)
 leave245:               ;           -1 +loop_245(xm)
 exit245:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string246 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -5370,7 +5354,7 @@ exit245:                ;           xloop LOOP_STACK
 do246save:              ;           258 do_246(xm)
     ld  (idx246),BC     ; 4:20      258 do_246(xm)
 do246:                  ;           258 do_246(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] -1 +loop_246(xm)   variant -1.C: step -1 with lo(real_stop) exclusivity, run 5x
 idx246 EQU $+1          ;           -1 +loop_246(xm)   idx always points to a 16-bit index
@@ -5381,12 +5365,12 @@ idx246 EQU $+1          ;           -1 +loop_246(xm)   idx always points to a 16
     jp   nz, do246save  ; 3:10      -1 +loop_246(xm)
 leave246:               ;           -1 +loop_246(xm)
 exit246:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string247 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1255 drop
-    push DE             ; 1:11      0 0 1255 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1255 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1255 drop
     push HL             ; 1:11      0 0 1255 drop
     ld   DE, 0x0000     ; 3:10      0 0 1255 drop
     ld    L, D          ; 1:4       0 0 1255 drop   L = D = 0x00
@@ -5411,8 +5395,8 @@ exit247:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string248 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 998 drop
-    push DE             ; 1:11      0 0 998 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 998 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 998 drop
     push HL             ; 1:11      0 0 998 drop
     ld   DE, 0x0000     ; 3:10      0 0 998 drop
     ld    L, D          ; 1:4       0 0 998 drop   L = D = 0x00
@@ -5438,8 +5422,8 @@ exit248:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string249 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1001 drop
-    push DE             ; 1:11      0 0 1001 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1001 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1001 drop
     push HL             ; 1:11      0 0 1001 drop
     ld   DE, 0x0000     ; 3:10      0 0 1001 drop
     ld    L, D          ; 1:4       0 0 1001 drop   L = D = 0x00
@@ -5465,8 +5449,8 @@ exit249:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string250 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1199 drop
-    push DE             ; 1:11      0 0 1199 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1199 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1199 drop
     push HL             ; 1:11      0 0 1199 drop
     ld   DE, 0x0000     ; 3:10      0 0 1199 drop
     ld    L, D          ; 1:4       0 0 1199 drop   L = D = 0x00
@@ -5492,8 +5476,8 @@ exit250:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string251 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 375 drop
-    push DE             ; 1:11      0 0 375 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 375 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 375 drop
     push HL             ; 1:11      0 0 375 drop
     ld   DE, 0x0000     ; 3:10      0 0 375 drop
     ld    L, D          ; 1:4       0 0 375 drop   L = D = 0x00
@@ -5521,8 +5505,8 @@ exit251:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string252 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 486 drop
-    push DE             ; 1:11      0 0 486 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 486 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 486 drop
     push HL             ; 1:11      0 0 486 drop
     ld   DE, 0x0000     ; 3:10      0 0 486 drop
     ld    L, D          ; 1:4       0 0 486 drop   L = D = 0x00
@@ -5562,7 +5546,7 @@ exit252:                ;           xloop LOOP_STACK
     ex   DE, HL         ; 1:4       do_253(m)
     pop  DE             ; 1:10      do_253(m)
 do253:                  ;           do_253(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx253 EQU $+1         ;[14:58]     loop_253(m)   ( 256 index -- )
     ld   BC, 0x0000     ; 3:10      loop_253(m)   idx always points to a 16-bit index
@@ -5576,7 +5560,7 @@ qdo253:                 ;           loop_253(m)
     jp   nz, do253      ; 3:10      loop_253(m)
 leave253:               ;           loop_253(m)
 exit253:                ;           loop_253(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string254 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -5588,7 +5572,7 @@ exit253:                ;           loop_253(m)
     ex   DE, HL         ; 1:4       do_254(m)
     pop  DE             ; 1:10      do_254(m)
 do254:                  ;           do_254(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx254 EQU $+1         ;[15:61]     loop_254(m)   ( 246 index -- )
     ld   BC, 0x0000     ; 3:10      loop_254(m)   idx always points to a 16-bit index
@@ -5602,7 +5586,7 @@ qdo254:                 ;           loop_254(m)
     jp   nz, do254      ; 3:10      loop_254(m)
 leave254:               ;           loop_254(m)
 exit254:                ;           loop_254(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string255 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -5614,7 +5598,7 @@ exit254:                ;           loop_254(m)
     ex   DE, HL         ; 1:4       do_255(m)
     pop  DE             ; 1:10      do_255(m)
 do255:                  ;           do_255(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx255 EQU $+1         ;[15:61]     loop_255(m)   ( 0x3D00 index -- )
     ld   BC, 0x0000     ; 3:10      loop_255(m)   idx always points to a 16-bit index
@@ -5628,7 +5612,7 @@ qdo255:                 ;           loop_255(m)
     jp   nz, do255      ; 3:10      loop_255(m)
 leave255:               ;           loop_255(m)
 exit255:                ;           loop_255(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string256 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -5640,7 +5624,7 @@ exit255:                ;           loop_255(m)
     ex   DE, HL         ; 1:4       do_256(m)
     pop  DE             ; 1:10      do_256(m)
 do256:                  ;           do_256(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx256 EQU $+1         ;[20:73]     loop_256(m)   ( 0x3C0A index -- )
     ld   BC, 0x0000     ; 3:10      loop_256(m)   idx always points to a 16-bit index
@@ -5656,7 +5640,7 @@ qdo256:                 ;           loop_256(m)
     jp   nz, do256      ; 3:10      loop_256(m)
 leave256:               ;           loop_256(m)
 exit256:                ;           loop_256(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string257 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -5668,7 +5652,7 @@ exit256:                ;           loop_256(m)
     ex   DE, HL         ; 1:4       do_257(m)
     pop  DE             ; 1:10      do_257(m)
 do257:                  ;           do_257(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx257 EQU $+1         ;[15:61]     loop_257(m)   ( 0x6600 index -- )
     ld   BC, 0x0000     ; 3:10      loop_257(m)   idx always points to a 16-bit index
@@ -5682,7 +5666,7 @@ qdo257:                 ;           loop_257(m)
     jp   nz, do257      ; 3:10      loop_257(m)
 leave257:               ;           loop_257(m)
 exit257:                ;           loop_257(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string258 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -5694,7 +5678,7 @@ exit257:                ;           loop_257(m)
     ex   DE, HL         ; 1:4       do_258(m)
     pop  DE             ; 1:10      do_258(m)
 do258:                  ;           do_258(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx258 EQU $+1         ;[20:73]     loop_258(m)   ( 0x4055 index -- )
     ld   BC, 0x0000     ; 3:10      loop_258(m)   idx always points to a 16-bit index
@@ -5710,19 +5694,19 @@ qdo258:                 ;           loop_258(m)
     jp   nz, do258      ; 3:10      loop_258(m)
 leave258:               ;           loop_258(m)
 exit258:                ;           loop_258(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string259 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -5
     ex   DE, HL         ; 1:4       -5
-    ld   HL, -5         ; 3:10      -5
+    ld   HL, 0-5        ; 3:10      -5
 
     ld  (idx259), HL    ; 3:16      do_259(m)   index  ( 0 index -- )
     ex   DE, HL         ; 1:4       do_259(m)
     pop  DE             ; 1:10      do_259(m)
 do259:                  ;           do_259(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx259 EQU $+1         ;[13:54]     loop_259(m)   ( 0 index -- )
     ld   BC, 0x0000     ; 3:10      loop_259(m)   idx always points to a 16-bit index
@@ -5735,19 +5719,19 @@ qdo259:                 ;           loop_259(m)
     jp   nz, do259      ; 3:10      loop_259(m)
 leave259:               ;           loop_259(m)
 exit259:                ;           loop_259(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string260 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -3
     ex   DE, HL         ; 1:4       -3
-    ld   HL, -3         ; 3:10      -3
+    ld   HL, 0-3        ; 3:10      -3
 
     ld  (idx260), HL    ; 3:16      do_260(m)   index  ( 2 index -- )
     ex   DE, HL         ; 1:4       do_260(m)
     pop  DE             ; 1:10      do_260(m)
 do260:                  ;           do_260(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx260 EQU $+1         ;[14:58]     loop_260(m)   ( 2 index -- )
     ld   BC, 0x0000     ; 3:10      loop_260(m)   idx always points to a 16-bit index
@@ -5760,13 +5744,13 @@ idx260 EQU $+1         ;[14:58]     loop_260(m)   ( 2 index -- )
     jp   nz, do260      ; 3:10      loop_260(m)
 leave260:               ;           loop_260(m)
 exit260:                ;           loop_260(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string261 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 0x6318   ( -- 0 0 0x6318 )
+    push DE             ; 1:11      0 0 0x6318   ( -- 0 0 0x6318 ) push3.m3
     push HL             ; 1:11      0 0 0x6318
-    ld   DE, 0          ; 3:10      0 0 0x6318
+    ld   DE, 0x0000     ; 3:10      0 0 0x6318
     push DE             ; 1:11      0 0 0x6318
     ld   HL, 0x6318     ; 3:10      0 0 0x6318
 
@@ -5793,9 +5777,9 @@ exit261:                ;           loop_261(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string262 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -700   ( -- 0 0 -700 )
+    push DE             ; 1:11      0 0 -700   ( -- 0 0 -700 ) push3.m3
     push HL             ; 1:11      0 0 -700
-    ld   DE, 0          ; 3:10      0 0 -700
+    ld   DE, 0x0000     ; 3:10      0 0 -700
     push DE             ; 1:11      0 0 -700
     ld   HL, 0xFD44     ; 3:10      0 0 -700
 
@@ -5832,7 +5816,7 @@ exit262:                ;           loop_262(m)
     pop  HL             ; 1:10      do_263(m)
     ex   DE, HL         ; 1:4       do_263(m)
 do263:                  ;           do_263(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx263 EQU $+1         ;[13:54]     -1 +loop_263(m)   ( 0 index -- )
     ld   BC, 0x0000     ; 3:10      -1 +loop_263(m)   idx always points to a 16-bit index
@@ -5844,7 +5828,7 @@ idx263 EQU $+1         ;[13:54]     -1 +loop_263(m)   ( 0 index -- )
     jp   nz, do263      ; 3:10      -1 +loop_263(m)
 leave263:               ;           -1 +loop_263(m)
 exit263:                ;           -1 +loop_263(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string264 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -5856,7 +5840,7 @@ exit263:                ;           -1 +loop_263(m)
     pop  HL             ; 1:10      do_264(m)
     ex   DE, HL         ; 1:4       do_264(m)
 do264:                  ;           do_264(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx264 EQU $+1         ;[13:54]     -1 +loop_264(m)   ( 1 index -- )
     ld   BC, 0x0000     ; 3:10      -1 +loop_264(m)   idx always points to a 16-bit index
@@ -5868,7 +5852,7 @@ idx264 EQU $+1         ;[13:54]     -1 +loop_264(m)   ( 1 index -- )
     jp   nz, do264      ; 3:10      -1 +loop_264(m)
 leave264:               ;           -1 +loop_264(m)
 exit264:                ;           -1 +loop_264(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string265 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -5880,7 +5864,7 @@ exit264:                ;           -1 +loop_264(m)
     pop  HL             ; 1:10      do_265(m)
     ex   DE, HL         ; 1:4       do_265(m)
 do265:                  ;           do_265(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx265 EQU $+1         ;[15:61]     -1 +loop_265(m)   ( 254 index -- )
     ld   BC, 0x0000     ; 3:10      -1 +loop_265(m)   idx always points to a 16-bit index
@@ -5893,13 +5877,13 @@ idx265 EQU $+1         ;[15:61]     -1 +loop_265(m)   ( 254 index -- )
     jp   nz, do265      ; 3:10      -1 +loop_265(m)
 leave265:               ;           -1 +loop_265(m)
 exit265:                ;           -1 +loop_265(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string266 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1255   ( -- 0 0 1255 )
+    push DE             ; 1:11      0 0 1255   ( -- 0 0 1255 ) push3.m3
     push HL             ; 1:11      0 0 1255
-    ld   DE, 0          ; 3:10      0 0 1255
+    ld   DE, 0x0000     ; 3:10      0 0 1255
     push DE             ; 1:11      0 0 1255
     ld   HL, 0x04E7     ; 3:10      0 0 1255
 
@@ -5925,9 +5909,9 @@ exit266:                ;           -1 +loop_266(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string267 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 998   ( -- 0 0 998 )
+    push DE             ; 1:11      0 0 998   ( -- 0 0 998 ) push3.m3
     push HL             ; 1:11      0 0 998
-    ld   DE, 0          ; 3:10      0 0 998
+    ld   DE, 0x0000     ; 3:10      0 0 998
     push DE             ; 1:11      0 0 998
     ld   HL, 0x03E6     ; 3:10      0 0 998
 
@@ -5953,9 +5937,9 @@ exit267:                ;           -1 +loop_267(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string268 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1001   ( -- 0 0 1001 )
+    push DE             ; 1:11      0 0 1001   ( -- 0 0 1001 ) push3.m3
     push HL             ; 1:11      0 0 1001
-    ld   DE, 0          ; 3:10      0 0 1001
+    ld   DE, 0x0000     ; 3:10      0 0 1001
     push DE             ; 1:11      0 0 1001
     ld   HL, 0x03E9     ; 3:10      0 0 1001
 
@@ -5981,9 +5965,9 @@ exit268:                ;           -1 +loop_268(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string269 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1199   ( -- 0 0 1199 )
+    push DE             ; 1:11      0 0 1199   ( -- 0 0 1199 ) push3.m3
     push HL             ; 1:11      0 0 1199
-    ld   DE, 0          ; 3:10      0 0 1199
+    ld   DE, 0x0000     ; 3:10      0 0 1199
     push DE             ; 1:11      0 0 1199
     ld   HL, 0x04AF     ; 3:10      0 0 1199
 
@@ -6009,9 +5993,9 @@ exit269:                ;           -1 +loop_269(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string270 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 375   ( -- 0 0 375 )
+    push DE             ; 1:11      0 0 375   ( -- 0 0 375 ) push3.m3
     push HL             ; 1:11      0 0 375
-    ld   DE, 0          ; 3:10      0 0 375
+    ld   DE, 0x0000     ; 3:10      0 0 375
     push DE             ; 1:11      0 0 375
     ld   HL, 0x0177     ; 3:10      0 0 375
 
@@ -6039,9 +6023,9 @@ exit270:                ;           -1 +loop_270(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string271 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 486   ( -- 0 0 486 )
+    push DE             ; 1:11      0 0 486   ( -- 0 0 486 ) push3.m3
     push HL             ; 1:11      0 0 486
-    ld   DE, 0          ; 3:10      0 0 486
+    ld   DE, 0x0000     ; 3:10      0 0 486
     push DE             ; 1:11      0 0 486
     ld   HL, 0x01E6     ; 3:10      0 0 486
 
@@ -6076,7 +6060,7 @@ exit271:                ;           -1 +loop_271(m)
 do272save:              ;           do_272(xm)
     ld  (idx272),BC     ; 4:20      do_272(xm)
 do272:                  ;           do_272(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:38]    loop_272   variant +1.A: 0 <= index < stop == 256, run 5x
 idx272 EQU $+1          ;           loop_272   idx always points to a 16-bit index
@@ -6087,7 +6071,7 @@ idx272 EQU $+1          ;           loop_272   idx always points to a 16-bit ind
     jp   nz, do272      ; 3:10      loop_272   index-stop
 leave272:               ;           loop_272
 exit272:                ;           loop_272
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string102  ; 3:10      print_i   Address of string273 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
@@ -6095,7 +6079,7 @@ exit272:                ;           loop_272
 do273save:              ;           do_273(xm)
     ld  (idx273),BC     ; 4:20      do_273(xm)
 do273:                  ;           do_273(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:45]    loop_273   variant +1.B: 0 <= index < stop <= 256, run 5x
 idx273 EQU $+1          ;           loop_273   idx always points to a 16-bit index
@@ -6107,7 +6091,7 @@ idx273 EQU $+1          ;           loop_273   idx always points to a 16-bit ind
     jp   nz, do273      ; 3:10      loop_273   index-stop
 leave273:               ;           loop_273
 exit273:                ;           loop_273
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string103  ; 3:10      print_i   Address of string274 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
@@ -6115,7 +6099,7 @@ exit273:                ;           loop_273
 do274save:              ;           do_274(xm)
     ld  (idx274),BC     ; 4:20      do_274(xm)
 do274:                  ;           do_274(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:34]     loop_274   variant +1.C: 0x3C00 <=index < stop == 0x3D00, run 5x
 idx274 EQU $+1          ;           loop_274   idx always points to a 16-bit index
@@ -6125,7 +6109,7 @@ idx274 EQU $+1          ;           loop_274   idx always points to a 16-bit ind
     jp   nz, do274      ; 3:10      loop_274
 leave274:               ;           loop_274
 exit274:                ;           loop_274
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string104  ; 3:10      print_i   Address of string275 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
@@ -6133,7 +6117,7 @@ exit274:                ;           loop_274
 do275save:              ;           do_275(xm)
     ld  (idx275),BC     ; 4:20      do_275(xm)
 do275:                  ;           do_275(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_275   variant +1.D: 0x3C00 <=index < stop <= 0x3D00, run 5x
 idx275 EQU $+1          ;           loop_275   idx always points to a 16-bit index
@@ -6144,7 +6128,7 @@ idx275 EQU $+1          ;           loop_275   idx always points to a 16-bit ind
     jp   nz, do275      ; 3:10      loop_275
 leave275:               ;           loop_275
 exit275:                ;           loop_275
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string105  ; 3:10      print_i   Address of string276 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
@@ -6152,7 +6136,7 @@ exit275:                ;           loop_275
 do276save:              ;           do_276(xm)
     ld  (idx276),BC     ; 4:20      do_276(xm)
 do276:                  ;           do_276(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:41]    loop_276   variant +1.E: 256*(1+hi(index)) == stop, run 5x
 idx276 EQU $+1          ;           loop_276   idx always points to a 16-bit index
@@ -6163,7 +6147,7 @@ idx276 EQU $+1          ;           loop_276   idx always points to a 16-bit ind
     jp   nz, do276      ; 3:10      loop_276
 leave276:               ;           loop_276
 exit276:                ;           loop_276
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string106  ; 3:10      print_i   Address of string277 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
@@ -6171,7 +6155,7 @@ exit276:                ;           loop_276
 do277save:              ;           do_277(xm)
     ld  (idx277),BC     ; 4:20      do_277(xm)
 do277:                  ;           do_277(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    loop_277   variant +1.F: hi(index) == hi(stop-1) && index < stop, run 5x
 idx277 EQU $+1          ;           loop_277   idx always points to a 16-bit index
@@ -6183,7 +6167,7 @@ idx277 EQU $+1          ;           loop_277   idx always points to a 16-bit ind
     jp   nz, do277      ; 3:10      loop_277
 leave277:               ;           loop_277
 exit277:                ;           loop_277
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string107  ; 3:10      print_i   Address of string278 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
@@ -6191,7 +6175,7 @@ exit277:                ;           loop_277
 do278save:              ;           do_278(xm)
     ld  (idx278),BC     ; 4:20      do_278(xm)
 do278:                  ;           do_278(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  loop_278   variant +1.G: stop == 0, run 5x
 idx278 EQU $+1          ;           loop_278   idx always points to a 16-bit index
@@ -6202,7 +6186,7 @@ idx278 EQU $+1          ;           loop_278   idx always points to a 16-bit ind
     jp   nz, do278save  ; 3:10      loop_278
 leave278:               ;           loop_278
 exit278:                ;           loop_278
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string108  ; 3:10      print_i   Address of string279 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
@@ -6210,7 +6194,7 @@ exit278:                ;           loop_278
 do279save:              ;           do_279(xm)
     ld  (idx279),BC     ; 4:20      do_279(xm)
 do279:                  ;           do_279(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] loop_279   variant +1.H: step one with lo(real_stop) exclusivity, run 5x
 idx279 EQU $+1          ;           loop_279   idx always points to a 16-bit index
@@ -6221,12 +6205,12 @@ idx279 EQU $+1          ;           loop_279   idx always points to a 16-bit ind
     jp   nz, do279save  ; 3:10      loop_279
 leave279:               ;           loop_279
 exit279:                ;           loop_279
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string109  ; 3:10      print_i   Address of string280 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6251,8 +6235,8 @@ exit280:                ;           loop_280
     call _show          ; 3:17      call ( -- )
     ld   BC, string110  ; 3:10      print_i   Address of string281 ending with inverted most significant bit == string110
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6284,7 +6268,7 @@ exit281:                ;           loop_281
 do282save:              ;           do_282(xm)
     ld  (idx282),BC     ; 4:20      do_282(xm)
 do282:                  ;           do_282(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_282(xm)   variant -1.A: step -1 and stop 0, run 5x
 idx282 EQU $+1          ;           -1 +loop_282(xm)   idx always points to a 16-bit index
@@ -6295,7 +6279,7 @@ idx282 EQU $+1          ;           -1 +loop_282(xm)   idx always points to a 16
     jp   nz, do282save  ; 3:10      -1 +loop_282(xm)
 leave282:               ;           -1 +loop_282(xm)
 exit282:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string112  ; 3:10      print_i   Address of string283 ending with inverted most significant bit == string112
     call PRINT_STRING_I ; 3:17      print_i
@@ -6303,7 +6287,7 @@ exit282:                ;           xloop LOOP_STACK
 do283save:              ;           do_283(xm)
     ld  (idx283),BC     ; 4:20      do_283(xm)
 do283:                  ;           do_283(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[9:54/34]  -1 +loop_283(xm)   variant -1.B: step -1 and stop 1, run 5x
 idx283 EQU $+1          ;           -1 +loop_283(xm)   idx always points to a 16-bit index
@@ -6314,7 +6298,7 @@ idx283 EQU $+1          ;           -1 +loop_283(xm)   idx always points to a 16
     jp   nz, do283save  ; 3:10      -1 +loop_283(xm)
 leave283:               ;           -1 +loop_283(xm)
 exit283:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string113  ; 3:10      print_i   Address of string284 ending with inverted most significant bit == string113
     call PRINT_STRING_I ; 3:17      print_i
@@ -6322,7 +6306,7 @@ exit283:                ;           xloop LOOP_STACK
 do284save:              ;           do_284(xm)
     ld  (idx284),BC     ; 4:20      do_284(xm)
 do284:                  ;           do_284(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:57/37] -1 +loop_284(xm)   variant -1.C: step -1 with lo(real_stop) exclusivity, run 5x
 idx284 EQU $+1          ;           -1 +loop_284(xm)   idx always points to a 16-bit index
@@ -6333,12 +6317,12 @@ idx284 EQU $+1          ;           -1 +loop_284(xm)   idx always points to a 16
     jp   nz, do284save  ; 3:10      -1 +loop_284(xm)
 leave284:               ;           -1 +loop_284(xm)
 exit284:                ;           xloop LOOP_STACK
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string114  ; 3:10      print_i   Address of string285 ending with inverted most significant bit == string114
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6363,8 +6347,8 @@ exit285:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string115  ; 3:10      print_i   Address of string286 ending with inverted most significant bit == string115
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6390,8 +6374,8 @@ exit286:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string116  ; 3:10      print_i   Address of string287 ending with inverted most significant bit == string116
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6417,8 +6401,8 @@ exit287:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string117  ; 3:10      print_i   Address of string288 ending with inverted most significant bit == string117
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6444,8 +6428,8 @@ exit288:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string118  ; 3:10      print_i   Address of string289 ending with inverted most significant bit == string118
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6473,8 +6457,8 @@ exit289:                ;           xloop LOOP_STACK
     call _show          ; 3:17      call ( -- )
     ld   BC, string119  ; 3:10      print_i   Address of string290 ending with inverted most significant bit == string119
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -6510,7 +6494,7 @@ exit290:                ;           xloop LOOP_STACK
 do291save:              ;           0 -10 do_291(xm)
     ld  (idx291),BC     ; 4:20      0 -10 do_291(xm)
 do291:                  ;           0 -10 do_291(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_291(xm)   variant +2.A: step 2 and real_stop is zero, run 5x
 idx291 EQU $+1          ;           2 +loop_291(xm)   idx always points to a 16-bit index
@@ -6522,7 +6506,7 @@ idx291 EQU $+1          ;           2 +loop_291(xm)   idx always points to a 16-
     jp   nz, do291save  ; 3:10      2 +loop_291(xm)
 leave291:               ;           2 +loop_291(xm)
 exit291:                ;           2 +loop_291(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string292 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -6530,7 +6514,7 @@ exit291:                ;           2 +loop_291(xm)
 do292save:              ;           1 -9 do_292(xm)
     ld  (idx292),BC     ; 4:20      1 -9 do_292(xm)
 do292:                  ;           1 -9 do_292(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_292(xm)   variant +2.B: step 2 and real_stop is one, run 5x
 idx292 EQU $+1          ;           2 +loop_292(xm)   idx always points to a 16-bit index
@@ -6542,7 +6526,7 @@ idx292 EQU $+1          ;           2 +loop_292(xm)   idx always points to a 16-
     jp   nz, do292save  ; 3:10      2 +loop_292(xm)
 leave292:               ;           2 +loop_292(xm)
 exit292:                ;           2 +loop_292(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string293 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -6550,7 +6534,7 @@ exit292:                ;           2 +loop_292(xm)
 do293save:              ;           5 -5 do_293(xm)
     ld  (idx293),BC     ; 4:20      5 -5 do_293(xm)
 do293:                  ;           5 -5 do_293(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] 2 +loop_293(xm)   variant +2.C: step 2 with lo(real_stop) exclusivity, run 5x
 idx293 EQU $+1          ;           2 +loop_293(xm)   idx always points to a 16-bit index
@@ -6562,12 +6546,12 @@ idx293 EQU $+1          ;           2 +loop_293(xm)   idx always points to a 16-
     jp   nz, do293save  ; 3:10      2 +loop_293(xm)
 leave293:               ;           2 +loop_293(xm)
 exit293:                ;           2 +loop_293(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string294 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2304 304 2drop
-    push DE             ; 1:11      0 0 2304 304 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2304 304 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2304 304 2drop
     push HL             ; 1:11      0 0 2304 304 2drop
     ld   DE, 0x0000     ; 3:10      0 0 2304 304 2drop
     ld    L, D          ; 1:4       0 0 2304 304 2drop   L = D = 0x00
@@ -6593,8 +6577,8 @@ exit294:                ;           2 +loop_294(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string295 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2050 50 2drop
-    push DE             ; 1:11      0 0 2050 50 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2050 50 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2050 50 2drop
     push HL             ; 1:11      0 0 2050 50 2drop
     ld   DE, 0x0000     ; 3:10      0 0 2050 50 2drop
     ld    L, D          ; 1:4       0 0 2050 50 2drop   L = D = 0x00
@@ -6623,8 +6607,8 @@ exit295:                ;           2 +loop_295(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string296 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1990 -10 2drop
-    push DE             ; 1:11      0 0 1990 -10 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1990 -10 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1990 -10 2drop
     push HL             ; 1:11      0 0 1990 -10 2drop
     ld   DE, 0x0000     ; 3:10      0 0 1990 -10 2drop
     ld    L, D          ; 1:4       0 0 1990 -10 2drop   L = D = 0x00
@@ -6657,7 +6641,7 @@ exit296:                ;           2 +loop_296(xm)
 do297save:              ;           0 8 do_297(xm)
     ld  (idx297),BC     ; 4:20      0 8 do_297(xm)
 do297:                  ;           0 8 do_297(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_297(xm)   variant -2.A: step -2 and real_stop is -2, run 5x
 idx297 EQU $+1          ;           -2 +loop_297(xm)   idx always points to a 16-bit index
@@ -6669,7 +6653,7 @@ idx297 EQU $+1          ;           -2 +loop_297(xm)   idx always points to a 16
     jp   nc, do297save  ; 3:10      -2 +loop_297(xm)
 leave297:               ;           -2 +loop_297(xm)
 exit297:                ;           -2 +loop_297(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string298 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -6677,7 +6661,7 @@ exit297:                ;           -2 +loop_297(xm)
 do298save:              ;           1 9 do_298(xm)
     ld  (idx298),BC     ; 4:20      1 9 do_298(xm)
 do298:                  ;           1 9 do_298(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_298(xm)   variant -2.B: step -2 and real_stop is -1, run 5x
 idx298 EQU $+1          ;           -2 +loop_298(xm)   idx always points to a 16-bit index
@@ -6689,7 +6673,7 @@ idx298 EQU $+1          ;           -2 +loop_298(xm)   idx always points to a 16
     jp   nz, do298save  ; 3:10      -2 +loop_298(xm)
 leave298:               ;           -2 +loop_298(xm)
 exit298:                ;           -2 +loop_298(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string299 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -6697,7 +6681,7 @@ exit298:                ;           -2 +loop_298(xm)
 do299save:              ;           2 10 do_299(xm)
     ld  (idx299),BC     ; 4:20      2 10 do_299(xm)
 do299:                  ;           2 10 do_299(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_299(xm)   variant -2.C: step -2 and real_stop is zero, run 5x
 idx299 EQU $+1          ;           -2 +loop_299(xm)   idx always points to a 16-bit index
@@ -6709,7 +6693,7 @@ idx299 EQU $+1          ;           -2 +loop_299(xm)   idx always points to a 16
     jp   nz, do299save  ; 3:10      -2 +loop_299(xm)
 leave299:               ;           -2 +loop_299(xm)
 exit299:                ;           -2 +loop_299(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string300 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -6717,7 +6701,7 @@ exit299:                ;           -2 +loop_299(xm)
 do300save:              ;           256 264 do_300(xm)
     ld  (idx300),BC     ; 4:20      256 264 do_300(xm)
 do300:                  ;           256 264 do_300(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_300(xm)   variant -2.D: step -2 with hi(real_stop) exclusivity, run 5x
 idx300 EQU $+1          ;           -2 +loop_300(xm)   idx always points to a 16-bit index
@@ -6729,7 +6713,7 @@ idx300 EQU $+1          ;           -2 +loop_300(xm)   idx always points to a 16
     jp   nz, do300save  ; 3:10      -2 +loop_300(xm)
 leave300:               ;           -2 +loop_300(xm)
 exit300:                ;           -2 +loop_300(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string301 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -6737,7 +6721,7 @@ exit300:                ;           -2 +loop_300(xm)
 do301save:              ;           300 308 do_301(xm)
     ld  (idx301),BC     ; 4:20      300 308 do_301(xm)
 do301:                  ;           300 308 do_301(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_301(xm)   variant -2.E: step -2 with lo(real_stop) exclusivity, run 5x
 idx301 EQU $+1          ;           -2 +loop_301(xm)   idx always points to a 16-bit index
@@ -6749,12 +6733,12 @@ idx301 EQU $+1          ;           -2 +loop_301(xm)   idx always points to a 16
     jp   nz, do301save  ; 3:10      -2 +loop_301(xm)
 leave301:               ;           -2 +loop_301(xm)
 exit301:                ;           -2 +loop_301(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string302 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 3 2001 2drop
-    push DE             ; 1:11      0 0 3 2001 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 3 2001 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 3 2001 2drop
     push HL             ; 1:11      0 0 3 2001 2drop
     ld   DE, 0x0000     ; 3:10      0 0 3 2001 2drop
     ld    L, D          ; 1:4       0 0 3 2001 2drop   L = D = 0x00
@@ -6781,8 +6765,8 @@ exit302:                ;           -2 +loop_302(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string303 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 234 2232 2drop
-    push DE             ; 1:11      0 0 234 2232 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 234 2232 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 234 2232 2drop
     push HL             ; 1:11      0 0 234 2232 2drop
     ld   DE, 0x0000     ; 3:10      0 0 234 2232 2drop
     ld    L, D          ; 1:4       0 0 234 2232 2drop   L = D = 0x00
@@ -6809,8 +6793,8 @@ exit303:                ;           -2 +loop_303(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string304 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -1802 196 2drop
-    push DE             ; 1:11      0 0 -1802 196 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -1802 196 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -1802 196 2drop
     push HL             ; 1:11      0 0 -1802 196 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -1802 196 2drop
     ld    L, D          ; 1:4       0 0 -1802 196 2drop   L = D = 0x00
@@ -6839,8 +6823,8 @@ exit304:                ;           -2 +loop_304(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string305 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -1748 250 2drop
-    push DE             ; 1:11      0 0 -1748 250 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -1748 250 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -1748 250 2drop
     push HL             ; 1:11      0 0 -1748 250 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -1748 250 2drop
     ld    L, D          ; 1:4       0 0 -1748 250 2drop   L = D = 0x00
@@ -6873,8 +6857,8 @@ exit305:                ;           -2 +loop_305(xm)
     call _pause         ; 3:17      call ( -- )
     ld   BC, string291  ; 3:10      print_i   Address of string306 ending with inverted most significant bit == string291
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0 -10
-    push DE             ; 1:11      0 -10   ( -- 0 -10 )
+                        ;[8:42]     0 -10   ( -- 0 -10 )
+    push DE             ; 1:11      0 -10
     push HL             ; 1:11      0 -10
     ld   DE, 0x0000     ; 3:10      0 -10
     ld   HL, 0xFFF6     ; 3:10      0 -10
@@ -6888,7 +6872,7 @@ exit305:                ;           -2 +loop_305(xm)
     pop  DE             ; 1:10      do_306(m)
     pop  HL             ; 1:10      do_306(m)
 do306:                  ;           do_306(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx306 EQU $+1          ;           2 +loop_306(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_306(m)   idx always points to a 16-bit index
@@ -6907,12 +6891,12 @@ stp_hi306 EQU $+1       ;           2 +loop_306(m)
     jp   nz, do306      ; 3:10      2 +loop_306(m)
 leave306:               ;           2 +loop_306(m)
 exit306:                ;           2 +loop_306(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string307 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     1 -9
-    push DE             ; 1:11      1 -9   ( -- 1 -9 )
+                        ;[8:42]     1 -9   ( -- 1 -9 )
+    push DE             ; 1:11      1 -9
     push HL             ; 1:11      1 -9
     ld   DE, 0x0001     ; 3:10      1 -9
     ld   HL, 0xFFF7     ; 3:10      1 -9
@@ -6926,7 +6910,7 @@ exit306:                ;           2 +loop_306(m)
     pop  DE             ; 1:10      do_307(m)
     pop  HL             ; 1:10      do_307(m)
 do307:                  ;           do_307(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx307 EQU $+1          ;           2 +loop_307(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_307(m)   idx always points to a 16-bit index
@@ -6945,12 +6929,12 @@ stp_hi307 EQU $+1       ;           2 +loop_307(m)
     jp   nz, do307      ; 3:10      2 +loop_307(m)
 leave307:               ;           2 +loop_307(m)
 exit307:                ;           2 +loop_307(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string308 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     5 -5
-    push DE             ; 1:11      5 -5   ( -- 5 -5 )
+                        ;[8:42]     5 -5   ( -- 5 -5 )
+    push DE             ; 1:11      5 -5
     push HL             ; 1:11      5 -5
     ld   DE, 0x0005     ; 3:10      5 -5
     ld   HL, 0xFFFB     ; 3:10      5 -5
@@ -6964,7 +6948,7 @@ exit307:                ;           2 +loop_307(m)
     pop  DE             ; 1:10      do_308(m)
     pop  HL             ; 1:10      do_308(m)
 do308:                  ;           do_308(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx308 EQU $+1          ;           2 +loop_308(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_308(m)   idx always points to a 16-bit index
@@ -6983,17 +6967,15 @@ stp_hi308 EQU $+1       ;           2 +loop_308(m)
     jp   nz, do308      ; 3:10      2 +loop_308(m)
 leave308:               ;           2 +loop_308(m)
 exit308:                ;           2 +loop_308(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string309 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2304 304   ( -- 0 0 2304 304 )
-    push HL             ; 1:11      0 0 2304 304
-    ld   DE, 0x0000     ; 3:10      0 0 2304 304
-    ld    L, D          ; 1:4       0 0 2304 304   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 2304 304   H = L = 0x00
     push DE             ; 1:11      0 0 2304 304
     push HL             ; 1:11      0 0 2304 304
+    ld   DE, 0x0000     ; 3:10      0 0 2304 304
+    push DE             ; 1:11      0 0 2304 304
+    push DE             ; 1:11      0 0 2304 304
     ld    D, 0x09       ; 2:7       0 0 2304 304
     ld   HL, 0x0130     ; 3:10      0 0 2304 304
 
@@ -7030,12 +7012,10 @@ exit309:                ;           2 +loop_309(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string310 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2050 50   ( -- 0 0 2050 50 )
-    push HL             ; 1:11      0 0 2050 50
-    ld   DE, 0x0000     ; 3:10      0 0 2050 50
-    ld    L, D          ; 1:4       0 0 2050 50   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 2050 50   H = L = 0x00
     push DE             ; 1:11      0 0 2050 50
+    push HL             ; 1:11      0 0 2050 50
+    ld   HL, 0x0000     ; 3:10      0 0 2050 50
+    push HL             ; 1:11      0 0 2050 50
     push HL             ; 1:11      0 0 2050 50
     ld   DE, 0x0802     ; 3:10      0 0 2050 50
     ld    L, 0x32       ; 2:7       0 0 2050 50
@@ -7073,12 +7053,10 @@ exit310:                ;           2 +loop_310(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string311 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1990 -10   ( -- 0 0 1990 -10 )
-    push HL             ; 1:11      0 0 1990 -10
-    ld   DE, 0x0000     ; 3:10      0 0 1990 -10
-    ld    L, D          ; 1:4       0 0 1990 -10   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 1990 -10   H = L = 0x00
     push DE             ; 1:11      0 0 1990 -10
+    push HL             ; 1:11      0 0 1990 -10
+    ld   HL, 0x0000     ; 3:10      0 0 1990 -10
+    push HL             ; 1:11      0 0 1990 -10
     push HL             ; 1:11      0 0 1990 -10
     ld   DE, 0x07C6     ; 3:10      0 0 1990 -10
     ld   HL, 0xFFF6     ; 3:10      0 0 1990 -10
@@ -7116,8 +7094,8 @@ exit311:                ;           2 +loop_311(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string297  ; 3:10      print_i   Address of string312 ending with inverted most significant bit == string297
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 8
-    push DE             ; 1:11      0 8   ( -- 0 8 )
+                        ;[7:40]     0 8   ( -- 0 8 )
+    push DE             ; 1:11      0 8
     push HL             ; 1:11      0 8
     ld   HL, 0x0008     ; 3:10      0 8
     ld    E, H          ; 1:4       0 8   E = H = 0x00
@@ -7132,7 +7110,7 @@ exit311:                ;           2 +loop_311(m)
     pop  DE             ; 1:10      do_312(m)
     pop  HL             ; 1:10      do_312(m)
 do312:                  ;           do_312(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_312(m)
 idx312 EQU $+1          ;           -2 +loop_312(m)
@@ -7151,15 +7129,15 @@ stp_hi312 EQU $+1       ;           -2 +loop_312(m)
     add  HL, BC         ; 1:11      -2 +loop_312(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_312(m)
     pop  HL             ; 1:10      -2 +loop_312(m)
-    jp    p, do312      ; 3:10      -2 +loop_312(m) negative step
+    jp    p, do312      ; 3:10      -2 +loop_312(m)
 leave312:               ;           -2 +loop_312(m)
 exit312:                ;           -2 +loop_312(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string313 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     1 9
-    push DE             ; 1:11      1 9   ( -- 1 9 )
+                        ;[8:42]     1 9   ( -- 1 9 )
+    push DE             ; 1:11      1 9
     push HL             ; 1:11      1 9
     ld   DE, 0x0001     ; 3:10      1 9
     ld   HL, 0x0009     ; 3:10      1 9
@@ -7173,7 +7151,7 @@ exit312:                ;           -2 +loop_312(m)
     pop  DE             ; 1:10      do_313(m)
     pop  HL             ; 1:10      do_313(m)
 do313:                  ;           do_313(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_313(m)
 idx313 EQU $+1          ;           -2 +loop_313(m)
@@ -7192,15 +7170,15 @@ stp_hi313 EQU $+1       ;           -2 +loop_313(m)
     add  HL, BC         ; 1:11      -2 +loop_313(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_313(m)
     pop  HL             ; 1:10      -2 +loop_313(m)
-    jp    p, do313      ; 3:10      -2 +loop_313(m) negative step
+    jp    p, do313      ; 3:10      -2 +loop_313(m)
 leave313:               ;           -2 +loop_313(m)
 exit313:                ;           -2 +loop_313(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string314 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     2 10
-    push DE             ; 1:11      2 10   ( -- 2 10 )
+                        ;[8:42]     2 10   ( -- 2 10 )
+    push DE             ; 1:11      2 10
     push HL             ; 1:11      2 10
     ld   DE, 0x0002     ; 3:10      2 10
     ld   HL, 0x000A     ; 3:10      2 10
@@ -7214,7 +7192,7 @@ exit313:                ;           -2 +loop_313(m)
     pop  DE             ; 1:10      do_314(m)
     pop  HL             ; 1:10      do_314(m)
 do314:                  ;           do_314(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_314(m)
 idx314 EQU $+1          ;           -2 +loop_314(m)
@@ -7233,15 +7211,15 @@ stp_hi314 EQU $+1       ;           -2 +loop_314(m)
     add  HL, BC         ; 1:11      -2 +loop_314(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_314(m)
     pop  HL             ; 1:10      -2 +loop_314(m)
-    jp    p, do314      ; 3:10      -2 +loop_314(m) negative step
+    jp    p, do314      ; 3:10      -2 +loop_314(m)
 leave314:               ;           -2 +loop_314(m)
 exit314:                ;           -2 +loop_314(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string315 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     256 264
-    push DE             ; 1:11      256 264   ( -- 256 264 )
+                        ;[8:42]     256 264   ( -- 256 264 )
+    push DE             ; 1:11      256 264
     push HL             ; 1:11      256 264
     ld   DE, 0x0100     ; 3:10      256 264
     ld   HL, 0x0108     ; 3:10      256 264
@@ -7255,7 +7233,7 @@ exit314:                ;           -2 +loop_314(m)
     pop  DE             ; 1:10      do_315(m)
     pop  HL             ; 1:10      do_315(m)
 do315:                  ;           do_315(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_315(m)
 idx315 EQU $+1          ;           -2 +loop_315(m)
@@ -7274,15 +7252,15 @@ stp_hi315 EQU $+1       ;           -2 +loop_315(m)
     add  HL, BC         ; 1:11      -2 +loop_315(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_315(m)
     pop  HL             ; 1:10      -2 +loop_315(m)
-    jp    p, do315      ; 3:10      -2 +loop_315(m) negative step
+    jp    p, do315      ; 3:10      -2 +loop_315(m)
 leave315:               ;           -2 +loop_315(m)
 exit315:                ;           -2 +loop_315(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string316 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     300 308
-    push DE             ; 1:11      300 308   ( -- 300 308 )
+                        ;[8:42]     300 308   ( -- 300 308 )
+    push DE             ; 1:11      300 308
     push HL             ; 1:11      300 308
     ld   DE, 0x012C     ; 3:10      300 308
     ld   HL, 0x0134     ; 3:10      300 308
@@ -7296,7 +7274,7 @@ exit315:                ;           -2 +loop_315(m)
     pop  DE             ; 1:10      do_316(m)
     pop  HL             ; 1:10      do_316(m)
 do316:                  ;           do_316(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_316(m)
 idx316 EQU $+1          ;           -2 +loop_316(m)
@@ -7315,20 +7293,18 @@ stp_hi316 EQU $+1       ;           -2 +loop_316(m)
     add  HL, BC         ; 1:11      -2 +loop_316(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_316(m)
     pop  HL             ; 1:10      -2 +loop_316(m)
-    jp    p, do316      ; 3:10      -2 +loop_316(m) negative step
+    jp    p, do316      ; 3:10      -2 +loop_316(m)
 leave316:               ;           -2 +loop_316(m)
 exit316:                ;           -2 +loop_316(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string317 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 3 2001   ( -- 0 0 3 2001 )
-    push HL             ; 1:11      0 0 3 2001
-    ld   DE, 0x0000     ; 3:10      0 0 3 2001
-    ld    L, D          ; 1:4       0 0 3 2001   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 3 2001   H = L = 0x00
     push DE             ; 1:11      0 0 3 2001
     push HL             ; 1:11      0 0 3 2001
+    ld   DE, 0x0000     ; 3:10      0 0 3 2001
+    push DE             ; 1:11      0 0 3 2001
+    push DE             ; 1:11      0 0 3 2001
     ld    E, 0x03       ; 2:7       0 0 3 2001
     ld   HL, 0x07D1     ; 3:10      0 0 3 2001
 
@@ -7362,19 +7338,17 @@ stp_hi317 EQU $+1       ;           -2 +loop_317(m)
     add  HL, BC         ; 1:11      -2 +loop_317(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_317(m)
     pop  HL             ; 1:10      -2 +loop_317(m)
-    jp    p, do317      ; 3:10      -2 +loop_317(m) negative step
+    jp    p, do317      ; 3:10      -2 +loop_317(m)
 leave317:               ;           -2 +loop_317(m)
 exit317:                ;           -2 +loop_317(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string318 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 234 2232   ( -- 0 0 234 2232 )
-    push HL             ; 1:11      0 0 234 2232
-    ld   DE, 0x0000     ; 3:10      0 0 234 2232
-    ld    L, D          ; 1:4       0 0 234 2232   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 234 2232   H = L = 0x00
     push DE             ; 1:11      0 0 234 2232
     push HL             ; 1:11      0 0 234 2232
+    ld   DE, 0x0000     ; 3:10      0 0 234 2232
+    push DE             ; 1:11      0 0 234 2232
+    push DE             ; 1:11      0 0 234 2232
     ld    E, 0xEA       ; 2:7       0 0 234 2232
     ld   HL, 0x08B8     ; 3:10      0 0 234 2232
 
@@ -7408,18 +7382,16 @@ stp_hi318 EQU $+1       ;           -2 +loop_318(m)
     add  HL, BC         ; 1:11      -2 +loop_318(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_318(m)
     pop  HL             ; 1:10      -2 +loop_318(m)
-    jp    p, do318      ; 3:10      -2 +loop_318(m) negative step
+    jp    p, do318      ; 3:10      -2 +loop_318(m)
 leave318:               ;           -2 +loop_318(m)
 exit318:                ;           -2 +loop_318(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string319 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1802 196   ( -- 0 0 -1802 196 )
-    push HL             ; 1:11      0 0 -1802 196
-    ld   DE, 0x0000     ; 3:10      0 0 -1802 196
-    ld    L, D          ; 1:4       0 0 -1802 196   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 -1802 196   H = L = 0x00
     push DE             ; 1:11      0 0 -1802 196
+    push HL             ; 1:11      0 0 -1802 196
+    ld   HL, 0x0000     ; 3:10      0 0 -1802 196
+    push HL             ; 1:11      0 0 -1802 196
     push HL             ; 1:11      0 0 -1802 196
     ld   DE, 0xF8F6     ; 3:10      0 0 -1802 196
     ld    L, 0xC4       ; 2:7       0 0 -1802 196
@@ -7454,18 +7426,16 @@ stp_hi319 EQU $+1       ;           -2 +loop_319(m)
     add  HL, BC         ; 1:11      -2 +loop_319(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_319(m)
     pop  HL             ; 1:10      -2 +loop_319(m)
-    jp    p, do319      ; 3:10      -2 +loop_319(m) negative step
+    jp    p, do319      ; 3:10      -2 +loop_319(m)
 leave319:               ;           -2 +loop_319(m)
 exit319:                ;           -2 +loop_319(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string320 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1748 250   ( -- 0 0 -1748 250 )
-    push HL             ; 1:11      0 0 -1748 250
-    ld   DE, 0x0000     ; 3:10      0 0 -1748 250
-    ld    L, D          ; 1:4       0 0 -1748 250   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 -1748 250   H = L = 0x00
     push DE             ; 1:11      0 0 -1748 250
+    push HL             ; 1:11      0 0 -1748 250
+    ld   HL, 0x0000     ; 3:10      0 0 -1748 250
+    push HL             ; 1:11      0 0 -1748 250
     push HL             ; 1:11      0 0 -1748 250
     ld   DE, 0xF92C     ; 3:10      0 0 -1748 250
     ld    L, 0xFA       ; 2:7       0 0 -1748 250
@@ -7500,7 +7470,7 @@ stp_hi320 EQU $+1       ;           -2 +loop_320(m)
     add  HL, BC         ; 1:11      -2 +loop_320(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_320(m)
     pop  HL             ; 1:10      -2 +loop_320(m)
-    jp    p, do320      ; 3:10      -2 +loop_320(m) negative step
+    jp    p, do320      ; 3:10      -2 +loop_320(m)
 leave320:               ;           -2 +loop_320(m)
 exit320:                ;           -2 +loop_320(m)
     call _show          ; 3:17      call ( -- )
@@ -7524,7 +7494,7 @@ exit320:                ;           -2 +loop_320(m)
     pop  HL             ; 1:10      -10 do_321(m)
     ex   DE, HL         ; 1:4       -10 do_321(m)
 do321:                  ;           -10 do_321(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx321 EQU $+1          ;           2 +loop_321(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_321(m)   idx always points to a 16-bit index
@@ -7543,7 +7513,7 @@ stp_hi321 EQU $+1       ;           2 +loop_321(m)
     jp   nz, do321      ; 3:10      2 +loop_321(m)
 leave321:               ;           2 +loop_321(m)
 exit321:                ;           2 +loop_321(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string322 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
@@ -7561,7 +7531,7 @@ exit321:                ;           2 +loop_321(m)
     pop  HL             ; 1:10      -9 do_322(m)
     ex   DE, HL         ; 1:4       -9 do_322(m)
 do322:                  ;           -9 do_322(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx322 EQU $+1          ;           2 +loop_322(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_322(m)   idx always points to a 16-bit index
@@ -7580,7 +7550,7 @@ stp_hi322 EQU $+1       ;           2 +loop_322(m)
     jp   nz, do322      ; 3:10      2 +loop_322(m)
 leave322:               ;           2 +loop_322(m)
 exit322:                ;           2 +loop_322(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string323 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
@@ -7598,7 +7568,7 @@ exit322:                ;           2 +loop_322(m)
     pop  HL             ; 1:10      -5 do_323(m)
     ex   DE, HL         ; 1:4       -5 do_323(m)
 do323:                  ;           -5 do_323(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx323 EQU $+1          ;           2 +loop_323(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_323(m)   idx always points to a 16-bit index
@@ -7617,13 +7587,13 @@ stp_hi323 EQU $+1       ;           2 +loop_323(m)
     jp   nz, do323      ; 3:10      2 +loop_323(m)
 leave323:               ;           2 +loop_323(m)
 exit323:                ;           2 +loop_323(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string324 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2304   ( -- 0 0 2304 )
+    push DE             ; 1:11      0 0 2304   ( -- 0 0 2304 ) push3.m3
     push HL             ; 1:11      0 0 2304
-    ld   DE, 0          ; 3:10      0 0 2304
+    ld   DE, 0x0000     ; 3:10      0 0 2304
     push DE             ; 1:11      0 0 2304
     ld   HL, 0x0900     ; 3:10      0 0 2304
 
@@ -7661,9 +7631,9 @@ exit324:                ;           2 +loop_324(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string325 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2050   ( -- 0 0 2050 )
+    push DE             ; 1:11      0 0 2050   ( -- 0 0 2050 ) push3.m3
     push HL             ; 1:11      0 0 2050
-    ld   DE, 0          ; 3:10      0 0 2050
+    ld   DE, 0x0000     ; 3:10      0 0 2050
     push DE             ; 1:11      0 0 2050
     ld   HL, 0x0802     ; 3:10      0 0 2050
 
@@ -7701,9 +7671,9 @@ exit325:                ;           2 +loop_325(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string326 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1990   ( -- 0 0 1990 )
+    push DE             ; 1:11      0 0 1990   ( -- 0 0 1990 ) push3.m3
     push HL             ; 1:11      0 0 1990
-    ld   DE, 0          ; 3:10      0 0 1990
+    ld   DE, 0x0000     ; 3:10      0 0 1990
     push DE             ; 1:11      0 0 1990
     ld   HL, 0x07C6     ; 3:10      0 0 1990
 
@@ -7755,7 +7725,7 @@ exit326:                ;           2 +loop_326(m)
     pop  HL             ; 1:10      8 do_327(m)
     ex   DE, HL         ; 1:4       8 do_327(m)
 do327:                  ;           8 do_327(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_327(m)
 idx327 EQU $+1          ;           -2 +loop_327(m)
@@ -7774,10 +7744,10 @@ stp_hi327 EQU $+1       ;           -2 +loop_327(m)
     add  HL, BC         ; 1:11      -2 +loop_327(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_327(m)
     pop  HL             ; 1:10      -2 +loop_327(m)
-    jp    p, do327      ; 3:10      -2 +loop_327(m) negative step
+    jp    p, do327      ; 3:10      -2 +loop_327(m)
 leave327:               ;           -2 +loop_327(m)
 exit327:                ;           -2 +loop_327(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string328 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -7795,7 +7765,7 @@ exit327:                ;           -2 +loop_327(m)
     pop  HL             ; 1:10      9 do_328(m)
     ex   DE, HL         ; 1:4       9 do_328(m)
 do328:                  ;           9 do_328(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_328(m)
 idx328 EQU $+1          ;           -2 +loop_328(m)
@@ -7814,10 +7784,10 @@ stp_hi328 EQU $+1       ;           -2 +loop_328(m)
     add  HL, BC         ; 1:11      -2 +loop_328(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_328(m)
     pop  HL             ; 1:10      -2 +loop_328(m)
-    jp    p, do328      ; 3:10      -2 +loop_328(m) negative step
+    jp    p, do328      ; 3:10      -2 +loop_328(m)
 leave328:               ;           -2 +loop_328(m)
 exit328:                ;           -2 +loop_328(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string329 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -7835,7 +7805,7 @@ exit328:                ;           -2 +loop_328(m)
     pop  HL             ; 1:10      10 do_329(m)
     ex   DE, HL         ; 1:4       10 do_329(m)
 do329:                  ;           10 do_329(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_329(m)
 idx329 EQU $+1          ;           -2 +loop_329(m)
@@ -7854,10 +7824,10 @@ stp_hi329 EQU $+1       ;           -2 +loop_329(m)
     add  HL, BC         ; 1:11      -2 +loop_329(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_329(m)
     pop  HL             ; 1:10      -2 +loop_329(m)
-    jp    p, do329      ; 3:10      -2 +loop_329(m) negative step
+    jp    p, do329      ; 3:10      -2 +loop_329(m)
 leave329:               ;           -2 +loop_329(m)
 exit329:                ;           -2 +loop_329(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string330 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -7875,7 +7845,7 @@ exit329:                ;           -2 +loop_329(m)
     pop  HL             ; 1:10      264 do_330(m)
     ex   DE, HL         ; 1:4       264 do_330(m)
 do330:                  ;           264 do_330(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_330(m)
 idx330 EQU $+1          ;           -2 +loop_330(m)
@@ -7894,10 +7864,10 @@ stp_hi330 EQU $+1       ;           -2 +loop_330(m)
     add  HL, BC         ; 1:11      -2 +loop_330(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_330(m)
     pop  HL             ; 1:10      -2 +loop_330(m)
-    jp    p, do330      ; 3:10      -2 +loop_330(m) negative step
+    jp    p, do330      ; 3:10      -2 +loop_330(m)
 leave330:               ;           -2 +loop_330(m)
 exit330:                ;           -2 +loop_330(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string331 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -7915,7 +7885,7 @@ exit330:                ;           -2 +loop_330(m)
     pop  HL             ; 1:10      308 do_331(m)
     ex   DE, HL         ; 1:4       308 do_331(m)
 do331:                  ;           308 do_331(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_331(m)
 idx331 EQU $+1          ;           -2 +loop_331(m)
@@ -7934,16 +7904,16 @@ stp_hi331 EQU $+1       ;           -2 +loop_331(m)
     add  HL, BC         ; 1:11      -2 +loop_331(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_331(m)
     pop  HL             ; 1:10      -2 +loop_331(m)
-    jp    p, do331      ; 3:10      -2 +loop_331(m) negative step
+    jp    p, do331      ; 3:10      -2 +loop_331(m)
 leave331:               ;           -2 +loop_331(m)
 exit331:                ;           -2 +loop_331(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string332 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 3   ( -- 0 0 3 )
+    push DE             ; 1:11      0 0 3   ( -- 0 0 3 ) push3.m3
     push HL             ; 1:11      0 0 3
-    ld   DE, 0          ; 3:10      0 0 3
+    ld   DE, 0x0000     ; 3:10      0 0 3
     push DE             ; 1:11      0 0 3
     ld   HL, 0x0003     ; 3:10      0 0 3
 
@@ -7978,15 +7948,15 @@ stp_hi332 EQU $+1       ;           -2 +loop_332(m)
     add  HL, BC         ; 1:11      -2 +loop_332(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_332(m)
     pop  HL             ; 1:10      -2 +loop_332(m)
-    jp    p, do332      ; 3:10      -2 +loop_332(m) negative step
+    jp    p, do332      ; 3:10      -2 +loop_332(m)
 leave332:               ;           -2 +loop_332(m)
 exit332:                ;           -2 +loop_332(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string333 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 234   ( -- 0 0 234 )
+    push DE             ; 1:11      0 0 234   ( -- 0 0 234 ) push3.m3
     push HL             ; 1:11      0 0 234
-    ld   DE, 0          ; 3:10      0 0 234
+    ld   DE, 0x0000     ; 3:10      0 0 234
     push DE             ; 1:11      0 0 234
     ld   HL, 0x00EA     ; 3:10      0 0 234
 
@@ -8021,15 +7991,15 @@ stp_hi333 EQU $+1       ;           -2 +loop_333(m)
     add  HL, BC         ; 1:11      -2 +loop_333(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_333(m)
     pop  HL             ; 1:10      -2 +loop_333(m)
-    jp    p, do333      ; 3:10      -2 +loop_333(m) negative step
+    jp    p, do333      ; 3:10      -2 +loop_333(m)
 leave333:               ;           -2 +loop_333(m)
 exit333:                ;           -2 +loop_333(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string334 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1802   ( -- 0 0 -1802 )
+    push DE             ; 1:11      0 0 -1802   ( -- 0 0 -1802 ) push3.m3
     push HL             ; 1:11      0 0 -1802
-    ld   DE, 0          ; 3:10      0 0 -1802
+    ld   DE, 0x0000     ; 3:10      0 0 -1802
     push DE             ; 1:11      0 0 -1802
     ld   HL, 0xF8F6     ; 3:10      0 0 -1802
 
@@ -8064,15 +8034,15 @@ stp_hi334 EQU $+1       ;           -2 +loop_334(m)
     add  HL, BC         ; 1:11      -2 +loop_334(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_334(m)
     pop  HL             ; 1:10      -2 +loop_334(m)
-    jp    p, do334      ; 3:10      -2 +loop_334(m) negative step
+    jp    p, do334      ; 3:10      -2 +loop_334(m)
 leave334:               ;           -2 +loop_334(m)
 exit334:                ;           -2 +loop_334(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string335 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1748   ( -- 0 0 -1748 )
+    push DE             ; 1:11      0 0 -1748   ( -- 0 0 -1748 ) push3.m3
     push HL             ; 1:11      0 0 -1748
-    ld   DE, 0          ; 3:10      0 0 -1748
+    ld   DE, 0x0000     ; 3:10      0 0 -1748
     push DE             ; 1:11      0 0 -1748
     ld   HL, 0xF92C     ; 3:10      0 0 -1748
 
@@ -8107,7 +8077,7 @@ stp_hi335 EQU $+1       ;           -2 +loop_335(m)
     add  HL, BC         ; 1:11      -2 +loop_335(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_335(m)
     pop  HL             ; 1:10      -2 +loop_335(m)
-    jp    p, do335      ; 3:10      -2 +loop_335(m) negative step
+    jp    p, do335      ; 3:10      -2 +loop_335(m)
 leave335:               ;           -2 +loop_335(m)
 exit335:                ;           -2 +loop_335(m)
     call _show          ; 3:17      call ( -- )
@@ -8121,7 +8091,7 @@ exit335:                ;           -2 +loop_335(m)
 do336save:              ;           -10 0 swap do_336(xm)
     ld  (idx336),BC     ; 4:20      -10 0 swap do_336(xm)
 do336:                  ;           -10 0 swap do_336(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_336(xm)   variant +2.A: step 2 and real_stop is zero, run 5x
 idx336 EQU $+1          ;           2 +loop_336(xm)   idx always points to a 16-bit index
@@ -8133,7 +8103,7 @@ idx336 EQU $+1          ;           2 +loop_336(xm)   idx always points to a 16-
     jp   nz, do336save  ; 3:10      2 +loop_336(xm)
 leave336:               ;           2 +loop_336(xm)
 exit336:                ;           2 +loop_336(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string337 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
@@ -8141,7 +8111,7 @@ exit336:                ;           2 +loop_336(xm)
 do337save:              ;           -9 1 swap do_337(xm)
     ld  (idx337),BC     ; 4:20      -9 1 swap do_337(xm)
 do337:                  ;           -9 1 swap do_337(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_337(xm)   variant +2.B: step 2 and real_stop is one, run 5x
 idx337 EQU $+1          ;           2 +loop_337(xm)   idx always points to a 16-bit index
@@ -8153,7 +8123,7 @@ idx337 EQU $+1          ;           2 +loop_337(xm)   idx always points to a 16-
     jp   nz, do337save  ; 3:10      2 +loop_337(xm)
 leave337:               ;           2 +loop_337(xm)
 exit337:                ;           2 +loop_337(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string338 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
@@ -8161,7 +8131,7 @@ exit337:                ;           2 +loop_337(xm)
 do338save:              ;           -5 5 swap do_338(xm)
     ld  (idx338),BC     ; 4:20      -5 5 swap do_338(xm)
 do338:                  ;           -5 5 swap do_338(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] 2 +loop_338(xm)   variant +2.C: step 2 with lo(real_stop) exclusivity, run 5x
 idx338 EQU $+1          ;           2 +loop_338(xm)   idx always points to a 16-bit index
@@ -8173,12 +8143,12 @@ idx338 EQU $+1          ;           2 +loop_338(xm)   idx always points to a 16-
     jp   nz, do338save  ; 3:10      2 +loop_338(xm)
 leave338:               ;           2 +loop_338(xm)
 exit338:                ;           2 +loop_338(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string339 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 304 2304 swap 2drop
-    push DE             ; 1:11      0 0 304 2304 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 304 2304 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 304 2304 swap 2drop
     push HL             ; 1:11      0 0 304 2304 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 304 2304 swap 2drop
     ld    L, D          ; 1:4       0 0 304 2304 swap 2drop   L = D = 0x00
@@ -8204,8 +8174,8 @@ exit339:                ;           2 +loop_339(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string340 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 50 2050 swap 2drop
-    push DE             ; 1:11      0 0 50 2050 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 50 2050 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 50 2050 swap 2drop
     push HL             ; 1:11      0 0 50 2050 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 50 2050 swap 2drop
     ld    L, D          ; 1:4       0 0 50 2050 swap 2drop   L = D = 0x00
@@ -8234,8 +8204,8 @@ exit340:                ;           2 +loop_340(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string341 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -10 1990 swap 2drop
-    push DE             ; 1:11      0 0 -10 1990 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -10 1990 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -10 1990 swap 2drop
     push HL             ; 1:11      0 0 -10 1990 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -10 1990 swap 2drop
     ld    L, D          ; 1:4       0 0 -10 1990 swap 2drop   L = D = 0x00
@@ -8268,7 +8238,7 @@ exit341:                ;           2 +loop_341(xm)
 do342save:              ;           8 0 swap do_342(xm)
     ld  (idx342),BC     ; 4:20      8 0 swap do_342(xm)
 do342:                  ;           8 0 swap do_342(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_342(xm)   variant -2.A: step -2 and real_stop is -2, run 5x
 idx342 EQU $+1          ;           -2 +loop_342(xm)   idx always points to a 16-bit index
@@ -8280,7 +8250,7 @@ idx342 EQU $+1          ;           -2 +loop_342(xm)   idx always points to a 16
     jp   nc, do342save  ; 3:10      -2 +loop_342(xm)
 leave342:               ;           -2 +loop_342(xm)
 exit342:                ;           -2 +loop_342(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string343 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -8288,7 +8258,7 @@ exit342:                ;           -2 +loop_342(xm)
 do343save:              ;           9 1 swap do_343(xm)
     ld  (idx343),BC     ; 4:20      9 1 swap do_343(xm)
 do343:                  ;           9 1 swap do_343(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_343(xm)   variant -2.B: step -2 and real_stop is -1, run 5x
 idx343 EQU $+1          ;           -2 +loop_343(xm)   idx always points to a 16-bit index
@@ -8300,7 +8270,7 @@ idx343 EQU $+1          ;           -2 +loop_343(xm)   idx always points to a 16
     jp   nz, do343save  ; 3:10      -2 +loop_343(xm)
 leave343:               ;           -2 +loop_343(xm)
 exit343:                ;           -2 +loop_343(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string344 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -8308,7 +8278,7 @@ exit343:                ;           -2 +loop_343(xm)
 do344save:              ;           10 2 swap do_344(xm)
     ld  (idx344),BC     ; 4:20      10 2 swap do_344(xm)
 do344:                  ;           10 2 swap do_344(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_344(xm)   variant -2.C: step -2 and real_stop is zero, run 5x
 idx344 EQU $+1          ;           -2 +loop_344(xm)   idx always points to a 16-bit index
@@ -8320,7 +8290,7 @@ idx344 EQU $+1          ;           -2 +loop_344(xm)   idx always points to a 16
     jp   nz, do344save  ; 3:10      -2 +loop_344(xm)
 leave344:               ;           -2 +loop_344(xm)
 exit344:                ;           -2 +loop_344(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string345 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -8328,7 +8298,7 @@ exit344:                ;           -2 +loop_344(xm)
 do345save:              ;           264 256 swap do_345(xm)
     ld  (idx345),BC     ; 4:20      264 256 swap do_345(xm)
 do345:                  ;           264 256 swap do_345(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_345(xm)   variant -2.D: step -2 with hi(real_stop) exclusivity, run 5x
 idx345 EQU $+1          ;           -2 +loop_345(xm)   idx always points to a 16-bit index
@@ -8340,7 +8310,7 @@ idx345 EQU $+1          ;           -2 +loop_345(xm)   idx always points to a 16
     jp   nz, do345save  ; 3:10      -2 +loop_345(xm)
 leave345:               ;           -2 +loop_345(xm)
 exit345:                ;           -2 +loop_345(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string346 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -8348,7 +8318,7 @@ exit345:                ;           -2 +loop_345(xm)
 do346save:              ;           308 300 swap do_346(xm)
     ld  (idx346),BC     ; 4:20      308 300 swap do_346(xm)
 do346:                  ;           308 300 swap do_346(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_346(xm)   variant -2.E: step -2 with lo(real_stop) exclusivity, run 5x
 idx346 EQU $+1          ;           -2 +loop_346(xm)   idx always points to a 16-bit index
@@ -8360,12 +8330,12 @@ idx346 EQU $+1          ;           -2 +loop_346(xm)   idx always points to a 16
     jp   nz, do346save  ; 3:10      -2 +loop_346(xm)
 leave346:               ;           -2 +loop_346(xm)
 exit346:                ;           -2 +loop_346(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string347 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2001 3 swap 2drop
-    push DE             ; 1:11      0 0 2001 3 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2001 3 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2001 3 swap 2drop
     push HL             ; 1:11      0 0 2001 3 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 2001 3 swap 2drop
     ld    L, D          ; 1:4       0 0 2001 3 swap 2drop   L = D = 0x00
@@ -8392,8 +8362,8 @@ exit347:                ;           -2 +loop_347(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string348 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2232 234 swap 2drop
-    push DE             ; 1:11      0 0 2232 234 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2232 234 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2232 234 swap 2drop
     push HL             ; 1:11      0 0 2232 234 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 2232 234 swap 2drop
     ld    L, D          ; 1:4       0 0 2232 234 swap 2drop   L = D = 0x00
@@ -8420,8 +8390,8 @@ exit348:                ;           -2 +loop_348(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string349 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 196 -1802 swap 2drop
-    push DE             ; 1:11      0 0 196 -1802 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 196 -1802 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 196 -1802 swap 2drop
     push HL             ; 1:11      0 0 196 -1802 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 196 -1802 swap 2drop
     ld    L, D          ; 1:4       0 0 196 -1802 swap 2drop   L = D = 0x00
@@ -8450,8 +8420,8 @@ exit349:                ;           -2 +loop_349(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string350 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 250 -1748 swap 2drop
-    push DE             ; 1:11      0 0 250 -1748 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 250 -1748 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 250 -1748 swap 2drop
     push HL             ; 1:11      0 0 250 -1748 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 250 -1748 swap 2drop
     ld    L, D          ; 1:4       0 0 250 -1748 swap 2drop   L = D = 0x00
@@ -8486,20 +8456,20 @@ exit350:                ;           -2 +loop_350(xm)
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -10
     ex   DE, HL         ; 1:4       -10
-    ld   HL, -10        ; 3:10      -10
+    ld   HL, 0-10       ; 3:10      -10
 
     ld  (idx351), HL    ; 3:16      0 swap do_351(m)   ( 0 index -- )
     pop  HL             ; 1:10      0 swap do_351(m)
     ex   DE, HL         ; 1:4       0 swap do_351(m)
 do351:                  ;           0 swap do_351(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx351 EQU $+1          ;           2 +loop_351(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_351(m)   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop_351(m)   index++
     ld    A, C          ; 1:4       2 +loop_351(m)
 stp_lo351 EQU $+1       ;           2 +loop_351(m)
-    sub  low 0-1        ; 2:7       2 +loop_351(m)   lo index - stop-1
+    sub  low +(0)-1     ; 2:7       2 +loop_351(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_351(m)
     add   A, A          ; 1:4       2 +loop_351(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_351(m)
@@ -8507,30 +8477,30 @@ stp_lo351 EQU $+1       ;           2 +loop_351(m)
     ld  (idx351),BC     ; 4:20      2 +loop_351(m)   save index
     jp   nz, do351      ; 3:10      2 +loop_351(m)
 stp_hi351 EQU $+1       ;           2 +loop_351(m)
-    sbc   A, high 0-1   ; 2:7       2 +loop_351(m)   hi index - stop-1
+    sbc   A, high +(0)-1; 2:7       2 +loop_351(m)   hi index - stop-1
     jp   nz, do351      ; 3:10      2 +loop_351(m)
 leave351:               ;           2 +loop_351(m)
 exit351:                ;           2 +loop_351(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string352 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -9
     ex   DE, HL         ; 1:4       -9
-    ld   HL, -9         ; 3:10      -9
+    ld   HL, 0-9        ; 3:10      -9
 
     ld  (idx352), HL    ; 3:16      1 swap do_352(m)   ( 1 index -- )
     pop  HL             ; 1:10      1 swap do_352(m)
     ex   DE, HL         ; 1:4       1 swap do_352(m)
 do352:                  ;           1 swap do_352(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx352 EQU $+1          ;           2 +loop_352(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_352(m)   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop_352(m)   index++
     ld    A, C          ; 1:4       2 +loop_352(m)
 stp_lo352 EQU $+1       ;           2 +loop_352(m)
-    sub  low 1-1        ; 2:7       2 +loop_352(m)   lo index - stop-1
+    sub  low +(1)-1     ; 2:7       2 +loop_352(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_352(m)
     add   A, A          ; 1:4       2 +loop_352(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_352(m)
@@ -8538,30 +8508,30 @@ stp_lo352 EQU $+1       ;           2 +loop_352(m)
     ld  (idx352),BC     ; 4:20      2 +loop_352(m)   save index
     jp   nz, do352      ; 3:10      2 +loop_352(m)
 stp_hi352 EQU $+1       ;           2 +loop_352(m)
-    sbc   A, high 1-1   ; 2:7       2 +loop_352(m)   hi index - stop-1
+    sbc   A, high +(1)-1; 2:7       2 +loop_352(m)   hi index - stop-1
     jp   nz, do352      ; 3:10      2 +loop_352(m)
 leave352:               ;           2 +loop_352(m)
 exit352:                ;           2 +loop_352(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string353 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -5
     ex   DE, HL         ; 1:4       -5
-    ld   HL, -5         ; 3:10      -5
+    ld   HL, 0-5        ; 3:10      -5
 
     ld  (idx353), HL    ; 3:16      5 swap do_353(m)   ( 5 index -- )
     pop  HL             ; 1:10      5 swap do_353(m)
     ex   DE, HL         ; 1:4       5 swap do_353(m)
 do353:                  ;           5 swap do_353(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx353 EQU $+1          ;           2 +loop_353(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_353(m)   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop_353(m)   index++
     ld    A, C          ; 1:4       2 +loop_353(m)
 stp_lo353 EQU $+1       ;           2 +loop_353(m)
-    sub  low 5-1        ; 2:7       2 +loop_353(m)   lo index - stop-1
+    sub  low +(5)-1     ; 2:7       2 +loop_353(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_353(m)
     add   A, A          ; 1:4       2 +loop_353(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_353(m)
@@ -8569,17 +8539,17 @@ stp_lo353 EQU $+1       ;           2 +loop_353(m)
     ld  (idx353),BC     ; 4:20      2 +loop_353(m)   save index
     jp   nz, do353      ; 3:10      2 +loop_353(m)
 stp_hi353 EQU $+1       ;           2 +loop_353(m)
-    sbc   A, high 5-1   ; 2:7       2 +loop_353(m)   hi index - stop-1
+    sbc   A, high +(5)-1; 2:7       2 +loop_353(m)   hi index - stop-1
     jp   nz, do353      ; 3:10      2 +loop_353(m)
 leave353:               ;           2 +loop_353(m)
 exit353:                ;           2 +loop_353(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string354 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 304   ( -- 0 0 304 )
+    push DE             ; 1:11      0 0 304   ( -- 0 0 304 ) push3.m3
     push HL             ; 1:11      0 0 304
-    ld   DE, 0          ; 3:10      0 0 304
+    ld   DE, 0x0000     ; 3:10      0 0 304
     push DE             ; 1:11      0 0 304
     ld   HL, 0x0130     ; 3:10      0 0 304
 
@@ -8596,7 +8566,7 @@ idx354 EQU $+1          ;           2 +loop_354(m)
     inc  BC             ; 1:6       2 +loop_354(m)   index++
     ld    A, C          ; 1:4       2 +loop_354(m)
 stp_lo354 EQU $+1       ;           2 +loop_354(m)
-    sub  low 2304-1     ; 2:7       2 +loop_354(m)   lo index - stop-1
+    sub  low +(2304)-1  ; 2:7       2 +loop_354(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_354(m)
     add   A, A          ; 1:4       2 +loop_354(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_354(m)
@@ -8604,16 +8574,16 @@ stp_lo354 EQU $+1       ;           2 +loop_354(m)
     ld  (idx354),BC     ; 4:20      2 +loop_354(m)   save index
     jp   nz, do354      ; 3:10      2 +loop_354(m)
 stp_hi354 EQU $+1       ;           2 +loop_354(m)
-    sbc   A, high 2304-1; 2:7       2 +loop_354(m)   hi index - stop-1
+    sbc   A, high +(2304)-1; 2:7       2 +loop_354(m)   hi index - stop-1
     jp   nz, do354      ; 3:10      2 +loop_354(m)
 leave354:               ;           2 +loop_354(m)
 exit354:                ;           2 +loop_354(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string355 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 50   ( -- 0 0 50 )
+    push DE             ; 1:11      0 0 50   ( -- 0 0 50 ) push3.m3
     push HL             ; 1:11      0 0 50
-    ld   DE, 0          ; 3:10      0 0 50
+    ld   DE, 0x0000     ; 3:10      0 0 50
     push DE             ; 1:11      0 0 50
     ld   HL, 0x0032     ; 3:10      0 0 50
 
@@ -8630,7 +8600,7 @@ idx355 EQU $+1          ;           2 +loop_355(m)
     inc  BC             ; 1:6       2 +loop_355(m)   index++
     ld    A, C          ; 1:4       2 +loop_355(m)
 stp_lo355 EQU $+1       ;           2 +loop_355(m)
-    sub  low 2050-1     ; 2:7       2 +loop_355(m)   lo index - stop-1
+    sub  low +(2050)-1  ; 2:7       2 +loop_355(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_355(m)
     add   A, A          ; 1:4       2 +loop_355(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_355(m)
@@ -8638,16 +8608,16 @@ stp_lo355 EQU $+1       ;           2 +loop_355(m)
     ld  (idx355),BC     ; 4:20      2 +loop_355(m)   save index
     jp   nz, do355      ; 3:10      2 +loop_355(m)
 stp_hi355 EQU $+1       ;           2 +loop_355(m)
-    sbc   A, high 2050-1; 2:7       2 +loop_355(m)   hi index - stop-1
+    sbc   A, high +(2050)-1; 2:7       2 +loop_355(m)   hi index - stop-1
     jp   nz, do355      ; 3:10      2 +loop_355(m)
 leave355:               ;           2 +loop_355(m)
 exit355:                ;           2 +loop_355(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string356 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -10   ( -- 0 0 -10 )
+    push DE             ; 1:11      0 0 -10   ( -- 0 0 -10 ) push3.m3
     push HL             ; 1:11      0 0 -10
-    ld   DE, 0          ; 3:10      0 0 -10
+    ld   DE, 0x0000     ; 3:10      0 0 -10
     push DE             ; 1:11      0 0 -10
     ld   HL, 0xFFF6     ; 3:10      0 0 -10
 
@@ -8664,7 +8634,7 @@ idx356 EQU $+1          ;           2 +loop_356(m)
     inc  BC             ; 1:6       2 +loop_356(m)   index++
     ld    A, C          ; 1:4       2 +loop_356(m)
 stp_lo356 EQU $+1       ;           2 +loop_356(m)
-    sub  low 1990-1     ; 2:7       2 +loop_356(m)   lo index - stop-1
+    sub  low +(1990)-1  ; 2:7       2 +loop_356(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_356(m)
     add   A, A          ; 1:4       2 +loop_356(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_356(m)
@@ -8672,7 +8642,7 @@ stp_lo356 EQU $+1       ;           2 +loop_356(m)
     ld  (idx356),BC     ; 4:20      2 +loop_356(m)   save index
     jp   nz, do356      ; 3:10      2 +loop_356(m)
 stp_hi356 EQU $+1       ;           2 +loop_356(m)
-    sbc   A, high 1990-1; 2:7       2 +loop_356(m)   hi index - stop-1
+    sbc   A, high +(1990)-1; 2:7       2 +loop_356(m)   hi index - stop-1
     jp   nz, do356      ; 3:10      2 +loop_356(m)
 leave356:               ;           2 +loop_356(m)
 exit356:                ;           2 +loop_356(m)
@@ -8687,7 +8657,7 @@ exit356:                ;           2 +loop_356(m)
     pop  HL             ; 1:10      0 swap do_357(m)
     ex   DE, HL         ; 1:4       0 swap do_357(m)
 do357:                  ;           0 swap do_357(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_357(m)
 idx357 EQU $+1          ;           -2 +loop_357(m)
@@ -8696,20 +8666,20 @@ idx357 EQU $+1          ;           -2 +loop_357(m)
     add  HL, BC         ; 1:11      -2 +loop_357(m) HL = index+step
     ld  (idx357), HL    ; 3:16      -2 +loop_357(m) save index
 stp_lo357 EQU $+1       ;           -2 +loop_357(m)
-    ld    A, low 0xFFFF+(0); 2:7       -2 +loop_357(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       -2 +loop_357(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_357(m)
     ld    L, A          ; 1:4       -2 +loop_357(m)
 stp_hi357 EQU $+1       ;           -2 +loop_357(m)
-    ld    A, high 0xFFFF+(0); 2:7       -2 +loop_357(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       -2 +loop_357(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_357(m)
     ld    H, A          ; 1:4       -2 +loop_357(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_357(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_357(m)
     pop  HL             ; 1:10      -2 +loop_357(m)
-    jp    p, do357      ; 3:10      -2 +loop_357(m) negative step
+    jp    p, do357      ; 3:10      -2 +loop_357(m)
 leave357:               ;           -2 +loop_357(m)
 exit357:                ;           -2 +loop_357(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string358 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -8721,7 +8691,7 @@ exit357:                ;           -2 +loop_357(m)
     pop  HL             ; 1:10      1 swap do_358(m)
     ex   DE, HL         ; 1:4       1 swap do_358(m)
 do358:                  ;           1 swap do_358(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_358(m)
 idx358 EQU $+1          ;           -2 +loop_358(m)
@@ -8730,20 +8700,20 @@ idx358 EQU $+1          ;           -2 +loop_358(m)
     add  HL, BC         ; 1:11      -2 +loop_358(m) HL = index+step
     ld  (idx358), HL    ; 3:16      -2 +loop_358(m) save index
 stp_lo358 EQU $+1       ;           -2 +loop_358(m)
-    ld    A, low 0xFFFF+(1); 2:7       -2 +loop_358(m)   lo stop-1
+    ld    A, low +(1)-1 ; 2:7       -2 +loop_358(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_358(m)
     ld    L, A          ; 1:4       -2 +loop_358(m)
 stp_hi358 EQU $+1       ;           -2 +loop_358(m)
-    ld    A, high 0xFFFF+(1); 2:7       -2 +loop_358(m)   hi stop-1
+    ld    A, high +(1)-1; 2:7       -2 +loop_358(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_358(m)
     ld    H, A          ; 1:4       -2 +loop_358(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_358(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_358(m)
     pop  HL             ; 1:10      -2 +loop_358(m)
-    jp    p, do358      ; 3:10      -2 +loop_358(m) negative step
+    jp    p, do358      ; 3:10      -2 +loop_358(m)
 leave358:               ;           -2 +loop_358(m)
 exit358:                ;           -2 +loop_358(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string359 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -8755,7 +8725,7 @@ exit358:                ;           -2 +loop_358(m)
     pop  HL             ; 1:10      2 swap do_359(m)
     ex   DE, HL         ; 1:4       2 swap do_359(m)
 do359:                  ;           2 swap do_359(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_359(m)
 idx359 EQU $+1          ;           -2 +loop_359(m)
@@ -8764,20 +8734,20 @@ idx359 EQU $+1          ;           -2 +loop_359(m)
     add  HL, BC         ; 1:11      -2 +loop_359(m) HL = index+step
     ld  (idx359), HL    ; 3:16      -2 +loop_359(m) save index
 stp_lo359 EQU $+1       ;           -2 +loop_359(m)
-    ld    A, low 0xFFFF+(2); 2:7       -2 +loop_359(m)   lo stop-1
+    ld    A, low +(2)-1 ; 2:7       -2 +loop_359(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_359(m)
     ld    L, A          ; 1:4       -2 +loop_359(m)
 stp_hi359 EQU $+1       ;           -2 +loop_359(m)
-    ld    A, high 0xFFFF+(2); 2:7       -2 +loop_359(m)   hi stop-1
+    ld    A, high +(2)-1; 2:7       -2 +loop_359(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_359(m)
     ld    H, A          ; 1:4       -2 +loop_359(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_359(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_359(m)
     pop  HL             ; 1:10      -2 +loop_359(m)
-    jp    p, do359      ; 3:10      -2 +loop_359(m) negative step
+    jp    p, do359      ; 3:10      -2 +loop_359(m)
 leave359:               ;           -2 +loop_359(m)
 exit359:                ;           -2 +loop_359(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string360 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -8789,7 +8759,7 @@ exit359:                ;           -2 +loop_359(m)
     pop  HL             ; 1:10      256 swap do_360(m)
     ex   DE, HL         ; 1:4       256 swap do_360(m)
 do360:                  ;           256 swap do_360(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_360(m)
 idx360 EQU $+1          ;           -2 +loop_360(m)
@@ -8798,20 +8768,20 @@ idx360 EQU $+1          ;           -2 +loop_360(m)
     add  HL, BC         ; 1:11      -2 +loop_360(m) HL = index+step
     ld  (idx360), HL    ; 3:16      -2 +loop_360(m) save index
 stp_lo360 EQU $+1       ;           -2 +loop_360(m)
-    ld    A, low 0xFFFF+(256); 2:7       -2 +loop_360(m)   lo stop-1
+    ld    A, low +(256)-1; 2:7       -2 +loop_360(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_360(m)
     ld    L, A          ; 1:4       -2 +loop_360(m)
 stp_hi360 EQU $+1       ;           -2 +loop_360(m)
-    ld    A, high 0xFFFF+(256); 2:7       -2 +loop_360(m)   hi stop-1
+    ld    A, high +(256)-1; 2:7       -2 +loop_360(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_360(m)
     ld    H, A          ; 1:4       -2 +loop_360(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_360(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_360(m)
     pop  HL             ; 1:10      -2 +loop_360(m)
-    jp    p, do360      ; 3:10      -2 +loop_360(m) negative step
+    jp    p, do360      ; 3:10      -2 +loop_360(m)
 leave360:               ;           -2 +loop_360(m)
 exit360:                ;           -2 +loop_360(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string361 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -8823,7 +8793,7 @@ exit360:                ;           -2 +loop_360(m)
     pop  HL             ; 1:10      300 swap do_361(m)
     ex   DE, HL         ; 1:4       300 swap do_361(m)
 do361:                  ;           300 swap do_361(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_361(m)
 idx361 EQU $+1          ;           -2 +loop_361(m)
@@ -8832,26 +8802,26 @@ idx361 EQU $+1          ;           -2 +loop_361(m)
     add  HL, BC         ; 1:11      -2 +loop_361(m) HL = index+step
     ld  (idx361), HL    ; 3:16      -2 +loop_361(m) save index
 stp_lo361 EQU $+1       ;           -2 +loop_361(m)
-    ld    A, low 0xFFFF+(300); 2:7       -2 +loop_361(m)   lo stop-1
+    ld    A, low +(300)-1; 2:7       -2 +loop_361(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_361(m)
     ld    L, A          ; 1:4       -2 +loop_361(m)
 stp_hi361 EQU $+1       ;           -2 +loop_361(m)
-    ld    A, high 0xFFFF+(300); 2:7       -2 +loop_361(m)   hi stop-1
+    ld    A, high +(300)-1; 2:7       -2 +loop_361(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_361(m)
     ld    H, A          ; 1:4       -2 +loop_361(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_361(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_361(m)
     pop  HL             ; 1:10      -2 +loop_361(m)
-    jp    p, do361      ; 3:10      -2 +loop_361(m) negative step
+    jp    p, do361      ; 3:10      -2 +loop_361(m)
 leave361:               ;           -2 +loop_361(m)
 exit361:                ;           -2 +loop_361(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string362 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2001   ( -- 0 0 2001 )
+    push DE             ; 1:11      0 0 2001   ( -- 0 0 2001 ) push3.m3
     push HL             ; 1:11      0 0 2001
-    ld   DE, 0          ; 3:10      0 0 2001
+    ld   DE, 0x0000     ; 3:10      0 0 2001
     push DE             ; 1:11      0 0 2001
     ld   HL, 0x07D1     ; 3:10      0 0 2001
 
@@ -8870,25 +8840,25 @@ idx362 EQU $+1          ;           -2 +loop_362(m)
     add  HL, BC         ; 1:11      -2 +loop_362(m) HL = index+step
     ld  (idx362), HL    ; 3:16      -2 +loop_362(m) save index
 stp_lo362 EQU $+1       ;           -2 +loop_362(m)
-    ld    A, low 0xFFFF+(3); 2:7       -2 +loop_362(m)   lo stop-1
+    ld    A, low +(3)-1 ; 2:7       -2 +loop_362(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_362(m)
     ld    L, A          ; 1:4       -2 +loop_362(m)
 stp_hi362 EQU $+1       ;           -2 +loop_362(m)
-    ld    A, high 0xFFFF+(3); 2:7       -2 +loop_362(m)   hi stop-1
+    ld    A, high +(3)-1; 2:7       -2 +loop_362(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_362(m)
     ld    H, A          ; 1:4       -2 +loop_362(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_362(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_362(m)
     pop  HL             ; 1:10      -2 +loop_362(m)
-    jp    p, do362      ; 3:10      -2 +loop_362(m) negative step
+    jp    p, do362      ; 3:10      -2 +loop_362(m)
 leave362:               ;           -2 +loop_362(m)
 exit362:                ;           -2 +loop_362(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string363 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2232   ( -- 0 0 2232 )
+    push DE             ; 1:11      0 0 2232   ( -- 0 0 2232 ) push3.m3
     push HL             ; 1:11      0 0 2232
-    ld   DE, 0          ; 3:10      0 0 2232
+    ld   DE, 0x0000     ; 3:10      0 0 2232
     push DE             ; 1:11      0 0 2232
     ld   HL, 0x08B8     ; 3:10      0 0 2232
 
@@ -8907,25 +8877,25 @@ idx363 EQU $+1          ;           -2 +loop_363(m)
     add  HL, BC         ; 1:11      -2 +loop_363(m) HL = index+step
     ld  (idx363), HL    ; 3:16      -2 +loop_363(m) save index
 stp_lo363 EQU $+1       ;           -2 +loop_363(m)
-    ld    A, low 0xFFFF+(234); 2:7       -2 +loop_363(m)   lo stop-1
+    ld    A, low +(234)-1; 2:7       -2 +loop_363(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_363(m)
     ld    L, A          ; 1:4       -2 +loop_363(m)
 stp_hi363 EQU $+1       ;           -2 +loop_363(m)
-    ld    A, high 0xFFFF+(234); 2:7       -2 +loop_363(m)   hi stop-1
+    ld    A, high +(234)-1; 2:7       -2 +loop_363(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_363(m)
     ld    H, A          ; 1:4       -2 +loop_363(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_363(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_363(m)
     pop  HL             ; 1:10      -2 +loop_363(m)
-    jp    p, do363      ; 3:10      -2 +loop_363(m) negative step
+    jp    p, do363      ; 3:10      -2 +loop_363(m)
 leave363:               ;           -2 +loop_363(m)
 exit363:                ;           -2 +loop_363(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string364 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 196   ( -- 0 0 196 )
+    push DE             ; 1:11      0 0 196   ( -- 0 0 196 ) push3.m3
     push HL             ; 1:11      0 0 196
-    ld   DE, 0          ; 3:10      0 0 196
+    ld   DE, 0x0000     ; 3:10      0 0 196
     push DE             ; 1:11      0 0 196
     ld   HL, 0x00C4     ; 3:10      0 0 196
 
@@ -8944,25 +8914,25 @@ idx364 EQU $+1          ;           -2 +loop_364(m)
     add  HL, BC         ; 1:11      -2 +loop_364(m) HL = index+step
     ld  (idx364), HL    ; 3:16      -2 +loop_364(m) save index
 stp_lo364 EQU $+1       ;           -2 +loop_364(m)
-    ld    A, low 0xFFFF+(-1802); 2:7       -2 +loop_364(m)   lo stop-1
+    ld    A, low +(-1802)-1; 2:7       -2 +loop_364(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_364(m)
     ld    L, A          ; 1:4       -2 +loop_364(m)
 stp_hi364 EQU $+1       ;           -2 +loop_364(m)
-    ld    A, high 0xFFFF+(-1802); 2:7       -2 +loop_364(m)   hi stop-1
+    ld    A, high +(-1802)-1; 2:7       -2 +loop_364(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_364(m)
     ld    H, A          ; 1:4       -2 +loop_364(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_364(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_364(m)
     pop  HL             ; 1:10      -2 +loop_364(m)
-    jp    p, do364      ; 3:10      -2 +loop_364(m) negative step
+    jp    p, do364      ; 3:10      -2 +loop_364(m)
 leave364:               ;           -2 +loop_364(m)
 exit364:                ;           -2 +loop_364(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string365 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 250   ( -- 0 0 250 )
+    push DE             ; 1:11      0 0 250   ( -- 0 0 250 ) push3.m3
     push HL             ; 1:11      0 0 250
-    ld   DE, 0          ; 3:10      0 0 250
+    ld   DE, 0x0000     ; 3:10      0 0 250
     push DE             ; 1:11      0 0 250
     ld   HL, 0x00FA     ; 3:10      0 0 250
 
@@ -8981,17 +8951,17 @@ idx365 EQU $+1          ;           -2 +loop_365(m)
     add  HL, BC         ; 1:11      -2 +loop_365(m) HL = index+step
     ld  (idx365), HL    ; 3:16      -2 +loop_365(m) save index
 stp_lo365 EQU $+1       ;           -2 +loop_365(m)
-    ld    A, low 0xFFFF+(-1748); 2:7       -2 +loop_365(m)   lo stop-1
+    ld    A, low +(-1748)-1; 2:7       -2 +loop_365(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_365(m)
     ld    L, A          ; 1:4       -2 +loop_365(m)
 stp_hi365 EQU $+1       ;           -2 +loop_365(m)
-    ld    A, high 0xFFFF+(-1748); 2:7       -2 +loop_365(m)   hi stop-1
+    ld    A, high +(-1748)-1; 2:7       -2 +loop_365(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_365(m)
     ld    H, A          ; 1:4       -2 +loop_365(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_365(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_365(m)
     pop  HL             ; 1:10      -2 +loop_365(m)
-    jp    p, do365      ; 3:10      -2 +loop_365(m) negative step
+    jp    p, do365      ; 3:10      -2 +loop_365(m)
 leave365:               ;           -2 +loop_365(m)
 exit365:                ;           -2 +loop_365(m)
     call _show          ; 3:17      call ( -- )
@@ -9014,7 +8984,7 @@ exit365:                ;           -2 +loop_365(m)
     pop  HL             ; 1:10      do_366(m)
     ex   DE, HL         ; 1:4       do_366(m)
 do366:                  ;           do_366(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx366 EQU $+1          ;           2 +loop_366(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_366(m)   idx always points to a 16-bit index
@@ -9033,7 +9003,7 @@ stp_hi366 EQU $+1       ;           2 +loop_366(m)
     jp   nz, do366      ; 3:10      2 +loop_366(m)
 leave366:               ;           2 +loop_366(m)
 exit366:                ;           2 +loop_366(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string367 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
@@ -9050,7 +9020,7 @@ exit366:                ;           2 +loop_366(m)
     pop  HL             ; 1:10      do_367(m)
     ex   DE, HL         ; 1:4       do_367(m)
 do367:                  ;           do_367(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx367 EQU $+1          ;           2 +loop_367(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_367(m)   idx always points to a 16-bit index
@@ -9069,7 +9039,7 @@ stp_hi367 EQU $+1       ;           2 +loop_367(m)
     jp   nz, do367      ; 3:10      2 +loop_367(m)
 leave367:               ;           2 +loop_367(m)
 exit367:                ;           2 +loop_367(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string368 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
@@ -9086,7 +9056,7 @@ exit367:                ;           2 +loop_367(m)
     pop  HL             ; 1:10      do_368(m)
     ex   DE, HL         ; 1:4       do_368(m)
 do368:                  ;           do_368(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx368 EQU $+1          ;           2 +loop_368(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_368(m)   idx always points to a 16-bit index
@@ -9105,12 +9075,12 @@ stp_hi368 EQU $+1       ;           2 +loop_368(m)
     jp   nz, do368      ; 3:10      2 +loop_368(m)
 leave368:               ;           2 +loop_368(m)
 exit368:                ;           2 +loop_368(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string369 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2304 drop
-    push DE             ; 1:11      0 0 2304 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2304 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2304 drop
     push HL             ; 1:11      0 0 2304 drop
     ld   DE, 0x0000     ; 3:10      0 0 2304 drop
     ld    L, D          ; 1:4       0 0 2304 drop   L = D = 0x00
@@ -9136,8 +9106,8 @@ exit369:                ;           2 +loop_369(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string370 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2050 drop
-    push DE             ; 1:11      0 0 2050 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2050 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2050 drop
     push HL             ; 1:11      0 0 2050 drop
     ld   DE, 0x0000     ; 3:10      0 0 2050 drop
     ld    L, D          ; 1:4       0 0 2050 drop   L = D = 0x00
@@ -9166,8 +9136,8 @@ exit370:                ;           2 +loop_370(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string371 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 1990 drop
-    push DE             ; 1:11      0 0 1990 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 1990 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 1990 drop
     push HL             ; 1:11      0 0 1990 drop
     ld   DE, 0x0000     ; 3:10      0 0 1990 drop
     ld    L, D          ; 1:4       0 0 1990 drop   L = D = 0x00
@@ -9209,7 +9179,7 @@ exit371:                ;           2 +loop_371(xm)
     pop  HL             ; 1:10      do_372(m)
     ex   DE, HL         ; 1:4       do_372(m)
 do372:                  ;           do_372(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_372(m)
 idx372 EQU $+1          ;           -2 +loop_372(m)
@@ -9228,10 +9198,10 @@ stp_hi372 EQU $+1       ;           -2 +loop_372(m)
     add  HL, BC         ; 1:11      -2 +loop_372(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_372(m)
     pop  HL             ; 1:10      -2 +loop_372(m)
-    jp    p, do372      ; 3:10      -2 +loop_372(m) negative step
+    jp    p, do372      ; 3:10      -2 +loop_372(m)
 leave372:               ;           -2 +loop_372(m)
 exit372:                ;           -2 +loop_372(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string373 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -9248,7 +9218,7 @@ exit372:                ;           -2 +loop_372(m)
     pop  HL             ; 1:10      do_373(m)
     ex   DE, HL         ; 1:4       do_373(m)
 do373:                  ;           do_373(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_373(m)
 idx373 EQU $+1          ;           -2 +loop_373(m)
@@ -9267,10 +9237,10 @@ stp_hi373 EQU $+1       ;           -2 +loop_373(m)
     add  HL, BC         ; 1:11      -2 +loop_373(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_373(m)
     pop  HL             ; 1:10      -2 +loop_373(m)
-    jp    p, do373      ; 3:10      -2 +loop_373(m) negative step
+    jp    p, do373      ; 3:10      -2 +loop_373(m)
 leave373:               ;           -2 +loop_373(m)
 exit373:                ;           -2 +loop_373(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string374 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -9287,7 +9257,7 @@ exit373:                ;           -2 +loop_373(m)
     pop  HL             ; 1:10      do_374(m)
     ex   DE, HL         ; 1:4       do_374(m)
 do374:                  ;           do_374(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_374(m)
 idx374 EQU $+1          ;           -2 +loop_374(m)
@@ -9306,10 +9276,10 @@ stp_hi374 EQU $+1       ;           -2 +loop_374(m)
     add  HL, BC         ; 1:11      -2 +loop_374(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_374(m)
     pop  HL             ; 1:10      -2 +loop_374(m)
-    jp    p, do374      ; 3:10      -2 +loop_374(m) negative step
+    jp    p, do374      ; 3:10      -2 +loop_374(m)
 leave374:               ;           -2 +loop_374(m)
 exit374:                ;           -2 +loop_374(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string375 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -9326,7 +9296,7 @@ exit374:                ;           -2 +loop_374(m)
     pop  HL             ; 1:10      do_375(m)
     ex   DE, HL         ; 1:4       do_375(m)
 do375:                  ;           do_375(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_375(m)
 idx375 EQU $+1          ;           -2 +loop_375(m)
@@ -9345,10 +9315,10 @@ stp_hi375 EQU $+1       ;           -2 +loop_375(m)
     add  HL, BC         ; 1:11      -2 +loop_375(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_375(m)
     pop  HL             ; 1:10      -2 +loop_375(m)
-    jp    p, do375      ; 3:10      -2 +loop_375(m) negative step
+    jp    p, do375      ; 3:10      -2 +loop_375(m)
 leave375:               ;           -2 +loop_375(m)
 exit375:                ;           -2 +loop_375(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string376 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -9365,7 +9335,7 @@ exit375:                ;           -2 +loop_375(m)
     pop  HL             ; 1:10      do_376(m)
     ex   DE, HL         ; 1:4       do_376(m)
 do376:                  ;           do_376(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_376(m)
 idx376 EQU $+1          ;           -2 +loop_376(m)
@@ -9384,15 +9354,15 @@ stp_hi376 EQU $+1       ;           -2 +loop_376(m)
     add  HL, BC         ; 1:11      -2 +loop_376(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_376(m)
     pop  HL             ; 1:10      -2 +loop_376(m)
-    jp    p, do376      ; 3:10      -2 +loop_376(m) negative step
+    jp    p, do376      ; 3:10      -2 +loop_376(m)
 leave376:               ;           -2 +loop_376(m)
 exit376:                ;           -2 +loop_376(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string377 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 3 drop
-    push DE             ; 1:11      0 0 3 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 3 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 3 drop
     push HL             ; 1:11      0 0 3 drop
     ld   DE, 0x0000     ; 3:10      0 0 3 drop
     ld    L, D          ; 1:4       0 0 3 drop   L = D = 0x00
@@ -9419,8 +9389,8 @@ exit377:                ;           -2 +loop_377(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string378 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 234 drop
-    push DE             ; 1:11      0 0 234 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 234 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 234 drop
     push HL             ; 1:11      0 0 234 drop
     ld   DE, 0x0000     ; 3:10      0 0 234 drop
     ld    L, D          ; 1:4       0 0 234 drop   L = D = 0x00
@@ -9447,8 +9417,8 @@ exit378:                ;           -2 +loop_378(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string379 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -1802 drop
-    push DE             ; 1:11      0 0 -1802 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -1802 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -1802 drop
     push HL             ; 1:11      0 0 -1802 drop
     ld   DE, 0x0000     ; 3:10      0 0 -1802 drop
     ld    L, D          ; 1:4       0 0 -1802 drop   L = D = 0x00
@@ -9477,8 +9447,8 @@ exit379:                ;           -2 +loop_379(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string380 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -1748 drop
-    push DE             ; 1:11      0 0 -1748 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -1748 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -1748 drop
     push HL             ; 1:11      0 0 -1748 drop
     ld   DE, 0x0000     ; 3:10      0 0 -1748 drop
     ld    L, D          ; 1:4       0 0 -1748 drop   L = D = 0x00
@@ -9525,7 +9495,7 @@ exit380:                ;           -2 +loop_380(xm)
     pop  HL             ; 1:10      do_381(m)
     ex   DE, HL         ; 1:4       do_381(m)
 do381:                  ;           do_381(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx381 EQU $+1          ;           2 +loop_381(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_381(m)   idx always points to a 16-bit index
@@ -9544,7 +9514,7 @@ stp_hi381 EQU $+1       ;           2 +loop_381(m)
     jp   nz, do381      ; 3:10      2 +loop_381(m)
 leave381:               ;           2 +loop_381(m)
 exit381:                ;           2 +loop_381(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string382 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
@@ -9562,7 +9532,7 @@ exit381:                ;           2 +loop_381(m)
     pop  HL             ; 1:10      do_382(m)
     ex   DE, HL         ; 1:4       do_382(m)
 do382:                  ;           do_382(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx382 EQU $+1          ;           2 +loop_382(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_382(m)   idx always points to a 16-bit index
@@ -9581,7 +9551,7 @@ stp_hi382 EQU $+1       ;           2 +loop_382(m)
     jp   nz, do382      ; 3:10      2 +loop_382(m)
 leave382:               ;           2 +loop_382(m)
 exit382:                ;           2 +loop_382(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string383 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
@@ -9599,7 +9569,7 @@ exit382:                ;           2 +loop_382(m)
     pop  HL             ; 1:10      do_383(m)
     ex   DE, HL         ; 1:4       do_383(m)
 do383:                  ;           do_383(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx383 EQU $+1          ;           2 +loop_383(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_383(m)   idx always points to a 16-bit index
@@ -9618,13 +9588,13 @@ stp_hi383 EQU $+1       ;           2 +loop_383(m)
     jp   nz, do383      ; 3:10      2 +loop_383(m)
 leave383:               ;           2 +loop_383(m)
 exit383:                ;           2 +loop_383(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string384 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2304   ( -- 0 0 2304 )
+    push DE             ; 1:11      0 0 2304   ( -- 0 0 2304 ) push3.m3
     push HL             ; 1:11      0 0 2304
-    ld   DE, 0          ; 3:10      0 0 2304
+    ld   DE, 0x0000     ; 3:10      0 0 2304
     push DE             ; 1:11      0 0 2304
     ld   HL, 0x0900     ; 3:10      0 0 2304
 
@@ -9662,9 +9632,9 @@ exit384:                ;           2 +loop_384(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string385 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2050   ( -- 0 0 2050 )
+    push DE             ; 1:11      0 0 2050   ( -- 0 0 2050 ) push3.m3
     push HL             ; 1:11      0 0 2050
-    ld   DE, 0          ; 3:10      0 0 2050
+    ld   DE, 0x0000     ; 3:10      0 0 2050
     push DE             ; 1:11      0 0 2050
     ld   HL, 0x0802     ; 3:10      0 0 2050
 
@@ -9702,9 +9672,9 @@ exit385:                ;           2 +loop_385(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string386 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 1990   ( -- 0 0 1990 )
+    push DE             ; 1:11      0 0 1990   ( -- 0 0 1990 ) push3.m3
     push HL             ; 1:11      0 0 1990
-    ld   DE, 0          ; 3:10      0 0 1990
+    ld   DE, 0x0000     ; 3:10      0 0 1990
     push DE             ; 1:11      0 0 1990
     ld   HL, 0x07C6     ; 3:10      0 0 1990
 
@@ -9756,7 +9726,7 @@ exit386:                ;           2 +loop_386(m)
     pop  HL             ; 1:10      do_387(m)
     ex   DE, HL         ; 1:4       do_387(m)
 do387:                  ;           do_387(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_387(m)
 idx387 EQU $+1          ;           -2 +loop_387(m)
@@ -9775,10 +9745,10 @@ stp_hi387 EQU $+1       ;           -2 +loop_387(m)
     add  HL, BC         ; 1:11      -2 +loop_387(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_387(m)
     pop  HL             ; 1:10      -2 +loop_387(m)
-    jp    p, do387      ; 3:10      -2 +loop_387(m) negative step
+    jp    p, do387      ; 3:10      -2 +loop_387(m)
 leave387:               ;           -2 +loop_387(m)
 exit387:                ;           -2 +loop_387(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string388 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -9796,7 +9766,7 @@ exit387:                ;           -2 +loop_387(m)
     pop  HL             ; 1:10      do_388(m)
     ex   DE, HL         ; 1:4       do_388(m)
 do388:                  ;           do_388(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_388(m)
 idx388 EQU $+1          ;           -2 +loop_388(m)
@@ -9815,10 +9785,10 @@ stp_hi388 EQU $+1       ;           -2 +loop_388(m)
     add  HL, BC         ; 1:11      -2 +loop_388(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_388(m)
     pop  HL             ; 1:10      -2 +loop_388(m)
-    jp    p, do388      ; 3:10      -2 +loop_388(m) negative step
+    jp    p, do388      ; 3:10      -2 +loop_388(m)
 leave388:               ;           -2 +loop_388(m)
 exit388:                ;           -2 +loop_388(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string389 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -9836,7 +9806,7 @@ exit388:                ;           -2 +loop_388(m)
     pop  HL             ; 1:10      do_389(m)
     ex   DE, HL         ; 1:4       do_389(m)
 do389:                  ;           do_389(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_389(m)
 idx389 EQU $+1          ;           -2 +loop_389(m)
@@ -9855,10 +9825,10 @@ stp_hi389 EQU $+1       ;           -2 +loop_389(m)
     add  HL, BC         ; 1:11      -2 +loop_389(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_389(m)
     pop  HL             ; 1:10      -2 +loop_389(m)
-    jp    p, do389      ; 3:10      -2 +loop_389(m) negative step
+    jp    p, do389      ; 3:10      -2 +loop_389(m)
 leave389:               ;           -2 +loop_389(m)
 exit389:                ;           -2 +loop_389(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string390 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -9876,7 +9846,7 @@ exit389:                ;           -2 +loop_389(m)
     pop  HL             ; 1:10      do_390(m)
     ex   DE, HL         ; 1:4       do_390(m)
 do390:                  ;           do_390(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_390(m)
 idx390 EQU $+1          ;           -2 +loop_390(m)
@@ -9895,10 +9865,10 @@ stp_hi390 EQU $+1       ;           -2 +loop_390(m)
     add  HL, BC         ; 1:11      -2 +loop_390(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_390(m)
     pop  HL             ; 1:10      -2 +loop_390(m)
-    jp    p, do390      ; 3:10      -2 +loop_390(m) negative step
+    jp    p, do390      ; 3:10      -2 +loop_390(m)
 leave390:               ;           -2 +loop_390(m)
 exit390:                ;           -2 +loop_390(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string391 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -9916,7 +9886,7 @@ exit390:                ;           -2 +loop_390(m)
     pop  HL             ; 1:10      do_391(m)
     ex   DE, HL         ; 1:4       do_391(m)
 do391:                  ;           do_391(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_391(m)
 idx391 EQU $+1          ;           -2 +loop_391(m)
@@ -9935,16 +9905,16 @@ stp_hi391 EQU $+1       ;           -2 +loop_391(m)
     add  HL, BC         ; 1:11      -2 +loop_391(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_391(m)
     pop  HL             ; 1:10      -2 +loop_391(m)
-    jp    p, do391      ; 3:10      -2 +loop_391(m) negative step
+    jp    p, do391      ; 3:10      -2 +loop_391(m)
 leave391:               ;           -2 +loop_391(m)
 exit391:                ;           -2 +loop_391(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string392 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 3   ( -- 0 0 3 )
+    push DE             ; 1:11      0 0 3   ( -- 0 0 3 ) push3.m3
     push HL             ; 1:11      0 0 3
-    ld   DE, 0          ; 3:10      0 0 3
+    ld   DE, 0x0000     ; 3:10      0 0 3
     push DE             ; 1:11      0 0 3
     ld   HL, 0x0003     ; 3:10      0 0 3
 
@@ -9979,15 +9949,15 @@ stp_hi392 EQU $+1       ;           -2 +loop_392(m)
     add  HL, BC         ; 1:11      -2 +loop_392(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_392(m)
     pop  HL             ; 1:10      -2 +loop_392(m)
-    jp    p, do392      ; 3:10      -2 +loop_392(m) negative step
+    jp    p, do392      ; 3:10      -2 +loop_392(m)
 leave392:               ;           -2 +loop_392(m)
 exit392:                ;           -2 +loop_392(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string393 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 234   ( -- 0 0 234 )
+    push DE             ; 1:11      0 0 234   ( -- 0 0 234 ) push3.m3
     push HL             ; 1:11      0 0 234
-    ld   DE, 0          ; 3:10      0 0 234
+    ld   DE, 0x0000     ; 3:10      0 0 234
     push DE             ; 1:11      0 0 234
     ld   HL, 0x00EA     ; 3:10      0 0 234
 
@@ -10022,15 +9992,15 @@ stp_hi393 EQU $+1       ;           -2 +loop_393(m)
     add  HL, BC         ; 1:11      -2 +loop_393(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_393(m)
     pop  HL             ; 1:10      -2 +loop_393(m)
-    jp    p, do393      ; 3:10      -2 +loop_393(m) negative step
+    jp    p, do393      ; 3:10      -2 +loop_393(m)
 leave393:               ;           -2 +loop_393(m)
 exit393:                ;           -2 +loop_393(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string394 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1802   ( -- 0 0 -1802 )
+    push DE             ; 1:11      0 0 -1802   ( -- 0 0 -1802 ) push3.m3
     push HL             ; 1:11      0 0 -1802
-    ld   DE, 0          ; 3:10      0 0 -1802
+    ld   DE, 0x0000     ; 3:10      0 0 -1802
     push DE             ; 1:11      0 0 -1802
     ld   HL, 0xF8F6     ; 3:10      0 0 -1802
 
@@ -10065,15 +10035,15 @@ stp_hi394 EQU $+1       ;           -2 +loop_394(m)
     add  HL, BC         ; 1:11      -2 +loop_394(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_394(m)
     pop  HL             ; 1:10      -2 +loop_394(m)
-    jp    p, do394      ; 3:10      -2 +loop_394(m) negative step
+    jp    p, do394      ; 3:10      -2 +loop_394(m)
 leave394:               ;           -2 +loop_394(m)
 exit394:                ;           -2 +loop_394(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string395 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -1748   ( -- 0 0 -1748 )
+    push DE             ; 1:11      0 0 -1748   ( -- 0 0 -1748 ) push3.m3
     push HL             ; 1:11      0 0 -1748
-    ld   DE, 0          ; 3:10      0 0 -1748
+    ld   DE, 0x0000     ; 3:10      0 0 -1748
     push DE             ; 1:11      0 0 -1748
     ld   HL, 0xF92C     ; 3:10      0 0 -1748
 
@@ -10108,7 +10078,7 @@ stp_hi395 EQU $+1       ;           -2 +loop_395(m)
     add  HL, BC         ; 1:11      -2 +loop_395(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_395(m)
     pop  HL             ; 1:10      -2 +loop_395(m)
-    jp    p, do395      ; 3:10      -2 +loop_395(m) negative step
+    jp    p, do395      ; 3:10      -2 +loop_395(m)
 leave395:               ;           -2 +loop_395(m)
 exit395:                ;           -2 +loop_395(m)
     call _show          ; 3:17      call ( -- )
@@ -10122,7 +10092,7 @@ exit395:                ;           -2 +loop_395(m)
 do396save:              ;           -10 do_396(xm)
     ld  (idx396),BC     ; 4:20      -10 do_396(xm)
 do396:                  ;           -10 do_396(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_396(xm)   variant +2.A: step 2 and real_stop is zero, run 5x
 idx396 EQU $+1          ;           2 +loop_396(xm)   idx always points to a 16-bit index
@@ -10134,7 +10104,7 @@ idx396 EQU $+1          ;           2 +loop_396(xm)   idx always points to a 16-
     jp   nz, do396save  ; 3:10      2 +loop_396(xm)
 leave396:               ;           2 +loop_396(xm)
 exit396:                ;           2 +loop_396(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string397 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
@@ -10142,7 +10112,7 @@ exit396:                ;           2 +loop_396(xm)
 do397save:              ;           -9 do_397(xm)
     ld  (idx397),BC     ; 4:20      -9 do_397(xm)
 do397:                  ;           -9 do_397(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_397(xm)   variant +2.B: step 2 and real_stop is one, run 5x
 idx397 EQU $+1          ;           2 +loop_397(xm)   idx always points to a 16-bit index
@@ -10154,7 +10124,7 @@ idx397 EQU $+1          ;           2 +loop_397(xm)   idx always points to a 16-
     jp   nz, do397save  ; 3:10      2 +loop_397(xm)
 leave397:               ;           2 +loop_397(xm)
 exit397:                ;           2 +loop_397(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string398 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
@@ -10162,7 +10132,7 @@ exit397:                ;           2 +loop_397(xm)
 do398save:              ;           -5 do_398(xm)
     ld  (idx398),BC     ; 4:20      -5 do_398(xm)
 do398:                  ;           -5 do_398(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] 2 +loop_398(xm)   variant +2.C: step 2 with lo(real_stop) exclusivity, run 5x
 idx398 EQU $+1          ;           2 +loop_398(xm)   idx always points to a 16-bit index
@@ -10174,12 +10144,12 @@ idx398 EQU $+1          ;           2 +loop_398(xm)   idx always points to a 16-
     jp   nz, do398save  ; 3:10      2 +loop_398(xm)
 leave398:               ;           2 +loop_398(xm)
 exit398:                ;           2 +loop_398(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string399 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 304 drop
-    push DE             ; 1:11      0 0 304 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 304 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 304 drop
     push HL             ; 1:11      0 0 304 drop
     ld   DE, 0x0000     ; 3:10      0 0 304 drop
     ld    L, D          ; 1:4       0 0 304 drop   L = D = 0x00
@@ -10205,8 +10175,8 @@ exit399:                ;           2 +loop_399(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string400 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 50 drop
-    push DE             ; 1:11      0 0 50 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 50 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 50 drop
     push HL             ; 1:11      0 0 50 drop
     ld   DE, 0x0000     ; 3:10      0 0 50 drop
     ld    L, D          ; 1:4       0 0 50 drop   L = D = 0x00
@@ -10235,8 +10205,8 @@ exit400:                ;           2 +loop_400(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string401 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -10 drop
-    push DE             ; 1:11      0 0 -10 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -10 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -10 drop
     push HL             ; 1:11      0 0 -10 drop
     ld   DE, 0x0000     ; 3:10      0 0 -10 drop
     ld    L, D          ; 1:4       0 0 -10 drop   L = D = 0x00
@@ -10269,7 +10239,7 @@ exit401:                ;           2 +loop_401(xm)
 do402save:              ;           8 do_402(xm)
     ld  (idx402),BC     ; 4:20      8 do_402(xm)
 do402:                  ;           8 do_402(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_402(xm)   variant -2.A: step -2 and real_stop is -2, run 5x
 idx402 EQU $+1          ;           -2 +loop_402(xm)   idx always points to a 16-bit index
@@ -10281,7 +10251,7 @@ idx402 EQU $+1          ;           -2 +loop_402(xm)   idx always points to a 16
     jp   nc, do402save  ; 3:10      -2 +loop_402(xm)
 leave402:               ;           -2 +loop_402(xm)
 exit402:                ;           -2 +loop_402(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string403 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -10289,7 +10259,7 @@ exit402:                ;           -2 +loop_402(xm)
 do403save:              ;           9 do_403(xm)
     ld  (idx403),BC     ; 4:20      9 do_403(xm)
 do403:                  ;           9 do_403(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_403(xm)   variant -2.B: step -2 and real_stop is -1, run 5x
 idx403 EQU $+1          ;           -2 +loop_403(xm)   idx always points to a 16-bit index
@@ -10301,7 +10271,7 @@ idx403 EQU $+1          ;           -2 +loop_403(xm)   idx always points to a 16
     jp   nz, do403save  ; 3:10      -2 +loop_403(xm)
 leave403:               ;           -2 +loop_403(xm)
 exit403:                ;           -2 +loop_403(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string404 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -10309,7 +10279,7 @@ exit403:                ;           -2 +loop_403(xm)
 do404save:              ;           10 do_404(xm)
     ld  (idx404),BC     ; 4:20      10 do_404(xm)
 do404:                  ;           10 do_404(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_404(xm)   variant -2.C: step -2 and real_stop is zero, run 5x
 idx404 EQU $+1          ;           -2 +loop_404(xm)   idx always points to a 16-bit index
@@ -10321,7 +10291,7 @@ idx404 EQU $+1          ;           -2 +loop_404(xm)   idx always points to a 16
     jp   nz, do404save  ; 3:10      -2 +loop_404(xm)
 leave404:               ;           -2 +loop_404(xm)
 exit404:                ;           -2 +loop_404(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string405 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -10329,7 +10299,7 @@ exit404:                ;           -2 +loop_404(xm)
 do405save:              ;           264 do_405(xm)
     ld  (idx405),BC     ; 4:20      264 do_405(xm)
 do405:                  ;           264 do_405(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_405(xm)   variant -2.D: step -2 with hi(real_stop) exclusivity, run 5x
 idx405 EQU $+1          ;           -2 +loop_405(xm)   idx always points to a 16-bit index
@@ -10341,7 +10311,7 @@ idx405 EQU $+1          ;           -2 +loop_405(xm)   idx always points to a 16
     jp   nz, do405save  ; 3:10      -2 +loop_405(xm)
 leave405:               ;           -2 +loop_405(xm)
 exit405:                ;           -2 +loop_405(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string406 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -10349,7 +10319,7 @@ exit405:                ;           -2 +loop_405(xm)
 do406save:              ;           308 do_406(xm)
     ld  (idx406),BC     ; 4:20      308 do_406(xm)
 do406:                  ;           308 do_406(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_406(xm)   variant -2.E: step -2 with lo(real_stop) exclusivity, run 5x
 idx406 EQU $+1          ;           -2 +loop_406(xm)   idx always points to a 16-bit index
@@ -10361,12 +10331,12 @@ idx406 EQU $+1          ;           -2 +loop_406(xm)   idx always points to a 16
     jp   nz, do406save  ; 3:10      -2 +loop_406(xm)
 leave406:               ;           -2 +loop_406(xm)
 exit406:                ;           -2 +loop_406(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string407 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2001 drop
-    push DE             ; 1:11      0 0 2001 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2001 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2001 drop
     push HL             ; 1:11      0 0 2001 drop
     ld   DE, 0x0000     ; 3:10      0 0 2001 drop
     ld    L, D          ; 1:4       0 0 2001 drop   L = D = 0x00
@@ -10393,8 +10363,8 @@ exit407:                ;           -2 +loop_407(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string408 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 2232 drop
-    push DE             ; 1:11      0 0 2232 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 2232 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 2232 drop
     push HL             ; 1:11      0 0 2232 drop
     ld   DE, 0x0000     ; 3:10      0 0 2232 drop
     ld    L, D          ; 1:4       0 0 2232 drop   L = D = 0x00
@@ -10421,8 +10391,8 @@ exit408:                ;           -2 +loop_408(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string409 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 196 drop
-    push DE             ; 1:11      0 0 196 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 196 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 196 drop
     push HL             ; 1:11      0 0 196 drop
     ld   DE, 0x0000     ; 3:10      0 0 196 drop
     ld    L, D          ; 1:4       0 0 196 drop   L = D = 0x00
@@ -10451,8 +10421,8 @@ exit409:                ;           -2 +loop_409(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string410 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 250 drop
-    push DE             ; 1:11      0 0 250 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 250 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 250 drop
     push HL             ; 1:11      0 0 250 drop
     ld   DE, 0x0000     ; 3:10      0 0 250 drop
     ld    L, D          ; 1:4       0 0 250 drop   L = D = 0x00
@@ -10487,20 +10457,20 @@ exit410:                ;           -2 +loop_410(xm)
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -10
     ex   DE, HL         ; 1:4       -10
-    ld   HL, -10        ; 3:10      -10
+    ld   HL, 0-10       ; 3:10      -10
 
     ld  (idx411), HL    ; 3:16      do_411(m)   ( 0 index -- )
     pop  HL             ; 1:10      do_411(m)
     ex   DE, HL         ; 1:4       do_411(m)
 do411:                  ;           do_411(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx411 EQU $+1          ;           2 +loop_411(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_411(m)   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop_411(m)   index++
     ld    A, C          ; 1:4       2 +loop_411(m)
 stp_lo411 EQU $+1       ;           2 +loop_411(m)
-    sub  low 0-1        ; 2:7       2 +loop_411(m)   lo index - stop-1
+    sub  low +(0)-1     ; 2:7       2 +loop_411(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_411(m)
     add   A, A          ; 1:4       2 +loop_411(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_411(m)
@@ -10508,30 +10478,30 @@ stp_lo411 EQU $+1       ;           2 +loop_411(m)
     ld  (idx411),BC     ; 4:20      2 +loop_411(m)   save index
     jp   nz, do411      ; 3:10      2 +loop_411(m)
 stp_hi411 EQU $+1       ;           2 +loop_411(m)
-    sbc   A, high 0-1   ; 2:7       2 +loop_411(m)   hi index - stop-1
+    sbc   A, high +(0)-1; 2:7       2 +loop_411(m)   hi index - stop-1
     jp   nz, do411      ; 3:10      2 +loop_411(m)
 leave411:               ;           2 +loop_411(m)
 exit411:                ;           2 +loop_411(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string412 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -9
     ex   DE, HL         ; 1:4       -9
-    ld   HL, -9         ; 3:10      -9
+    ld   HL, 0-9        ; 3:10      -9
 
     ld  (idx412), HL    ; 3:16      do_412(m)   ( 1 index -- )
     pop  HL             ; 1:10      do_412(m)
     ex   DE, HL         ; 1:4       do_412(m)
 do412:                  ;           do_412(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx412 EQU $+1          ;           2 +loop_412(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_412(m)   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop_412(m)   index++
     ld    A, C          ; 1:4       2 +loop_412(m)
 stp_lo412 EQU $+1       ;           2 +loop_412(m)
-    sub  low 1-1        ; 2:7       2 +loop_412(m)   lo index - stop-1
+    sub  low +(1)-1     ; 2:7       2 +loop_412(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_412(m)
     add   A, A          ; 1:4       2 +loop_412(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_412(m)
@@ -10539,30 +10509,30 @@ stp_lo412 EQU $+1       ;           2 +loop_412(m)
     ld  (idx412),BC     ; 4:20      2 +loop_412(m)   save index
     jp   nz, do412      ; 3:10      2 +loop_412(m)
 stp_hi412 EQU $+1       ;           2 +loop_412(m)
-    sbc   A, high 1-1   ; 2:7       2 +loop_412(m)   hi index - stop-1
+    sbc   A, high +(1)-1; 2:7       2 +loop_412(m)   hi index - stop-1
     jp   nz, do412      ; 3:10      2 +loop_412(m)
 leave412:               ;           2 +loop_412(m)
 exit412:                ;           2 +loop_412(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string413 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -5
     ex   DE, HL         ; 1:4       -5
-    ld   HL, -5         ; 3:10      -5
+    ld   HL, 0-5        ; 3:10      -5
 
     ld  (idx413), HL    ; 3:16      do_413(m)   ( 5 index -- )
     pop  HL             ; 1:10      do_413(m)
     ex   DE, HL         ; 1:4       do_413(m)
 do413:                  ;           do_413(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 idx413 EQU $+1          ;           2 +loop_413(m)
     ld   BC, 0x0000     ; 3:10      2 +loop_413(m)   idx always points to a 16-bit index
     inc  BC             ; 1:6       2 +loop_413(m)   index++
     ld    A, C          ; 1:4       2 +loop_413(m)
 stp_lo413 EQU $+1       ;           2 +loop_413(m)
-    sub  low 5-1        ; 2:7       2 +loop_413(m)   lo index - stop-1
+    sub  low +(5)-1     ; 2:7       2 +loop_413(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_413(m)
     add   A, A          ; 1:4       2 +loop_413(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_413(m)
@@ -10570,17 +10540,17 @@ stp_lo413 EQU $+1       ;           2 +loop_413(m)
     ld  (idx413),BC     ; 4:20      2 +loop_413(m)   save index
     jp   nz, do413      ; 3:10      2 +loop_413(m)
 stp_hi413 EQU $+1       ;           2 +loop_413(m)
-    sbc   A, high 5-1   ; 2:7       2 +loop_413(m)   hi index - stop-1
+    sbc   A, high +(5)-1; 2:7       2 +loop_413(m)   hi index - stop-1
     jp   nz, do413      ; 3:10      2 +loop_413(m)
 leave413:               ;           2 +loop_413(m)
 exit413:                ;           2 +loop_413(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string414 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 304   ( -- 0 0 304 )
+    push DE             ; 1:11      0 0 304   ( -- 0 0 304 ) push3.m3
     push HL             ; 1:11      0 0 304
-    ld   DE, 0          ; 3:10      0 0 304
+    ld   DE, 0x0000     ; 3:10      0 0 304
     push DE             ; 1:11      0 0 304
     ld   HL, 0x0130     ; 3:10      0 0 304
 
@@ -10597,7 +10567,7 @@ idx414 EQU $+1          ;           2 +loop_414(m)
     inc  BC             ; 1:6       2 +loop_414(m)   index++
     ld    A, C          ; 1:4       2 +loop_414(m)
 stp_lo414 EQU $+1       ;           2 +loop_414(m)
-    sub  low 2304-1     ; 2:7       2 +loop_414(m)   lo index - stop-1
+    sub  low +(2304)-1  ; 2:7       2 +loop_414(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_414(m)
     add   A, A          ; 1:4       2 +loop_414(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_414(m)
@@ -10605,16 +10575,16 @@ stp_lo414 EQU $+1       ;           2 +loop_414(m)
     ld  (idx414),BC     ; 4:20      2 +loop_414(m)   save index
     jp   nz, do414      ; 3:10      2 +loop_414(m)
 stp_hi414 EQU $+1       ;           2 +loop_414(m)
-    sbc   A, high 2304-1; 2:7       2 +loop_414(m)   hi index - stop-1
+    sbc   A, high +(2304)-1; 2:7       2 +loop_414(m)   hi index - stop-1
     jp   nz, do414      ; 3:10      2 +loop_414(m)
 leave414:               ;           2 +loop_414(m)
 exit414:                ;           2 +loop_414(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string415 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 50   ( -- 0 0 50 )
+    push DE             ; 1:11      0 0 50   ( -- 0 0 50 ) push3.m3
     push HL             ; 1:11      0 0 50
-    ld   DE, 0          ; 3:10      0 0 50
+    ld   DE, 0x0000     ; 3:10      0 0 50
     push DE             ; 1:11      0 0 50
     ld   HL, 0x0032     ; 3:10      0 0 50
 
@@ -10631,7 +10601,7 @@ idx415 EQU $+1          ;           2 +loop_415(m)
     inc  BC             ; 1:6       2 +loop_415(m)   index++
     ld    A, C          ; 1:4       2 +loop_415(m)
 stp_lo415 EQU $+1       ;           2 +loop_415(m)
-    sub  low 2050-1     ; 2:7       2 +loop_415(m)   lo index - stop-1
+    sub  low +(2050)-1  ; 2:7       2 +loop_415(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_415(m)
     add   A, A          ; 1:4       2 +loop_415(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_415(m)
@@ -10639,16 +10609,16 @@ stp_lo415 EQU $+1       ;           2 +loop_415(m)
     ld  (idx415),BC     ; 4:20      2 +loop_415(m)   save index
     jp   nz, do415      ; 3:10      2 +loop_415(m)
 stp_hi415 EQU $+1       ;           2 +loop_415(m)
-    sbc   A, high 2050-1; 2:7       2 +loop_415(m)   hi index - stop-1
+    sbc   A, high +(2050)-1; 2:7       2 +loop_415(m)   hi index - stop-1
     jp   nz, do415      ; 3:10      2 +loop_415(m)
 leave415:               ;           2 +loop_415(m)
 exit415:                ;           2 +loop_415(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string416 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -10   ( -- 0 0 -10 )
+    push DE             ; 1:11      0 0 -10   ( -- 0 0 -10 ) push3.m3
     push HL             ; 1:11      0 0 -10
-    ld   DE, 0          ; 3:10      0 0 -10
+    ld   DE, 0x0000     ; 3:10      0 0 -10
     push DE             ; 1:11      0 0 -10
     ld   HL, 0xFFF6     ; 3:10      0 0 -10
 
@@ -10665,7 +10635,7 @@ idx416 EQU $+1          ;           2 +loop_416(m)
     inc  BC             ; 1:6       2 +loop_416(m)   index++
     ld    A, C          ; 1:4       2 +loop_416(m)
 stp_lo416 EQU $+1       ;           2 +loop_416(m)
-    sub  low 1990-1     ; 2:7       2 +loop_416(m)   lo index - stop-1
+    sub  low +(1990)-1  ; 2:7       2 +loop_416(m)   lo index - stop-1
     rra                 ; 1:4       2 +loop_416(m)
     add   A, A          ; 1:4       2 +loop_416(m)   and 0xFE with save carry
     ld    A, B          ; 1:4       2 +loop_416(m)
@@ -10673,7 +10643,7 @@ stp_lo416 EQU $+1       ;           2 +loop_416(m)
     ld  (idx416),BC     ; 4:20      2 +loop_416(m)   save index
     jp   nz, do416      ; 3:10      2 +loop_416(m)
 stp_hi416 EQU $+1       ;           2 +loop_416(m)
-    sbc   A, high 1990-1; 2:7       2 +loop_416(m)   hi index - stop-1
+    sbc   A, high +(1990)-1; 2:7       2 +loop_416(m)   hi index - stop-1
     jp   nz, do416      ; 3:10      2 +loop_416(m)
 leave416:               ;           2 +loop_416(m)
 exit416:                ;           2 +loop_416(m)
@@ -10688,7 +10658,7 @@ exit416:                ;           2 +loop_416(m)
     pop  HL             ; 1:10      do_417(m)
     ex   DE, HL         ; 1:4       do_417(m)
 do417:                  ;           do_417(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_417(m)
 idx417 EQU $+1          ;           -2 +loop_417(m)
@@ -10697,20 +10667,20 @@ idx417 EQU $+1          ;           -2 +loop_417(m)
     add  HL, BC         ; 1:11      -2 +loop_417(m) HL = index+step
     ld  (idx417), HL    ; 3:16      -2 +loop_417(m) save index
 stp_lo417 EQU $+1       ;           -2 +loop_417(m)
-    ld    A, low 0xFFFF+(0); 2:7       -2 +loop_417(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       -2 +loop_417(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_417(m)
     ld    L, A          ; 1:4       -2 +loop_417(m)
 stp_hi417 EQU $+1       ;           -2 +loop_417(m)
-    ld    A, high 0xFFFF+(0); 2:7       -2 +loop_417(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       -2 +loop_417(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_417(m)
     ld    H, A          ; 1:4       -2 +loop_417(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_417(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_417(m)
     pop  HL             ; 1:10      -2 +loop_417(m)
-    jp    p, do417      ; 3:10      -2 +loop_417(m) negative step
+    jp    p, do417      ; 3:10      -2 +loop_417(m)
 leave417:               ;           -2 +loop_417(m)
 exit417:                ;           -2 +loop_417(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string418 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -10722,7 +10692,7 @@ exit417:                ;           -2 +loop_417(m)
     pop  HL             ; 1:10      do_418(m)
     ex   DE, HL         ; 1:4       do_418(m)
 do418:                  ;           do_418(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_418(m)
 idx418 EQU $+1          ;           -2 +loop_418(m)
@@ -10731,20 +10701,20 @@ idx418 EQU $+1          ;           -2 +loop_418(m)
     add  HL, BC         ; 1:11      -2 +loop_418(m) HL = index+step
     ld  (idx418), HL    ; 3:16      -2 +loop_418(m) save index
 stp_lo418 EQU $+1       ;           -2 +loop_418(m)
-    ld    A, low 0xFFFF+(1); 2:7       -2 +loop_418(m)   lo stop-1
+    ld    A, low +(1)-1 ; 2:7       -2 +loop_418(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_418(m)
     ld    L, A          ; 1:4       -2 +loop_418(m)
 stp_hi418 EQU $+1       ;           -2 +loop_418(m)
-    ld    A, high 0xFFFF+(1); 2:7       -2 +loop_418(m)   hi stop-1
+    ld    A, high +(1)-1; 2:7       -2 +loop_418(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_418(m)
     ld    H, A          ; 1:4       -2 +loop_418(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_418(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_418(m)
     pop  HL             ; 1:10      -2 +loop_418(m)
-    jp    p, do418      ; 3:10      -2 +loop_418(m) negative step
+    jp    p, do418      ; 3:10      -2 +loop_418(m)
 leave418:               ;           -2 +loop_418(m)
 exit418:                ;           -2 +loop_418(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string419 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -10756,7 +10726,7 @@ exit418:                ;           -2 +loop_418(m)
     pop  HL             ; 1:10      do_419(m)
     ex   DE, HL         ; 1:4       do_419(m)
 do419:                  ;           do_419(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_419(m)
 idx419 EQU $+1          ;           -2 +loop_419(m)
@@ -10765,20 +10735,20 @@ idx419 EQU $+1          ;           -2 +loop_419(m)
     add  HL, BC         ; 1:11      -2 +loop_419(m) HL = index+step
     ld  (idx419), HL    ; 3:16      -2 +loop_419(m) save index
 stp_lo419 EQU $+1       ;           -2 +loop_419(m)
-    ld    A, low 0xFFFF+(2); 2:7       -2 +loop_419(m)   lo stop-1
+    ld    A, low +(2)-1 ; 2:7       -2 +loop_419(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_419(m)
     ld    L, A          ; 1:4       -2 +loop_419(m)
 stp_hi419 EQU $+1       ;           -2 +loop_419(m)
-    ld    A, high 0xFFFF+(2); 2:7       -2 +loop_419(m)   hi stop-1
+    ld    A, high +(2)-1; 2:7       -2 +loop_419(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_419(m)
     ld    H, A          ; 1:4       -2 +loop_419(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_419(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_419(m)
     pop  HL             ; 1:10      -2 +loop_419(m)
-    jp    p, do419      ; 3:10      -2 +loop_419(m) negative step
+    jp    p, do419      ; 3:10      -2 +loop_419(m)
 leave419:               ;           -2 +loop_419(m)
 exit419:                ;           -2 +loop_419(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string420 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -10790,7 +10760,7 @@ exit419:                ;           -2 +loop_419(m)
     pop  HL             ; 1:10      do_420(m)
     ex   DE, HL         ; 1:4       do_420(m)
 do420:                  ;           do_420(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_420(m)
 idx420 EQU $+1          ;           -2 +loop_420(m)
@@ -10799,20 +10769,20 @@ idx420 EQU $+1          ;           -2 +loop_420(m)
     add  HL, BC         ; 1:11      -2 +loop_420(m) HL = index+step
     ld  (idx420), HL    ; 3:16      -2 +loop_420(m) save index
 stp_lo420 EQU $+1       ;           -2 +loop_420(m)
-    ld    A, low 0xFFFF+(256); 2:7       -2 +loop_420(m)   lo stop-1
+    ld    A, low +(256)-1; 2:7       -2 +loop_420(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_420(m)
     ld    L, A          ; 1:4       -2 +loop_420(m)
 stp_hi420 EQU $+1       ;           -2 +loop_420(m)
-    ld    A, high 0xFFFF+(256); 2:7       -2 +loop_420(m)   hi stop-1
+    ld    A, high +(256)-1; 2:7       -2 +loop_420(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_420(m)
     ld    H, A          ; 1:4       -2 +loop_420(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_420(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_420(m)
     pop  HL             ; 1:10      -2 +loop_420(m)
-    jp    p, do420      ; 3:10      -2 +loop_420(m) negative step
+    jp    p, do420      ; 3:10      -2 +loop_420(m)
 leave420:               ;           -2 +loop_420(m)
 exit420:                ;           -2 +loop_420(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string421 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -10824,7 +10794,7 @@ exit420:                ;           -2 +loop_420(m)
     pop  HL             ; 1:10      do_421(m)
     ex   DE, HL         ; 1:4       do_421(m)
 do421:                  ;           do_421(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -2 +loop_421(m)
 idx421 EQU $+1          ;           -2 +loop_421(m)
@@ -10833,26 +10803,26 @@ idx421 EQU $+1          ;           -2 +loop_421(m)
     add  HL, BC         ; 1:11      -2 +loop_421(m) HL = index+step
     ld  (idx421), HL    ; 3:16      -2 +loop_421(m) save index
 stp_lo421 EQU $+1       ;           -2 +loop_421(m)
-    ld    A, low 0xFFFF+(300); 2:7       -2 +loop_421(m)   lo stop-1
+    ld    A, low +(300)-1; 2:7       -2 +loop_421(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_421(m)
     ld    L, A          ; 1:4       -2 +loop_421(m)
 stp_hi421 EQU $+1       ;           -2 +loop_421(m)
-    ld    A, high 0xFFFF+(300); 2:7       -2 +loop_421(m)   hi stop-1
+    ld    A, high +(300)-1; 2:7       -2 +loop_421(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_421(m)
     ld    H, A          ; 1:4       -2 +loop_421(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_421(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_421(m)
     pop  HL             ; 1:10      -2 +loop_421(m)
-    jp    p, do421      ; 3:10      -2 +loop_421(m) negative step
+    jp    p, do421      ; 3:10      -2 +loop_421(m)
 leave421:               ;           -2 +loop_421(m)
 exit421:                ;           -2 +loop_421(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string422 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2001   ( -- 0 0 2001 )
+    push DE             ; 1:11      0 0 2001   ( -- 0 0 2001 ) push3.m3
     push HL             ; 1:11      0 0 2001
-    ld   DE, 0          ; 3:10      0 0 2001
+    ld   DE, 0x0000     ; 3:10      0 0 2001
     push DE             ; 1:11      0 0 2001
     ld   HL, 0x07D1     ; 3:10      0 0 2001
 
@@ -10871,25 +10841,25 @@ idx422 EQU $+1          ;           -2 +loop_422(m)
     add  HL, BC         ; 1:11      -2 +loop_422(m) HL = index+step
     ld  (idx422), HL    ; 3:16      -2 +loop_422(m) save index
 stp_lo422 EQU $+1       ;           -2 +loop_422(m)
-    ld    A, low 0xFFFF+(3); 2:7       -2 +loop_422(m)   lo stop-1
+    ld    A, low +(3)-1 ; 2:7       -2 +loop_422(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_422(m)
     ld    L, A          ; 1:4       -2 +loop_422(m)
 stp_hi422 EQU $+1       ;           -2 +loop_422(m)
-    ld    A, high 0xFFFF+(3); 2:7       -2 +loop_422(m)   hi stop-1
+    ld    A, high +(3)-1; 2:7       -2 +loop_422(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_422(m)
     ld    H, A          ; 1:4       -2 +loop_422(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_422(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_422(m)
     pop  HL             ; 1:10      -2 +loop_422(m)
-    jp    p, do422      ; 3:10      -2 +loop_422(m) negative step
+    jp    p, do422      ; 3:10      -2 +loop_422(m)
 leave422:               ;           -2 +loop_422(m)
 exit422:                ;           -2 +loop_422(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string423 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 2232   ( -- 0 0 2232 )
+    push DE             ; 1:11      0 0 2232   ( -- 0 0 2232 ) push3.m3
     push HL             ; 1:11      0 0 2232
-    ld   DE, 0          ; 3:10      0 0 2232
+    ld   DE, 0x0000     ; 3:10      0 0 2232
     push DE             ; 1:11      0 0 2232
     ld   HL, 0x08B8     ; 3:10      0 0 2232
 
@@ -10908,25 +10878,25 @@ idx423 EQU $+1          ;           -2 +loop_423(m)
     add  HL, BC         ; 1:11      -2 +loop_423(m) HL = index+step
     ld  (idx423), HL    ; 3:16      -2 +loop_423(m) save index
 stp_lo423 EQU $+1       ;           -2 +loop_423(m)
-    ld    A, low 0xFFFF+(234); 2:7       -2 +loop_423(m)   lo stop-1
+    ld    A, low +(234)-1; 2:7       -2 +loop_423(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_423(m)
     ld    L, A          ; 1:4       -2 +loop_423(m)
 stp_hi423 EQU $+1       ;           -2 +loop_423(m)
-    ld    A, high 0xFFFF+(234); 2:7       -2 +loop_423(m)   hi stop-1
+    ld    A, high +(234)-1; 2:7       -2 +loop_423(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_423(m)
     ld    H, A          ; 1:4       -2 +loop_423(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_423(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_423(m)
     pop  HL             ; 1:10      -2 +loop_423(m)
-    jp    p, do423      ; 3:10      -2 +loop_423(m) negative step
+    jp    p, do423      ; 3:10      -2 +loop_423(m)
 leave423:               ;           -2 +loop_423(m)
 exit423:                ;           -2 +loop_423(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string424 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 196   ( -- 0 0 196 )
+    push DE             ; 1:11      0 0 196   ( -- 0 0 196 ) push3.m3
     push HL             ; 1:11      0 0 196
-    ld   DE, 0          ; 3:10      0 0 196
+    ld   DE, 0x0000     ; 3:10      0 0 196
     push DE             ; 1:11      0 0 196
     ld   HL, 0x00C4     ; 3:10      0 0 196
 
@@ -10945,25 +10915,25 @@ idx424 EQU $+1          ;           -2 +loop_424(m)
     add  HL, BC         ; 1:11      -2 +loop_424(m) HL = index+step
     ld  (idx424), HL    ; 3:16      -2 +loop_424(m) save index
 stp_lo424 EQU $+1       ;           -2 +loop_424(m)
-    ld    A, low 0xFFFF+(-1802); 2:7       -2 +loop_424(m)   lo stop-1
+    ld    A, low +(-1802)-1; 2:7       -2 +loop_424(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_424(m)
     ld    L, A          ; 1:4       -2 +loop_424(m)
 stp_hi424 EQU $+1       ;           -2 +loop_424(m)
-    ld    A, high 0xFFFF+(-1802); 2:7       -2 +loop_424(m)   hi stop-1
+    ld    A, high +(-1802)-1; 2:7       -2 +loop_424(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_424(m)
     ld    H, A          ; 1:4       -2 +loop_424(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_424(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_424(m)
     pop  HL             ; 1:10      -2 +loop_424(m)
-    jp    p, do424      ; 3:10      -2 +loop_424(m) negative step
+    jp    p, do424      ; 3:10      -2 +loop_424(m)
 leave424:               ;           -2 +loop_424(m)
 exit424:                ;           -2 +loop_424(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string425 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 250   ( -- 0 0 250 )
+    push DE             ; 1:11      0 0 250   ( -- 0 0 250 ) push3.m3
     push HL             ; 1:11      0 0 250
-    ld   DE, 0          ; 3:10      0 0 250
+    ld   DE, 0x0000     ; 3:10      0 0 250
     push DE             ; 1:11      0 0 250
     ld   HL, 0x00FA     ; 3:10      0 0 250
 
@@ -10982,17 +10952,17 @@ idx425 EQU $+1          ;           -2 +loop_425(m)
     add  HL, BC         ; 1:11      -2 +loop_425(m) HL = index+step
     ld  (idx425), HL    ; 3:16      -2 +loop_425(m) save index
 stp_lo425 EQU $+1       ;           -2 +loop_425(m)
-    ld    A, low 0xFFFF+(-1748); 2:7       -2 +loop_425(m)   lo stop-1
+    ld    A, low +(-1748)-1; 2:7       -2 +loop_425(m)   lo stop-1
     sub   L             ; 1:4       -2 +loop_425(m)
     ld    L, A          ; 1:4       -2 +loop_425(m)
 stp_hi425 EQU $+1       ;           -2 +loop_425(m)
-    ld    A, high 0xFFFF+(-1748); 2:7       -2 +loop_425(m)   hi stop-1
+    ld    A, high +(-1748)-1; 2:7       -2 +loop_425(m)   hi stop-1
     sbc   A, H          ; 1:4       -2 +loop_425(m)
     ld    H, A          ; 1:4       -2 +loop_425(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -2 +loop_425(m) HL = stop-index
     xor   H             ; 1:4       -2 +loop_425(m)
     pop  HL             ; 1:10      -2 +loop_425(m)
-    jp    p, do425      ; 3:10      -2 +loop_425(m) negative step
+    jp    p, do425      ; 3:10      -2 +loop_425(m)
 leave425:               ;           -2 +loop_425(m)
 exit425:                ;           -2 +loop_425(m)
     call _show          ; 3:17      call ( -- )
@@ -11006,7 +10976,7 @@ exit425:                ;           -2 +loop_425(m)
 do426save:              ;           do_426(xm)
     ld  (idx426),BC     ; 4:20      do_426(xm)
 do426:                  ;           do_426(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_426(xm)   variant +2.A: step 2 and real_stop is zero, run 5x
 idx426 EQU $+1          ;           2 +loop_426(xm)   idx always points to a 16-bit index
@@ -11018,7 +10988,7 @@ idx426 EQU $+1          ;           2 +loop_426(xm)   idx always points to a 16-
     jp   nz, do426save  ; 3:10      2 +loop_426(xm)
 leave426:               ;           2 +loop_426(xm)
 exit426:                ;           2 +loop_426(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string292  ; 3:10      print_i   Address of string427 ending with inverted most significant bit == string292
     call PRINT_STRING_I ; 3:17      print_i
@@ -11026,7 +10996,7 @@ exit426:                ;           2 +loop_426(xm)
 do427save:              ;           do_427(xm)
     ld  (idx427),BC     ; 4:20      do_427(xm)
 do427:                  ;           do_427(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] 2 +loop_427(xm)   variant +2.B: step 2 and real_stop is one, run 5x
 idx427 EQU $+1          ;           2 +loop_427(xm)   idx always points to a 16-bit index
@@ -11038,7 +11008,7 @@ idx427 EQU $+1          ;           2 +loop_427(xm)   idx always points to a 16-
     jp   nz, do427save  ; 3:10      2 +loop_427(xm)
 leave427:               ;           2 +loop_427(xm)
 exit427:                ;           2 +loop_427(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string293  ; 3:10      print_i   Address of string428 ending with inverted most significant bit == string293
     call PRINT_STRING_I ; 3:17      print_i
@@ -11046,7 +11016,7 @@ exit427:                ;           2 +loop_427(xm)
 do428save:              ;           do_428(xm)
     ld  (idx428),BC     ; 4:20      do_428(xm)
 do428:                  ;           do_428(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] 2 +loop_428(xm)   variant +2.C: step 2 with lo(real_stop) exclusivity, run 5x
 idx428 EQU $+1          ;           2 +loop_428(xm)   idx always points to a 16-bit index
@@ -11058,12 +11028,12 @@ idx428 EQU $+1          ;           2 +loop_428(xm)   idx always points to a 16-
     jp   nz, do428save  ; 3:10      2 +loop_428(xm)
 leave428:               ;           2 +loop_428(xm)
 exit428:                ;           2 +loop_428(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string294  ; 3:10      print_i   Address of string429 ending with inverted most significant bit == string294
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11089,8 +11059,8 @@ exit429:                ;           2 +loop_429(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string295  ; 3:10      print_i   Address of string430 ending with inverted most significant bit == string295
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11119,8 +11089,8 @@ exit430:                ;           2 +loop_430(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string296  ; 3:10      print_i   Address of string431 ending with inverted most significant bit == string296
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11153,7 +11123,7 @@ exit431:                ;           2 +loop_431(xm)
 do432save:              ;           do_432(xm)
     ld  (idx432),BC     ; 4:20      do_432(xm)
 do432:                  ;           do_432(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_432(xm)   variant -2.A: step -2 and real_stop is -2, run 5x
 idx432 EQU $+1          ;           -2 +loop_432(xm)   idx always points to a 16-bit index
@@ -11165,7 +11135,7 @@ idx432 EQU $+1          ;           -2 +loop_432(xm)   idx always points to a 16
     jp   nc, do432save  ; 3:10      -2 +loop_432(xm)
 leave432:               ;           -2 +loop_432(xm)
 exit432:                ;           -2 +loop_432(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string298  ; 3:10      print_i   Address of string433 ending with inverted most significant bit == string298
     call PRINT_STRING_I ; 3:17      print_i
@@ -11173,7 +11143,7 @@ exit432:                ;           -2 +loop_432(xm)
 do433save:              ;           do_433(xm)
     ld  (idx433),BC     ; 4:20      do_433(xm)
 do433:                  ;           do_433(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_433(xm)   variant -2.B: step -2 and real_stop is -1, run 5x
 idx433 EQU $+1          ;           -2 +loop_433(xm)   idx always points to a 16-bit index
@@ -11185,7 +11155,7 @@ idx433 EQU $+1          ;           -2 +loop_433(xm)   idx always points to a 16
     jp   nz, do433save  ; 3:10      -2 +loop_433(xm)
 leave433:               ;           -2 +loop_433(xm)
 exit433:                ;           -2 +loop_433(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string299  ; 3:10      print_i   Address of string434 ending with inverted most significant bit == string299
     call PRINT_STRING_I ; 3:17      print_i
@@ -11193,7 +11163,7 @@ exit433:                ;           -2 +loop_433(xm)
 do434save:              ;           do_434(xm)
     ld  (idx434),BC     ; 4:20      do_434(xm)
 do434:                  ;           do_434(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[10:58/38] -2 +loop_434(xm)   variant -2.C: step -2 and real_stop is zero, run 5x
 idx434 EQU $+1          ;           -2 +loop_434(xm)   idx always points to a 16-bit index
@@ -11205,7 +11175,7 @@ idx434 EQU $+1          ;           -2 +loop_434(xm)   idx always points to a 16
     jp   nz, do434save  ; 3:10      -2 +loop_434(xm)
 leave434:               ;           -2 +loop_434(xm)
 exit434:                ;           -2 +loop_434(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string300  ; 3:10      print_i   Address of string435 ending with inverted most significant bit == string300
     call PRINT_STRING_I ; 3:17      print_i
@@ -11213,7 +11183,7 @@ exit434:                ;           -2 +loop_434(xm)
 do435save:              ;           do_435(xm)
     ld  (idx435),BC     ; 4:20      do_435(xm)
 do435:                  ;           do_435(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_435(xm)   variant -2.D: step -2 with hi(real_stop) exclusivity, run 5x
 idx435 EQU $+1          ;           -2 +loop_435(xm)   idx always points to a 16-bit index
@@ -11225,7 +11195,7 @@ idx435 EQU $+1          ;           -2 +loop_435(xm)   idx always points to a 16
     jp   nz, do435save  ; 3:10      -2 +loop_435(xm)
 leave435:               ;           -2 +loop_435(xm)
 exit435:                ;           -2 +loop_435(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string301  ; 3:10      print_i   Address of string436 ending with inverted most significant bit == string301
     call PRINT_STRING_I ; 3:17      print_i
@@ -11233,7 +11203,7 @@ exit435:                ;           -2 +loop_435(xm)
 do436save:              ;           do_436(xm)
     ld  (idx436),BC     ; 4:20      do_436(xm)
 do436:                  ;           do_436(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:61/41] -2 +loop_436(xm)   variant -2.E: step -2 with lo(real_stop) exclusivity, run 5x
 idx436 EQU $+1          ;           -2 +loop_436(xm)   idx always points to a 16-bit index
@@ -11245,12 +11215,12 @@ idx436 EQU $+1          ;           -2 +loop_436(xm)   idx always points to a 16
     jp   nz, do436save  ; 3:10      -2 +loop_436(xm)
 leave436:               ;           -2 +loop_436(xm)
 exit436:                ;           -2 +loop_436(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string302  ; 3:10      print_i   Address of string437 ending with inverted most significant bit == string302
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11277,8 +11247,8 @@ exit437:                ;           -2 +loop_437(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string303  ; 3:10      print_i   Address of string438 ending with inverted most significant bit == string303
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11305,8 +11275,8 @@ exit438:                ;           -2 +loop_438(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string304  ; 3:10      print_i   Address of string439 ending with inverted most significant bit == string304
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11335,8 +11305,8 @@ exit439:                ;           -2 +loop_439(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string305  ; 3:10      print_i   Address of string440 ending with inverted most significant bit == string305
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -11373,7 +11343,7 @@ exit440:                ;           -2 +loop_440(xm)
 do441save:              ;           0 13 do_441(xm)
     ld  (idx441),BC     ; 4:20      0 13 do_441(xm)
 do441:                  ;           0 13 do_441(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:66/46] -3 +loop_441(xm)   variant -X.A: step -3 and stop 0, run 5x
 idx441 EQU $+1          ;           -3 +loop_441(xm)   idx always points to a 16-bit index
@@ -11386,7 +11356,7 @@ idx441 EQU $+1          ;           -3 +loop_441(xm)   idx always points to a 16
     jp   nc, do441save  ; 3:10      -3 +loop_441(xm)   carry if postivie index -> negative index
 leave441:               ;           -3 +loop_441(xm)
 exit441:                ;           -3 +loop_441(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string442 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11394,7 +11364,7 @@ exit441:                ;           -3 +loop_441(xm)
 do442save:              ;           0 43 do_442(xm)
     ld  (idx442),BC     ; 4:20      0 43 do_442(xm)
 do442:                  ;           0 43 do_442(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] -10 +loop_442(xm)   variant -X.B: negative step and stop 0, run 5x
 idx442 EQU $+1          ;           -10 +loop_442(xm)   idx always points to a 16-bit index
@@ -11408,7 +11378,7 @@ idx442 EQU $+1          ;           -10 +loop_442(xm)   idx always points to a 1
     jp   nc, do442save  ; 3:10      -10 +loop_442(xm)   carry if postivie index -> negative index
 leave442:               ;           -10 +loop_442(xm)
 exit442:                ;           -10 +loop_442(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string443 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11416,7 +11386,7 @@ exit442:                ;           -10 +loop_442(xm)
 do443save:              ;           510 671 do_443(xm)
     ld  (idx443),BC     ; 4:20      510 671 do_443(xm)
 do443:                  ;           510 671 do_443(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[17:55/60] -33 +loop_443(xm)   variant +X.C: negative step 3..255 and hi(real_stop) exclusivity, run 5x
@@ -11432,7 +11402,7 @@ idx443 EQU $+1          ;           -33 +loop_443(xm)   idx always points to a 1
     jp   nz, do443save  ; 3:10      -33 +loop_443(xm)
 leave443:               ;           -33 +loop_443(xm)
 exit443:                ;           -33 +loop_443(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string444 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11440,7 +11410,7 @@ exit443:                ;           -33 +loop_443(xm)
 do444save:              ;           -1160 50 do_444(xm)
     ld  (idx444),BC     ; 4:20      -1160 50 do_444(xm)
 do444:                  ;           -1160 50 do_444(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[16:77/57] -300 +loop_444(xm)   variant +X.D: negative step 256+ and hi(real_stop) exclusivity, run 5x
@@ -11456,12 +11426,12 @@ idx444 EQU $+1          ;           -300 +loop_444(xm)   idx always points to a 
     jp   nz, do444save  ; 3:10      -300 +loop_444(xm)
 leave444:               ;           -300 +loop_444(xm)
 exit444:                ;           -300 +loop_444(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string445 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 30 7027 2drop
-    push DE             ; 1:11      0 0 30 7027 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 30 7027 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 30 7027 2drop
     push HL             ; 1:11      0 0 30 7027 2drop
     ld   DE, 0x0000     ; 3:10      0 0 30 7027 2drop
     ld    L, D          ; 1:4       0 0 30 7027 2drop   L = D = 0x00
@@ -11492,8 +11462,8 @@ exit445:                ;           -7 +loop_445(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string446 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -70 6927 2drop
-    push DE             ; 1:11      0 0 -70 6927 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -70 6927 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -70 6927 2drop
     push HL             ; 1:11      0 0 -70 6927 2drop
     ld   DE, 0x0000     ; 3:10      0 0 -70 6927 2drop
     ld    L, D          ; 1:4       0 0 -70 6927 2drop   L = D = 0x00
@@ -11530,7 +11500,7 @@ exit446:                ;           -7 +loop_446(xm)
 do447save:              ;           25 10 do_447(xm)
     ld  (idx447),BC     ; 4:20      25 10 do_447(xm)
 do447:                  ;           25 10 do_447(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    3 +loop_447(xm)   variant +X.A: positive step and 0 <= index < stop < 256, run 5x
 idx447 EQU $+1          ;           3 +loop_447(xm)   idx always points to a 16-bit index
@@ -11542,7 +11512,7 @@ idx447 EQU $+1          ;           3 +loop_447(xm)   idx always points to a 16-
     jp   nz, do447      ; 3:10      3 +loop_447(xm)
 leave447:               ;           3 +loop_447(xm)
 exit447:                ;           3 +loop_447(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string448 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11550,7 +11520,7 @@ exit447:                ;           3 +loop_447(xm)
 do448save:              ;           0xC610 0xC601 do_448(xm)
     ld  (idx448),BC     ; 4:20      0xC610 0xC601 do_448(xm)
 do448:                  ;           0xC610 0xC601 do_448(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:44]    3 +loop_448(xm)   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run 5x
 idx448 EQU $+1          ;           3 +loop_448(xm)   idx always points to a 16-bit index
@@ -11561,7 +11531,7 @@ idx448 EQU $+1          ;           3 +loop_448(xm)   idx always points to a 16-
     jp   nz, do448      ; 3:10      3 +loop_448(xm)
 leave448:               ;           3 +loop_448(xm)
 exit448:                ;           3 +loop_448(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string449 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11569,7 +11539,7 @@ exit448:                ;           3 +loop_448(xm)
 do449save:              ;           2500 25 do_449(xm)
     ld  (idx449),BC     ; 4:20      2500 25 do_449(xm)
 do449:                  ;           2500 25 do_449(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:51]    512 +loop_449(xm)   variant +X.C: positive step = n*256, run 5x
 idx449 EQU $+1          ;           512 +loop_449(xm)   idx always points to a 16-bit index
@@ -11581,7 +11551,7 @@ idx449 EQU $+1          ;           512 +loop_449(xm)   idx always points to a 1
     jp   nz, do449      ; 3:10      512 +loop_449(xm)
 leave449:               ;           512 +loop_449(xm)
 exit449:                ;           512 +loop_449(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string450 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11589,7 +11559,7 @@ exit449:                ;           512 +loop_449(xm)
 do450save:              ;           0 -15 do_450(xm)
     ld  (idx450),BC     ; 4:20      0 -15 do_450(xm)
 do450:                  ;           0 -15 do_450(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 3 +loop_450(xm)   variant +X.D: positive step 3..255 and stop 0, run 5x
 idx450 EQU $+1          ;           3 +loop_450(xm)   idx always points to a 16-bit index
@@ -11602,7 +11572,7 @@ idx450 EQU $+1          ;           3 +loop_450(xm)   idx always points to a 16-
     jp   nc, do450save  ; 3:10      3 +loop_450(xm)
 leave450:               ;           3 +loop_450(xm)
 exit450:                ;           3 +loop_450(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string451 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11610,7 +11580,7 @@ exit450:                ;           3 +loop_450(xm)
 do451save:              ;           5 -29 do_451(xm)
     ld  (idx451),BC     ; 4:20      5 -29 do_451(xm)
 do451:                  ;           5 -29 do_451(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 7 +loop_451(xm)   variant +X.E: positive step 3..255 and hi(real_stop) = exclusivity zero, run 5x
 idx451 EQU $+1          ;           7 +loop_451(xm)   idx always points to a 16-bit index
@@ -11623,7 +11593,7 @@ idx451 EQU $+1          ;           7 +loop_451(xm)   idx always points to a 16-
     jp   nz, do451save  ; 3:10      7 +loop_451(xm)
 leave451:               ;           7 +loop_451(xm)
 exit451:                ;           7 +loop_451(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string452 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11631,7 +11601,7 @@ exit451:                ;           7 +loop_451(xm)
 do452save:              ;           260 227 do_452(xm)
     ld  (idx452),BC     ; 4:20      260 227 do_452(xm)
 do452:                  ;           260 227 do_452(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[17:55/60] 7 +loop_452(xm)   variant +X.F: positive step 3..255 and hi(real_stop) exclusivity, run 5x
 idx452 EQU $+1          ;           7 +loop_452(xm)   idx always points to a 16-bit index
@@ -11646,7 +11616,7 @@ idx452 EQU $+1          ;           7 +loop_452(xm)   idx always points to a 16-
     jp   nz, do452save  ; 3:10      7 +loop_452(xm)
 leave452:               ;           7 +loop_452(xm)
 exit452:                ;           7 +loop_452(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string453 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11654,7 +11624,7 @@ exit452:                ;           7 +loop_452(xm)
 do453save:              ;           10 -23 do_453(xm)
     ld  (idx453),BC     ; 4:20      10 -23 do_453(xm)
 do453:                  ;           10 -23 do_453(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[19:67/68] 7 +loop_453(xm)   variant +X.G: positive step 3..255 and real_stop 0..255, run 5x
 idx453 EQU $+1          ;           7 +loop_453(xm)   idx always points to a 16-bit index
@@ -11671,7 +11641,7 @@ idx453 EQU $+1          ;           7 +loop_453(xm)   idx always points to a 16-
     jp   nz, do453save  ; 3:10      7 +loop_453(xm)
 leave453:               ;           7 +loop_453(xm)
 exit453:                ;           7 +loop_453(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string454 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11679,7 +11649,7 @@ exit453:                ;           7 +loop_453(xm)
 do454save:              ;           230 -1485 do_454(xm)
     ld  (idx454),BC     ; 4:20      230 -1485 do_454(xm)
 do454:                  ;           230 -1485 do_454(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] 345 +loop_454(xm)   variant +X.H: positive step 256+ and hi(real_stop) exclusivity zero, run 5x
 idx454 EQU $+1          ;           345 +loop_454(xm)   idx always points to a 16-bit index
@@ -11693,12 +11663,12 @@ idx454 EQU $+1          ;           345 +loop_454(xm)   idx always points to a 1
     jp   nz, do454save  ; 3:10      345 +loop_454(xm)
 leave454:               ;           345 +loop_454(xm)
 exit454:                ;           345 +loop_454(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string455 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 4516 516 2drop
-    push DE             ; 1:11      0 0 4516 516 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 4516 516 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 4516 516 2drop
     push HL             ; 1:11      0 0 4516 516 2drop
     ld   DE, 0x0000     ; 3:10      0 0 4516 516 2drop
     ld    L, D          ; 1:4       0 0 4516 516 2drop   L = D = 0x00
@@ -11734,7 +11704,7 @@ exit455:                ;           4 +loop_455(xm)
 do456save:              ;           1234 33 do_456(xm)
     ld  (idx456),BC     ; 4:20      1234 33 do_456(xm)
 do456:                  ;           1234 33 do_456(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:77/57] 300 +loop_456(xm)   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 5x
 idx456 EQU $+1          ;           300 +loop_456(xm)   idx always points to a 16-bit index
@@ -11749,7 +11719,7 @@ idx456 EQU $+1          ;           300 +loop_456(xm)   idx always points to a 1
     jp   nz, do456save  ; 3:10      300 +loop_456(xm)
 leave456:               ;           300 +loop_456(xm)
 exit456:                ;           300 +loop_456(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string457 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
@@ -11757,7 +11727,7 @@ exit456:                ;           300 +loop_456(xm)
 do457save:              ;           1034 1019 do_457(xm)
     ld  (idx457),BC     ; 4:20      1034 1019 do_457(xm)
 do457:                  ;           1034 1019 do_457(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:78/58] 3 +loop_457(xm)   variant +X.K : positive step 3..255 and lo(real_stop) exclusivity, run 5x
 idx457 EQU $+1          ;           3 +loop_457(xm)   idx always points to a 16-bit index
@@ -11773,12 +11743,12 @@ idx457 EQU $+1          ;           3 +loop_457(xm)   idx always points to a 16-
     jp   nz, do457save  ; 3:10      3 +loop_457(xm)
 leave457:               ;           3 +loop_457(xm)
 exit457:                ;           3 +loop_457(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string458 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 500 100 2drop
-    push DE             ; 1:11      0 0 500 100 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 500 100 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 500 100 2drop
     push HL             ; 1:11      0 0 500 100 2drop
     ld   DE, 0x0000     ; 3:10      0 0 500 100 2drop
     ld    L, D          ; 1:4       0 0 500 100 2drop   L = D = 0x00
@@ -11815,8 +11785,8 @@ exit458:                ;           4 +loop_458(xm)
     call _pause         ; 3:17      call ( -- )
     ld   BC, string441  ; 3:10      print_i   Address of string459 ending with inverted most significant bit == string441
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 13
-    push DE             ; 1:11      0 13   ( -- 0 13 )
+                        ;[7:40]     0 13   ( -- 0 13 )
+    push DE             ; 1:11      0 13
     push HL             ; 1:11      0 13
     ld   HL, 0x000D     ; 3:10      0 13
     ld    E, H          ; 1:4       0 13   E = H = 0x00
@@ -11831,7 +11801,7 @@ exit458:                ;           4 +loop_458(xm)
     pop  DE             ; 1:10      do_459(m)
     pop  HL             ; 1:10      do_459(m)
 do459:                  ;           do_459(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -3 +loop_459(m)
 idx459 EQU $+1          ;           -3 +loop_459(m)
@@ -11850,15 +11820,15 @@ stp_hi459 EQU $+1       ;           -3 +loop_459(m)
     add  HL, BC         ; 1:11      -3 +loop_459(m) HL = stop-index
     xor   H             ; 1:4       -3 +loop_459(m)
     pop  HL             ; 1:10      -3 +loop_459(m)
-    jp    p, do459      ; 3:10      -3 +loop_459(m) negative step
+    jp    p, do459      ; 3:10      -3 +loop_459(m)
 leave459:               ;           -3 +loop_459(m)
 exit459:                ;           -3 +loop_459(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string460 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 43
-    push DE             ; 1:11      0 43   ( -- 0 43 )
+                        ;[7:40]     0 43   ( -- 0 43 )
+    push DE             ; 1:11      0 43
     push HL             ; 1:11      0 43
     ld   HL, 0x002B     ; 3:10      0 43
     ld    E, H          ; 1:4       0 43   E = H = 0x00
@@ -11873,7 +11843,7 @@ exit459:                ;           -3 +loop_459(m)
     pop  DE             ; 1:10      do_460(m)
     pop  HL             ; 1:10      do_460(m)
 do460:                  ;           do_460(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -10 +loop_460(m)
 idx460 EQU $+1          ;           -10 +loop_460(m)
@@ -11892,15 +11862,15 @@ stp_hi460 EQU $+1       ;           -10 +loop_460(m)
     add  HL, BC         ; 1:11      -10 +loop_460(m) HL = stop-index
     xor   H             ; 1:4       -10 +loop_460(m)
     pop  HL             ; 1:10      -10 +loop_460(m)
-    jp    p, do460      ; 3:10      -10 +loop_460(m) negative step
+    jp    p, do460      ; 3:10      -10 +loop_460(m)
 leave460:               ;           -10 +loop_460(m)
 exit460:                ;           -10 +loop_460(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string461 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     510 671
-    push DE             ; 1:11      510 671   ( -- 510 671 )
+                        ;[8:42]     510 671   ( -- 510 671 )
+    push DE             ; 1:11      510 671
     push HL             ; 1:11      510 671
     ld   DE, 0x01FE     ; 3:10      510 671
     ld   HL, 0x029F     ; 3:10      510 671
@@ -11914,7 +11884,7 @@ exit460:                ;           -10 +loop_460(m)
     pop  DE             ; 1:10      do_461(m)
     pop  HL             ; 1:10      do_461(m)
 do461:                  ;           do_461(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -33 +loop_461(m)
 idx461 EQU $+1          ;           -33 +loop_461(m)
@@ -11933,15 +11903,15 @@ stp_hi461 EQU $+1       ;           -33 +loop_461(m)
     add  HL, BC         ; 1:11      -33 +loop_461(m) HL = stop-index
     xor   H             ; 1:4       -33 +loop_461(m)
     pop  HL             ; 1:10      -33 +loop_461(m)
-    jp    p, do461      ; 3:10      -33 +loop_461(m) negative step
+    jp    p, do461      ; 3:10      -33 +loop_461(m)
 leave461:               ;           -33 +loop_461(m)
 exit461:                ;           -33 +loop_461(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string462 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     -1160 50
-    push DE             ; 1:11      -1160 50   ( -- -1160 50 )
+                        ;[8:42]     -1160 50   ( -- -1160 50 )
+    push DE             ; 1:11      -1160 50
     push HL             ; 1:11      -1160 50
     ld   DE, 0xFB78     ; 3:10      -1160 50
     ld   HL, 0x0032     ; 3:10      -1160 50
@@ -11955,7 +11925,7 @@ exit461:                ;           -33 +loop_461(m)
     pop  DE             ; 1:10      do_462(m)
     pop  HL             ; 1:10      do_462(m)
 do462:                  ;           do_462(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -300 +loop_462(m)
 idx462 EQU $+1          ;           -300 +loop_462(m)
@@ -11974,20 +11944,18 @@ stp_hi462 EQU $+1       ;           -300 +loop_462(m)
     add  HL, BC         ; 1:11      -300 +loop_462(m) HL = stop-index
     xor   H             ; 1:4       -300 +loop_462(m)
     pop  HL             ; 1:10      -300 +loop_462(m)
-    jp    p, do462      ; 3:10      -300 +loop_462(m) negative step
+    jp    p, do462      ; 3:10      -300 +loop_462(m)
 leave462:               ;           -300 +loop_462(m)
 exit462:                ;           -300 +loop_462(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string463 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 30 7027   ( -- 0 0 30 7027 )
-    push HL             ; 1:11      0 0 30 7027
-    ld   DE, 0x0000     ; 3:10      0 0 30 7027
-    ld    L, D          ; 1:4       0 0 30 7027   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 30 7027   H = L = 0x00
     push DE             ; 1:11      0 0 30 7027
     push HL             ; 1:11      0 0 30 7027
+    ld   DE, 0x0000     ; 3:10      0 0 30 7027
+    push DE             ; 1:11      0 0 30 7027
+    push DE             ; 1:11      0 0 30 7027
     ld    E, 0x1E       ; 2:7       0 0 30 7027
     ld   HL, 0x1B73     ; 3:10      0 0 30 7027
 
@@ -12021,18 +11989,16 @@ stp_hi463 EQU $+1       ;           -7 +loop_463(m)
     add  HL, BC         ; 1:11      -7 +loop_463(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_463(m)
     pop  HL             ; 1:10      -7 +loop_463(m)
-    jp    p, do463      ; 3:10      -7 +loop_463(m) negative step
+    jp    p, do463      ; 3:10      -7 +loop_463(m)
 leave463:               ;           -7 +loop_463(m)
 exit463:                ;           -7 +loop_463(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string464 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -70 6927   ( -- 0 0 -70 6927 )
-    push HL             ; 1:11      0 0 -70 6927
-    ld   DE, 0x0000     ; 3:10      0 0 -70 6927
-    ld    L, D          ; 1:4       0 0 -70 6927   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 -70 6927   H = L = 0x00
     push DE             ; 1:11      0 0 -70 6927
+    push HL             ; 1:11      0 0 -70 6927
+    ld   HL, 0x0000     ; 3:10      0 0 -70 6927
+    push HL             ; 1:11      0 0 -70 6927
     push HL             ; 1:11      0 0 -70 6927
     ld   DE, 0xFFBA     ; 3:10      0 0 -70 6927
     ld   HL, 0x1B0F     ; 3:10      0 0 -70 6927
@@ -12067,14 +12033,14 @@ stp_hi464 EQU $+1       ;           -7 +loop_464(m)
     add  HL, BC         ; 1:11      -7 +loop_464(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_464(m)
     pop  HL             ; 1:10      -7 +loop_464(m)
-    jp    p, do464      ; 3:10      -7 +loop_464(m) negative step
+    jp    p, do464      ; 3:10      -7 +loop_464(m)
 leave464:               ;           -7 +loop_464(m)
 exit464:                ;           -7 +loop_464(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string447  ; 3:10      print_i   Address of string465 ending with inverted most significant bit == string447
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     25 10
-    push DE             ; 1:11      25 10   ( -- 25 10 )
+                        ;[8:42]     25 10   ( -- 25 10 )
+    push DE             ; 1:11      25 10
     push HL             ; 1:11      25 10
     ld   DE, 0x0019     ; 3:10      25 10
     ld   HL, 0x000A     ; 3:10      25 10
@@ -12088,7 +12054,7 @@ exit464:                ;           -7 +loop_464(m)
     pop  DE             ; 1:10      do_465(m)
     pop  HL             ; 1:10      do_465(m)
 do465:                  ;           do_465(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_465(m)
 idx465 EQU $+1          ;           3 +loop_465(m)
@@ -12107,15 +12073,15 @@ stp_hi465 EQU $+1       ;           3 +loop_465(m)
     add  HL, BC         ; 1:11      3 +loop_465(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_465(m)
     pop  HL             ; 1:10      3 +loop_465(m)
-    jp    p, do465      ; 3:10      3 +loop_465(m) negative step
+    jp    p, do465      ; 3:10      3 +loop_465(m)
 leave465:               ;           3 +loop_465(m)
 exit465:                ;           3 +loop_465(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string466 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0xC610 0xC601
-    push DE             ; 1:11      0xC610 0xC601   ( -- 0xC610 0xC601 )
+                        ;[8:42]     0xC610 0xC601   ( -- 0xC610 0xC601 )
+    push DE             ; 1:11      0xC610 0xC601
     push HL             ; 1:11      0xC610 0xC601
     ld   DE, 0xC610     ; 3:10      0xC610 0xC601
     ld   HL, 0xC601     ; 3:10      0xC610 0xC601
@@ -12129,7 +12095,7 @@ exit465:                ;           3 +loop_465(m)
     pop  DE             ; 1:10      do_466(m)
     pop  HL             ; 1:10      do_466(m)
 do466:                  ;           do_466(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_466(m)
 idx466 EQU $+1          ;           3 +loop_466(m)
@@ -12148,15 +12114,15 @@ stp_hi466 EQU $+1       ;           3 +loop_466(m)
     add  HL, BC         ; 1:11      3 +loop_466(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_466(m)
     pop  HL             ; 1:10      3 +loop_466(m)
-    jp    p, do466      ; 3:10      3 +loop_466(m) negative step
+    jp    p, do466      ; 3:10      3 +loop_466(m)
 leave466:               ;           3 +loop_466(m)
 exit466:                ;           3 +loop_466(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string467 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     2500 25
-    push DE             ; 1:11      2500 25   ( -- 2500 25 )
+                        ;[8:42]     2500 25   ( -- 2500 25 )
+    push DE             ; 1:11      2500 25
     push HL             ; 1:11      2500 25
     ld   DE, 0x09C4     ; 3:10      2500 25
     ld   HL, 0x0019     ; 3:10      2500 25
@@ -12170,7 +12136,7 @@ exit466:                ;           3 +loop_466(m)
     pop  DE             ; 1:10      do_467(m)
     pop  HL             ; 1:10      do_467(m)
 do467:                  ;           do_467(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      512 +loop_467(m)
 idx467 EQU $+1          ;           512 +loop_467(m)
@@ -12189,15 +12155,15 @@ stp_hi467 EQU $+1       ;           512 +loop_467(m)
     add  HL, BC         ; 1:11      512 +loop_467(m) HL = stop-index
     xor   H             ; 1:4       512 +loop_467(m)
     pop  HL             ; 1:10      512 +loop_467(m)
-    jp    p, do467      ; 3:10      512 +loop_467(m) negative step
+    jp    p, do467      ; 3:10      512 +loop_467(m)
 leave467:               ;           512 +loop_467(m)
 exit467:                ;           512 +loop_467(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string468 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     0 -15
-    push DE             ; 1:11      0 -15   ( -- 0 -15 )
+                        ;[8:42]     0 -15   ( -- 0 -15 )
+    push DE             ; 1:11      0 -15
     push HL             ; 1:11      0 -15
     ld   DE, 0x0000     ; 3:10      0 -15
     ld   HL, 0xFFF1     ; 3:10      0 -15
@@ -12211,7 +12177,7 @@ exit467:                ;           512 +loop_467(m)
     pop  DE             ; 1:10      do_468(m)
     pop  HL             ; 1:10      do_468(m)
 do468:                  ;           do_468(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_468(m)
 idx468 EQU $+1          ;           3 +loop_468(m)
@@ -12230,15 +12196,15 @@ stp_hi468 EQU $+1       ;           3 +loop_468(m)
     add  HL, BC         ; 1:11      3 +loop_468(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_468(m)
     pop  HL             ; 1:10      3 +loop_468(m)
-    jp    p, do468      ; 3:10      3 +loop_468(m) negative step
+    jp    p, do468      ; 3:10      3 +loop_468(m)
 leave468:               ;           3 +loop_468(m)
 exit468:                ;           3 +loop_468(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string469 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     5 -29
-    push DE             ; 1:11      5 -29   ( -- 5 -29 )
+                        ;[8:42]     5 -29   ( -- 5 -29 )
+    push DE             ; 1:11      5 -29
     push HL             ; 1:11      5 -29
     ld   DE, 0x0005     ; 3:10      5 -29
     ld   HL, 0xFFE3     ; 3:10      5 -29
@@ -12252,7 +12218,7 @@ exit468:                ;           3 +loop_468(m)
     pop  DE             ; 1:10      do_469(m)
     pop  HL             ; 1:10      do_469(m)
 do469:                  ;           do_469(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_469(m)
 idx469 EQU $+1          ;           7 +loop_469(m)
@@ -12271,15 +12237,15 @@ stp_hi469 EQU $+1       ;           7 +loop_469(m)
     add  HL, BC         ; 1:11      7 +loop_469(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_469(m)
     pop  HL             ; 1:10      7 +loop_469(m)
-    jp    p, do469      ; 3:10      7 +loop_469(m) negative step
+    jp    p, do469      ; 3:10      7 +loop_469(m)
 leave469:               ;           7 +loop_469(m)
 exit469:                ;           7 +loop_469(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string470 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     260 227
-    push DE             ; 1:11      260 227   ( -- 260 227 )
+                        ;[8:42]     260 227   ( -- 260 227 )
+    push DE             ; 1:11      260 227
     push HL             ; 1:11      260 227
     ld   DE, 0x0104     ; 3:10      260 227
     ld   HL, 0x00E3     ; 3:10      260 227
@@ -12293,7 +12259,7 @@ exit469:                ;           7 +loop_469(m)
     pop  DE             ; 1:10      do_470(m)
     pop  HL             ; 1:10      do_470(m)
 do470:                  ;           do_470(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_470(m)
 idx470 EQU $+1          ;           7 +loop_470(m)
@@ -12312,15 +12278,15 @@ stp_hi470 EQU $+1       ;           7 +loop_470(m)
     add  HL, BC         ; 1:11      7 +loop_470(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_470(m)
     pop  HL             ; 1:10      7 +loop_470(m)
-    jp    p, do470      ; 3:10      7 +loop_470(m) negative step
+    jp    p, do470      ; 3:10      7 +loop_470(m)
 leave470:               ;           7 +loop_470(m)
 exit470:                ;           7 +loop_470(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string471 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     10 -23
-    push DE             ; 1:11      10 -23   ( -- 10 -23 )
+                        ;[8:42]     10 -23   ( -- 10 -23 )
+    push DE             ; 1:11      10 -23
     push HL             ; 1:11      10 -23
     ld   DE, 0x000A     ; 3:10      10 -23
     ld   HL, 0xFFE9     ; 3:10      10 -23
@@ -12334,7 +12300,7 @@ exit470:                ;           7 +loop_470(m)
     pop  DE             ; 1:10      do_471(m)
     pop  HL             ; 1:10      do_471(m)
 do471:                  ;           do_471(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_471(m)
 idx471 EQU $+1          ;           7 +loop_471(m)
@@ -12353,15 +12319,15 @@ stp_hi471 EQU $+1       ;           7 +loop_471(m)
     add  HL, BC         ; 1:11      7 +loop_471(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_471(m)
     pop  HL             ; 1:10      7 +loop_471(m)
-    jp    p, do471      ; 3:10      7 +loop_471(m) negative step
+    jp    p, do471      ; 3:10      7 +loop_471(m)
 leave471:               ;           7 +loop_471(m)
 exit471:                ;           7 +loop_471(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string472 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     230 -1485
-    push DE             ; 1:11      230 -1485   ( -- 230 -1485 )
+                        ;[8:42]     230 -1485   ( -- 230 -1485 )
+    push DE             ; 1:11      230 -1485
     push HL             ; 1:11      230 -1485
     ld   DE, 0x00E6     ; 3:10      230 -1485
     ld   HL, 0xFA33     ; 3:10      230 -1485
@@ -12375,7 +12341,7 @@ exit471:                ;           7 +loop_471(m)
     pop  DE             ; 1:10      do_472(m)
     pop  HL             ; 1:10      do_472(m)
 do472:                  ;           do_472(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      345 +loop_472(m)
 idx472 EQU $+1          ;           345 +loop_472(m)
@@ -12394,19 +12360,17 @@ stp_hi472 EQU $+1       ;           345 +loop_472(m)
     add  HL, BC         ; 1:11      345 +loop_472(m) HL = stop-index
     xor   H             ; 1:4       345 +loop_472(m)
     pop  HL             ; 1:10      345 +loop_472(m)
-    jp    p, do472      ; 3:10      345 +loop_472(m) negative step
+    jp    p, do472      ; 3:10      345 +loop_472(m)
 leave472:               ;           345 +loop_472(m)
 exit472:                ;           345 +loop_472(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string473 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 4516 516   ( -- 0 0 4516 516 )
-    push HL             ; 1:11      0 0 4516 516
-    ld   DE, 0x0000     ; 3:10      0 0 4516 516
-    ld    L, D          ; 1:4       0 0 4516 516   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 4516 516   H = L = 0x00
     push DE             ; 1:11      0 0 4516 516
+    push HL             ; 1:11      0 0 4516 516
+    ld   HL, 0x0000     ; 3:10      0 0 4516 516
+    push HL             ; 1:11      0 0 4516 516
     push HL             ; 1:11      0 0 4516 516
     ld   DE, 0x11A4     ; 3:10      0 0 4516 516
     ld   HL, 0x0204     ; 3:10      0 0 4516 516
@@ -12441,14 +12405,14 @@ stp_hi473 EQU $+1       ;           4 +loop_473(m)
     add  HL, BC         ; 1:11      4 +loop_473(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_473(m)
     pop  HL             ; 1:10      4 +loop_473(m)
-    jp    p, do473      ; 3:10      4 +loop_473(m) negative step
+    jp    p, do473      ; 3:10      4 +loop_473(m)
 leave473:               ;           4 +loop_473(m)
 exit473:                ;           4 +loop_473(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string456  ; 3:10      print_i   Address of string474 ending with inverted most significant bit == string456
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     1234 33
-    push DE             ; 1:11      1234 33   ( -- 1234 33 )
+                        ;[8:42]     1234 33   ( -- 1234 33 )
+    push DE             ; 1:11      1234 33
     push HL             ; 1:11      1234 33
     ld   DE, 0x04D2     ; 3:10      1234 33
     ld   HL, 0x0021     ; 3:10      1234 33
@@ -12462,7 +12426,7 @@ exit473:                ;           4 +loop_473(m)
     pop  DE             ; 1:10      do_474(m)
     pop  HL             ; 1:10      do_474(m)
 do474:                  ;           do_474(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      300 +loop_474(m)
 idx474 EQU $+1          ;           300 +loop_474(m)
@@ -12481,15 +12445,15 @@ stp_hi474 EQU $+1       ;           300 +loop_474(m)
     add  HL, BC         ; 1:11      300 +loop_474(m) HL = stop-index
     xor   H             ; 1:4       300 +loop_474(m)
     pop  HL             ; 1:10      300 +loop_474(m)
-    jp    p, do474      ; 3:10      300 +loop_474(m) negative step
+    jp    p, do474      ; 3:10      300 +loop_474(m)
 leave474:               ;           300 +loop_474(m)
 exit474:                ;           300 +loop_474(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string475 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[8:42]     1034 1019
-    push DE             ; 1:11      1034 1019   ( -- 1034 1019 )
+                        ;[8:42]     1034 1019   ( -- 1034 1019 )
+    push DE             ; 1:11      1034 1019
     push HL             ; 1:11      1034 1019
     ld   DE, 0x040A     ; 3:10      1034 1019
     ld   HL, 0x03FB     ; 3:10      1034 1019
@@ -12503,7 +12467,7 @@ exit474:                ;           300 +loop_474(m)
     pop  DE             ; 1:10      do_475(m)
     pop  HL             ; 1:10      do_475(m)
 do475:                  ;           do_475(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_475(m)
 idx475 EQU $+1          ;           3 +loop_475(m)
@@ -12522,19 +12486,17 @@ stp_hi475 EQU $+1       ;           3 +loop_475(m)
     add  HL, BC         ; 1:11      3 +loop_475(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_475(m)
     pop  HL             ; 1:10      3 +loop_475(m)
-    jp    p, do475      ; 3:10      3 +loop_475(m) negative step
+    jp    p, do475      ; 3:10      3 +loop_475(m)
 leave475:               ;           3 +loop_475(m)
 exit475:                ;           3 +loop_475(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string476 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 500 100   ( -- 0 0 500 100 )
-    push HL             ; 1:11      0 0 500 100
-    ld   DE, 0x0000     ; 3:10      0 0 500 100
-    ld    L, D          ; 1:4       0 0 500 100   L = D = 0x00
-    ld    H, L          ; 1:4       0 0 500 100   H = L = 0x00
     push DE             ; 1:11      0 0 500 100
+    push HL             ; 1:11      0 0 500 100
+    ld   HL, 0x0000     ; 3:10      0 0 500 100
+    push HL             ; 1:11      0 0 500 100
     push HL             ; 1:11      0 0 500 100
     ld   DE, 0x01F4     ; 3:10      0 0 500 100
     ld    L, 0x64       ; 2:7       0 0 500 100
@@ -12569,7 +12531,7 @@ stp_hi476 EQU $+1       ;           4 +loop_476(m)
     add  HL, BC         ; 1:11      4 +loop_476(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_476(m)
     pop  HL             ; 1:10      4 +loop_476(m)
-    jp    p, do476      ; 3:10      4 +loop_476(m) negative step
+    jp    p, do476      ; 3:10      4 +loop_476(m)
 leave476:               ;           4 +loop_476(m)
 exit476:                ;           4 +loop_476(m)
     call _show          ; 3:17      call ( -- )
@@ -12594,7 +12556,7 @@ exit476:                ;           4 +loop_476(m)
     pop  HL             ; 1:10      13 do_477(m)
     ex   DE, HL         ; 1:4       13 do_477(m)
 do477:                  ;           13 do_477(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -3 +loop_477(m)
 idx477 EQU $+1          ;           -3 +loop_477(m)
@@ -12613,10 +12575,10 @@ stp_hi477 EQU $+1       ;           -3 +loop_477(m)
     add  HL, BC         ; 1:11      -3 +loop_477(m) HL = stop-index
     xor   H             ; 1:4       -3 +loop_477(m)
     pop  HL             ; 1:10      -3 +loop_477(m)
-    jp    p, do477      ; 3:10      -3 +loop_477(m) negative step
+    jp    p, do477      ; 3:10      -3 +loop_477(m)
 leave477:               ;           -3 +loop_477(m)
 exit477:                ;           -3 +loop_477(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string478 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -12635,7 +12597,7 @@ exit477:                ;           -3 +loop_477(m)
     pop  HL             ; 1:10      43 do_478(m)
     ex   DE, HL         ; 1:4       43 do_478(m)
 do478:                  ;           43 do_478(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -10 +loop_478(m)
 idx478 EQU $+1          ;           -10 +loop_478(m)
@@ -12654,10 +12616,10 @@ stp_hi478 EQU $+1       ;           -10 +loop_478(m)
     add  HL, BC         ; 1:11      -10 +loop_478(m) HL = stop-index
     xor   H             ; 1:4       -10 +loop_478(m)
     pop  HL             ; 1:10      -10 +loop_478(m)
-    jp    p, do478      ; 3:10      -10 +loop_478(m) negative step
+    jp    p, do478      ; 3:10      -10 +loop_478(m)
 leave478:               ;           -10 +loop_478(m)
 exit478:                ;           -10 +loop_478(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string479 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -12676,7 +12638,7 @@ exit478:                ;           -10 +loop_478(m)
     pop  HL             ; 1:10      671 do_479(m)
     ex   DE, HL         ; 1:4       671 do_479(m)
 do479:                  ;           671 do_479(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -33 +loop_479(m)
 idx479 EQU $+1          ;           -33 +loop_479(m)
@@ -12695,17 +12657,17 @@ stp_hi479 EQU $+1       ;           -33 +loop_479(m)
     add  HL, BC         ; 1:11      -33 +loop_479(m) HL = stop-index
     xor   H             ; 1:4       -33 +loop_479(m)
     pop  HL             ; 1:10      -33 +loop_479(m)
-    jp    p, do479      ; 3:10      -33 +loop_479(m) negative step
+    jp    p, do479      ; 3:10      -33 +loop_479(m)
 leave479:               ;           -33 +loop_479(m)
 exit479:                ;           -33 +loop_479(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string480 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
 
     push DE             ; 1:11      -1160
     ex   DE, HL         ; 1:4       -1160
-    ld   HL, -1160      ; 3:10      -1160
+    ld   HL, 0-1160     ; 3:10      -1160
 
     dec  HL             ; 1:6       50 do_480(m)
     ld    A, L          ; 1:4       50 do_480(m)
@@ -12717,7 +12679,7 @@ exit479:                ;           -33 +loop_479(m)
     pop  HL             ; 1:10      50 do_480(m)
     ex   DE, HL         ; 1:4       50 do_480(m)
 do480:                  ;           50 do_480(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -300 +loop_480(m)
 idx480 EQU $+1          ;           -300 +loop_480(m)
@@ -12736,15 +12698,15 @@ stp_hi480 EQU $+1       ;           -300 +loop_480(m)
     add  HL, BC         ; 1:11      -300 +loop_480(m) HL = stop-index
     xor   H             ; 1:4       -300 +loop_480(m)
     pop  HL             ; 1:10      -300 +loop_480(m)
-    jp    p, do480      ; 3:10      -300 +loop_480(m) negative step
+    jp    p, do480      ; 3:10      -300 +loop_480(m)
 leave480:               ;           -300 +loop_480(m)
 exit480:                ;           -300 +loop_480(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string481 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -12785,14 +12747,14 @@ stp_hi481 EQU $+1       ;           -7 +loop_481(m)
     add  HL, BC         ; 1:11      -7 +loop_481(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_481(m)
     pop  HL             ; 1:10      -7 +loop_481(m)
-    jp    p, do481      ; 3:10      -7 +loop_481(m) negative step
+    jp    p, do481      ; 3:10      -7 +loop_481(m)
 leave481:               ;           -7 +loop_481(m)
 exit481:                ;           -7 +loop_481(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string482 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -12800,7 +12762,7 @@ exit481:                ;           -7 +loop_481(m)
 
     push DE             ; 1:11      -70
     ex   DE, HL         ; 1:4       -70
-    ld   HL, -70        ; 3:10      -70
+    ld   HL, 0-70       ; 3:10      -70
 
     dec  HL             ; 1:6       6927 do_482(m)
     ld    A, L          ; 1:4       6927 do_482(m)
@@ -12833,7 +12795,7 @@ stp_hi482 EQU $+1       ;           -7 +loop_482(m)
     add  HL, BC         ; 1:11      -7 +loop_482(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_482(m)
     pop  HL             ; 1:10      -7 +loop_482(m)
-    jp    p, do482      ; 3:10      -7 +loop_482(m) negative step
+    jp    p, do482      ; 3:10      -7 +loop_482(m)
 leave482:               ;           -7 +loop_482(m)
 exit482:                ;           -7 +loop_482(m)
     call _show          ; 3:17      call ( -- )
@@ -12854,7 +12816,7 @@ exit482:                ;           -7 +loop_482(m)
     pop  HL             ; 1:10      10 do_483(m)
     ex   DE, HL         ; 1:4       10 do_483(m)
 do483:                  ;           10 do_483(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_483(m)
 idx483 EQU $+1          ;           3 +loop_483(m)
@@ -12873,10 +12835,10 @@ stp_hi483 EQU $+1       ;           3 +loop_483(m)
     add  HL, BC         ; 1:11      3 +loop_483(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_483(m)
     pop  HL             ; 1:10      3 +loop_483(m)
-    jp    p, do483      ; 3:10      3 +loop_483(m) negative step
+    jp    p, do483      ; 3:10      3 +loop_483(m)
 leave483:               ;           3 +loop_483(m)
 exit483:                ;           3 +loop_483(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string484 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -12895,7 +12857,7 @@ exit483:                ;           3 +loop_483(m)
     pop  HL             ; 1:10      0xC601 do_484(m)
     ex   DE, HL         ; 1:4       0xC601 do_484(m)
 do484:                  ;           0xC601 do_484(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_484(m)
 idx484 EQU $+1          ;           3 +loop_484(m)
@@ -12914,10 +12876,10 @@ stp_hi484 EQU $+1       ;           3 +loop_484(m)
     add  HL, BC         ; 1:11      3 +loop_484(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_484(m)
     pop  HL             ; 1:10      3 +loop_484(m)
-    jp    p, do484      ; 3:10      3 +loop_484(m) negative step
+    jp    p, do484      ; 3:10      3 +loop_484(m)
 leave484:               ;           3 +loop_484(m)
 exit484:                ;           3 +loop_484(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string485 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -12936,7 +12898,7 @@ exit484:                ;           3 +loop_484(m)
     pop  HL             ; 1:10      25 do_485(m)
     ex   DE, HL         ; 1:4       25 do_485(m)
 do485:                  ;           25 do_485(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      512 +loop_485(m)
 idx485 EQU $+1          ;           512 +loop_485(m)
@@ -12955,10 +12917,10 @@ stp_hi485 EQU $+1       ;           512 +loop_485(m)
     add  HL, BC         ; 1:11      512 +loop_485(m) HL = stop-index
     xor   H             ; 1:4       512 +loop_485(m)
     pop  HL             ; 1:10      512 +loop_485(m)
-    jp    p, do485      ; 3:10      512 +loop_485(m) negative step
+    jp    p, do485      ; 3:10      512 +loop_485(m)
 leave485:               ;           512 +loop_485(m)
 exit485:                ;           512 +loop_485(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string486 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
@@ -12977,7 +12939,7 @@ exit485:                ;           512 +loop_485(m)
     pop  HL             ; 1:10      -15 do_486(m)
     ex   DE, HL         ; 1:4       -15 do_486(m)
 do486:                  ;           -15 do_486(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_486(m)
 idx486 EQU $+1          ;           3 +loop_486(m)
@@ -12996,10 +12958,10 @@ stp_hi486 EQU $+1       ;           3 +loop_486(m)
     add  HL, BC         ; 1:11      3 +loop_486(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_486(m)
     pop  HL             ; 1:10      3 +loop_486(m)
-    jp    p, do486      ; 3:10      3 +loop_486(m) negative step
+    jp    p, do486      ; 3:10      3 +loop_486(m)
 leave486:               ;           3 +loop_486(m)
 exit486:                ;           3 +loop_486(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string487 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
@@ -13018,7 +12980,7 @@ exit486:                ;           3 +loop_486(m)
     pop  HL             ; 1:10      -29 do_487(m)
     ex   DE, HL         ; 1:4       -29 do_487(m)
 do487:                  ;           -29 do_487(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_487(m)
 idx487 EQU $+1          ;           7 +loop_487(m)
@@ -13037,10 +12999,10 @@ stp_hi487 EQU $+1       ;           7 +loop_487(m)
     add  HL, BC         ; 1:11      7 +loop_487(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_487(m)
     pop  HL             ; 1:10      7 +loop_487(m)
-    jp    p, do487      ; 3:10      7 +loop_487(m) negative step
+    jp    p, do487      ; 3:10      7 +loop_487(m)
 leave487:               ;           7 +loop_487(m)
 exit487:                ;           7 +loop_487(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string488 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -13059,7 +13021,7 @@ exit487:                ;           7 +loop_487(m)
     pop  HL             ; 1:10      227 do_488(m)
     ex   DE, HL         ; 1:4       227 do_488(m)
 do488:                  ;           227 do_488(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_488(m)
 idx488 EQU $+1          ;           7 +loop_488(m)
@@ -13078,10 +13040,10 @@ stp_hi488 EQU $+1       ;           7 +loop_488(m)
     add  HL, BC         ; 1:11      7 +loop_488(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_488(m)
     pop  HL             ; 1:10      7 +loop_488(m)
-    jp    p, do488      ; 3:10      7 +loop_488(m) negative step
+    jp    p, do488      ; 3:10      7 +loop_488(m)
 leave488:               ;           7 +loop_488(m)
 exit488:                ;           7 +loop_488(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string489 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
@@ -13100,7 +13062,7 @@ exit488:                ;           7 +loop_488(m)
     pop  HL             ; 1:10      -23 do_489(m)
     ex   DE, HL         ; 1:4       -23 do_489(m)
 do489:                  ;           -23 do_489(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_489(m)
 idx489 EQU $+1          ;           7 +loop_489(m)
@@ -13119,10 +13081,10 @@ stp_hi489 EQU $+1       ;           7 +loop_489(m)
     add  HL, BC         ; 1:11      7 +loop_489(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_489(m)
     pop  HL             ; 1:10      7 +loop_489(m)
-    jp    p, do489      ; 3:10      7 +loop_489(m) negative step
+    jp    p, do489      ; 3:10      7 +loop_489(m)
 leave489:               ;           7 +loop_489(m)
 exit489:                ;           7 +loop_489(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string490 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
@@ -13141,7 +13103,7 @@ exit489:                ;           7 +loop_489(m)
     pop  HL             ; 1:10      -1485 do_490(m)
     ex   DE, HL         ; 1:4       -1485 do_490(m)
 do490:                  ;           -1485 do_490(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      345 +loop_490(m)
 idx490 EQU $+1          ;           345 +loop_490(m)
@@ -13160,15 +13122,15 @@ stp_hi490 EQU $+1       ;           345 +loop_490(m)
     add  HL, BC         ; 1:11      345 +loop_490(m) HL = stop-index
     xor   H             ; 1:4       345 +loop_490(m)
     pop  HL             ; 1:10      345 +loop_490(m)
-    jp    p, do490      ; 3:10      345 +loop_490(m) negative step
+    jp    p, do490      ; 3:10      345 +loop_490(m)
 leave490:               ;           345 +loop_490(m)
 exit490:                ;           345 +loop_490(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string491 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -13209,7 +13171,7 @@ stp_hi491 EQU $+1       ;           4 +loop_491(m)
     add  HL, BC         ; 1:11      4 +loop_491(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_491(m)
     pop  HL             ; 1:10      4 +loop_491(m)
-    jp    p, do491      ; 3:10      4 +loop_491(m) negative step
+    jp    p, do491      ; 3:10      4 +loop_491(m)
 leave491:               ;           4 +loop_491(m)
 exit491:                ;           4 +loop_491(m)
     call _show          ; 3:17      call ( -- )
@@ -13230,7 +13192,7 @@ exit491:                ;           4 +loop_491(m)
     pop  HL             ; 1:10      33 do_492(m)
     ex   DE, HL         ; 1:4       33 do_492(m)
 do492:                  ;           33 do_492(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      300 +loop_492(m)
 idx492 EQU $+1          ;           300 +loop_492(m)
@@ -13249,10 +13211,10 @@ stp_hi492 EQU $+1       ;           300 +loop_492(m)
     add  HL, BC         ; 1:11      300 +loop_492(m) HL = stop-index
     xor   H             ; 1:4       300 +loop_492(m)
     pop  HL             ; 1:10      300 +loop_492(m)
-    jp    p, do492      ; 3:10      300 +loop_492(m) negative step
+    jp    p, do492      ; 3:10      300 +loop_492(m)
 leave492:               ;           300 +loop_492(m)
 exit492:                ;           300 +loop_492(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string493 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -13271,7 +13233,7 @@ exit492:                ;           300 +loop_492(m)
     pop  HL             ; 1:10      1019 do_493(m)
     ex   DE, HL         ; 1:4       1019 do_493(m)
 do493:                  ;           1019 do_493(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_493(m)
 idx493 EQU $+1          ;           3 +loop_493(m)
@@ -13290,15 +13252,15 @@ stp_hi493 EQU $+1       ;           3 +loop_493(m)
     add  HL, BC         ; 1:11      3 +loop_493(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_493(m)
     pop  HL             ; 1:10      3 +loop_493(m)
-    jp    p, do493      ; 3:10      3 +loop_493(m) negative step
+    jp    p, do493      ; 3:10      3 +loop_493(m)
 leave493:               ;           3 +loop_493(m)
 exit493:                ;           3 +loop_493(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string494 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -13339,7 +13301,7 @@ stp_hi494 EQU $+1       ;           4 +loop_494(m)
     add  HL, BC         ; 1:11      4 +loop_494(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_494(m)
     pop  HL             ; 1:10      4 +loop_494(m)
-    jp    p, do494      ; 3:10      4 +loop_494(m) negative step
+    jp    p, do494      ; 3:10      4 +loop_494(m)
 leave494:               ;           4 +loop_494(m)
 exit494:                ;           4 +loop_494(m)
     call _show          ; 3:17      call ( -- )
@@ -13353,7 +13315,7 @@ exit494:                ;           4 +loop_494(m)
 do495save:              ;           13 0 swap do_495(xm)
     ld  (idx495),BC     ; 4:20      13 0 swap do_495(xm)
 do495:                  ;           13 0 swap do_495(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:66/46] -3 +loop_495(xm)   variant -X.A: step -3 and stop 0, run 5x
 idx495 EQU $+1          ;           -3 +loop_495(xm)   idx always points to a 16-bit index
@@ -13366,7 +13328,7 @@ idx495 EQU $+1          ;           -3 +loop_495(xm)   idx always points to a 16
     jp   nc, do495save  ; 3:10      -3 +loop_495(xm)   carry if postivie index -> negative index
 leave495:               ;           -3 +loop_495(xm)
 exit495:                ;           -3 +loop_495(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string496 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -13374,7 +13336,7 @@ exit495:                ;           -3 +loop_495(xm)
 do496save:              ;           43 0 swap do_496(xm)
     ld  (idx496),BC     ; 4:20      43 0 swap do_496(xm)
 do496:                  ;           43 0 swap do_496(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] -10 +loop_496(xm)   variant -X.B: negative step and stop 0, run 5x
 idx496 EQU $+1          ;           -10 +loop_496(xm)   idx always points to a 16-bit index
@@ -13388,7 +13350,7 @@ idx496 EQU $+1          ;           -10 +loop_496(xm)   idx always points to a 1
     jp   nc, do496save  ; 3:10      -10 +loop_496(xm)   carry if postivie index -> negative index
 leave496:               ;           -10 +loop_496(xm)
 exit496:                ;           -10 +loop_496(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string497 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -13396,7 +13358,7 @@ exit496:                ;           -10 +loop_496(xm)
 do497save:              ;           671 510 swap do_497(xm)
     ld  (idx497),BC     ; 4:20      671 510 swap do_497(xm)
 do497:                  ;           671 510 swap do_497(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[17:55/60] -33 +loop_497(xm)   variant +X.C: negative step 3..255 and hi(real_stop) exclusivity, run 5x
@@ -13412,7 +13374,7 @@ idx497 EQU $+1          ;           -33 +loop_497(xm)   idx always points to a 1
     jp   nz, do497save  ; 3:10      -33 +loop_497(xm)
 leave497:               ;           -33 +loop_497(xm)
 exit497:                ;           -33 +loop_497(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string498 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
@@ -13420,7 +13382,7 @@ exit497:                ;           -33 +loop_497(xm)
 do498save:              ;           50 -1160 swap do_498(xm)
     ld  (idx498),BC     ; 4:20      50 -1160 swap do_498(xm)
 do498:                  ;           50 -1160 swap do_498(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[16:77/57] -300 +loop_498(xm)   variant +X.D: negative step 256+ and hi(real_stop) exclusivity, run 5x
@@ -13436,12 +13398,12 @@ idx498 EQU $+1          ;           -300 +loop_498(xm)   idx always points to a 
     jp   nz, do498save  ; 3:10      -300 +loop_498(xm)
 leave498:               ;           -300 +loop_498(xm)
 exit498:                ;           -300 +loop_498(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string499 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 7027 30 swap 2drop
-    push DE             ; 1:11      0 0 7027 30 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 7027 30 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 7027 30 swap 2drop
     push HL             ; 1:11      0 0 7027 30 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 7027 30 swap 2drop
     ld    L, D          ; 1:4       0 0 7027 30 swap 2drop   L = D = 0x00
@@ -13472,8 +13434,8 @@ exit499:                ;           -7 +loop_499(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string500 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 6927 -70 swap 2drop
-    push DE             ; 1:11      0 0 6927 -70 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 6927 -70 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 6927 -70 swap 2drop
     push HL             ; 1:11      0 0 6927 -70 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 6927 -70 swap 2drop
     ld    L, D          ; 1:4       0 0 6927 -70 swap 2drop   L = D = 0x00
@@ -13510,7 +13472,7 @@ exit500:                ;           -7 +loop_500(xm)
 do501save:              ;           10 25 swap do_501(xm)
     ld  (idx501),BC     ; 4:20      10 25 swap do_501(xm)
 do501:                  ;           10 25 swap do_501(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    3 +loop_501(xm)   variant +X.A: positive step and 0 <= index < stop < 256, run 5x
 idx501 EQU $+1          ;           3 +loop_501(xm)   idx always points to a 16-bit index
@@ -13522,7 +13484,7 @@ idx501 EQU $+1          ;           3 +loop_501(xm)   idx always points to a 16-
     jp   nz, do501      ; 3:10      3 +loop_501(xm)
 leave501:               ;           3 +loop_501(xm)
 exit501:                ;           3 +loop_501(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string502 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -13530,7 +13492,7 @@ exit501:                ;           3 +loop_501(xm)
 do502save:              ;           0xC601 0xC610 swap do_502(xm)
     ld  (idx502),BC     ; 4:20      0xC601 0xC610 swap do_502(xm)
 do502:                  ;           0xC601 0xC610 swap do_502(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:44]    3 +loop_502(xm)   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run 5x
 idx502 EQU $+1          ;           3 +loop_502(xm)   idx always points to a 16-bit index
@@ -13541,7 +13503,7 @@ idx502 EQU $+1          ;           3 +loop_502(xm)   idx always points to a 16-
     jp   nz, do502      ; 3:10      3 +loop_502(xm)
 leave502:               ;           3 +loop_502(xm)
 exit502:                ;           3 +loop_502(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string503 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -13549,7 +13511,7 @@ exit502:                ;           3 +loop_502(xm)
 do503save:              ;           25 2500 swap do_503(xm)
     ld  (idx503),BC     ; 4:20      25 2500 swap do_503(xm)
 do503:                  ;           25 2500 swap do_503(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:51]    512 +loop_503(xm)   variant +X.C: positive step = n*256, run 5x
 idx503 EQU $+1          ;           512 +loop_503(xm)   idx always points to a 16-bit index
@@ -13561,7 +13523,7 @@ idx503 EQU $+1          ;           512 +loop_503(xm)   idx always points to a 1
     jp   nz, do503      ; 3:10      512 +loop_503(xm)
 leave503:               ;           512 +loop_503(xm)
 exit503:                ;           512 +loop_503(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string504 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
@@ -13569,7 +13531,7 @@ exit503:                ;           512 +loop_503(xm)
 do504save:              ;           -15 0 swap do_504(xm)
     ld  (idx504),BC     ; 4:20      -15 0 swap do_504(xm)
 do504:                  ;           -15 0 swap do_504(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 3 +loop_504(xm)   variant +X.D: positive step 3..255 and stop 0, run 5x
 idx504 EQU $+1          ;           3 +loop_504(xm)   idx always points to a 16-bit index
@@ -13582,7 +13544,7 @@ idx504 EQU $+1          ;           3 +loop_504(xm)   idx always points to a 16-
     jp   nc, do504save  ; 3:10      3 +loop_504(xm)
 leave504:               ;           3 +loop_504(xm)
 exit504:                ;           3 +loop_504(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string505 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
@@ -13590,7 +13552,7 @@ exit504:                ;           3 +loop_504(xm)
 do505save:              ;           -29 5 swap do_505(xm)
     ld  (idx505),BC     ; 4:20      -29 5 swap do_505(xm)
 do505:                  ;           -29 5 swap do_505(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 7 +loop_505(xm)   variant +X.E: positive step 3..255 and hi(real_stop) = exclusivity zero, run 5x
 idx505 EQU $+1          ;           7 +loop_505(xm)   idx always points to a 16-bit index
@@ -13603,7 +13565,7 @@ idx505 EQU $+1          ;           7 +loop_505(xm)   idx always points to a 16-
     jp   nz, do505save  ; 3:10      7 +loop_505(xm)
 leave505:               ;           7 +loop_505(xm)
 exit505:                ;           7 +loop_505(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string506 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -13611,7 +13573,7 @@ exit505:                ;           7 +loop_505(xm)
 do506save:              ;           227 260 swap do_506(xm)
     ld  (idx506),BC     ; 4:20      227 260 swap do_506(xm)
 do506:                  ;           227 260 swap do_506(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[17:55/60] 7 +loop_506(xm)   variant +X.F: positive step 3..255 and hi(real_stop) exclusivity, run 5x
 idx506 EQU $+1          ;           7 +loop_506(xm)   idx always points to a 16-bit index
@@ -13626,7 +13588,7 @@ idx506 EQU $+1          ;           7 +loop_506(xm)   idx always points to a 16-
     jp   nz, do506save  ; 3:10      7 +loop_506(xm)
 leave506:               ;           7 +loop_506(xm)
 exit506:                ;           7 +loop_506(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string507 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
@@ -13634,7 +13596,7 @@ exit506:                ;           7 +loop_506(xm)
 do507save:              ;           -23 10 swap do_507(xm)
     ld  (idx507),BC     ; 4:20      -23 10 swap do_507(xm)
 do507:                  ;           -23 10 swap do_507(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[19:67/68] 7 +loop_507(xm)   variant +X.G: positive step 3..255 and real_stop 0..255, run 5x
 idx507 EQU $+1          ;           7 +loop_507(xm)   idx always points to a 16-bit index
@@ -13651,7 +13613,7 @@ idx507 EQU $+1          ;           7 +loop_507(xm)   idx always points to a 16-
     jp   nz, do507save  ; 3:10      7 +loop_507(xm)
 leave507:               ;           7 +loop_507(xm)
 exit507:                ;           7 +loop_507(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string508 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
@@ -13659,7 +13621,7 @@ exit507:                ;           7 +loop_507(xm)
 do508save:              ;           -1485 230 swap do_508(xm)
     ld  (idx508),BC     ; 4:20      -1485 230 swap do_508(xm)
 do508:                  ;           -1485 230 swap do_508(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] 345 +loop_508(xm)   variant +X.H: positive step 256+ and hi(real_stop) exclusivity zero, run 5x
 idx508 EQU $+1          ;           345 +loop_508(xm)   idx always points to a 16-bit index
@@ -13673,12 +13635,12 @@ idx508 EQU $+1          ;           345 +loop_508(xm)   idx always points to a 1
     jp   nz, do508save  ; 3:10      345 +loop_508(xm)
 leave508:               ;           345 +loop_508(xm)
 exit508:                ;           345 +loop_508(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string509 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 516 4516 swap 2drop
-    push DE             ; 1:11      0 0 516 4516 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 516 4516 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 516 4516 swap 2drop
     push HL             ; 1:11      0 0 516 4516 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 516 4516 swap 2drop
     ld    L, D          ; 1:4       0 0 516 4516 swap 2drop   L = D = 0x00
@@ -13714,7 +13676,7 @@ exit509:                ;           4 +loop_509(xm)
 do510save:              ;           33 1234 swap do_510(xm)
     ld  (idx510),BC     ; 4:20      33 1234 swap do_510(xm)
 do510:                  ;           33 1234 swap do_510(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:77/57] 300 +loop_510(xm)   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 5x
 idx510 EQU $+1          ;           300 +loop_510(xm)   idx always points to a 16-bit index
@@ -13729,7 +13691,7 @@ idx510 EQU $+1          ;           300 +loop_510(xm)   idx always points to a 1
     jp   nz, do510save  ; 3:10      300 +loop_510(xm)
 leave510:               ;           300 +loop_510(xm)
 exit510:                ;           300 +loop_510(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string511 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -13737,7 +13699,7 @@ exit510:                ;           300 +loop_510(xm)
 do511save:              ;           1019 1034 swap do_511(xm)
     ld  (idx511),BC     ; 4:20      1019 1034 swap do_511(xm)
 do511:                  ;           1019 1034 swap do_511(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:78/58] 3 +loop_511(xm)   variant +X.K : positive step 3..255 and lo(real_stop) exclusivity, run 5x
 idx511 EQU $+1          ;           3 +loop_511(xm)   idx always points to a 16-bit index
@@ -13753,12 +13715,12 @@ idx511 EQU $+1          ;           3 +loop_511(xm)   idx always points to a 16-
     jp   nz, do511save  ; 3:10      3 +loop_511(xm)
 leave511:               ;           3 +loop_511(xm)
 exit511:                ;           3 +loop_511(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string512 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 100 500 swap 2drop
-    push DE             ; 1:11      0 0 100 500 swap 2drop   ( -- 0 0 )
+                        ;[7:40]     0 0 100 500 swap 2drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 100 500 swap 2drop
     push HL             ; 1:11      0 0 100 500 swap 2drop
     ld   DE, 0x0000     ; 3:10      0 0 100 500 swap 2drop
     ld    L, D          ; 1:4       0 0 100 500 swap 2drop   L = D = 0x00
@@ -13803,7 +13765,7 @@ exit512:                ;           4 +loop_512(xm)
     pop  HL             ; 1:10      0 swap do_513(m)
     ex   DE, HL         ; 1:4       0 swap do_513(m)
 do513:                  ;           0 swap do_513(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -3 +loop_513(m)
 idx513 EQU $+1          ;           -3 +loop_513(m)
@@ -13812,20 +13774,20 @@ idx513 EQU $+1          ;           -3 +loop_513(m)
     add  HL, BC         ; 1:11      -3 +loop_513(m) HL = index+step
     ld  (idx513), HL    ; 3:16      -3 +loop_513(m) save index
 stp_lo513 EQU $+1       ;           -3 +loop_513(m)
-    ld    A, low 0xFFFF+(0); 2:7       -3 +loop_513(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       -3 +loop_513(m)   lo stop-1
     sub   L             ; 1:4       -3 +loop_513(m)
     ld    L, A          ; 1:4       -3 +loop_513(m)
 stp_hi513 EQU $+1       ;           -3 +loop_513(m)
-    ld    A, high 0xFFFF+(0); 2:7       -3 +loop_513(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       -3 +loop_513(m)   hi stop-1
     sbc   A, H          ; 1:4       -3 +loop_513(m)
     ld    H, A          ; 1:4       -3 +loop_513(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -3 +loop_513(m) HL = stop-index
     xor   H             ; 1:4       -3 +loop_513(m)
     pop  HL             ; 1:10      -3 +loop_513(m)
-    jp    p, do513      ; 3:10      -3 +loop_513(m) negative step
+    jp    p, do513      ; 3:10      -3 +loop_513(m)
 leave513:               ;           -3 +loop_513(m)
 exit513:                ;           -3 +loop_513(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string514 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -13837,7 +13799,7 @@ exit513:                ;           -3 +loop_513(m)
     pop  HL             ; 1:10      0 swap do_514(m)
     ex   DE, HL         ; 1:4       0 swap do_514(m)
 do514:                  ;           0 swap do_514(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -10 +loop_514(m)
 idx514 EQU $+1          ;           -10 +loop_514(m)
@@ -13846,20 +13808,20 @@ idx514 EQU $+1          ;           -10 +loop_514(m)
     add  HL, BC         ; 1:11      -10 +loop_514(m) HL = index+step
     ld  (idx514), HL    ; 3:16      -10 +loop_514(m) save index
 stp_lo514 EQU $+1       ;           -10 +loop_514(m)
-    ld    A, low 0xFFFF+(0); 2:7       -10 +loop_514(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       -10 +loop_514(m)   lo stop-1
     sub   L             ; 1:4       -10 +loop_514(m)
     ld    L, A          ; 1:4       -10 +loop_514(m)
 stp_hi514 EQU $+1       ;           -10 +loop_514(m)
-    ld    A, high 0xFFFF+(0); 2:7       -10 +loop_514(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       -10 +loop_514(m)   hi stop-1
     sbc   A, H          ; 1:4       -10 +loop_514(m)
     ld    H, A          ; 1:4       -10 +loop_514(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -10 +loop_514(m) HL = stop-index
     xor   H             ; 1:4       -10 +loop_514(m)
     pop  HL             ; 1:10      -10 +loop_514(m)
-    jp    p, do514      ; 3:10      -10 +loop_514(m) negative step
+    jp    p, do514      ; 3:10      -10 +loop_514(m)
 leave514:               ;           -10 +loop_514(m)
 exit514:                ;           -10 +loop_514(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string515 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -13871,7 +13833,7 @@ exit514:                ;           -10 +loop_514(m)
     pop  HL             ; 1:10      510 swap do_515(m)
     ex   DE, HL         ; 1:4       510 swap do_515(m)
 do515:                  ;           510 swap do_515(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -33 +loop_515(m)
 idx515 EQU $+1          ;           -33 +loop_515(m)
@@ -13880,20 +13842,20 @@ idx515 EQU $+1          ;           -33 +loop_515(m)
     add  HL, BC         ; 1:11      -33 +loop_515(m) HL = index+step
     ld  (idx515), HL    ; 3:16      -33 +loop_515(m) save index
 stp_lo515 EQU $+1       ;           -33 +loop_515(m)
-    ld    A, low 0xFFFF+(510); 2:7       -33 +loop_515(m)   lo stop-1
+    ld    A, low +(510)-1; 2:7       -33 +loop_515(m)   lo stop-1
     sub   L             ; 1:4       -33 +loop_515(m)
     ld    L, A          ; 1:4       -33 +loop_515(m)
 stp_hi515 EQU $+1       ;           -33 +loop_515(m)
-    ld    A, high 0xFFFF+(510); 2:7       -33 +loop_515(m)   hi stop-1
+    ld    A, high +(510)-1; 2:7       -33 +loop_515(m)   hi stop-1
     sbc   A, H          ; 1:4       -33 +loop_515(m)
     ld    H, A          ; 1:4       -33 +loop_515(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -33 +loop_515(m) HL = stop-index
     xor   H             ; 1:4       -33 +loop_515(m)
     pop  HL             ; 1:10      -33 +loop_515(m)
-    jp    p, do515      ; 3:10      -33 +loop_515(m) negative step
+    jp    p, do515      ; 3:10      -33 +loop_515(m)
 leave515:               ;           -33 +loop_515(m)
 exit515:                ;           -33 +loop_515(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string516 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
@@ -13905,7 +13867,7 @@ exit515:                ;           -33 +loop_515(m)
     pop  HL             ; 1:10      -1160 swap do_516(m)
     ex   DE, HL         ; 1:4       -1160 swap do_516(m)
 do516:                  ;           -1160 swap do_516(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -300 +loop_516(m)
 idx516 EQU $+1          ;           -300 +loop_516(m)
@@ -13914,26 +13876,26 @@ idx516 EQU $+1          ;           -300 +loop_516(m)
     add  HL, BC         ; 1:11      -300 +loop_516(m) HL = index+step
     ld  (idx516), HL    ; 3:16      -300 +loop_516(m) save index
 stp_lo516 EQU $+1       ;           -300 +loop_516(m)
-    ld    A, low 0xFFFF+(-1160); 2:7       -300 +loop_516(m)   lo stop-1
+    ld    A, low +(-1160)-1; 2:7       -300 +loop_516(m)   lo stop-1
     sub   L             ; 1:4       -300 +loop_516(m)
     ld    L, A          ; 1:4       -300 +loop_516(m)
 stp_hi516 EQU $+1       ;           -300 +loop_516(m)
-    ld    A, high 0xFFFF+(-1160); 2:7       -300 +loop_516(m)   hi stop-1
+    ld    A, high +(-1160)-1; 2:7       -300 +loop_516(m)   hi stop-1
     sbc   A, H          ; 1:4       -300 +loop_516(m)
     ld    H, A          ; 1:4       -300 +loop_516(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -300 +loop_516(m) HL = stop-index
     xor   H             ; 1:4       -300 +loop_516(m)
     pop  HL             ; 1:10      -300 +loop_516(m)
-    jp    p, do516      ; 3:10      -300 +loop_516(m) negative step
+    jp    p, do516      ; 3:10      -300 +loop_516(m)
 leave516:               ;           -300 +loop_516(m)
 exit516:                ;           -300 +loop_516(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string517 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 7027   ( -- 0 0 7027 )
+    push DE             ; 1:11      0 0 7027   ( -- 0 0 7027 ) push3.m3
     push HL             ; 1:11      0 0 7027
-    ld   DE, 0          ; 3:10      0 0 7027
+    ld   DE, 0x0000     ; 3:10      0 0 7027
     push DE             ; 1:11      0 0 7027
     ld   HL, 0x1B73     ; 3:10      0 0 7027
 
@@ -13952,25 +13914,25 @@ idx517 EQU $+1          ;           -7 +loop_517(m)
     add  HL, BC         ; 1:11      -7 +loop_517(m) HL = index+step
     ld  (idx517), HL    ; 3:16      -7 +loop_517(m) save index
 stp_lo517 EQU $+1       ;           -7 +loop_517(m)
-    ld    A, low 0xFFFF+(30); 2:7       -7 +loop_517(m)   lo stop-1
+    ld    A, low +(30)-1; 2:7       -7 +loop_517(m)   lo stop-1
     sub   L             ; 1:4       -7 +loop_517(m)
     ld    L, A          ; 1:4       -7 +loop_517(m)
 stp_hi517 EQU $+1       ;           -7 +loop_517(m)
-    ld    A, high 0xFFFF+(30); 2:7       -7 +loop_517(m)   hi stop-1
+    ld    A, high +(30)-1; 2:7       -7 +loop_517(m)   hi stop-1
     sbc   A, H          ; 1:4       -7 +loop_517(m)
     ld    H, A          ; 1:4       -7 +loop_517(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -7 +loop_517(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_517(m)
     pop  HL             ; 1:10      -7 +loop_517(m)
-    jp    p, do517      ; 3:10      -7 +loop_517(m) negative step
+    jp    p, do517      ; 3:10      -7 +loop_517(m)
 leave517:               ;           -7 +loop_517(m)
 exit517:                ;           -7 +loop_517(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string518 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 6927   ( -- 0 0 6927 )
+    push DE             ; 1:11      0 0 6927   ( -- 0 0 6927 ) push3.m3
     push HL             ; 1:11      0 0 6927
-    ld   DE, 0          ; 3:10      0 0 6927
+    ld   DE, 0x0000     ; 3:10      0 0 6927
     push DE             ; 1:11      0 0 6927
     ld   HL, 0x1B0F     ; 3:10      0 0 6927
 
@@ -13989,17 +13951,17 @@ idx518 EQU $+1          ;           -7 +loop_518(m)
     add  HL, BC         ; 1:11      -7 +loop_518(m) HL = index+step
     ld  (idx518), HL    ; 3:16      -7 +loop_518(m) save index
 stp_lo518 EQU $+1       ;           -7 +loop_518(m)
-    ld    A, low 0xFFFF+(-70); 2:7       -7 +loop_518(m)   lo stop-1
+    ld    A, low +(-70)-1; 2:7       -7 +loop_518(m)   lo stop-1
     sub   L             ; 1:4       -7 +loop_518(m)
     ld    L, A          ; 1:4       -7 +loop_518(m)
 stp_hi518 EQU $+1       ;           -7 +loop_518(m)
-    ld    A, high 0xFFFF+(-70); 2:7       -7 +loop_518(m)   hi stop-1
+    ld    A, high +(-70)-1; 2:7       -7 +loop_518(m)   hi stop-1
     sbc   A, H          ; 1:4       -7 +loop_518(m)
     ld    H, A          ; 1:4       -7 +loop_518(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -7 +loop_518(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_518(m)
     pop  HL             ; 1:10      -7 +loop_518(m)
-    jp    p, do518      ; 3:10      -7 +loop_518(m) negative step
+    jp    p, do518      ; 3:10      -7 +loop_518(m)
 leave518:               ;           -7 +loop_518(m)
 exit518:                ;           -7 +loop_518(m)
     call _show          ; 3:17      call ( -- )
@@ -14013,7 +13975,7 @@ exit518:                ;           -7 +loop_518(m)
     pop  HL             ; 1:10      25 swap do_519(m)
     ex   DE, HL         ; 1:4       25 swap do_519(m)
 do519:                  ;           25 swap do_519(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_519(m)
 idx519 EQU $+1          ;           3 +loop_519(m)
@@ -14022,20 +13984,20 @@ idx519 EQU $+1          ;           3 +loop_519(m)
     add  HL, BC         ; 1:11      3 +loop_519(m) HL = index+step
     ld  (idx519), HL    ; 3:16      3 +loop_519(m) save index
 stp_lo519 EQU $+1       ;           3 +loop_519(m)
-    ld    A, low 0xFFFF+(25); 2:7       3 +loop_519(m)   lo stop-1
+    ld    A, low +(25)-1; 2:7       3 +loop_519(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_519(m)
     ld    L, A          ; 1:4       3 +loop_519(m)
 stp_hi519 EQU $+1       ;           3 +loop_519(m)
-    ld    A, high 0xFFFF+(25); 2:7       3 +loop_519(m)   hi stop-1
+    ld    A, high +(25)-1; 2:7       3 +loop_519(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_519(m)
     ld    H, A          ; 1:4       3 +loop_519(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_519(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_519(m)
     pop  HL             ; 1:10      3 +loop_519(m)
-    jp    p, do519      ; 3:10      3 +loop_519(m) negative step
+    jp    p, do519      ; 3:10      3 +loop_519(m)
 leave519:               ;           3 +loop_519(m)
 exit519:                ;           3 +loop_519(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string520 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -14047,7 +14009,7 @@ exit519:                ;           3 +loop_519(m)
     pop  HL             ; 1:10      0xC610 swap do_520(m)
     ex   DE, HL         ; 1:4       0xC610 swap do_520(m)
 do520:                  ;           0xC610 swap do_520(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_520(m)
 idx520 EQU $+1          ;           3 +loop_520(m)
@@ -14056,20 +14018,20 @@ idx520 EQU $+1          ;           3 +loop_520(m)
     add  HL, BC         ; 1:11      3 +loop_520(m) HL = index+step
     ld  (idx520), HL    ; 3:16      3 +loop_520(m) save index
 stp_lo520 EQU $+1       ;           3 +loop_520(m)
-    ld    A, low 0xFFFF+(0xC610); 2:7       3 +loop_520(m)   lo stop-1
+    ld    A, low +(0xC610)-1; 2:7       3 +loop_520(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_520(m)
     ld    L, A          ; 1:4       3 +loop_520(m)
 stp_hi520 EQU $+1       ;           3 +loop_520(m)
-    ld    A, high 0xFFFF+(0xC610); 2:7       3 +loop_520(m)   hi stop-1
+    ld    A, high +(0xC610)-1; 2:7       3 +loop_520(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_520(m)
     ld    H, A          ; 1:4       3 +loop_520(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_520(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_520(m)
     pop  HL             ; 1:10      3 +loop_520(m)
-    jp    p, do520      ; 3:10      3 +loop_520(m) negative step
+    jp    p, do520      ; 3:10      3 +loop_520(m)
 leave520:               ;           3 +loop_520(m)
 exit520:                ;           3 +loop_520(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string521 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -14081,7 +14043,7 @@ exit520:                ;           3 +loop_520(m)
     pop  HL             ; 1:10      2500 swap do_521(m)
     ex   DE, HL         ; 1:4       2500 swap do_521(m)
 do521:                  ;           2500 swap do_521(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      512 +loop_521(m)
 idx521 EQU $+1          ;           512 +loop_521(m)
@@ -14090,32 +14052,32 @@ idx521 EQU $+1          ;           512 +loop_521(m)
     add  HL, BC         ; 1:11      512 +loop_521(m) HL = index+step
     ld  (idx521), HL    ; 3:16      512 +loop_521(m) save index
 stp_lo521 EQU $+1       ;           512 +loop_521(m)
-    ld    A, low 0xFFFF+(2500); 2:7       512 +loop_521(m)   lo stop-1
+    ld    A, low +(2500)-1; 2:7       512 +loop_521(m)   lo stop-1
     sub   L             ; 1:4       512 +loop_521(m)
     ld    L, A          ; 1:4       512 +loop_521(m)
 stp_hi521 EQU $+1       ;           512 +loop_521(m)
-    ld    A, high 0xFFFF+(2500); 2:7       512 +loop_521(m)   hi stop-1
+    ld    A, high +(2500)-1; 2:7       512 +loop_521(m)   hi stop-1
     sbc   A, H          ; 1:4       512 +loop_521(m)
     ld    H, A          ; 1:4       512 +loop_521(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      512 +loop_521(m) HL = stop-index
     xor   H             ; 1:4       512 +loop_521(m)
     pop  HL             ; 1:10      512 +loop_521(m)
-    jp    p, do521      ; 3:10      512 +loop_521(m) negative step
+    jp    p, do521      ; 3:10      512 +loop_521(m)
 leave521:               ;           512 +loop_521(m)
 exit521:                ;           512 +loop_521(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string522 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -15
     ex   DE, HL         ; 1:4       -15
-    ld   HL, -15        ; 3:10      -15
+    ld   HL, 0-15       ; 3:10      -15
 
     ld  (idx522), HL    ; 3:16      0 swap do_522(m)   ( 0 index -- )
     pop  HL             ; 1:10      0 swap do_522(m)
     ex   DE, HL         ; 1:4       0 swap do_522(m)
 do522:                  ;           0 swap do_522(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_522(m)
 idx522 EQU $+1          ;           3 +loop_522(m)
@@ -14124,32 +14086,32 @@ idx522 EQU $+1          ;           3 +loop_522(m)
     add  HL, BC         ; 1:11      3 +loop_522(m) HL = index+step
     ld  (idx522), HL    ; 3:16      3 +loop_522(m) save index
 stp_lo522 EQU $+1       ;           3 +loop_522(m)
-    ld    A, low 0xFFFF+(0); 2:7       3 +loop_522(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       3 +loop_522(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_522(m)
     ld    L, A          ; 1:4       3 +loop_522(m)
 stp_hi522 EQU $+1       ;           3 +loop_522(m)
-    ld    A, high 0xFFFF+(0); 2:7       3 +loop_522(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       3 +loop_522(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_522(m)
     ld    H, A          ; 1:4       3 +loop_522(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_522(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_522(m)
     pop  HL             ; 1:10      3 +loop_522(m)
-    jp    p, do522      ; 3:10      3 +loop_522(m) negative step
+    jp    p, do522      ; 3:10      3 +loop_522(m)
 leave522:               ;           3 +loop_522(m)
 exit522:                ;           3 +loop_522(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string523 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -29
     ex   DE, HL         ; 1:4       -29
-    ld   HL, -29        ; 3:10      -29
+    ld   HL, 0-29       ; 3:10      -29
 
     ld  (idx523), HL    ; 3:16      5 swap do_523(m)   ( 5 index -- )
     pop  HL             ; 1:10      5 swap do_523(m)
     ex   DE, HL         ; 1:4       5 swap do_523(m)
 do523:                  ;           5 swap do_523(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_523(m)
 idx523 EQU $+1          ;           7 +loop_523(m)
@@ -14158,20 +14120,20 @@ idx523 EQU $+1          ;           7 +loop_523(m)
     add  HL, BC         ; 1:11      7 +loop_523(m) HL = index+step
     ld  (idx523), HL    ; 3:16      7 +loop_523(m) save index
 stp_lo523 EQU $+1       ;           7 +loop_523(m)
-    ld    A, low 0xFFFF+(5); 2:7       7 +loop_523(m)   lo stop-1
+    ld    A, low +(5)-1 ; 2:7       7 +loop_523(m)   lo stop-1
     sub   L             ; 1:4       7 +loop_523(m)
     ld    L, A          ; 1:4       7 +loop_523(m)
 stp_hi523 EQU $+1       ;           7 +loop_523(m)
-    ld    A, high 0xFFFF+(5); 2:7       7 +loop_523(m)   hi stop-1
+    ld    A, high +(5)-1; 2:7       7 +loop_523(m)   hi stop-1
     sbc   A, H          ; 1:4       7 +loop_523(m)
     ld    H, A          ; 1:4       7 +loop_523(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      7 +loop_523(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_523(m)
     pop  HL             ; 1:10      7 +loop_523(m)
-    jp    p, do523      ; 3:10      7 +loop_523(m) negative step
+    jp    p, do523      ; 3:10      7 +loop_523(m)
 leave523:               ;           7 +loop_523(m)
 exit523:                ;           7 +loop_523(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string524 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -14183,7 +14145,7 @@ exit523:                ;           7 +loop_523(m)
     pop  HL             ; 1:10      260 swap do_524(m)
     ex   DE, HL         ; 1:4       260 swap do_524(m)
 do524:                  ;           260 swap do_524(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_524(m)
 idx524 EQU $+1          ;           7 +loop_524(m)
@@ -14192,32 +14154,32 @@ idx524 EQU $+1          ;           7 +loop_524(m)
     add  HL, BC         ; 1:11      7 +loop_524(m) HL = index+step
     ld  (idx524), HL    ; 3:16      7 +loop_524(m) save index
 stp_lo524 EQU $+1       ;           7 +loop_524(m)
-    ld    A, low 0xFFFF+(260); 2:7       7 +loop_524(m)   lo stop-1
+    ld    A, low +(260)-1; 2:7       7 +loop_524(m)   lo stop-1
     sub   L             ; 1:4       7 +loop_524(m)
     ld    L, A          ; 1:4       7 +loop_524(m)
 stp_hi524 EQU $+1       ;           7 +loop_524(m)
-    ld    A, high 0xFFFF+(260); 2:7       7 +loop_524(m)   hi stop-1
+    ld    A, high +(260)-1; 2:7       7 +loop_524(m)   hi stop-1
     sbc   A, H          ; 1:4       7 +loop_524(m)
     ld    H, A          ; 1:4       7 +loop_524(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      7 +loop_524(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_524(m)
     pop  HL             ; 1:10      7 +loop_524(m)
-    jp    p, do524      ; 3:10      7 +loop_524(m) negative step
+    jp    p, do524      ; 3:10      7 +loop_524(m)
 leave524:               ;           7 +loop_524(m)
 exit524:                ;           7 +loop_524(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string525 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -23
     ex   DE, HL         ; 1:4       -23
-    ld   HL, -23        ; 3:10      -23
+    ld   HL, 0-23       ; 3:10      -23
 
     ld  (idx525), HL    ; 3:16      10 swap do_525(m)   ( 10 index -- )
     pop  HL             ; 1:10      10 swap do_525(m)
     ex   DE, HL         ; 1:4       10 swap do_525(m)
 do525:                  ;           10 swap do_525(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_525(m)
 idx525 EQU $+1          ;           7 +loop_525(m)
@@ -14226,32 +14188,32 @@ idx525 EQU $+1          ;           7 +loop_525(m)
     add  HL, BC         ; 1:11      7 +loop_525(m) HL = index+step
     ld  (idx525), HL    ; 3:16      7 +loop_525(m) save index
 stp_lo525 EQU $+1       ;           7 +loop_525(m)
-    ld    A, low 0xFFFF+(10); 2:7       7 +loop_525(m)   lo stop-1
+    ld    A, low +(10)-1; 2:7       7 +loop_525(m)   lo stop-1
     sub   L             ; 1:4       7 +loop_525(m)
     ld    L, A          ; 1:4       7 +loop_525(m)
 stp_hi525 EQU $+1       ;           7 +loop_525(m)
-    ld    A, high 0xFFFF+(10); 2:7       7 +loop_525(m)   hi stop-1
+    ld    A, high +(10)-1; 2:7       7 +loop_525(m)   hi stop-1
     sbc   A, H          ; 1:4       7 +loop_525(m)
     ld    H, A          ; 1:4       7 +loop_525(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      7 +loop_525(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_525(m)
     pop  HL             ; 1:10      7 +loop_525(m)
-    jp    p, do525      ; 3:10      7 +loop_525(m) negative step
+    jp    p, do525      ; 3:10      7 +loop_525(m)
 leave525:               ;           7 +loop_525(m)
 exit525:                ;           7 +loop_525(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string526 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -1485
     ex   DE, HL         ; 1:4       -1485
-    ld   HL, -1485      ; 3:10      -1485
+    ld   HL, 0-1485     ; 3:10      -1485
 
     ld  (idx526), HL    ; 3:16      230 swap do_526(m)   ( 230 index -- )
     pop  HL             ; 1:10      230 swap do_526(m)
     ex   DE, HL         ; 1:4       230 swap do_526(m)
 do526:                  ;           230 swap do_526(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      345 +loop_526(m)
 idx526 EQU $+1          ;           345 +loop_526(m)
@@ -14260,26 +14222,26 @@ idx526 EQU $+1          ;           345 +loop_526(m)
     add  HL, BC         ; 1:11      345 +loop_526(m) HL = index+step
     ld  (idx526), HL    ; 3:16      345 +loop_526(m) save index
 stp_lo526 EQU $+1       ;           345 +loop_526(m)
-    ld    A, low 0xFFFF+(230); 2:7       345 +loop_526(m)   lo stop-1
+    ld    A, low +(230)-1; 2:7       345 +loop_526(m)   lo stop-1
     sub   L             ; 1:4       345 +loop_526(m)
     ld    L, A          ; 1:4       345 +loop_526(m)
 stp_hi526 EQU $+1       ;           345 +loop_526(m)
-    ld    A, high 0xFFFF+(230); 2:7       345 +loop_526(m)   hi stop-1
+    ld    A, high +(230)-1; 2:7       345 +loop_526(m)   hi stop-1
     sbc   A, H          ; 1:4       345 +loop_526(m)
     ld    H, A          ; 1:4       345 +loop_526(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      345 +loop_526(m) HL = stop-index
     xor   H             ; 1:4       345 +loop_526(m)
     pop  HL             ; 1:10      345 +loop_526(m)
-    jp    p, do526      ; 3:10      345 +loop_526(m) negative step
+    jp    p, do526      ; 3:10      345 +loop_526(m)
 leave526:               ;           345 +loop_526(m)
 exit526:                ;           345 +loop_526(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string527 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 516   ( -- 0 0 516 )
+    push DE             ; 1:11      0 0 516   ( -- 0 0 516 ) push3.m3
     push HL             ; 1:11      0 0 516
-    ld   DE, 0          ; 3:10      0 0 516
+    ld   DE, 0x0000     ; 3:10      0 0 516
     push DE             ; 1:11      0 0 516
     ld   HL, 0x0204     ; 3:10      0 0 516
 
@@ -14298,17 +14260,17 @@ idx527 EQU $+1          ;           4 +loop_527(m)
     add  HL, BC         ; 1:11      4 +loop_527(m) HL = index+step
     ld  (idx527), HL    ; 3:16      4 +loop_527(m) save index
 stp_lo527 EQU $+1       ;           4 +loop_527(m)
-    ld    A, low 0xFFFF+(4516); 2:7       4 +loop_527(m)   lo stop-1
+    ld    A, low +(4516)-1; 2:7       4 +loop_527(m)   lo stop-1
     sub   L             ; 1:4       4 +loop_527(m)
     ld    L, A          ; 1:4       4 +loop_527(m)
 stp_hi527 EQU $+1       ;           4 +loop_527(m)
-    ld    A, high 0xFFFF+(4516); 2:7       4 +loop_527(m)   hi stop-1
+    ld    A, high +(4516)-1; 2:7       4 +loop_527(m)   hi stop-1
     sbc   A, H          ; 1:4       4 +loop_527(m)
     ld    H, A          ; 1:4       4 +loop_527(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      4 +loop_527(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_527(m)
     pop  HL             ; 1:10      4 +loop_527(m)
-    jp    p, do527      ; 3:10      4 +loop_527(m) negative step
+    jp    p, do527      ; 3:10      4 +loop_527(m)
 leave527:               ;           4 +loop_527(m)
 exit527:                ;           4 +loop_527(m)
     call _show          ; 3:17      call ( -- )
@@ -14322,7 +14284,7 @@ exit527:                ;           4 +loop_527(m)
     pop  HL             ; 1:10      1234 swap do_528(m)
     ex   DE, HL         ; 1:4       1234 swap do_528(m)
 do528:                  ;           1234 swap do_528(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      300 +loop_528(m)
 idx528 EQU $+1          ;           300 +loop_528(m)
@@ -14331,20 +14293,20 @@ idx528 EQU $+1          ;           300 +loop_528(m)
     add  HL, BC         ; 1:11      300 +loop_528(m) HL = index+step
     ld  (idx528), HL    ; 3:16      300 +loop_528(m) save index
 stp_lo528 EQU $+1       ;           300 +loop_528(m)
-    ld    A, low 0xFFFF+(1234); 2:7       300 +loop_528(m)   lo stop-1
+    ld    A, low +(1234)-1; 2:7       300 +loop_528(m)   lo stop-1
     sub   L             ; 1:4       300 +loop_528(m)
     ld    L, A          ; 1:4       300 +loop_528(m)
 stp_hi528 EQU $+1       ;           300 +loop_528(m)
-    ld    A, high 0xFFFF+(1234); 2:7       300 +loop_528(m)   hi stop-1
+    ld    A, high +(1234)-1; 2:7       300 +loop_528(m)   hi stop-1
     sbc   A, H          ; 1:4       300 +loop_528(m)
     ld    H, A          ; 1:4       300 +loop_528(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      300 +loop_528(m) HL = stop-index
     xor   H             ; 1:4       300 +loop_528(m)
     pop  HL             ; 1:10      300 +loop_528(m)
-    jp    p, do528      ; 3:10      300 +loop_528(m) negative step
+    jp    p, do528      ; 3:10      300 +loop_528(m)
 leave528:               ;           300 +loop_528(m)
 exit528:                ;           300 +loop_528(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string529 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -14356,7 +14318,7 @@ exit528:                ;           300 +loop_528(m)
     pop  HL             ; 1:10      1034 swap do_529(m)
     ex   DE, HL         ; 1:4       1034 swap do_529(m)
 do529:                  ;           1034 swap do_529(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_529(m)
 idx529 EQU $+1          ;           3 +loop_529(m)
@@ -14365,26 +14327,26 @@ idx529 EQU $+1          ;           3 +loop_529(m)
     add  HL, BC         ; 1:11      3 +loop_529(m) HL = index+step
     ld  (idx529), HL    ; 3:16      3 +loop_529(m) save index
 stp_lo529 EQU $+1       ;           3 +loop_529(m)
-    ld    A, low 0xFFFF+(1034); 2:7       3 +loop_529(m)   lo stop-1
+    ld    A, low +(1034)-1; 2:7       3 +loop_529(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_529(m)
     ld    L, A          ; 1:4       3 +loop_529(m)
 stp_hi529 EQU $+1       ;           3 +loop_529(m)
-    ld    A, high 0xFFFF+(1034); 2:7       3 +loop_529(m)   hi stop-1
+    ld    A, high +(1034)-1; 2:7       3 +loop_529(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_529(m)
     ld    H, A          ; 1:4       3 +loop_529(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_529(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_529(m)
     pop  HL             ; 1:10      3 +loop_529(m)
-    jp    p, do529      ; 3:10      3 +loop_529(m) negative step
+    jp    p, do529      ; 3:10      3 +loop_529(m)
 leave529:               ;           3 +loop_529(m)
 exit529:                ;           3 +loop_529(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string530 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 100   ( -- 0 0 100 )
+    push DE             ; 1:11      0 0 100   ( -- 0 0 100 ) push3.m3
     push HL             ; 1:11      0 0 100
-    ld   DE, 0          ; 3:10      0 0 100
+    ld   DE, 0x0000     ; 3:10      0 0 100
     push DE             ; 1:11      0 0 100
     ld   HL, 0x0064     ; 3:10      0 0 100
 
@@ -14403,17 +14365,17 @@ idx530 EQU $+1          ;           4 +loop_530(m)
     add  HL, BC         ; 1:11      4 +loop_530(m) HL = index+step
     ld  (idx530), HL    ; 3:16      4 +loop_530(m) save index
 stp_lo530 EQU $+1       ;           4 +loop_530(m)
-    ld    A, low 0xFFFF+(500); 2:7       4 +loop_530(m)   lo stop-1
+    ld    A, low +(500)-1; 2:7       4 +loop_530(m)   lo stop-1
     sub   L             ; 1:4       4 +loop_530(m)
     ld    L, A          ; 1:4       4 +loop_530(m)
 stp_hi530 EQU $+1       ;           4 +loop_530(m)
-    ld    A, high 0xFFFF+(500); 2:7       4 +loop_530(m)   hi stop-1
+    ld    A, high +(500)-1; 2:7       4 +loop_530(m)   hi stop-1
     sbc   A, H          ; 1:4       4 +loop_530(m)
     ld    H, A          ; 1:4       4 +loop_530(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      4 +loop_530(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_530(m)
     pop  HL             ; 1:10      4 +loop_530(m)
-    jp    p, do530      ; 3:10      4 +loop_530(m) negative step
+    jp    p, do530      ; 3:10      4 +loop_530(m)
 leave530:               ;           4 +loop_530(m)
 exit530:                ;           4 +loop_530(m)
     call _show          ; 3:17      call ( -- )
@@ -14436,7 +14398,7 @@ exit530:                ;           4 +loop_530(m)
     pop  HL             ; 1:10      do_531(m)
     ex   DE, HL         ; 1:4       do_531(m)
 do531:                  ;           do_531(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -3 +loop_531(m)
 idx531 EQU $+1          ;           -3 +loop_531(m)
@@ -14455,10 +14417,10 @@ stp_hi531 EQU $+1       ;           -3 +loop_531(m)
     add  HL, BC         ; 1:11      -3 +loop_531(m) HL = stop-index
     xor   H             ; 1:4       -3 +loop_531(m)
     pop  HL             ; 1:10      -3 +loop_531(m)
-    jp    p, do531      ; 3:10      -3 +loop_531(m) negative step
+    jp    p, do531      ; 3:10      -3 +loop_531(m)
 leave531:               ;           -3 +loop_531(m)
 exit531:                ;           -3 +loop_531(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string532 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -14475,7 +14437,7 @@ exit531:                ;           -3 +loop_531(m)
     pop  HL             ; 1:10      do_532(m)
     ex   DE, HL         ; 1:4       do_532(m)
 do532:                  ;           do_532(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -10 +loop_532(m)
 idx532 EQU $+1          ;           -10 +loop_532(m)
@@ -14494,10 +14456,10 @@ stp_hi532 EQU $+1       ;           -10 +loop_532(m)
     add  HL, BC         ; 1:11      -10 +loop_532(m) HL = stop-index
     xor   H             ; 1:4       -10 +loop_532(m)
     pop  HL             ; 1:10      -10 +loop_532(m)
-    jp    p, do532      ; 3:10      -10 +loop_532(m) negative step
+    jp    p, do532      ; 3:10      -10 +loop_532(m)
 leave532:               ;           -10 +loop_532(m)
 exit532:                ;           -10 +loop_532(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string533 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -14514,7 +14476,7 @@ exit532:                ;           -10 +loop_532(m)
     pop  HL             ; 1:10      do_533(m)
     ex   DE, HL         ; 1:4       do_533(m)
 do533:                  ;           do_533(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -33 +loop_533(m)
 idx533 EQU $+1          ;           -33 +loop_533(m)
@@ -14533,16 +14495,16 @@ stp_hi533 EQU $+1       ;           -33 +loop_533(m)
     add  HL, BC         ; 1:11      -33 +loop_533(m) HL = stop-index
     xor   H             ; 1:4       -33 +loop_533(m)
     pop  HL             ; 1:10      -33 +loop_533(m)
-    jp    p, do533      ; 3:10      -33 +loop_533(m) negative step
+    jp    p, do533      ; 3:10      -33 +loop_533(m)
 leave533:               ;           -33 +loop_533(m)
 exit533:                ;           -33 +loop_533(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string534 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -1160
     ex   DE, HL         ; 1:4       -1160
-    ld   HL, -1160      ; 3:10      -1160
+    ld   HL, 0-1160     ; 3:10      -1160
     dec  HL             ; 1:6       do_534(m)
     ld    A, L          ; 1:4       do_534(m)
     ld  (stp_lo534), A  ; 3:13      do_534(m)   lo stop-1
@@ -14553,7 +14515,7 @@ exit533:                ;           -33 +loop_533(m)
     pop  HL             ; 1:10      do_534(m)
     ex   DE, HL         ; 1:4       do_534(m)
 do534:                  ;           do_534(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -300 +loop_534(m)
 idx534 EQU $+1          ;           -300 +loop_534(m)
@@ -14572,15 +14534,15 @@ stp_hi534 EQU $+1       ;           -300 +loop_534(m)
     add  HL, BC         ; 1:11      -300 +loop_534(m) HL = stop-index
     xor   H             ; 1:4       -300 +loop_534(m)
     pop  HL             ; 1:10      -300 +loop_534(m)
-    jp    p, do534      ; 3:10      -300 +loop_534(m) negative step
+    jp    p, do534      ; 3:10      -300 +loop_534(m)
 leave534:               ;           -300 +loop_534(m)
 exit534:                ;           -300 +loop_534(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string535 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 30 drop
-    push DE             ; 1:11      0 0 30 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 30 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 30 drop
     push HL             ; 1:11      0 0 30 drop
     ld   DE, 0x0000     ; 3:10      0 0 30 drop
     ld    L, D          ; 1:4       0 0 30 drop   L = D = 0x00
@@ -14611,8 +14573,8 @@ exit535:                ;           -7 +loop_535(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string536 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 -70 drop
-    push DE             ; 1:11      0 0 -70 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 -70 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 -70 drop
     push HL             ; 1:11      0 0 -70 drop
     ld   DE, 0x0000     ; 3:10      0 0 -70 drop
     ld    L, D          ; 1:4       0 0 -70 drop   L = D = 0x00
@@ -14658,7 +14620,7 @@ exit536:                ;           -7 +loop_536(xm)
     pop  HL             ; 1:10      do_537(m)
     ex   DE, HL         ; 1:4       do_537(m)
 do537:                  ;           do_537(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_537(m)
 idx537 EQU $+1          ;           3 +loop_537(m)
@@ -14677,10 +14639,10 @@ stp_hi537 EQU $+1       ;           3 +loop_537(m)
     add  HL, BC         ; 1:11      3 +loop_537(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_537(m)
     pop  HL             ; 1:10      3 +loop_537(m)
-    jp    p, do537      ; 3:10      3 +loop_537(m) negative step
+    jp    p, do537      ; 3:10      3 +loop_537(m)
 leave537:               ;           3 +loop_537(m)
 exit537:                ;           3 +loop_537(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string538 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -14697,7 +14659,7 @@ exit537:                ;           3 +loop_537(m)
     pop  HL             ; 1:10      do_538(m)
     ex   DE, HL         ; 1:4       do_538(m)
 do538:                  ;           do_538(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_538(m)
 idx538 EQU $+1          ;           3 +loop_538(m)
@@ -14716,10 +14678,10 @@ stp_hi538 EQU $+1       ;           3 +loop_538(m)
     add  HL, BC         ; 1:11      3 +loop_538(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_538(m)
     pop  HL             ; 1:10      3 +loop_538(m)
-    jp    p, do538      ; 3:10      3 +loop_538(m) negative step
+    jp    p, do538      ; 3:10      3 +loop_538(m)
 leave538:               ;           3 +loop_538(m)
 exit538:                ;           3 +loop_538(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string539 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -14736,7 +14698,7 @@ exit538:                ;           3 +loop_538(m)
     pop  HL             ; 1:10      do_539(m)
     ex   DE, HL         ; 1:4       do_539(m)
 do539:                  ;           do_539(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      512 +loop_539(m)
 idx539 EQU $+1          ;           512 +loop_539(m)
@@ -14755,10 +14717,10 @@ stp_hi539 EQU $+1       ;           512 +loop_539(m)
     add  HL, BC         ; 1:11      512 +loop_539(m) HL = stop-index
     xor   H             ; 1:4       512 +loop_539(m)
     pop  HL             ; 1:10      512 +loop_539(m)
-    jp    p, do539      ; 3:10      512 +loop_539(m) negative step
+    jp    p, do539      ; 3:10      512 +loop_539(m)
 leave539:               ;           512 +loop_539(m)
 exit539:                ;           512 +loop_539(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string540 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
@@ -14775,7 +14737,7 @@ exit539:                ;           512 +loop_539(m)
     pop  HL             ; 1:10      do_540(m)
     ex   DE, HL         ; 1:4       do_540(m)
 do540:                  ;           do_540(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_540(m)
 idx540 EQU $+1          ;           3 +loop_540(m)
@@ -14794,10 +14756,10 @@ stp_hi540 EQU $+1       ;           3 +loop_540(m)
     add  HL, BC         ; 1:11      3 +loop_540(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_540(m)
     pop  HL             ; 1:10      3 +loop_540(m)
-    jp    p, do540      ; 3:10      3 +loop_540(m) negative step
+    jp    p, do540      ; 3:10      3 +loop_540(m)
 leave540:               ;           3 +loop_540(m)
 exit540:                ;           3 +loop_540(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string541 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
@@ -14814,7 +14776,7 @@ exit540:                ;           3 +loop_540(m)
     pop  HL             ; 1:10      do_541(m)
     ex   DE, HL         ; 1:4       do_541(m)
 do541:                  ;           do_541(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_541(m)
 idx541 EQU $+1          ;           7 +loop_541(m)
@@ -14833,10 +14795,10 @@ stp_hi541 EQU $+1       ;           7 +loop_541(m)
     add  HL, BC         ; 1:11      7 +loop_541(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_541(m)
     pop  HL             ; 1:10      7 +loop_541(m)
-    jp    p, do541      ; 3:10      7 +loop_541(m) negative step
+    jp    p, do541      ; 3:10      7 +loop_541(m)
 leave541:               ;           7 +loop_541(m)
 exit541:                ;           7 +loop_541(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string542 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -14853,7 +14815,7 @@ exit541:                ;           7 +loop_541(m)
     pop  HL             ; 1:10      do_542(m)
     ex   DE, HL         ; 1:4       do_542(m)
 do542:                  ;           do_542(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_542(m)
 idx542 EQU $+1          ;           7 +loop_542(m)
@@ -14872,10 +14834,10 @@ stp_hi542 EQU $+1       ;           7 +loop_542(m)
     add  HL, BC         ; 1:11      7 +loop_542(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_542(m)
     pop  HL             ; 1:10      7 +loop_542(m)
-    jp    p, do542      ; 3:10      7 +loop_542(m) negative step
+    jp    p, do542      ; 3:10      7 +loop_542(m)
 leave542:               ;           7 +loop_542(m)
 exit542:                ;           7 +loop_542(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string543 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
@@ -14892,7 +14854,7 @@ exit542:                ;           7 +loop_542(m)
     pop  HL             ; 1:10      do_543(m)
     ex   DE, HL         ; 1:4       do_543(m)
 do543:                  ;           do_543(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_543(m)
 idx543 EQU $+1          ;           7 +loop_543(m)
@@ -14911,10 +14873,10 @@ stp_hi543 EQU $+1       ;           7 +loop_543(m)
     add  HL, BC         ; 1:11      7 +loop_543(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_543(m)
     pop  HL             ; 1:10      7 +loop_543(m)
-    jp    p, do543      ; 3:10      7 +loop_543(m) negative step
+    jp    p, do543      ; 3:10      7 +loop_543(m)
 leave543:               ;           7 +loop_543(m)
 exit543:                ;           7 +loop_543(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string544 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
@@ -14931,7 +14893,7 @@ exit543:                ;           7 +loop_543(m)
     pop  HL             ; 1:10      do_544(m)
     ex   DE, HL         ; 1:4       do_544(m)
 do544:                  ;           do_544(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      345 +loop_544(m)
 idx544 EQU $+1          ;           345 +loop_544(m)
@@ -14950,15 +14912,15 @@ stp_hi544 EQU $+1       ;           345 +loop_544(m)
     add  HL, BC         ; 1:11      345 +loop_544(m) HL = stop-index
     xor   H             ; 1:4       345 +loop_544(m)
     pop  HL             ; 1:10      345 +loop_544(m)
-    jp    p, do544      ; 3:10      345 +loop_544(m) negative step
+    jp    p, do544      ; 3:10      345 +loop_544(m)
 leave544:               ;           345 +loop_544(m)
 exit544:                ;           345 +loop_544(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string545 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 4516 drop
-    push DE             ; 1:11      0 0 4516 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 4516 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 4516 drop
     push HL             ; 1:11      0 0 4516 drop
     ld   DE, 0x0000     ; 3:10      0 0 4516 drop
     ld    L, D          ; 1:4       0 0 4516 drop   L = D = 0x00
@@ -15003,7 +14965,7 @@ exit545:                ;           4 +loop_545(xm)
     pop  HL             ; 1:10      do_546(m)
     ex   DE, HL         ; 1:4       do_546(m)
 do546:                  ;           do_546(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      300 +loop_546(m)
 idx546 EQU $+1          ;           300 +loop_546(m)
@@ -15022,10 +14984,10 @@ stp_hi546 EQU $+1       ;           300 +loop_546(m)
     add  HL, BC         ; 1:11      300 +loop_546(m) HL = stop-index
     xor   H             ; 1:4       300 +loop_546(m)
     pop  HL             ; 1:10      300 +loop_546(m)
-    jp    p, do546      ; 3:10      300 +loop_546(m) negative step
+    jp    p, do546      ; 3:10      300 +loop_546(m)
 leave546:               ;           300 +loop_546(m)
 exit546:                ;           300 +loop_546(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string547 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -15042,7 +15004,7 @@ exit546:                ;           300 +loop_546(m)
     pop  HL             ; 1:10      do_547(m)
     ex   DE, HL         ; 1:4       do_547(m)
 do547:                  ;           do_547(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_547(m)
 idx547 EQU $+1          ;           3 +loop_547(m)
@@ -15061,15 +15023,15 @@ stp_hi547 EQU $+1       ;           3 +loop_547(m)
     add  HL, BC         ; 1:11      3 +loop_547(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_547(m)
     pop  HL             ; 1:10      3 +loop_547(m)
-    jp    p, do547      ; 3:10      3 +loop_547(m) negative step
+    jp    p, do547      ; 3:10      3 +loop_547(m)
 leave547:               ;           3 +loop_547(m)
 exit547:                ;           3 +loop_547(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string548 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 500 drop
-    push DE             ; 1:11      0 0 500 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 500 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 500 drop
     push HL             ; 1:11      0 0 500 drop
     ld   DE, 0x0000     ; 3:10      0 0 500 drop
     ld    L, D          ; 1:4       0 0 500 drop   L = D = 0x00
@@ -15120,7 +15082,7 @@ exit548:                ;           4 +loop_548(xm)
     pop  HL             ; 1:10      do_549(m)
     ex   DE, HL         ; 1:4       do_549(m)
 do549:                  ;           do_549(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -3 +loop_549(m)
 idx549 EQU $+1          ;           -3 +loop_549(m)
@@ -15139,10 +15101,10 @@ stp_hi549 EQU $+1       ;           -3 +loop_549(m)
     add  HL, BC         ; 1:11      -3 +loop_549(m) HL = stop-index
     xor   H             ; 1:4       -3 +loop_549(m)
     pop  HL             ; 1:10      -3 +loop_549(m)
-    jp    p, do549      ; 3:10      -3 +loop_549(m) negative step
+    jp    p, do549      ; 3:10      -3 +loop_549(m)
 leave549:               ;           -3 +loop_549(m)
 exit549:                ;           -3 +loop_549(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string550 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -15160,7 +15122,7 @@ exit549:                ;           -3 +loop_549(m)
     pop  HL             ; 1:10      do_550(m)
     ex   DE, HL         ; 1:4       do_550(m)
 do550:                  ;           do_550(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -10 +loop_550(m)
 idx550 EQU $+1          ;           -10 +loop_550(m)
@@ -15179,10 +15141,10 @@ stp_hi550 EQU $+1       ;           -10 +loop_550(m)
     add  HL, BC         ; 1:11      -10 +loop_550(m) HL = stop-index
     xor   H             ; 1:4       -10 +loop_550(m)
     pop  HL             ; 1:10      -10 +loop_550(m)
-    jp    p, do550      ; 3:10      -10 +loop_550(m) negative step
+    jp    p, do550      ; 3:10      -10 +loop_550(m)
 leave550:               ;           -10 +loop_550(m)
 exit550:                ;           -10 +loop_550(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string551 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -15200,7 +15162,7 @@ exit550:                ;           -10 +loop_550(m)
     pop  HL             ; 1:10      do_551(m)
     ex   DE, HL         ; 1:4       do_551(m)
 do551:                  ;           do_551(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -33 +loop_551(m)
 idx551 EQU $+1          ;           -33 +loop_551(m)
@@ -15219,16 +15181,16 @@ stp_hi551 EQU $+1       ;           -33 +loop_551(m)
     add  HL, BC         ; 1:11      -33 +loop_551(m) HL = stop-index
     xor   H             ; 1:4       -33 +loop_551(m)
     pop  HL             ; 1:10      -33 +loop_551(m)
-    jp    p, do551      ; 3:10      -33 +loop_551(m) negative step
+    jp    p, do551      ; 3:10      -33 +loop_551(m)
 leave551:               ;           -33 +loop_551(m)
 exit551:                ;           -33 +loop_551(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string552 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -1160
     ex   DE, HL         ; 1:4       -1160
-    ld   HL, -1160      ; 3:10      -1160
+    ld   HL, 0-1160     ; 3:10      -1160
 
     dec  HL             ; 1:6       do_552(m)
     ld    A, L          ; 1:4       do_552(m)
@@ -15240,7 +15202,7 @@ exit551:                ;           -33 +loop_551(m)
     pop  HL             ; 1:10      do_552(m)
     ex   DE, HL         ; 1:4       do_552(m)
 do552:                  ;           do_552(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -300 +loop_552(m)
 idx552 EQU $+1          ;           -300 +loop_552(m)
@@ -15259,16 +15221,16 @@ stp_hi552 EQU $+1       ;           -300 +loop_552(m)
     add  HL, BC         ; 1:11      -300 +loop_552(m) HL = stop-index
     xor   H             ; 1:4       -300 +loop_552(m)
     pop  HL             ; 1:10      -300 +loop_552(m)
-    jp    p, do552      ; 3:10      -300 +loop_552(m) negative step
+    jp    p, do552      ; 3:10      -300 +loop_552(m)
 leave552:               ;           -300 +loop_552(m)
 exit552:                ;           -300 +loop_552(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string553 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 30   ( -- 0 0 30 )
+    push DE             ; 1:11      0 0 30   ( -- 0 0 30 ) push3.m3
     push HL             ; 1:11      0 0 30
-    ld   DE, 0          ; 3:10      0 0 30
+    ld   DE, 0x0000     ; 3:10      0 0 30
     push DE             ; 1:11      0 0 30
     ld   HL, 0x001E     ; 3:10      0 0 30
 
@@ -15303,15 +15265,15 @@ stp_hi553 EQU $+1       ;           -7 +loop_553(m)
     add  HL, BC         ; 1:11      -7 +loop_553(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_553(m)
     pop  HL             ; 1:10      -7 +loop_553(m)
-    jp    p, do553      ; 3:10      -7 +loop_553(m) negative step
+    jp    p, do553      ; 3:10      -7 +loop_553(m)
 leave553:               ;           -7 +loop_553(m)
 exit553:                ;           -7 +loop_553(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string554 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 -70   ( -- 0 0 -70 )
+    push DE             ; 1:11      0 0 -70   ( -- 0 0 -70 ) push3.m3
     push HL             ; 1:11      0 0 -70
-    ld   DE, 0          ; 3:10      0 0 -70
+    ld   DE, 0x0000     ; 3:10      0 0 -70
     push DE             ; 1:11      0 0 -70
     ld   HL, 0xFFBA     ; 3:10      0 0 -70
 
@@ -15346,7 +15308,7 @@ stp_hi554 EQU $+1       ;           -7 +loop_554(m)
     add  HL, BC         ; 1:11      -7 +loop_554(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_554(m)
     pop  HL             ; 1:10      -7 +loop_554(m)
-    jp    p, do554      ; 3:10      -7 +loop_554(m) negative step
+    jp    p, do554      ; 3:10      -7 +loop_554(m)
 leave554:               ;           -7 +loop_554(m)
 exit554:                ;           -7 +loop_554(m)
     call _show          ; 3:17      call ( -- )
@@ -15366,7 +15328,7 @@ exit554:                ;           -7 +loop_554(m)
     pop  HL             ; 1:10      do_555(m)
     ex   DE, HL         ; 1:4       do_555(m)
 do555:                  ;           do_555(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_555(m)
 idx555 EQU $+1          ;           3 +loop_555(m)
@@ -15385,10 +15347,10 @@ stp_hi555 EQU $+1       ;           3 +loop_555(m)
     add  HL, BC         ; 1:11      3 +loop_555(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_555(m)
     pop  HL             ; 1:10      3 +loop_555(m)
-    jp    p, do555      ; 3:10      3 +loop_555(m) negative step
+    jp    p, do555      ; 3:10      3 +loop_555(m)
 leave555:               ;           3 +loop_555(m)
 exit555:                ;           3 +loop_555(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string556 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -15406,7 +15368,7 @@ exit555:                ;           3 +loop_555(m)
     pop  HL             ; 1:10      do_556(m)
     ex   DE, HL         ; 1:4       do_556(m)
 do556:                  ;           do_556(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_556(m)
 idx556 EQU $+1          ;           3 +loop_556(m)
@@ -15425,10 +15387,10 @@ stp_hi556 EQU $+1       ;           3 +loop_556(m)
     add  HL, BC         ; 1:11      3 +loop_556(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_556(m)
     pop  HL             ; 1:10      3 +loop_556(m)
-    jp    p, do556      ; 3:10      3 +loop_556(m) negative step
+    jp    p, do556      ; 3:10      3 +loop_556(m)
 leave556:               ;           3 +loop_556(m)
 exit556:                ;           3 +loop_556(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string557 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -15446,7 +15408,7 @@ exit556:                ;           3 +loop_556(m)
     pop  HL             ; 1:10      do_557(m)
     ex   DE, HL         ; 1:4       do_557(m)
 do557:                  ;           do_557(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      512 +loop_557(m)
 idx557 EQU $+1          ;           512 +loop_557(m)
@@ -15465,10 +15427,10 @@ stp_hi557 EQU $+1       ;           512 +loop_557(m)
     add  HL, BC         ; 1:11      512 +loop_557(m) HL = stop-index
     xor   H             ; 1:4       512 +loop_557(m)
     pop  HL             ; 1:10      512 +loop_557(m)
-    jp    p, do557      ; 3:10      512 +loop_557(m) negative step
+    jp    p, do557      ; 3:10      512 +loop_557(m)
 leave557:               ;           512 +loop_557(m)
 exit557:                ;           512 +loop_557(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string558 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
@@ -15486,7 +15448,7 @@ exit557:                ;           512 +loop_557(m)
     pop  HL             ; 1:10      do_558(m)
     ex   DE, HL         ; 1:4       do_558(m)
 do558:                  ;           do_558(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_558(m)
 idx558 EQU $+1          ;           3 +loop_558(m)
@@ -15505,10 +15467,10 @@ stp_hi558 EQU $+1       ;           3 +loop_558(m)
     add  HL, BC         ; 1:11      3 +loop_558(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_558(m)
     pop  HL             ; 1:10      3 +loop_558(m)
-    jp    p, do558      ; 3:10      3 +loop_558(m) negative step
+    jp    p, do558      ; 3:10      3 +loop_558(m)
 leave558:               ;           3 +loop_558(m)
 exit558:                ;           3 +loop_558(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string559 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
@@ -15526,7 +15488,7 @@ exit558:                ;           3 +loop_558(m)
     pop  HL             ; 1:10      do_559(m)
     ex   DE, HL         ; 1:4       do_559(m)
 do559:                  ;           do_559(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_559(m)
 idx559 EQU $+1          ;           7 +loop_559(m)
@@ -15545,10 +15507,10 @@ stp_hi559 EQU $+1       ;           7 +loop_559(m)
     add  HL, BC         ; 1:11      7 +loop_559(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_559(m)
     pop  HL             ; 1:10      7 +loop_559(m)
-    jp    p, do559      ; 3:10      7 +loop_559(m) negative step
+    jp    p, do559      ; 3:10      7 +loop_559(m)
 leave559:               ;           7 +loop_559(m)
 exit559:                ;           7 +loop_559(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string560 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -15566,7 +15528,7 @@ exit559:                ;           7 +loop_559(m)
     pop  HL             ; 1:10      do_560(m)
     ex   DE, HL         ; 1:4       do_560(m)
 do560:                  ;           do_560(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_560(m)
 idx560 EQU $+1          ;           7 +loop_560(m)
@@ -15585,10 +15547,10 @@ stp_hi560 EQU $+1       ;           7 +loop_560(m)
     add  HL, BC         ; 1:11      7 +loop_560(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_560(m)
     pop  HL             ; 1:10      7 +loop_560(m)
-    jp    p, do560      ; 3:10      7 +loop_560(m) negative step
+    jp    p, do560      ; 3:10      7 +loop_560(m)
 leave560:               ;           7 +loop_560(m)
 exit560:                ;           7 +loop_560(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string561 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
@@ -15606,7 +15568,7 @@ exit560:                ;           7 +loop_560(m)
     pop  HL             ; 1:10      do_561(m)
     ex   DE, HL         ; 1:4       do_561(m)
 do561:                  ;           do_561(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_561(m)
 idx561 EQU $+1          ;           7 +loop_561(m)
@@ -15625,10 +15587,10 @@ stp_hi561 EQU $+1       ;           7 +loop_561(m)
     add  HL, BC         ; 1:11      7 +loop_561(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_561(m)
     pop  HL             ; 1:10      7 +loop_561(m)
-    jp    p, do561      ; 3:10      7 +loop_561(m) negative step
+    jp    p, do561      ; 3:10      7 +loop_561(m)
 leave561:               ;           7 +loop_561(m)
 exit561:                ;           7 +loop_561(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string562 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
@@ -15646,7 +15608,7 @@ exit561:                ;           7 +loop_561(m)
     pop  HL             ; 1:10      do_562(m)
     ex   DE, HL         ; 1:4       do_562(m)
 do562:                  ;           do_562(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      345 +loop_562(m)
 idx562 EQU $+1          ;           345 +loop_562(m)
@@ -15665,16 +15627,16 @@ stp_hi562 EQU $+1       ;           345 +loop_562(m)
     add  HL, BC         ; 1:11      345 +loop_562(m) HL = stop-index
     xor   H             ; 1:4       345 +loop_562(m)
     pop  HL             ; 1:10      345 +loop_562(m)
-    jp    p, do562      ; 3:10      345 +loop_562(m) negative step
+    jp    p, do562      ; 3:10      345 +loop_562(m)
 leave562:               ;           345 +loop_562(m)
 exit562:                ;           345 +loop_562(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string563 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 4516   ( -- 0 0 4516 )
+    push DE             ; 1:11      0 0 4516   ( -- 0 0 4516 ) push3.m3
     push HL             ; 1:11      0 0 4516
-    ld   DE, 0          ; 3:10      0 0 4516
+    ld   DE, 0x0000     ; 3:10      0 0 4516
     push DE             ; 1:11      0 0 4516
     ld   HL, 0x11A4     ; 3:10      0 0 4516
 
@@ -15709,7 +15671,7 @@ stp_hi563 EQU $+1       ;           4 +loop_563(m)
     add  HL, BC         ; 1:11      4 +loop_563(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_563(m)
     pop  HL             ; 1:10      4 +loop_563(m)
-    jp    p, do563      ; 3:10      4 +loop_563(m) negative step
+    jp    p, do563      ; 3:10      4 +loop_563(m)
 leave563:               ;           4 +loop_563(m)
 exit563:                ;           4 +loop_563(m)
     call _show          ; 3:17      call ( -- )
@@ -15729,7 +15691,7 @@ exit563:                ;           4 +loop_563(m)
     pop  HL             ; 1:10      do_564(m)
     ex   DE, HL         ; 1:4       do_564(m)
 do564:                  ;           do_564(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      300 +loop_564(m)
 idx564 EQU $+1          ;           300 +loop_564(m)
@@ -15748,10 +15710,10 @@ stp_hi564 EQU $+1       ;           300 +loop_564(m)
     add  HL, BC         ; 1:11      300 +loop_564(m) HL = stop-index
     xor   H             ; 1:4       300 +loop_564(m)
     pop  HL             ; 1:10      300 +loop_564(m)
-    jp    p, do564      ; 3:10      300 +loop_564(m) negative step
+    jp    p, do564      ; 3:10      300 +loop_564(m)
 leave564:               ;           300 +loop_564(m)
 exit564:                ;           300 +loop_564(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string565 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -15769,7 +15731,7 @@ exit564:                ;           300 +loop_564(m)
     pop  HL             ; 1:10      do_565(m)
     ex   DE, HL         ; 1:4       do_565(m)
 do565:                  ;           do_565(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_565(m)
 idx565 EQU $+1          ;           3 +loop_565(m)
@@ -15788,16 +15750,16 @@ stp_hi565 EQU $+1       ;           3 +loop_565(m)
     add  HL, BC         ; 1:11      3 +loop_565(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_565(m)
     pop  HL             ; 1:10      3 +loop_565(m)
-    jp    p, do565      ; 3:10      3 +loop_565(m) negative step
+    jp    p, do565      ; 3:10      3 +loop_565(m)
 leave565:               ;           3 +loop_565(m)
 exit565:                ;           3 +loop_565(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string566 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 500   ( -- 0 0 500 )
+    push DE             ; 1:11      0 0 500   ( -- 0 0 500 ) push3.m3
     push HL             ; 1:11      0 0 500
-    ld   DE, 0          ; 3:10      0 0 500
+    ld   DE, 0x0000     ; 3:10      0 0 500
     push DE             ; 1:11      0 0 500
     ld   HL, 0x01F4     ; 3:10      0 0 500
 
@@ -15832,7 +15794,7 @@ stp_hi566 EQU $+1       ;           4 +loop_566(m)
     add  HL, BC         ; 1:11      4 +loop_566(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_566(m)
     pop  HL             ; 1:10      4 +loop_566(m)
-    jp    p, do566      ; 3:10      4 +loop_566(m) negative step
+    jp    p, do566      ; 3:10      4 +loop_566(m)
 leave566:               ;           4 +loop_566(m)
 exit566:                ;           4 +loop_566(m)
     call _show          ; 3:17      call ( -- )
@@ -15846,7 +15808,7 @@ exit566:                ;           4 +loop_566(m)
 do567save:              ;           13 do_567(xm)
     ld  (idx567),BC     ; 4:20      13 do_567(xm)
 do567:                  ;           13 do_567(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:66/46] -3 +loop_567(xm)   variant -X.A: step -3 and stop 0, run 5x
 idx567 EQU $+1          ;           -3 +loop_567(xm)   idx always points to a 16-bit index
@@ -15859,7 +15821,7 @@ idx567 EQU $+1          ;           -3 +loop_567(xm)   idx always points to a 16
     jp   nc, do567save  ; 3:10      -3 +loop_567(xm)   carry if postivie index -> negative index
 leave567:               ;           -3 +loop_567(xm)
 exit567:                ;           -3 +loop_567(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string568 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -15867,7 +15829,7 @@ exit567:                ;           -3 +loop_567(xm)
 do568save:              ;           43 do_568(xm)
     ld  (idx568),BC     ; 4:20      43 do_568(xm)
 do568:                  ;           43 do_568(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] -10 +loop_568(xm)   variant -X.B: negative step and stop 0, run 5x
 idx568 EQU $+1          ;           -10 +loop_568(xm)   idx always points to a 16-bit index
@@ -15881,7 +15843,7 @@ idx568 EQU $+1          ;           -10 +loop_568(xm)   idx always points to a 1
     jp   nc, do568save  ; 3:10      -10 +loop_568(xm)   carry if postivie index -> negative index
 leave568:               ;           -10 +loop_568(xm)
 exit568:                ;           -10 +loop_568(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string569 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -15889,7 +15851,7 @@ exit568:                ;           -10 +loop_568(xm)
 do569save:              ;           671 do_569(xm)
     ld  (idx569),BC     ; 4:20      671 do_569(xm)
 do569:                  ;           671 do_569(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[17:55/60] -33 +loop_569(xm)   variant +X.C: negative step 3..255 and hi(real_stop) exclusivity, run 5x
@@ -15905,7 +15867,7 @@ idx569 EQU $+1          ;           -33 +loop_569(xm)   idx always points to a 1
     jp   nz, do569save  ; 3:10      -33 +loop_569(xm)
 leave569:               ;           -33 +loop_569(xm)
 exit569:                ;           -33 +loop_569(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string570 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
@@ -15913,7 +15875,7 @@ exit569:                ;           -33 +loop_569(xm)
 do570save:              ;           50 do_570(xm)
     ld  (idx570),BC     ; 4:20      50 do_570(xm)
 do570:                  ;           50 do_570(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[16:77/57] -300 +loop_570(xm)   variant +X.D: negative step 256+ and hi(real_stop) exclusivity, run 5x
@@ -15929,12 +15891,12 @@ idx570 EQU $+1          ;           -300 +loop_570(xm)   idx always points to a 
     jp   nz, do570save  ; 3:10      -300 +loop_570(xm)
 leave570:               ;           -300 +loop_570(xm)
 exit570:                ;           -300 +loop_570(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string571 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 7027 drop
-    push DE             ; 1:11      0 0 7027 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 7027 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 7027 drop
     push HL             ; 1:11      0 0 7027 drop
     ld   DE, 0x0000     ; 3:10      0 0 7027 drop
     ld    L, D          ; 1:4       0 0 7027 drop   L = D = 0x00
@@ -15965,8 +15927,8 @@ exit571:                ;           -7 +loop_571(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string572 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 6927 drop
-    push DE             ; 1:11      0 0 6927 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 6927 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 6927 drop
     push HL             ; 1:11      0 0 6927 drop
     ld   DE, 0x0000     ; 3:10      0 0 6927 drop
     ld    L, D          ; 1:4       0 0 6927 drop   L = D = 0x00
@@ -16003,7 +15965,7 @@ exit572:                ;           -7 +loop_572(xm)
 do573save:              ;           10 do_573(xm)
     ld  (idx573),BC     ; 4:20      10 do_573(xm)
 do573:                  ;           10 do_573(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    3 +loop_573(xm)   variant +X.A: positive step and 0 <= index < stop < 256, run 5x
 idx573 EQU $+1          ;           3 +loop_573(xm)   idx always points to a 16-bit index
@@ -16015,7 +15977,7 @@ idx573 EQU $+1          ;           3 +loop_573(xm)   idx always points to a 16-
     jp   nz, do573      ; 3:10      3 +loop_573(xm)
 leave573:               ;           3 +loop_573(xm)
 exit573:                ;           3 +loop_573(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string574 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -16023,7 +15985,7 @@ exit573:                ;           3 +loop_573(xm)
 do574save:              ;           0xC601 do_574(xm)
     ld  (idx574),BC     ; 4:20      0xC601 do_574(xm)
 do574:                  ;           0xC601 do_574(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:44]    3 +loop_574(xm)   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run 5x
 idx574 EQU $+1          ;           3 +loop_574(xm)   idx always points to a 16-bit index
@@ -16034,7 +15996,7 @@ idx574 EQU $+1          ;           3 +loop_574(xm)   idx always points to a 16-
     jp   nz, do574      ; 3:10      3 +loop_574(xm)
 leave574:               ;           3 +loop_574(xm)
 exit574:                ;           3 +loop_574(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string575 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -16042,7 +16004,7 @@ exit574:                ;           3 +loop_574(xm)
 do575save:              ;           25 do_575(xm)
     ld  (idx575),BC     ; 4:20      25 do_575(xm)
 do575:                  ;           25 do_575(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:51]    512 +loop_575(xm)   variant +X.C: positive step = n*256, run 5x
 idx575 EQU $+1          ;           512 +loop_575(xm)   idx always points to a 16-bit index
@@ -16054,7 +16016,7 @@ idx575 EQU $+1          ;           512 +loop_575(xm)   idx always points to a 1
     jp   nz, do575      ; 3:10      512 +loop_575(xm)
 leave575:               ;           512 +loop_575(xm)
 exit575:                ;           512 +loop_575(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string576 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
@@ -16062,7 +16024,7 @@ exit575:                ;           512 +loop_575(xm)
 do576save:              ;           -15 do_576(xm)
     ld  (idx576),BC     ; 4:20      -15 do_576(xm)
 do576:                  ;           -15 do_576(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 3 +loop_576(xm)   variant +X.D: positive step 3..255 and stop 0, run 5x
 idx576 EQU $+1          ;           3 +loop_576(xm)   idx always points to a 16-bit index
@@ -16075,7 +16037,7 @@ idx576 EQU $+1          ;           3 +loop_576(xm)   idx always points to a 16-
     jp   nc, do576save  ; 3:10      3 +loop_576(xm)
 leave576:               ;           3 +loop_576(xm)
 exit576:                ;           3 +loop_576(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string577 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
@@ -16083,7 +16045,7 @@ exit576:                ;           3 +loop_576(xm)
 do577save:              ;           -29 do_577(xm)
     ld  (idx577),BC     ; 4:20      -29 do_577(xm)
 do577:                  ;           -29 do_577(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 7 +loop_577(xm)   variant +X.E: positive step 3..255 and hi(real_stop) = exclusivity zero, run 5x
 idx577 EQU $+1          ;           7 +loop_577(xm)   idx always points to a 16-bit index
@@ -16096,7 +16058,7 @@ idx577 EQU $+1          ;           7 +loop_577(xm)   idx always points to a 16-
     jp   nz, do577save  ; 3:10      7 +loop_577(xm)
 leave577:               ;           7 +loop_577(xm)
 exit577:                ;           7 +loop_577(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string578 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -16104,7 +16066,7 @@ exit577:                ;           7 +loop_577(xm)
 do578save:              ;           227 do_578(xm)
     ld  (idx578),BC     ; 4:20      227 do_578(xm)
 do578:                  ;           227 do_578(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[17:55/60] 7 +loop_578(xm)   variant +X.F: positive step 3..255 and hi(real_stop) exclusivity, run 5x
 idx578 EQU $+1          ;           7 +loop_578(xm)   idx always points to a 16-bit index
@@ -16119,7 +16081,7 @@ idx578 EQU $+1          ;           7 +loop_578(xm)   idx always points to a 16-
     jp   nz, do578save  ; 3:10      7 +loop_578(xm)
 leave578:               ;           7 +loop_578(xm)
 exit578:                ;           7 +loop_578(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string579 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
@@ -16127,7 +16089,7 @@ exit578:                ;           7 +loop_578(xm)
 do579save:              ;           -23 do_579(xm)
     ld  (idx579),BC     ; 4:20      -23 do_579(xm)
 do579:                  ;           -23 do_579(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[19:67/68] 7 +loop_579(xm)   variant +X.G: positive step 3..255 and real_stop 0..255, run 5x
 idx579 EQU $+1          ;           7 +loop_579(xm)   idx always points to a 16-bit index
@@ -16144,7 +16106,7 @@ idx579 EQU $+1          ;           7 +loop_579(xm)   idx always points to a 16-
     jp   nz, do579save  ; 3:10      7 +loop_579(xm)
 leave579:               ;           7 +loop_579(xm)
 exit579:                ;           7 +loop_579(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string580 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
@@ -16152,7 +16114,7 @@ exit579:                ;           7 +loop_579(xm)
 do580save:              ;           -1485 do_580(xm)
     ld  (idx580),BC     ; 4:20      -1485 do_580(xm)
 do580:                  ;           -1485 do_580(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] 345 +loop_580(xm)   variant +X.H: positive step 256+ and hi(real_stop) exclusivity zero, run 5x
 idx580 EQU $+1          ;           345 +loop_580(xm)   idx always points to a 16-bit index
@@ -16166,12 +16128,12 @@ idx580 EQU $+1          ;           345 +loop_580(xm)   idx always points to a 1
     jp   nz, do580save  ; 3:10      345 +loop_580(xm)
 leave580:               ;           345 +loop_580(xm)
 exit580:                ;           345 +loop_580(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string581 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 516 drop
-    push DE             ; 1:11      0 0 516 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 516 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 516 drop
     push HL             ; 1:11      0 0 516 drop
     ld   DE, 0x0000     ; 3:10      0 0 516 drop
     ld    L, D          ; 1:4       0 0 516 drop   L = D = 0x00
@@ -16207,7 +16169,7 @@ exit581:                ;           4 +loop_581(xm)
 do582save:              ;           33 do_582(xm)
     ld  (idx582),BC     ; 4:20      33 do_582(xm)
 do582:                  ;           33 do_582(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:77/57] 300 +loop_582(xm)   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 5x
 idx582 EQU $+1          ;           300 +loop_582(xm)   idx always points to a 16-bit index
@@ -16222,7 +16184,7 @@ idx582 EQU $+1          ;           300 +loop_582(xm)   idx always points to a 1
     jp   nz, do582save  ; 3:10      300 +loop_582(xm)
 leave582:               ;           300 +loop_582(xm)
 exit582:                ;           300 +loop_582(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string583 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -16230,7 +16192,7 @@ exit582:                ;           300 +loop_582(xm)
 do583save:              ;           1019 do_583(xm)
     ld  (idx583),BC     ; 4:20      1019 do_583(xm)
 do583:                  ;           1019 do_583(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:78/58] 3 +loop_583(xm)   variant +X.K : positive step 3..255 and lo(real_stop) exclusivity, run 5x
 idx583 EQU $+1          ;           3 +loop_583(xm)   idx always points to a 16-bit index
@@ -16246,12 +16208,12 @@ idx583 EQU $+1          ;           3 +loop_583(xm)   idx always points to a 16-
     jp   nz, do583save  ; 3:10      3 +loop_583(xm)
 leave583:               ;           3 +loop_583(xm)
 exit583:                ;           3 +loop_583(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string584 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0 100 drop
-    push DE             ; 1:11      0 0 100 drop   ( -- 0 0 )
+                        ;[7:40]     0 0 100 drop   ( -- 0 0 )
+    push DE             ; 1:11      0 0 100 drop
     push HL             ; 1:11      0 0 100 drop
     ld   DE, 0x0000     ; 3:10      0 0 100 drop
     ld    L, D          ; 1:4       0 0 100 drop   L = D = 0x00
@@ -16296,7 +16258,7 @@ exit584:                ;           4 +loop_584(xm)
     pop  HL             ; 1:10      do_585(m)
     ex   DE, HL         ; 1:4       do_585(m)
 do585:                  ;           do_585(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -3 +loop_585(m)
 idx585 EQU $+1          ;           -3 +loop_585(m)
@@ -16305,20 +16267,20 @@ idx585 EQU $+1          ;           -3 +loop_585(m)
     add  HL, BC         ; 1:11      -3 +loop_585(m) HL = index+step
     ld  (idx585), HL    ; 3:16      -3 +loop_585(m) save index
 stp_lo585 EQU $+1       ;           -3 +loop_585(m)
-    ld    A, low 0xFFFF+(0); 2:7       -3 +loop_585(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       -3 +loop_585(m)   lo stop-1
     sub   L             ; 1:4       -3 +loop_585(m)
     ld    L, A          ; 1:4       -3 +loop_585(m)
 stp_hi585 EQU $+1       ;           -3 +loop_585(m)
-    ld    A, high 0xFFFF+(0); 2:7       -3 +loop_585(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       -3 +loop_585(m)   hi stop-1
     sbc   A, H          ; 1:4       -3 +loop_585(m)
     ld    H, A          ; 1:4       -3 +loop_585(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -3 +loop_585(m) HL = stop-index
     xor   H             ; 1:4       -3 +loop_585(m)
     pop  HL             ; 1:10      -3 +loop_585(m)
-    jp    p, do585      ; 3:10      -3 +loop_585(m) negative step
+    jp    p, do585      ; 3:10      -3 +loop_585(m)
 leave585:               ;           -3 +loop_585(m)
 exit585:                ;           -3 +loop_585(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string586 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -16330,7 +16292,7 @@ exit585:                ;           -3 +loop_585(m)
     pop  HL             ; 1:10      do_586(m)
     ex   DE, HL         ; 1:4       do_586(m)
 do586:                  ;           do_586(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -10 +loop_586(m)
 idx586 EQU $+1          ;           -10 +loop_586(m)
@@ -16339,20 +16301,20 @@ idx586 EQU $+1          ;           -10 +loop_586(m)
     add  HL, BC         ; 1:11      -10 +loop_586(m) HL = index+step
     ld  (idx586), HL    ; 3:16      -10 +loop_586(m) save index
 stp_lo586 EQU $+1       ;           -10 +loop_586(m)
-    ld    A, low 0xFFFF+(0); 2:7       -10 +loop_586(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       -10 +loop_586(m)   lo stop-1
     sub   L             ; 1:4       -10 +loop_586(m)
     ld    L, A          ; 1:4       -10 +loop_586(m)
 stp_hi586 EQU $+1       ;           -10 +loop_586(m)
-    ld    A, high 0xFFFF+(0); 2:7       -10 +loop_586(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       -10 +loop_586(m)   hi stop-1
     sbc   A, H          ; 1:4       -10 +loop_586(m)
     ld    H, A          ; 1:4       -10 +loop_586(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -10 +loop_586(m) HL = stop-index
     xor   H             ; 1:4       -10 +loop_586(m)
     pop  HL             ; 1:10      -10 +loop_586(m)
-    jp    p, do586      ; 3:10      -10 +loop_586(m) negative step
+    jp    p, do586      ; 3:10      -10 +loop_586(m)
 leave586:               ;           -10 +loop_586(m)
 exit586:                ;           -10 +loop_586(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string587 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -16364,7 +16326,7 @@ exit586:                ;           -10 +loop_586(m)
     pop  HL             ; 1:10      do_587(m)
     ex   DE, HL         ; 1:4       do_587(m)
 do587:                  ;           do_587(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -33 +loop_587(m)
 idx587 EQU $+1          ;           -33 +loop_587(m)
@@ -16373,20 +16335,20 @@ idx587 EQU $+1          ;           -33 +loop_587(m)
     add  HL, BC         ; 1:11      -33 +loop_587(m) HL = index+step
     ld  (idx587), HL    ; 3:16      -33 +loop_587(m) save index
 stp_lo587 EQU $+1       ;           -33 +loop_587(m)
-    ld    A, low 0xFFFF+(510); 2:7       -33 +loop_587(m)   lo stop-1
+    ld    A, low +(510)-1; 2:7       -33 +loop_587(m)   lo stop-1
     sub   L             ; 1:4       -33 +loop_587(m)
     ld    L, A          ; 1:4       -33 +loop_587(m)
 stp_hi587 EQU $+1       ;           -33 +loop_587(m)
-    ld    A, high 0xFFFF+(510); 2:7       -33 +loop_587(m)   hi stop-1
+    ld    A, high +(510)-1; 2:7       -33 +loop_587(m)   hi stop-1
     sbc   A, H          ; 1:4       -33 +loop_587(m)
     ld    H, A          ; 1:4       -33 +loop_587(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -33 +loop_587(m) HL = stop-index
     xor   H             ; 1:4       -33 +loop_587(m)
     pop  HL             ; 1:10      -33 +loop_587(m)
-    jp    p, do587      ; 3:10      -33 +loop_587(m) negative step
+    jp    p, do587      ; 3:10      -33 +loop_587(m)
 leave587:               ;           -33 +loop_587(m)
 exit587:                ;           -33 +loop_587(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string588 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
@@ -16398,7 +16360,7 @@ exit587:                ;           -33 +loop_587(m)
     pop  HL             ; 1:10      do_588(m)
     ex   DE, HL         ; 1:4       do_588(m)
 do588:                  ;           do_588(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      -300 +loop_588(m)
 idx588 EQU $+1          ;           -300 +loop_588(m)
@@ -16407,26 +16369,26 @@ idx588 EQU $+1          ;           -300 +loop_588(m)
     add  HL, BC         ; 1:11      -300 +loop_588(m) HL = index+step
     ld  (idx588), HL    ; 3:16      -300 +loop_588(m) save index
 stp_lo588 EQU $+1       ;           -300 +loop_588(m)
-    ld    A, low 0xFFFF+(-1160); 2:7       -300 +loop_588(m)   lo stop-1
+    ld    A, low +(-1160)-1; 2:7       -300 +loop_588(m)   lo stop-1
     sub   L             ; 1:4       -300 +loop_588(m)
     ld    L, A          ; 1:4       -300 +loop_588(m)
 stp_hi588 EQU $+1       ;           -300 +loop_588(m)
-    ld    A, high 0xFFFF+(-1160); 2:7       -300 +loop_588(m)   hi stop-1
+    ld    A, high +(-1160)-1; 2:7       -300 +loop_588(m)   hi stop-1
     sbc   A, H          ; 1:4       -300 +loop_588(m)
     ld    H, A          ; 1:4       -300 +loop_588(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -300 +loop_588(m) HL = stop-index
     xor   H             ; 1:4       -300 +loop_588(m)
     pop  HL             ; 1:10      -300 +loop_588(m)
-    jp    p, do588      ; 3:10      -300 +loop_588(m) negative step
+    jp    p, do588      ; 3:10      -300 +loop_588(m)
 leave588:               ;           -300 +loop_588(m)
 exit588:                ;           -300 +loop_588(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string589 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 7027   ( -- 0 0 7027 )
+    push DE             ; 1:11      0 0 7027   ( -- 0 0 7027 ) push3.m3
     push HL             ; 1:11      0 0 7027
-    ld   DE, 0          ; 3:10      0 0 7027
+    ld   DE, 0x0000     ; 3:10      0 0 7027
     push DE             ; 1:11      0 0 7027
     ld   HL, 0x1B73     ; 3:10      0 0 7027
 
@@ -16445,25 +16407,25 @@ idx589 EQU $+1          ;           -7 +loop_589(m)
     add  HL, BC         ; 1:11      -7 +loop_589(m) HL = index+step
     ld  (idx589), HL    ; 3:16      -7 +loop_589(m) save index
 stp_lo589 EQU $+1       ;           -7 +loop_589(m)
-    ld    A, low 0xFFFF+(30); 2:7       -7 +loop_589(m)   lo stop-1
+    ld    A, low +(30)-1; 2:7       -7 +loop_589(m)   lo stop-1
     sub   L             ; 1:4       -7 +loop_589(m)
     ld    L, A          ; 1:4       -7 +loop_589(m)
 stp_hi589 EQU $+1       ;           -7 +loop_589(m)
-    ld    A, high 0xFFFF+(30); 2:7       -7 +loop_589(m)   hi stop-1
+    ld    A, high +(30)-1; 2:7       -7 +loop_589(m)   hi stop-1
     sbc   A, H          ; 1:4       -7 +loop_589(m)
     ld    H, A          ; 1:4       -7 +loop_589(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -7 +loop_589(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_589(m)
     pop  HL             ; 1:10      -7 +loop_589(m)
-    jp    p, do589      ; 3:10      -7 +loop_589(m) negative step
+    jp    p, do589      ; 3:10      -7 +loop_589(m)
 leave589:               ;           -7 +loop_589(m)
 exit589:                ;           -7 +loop_589(m)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string590 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 6927   ( -- 0 0 6927 )
+    push DE             ; 1:11      0 0 6927   ( -- 0 0 6927 ) push3.m3
     push HL             ; 1:11      0 0 6927
-    ld   DE, 0          ; 3:10      0 0 6927
+    ld   DE, 0x0000     ; 3:10      0 0 6927
     push DE             ; 1:11      0 0 6927
     ld   HL, 0x1B0F     ; 3:10      0 0 6927
 
@@ -16482,17 +16444,17 @@ idx590 EQU $+1          ;           -7 +loop_590(m)
     add  HL, BC         ; 1:11      -7 +loop_590(m) HL = index+step
     ld  (idx590), HL    ; 3:16      -7 +loop_590(m) save index
 stp_lo590 EQU $+1       ;           -7 +loop_590(m)
-    ld    A, low 0xFFFF+(-70); 2:7       -7 +loop_590(m)   lo stop-1
+    ld    A, low +(-70)-1; 2:7       -7 +loop_590(m)   lo stop-1
     sub   L             ; 1:4       -7 +loop_590(m)
     ld    L, A          ; 1:4       -7 +loop_590(m)
 stp_hi590 EQU $+1       ;           -7 +loop_590(m)
-    ld    A, high 0xFFFF+(-70); 2:7       -7 +loop_590(m)   hi stop-1
+    ld    A, high +(-70)-1; 2:7       -7 +loop_590(m)   hi stop-1
     sbc   A, H          ; 1:4       -7 +loop_590(m)
     ld    H, A          ; 1:4       -7 +loop_590(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      -7 +loop_590(m) HL = stop-index
     xor   H             ; 1:4       -7 +loop_590(m)
     pop  HL             ; 1:10      -7 +loop_590(m)
-    jp    p, do590      ; 3:10      -7 +loop_590(m) negative step
+    jp    p, do590      ; 3:10      -7 +loop_590(m)
 leave590:               ;           -7 +loop_590(m)
 exit590:                ;           -7 +loop_590(m)
     call _show          ; 3:17      call ( -- )
@@ -16506,7 +16468,7 @@ exit590:                ;           -7 +loop_590(m)
     pop  HL             ; 1:10      do_591(m)
     ex   DE, HL         ; 1:4       do_591(m)
 do591:                  ;           do_591(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_591(m)
 idx591 EQU $+1          ;           3 +loop_591(m)
@@ -16515,20 +16477,20 @@ idx591 EQU $+1          ;           3 +loop_591(m)
     add  HL, BC         ; 1:11      3 +loop_591(m) HL = index+step
     ld  (idx591), HL    ; 3:16      3 +loop_591(m) save index
 stp_lo591 EQU $+1       ;           3 +loop_591(m)
-    ld    A, low 0xFFFF+(25); 2:7       3 +loop_591(m)   lo stop-1
+    ld    A, low +(25)-1; 2:7       3 +loop_591(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_591(m)
     ld    L, A          ; 1:4       3 +loop_591(m)
 stp_hi591 EQU $+1       ;           3 +loop_591(m)
-    ld    A, high 0xFFFF+(25); 2:7       3 +loop_591(m)   hi stop-1
+    ld    A, high +(25)-1; 2:7       3 +loop_591(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_591(m)
     ld    H, A          ; 1:4       3 +loop_591(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_591(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_591(m)
     pop  HL             ; 1:10      3 +loop_591(m)
-    jp    p, do591      ; 3:10      3 +loop_591(m) negative step
+    jp    p, do591      ; 3:10      3 +loop_591(m)
 leave591:               ;           3 +loop_591(m)
 exit591:                ;           3 +loop_591(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string592 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -16540,7 +16502,7 @@ exit591:                ;           3 +loop_591(m)
     pop  HL             ; 1:10      do_592(m)
     ex   DE, HL         ; 1:4       do_592(m)
 do592:                  ;           do_592(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_592(m)
 idx592 EQU $+1          ;           3 +loop_592(m)
@@ -16549,20 +16511,20 @@ idx592 EQU $+1          ;           3 +loop_592(m)
     add  HL, BC         ; 1:11      3 +loop_592(m) HL = index+step
     ld  (idx592), HL    ; 3:16      3 +loop_592(m) save index
 stp_lo592 EQU $+1       ;           3 +loop_592(m)
-    ld    A, low 0xFFFF+(0xC610); 2:7       3 +loop_592(m)   lo stop-1
+    ld    A, low +(0xC610)-1; 2:7       3 +loop_592(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_592(m)
     ld    L, A          ; 1:4       3 +loop_592(m)
 stp_hi592 EQU $+1       ;           3 +loop_592(m)
-    ld    A, high 0xFFFF+(0xC610); 2:7       3 +loop_592(m)   hi stop-1
+    ld    A, high +(0xC610)-1; 2:7       3 +loop_592(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_592(m)
     ld    H, A          ; 1:4       3 +loop_592(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_592(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_592(m)
     pop  HL             ; 1:10      3 +loop_592(m)
-    jp    p, do592      ; 3:10      3 +loop_592(m) negative step
+    jp    p, do592      ; 3:10      3 +loop_592(m)
 leave592:               ;           3 +loop_592(m)
 exit592:                ;           3 +loop_592(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string593 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -16574,7 +16536,7 @@ exit592:                ;           3 +loop_592(m)
     pop  HL             ; 1:10      do_593(m)
     ex   DE, HL         ; 1:4       do_593(m)
 do593:                  ;           do_593(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      512 +loop_593(m)
 idx593 EQU $+1          ;           512 +loop_593(m)
@@ -16583,32 +16545,32 @@ idx593 EQU $+1          ;           512 +loop_593(m)
     add  HL, BC         ; 1:11      512 +loop_593(m) HL = index+step
     ld  (idx593), HL    ; 3:16      512 +loop_593(m) save index
 stp_lo593 EQU $+1       ;           512 +loop_593(m)
-    ld    A, low 0xFFFF+(2500); 2:7       512 +loop_593(m)   lo stop-1
+    ld    A, low +(2500)-1; 2:7       512 +loop_593(m)   lo stop-1
     sub   L             ; 1:4       512 +loop_593(m)
     ld    L, A          ; 1:4       512 +loop_593(m)
 stp_hi593 EQU $+1       ;           512 +loop_593(m)
-    ld    A, high 0xFFFF+(2500); 2:7       512 +loop_593(m)   hi stop-1
+    ld    A, high +(2500)-1; 2:7       512 +loop_593(m)   hi stop-1
     sbc   A, H          ; 1:4       512 +loop_593(m)
     ld    H, A          ; 1:4       512 +loop_593(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      512 +loop_593(m) HL = stop-index
     xor   H             ; 1:4       512 +loop_593(m)
     pop  HL             ; 1:10      512 +loop_593(m)
-    jp    p, do593      ; 3:10      512 +loop_593(m) negative step
+    jp    p, do593      ; 3:10      512 +loop_593(m)
 leave593:               ;           512 +loop_593(m)
 exit593:                ;           512 +loop_593(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string594 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -15
     ex   DE, HL         ; 1:4       -15
-    ld   HL, -15        ; 3:10      -15
+    ld   HL, 0-15       ; 3:10      -15
 
     ld  (idx594), HL    ; 3:16      do_594(m)   ( 0 index -- )
     pop  HL             ; 1:10      do_594(m)
     ex   DE, HL         ; 1:4       do_594(m)
 do594:                  ;           do_594(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_594(m)
 idx594 EQU $+1          ;           3 +loop_594(m)
@@ -16617,32 +16579,32 @@ idx594 EQU $+1          ;           3 +loop_594(m)
     add  HL, BC         ; 1:11      3 +loop_594(m) HL = index+step
     ld  (idx594), HL    ; 3:16      3 +loop_594(m) save index
 stp_lo594 EQU $+1       ;           3 +loop_594(m)
-    ld    A, low 0xFFFF+(0); 2:7       3 +loop_594(m)   lo stop-1
+    ld    A, low +(0)-1 ; 2:7       3 +loop_594(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_594(m)
     ld    L, A          ; 1:4       3 +loop_594(m)
 stp_hi594 EQU $+1       ;           3 +loop_594(m)
-    ld    A, high 0xFFFF+(0); 2:7       3 +loop_594(m)   hi stop-1
+    ld    A, high +(0)-1; 2:7       3 +loop_594(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_594(m)
     ld    H, A          ; 1:4       3 +loop_594(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_594(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_594(m)
     pop  HL             ; 1:10      3 +loop_594(m)
-    jp    p, do594      ; 3:10      3 +loop_594(m) negative step
+    jp    p, do594      ; 3:10      3 +loop_594(m)
 leave594:               ;           3 +loop_594(m)
 exit594:                ;           3 +loop_594(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string595 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -29
     ex   DE, HL         ; 1:4       -29
-    ld   HL, -29        ; 3:10      -29
+    ld   HL, 0-29       ; 3:10      -29
 
     ld  (idx595), HL    ; 3:16      do_595(m)   ( 5 index -- )
     pop  HL             ; 1:10      do_595(m)
     ex   DE, HL         ; 1:4       do_595(m)
 do595:                  ;           do_595(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_595(m)
 idx595 EQU $+1          ;           7 +loop_595(m)
@@ -16651,20 +16613,20 @@ idx595 EQU $+1          ;           7 +loop_595(m)
     add  HL, BC         ; 1:11      7 +loop_595(m) HL = index+step
     ld  (idx595), HL    ; 3:16      7 +loop_595(m) save index
 stp_lo595 EQU $+1       ;           7 +loop_595(m)
-    ld    A, low 0xFFFF+(5); 2:7       7 +loop_595(m)   lo stop-1
+    ld    A, low +(5)-1 ; 2:7       7 +loop_595(m)   lo stop-1
     sub   L             ; 1:4       7 +loop_595(m)
     ld    L, A          ; 1:4       7 +loop_595(m)
 stp_hi595 EQU $+1       ;           7 +loop_595(m)
-    ld    A, high 0xFFFF+(5); 2:7       7 +loop_595(m)   hi stop-1
+    ld    A, high +(5)-1; 2:7       7 +loop_595(m)   hi stop-1
     sbc   A, H          ; 1:4       7 +loop_595(m)
     ld    H, A          ; 1:4       7 +loop_595(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      7 +loop_595(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_595(m)
     pop  HL             ; 1:10      7 +loop_595(m)
-    jp    p, do595      ; 3:10      7 +loop_595(m) negative step
+    jp    p, do595      ; 3:10      7 +loop_595(m)
 leave595:               ;           7 +loop_595(m)
 exit595:                ;           7 +loop_595(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string596 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -16676,7 +16638,7 @@ exit595:                ;           7 +loop_595(m)
     pop  HL             ; 1:10      do_596(m)
     ex   DE, HL         ; 1:4       do_596(m)
 do596:                  ;           do_596(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_596(m)
 idx596 EQU $+1          ;           7 +loop_596(m)
@@ -16685,32 +16647,32 @@ idx596 EQU $+1          ;           7 +loop_596(m)
     add  HL, BC         ; 1:11      7 +loop_596(m) HL = index+step
     ld  (idx596), HL    ; 3:16      7 +loop_596(m) save index
 stp_lo596 EQU $+1       ;           7 +loop_596(m)
-    ld    A, low 0xFFFF+(260); 2:7       7 +loop_596(m)   lo stop-1
+    ld    A, low +(260)-1; 2:7       7 +loop_596(m)   lo stop-1
     sub   L             ; 1:4       7 +loop_596(m)
     ld    L, A          ; 1:4       7 +loop_596(m)
 stp_hi596 EQU $+1       ;           7 +loop_596(m)
-    ld    A, high 0xFFFF+(260); 2:7       7 +loop_596(m)   hi stop-1
+    ld    A, high +(260)-1; 2:7       7 +loop_596(m)   hi stop-1
     sbc   A, H          ; 1:4       7 +loop_596(m)
     ld    H, A          ; 1:4       7 +loop_596(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      7 +loop_596(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_596(m)
     pop  HL             ; 1:10      7 +loop_596(m)
-    jp    p, do596      ; 3:10      7 +loop_596(m) negative step
+    jp    p, do596      ; 3:10      7 +loop_596(m)
 leave596:               ;           7 +loop_596(m)
 exit596:                ;           7 +loop_596(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string597 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -23
     ex   DE, HL         ; 1:4       -23
-    ld   HL, -23        ; 3:10      -23
+    ld   HL, 0-23       ; 3:10      -23
 
     ld  (idx597), HL    ; 3:16      do_597(m)   ( 10 index -- )
     pop  HL             ; 1:10      do_597(m)
     ex   DE, HL         ; 1:4       do_597(m)
 do597:                  ;           do_597(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      7 +loop_597(m)
 idx597 EQU $+1          ;           7 +loop_597(m)
@@ -16719,32 +16681,32 @@ idx597 EQU $+1          ;           7 +loop_597(m)
     add  HL, BC         ; 1:11      7 +loop_597(m) HL = index+step
     ld  (idx597), HL    ; 3:16      7 +loop_597(m) save index
 stp_lo597 EQU $+1       ;           7 +loop_597(m)
-    ld    A, low 0xFFFF+(10); 2:7       7 +loop_597(m)   lo stop-1
+    ld    A, low +(10)-1; 2:7       7 +loop_597(m)   lo stop-1
     sub   L             ; 1:4       7 +loop_597(m)
     ld    L, A          ; 1:4       7 +loop_597(m)
 stp_hi597 EQU $+1       ;           7 +loop_597(m)
-    ld    A, high 0xFFFF+(10); 2:7       7 +loop_597(m)   hi stop-1
+    ld    A, high +(10)-1; 2:7       7 +loop_597(m)   hi stop-1
     sbc   A, H          ; 1:4       7 +loop_597(m)
     ld    H, A          ; 1:4       7 +loop_597(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      7 +loop_597(m) HL = stop-index
     xor   H             ; 1:4       7 +loop_597(m)
     pop  HL             ; 1:10      7 +loop_597(m)
-    jp    p, do597      ; 3:10      7 +loop_597(m) negative step
+    jp    p, do597      ; 3:10      7 +loop_597(m)
 leave597:               ;           7 +loop_597(m)
 exit597:                ;           7 +loop_597(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string598 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
     push DE             ; 1:11      -1485
     ex   DE, HL         ; 1:4       -1485
-    ld   HL, -1485      ; 3:10      -1485
+    ld   HL, 0-1485     ; 3:10      -1485
 
     ld  (idx598), HL    ; 3:16      do_598(m)   ( 230 index -- )
     pop  HL             ; 1:10      do_598(m)
     ex   DE, HL         ; 1:4       do_598(m)
 do598:                  ;           do_598(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      345 +loop_598(m)
 idx598 EQU $+1          ;           345 +loop_598(m)
@@ -16753,26 +16715,26 @@ idx598 EQU $+1          ;           345 +loop_598(m)
     add  HL, BC         ; 1:11      345 +loop_598(m) HL = index+step
     ld  (idx598), HL    ; 3:16      345 +loop_598(m) save index
 stp_lo598 EQU $+1       ;           345 +loop_598(m)
-    ld    A, low 0xFFFF+(230); 2:7       345 +loop_598(m)   lo stop-1
+    ld    A, low +(230)-1; 2:7       345 +loop_598(m)   lo stop-1
     sub   L             ; 1:4       345 +loop_598(m)
     ld    L, A          ; 1:4       345 +loop_598(m)
 stp_hi598 EQU $+1       ;           345 +loop_598(m)
-    ld    A, high 0xFFFF+(230); 2:7       345 +loop_598(m)   hi stop-1
+    ld    A, high +(230)-1; 2:7       345 +loop_598(m)   hi stop-1
     sbc   A, H          ; 1:4       345 +loop_598(m)
     ld    H, A          ; 1:4       345 +loop_598(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      345 +loop_598(m) HL = stop-index
     xor   H             ; 1:4       345 +loop_598(m)
     pop  HL             ; 1:10      345 +loop_598(m)
-    jp    p, do598      ; 3:10      345 +loop_598(m) negative step
+    jp    p, do598      ; 3:10      345 +loop_598(m)
 leave598:               ;           345 +loop_598(m)
 exit598:                ;           345 +loop_598(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string599 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 516   ( -- 0 0 516 )
+    push DE             ; 1:11      0 0 516   ( -- 0 0 516 ) push3.m3
     push HL             ; 1:11      0 0 516
-    ld   DE, 0          ; 3:10      0 0 516
+    ld   DE, 0x0000     ; 3:10      0 0 516
     push DE             ; 1:11      0 0 516
     ld   HL, 0x0204     ; 3:10      0 0 516
 
@@ -16791,17 +16753,17 @@ idx599 EQU $+1          ;           4 +loop_599(m)
     add  HL, BC         ; 1:11      4 +loop_599(m) HL = index+step
     ld  (idx599), HL    ; 3:16      4 +loop_599(m) save index
 stp_lo599 EQU $+1       ;           4 +loop_599(m)
-    ld    A, low 0xFFFF+(4516); 2:7       4 +loop_599(m)   lo stop-1
+    ld    A, low +(4516)-1; 2:7       4 +loop_599(m)   lo stop-1
     sub   L             ; 1:4       4 +loop_599(m)
     ld    L, A          ; 1:4       4 +loop_599(m)
 stp_hi599 EQU $+1       ;           4 +loop_599(m)
-    ld    A, high 0xFFFF+(4516); 2:7       4 +loop_599(m)   hi stop-1
+    ld    A, high +(4516)-1; 2:7       4 +loop_599(m)   hi stop-1
     sbc   A, H          ; 1:4       4 +loop_599(m)
     ld    H, A          ; 1:4       4 +loop_599(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      4 +loop_599(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_599(m)
     pop  HL             ; 1:10      4 +loop_599(m)
-    jp    p, do599      ; 3:10      4 +loop_599(m) negative step
+    jp    p, do599      ; 3:10      4 +loop_599(m)
 leave599:               ;           4 +loop_599(m)
 exit599:                ;           4 +loop_599(m)
     call _show          ; 3:17      call ( -- )
@@ -16815,7 +16777,7 @@ exit599:                ;           4 +loop_599(m)
     pop  HL             ; 1:10      do_600(m)
     ex   DE, HL         ; 1:4       do_600(m)
 do600:                  ;           do_600(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      300 +loop_600(m)
 idx600 EQU $+1          ;           300 +loop_600(m)
@@ -16824,20 +16786,20 @@ idx600 EQU $+1          ;           300 +loop_600(m)
     add  HL, BC         ; 1:11      300 +loop_600(m) HL = index+step
     ld  (idx600), HL    ; 3:16      300 +loop_600(m) save index
 stp_lo600 EQU $+1       ;           300 +loop_600(m)
-    ld    A, low 0xFFFF+(1234); 2:7       300 +loop_600(m)   lo stop-1
+    ld    A, low +(1234)-1; 2:7       300 +loop_600(m)   lo stop-1
     sub   L             ; 1:4       300 +loop_600(m)
     ld    L, A          ; 1:4       300 +loop_600(m)
 stp_hi600 EQU $+1       ;           300 +loop_600(m)
-    ld    A, high 0xFFFF+(1234); 2:7       300 +loop_600(m)   hi stop-1
+    ld    A, high +(1234)-1; 2:7       300 +loop_600(m)   hi stop-1
     sbc   A, H          ; 1:4       300 +loop_600(m)
     ld    H, A          ; 1:4       300 +loop_600(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      300 +loop_600(m) HL = stop-index
     xor   H             ; 1:4       300 +loop_600(m)
     pop  HL             ; 1:10      300 +loop_600(m)
-    jp    p, do600      ; 3:10      300 +loop_600(m) negative step
+    jp    p, do600      ; 3:10      300 +loop_600(m)
 leave600:               ;           300 +loop_600(m)
 exit600:                ;           300 +loop_600(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string601 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -16849,7 +16811,7 @@ exit600:                ;           300 +loop_600(m)
     pop  HL             ; 1:10      do_601(m)
     ex   DE, HL         ; 1:4       do_601(m)
 do601:                  ;           do_601(m)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     push HL             ; 1:11      3 +loop_601(m)
 idx601 EQU $+1          ;           3 +loop_601(m)
@@ -16858,26 +16820,26 @@ idx601 EQU $+1          ;           3 +loop_601(m)
     add  HL, BC         ; 1:11      3 +loop_601(m) HL = index+step
     ld  (idx601), HL    ; 3:16      3 +loop_601(m) save index
 stp_lo601 EQU $+1       ;           3 +loop_601(m)
-    ld    A, low 0xFFFF+(1034); 2:7       3 +loop_601(m)   lo stop-1
+    ld    A, low +(1034)-1; 2:7       3 +loop_601(m)   lo stop-1
     sub   L             ; 1:4       3 +loop_601(m)
     ld    L, A          ; 1:4       3 +loop_601(m)
 stp_hi601 EQU $+1       ;           3 +loop_601(m)
-    ld    A, high 0xFFFF+(1034); 2:7       3 +loop_601(m)   hi stop-1
+    ld    A, high +(1034)-1; 2:7       3 +loop_601(m)   hi stop-1
     sbc   A, H          ; 1:4       3 +loop_601(m)
     ld    H, A          ; 1:4       3 +loop_601(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      3 +loop_601(m) HL = stop-index
     xor   H             ; 1:4       3 +loop_601(m)
     pop  HL             ; 1:10      3 +loop_601(m)
-    jp    p, do601      ; 3:10      3 +loop_601(m) negative step
+    jp    p, do601      ; 3:10      3 +loop_601(m)
 leave601:               ;           3 +loop_601(m)
 exit601:                ;           3 +loop_601(m)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string602 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-    push DE             ; 1:11      0 0 100   ( -- 0 0 100 )
+    push DE             ; 1:11      0 0 100   ( -- 0 0 100 ) push3.m3
     push HL             ; 1:11      0 0 100
-    ld   DE, 0          ; 3:10      0 0 100
+    ld   DE, 0x0000     ; 3:10      0 0 100
     push DE             ; 1:11      0 0 100
     ld   HL, 0x0064     ; 3:10      0 0 100
 
@@ -16896,17 +16858,17 @@ idx602 EQU $+1          ;           4 +loop_602(m)
     add  HL, BC         ; 1:11      4 +loop_602(m) HL = index+step
     ld  (idx602), HL    ; 3:16      4 +loop_602(m) save index
 stp_lo602 EQU $+1       ;           4 +loop_602(m)
-    ld    A, low 0xFFFF+(500); 2:7       4 +loop_602(m)   lo stop-1
+    ld    A, low +(500)-1; 2:7       4 +loop_602(m)   lo stop-1
     sub   L             ; 1:4       4 +loop_602(m)
     ld    L, A          ; 1:4       4 +loop_602(m)
 stp_hi602 EQU $+1       ;           4 +loop_602(m)
-    ld    A, high 0xFFFF+(500); 2:7       4 +loop_602(m)   hi stop-1
+    ld    A, high +(500)-1; 2:7       4 +loop_602(m)   hi stop-1
     sbc   A, H          ; 1:4       4 +loop_602(m)
     ld    H, A          ; 1:4       4 +loop_602(m) HL = stop-(index+step)
     add  HL, BC         ; 1:11      4 +loop_602(m) HL = stop-index
     xor   H             ; 1:4       4 +loop_602(m)
     pop  HL             ; 1:10      4 +loop_602(m)
-    jp    p, do602      ; 3:10      4 +loop_602(m) negative step
+    jp    p, do602      ; 3:10      4 +loop_602(m)
 leave602:               ;           4 +loop_602(m)
 exit602:                ;           4 +loop_602(m)
     call _show          ; 3:17      call ( -- )
@@ -16920,7 +16882,7 @@ exit602:                ;           4 +loop_602(m)
 do603save:              ;           do_603(xm)
     ld  (idx603),BC     ; 4:20      do_603(xm)
 do603:                  ;           do_603(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[11:66/46] -3 +loop_603(xm)   variant -X.A: step -3 and stop 0, run 5x
 idx603 EQU $+1          ;           -3 +loop_603(xm)   idx always points to a 16-bit index
@@ -16933,7 +16895,7 @@ idx603 EQU $+1          ;           -3 +loop_603(xm)   idx always points to a 16
     jp   nc, do603save  ; 3:10      -3 +loop_603(xm)   carry if postivie index -> negative index
 leave603:               ;           -3 +loop_603(xm)
 exit603:                ;           -3 +loop_603(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string442  ; 3:10      print_i   Address of string604 ending with inverted most significant bit == string442
     call PRINT_STRING_I ; 3:17      print_i
@@ -16941,7 +16903,7 @@ exit603:                ;           -3 +loop_603(xm)
 do604save:              ;           do_604(xm)
     ld  (idx604),BC     ; 4:20      do_604(xm)
 do604:                  ;           do_604(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] -10 +loop_604(xm)   variant -X.B: negative step and stop 0, run 5x
 idx604 EQU $+1          ;           -10 +loop_604(xm)   idx always points to a 16-bit index
@@ -16955,7 +16917,7 @@ idx604 EQU $+1          ;           -10 +loop_604(xm)   idx always points to a 1
     jp   nc, do604save  ; 3:10      -10 +loop_604(xm)   carry if postivie index -> negative index
 leave604:               ;           -10 +loop_604(xm)
 exit604:                ;           -10 +loop_604(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string443  ; 3:10      print_i   Address of string605 ending with inverted most significant bit == string443
     call PRINT_STRING_I ; 3:17      print_i
@@ -16963,7 +16925,7 @@ exit604:                ;           -10 +loop_604(xm)
 do605save:              ;           do_605(xm)
     ld  (idx605),BC     ; 4:20      do_605(xm)
 do605:                  ;           do_605(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[17:55/60] -33 +loop_605(xm)   variant +X.C: negative step 3..255 and hi(real_stop) exclusivity, run 5x
@@ -16979,7 +16941,7 @@ idx605 EQU $+1          ;           -33 +loop_605(xm)   idx always points to a 1
     jp   nz, do605save  ; 3:10      -33 +loop_605(xm)
 leave605:               ;           -33 +loop_605(xm)
 exit605:                ;           -33 +loop_605(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string444  ; 3:10      print_i   Address of string606 ending with inverted most significant bit == string444
     call PRINT_STRING_I ; 3:17      print_i
@@ -16987,7 +16949,7 @@ exit605:                ;           -33 +loop_605(xm)
 do606save:              ;           do_606(xm)
     ld  (idx606),BC     ; 4:20      do_606(xm)
 do606:                  ;           do_606(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
 
                         ;[16:77/57] -300 +loop_606(xm)   variant +X.D: negative step 256+ and hi(real_stop) exclusivity, run 5x
@@ -17003,12 +16965,12 @@ idx606 EQU $+1          ;           -300 +loop_606(xm)   idx always points to a 
     jp   nz, do606save  ; 3:10      -300 +loop_606(xm)
 leave606:               ;           -300 +loop_606(xm)
 exit606:                ;           -300 +loop_606(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string445  ; 3:10      print_i   Address of string607 ending with inverted most significant bit == string445
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -17039,8 +17001,8 @@ exit607:                ;           -7 +loop_607(xm)
     call _show          ; 3:17      call ( -- )
     ld   BC, string446  ; 3:10      print_i   Address of string608 ending with inverted most significant bit == string446
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -17077,7 +17039,7 @@ exit608:                ;           -7 +loop_608(xm)
 do609save:              ;           do_609(xm)
     ld  (idx609),BC     ; 4:20      do_609(xm)
 do609:                  ;           do_609(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[13:48]    3 +loop_609(xm)   variant +X.A: positive step and 0 <= index < stop < 256, run 5x
 idx609 EQU $+1          ;           3 +loop_609(xm)   idx always points to a 16-bit index
@@ -17089,7 +17051,7 @@ idx609 EQU $+1          ;           3 +loop_609(xm)   idx always points to a 16-
     jp   nz, do609      ; 3:10      3 +loop_609(xm)
 leave609:               ;           3 +loop_609(xm)
 exit609:                ;           3 +loop_609(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string448  ; 3:10      print_i   Address of string610 ending with inverted most significant bit == string448
     call PRINT_STRING_I ; 3:17      print_i
@@ -17097,7 +17059,7 @@ exit609:                ;           3 +loop_609(xm)
 do610save:              ;           do_610(xm)
     ld  (idx610),BC     ; 4:20      do_610(xm)
 do610:                  ;           do_610(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[12:44]    3 +loop_610(xm)   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run 5x
 idx610 EQU $+1          ;           3 +loop_610(xm)   idx always points to a 16-bit index
@@ -17108,7 +17070,7 @@ idx610 EQU $+1          ;           3 +loop_610(xm)   idx always points to a 16-
     jp   nz, do610      ; 3:10      3 +loop_610(xm)
 leave610:               ;           3 +loop_610(xm)
 exit610:                ;           3 +loop_610(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string449  ; 3:10      print_i   Address of string611 ending with inverted most significant bit == string449
     call PRINT_STRING_I ; 3:17      print_i
@@ -17116,7 +17078,7 @@ exit610:                ;           3 +loop_610(xm)
 do611save:              ;           do_611(xm)
     ld  (idx611),BC     ; 4:20      do_611(xm)
 do611:                  ;           do_611(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:51]    512 +loop_611(xm)   variant +X.C: positive step = n*256, run 5x
 idx611 EQU $+1          ;           512 +loop_611(xm)   idx always points to a 16-bit index
@@ -17128,7 +17090,7 @@ idx611 EQU $+1          ;           512 +loop_611(xm)   idx always points to a 1
     jp   nz, do611      ; 3:10      512 +loop_611(xm)
 leave611:               ;           512 +loop_611(xm)
 exit611:                ;           512 +loop_611(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string450  ; 3:10      print_i   Address of string612 ending with inverted most significant bit == string450
     call PRINT_STRING_I ; 3:17      print_i
@@ -17136,7 +17098,7 @@ exit611:                ;           512 +loop_611(xm)
 do612save:              ;           do_612(xm)
     ld  (idx612),BC     ; 4:20      do_612(xm)
 do612:                  ;           do_612(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 3 +loop_612(xm)   variant +X.D: positive step 3..255 and stop 0, run 5x
 idx612 EQU $+1          ;           3 +loop_612(xm)   idx always points to a 16-bit index
@@ -17149,7 +17111,7 @@ idx612 EQU $+1          ;           3 +loop_612(xm)   idx always points to a 16-
     jp   nc, do612save  ; 3:10      3 +loop_612(xm)
 leave612:               ;           3 +loop_612(xm)
 exit612:                ;           3 +loop_612(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string451  ; 3:10      print_i   Address of string613 ending with inverted most significant bit == string451
     call PRINT_STRING_I ; 3:17      print_i
@@ -17157,7 +17119,7 @@ exit612:                ;           3 +loop_612(xm)
 do613save:              ;           do_613(xm)
     ld  (idx613),BC     ; 4:20      do_613(xm)
 do613:                  ;           do_613(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:55/49] 7 +loop_613(xm)   variant +X.E: positive step 3..255 and hi(real_stop) = exclusivity zero, run 5x
 idx613 EQU $+1          ;           7 +loop_613(xm)   idx always points to a 16-bit index
@@ -17170,7 +17132,7 @@ idx613 EQU $+1          ;           7 +loop_613(xm)   idx always points to a 16-
     jp   nz, do613save  ; 3:10      7 +loop_613(xm)
 leave613:               ;           7 +loop_613(xm)
 exit613:                ;           7 +loop_613(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string452  ; 3:10      print_i   Address of string614 ending with inverted most significant bit == string452
     call PRINT_STRING_I ; 3:17      print_i
@@ -17178,7 +17140,7 @@ exit613:                ;           7 +loop_613(xm)
 do614save:              ;           do_614(xm)
     ld  (idx614),BC     ; 4:20      do_614(xm)
 do614:                  ;           do_614(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[17:55/60] 7 +loop_614(xm)   variant +X.F: positive step 3..255 and hi(real_stop) exclusivity, run 5x
 idx614 EQU $+1          ;           7 +loop_614(xm)   idx always points to a 16-bit index
@@ -17193,7 +17155,7 @@ idx614 EQU $+1          ;           7 +loop_614(xm)   idx always points to a 16-
     jp   nz, do614save  ; 3:10      7 +loop_614(xm)
 leave614:               ;           7 +loop_614(xm)
 exit614:                ;           7 +loop_614(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string453  ; 3:10      print_i   Address of string615 ending with inverted most significant bit == string453
     call PRINT_STRING_I ; 3:17      print_i
@@ -17201,7 +17163,7 @@ exit614:                ;           7 +loop_614(xm)
 do615save:              ;           do_615(xm)
     ld  (idx615),BC     ; 4:20      do_615(xm)
 do615:                  ;           do_615(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[19:67/68] 7 +loop_615(xm)   variant +X.G: positive step 3..255 and real_stop 0..255, run 5x
 idx615 EQU $+1          ;           7 +loop_615(xm)   idx always points to a 16-bit index
@@ -17218,7 +17180,7 @@ idx615 EQU $+1          ;           7 +loop_615(xm)   idx always points to a 16-
     jp   nz, do615save  ; 3:10      7 +loop_615(xm)
 leave615:               ;           7 +loop_615(xm)
 exit615:                ;           7 +loop_615(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string454  ; 3:10      print_i   Address of string616 ending with inverted most significant bit == string454
     call PRINT_STRING_I ; 3:17      print_i
@@ -17226,7 +17188,7 @@ exit615:                ;           7 +loop_615(xm)
 do616save:              ;           do_616(xm)
     ld  (idx616),BC     ; 4:20      do_616(xm)
 do616:                  ;           do_616(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[14:70/50] 345 +loop_616(xm)   variant +X.H: positive step 256+ and hi(real_stop) exclusivity zero, run 5x
 idx616 EQU $+1          ;           345 +loop_616(xm)   idx always points to a 16-bit index
@@ -17240,12 +17202,12 @@ idx616 EQU $+1          ;           345 +loop_616(xm)   idx always points to a 1
     jp   nz, do616save  ; 3:10      345 +loop_616(xm)
 leave616:               ;           345 +loop_616(xm)
 exit616:                ;           345 +loop_616(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string455  ; 3:10      print_i   Address of string617 ending with inverted most significant bit == string455
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -17281,7 +17243,7 @@ exit617:                ;           4 +loop_617(xm)
 do618save:              ;           do_618(xm)
     ld  (idx618),BC     ; 4:20      do_618(xm)
 do618:                  ;           do_618(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:77/57] 300 +loop_618(xm)   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 5x
 idx618 EQU $+1          ;           300 +loop_618(xm)   idx always points to a 16-bit index
@@ -17296,7 +17258,7 @@ idx618 EQU $+1          ;           300 +loop_618(xm)   idx always points to a 1
     jp   nz, do618save  ; 3:10      300 +loop_618(xm)
 leave618:               ;           300 +loop_618(xm)
 exit618:                ;           300 +loop_618(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string457  ; 3:10      print_i   Address of string619 ending with inverted most significant bit == string457
     call PRINT_STRING_I ; 3:17      print_i
@@ -17304,7 +17266,7 @@ exit618:                ;           300 +loop_618(xm)
 do619save:              ;           do_619(xm)
     ld  (idx619),BC     ; 4:20      do_619(xm)
 do619:                  ;           do_619(xm)
-    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, DE', BC'
+    ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
                         ;[16:78/58] 3 +loop_619(xm)   variant +X.K : positive step 3..255 and lo(real_stop) exclusivity, run 5x
 idx619 EQU $+1          ;           3 +loop_619(xm)   idx always points to a 16-bit index
@@ -17320,12 +17282,12 @@ idx619 EQU $+1          ;           3 +loop_619(xm)   idx always points to a 16-
     jp   nz, do619save  ; 3:10      3 +loop_619(xm)
 leave619:               ;           3 +loop_619(xm)
 exit619:                ;           3 +loop_619(xm)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
     ld   BC, string458  ; 3:10      print_i   Address of string620 ending with inverted most significant bit == string458
     call PRINT_STRING_I ; 3:17      print_i
-                        ;[7:40]     0 0
-    push DE             ; 1:11      0 0   ( -- 0 0 )
+                        ;[7:40]     0 0   ( -- 0 0 )
+    push DE             ; 1:11      0 0
     push HL             ; 1:11      0 0
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
@@ -17370,7 +17332,6 @@ Stop:                   ;           stop
 _test:                  ;           
     pop  BC             ; 1:10      : ret
     ld  (_test_end+1),BC; 4:20      : ( ret -- )
-
                        ;[ 9:46]     _counter @ 1+ _counter !
     ld   BC,(_counter)  ; 4:20      _counter @ 1+ _counter !
     inc  BC             ; 1:6       _counter @ 1+ _counter !
@@ -17400,7 +17361,7 @@ _show:                  ;
                         ;[7:30]     0 _counter !  push2_store(0,_counter)   ( -- )  val=0, addr=_counter
     ld   BC, 0          ; 3:10      0 _counter !  push2_store(0,_counter)
     ld   (_counter), BC ; 4:20      0 _counter !  push2_store(0,_counter)
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 _show_end:
     jp   0x0000         ; 3:10      ;
@@ -17444,7 +17405,7 @@ PRT_S16:                ;           prt_s16
     ld    A, H          ; 1:4       prt_s16
     add   A, A          ; 1:4       prt_s16
     jr   nc, PRT_U16    ; 2:7/12    prt_s16
-    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
     xor   A             ; 1:4       prt_s16   neg
     sub   L             ; 1:4       prt_s16   neg
@@ -17458,7 +17419,7 @@ PRT_S16:                ;           prt_s16
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRT_SP_U16:             ;           prt_sp_u16
-    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      prt_sp_u16   putchar with ZX 48K ROM in, this will print char in A
     ; fall to prt_u16
 ;------------------------------------------------------------------------------
