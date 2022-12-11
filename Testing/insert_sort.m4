@@ -12,7 +12,7 @@ include(`../M4/FIRST.M4')dnl
     CR
        
     DEPTH UDOT PRINT_Z({" values in data stack.", 0xD})
-    __RAS
+    RAS
     PRINT_Z({"RAS:"}) UDOT CR
     STOP
     
