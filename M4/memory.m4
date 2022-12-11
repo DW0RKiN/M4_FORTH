@@ -3263,6 +3263,15 @@ __{}define({__TMP_C},eval(__TMP_C+__CLOCKS_16BIT)){}dnl
     inc  HL             ; 1:6       __INFO
     ld  (HL),B          ; 1:7       __INFO
     pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__IS_MEM_REF($3),{1:0:0},{define({_TMP_INFO},__INFO){}dnl
+                       ;[17:80]     __INFO{}__LD_REG16({BC},$1){}__CODE_16BIT
+    ld    A,(BC)        ; 1:7       __INFO
+    add   A,format({%-12s},low $2); 2:7       __INFO
+    ld  format({%-16s},($3){,}A); 3:13      __INFO
+    inc  BC             ; 1:6       __INFO
+    ld    A,(BC)        ; 1:7       __INFO
+    adc   A,format({%-12s},high $2); 2:7       __INFO
+    ld  format({%-16s},($3+1){,}A); 3:13      __INFO},
 __{}__IS_MEM_REF($1)::__IS_MEM_REF($3),{1::0},{define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$2){}dnl
 __{}define({__TMP_B},eval(10+__BYTES_16BIT)){}dnl
@@ -3291,6 +3300,18 @@ __{}__IS_MEM_REF($1):__IS_MEM_REF($2):__IS_MEM_REF($3),{1:0:1},{define({_TMP_INF
     ld  (HL),C          ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     ld  (HL),A          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__IS_MEM_REF($3),{1:0:1},{define({_TMP_INFO},__INFO){}dnl
+                       ;[19:111]    __INFO
+    push HL             ; 1:11      __INFO{}__LD_REG16({HL},$1){}__CODE_16BIT{}__LD_REG16({BC},$3){}__CODE_16BIT
+    ld    A,format({%-12s},low $2); 2:7       __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (BC),A          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    inc  BC             ; 1:6       __INFO
+    ld    A,format({%-12s},low $2); 2:7       __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld  (BC),A          ; 1:7       __INFO
     pop  HL             ; 1:10      __INFO},
 __{}__IS_MEM_REF($1)::__IS_MEM_REF($3),{1::1},{define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({HL},$3){}dnl
@@ -3375,6 +3396,15 @@ __{}__IS_MEM_REF($2):ifelse($1,$3,{1},__HEX_HL($1),__HEX_HL($3),{1},{0}),{0:1},{
     ld    A,(BC)        ; 1:7       __INFO
     adc   A,format({%-12s},high $2); 2:7       __INFO
     ld  (BC),A          ; 1:7       __INFO},
+__{}_TYP_SINGLE:__IS_MEM_REF($2),{fast:0},{define({_TMP_INFO},__INFO){}dnl
+                       ;[16:66]     __INFO
+    ld    A,format({%-12s},($1)); 3:13      __INFO
+    add   A,format({%-12s},low $2); 2:7       __INFO
+    ld  format({%-16s},($3){,}A); 3:13      __INFO
+    ld    A,format({%-12s},($1+1)); 3:13      __INFO
+    adc   A,format({%-12s},high $2); 2:7       __INFO
+    ld  format({%-16s},($3+1){,}A); 3:13      __INFO},
+
 __{}{define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$2){}dnl
 __{}define({__TMP_B},eval(6+__BYTES_16BIT)){}dnl
