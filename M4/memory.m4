@@ -2723,14 +2723,24 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_FETCH},{$1 @},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FETCH},{dnl
-__{}define({__INFO},{push_fetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 @ push($1) fetch
-    ex   DE, HL         ; 1:4       $1 @ push($1) fetch
-    ld   HL,format({%-12s},($1)); 3:16      $1 @ push($1) fetch}){}dnl
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2773,16 +2783,26 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_1ADD},{$1 @ 1+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FETCH_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
-__{}eval($#>1),{1},{
+eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO},
 {
-__{}define({__INFO},__COMPILE_INFO){}dnl
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld   HL,format({%-12s},($1)); 3:16      __INFO
-    inc  HL             ; 1:6       __INFO})}){}dnl
+    inc  HL             ; 1:6       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2793,17 +2813,28 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_2ADD},{$1 @ 2+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FETCH_2ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    inc  HL             ; 1:6       __INFO},
 {
-__{}define({__INFO},__COMPILE_INFO){}dnl
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld   HL,format({%-12s},($1)); 3:16      __INFO
     inc  HL             ; 1:6       __INFO
-    inc  HL             ; 1:6       __INFO})}){}dnl
+    inc  HL             ; 1:6       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2814,15 +2845,24 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_FETCH_PUSH_ADD},{$1 @ $2 +},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FETCH_PUSH_ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(eval($#<2),{1},{
 __{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-{
-__{}define({__INFO},__COMPILE_INFO){}dnl
+__IS_MEM_REF($1),1,{
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ld   HL,format({%-12s},($1)); 3:16      __INFO{}__ASM_TOKEN_PUSH_ADD($2)})}){}dnl
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO{}__ASM_TOKEN_PUSH_ADD($2)},
+{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO{}__ASM_TOKEN_PUSH_ADD($2)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
