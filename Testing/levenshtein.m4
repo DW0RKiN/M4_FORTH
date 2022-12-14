@@ -16,21 +16,21 @@ ORG 0x8000
     ACCEPT_Z
     
     ;# self-modifying code
-    DUP_PUSH_CSTORE(label_03)
+    DUP PUSH(label_03) CSTORE
     _1ADD
-    DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE(label_01,label_02,len_1)    
+    DUP PUSH(label_01) CSTORE DUP PUSH(label_02) CSTORE DUP PUSH(len_1) CSTORE    
     ;# ( word_1_len )
     
     ;# 0 1 2 3 4 5 ... set first row
     DUP
-    PUSH_ADD(table)
-    SWAP_1ADD_SWAP
+    PUSH(table) ADD
+    SWAP _1ADD SWAP
     ;#PUSH2(max_word_1_len+1,table+max_word_1_len+1)
     BEGIN
-        _2DUP_CSTORE
+        _2DUP CSTORE
         _1SUB 
-        SWAP_1SUB_SWAP 
-    OVER_0EQ_UNTIL
+        SWAP _1SUB SWAP 
+    OVER _0EQ UNTIL
 
     _1ADD
     SWAP
@@ -52,14 +52,14 @@ ORG 0x8000
     ;# 2
     ;# 3
     BEGIN
-        NROT_SWAP
-        _2DUP_CSTORE
-        PUSH_CFETCH_ADD(len_1)
-        SWAP_1ADD_SWAP
-        NROT_SWAP
+        NROT SWAP
+        _2DUP CSTORE
+        PUSH(len_1) CFETCH ADD
+        SWAP _1ADD SWAP
+        NROT SWAP
         _1SUB
-    DUP_0EQ_UNTIL
-    DROP_2DROP
+    DUP _0EQ UNTIL
+    DROP _2DROP
     
     ;#SCALL(view_table)
     ;#CR
@@ -101,7 +101,7 @@ ORG 0x8000
             
             _1ADD
             ;# ( P_word_1  P_word_2++ )
-        DUP_CFETCH_0EQ_UNTIL
+        DUP CFETCH _0EQ UNTIL
         
         ARRAY_INC
 
@@ -126,16 +126,16 @@ SCOLON(view_table)
     PUSH_CFETCH_PUSH(len_2,table)
     BEGIN
         CR
-        PUSH_CFETCH(len_1)
+        PUSH(len_1) CFETCH
         BEGIN
             OVER CFETCH
             UDOTZXROM
-            SWAP_1ADD_SWAP 
+            SWAP _1ADD SWAP 
             _1SUB
-        DUP_0EQ_UNTIL
+        DUP _0EQ UNTIL
         DROP
-        SWAP_1SUB_SWAP 
-    OVER_0EQ_UNTIL
+        SWAP _1SUB SWAP 
+    OVER _0EQ UNTIL
     _2DROP
 SSEMICOLON
     
@@ -143,14 +143,14 @@ SSEMICOLON
 SCOLON(clear_table)
     PUSH_CFETCH_PUSH(len_2,table)
     BEGIN
-        PUSH_CFETCH(len_1)
+        PUSH(len_1) CFETCH
         BEGIN
-            OVER_PUSH_SWAP_CSTORE(0)
-            SWAP_1ADD_SWAP
+            OVER PUSH(0) SWAP CSTORE
+            SWAP _1ADD SWAP
             _1SUB
-        DUP_0EQ_UNTIL
+        DUP _0EQ UNTIL
         DROP
-        SWAP_1SUB_SWAP 
-    OVER_0EQ_UNTIL
+        SWAP _1SUB SWAP 
+    OVER _0EQ UNTIL
     _2DROP
 SSEMICOLON
