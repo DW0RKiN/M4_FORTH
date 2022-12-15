@@ -201,7 +201,7 @@ eval($#>1),{1},{
 __{}.error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}define({_TMP_INFO},{dup $1 = until BEGIN_STACK}){}dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
+__{}define({_TMP_STACK_INFO},{{}_TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
 __{}__EQ_MAKE_BEST_CODE($1,3,10,begin{}BEGIN_STACK,0)
 __{}_TMP_BEST_CODE
 __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
@@ -209,12 +209,12 @@ __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK
 dnl
 dnl
 dnl # ( n -- n )
-define({DUP_PUSH_HI_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HI_EQ_UNTIL},{dup_push_hi_eq until},$@){}dnl
+define({DUP_PUSH_HEQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HEQ_UNTIL},{dup $1 h= until},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DUP_PUSH_HI_EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_hi_eq until}){}dnl
+define({__ASM_TOKEN_DUP_PUSH_HEQ_UNTIL},{dnl
+__{}define({__INFO},{dup_push_heq until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
 __{}$1,{},{
@@ -247,12 +247,12 @@ __{}break{}BEGIN_STACK:               ;           dup $1 hi_eq until BEGIN_STACK
 dnl
 dnl
 dnl # ( n -- n )
-define({DUP_PUSH_LO_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LO_EQ_UNTIL},{dup_push_lo_eq until},$@){}dnl
+define({DUP_PUSH_CEQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ_UNTIL},{dup $1 c= until},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DUP_PUSH_LO_EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_lo_eq until}){}dnl
+define({__ASM_TOKEN_DUP_PUSH_CEQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}.error {$0} for non-existent {BEGIN}},
 __{}$1,{},{
@@ -260,28 +260,28 @@ __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}                        ;[6:21]     dup $1 lo_eq until BEGIN_STACK
-__{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
-__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
-__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK},
+__{}__{}                        ;[6:21]     __INFO BEGIN_STACK
+__{}__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}__{}    xor  low format({%-11s},$1); 2:7       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK},
 __{}{dnl
 __{}__{}ifelse(eval(($1) & 0xFF),{0},{dnl
-__{}__{}__{}                        ;[5:18]     dup $1 lo_eq until BEGIN_STACK   variant: zero
-__{}__{}__{}    inc   L             ; 1:4       dup $1 lo_eq until BEGIN_STACK
-__{}__{}__{}    dec   L             ; 1:4       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
-__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK},
+__{}__{}__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: zero
+__{}__{}__{}    inc   L             ; 1:4       __INFO BEGIN_STACK
+__{}__{}__{}    dec   L             ; 1:4       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK},
 __{}__{}eval(($1) & 0xFF),{255},{dnl
-__{}__{}__{}                        ;[5:18]     dup $1 lo_eq until BEGIN_STACK   variant: lo(stop) == 255
-__{}__{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
-__{}__{}__{}    inc   A             ; 1:4       dup $1 lo_eq until BEGIN_STACK   A = 0xFF --> 0x00 ?
-__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK},
+__{}__{}__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: lo(stop) == 255
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}__{}__{}    inc   A             ; 1:4       __INFO BEGIN_STACK   A = 0xFF --> 0x00 ?
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK},
 __{}__{}{dnl
-__{}__{}__{}                        ;[6:21]     dup $1 lo_eq until BEGIN_STACK
-__{}__{}__{}    ld    A, L          ; 1:4       dup $1 lo_eq until BEGIN_STACK
-__{}__{}__{}    xor  low format({%-11s},$1); 2:7       dup $1 lo_eq until BEGIN_STACK   lo(TOS) ^ lo(stop)
-__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 lo_eq until BEGIN_STACK}){}dnl
+__{}__{}__{}                        ;[6:21]     __INFO BEGIN_STACK
+__{}__{}__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}__{}__{}    xor  low format({%-11s},$1); 2:7       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK}){}dnl
 __{}})
-__{}break{}BEGIN_STACK:               ;           dup $1 lo_eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl # ( x -- x )

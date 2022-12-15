@@ -834,9 +834,21 @@ __{}__ADD_TOKEN({__TOKEN_SWAP},{swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_SWAP},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-
+__{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO   ( b a -- a b )}){}dnl
+dnl
+dnl
+dnl
+dnl # ( 0xaabb -- 0xbbaa )
+define({CSWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_CSWAP},{cswap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CSWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO   ( 0xbbaa -- 0xaabb )
+    ld    L, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( b a -- a b a )
