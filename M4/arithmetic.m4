@@ -23,6 +23,16 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = x1 + x2
+define({OVER_SWAP_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_ADD},{over swap +},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, DE         ; 1:11      __INFO  ( x2 x1 -- x2 x3 )   x3 = x1 + x2}){}dnl
+dnl
+dnl
 dnl # ( x -- x+n )
 dnl # x = x + n
 define({PUSH_ADD},{dnl
@@ -272,6 +282,17 @@ __{}define({__INFO},__COMPILE_INFO)
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = x2 - x1
+define({OVER_SWAP_SUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_SUB},{over swap -},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_SUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO  ( x2 x1 -- x2 x3 )   x3 = x2 - x1
+    sbc  HL, DE         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl # swap -
@@ -966,18 +987,120 @@ dnl ## 8bit Arithmetic
 dnl ---------------------------------------------------------------------------
 dnl
 dnl
-dnl # ( c2 c1 -- c2+c1 )
-dnl # c = c2 + c1
+dnl
+dnl # ( x2 x1 -- x3 )
+dnl # x3 = hi(x1) + lo(lo(x2) + lo(x1))
 define({CADD},{dnl
 __{}__ADD_TOKEN({__TOKEN_CADD},{c+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, E          ; 1:4       __INFO   ( c2 c1 -- c2+c1 )
-    add   A, L          ; 1:4       __INFO   ( c2 c1 -- c2+c1 )
-    ld    L, A          ; 1:4       __INFO   ( c2 c1 -- c2+c1 )
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(x1) + lo(lo(x2) + lo(x1))
+    add   A, L          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )
+dnl # x3 = hi(x1) + lo(lo(x2) - lo(x1))
+define({CSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_CSUB},{c-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(x1) + lo(lo(x2) - lo(x1))
+    sub   A, L          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )
+dnl # x3 = hi(x1) + lo(lo(x2) + lo(x1))
+define({OVER_SWAP_CADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CADD},{c+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_CADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )  x3 = hi(x1) + lo(lo(x2) + lo(x1))
+    add   A, L          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )
+dnl # x3 = hi(x1) + lo(lo(x2) - lo(x1))
+define({OVER_SWAP_CSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CSUB},{c-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_CSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )  x3 = hi(x1) + lo(lo(x2) - lo(x1))
+    sub   A, L          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )
+dnl # x3 = hi(hi(x2) + hi(x1)) + lo(x1)
+define({HADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_HADD},{h+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(hi(x2) + hi(x1)) + lo(x1)
+    add   A, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )
+dnl # x3 = hi(hi(x2) - hi(x1)) + lo(x1)
+define({HSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_HSUB},{h-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(hi(x2) - hi(x1)) + lo(x1)
+    sub   A, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )
+dnl # x3 = hi(hi(x2) + hi(x1)) + lo(x1)
+define({OVER_SWAP_HADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_HADD},{h+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_HADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )  x3 = hi(hi(x2) + hi(x1)) + lo(x1)
+    add   A, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )
+dnl # x3 = hi(hi(x2) - hi(x1)) + lo(x1)
+define({OVER_SWAP_HSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_HSUB},{h-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_HSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )  x3 = hi(hi(x2) - hi(x1)) + lo(x1)
+    sub   A, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl

@@ -208,42 +208,57 @@ __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
 __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
+dnl
 dnl # ( n -- n )
 define({DUP_PUSH_HEQ_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HEQ_UNTIL},{dup $1 h= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_HEQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_heq until}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}                        ;[6:21]     dup $1 hi_eq until BEGIN_STACK
-__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
-__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
-__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK},
-__{}{dnl
-__{}__{}ifelse(eval(($1) & 0xFF00),{0},{dnl
-__{}__{}__{}                        ;[5:18]     dup $1 hi_eq until BEGIN_STACK   variant: zero
-__{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
-__{}__{}__{}    or    A             ; 1:4       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
-__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK},
-__{}__{}eval(0xFF00 - (($1) & 0xFF00)),{0},{dnl
-__{}__{}__{}                        ;[5:18]     dup $1 hi_eq until BEGIN_STACK   variant: hi(stop) == 255
-__{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
-__{}__{}__{}    inc   A             ; 1:4       dup $1 hi_eq until BEGIN_STACK   A = 0xFF --> 0x00 ?
-__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK},
-__{}__{}{dnl
-__{}__{}__{}                        ;[6:21]     dup $1 hi_eq until BEGIN_STACK
-__{}__{}__{}    ld    A, H          ; 1:4       dup $1 hi_eq until BEGIN_STACK
-__{}__{}__{}    xor  high format({%-10s},$1); 2:7       dup $1 hi_eq until BEGIN_STACK   hi(TOS) ^ hi(stop)
-__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup $1 hi_eq until BEGIN_STACK}){}dnl
-__{}})
-__{}break{}BEGIN_STACK:               ;           dup $1 hi_eq until BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+__{}  .error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[7:27]     __INFO BEGIN_STACK
+__{}    ld    A,format({%-12s},($1+1)); 3:13      __INFO BEGIN_STACK
+__{}    xor   H             ; 1:4       __INFO BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__IS_NUM($1),{0},{
+__{}                        ;[6:21]     __INFO BEGIN_STACK
+__{}    ld    A, H          ; 1:4       __INFO BEGIN_STACK
+__{}    xor  format({%-15s},high $1); 2:7       __INFO BEGIN_STACK   hi(TOS) ^ hi($1)
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__HEX_H($1),{0x00},{
+__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: hi($1) == zero
+__{}    inc   H             ; 1:4       __INFO BEGIN_STACK
+__{}    dec   H             ; 1:4       __INFO BEGIN_STACK   hi(TOS) ^ hi(stop)
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__HEX_H($1),{0x01},{
+__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: hi($1) == 255
+__{}    ld    A, H          ; 1:4       __INFO BEGIN_STACK
+__{}    dec   A             ; 1:4       __INFO BEGIN_STACK   A = 0x01 --> 0x00 ?
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__HEX_H($1),{0xFF},{
+__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: hi($1) == 255
+__{}    ld    A, H          ; 1:4       __INFO BEGIN_STACK
+__{}    inc   A             ; 1:4       __INFO BEGIN_STACK   A = 0xFF --> 0x00 ?
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+{
+__{}                        ;[6:21]     __INFO BEGIN_STACK
+__{}    ld    A, H          ; 1:4       __INFO BEGIN_STACK
+__{}    xor  __HEX_H($1)           ; 2:7       __INFO BEGIN_STACK   hi(TOS) ^ hi(__HEX_HL($1))
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( n -- n )
@@ -254,34 +269,48 @@ dnl
 define({__ASM_TOKEN_DUP_PUSH_CEQ_UNTIL},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}.error {$0} for non-existent {BEGIN}},
-__{}$1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}                        ;[6:21]     __INFO BEGIN_STACK
-__{}__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
-__{}__{}    xor  low format({%-11s},$1); 2:7       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
-__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK},
-__{}{dnl
-__{}__{}ifelse(eval(($1) & 0xFF),{0},{dnl
-__{}__{}__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: zero
-__{}__{}__{}    inc   L             ; 1:4       __INFO BEGIN_STACK
-__{}__{}__{}    dec   L             ; 1:4       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
-__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK},
-__{}__{}eval(($1) & 0xFF),{255},{dnl
-__{}__{}__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: lo(stop) == 255
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
-__{}__{}__{}    inc   A             ; 1:4       __INFO BEGIN_STACK   A = 0xFF --> 0x00 ?
-__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK},
-__{}__{}{dnl
-__{}__{}__{}                        ;[6:21]     __INFO BEGIN_STACK
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
-__{}__{}__{}    xor  low format({%-11s},$1); 2:7       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
-__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK}){}dnl
-__{}})
+__{}  .error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}                        ;[7:27]     __INFO BEGIN_STACK
+__{}    ld    A,format({%-12s},$1); 3:13      __INFO BEGIN_STACK
+__{}    xor   L             ; 1:4       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__IS_NUM($1),{0},{
+__{}                        ;[6:21]     __INFO BEGIN_STACK
+__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}    xor  format({%-15s},low $1); 2:7       __INFO BEGIN_STACK   lo(TOS) ^ lo($1)
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__HEX_L($1),{0x00},{
+__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: hi($1) == zero
+__{}    inc   L             ; 1:4       __INFO BEGIN_STACK
+__{}    dec   L             ; 1:4       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__HEX_L($1),{0x01},{
+__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: lo($1) == 1
+__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}    dec   A             ; 1:4       __INFO BEGIN_STACK   A = 0x01 --> 0x00 ?
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+__HEX_L($1),{0xFF},{
+__{}                        ;[5:18]     __INFO BEGIN_STACK   variant: lo($1) == 255
+__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}    inc   A             ; 1:4       __INFO BEGIN_STACK   A = 0xFF --> 0x00 ?
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
+__{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})},
+{
+__{}                        ;[6:21]     __INFO BEGIN_STACK
+__{}    ld    A, L          ; 1:4       __INFO BEGIN_STACK
+__{}    xor  __HEX_L($1)           ; 2:7       __INFO BEGIN_STACK   lo(TOS) ^ lo(__HEX_HL($1))
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           __INFO BEGIN_STACK{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( x -- x )

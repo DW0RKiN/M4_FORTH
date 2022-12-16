@@ -805,189 +805,6 @@ __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
 dnl
 dnl
-define({DUP_PUSH_CEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ},{dup $1 c=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DUP_PUSH_CEQ},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-dnl
-__{}define({_TMP_INFO},__INFO){}dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
-__{}ifelse($1,{},{dnl
-__{}  .error {$0}(): Missing parameter!},
-__{}eval($#>1),{1},{
-__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),{1},{
-__{}__{}                       ;[10:54]     _TMP_INFO   ( char -- char f )   L == (addr)
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A,format({%-12s},$1); 3:13      _TMP_INFO
-__{}__{}    sub   L             ; 1:4       _TMP_INFO
-__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
-__{}__IS_NUM($1),{0},{
-__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L = $1
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
-__{}__{}    sub   L             ; 1:4       _TMP_INFO
-__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
-__{}__SAVE_EVAL($1),{0},{
-__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 0
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
-__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
-__{}__SAVE_EVAL($1),{255},{
-__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 255
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
-__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
-__{}__SAVE_EVAL($1),{1},{
-__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 1
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
-__{}__{}    dec   A             ; 1:4       _TMP_INFO
-__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
-__{}__SAVE_EVAL($1),{254},{
-__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 254
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
-__{}__{}    inc   A             ; 1:4       _TMP_INFO
-__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
-__{}{
-__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L == $1
-__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}__{}    push HL             ; 1:11      _TMP_INFO
-__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
-__{}__{}    sub   L             ; 1:4       _TMP_INFO
-__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
-__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # C=
-dnl # ( c1 c2 -- flag )
-dnl # equal ( lo c1 == lo c2 )
-define({CEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_CEQ},{c=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_CEQ},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[7:40]     __INFO   ( c1 c2 -- flag )
-    ld    A, L          ; 1:4       __INFO
-    xor   E             ; 1:4       __INFO   ignores higher bytes
-    sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # 0 C=
-dnl # ( c1 -- flag )  flag = lo c1 == 0
-define({_0CEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_0CEQ},{0 c=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_0CEQ},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[5:26]     __INFO   ( c1 -- flag )  flag = lo(c1) == 0
-    ld    A, L          ; 1:4       __INFO   ignores higher bytes
-    sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl # C@ 0 C=
-dnl # ( addr -- flag )  flag = byte from (addr) == 0
-define({CFETCH_0CEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH_0CEQ},{c@ 0 c=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_CFETCH_0CEQ},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[5:29]     __INFO   ( addr -- flag )  flag = byte from (addr) == 0
-    ld    A,(HL)        ; 1:7       __INFO
-    sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl # C<>
-dnl # ( c1 c2 -- flag )
-dnl # not equal ( lo c1 == lo c2 )
-define({CNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CNE},{c<>},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_CNE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[7:40]     __INFO   ( c1 c2 -- flag )
-    ld    A, L          ; 1:4       __INFO
-    xor   E             ; 1:4       __INFO   ignores higher bytes
-    add   A, 0xFF       ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl # 0 C<>
-dnl # ( c1 -- flag )  flag = lo c1 <> 0
-define({_0CNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_0CNE},{0 c<>},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_0CNE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[5:26]     __INFO   ( c1 -- flag )  flag = lo(c1) <> 0
-    ld    A, L          ; 1:4       __INFO   ignores higher bytes
-    add   A, 0xFF       ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl # C@ 0 C<>
-dnl # ( addr -- flag )  flag = byte from (addr) <> 0
-define({CFETCH_0CNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CFETCH_0CNE},{c@ 0 c<>},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_CFETCH_0CNE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[5:29]     __INFO   ( addr -- flag )  flag = byte from (addr) <> 0
-    ld    A,(HL)        ; 1:7       __INFO
-    add   A, 0xFF       ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl # over C@ over C@ C=
-dnl # ( addr2 addr1 -- addr2 addr1 flag )
-dnl # flag = char2 == char1
-dnl # 8-bit compares the contents of two addresses.
-define({OVER_CFETCH_OVER_CFETCH_CEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH_CEQ},{over_cfetch_over_cfetch_ceq},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_OVER_CFETCH_OVER_CFETCH_CEQ},{dnl
-__{}define({__INFO},{over_cfetch_over_cfetch_ceq}){}dnl
-
-                        ;[8:51]     over @C over @C C= over_cfetch_over_cfetch_ceq ( addr2 addr1 -- addr2 addr1 flag(char2==char1) )
-    push DE             ; 1:11      over @C over @C C= over_cfetch_over_cfetch_ceq
-    ex   DE, HL         ; 1:4       over @C over @C C= over_cfetch_over_cfetch_ceq
-    ld    A, (DE)       ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
-    xor (HL)            ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
-    sub  0x01           ; 2:7       over @C over @C C= over_cfetch_over_cfetch_ceq
-    sbc  HL, HL         ; 2:15      over @C over @C C= over_cfetch_over_cfetch_ceq}){}dnl
-dnl
-dnl
-dnl
 dnl # <>
 dnl # ( x1 x2 -- flag )
 dnl # not equal ( x1 <> x2 )
@@ -1213,8 +1030,8 @@ __{}__ADD_TOKEN({__TOKEN_UEQ},{ueq},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UEQ},{dnl
-__{}define({__INFO},{ueq}){}dnl
-EQ}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_EQ}){}dnl
 dnl
 dnl # ( x1 x2 -- x )
 dnl # not equal ( x1 <> x2 )
@@ -1223,8 +1040,9 @@ __{}__ADD_TOKEN({__TOKEN_UNE},{une},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UNE},{dnl
-__{}define({__INFO},{une}){}dnl
-NE}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_NE}){}dnl
+dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
@@ -1245,6 +1063,7 @@ __{}define({__INFO},{ult}){}dnl
     pop  DE             ; 1:10      u<}){}dnl
 dnl
 dnl
+dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
 dnl # unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
@@ -1262,6 +1081,7 @@ __{}define({__INFO},{ule}){}dnl
     pop  DE             ; 1:10      u<=}){}dnl
 dnl
 dnl
+dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define({UGT},{dnl
@@ -1275,6 +1095,7 @@ __{}define({__INFO},{ugt}){}dnl
     sbc  HL, DE         ; 2:15      u>
     sbc  HL, HL         ; 2:15      u>
     pop  DE             ; 1:10      u>}){}dnl
+dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )
@@ -2068,6 +1889,682 @@ __{}__{}__{}    .error {$0}($@): negative parameters found in macro! Use {PUSH_R
 __{}__{}{
 __{}__{}    .error {$0}($@): $# parameters found in macro!}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # -------------------------- 8 bits --------------------------
+dnl
+dnl
+dnl
+dnl # C=
+dnl # ( c1 c2 -- flag )
+dnl # equal ( lo c1 == lo c2 )
+define({CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_CEQ},{c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: lo(c1) == lo(c2)
+    ld    A, L          ; 1:4       __INFO
+    xor   E             ; 1:4       __INFO   ignores higher bytes
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 8 rshift swap 8 rshift C=
+dnl # ( c1 c2 -- flag )
+dnl # equal ( hi c1 == hi c2 )
+define({HEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_HEQ},{h=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: hi(c1) == hi(c2)
+    ld    A, H          ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO   ignores lower bytes
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # C<>
+dnl # ( c1 c2 -- flag )
+dnl # not equal ( lo c1 <> lo c2 )
+define({CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CNE},{c<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: lo(c1) <> lo(c2)
+    ld    A, L          ; 1:4       __INFO
+    xor   E             ; 1:4       __INFO   ignores higher bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 8 rshift swap 8 rshift  C<>
+dnl # ( c1 c2 -- flag )
+dnl # not equal ( hi c1 <> hi c2 )
+define({HNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HNE},{h<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: hi(c1) <> hi(c2)
+    ld    A, H          ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO   ignores lower bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( lo(x2) < lo(x1) )
+define({CULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_CULT},{cu<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CULT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:33]     __INFO
+    ld    A, E          ; 1:4       __INFO   E<L --> E-L<0 --> carry if true
+    sub   L             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( hi(x2) < hi(x1) )
+define({HULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HULT},{hu<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HULT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:33]     __INFO
+    ld    A, D          ; 1:4       __INFO   D<H --> D-H<0 --> carry if true
+    sub   H             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( lo(x2) > lo(x1) )
+define({CUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_CUGT},{cu>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CUGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:33]     __INFO
+    ld    A, L          ; 1:4       __INFO   E>L --> 0>L-E --> carry if true
+    sub   E             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( hi(x2) > hi(x1) )
+define({HUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_HUGT},{hu>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HUGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:33]     __INFO
+    ld    A, H          ; 1:4       __INFO   D>H --> 0>H-D --> carry if true
+    sub   D             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( lo(x2) >= lo(x1) )
+define({CUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CUGE},{cu>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CUGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:37]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, L          ; 1:4       __INFO   E>=L --> E+1>L --> 0>L-E-1 --> carry if true
+    sub   E             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( hi(x2) >= hi(x1) )
+define({HUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HUGE},{hu>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HUGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:37]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO   D>=H --> D+1>H --> 0>H-D-1 --> carry if true
+    sub   D             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( lo(x2) <= lo(x1) )
+define({CULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CULE},{cu<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CULE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:37]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, E          ; 1:4       __INFO   E<=L --> E<L+1 --> E-L-1<0 --> carry if true
+    sub   L             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- flag )
+dnl # unsigned ( hi(x2) <= hi(x1) )
+define({HULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HULE},{hu<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HULE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:37]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO   D<=H --> D<H+1 --> D-H-1<0 --> carry if true
+    sub   H             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # C=
+dnl # ( x2 x1 -- x2 x1 flag )
+dnl # equal ( lo x1 == lo x2 )
+define({_2DUP_CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CEQ},{2dup c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:45]     __INFO   ( x2 x1 -- x2 x1 flag )  flag: lo(x1) == lo(x2)
+    ld    A, L          ; 1:4       __INFO
+    xor   E             ; 1:4       __INFO   ignores higher bytes
+    sub  0x01           ; 2:7       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 8 rshift swap 8 rshift C=
+dnl # ( x2 x1 -- x2 x1 flag )
+dnl # equal ( hi x1 == hi x2 )
+define({_2DUP_HEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HEQ},{2dup h=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:45]     __INFO   ( x2 x1 -- x2 x1 flag )  flag: hi(x1) == hi(x2)
+    ld    A, H          ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO   ignores lower bytes
+    sub  0x01           ; 2:7       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # C<>
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # not equal ( lo u2 <> lo u1 )
+define({_2DUP_CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CNE},{2dup c<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:45]     __INFO   ( u2 u1 -- u2 u1 flag )  flag: lo(u2) <> lo(u1)
+    ld    A, L          ; 1:4       __INFO
+    xor   E             ; 1:4       __INFO   ignores higher bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 8 rshift swap 8 rshift  C<>
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # not equal ( hi u2 <> hi u1 )
+define({_2DUP_HNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HNE},{2dup h<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:45]     __INFO   ( u2 u1 -- u2 u1 flag )  flag: hi(u2) <> hi(u1)
+    ld    A, H          ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO   ignores lower bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( lo(x2) < lo(x1) )
+define({_2DUP_CULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CULT},{2dup cu<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CULT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:38]     __INFO
+    ld    A, E          ; 1:4       __INFO   E<L --> E-L<0 --> carry if true
+    sub   L             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( hi(x2) < hi(x1) )
+define({_2DUP_HULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HULT},{2dup hu<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HULT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:38]     __INFO
+    ld    A, D          ; 1:4       __INFO   D<H --> D-H<0 --> carry if true
+    sub   H             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( lo(x2) > lo(x1) )
+define({_2DUP_CUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CUGT},{2dup cu>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CUGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:38]     __INFO
+    ld    A, L          ; 1:4       __INFO   E>L --> 0>L-E --> carry if true
+    sub   E             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( hi(x2) > hi(x1) )
+define({_2DUP_HUGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HUGT},{2dup hu>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HUGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:38]     __INFO
+    ld    A, H          ; 1:4       __INFO   D>H --> 0>H-D --> carry if true
+    sub   D             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( lo(x2) >= lo(x1) )
+define({_2DUP_CUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CUGE},{2dup cu>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CUGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:42]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, L          ; 1:4       __INFO   E>=L --> E+1>L --> 0>L-E-1 --> carry if true
+    sub   E             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( hi(x2) >= hi(x1) )
+define({_2DUP_HUGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HUGE},{2dup hu>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HUGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:42]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO   D>=H --> D+1>H --> 0>H-D-1 --> carry if true
+    sub   D             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( lo(x2) <= lo(x1) )
+define({_2DUP_CULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CULE},{2dup cu<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_CULE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:42]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, E          ; 1:4       __INFO   E<=L --> E<L+1 --> E-L-1<0 --> carry if true
+    sub   L             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u2 u1 -- u2 u1 flag )
+dnl # unsigned ( hi(x2) <= hi(x1) )
+define({_2DUP_HULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HULE},{2dup hu<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HULE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:42]     __INFO
+    scf                 ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO   D<=H --> D<H+1 --> D-H-1<0 --> carry if true
+    sub   H             ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+define({DUP_PUSH_CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ},{dup $1 c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
+__{}ifelse($1,{},{dnl
+__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                       ;[10:54]     _TMP_INFO   ( char -- char f )   L == (addr)
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,format({%-12s},$1); 3:13      _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__IS_NUM($1),{0},{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L = $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{0},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 0
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{255},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 255
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{1},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__SAVE_EVAL($1),{254},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 254
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L == $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({DUP_PUSH_HEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HEQ},{dup $1 h=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_HEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
+__{}ifelse($1,{},{dnl
+__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                       ;[10:54]     _TMP_INFO   ( char -- char f )   H == (addr+1)
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,format({%-12s},($1+1)); 3:13      _TMP_INFO
+__{}__{}    sub   H             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__IS_NUM($1),{0},{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   H = high $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,__FORM({%-12s},high $1); 2:7       _TMP_INFO
+__{}__{}    sub   H             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__HEX_H($1),{0x00},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   H == 0
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, H          ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__HEX_H($1),{0xFF},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   H == 255
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, H          ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__HEX_H($1),{0x01},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   H == 1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}__HEX_H($1),{0xFE},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   H == 254
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0x01       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1},
+__{}{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   H == __HEX_H($1)
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       _TMP_INFO
+__{}__{}    sub   H             ; 1:4       _TMP_INFO
+__{}__{}    sub  0x01           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 0 C=
+dnl # ( c1 -- flag )  flag = lo c1 == 0
+define({_0CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_0CEQ},{0 c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:26]     __INFO   ( c1 -- flag )  flag = lo(c1) == 0
+    ld    A, L          ; 1:4       __INFO   ignores higher bytes
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 8 rshift 0 C=
+dnl # ( c1 -- flag )  flag = hi c1 == 0
+define({_0HEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_0HEQ},{0 h=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0HEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:26]     __INFO   ( c1 -- flag )  flag = hi(c1) == 0
+    ld    A, H          ; 1:4       __INFO   ignores lower bytes
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl # C@ 0 C=
+dnl # ( addr -- flag )  flag = byte from (addr) == 0
+define({CFETCH_0CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_0CEQ},{c@ 0 c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH_0CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:29]     __INFO   ( addr -- flag )  flag = byte from (addr) == 0
+    ld    A,(HL)        ; 1:7       __INFO
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 0 C<>
+dnl # ( c1 -- flag )  flag = lo c1 <> 0
+define({_0CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0CNE},{0 c<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0CNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:26]     __INFO   ( c1 -- flag )  flag = lo(c1) <> 0
+    ld    A, L          ; 1:4       __INFO   ignores higher bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 8 rshift 0 C<>
+dnl # ( c1 -- flag )  flag = hi c1 <> 0
+define({_0HNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0HNE},{0 h<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0HNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:26]     __INFO   ( c1 -- flag )  flag = hi(c1) <> 0
+    ld    A, H          ; 1:4       __INFO   ignores lower bytes
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # C@ 0 C<>
+dnl # ( addr -- flag )  flag = byte from (addr) <> 0
+define({CFETCH_0CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_CFETCH_0CNE},{c@ 0 c<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CFETCH_0CNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:29]     __INFO   ( addr -- flag )  flag = byte from (addr) <> 0
+    ld    A,(HL)        ; 1:7       __INFO
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl # over C@ over C@ C=
+dnl # ( addr2 addr1 -- addr2 addr1 flag )
+dnl # flag = char2 == char1
+dnl # 8-bit compares the contents of two addresses.
+define({OVER_CFETCH_OVER_CFETCH_CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH_CEQ},{over_cfetch_over_cfetch_ceq},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_CFETCH_OVER_CFETCH_CEQ},{dnl
+__{}define({__INFO},{over_cfetch_over_cfetch_ceq}){}dnl
+
+                        ;[8:51]     over @C over @C C= over_cfetch_over_cfetch_ceq ( addr2 addr1 -- addr2 addr1 flag(char2==char1) )
+    push DE             ; 1:11      over @C over @C C= over_cfetch_over_cfetch_ceq
+    ex   DE, HL         ; 1:4       over @C over @C C= over_cfetch_over_cfetch_ceq
+    ld    A, (DE)       ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    xor (HL)            ; 1:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    sub  0x01           ; 2:7       over @C over @C C= over_cfetch_over_cfetch_ceq
+    sbc  HL, HL         ; 2:15      over @C over @C C= over_cfetch_over_cfetch_ceq}){}dnl
 dnl
 dnl
 dnl
