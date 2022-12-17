@@ -1896,6 +1896,90 @@ dnl # -------------------------- 8 bits --------------------------
 dnl
 dnl
 dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x1) + lo(x2 & x1)
+define({CAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_CAND},{cand},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CAND},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x1) + lo(x2 & x1)
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x2 & x1) + lo(x1)
+define({HAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_HAND},{hand},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HAND},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x2 & x1) + lo(x1)
+    and   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x1) + lo(x2 | x1)
+define({COR},{dnl
+__{}__ADD_TOKEN({__TOKEN_COR},{cor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_COR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x1) + lo(x2 | x1)
+    or    L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x2 | x1) + lo(x1)
+define({HOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_HOR},{hor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x2 | x1) + lo(x1)
+    or    H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x1) + lo(x2 ^ x1)
+define({CXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_CXOR},{cxor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_CXOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x1) + lo(x2 ^ x1)
+    xor   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x2 ^ x1) + lo(x1)
+define({HXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_HXOR},{hxor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HXOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x2 ^ x1) + lo(x1)
+    xor   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # C=
 dnl # ( c1 c2 -- flag )
 dnl # equal ( lo c1 == lo c2 )
