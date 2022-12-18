@@ -2205,7 +2205,7 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl # ( -- )
+dnl # ( -- f )
 define({EQ_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
@@ -2235,13 +2235,14 @@ __{}  .error {$0}($@): $2 is not register name!},
     ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 == $2)
     xor   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
     sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- )
+dnl # ( -- f )
 define({NE_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
@@ -2271,13 +2272,14 @@ __{}  .error {$0}($@): $2 is not register name!},
     ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 <> $2)
     xor   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
     add   A, 0xFF       ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- )
+dnl # ( -- f )
 define({ULT_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
@@ -2306,13 +2308,14 @@ __{}  .error {$0}($@): $2 is not register name!},
 {
     ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 < $2)
     sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   $1<$2 --> $1-$2<0 --> carry if true
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- )
+dnl # ( -- f )
 define({ULE_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
@@ -2342,13 +2345,14 @@ __{}  .error {$0}($@): $2 is not register name!},
     ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 <= $2) = ($1 < $2 + 1)
     scf                 ; 1:4       __INFO
     sbc   A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   $1<$2+1 --> $1-$2-1<0 --> carry if true
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- )
+dnl # ( -- f )
 define({UGT_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
@@ -2377,13 +2381,14 @@ __{}  .error {$0}($@): $2 is not register name!},
 {
     ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 > $2)
     sub   format({%-14s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   $1>$2 --> 0>$2-$1 --> carry if true
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- )
+dnl # ( -- f )
 define({UGE_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
@@ -2413,8 +2418,10 @@ __{}  .error {$0}($@): $2 is not register name!},
     ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 >= $2) = ($1 + 1 > $2)
     scf                 ; 1:4       __INFO
     sbc   A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   $1+1>$2 --> 0>$2-$1-1 --> carry if true
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
 }){}dnl
 dnl
 dnl
@@ -2438,7 +2445,7 @@ dnl
 dnl
 dnl
 dnl # 8 rshift swap 8 rshift C=
-dnl # ( c1 c2 -- flag )
+dnl # ( x1 x2 -- flag )
 dnl # equal ( hi(x1) == hi(x2) )
 define({HEQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_HEQ},{h=},$@){}dnl
@@ -2456,7 +2463,7 @@ dnl
 dnl
 dnl
 dnl # C<>
-dnl # ( c1 c2 -- flag )
+dnl # ( x1 x2 -- flag )
 dnl # not equal ( lo(x1) <> lo(x2) )
 define({CNE},{dnl
 __{}__ADD_TOKEN({__TOKEN_CNE},{c<>},$@){}dnl
