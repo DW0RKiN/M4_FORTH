@@ -988,6 +988,74 @@ dnl ---------------------------------------------------------------------------
 dnl
 dnl
 dnl
+dnl # ( -- )
+define({ADD_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_ADD_REG8_REG8},{add($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_ADD_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- )   $1 += $2
+    add   A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    ld    format({%-14s},{$1, A}); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({SUB_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_SUB_REG8_REG8},{sub($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_SUB_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- )   $1 -= $2
+    sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    ld    format({%-14s},{$1, A}); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( x2 x1 -- x3 )
 dnl # x3 = hi(x1) + lo(lo(x2) + lo(x1))
 define({CADD},{dnl

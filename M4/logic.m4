@@ -1942,7 +1942,7 @@ dnl
 dnl
 dnl
 dnl # ( -- )
-define({AND_8REG_8REG},{dnl
+define({AND_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
 __{}  .error {$0}($@): Missing parameter!},
@@ -1953,10 +1953,10 @@ __{}  .error {$0}($@): $1 is not register name!},
 __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_AND_8REG_8REG},{and($1,$2)},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_AND_REG8_REG8},{and($1,$2)},$@){}dnl
 })}){}dnl
 dnl
-define({__ASM_TOKEN_AND_8REG_8REG},{dnl
+define({__ASM_TOKEN_AND_REG8_REG8},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(
 eval($#<2),1,{
@@ -1976,7 +1976,7 @@ dnl
 dnl
 dnl
 dnl # ( -- )
-define({OR_8REG_8REG},{dnl
+define({OR_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
 __{}  .error {$0}($@): Missing parameter!},
@@ -1987,10 +1987,10 @@ __{}  .error {$0}($@): $1 is not register name!},
 __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_OR_8REG_8REG},{or($1,$2)},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OR_REG8_REG8},{or($1,$2)},$@){}dnl
 })}){}dnl
 dnl
-define({__ASM_TOKEN_OR_8REG_8REG},{dnl
+define({__ASM_TOKEN_OR_REG8_REG8},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(
 eval($#<2),1,{
@@ -2010,7 +2010,7 @@ dnl
 dnl
 dnl
 dnl # ( -- )
-define({XOR_8REG_8REG},{dnl
+define({XOR_REG8_REG8},{dnl
 ifelse(
 eval($#<2),1,{
 __{}  .error {$0}($@): Missing parameter!},
@@ -2021,10 +2021,10 @@ __{}  .error {$0}($@): $1 is not register name!},
 __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {dnl
-__{}__ADD_TOKEN({__TOKEN_XOR_8REG_8REG},{xor($1,$2)},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_XOR_REG8_REG8},{xor($1,$2)},$@){}dnl
 })}){}dnl
 dnl
-define({__ASM_TOKEN_XOR_8REG_8REG},{dnl
+define({__ASM_TOKEN_XOR_REG8_REG8},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(
 eval($#<2),1,{
@@ -2202,6 +2202,220 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x2 ^ x1) + lo(x1)
     xor   H             ; 1:4       __INFO
     ld    H, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({EQ_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_EQ_REG8_REG8},{eq($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_EQ_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 == $2)
+    xor   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({NE_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_NE_REG8_REG8},{ne($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_NE_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 <> $2)
+    xor   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    add   A, 0xFF       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({ULT_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_ULT_REG8_REG8},{ult($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_ULT_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 < $2)
+    sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({ULE_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_ULE_REG8_REG8},{ule($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_ULE_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    scf                 ; 1:4       __INFO
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 <= $2) = ($1 < $2 + 1)
+    sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({UGT_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_UGT_REG8_REG8},{ugt($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_UGT_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 > $2)
+    sub   format({%-14s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({UGE_REG8_REG8},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_UGE_REG8_REG8},{uge($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_UGE_REG8_REG8},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    scf                 ; 1:4       __INFO
+    ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 >= $2) = ($1 > $2 + 1)
+    sub   format({%-14s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

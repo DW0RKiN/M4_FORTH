@@ -224,7 +224,7 @@ dnl # aF --> 1
 dnl # dh --> 0
 dnl # ix --> 1
 define({__IS_REG},{dnl
-__{}eval(1+regexp({$1},{^\([a-eA-E]\|[Aa][Ff]\|[Bb][Cc]\|[Dd][Ee]\|[Hh][Ll]\|[Ii][Xx]\|[Ii][Xx][HhLl]\|[Ii][Yy]\|[Ii][Yy][HhLl]\)$}))}){}dnl
+__{}eval(1+regexp({$1},{^\([a-ehA-EH]\|[Aa][Ff]\|[Bb][Cc]\|[Dd][Ee]\|[Hh][Ll]\|[Ii][XxYy]\|[Ii][XxYy][HhLl]\)$}))}){}dnl
 dnl
 dnl
 dnl
