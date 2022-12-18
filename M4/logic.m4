@@ -2305,7 +2305,7 @@ __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {
     ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 < $2)
-    sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   $1<$2 --> $1-$2<0 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 }){}dnl
@@ -2339,9 +2339,9 @@ __{}  .error {$0}($@): $1 is not register name!},
 __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {
-    scf                 ; 1:4       __INFO
     ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 <= $2) = ($1 < $2 + 1)
-    sub   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    scf                 ; 1:4       __INFO
+    sbc   A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   $1<$2+1 --> $1-$2-1<0 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 }){}dnl
@@ -2376,7 +2376,7 @@ __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {
     ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 > $2)
-    sub   format({%-14s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO
+    sub   format({%-14s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   $1>$2 --> 0>$2-$1 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 }){}dnl
@@ -2410,9 +2410,9 @@ __{}  .error {$0}($@): $1 is not register name!},
 __IS_REG($2),0,{
 __{}  .error {$0}($@): $2 is not register name!},
 {
+    ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 >= $2) = ($1 + 1 > $2)
     scf                 ; 1:4       __INFO
-    ld    A, format({%-11s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO   ( -- f )   f = ($1 >= $2) = ($1 > $2 + 1)
-    sub   format({%-14s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO
+    sbc   A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   $1+1>$2 --> 0>$2-$1-1 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 }){}dnl
@@ -2420,15 +2420,15 @@ dnl
 dnl
 dnl
 dnl # C=
-dnl # ( c1 c2 -- flag )
-dnl # equal ( lo c1 == lo c2 )
+dnl # ( x1 x2 -- flag )
+dnl # equal ( lo(x1) == lo(x2) )
 define({CEQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_CEQ},{c=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: lo(c1) == lo(c2)
+                        ;[7:40]     __INFO   ( x1 x2 -- flag )  flag: lo(x1) == lo(x2)
     ld    A, L          ; 1:4       __INFO
     xor   E             ; 1:4       __INFO   ignores higher bytes
     sub  0x01           ; 2:7       __INFO
@@ -2439,14 +2439,14 @@ dnl
 dnl
 dnl # 8 rshift swap 8 rshift C=
 dnl # ( c1 c2 -- flag )
-dnl # equal ( hi c1 == hi c2 )
+dnl # equal ( hi(x1) == hi(x2) )
 define({HEQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_HEQ},{h=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: hi(c1) == hi(c2)
+                        ;[7:40]     __INFO   ( x1 x2 -- flag )  flag: hi(x1) == hi(x2)
     ld    A, H          ; 1:4       __INFO
     xor   D             ; 1:4       __INFO   ignores lower bytes
     sub  0x01           ; 2:7       __INFO
@@ -2457,14 +2457,14 @@ dnl
 dnl
 dnl # C<>
 dnl # ( c1 c2 -- flag )
-dnl # not equal ( lo c1 <> lo c2 )
+dnl # not equal ( lo(x1) <> lo(x2) )
 define({CNE},{dnl
 __{}__ADD_TOKEN({__TOKEN_CNE},{c<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CNE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: lo(c1) <> lo(c2)
+                        ;[7:40]     __INFO   ( x1 x2 -- flag )  flag: lo(x1) <> lo(x2)
     ld    A, L          ; 1:4       __INFO
     xor   E             ; 1:4       __INFO   ignores higher bytes
     add   A, 0xFF       ; 2:7       __INFO
@@ -2475,14 +2475,14 @@ dnl
 dnl
 dnl # 8 rshift swap 8 rshift  C<>
 dnl # ( c1 c2 -- flag )
-dnl # not equal ( hi c1 <> hi c2 )
+dnl # not equal ( hi(x1) <> hi(x2) )
 define({HNE},{dnl
 __{}__ADD_TOKEN({__TOKEN_HNE},{h<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HNE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[7:40]     __INFO   ( c1 c2 -- flag )  flag: hi(c1) <> hi(c2)
+                        ;[7:40]     __INFO   ( x1 x2 -- flag )  flag: hi(x1) <> hi(x2)
     ld    A, H          ; 1:4       __INFO
     xor   D             ; 1:4       __INFO   ignores lower bytes
     add   A, 0xFF       ; 2:7       __INFO
@@ -2491,133 +2491,133 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( lo(x2) < lo(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( lo(u2) < lo(u1) )
 define({CULT},{dnl
 __{}__ADD_TOKEN({__TOKEN_CULT},{cu<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CULT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:33]     __INFO
-    ld    A, E          ; 1:4       __INFO   E<L --> E-L<0 --> carry if true
-    sub   L             ; 1:4       __INFO
+                        ;[5:33]     __INFO   ( u2 u1 -- f )  f = lo(u2) < lo(u1)
+    ld    A, E          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO   E<L --> E-L<0 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( hi(x2) < hi(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( hi(u2) < hi(u1) )
 define({HULT},{dnl
 __{}__ADD_TOKEN({__TOKEN_HULT},{hu<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HULT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:33]     __INFO
-    ld    A, D          ; 1:4       __INFO   D<H --> D-H<0 --> carry if true
-    sub   H             ; 1:4       __INFO
+                        ;[5:33]     __INFO   ( u2 u1 -- f )  f = hi(u2) < hi(u1)
+    ld    A, D          ; 1:4       __INFO
+    sub   H             ; 1:4       __INFO   D<H --> D-H<0 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( lo(x2) > lo(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( lo(u2) > lo(u1) )
 define({CUGT},{dnl
 __{}__ADD_TOKEN({__TOKEN_CUGT},{cu>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CUGT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:33]     __INFO
-    ld    A, L          ; 1:4       __INFO   E>L --> 0>L-E --> carry if true
-    sub   E             ; 1:4       __INFO
+                        ;[5:33]     __INFO   ( u2 u1 -- f )  f = lo(u2) > lo(u1)
+    ld    A, L          ; 1:4       __INFO
+    sub   E             ; 1:4       __INFO   E>L --> 0>L-E --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( hi(x2) > hi(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( hi(u2) > hi(u1) )
 define({HUGT},{dnl
 __{}__ADD_TOKEN({__TOKEN_HUGT},{hu>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HUGT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:33]     __INFO
-    ld    A, H          ; 1:4       __INFO   D>H --> 0>H-D --> carry if true
-    sub   D             ; 1:4       __INFO
+                        ;[5:33]     __INFO   ( u2 u1 -- f )  f = hi(u2) > hi(u1)
+    ld    A, H          ; 1:4       __INFO
+    sub   D             ; 1:4       __INFO   D>H --> 0>H-D --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( lo(x2) >= lo(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( lo(u2) >= lo(u1) )
 define({CUGE},{dnl
 __{}__ADD_TOKEN({__TOKEN_CUGE},{cu>=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CUGE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[6:37]     __INFO
+                        ;[6:37]     __INFO   ( u2 u1 -- f )  f = lo(u2) >= lo(u1)
+    ld    A, L          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, L          ; 1:4       __INFO   E>=L --> E+1>L --> 0>L-E-1 --> carry if true
-    sub   E             ; 1:4       __INFO
+    sbc   A, E          ; 1:4       __INFO   E>=L --> E+1>L --> 0>L-E-1 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( hi(x2) >= hi(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( hi(u2) >= hi(u1) )
 define({HUGE},{dnl
 __{}__ADD_TOKEN({__TOKEN_HUGE},{hu>=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HUGE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[6:37]     __INFO
+                        ;[6:37]     __INFO   ( u2 u1 -- f )  f = hi(u2) >= hi(u1)
+    ld    A, H          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, H          ; 1:4       __INFO   D>=H --> D+1>H --> 0>H-D-1 --> carry if true
-    sub   D             ; 1:4       __INFO
+    sbc   A, D          ; 1:4       __INFO   D>=H --> D+1>H --> 0>H-D-1 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( lo(x2) <= lo(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( lo(u2) <= lo(u1) )
 define({CULE},{dnl
 __{}__ADD_TOKEN({__TOKEN_CULE},{cu<=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CULE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[6:37]     __INFO
+                        ;[6:37]     __INFO   ( u2 u1 -- f )  f = lo(u2) <= lo(u1)
+    ld    A, E          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, E          ; 1:4       __INFO   E<=L --> E<L+1 --> E-L-1<0 --> carry if true
-    sub   L             ; 1:4       __INFO
+    sbc   A, L          ; 1:4       __INFO   E<=L --> E<L+1 --> E-L-1<0 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( x2 x1 -- flag )
-dnl # unsigned ( hi(x2) <= hi(x1) )
+dnl # ( u2 u1 -- flag )
+dnl # unsigned ( hi(u2) <= hi(u1) )
 define({HULE},{dnl
 __{}__ADD_TOKEN({__TOKEN_HULE},{hu<=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HULE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[6:37]     __INFO
+                        ;[6:37]     __INFO   ( u2 u1 -- f )  f = hi(u2) <= hi(u1)
+    ld    A, D          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, D          ; 1:4       __INFO   D<=H --> D<H+1 --> D-H-1<0 --> carry if true
-    sub   H             ; 1:4       __INFO
+    sbc   A, H          ; 1:4       __INFO   D<=H --> D<H+1 --> D-H-1<0 --> carry if true
     sbc  HL, HL         ; 2:15      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
@@ -2709,8 +2709,8 @@ dnl
 define({__ASM_TOKEN_2DUP_CULT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:38]     __INFO
-    ld    A, E          ; 1:4       __INFO   E<L --> E-L<0 --> carry if true
-    sub   L             ; 1:4       __INFO
+    ld    A, E          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO   E<L --> E-L<0 --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2726,8 +2726,8 @@ dnl
 define({__ASM_TOKEN_2DUP_HULT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:38]     __INFO
-    ld    A, D          ; 1:4       __INFO   D<H --> D-H<0 --> carry if true
-    sub   H             ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    sub   H             ; 1:4       __INFO   D<H --> D-H<0 --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2743,8 +2743,8 @@ dnl
 define({__ASM_TOKEN_2DUP_CUGT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:38]     __INFO
-    ld    A, L          ; 1:4       __INFO   E>L --> 0>L-E --> carry if true
-    sub   E             ; 1:4       __INFO
+    ld    A, L          ; 1:4       __INFO
+    sub   E             ; 1:4       __INFO   E>L --> 0>L-E --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2760,8 +2760,8 @@ dnl
 define({__ASM_TOKEN_2DUP_HUGT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:38]     __INFO
-    ld    A, H          ; 1:4       __INFO   D>H --> 0>H-D --> carry if true
-    sub   D             ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO
+    sub   D             ; 1:4       __INFO   D>H --> 0>H-D --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2777,9 +2777,9 @@ dnl
 define({__ASM_TOKEN_2DUP_CUGE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[7:42]     __INFO
+    ld    A, L          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, L          ; 1:4       __INFO   E>=L --> E+1>L --> 0>L-E-1 --> carry if true
-    sub   E             ; 1:4       __INFO
+    sbc   A, E          ; 1:4       __INFO   E>=L --> E+1>L --> 0>L-E-1 --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2795,9 +2795,9 @@ dnl
 define({__ASM_TOKEN_2DUP_HUGE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[7:42]     __INFO
+    ld    A, H          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, H          ; 1:4       __INFO   D>=H --> D+1>H --> 0>H-D-1 --> carry if true
-    sub   D             ; 1:4       __INFO
+    sbc   A, D          ; 1:4       __INFO   D>=H --> D+1>H --> 0>H-D-1 --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2813,9 +2813,9 @@ dnl
 define({__ASM_TOKEN_2DUP_CULE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[7:42]     __INFO
+    ld    A, E          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, E          ; 1:4       __INFO   E<=L --> E<L+1 --> E-L-1<0 --> carry if true
-    sub   L             ; 1:4       __INFO
+    sbc   A, L          ; 1:4       __INFO   E<=L --> E<L+1 --> E-L-1<0 --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -2831,9 +2831,9 @@ dnl
 define({__ASM_TOKEN_2DUP_HULE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[7:42]     __INFO
+    ld    A, D          ; 1:4       __INFO
     scf                 ; 1:4       __INFO
-    ld    A, D          ; 1:4       __INFO   D<=H --> D<H+1 --> D-H-1<0 --> carry if true
-    sub   H             ; 1:4       __INFO
+    sbc   A, H          ; 1:4       __INFO   D<=H --> D<H+1 --> D-H-1<0 --> carry if true
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
