@@ -224,7 +224,7 @@ dnl # aF --> 1
 dnl # dh --> 0
 dnl # ix --> 1
 define({__IS_REG},{dnl
-__{}eval(1+regexp({$1},{^\([a-eA-E]\|[Aa][Ff]\|[Bb][Cc]\|[Dd][Ee]\|[Hh][Ll]\|[Ii][Xx]\|[Ii][Yy]\)$}))}){}dnl
+__{}eval(1+regexp({$1},{^\([a-eA-E]\|[Aa][Ff]\|[Bb][Cc]\|[Dd][Ee]\|[Hh][Ll]\|[Ii][Xx]\|[Ii][Xx][HhLl]\|[Ii][Yy]\|[Ii][Yy][HhLl]\)$}))}){}dnl
 dnl
 dnl
 dnl
@@ -1670,6 +1670,17 @@ dnl # O...
 o...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_OVER-__TOKEN_OVER},{__SET_TOKEN({__TOKEN_2DUP},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_OVER-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_OVER_SWAP},__LAST_TOKEN_INFO{ }$2)},
+
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_AND}, {__SET_TOKEN({__TOKEN_OVER_SWAP_AND}, __LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_OR},  {__SET_TOKEN({__TOKEN_OVER_SWAP_OR},  __LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_XOR}, {__SET_TOKEN({__TOKEN_OVER_SWAP_XOR}, __LAST_TOKEN_INFO{ }$2)},
+
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_CAND},{__SET_TOKEN({__TOKEN_OVER_SWAP_CAND},__LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_COR}, {__SET_TOKEN({__TOKEN_OVER_SWAP_COR}, __LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_CXOR},{__SET_TOKEN({__TOKEN_OVER_SWAP_CXOR},__LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_HAND},{__SET_TOKEN({__TOKEN_OVER_SWAP_HAND},__LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_HOR}, {__SET_TOKEN({__TOKEN_OVER_SWAP_HOR}, __LAST_TOKEN_INFO{ }$2)},
+            __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_HXOR},{__SET_TOKEN({__TOKEN_OVER_SWAP_HXOR},__LAST_TOKEN_INFO{ }$2)},
 
             __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_ADD}, {__SET_TOKEN({__TOKEN_OVER_SWAP_ADD}, __LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_OVER_SWAP-__TOKEN_SUB}, {__SET_TOKEN({__TOKEN_OVER_SWAP_SUB}, __LAST_TOKEN_INFO{ }$2)},

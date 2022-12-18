@@ -1,22 +1,37 @@
 dnl ## Logic
 dnl
 dnl
-dnl # ( x1 x2 -- x )
+dnl # ( x2 x1 -- x )
 dnl # x = x1 & x2
 define({AND},{dnl
 __{}__ADD_TOKEN({__TOKEN_AND},{and},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_AND},{dnl
-__{}define({__INFO},{and}){}dnl
-
-    ld    A, E          ; 1:4       and   ( x2 x1 -- x )  x = x2 & x1
-    and   L             ; 1:4       and
-    ld    L, A          ; 1:4       and
-    ld    A, D          ; 1:4       and
-    and   H             ; 1:4       and
-    ld    H, A          ; 1:4       and
-    pop  DE             ; 1:10      and}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x )  x = x2 & x1
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    and   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x )
+dnl # x = x1 & x2
+define({OVER_SWAP_AND},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_AND},{over swap and},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_AND},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x )  x = x2 & x1
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    and   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( x -- x&n )
@@ -62,22 +77,37 @@ __{}__AND_REG16_16BIT({DE},$1){}dnl
 })}){}dnl
 dnl
 dnl
-dnl # ( x1 x2 -- x )
+dnl # ( x2 x1 -- x )
 dnl # x = x1 | x2
 define({OR},{dnl
 __{}__ADD_TOKEN({__TOKEN_OR},{or},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OR},{dnl
-__{}define({__INFO},{or}){}dnl
-
-    ld    A, E          ; 1:4       or   ( x2 x1 -- x )  x = x2 | x1
-    or    L             ; 1:4       or
-    ld    L, A          ; 1:4       or
-    ld    A, D          ; 1:4       or
-    or    H             ; 1:4       or
-    ld    H, A          ; 1:4       or
-    pop  DE             ; 1:10      or}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x )  x = x2 | x1
+    or    L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x )
+dnl # x = x1 | x2
+define({OVER_SWAP_OR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_OR},{over swap or},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_OR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x )  x = x2 | x1
+    or    L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( x -- x|n )
@@ -198,22 +228,37 @@ __{}__{}eval(($1)<16),{1},{__OR_REG8_8BIT({H},eval(1<<($1-8)))})}){}dnl
 })}){}dnl
 dnl
 dnl
-dnl # ( x1 x2 -- x )
+dnl # ( x2 x1 -- x )
 dnl # x = x1 ^ x2
 define({XOR},{dnl
 __{}__ADD_TOKEN({__TOKEN_XOR},{xor},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_XOR},{dnl
-__{}define({__INFO},{xor}){}dnl
-
-    ld    A, E          ; 1:4       xor   ( x2 x1 -- x )  x = x2 ^ x1
-    xor   L             ; 1:4       xor
-    ld    L, A          ; 1:4       xor
-    ld    A, D          ; 1:4       xor
-    xor   H             ; 1:4       xor
-    ld    H, A          ; 1:4       xor
-    pop  DE             ; 1:10      xor}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x )  x = x2 ^ x1
+    xor   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x )
+dnl # x = x1 ^ x2
+define({OVER_SWAP_XOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_XOR},{over swap xor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_XOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x )  x = x2 ^ x1
+    xor   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    A, D          ; 1:4       __INFO
+    xor   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( x -- x^n )
@@ -1896,6 +1941,108 @@ dnl # -------------------------- 8 bits --------------------------
 dnl
 dnl
 dnl
+dnl # ( -- )
+define({AND_8REG_8REG},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_AND_8REG_8REG},{and($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_AND_8REG_8REG},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- )   $1 = $1 and $2
+    and   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    ld    format({%-14s},{$1, A}); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({OR_8REG_8REG},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_OR_8REG_8REG},{or($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_OR_8REG_8REG},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- )   $1 = $1 or $2
+    or    format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    ld    format({%-14s},{$1, A}); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({XOR_8REG_8REG},{dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{dnl
+__{}__ADD_TOKEN({__TOKEN_XOR_8REG_8REG},{xor($1,$2)},$@){}dnl
+})}){}dnl
+dnl
+define({__ASM_TOKEN_XOR_8REG_8REG},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(
+eval($#<2),1,{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_REG($1),0,{
+__{}  .error {$0}($@): $1 is not register name!},
+__IS_REG($2),0,{
+__{}  .error {$0}($@): $2 is not register name!},
+{
+    ld    A, format({%-11s},$1); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO   ( -- )   $1 = $1 xor $2
+    xor   format({%-14s},$2); ifelse(len($2),1,{1:4},len($2),3,{2:8},{?:?})       __INFO
+    ld    format({%-14s},{$1, A}); ifelse(len($1),1,{1:4},len($1),3,{2:8},{?:?})       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( x2 x1 -- x3 )  x3 = hi(x1) + lo(x2 & x1)
 define({CAND},{dnl
 __{}__ADD_TOKEN({__TOKEN_CAND},{cand},$@){}dnl
@@ -1977,6 +2124,84 @@ __{}define({__INFO},__COMPILE_INFO)
     xor   H             ; 1:4       __INFO
     ld    H, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = hi(x1) + lo(x2 & x1)
+define({OVER_SWAP_CAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CAND},{over swap cand},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_CAND},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x1) + lo(x2 & x1)
+    and   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = hi(x2 & x1) + lo(x1)
+define({OVER_SWAP_HAND},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_HAND},{over swap hand},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_HAND},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x2 & x1) + lo(x1)
+    and   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = hi(x1) + lo(x2 | x1)
+define({OVER_SWAP_COR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_COR},{over swap cor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_COR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x1) + lo(x2 | x1)
+    or    L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = hi(x2 | x1) + lo(x1)
+define({OVER_SWAP_HOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_HOR},{over swap hor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_HOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x2 | x1) + lo(x1)
+    or    H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = hi(x1) + lo(x2 ^ x1)
+define({OVER_SWAP_CXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CXOR},{over swap cxor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_CXOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x1) + lo(x2 ^ x1)
+    xor   L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x3 )  x3 = hi(x2 ^ x1) + lo(x1)
+define({OVER_SWAP_HXOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_HXOR},{over swap hxor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_HXOR},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )   x3 = hi(x2 ^ x1) + lo(x1)
+    xor   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
