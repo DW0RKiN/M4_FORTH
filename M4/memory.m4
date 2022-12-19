@@ -3379,7 +3379,7 @@ __{}__HEX_HL($2),0x0001,{
                        ;[ 9:46]     __INFO
     ld   BC,format({%-12s},($1)); 4:20      __INFO
     inc  BC             ; 1:6       __INFO
-    ld  format({%-16s},($3){,} BC); 4:20      __INFO},  
+    ld  format({%-16s},($3){,} BC); 4:20      __INFO},
 __{}__HEX_HL($2),0xFFFF,{
                        ;[ 9:46]     __INFO
     ld   BC,format({%-12s},($1)); 4:20      __INFO
@@ -3403,7 +3403,7 @@ __{}__HEX_HL($2),0x0003,{
     inc  BC             ; 1:6       __INFO
     inc  BC             ; 1:6       __INFO
     inc  BC             ; 1:6       __INFO
-    ld  format({%-16s},($3){,} BC); 4:20      __INFO},  
+    ld  format({%-16s},($3){,} BC); 4:20      __INFO},
 __{}__HEX_HL($2),0xFFFD,{
                        ;[11:58]     __INFO
     ld   BC,format({%-12s},($1)); 4:20      __INFO
@@ -3418,7 +3418,7 @@ __{}__HEX_HL($2),0x0004,{
     inc  BC             ; 1:6       __INFO
     inc  BC             ; 1:6       __INFO
     inc  BC             ; 1:6       __INFO
-    ld  format({%-16s},($3){,} BC); 4:20      __INFO},  
+    ld  format({%-16s},($3){,} BC); 4:20      __INFO},
 __{}__HEX_HL($2),0xFFFC,{
                        ;[12:64]     __INFO
     ld   BC,format({%-12s},($1)); 4:20      __INFO
@@ -3426,7 +3426,7 @@ __{}__HEX_HL($2),0xFFFC,{
     dec  BC             ; 1:6       __INFO
     dec  BC             ; 1:6       __INFO
     dec  BC             ; 1:6       __INFO
-    ld  format({%-16s},($3){,} BC); 4:20      __INFO},  
+    ld  format({%-16s},($3){,} BC); 4:20      __INFO},
 __{}__IS_MEM_REF($2):ifelse($1,$3,{1},__HEX_HL($1),__HEX_HL($3),{1},{0}),{0:1},{define({_TMP_INFO},__INFO){}dnl
                        ;[12:58]     __INFO{}__LD_REG16({BC},$1){}__CODE_16BIT
     ld    A,(BC)        ; 1:7       __INFO
