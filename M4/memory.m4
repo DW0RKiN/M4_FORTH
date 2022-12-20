@@ -1597,6 +1597,21 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # swap 8 rshift swap C!
+dnl # ( x addr -- )
+dnl # store hi(x) at addr
+define({HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_HSTORE},{h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld  (HL),D          ; 1:7       __INFO   ( x addr -- )
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
 dnl # dup addr C!
 dnl # ( char -- char )
 dnl # store 8-bit char lo(tos) at addr
@@ -1619,9 +1634,31 @@ __{}    ld    A, L          ; 1:4       __INFO
 __{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})})}){}dnl
 dnl
 dnl
+dnl # dup 8 rshift addr C!
+dnl # ( x -- x )
+dnl # store hi(tos) at addr
+define({DUP_PUSH_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HSTORE},{dup $1 h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_HSTORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})})}){}dnl
+dnl
+dnl
 dnl # addr C!
 dnl # ( char -- )
-dnl # store(addr) store 8-bit char at addr
+dnl # store lo(tos) at addr
 define({PUSH_CSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_CSTORE},{$1 c!},$@){}dnl
 }){}dnl
@@ -1633,6 +1670,25 @@ eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 {define({__INFO},__COMPILE_INFO)
 __{}    ld    A, L          ; 1:4       __INFO
+__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+dnl
+dnl
+dnl # 8 rshift addr C!
+dnl # ( x -- )
+dnl # store hi(tos) at addr
+define({PUSH_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_HSTORE},{$1 h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_HSTORE},{dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+eval($#>1),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{define({__INFO},__COMPILE_INFO)
+__{}    ld    A, H          ; 1:4       __INFO
 __{}    ld   format({%-15s},($1){,} A); 3:13      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
@@ -1865,30 +1921,56 @@ dnl # over swap c!
 dnl # ( char addr -- char )
 dnl # store 8-bit number at addr with save char
 define({OVER_SWAP_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CSTORE},{over_swap_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_CSTORE},{over swap c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_SWAP_CSTORE},{dnl
-__{}define({__INFO},{over_swap_cstore}){}dnl
-
-                        ;[3:21]     over swap c!  over_swap_cstore   ( char addr -- char )
-    ld  (HL),E          ; 1:7       over swap c!  over_swap_cstore
-    ex   DE, HL         ; 1:4       over swap c!  over_swap_cstore
-    pop  DE             ; 1:10      over swap c!  over_swap_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[3:21]     __INFO   ( char addr -- char )
+    ld  (HL),E          ; 1:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # over 8 rshift swap c!
+dnl # ( x addr -- char )
+dnl # store hi(x) at addr with save x
+define({OVER_SWAP_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_HSTORE},{over swap h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_SWAP_HSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[3:21]     __INFO   ( x addr -- x )
+    ld  (HL),D          ; 1:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # 2dup c!
 dnl # ( char addr -- char addr )
 dnl # store 8-bit number at addr with save all
 define({_2DUP_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{2dup_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{2dup c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_CSTORE},{dnl
-__{}define({__INFO},{2dup_cstore}){}dnl
-
-                        ;[1:7]      2dup c!  _2dup_cstore   ( char addr -- char addr )
-    ld  (HL),E          ; 1:7       2dup c!  _2dup_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[1:7]      __INFO   ( char addr -- char addr )
+    ld  (HL),E          ; 1:7       __INFO}){}dnl
+dnl
+dnl
+dnl # over 8 rshift over c!
+dnl # ( x addr -- x addr )
+dnl # store hi(x) at addr with save all
+define({_2DUP_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{2dup h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[1:7]      __INFO   ( x addr -- x addr )
+    ld  (HL),D          ; 1:7       __INFO}){}dnl
 dnl
 dnl
 dnl # 2dup c! 1+

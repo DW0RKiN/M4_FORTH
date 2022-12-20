@@ -599,11 +599,10 @@ __{}__ADD_TOKEN({__TOKEN_TRUE},{true},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TRUE},{dnl
-__{}define({__INFO},{true}){}dnl
-
-    push DE             ; 1:11      true
-    ex   DE, HL         ; 1:4       true
-    ld   HL, 0xffff     ; 3:10      true}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, 0xffff     ; 3:10      __INFO}){}dnl
 dnl
 dnl # ( -- x )
 dnl # x = 0
@@ -612,11 +611,10 @@ __{}__ADD_TOKEN({__TOKEN_FALSE},{false},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FALSE},{dnl
-__{}define({__INFO},{false}){}dnl
-
-    push DE             ; 1:11      false
-    ex   DE, HL         ; 1:4       false
-    ld   HL, 0x0000     ; 3:10      false}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, 0x0000     ; 3:10      __INFO}){}dnl
 dnl
 dnl # -------------------------------------
 dnl
@@ -625,17 +623,16 @@ dnl # ( x1 -- flag )
 dnl # if ( x1 ) flag = 0; else flag = 0xFFFF;
 dnl # 0 if 16-bit number not equal to zero, -1 if equal
 define({_0EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_0EQ},{0eq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_0EQ},{0=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0EQ},{dnl
-__{}define({__INFO},{0eq}){}dnl
-
-                        ;[5:29]     0=
-    ld    A, H          ; 1:4       0=
-    dec  HL             ; 1:6       0=
-    sub   H             ; 1:4       0=
-    sbc  HL, HL         ; 2:15      0=}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:29]     __INFO
+    ld    A, H          ; 1:4       __INFO
+    dec  HL             ; 1:6       __INFO
+    sub   H             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -937,21 +934,21 @@ dnl
 dnl # 0<
 dnl # ( x1 -- flag )
 define({_0LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_0LT},{0lt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_0LT},{0<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0LT},{dnl
-__{}define({__INFO},{0lt}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_0LT,{small},{
-                        ;[4:23]     0<  ( x -- flag x<0 )
-    rl    H             ; 2:8       0<
-    sbc  HL, HL         ; 2:15      0<}
+                        ;[4:23]     __INFO   ( x -- flag x<0 )
+    rl    H             ; 2:8       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}
 ,{
-                        ;[5:20]     0<  ( x -- flag x<0 )
-    rl    H             ; 2:8       0<
-    sbc   A, A          ; 1:4       0<
-    ld    L, A          ; 1:4       0<
-    ld    H, A          ; 1:4       0<})}){}dnl
+                        ;[5:20]     __INFO   ( x -- flag x<0 )
+    rl    H             ; 2:8       __INFO
+    sbc   A, A          ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO})}){}dnl
 dnl
 dnl
 dnl # <=
@@ -1055,16 +1052,15 @@ dnl
 dnl # 0>=
 dnl # ( x1 -- flag )
 define({_0GE},{dnl
-__{}__ADD_TOKEN({__TOKEN_0GE},{0ge},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_0GE},{0>=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0GE},{dnl
-__{}define({__INFO},{0ge}){}dnl
-
-    ld    A, H          ; 1:4       0>=
-    sub   0x80          ; 2:7       0>=
-    sbc  HL, HL         ; 2:15      0>=
-    pop  DE             ; 1:10      0>=}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO
+    sub   0x80          ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl # ------------ unsigned ---------------
 dnl
@@ -1868,24 +1864,24 @@ __{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore
 __{}__{}{dnl
 __{}__{}__{}ifelse(eval($1),{0},{
 __{}__{}__{}                        ;           $1 rshift},
-__{}__{}__{}eval($1),{1},{_1RSHIFT},
-__{}__{}__{}eval($1),{2},{_2RSHIFT},
-__{}__{}__{}eval($1),{3},{_3RSHIFT},
-__{}__{}__{}eval($1),{4},{_4RSHIFT},
-__{}__{}__{}eval($1),{5},{_5RSHIFT},
-__{}__{}__{}eval($1),{6},{_6RSHIFT},
-__{}__{}__{}eval($1),{7},{_7RSHIFT},
-__{}__{}__{}eval($1),{8},{_8RSHIFT},
-__{}__{}__{}eval($1),{9},{_9RSHIFT},
-__{}__{}__{}eval($1),{10},{_10RSHIFT},
-__{}__{}__{}eval($1),{11},{_11RSHIFT},
-__{}__{}__{}eval($1),{12},{_12RSHIFT},
-__{}__{}__{}eval($1),{13},{_13RSHIFT},
-__{}__{}__{}eval($1),{14},{_14RSHIFT},
-__{}__{}__{}eval($1),{15},{_15RSHIFT},
-__{}__{}__{}eval($1),{16},{_16RSHIFT},
-__{}__{}__{}eval(($1)>15),{1},{
-__{}__{}__{}                        ;           $1 rshift --> 16 rshift{}_16RSHIFT},
+__{}__{}__{}eval($1),{1},{__ASM_TOKEN_1RSHIFT},
+__{}__{}__{}eval($1),{2},{__ASM_TOKEN_2RSHIFT},
+__{}__{}__{}eval($1),{3},{__ASM_TOKEN_3RSHIFT},
+__{}__{}__{}eval($1),{4},{__ASM_TOKEN_4RSHIFT},
+__{}__{}__{}eval($1),{5},{__ASM_TOKEN_5RSHIFT},
+__{}__{}__{}eval($1),{6},{__ASM_TOKEN_6RSHIFT},
+__{}__{}__{}eval($1),{7},{__ASM_TOKEN_7RSHIFT},
+__{}__{}__{}eval($1),{8},{__ASM_TOKEN_8RSHIFT},
+__{}__{}__{}eval($1),{9},{__ASM_TOKEN_9RSHIFT},
+__{}__{}__{}eval($1),{10},{__ASM_TOKEN_10RSHIFT},
+__{}__{}__{}eval($1),{11},{__ASM_TOKEN_11RSHIFT},
+__{}__{}__{}eval($1),{12},{__ASM_TOKEN_12RSHIFT},
+__{}__{}__{}eval($1),{13},{__ASM_TOKEN_13RSHIFT},
+__{}__{}__{}eval($1),{14},{__ASM_TOKEN_14RSHIFT},
+__{}__{}__{}eval($1),{15},{__ASM_TOKEN_15RSHIFT},
+__{}__{}__{}eval($1),{16},{__ASM_TOKEN_16RSHIFT},
+__{}__{}__{}eval(($1)>16),{1},{
+__{}__{}__{}                        ;           $1 rshift --> 16 rshift{}__ASM_TOKEN_16RSHIFT},
 __{}__{}__{}{
 __{}__{}__{}    .error {$0}($@): negative parameters found in macro! Use {PUSH_LSHIFT}(eval(-($1))).})})},
 __{}__{}{
@@ -1911,24 +1907,24 @@ __{}__{}__{}    .error {$0}($@): M4 does not know the "{$1}" value and therefore
 __{}__{}{dnl
 __{}__{}__{}ifelse(eval($1),{0},{
 __{}__{}__{}                        ;           $1 lshift},
-__{}__{}__{}eval($1),{1},{_1LSHIFT},
-__{}__{}__{}eval($1),{2},{_2LSHIFT},
-__{}__{}__{}eval($1),{3},{_3LSHIFT},
-__{}__{}__{}eval($1),{4},{_4LSHIFT},
-__{}__{}__{}eval($1),{5},{_5LSHIFT},
-__{}__{}__{}eval($1),{6},{_6LSHIFT},
-__{}__{}__{}eval($1),{7},{_7LSHIFT},
-__{}__{}__{}eval($1),{8},{_8LSHIFT},
-__{}__{}__{}eval($1),{9},{_9LSHIFT},
-__{}__{}__{}eval($1),{10},{_10LSHIFT},
-__{}__{}__{}eval($1),{11},{_11LSHIFT},
-__{}__{}__{}eval($1),{12},{_12LSHIFT},
-__{}__{}__{}eval($1),{13},{_13LSHIFT},
-__{}__{}__{}eval($1),{14},{_14LSHIFT},
-__{}__{}__{}eval($1),{15},{_15LSHIFT},
-__{}__{}__{}eval($1),{16},{_16LSHIFT},
+__{}__{}__{}eval($1),{1},{__ASM_TOKEN_1LSHIFT},
+__{}__{}__{}eval($1),{2},{__ASM_TOKEN_2LSHIFT},
+__{}__{}__{}eval($1),{3},{__ASM_TOKEN_3LSHIFT},
+__{}__{}__{}eval($1),{4},{__ASM_TOKEN_4LSHIFT},
+__{}__{}__{}eval($1),{5},{__ASM_TOKEN_5LSHIFT},
+__{}__{}__{}eval($1),{6},{__ASM_TOKEN_6LSHIFT},
+__{}__{}__{}eval($1),{7},{__ASM_TOKEN_7LSHIFT},
+__{}__{}__{}eval($1),{8},{__ASM_TOKEN_8LSHIFT},
+__{}__{}__{}eval($1),{9},{__ASM_TOKEN_9LSHIFT},
+__{}__{}__{}eval($1),{10},{__ASM_TOKEN_10LSHIFT},
+__{}__{}__{}eval($1),{11},{__ASM_TOKEN_11LSHIFT},
+__{}__{}__{}eval($1),{12},{__ASM_TOKEN_12LSHIFT},
+__{}__{}__{}eval($1),{13},{__ASM_TOKEN_13LSHIFT},
+__{}__{}__{}eval($1),{14},{__ASM_TOKEN_14LSHIFT},
+__{}__{}__{}eval($1),{15},{__ASM_TOKEN_15LSHIFT},
+__{}__{}__{}eval($1),{16},{__ASM_TOKEN_16LSHIFT},
 __{}__{}__{}eval(($1)>16),{1},{
-__{}__{}__{}                        ;           $1 lshift --> 16 lshift{}_16LSHIFT},
+__{}__{}__{}                        ;           $1 lshift --> 16 lshift{}__ASM_TOKEN_16LSHIFT},
 __{}__{}__{}{
 __{}__{}__{}    .error {$0}($@): negative parameters found in macro! Use {PUSH_RSHIFT}(eval(-($1))).})})},
 __{}__{}{
