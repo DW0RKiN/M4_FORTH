@@ -1792,7 +1792,10 @@ push,,,
             __LAST_TOKEN_NAME:__LAST_TOKEN_VALUE:$1,   {__TOKEN_PUSH:0:__TOKEN_QDUP},            {},
             __LAST_TOKEN_NAME:__LAST_TOKEN_IS_NUM_1:$1,{__TOKEN_PUSH:1:__TOKEN_QDUP},            {__SET_TOKEN({__TOKEN_PUSH2},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY,__LAST_TOKEN_ARRAY)},
 
-            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_OVER,              {__SET_TOKEN({__TOKEN_PUSH_OVER},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_OVER,              {__SET_TOKEN({__TOKEN_PUSH_OVER},     __LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_2OVER,             {__SET_TOKEN({__TOKEN_PUSH_2OVER},    __LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+            __LAST_TOKEN_NAME:$1,                                         __TOKEN_PUSH_2OVER:__TOKEN_NIP,            {__SET_TOKEN({__TOKEN_OVER_PUSH_SWAP},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
+
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_OVER-__TOKEN_STORE},        {__SET_TOKEN({__TOKEN_PUSH_OVER_STORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
             __LAST_TOKEN_NAME-$1,                      {__TOKEN_PUSH_OVER-__TOKEN_CSTORE},        {__SET_TOKEN({__TOKEN_PUSH_OVER_CSTORE},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},
 
