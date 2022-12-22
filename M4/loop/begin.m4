@@ -187,11 +187,11 @@ dnl
 dnl # ( n -- n )
 dnl # dup const = until
 define({DUP_PUSH_EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_UNTIL},{dup_push_eq until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_UNTIL},{dup $1 = until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_push_eq until}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
 BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
@@ -205,6 +205,30 @@ __{}define({_TMP_STACK_INFO},{{}_TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
 __{}__EQ_MAKE_BEST_CODE($1,3,10,begin{}BEGIN_STACK,0)
 __{}_TMP_BEST_CODE
 __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
+dnl
+dnl
+dnl # ( n -- n )
+dnl # dup const <> until
+define({DUP_PUSH_NE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_UNTIL},{dup $1 <> until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_NE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(dnl
+BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0} for non-existent {BEGIN}},
+$1,{},{
+__{}.error {$0}(): Missing parameter!},
+eval($#>1),{1},{
+__{}.error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({_TMP_INFO},{dup $1 = until BEGIN_STACK}){}dnl
+__{}define({_TMP_STACK_INFO},{{}_TMP_INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
+__{}__EQ_MAKE_BEST_CODE($1,3,10,begin{}BEGIN_STACK,0)
+__{}_TMP_BEST_CODE
+__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
 __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl

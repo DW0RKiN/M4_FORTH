@@ -661,140 +661,140 @@ dnl
 dnl # ( x -- x|n )
 dnl # x = x | n
 define({PUSH_EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_EQ},{push_eq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ},{$1 =},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_EQ},{dnl
-__{}define({__INFO},{push_eq}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                        ;[12:58/59] $1 =
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 =
-__{}__{}    xor   A             ; 1:4       $1 =   A = 0x00
-__{}__{}    sbc  HL, BC         ; 2:15      $1 =
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
-__{}__{}    dec   A             ; 1:4       $1 =   A = 0xFF
-__{}__{}    ld    L, A          ; 1:4       $1 =
-__{}__{}    ld    H, A          ; 1:4       $1 =   HL= flag},
+__{}__{}                        ;[12:58/59] __INFO
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}__{}    xor   A             ; 1:4       __INFO   A = 0x00
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    dec   A             ; 1:4       __INFO   A = 0xFF
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO   HL= flag},
 __{}__IS_NUM($1),{0},{dnl
 __{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
-__{}__{}                        ;[11:48/49] $1 =
-__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      $1 =
-__{}__{}    xor   A             ; 1:4       $1 =   A = 0x00
-__{}__{}    sbc  HL, BC         ; 2:15      $1 =
-__{}__{}    jr   nz, $+3        ; 2:7/12    $1 =
-__{}__{}    dec   A             ; 1:4       $1 =   A = 0xFF
-__{}__{}    ld    L, A          ; 1:4       $1 =
-__{}__{}    ld    H, A          ; 1:4       $1 =   HL= flag},
+__{}__{}                        ;[11:48/49] __INFO
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO
+__{}__{}    xor   A             ; 1:4       __INFO   A = 0x00
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    dec   A             ; 1:4       __INFO   A = 0xFF
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO   HL= flag},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
-__{}__{}                        ;[6:30]     $1 =
-__{}__{}    ld    A, L          ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[6:30]     __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval($1),{1},{dnl
-__{}__{}                        ;[7:34]     $1 =
-__{}__{}    ld    A, L          ; 1:4       $1 =
-__{}__{}    dec   A             ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval((($1) & 0xffff) - 0xffff),{0},{dnl
-__{}__{}                        ;[7:36]     $1 =
-__{}__{}    inc   HL            ; 1:6       $1 =
-__{}__{}    ld    A, L          ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[7:36]     __INFO
+__{}__{}    inc   HL            ; 1:6       __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval($1),{255},{dnl
-__{}__{}                        ;[7:34]     $1 =
-__{}__{}    ld    A, L          ; 1:4       $1 =
-__{}__{}    inc   A             ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval($1),{256},{dnl
-__{}__{}                        ;[7:34]     $1 =
-__{}__{}    ld    A, H          ; 1:4       $1 =
-__{}__{}    dec   A             ; 1:4       $1 =
-__{}__{}    or    L             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval(($1) - 0xff00),{0},{dnl
-__{}__{}                        ;[7:34]     $1 =
-__{}__{}    ld    A, H          ; 1:4       $1 =
-__{}__{}    inc   A             ; 1:4       $1 =
-__{}__{}    or    L             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval(($1) & 0xff00),{0},{dnl
-__{}__{}                        ;[8:37]     $1 =
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
-__{}__{}    xor   L             ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[8:37]     __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval(($1) & 0xff),{0},{dnl
-__{}__{}                        ;[8:37]     $1 =
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
-__{}__{}    xor   H             ; 1:4       $1 =
-__{}__{}    or    L             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[8:37]     __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval((($1)>>8) & 0xff),{1},{dnl
-__{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
-__{}__{}    xor   L             ; 1:4       $1 =
-__{}__{}    dec   H             ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval((($1)>>8) & 0xff),{255},{dnl
-__{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
-__{}__{}    xor   L             ; 1:4       $1 =
-__{}__{}    inc   H             ; 1:4       $1 =
-__{}__{}    or    H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval(($1) & 0xff),{1},{dnl
-__{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
-__{}__{}    xor   H             ; 1:4       $1 =
-__{}__{}    dec   L             ; 1:4       $1 =
-__{}__{}    or    L             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval(($1) & 0xff),{255},{dnl
-__{}__{}                        ;[9:41]     $1 =
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
-__{}__{}    xor   H             ; 1:4       $1 =
-__{}__{}    inc   L             ; 1:4       $1 =
-__{}__{}    or    L             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}eval((($1) & 0xff)-((($1)>>8) & 0xff)),{0},{dnl
-__{}__{}                        ;[11:48/35] $1 =
-__{}__{}    ld    A, L          ; 1:4       $1 =
-__{}__{}    xor   H             ; 1:4       $1 =
-__{}__{}    jr   nz, $+7        ; 2:7/12    $1 =
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1) = hi($1)
-__{}__{}    xor   H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =},
+__{}__{}                        ;[11:48/35] __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    jr   nz, $+7        ; 2:7/12    __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1) = hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}{dnl
-__{}__{}                        ;[12:51/38] $1 =
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       $1 =   lo($1)
-__{}__{}    xor   L             ; 1:4       $1 =
-__{}__{}    jr   nz, $+7        ; 2:7/12    $1 =
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       $1 =   hi($1)
-__{}__{}    xor   H             ; 1:4       $1 =
-__{}__{}    sub  0x01           ; 2:7       $1 =
-__{}__{}    sbc  HL, HL         ; 2:15      $1 =}){}dnl
+__{}__{}                        ;[12:51/38] __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    jr   nz, $+7        ; 2:7/12    __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -861,6 +861,138 @@ __{}define({__INFO},__COMPILE_INFO)
     jr    z, $+5        ; 2:7/12    __INFO
     ld   HL, 0xFFFF     ; 3:10      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x -- f )
+dnl # f = x <> $1
+define({PUSH_NE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NE},{$1 <>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_NE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}$#,{1},,{
+__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}__{}                        ;[12:56/51] __INFO
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}__{}    xor   A             ; 1:4       __INFO   A = 0x00
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL= flag},
+__{}__IS_NUM($1),{0},{dnl
+__{}__{}    .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
+__{}__{}                        ;[11:46/41] __INFO
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO
+__{}__{}    xor   A             ; 1:4       __INFO   A = 0x00
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL= flag},
+__{}{dnl
+__{}__{}ifelse(eval($1),{0},{dnl
+__{}__{}                        ;[7:25/20]  __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL= flag},
+__{}__{}eval($1),{0},{dnl
+__{}__{}                        ;[6:30]     __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval($1),{1},{dnl
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval((($1) & 0xffff) - 0xffff),{0},{dnl
+__{}__{}                        ;[7:36]     __INFO
+__{}__{}    inc   HL            ; 1:6       __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval($1),{255},{dnl
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval($1),{256},{dnl
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval(($1) - 0xff00),{0},{dnl
+__{}__{}                        ;[7:34]     __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval(($1) & 0xff00),{0},{dnl
+__{}__{}                        ;[8:37]     __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval(($1) & 0xff),{0},{dnl
+__{}__{}                        ;[8:37]     __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval((($1)>>8) & 0xff),{1},{dnl
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval((($1)>>8) & 0xff),{255},{dnl
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   lo($1)
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval(($1) & 0xff),{1},{dnl
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}eval(($1) & 0xff),{255},{dnl
+__{}__{}                        ;[9:41]     __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   hi($1)
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}{dnl
+__{}__{}                        ;[11:46/41] __INFO
+__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   BC = $1
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = true}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

@@ -4142,13 +4142,12 @@ __{}__ADD_TOKEN({__TOKEN_RDROP},{rdrop},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_RDROP},{dnl
-__{}define({__INFO},{rdrop}){}dnl
-
-                        ;[4:18]     rdrop
-    exx                 ; 1:4       rdrop
-    inc   L             ; 1:4       rdrop
-    inc   HL            ; 1:6       rdrop
-    exx                 ; 1:4       rdrop r:( a -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[4:18]     __INFO   ( r: a -- )
+    exx                 ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   HL            ; 1:6       __INFO
+    exx                 ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # r> r> swap >r >r
@@ -4246,23 +4245,22 @@ __{}__ADD_TOKEN({__TOKEN_2R_FETCH},{2r_fetch},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2R_FETCH},{dnl
-__{}define({__INFO},{2r_fetch}){}dnl
-
-                        ;[14:99]    _2r_fetch ( b a -- b a j i ) ( R: j i -- j i )
-    push DE             ; 1:11      _2r_fetch b   . b a
-    exx                 ; 1:4       _2r_fetch b   .
-    push HL             ; 1:11      _2r_fetch b r .
-    exx                 ; 1:4       _2r_fetch b r . b a
-    ex  (SP), HL        ; 1:19      _2r_fetch b a . b r     HL = r.a.s.
-    ld    E,(HL)        ; 1:7       _2r_fetch
-    inc   L             ; 1:4       _2r_fetch
-    ld    D,(HL)        ; 1:7       _2r_fetch
-    inc  HL             ; 1:6       _2r_fetch b a . i r
-    ld    A,(HL)        ; 1:7       _2r_fetch
-    inc   L             ; 1:4       _2r_fetch
-    ld    H,(HL)        ; 1:7       _2r_fetch
-    ld    L, A          ; 1:4       _2r_fetch b a . i j
-    ex   DE, HL         ; 1:4       _2r_fetch b a . j i}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[14:99]    __INFO   ( b a -- b a j i ) ( r: j i -- j i )
+    push DE             ; 1:11      __INFO   b   . b a
+    exx                 ; 1:4       __INFO   b   .
+    push HL             ; 1:11      __INFO   b r .
+    exx                 ; 1:4       __INFO   b r . b a
+    ex  (SP), HL        ; 1:19      __INFO   b a . b r     HL = r.a.s.
+    ld    E,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    D,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO   b a . i r
+    ld    A,(HL)        ; 1:7       __INFO
+    inc   L             ; 1:4       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO   b a . i j
+    ex   DE, HL         ; 1:4       __INFO   b a . j i}){}dnl
 dnl
 dnl
 dnl # 2rdrop
@@ -4273,15 +4271,14 @@ __{}__ADD_TOKEN({__TOKEN_2RDROP},{2rdrop},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2RDROP},{dnl
-__{}define({__INFO},{2rdrop}){}dnl
-
-                        ;[6:28]     _2rdrop
-    exx                 ; 1:4       _2rdrop
-    inc   L             ; 1:4       _2rdrop
-    inc   HL            ; 1:6       _2rdrop
-    inc   L             ; 1:4       _2rdrop
-    inc   HL            ; 1:6       _2rdrop
-    exx                 ; 1:4       _2rdrop r:( x1 x2 -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:28]     __INFO   ( r: x1 x2 -- )
+    exx                 ; 1:4       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   HL            ; 1:6       __INFO
+    inc   L             ; 1:4       __INFO
+    inc   HL            ; 1:6       __INFO
+    exx                 ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # r> r> r> r> _2swap >r >r >r >r
@@ -4293,23 +4290,22 @@ __{}__ADD_TOKEN({__TOKEN_2RSWAP},{2rswap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2RSWAP},{dnl
-__{}define({__INFO},{2rswap}){}dnl
-
-                        ;[19:134]   rswap ( R: l k j i -- j i l k )
-    exx                 ; 1:4       rswap
-    ld  ($+14), SP      ; 4:20      rswap
-    ld   SP, HL         ; 1:6       rswap
-    ex   DE, HL         ; 1:4       rswap l  k  j  i
-    pop  BC             ; 1:10      rswap l  k  j  BC
-    pop  HL             ; 1:10      rswap l  k  HL
-    pop  AF             ; 1:10      rswap l  AF
-    ex  (SP),HL         ; 1:19      rswap j     HL=l
-    push BC             ; 1:11      rswap j  i
-    push HL             ; 1:11      rswap j  i  l
-    push AF             ; 1:11      rswap j  i  l  k
-    ld   SP, 0x0000     ; 3:10      rswap
-    ex   DE, HL         ; 1:4       rswap
-    exx                 ; 1:4       rswap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[19:134]   __INFO   ( r: l k j i -- j i l k )
+    exx                 ; 1:4       __INFO
+    ld  ($+14), SP      ; 4:20      __INFO
+    ld   SP, HL         ; 1:6       __INFO
+    ex   DE, HL         ; 1:4       __INFO   l  k  j  i
+    pop  BC             ; 1:10      __INFO   l  k  j  BC
+    pop  HL             ; 1:10      __INFO   l  k  HL
+    pop  AF             ; 1:10      __INFO   l  AF
+    ex  (SP),HL         ; 1:19      __INFO   j     HL=l
+    push BC             ; 1:11      __INFO   j  i
+    push HL             ; 1:11      __INFO   j  i  l
+    push AF             ; 1:11      __INFO   j  i  l  k
+    ld   SP, 0x0000     ; 3:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -4319,11 +4315,12 @@ __{}__ADD_TOKEN({__TOKEN_RAS},{ras},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_RAS},{
-    ex   DE, HL         ; 1:4       ras   ( -- return_address_stack )
-    exx                 ; 1:4       ras
-    push HL             ; 1:11      ras
-    exx                 ; 1:4       ras
-    ex  (SP),HL         ; 1:19      ras}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ex   DE, HL         ; 1:4       __INFO   ( -- return_address_stack )
+    exx                 ; 1:4       __INFO
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    ex  (SP),HL         ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl
