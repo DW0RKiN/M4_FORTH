@@ -5289,7 +5289,7 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl # $1 D=
+dnl # $1. D=
 dnl # ( d1 -- flag )
 dnl # equal ( d1 == $1 )
 define({PUSHDOT_DEQ},{dnl
@@ -5352,8 +5352,8 @@ __{}__ADD_TOKEN({__TOKEN_PUSH2_DEQ},{$1 $2 d=},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_DEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(eval($#<2),{},{
-__{}  .error {$0}(): Missing address parameter!},
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_MEM_REF($1):__IS_MEM_REF($2),{1:0},{
@@ -5611,6 +5611,42 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
     add   A, A          ; 1:4       D<                                   --> carry if true
     sbc  HL, HL         ; 2:15      D<   set flag d2<d1
     pop  DE             ; 1:10      D<})}){}dnl
+dnl
+dnl
+dnl # $1 $2 D<
+dnl # $1. D<
+dnl # ( d -- flag )
+dnl # signed ( d < $1. ) --> ( d - $1. < 0 ) --> carry is true
+define({PUSH2_DLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DLT},{$1 $2 d<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DLT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(dnl
+eval($#<2),1,{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+_TYP_DOUBLE,{function},{
+__{}ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes})){}dnl
+__{}__SET_BYTES_CLOCKS_PRICES(10,70,4*10+70){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+    push HL             ; 1:10      __INFO   hi16(d)
+    ld   C, E           ; 1:4       __INFO
+    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
+    pop  AF             ; 1:10      __INFO   hi16(d)
+    call FCE_DLT        ; 3:17      __INFO   carry if true
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   set flag d2<d1},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
+__{}    pop  DE             ; 1:10      __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d1 < $1*65536+$2}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( pd2 pd1 -- pd2 pd1 flag )
@@ -6693,55 +6729,23 @@ dnl
 dnl
 dnl # 2dup D. D<
 dnl # ( d -- d f )
-define({_2DUP_PUSHDOT_DLT},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DLT},{2dup_pushdot_dlt},$@){}dnl
+define({_2DUP_PUSH2_DLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLT},{2dup $1 $2 d<},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_2DUP_PUSHDOT_DLT},{dnl
-__{}define({__INFO},{2dup_pushdot_dlt}){}dnl
-ifelse($1,{},{
-    .error {$0}(): Missing parameter!},
-$#,{1},{ifelse(__IS_MEM_REF($1),{1},{
-__{}                        ;[24:118]   2dup $1 D<    ( d1 -- d1 flag )
-__{}    ld   BC, format({%-11s},$1); 4:20      2dup $1 D<    DEHL<$1     $1 = ..BC
-__{}    ld    A, L          ; 1:4       2dup $1 D<    DEHL<$1
-__{}    sub   C             ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-..BC<0 --> carry if true
-__{}    ld    A, H          ; 1:4       2dup $1 D<    DEHL<$1
-__{}    sbc   A, B          ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-..BC<0 --> carry if true
-__{}    ld   BC,format({%-12s},($1+2)); 4:20      2dup $1 D<    DEHL<$1     $1 = BC..
-__{}    ld    A, E          ; 1:4       2dup $1 D<    DEHL<$1
-__{}    sbc   A, C          ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-BC..<0 --> carry if true
-__{}    ld    A, D          ; 1:4       2dup $1 D<    DEHL<$1
-__{}    sbc   A, B          ; 1:4       2dup $1 D<    DEHL<$1 --> DEHL-BC..<0 --> carry if true
-__{}    rra                 ; 1:4       2dup $1 D<    DEHL<$1                 --> sign  if true
-__{}    xor   D             ; 1:4       2dup $1 D<
-__{}    xor   B             ; 1:4       2dup $1 D<
-__{}    add   A, A          ; 1:4       2dup $1 D<    DEHL<$1                 --> carry if true
-__{}    push DE             ; 1:11      2dup $1 D<
-__{}    ex   DE, HL         ; 1:4       2dup $1 D<
-__{}    sbc  HL, HL         ; 2:15      2dup $1 D<    set flag d1<$1},
-__{}__IS_NUM($1),{0},{
-__{}   .error {$0}($@): M4 does not know $1 parameter value!},
-__{}{
-__{}                       ;[20:89]     2dup $1 D<   ( d1 -- d1 flag )   # default version
-__{}    ld    A, D          ; 1:4       2dup $1 D<
-__{}    add   A, A          ; 1:4       2dup $1 D<{}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
-__{}__{}    jr   nc, $+14       ; 2:7/12    2dup $1 D<   positive d1 < negative constant --> false},
-__{}__{}{
-__{}__{}    jr    c, $+14       ; 2:7/12    2dup $1 D<   negative d1 < positive constant --> true})
-__{}    ld    A, L          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
-__{}    sub   A, __HEX_L($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))<0 --> carry if true
-__{}    ld    A, H          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
-__{}    sbc   A, __HEX_H($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..<0 --> carry if true
-__{}    ld    A, E          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
-__{}    sbc   A, __HEX_E($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....<0 --> carry if true
-__{}    ld    A, D          ; 1:4       2dup $1 D<   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
-__{}    sbc   A, __HEX_D($1)       ; 2:7       2dup $1 D<   DEHL<$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......<0 --> carry if true
-__{}    push DE             ; 1:11      2dup $1 D<
-__{}    ex   DE, HL         ; 1:4       2dup $1 D<
-__{}    sbc  HL, HL         ; 2:15      2dup $1 D<   set flag d1<$1})},
-{
-    .error {$0}($@): $# parameters found in macro!})}){}dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(dnl
+eval($#<2),1,{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>2),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d flag )},4,30)
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

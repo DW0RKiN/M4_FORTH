@@ -24,6 +24,7 @@ define({__HEX_D},   {ifelse(__IS_NUM($1),{0},,{format({0x%02X},eval(0xFF   & (($
 define({__HEX_HL},  {ifelse(__IS_NUM($1),{0},,{format({0x%04X},eval(0xFFFF &  ($1)     ))})}){}dnl
 define({__HEX_DE},  {ifelse(__IS_NUM($1),{0},,{format({0x%04X},eval(0xFFFF & (($1)>>16)))})}){}dnl
 define({__HEX_DEHL},{ifelse(__IS_NUM($1),{0},,{format({0x%08X},eval(           $1      ))})}){}dnl
+define({__HEX_DE_HL},{ifelse(__IS_NUM($1):__IS_NUM($2),{1:1},{format({0x%04X},eval($1)){}format({%04X},eval($2))},)}){}dnl
 dnl
 dnl
 dnl
@@ -2308,7 +2309,6 @@ __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                                
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                                            __TOKEN_PUSHS:1:__TOKEN_DNE,                 {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_DNE},__BEFORELAST_TOKEN_REVERSE_2{ }__BEFORELAST_TOKEN_REVERSE_1{ }$2,__BEFORELAST_TOKEN_LAST_2_PAR){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS,__BEFORELAST_TOKEN_INFO{ 2drop},__DROP_2_PAR(__BEFORELAST_TOKEN_ARRAY))},
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>2):$1,                                            __TOKEN_PUSHS:1:__TOKEN_DLT,                 {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_DLT},__BEFORELAST_TOKEN_REVERSE_2{ }__BEFORELAST_TOKEN_REVERSE_1{ }$2,__BEFORELAST_TOKEN_LAST_2_PAR){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS,__BEFORELAST_TOKEN_INFO{ 2drop},__DROP_2_PAR(__BEFORELAST_TOKEN_ARRAY))},
 
-
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_PTR_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DMAX:0,      {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d>?,  __LAST_TOKEN_LAST_4_PAR))},
 __LAST_TOKEN_NAME:eval(__LAST_TOKEN_ITEMS>3):$1:__LAST_TOKEN_IS_PTR_REVERSE_4_3_2_1,  __TOKEN_PUSHS:1:__TOKEN_DMIN:0,      {__SET_TOKEN(__TOKEN_PUSHS, __LAST_TOKEN_INFO{ }$2,__DROP_4_PAR(__LAST_TOKEN_ARRAY){}ifelse(__LAST_TOKEN_ITEMS,4,,{,}){}__EVAL_S32(d<?,  __LAST_TOKEN_LAST_4_PAR))},
 
@@ -2436,6 +2436,14 @@ __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_DUP:__TOK
 __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_DUP_PUSH_NE:__TOKEN_UNTIL,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_UNTIL)},
 __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_DUP_PUSH_NE:__TOKEN_WHILE,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_WHILE)},
 __BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_DUP_PUSH_NE:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_IF)},
+
+__BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_2DUP:__TOKEN_PUSH2_DEQ,         {__SET_CHECK_TOKEN(__TOKEN_2DUP_PUSH2_DEQ)},
+__BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_2DUP:__TOKEN_PUSH2_DNE,         {__SET_CHECK_TOKEN(__TOKEN_2DUP_PUSH2_DNE)},
+__BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_2DUP:__TOKEN_PUSH2_DLT,         {__SET_CHECK_TOKEN(__TOKEN_2DUP_PUSH2_DLT)},
+
+__BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_2DUP_PUSH2_DEQ:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_2DUP_PUSH2_DEQ_IF)},
+__BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_2DUP_PUSH2_DNE:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_2DUP_PUSH2_DNE_IF)},
+__BEFORELAST_TOKEN_NAME:__LAST_TOKEN_NAME,                     __TOKEN_2DUP_PUSH2_DLT:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_2DUP_PUSH2_DLT_IF)},
 
 __BEFORELAST_TOKEN_NAME:__BEFORELAST_TOKEN_ITEMS:__LAST_TOKEN_NAME,  __TOKEN_DUP_PUSHS:1:__TOKEN_LT_IF,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_LT_IF)},
 __BEFORELAST_TOKEN_NAME:__BEFORELAST_TOKEN_ITEMS:__LAST_TOKEN_NAME,  __TOKEN_DUP_PUSHS:1:__TOKEN_LE_IF,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_LE_IF)},
@@ -3119,10 +3127,13 @@ dnl #  $7 Source registry name
 dnl #  $8 Source registry 16-bit value
 dnl
 dnl # Output:
-dnl # __CLOCKS_16BIT
-dnl # __BYTES_16BIT
 dnl # __CODE_16BIT
+dnl # __BYTES_16BIT
+dnl # __CLOCKS_16BIT
 dnl # __PRICE_16BIT = __CLOCKS_16BIT+4*__BYTES_16BIT
+dnl # __SUM_BYTES  += __BYTES_16BIT
+dnl # __SUM_CLOCKS += __CLOCKS_16BIT
+dnl # __SUM_PRICES += __PRICE_16BIT
 __{}undefine({__COMMA}){}dnl
 ifelse(__IS_MEM_REF($2),{1},{dnl
 __{}define({__CLOCKS_16BIT},0){}dnl
@@ -3222,6 +3233,9 @@ __{}__{}define({__CODE_16BIT},{
 __{}__{}    ld   $1{,} __HEX_HL($2)     ; 3:10      }_TMP_INFO)}){}dnl
 __{}}){}dnl
 __{}define({__PRICE_16BIT},eval(__CLOCKS_16BIT+4*__BYTES_16BIT)){}dnl
+__{}ifelse(__IS_NUM(__SUM_BYTES), 0,{define({__SUM_BYTES},  __BYTES_16BIT)},{define({__SUM_BYTES}, eval(__SUM_BYTES + __BYTES_16BIT))}){}dnl
+__{}ifelse(__IS_NUM(__SUM_CLOCKS),0,{define({__SUM_CLOCKS},__CLOCKS_16BIT)},{define({__SUM_CLOCKS},eval(__SUM_CLOCKS+__CLOCKS_16BIT))}){}dnl
+__{}ifelse(__IS_NUM(__SUM_PRICES),0,{define({__SUM_PRICES}, __PRICE_16BIT)},{define({__SUM_PRICES},eval(__SUM_PRICES+ __PRICE_16BIT))}){}dnl
 }){}dnl
 dnl
 dnl
@@ -3238,11 +3252,14 @@ dnl #  $5 Source registry name
 dnl #  $6 Source registry 16-bit value after
 dnl
 dnl # Output:
-dnl # __CLOCKS_16BIT
-dnl # __BYTES_16BIT
 dnl # __CODE_BEFORE_16BIT
 dnl # __CODE_AFTER_16BIT
+dnl # __BYTES_16BIT
+dnl # __CLOCKS_16BIT
 dnl # __PRICE_16BIT = __CLOCKS_16BIT+4*__BYTES_16BIT
+dnl # __SUM_BYTES  += __BYTES_16BIT
+dnl # __SUM_CLOCKS += __CLOCKS_16BIT
+dnl # __SUM_PRICES += __PRICE_16BIT
 ifelse(1,0,{
 ;+++vvv+++
 ; $1 $2
@@ -3318,8 +3335,26 @@ __{}__{}define({__CODE_AFTER_16BIT},{
 __{}__{}    ld   $1{,} __HEX_HL($2)     ; 3:10      _TMP_INFO})}){}dnl
 __{}}){}dnl
 __{}define({__PRICE_16BIT},eval(__CLOCKS_16BIT+4*__BYTES_16BIT)){}dnl
+__{}ifelse(__IS_NUM(__SUM_BYTES), 0,{define({__SUM_BYTES},  __BYTES_16BIT)},{define({__SUM_BYTES}, eval(__SUM_BYTES + __BYTES_16BIT))}){}dnl
+__{}ifelse(__IS_NUM(__SUM_CLOCKS),0,{define({__SUM_CLOCKS},__CLOCKS_16BIT)},{define({__SUM_CLOCKS},eval(__SUM_CLOCKS+__CLOCKS_16BIT))}){}dnl
+__{}ifelse(__IS_NUM(__SUM_PRICES),0,{define({__SUM_PRICES}, __PRICE_16BIT)},{define({__SUM_PRICES},eval(__SUM_PRICES+ __PRICE_16BIT))}){}dnl
 }){}dnl
 dnl
+dnl
+dnl
+define({__RESET_BYTES_CLOCKS_PRICES},{dnl
+__{}define({__SUM_BYTES},0){}dnl
+__{}define({__SUM_CLOCKS},0){}dnl
+__{}define({__SUM_PRICES},0){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__SET_BYTES_CLOCKS_PRICES},{dnl
+__{}define({__SUM_BYTES},eval($1)){}dnl
+__{}define({__SUM_CLOCKS},eval($2)){}dnl
+__{}define({__SUM_PRICES},eval($3)){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -5428,6 +5463,120 @@ __{}__{}__{}    sbc   A{,} __HEX_H($2-($1))       ; 2:7       _TMP_INFO   carry:
 __{}}){}dnl
 })})dnl
 dnl
+dnl
+dnl
+dnl # Input:
+dnl #    __INFO
+dnl #    $1 ...hi16
+dnl #    $2 ...lo16
+dnl #    $3 ...head info
+dnl #    $4 ...+bytes
+dnl #    $5 ...+clocks
+dnl # Output:
+dnl #    print code
+dnl # Pollutes: 
+dnl #    AF,BC
+define({__MAKE_CODE_DLT_SET_CARRY},{dnl
+ifelse(dnl
+eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{dnl
+__{}define({_TMP_INFO},__INFO{   ..BC = $2}){}dnl
+__{}__LD_REG16(BC,$1,BC,$2){}dnl
+__{}define({__TMP_B},__BYTES_16BIT){}dnl
+__{}define({__TMP_C},__CLOCKS_16BIT){}dnl
+__{}__LD_REG16(BC,$2){}dnl
+__{}define({__TMP},[eval(__TMP_B+__BYTES_16BIT+12+$4):eval(__TMP_C+__CLOCKS_16BIT+48+$5)])
+__{}                        ;format({%-11s},__TMP)__INFO   {$3}{}dnl
+__{}__CODE_16BIT
+__{}    ld    A, L          ; 1:4       __INFO   ..HL < ..BC
+__{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO   ..HL < ..BC
+__{}    sbc   A, B          ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true{}define({_TMP_INFO},__INFO{   BC.. = $1}){}__LD_REG16(BC,$1,BC,$2){}__CODE_16BIT
+__{}    ld    A, E          ; 1:4       __INFO   DE.. < BC..
+__{}    sbc   A, C          ; 1:4       __INFO   DE.. - BC.. < 0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO   DE.. < BC..
+__{}    sbc   A, B          ; 1:4       __INFO   DE.. - BC.. < 0 --> carry if true
+__{}    rra                 ; 1:4       __INFO   --> sign  if true
+__{}    xor   D             ; 1:4       __INFO
+__{}    xor   B             ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO   --> carry if true},
+eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{1},{
+__{}define({__TMP},[ifelse(__IS_NUM($1),0,{eval(18+$4):eval(74+$5)},{ifelse(__HEX_HL(0x8000 & ($1)),{0x8000},{eval(18+$4):eval(74+$5)},{eval(17+$4):eval(70+$5)})})]){}dnl
+__{}                        ;format({%-11s},__TMP)__INFO   {$3}{}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}define({_TMP_INFO},__INFO{    ..BC = $2}){}dnl
+__{}__LD_REG16(BC,$2){}dnl
+__{}__CODE_16BIT
+__{}    ld    A, L          ; 1:4       __INFO   ..HL < ..BC
+__{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO   ..HL < ..BC
+__{}    sbc   A, B          ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true},
+__{}{
+__{}    ld    A, L          ; 1:4       __INFO   HL < $2
+__{}    sub  format({%-15s},low $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO   HL < $2
+__{}    sbc   A, format({%-11s},high $2); 2:7       __INFO   HL - $2 < 0 --> carry if true}){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}define({_TMP_INFO},__INFO{    BC.. = $1}){}dnl
+__{}__LD_REG16(BC,$1,BC,$2){}dnl
+__{}__CODE_16BIT
+__{}    ld    A, E          ; 1:4       __INFO   DE.. < BC..
+__{}    sbc   A, C          ; 1:4       __INFO   DE.. - BC.. < 0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO   DE.. < BC..
+__{}    sbc   A, B          ; 1:4       __INFO   DE.. - BC.. < 0 --> carry if true
+__{}    rra                 ; 1:4       __INFO   --> sign  if true
+__{}    xor   D             ; 1:4       __INFO
+__{}    xor   B             ; 1:4       __INFO},
+__{}{
+__{}    ld    A, E          ; 1:4       __INFO   DE < $1
+__{}    sbc   A, format({%-11s},low $1); 2:7       __INFO   DE - $1 < 0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO   DE < $1
+__{}    sbc   A, format({%-11s},high $1); 2:7       __INFO   DE - $1 < 0 --> carry if true
+__{}    rra                 ; 1:4       __INFO   --> sign  if true
+__{}    xor   D             ; 1:4       __INFO{}dnl
+__{}ifelse(__IS_NUM($1),0,{
+__{}  if ((($1) & 0x8000) = 0x8000)
+__{}    ccf                 ; 1:4       __INFO
+__{}  endif},
+__{}__HEX_HL(0x8000 & ($1)),0x8000,{
+__{}    ccf                 ; 1:4       __INFO})})
+__{}    add   A, A          ; 1:4       __INFO   --> carry if true},
+{
+__{}define({__TMP},[eval($4+16):eval($5+59)]){}dnl
+__{}                        ;format({%-11s},__TMP)__INFO   {$3}
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO
+__{}ifelse(__IS_NUM($1),1,{dnl
+__{}ifelse(eval((($1) & 0x8000) - 0x8000),0,{dnl
+__{}__{}    jr   nc, $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false},
+__{}__{}{dnl
+__{}__{}    jr    c, $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true})},
+__{}{dnl
+__{}  if ((($1) & 0x8000) = 0x8000)
+__{}    jr   nc, $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false
+__{}  else
+__{}    jr    c, $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true
+__{}  endif}){}dnl
+__{}ifelse(__IS_NUM($2),1,{
+__{}    ld    A, L          ; 1:4       __INFO   HL < __HEX_HL($2)
+__{}    sub  format({%-15s},low $2); 2:7       __INFO    L -   __HEX_L($2) < 0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO   HL < __HEX_HL($2)
+__{}    sbc   A, format({%-11s},high $2); 2:7       __INFO   H  - __HEX_H($2)   < 0 --> carry if true},
+__{}{
+__{}    ld    A, L          ; 1:4       __INFO   HL < $2
+__{}    sub  format({%-15s},low $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO   HL < $2
+__{}    sbc   A, format({%-11s},high $2); 2:7       __INFO   HL - $2 < 0 --> carry if true}){}dnl
+__{}ifelse(__IS_NUM($1),1,{
+__{}    ld    A, E          ; 1:4       __INFO   DE < __HEX_HL($1)
+__{}    sbc   A, __HEX_L($1)       ; 2:7       __INFO    E -   __HEX_L($1) < 0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO   DE < __HEX_HL($1)
+__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   D  - __HEX_H($1)   < 0 --> carry if true},
+__{}{
+__{}    ld    A, E          ; 1:4       __INFO   DE < $1
+__{}    sbc   A, format({%-11s},low $1); 2:7       __INFO   DE - $1 < 0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO   DE < $1
+__{}    sbc   A, format({%-11s},high $1); 2:7       __INFO   DE - $1 < 0 --> carry if true})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
