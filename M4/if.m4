@@ -1887,7 +1887,7 @@ dnl
 dnl
 dnl
 dnl D< if
-dnl ( d d -- )
+dnl ( d -- )
 define({_2DUP_PUSH2_DLT_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLT_IF},{2dup $1 $2 d< if},$@){}dnl
 }){}dnl
@@ -1901,17 +1901,6 @@ eval($#<2),1,{
 __{}  .error {$0}($@): Missing parameter!},
 eval($#>2),1,{
 __{}  .error {$0}($@): $# parameters found in macro!},
-_TYP_DOUBLE,{function},{dnl
-__{}ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-                       ;[10:67]     D< if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
-    pop  BC             ; 1:10      D< if   l2
-    pop  AF             ; 1:10      D< if   h2
-    call FCE_DLT        ; 3:17      D< if   carry if true
-    pop  HL             ; 1:10      D< if
-    pop  DE             ; 1:10      D< if
-    jp   nc, else{}IF_COUNT    ; 3:10      D< if},
 {dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl

@@ -5344,8 +5344,8 @@ dnl
 dnl
 dnl
 dnl # hi lo D=
-dnl # ( d1 -- flag )
-dnl # equal ( d1 == (hi<<16)+lo )
+dnl # ( d -- flag )
+dnl # equal ( d == (hi<<16)+lo )
 define({PUSH2_DEQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH2_DEQ},{$1 $2 d=},$@){}dnl
 }){}dnl
@@ -5356,78 +5356,138 @@ ifelse(eval($#<2),{1},{
 __{}  .error {$0}($@): Missing parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1):__IS_MEM_REF($2),{1:0},{
-__{}                       ;[19:96]     __INFO   ( d1 -- flag )  flag: d1 == ($1<<16)+__HEX_HL($2)
-__{}    ld   BC,format({%-12s},$2); 3:10      __INFO
+eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{
+__{}__SET_BYTES_CLOCKS_PRICES(13,70){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$1,{HL},0x0000,{BC},$2){}dnl
+__{}__LD_REG16({BC},$2){}dnl
+__{}                        ;format({%-11s},[__SUM_BYTES:eval(49+__CLOCKS_16BIT)/__SUM_CLOCKS])__INFO   ( d1 -- flag )  flag: d1 == $1*65536+$2{}__CODE_16BIT
 __{}    xor   A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    jr   nz, $+10       ; 2:7/12    __INFO
-__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO{}__LD_REG16({HL},$1,{HL},0x0000,{BC},$2)
+__{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
+__{}__CODE_16BIT
 __{}    sbc  HL, DE         ; 2:15      __INFO
 __{}    jr   nz, $+3        ; 2:7/12    __INFO
 __{}    dec   A             ; 1:4       __INFO   A = 0xFF
 __{}    ld    L, A          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO   HL = flag
 __{}    pop  DE             ; 1:10      __INFO},
-__IS_MEM_REF($1):__IS_MEM_REF($2),{0:1},{
-__{}                       ;[20:100]    __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL($1<<16)+$2
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld   BC,format({%-12s},$1); 3:10      __INFO
-__{}    xor   A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    jr   nz, $+10       ; 2:7/12    __INFO
-__{}    ld   HL,format({%-12s},$2); 3:16      __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}    jr   nz, $+3        ; 2:7/12    __INFO
-__{}    dec   A             ; 1:4       __INFO   A = 0xFF
-__{}    ld    L, A          ; 1:4       __INFO
-__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-eval(__IS_MEM_REF($1) | __IS_MEM_REF($2)),{1},{
-__{}                       ;[20:106]    __INFO   ( d1 -- flag )  flag: d1 == ($1<<16)+$2
-__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
-__{}    xor   A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    jr   nz, $+10       ; 2:7/12    __INFO
-__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}    jr   nz, $+3        ; 2:7/12    __INFO
-__{}    dec   A             ; 1:4       __INFO   A = 0xFF
-__{}    ld    L, A          ; 1:4       __INFO
-__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-__IS_NUM($1),{0},{
-__{}  .error {$0}($@): M4 does not know $1 parameter value!},
+__HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{dnl
+__{}__ASM_TOKEN_D0EQ},
 {dnl
-__{}ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0EQ},
+__{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == eval((__HEX_HL($1)<<16)+__HEX_HL($2))}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
+__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
+__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
+__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
+__{}                        ;[eval(16+__BYTES_16BIT):59/eval(80+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
+__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO
+__{}    xor   A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
+__{}__CODE_16BIT
+__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}    dec   A             ; 1:4       __INFO   A = 0xFF
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = flag
+__{}    pop  DE             ; 1:10      __INFO},{
+__{}_TMP_BEST_CODE
+__{}    sub  0x01           ; 2:7       __INFO
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = flag
+__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # hi lo D=
+dnl # ( d -- flag )
+dnl # equal ( d == (hi<<16)+lo )
+define({_2DUP_PUSH2_DEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DEQ},{2dup $1 $2 d=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{
+__{}__SET_BYTES_CLOCKS_PRICES(14,75){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$2,{HL},0x0000,{BC},$1){}dnl
+__{}__LD_REG16({BC},$1,{A},0x00){}dnl
+__{}                        ;format({%-11s},[__SUM_BYTES:eval(54+__CLOCKS_16BIT)/__SUM_CLOCKS])__INFO   ( d -- d flag )  flag: d1 == $1*65536+$2
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    xor   A             ; 1:4       __INFO{}__CODE_16BIT
+__{}    sbc  HL, BC         ; 2:15      __INFO{}__LD_REG16({HL},$2,{HL},0x0000,{BC},$1)
+__{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
+__{}__CODE_16BIT
+__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}    dec   A             ; 1:4       __INFO   A = 0xFF
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = flag},
+__HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{dnl
+__{}                        ;format({%-11s},[10:53])__INFO   ( d -- d flag )  flag: d == 0
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    or    E             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    sub   0x01          ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+{dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__DEQ_MAKE_BEST_CODE(__HEX_DE_HL($1,$2),6,37,0,0){}dnl
+__{}__DEQ_MAKE_HLDE_CODE(__HEX_DE_HL($1,$2),10){}dnl
+__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
+__{}ifelse(_TMP_ZERO,{1},{dnl
+__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl #    false
+__{}__{}define({_TMP_J2},eval(_TMP_NJ+20)){}dnl # false2
+__{}__{}define({_TMP_NJ},eval(_TMP_NJ+19)){}dnl # true
+__{}__{}define({_TMP_HLDE_CODE},{dnl
+__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}}_TMP_HLDE_CODE{
+__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = true
+__{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==__HEX_DE_HL($1,$2)})},
 __{}{dnl
-__{}__{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == eval((__HEX_HL($1)<<16)+__HEX_HL($2))}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
-__{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
-__{}__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
-__{}__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
-__{}__{}                        ;[eval(16+__BYTES_16BIT):59/eval(80+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
-__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}__{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
-__{}__{}__CODE_16BIT
-__{}__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
-__{}__{}    dec   A             ; 1:4       __INFO   A = 0xFF
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}__{}    pop  DE             ; 1:10      __INFO},{
-__{}__{}_TMP_BEST_CODE
-__{}__{}    sub  0x01           ; 2:7       __INFO
-__{}__{}    sbc   A, A          ; 1:4       __INFO
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}__{}    pop  DE             ; 1:10      __INFO})})})}){}dnl
+__{}__{}define({_TMP_J},eval(_TMP_J+15)){}dnl #   false
+__{}__{}define({_TMP_J2},eval(_TMP_NJ+27)){}dnl # false2
+__{}__{}define({_TMP_NJ},eval(_TMP_NJ+26)){}dnl # true
+__{}__{}define({_TMP_HLDE_CODE},{dnl
+__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}}_TMP_HLDE_CODE{
+__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO <-- error! 50% carry
+__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
+__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==__HEX_DE_HL($1,$2)})}){}dnl
+__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl #     price = 16*(clocks + 4*bytes)
+__{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
+__{}ifelse(_TMP,{0},{
+__{}__{}if 0
+__{}__{}; price: _TMP_BEST_P})
+__{}_TMP_BEST_CODE
+__{}    sub 0x01            ; 2:7       _TMP_INFO
+__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}    push HL             ; 1:11      _TMP_INFO
+__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==__HEX_DE_HL($1,$2){}dnl
+__{}ifelse(_TMP,{0},{
+__{}__{}else
+__{}__{}; price: _TMP_P
+__{}__{}_TMP_HLDE_CODE
+__{}__{}endif})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 dnl # hi lo D<>
-dnl # ( d1 -- flag )
+dnl # ( d -- flag )
 dnl # not equal ( d1 <> (hi<<16)+lo )
 define({PUSH2_DNE},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH2_DNE},{$1 $2 d<>},$@){}dnl
@@ -5435,67 +5495,48 @@ __{}__ADD_TOKEN({__TOKEN_PUSH2_DNE},{$1 $2 d<>},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_DNE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(eval($#<2),{},{
-__{}  .error {$0}(): Missing address parameter!},
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
 eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1):__IS_MEM_REF($2),{1:0},{
-__{}                       ;[19:94]     __INFO   ( d1 -- flag )  flag: d1 == ($1<<16)+__HEX_HL($2)
-__{}    ld   BC,format({%-12s},$2); 3:10      __INFO
+eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{
+__{}__SET_BYTES_CLOCKS_PRICES(13,68){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$1,{HL},0x0000,{BC},$2){}dnl
+__{}__LD_REG16({BC},$2){}dnl
+__{}                        ;format({%-11s},[__SUM_BYTES:eval(51+__CLOCKS_16BIT)/__SUM_CLOCKS])__INFO   ( d1 -- flag )  flag: d1 == $1*65536+$2{}__CODE_16BIT
+__{}    xor   A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO{}__LD_REG16({HL},$1,{HL},0x0000,{BC},$2)
+__{}    jr   nz, $+format({%-9s},eval(6+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
+__{}__CODE_16BIT
+__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = true
+__{}    pop  DE             ; 1:10      __INFO},
+__HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{dnl
+__{}__ASM_TOKEN_D0NE},
+{dnl
+__{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
+__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
+__{}define({_TMP_P},eval(61+78+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
+__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
+__{}                        ;[eval(16+__BYTES_16BIT):61/eval(78+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
+__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO
 __{}    xor   A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    jr   nz, $+9        ; 2:7/12    __INFO
-__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
+__{}    jr   nz, $+format({%-9s},eval(6+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
+__{}__CODE_16BIT
 __{}    sbc  HL, DE         ; 2:15      __INFO
 __{}    jr    z, $+5        ; 2:7/12    __INFO
 __{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-__IS_MEM_REF($1):__IS_MEM_REF($2),{0:1},{
-__{}                       ;[20:98]     __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL($1<<16)+$2
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld   BC,format({%-12s},$1); 3:10      __INFO
-__{}    xor   A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    jr   nz, $+9        ; 2:7/12    __INFO
-__{}    ld   HL,format({%-12s},$2); 3:16      __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}    jr    z, $+5        ; 2:7/12    __INFO
-__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-eval(__IS_MEM_REF($1) | __IS_MEM_REF($2)),{1},{
-__{}                       ;[20:104]    __INFO   ( d1 -- flag )  flag: d1 == ($1<<16)+$2
-__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
-__{}    xor   A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    jr   nz, $+9        ; 2:7/12    __INFO
-__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}    jr    z, $+5        ; 2:7/12    __INFO
-__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-__IS_NUM($1),{0},{
-__{}  .error {$0}($@): M4 does not know $1 parameter value!},
-{ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0NE},
-__{}__{}{define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
-__{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
-__{}__{}define({_TMP_P},eval(61+78+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
-__{}__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
-__{}__{}                        ;[eval(16+__BYTES_16BIT):61/eval(78+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
-__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}__{}    jr   nz, $+format({%-9s},eval(6+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
-__{}__{}__CODE_16BIT
-__{}__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
-__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = flag
-__{}__{}    pop  DE             ; 1:10      __INFO},{
-__{}__{}_TMP_BEST_CODE
-__{}__{}    add  0xFF           ; 2:7       __INFO
-__{}__{}    sbc   A, A          ; 1:4       __INFO
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}__{}    pop  DE             ; 1:10      __INFO})})})}){}dnl
+__{}    pop  DE             ; 1:10      __INFO},{
+__{}_TMP_BEST_CODE
+__{}    add  0xFF           ; 2:7       __INFO
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = flag
+__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -5630,7 +5671,7 @@ eval($#>2),1,{
 __{}  .error {$0}($@): $# parameters found in macro!},
 _TYP_DOUBLE,{function},{
 __{}ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes})){}dnl
-__{}__SET_BYTES_CLOCKS_PRICES(10,70,4*10+70){}dnl
+__{}__SET_BYTES_CLOCKS_PRICES(10,70){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
 __{}__LD_REG16({HL},$2){}dnl
@@ -5641,11 +5682,11 @@ __{}__LD_REG16({HL},$2){}dnl
     pop  AF             ; 1:10      __INFO   hi16(d)
     call FCE_DLT        ; 3:17      __INFO   carry if true
     pop  DE             ; 1:10      __INFO
-    sbc  HL, HL         ; 2:15      __INFO   set flag d2<d1},
+    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2},
 {dnl
 __{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
 __{}    pop  DE             ; 1:10      __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d1 < $1*65536+$2}){}dnl
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2}){}dnl
 }){}dnl
 dnl
 dnl
@@ -6724,6 +6765,61 @@ __{}    ex   DE, HL         ; 1:4       2dup $1 D<=
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D<=   set flag d1<=$1})},
 {
     .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. D<
+dnl # ( d -- d f )
+define({_2DUP_PUSHDOT_DLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSHDOT_DLT},{2dup $1. d<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSHDOT_DLT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+    .error {$0}(): Missing parameter!},
+$#,{1},{ifelse(__IS_MEM_REF($1),{1},{
+__{}                        ;[24:118]   __INFO    ( d1 -- d1 flag )
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO    DEHL<$1     $1 = ..BC
+__{}    ld    A, L          ; 1:4       __INFO    DEHL<$1
+__{}    sub   C             ; 1:4       __INFO    DEHL<$1 --> DEHL-..BC<0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO    DEHL<$1
+__{}    sbc   A, B          ; 1:4       __INFO    DEHL<$1 --> DEHL-..BC<0 --> carry if true
+__{}    ld   BC,format({%-12s},($1+2)); 4:20      __INFO    DEHL<$1     $1 = BC..
+__{}    ld    A, E          ; 1:4       __INFO    DEHL<$1
+__{}    sbc   A, C          ; 1:4       __INFO    DEHL<$1 --> DEHL-BC..<0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO    DEHL<$1
+__{}    sbc   A, B          ; 1:4       __INFO    DEHL<$1 --> DEHL-BC..<0 --> carry if true
+__{}    rra                 ; 1:4       __INFO    DEHL<$1                 --> sign  if true
+__{}    xor   D             ; 1:4       __INFO
+__{}    xor   B             ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO    DEHL<$1                 --> carry if true
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO    set flag d1<$1},
+__{}__IS_NUM($1),{0},{
+__{}   .error {$0}($@): M4 does not know $1 parameter value!},
+__{}{
+__{}                       ;[20:89]     __INFO   ( d1 -- d1 flag )   # default version
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO{}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
+__{}__{}    jr   nc, $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false},
+__{}__{}{
+__{}__{}    jr    c, $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true})
+__{}    ld    A, L          ; 1:4       __INFO   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sub   A, __HEX_L($1)       ; 2:7       __INFO   DEHL<$1 --> ...A-0x......format({%02X},eval((($1)>>0) & 0xFF))<0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   DEHL<$1 --> ..A.-0x....format({%02X},eval((($1)>>8) & 0xFF))..<0 --> carry if true
+__{}    ld    A, E          ; 1:4       __INFO   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sbc   A, __HEX_E($1)       ; 2:7       __INFO   DEHL<$1 --> .A..-0x..format({%02X},eval((($1)>>16) & 0xFF))....<0 --> carry if true
+__{}    ld    A, D          ; 1:4       __INFO   DEHL<$1 --> DEHL-__HEX_DEHL($1)<0 --> carry if true
+__{}    sbc   A, __HEX_D($1)       ; 2:7       __INFO   DEHL<$1 --> A...-0x{}format({%02X},eval((($1)>>24) & 0xFF))......<0 --> carry if true
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d1<$1})},
+{
+    .error {$0}($@): $# parameters found in macro!}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
