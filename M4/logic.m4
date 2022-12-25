@@ -5431,7 +5431,7 @@ __{}    jr   nz, $+3        ; 2:7/12    __INFO
 __{}    dec   A             ; 1:4       __INFO   A = 0xFF
 __{}    ld    L, A          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO   HL = flag},
-__HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{dnl
+__HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{
 __{}                        ;format({%-11s},[10:53])__INFO   ( d -- d flag )  flag: d == 0
 __{}    push DE             ; 1:11      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
@@ -5443,31 +5443,34 @@ __{}    sub   0x01          ; 2:7       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO},
 {dnl
 __{}define({_TMP_INFO},__INFO){}dnl
+__{}define({_TMP_STACK_INFO},{ }__INFO{   ( d -- d flag )  flag: d==$1*65536+$2}){}dnl
 __{}__DEQ_MAKE_BEST_CODE(__HEX_DE_HL($1,$2),6,37,0,0){}dnl
-__{}__DEQ_MAKE_HLDE_CODE(__HEX_DE_HL($1,$2),10){}dnl
-__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
+__{}__DEQ_MAKE_HLDE_CODE(__HEX_DE_HL($1,$2),9+{_TMP_ZERO}){}dnl
 __{}ifelse(_TMP_ZERO,{1},{dnl
-__{}__{}define({_TMP_J},eval(_TMP_J+8)){}dnl #    false
-__{}__{}define({_TMP_J2},eval(_TMP_NJ+20)){}dnl # false2
-__{}__{}define({_TMP_NJ},eval(_TMP_NJ+19)){}dnl # true
+__{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
+__{}__{}define({_TMP_T}, eval(_TMP_NJ+19)){}dnl  # true
+__{}__{}define({_TMP_F}, eval(_TMP_J+8)){}dnl    # false
+__{}__{}define({_TMP_F2},eval(_TMP_NJ+20)){}dnl # false2
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J/_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}                     ;[_TMP_B:_TMP_T/_TMP_F,_TMP_F2] _TMP_INFO   ( d -- d flag )
 __{}__{}__{}}_TMP_HLDE_CODE{
 __{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   A = 0xFF = true
 __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
-__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d1==__HEX_DE_HL($1,$2)})},
+__{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d==__HEX_DE_HL($1,$2)})},
 __{}{dnl
-__{}__{}define({_TMP_J},eval(_TMP_J+15)){}dnl #   false
-__{}__{}define({_TMP_J2},eval(_TMP_NJ+27)){}dnl # false2
-__{}__{}define({_TMP_NJ},eval(_TMP_NJ+26)){}dnl # true
+__{}__{}define({_TMP_B},eval(_TMP_B+6)){}dnl
+__{}__{}define({_TMP_T}, eval(_TMP_NJ+20)){}dnl  # true
+__{}__{}define({_TMP_F}, eval(_TMP_J+15)){}dnl   # false
+__{}__{}define({_TMP_F2},eval(_TMP_NJ+22)){}dnl # false2
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 flag )
+__{}__{}__{}                     ;[_TMP_B:_TMP_T/_TMP_F,_TMP_F2] _TMP_INFO   ( d -- d flag )
 __{}__{}__{}}_TMP_HLDE_CODE{
-__{}__{}__{}    jr   nz, $+3        ; 2:7/12    _TMP_INFO <-- error! 50% carry
-__{}__{}__{}    scf                 ; 1:4       _TMP_INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==__HEX_DE_HL($1,$2)})}){}dnl
-__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl #     price = 16*(clocks + 4*bytes)
+__{}__{}__{}    jr    z, $+4        ; 2:7/12    _TMP_INFO
+__{}__{}__{}    ld    L, 0x01       ; 2:7       _TMP_INFO
+__{}__{}__{}    dec   L             ; 1:4       _TMP_INFO
+__{}__{}__{}    ld    H, L          ; 1:4       _TMP_INFO   set flag d==__HEX_DE_HL($1,$2)})}){}dnl
+__{}define({_TMP_P},eval(8*_TMP_T+4*_TMP_F+4*_TMP_F2+64*_TMP_B)){}dnl #     price = 16*(clocks + 4*bytes)
 __{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
 __{}ifelse(_TMP,{0},{
 __{}__{}if 0
@@ -5476,7 +5479,7 @@ __{}_TMP_BEST_CODE
 __{}    sub 0x01            ; 2:7       _TMP_INFO
 __{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}    push HL             ; 1:11      _TMP_INFO
-__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d1==__HEX_DE_HL($1,$2){}dnl
+__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d==__HEX_DE_HL($1,$2){}dnl
 __{}ifelse(_TMP,{0},{
 __{}__{}else
 __{}__{}; price: _TMP_P
@@ -5536,6 +5539,77 @@ __{}    sbc   A, A          ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO   HL = flag
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # hi lo D=
+dnl # ( d -- flag )
+dnl # equal ( d == (hi<<16)+lo )
+define({_2DUP_PUSH2_DNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DNE},{2dup $1 $2 d<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DNE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{
+__{}__SET_BYTES_CLOCKS_PRICES(14,73){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({HL},$2,{HL},0x0000,{BC},$1){}dnl
+__{}__LD_REG16({BC},$1,{A},0x00){}dnl
+__{}format({%36s},;[__SUM_BYTES:eval(56+__CLOCKS_16BIT){,}__SUM_CLOCKS/eval(__SUM_CLOCKS-5)] )__INFO   ( d -- d flag )  flag: d1 == $1*65536+$2
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    xor   A             ; 1:4       __INFO{}__CODE_16BIT
+__{}    sbc  HL, BC         ; 2:15      __INFO{}__LD_REG16({HL},$2,{HL},0x0000,{BC},$1)
+__{}    jr   nz, $+format({%-9s},eval(6+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
+__{}__CODE_16BIT
+__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = true},
+__HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{
+__{}                        ;format({%-11s},[10:53])__INFO   ( d -- d flag )  flag: d == 0
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    or    E             ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+{dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({_TMP_STACK_INFO},{ }__INFO{   ( d -- d flag )  flag: d<>$1*65536+$2}){}dnl
+__{}__DEQ_MAKE_BEST_CODE(__HEX_DE_HL($1,$2),6,37,0,0){}dnl
+__{}__DEQ_MAKE_HLDE_CODE(__HEX_DE_HL($1,$2),9){}dnl
+__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
+__{}define({_TMP_T}, eval(_TMP_J+10)){}dnl   # true
+__{}define({_TMP_T2},eval(_TMP_NJ+17)){}dnl  # true2
+__{}define({_TMP_F}, eval(_TMP_NJ+12)){}dnl  # false
+__{}define({_TMP_HLDE_CODE},{dnl
+__{}__{}                     ;[_TMP_B:_TMP_T,_TMP_T2/_TMP_F] _TMP_INFO   ( d -- d flag )
+__{}__{}}_TMP_HLDE_CODE{
+__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag d<>__HEX_DE_HL($1,$2)}){}dnl
+__{}define({_TMP_P},eval(4*_TMP_T+4*_TMP_T2+8*_TMP_F+64*_TMP_B)){}dnl #     price = 16*(clocks + 4*bytes)
+__{}define({_TMP},eval(_TMP_BEST_P<=_TMP_P)){}dnl
+__{}ifelse(_TMP,{0},{
+__{}__{}if 0
+__{}__{}; price: _TMP_BEST_P})
+__{}_TMP_BEST_CODE
+__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
+__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}    push HL             ; 1:11      _TMP_INFO
+__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag d<>__HEX_DE_HL($1,$2){}dnl
+__{}ifelse(_TMP,{0},{
+__{}__{}else
+__{}__{}; price: _TMP_P
+__{}__{}_TMP_HLDE_CODE
+__{}__{}endif})}){}dnl
 }){}dnl
 dnl
 dnl
