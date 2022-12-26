@@ -5520,7 +5520,7 @@ __HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{dnl
 __{}__ASM_TOKEN_D0NE},
 {dnl
 __{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == $1}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
-__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
+__{}__DEQ_MAKE_BEST_CODE(__HEX_DE_HL($1,$2),6,29,0,0){}dnl
 __{}define({_TMP_P},eval(61+78+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
 __{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
 __{}                        ;[eval(16+__BYTES_16BIT):61/eval(78+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))

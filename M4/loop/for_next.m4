@@ -185,7 +185,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
-    jp    z, next{}$1    ; 3:10      __INFO   ( index -- )
+    jp    z, leave{}$1   ; 3:10      __INFO   ( index -- )
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),BC     ; 4:20      __INFO   save index}){}dnl
 dnl
@@ -208,14 +208,14 @@ define({__ASM_TOKEN_PUSH_QFOR},{dnl
 __{}define({__INFO},__COMPILE_INFO)
 
 __{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
-    jp    next{}$1       ; 3:10      __INFO   ( -- )
+    jp    leave{}$1      ; 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO},
 __{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{
     ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
-    jp    z, next{}$1    ; 3:10      __INFO
+    jp    z, leave{}$1   ; 3:10      __INFO
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),BC     ; 4:20      __INFO   save index},
 __{}__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
@@ -245,14 +245,14 @@ dnl
 define({__ASM_TOKEN_PUSH_QFOR_I},{dnl
 __{}define({__INFO},__COMPILE_INFO)
 __{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
-    jp    next{}$1       ; 3:10      __INFO   ( -- )
+    jp    leave{}$1      ; 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO},
 __{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{
     ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
-    jp    z, next{}$1    ; 3:10      __INFO
+    jp    z, leave{}$1   ; 3:10      __INFO
 for{}$1:                 ;           __INFO
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
