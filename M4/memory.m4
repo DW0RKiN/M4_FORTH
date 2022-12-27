@@ -467,6 +467,7 @@ __{}__{}$1:
 __{}__{}    dw $2})})}){}dnl
 dnl
 dnl
+dnl
 dnl # _DVARIABLE(name)             --> (name) = 0
 dnl # _DVARIABLE(name,100)         --> (name) = 100
 dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
