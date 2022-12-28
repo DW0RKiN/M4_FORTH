@@ -1737,6 +1737,12 @@ pushdot,,,
 
 dnl # PUSH
 push,,,
+
+            __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_DROP,              {__DELETE_LAST_TOKEN},
+            __LAST_TOKEN_NAME:$1,                                         __TOKEN_PUSHS:__TOKEN_DROP,                {__SET_TOKEN({__TOKEN_PUSHS},__LAST_TOKEN_INFO{ }$2,__DROP_1_PAR(__LAST_TOKEN_ARRAY))},
+
+            __LAST_TOKEN_NAME:$1,                                         __TOKEN_PUSH_STORE:__TOKEN_PUSHS,          {__SET_TOKEN({__TOKEN_DUP_PUSH_STORE},__LAST_TOKEN_INFO,__LAST_TOKEN_ARRAY){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,{}){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
+            
             __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_ADDLOOP,           {__SET_LOOP_STEP(LOOP_STACK,__LAST_TOKEN_ARRAY){}__SET_TOKEN({__TOKEN_PUSH_ADDLOOP},__LAST_TOKEN_INFO{ }$2,$3)},
 
             __LAST_TOKEN_NAME:__LAST_TOKEN_ITEMS:$1,                      __TOKEN_PUSHS:1:__TOKEN_EMIT,              {__SET_TOKEN({__TOKEN_PUSH_EMIT},__LAST_TOKEN_INFO{ }$2,__LAST_TOKEN_ARRAY)},

@@ -468,6 +468,50 @@ __{}__{}    dw $2})})}){}dnl
 dnl
 dnl
 dnl
+dnl # >r     ... r>                     --> name ! ... inline_variable(name)
+dnl # name ! ... variable name name @   --> name ! ... inline_variable(name)
+define({INLINE_VARIABLE},{dnl
+__{}define({__PSIZE_}$1,2)dnl
+__{}__ADD_TOKEN({__TOKEN_INLINE_VARIABLE},{inline_variable __REMOVE_COMMA($@)},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_INLINE_VARIABLE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing  parameter with variable name!},
+eval($#>2),{1},{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_REG($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__IS_INSTRUCTION($1),{1},{
+__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__IS_MEM_REF($2),1,{
+__{}  .error {$0}($@): The variable value is memory reference!},
+$#,{1},{dnl
+__{}define({__PSIZE_}$1,2)
+    push DE             ; 1:11      __INFO   ( -- $1 )
+    ex   DE, HL         ; 1:4       __INFO
+    db   0x21           ; 3:10      __INFO   ld HL, 0x0000
+format({%-24s},$1:);           __INFO
+    dw   0x0000         ;           __INFO},
+__IS_NUM($2),1,{dnl
+__{}define({__PSIZE_}$1,2)
+    push DE             ; 1:11      __INFO   ( -- $1 )
+    ex   DE, HL         ; 1:4       __INFO
+    db   0x21           ; 3:10      __INFO   ld HL, __HEX_HL($2)
+format({%-24s},$1:);           __INFO
+    dw   __HEX_HL($2)         ;           __INFO},
+{dnl
+__{}define({__PSIZE_}$1,2)
+    push DE             ; 1:11      __INFO   ( -- $1 )
+    ex   DE, HL         ; 1:4       __INFO
+    db   0x21           ; 3:10      __INFO   ld HL, $2
+format({%-24s},$1:);           __INFO
+    dw   format({%-15s},$2);           __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # _DVARIABLE(name)             --> (name) = 0
 dnl # _DVARIABLE(name,100)         --> (name) = 100
 dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
@@ -3592,31 +3636,31 @@ dnl # addr !
 dnl # ( x -- )
 dnl # store(addr) store 16-bit number at addr
 define({PUSH_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_STORE},{push_store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_STORE},{$1 !},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_STORE},{dnl
-__{}define({__INFO},{push_store}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_MEM_REF($1),{1},{
-__{}                        ;[10:58]    $1 !  push_store($1)   ( x -- )  addr=$1
-__{}    ld    C, L          ; 1:4       $1 !  push_store($1)
-__{}    ld    B, H          ; 1:4       $1 !  push_store($1)
-__{}    ld   HL, format({%-11s},$1); 3:16      $1 !  push_store($1)
-__{}    ld  (HL), C         ; 1:7       $1 !  push_store($1)
-__{}    inc  HL             ; 1:6       $1 !  push_store($1)
-__{}    ld  (HL), B         ; 1:7       $1 !  push_store($1)
-__{}    ex   DE, HL         ; 1:4       $1 !  push_store($1)
-__{}    pop  DE             ; 1:10      $1 !  push_store($1)},
+__{}                        ;[10:58]    __INFO   ( x -- )  addr=$1
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, H          ; 1:4       __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    ld  (HL), C         ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL), B         ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 {
-__{}                        ;[5:30]     $1 !  push_store($1)   ( x -- )  addr=$1
-__{}    ld   format({%-15s},($1){,} HL); 3:16      $1 !  push_store($1)
-__{}    ex   DE, HL         ; 1:4       $1 !  push_store($1)
-__{}    pop  DE             ; 1:10      $1 !  push_store($1)})}){}dnl
+__{}                        ;[5:30]     __INFO   ( x -- )  addr=$1
+__{}    ld   format({%-15s},($1){,} HL); 3:16      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
 dnl
 dnl
