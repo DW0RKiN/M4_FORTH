@@ -1713,9 +1713,14 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-{define({__INFO},__COMPILE_INFO)
+{define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( x -- )
 __{}    ld    A, L          ; 1:4       __INFO
-__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}    ld    A, L          ; 1:4       __INFO   ( x -- )
+__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
@@ -1732,9 +1737,14 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-{define({__INFO},__COMPILE_INFO)
+{define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( x -- )
 __{}    ld    A, H          ; 1:4       __INFO
-__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( x -- )
+__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
 dnl
