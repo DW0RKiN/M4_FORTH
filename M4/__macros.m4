@@ -1538,6 +1538,9 @@ c...,,,
 
 dnl # DUP
 dup,,,
+
+            __LAST_TOKEN_NAME:$1,{__TOKEN_DUP:__TOKEN_TYPE_I},            {__SET_TOKEN({__TOKEN_DUP_TYPE_I},__LAST_TOKEN_INFO{ }$2)},
+
             __LAST_TOKEN_NAME:$1,{__TOKEN_DUP:__TOKEN_DOT},               {__SET_TOKEN({__TOKEN_DUP_DOT},__LAST_TOKEN_INFO{ }$2)},
 
             __LAST_TOKEN_NAME-$1,{__TOKEN_DUP-__TOKEN_IF},                {__SET_TOKEN({__TOKEN_DUP_IF},__LAST_TOKEN_INFO{ }$2)},

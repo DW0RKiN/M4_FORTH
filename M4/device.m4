@@ -786,17 +786,33 @@ __{}define({__INFO},{cr}){}dnl
     rst   0x10          ; 1:11      cr      with {48K ROM} in, this will print char in A})dnl
 dnl
 dnl
+dnl # ( -- )
+dnl # .( char )
+define({PUSH_EMIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EMIT},{{$1} emit},{$@}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_EMIT},{dnl
+ifelse({$1},{},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write push({{','}}) emit},
+{define({__INFO},__COMPILE_INFO)
+    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})dnl
+}){}dnl
+dnl
+dnl
 dnl # ( 'a' -- )
 dnl # print char 'a'
 define({EMIT},{dnl
-__{}__ADD_TOKEN({__TOKEN_EMIT},{emit},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_EMIT},{emit},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},{emit},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_EMIT},{dnl
-__{}define({__INFO},{emit}){}dnl
-
-    ld    A, L          ; 1:4       emit    Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      emit    with {48K ROM} in, this will print char in A{}dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__ASM_DUP_EMIT{}dnl
 __{}__ASM_TOKEN_DROP})dnl
 dnl
 dnl
@@ -807,10 +823,9 @@ __{}__ADD_TOKEN({__TOKEN_DUP_EMIT},{dup emit},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_EMIT},{dnl
-__{}define({__INFO},{dup emit}){}dnl
-
-    ld    A, L          ; 1:4       dup emit    Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      dup emit    with {48K ROM} in, this will print char in A})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO    Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      __INFO    with {48K ROM} in, this will print char in A})dnl
 dnl
 dnl
 dnl # ( addr -- addr )
@@ -866,23 +881,6 @@ __{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you ha
 {define({__INFO},__COMPILE_INFO)
     ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl # ( -- )
-dnl # .( char )
-define({PUSH_EMIT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_EMIT},{{$1} emit},{$@}){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH_EMIT},{dnl
-ifelse({$1},{},{
-__{}  .error {$0}($@): Missing parameter!},
-eval($#>1),1,{
-__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write push({{','}}) emit},
-{define({__INFO},__COMPILE_INFO)
-    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})dnl
 }){}dnl
 dnl
 dnl
@@ -962,12 +960,12 @@ dnl
 dnl # ( addr -- )
 dnl # print inverted_msb-terminated string
 define({TYPE_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_TYPE_I},{type_i},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_TYPE_I},{type_i},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},{type_i},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TYPE_I},{dnl
-__{}define({__INFO},{type_i}){}dnl
-
+__{}define({__INFO},__COMPILE_INFO)
 __{}define({USE_TYPE_I},{})dnl
     call PRINT_TYPE_I   ; 3:17      type_i   ( addr -- )
     ex   DE, HL         ; 1:4       type_i
@@ -996,10 +994,9 @@ __{}__ADD_TOKEN({__TOKEN_DUP_TYPE_I},{dup type_i},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_TYPE_I},{dnl
-__{}define({__INFO},{dup type_i}){}dnl
-
+__{}define({__INFO},__COMPILE_INFO)
 __{}define({USE_TYPE_I},{})dnl
-    call PRINT_TYPE_I   ; 3:17      dup type_i   ( addr -- addr )})dnl
+    call PRINT_TYPE_I   ; 3:17      __INFO   ( addr -- addr )})dnl
 dnl
 dnl
 dnl
