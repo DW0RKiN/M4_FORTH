@@ -583,6 +583,46 @@ define({__BEFORE_X_TOKEN_ARRAY_4},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__G
 define({__BEFORE_X_TOKEN_ARRAY_5},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_5(eval(__COUNT_TOKEN-$1))})}){}dnl
 define({__BEFORE_X_TOKEN_ARRAY_6},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_6(eval(__COUNT_TOKEN-$1))})}){}dnl
 dnl
+define({__T_NAME},   {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{defn({__TOKEN[}eval(__COUNT_TOKEN-$1){].NAME})})}){}dnl
+define({__T_INFO},   {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{defn({__TOKEN[}eval(__COUNT_TOKEN-$1){].INFO})})}){}dnl
+define({__T_ITEMS},  {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__DIM(__SPOJ({__ALL},defn(__TOKEN[}eval(__COUNT_TOKEN-$1){].PARAM)))})}){}dnl
+define({__T_PARAM},  {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{defn({__TOKEN[}eval(__COUNT_TOKEN-$1){].PARAM})})}){}dnl
+define({__T_ARRAY},  {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_ARRAY_1},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_1(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_ARRAY_2},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_2(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_ARRAY_3},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_3(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_ARRAY_4},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_4(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_ARRAY_5},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_5(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_ARRAY_6},{ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>$1),1,{__GET_TOKEN_ARRAY_6(eval(__COUNT_TOKEN-$1))})}){}dnl
+define({__T_REVERSE_1},{__REVERSE_1_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_REVERSE_2},{__REVERSE_2_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_REVERSE_3},{__REVERSE_3_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_REVERSE_4},{__REVERSE_4_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_LAST_1_PAR},{__LAST_1_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_LAST_2_PAR},{__LAST_2_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_LAST_3_PAR},{__LAST_3_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_LAST_4_PAR},{__LAST_4_PAR(__GET_TOKEN_ARRAY(eval(__COUNT_TOKEN-$1)))}){}dnl
+define({__T_IS_PTR_REVERSE_1},{__IS_MEM_REF(__T_REVERSE_1($1))}){}dnl
+define({__T_IS_PTR_REVERSE_2},{__IS_MEM_REF(__T_REVERSE_2($1))}){}dnl
+define({__T_IS_PTR_REVERSE_3},{__IS_MEM_REF(__T_REVERSE_3($1))}){}dnl
+define({__T_IS_PTR_REVERSE_4},{__IS_MEM_REF(__T_REVERSE_4($1))}){}dnl
+define({__T_IS_PTR_REVERSE_2_1},    {eval(                                                                __IS_MEM_REF(__T_REVERSE_2($1))|__IS_MEM_REF(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_PTR_REVERSE_3_1},    {eval(                                __IS_MEM_REF(__T_REVERSE_3($1))|                                __IS_MEM_REF(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_PTR_REVERSE_4_1},    {eval(__IS_MEM_REF(__T_REVERSE_4($1))|                                                                __IS_MEM_REF(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_PTR_REVERSE_3_2},    {eval(                                __IS_MEM_REF(__T_REVERSE_3($1))|__IS_MEM_REF(__T_REVERSE_2($1))                                )}){}dnl
+define({__T_IS_PTR_REVERSE_4_2},    {eval(__IS_MEM_REF(__T_REVERSE_4($1))|                                __IS_MEM_REF(__T_REVERSE_2($1))                                )}){}dnl
+define({__T_IS_PTR_REVERSE_4_3},    {eval(__IS_MEM_REF(__T_REVERSE_4($1))|__IS_MEM_REF(__T_REVERSE_3($1))                                                                )}){}dnl
+define({__T_IS_PTR_REVERSE_3_2_1},  {eval(                                __IS_MEM_REF(__T_REVERSE_3($1))|__IS_MEM_REF(__T_REVERSE_2($1))|__IS_MEM_REF(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_PTR_REVERSE_4_3_2_1},{eval(__IS_MEM_REF(__T_REVERSE_4($1))|__IS_MEM_REF(__T_REVERSE_3($1))|__IS_MEM_REF(__T_REVERSE_2($1))|__IS_MEM_REF(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_NUM_REVERSE_1},{__IS_NUM(__T_REVERSE_1($1))}){}dnl
+define({__T_IS_NUM_REVERSE_2},{__IS_NUM(__T_REVERSE_2($1))}){}dnl
+define({__T_IS_NUM_REVERSE_3},{__IS_NUM(__T_REVERSE_3($1))}){}dnl
+define({__T_IS_NUM_REVERSE_4},{__IS_NUM(__T_REVERSE_4($1))}){}dnl
+define({__T_IS_NUM_REVERSE_2_1},    {eval(                                                        __IS_NUM(__T_REVERSE_2($1))&__IS_NUM(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_NUM_REVERSE_4_3},    {eval(__IS_NUM(__T_REVERSE_4($1))&__IS_NUM(__T_REVERSE_3($1))                                                        )}){}dnl
+define({__T_IS_NUM_REVERSE_3_2_1},  {eval(                            __IS_NUM(__T_REVERSE_3($1))&__IS_NUM(__T_REVERSE_2($1))&__IS_NUM(__T_REVERSE_1($1)))}){}dnl
+define({__T_IS_NUM_REVERSE_4_3_2_1},{eval(__IS_NUM(__T_REVERSE_4($1))&__IS_NUM(__T_REVERSE_3($1))&__IS_NUM(__T_REVERSE_2($1))&__IS_NUM(__T_REVERSE_1($1)))}){}dnl
+dnl
 define({__BEFORELAST_TOKEN_NAME},   {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>1),1,{defn({__TOKEN[}eval(__COUNT_TOKEN-1){].NAME})})}){}dnl
 define({__BEFORELAST_TOKEN_INFO},   {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>1),1,{defn({__TOKEN[}eval(__COUNT_TOKEN-1){].INFO})})}){}dnl
 define({__BEFORELAST_TOKEN_ITEMS},  {ifelse(__SAVE_EVAL(}__COUNT_TOKEN{>1),1,{__DIM(__SPOJ({__ALL},defn(__TOKEN[}eval(__COUNT_TOKEN-1){].PARAM)))})}){}dnl
@@ -1570,6 +1610,7 @@ d...,,,
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_2DROP},__LAST_TOKEN_INFO{ }$2)},
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_2DROP},        {__SET_TOKEN({__TOKEN_3DROP},__LAST_TOKEN_INFO{ }$2)},
 
+            __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_RAS},          {__SET_TOKEN({__TOKEN_DROP_RAS},__LAST_TOKEN_INFO{ }$2)},
 
             __LAST_TOKEN_NAME-$1,{__TOKEN_DROP-__TOKEN_DUP},          {__SET_TOKEN({__TOKEN_DROP_DUP},__LAST_TOKEN_INFO{ }$2)},
 

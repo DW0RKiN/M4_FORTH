@@ -4420,13 +4420,27 @@ define({RAS},{dnl
 __{}__ADD_TOKEN({__TOKEN_RAS},{ras},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_RAS},{
+define({__ASM_TOKEN_RAS},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO   ( -- return_address_stack )
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
     ex  (SP),HL         ; 1:19      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- r.a.s. )
+define({DROP_RAS},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_RAS},{drop ras},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_RAS},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    exx                 ; 1:4       __INFO   ( x -- return_address_stack )
+    push HL             ; 1:11      __INFO
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl

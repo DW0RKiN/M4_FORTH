@@ -4060,17 +4060,16 @@ dnl # 2dup !
 dnl # ( x addr -- x addr )
 dnl # store 16-bit number at addr
 define({_2DUP_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_STORE},{2dup_store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE},{2dup !},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_STORE},{dnl
-__{}define({__INFO},{2dup_store}){}dnl
-
-                        ;[4:26]     2dup ! _2dup_store   ( x addr -- x addr )
-    ld  (HL),E          ; 1:7       2dup ! _2dup_store
-    inc  HL             ; 1:6       2dup ! _2dup_store
-    ld  (HL),D          ; 1:7       2dup ! _2dup_store
-    dec  HL             ; 1:6       2dup ! _2dup_store}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[4:26]     __INFO   ( x addr -- x addr )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # 2dup ! 2+
