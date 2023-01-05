@@ -2003,7 +2003,7 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl # 2dup c!
-dnl # ( char addr -- char addr )
+dnl # ( x addr -- x addr )  (addr)=lo8(x)
 dnl # store 8-bit number at addr with save all
 define({_2DUP_CSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{2dup c!},$@){}dnl
@@ -2011,12 +2011,12 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{2dup c!},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_CSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[1:7]      __INFO   ( char addr -- char addr )
+                        ;[1:7]      __INFO   ( char addr -- char addr )  (addr)=lo8(x)
     ld  (HL),E          ; 1:7       __INFO}){}dnl
 dnl
 dnl
 dnl # over 8 rshift over c!
-dnl # ( x addr -- x addr )
+dnl # ( x addr -- x addr )  (addr)=hi8(x)
 dnl # store hi(x) at addr with save all
 define({_2DUP_HSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{2dup h!},$@){}dnl
@@ -2024,23 +2024,36 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{2dup h!},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_HSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[1:7]      __INFO   ( x addr -- x addr )
+                        ;[1:7]      __INFO   ( x addr -- x addr )  (addr)=hi8(x)
     ld  (HL),D          ; 1:7       __INFO}){}dnl
 dnl
 dnl
 dnl # 2dup c! 1+
-dnl # ( char addr -- char addr+1 )
+dnl # ( x addr -- x addr+1 )  (addr)=lo8(x)
 dnl # store 8-bit number at addr with save all and increment
 define({_2DUP_CSTORE_1ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE_1ADD},{2dup_cstore_1add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE_1ADD},{2dup c! 1+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_CSTORE_1ADD},{dnl
-__{}define({__INFO},{2dup_cstore_1add}){}dnl
-
-                        ;[2:13]     2dup c! 1+  _2dup_cstore_1add   ( char addr -- char addr+1 )
-    ld  (HL),E          ; 1:7       2dup c! 1+  _2dup_cstore_1add
-    inc  HL             ; 1:6       2dup c! 1+  _2dup_cstore_1add}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[2:13]     __INFO   ( x addr -- x addr+1 )  (addr)=lo8(x)
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO}){}dnl
+dnl
+dnl
+dnl # 2dup h! 1+
+dnl # ( x addr -- x addr+1 )  (addr)=hi8(x)
+dnl # store 8-bit number at addr with save all and increment
+define({_2DUP_HSTORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE_1ADD},{2dup h! 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_HSTORE_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[2:13]     __INFO   ( x addr -- x addr+1 )  (addr)=hi8(x)
+    ld  (HL),D          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # number over c!
@@ -4072,21 +4085,35 @@ __{}define({__INFO},__COMPILE_INFO)
     dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
+dnl # 2dup ! 1+
+dnl # ( x addr -- x addr+1 )
+dnl # store 16-bit number at addr
+define({_2DUP_STORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_1ADD},{2dup ! 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_STORE_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[3:20]     __INFO   ( x addr -- x addr+1 )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO}){}dnl
+dnl
+dnl
 dnl # 2dup ! 2+
 dnl # ( x addr -- x addr+2 )
 dnl # store 16-bit number at addr
 define({_2DUP_STORE_2ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_2ADD},{2dup_store_2add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_2ADD},{2dup ! 2+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_STORE_2ADD},{dnl
-__{}define({__INFO},{2dup_store_2add}){}dnl
-
-                        ;[4:26]     2dup ! 2+ _2dup_store_2add   ( x addr -- x addr+2 )
-    ld  (HL),E          ; 1:7       2dup ! 2+ _2dup_store_2add
-    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add
-    ld  (HL),D          ; 1:7       2dup ! 2+ _2dup_store_2add
-    inc  HL             ; 1:6       2dup ! 2+ _2dup_store_2add}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[4:26]     __INFO   ( x addr -- x addr+2 )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl
