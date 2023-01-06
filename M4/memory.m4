@@ -1860,45 +1860,69 @@ dnl # addr C!
 dnl # ( char -- char )
 dnl # store(addr) store 8-bit char at addr
 define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup_push_cstore_dup_push_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup $1 c! dup $2 c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
-__{}define({__INFO},{dup_push_cstore_dup_push_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing two address parameters!},
+__{}__{}.error {$0}(): Missing first address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
-__{}$#,{2},{
-    ld    A, L          ; 1:4       dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore
-    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore
-    ld   format({%-15s},($2){,} A); 3:13      dup $1 C! dup $2 C! dup push($1) cstore dup push($2) cstore},
+eval($#>2),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld    A, L          ; 1:4       __INFO{}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
 __{}{
-__{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
+__{}__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($2){,} A); 3:13      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # addr C!
 dnl # ( char -- char )
 dnl # store(addr) store 8-bit char at addr
 define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup_push_cstore_dup_push_cstore_dup_push_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup $1  c! dup $2 c! dup $3 c!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
-__{}define({__INFO},{dup_push_cstore_dup_push_cstore_dup_push_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing two address parameters!},
+__{}__{}.error {$0}(): Missing first address parameters!},
 $2,{},{
 __{}__{}.error {$0}(): Missing second address parameter!},
 $3,{},{
 __{}__{}.error {$0}(): Missing third address parameter!},
-__{}$#,{3},{
-    ld    A, L          ; 1:4       dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
-    ld   format({%-15s},($1){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
-    ld   format({%-15s},($2){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore
-    ld   format({%-15s},($3){,} A); 3:13      dup $1 C! dup $2 C! dup $3 C!   dup push($1) cstore dup push($2) cstore dup push($3) cstore},
+eval($#>3),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld    A, L          ; 1:4       __INFO{}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
 __{}{
-__{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
+__{}__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($2){,} A); 3:13      __INFO}){}dnl
+__{}ifelse(__IS_MEM_REF($3),1,{
+__{}__{}    ld   BC,format({%-12s},$3); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($3){,} A); 3:13      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
