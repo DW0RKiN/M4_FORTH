@@ -1658,8 +1658,8 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl # dup addr C!
-dnl # ( char -- char )
-dnl # store 8-bit char lo(tos) at addr
+dnl # ( x -- x )
+dnl # store 8-bit char lo8(tos) at addr
 define({DUP_PUSH_CSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE},{dup $1 c!},$@){}dnl
 }){}dnl
@@ -1669,19 +1669,20 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-{define({__INFO},__COMPILE_INFO){}dnl
+{define({__INFO},__COMPILE_INFO)
+__{}    ld    A, L          ; 1:4       __INFO   ( x -- x ){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
-__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
-__{}    ld    A, L          ; 1:4       __INFO
-__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
 __{}{
-__{}    ld    A, L          ; 1:4       __INFO
-__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})})}){}dnl
+__{}__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # dup 8 rshift addr C!
 dnl # ( x -- x )
-dnl # store hi(tos) at addr
+dnl # store hi8(tos) at addr
 define({DUP_PUSH_HSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HSTORE},{dup $1 h!},$@){}dnl
 }){}dnl
@@ -1691,14 +1692,15 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-{define({__INFO},__COMPILE_INFO){}dnl
+{define({__INFO},__COMPILE_INFO)
+__{}    ld    A, H          ; 1:4       __INFO   ( x -- x ){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
-__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
 __{}{
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO})})}){}dnl
+__{}__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # addr C!
@@ -1857,8 +1859,8 @@ dnl
 dnl
 dnl
 dnl # addr C!
-dnl # ( char -- char )
-dnl # store(addr) store 8-bit char at addr
+dnl # ( x -- x )
+dnl # store(addr) store 8-bit lo8(x) at addr
 define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup $1 c! dup $2 c!},$@){}dnl
 }){}dnl
@@ -1872,7 +1874,7 @@ __{}__{}.error {$0}(): Missing second address parameter!},
 eval($#>2),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 {
-__{}    ld    A, L          ; 1:4       __INFO{}dnl
+__{}    ld    A, L          ; 1:4       __INFO   ( x -- x )   A = lo8(x){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
 __{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}__{}    ld  (BC),A          ; 1:7       __INFO},
@@ -1887,9 +1889,42 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
+dnl
+dnl # addr h!
+dnl # ( x -- x )
+dnl # store(addr) store 8-bit hi8(x) at addr
+define({DUP_PUSH_HSTORE_DUP_PUSH_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE},{dup $1 h! dup $2 h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}__{}.error {$0}(): Missing first address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+eval($#>2),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld    A, H          ; 1:4       __INFO   ( x -- x )   A = hi8(x){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($2){,} A); 3:13      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # addr C!
-dnl # ( char -- char )
-dnl # store(addr) store 8-bit char at addr
+dnl # ( x -- x )
+dnl # store(addr) store 8-bit lo8(x) at addr
 define({DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE_DUP_PUSH_CSTORE},{dup $1  c! dup $2 c! dup $3 c!},$@){}dnl
 }){}dnl
@@ -1905,7 +1940,46 @@ __{}__{}.error {$0}(): Missing third address parameter!},
 eval($#>3),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 {
-__{}    ld    A, L          ; 1:4       __INFO{}dnl
+__{}    ld    A, L          ; 1:4       __INFO   ( x -- x )   A = lo8(x){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($1){,} A); 3:13      __INFO}){}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($2){,} A); 3:13      __INFO}){}dnl
+__{}ifelse(__IS_MEM_REF($3),1,{
+__{}__{}    ld   BC,format({%-12s},$3); 4:20      __INFO
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}{
+__{}__{}    ld   format({%-15s},($3){,} A); 3:13      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # addr h!
+dnl # ( x -- x )
+dnl # store(addr) store 8-bit hi8(x) at addr
+define({DUP_PUSH_HSTORE_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE},{dup $1  h! dup $2 h! dup $3 h!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE_DUP_PUSH_HSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}__{}.error {$0}(): Missing first address parameters!},
+$2,{},{
+__{}__{}.error {$0}(): Missing second address parameter!},
+$3,{},{
+__{}__{}.error {$0}(): Missing third address parameter!},
+eval($#>3),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+{
+__{}    ld    A, H          ; 1:4       __INFO   ( x -- x )   A = hi8(x){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
 __{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}__{}    ld  (BC),A          ; 1:7       __INFO},
