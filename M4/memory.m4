@@ -1632,7 +1632,8 @@ dnl # C!
 dnl # ( char addr -- )
 dnl # store 8-bit char at addr
 define({CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CSTORE},{c!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{c!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CSTORE},{dnl
@@ -1647,7 +1648,8 @@ dnl # swap 8 rshift swap C!
 dnl # ( x addr -- )
 dnl # store hi(x) at addr
 define({HSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_HSTORE},{h!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{h!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HSTORE},{dnl
@@ -3713,7 +3715,8 @@ dnl # !
 dnl # ( x addr -- )
 dnl # store 16-bit number at addr
 define({STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_STORE},{!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_1ADD},{!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STORE},{dnl
