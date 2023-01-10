@@ -2041,19 +2041,35 @@ dnl
 dnl
 dnl
 dnl
-dnl # tuck C!
-dnl # ( char addr -- addr )
-dnl # store 8-bit number at addr with save addr
+dnl # tuck c!
+dnl # ( x addr -- addr )
+dnl # store 8-bit lo8(x) at addr with save addr
 define({TUCK_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_TUCK_CSTORE},{tuck_cstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{tuck c!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NIP},{},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TUCK_CSTORE},{dnl
-__{}define({__INFO},{tuck_cstore}){}dnl
-
-                        ;[2:17]     tuck c!  tuck_cstore   ( char addr -- addr )
-    ld  (HL),E          ; 1:7       tuck c!  tuck_cstore
-    pop  DE             ; 1:10      tuck c!  tuck_cstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[2:17]     __INFO   ( x addr -- addr )  (addr) = lo8(x)
+    ld  (HL),E          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # tuck h!
+dnl # ( char addr -- addr )
+dnl # store 8-bit hi8(x) at addr with save addr
+define({TUCK_HSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{tuck h!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NIP},{},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TUCK_HSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[2:17]     __INFO   ( x addr -- addr )  (addr) = hi8(x)
+    ld  (HL),D          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # tuck c! 1+
@@ -3859,18 +3875,18 @@ dnl # tuck !
 dnl # ( x addr -- addr )
 dnl # store 16-bit number at addr
 define({TUCK_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_TUCK_STORE},{tuck_store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE},{tuck !},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NIP},{},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TUCK_STORE},{dnl
-__{}define({__INFO},{tuck_store}){}dnl
-
-                        ;[5:36]     tuck ! tuck_store   ( x addr -- addr )
-    ld  (HL),E          ; 1:7       tuck ! tuck_store
-    inc  HL             ; 1:6       tuck ! tuck_store
-    ld  (HL),D          ; 1:7       tuck ! tuck_store
-    dec  HL             ; 1:6       tuck ! tuck_store
-    pop  DE             ; 1:10      tuck ! tuck_store}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:36]     __INFO   ( x addr -- addr )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # tuck ! 2+
