@@ -2256,6 +2256,25 @@ __{}__{}    ld    H, B          ; 1:4       __INFO
 __{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl # 2over 3 pick ( d c b a -- d c b a d c b )
+define({_2OVER_3_PICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_3_PICK},{2over 3 pick},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2OVER_3_PICK},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}                       ;[ 8:65]     __INFO   ( d c b a -- d c b a d c b )
+__{}    pop  AF             ; 1:10      __INFO   d         . b a     AF = c
+__{}    pop  BC             ; 1:10      __INFO             . b a     BC = d
+__{}    push BC             ; 1:11      __INFO   d         . b a
+__{}    push AF             ; 1:11      __INFO   d c       . b a
+__{}    push DE             ; 1:11      __INFO   d c b     . b a
+__{}    push AF             ; 1:11      __INFO   d c b c   . b a
+__{}    ex  (SP),HL         ; 1:19      __INFO   d c b a   . b c
+__{}    push BC             ; 1:11      __INFO   d c b a d . b c
+__{}    ex   DE, HL         ; 1:4       __INFO   d c b a d . c b}){}dnl
+dnl
+dnl
 dnl # ( ...n3 n2 n1 n0 x -- ...n3 n2 n1 n0 nx )
 dnl # Remove x. Copy the nx to the top of the stack.
 define({PICK},{dnl

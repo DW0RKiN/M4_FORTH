@@ -307,21 +307,25 @@ dnl #    $1 = { }
 dnl #    $2 = par1
 dnl #    $3 = ...
 dnl # Output:
-dnl #    ignore empty par
+dnl #    ignore empty par or "__dtto"
 dnl #    par1{ }par2{ }par3
 define({__CONCATENATE_WITH},{dnl
 __{}ifelse(dnl
 __{}$#,1,,
+__{}$#:$2,2:__dtto,,
 __{}$#,2,$2,
 __{}$2,,{$0({$1},shift(shift($@)))},
+__{}$2,__dtto,{$0({$1},shift(shift($@)))},
 __{}{$2{}__CONCATENATE_WITH_LOOP({$1},shift(shift($@)))}){}dnl
 }){}dnl
 dnl
 define({__CONCATENATE_WITH_LOOP},{dnl
 __{}ifelse(dnl
-__{}$#{}$2,2,{},
+__{}$#{:}$2,2:,{},
+__{}$#{:}$2,2:__dtto,{},
 __{}$#,2,{{$1}$2},
 __{}$2,,{$0({$1},shift(shift($@)))},
+__{}$2,__dtto,{$0({$1},shift(shift($@)))},
 __{}{{$1}$2{}$0({$1},shift(shift($@)))}){}dnl
 }){}dnl
 dnl
@@ -1454,27 +1458,10 @@ _1,,,
             __T_NAME(0):$1,{__TOKEN_2SUB:__TOKEN_2ADD},       {__DELETE_LAST_TOKEN},
             __T_NAME(0):$1,{__TOKEN_2ADD:__TOKEN_2SUB},       {__DELETE_LAST_TOKEN},
 
-            __T_NAME(0):$1,{__TOKEN_2DUP_STORE:__TOKEN_1ADD}, {__SET_TOKEN({__TOKEN_2DUP_STORE_1ADD}, __T_INFO(0){ }$2)},
-            __T_NAME(0):$1,{__TOKEN_2DUP_CSTORE:__TOKEN_1ADD},{__SET_TOKEN({__TOKEN_2DUP_CSTORE_1ADD},__T_INFO(0){ }$2)},
-            __T_NAME(0):$1,{__TOKEN_2DUP_HSTORE:__TOKEN_1ADD},{__SET_TOKEN({__TOKEN_2DUP_HSTORE_1ADD},__T_INFO(0){ }$2)},
-
 dnl # _2...
 _2,,,
             __T_NAME(0)-$1,{__TOKEN_2DUP-__TOKEN_DADD},{__SET_TOKEN({__TOKEN_2DUP_DADD},__T_INFO(0){ }$2)},
             
-            __T_NAME(1):__T_NAME(0):$1,{__TOKEN_2DUP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP}, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,{__TOKEN_2DUP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP},     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,{__TOKEN_2DUP:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP},     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
-            __T_NAME(3):__T_NAME(2)=__T_LAST_1_PAR(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_OVER:__TOKEN_PUSH_RSHIFT=8:__TOKEN_OVER:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,
-                  {__SET_TOKEN_X(eval(__COUNT_TOKEN-3),{__TOKEN_2DUP_HSTORE},__CONCATENATE_WITH({ },__T_INFO(3),__T_INFO(2),__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
-            
-            __T_NAME(0)-$1,{__TOKEN_2DUP-__TOKEN_STORE}, {__SET_TOKEN({__TOKEN_2DUP_STORE},__T_INFO(0){ }$2)},
-            __T_NAME(0)-$1,{__TOKEN_2DUP-__TOKEN_CSTORE},{__SET_TOKEN({__TOKEN_2DUP_CSTORE},__T_INFO(0){ }$2)},
-            __T_NAME(0)-$1,{__TOKEN_2DUP-__TOKEN_HSTORE},{__SET_TOKEN({__TOKEN_2DUP_HSTORE},__T_INFO(0){ }$2)},
-            __T_NAME(2):__T_NAME(1)=__T_LAST_1_PAR(1):__T_NAME(0):$1,                         __TOKEN_OVER:__TOKEN_PUSH_RSHIFT=8:__TOKEN_OVER:__TOKEN_CSTORE,
-                  {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_2DUP_HSTORE},__T_INFO(2){ }__T_INFO(1){ }__T_INFO(0){ }$2){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
-            
-            __T_NAME(0):$1,{__TOKEN_2DUP_STORE:__TOKEN_2ADD},{__SET_TOKEN({__TOKEN_2DUP_STORE_2ADD},__T_INFO(0){ }$2)},
 
             __T_NAME(0)-$1,{__TOKEN_2DUP-__TOKEN_CEQ}, {__SET_TOKEN({__TOKEN_2DUP_CEQ}, __T_INFO(0){ }$2)},
             __T_NAME(0)-$1,{__TOKEN_2DUP-__TOKEN_CNE}, {__SET_TOKEN({__TOKEN_2DUP_CNE}, __T_INFO(0){ }$2)},
@@ -1513,9 +1500,7 @@ _2,,,
             __T_NAME(1):__T_NAME(0):$1,{__TOKEN_ROT_1ADD_NROT:__TOKEN_2OVER:__TOKEN_NIP},{define({__TEMP},__T_INFO(1){ }__T_INFO(0){ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP},__TEMP)},
             __T_NAME(1):__T_NAME(0):$1,{__TOKEN_ROT_1SUB_NROT:__TOKEN_2OVER:__TOKEN_NIP},{define({__TEMP},__T_INFO(1){ }__T_INFO(0){ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_ROT_1SUB_NROT_2OVER_NIP},__TEMP)},
             __T_NAME(0)-$1,{__TOKEN_2OVER-__TOKEN_NIP},{__SET_TOKEN({__TOKEN_2OVER_NIP},__T_INFO(0){ }$2)},
-
-            __T_NAME(0)-$1,{__TOKEN_2OVER-__TOKEN_3_PICK},{__SET_TOKEN({__TOKEN_2OVER},__T_INFO(0){ }$2)},
-
+            
             __T_NAME(0)-$1,{__TOKEN_2OVER-__TOKEN_DADD},{__SET_TOKEN({__TOKEN_2OVER_DADD},__T_INFO(0){ }$2)},
             __T_NAME(0)-$1,{__TOKEN_2OVER-__TOKEN_DSUB},{__SET_TOKEN({__TOKEN_2OVER_DSUB},__T_INFO(0){ }$2)},
 
@@ -1744,12 +1729,6 @@ o...,,,
             __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_HADD},{__SET_TOKEN({__TOKEN_OVER_SWAP_HADD},__T_INFO(0){ }$2)},
             __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_HSUB},{__SET_TOKEN({__TOKEN_OVER_SWAP_HSUB},__T_INFO(0){ }$2)},
             
-            __T_NAME(1):__T_NAME(0):$1,{__TOKEN_OVER_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP}, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE_1ADD}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_DROP},$2)},
-            __T_NAME(1):__T_NAME(0):$1,{__TOKEN_OVER_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP},     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_CSTORE},     __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_DROP},$2)},
-            __T_NAME(1):__T_NAME(0):$1,{__TOKEN_OVER_SWAP:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP},     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_HSTORE},     __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_DROP},$2)},
-            __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_STORE}, {__SET_TOKEN({__TOKEN_OVER_SWAP_STORE}, __T_INFO(0){ }$2)},
-            __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_CSTORE},{__SET_TOKEN({__TOKEN_OVER_SWAP_CSTORE},__T_INFO(0){ }$2)},
-            __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_HSTORE},{__SET_TOKEN({__TOKEN_OVER_SWAP_HSTORE},__T_INFO(0){ }$2)},
 
             __T_NAME(2):__T_NAME(1):__T_NAME(0):$1,
                __TOKEN_OVER:__TOKEN_CFETCH:__TOKEN_OVER:__TOKEN_CFETCH,
@@ -1787,9 +1766,6 @@ push,,,
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_DROP,                         {__DELETE_LAST_TOKEN},
             __T_NAME(0):$1,                              __TOKEN_PUSHS:__TOKEN_DROP,                           {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__DROP_1_PAR(__T_ARRAY(0)))},
 
-            __T_NAME(0):$1,                              __TOKEN_PUSH_STORE:__TOKEN_PUSHS,                     {__SET_TOKEN({__TOKEN_DUP_PUSH_STORE}, __T_INFO(0),__T_ARRAY(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,{}){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_CSTORE:__TOKEN_PUSHS,                    {__SET_TOKEN({__TOKEN_DUP_PUSH_CSTORE},__T_INFO(0),__T_ARRAY(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,{}){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_HSTORE:__TOKEN_PUSHS,                    {__SET_TOKEN({__TOKEN_DUP_PUSH_HSTORE},__T_INFO(0),__T_ARRAY(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,{}){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_ADDLOOP,                      {__SET_LOOP_STEP(LOOP_STACK,__T_ARRAY(0)){}__SET_TOKEN({__TOKEN_PUSH_ADDLOOP},__T_INFO(0){ }$2,$3)},
 
@@ -1807,12 +1783,6 @@ push,,,
             __T_NAME(0):$1:$#,                           __TOKEN_PUSH_FETCH_2ADD:__TOKEN_PUSHS:3,              {__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)},
             __T_NAME(0):$1:$#,                           __TOKEN_PUSH_FETCH_PUSH_ADD:__TOKEN_PUSHS:3,          {__SET_TOKEN({__TOKEN_PUSH_FETCH_PUSH_ADD_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)},
 
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_FETCH_1ADD_PUSH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_FETCH_2ADD_PUSH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_FETCH_PUSH_ADD_PUSH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_FETCH_PUSH_ADD_PUSH_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_FETCH_1ADD_PUSH:__TOKEN_STORE,                             {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_FETCH_2ADD_PUSH:__TOKEN_STORE,                             {__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_FETCH_PUSH_ADD_PUSH:__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_FETCH_PUSH_ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_CFETCH,                       {__SET_TOKEN({__TOKEN_PUSH_CFETCH},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):$1,                              __TOKEN_PUSH_CFETCH:__TOKEN_ADD,                      {__SET_TOKEN({__TOKEN_PUSH_CFETCH_ADD},__T_INFO(0){ }$2,__T_ARRAY(0))},
@@ -1827,19 +1797,6 @@ push,,,
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_K,                            {__SET_TOKEN({__TOKEN_PUSH_K},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
             
 
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_I:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_I_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_J:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_J_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_K:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_K_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0)-$1,                              __TOKEN_PUSH_I-__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_I_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                              __TOKEN_PUSH_J-__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_J_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                              __TOKEN_PUSH_K-__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_K_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_I:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_I_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_J:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_J_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_K:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_K_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0)-$1,                              __TOKEN_PUSH_I-__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_PUSH_I_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                              __TOKEN_PUSH_J-__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_PUSH_J_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                              __TOKEN_PUSH_K-__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_PUSH_K_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
 !!!prehodit do druheho pruchodu vcetne nasledujichich!!!,,,
             __T_NAME(0):$1:$#,                   {__TOKEN_I:__TOKEN_PUSHS:3},              {ifelse(__GET_LOOP_TYPE(LOOP_STACK),S,{__SET_TOKEN({__TOKEN_DUP_PUSH},__T_INFO(0){ }$2,$3)},{__SET_TOKEN({__TOKEN_I_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)})},
@@ -1863,11 +1820,6 @@ push,,,
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_OVER,                         {__SET_TOKEN({__TOKEN_PUSH_OVER},     __T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_2OVER,                        {__SET_TOKEN({__TOKEN_PUSH_2OVER},    __T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):$1,                              __TOKEN_PUSH_2OVER:__TOKEN_NIP,                       {__SET_TOKEN({__TOKEN_OVER_PUSH_SWAP},__T_INFO(0){ }$2,__T_ARRAY(0))},
-
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_OVER:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_OVER_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,                  __TOKEN_PUSH_OVER:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_OVER_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_OVER:__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_OVER_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0):$1,                              __TOKEN_PUSH_OVER:__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_PUSH_OVER_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_PUSH,                         {__SET_TOKEN({__TOKEN_PUSH2},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
 
@@ -1907,61 +1859,40 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COU
 
 
             __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0000:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_DUP},__T_INFO(0){ $2})},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(0__T_ITEMS(0)>1):$1, __TOKEN_PUSHS=0x0000:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_2(0))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(1__T_ITEMS(0)>11):$1, __TOKEN_PUSHS=0x0000:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_2(0))},
 
             __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0001:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_OVER},__T_INFO(0){ }$2)},
             __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0001:2:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSH_OVER},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(0__T_ITEMS(0)>2):$1, __TOKEN_PUSHS=0x0001:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_3(0))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(1__T_ITEMS(0)>12):$1, __TOKEN_PUSHS=0x0001:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_3(0))},
 
             __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0002:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_2_PICK},__T_INFO(0){ }$2)},
             __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0002:2:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_OVER_PUSH_SWAP},__T_INFO(0){ }$2,__DROP_1_PAR(__T_ARRAY(0)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0002:3:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},__T_INFO(1){ }$2,__T_REVERSE_1(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_SWAP},__T_INFO(0),__DROP_1_PAR(__T_ARRAY(1)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(0__T_ITEMS(0)>3):$1, __TOKEN_PUSHS=0x0002:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_4(0))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0002:3:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},__dtto,__T_REVERSE_1(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_SWAP},__T_INFO(1){ }$2,__DROP_1_PAR(__T_ARRAY(1)))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(1__T_ITEMS(0)>13):$1, __TOKEN_PUSHS=0x0002:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_4(0))},
 
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_3_PICK},__T_INFO(0){ }$2)},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:2:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},__T_INFO(1){ }$2,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_2_PICK,__T_INFO(0))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:3:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},__T_INFO(1){ }$2,__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_OVER_PUSH_SWAP,__T_INFO(0),__DROP_2_PAR(__T_ARRAY(1)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:4:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},__T_INFO(1){ }$2,__T_REVERSE_3(1),__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_DUP_PUSH_SWAP,__T_INFO(0),__DROP_3_PAR(__T_ARRAY(1)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(0__T_ITEMS(0)>4):$1, __TOKEN_PUSHS=0x0003:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_5(0))},
+            __T_NAME(0):$1,                                            __TOKEN_2OVER:__TOKEN_3_PICK,             {__SET_TOKEN({__TOKEN_2OVER_3_PICK},__T_INFO(0){ }$2)},
+__T_NAME(1):__T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_2OVER:__TOKEN_PUSHS=0x0003:1:__TOKEN_PICK, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_3_PICK},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
             
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:2:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},__T_INFO(1){ }$2,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_PICK,__T_INFO(0))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:3:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},__T_INFO(1){ }$2,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_2_PICK,__T_INFO(0))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:4:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},__T_INFO(1){ }$2,__T_REVERSE_3(1),__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_OVER_PUSH_SWAP,__T_INFO(0),__DROP_3_PAR(__T_ARRAY(1)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:5:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},__T_INFO(1){ }$2,__T_REVERSE_4(1),__T_REVERSE_3(1),__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_DUP_PUSH_SWAP,__T_INFO(0),__DROP_4_PAR(__T_ARRAY(1)))},
-            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(0__T_ITEMS(0)>5):$1, __TOKEN_PUSHS=0x0004:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_6(0))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_3_PICK},__T_INFO(0){ }$2)},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:2:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},          __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_2_PICK,__T_INFO(1){ }$2)},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:3:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},          __dtto,__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_OVER_PUSH_SWAP,__T_INFO(1){ }$2,__DROP_2_PAR(__T_ARRAY(1)))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0003:4:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},__dtto,__T_REVERSE_3(1),__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_DUP_PUSH_SWAP,__T_INFO(1){ }$2,__DROP_3_PAR(__T_ARRAY(1)))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(1__T_ITEMS(0)>14):$1, __TOKEN_PUSHS=0x0003:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_5(0))},
+            
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:2:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},                    __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_PICK,__T_INFO(1){ }$2)},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:3:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},          __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_2_PICK,__T_INFO(1){ }$2)},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:4:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},          __dtto,__T_REVERSE_3(1),__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_OVER_PUSH_SWAP,__T_INFO(1){ }$2,__DROP_3_PAR(__T_ARRAY(1)))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1,          __TOKEN_PUSHS=0x0004:5:__TOKEN_PICK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},__dtto,__T_REVERSE_4(1),__T_REVERSE_3(1),__T_REVERSE_2(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_DUP_PUSH_SWAP,__T_INFO(1){ }$2,__DROP_4_PAR(__T_ARRAY(1)))},
+            __T_NAME(0)=__T_HEX_REVERSE_1(0):eval(1__T_ITEMS(0)>15):$1, __TOKEN_PUSHS=0x0004:1:__TOKEN_PICK, {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ $2},__DROP_1_PAR(__T_ARRAY(0)),__T_REVERSE_6(0))},
             
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_PICK,           {__SET_TOKEN({__TOKEN_PUSH_PICK},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):$1:$#,                                __TOKEN_PUSH_PICK:__TOKEN_PUSHS:3,      {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
             __T_NAME(0)-$1,                                   __TOKEN_PUSH_PICK_PUSH-__TOKEN_SWAP,    {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH_SWAP},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            
-            __T_NAME(1):__T_NAME(0):$1,          {__TOKEN_PUSH_PICK_PUSH_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP}, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_PICK_PUSH_SWAP_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,          {__TOKEN_PUSH_PICK_PUSH_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP},     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_PICK_PUSH_SWAP_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0)-$1,                      {__TOKEN_PUSH_PICK_PUSH_SWAP-__TOKEN_STORE},                         {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH_SWAP_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                      {__TOKEN_PUSH_PICK_PUSH_SWAP-__TOKEN_CSTORE},                        {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH_SWAP_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            
+                        
             __T_NAME(0)-$1,                                   __TOKEN_2_PICK-__TOKEN_PUSH,            {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH},__T_INFO(0){ }$2,2,shift(shift($@)))},
             __T_NAME(0)-$1,                                   __TOKEN_3_PICK-__TOKEN_PUSH,            {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH},__T_INFO(0){ }$2,3,shift(shift($@)))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_R_FETCH,        {__SET_TOKEN({__TOKEN_PUSH_R_FETCH},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            
-            __T_NAME(1):__T_NAME(0):$1,          {__TOKEN_PUSH_R_FETCH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP}, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_R_FETCH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):$1,          {__TOKEN_PUSH_R_FETCH:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP},     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_R_FETCH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0)-$1,                      {__TOKEN_PUSH_R_FETCH-__TOKEN_STORE},                         {__SET_TOKEN({__TOKEN_PUSH_R_FETCH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                      {__TOKEN_PUSH_R_FETCH-__TOKEN_CSTORE},                        {__SET_TOKEN({__TOKEN_PUSH_R_FETCH_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-
-            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
-            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
-            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_STORE,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_CSTORE,                        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_HSTORE,                        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
-
-            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__SET_TOKEN({__TOKEN_DROP},__T_INFO(1))},
-            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__SET_TOKEN({__TOKEN_DROP},__T_INFO(1))},
-            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__SET_TOKEN({__TOKEN_DROP},__T_INFO(1))},
-            __T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_PUSHS:1:__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_STORE}, __T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_PUSHS:1:__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_PUSH_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_PUSHS:1:__TOKEN_HSTORE,                        {__SET_TOKEN({__TOKEN_PUSH_HSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
             
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_2STORE,         {__SET_TOKEN({__TOKEN_PUSH_2STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_2FETCH,         {__SET_TOKEN({__TOKEN_PUSH_2FETCH},__T_INFO(0){ }$2,__T_ARRAY(0))},
@@ -1977,7 +1908,10 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COU
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_COMMA,          {__SET_TOKEN({__TOKEN_PUSH_COMMA},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_LSHIFT,         {__SET_TOKEN({__TOKEN_PUSH_LSHIFT},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_RSHIFT,         {__SET_TOKEN({__TOKEN_PUSH_RSHIFT},__T_INFO(0){ }$2,__T_ARRAY(0))},
+                        
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,          __TOKEN_OVER:__TOKEN_PUSHS:1:__TOKEN_SWAP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_OVER_PUSH_SWAP},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_SWAP,           {__SET_TOKEN({__TOKEN_PUSH_SWAP},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            
             __T_NAME(0)-$1,                                   __TOKEN_PUSH_COMMA-__TOKEN_PUSHS_COMMA, {__SET_TOKEN({__TOKEN_PUSHS_COMMA},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
             __T_NAME(0)-$1,                                   __TOKEN_PUSHS_COMMA-__TOKEN_PUSHS_COMMA,{__SET_TOKEN({__TOKEN_PUSHS_COMMA},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
 
@@ -2035,23 +1969,14 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COU
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_2OVER,           {__SET_TOKEN({__TOKEN_PUSH2_2OVER},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0)-$1,                                   __TOKEN_PUSH2_2OVER-__TOKEN_NIP,         {__SET_TOKEN({__TOKEN_PUSH2_2OVER_NIP},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0)-$1,                                   __TOKEN_PUSH2_2OVER_NIP-__TOKEN_2STORE,  {__SET_TOKEN({__TOKEN_PUSH2_2OVER_NIP_2STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-
-            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_PUSHS:2:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH2_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_PUSHS:2:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH2_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_PUSHS:2:__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH2_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_PUSHS:2:__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_PUSH2_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
            
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_2FETCH,          {__SET_TOKEN({__TOKEN_PUSH2_2FETCH},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_ADDSTORE,        {__SET_TOKEN({__TOKEN_PUSH2_ADDSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_RPICK,           {__SET_TOKEN({__TOKEN_PUSH2_RPICK},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                                   __TOKEN_PUSH2_RPICK-__TOKEN_STORE,       {__SET_TOKEN({__TOKEN_PUSH2_RPICK_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-            __T_NAME(0)-$1,                                   __TOKEN_PUSH2_RPICK-__TOKEN_CSTORE,      {__SET_TOKEN({__TOKEN_PUSH2_RPICK_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
-
 
             __T_NAME(0)-$1,                 dodelat{__TOKEN_PUSH2_FETCH-__TOKEN_1ADD},     {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0)-$1,                 dodelat{__TOKEN_PUSH2_FETCH_1ADD-__TOKEN_PUSH},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)},
-            __T_NAME(0)-$1,                 dodelat{__TOKEN_PUSH2_FETCH_1ADD_PUSH-__TOKEN_STORE},{__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_CFETCH,          {__SET_TOKEN({__TOKEN_PUSH2_CFETCH},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
@@ -2242,31 +2167,6 @@ __T_NAME(0):eval(__T_ITEMS(0)>2):$1:__T_IS_NUM_1_2_3(0),   __TOKEN_PUSHS:1:__TOK
 __T_NAME(0):$1,                                                        __TOKEN_PUSHS:__TOKEN_PUSH,      {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__T_ARRAY(0),$3)},
 __T_NAME(0):$1,                                                        __TOKEN_PUSHS:__TOKEN_PUSHS,     {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
 
-__T_NAME(1):eval(0{}__T_ITEMS(1)>2):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, 
-{__SET_TOKEN({__TOKEN_PUSH2_STORE},__REMOVE_COMMA(__T_LAST_2_PAR(1)){ }$2,__T_LAST_2_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSHS},__T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
-Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
-
-__T_NAME(1):eval(0{}__T_ITEMS(1)>2):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_2DROP, 
-{__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSHS},__T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
-Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
-
-__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_1ADD:__TOKEN_2DROP, 
-{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
-Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
-
-__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_2ADD:__TOKEN_2DROP, 
-{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
-Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
-
-__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_1SUB:__TOKEN_2DROP, 
-{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
-Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
-
-__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_2SUB:__TOKEN_2DROP, 
-{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
-Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
-
-__T_NAME(0):eval(__T_ITEMS(0)>2):$1,             __TOKEN_PUSHS:1:__TOKEN_STORE,                         {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_STORE},__REMOVE_COMMA(__T_LAST_2_PAR(1)){ }$2,__T_LAST_2_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS, __T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
 
 __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_2STORE,   {__SET_TOKEN({__TOKEN_PUSH_2STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
 __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:2:__TOKEN_2STORE,   {__SET_TOKEN({__TOKEN_PUSH2_2STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
@@ -2486,19 +2386,167 @@ r...,,,
 dnl # (C/H))STORE
 s...,,,
 
-            __T_NAME(1):__T_NAME(0):$1, __TOKEN_TUCK:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE},  __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},$2)},
-            __T_NAME(1):__T_NAME(0):$1, __TOKEN_TUCK:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_CSTORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},$2)},
-            __T_NAME(1):__T_NAME(0):$1, __TOKEN_TUCK:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_HSTORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},$2)},
+"dup num !",,,
+            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_STORE,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_CSTORE,                        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_HSTORE,                        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
 
-            __T_NAME(0):$1,             __TOKEN_TUCK:__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_2DUP_STORE},  __CONCATENATE_WITH({ },__T_INFO(0),$2)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP},$2)},
-            __T_NAME(0):$1,             __TOKEN_TUCK:__TOKEN_CSTORE,                        {__SET_TOKEN({__TOKEN_2DUP_CSTORE}, __CONCATENATE_WITH({ },__T_INFO(0),$2)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP},$2)},
-            __T_NAME(0):$1,             __TOKEN_TUCK:__TOKEN_HSTORE,                        {__SET_TOKEN({__TOKEN_2DUP_HSTORE}, __CONCATENATE_WITH({ },__T_INFO(0),$2)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP},$2)},
+"num !" --> "dup num !" + "drop",,,
+            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                  {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__SET_TOKEN({__TOKEN_DROP},__dtto)},
+            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_PUSHS:1:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                      {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__SET_TOKEN({__TOKEN_DROP},__dtto)},
+            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_PUSHS:1:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,                      {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__SET_TOKEN({__TOKEN_DROP},__dtto)},
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:1:__TOKEN_STORE,                                          {__SET_TOKEN({__TOKEN_PUSH_STORE}, __T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:1:__TOKEN_CSTORE,                                         {__SET_TOKEN({__TOKEN_PUSH_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:1:__TOKEN_HSTORE,                                         {__SET_TOKEN({__TOKEN_PUSH_HSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+"num num !",,,
+            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_PUSHS:2:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                  {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH2_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,__TOKEN_PUSHS:2:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                      {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH2_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:2:__TOKEN_STORE,                                          {__SET_TOKEN({__TOKEN_PUSH2_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:2:__TOKEN_CSTORE,                                         {__SET_TOKEN({__TOKEN_PUSH2_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_R_FETCH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,             {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_R_FETCH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_R_FETCH:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_R_FETCH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_R_FETCH:__TOKEN_STORE,                                     {__SET_TOKEN({__TOKEN_PUSH_R_FETCH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_R_FETCH:__TOKEN_CSTORE,                                    {__SET_TOKEN({__TOKEN_PUSH_R_FETCH_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            __T_NAME(2):__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_STORE,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_CSTORE,                        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,             __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_HSTORE,                        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_PICK_PUSH_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,      {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_PICK_PUSH_SWAP_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_PICK_PUSH_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,          {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_PICK_PUSH_SWAP_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_PICK_PUSH_SWAP:__TOKEN_STORE,                              {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH_SWAP_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_PICK_PUSH_SWAP:__TOKEN_CSTORE,                             {__SET_TOKEN({__TOKEN_PUSH_PICK_PUSH_SWAP_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_OVER:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_OVER_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_OVER:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                    {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_OVER_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_OVER:__TOKEN_STORE,                                        {__SET_TOKEN({__TOKEN_PUSH_OVER_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_OVER:__TOKEN_CSTORE,                                       {__SET_TOKEN({__TOKEN_PUSH_OVER_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_I:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_I_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_J:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_J_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_K:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_K_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_I:__TOKEN_STORE,                                           {__SET_TOKEN({__TOKEN_PUSH_I_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_J:__TOKEN_STORE,                                           {__SET_TOKEN({__TOKEN_PUSH_J_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_K:__TOKEN_STORE,                                           {__SET_TOKEN({__TOKEN_PUSH_K_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
             
-            __T_NAME(1):__T_NAME(0):$1, __TOKEN_2DUP_STORE:__TOKEN_NIP:__TOKEN_2ADD,        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_TUCK_STORE_2ADD},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0)-$1, __TOKEN_TUCK_STORE-__TOKEN_2ADD,                                {__SET_TOKEN({__TOKEN_TUCK_STORE_2ADD},__T_INFO(0){ }$2)},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_I:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                       {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_I_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_J:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                       {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_J_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_K:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                       {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_K_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_I:__TOKEN_CSTORE,                                          {__SET_TOKEN({__TOKEN_PUSH_I_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_J:__TOKEN_CSTORE,                                          {__SET_TOKEN({__TOKEN_PUSH_J_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_K:__TOKEN_CSTORE,                                          {__SET_TOKEN({__TOKEN_PUSH_K_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(0):$1,                         __TOKEN_PUSH2_RPICK:__TOKEN_STORE,                                      {__SET_TOKEN({__TOKEN_PUSH2_RPICK_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH2_RPICK:__TOKEN_CSTORE,                                     {__SET_TOKEN({__TOKEN_PUSH2_RPICK_CSTORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                 dodelat{__TOKEN_PUSH2_FETCH_1ADD_PUSH-__TOKEN_STORE},                           {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_FETCH_1ADD_PUSH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_FETCH_2ADD_PUSH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_PUSH_FETCH_PUSH_ADD_PUSH:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_FETCH_PUSH_ADD_PUSH_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_FETCH_1ADD_PUSH:__TOKEN_STORE,                             {__SET_TOKEN({__TOKEN_PUSH_FETCH_1ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_FETCH_2ADD_PUSH:__TOKEN_STORE,                             {__SET_TOKEN({__TOKEN_PUSH_FETCH_2ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_FETCH_PUSH_ADD_PUSH:__TOKEN_STORE,                         {__SET_TOKEN({__TOKEN_PUSH_FETCH_PUSH_ADD_PUSH_STORE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_2DUP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_2DUP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_2DUP:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_HSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+
+            __T_NAME(3):__T_NAME(2)=__T_LAST_1_PAR(2):__T_NAME(1):__T_NAME(0):$1, 
+               __TOKEN_OVER:__TOKEN_PUSH_RSHIFT=8:__TOKEN_OVER:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,
+                  {__SET_TOKEN_X(eval(__COUNT_TOKEN-3),{__TOKEN_2DUP_HSTORE},__CONCATENATE_WITH({ },__T_INFO(3),__T_INFO(2),__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            
+            __T_NAME(0):$1,                         __TOKEN_2DUP:__TOKEN_STORE,                                             {__SET_TOKEN({__TOKEN_2DUP_STORE},__T_INFO(0){ }$2)},
+            __T_NAME(0):$1,                         __TOKEN_2DUP:__TOKEN_CSTORE,                                            {__SET_TOKEN({__TOKEN_2DUP_CSTORE},__T_INFO(0){ }$2)},
+            __T_NAME(0):$1,                         __TOKEN_2DUP:__TOKEN_HSTORE,                                            {__SET_TOKEN({__TOKEN_2DUP_HSTORE},__T_INFO(0){ }$2)},
+
+            __T_NAME(2):__T_NAME(1)=__T_LAST_1_PAR(1):__T_NAME(0):$1,                         
+               __TOKEN_OVER:__TOKEN_PUSH_RSHIFT=8:__TOKEN_OVER:__TOKEN_CSTORE,
+                  {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_2DUP_HSTORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+            
+            __T_NAME(0):$1,                         __TOKEN_2DUP_STORE:__TOKEN_2ADD,                                        {__SET_TOKEN({__TOKEN_2DUP_STORE_2ADD},__T_INFO(0){ }$2)},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_OVER_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE_1ADD}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_DROP},$2)},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_OVER_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                    {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_CSTORE},     __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_DROP},$2)},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_OVER_SWAP:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,                    {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_HSTORE},     __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_DROP},$2)},
+            __T_NAME(0):$1,                         __TOKEN_OVER_SWAP:__TOKEN_STORE,                                        {__SET_TOKEN({__TOKEN_OVER_SWAP_STORE}, __T_INFO(0){ }$2)},
+            __T_NAME(0):$1,                         __TOKEN_OVER_SWAP:__TOKEN_CSTORE,                                       {__SET_TOKEN({__TOKEN_OVER_SWAP_CSTORE},__T_INFO(0){ }$2)},
+            __T_NAME(0):$1,                         __TOKEN_OVER_SWAP:__TOKEN_HSTORE,                                       {__SET_TOKEN({__TOKEN_OVER_SWAP_HSTORE},__T_INFO(0){ }$2)},
+
+__T_NAME(1):eval(0{}__T_ITEMS(1)>2):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, 
+{__SET_TOKEN({__TOKEN_PUSH2_STORE},__REMOVE_COMMA(__T_LAST_2_PAR(1)){ }$2,__T_LAST_2_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSHS},__T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
+Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
+
+__T_NAME(1):eval(0{}__T_ITEMS(1)>2):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_2DROP, 
+{__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSHS},__T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
+Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
+
+__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_1ADD:__TOKEN_2DROP, 
+{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
+Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
+
+__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_2ADD:__TOKEN_2DROP, 
+{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
+Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
+
+__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_1SUB:__TOKEN_2DROP, 
+{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
+Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
+
+__T_NAME(2):eval(0{}__T_ITEMS(2)>2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_PUSHS:1:__TOKEN_PUSH2_STORE:__TOKEN_2SUB:__TOKEN_2DROP, 
+{__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSHS},__T_INFO(2){ 2drop},__DROP_2_PAR(__T_ARRAY(2))){}__DELETE_LAST_TOKEN},
+Teoreticky by to slo prohodit pokud by prvni pushs nenacitalo neco z adresy kam pak bude store ukladat...,,,
+
+            __T_NAME(0):eval(__T_ITEMS(0)>2):$1,    __TOKEN_PUSHS:1:__TOKEN_STORE,                                          {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_STORE},__REMOVE_COMMA(__T_LAST_2_PAR(1)){ }$2,__T_LAST_2_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS, __T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
+
+            __T_NAME(0):$1,                         __TOKEN_PUSH_STORE:__TOKEN_PUSHS,                                       {__SET_TOKEN({__TOKEN_DUP_PUSH_STORE}, __T_INFO(0),__T_ARRAY(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,__dtto){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_CSTORE:__TOKEN_PUSHS,                                      {__SET_TOKEN({__TOKEN_DUP_PUSH_CSTORE},__T_INFO(0),__T_ARRAY(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,__dtto){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
+            __T_NAME(0):$1,                         __TOKEN_PUSH_HSTORE:__TOKEN_PUSHS,                                      {__SET_TOKEN({__TOKEN_DUP_PUSH_HSTORE},__T_INFO(0),__T_ARRAY(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DROP,__dtto){}__INC_TOKEN_COUNT{}__SET_TOKEN($1,$2,shift(shift($@)))},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_2DUP_STORE:__TOKEN_NIP:__TOKEN_1ADD,                            {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE_1ADD},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+
+num 2pick !,,,
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_OVER_PUSH_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,           {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_OVER_PUSH_SWAP_STORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+num 2pick c!,,,
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_OVER_PUSH_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,               {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_OVER_PUSH_SWAP_CSTORE},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
+
+num 3pick !,,,
+            __T_NAME(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_2_PICK:__TOKEN_PUSH_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSH_3_PICK_STORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+
+num 3pick c!,,,
+            __T_NAME(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_2_PICK:__TOKEN_PUSH_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSH_3_PICK_CSTORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+
+num 4pick !,,,
+            __T_NAME(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_3_PICK:__TOKEN_PUSH_SWAP:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP, {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSH_4_PICK_STORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+
+num 4pick c!,,,
+            __T_NAME(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_3_PICK:__TOKEN_PUSH_SWAP:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,     {__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_PUSH_4_PICK_CSTORE},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN{}__DELETE_LAST_TOKEN},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_TUCK:__TOKEN_2DUP_STORE_1ADD:__TOKEN_2DROP,                     {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_STORE},  __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_TUCK:__TOKEN_2DUP_CSTORE:__TOKEN_2DROP,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_CSTORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_TUCK:__TOKEN_2DUP_HSTORE:__TOKEN_2DROP,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_HSTORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+
+            __T_NAME(0):$1,                         __TOKEN_TUCK:__TOKEN_STORE,                                             {__SET_TOKEN({__TOKEN_2DUP_STORE},  __CONCATENATE_WITH({ },__T_INFO(0),$2)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+            __T_NAME(0):$1,                         __TOKEN_TUCK:__TOKEN_CSTORE,                                            {__SET_TOKEN({__TOKEN_2DUP_CSTORE}, __CONCATENATE_WITH({ },__T_INFO(0),$2)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+            __T_NAME(0):$1,                         __TOKEN_TUCK:__TOKEN_HSTORE,                                            {__SET_TOKEN({__TOKEN_2DUP_HSTORE}, __CONCATENATE_WITH({ },__T_INFO(0),$2)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP},__dtto)},
+
+            __T_NAME(1):__T_NAME(0):$1,             __TOKEN_2DUP_STORE:__TOKEN_NIP:__TOKEN_2ADD,                            {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_TUCK_STORE_2ADD},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                         __TOKEN_TUCK_STORE:__TOKEN_2ADD,                                        {__SET_TOKEN({__TOKEN_TUCK_STORE_2ADD},__T_INFO(0){ }$2)},
             
 dnl # S...
 s...,,,
+
+            __T_NAME(0):$1,{__TOKEN_2DUP_STORE:__TOKEN_1ADD}, {__SET_TOKEN({__TOKEN_2DUP_STORE_1ADD}, __T_INFO(0){ }$2)},
+            __T_NAME(0):$1,{__TOKEN_2DUP_CSTORE:__TOKEN_1ADD},{__SET_TOKEN({__TOKEN_2DUP_CSTORE_1ADD},__T_INFO(0){ }$2)},
+            __T_NAME(0):$1,{__TOKEN_2DUP_HSTORE:__TOKEN_1ADD},{__SET_TOKEN({__TOKEN_2DUP_HSTORE_1ADD},__T_INFO(0){ }$2)},
 
             __T_NAME(0)-$1, {__TOKEN_SPACE-__TOKEN_DOT},  {__SET_TOKEN({__TOKEN_SPACE_DOT},__T_INFO(0){ }$2)},
             __T_NAME(0)-$1, {__TOKEN_SPACE-__TOKEN_UDOT}, {__SET_TOKEN({__TOKEN_SPACE_UDOT},__T_INFO(0){ }$2)},
@@ -2563,11 +2611,11 @@ define({__ASM_TOKEN_NOPE},{}){}dnl
 dnl
 dnl
 dnl
-define({__SET_CHECK_TOKEN}, {__SET_TOKEN($1,__T_INFO(1){ }__T_INFO(0),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
+define({__SET_CHECK_TOKEN}, {__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
 dnl
-define({__SET_CHECK_TOKEN2},{__SET_TOKEN($1,__T_INFO(1){ }__T_INFO(0),__T_ARRAY(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
+define({__SET_CHECK_TOKEN2},{__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
 dnl
-define({__SET_CHECK_TOKEN3},{__SET_TOKEN($1,__T_INFO(1){ }__T_INFO(0),__T_ARRAY(1),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
+define({__SET_CHECK_TOKEN3},{__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(1),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
 dnl
 dnl
 dnl
@@ -2654,8 +2702,8 @@ __T_NAME(1):__T_NAME(0):__T_ITEMS(0),  __TOKEN_DROP_DUP:__TOKEN_PUSHS:1,       {
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DROP_DUP:__TOKEN_PUSH_SWAP,     {__SET_CHECK_TOKEN(__TOKEN_DROP_PUSH_OVER)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_OVER:__TOKEN_PUSHS,             {__SET_CHECK_TOKEN(__TOKEN_OVER_PUSHS)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_OVER:__TOKEN_PUSH_ADD,          {__SET_CHECK_TOKEN(__TOKEN_OVER_PUSH_ADD)},
-__T_NAME(1):__T_NAME(0),                     __TOKEN_OVER:__TOKEN_PUSH_SWAP,         {__SET_CHECK_TOKEN(__TOKEN_OVER_PUSH_SWAP)},
-__T_NAME(1):__T_NAME(0),                     __TOKEN_OVER_PUSH_SWAP:__TOKEN_CSTORE,  {__SET_CHECK_TOKEN2(__TOKEN_OVER_PUSH_SWAP_CSTORE)},
+udelano nahore __T_NAME(1):__T_NAME(0),                     __TOKEN_OVER:__TOKEN_PUSH_SWAP,         {__SET_CHECK_TOKEN(__TOKEN_OVER_PUSH_SWAP)},
+udelano nahore a c! je ted "2dup c! 2drop" __T_NAME(1):__T_NAME(0),                     __TOKEN_OVER_PUSH_SWAP:__TOKEN_CSTORE,  {__SET_CHECK_TOKEN2(__TOKEN_OVER_PUSH_SWAP_CSTORE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSHS,              {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSHS)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2DROP:__TOKEN_PUSHS,            {__SET_CHECK_TOKEN(__TOKEN_2DROP_PUSHS)},
@@ -2700,6 +2748,7 @@ dnl
 define({__COMPILE_REC},{ifelse(eval(__COUNT_TOKEN>__TOKEN_I),{1},{dnl
 __{}define({__TOKEN_I},eval(__TOKEN_I+1))dnl
 __{}define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))dnl
+__{}ifelse(__COMPILE_INFO,{__dtto},{define({__COMPILE_INFO},__GET_TOKEN_INFO(eval(__TOKEN_I-1)))})dnl
 __{}ifelse(__GET_TOKEN_PARAM(__TOKEN_I),{()},{dnl
 __{}__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1))},
 __{}{dnl

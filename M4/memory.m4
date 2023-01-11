@@ -1381,7 +1381,7 @@ dnl # --------------------------------------------------------------------------
 dnl ## Memory access 8bit
 dnl # -------------------------------------------------------------------------------------
 dnl
-dnl # C@
+dnl # c@
 dnl # ( addr -- char )
 dnl # fetch 8-bit char from addr
 define({CFETCH},{dnl
@@ -1389,10 +1389,22 @@ __{}__ADD_TOKEN({__TOKEN_CFETCH},{c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH},{dnl
-__{}define({__INFO},{cfetch}){}dnl
-
-    ld    L,(HL)        ; 1:7       C@ cfetch   ( addr -- char )
-    ld    H, 0x00       ; 2:7       C@ cfetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    L,(HL)        ; 1:7       __INFO   ( addr -- char )
+    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+dnl
+dnl
+dnl # h@
+dnl # ( addr -- char )
+dnl # fetch 8-bit char from addr
+define({HFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_HFETCH},{h@},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HFETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    H,(HL)        ; 1:7       __INFO   ( addr -- char )
+    ld    L, 0x00       ; 2:7       __INFO}){}dnl
 dnl
 dnl
 dnl # dup C@
@@ -1633,7 +1645,7 @@ dnl # ( char addr -- )
 dnl # store 8-bit char at addr
 define({CSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{c!},$@){}dnl
-__{}__ADD_TOKEN({__TOKEN_2DROP},{},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CSTORE},{dnl
@@ -1649,7 +1661,7 @@ dnl # ( x addr -- )
 dnl # store hi(x) at addr
 define({HSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{h!},$@){}dnl
-__{}__ADD_TOKEN({__TOKEN_2DROP},{},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HSTORE},{dnl
@@ -3732,7 +3744,7 @@ dnl # ( x addr -- )
 dnl # store 16-bit number at addr
 define({STORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_STORE_1ADD},{!},$@){}dnl
-__{}__ADD_TOKEN({__TOKEN_2DROP},{},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STORE},{dnl
