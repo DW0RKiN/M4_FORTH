@@ -513,13 +513,43 @@ dnl
 dnl
 dnl
 dnl
+dnl # __PARAM_X()            --> ""
+dnl # __PARAM_X(0)           --> ""
+dnl # __PARAM_X(-1,p1,p2,p3) --> ""
+dnl # __PARAM_X( x,p1,p2,p3) --> ""
+dnl # __PARAM_X( 0,p1,p2,p3) --> ""
+dnl # __PARAM_X( 1,p1,p2,p3) --> "p1"
+dnl # __PARAM_X( 2,p1,p2,p3) --> "p2"
+dnl # __PARAM_X( 3,p1,p2,p3) --> "p3"
+dnl # __PARAM_X( 4,p1,p2,p3) --> ""
+define({__PARAM_X},{dnl
+__{}ifelse(dnl
+__{}__IS_NUM($1),0,{},
+__{}{ifelse(dnl
+__{}__{}eval($1),{1},{$2},
+__{}__{}eval($1>1),{1},{$0(eval($1-1),shift(shift($@)))}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
-define({__PARAM_X},{ifelse(eval($1>1),{1},{$0(eval($1-1),shift(shift($@)))},{$2})}){}dnl
 dnl
 dnl
-dnl
-define({__REVERSE_X_PAR},    {ifelse($1,0,{},eval($#<$1+1),1,{},$#,eval($1+1),{$2},{$0($1,shift(shift($@)))})}){}dnl
-dnl define({__REVERSE_X_PAR},    {__REMOVE_COMMA($@)}){}dnl
+dnl # __REVERSE_X_PAR()            --> ""
+dnl # __REVERSE_X_PAR(0)           --> ""
+dnl # __REVERSE_X_PAR(-1,p3,p2,p1) --> ""
+dnl # __REVERSE_X_PAR( x,p3,p2,p1) --> ""
+dnl # __REVERSE_X_PAR( 0,p3,p2,p1) --> ""
+dnl # __REVERSE_X_PAR( 1,p3,p2,p1) --> "p1"
+dnl # __REVERSE_X_PAR( 2,p3,p2,p1) --> "p2"
+dnl # __REVERSE_X_PAR( 3,p3,p2,p1) --> "p3"
+dnl # __REVERSE_X_PAR( 4,p3,p2,p1) --> ""
+define({__REVERSE_X_PAR},{dnl
+__{}ifelse(dnl
+__{}__IS_NUM($1),0,{},
+__{}{ifelse(eval($#<$1+1),1,{},
+__{}__{}$#,eval($1+1),{$2},
+__{}__{}eval($1>0),{1},{$0($1,shift(shift($@)))}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
