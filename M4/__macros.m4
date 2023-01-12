@@ -513,6 +513,16 @@ dnl
 dnl
 dnl
 dnl
+dnl
+define({__PARAM_X},{ifelse(eval($1>1),{1},{$0(eval($1-1),shift(shift($@)))},{$2})}){}dnl
+dnl
+dnl
+dnl
+define({__REVERSE_X_PAR},    {ifelse($1,0,{},eval($#<$1+1),1,{},$#,eval($1+1),{$2},{$0($1,shift(shift($@)))})}){}dnl
+dnl define({__REVERSE_X_PAR},    {__REMOVE_COMMA($@)}){}dnl
+dnl
+dnl
+dnl
 dnl # Fail with multiline...
 define({__BOXING},{regexp({$@},{^\(.\)\(.*\)\(.\)$},{\1\1\2\3\3})}){}dnl
 define({__UNBOXING},$*){}dnl
@@ -559,11 +569,6 @@ define({__REVERSE_6_PAR},    {ifelse($#,0,{},$#,1,  {},$#,2,  {},$#,3,  {},$#,4,
 define({__REVERSE_7_PAR},    {ifelse(eval($#<7),1,{},$#,7,{$1},{$0(shift($@))})}){}dnl
 define({__REVERSE_8_PAR},    {ifelse(eval($#<8),1,{},$#,8,{$1},{$0(shift($@))})}){}dnl
 define({__REVERSE_9_PAR},    {ifelse(eval($#<9),1,{},$#,9,{$1},{$0(shift($@))})}){}dnl
-dnl
-define({__REVERSE_X_PAR},    {ifelse($1,0,{},eval($#<$1+1),1,{},$#,eval($1+1),{$2},{$0($1,shift(shift($@)))})}){}dnl
-dnl define({__REVERSE_X_PAR},    {__REMOVE_COMMA($@)}){}dnl
-dnl
-dnl
 dnl
 dnl
 dnl

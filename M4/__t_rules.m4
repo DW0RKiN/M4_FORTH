@@ -3,8 +3,6 @@ dnl
 dnl
 dnl
 dnl
-define({__PARAM_X},{ifelse(eval($1>1),{1},{$0(eval($1-1),shift(shift($@)))},{$2})}){}dnl
-dnl
 define({__SET_TOKEN_NAME},{dnl
 __{}define({__TOKEN[$1].NAME},{$2})}){}dnl
 dnl
