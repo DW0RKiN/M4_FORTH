@@ -1969,7 +1969,7 @@ __{}define({__INFO},__COMPILE_INFO)
     push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
-dnl # 2over D+ 2swap 
+dnl # 2over D+ 2swap
 dnl # ( d2 d1 -- d3 d2 )  d3 = d2+d1
 dnl # ( h2 l2 h1 l1 -- h3 l3 h2 l2 )
 define({_2OVER_DADD_2SWAP},{dnl
@@ -1979,7 +1979,7 @@ dnl
 define({__ASM_TOKEN_2OVER_DADD_2SWAP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[10:97]    __INFO   ( d2 d1 -- d3 d2 )  d3 = d2 + d1
-    pop  BC             ; 1:10      __INFO   h2 -- . h1 l1   BC = l2                        
+    pop  BC             ; 1:10      __INFO   h2 -- . h1 l1   BC = l2
     add  HL, BC         ; 1:11      __INFO   h2 -- . h1 l3   BC = l2
     ex  (SP),HL         ; 1:19      __INFO   l3 -- . h1 h2   BC = l2
     ex   DE, HL         ; 1:4       __INFO   l3 -- . h2 h1   BC = l2
@@ -2003,7 +2003,7 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[10:97]    __INFO   ( d2 d1 -- d1 d3 )  d3 = d2 + d1
     ld    C, L          ; 1:4       __INFO
     ld    B, H          ; 1:4       __INFO   h2 l2 . h1 l1   BC = l1
-    pop  HL             ; 1:10      __INFO   h2 -- . h1 l2   BC = l1                        
+    pop  HL             ; 1:10      __INFO   h2 -- . h1 l2   BC = l1
     add  HL, BC         ; 1:11      __INFO   h2 -- . h1 l3   BC = l1
     ex  (SP),HL         ; 1:19      __INFO   l3 -- . h1 h2   BC = l1
     adc  HL, DE         ; 2:15      __INFO   l3 -- . h1 h3   BC = l1
