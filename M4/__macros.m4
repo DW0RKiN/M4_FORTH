@@ -1628,14 +1628,14 @@ dnl # _TMP_R1 .. _TMP_R4  Rx = D,E,H,L
 dnl # _TMP_N1 .. _TMP_N4  Nx = 1..256
 dnl # reg with 0(=256) must by last
 dnl # reg with 255 must by last
-dnl # 
+dnl #
 dnl # Out:
 dnl # __DEQ_CODE
 dnl # __DEQ_CLOCKS_TRUE
 dnl # __DEQ_CLOCKS_FAIL
 dnl # __DEQ_CLOCKS
 dnl # __DEQ_BYTES
-dnl # 
+dnl #
 dnl # zero flag if const == DEHL
 dnl # A = 0 if const == DEHL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
@@ -3556,7 +3556,7 @@ dnl #    $4 ...+bytes
 dnl #    $5 ...+clocks
 dnl # Output:
 dnl #    print code
-dnl # Pollutes: 
+dnl # Pollutes:
 dnl #    AF,BC
 define({__MAKE_CODE_DLT_SET_CARRY},{dnl
 ifelse(dnl
@@ -3672,7 +3672,7 @@ dnl #    $4 ...+bytes
 dnl #    $5 ...+clocks
 dnl # Output:
 dnl #    print code
-dnl # Pollutes: 
+dnl # Pollutes:
 dnl #    AF,BC
 define({__MAKE_CODE_DEQ_SET_ZERO},{dnl
 
