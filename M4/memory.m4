@@ -2582,6 +2582,8 @@ __{}    pop  DE             ; 1:10      __INFO},
 __{}__HEX_HL($1),{0x0003},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[10:60]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
+__{}__IS_NUM($2),1,{define({__TMP},__LD_R_NUM(__INFO,A,$2))
+__{}__{}                        ;[eval(7+__BYTES):eval(47+__CLOCKS)]     __INFO  ( addr -- ) u=$1, char=$2{}__CODE},
 __{}{
 __{}__{}                        ;[9:54]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
@@ -2595,6 +2597,8 @@ __{}    pop  DE             ; 1:10      __INFO},
 __{}__HEX_HL($1),{0x0004},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[12:73]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
+__{}__IS_NUM($2),1,{define({__TMP},__LD_R_NUM(__INFO,A,$2))
+__{}__{}                        ;[eval(9+__BYTES):eval(60+__CLOCKS)]    __INFO  ( addr -- ) u=$1, char=$2{}__CODE},
 __{}{
 __{}__{}                       ;[11:67]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
@@ -2610,6 +2614,8 @@ __{}    pop  DE             ; 1:10      __INFO},
 __{}__HEX_HL($1),{0x0005},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[14:86]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
+__{}__IS_NUM($2),1,{define({__TMP},__LD_R_NUM(__INFO,A,$2))
+__{}__{}                        ;[eval(11+__BYTES):eval(73+__CLOCKS)]    __INFO  ( addr -- ) u=$1, char=$2{}__CODE},
 __{}{
 __{}__{}                       ;[13:80]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
