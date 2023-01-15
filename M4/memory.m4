@@ -2557,33 +2557,34 @@ __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}__HEX_HL($1),{0x0000},{
 __{}    ex   DE, HL         ; 1:4       __INFO  ( addr -- ) u=$1, char=$2
 __{}    pop  DE             ; 1:10      __INFO},
-__{}__HEX_HL($1),{0x0001},{
-__{}                        ;[4:24]     __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}__HEX_HL($1),{0x0001},{ifelse(__IS_MEM_REF($2),1,{
+__{}__{}                        ;[6:34]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}{
+__{}__{}                        ;[4:24]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
-__{}__HEX_HL($1),{0x0002},{
-__{}                        ;[7:40]     __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}__HEX_HL($1),{0x0002},{ifelse(__IS_MEM_REF($2),1,{
+__{}__{}                        ;[8:47]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}{
+__{}__{}                        ;[7:40]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
-__{}__HEX_HL($1),{0x0003},{
-__{}                        ;[9:54]     __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld    A, format({%-11s},$2); 2:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO},
-__{}__HEX_HL($1),{0x0004},{
-__{}                       ;[11:67]     __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld    A, format({%-11s},$2); 2:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
+__{}__HEX_HL($1),{0x0003},{ifelse(__IS_MEM_REF($2),1,{
+__{}__{}                       ;[10:60]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
+__{}{
+__{}__{}                        ;[9:54]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
@@ -2591,9 +2592,27 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
-__{}__HEX_HL($1),{0x0005},{
-__{}                       ;[13:80]     __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld    A, format({%-11s},$2); 2:7       __INFO
+__{}__HEX_HL($1),{0x0004},{ifelse(__IS_MEM_REF($2),1,{
+__{}__{}                       ;[12:73]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
+__{}{
+__{}__{}                       ;[11:67]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__{}__HEX_HL($1),{0x0005},{ifelse(__IS_MEM_REF($2),1,{
+__{}__{}                       ;[14:86]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
+__{}{
+__{}__{}                       ;[13:80]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
