@@ -2557,7 +2557,7 @@ __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}__HEX_HL($1),{0x0000},{
 __{}    ex   DE, HL         ; 1:4       __INFO  ( addr -- ) u=$1, char=$2
 __{}    pop  DE             ; 1:10      __INFO},
-__{}eval($1),{1},{
+__{}__HEX_HL($1),{0x0001},{
 __{}                        ;[4:24]     __INFO  ( addr -- ) u=$1, char=$2
 __{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
@@ -2605,50 +2605,78 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
-__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{
-__{}                       format({%-13s},;[13:eval(19+(52*$1)/3)])__INFO  ( addr -- ) u=$1, char=$2
-__{}    ld   BC, format({%-11s},eval(($1)/3){*256+$2}); 3:10      __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    djnz $-6            ; 2:13/8    __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO},
-__{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{
-__{}                       format({%-13s},;[11:eval(19+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
-__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    djnz $-4            ; 2:13/8    __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO},
-__{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{
-__{}                       format({%-13s},;[12:eval(26+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
-__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    djnz $-4            ; 2:13/8    __INFO
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO},
-__{}{
-__{}                       format({%-13s},;[13:eval(39+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
+__IS_MEM_REF($1),1,{
+__{}  .warning Fail if $1 < 2!
+__{}format({%35s},;[15:55+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
 __{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
-__{}    ld   BC, format({%-11s},eval($1)-1); 3:10      __INFO
+__{}    ld   BC, format({%-11s},$1-1); 4:20      __INFO
+__{}    dec  BC             ; 1:6       __INFO   $1-1
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    D, H          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
-__{}    inc  DE             ; 1:6       __INFO DE = to
+__{}    inc  DE             ; 1:6       __INFO   DE = to
 __{}    ldir                ; 2:u*21/16 __INFO
 __{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+__{}    pop  DE             ; 1:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}  .warning Fail if $1 < 2!
+__{}format({%35s},;[13:39+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
+__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}    ld   BC, format({%-11s},$1-1); 3:10      __INFO   $1-1
+__{}    push DE             ; 1:11      __INFO
+__{}    ld    D, H          ; 1:4       __INFO
+__{}    ld    E, L          ; 1:4       __INFO
+__{}    inc  DE             ; 1:6       __INFO   DE = to
+__{}    ldir                ; 2:u*21/16 __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__{}{ifelse(dnl
+__{}__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{
+__{}__{}                       format({%-13s},;[13:eval(19+(52*$1)/3)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld   BC, format({%-11s},eval(($1)/3){*256+$2}); 3:10      __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    djnz $-6            ; 2:13/8    __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+__{}__{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{
+__{}__{}                       format({%-13s},;[11:eval(19+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    djnz $-4            ; 2:13/8    __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+__{}__{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{
+__{}__{}                       format({%-13s},;[12:eval(26+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    djnz $-4            ; 2:13/8    __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+__{}__{}{
+__{}__{}                       format({%-13s},;[13:eval(39+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}__{}    ld   BC, __HEX_HL($1-1)     ; 3:10      __INFO   $1-1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
