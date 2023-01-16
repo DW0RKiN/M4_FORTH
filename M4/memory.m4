@@ -2619,9 +2619,15 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
 __IS_MEM_REF($1),1,{
-__{}  .warning Fail if $1 < 2!
-__{}format({%35s},;[15:55+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}  .warning Fail if $1 < 2!{}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}format({%35s},;[17:86+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       ;[12:73]     __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}{
+__{}__{}format({%35s},;[15:76+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})
 __{}    ld   BC, format({%-11s},$1-1); 4:20      __INFO
 __{}    dec  BC             ; 1:6       __INFO   $1-1
 __{}    push DE             ; 1:11      __INFO
@@ -2630,9 +2636,14 @@ __{}    ld    E, L          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO   DE = to
 __{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP},
 __{}__IS_NUM($1),0,{
-__{}  .warning Fail if $1 < 2!
-__{}format({%35s},;[13:39+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
-__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
+__{}  .warning Fail if $1 < 2!{}dnl
+__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}format({%35s},;[15:70+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}{
+__{}__{}format({%35s},;[13:60+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})
 __{}    ld   BC, format({%-11s},$1-1); 3:10      __INFO   $1-1
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    D, H          ; 1:4       __INFO
@@ -2641,7 +2652,7 @@ __{}    inc  DE             ; 1:6       __INFO   DE = to
 __{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP},
 __{}__IS_MEM_REF($2),1,{ifelse(dnl
 __{}__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{
-__{}__{}                       format({%-13s},;[15:eval(29+(52*$1)/3)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[29:eval(29+52*($1)/3)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
 __{}__{}    ld    B, __HEX_L(($1)/3)       ; 2:7       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
@@ -2652,7 +2663,7 @@ __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-6            ; 2:13/8    __INFO{}__ASM_TOKEN_DROP},
 __{}__{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{
-__{}__{}                       format({%-13s},;[13:eval(29+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[13:eval(29+39*($1)/2)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
 __{}__{}    ld    B, __HEX_L(($1)/2)       ; 2:7       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
@@ -2661,7 +2672,7 @@ __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO{}__ASM_TOKEN_DROP},
 __{}__{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{
-__{}__{}                       format({%-13s},;[14:eval(36+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[14:eval(36+39*($1)/2)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
 __{}__{}    ld    B, __HEX_L(($1)/2)       ; 2:7       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
@@ -2671,7 +2682,7 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
 __{}__{}{
-__{}__{}                       format({%-13s},;[15:eval(49+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[15:eval(70+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    ld   BC, __HEX_HL($1-1)     ; 3:10      __INFO   $1-1
@@ -2709,7 +2720,7 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO
 __{}__{}    ld  (HL),C          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
 __{}__{}{
-__{}__{}                       format({%-13s},;[13:eval(39+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[13:eval(60+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
 __{}__{}    ld   BC, __HEX_HL($1-1)     ; 3:10      __INFO   $1-1
 __{}__{}    push DE             ; 1:11      __INFO
