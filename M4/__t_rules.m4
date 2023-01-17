@@ -1399,7 +1399,7 @@ define({__CHECK_TOKEN},{ifelse(dnl
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2SWAP:__TOKEN_2OVER_DADD,       {__SET_CHECK_TOKEN(__TOKEN_2SWAP_2OVER_DADD)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2OVER_DADD:__TOKEN_2SWAP,       {__SET_CHECK_TOKEN(__TOKEN_2OVER_DADD_2SWAP)},
 
-__T_NAME(1):__T_NAME(0):__T_ITEMS(0),        __TOKEN_I:__TOKEN_PUSHS:1,                    {ifelse(__GET_LOOP_TYPE(__T_ARRAY_1(0)),S,{__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH)},{__SET_CHECK_TOKEN3(__TOKEN_I_PUSH)})},
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0),        __TOKEN_I:__TOKEN_PUSHS:1,                    {ifelse(__GET_LOOP_TYPE(__T_ARRAY_1(0)),S,{__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH)}, {__SET_CHECK_TOKEN3(__TOKEN_I_PUSH)})},
 __T_NAME(1):__T_NAME(0):__T_ITEMS(0),        __TOKEN_J:__TOKEN_PUSHS:1,                    {ifelse(__GET_LOOP_TYPE(__T_ARRAY_1(0)),S,{__SET_CHECK_TOKEN2(__TOKEN_OVER_PUSH)},{__SET_CHECK_TOKEN3(__TOKEN_J_PUSH)})},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_PUSH_SWAP:__TOKEN_PUSH_SWAP,    {__SET_CHECK_TOKEN3(__TOKEN_PUSH_SWAP_PUSH_SWAP)},
