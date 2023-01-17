@@ -853,9 +853,6 @@ __{}__{}define({__ID_1},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
 __{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
 __{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
-
-__A_T: __TOKEN_J_PUSH {j_}__ID_0{ $3} __ID_0 __ID_1 $1
-
 __{}__{}__ADD_TOKEN({__TOKEN_J_PUSH},{j_}__ID_0{ $3},__ID_0,__ID_1,$1)}){}dnl
 }){}dnl
 dnl
