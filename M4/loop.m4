@@ -783,9 +783,9 @@ dnl
 dnl # -----------------------------------------------------------------------
 dnl
 dnl
-define({__INFO_INDEX},{
+define({__SHOW_INDEX},{__ASM({
 r: __TMP_R
-s: __TMP_S}){}dnl
+s: __TMP_S})}){}dnl
 dnl
 dnl # ( -- j )
 dnl # hodnota indexu vnejsi smycky
@@ -834,7 +834,7 @@ __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2),{},{2},{1}),0)){}dnl
 __{}__{}__ASM_DROP_INDEX2R($1,{j},__TMP_R)},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},{2},{1}),0)){}dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__HEX_HL(__GET_LOOP_END($2)),0x0000,1,__HEX_HL(__GET_LOOP_END($2)),0x0001,1,2),0)){}dnl
 __{}__{}__ASM_DROP_INDEX2S($1,{j},__TMP_S)},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
@@ -844,16 +844,20 @@ dnl
 dnl # ( -- j x )
 dnl # vlozeni indexu vnejsi smycky a hodnoty
 define({J_PUSH},{dnl
-__{}ifelse($#,{0},{
-__{}  .error {$0}($@): Missing parameter!}
-__{}$#,{1},{dnl
+__{}ifelse(eval($#<1),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
 __{}__{}define({__ID_1},LOOP_STACK){}dnl
 __{}__{}popdef({LOOP_STACK}){}dnl
 __{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
 __{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_J_PUSH},{$1 j_}__ID_0,__ID_0,__ID_1,$1)},
-__{}{
-__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
+
+__A_T: __TOKEN_J_PUSH {j_}__ID_0{ $3} __ID_0 __ID_1 $1
+
+__{}__{}__ADD_TOKEN({__TOKEN_J_PUSH},{j_}__ID_0{ $3},__ID_0,__ID_1,$1)}){}dnl
+}){}dnl
 dnl
 dnl # Input:
 dnl #   $1 - id j loop
@@ -874,7 +878,7 @@ __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
 __{}__{}__ASM_INDEX2R_PUSH($1,{j},__TMP_R,$3)},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__HEX_HL(__GET_LOOP_END($2)),0x0000,1,__HEX_HL(__GET_LOOP_END($2)),0x0001,1,2),0)){}dnl
 __{}__{}__ASM_INDEX2S_PUSH($1,{j},__TMP_S,$3)},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
@@ -984,7 +988,7 @@ __{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2
 __{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
 __{}__{}__ASM_INDEX2R($1,{k},__TMP_R)},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__HEX_HL(__GET_LOOP_END($2)),0x0000,1,__HEX_HL(__GET_LOOP_END($2)),0x0001,1,2),0)){}dnl
 __{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
 __{}__{}__ASM_INDEX2S($1,{k},__TMP_S)},
 __{}{
@@ -1012,7 +1016,7 @@ __{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($2),{R},ifelse(__GET_LOOP_END($2
 __{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
 __{}__{}__ASM_DROP_INDEX2R($1,{k},__TMP_R)},
 __{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__GET_LOOP_END($2),{},2,1),0)){}dnl
+__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__HEX_HL(__GET_LOOP_END($2)),0x0000,1,__HEX_HL(__GET_LOOP_END($2)),0x0001,1,2),0)){}dnl
 __{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__GET_LOOP_END($3),{},2,1),0))){}dnl
 __{}__{}__ASM_DROP_INDEX2S($1,{k},__TMP_S)},
 __{}{
