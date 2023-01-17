@@ -2278,6 +2278,31 @@ __{}__{}    ld    H, B          ; 1:4       __INFO
 __{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl # 3 pick num ( d c b a -- d c b a d num )
+define({_3_PICK_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_3_PICK_PUSH},{3 pick $1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3_PICK_PUSH},{dnl
+ifelse(dnl
+eval($#<1),1,{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                       ;[ 8:65]     __INFO   ( d c b a -- d c b a d $1 )
+__{}__{}    pop  AF             ; 1:10      __INFO
+__{}__{}    pop  BC             ; 1:10      __INFO
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    push AF             ; 1:11      __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld    D, B          ; 1:4       __INFO
+__{}__{}    ld    E, C          ; 1:4       __INFO{}__ASM_TOKEN_DROP_PUSH($1)}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # 2over 3 pick ( d c b a -- d c b a d c b )
 define({_2OVER_3_PICK},{dnl
 __{}__ADD_TOKEN({__TOKEN_2OVER_3_PICK},{2over 3 pick},$@){}dnl

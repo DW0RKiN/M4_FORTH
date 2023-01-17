@@ -568,7 +568,8 @@ __{}ifelse(dnl
 __{}__{}eval($3),0,{__ASM_TOKEN_DUP_PUSH($4)},
 __{}__{}eval($3),1,{__ASM_TOKEN_OVER_PUSH($4)},
 __{}__{}eval($3),2,{__ASM_TOKEN_2_PICK_PUSH($4)},
-__{}__{}{__ASM_TOKEN_PUSH_PICK($3){}__ASM_TOKEN_PUSH($4)}){}dnl
+__{}__{}eval($3),3,{__ASM_TOKEN_3_PICK_PUSH($4)},
+__{}__{}{__ASM_TOKEN_PUSH_PICK_PUSH($3,$4)}){}dnl
 }){}dnl
 dnl
 dnl
