@@ -371,7 +371,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id x loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 define({__ASM_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(m))
@@ -381,7 +381,7 @@ __{}define({__INFO},__COMPILE_INFO{}(m))
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id x loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -393,7 +393,7 @@ __{}__ASM_TOKEN_PUSH_RPICK($3)}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id x loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -421,7 +421,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id i loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 define({__ASM_DROP_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
@@ -429,7 +429,7 @@ __{}define({__INFO},__COMPILE_INFO{(m)})
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id x loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -440,7 +440,7 @@ __{}__ASM_TOKEN_DROP_PUSH_RPICK($3)}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id x loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -466,7 +466,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id i loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 define({__ASM_DUP_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
@@ -477,23 +477,16 @@ __{}define({__INFO},__COMPILE_INFO{(m)})
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id x loop
+dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
 dnl #      2,3,4 = k
 define({__ASM_DUP_INDEX2R},{dnl
 __{}define({__INFO},__COMPILE_INFO{(r)})
-    exx                 ; 1:4       __INFO   ( x -- x x $2 )
-    ld    E,(HL)        ; 1:7       __INFO
-    inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
-    dec   L             ; 1:4       __INFO
-    push DE             ; 1:11      __INFO
-    exx                 ; 1:4       __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ex  (SP), HL        ; 1:19      __INFO
-    push DE             ; 1:11      __INFO}){}dnl
+__{}__ASM_TOKEN_PUSH_RPICK($3){}dnl
+__{}__ASM_TOKEN_OVER_SWAP{}dnl
+}){}dnl
 dnl
 dnl
 dnl # Input:
@@ -509,10 +502,6 @@ __{}eval($3),0,{
                                     __INFO   ( $2 -- $2 $2 $2 ){}__ASM_TOKEN_DUP_DUP},
 __{}eval($3),1,{
                                     __INFO   ( $2 i -- $2 i i $2 ){}__ASM_TOKEN_2DUP{}__ASM_TOKEN_SWAP},
-__{}eval($3),2,{
-                                    __INFO   ( $2 b a -- $2 b a a $2 ){}__ASM_TOKEN_2_PICK{}__ASM_TOKEN_OVER_SWAP},
-__{}eval($3),3,{
-                                    __INFO   ( $2 c b a -- $2 c b a a $2 ){}__ASM_TOKEN_3_PICK{}__ASM_TOKEN_OVER_SWAP},
 __{}{__ASM_TOKEN_PUSH_PICK($3){}__ASM_TOKEN_OVER_SWAP}){}dnl
 }){}dnl
 dnl
