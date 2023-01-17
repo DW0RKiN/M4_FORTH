@@ -358,7 +358,9 @@ __T_NAME(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_DUP_TYPE_I:__TOKEN_DROP,{__SET_T
 
             __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_IF},                {__SET_TOKEN({__TOKEN_DUP_IF},__T_INFO(0){ }$2)},
 
-            __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_I},                 {__SET_TOKEN({__TOKEN_DUP_I},__T_INFO(0){ }$2,$3)},
+            __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_I},                 {__SET_TOKEN({__TOKEN_DUP_I},__T_INFO(0){ }$2,shift(shift($@)))},
+            __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_J},                 {__SET_TOKEN({__TOKEN_DUP_J},__T_INFO(0){ }$2,shift(shift($@)))},
+            __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_K},                 {__SET_TOKEN({__TOKEN_DUP_K},__T_INFO(0){ }$2,shift(shift($@)))},
 
             __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_DUP},               {__SET_TOKEN({__TOKEN_DUP_DUP},__T_INFO(0){ }$2)},
 __T_NAME(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_DUP_EMIT:__TOKEN_DROP,{__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_EMIT},__T_INFO(1){ }__T_INFO(0),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},

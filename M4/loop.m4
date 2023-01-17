@@ -496,12 +496,12 @@ dnl #   $3 0 = i
 dnl #      1,2 = j
 dnl #      2,3,4 = k
 define({__ASM_DUP_INDEX2S},{dnl
-__{}define({__INFO},__COMPILE_INFO{(s)}){}dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
 __{}ifelse(dnl
 __{}eval($3),0,{
-                                    __INFO   ( $2 -- $2 $2 $2 ){}__ASM_TOKEN_DUP_DUP},
+                                    __COMPILE_INFO   ( $2 -- $2 $2 $2 ){}__ASM_TOKEN_DUP_DUP},
 __{}eval($3),1,{
-                                    __INFO   ( $2 i -- $2 i i $2 ){}__ASM_TOKEN_2DUP{}__ASM_TOKEN_SWAP},
+                                    __COMPILE_INFO   ( $2 i -- $2 i i $2 ){}__ASM_TOKEN_2DUP{}__ASM_TOKEN_SWAP},
 __{}{__ASM_TOKEN_PUSH_PICK($3){}__ASM_TOKEN_OVER_SWAP}){}dnl
 }){}dnl
 dnl
@@ -860,11 +860,32 @@ __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_DROP_J},{dnl
-__{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_DROP_INDEX2M($1,{j})},
-__{}__GET_LOOP_TYPE($1),{R},{dnl
-__{}__{}__ASM_DROP_INDEX2R($1,{j},__COUNT_DEEP_R_INDEX(shift($@)))},
-__{}__GET_LOOP_TYPE($1),{S},{dnl
-__{}__{}__ASM_DROP_INDEX2S($1,{j},__COUNT_DEEP_S_INDEX(shift($@)))},
+__{}ifelse(dnl
+__{}__GET_LOOP_TYPE($1),{M},{__ASM_DROP_INDEX2M($1,{j})},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_DROP_INDEX2R($1,{j},__COUNT_DEEP_R_INDEX($2))},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_DROP_INDEX2S($1,{j},__COUNT_DEEP_S_INDEX($2))},
+__{}{
+__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
+dnl
+dnl
+dnl
+dnl # dup j
+dnl # ( x -- x x j )
+define({DUP_J},{dnl
+__{}ifelse($#,{0},{dnl
+__{}__{}define({__ID_1},LOOP_STACK){}dnl
+__{}__{}popdef({LOOP_STACK}){}dnl
+__{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
+__{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_DUP_J},{drop j_}__ID_0,__ID_0,__ID_1)},
+__{}{
+__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_J},{dnl
+__{}ifelse(dnl
+__{}__GET_LOOP_TYPE($1),{M},{__ASM_DUP_INDEX2M($1,{j})},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_DUP_INDEX2R($1,{j},__COUNT_DEEP_S_INDEX($2))},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_DUP_INDEX2S($1,{j},__COUNT_DEEP_S_INDEX($2))},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -1093,13 +1114,9 @@ dnl
 define({__ASM_TOKEN_PUSH_K},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M($1,$2,{k})},
 __{}__GET_LOOP_TYPE($2),{R},{dnl
-__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0)){}dnl
-__{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($4),{R},ifelse(__GET_LOOP_END($4),{},2,1),0))){}dnl
-__{}__{}__ASM_PUSH_INDEX2R($1,$2,{k},__TMP_R)},
+__{}__{}__ASM_PUSH_INDEX2R($1,$2,{k},__COUNT_DEEP_R_INDEX($3,$4))},
 __{}__GET_LOOP_TYPE($2),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__HEX_HL(__GET_LOOP_END($3)),0x0000,1,__HEX_HL(__GET_LOOP_END($3)),0x0001,1,2),0)){}dnl
-__{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($4),{S},ifelse(__HEX_HL(__GET_LOOP_END($4)),0x0000,1,__HEX_HL(__GET_LOOP_END($4)),0x0001,1,2),0))){}dnl
-__{}__{}__ASM_PUSH_INDEX2S($1,$2,{k},__TMP_S)},
+__{}__{}__ASM_PUSH_INDEX2S($1,$2,{k},__COUNT_DEEP_S_INDEX($3,$4))},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -1123,13 +1140,9 @@ dnl
 define({__ASM_TOKEN_PUSH_K_STORE},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M_STORE($1,$2,{k})},
 __{}__GET_LOOP_TYPE($2),{R},{dnl
-__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0)){}dnl
-__{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($4),{R},ifelse(__GET_LOOP_END($4),{},2,1),0))){}dnl
-__{}__{}__ASM_PUSH_INDEX2R_STORE($1,$2,{k},__TMP_R)},
+__{}__{}__ASM_PUSH_INDEX2R_STORE($1,$2,{k},__COUNT_DEEP_R_INDEX($3,$4))},
 __{}__GET_LOOP_TYPE($2),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__HEX_HL(__GET_LOOP_END($3)),0x0000,1,__HEX_HL(__GET_LOOP_END($3)),0x0001,1,2),0)){}dnl
-__{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($4),{S},ifelse(__HEX_HL(__GET_LOOP_END($4)),0x0000,1,__HEX_HL(__GET_LOOP_END($4)),0x0001,1,2),0))){}dnl
-__{}__{}__ASM_PUSH_INDEX2S_STORE($1,$2,{k},__TMP_S)},
+__{}__{}__ASM_PUSH_INDEX2S_STORE($1,$2,{k},__COUNT_DEEP_S_INDEX($3,$4))},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -1154,13 +1167,9 @@ dnl
 define({__ASM_TOKEN_PUSH_K_CSTORE},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M_CSTORE($1,$2,{k})},
 __{}__GET_LOOP_TYPE($2),{R},{dnl
-__{}__{}define({__TMP_R},ifelse(__GET_LOOP_TYPE($3),{R},ifelse(__GET_LOOP_END($3),{},2,1),0)){}dnl
-__{}__{}define({__TMP_R},eval(__TMP_R+ifelse(__GET_LOOP_TYPE($4),{R},ifelse(__GET_LOOP_END($4),{},2,1),0))){}dnl
-__{}__{}__ASM_PUSH_INDEX2R_CSTORE($1,$2,{k},__TMP_R)},
+__{}__{}__ASM_PUSH_INDEX2R_CSTORE($1,$2,{k},__COUNT_DEEP_R_INDEX($3,$4))},
 __{}__GET_LOOP_TYPE($2),{S},{dnl
-__{}__{}define({__TMP_S},ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__HEX_HL(__GET_LOOP_END($3)),0x0000,1,__HEX_HL(__GET_LOOP_END($3)),0x0001,1,2),0)){}dnl
-__{}__{}define({__TMP_S},eval(__TMP_S+ifelse(__GET_LOOP_TYPE($4),{S},ifelse(__HEX_HL(__GET_LOOP_END($4)),0x0000,1,__HEX_HL(__GET_LOOP_END($4)),0x0001,1,2),0))){}dnl
-__{}__{}__ASM_PUSH_INDEX2S_CSTORE($1,$2,{k},__TMP_S)},
+__{}__{}__ASM_PUSH_INDEX2S_CSTORE($1,$2,{k},__COUNT_DEEP_S_INDEX($3,$4))},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
