@@ -586,24 +586,6 @@ push,,,
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_J,                            {__SET_TOKEN({__TOKEN_PUSH_J},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_K,                            {__SET_TOKEN({__TOKEN_PUSH_K},__T_INFO(0){ }$2,__T_ARRAY(0),shift(shift($@)))},
 
-
-
-!!!prehodit do druheho pruchodu vcetne nasledujichich!!!,,,
-            __T_NAME(0):$1:$#,                   {__TOKEN_I:__TOKEN_PUSHS:3},              {ifelse(__GET_LOOP_TYPE(LOOP_STACK),S,{__SET_TOKEN({__TOKEN_DUP_PUSH},__T_INFO(0){ }$2,$3)},{__SET_TOKEN({__TOKEN_I_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)})},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_J-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_J_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_K-__TOKEN_PUSH},                 {__SET_TOKEN({__TOKEN_K_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0),$3)},
-            __T_NAME(0)-$1,                      {__TOKEN_I_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_I},__T_INFO(0){ drop},__T_ARRAY_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_J_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_J},__T_INFO(0){ drop},__T_ARRAY_1(0),__T_ARRAY_3(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_K_PUSH-__TOKEN_ADDLOOP},         {__SET_LOOP_STEP($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_K},__T_INFO(0){ drop},__T_ARRAY_1(0),__T_ARRAY_3(0),__T_ARRAY_4(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,$3)},
-            __T_NAME(0)-$1,                      {__TOKEN_I_PUSH-__TOKEN_DO},              {__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_I},__T_INFO(0){ drop},__T_ARRAY_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DO,__GET_LOOP_BEGIN($3){ }$2,$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_J_PUSH-__TOKEN_DO},              {__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_J},__T_INFO(0){ drop},__T_ARRAY_1(0),__T_ARRAY_3(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DO,__GET_LOOP_BEGIN($3){ }$2,$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_K_PUSH-__TOKEN_DO},              {__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_K},__T_INFO(0){ drop},__T_ARRAY_1(0),__T_ARRAY_3(0),__T_ARRAY_4(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_DO,__GET_LOOP_BEGIN($3){ }$2,$3)},
-            __T_NAME(0)-$1,                      {__TOKEN_I_PUSH-__TOKEN_QDO},             {__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_I},__T_INFO(0){ drop},__T_ARRAY_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_QDO,__GET_LOOP_BEGIN($3){ }$2,$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_J_PUSH-__TOKEN_QDO},             {__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_J},__T_INFO(0){ drop},__T_ARRAY_1(0),__T_ARRAY_3(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_QDO,__GET_LOOP_BEGIN($3){ }$2,$3)},
-            __T_NAME(0)-$1,               dodelat{__TOKEN_K_PUSH-__TOKEN_QDO},             {__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}__SET_TOKEN({__TOKEN_K},__T_INFO(0){ drop},__T_ARRAY_1(0),__T_ARRAY_3(0),__T_ARRAY_4(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_QDO,__GET_LOOP_BEGIN($3){ }$2,$3)},
-
-
-
             __T_NAME(0)=__T_HEX_REVERSE_1(0):$1,         __TOKEN_PUSHS=0x0000:__TOKEN_QDUP,                    {},
             __T_NAME(0):__T_IS_NUM_REVERSE_1(0):$1,      __TOKEN_PUSHS:1:__TOKEN_QDUP,                         {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__T_ARRAY(0),__T_REVERSE_1(0))},
 
@@ -1403,11 +1385,11 @@ dnl
 define({__ASM_TOKEN_NOPE},{}){}dnl
 dnl
 dnl
-dnl
+dnl # param first only
 define({__SET_CHECK_TOKEN}, {__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
-dnl
+dnl # param second only
 define({__SET_CHECK_TOKEN2},{__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
-dnl
+dnl # param both
 define({__SET_CHECK_TOKEN3},{__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(1),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
 dnl
 dnl
@@ -1416,6 +1398,9 @@ dnl # xxx + pushs = xxx_pushs ( after all pushs + xxx = pushs_xxx rule is done )
 define({__CHECK_TOKEN},{ifelse(dnl
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2SWAP:__TOKEN_2OVER_DADD,       {__SET_CHECK_TOKEN(__TOKEN_2SWAP_2OVER_DADD)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2OVER_DADD:__TOKEN_2SWAP,       {__SET_CHECK_TOKEN(__TOKEN_2OVER_DADD_2SWAP)},
+
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0),        __TOKEN_I:__TOKEN_PUSHS:1,                    {ifelse(__GET_LOOP_TYPE(__T_ARRAY_1(0)),S,{__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH)},{__SET_CHECK_TOKEN3(__TOKEN_I_PUSH)})},
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0),        __TOKEN_J:__TOKEN_PUSHS:1,                    {ifelse(__GET_LOOP_TYPE(__T_ARRAY_1(0)),S,{__SET_CHECK_TOKEN2(__TOKEN_OVER_PUSH)},{__SET_CHECK_TOKEN3(__TOKEN_J_PUSH)})},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_PUSH_SWAP:__TOKEN_PUSH_SWAP,    {__SET_CHECK_TOKEN3(__TOKEN_PUSH_SWAP_PUSH_SWAP)},
 __T_NAME(1):__T_NAME(0),           __TOKEN_PUSH_SWAP_PUSH_SWAP:__TOKEN_PUSH_SWAP,    {__SET_CHECK_TOKEN3(__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP)},

@@ -2221,6 +2221,28 @@ __{}__{}    ld    H, B          ; 1:4       __INFO
 __{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl # 2 pick num ( c b a -- c b a c num )
+define({_2_PICK_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_2_PICK_PUSH},{2 pick $1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2_PICK_PUSH},{dnl
+ifelse(dnl
+eval($#<1),1,{
+__{}  .error {$0}(): Missing parameter!},
+eval($#>1),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}    pop  BC             ; 1:10      __INFO   ( c b a -- c b a c $1 )
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld    D, B          ; 1:4       __INFO
+__{}__{}    ld    E, C          ; 1:4       __INFO{}__ASM_TOKEN_DROP_PUSH($1)}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # 2 pick ( c b a -- c b a c b )
 define({_2_PICK_2_PICK},{dnl
 __{}__ADD_TOKEN({__TOKEN_2_PICK_2_PICK},{2 pick 2 pick},$@){}dnl

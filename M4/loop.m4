@@ -360,6 +360,8 @@ define({I},{dnl
 __{}__ADD_TOKEN({__TOKEN_I},{i_}LOOP_STACK,LOOP_STACK){}dnl
 }){}dnl
 dnl
+dnl # Input:
+dnl #    $1 = id i loop:
 define({__ASM_TOKEN_I},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{i})},
 __{}__GET_LOOP_TYPE($1),{R},{__ASM_INDEX2R($1,{i},0)},
@@ -369,7 +371,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 define({__ASM_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(m))
@@ -379,7 +381,7 @@ __{}define({__INFO},__COMPILE_INFO{}(m))
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -391,7 +393,7 @@ __{}__ASM_TOKEN_PUSH_RPICK($3)}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -419,7 +421,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id i loop
 dnl #   $2 i,j,k
 define({__ASM_DROP_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
@@ -427,7 +429,7 @@ __{}define({__INFO},__COMPILE_INFO{(m)})
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -438,7 +440,7 @@ __{}__ASM_TOKEN_DROP_PUSH_RPICK($3)}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -464,7 +466,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id i loop
 dnl #   $2 i,j,k
 define({__ASM_DUP_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
@@ -475,7 +477,7 @@ __{}define({__INFO},__COMPILE_INFO{(m)})
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
@@ -495,17 +497,24 @@ __{}define({__INFO},__COMPILE_INFO{(r)})
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 i,j,k
 dnl #   $3 0 = i
 dnl #      1,2 = j
 dnl #      2,3,4 = k
 define({__ASM_DUP_INDEX2S},{dnl
-__{}define({__INFO},__COMPILE_INFO{(s)})
-    push DE             ; 1:11      __INFO   ( x -- x x $2 )
-    push HL             ; 1:11      __INFO
-    ld    E, L          ; 1:4       __INFO
-    ld    D, H          ; 1:4       __INFO}){}dnl
+__{}define({__INFO},__COMPILE_INFO{(s)}){}dnl
+__{}ifelse(dnl
+__{}eval($3),0,{
+                                    __INFO   ( $2 -- $2 $2 $2 ){}__ASM_TOKEN_DUP_DUP},
+__{}eval($3),1,{
+                                    __INFO   ( $2 i -- $2 i i $2 ){}__ASM_TOKEN_2DUP{}__ASM_TOKEN_SWAP},
+__{}eval($3),2,{
+                                    __INFO   ( $2 b a -- $2 b a a $2 ){}__ASM_TOKEN_2_PICK{}__ASM_TOKEN_OVER_SWAP},
+__{}eval($3),3,{
+                                    __INFO   ( $2 c b a -- $2 c b a a $2 ){}__ASM_TOKEN_3_PICK{}__ASM_TOKEN_OVER_SWAP},
+__{}{__ASM_TOKEN_PUSH_PICK($3){}__ASM_TOKEN_OVER_SWAP}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -523,7 +532,7 @@ __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 number
 dnl #   $3 i,j,k
 define({__ASM_INDEX2M_PUSH},{dnl
@@ -540,7 +549,7 @@ dnl
 dnl
 dnl
 dnl # Input:
-dnl #   $1 id loop
+dnl #   $1 id x loop
 dnl #   $2 number
 dnl #   $3 i,j,k
 dnl #   $4 0 = i
@@ -793,6 +802,9 @@ __{}__{}__ADD_TOKEN({__TOKEN_J},{j_}__ID_0,__ID_0,__ID_1)},
 __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
+dnl # Input:
+dnl #    $1 = id j loop:
+dnl #    $2 = id i loop:
 define({__ASM_TOKEN_J},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{j})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl
@@ -924,6 +936,10 @@ __{}__{}pushdef({LOOP_STACK},__ID_2){}dnl
 __{}__ADD_TOKEN({__TOKEN_K},{k_}__ID_0,__ID_0,__ID_1,__ID_2){}dnl
 }){}dnl
 dnl
+dnl # Input:
+dnl #    $1 = id k loop:
+dnl #    $2 = id j loop:
+dnl #    $3 = id i loop:
 define({__ASM_TOKEN_K},{dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_INDEX2M($1,{k})},
 __{}__GET_LOOP_TYPE($1),{R},{dnl
