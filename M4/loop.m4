@@ -186,7 +186,7 @@ dnl # ( -- )
 dnl # 5 2 do i .     loop --> 2 3 4
 dnl # 5 2 do i . +1 +loop --> 2 3 4
 define({LOOP},{dnl
-__{}__SET_LOOP_STEP(LOOP_COUNT,1){}dnl
+__{}__SET_LOOP_STEP(LOOP_STACK,1){}dnl
 __{}__ADD_TOKEN({__TOKEN_LOOP},{loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LOOP_STACK}){}dnl
 }){}dnl
@@ -255,7 +255,8 @@ __{}popdef({LOOP_STACK}){}dnl
 dnl
 dnl
 define({__ASM_TOKEN_PUSH_ADDLOOP},{dnl
-__{}ifelse(__GET_LOOP_TYPE($1),{M},{dnl
+__{}ifelse(dnl
+__{}__GET_LOOP_TYPE($1),{M},{dnl
 __{}__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:1},{dnl
 __{}__{}__{}__ASM_TOKEN_MLOOP_I8($1)},
 __{}__{}__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{:1},{dnl
@@ -578,6 +579,7 @@ dnl # vlozeni hodnoty a indexu vnitrni smycky
 define({PUSH_I},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_I},{$1 i_}LOOP_STACK,$1,LOOP_STACK){}dnl
 }){}dnl
+dnl
 define({__ASM_TOKEN_PUSH_I},{dnl
 __{}ifelse(__GET_LOOP_TYPE($2),{M},{__ASM_PUSH_INDEX2M($1,$2,{i})},
 __{}__GET_LOOP_TYPE($2),{R},{__ASM_PUSH_INDEX2R($1,$2,{i},0)},
@@ -806,9 +808,9 @@ __{}eval($#>3),1,{
 __{}  .error {$0}($@)!},
 __{}{dnl
 __{}__{}define({__TMP},0){}dnl
-__{}__{}define({__TMP},eval(__TMP+ifelse(__GET_LOOP_TYPE($1),{S},ifelse(__HEX_HL(__GET_LOOP_END($1)),0x0000,1,__HEX_HL(__GET_LOOP_END($1)),0x0001,1,2),0))){}dnl
-__{}__{}define({__TMP},eval(__TMP+ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__HEX_HL(__GET_LOOP_END($2)),0x0000,1,__HEX_HL(__GET_LOOP_END($2)),0x0001,1,2),0))){}dnl
-__{}__{}define({__TMP},eval(__TMP+ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__HEX_HL(__GET_LOOP_END($3)),0x0000,1,__HEX_HL(__GET_LOOP_END($3)),0x0001,1,2),0))){}dnl
+__{}__{}define({__TMP},eval(__TMP+ifelse(__GET_LOOP_TYPE($1),{S},ifelse(__HEX_HL(__GET_LOOP_END($1)),0xFFFF,1,__HEX_HL(__GET_LOOP_END($1)),0x0000,1,__HEX_HL(__GET_LOOP_END($1)),0x0001,1,2),0))){}dnl
+__{}__{}define({__TMP},eval(__TMP+ifelse(__GET_LOOP_TYPE($2),{S},ifelse(__HEX_HL(__GET_LOOP_END($2)),0xFFFF,1,__HEX_HL(__GET_LOOP_END($2)),0x0000,1,__HEX_HL(__GET_LOOP_END($2)),0x0001,1,2),0))){}dnl
+__{}__{}define({__TMP},eval(__TMP+ifelse(__GET_LOOP_TYPE($3),{S},ifelse(__HEX_HL(__GET_LOOP_END($3)),0xFFFF,1,__HEX_HL(__GET_LOOP_END($3)),0x0000,1,__HEX_HL(__GET_LOOP_END($3)),0x0001,1,2),0))){}dnl
 __{}__{}__TMP}){}dnl
 }){}dnl
 dnl

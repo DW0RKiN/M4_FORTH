@@ -558,8 +558,12 @@ push,,,
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_DROP,                         {__DELETE_LAST_TOKEN},
             __T_NAME(0):$1,                              __TOKEN_PUSHS:__TOKEN_DROP,                           {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__DROP_1_PAR(__T_ARRAY(0)))},
 
-
-            __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_ADDLOOP,                      {__SET_LOOP_STEP(LOOP_STACK,__T_ARRAY(0)){}__SET_TOKEN({__TOKEN_PUSH_ADDLOOP},__T_INFO(0){ }$2,$3)},
+            __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_ADDLOOP,                      
+__{}__{}__{}{ifelse(__GET_LOOP_STEP($3),{},{dnl
+__{}__{}__{}__{}__SET_LOOP_STEP($3,__T_ARRAY_1(0)){}__SET_TOKEN({__TOKEN_PUSH_ADDLOOP},__CONCATENATE_WITH({ },__T_INFO(0),$2),$3,__T_ARRAY_1(0))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__CONCATENATE_WITH({ },__GET_LOOP_STEP($3),$2),$3,__GET_LOOP_STEP($3)){}dnl
+__{}__{}__{}})},
 
             __T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,     __TOKEN_PUSHS:1:__TOKEN_DUP_EMIT:__TOKEN_DROP,        {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_EMIT},__T_INFO(1){ }__T_INFO(0),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
 
@@ -716,11 +720,16 @@ dnl # PUSH2
 push2,,,
 
 
-            __T_NAME(0):eval(__T_ITEMS(0)>1):$1,              __TOKEN_PUSHS:1:__TOKEN_ADDLOOP,
-                {__SET_LOOP_STEP($3,__T_REVERSE_1(0)){}dnl
-__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ drop},__DROP_1_PAR(__T_ARRAY(0))){}dnl
-__{}__{}__{}__{}__INC_TOKEN_COUNT{}dnl
-__{}__{}__{}__{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,shift(shift($@)))},
+            __T_NAME(0):eval(__T_ITEMS(0)0>10):$1,              __TOKEN_PUSHS:1:__TOKEN_ADDLOOP,
+            {ifelse(__GET_LOOP_STEP($3),{},
+__{}__{}__{}__{}{__SET_LOOP_STEP($3,__T_REVERSE_1(0)){}dnl
+__{}__{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ drop},__DROP_1_PAR(__T_ARRAY(0))){}dnl
+__{}__{}__{}__{}__{}__INC_TOKEN_COUNT{}dnl
+__{}__{}__{}__{}__{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__GET_LOOP_STEP($3){ }$2,shift(shift($@)))},
+__{}__{}__{}__{}{__INC_TOKEN_COUNT{}dnl
+__{}__{}__{}__{}__{}__SET_TOKEN(__TOKEN_PUSH_ADDLOOP,__CONCATENATE_WITH({ },__GET_LOOP_STEP($3),$2),$3,__GET_LOOP_STEP($3)){}dnl
+__{}__{}__{}__{}}){}dnl
+__{}__{}__{}},
 
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_DO,              {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
 __{}__{}__{}__{}__SET_LOOP_END(  $3,__T_ARRAY_1(0)){}dnl
@@ -1368,7 +1377,7 @@ dnl # Z...
 z,,,
         {dnl
 __{}__{}__{}__INC_TOKEN_COUNT{}dnl
-__{}__{}__{}ifelse($1,__TOKEN_LOOP,{__SET_LOOP_STEP(LOOP_STACK,1)}){}dnl
+__{}__{}__{}ifelse($1,__TOKEN_LOOP,{__SET_LOOP_STEP($3,1)}){}dnl
 __{}__{}__{}__SET_TOKEN($@){}dnl
 __{}__{}})},
 __{}{dnl
