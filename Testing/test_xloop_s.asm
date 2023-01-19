@@ -1452,19 +1452,15 @@ exit114:                ;           -1 +loop_114(s)
     ld   DE, 0x0000     ; 3:10      0 0 -1 998 2drop
     ld    L, D          ; 1:4       0 0 -1 998 2drop   L = D = 0x00
     ld    H, L          ; 1:4       0 0 -1 998 2drop   H = L = 0x00
-                        ;[8:42]     -1 998 do_115(s)   ( -- -1 998 )
     push DE             ; 1:11      -1 998 do_115(s)
-    push HL             ; 1:11      -1 998 do_115(s)
-    ld   DE, 0xFFFF     ; 3:10      -1 998 do_115(s)
-    ld   HL, 0x03E6     ; 3:10      -1 998 do_115(s)
-do115:                  ;           -1 998 do_115(s)   ( stop index -- stop index )
+    ex   DE, HL         ; 1:4       -1 998 do_115(s)
+    ld   HL, 998        ; 3:10      -1 998 do_115(s)
+do115:                  ;           -1 998 do_115(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_115(s)
-    xor   E             ; 1:4       -1 +loop_115(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_115(s)
+    and   H             ; 1:4       -1 +loop_115(s)
     dec  HL             ; 1:6       -1 +loop_115(s)   index--
-    jp   nz, do115      ; 3:10      -1 +loop_115(s)
-    xor   D             ; 1:4       -1 +loop_115(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_115(s)   0xFF?
     jp   nz, do115      ; 3:10      -1 +loop_115(s)
 leave115:               ;           -1 +loop_115(s)
     pop  HL             ; 1:10      unloop_115(s)   ( stop_i i -- )
@@ -2850,19 +2846,15 @@ exit171:                ;           -1 +loop_171(s)
     ld   DE, 0x0000     ; 3:10      0 0 998 -1 swap 2drop
     ld    L, D          ; 1:4       0 0 998 -1 swap 2drop   L = D = 0x00
     ld    H, L          ; 1:4       0 0 998 -1 swap 2drop   H = L = 0x00
-                        ;[8:42]     -1 998 do_172(s)   ( -- -1 998 )
     push DE             ; 1:11      -1 998 do_172(s)
-    push HL             ; 1:11      -1 998 do_172(s)
-    ld   DE, 0xFFFF     ; 3:10      -1 998 do_172(s)
-    ld   HL, 0x03E6     ; 3:10      -1 998 do_172(s)
-do172:                  ;           -1 998 do_172(s)   ( stop index -- stop index )
+    ex   DE, HL         ; 1:4       -1 998 do_172(s)
+    ld   HL, 998        ; 3:10      -1 998 do_172(s)
+do172:                  ;           -1 998 do_172(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_172(s)
-    xor   E             ; 1:4       -1 +loop_172(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_172(s)
+    and   H             ; 1:4       -1 +loop_172(s)
     dec  HL             ; 1:6       -1 +loop_172(s)   index--
-    jp   nz, do172      ; 3:10      -1 +loop_172(s)
-    xor   D             ; 1:4       -1 +loop_172(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_172(s)   0xFF?
     jp   nz, do172      ; 3:10      -1 +loop_172(s)
 leave172:               ;           -1 +loop_172(s)
     pop  HL             ; 1:10      unloop_172(s)   ( stop_i i -- )
@@ -2987,8 +2979,8 @@ exit176:                ;           -1 +loop_176(s)
     ex   DE, HL         ; 1:4       251
     ld   HL, 251        ; 3:10      251
 
-    push DE             ; 1:11      256 swap do_177(s)
-    ld   DE, 256        ; 3:10      256 swap do_177(s) ( a -- 256 a )
+    push DE             ; 1:11      256 swap do_177(s)   ( x -- 256 x )
+    ld   DE, 256        ; 3:10      256 swap do_177(s)
 do177:                  ;           256 swap do_177(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3011,8 +3003,8 @@ exit177:                ;           loop_177(s)
     ex   DE, HL         ; 1:4       241
     ld   HL, 241        ; 3:10      241
 
-    push DE             ; 1:11      246 swap do_178(s)
-    ld   DE, 246        ; 3:10      246 swap do_178(s) ( a -- 246 a )
+    push DE             ; 1:11      246 swap do_178(s)   ( x -- 246 x )
+    ld   DE, 246        ; 3:10      246 swap do_178(s)
 do178:                  ;           246 swap do_178(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3035,8 +3027,8 @@ exit178:                ;           loop_178(s)
     ex   DE, HL         ; 1:4       0x3CFB
     ld   HL, 0x3CFB     ; 3:10      0x3CFB
 
-    push DE             ; 1:11      0x3D00 swap do_179(s)
-    ld   DE, 0x3D00     ; 3:10      0x3D00 swap do_179(s) ( a -- 0x3D00 a )
+    push DE             ; 1:11      0x3D00 swap do_179(s)   ( x -- 0x3D00 x )
+    ld   DE, 0x3D00     ; 3:10      0x3D00 swap do_179(s)
 do179:                  ;           0x3D00 swap do_179(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3059,8 +3051,8 @@ exit179:                ;           loop_179(s)
     ex   DE, HL         ; 1:4       0x3C05
     ld   HL, 0x3C05     ; 3:10      0x3C05
 
-    push DE             ; 1:11      0x3C0A swap do_180(s)
-    ld   DE, 0x3C0A     ; 3:10      0x3C0A swap do_180(s) ( a -- 0x3C0A a )
+    push DE             ; 1:11      0x3C0A swap do_180(s)   ( x -- 0x3C0A x )
+    ld   DE, 0x3C0A     ; 3:10      0x3C0A swap do_180(s)
 do180:                  ;           0x3C0A swap do_180(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3083,8 +3075,8 @@ exit180:                ;           loop_180(s)
     ex   DE, HL         ; 1:4       0x65FB
     ld   HL, 0x65FB     ; 3:10      0x65FB
 
-    push DE             ; 1:11      0x6600 swap do_181(s)
-    ld   DE, 0x6600     ; 3:10      0x6600 swap do_181(s) ( a -- 0x6600 a )
+    push DE             ; 1:11      0x6600 swap do_181(s)   ( x -- 0x6600 x )
+    ld   DE, 0x6600     ; 3:10      0x6600 swap do_181(s)
 do181:                  ;           0x6600 swap do_181(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3107,8 +3099,8 @@ exit181:                ;           loop_181(s)
     ex   DE, HL         ; 1:4       0x4050
     ld   HL, 0x4050     ; 3:10      0x4050
 
-    push DE             ; 1:11      0x4055 swap do_182(s)
-    ld   DE, 0x4055     ; 3:10      0x4055 swap do_182(s) ( a -- 0x4055 a )
+    push DE             ; 1:11      0x4055 swap do_182(s)   ( x -- 0x4055 x )
+    ld   DE, 0x4055     ; 3:10      0x4055 swap do_182(s)
 do182:                  ;           0x4055 swap do_182(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3150,8 +3142,8 @@ exit183:                ;           loop_183(s)
     ex   DE, HL         ; 1:4       -3
     ld   HL, 0-3        ; 3:10      -3
 
-    push DE             ; 1:11      2 swap do_184(s)
-    ld   DE, 2          ; 3:10      2 swap do_184(s) ( a -- 2 a )
+    push DE             ; 1:11      2 swap do_184(s)   ( x -- 2 x )
+    ld   DE, 2          ; 3:10      2 swap do_184(s)
 do184:                  ;           2 swap do_184(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3176,8 +3168,8 @@ exit184:                ;           loop_184(s)
     push DE             ; 1:11      0 0 0x6318
     ld   HL, 0x6318     ; 3:10      0 0 0x6318
 
-    push DE             ; 1:11      0x6700 swap do_185(s)
-    ld   DE, 0x6700     ; 3:10      0x6700 swap do_185(s) ( a -- 0x6700 a )
+    push DE             ; 1:11      0x6700 swap do_185(s)   ( x -- 0x6700 x )
+    ld   DE, 0x6700     ; 3:10      0x6700 swap do_185(s)
 do185:                  ;           0x6700 swap do_185(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       loop_185(s)   index++
@@ -3200,8 +3192,8 @@ exit185:                ;           loop_185(s)
     push DE             ; 1:11      0 0 -700
     ld   HL, 0xFD44     ; 3:10      0 0 -700
 
-    push DE             ; 1:11      300 swap do_186(s)
-    ld   DE, 300        ; 3:10      300 swap do_186(s) ( a -- 300 a )
+    push DE             ; 1:11      300 swap do_186(s)   ( x -- 300 x )
+    ld   DE, 300        ; 3:10      300 swap do_186(s)
 do186:                  ;           300 swap do_186(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       loop_186(s)   index++
@@ -3260,8 +3252,8 @@ exit188:                ;           -1 +loop_188(s)
     ex   DE, HL         ; 1:4       258
     ld   HL, 258        ; 3:10      258
 
-    push DE             ; 1:11      254 swap do_189(s)
-    ld   DE, 254        ; 3:10      254 swap do_189(s) ( a -- 254 a )
+    push DE             ; 1:11      254 swap do_189(s)   ( x -- 254 x )
+    ld   DE, 254        ; 3:10      254 swap do_189(s)
 do189:                  ;           254 swap do_189(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -3286,8 +3278,8 @@ exit189:                ;           -1 +loop_189(s)
     push DE             ; 1:11      0 0 1255
     ld   HL, 0x04E7     ; 3:10      0 0 1255
 
-    push DE             ; 1:11      256 swap do_190(s)
-    ld   DE, 256        ; 3:10      256 swap do_190(s) ( a -- 256 a )
+    push DE             ; 1:11      256 swap do_190(s)   ( x -- 256 x )
+    ld   DE, 256        ; 3:10      256 swap do_190(s)
 do190:                  ;           256 swap do_190(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_190(s)
@@ -3310,16 +3302,12 @@ exit190:                ;           -1 +loop_190(s)
     push DE             ; 1:11      0 0 998
     ld   HL, 0x03E6     ; 3:10      0 0 998
 
-    push DE             ; 1:11      -1 swap do_191(s)
-    ld   DE, 0-1        ; 3:10      -1 swap do_191(s) ( a -- -1 a )
-do191:                  ;           -1 swap do_191(s)   ( stop index -- stop index )
+do191:                  ;           -1 swap do_191(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_191(s)
-    xor   E             ; 1:4       -1 +loop_191(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_191(s)
+    and   H             ; 1:4       -1 +loop_191(s)
     dec  HL             ; 1:6       -1 +loop_191(s)   index--
-    jp   nz, do191      ; 3:10      -1 +loop_191(s)
-    xor   D             ; 1:4       -1 +loop_191(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_191(s)   0xFF?
     jp   nz, do191      ; 3:10      -1 +loop_191(s)
 leave191:               ;           -1 +loop_191(s)
     pop  HL             ; 1:10      unloop_191(s)   ( stop_i i -- )
@@ -3334,8 +3322,8 @@ exit191:                ;           -1 +loop_191(s)
     push DE             ; 1:11      0 0 1001
     ld   HL, 0x03E9     ; 3:10      0 0 1001
 
-    push DE             ; 1:11      2 swap do_192(s)
-    ld   DE, 2          ; 3:10      2 swap do_192(s) ( a -- 2 a )
+    push DE             ; 1:11      2 swap do_192(s)   ( x -- 2 x )
+    ld   DE, 2          ; 3:10      2 swap do_192(s)
 do192:                  ;           2 swap do_192(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_192(s)
@@ -3358,8 +3346,8 @@ exit192:                ;           -1 +loop_192(s)
     push DE             ; 1:11      0 0 1199
     ld   HL, 0x04AF     ; 3:10      0 0 1199
 
-    push DE             ; 1:11      200 swap do_193(s)
-    ld   DE, 200        ; 3:10      200 swap do_193(s) ( a -- 200 a )
+    push DE             ; 1:11      200 swap do_193(s)   ( x -- 200 x )
+    ld   DE, 200        ; 3:10      200 swap do_193(s)
 do193:                  ;           200 swap do_193(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_193(s)
@@ -3382,8 +3370,8 @@ exit193:                ;           -1 +loop_193(s)
     push DE             ; 1:11      0 0 375
     ld   HL, 0x0177     ; 3:10      0 0 375
 
-    push DE             ; 1:11      -624 swap do_194(s)
-    ld   DE, 0-624      ; 3:10      -624 swap do_194(s) ( a -- -624 a )
+    push DE             ; 1:11      -624 swap do_194(s)   ( x -- -624 x )
+    ld   DE, 0-624      ; 3:10      -624 swap do_194(s)
 do194:                  ;           -624 swap do_194(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_194(s)
@@ -3406,8 +3394,8 @@ exit194:                ;           -1 +loop_194(s)
     push DE             ; 1:11      0 0 486
     ld   HL, 0x01E6     ; 3:10      0 0 486
 
-    push DE             ; 1:11      -513 swap do_195(s)
-    ld   DE, 0-513      ; 3:10      -513 swap do_195(s) ( a -- -513 a )
+    push DE             ; 1:11      -513 swap do_195(s)   ( x -- -513 x )
+    ld   DE, 0-513      ; 3:10      -513 swap do_195(s)
 do195:                  ;           -513 swap do_195(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_195(s)
@@ -3779,19 +3767,15 @@ exit209:                ;           -1 +loop_209(s)
     ld   DE, 0x0000     ; 3:10      0 0 -1 drop
     ld    L, D          ; 1:4       0 0 -1 drop   L = D = 0x00
     ld    H, L          ; 1:4       0 0 -1 drop   H = L = 0x00
-                        ;[8:42]     -1 998 do_210(s)   ( -- -1 998 )
     push DE             ; 1:11      -1 998 do_210(s)
-    push HL             ; 1:11      -1 998 do_210(s)
-    ld   DE, 0xFFFF     ; 3:10      -1 998 do_210(s)
-    ld   HL, 0x03E6     ; 3:10      -1 998 do_210(s)
-do210:                  ;           -1 998 do_210(s)   ( stop index -- stop index )
+    ex   DE, HL         ; 1:4       -1 998 do_210(s)
+    ld   HL, 998        ; 3:10      -1 998 do_210(s)
+do210:                  ;           -1 998 do_210(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_210(s)
-    xor   E             ; 1:4       -1 +loop_210(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_210(s)
+    and   H             ; 1:4       -1 +loop_210(s)
     dec  HL             ; 1:6       -1 +loop_210(s)   index--
-    jp   nz, do210      ; 3:10      -1 +loop_210(s)
-    xor   D             ; 1:4       -1 +loop_210(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_210(s)   0xFF?
     jp   nz, do210      ; 3:10      -1 +loop_210(s)
 leave210:               ;           -1 +loop_210(s)
     pop  HL             ; 1:10      unloop_210(s)   ( stop_i i -- )
@@ -4716,19 +4700,15 @@ exit247:                ;           -1 +loop_247(s)
     ld   DE, 0x0000     ; 3:10      0 0 998 drop
     ld    L, D          ; 1:4       0 0 998 drop   L = D = 0x00
     ld    H, L          ; 1:4       0 0 998 drop   H = L = 0x00
-                        ;[8:42]     -1 998 do_248(s)   ( -- -1 998 )
     push DE             ; 1:11      -1 998 do_248(s)
-    push HL             ; 1:11      -1 998 do_248(s)
-    ld   DE, 0xFFFF     ; 3:10      -1 998 do_248(s)
-    ld   HL, 0x03E6     ; 3:10      -1 998 do_248(s)
-do248:                  ;           -1 998 do_248(s)   ( stop index -- stop index )
+    ex   DE, HL         ; 1:4       -1 998 do_248(s)
+    ld   HL, 998        ; 3:10      -1 998 do_248(s)
+do248:                  ;           -1 998 do_248(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_248(s)
-    xor   E             ; 1:4       -1 +loop_248(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_248(s)
+    and   H             ; 1:4       -1 +loop_248(s)
     dec  HL             ; 1:6       -1 +loop_248(s)   index--
-    jp   nz, do248      ; 3:10      -1 +loop_248(s)
-    xor   D             ; 1:4       -1 +loop_248(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_248(s)   0xFF?
     jp   nz, do248      ; 3:10      -1 +loop_248(s)
 leave248:               ;           -1 +loop_248(s)
     pop  HL             ; 1:10      unloop_248(s)   ( stop_i i -- )
@@ -4853,8 +4833,8 @@ exit252:                ;           -1 +loop_252(s)
     ex   DE, HL         ; 1:4       251
     ld   HL, 251        ; 3:10      251
 
-    push DE             ; 1:11      do_253(s)
-    ld   DE, 256        ; 3:10      do_253(s) ( a -- 256 a )
+    push DE             ; 1:11      do_253(s)   ( x -- 256 x )
+    ld   DE, 256        ; 3:10      do_253(s)
 do253:                  ;           do_253(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -4877,8 +4857,8 @@ exit253:                ;           loop_253(s)
     ex   DE, HL         ; 1:4       241
     ld   HL, 241        ; 3:10      241
 
-    push DE             ; 1:11      do_254(s)
-    ld   DE, 246        ; 3:10      do_254(s) ( a -- 246 a )
+    push DE             ; 1:11      do_254(s)   ( x -- 246 x )
+    ld   DE, 246        ; 3:10      do_254(s)
 do254:                  ;           do_254(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -4901,8 +4881,8 @@ exit254:                ;           loop_254(s)
     ex   DE, HL         ; 1:4       0x3CFB
     ld   HL, 0x3CFB     ; 3:10      0x3CFB
 
-    push DE             ; 1:11      do_255(s)
-    ld   DE, 0x3D00     ; 3:10      do_255(s) ( a -- 0x3D00 a )
+    push DE             ; 1:11      do_255(s)   ( x -- 0x3D00 x )
+    ld   DE, 0x3D00     ; 3:10      do_255(s)
 do255:                  ;           do_255(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -4925,8 +4905,8 @@ exit255:                ;           loop_255(s)
     ex   DE, HL         ; 1:4       0x3C05
     ld   HL, 0x3C05     ; 3:10      0x3C05
 
-    push DE             ; 1:11      do_256(s)
-    ld   DE, 0x3C0A     ; 3:10      do_256(s) ( a -- 0x3C0A a )
+    push DE             ; 1:11      do_256(s)   ( x -- 0x3C0A x )
+    ld   DE, 0x3C0A     ; 3:10      do_256(s)
 do256:                  ;           do_256(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -4949,8 +4929,8 @@ exit256:                ;           loop_256(s)
     ex   DE, HL         ; 1:4       0x65FB
     ld   HL, 0x65FB     ; 3:10      0x65FB
 
-    push DE             ; 1:11      do_257(s)
-    ld   DE, 0x6600     ; 3:10      do_257(s) ( a -- 0x6600 a )
+    push DE             ; 1:11      do_257(s)   ( x -- 0x6600 x )
+    ld   DE, 0x6600     ; 3:10      do_257(s)
 do257:                  ;           do_257(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -4973,8 +4953,8 @@ exit257:                ;           loop_257(s)
     ex   DE, HL         ; 1:4       0x4050
     ld   HL, 0x4050     ; 3:10      0x4050
 
-    push DE             ; 1:11      do_258(s)
-    ld   DE, 0x4055     ; 3:10      do_258(s) ( a -- 0x4055 a )
+    push DE             ; 1:11      do_258(s)   ( x -- 0x4055 x )
+    ld   DE, 0x4055     ; 3:10      do_258(s)
 do258:                  ;           do_258(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -5016,8 +4996,8 @@ exit259:                ;           loop_259(s)
     ex   DE, HL         ; 1:4       -3
     ld   HL, 0-3        ; 3:10      -3
 
-    push DE             ; 1:11      do_260(s)
-    ld   DE, 2          ; 3:10      do_260(s) ( a -- 2 a )
+    push DE             ; 1:11      do_260(s)   ( x -- 2 x )
+    ld   DE, 2          ; 3:10      do_260(s)
 do260:                  ;           do_260(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -5042,8 +5022,8 @@ exit260:                ;           loop_260(s)
     push DE             ; 1:11      0 0 0x6318
     ld   HL, 0x6318     ; 3:10      0 0 0x6318
 
-    push DE             ; 1:11      do_261(s)
-    ld   DE, 0x6700     ; 3:10      do_261(s) ( a -- 0x6700 a )
+    push DE             ; 1:11      do_261(s)   ( x -- 0x6700 x )
+    ld   DE, 0x6700     ; 3:10      do_261(s)
 do261:                  ;           do_261(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       loop_261(s)   index++
@@ -5066,8 +5046,8 @@ exit261:                ;           loop_261(s)
     push DE             ; 1:11      0 0 -700
     ld   HL, 0xFD44     ; 3:10      0 0 -700
 
-    push DE             ; 1:11      do_262(s)
-    ld   DE, 300        ; 3:10      do_262(s) ( a -- 300 a )
+    push DE             ; 1:11      do_262(s)   ( x -- 300 x )
+    ld   DE, 300        ; 3:10      do_262(s)
 do262:                  ;           do_262(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       loop_262(s)   index++
@@ -5126,8 +5106,8 @@ exit264:                ;           -1 +loop_264(s)
     ex   DE, HL         ; 1:4       258
     ld   HL, 258        ; 3:10      258
 
-    push DE             ; 1:11      do_265(s)
-    ld   DE, 254        ; 3:10      do_265(s) ( a -- 254 a )
+    push DE             ; 1:11      do_265(s)   ( x -- 254 x )
+    ld   DE, 254        ; 3:10      do_265(s)
 do265:                  ;           do_265(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -5152,8 +5132,8 @@ exit265:                ;           -1 +loop_265(s)
     push DE             ; 1:11      0 0 1255
     ld   HL, 0x04E7     ; 3:10      0 0 1255
 
-    push DE             ; 1:11      do_266(s)
-    ld   DE, 256        ; 3:10      do_266(s) ( a -- 256 a )
+    push DE             ; 1:11      do_266(s)   ( x -- 256 x )
+    ld   DE, 256        ; 3:10      do_266(s)
 do266:                  ;           do_266(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_266(s)
@@ -5176,16 +5156,12 @@ exit266:                ;           -1 +loop_266(s)
     push DE             ; 1:11      0 0 998
     ld   HL, 0x03E6     ; 3:10      0 0 998
 
-    push DE             ; 1:11      do_267(s)
-    ld   DE, 0-1        ; 3:10      do_267(s) ( a -- -1 a )
-do267:                  ;           do_267(s)   ( stop index -- stop index )
+do267:                  ;           do_267(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_267(s)
-    xor   E             ; 1:4       -1 +loop_267(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_267(s)
+    and   H             ; 1:4       -1 +loop_267(s)
     dec  HL             ; 1:6       -1 +loop_267(s)   index--
-    jp   nz, do267      ; 3:10      -1 +loop_267(s)
-    xor   D             ; 1:4       -1 +loop_267(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_267(s)   0xFF?
     jp   nz, do267      ; 3:10      -1 +loop_267(s)
 leave267:               ;           -1 +loop_267(s)
     pop  HL             ; 1:10      unloop_267(s)   ( stop_i i -- )
@@ -5200,8 +5176,8 @@ exit267:                ;           -1 +loop_267(s)
     push DE             ; 1:11      0 0 1001
     ld   HL, 0x03E9     ; 3:10      0 0 1001
 
-    push DE             ; 1:11      do_268(s)
-    ld   DE, 2          ; 3:10      do_268(s) ( a -- 2 a )
+    push DE             ; 1:11      do_268(s)   ( x -- 2 x )
+    ld   DE, 2          ; 3:10      do_268(s)
 do268:                  ;           do_268(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_268(s)
@@ -5224,8 +5200,8 @@ exit268:                ;           -1 +loop_268(s)
     push DE             ; 1:11      0 0 1199
     ld   HL, 0x04AF     ; 3:10      0 0 1199
 
-    push DE             ; 1:11      do_269(s)
-    ld   DE, 200        ; 3:10      do_269(s) ( a -- 200 a )
+    push DE             ; 1:11      do_269(s)   ( x -- 200 x )
+    ld   DE, 200        ; 3:10      do_269(s)
 do269:                  ;           do_269(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_269(s)
@@ -5248,8 +5224,8 @@ exit269:                ;           -1 +loop_269(s)
     push DE             ; 1:11      0 0 375
     ld   HL, 0x0177     ; 3:10      0 0 375
 
-    push DE             ; 1:11      do_270(s)
-    ld   DE, 0-624      ; 3:10      do_270(s) ( a -- -624 a )
+    push DE             ; 1:11      do_270(s)   ( x -- -624 x )
+    ld   DE, 0-624      ; 3:10      do_270(s)
 do270:                  ;           do_270(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_270(s)
@@ -5272,8 +5248,8 @@ exit270:                ;           -1 +loop_270(s)
     push DE             ; 1:11      0 0 486
     ld   HL, 0x01E6     ; 3:10      0 0 486
 
-    push DE             ; 1:11      do_271(s)
-    ld   DE, 0-513      ; 3:10      do_271(s) ( a -- -513 a )
+    push DE             ; 1:11      do_271(s)   ( x -- -513 x )
+    ld   DE, 0-513      ; 3:10      do_271(s)
 do271:                  ;           do_271(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_271(s)
@@ -5619,19 +5595,15 @@ exit285:                ;           -1 +loop_285(s)
     ld   DE, 0x0000     ; 3:10      0 0
     ld    L, D          ; 1:4       0 0   L = D = 0x00
     ld    H, L          ; 1:4       0 0   H = L = 0x00
-                        ;[8:42]     do_286(s)   ( -- -1 998 )
     push DE             ; 1:11      do_286(s)
-    push HL             ; 1:11      do_286(s)
-    ld   DE, 0xFFFF     ; 3:10      do_286(s)
-    ld   HL, 0x03E6     ; 3:10      do_286(s)
-do286:                  ;           do_286(s)   ( stop index -- stop index )
+    ex   DE, HL         ; 1:4       do_286(s)
+    ld   HL, 998        ; 3:10      do_286(s)
+do286:                  ;           do_286(s)   ( stop index -- index )  stop = -1
     call _test          ; 3:17      call ( -- )
     ld    A, L          ; 1:4       -1 +loop_286(s)
-    xor   E             ; 1:4       -1 +loop_286(s)   lo(index - stop)
-    ld    A, H          ; 1:4       -1 +loop_286(s)
+    and   H             ; 1:4       -1 +loop_286(s)
     dec  HL             ; 1:6       -1 +loop_286(s)   index--
-    jp   nz, do286      ; 3:10      -1 +loop_286(s)
-    xor   D             ; 1:4       -1 +loop_286(s)   hi(index - stop)
+    inc   A             ; 1:4       -1 +loop_286(s)   0xFF?
     jp   nz, do286      ; 3:10      -1 +loop_286(s)
 leave286:               ;           -1 +loop_286(s)
     pop  HL             ; 1:10      unloop_286(s)   ( stop_i i -- )
@@ -5779,7 +5751,7 @@ do292:                  ;           1 -9 do_292(s)   ( stop index -- index )  st
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     inc  HL             ; 1:6       2 +loop_292(s)
     ld    A, L          ; 1:4       2 +loop_292(s)
-    and 0xFE            ; 2:7       2 +loop_292(s)
+    and 0xFE            ; 2:7       2 +loop_292(s)   set_bit(0) = 0
     or    H             ; 1:4       2 +loop_292(s)   0 or 1 --> zero flag
     inc  HL             ; 1:6       2 +loop_292(s)   HL = index+2-stop
     jp   nz, do292      ; 3:10      2 +loop_292(s)
@@ -5913,7 +5885,7 @@ exit296:                ;           2 +loop_296(s)
 do297:                  ;           0 8 do_297(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_297(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_297(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -2 +loop_297(s)   HL = index+step
     jp    c, do297      ; 3:10      -2 +loop_297(s)
 leave297:               ;           -2 +loop_297(s)
@@ -5930,7 +5902,7 @@ exit297:                ;           -2 +loop_297(s)
 do298:                  ;           1 9 do_298(s)   ( stop index -- index )  stop = 1
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_298(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_298(s)   BC = step, stop = 1
     dec  HL             ; 1:6       -2 +loop_298(s)   HL-= stop = index-stop
     add  HL, BC         ; 1:11      -2 +loop_298(s)   HL+= step = index-stop+step
     inc  HL             ; 1:6       -2 +loop_298(s)   HL+= stop = index+step
@@ -6956,7 +6928,7 @@ do337:                  ;           -9 1 swap do_337(s)   ( stop index -- index 
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     inc  HL             ; 1:6       2 +loop_337(s)
     ld    A, L          ; 1:4       2 +loop_337(s)
-    and 0xFE            ; 2:7       2 +loop_337(s)
+    and 0xFE            ; 2:7       2 +loop_337(s)   set_bit(0) = 0
     or    H             ; 1:4       2 +loop_337(s)   0 or 1 --> zero flag
     inc  HL             ; 1:6       2 +loop_337(s)   HL = index+2-stop
     jp   nz, do337      ; 3:10      2 +loop_337(s)
@@ -7090,7 +7062,7 @@ exit341:                ;           2 +loop_341(s)
 do342:                  ;           8 0 swap do_342(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_342(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_342(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -2 +loop_342(s)   HL = index+step
     jp    c, do342      ; 3:10      -2 +loop_342(s)
 leave342:               ;           -2 +loop_342(s)
@@ -7107,7 +7079,7 @@ exit342:                ;           -2 +loop_342(s)
 do343:                  ;           9 1 swap do_343(s)   ( stop index -- index )  stop = 1
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_343(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_343(s)   BC = step, stop = 1
     dec  HL             ; 1:6       -2 +loop_343(s)   HL-= stop = index-stop
     add  HL, BC         ; 1:11      -2 +loop_343(s)   HL+= step = index-stop+step
     inc  HL             ; 1:6       -2 +loop_343(s)   HL+= stop = index+step
@@ -7337,7 +7309,7 @@ do352:                  ;           1 swap do_352(s)   ( stop index -- index )  
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     inc  HL             ; 1:6       2 +loop_352(s)
     ld    A, L          ; 1:4       2 +loop_352(s)
-    and 0xFE            ; 2:7       2 +loop_352(s)
+    and 0xFE            ; 2:7       2 +loop_352(s)   set_bit(0) = 0
     or    H             ; 1:4       2 +loop_352(s)   0 or 1 --> zero flag
     inc  HL             ; 1:6       2 +loop_352(s)   HL = index+2-stop
     jp   nz, do352      ; 3:10      2 +loop_352(s)
@@ -7353,8 +7325,8 @@ exit352:                ;           2 +loop_352(s)
     ex   DE, HL         ; 1:4       -5
     ld   HL, 0-5        ; 3:10      -5
 
-    push DE             ; 1:11      5 swap do_353(s)
-    ld   DE, 5          ; 3:10      5 swap do_353(s) ( a -- 5 a )
+    push DE             ; 1:11      5 swap do_353(s)   ( x -- 5 x )
+    ld   DE, 5          ; 3:10      5 swap do_353(s)
 do353:                  ;           5 swap do_353(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -7382,8 +7354,8 @@ exit353:                ;           2 +loop_353(s)
     push DE             ; 1:11      0 0 304
     ld   HL, 0x0130     ; 3:10      0 0 304
 
-    push DE             ; 1:11      2304 swap do_354(s)
-    ld   DE, 2304       ; 3:10      2304 swap do_354(s) ( a -- 2304 a )
+    push DE             ; 1:11      2304 swap do_354(s)   ( x -- 2304 x )
+    ld   DE, 2304       ; 3:10      2304 swap do_354(s)
 do354:                  ;           2304 swap do_354(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       2 +loop_354(s)   standart version
@@ -7409,8 +7381,8 @@ exit354:                ;           2 +loop_354(s)
     push DE             ; 1:11      0 0 50
     ld   HL, 0x0032     ; 3:10      0 0 50
 
-    push DE             ; 1:11      2050 swap do_355(s)
-    ld   DE, 2050       ; 3:10      2050 swap do_355(s) ( a -- 2050 a )
+    push DE             ; 1:11      2050 swap do_355(s)   ( x -- 2050 x )
+    ld   DE, 2050       ; 3:10      2050 swap do_355(s)
 do355:                  ;           2050 swap do_355(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       2 +loop_355(s)   standart version
@@ -7436,8 +7408,8 @@ exit355:                ;           2 +loop_355(s)
     push DE             ; 1:11      0 0 -10
     ld   HL, 0xFFF6     ; 3:10      0 0 -10
 
-    push DE             ; 1:11      1990 swap do_356(s)
-    ld   DE, 1990       ; 3:10      1990 swap do_356(s) ( a -- 1990 a )
+    push DE             ; 1:11      1990 swap do_356(s)   ( x -- 1990 x )
+    ld   DE, 1990       ; 3:10      1990 swap do_356(s)
 do356:                  ;           1990 swap do_356(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       2 +loop_356(s)   standart version
@@ -7464,7 +7436,7 @@ exit356:                ;           2 +loop_356(s)
 do357:                  ;           0 swap do_357(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_357(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_357(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -2 +loop_357(s)   HL = index+step
     jp    c, do357      ; 3:10      -2 +loop_357(s)
 leave357:               ;           -2 +loop_357(s)
@@ -7482,7 +7454,7 @@ exit357:                ;           -2 +loop_357(s)
 do358:                  ;           1 swap do_358(s)   ( stop index -- index )  stop = 1
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_358(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_358(s)   BC = step, stop = 1
     dec  HL             ; 1:6       -2 +loop_358(s)   HL-= stop = index-stop
     add  HL, BC         ; 1:11      -2 +loop_358(s)   HL+= step = index-stop+step
     inc  HL             ; 1:6       -2 +loop_358(s)   HL+= stop = index+step
@@ -7499,8 +7471,8 @@ exit358:                ;           -2 +loop_358(s)
     ex   DE, HL         ; 1:4       10
     ld   HL, 10         ; 3:10      10
 
-    push DE             ; 1:11      2 swap do_359(s)
-    ld   DE, 2          ; 3:10      2 swap do_359(s) ( a -- 2 a )
+    push DE             ; 1:11      2 swap do_359(s)   ( x -- 2 x )
+    ld   DE, 2          ; 3:10      2 swap do_359(s)
 do359:                  ;           2 swap do_359(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -7524,8 +7496,8 @@ exit359:                ;           -2 +loop_359(s)
     ex   DE, HL         ; 1:4       264
     ld   HL, 264        ; 3:10      264
 
-    push DE             ; 1:11      256 swap do_360(s)
-    ld   DE, 256        ; 3:10      256 swap do_360(s) ( a -- 256 a )
+    push DE             ; 1:11      256 swap do_360(s)   ( x -- 256 x )
+    ld   DE, 256        ; 3:10      256 swap do_360(s)
 do360:                  ;           256 swap do_360(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -7549,8 +7521,8 @@ exit360:                ;           -2 +loop_360(s)
     ex   DE, HL         ; 1:4       308
     ld   HL, 308        ; 3:10      308
 
-    push DE             ; 1:11      300 swap do_361(s)
-    ld   DE, 300        ; 3:10      300 swap do_361(s) ( a -- 300 a )
+    push DE             ; 1:11      300 swap do_361(s)   ( x -- 300 x )
+    ld   DE, 300        ; 3:10      300 swap do_361(s)
 do361:                  ;           300 swap do_361(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -7576,8 +7548,8 @@ exit361:                ;           -2 +loop_361(s)
     push DE             ; 1:11      0 0 2001
     ld   HL, 0x07D1     ; 3:10      0 0 2001
 
-    push DE             ; 1:11      3 swap do_362(s)
-    ld   DE, 3          ; 3:10      3 swap do_362(s) ( a -- 3 a )
+    push DE             ; 1:11      3 swap do_362(s)   ( x -- 3 x )
+    ld   DE, 3          ; 3:10      3 swap do_362(s)
 do362:                  ;           3 swap do_362(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_362(s)
@@ -7601,8 +7573,8 @@ exit362:                ;           -2 +loop_362(s)
     push DE             ; 1:11      0 0 2232
     ld   HL, 0x08B8     ; 3:10      0 0 2232
 
-    push DE             ; 1:11      234 swap do_363(s)
-    ld   DE, 234        ; 3:10      234 swap do_363(s) ( a -- 234 a )
+    push DE             ; 1:11      234 swap do_363(s)   ( x -- 234 x )
+    ld   DE, 234        ; 3:10      234 swap do_363(s)
 do363:                  ;           234 swap do_363(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_363(s)
@@ -7626,8 +7598,8 @@ exit363:                ;           -2 +loop_363(s)
     push DE             ; 1:11      0 0 196
     ld   HL, 0x00C4     ; 3:10      0 0 196
 
-    push DE             ; 1:11      -1802 swap do_364(s)
-    ld   DE, 0-1802     ; 3:10      -1802 swap do_364(s) ( a -- -1802 a )
+    push DE             ; 1:11      -1802 swap do_364(s)   ( x -- -1802 x )
+    ld   DE, 0-1802     ; 3:10      -1802 swap do_364(s)
 do364:                  ;           -1802 swap do_364(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_364(s)
@@ -7651,8 +7623,8 @@ exit364:                ;           -2 +loop_364(s)
     push DE             ; 1:11      0 0 250
     ld   HL, 0x00FA     ; 3:10      0 0 250
 
-    push DE             ; 1:11      -1748 swap do_365(s)
-    ld   DE, 0-1748     ; 3:10      -1748 swap do_365(s) ( a -- -1748 a )
+    push DE             ; 1:11      -1748 swap do_365(s)   ( x -- -1748 x )
+    ld   DE, 0-1748     ; 3:10      -1748 swap do_365(s)
 do365:                  ;           -1748 swap do_365(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_365(s)
@@ -8519,7 +8491,7 @@ do397:                  ;           -9 do_397(s)   ( stop index -- index )  stop
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     inc  HL             ; 1:6       2 +loop_397(s)
     ld    A, L          ; 1:4       2 +loop_397(s)
-    and 0xFE            ; 2:7       2 +loop_397(s)
+    and 0xFE            ; 2:7       2 +loop_397(s)   set_bit(0) = 0
     or    H             ; 1:4       2 +loop_397(s)   0 or 1 --> zero flag
     inc  HL             ; 1:6       2 +loop_397(s)   HL = index+2-stop
     jp   nz, do397      ; 3:10      2 +loop_397(s)
@@ -8653,7 +8625,7 @@ exit401:                ;           2 +loop_401(s)
 do402:                  ;           8 do_402(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_402(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_402(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -2 +loop_402(s)   HL = index+step
     jp    c, do402      ; 3:10      -2 +loop_402(s)
 leave402:               ;           -2 +loop_402(s)
@@ -8670,7 +8642,7 @@ exit402:                ;           -2 +loop_402(s)
 do403:                  ;           9 do_403(s)   ( stop index -- index )  stop = 1
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_403(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_403(s)   BC = step, stop = 1
     dec  HL             ; 1:6       -2 +loop_403(s)   HL-= stop = index-stop
     add  HL, BC         ; 1:11      -2 +loop_403(s)   HL+= step = index-stop+step
     inc  HL             ; 1:6       -2 +loop_403(s)   HL+= stop = index+step
@@ -8900,7 +8872,7 @@ do412:                  ;           do_412(s)   ( stop index -- index )  stop = 
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     inc  HL             ; 1:6       2 +loop_412(s)
     ld    A, L          ; 1:4       2 +loop_412(s)
-    and 0xFE            ; 2:7       2 +loop_412(s)
+    and 0xFE            ; 2:7       2 +loop_412(s)   set_bit(0) = 0
     or    H             ; 1:4       2 +loop_412(s)   0 or 1 --> zero flag
     inc  HL             ; 1:6       2 +loop_412(s)   HL = index+2-stop
     jp   nz, do412      ; 3:10      2 +loop_412(s)
@@ -8916,8 +8888,8 @@ exit412:                ;           2 +loop_412(s)
     ex   DE, HL         ; 1:4       -5
     ld   HL, 0-5        ; 3:10      -5
 
-    push DE             ; 1:11      do_413(s)
-    ld   DE, 5          ; 3:10      do_413(s) ( a -- 5 a )
+    push DE             ; 1:11      do_413(s)   ( x -- 5 x )
+    ld   DE, 5          ; 3:10      do_413(s)
 do413:                  ;           do_413(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -8945,8 +8917,8 @@ exit413:                ;           2 +loop_413(s)
     push DE             ; 1:11      0 0 304
     ld   HL, 0x0130     ; 3:10      0 0 304
 
-    push DE             ; 1:11      do_414(s)
-    ld   DE, 2304       ; 3:10      do_414(s) ( a -- 2304 a )
+    push DE             ; 1:11      do_414(s)   ( x -- 2304 x )
+    ld   DE, 2304       ; 3:10      do_414(s)
 do414:                  ;           do_414(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       2 +loop_414(s)   standart version
@@ -8972,8 +8944,8 @@ exit414:                ;           2 +loop_414(s)
     push DE             ; 1:11      0 0 50
     ld   HL, 0x0032     ; 3:10      0 0 50
 
-    push DE             ; 1:11      do_415(s)
-    ld   DE, 2050       ; 3:10      do_415(s) ( a -- 2050 a )
+    push DE             ; 1:11      do_415(s)   ( x -- 2050 x )
+    ld   DE, 2050       ; 3:10      do_415(s)
 do415:                  ;           do_415(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       2 +loop_415(s)   standart version
@@ -8999,8 +8971,8 @@ exit415:                ;           2 +loop_415(s)
     push DE             ; 1:11      0 0 -10
     ld   HL, 0xFFF6     ; 3:10      0 0 -10
 
-    push DE             ; 1:11      do_416(s)
-    ld   DE, 1990       ; 3:10      do_416(s) ( a -- 1990 a )
+    push DE             ; 1:11      do_416(s)   ( x -- 1990 x )
+    ld   DE, 1990       ; 3:10      do_416(s)
 do416:                  ;           do_416(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     inc  HL             ; 1:6       2 +loop_416(s)   standart version
@@ -9027,7 +8999,7 @@ exit416:                ;           2 +loop_416(s)
 do417:                  ;           do_417(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_417(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_417(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -2 +loop_417(s)   HL = index+step
     jp    c, do417      ; 3:10      -2 +loop_417(s)
 leave417:               ;           -2 +loop_417(s)
@@ -9045,7 +9017,7 @@ exit417:                ;           -2 +loop_417(s)
 do418:                  ;           do_418(s)   ( stop index -- index )  stop = 1
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_418(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_418(s)   BC = step, stop = 1
     dec  HL             ; 1:6       -2 +loop_418(s)   HL-= stop = index-stop
     add  HL, BC         ; 1:11      -2 +loop_418(s)   HL+= step = index-stop+step
     inc  HL             ; 1:6       -2 +loop_418(s)   HL+= stop = index+step
@@ -9062,8 +9034,8 @@ exit418:                ;           -2 +loop_418(s)
     ex   DE, HL         ; 1:4       10
     ld   HL, 10         ; 3:10      10
 
-    push DE             ; 1:11      do_419(s)
-    ld   DE, 2          ; 3:10      do_419(s) ( a -- 2 a )
+    push DE             ; 1:11      do_419(s)   ( x -- 2 x )
+    ld   DE, 2          ; 3:10      do_419(s)
 do419:                  ;           do_419(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -9087,8 +9059,8 @@ exit419:                ;           -2 +loop_419(s)
     ex   DE, HL         ; 1:4       264
     ld   HL, 264        ; 3:10      264
 
-    push DE             ; 1:11      do_420(s)
-    ld   DE, 256        ; 3:10      do_420(s) ( a -- 256 a )
+    push DE             ; 1:11      do_420(s)   ( x -- 256 x )
+    ld   DE, 256        ; 3:10      do_420(s)
 do420:                  ;           do_420(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -9112,8 +9084,8 @@ exit420:                ;           -2 +loop_420(s)
     ex   DE, HL         ; 1:4       308
     ld   HL, 308        ; 3:10      308
 
-    push DE             ; 1:11      do_421(s)
-    ld   DE, 300        ; 3:10      do_421(s) ( a -- 300 a )
+    push DE             ; 1:11      do_421(s)   ( x -- 300 x )
+    ld   DE, 300        ; 3:10      do_421(s)
 do421:                  ;           do_421(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -9139,8 +9111,8 @@ exit421:                ;           -2 +loop_421(s)
     push DE             ; 1:11      0 0 2001
     ld   HL, 0x07D1     ; 3:10      0 0 2001
 
-    push DE             ; 1:11      do_422(s)
-    ld   DE, 3          ; 3:10      do_422(s) ( a -- 3 a )
+    push DE             ; 1:11      do_422(s)   ( x -- 3 x )
+    ld   DE, 3          ; 3:10      do_422(s)
 do422:                  ;           do_422(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_422(s)
@@ -9164,8 +9136,8 @@ exit422:                ;           -2 +loop_422(s)
     push DE             ; 1:11      0 0 2232
     ld   HL, 0x08B8     ; 3:10      0 0 2232
 
-    push DE             ; 1:11      do_423(s)
-    ld   DE, 234        ; 3:10      do_423(s) ( a -- 234 a )
+    push DE             ; 1:11      do_423(s)   ( x -- 234 x )
+    ld   DE, 234        ; 3:10      do_423(s)
 do423:                  ;           do_423(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_423(s)
@@ -9189,8 +9161,8 @@ exit423:                ;           -2 +loop_423(s)
     push DE             ; 1:11      0 0 196
     ld   HL, 0x00C4     ; 3:10      0 0 196
 
-    push DE             ; 1:11      do_424(s)
-    ld   DE, 0-1802     ; 3:10      do_424(s) ( a -- -1802 a )
+    push DE             ; 1:11      do_424(s)   ( x -- -1802 x )
+    ld   DE, 0-1802     ; 3:10      do_424(s)
 do424:                  ;           do_424(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_424(s)
@@ -9214,8 +9186,8 @@ exit424:                ;           -2 +loop_424(s)
     push DE             ; 1:11      0 0 250
     ld   HL, 0x00FA     ; 3:10      0 0 250
 
-    push DE             ; 1:11      do_425(s)
-    ld   DE, 0-1748     ; 3:10      do_425(s) ( a -- -1748 a )
+    push DE             ; 1:11      do_425(s)   ( x -- -1748 x )
+    ld   DE, 0-1748     ; 3:10      do_425(s)
 do425:                  ;           do_425(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -2 +loop_425(s)
@@ -9264,7 +9236,7 @@ do427:                  ;           do_427(s)   ( stop index -- index )  stop = 
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
     inc  HL             ; 1:6       2 +loop_427(s)
     ld    A, L          ; 1:4       2 +loop_427(s)
-    and 0xFE            ; 2:7       2 +loop_427(s)
+    and 0xFE            ; 2:7       2 +loop_427(s)   set_bit(0) = 0
     or    H             ; 1:4       2 +loop_427(s)   0 or 1 --> zero flag
     inc  HL             ; 1:6       2 +loop_427(s)   HL = index+2-stop
     jp   nz, do427      ; 3:10      2 +loop_427(s)
@@ -9398,7 +9370,7 @@ exit431:                ;           2 +loop_431(s)
 do432:                  ;           do_432(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_432(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_432(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -2 +loop_432(s)   HL = index+step
     jp    c, do432      ; 3:10      -2 +loop_432(s)
 leave432:               ;           -2 +loop_432(s)
@@ -9415,7 +9387,7 @@ exit432:                ;           -2 +loop_432(s)
 do433:                  ;           do_433(s)   ( stop index -- index )  stop = 1
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -2         ; 3:10      -2 +loop_433(s)   BC = step
+    ld   BC, -2         ; 3:10      -2 +loop_433(s)   BC = step, stop = 1
     dec  HL             ; 1:6       -2 +loop_433(s)   HL-= stop = index-stop
     add  HL, BC         ; 1:11      -2 +loop_433(s)   HL+= step = index-stop+step
     inc  HL             ; 1:6       -2 +loop_433(s)   HL+= stop = index+step
@@ -9622,7 +9594,7 @@ exit440:                ;           -2 +loop_440(s)
 do441:                  ;           0 13 do_441(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -3         ; 3:10      -3 +loop_441(s)   BC = step
+    ld   BC, -3         ; 3:10      -3 +loop_441(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -3 +loop_441(s)   HL = index+step
     jp    c, do441      ; 3:10      -3 +loop_441(s)
 leave441:               ;           -3 +loop_441(s)
@@ -9639,7 +9611,7 @@ exit441:                ;           -3 +loop_441(s)
 do442:                  ;           0 43 do_442(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -10        ; 3:10      -10 +loop_442(s)   BC = step
+    ld   BC, -10        ; 3:10      -10 +loop_442(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -10 +loop_442(s)   HL = index+step
     jp    c, do442      ; 3:10      -10 +loop_442(s)
 leave442:               ;           -10 +loop_442(s)
@@ -9832,7 +9804,7 @@ exit449:                ;           512 +loop_449(s)
 do450:                  ;           0 -15 do_450(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, 3          ; 3:10      3 +loop_450(s)   BC = step
+    ld   BC, 3          ; 3:10      3 +loop_450(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      3 +loop_450(s)   HL = index+step
     jp   nc, do450      ; 3:10      3 +loop_450(s)
 leave450:               ;           3 +loop_450(s)
@@ -11015,7 +10987,7 @@ exit494:                ;           4 +loop_494(s)
 do495:                  ;           13 0 swap do_495(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -3         ; 3:10      -3 +loop_495(s)   BC = step
+    ld   BC, -3         ; 3:10      -3 +loop_495(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -3 +loop_495(s)   HL = index+step
     jp    c, do495      ; 3:10      -3 +loop_495(s)
 leave495:               ;           -3 +loop_495(s)
@@ -11032,7 +11004,7 @@ exit495:                ;           -3 +loop_495(s)
 do496:                  ;           43 0 swap do_496(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -10        ; 3:10      -10 +loop_496(s)   BC = step
+    ld   BC, -10        ; 3:10      -10 +loop_496(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -10 +loop_496(s)   HL = index+step
     jp    c, do496      ; 3:10      -10 +loop_496(s)
 leave496:               ;           -10 +loop_496(s)
@@ -11225,7 +11197,7 @@ exit503:                ;           512 +loop_503(s)
 do504:                  ;           -15 0 swap do_504(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, 3          ; 3:10      3 +loop_504(s)   BC = step
+    ld   BC, 3          ; 3:10      3 +loop_504(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      3 +loop_504(s)   HL = index+step
     jp   nc, do504      ; 3:10      3 +loop_504(s)
 leave504:               ;           3 +loop_504(s)
@@ -11447,7 +11419,7 @@ exit512:                ;           4 +loop_512(s)
 do513:                  ;           0 swap do_513(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -3         ; 3:10      -3 +loop_513(s)   BC = step
+    ld   BC, -3         ; 3:10      -3 +loop_513(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -3 +loop_513(s)   HL = index+step
     jp    c, do513      ; 3:10      -3 +loop_513(s)
 leave513:               ;           -3 +loop_513(s)
@@ -11465,7 +11437,7 @@ exit513:                ;           -3 +loop_513(s)
 do514:                  ;           0 swap do_514(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -10        ; 3:10      -10 +loop_514(s)   BC = step
+    ld   BC, -10        ; 3:10      -10 +loop_514(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -10 +loop_514(s)   HL = index+step
     jp    c, do514      ; 3:10      -10 +loop_514(s)
 leave514:               ;           -10 +loop_514(s)
@@ -11480,8 +11452,8 @@ exit514:                ;           -10 +loop_514(s)
     ex   DE, HL         ; 1:4       671
     ld   HL, 671        ; 3:10      671
 
-    push DE             ; 1:11      510 swap do_515(s)
-    ld   DE, 510        ; 3:10      510 swap do_515(s) ( a -- 510 a )
+    push DE             ; 1:11      510 swap do_515(s)   ( x -- 510 x )
+    ld   DE, 510        ; 3:10      510 swap do_515(s)
 do515:                  ;           510 swap do_515(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11505,8 +11477,8 @@ exit515:                ;           -33 +loop_515(s)
     ex   DE, HL         ; 1:4       50
     ld   HL, 50         ; 3:10      50
 
-    push DE             ; 1:11      -1160 swap do_516(s)
-    ld   DE, 0-1160     ; 3:10      -1160 swap do_516(s) ( a -- -1160 a )
+    push DE             ; 1:11      -1160 swap do_516(s)   ( x -- -1160 x )
+    ld   DE, 0-1160     ; 3:10      -1160 swap do_516(s)
 do516:                  ;           -1160 swap do_516(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11532,8 +11504,8 @@ exit516:                ;           -300 +loop_516(s)
     push DE             ; 1:11      0 0 7027
     ld   HL, 0x1B73     ; 3:10      0 0 7027
 
-    push DE             ; 1:11      30 swap do_517(s)
-    ld   DE, 30         ; 3:10      30 swap do_517(s) ( a -- 30 a )
+    push DE             ; 1:11      30 swap do_517(s)   ( x -- 30 x )
+    ld   DE, 30         ; 3:10      30 swap do_517(s)
 do517:                  ;           30 swap do_517(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -7 +loop_517(s)
@@ -11557,8 +11529,8 @@ exit517:                ;           -7 +loop_517(s)
     push DE             ; 1:11      0 0 6927
     ld   HL, 0x1B0F     ; 3:10      0 0 6927
 
-    push DE             ; 1:11      -70 swap do_518(s)
-    ld   DE, 0-70       ; 3:10      -70 swap do_518(s) ( a -- -70 a )
+    push DE             ; 1:11      -70 swap do_518(s)   ( x -- -70 x )
+    ld   DE, 0-70       ; 3:10      -70 swap do_518(s)
 do518:                  ;           -70 swap do_518(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -7 +loop_518(s)
@@ -11580,8 +11552,8 @@ exit518:                ;           -7 +loop_518(s)
     ex   DE, HL         ; 1:4       10
     ld   HL, 10         ; 3:10      10
 
-    push DE             ; 1:11      25 swap do_519(s)
-    ld   DE, 25         ; 3:10      25 swap do_519(s) ( a -- 25 a )
+    push DE             ; 1:11      25 swap do_519(s)   ( x -- 25 x )
+    ld   DE, 25         ; 3:10      25 swap do_519(s)
 do519:                  ;           25 swap do_519(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11605,8 +11577,8 @@ exit519:                ;           3 +loop_519(s)
     ex   DE, HL         ; 1:4       0xC601
     ld   HL, 0xC601     ; 3:10      0xC601
 
-    push DE             ; 1:11      0xC610 swap do_520(s)
-    ld   DE, 0xC610     ; 3:10      0xC610 swap do_520(s) ( a -- 0xC610 a )
+    push DE             ; 1:11      0xC610 swap do_520(s)   ( x -- 0xC610 x )
+    ld   DE, 0xC610     ; 3:10      0xC610 swap do_520(s)
 do520:                  ;           0xC610 swap do_520(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11630,8 +11602,8 @@ exit520:                ;           3 +loop_520(s)
     ex   DE, HL         ; 1:4       25
     ld   HL, 25         ; 3:10      25
 
-    push DE             ; 1:11      2500 swap do_521(s)
-    ld   DE, 2500       ; 3:10      2500 swap do_521(s) ( a -- 2500 a )
+    push DE             ; 1:11      2500 swap do_521(s)   ( x -- 2500 x )
+    ld   DE, 2500       ; 3:10      2500 swap do_521(s)
 do521:                  ;           2500 swap do_521(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11658,7 +11630,7 @@ exit521:                ;           512 +loop_521(s)
 do522:                  ;           0 swap do_522(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, 3          ; 3:10      3 +loop_522(s)   BC = step
+    ld   BC, 3          ; 3:10      3 +loop_522(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      3 +loop_522(s)   HL = index+step
     jp   nc, do522      ; 3:10      3 +loop_522(s)
 leave522:               ;           3 +loop_522(s)
@@ -11673,8 +11645,8 @@ exit522:                ;           3 +loop_522(s)
     ex   DE, HL         ; 1:4       -29
     ld   HL, 0-29       ; 3:10      -29
 
-    push DE             ; 1:11      5 swap do_523(s)
-    ld   DE, 5          ; 3:10      5 swap do_523(s) ( a -- 5 a )
+    push DE             ; 1:11      5 swap do_523(s)   ( x -- 5 x )
+    ld   DE, 5          ; 3:10      5 swap do_523(s)
 do523:                  ;           5 swap do_523(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11698,8 +11670,8 @@ exit523:                ;           7 +loop_523(s)
     ex   DE, HL         ; 1:4       227
     ld   HL, 227        ; 3:10      227
 
-    push DE             ; 1:11      260 swap do_524(s)
-    ld   DE, 260        ; 3:10      260 swap do_524(s) ( a -- 260 a )
+    push DE             ; 1:11      260 swap do_524(s)   ( x -- 260 x )
+    ld   DE, 260        ; 3:10      260 swap do_524(s)
 do524:                  ;           260 swap do_524(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11723,8 +11695,8 @@ exit524:                ;           7 +loop_524(s)
     ex   DE, HL         ; 1:4       -23
     ld   HL, 0-23       ; 3:10      -23
 
-    push DE             ; 1:11      10 swap do_525(s)
-    ld   DE, 10         ; 3:10      10 swap do_525(s) ( a -- 10 a )
+    push DE             ; 1:11      10 swap do_525(s)   ( x -- 10 x )
+    ld   DE, 10         ; 3:10      10 swap do_525(s)
 do525:                  ;           10 swap do_525(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11748,8 +11720,8 @@ exit525:                ;           7 +loop_525(s)
     ex   DE, HL         ; 1:4       -1485
     ld   HL, 0-1485     ; 3:10      -1485
 
-    push DE             ; 1:11      230 swap do_526(s)
-    ld   DE, 230        ; 3:10      230 swap do_526(s) ( a -- 230 a )
+    push DE             ; 1:11      230 swap do_526(s)   ( x -- 230 x )
+    ld   DE, 230        ; 3:10      230 swap do_526(s)
 do526:                  ;           230 swap do_526(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11775,8 +11747,8 @@ exit526:                ;           345 +loop_526(s)
     push DE             ; 1:11      0 0 516
     ld   HL, 0x0204     ; 3:10      0 0 516
 
-    push DE             ; 1:11      4516 swap do_527(s)
-    ld   DE, 4516       ; 3:10      4516 swap do_527(s) ( a -- 4516 a )
+    push DE             ; 1:11      4516 swap do_527(s)   ( x -- 4516 x )
+    ld   DE, 4516       ; 3:10      4516 swap do_527(s)
 do527:                  ;           4516 swap do_527(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       4 +loop_527(s)
@@ -11798,8 +11770,8 @@ exit527:                ;           4 +loop_527(s)
     ex   DE, HL         ; 1:4       33
     ld   HL, 33         ; 3:10      33
 
-    push DE             ; 1:11      1234 swap do_528(s)
-    ld   DE, 1234       ; 3:10      1234 swap do_528(s) ( a -- 1234 a )
+    push DE             ; 1:11      1234 swap do_528(s)   ( x -- 1234 x )
+    ld   DE, 1234       ; 3:10      1234 swap do_528(s)
 do528:                  ;           1234 swap do_528(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11823,8 +11795,8 @@ exit528:                ;           300 +loop_528(s)
     ex   DE, HL         ; 1:4       1019
     ld   HL, 1019       ; 3:10      1019
 
-    push DE             ; 1:11      1034 swap do_529(s)
-    ld   DE, 1034       ; 3:10      1034 swap do_529(s) ( a -- 1034 a )
+    push DE             ; 1:11      1034 swap do_529(s)   ( x -- 1034 x )
+    ld   DE, 1034       ; 3:10      1034 swap do_529(s)
 do529:                  ;           1034 swap do_529(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -11850,8 +11822,8 @@ exit529:                ;           3 +loop_529(s)
     push DE             ; 1:11      0 0 100
     ld   HL, 0x0064     ; 3:10      0 0 100
 
-    push DE             ; 1:11      500 swap do_530(s)
-    ld   DE, 500        ; 3:10      500 swap do_530(s) ( a -- 500 a )
+    push DE             ; 1:11      500 swap do_530(s)   ( x -- 500 x )
+    ld   DE, 500        ; 3:10      500 swap do_530(s)
 do530:                  ;           500 swap do_530(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       4 +loop_530(s)
@@ -12817,7 +12789,7 @@ exit566:                ;           4 +loop_566(s)
 do567:                  ;           13 do_567(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -3         ; 3:10      -3 +loop_567(s)   BC = step
+    ld   BC, -3         ; 3:10      -3 +loop_567(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -3 +loop_567(s)   HL = index+step
     jp    c, do567      ; 3:10      -3 +loop_567(s)
 leave567:               ;           -3 +loop_567(s)
@@ -12834,7 +12806,7 @@ exit567:                ;           -3 +loop_567(s)
 do568:                  ;           43 do_568(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -10        ; 3:10      -10 +loop_568(s)   BC = step
+    ld   BC, -10        ; 3:10      -10 +loop_568(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -10 +loop_568(s)   HL = index+step
     jp    c, do568      ; 3:10      -10 +loop_568(s)
 leave568:               ;           -10 +loop_568(s)
@@ -13027,7 +12999,7 @@ exit575:                ;           512 +loop_575(s)
 do576:                  ;           -15 do_576(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, 3          ; 3:10      3 +loop_576(s)   BC = step
+    ld   BC, 3          ; 3:10      3 +loop_576(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      3 +loop_576(s)   HL = index+step
     jp   nc, do576      ; 3:10      3 +loop_576(s)
 leave576:               ;           3 +loop_576(s)
@@ -13249,7 +13221,7 @@ exit584:                ;           4 +loop_584(s)
 do585:                  ;           do_585(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -3         ; 3:10      -3 +loop_585(s)   BC = step
+    ld   BC, -3         ; 3:10      -3 +loop_585(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -3 +loop_585(s)   HL = index+step
     jp    c, do585      ; 3:10      -3 +loop_585(s)
 leave585:               ;           -3 +loop_585(s)
@@ -13267,7 +13239,7 @@ exit585:                ;           -3 +loop_585(s)
 do586:                  ;           do_586(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -10        ; 3:10      -10 +loop_586(s)   BC = step
+    ld   BC, -10        ; 3:10      -10 +loop_586(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -10 +loop_586(s)   HL = index+step
     jp    c, do586      ; 3:10      -10 +loop_586(s)
 leave586:               ;           -10 +loop_586(s)
@@ -13282,8 +13254,8 @@ exit586:                ;           -10 +loop_586(s)
     ex   DE, HL         ; 1:4       671
     ld   HL, 671        ; 3:10      671
 
-    push DE             ; 1:11      do_587(s)
-    ld   DE, 510        ; 3:10      do_587(s) ( a -- 510 a )
+    push DE             ; 1:11      do_587(s)   ( x -- 510 x )
+    ld   DE, 510        ; 3:10      do_587(s)
 do587:                  ;           do_587(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13307,8 +13279,8 @@ exit587:                ;           -33 +loop_587(s)
     ex   DE, HL         ; 1:4       50
     ld   HL, 50         ; 3:10      50
 
-    push DE             ; 1:11      do_588(s)
-    ld   DE, 0-1160     ; 3:10      do_588(s) ( a -- -1160 a )
+    push DE             ; 1:11      do_588(s)   ( x -- -1160 x )
+    ld   DE, 0-1160     ; 3:10      do_588(s)
 do588:                  ;           do_588(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13334,8 +13306,8 @@ exit588:                ;           -300 +loop_588(s)
     push DE             ; 1:11      0 0 7027
     ld   HL, 0x1B73     ; 3:10      0 0 7027
 
-    push DE             ; 1:11      do_589(s)
-    ld   DE, 30         ; 3:10      do_589(s) ( a -- 30 a )
+    push DE             ; 1:11      do_589(s)   ( x -- 30 x )
+    ld   DE, 30         ; 3:10      do_589(s)
 do589:                  ;           do_589(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -7 +loop_589(s)
@@ -13359,8 +13331,8 @@ exit589:                ;           -7 +loop_589(s)
     push DE             ; 1:11      0 0 6927
     ld   HL, 0x1B0F     ; 3:10      0 0 6927
 
-    push DE             ; 1:11      do_590(s)
-    ld   DE, 0-70       ; 3:10      do_590(s) ( a -- -70 a )
+    push DE             ; 1:11      do_590(s)   ( x -- -70 x )
+    ld   DE, 0-70       ; 3:10      do_590(s)
 do590:                  ;           do_590(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       -7 +loop_590(s)
@@ -13382,8 +13354,8 @@ exit590:                ;           -7 +loop_590(s)
     ex   DE, HL         ; 1:4       10
     ld   HL, 10         ; 3:10      10
 
-    push DE             ; 1:11      do_591(s)
-    ld   DE, 25         ; 3:10      do_591(s) ( a -- 25 a )
+    push DE             ; 1:11      do_591(s)   ( x -- 25 x )
+    ld   DE, 25         ; 3:10      do_591(s)
 do591:                  ;           do_591(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13407,8 +13379,8 @@ exit591:                ;           3 +loop_591(s)
     ex   DE, HL         ; 1:4       0xC601
     ld   HL, 0xC601     ; 3:10      0xC601
 
-    push DE             ; 1:11      do_592(s)
-    ld   DE, 0xC610     ; 3:10      do_592(s) ( a -- 0xC610 a )
+    push DE             ; 1:11      do_592(s)   ( x -- 0xC610 x )
+    ld   DE, 0xC610     ; 3:10      do_592(s)
 do592:                  ;           do_592(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13432,8 +13404,8 @@ exit592:                ;           3 +loop_592(s)
     ex   DE, HL         ; 1:4       25
     ld   HL, 25         ; 3:10      25
 
-    push DE             ; 1:11      do_593(s)
-    ld   DE, 2500       ; 3:10      do_593(s) ( a -- 2500 a )
+    push DE             ; 1:11      do_593(s)   ( x -- 2500 x )
+    ld   DE, 2500       ; 3:10      do_593(s)
 do593:                  ;           do_593(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13460,7 +13432,7 @@ exit593:                ;           512 +loop_593(s)
 do594:                  ;           do_594(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, 3          ; 3:10      3 +loop_594(s)   BC = step
+    ld   BC, 3          ; 3:10      3 +loop_594(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      3 +loop_594(s)   HL = index+step
     jp   nc, do594      ; 3:10      3 +loop_594(s)
 leave594:               ;           3 +loop_594(s)
@@ -13475,8 +13447,8 @@ exit594:                ;           3 +loop_594(s)
     ex   DE, HL         ; 1:4       -29
     ld   HL, 0-29       ; 3:10      -29
 
-    push DE             ; 1:11      do_595(s)
-    ld   DE, 5          ; 3:10      do_595(s) ( a -- 5 a )
+    push DE             ; 1:11      do_595(s)   ( x -- 5 x )
+    ld   DE, 5          ; 3:10      do_595(s)
 do595:                  ;           do_595(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13500,8 +13472,8 @@ exit595:                ;           7 +loop_595(s)
     ex   DE, HL         ; 1:4       227
     ld   HL, 227        ; 3:10      227
 
-    push DE             ; 1:11      do_596(s)
-    ld   DE, 260        ; 3:10      do_596(s) ( a -- 260 a )
+    push DE             ; 1:11      do_596(s)   ( x -- 260 x )
+    ld   DE, 260        ; 3:10      do_596(s)
 do596:                  ;           do_596(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13525,8 +13497,8 @@ exit596:                ;           7 +loop_596(s)
     ex   DE, HL         ; 1:4       -23
     ld   HL, 0-23       ; 3:10      -23
 
-    push DE             ; 1:11      do_597(s)
-    ld   DE, 10         ; 3:10      do_597(s) ( a -- 10 a )
+    push DE             ; 1:11      do_597(s)   ( x -- 10 x )
+    ld   DE, 10         ; 3:10      do_597(s)
 do597:                  ;           do_597(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13550,8 +13522,8 @@ exit597:                ;           7 +loop_597(s)
     ex   DE, HL         ; 1:4       -1485
     ld   HL, 0-1485     ; 3:10      -1485
 
-    push DE             ; 1:11      do_598(s)
-    ld   DE, 230        ; 3:10      do_598(s) ( a -- 230 a )
+    push DE             ; 1:11      do_598(s)   ( x -- 230 x )
+    ld   DE, 230        ; 3:10      do_598(s)
 do598:                  ;           do_598(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13577,8 +13549,8 @@ exit598:                ;           345 +loop_598(s)
     push DE             ; 1:11      0 0 516
     ld   HL, 0x0204     ; 3:10      0 0 516
 
-    push DE             ; 1:11      do_599(s)
-    ld   DE, 4516       ; 3:10      do_599(s) ( a -- 4516 a )
+    push DE             ; 1:11      do_599(s)   ( x -- 4516 x )
+    ld   DE, 4516       ; 3:10      do_599(s)
 do599:                  ;           do_599(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       4 +loop_599(s)
@@ -13600,8 +13572,8 @@ exit599:                ;           4 +loop_599(s)
     ex   DE, HL         ; 1:4       33
     ld   HL, 33         ; 3:10      33
 
-    push DE             ; 1:11      do_600(s)
-    ld   DE, 1234       ; 3:10      do_600(s) ( a -- 1234 a )
+    push DE             ; 1:11      do_600(s)   ( x -- 1234 x )
+    ld   DE, 1234       ; 3:10      do_600(s)
 do600:                  ;           do_600(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13625,8 +13597,8 @@ exit600:                ;           300 +loop_600(s)
     ex   DE, HL         ; 1:4       1019
     ld   HL, 1019       ; 3:10      1019
 
-    push DE             ; 1:11      do_601(s)
-    ld   DE, 1034       ; 3:10      do_601(s) ( a -- 1034 a )
+    push DE             ; 1:11      do_601(s)   ( x -- 1034 x )
+    ld   DE, 1034       ; 3:10      do_601(s)
 do601:                  ;           do_601(s)   ( stop index -- stop index )
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
@@ -13652,8 +13624,8 @@ exit601:                ;           3 +loop_601(s)
     push DE             ; 1:11      0 0 100
     ld   HL, 0x0064     ; 3:10      0 0 100
 
-    push DE             ; 1:11      do_602(s)
-    ld   DE, 500        ; 3:10      do_602(s) ( a -- 500 a )
+    push DE             ; 1:11      do_602(s)   ( x -- 500 x )
+    ld   DE, 500        ; 3:10      do_602(s)
 do602:                  ;           do_602(s)   ( stop index -- stop index )
     call _test          ; 3:17      call ( -- )
     or    A             ; 1:4       4 +loop_602(s)
@@ -13681,7 +13653,7 @@ exit602:                ;           4 +loop_602(s)
 do603:                  ;           do_603(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -3         ; 3:10      -3 +loop_603(s)   BC = step
+    ld   BC, -3         ; 3:10      -3 +loop_603(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -3 +loop_603(s)   HL = index+step
     jp    c, do603      ; 3:10      -3 +loop_603(s)
 leave603:               ;           -3 +loop_603(s)
@@ -13698,7 +13670,7 @@ exit603:                ;           -3 +loop_603(s)
 do604:                  ;           do_604(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, -10        ; 3:10      -10 +loop_604(s)   BC = step
+    ld   BC, -10        ; 3:10      -10 +loop_604(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      -10 +loop_604(s)   HL = index+step
     jp    c, do604      ; 3:10      -10 +loop_604(s)
 leave604:               ;           -10 +loop_604(s)
@@ -13891,7 +13863,7 @@ exit611:                ;           512 +loop_611(s)
 do612:                  ;           do_612(s)   ( stop index -- index )  stop = 0
     ld    A, '.'        ; 2:7       putchar('.')   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      putchar('.')   putchar(reg A) with ZX 48K ROM
-    ld   BC, 3          ; 3:10      3 +loop_612(s)   BC = step
+    ld   BC, 3          ; 3:10      3 +loop_612(s)   BC = step, stop = 0
     add  HL, BC         ; 1:11      3 +loop_612(s)   HL = index+step
     jp   nc, do612      ; 3:10      3 +loop_612(s)
 leave612:               ;           3 +loop_612(s)
@@ -14126,13 +14098,13 @@ _test_end:
 _show:                  ;           
     pop  BC             ; 1:10      : ret
     ld  (_show_end+1),BC; 4:20      : ( ret -- )
-    push DE             ; 1:11      _index @ push(_index) fetch
-    ex   DE, HL         ; 1:4       _index @ push(_index) fetch
-    ld   HL,(_index)    ; 3:16      _index @ push(_index) fetch
+    push DE             ; 1:11      _index @
+    ex   DE, HL         ; 1:4       _index @
+    ld   HL,(_index)    ; 3:16      _index @
     call PRT_S16        ; 3:17      .   ( s -- )
-    push DE             ; 1:11      _counter @ push(_counter) fetch
-    ex   DE, HL         ; 1:4       _counter @ push(_counter) fetch
-    ld   HL,(_counter)  ; 3:16      _counter @ push(_counter) fetch
+    push DE             ; 1:11      _counter @
+    ex   DE, HL         ; 1:4       _counter @
+    ld   HL,(_counter)  ; 3:16      _counter @
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
                         ;[7:30]     0 _index !  push2_store(0,_index)   ( -- )  val=0, addr=_index
     ld   BC, 0          ; 3:10      0 _index !  push2_store(0,_index)
