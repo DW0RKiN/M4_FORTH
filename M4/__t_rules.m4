@@ -344,6 +344,10 @@ dnl # B...
 
 dnl # C...
 c...,,,
+
+            __T_NAME(0):$1,            {__TOKEN_2OVER_NIP:__TOKEN_CFETCH},                                                  {__SET_TOKEN({__TOKEN_2OVER_NIP_CFETCH},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,            {__TOKEN_2OVER_NIP:__TOKEN_HFETCH},                                                  {__SET_TOKEN({__TOKEN_2OVER_NIP_HFETCH},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
             __T_NAME(1):__T_NAME(0):$1,{__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE:__TOKEN_2OVER_NIP:__TOKEN_CFETCH},{define({__TEMP},__T_INFO(1){ }__T_INFO(0){ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH},__TEMP)},
 
             __T_NAME(0):$1,                              __TOKEN_CFETCH:__TOKEN_0CNE,               {__SET_TOKEN({__TOKEN_CFETCH_0CNE},__T_INFO(0){ }$2)},

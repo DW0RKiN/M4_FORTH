@@ -1415,32 +1415,49 @@ __{}__ADD_TOKEN({__TOKEN_DUP_CFETCH},{dup c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH},{dnl
-__{}define({__INFO},{dup_cfetch}){}dnl
-
-                        ;[5:29]     dup C@ dup_cfetch ( addr -- addr char )
-    push DE             ; 1:11      dup C@ dup_cfetch
-    ld    E,(HL)        ; 1:7       dup C@ dup_cfetch
-    ld    D, 0x00       ; 2:7       dup C@ dup_cfetch
-    ex   DE, HL         ; 1:4       dup C@ dup_cfetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:29]     __INFO   ( addr -- addr char )
+    push DE             ; 1:11      __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    ld    D, 0x00       ; 2:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
-dnl # 2over nip C@
+dnl # 2over nip c@
 dnl # ( addr d -- addr d char )
 define({_2OVER_NIP_CFETCH},{dnl
 __{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH},{2over nip c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH},{dnl
-__{}define({__INFO},{2over_nip_cfetch}){}dnl
-
-                        ;[8:54]     2over nip C@ ( addr d -- addr d char )
-    pop  BC             ; 1:10      2over nip C@
-    push BC             ; 1:11      2over nip C@
-    push DE             ; 1:11      2over nip C@
-    ex   DE, HL         ; 1:4       2over nip C@
-    ld    A,(BC)        ; 1:7       2over nip C@
-    ld    L, A          ; 1:4       2over nip C@
-    ld    H, 0x00       ; 2:7       2over nip C@}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:54]     __INFO   ( addr x2 x1 -- addr x2 x1 n )  n = (addr) & 0xFF
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A,(BC)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+dnl
+dnl
+dnl # 2over nip h@
+dnl # ( addr d -- addr d char )
+define({_2OVER_NIP_HFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_HFETCH},{2over nip h@},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2OVER_NIP_HFETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:54]     __INFO   ( addr x2 x1 -- addr x2 x1 x )  x = (addr) << 8
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A,(BC)        ; 1:7       __INFO
+    ld    L, 0x00       ; 2:7       __INFO
+    ld    H, A          ; 1:4       __INFO
+}){}dnl
 dnl
 dnl
 dnl # dup C@ swap
