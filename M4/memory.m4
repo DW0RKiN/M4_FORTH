@@ -3062,15 +3062,14 @@ __{}__ADD_TOKEN({__TOKEN_DUP_FETCH},{dup @},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_FETCH},{dnl
-__{}define({__INFO},{dup_fetch}){}dnl
-
-                        ;[6:41]     dup @ dup_fetch ( addr -- addr x )
-    push DE             ; 1:11      dup @ dup_fetch
-    ld    E, (HL)       ; 1:7       dup @ dup_fetch
-    inc  HL             ; 1:6       dup @ dup_fetch
-    ld    D, (HL)       ; 1:7       dup @ dup_fetch
-    dec  HL             ; 1:6       dup @ dup_fetch
-    ex   DE, HL         ; 1:4       dup @ dup_fetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:41]     __INFO   ( addr -- addr x )
+    push DE             ; 1:11      __INFO
+    ld    E, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    D, (HL)       ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # dup @ swap
@@ -3081,14 +3080,13 @@ __{}__ADD_TOKEN({__TOKEN_DUP_FETCH_SWAP},{dup @ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_FETCH_SWAP},{dnl
-__{}define({__INFO},{dup_fetch_swap}){}dnl
-
-                        ;[5:37]     dup @ swap dup_fetch_swap ( addr -- x addr )
-    push DE             ; 1:11      dup @ swap dup_fetch_swap
-    ld    E, (HL)       ; 1:7       dup @ swap dup_fetch_swap
-    inc  HL             ; 1:6       dup @ swap dup_fetch_swap
-    ld    D, (HL)       ; 1:7       dup @ swap dup_fetch_swap
-    dec  HL             ; 1:6       dup @ swap dup_fetch_swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:37]     __INFO   ( addr -- x addr )
+    push DE             ; 1:11      __INFO
+    ld    E, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    D, (HL)       ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl # addr @
@@ -3918,11 +3916,11 @@ dnl # x addr !
 dnl # ( -- )
 dnl # store(addr) store 16-bit number at addr
 define({PUSH2_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_STORE},{push2_store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_STORE},{$1 $2 !},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_STORE},{dnl
-__{}define({__INFO},{push2_store}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
 ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing parameters!},
@@ -3932,52 +3930,52 @@ eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_MEM_REF($2),{1},{dnl
 __{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{
-__{}__{}__{}                        ;[12:78]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
-__{}__{}__{}    push HL             ; 1:11      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    pop  HL             ; 1:11      $1 $2 !  push2_store($1,$2)},
+__{}__{}__{}                        ;[12:78]    __INFO   ( -- )  val=$1, addr=$2
+__{}__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
+__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}__{}__{}    ld  (HL), C         ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL), B         ; 1:7       __INFO
+__{}__{}__{}    pop  HL             ; 1:11      __INFO},
 __{}__{}__{}_TYP_SINGLE,{smal},{
-__{}__{}__{}                        ;[10:64]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
-__{}__{}__{}    push HL             ; 1:11      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld  (HL),format({%-11s}, low $1); 2:10      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    pop  HL             ; 1:11      $1 $2 !  push2_store($1,$2)},
+__{}__{}__{}                        ;[10:64]    __INFO   ( -- )  val=$1, addr=$2
+__{}__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
+__{}__{}__{}    ld  (HL),format({%-11s}, low $1); 2:10      __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      __INFO
+__{}__{}__{}    pop  HL             ; 1:11      __INFO},
 __{}__{}__{}__IS_NUM($1),{1},{
-__{}__{}__{}__{}define({__CODE1},__LD_R_NUM({$1 $2 !  push2_store($1,$2)   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
+__{}__{}__{}__{}define({__CODE1},__LD_R_NUM({__INFO   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
 __{}__{}__{}__{}define({__TMP_C},eval(40+__CLOCKS)){}dnl
 __{}__{}__{}__{}define({__TMP_B},eval(7+__BYTES)){}dnl
-__{}__{}__{}__{}define({__CODE2},__LD_R_NUM({$1 $2 !  push2_store($1,$2)   hi($1) = __HEX_H($1)},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
+__{}__{}__{}__{}define({__CODE2},__LD_R_NUM({__INFO   hi($1) = __HEX_H($1)},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
 __{}__{}__{}__{}define({__TMP_C},eval(__TMP_C+__CLOCKS)){}dnl
 __{}__{}__{}__{}define({__TMP_B},eval(__TMP_B+__BYTES)){}dnl
-__{}__{}__{}                        ;format({%-10s},[__TMP_B:__TMP_C]) $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
-__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      $1 $2 !  push2_store($1,$2){}dnl
+__{}__{}__{}                        ;format({%-10s},[__TMP_B:__TMP_C]) __INFO   ( -- )  val=$1, addr=$2
+__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      __INFO{}dnl
 __{}__{}__{}__CODE1
-__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    inc  BC             ; 1:6       $1 $2 !  push2_store($1,$2){}dnl
+__{}__{}__{}    ld  (BC), A         ; 1:7       __INFO
+__{}__{}__{}    inc  BC             ; 1:6       __INFO{}dnl
 __{}__{}__{}__CODE2
-__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)},
+__{}__{}__{}    ld  (BC), A         ; 1:7       __INFO},
 __{}__{}__{}{
-__{}__{}__{}                        ;[11:54]    $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
-__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld    A, format({%-11s}, low $1); 2:7       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    inc  BC             ; 1:6       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld    A, format({%-11s}, high $1); 2:7       $1 $2 !  push2_store($1,$2)
-__{}__{}__{}    ld  (BC), A         ; 1:7       $1 $2 !  push2_store($1,$2)})},
+__{}__{}__{}                        ;[11:54]    __INFO   ( -- )  val=$1, addr=$2
+__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      __INFO
+__{}__{}__{}    ld    A, format({%-11s}, low $1); 2:7       __INFO
+__{}__{}__{}    ld  (BC), A         ; 1:7       __INFO
+__{}__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}__{}    ld    A, format({%-11s}, high $1); 2:7       __INFO
+__{}__{}__{}    ld  (BC), A         ; 1:7       __INFO})},
 __IS_MEM_REF($1),{1},{
-__{}                        ;[8:40]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 !  push2_store($1,$2)
-__{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)},
+__{}                        ;[8:40]     __INFO   ( -- )  val=$1, addr=$2
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
 {
-__{}                        ;[7:30]     $1 $2 !  push2_store($1,$2)   ( -- )  val=$1, addr=$2
-__{}    ld   BC, format({%-11s},$1); 3:10      $1 $2 !  push2_store($1,$2)
-__{}    ld   format({%-15s},($2){,} BC); 4:20      $1 $2 !  push2_store($1,$2)})}){}dnl
+__{}                        ;[7:30]     __INFO   ( -- )  val=$1, addr=$2
+__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -4003,18 +4001,17 @@ dnl # tuck ! 2+
 dnl # ( x addr -- addr+2 )
 dnl # store 16-bit number at addr
 define({TUCK_STORE_2ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_TUCK_STORE_2ADD},{tuck_store_2add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_TUCK_STORE_2ADD},{tuck ! +2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TUCK_STORE_2ADD},{dnl
-__{}define({__INFO},{tuck_store_2add}){}dnl
-
-                        ;[5:36]     tuck ! +2 tuck_store_2add   ( x addr -- addr+2 )
-    ld  (HL),E          ; 1:7       tuck ! +2 tuck_store_2add
-    inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
-    ld  (HL),D          ; 1:7       tuck ! +2 tuck_store_2add
-    inc  HL             ; 1:6       tuck ! +2 tuck_store_2add
-    pop  DE             ; 1:10      tuck ! +2 tuck_store_2add}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:36]     __INFO   ( x addr -- addr+2 )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -4282,18 +4279,17 @@ dnl # over swap !
 dnl # ( x addr -- x )
 dnl # store 16-bit number at addr
 define({OVER_SWAP_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_STORE},{over_swap_store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_SWAP_STORE},{over swap !},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_SWAP_STORE},{dnl
-__{}define({__INFO},{over_swap_store}){}dnl
-
-                        ;[5:34]     over swap ! over_swap_store   ( x addr -- x )
-    ld  (HL),E          ; 1:7       over swap ! over_swap_store
-    inc  HL             ; 1:6       over swap ! over_swap_store
-    ld  (HL),D          ; 1:7       over swap ! over_swap_store
-    ex   DE, HL         ; 1:4       over swap ! over_swap_store
-    pop  DE             ; 1:10      over swap ! over_swap_store}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:34]     __INFO   ( x addr -- x )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # 2dup !
