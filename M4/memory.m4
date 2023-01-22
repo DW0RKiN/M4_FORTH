@@ -5141,36 +5141,48 @@ __{}define({__INFO},{fast_copy_16_bytes_stop}){}dnl
 dnl
 dnl
 dnl
+dnl # FAST_COPY_16_BYTES(from,to)
 define({FAST_COPY_16_BYTES},{dnl
 __{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES},{fast_copy_16_bytes},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FAST_COPY_16_BYTES},{dnl
-__{}define({__INFO},{fast_copy_16_bytes}){}dnl
-
-                        ;[26:204]
-    ld   SP, format({%-11s},$1); 3:10      from
-    pop  AF             ; 1:10
-    pop  BC             ; 1:10
-    pop  DE             ; 1:10
-    pop  HL             ; 1:10
-    exx                 ; 1:4
-    pop  BC             ; 1:10
-    pop  DE             ; 1:10
-    pop  HL             ; 1:10
-    ex   AF, AF'        ; 1:4
-    pop  AF             ; 1:10
-    ld   SP, format({%-11s},$2); 3:10      to
-    push AF             ; 1:11
-    ex   AF, AF'        ; 1:4
-    push HL             ; 1:11
-    push DE             ; 1:11
-    push BC             ; 1:11
-    exx                 ; 1:4
-    push HL             ; 1:11
-    push DE             ; 1:11
-    push BC             ; 1:11
-    push AF             ; 1:11}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($#,0,{
+__{}  .error {$0}(): Missing from and to address parameter!},
+__{}$#,1,{
+__{}  .error {$0}($@): Missing second address parameter!},
+__{}eval($#>2),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}  .error {$0}($@): First parameter is memory reference!},
+__{}__IS_MEM_REF($2),1,{
+__{}  .error {$0}($@): Second parameter is memory reference!},
+__{}{
+__{}                        ;[26:204]
+__{}    ld   SP, format({%-11s},$1); 3:10      __INFO   from = $1
+__{}    pop  AF             ; 1:10      __INFO
+__{}    pop  BC             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    exx                 ; 1:4       __INFO
+__{}    pop  BC             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    ex   AF, AF'        ; 1:4       __INFO
+__{}    pop  AF             ; 1:10      __INFO
+__{}    ld   SP, format({%-11s},$2); 3:10      __INFO   to = $2
+__{}    push AF             ; 1:11      __INFO
+__{}    ex   AF, AF'        ; 1:4       __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    push DE             ; 1:11      __INFO
+__{}    push BC             ; 1:11      __INFO
+__{}    exx                 ; 1:4       __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}    push DE             ; 1:11      __INFO
+__{}    push BC             ; 1:11      __INFO
+__{}    push AF             ; 1:11      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
