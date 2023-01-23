@@ -5114,30 +5114,46 @@ __{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES_INIT},{fast_copy_16_bytes_init},$@){
 }){}dnl
 dnl
 define({__ASM_TOKEN_FAST_COPY_16_BYTES_INIT},{dnl
-__{}define({__INFO},{fast_copy_16_bytes_init}){}dnl
-
-                        ;[9:58]
-    di                  ; 1:4
-    push DE             ; 1:11      save nos
-    push HL             ; 1:11      save tos
-    exx                 ; 1:4
-    push HL             ; 1:11      save ras
-    ld   format({%-15s},($1){,}SP); 4:20      save orig SP}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($#,0,{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}  .error {$0}($@): Parameter is memory reference!},
+__{}{
+__{}                        ;[9:58]     __INFO
+__{}    di                  ; 1:4       __INFO
+__{}    push DE             ; 1:11      __INFO   save nos
+__{}    push HL             ; 1:11      __INFO   save tos
+__{}    exx                 ; 1:4       __INFO
+__{}    push HL             ; 1:11      __INFO   save ras
+__{}    ld   format({%-15s},($1){,}SP); 4:20      __INFO   save orig SP}){}dnl
+}){}dnl
+dnl
+dnl
 dnl
 define({FAST_COPY_16_BYTES_STOP},{dnl
 __{}__ADD_TOKEN({__TOKEN_FAST_COPY_16_BYTES_STOP},{fast_copy_16_bytes_stop},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FAST_COPY_16_BYTES_STOP},{dnl
-__{}define({__INFO},{fast_copy_16_bytes_stop}){}dnl
-
-                        ;[9:58]
-    ld   SP, format({%-11s},($1)); 4:20      load orig SP
-    pop  HL             ; 1:10      load ras
-    exx                 ; 1:4
-    pop  HL             ; 1:10      load tos
-    pop  HL             ; 1:10      load nos
-    ei                  ; 1:4}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($#,0,{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}  .error {$0}($@): Parameter is memory reference!},
+__{}{
+                        ;[9:58]     __INFO
+    ld   SP, format({%-11s},($1)); 4:20      __INFO   load orig SP
+    pop  HL             ; 1:10      __INFO   load ras
+    exx                 ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO   load tos
+    pop  HL             ; 1:10      __INFO   load nos
+    ei                  ; 1:4       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -5159,8 +5175,8 @@ __{}  .error {$0}($@): First parameter is memory reference!},
 __{}__IS_MEM_REF($2),1,{
 __{}  .error {$0}($@): Second parameter is memory reference!},
 __{}{
-__{}                        ;[26:204]
-__{}    ld   SP, format({%-11s},$1); 3:10      __INFO   from = $1
+__{}                        ;[26:204]   __INFO
+__{}    ld   SP, format({%-11s},$1); 3:10      __INFO   from = $1 .. $1+15
 __{}    pop  AF             ; 1:10      __INFO
 __{}    pop  BC             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO
@@ -5171,7 +5187,7 @@ __{}    pop  DE             ; 1:10      __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    pop  AF             ; 1:10      __INFO
-__{}    ld   SP, format({%-11s},$2); 3:10      __INFO   to = $2
+__{}    ld   SP, format({%-11s},$2); 3:10      __INFO   to = $2-16 .. $2-1
 __{}    push AF             ; 1:11      __INFO
 __{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    push HL             ; 1:11      __INFO
